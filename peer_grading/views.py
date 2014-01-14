@@ -1,17 +1,18 @@
 """
 Interface for all Peer Grading Workflow. Covers all requests made for Peer Grading.
 """
-import json
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.response import Response
-from models import PeerGradedEssay, PeerGradingStatus
-from serializers import PeerGradedEssaySerializer, PeerGradingStatusSerializer
+from models import Status
+from common_grading.models import Essay
+from serializers import StatusSerializer
+from common_grading.serializers import EssaySerializer
 
 
-class PeerGradedEssayViewSet(viewsets.ModelViewSet):
+class EssayViewSet(viewsets.ModelViewSet):
 
-    queryset = PeerGradedEssay.objects.all()
-    serializer_class = PeerGradedEssaySerializer
+    queryset = Essay.objects.all()
+    serializer_class = EssaySerializer
 
     def create(self, request, *args, **kwargs):
         """
@@ -21,10 +22,20 @@ class PeerGradedEssayViewSet(viewsets.ModelViewSet):
         @return: Once an essay has been submitted, the student's status for beginning peer grading should be immediately
                  returned. See student_status for more information.
         """
+        # TODO Copied 99% of this from Django REST mixins.py to inject 'peer' to grading_type. Figure out what I actually want...
+        data = request.DATA.copy()
+        data['grading_type'] = "peer"
+        serializer = self.get_serializer(data=data, files=request.FILES)
 
-        response = {'success': True,
-                    'message': "Nothing happened."}
-        return Response(json.dumps(response))
+        if serializer.is_valid():
+            self.pre_save(serializer.object)
+            self.object = serializer.save(force_insert=True)
+            self.post_save(self.object, created=True)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED,
+                            headers=headers)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, *args, **kwargs):
         """
@@ -59,10 +70,10 @@ class PeerGradedEssayViewSet(viewsets.ModelViewSet):
         pass
 
 
-class PeerGradingStatusViewSet(viewsets.ModelViewSet):
+class StatusViewSet(viewsets.ModelViewSet):
 
-    queryset = PeerGradingStatus.objects.all()
-    serializer_class = PeerGradingStatusSerializer
+    queryset = Status.objects.all()
+    serializer_class = StatusSerializer
 
     def get(self, request):
         """

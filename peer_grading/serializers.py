@@ -1,14 +1,8 @@
 from rest_framework import serializers
-from models import PeerGradingStatus, PeerGradedEssay
+from models import Status
 
 
-class PeerGradedEssaySerializer(serializers.HyperlinkedModelSerializer):
+class StatusSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = PeerGradedEssay
-        fields = ('student_id', 'problem_id', 'essay_body', 'grades', 'status')
-
-
-class PeerGradingStatusSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = PeerGradingStatus
+        model = Status
         fields = ('student_id', 'problem_id', 'grading_status')
