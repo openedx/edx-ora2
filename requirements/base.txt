@@ -1,5 +1,5 @@
 # edX Internal Requirements
 
 # Third Party Requirements
-
-# Test Requirements
+django==1.4.8
+djangorestframework==2.3.5
