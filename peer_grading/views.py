@@ -1,18 +1,13 @@
 """
 Interface for all Peer Grading Workflow. Covers all requests made for Peer Grading.
 """
-from rest_framework import viewsets, status
-from rest_framework.response import Response
 from models import Status
 from common_grading.models import Essay
-from serializers import StatusSerializer
-from common_grading.serializers import EssaySerializer
 
 
 class EssayViewSet(viewsets.ModelViewSet):
 
     queryset = Essay.objects.all()
-    serializer_class = EssaySerializer
 
     def create(self, request, *args, **kwargs):
         """
@@ -22,20 +17,7 @@ class EssayViewSet(viewsets.ModelViewSet):
         @return: Once an essay has been submitted, the student's status for beginning peer grading should be immediately
                  returned. See student_status for more information.
         """
-        # TODO Copied 99% of this from Django REST mixins.py to inject 'peer' to grading_type. Figure out what I actually want...
-        data = request.DATA.copy()
-        data['grading_type'] = "peer"
-        serializer = self.get_serializer(data=data, files=request.FILES)
-
-        if serializer.is_valid():
-            self.pre_save(serializer.object)
-            self.object = serializer.save(force_insert=True)
-            self.post_save(self.object, created=True)
-            headers = self.get_success_headers(serializer.data)
-            return Response(serializer.data, status=status.HTTP_201_CREATED,
-                            headers=headers)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        pass
 
     def retrieve(self, request, *args, **kwargs):
         """
@@ -73,7 +55,6 @@ class EssayViewSet(viewsets.ModelViewSet):
 class StatusViewSet(viewsets.ModelViewSet):
 
     queryset = Status.objects.all()
-    serializer_class = StatusSerializer
 
     def get(self, request):
         """

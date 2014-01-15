@@ -1,5 +1,5 @@
 import logging
-from x_module import XModule
+from x_module import XBlock
 from xmodule.raw_module import RawDescriptor
 
 log = logging.getLogger(__name__)
@@ -12,7 +12,7 @@ class PeerGradingFields(object):
     pass
 
 
-class PeerGradingModule(PeerGradingFields, XModule):
+class PeerGradingModule(PeerGradingFields, XBlock):
 
     _VERSION = 0
 

@@ -1,1 +1,5 @@
-djangorestframework==2.3.5
+# edX Internal Requirements
+
+# Third Party Requirements
+
+# Test Requirements
