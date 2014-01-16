@@ -23,12 +23,22 @@ def get_last_submission(student_id, location):
     pass
 
 
-def submit(submission):
+def submit_submission(submission):
     """
     Submit a submission for peer grading.
     @param submission: The submission to add to the peer grading queue. Should contain the student_id,
                        associated location, and all answer related fields prepopulated. Submission date,
                        preferred grader, and other attributes can be determined internally.
     @return: The saved submission.
+    """
+    pass
+
+
+def submit_score(scoring, submission):
+    """
+    Submit a scoring for a particular submission
+    @param scoring: The score for a particular submission.
+    @param submission: The associated submission.
+    @return: True if the submission succeeded.
     """
     pass
