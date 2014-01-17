@@ -3,12 +3,9 @@ This is an initial prototype for redesigning Peer Grading and general Open Ended
 Installation
 ------------
 
-./manage.py runserver
-
-The intent of this prototype is to be installed as a plugin for the edx-platform. Refer to XBlock and
-XModule documentation for more details. (Though I should have more here once this prototype is better
-refined...)
-
+The intent of this project is to be installed as a plugin for the edx-platform. Use pip to install edx-tim against the
+edx-platform's list of requirements. Refer to the XBlock documentation for more details on installing new XBlocks
+against edx-platform.
 
 License
 -------
@@ -21,12 +18,18 @@ Please see ``LICENSE.txt`` for details.
 Documentation
 ------------
 
-TODO
+This project currently the home of the peer grading module. edx-tim must be installed against the edx-platform for full
+functionality. The goal of the edx-tim project is to build a clean, stable, scalable set of grading modules.  All work
+on this framework should be designed to be implementation independent at the schema level, such that submissions can
+be resubmitted against any number of different grading modules.
 
 How to Contribute
 -----------------
 
-Currently locked down.
+The edx-tim repository is now public. External pull requests may be limited currently, as the project is in initial
+phases of development.
+
+Please read [How To Contribute](https://github.com/edx/edx-platform/wiki/How-To-Contribute) for details.
 
 Reporting Security Issues
 -------------------------
