@@ -120,15 +120,9 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'rest_framework',
     'peer_grading',
     'common_grading'
 )
-
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSIONS_CLASSES': ('rest_framework.permissions.IsAdminUser',),
-    'PAGINATE_BY': 10
-}
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
