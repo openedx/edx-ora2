@@ -1,0 +1,4 @@
+include requirements/base.txt
+include LICENSE
+include AUTHORS
+include README.md
