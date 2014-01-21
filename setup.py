@@ -4,10 +4,25 @@ from setuptools import setup
 
 PACKAGES = ['common_grading', 'peer_grading']
 
+
+def is_requirement(line):
+    """
+    Return True if the requirement line is a package requirement;
+    that is, it is not blank, a comment, or editable.
+    """
+    # Remove whitespace at the start/end of the line
+    line = line.strip()
+
+    # Skip blank lines, comments, and editable installs
+    return not (line == ''  or line.startswith('#') or line.startswith('-e'))
+
+
 REQUIREMENTS = [
     line.strip() for line in
     open("requirements/base.txt").readlines()
+    if is_requirement(line)
 ]
+
 
 setup(
     name='edx-tim',
