@@ -7,3 +7,4 @@ install:
 script:
   - "python manage.py test"
   - "python manage.py harvest"
+  - "python setup.py install"
