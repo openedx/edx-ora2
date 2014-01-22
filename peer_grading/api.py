@@ -1,6 +1,8 @@
+from common_grading.models import GRADING_TYPES
+import common_grading.data_service as data_service
 
 
-def get_next_submission(student_id, location):
+def get_next_submission(submission):
     """Request the next submission to be peer graded.
 
     Args:
@@ -14,7 +16,7 @@ def get_next_submission(student_id, location):
     pass
 
 
-def get_last_submission(student_id, location):
+def get_submission(submission):
     """Used to give visibility to scoring and workflow for a submission in peer grading.
 
     If the student has submitted a submission and has graded enough peers, this function will return the submission as
@@ -28,23 +30,25 @@ def get_last_submission(student_id, location):
         Submission: The student's latest submission, restrained on workflow completion.
 
     """
-    pass
+    return data_service.get_submissions(submission)
 
 
-def submit_submission(submission):
+def create_submission(submission):
     """Submit a submission for peer grading.
 
     Args:
-        submission (Submission): The submission to add to the peer grading queue. Should contain the student_id,
-            associated location, and all answer related fields prepopulated. Submission date,
-            preferred grader, and other attributes can be determined internally.
+        student_id (str): The submitting student.
+        location (str): The location this submission is associated with.
+        course_id (str): The course this submission is associated with.
+        essay_body (str): The body of the submission to grade.
     Returns:
         Submission: The saved submission.
     """
-    pass
+    submission["preferred_grading"] = GRADING_TYPES[0]
+    data_service.create_submission(submission)
 
 
-def submit_score(scoring, submission):
+def update_submission(submission):
     """Submit a scoring for a particular submission
 
     Args:
@@ -54,4 +58,28 @@ def submit_score(scoring, submission):
         bool: True if the submission succeeded.
 
     """
+    pass
+
+
+def get_scoring():
+    pass
+
+
+def create_scoring():
+    pass
+
+
+def update_scoring():
+    pass
+
+
+def get_feedback():
+    pass
+
+
+def create_feedback():
+    pass
+
+
+def update_feedback():
     pass
