@@ -4,14 +4,14 @@ Feature: An author can configured required reviewers per submission.
 
     Scenario: Author configures required reviewers per submission
         Given: I am an author
-        And: I configure <RequiredReviews> required reviewers per submissions
+        And: I configure "<RequiredReviews>" required reviewers per submissions
         And: I submit a submission
-        And: I review <RequiredPeerReviews> peer submissions
-        When: <RequiredReviews> students review the submission
+        And: I review enough peer submissions
+        When: "<RequiredReviews>" students review the submission
         Then: I receive my reviews.
 
         Examples:
-        | RequiredReviews | RequiredPeerReviews |
-        | 1               | 2                   |
-        | 3               | 5                   |
-        | 7               | 12                  |
+        | RequiredReviews |
+        | 1               |
+        | 3               |
+        | 7               |

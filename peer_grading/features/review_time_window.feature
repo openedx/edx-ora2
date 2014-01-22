@@ -5,10 +5,10 @@ Feature: An author can configure the peer review start and end dates
 
   Scenario: An author can configure the peer review start and end dates
     Given: I am an author
-    And: I configure a start date in the <RelativeStartTime>
-    And: I configure an end date in the <RelativeEndTime>
+    And: I configure a start date in the "<RelativeStartTime>"
+    And: I configure an end date in the "<RelativeEndTime>"
     When: I attempt to review a peer submission
-    Then: My attempt to review a peer submission <Result>
+    Then: My attempt to review a peer submission "<Result>"
 
   Examples:
   | RelativeStartTime | RelativeEndTime   | Result |

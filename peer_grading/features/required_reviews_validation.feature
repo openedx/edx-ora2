@@ -7,9 +7,9 @@ Feature: An author is required to configure less reviews than reviewers
 
   Scenario: An author is required to configure less reviews than reviewers
     Given: I am an author
-    And: I configure <RequiredPeerReviews> required reviews per student
-    And: I configure <RequiredReviews> required reviews per submission
-    Then: The validation <Result>
+    And: I configure "<RequiredPeerReviews>" required reviews per student
+    And: I configure "<RequiredReviews>" required reviews per submission
+    Then: The validation "<Result>"
 
   Examples:
   | RequiredReviews | RequiredPeerReviews | Result |
