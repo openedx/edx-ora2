@@ -31,6 +31,10 @@ class TestApi(TestCase):
         self._assert_submission(submissions[0], "this is my answer!", 1, 1)
         self._assert_submission(submissions[1], "this is my other answer!", 1, 1)
 
+        # Test a limit on the submissions
+        submissions = get_submissions(STUDENT_ITEM, 1)
+        self.assertEqual(1, len(submissions))
+
     def _assert_submission(self, submission, expected_answer, expected_item, expected_attempt):
         self.assertIsNotNone(submission)
         self.assertEqual(submission.answer, expected_answer)
