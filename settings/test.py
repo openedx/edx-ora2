@@ -5,7 +5,7 @@ Test-specific Django settings.
 # Inherit from base settings
 from .base import *
 
-TEST_APPS = ('common_grading', 'peer_grading')
+TEST_APPS = ('peer_grading', 'common_grading',)
 
 # Configure nose
 NOSE_ARGS = [
@@ -20,4 +20,4 @@ LETTUCE_APPS = TEST_APPS
 LETTUCE_SERVER_PORT = 8005
 
 # Install test-specific Django apps
-INSTALLED_APPS += ('django_nose', 'lettuce.django')
+INSTALLED_APPS += ('django_nose', 'lettuce.django',)
