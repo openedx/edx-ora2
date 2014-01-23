@@ -2,7 +2,7 @@
 
 from setuptools import setup
 
-PACKAGES = ['common_grading', 'peer_grading']
+PACKAGES = ['submissions', 'openassessment.peer']
 
 
 def is_requirement(line):
@@ -39,5 +39,6 @@ setup(
         'Programming Language :: Python',
     ],
     packages=PACKAGES,
+    package_dir={'': 'apps'},
     install_requires=REQUIREMENTS,
 )
