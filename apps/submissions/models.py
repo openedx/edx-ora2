@@ -5,8 +5,8 @@ workflows, ORA, etc. So the flow is this:
 Student submission:
 * XBlock creates a Submission
 * submissions app sends a general notification that a submission has happened
-* openresponse can listen for that signal if it wants, or query itself on demand
-* when openresponse is satistifed that it has collected enough information to
+* openassessment can listen for that signal if it wants, or query itself on demand
+* when openassessment is satisfied that it has collected enough information to
   score the student, it will push that score information back to this app.
 * when the LMS wants to know what raw scores a student has, it calls this app.
 
@@ -15,8 +15,12 @@ Things to consider probably aren't worth the extra effort/complexity in the MVP:
 * Version ID (this doesn't work until split-mongostore comes into being)
 
 """
+from collections import namedtuple
+
 from django.db import models
 from django.utils.timezone import now
+
+StudentItemStruct = namedtuple("StudentItemStruct", "student_id course_id item_id item_type")
 
 class StudentItem(models.Model):
     """Represents a single item for a single course for a single user.
@@ -42,10 +46,9 @@ class StudentItem(models.Model):
         unique_together = (
             # For integrity reasons, and looking up all of a student's items
             ("course_id", "student_id", "item_id"),
-
-            # Composite index for getting information across a course
-            ("course_id", "item_id"),
         )
+
+SubmissionStruct = namedtuple("SubmissionStruct", "student_item attempt_number submitted_at created_at answer")
 
 
 class Submission(models.Model):
