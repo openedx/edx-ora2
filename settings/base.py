@@ -1,5 +1,14 @@
 # Django settings for peer_grading project.
 
+import os
+import sys
+
+# A little pythonpath munging to let it see things in apps
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+APPS_DIR = os.path.join(BASE_DIR, "apps")
+
+sys.path.append(APPS_DIR)  # So it can find the gradebook apps dir
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -121,7 +130,9 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'peer_grading',
-    'common_grading'
+    'common_grading',
+    'submissions',
+    'openresponse.peer',
 )
 
 # A sample logging configuration. The only tangible logging
