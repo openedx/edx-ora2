@@ -13,6 +13,10 @@ def and_i_configure_required_reviewers_per_student(step, required):
 def and_i_configure_required_reviewers_per_student(step, required):
     pass
 
+@step(u'And: I configure "([^"]*)" required reviews per submission')
+def and_i_configure_group1_required_reviews_per_submission(step, group1):
+    pass
+
 @step(u'Then: The validation "([^"]*)"')
 def then_the_validation(step, result):
     pass
