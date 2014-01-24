@@ -4,39 +4,75 @@ Public interface for the submissions app.
 """
 from datetime import datetime
 
+from django.utils.encoding import force_unicode
+
 from submissions.serializers import SubmissionSerializer
 from submissions.models import Submission, StudentItem, SubmissionStruct
 
 
-def create_submission(student_item, answer, submitted_at=None, attempt_number=None):
-    student_item_model, _ = StudentItem.objects.get_or_create(
-        student_id=student_item.student_id,
-        course_id=student_item.course_id,
-        item_id=student_item.item_id,
-        item_type=student_item.item_type,
-    )
+def create_submission(student_item_struct, answer, submitted_at=None, attempt_number=None):
+    """Creates a submission for evaluation.
 
-    submitted_at = submitted_at if submitted_at else datetime.now()
-    submissions = Submission.objects.filter(student_item=student_item_model).order_by("-submitted_at")[:0]
+    Generic means by which to submit an answer for evaluation.
+
+    Args:
+        student_item_struct (StudentItemStruct): The student_item this submission is associated with. This is used to
+            determine which course, student, and location this submission belongs to.
+        answer (str): The answer given by the student to be evaluated.
+        submitted_at (date): The date in which this submission was submitted. If not specified, defaults to the current
+            date.
+        attempt_number (int): A student may be able to submit multiple attempts per question. This allows the designated
+            attempt to be overridden. If the attempt is not specified, it will be incremented by the number of
+            submissions associated with this student_item.
+
+    Returns:
+        SubmissionStruct: A representation of the created Submission.
+
+    """
+    student_item_model, _ = StudentItem.objects.get_or_create(
+        student_id=student_item_struct.student_id,
+        course_id=student_item_struct.course_id,
+        item_id=student_item_struct.item_id,
+        item_type=student_item_struct.item_type,
+    )
 
     if attempt_number is None:
+        submissions = Submission.objects.filter(student_item=student_item_model)[:0]
         attempt_number = submissions[0].attempt_number + 1 if submissions else 1
 
-    submission = Submission.objects.create(
-        student_item=student_item_model,
-        submitted_at=submitted_at,
-        answer=answer,
-        attempt_number=attempt_number,
-    )
+    model_kwargs = {
+        "student_item": student_item_model,
+        "answer": force_unicode(answer),
+        "attempt_number": attempt_number,
+    }
+    if submitted_at:
+        model_kwargs["submitted_at"] = submitted_at
+
+    submission = Submission.objects.create(**model_kwargs)
     return SubmissionStruct(**SubmissionSerializer(submission).data)
 
 
-def get_submissions(student_item, limit=None):
+def get_submissions(student_item_struct, limit=None):
+    """Retrieves the specified submission.
+
+    Returns the requested submission relative to the student item. Exception thrown if no submission is found relative
+    to this location.
+
+    Args:
+        student_item_struct (StudentItemStruct): The location of the problem this submission is associated with, as
+            defined by a course, student, and item.
+        limit (int): Optional parameter for limiting the returned number of submissions associated with this student
+            item. If not specified, all associated submissions are returned.
+
+    Returns:
+        List SubmissionStruct: A list of SubmissionStruct for the associated student item.
+
+    """
     student_item_model, _ = StudentItem.objects.get_or_create(
-        student_id=student_item.student_id,
-        course_id=student_item.course_id,
-        item_id=student_item.item_id,
-        item_type=student_item.item_type,
+        student_id=student_item_struct.student_id,
+        course_id=student_item_struct.course_id,
+        item_id=student_item_struct.item_id,
+        item_type=student_item_struct.item_type,
     )
 
     submission_models = Submission.objects.filter(student_item=student_item_model)

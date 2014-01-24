@@ -1,5 +1,7 @@
 import datetime
+
 from django.test import TestCase
+
 from submissions.models import StudentItem, StudentItemStruct
 from submissions.api import create_submission, get_submissions
 
@@ -25,8 +27,8 @@ class TestApi(TestCase):
         create_submission(STUDENT_ITEM, ANSWER_TWO)
         submissions = get_submissions(STUDENT_ITEM)
 
-        self._assert_submission(submissions[0],ANSWER_ONE, 1, 1)
-        self._assert_submission(submissions[1], ANSWER_TWO, 1, 1)
+        self._assert_submission(submissions[1], ANSWER_ONE, 1, 1)
+        self._assert_submission(submissions[0], ANSWER_TWO, 1, 1)
 
     def test_get_latest_submission(self):
         past_date = datetime.date(2007, 11, 23)
@@ -42,8 +44,8 @@ class TestApi(TestCase):
 
     def test_set_attempt_number(self):
         create_submission(STUDENT_ITEM, ANSWER_ONE, None, 2)
-        submission = get_submissions(STUDENT_ITEM)
-        self._assert_submission(submission, ANSWER_ONE, 1, 2)
+        submissions = get_submissions(STUDENT_ITEM)
+        self._assert_submission(submissions[0], ANSWER_ONE, 1, 2)
 
     def _assert_submission(self, submission, expected_answer, expected_item, expected_attempt):
         self.assertIsNotNone(submission)

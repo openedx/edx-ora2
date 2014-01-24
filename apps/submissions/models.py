@@ -22,6 +22,7 @@ from django.utils.timezone import now
 
 StudentItemStruct = namedtuple("StudentItemStruct", "student_id course_id item_id item_type")
 
+
 class StudentItem(models.Model):
     """Represents a single item for a single course for a single user.
 
@@ -73,6 +74,8 @@ class Submission(models.Model):
     # The actual answer, assumed to be a JSON string
     answer = models.TextField(blank=True)
 
+    class Meta:
+        ordering = ["-submitted_at"]
 
 class Score(models.Model):
     """What the user scored for a given StudentItem.
