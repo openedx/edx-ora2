@@ -47,6 +47,9 @@ class TestApi(TestCase):
         submissions = get_submissions(STUDENT_ITEM)
         self._assert_submission(submissions[0], ANSWER_ONE, 1, 2)
 
+    def test_error_checking(self):
+        create_submission(STUDENT_ITEM, -100)
+
     def _assert_submission(self, submission, expected_answer, expected_item,
                            expected_attempt):
         self.assertIsNotNone(submission)

@@ -2,15 +2,33 @@
 Public interface for the submissions app.
 
 """
+import copy
+
 from django.db import DatabaseError
 from django.utils.encoding import force_unicode
 
 from submissions.serializers import SubmissionSerializer
 from submissions.models import Submission, StudentItem, SubmissionStruct
+from apps.submissions.serializers import StudentItemSerializer
 
 
-class SubmissionAccessError(Exception):
+class SubmissionInternalError(Exception):
     pass
+
+
+class SubmissionRequestError(Exception):
+
+    def __init__(self, field_errors):
+        print field_errors
+        self.field_errors = copy.deepcopy(field_errors)
+        super(SubmissionRequestError, self).__init__()
+
+    def __unicode__(self):
+        return repr(self)
+
+    def __repr__(self):
+        return "SubmissionRequestError({!r})".format(self.field_errors)
+
 
 class SubmissionNotFoundError(Exception):
     pass
@@ -44,17 +62,17 @@ def create_submission(student_item_struct, answer, submitted_at=None,
     """
     try:
         student_item_model, _ = StudentItem.objects.get_or_create(
-            **student_item_struct._asdict())
+            **student_item_struct._asdict()
+        )
     except DatabaseError as err:
-        raise SubmissionAccessError(err)
-
+        raise SubmissionInternalError(err)
 
     if attempt_number is None:
         try:
             submissions = Submission.objects.filter(
                 student_item=student_item_model)[:0]
         except DatabaseError as err:
-            raise SubmissionAccessError(err)
+            raise SubmissionInternalError(err)
         attempt_number = submissions[0].attempt_number + 1 if submissions else 1
 
     model_kwargs = {
@@ -68,7 +86,8 @@ def create_submission(student_item_struct, answer, submitted_at=None,
     try:
         submission = Submission.objects.create(**model_kwargs)
     except DatabaseError as err:
-        raise SubmissionAccessError(err)
+        raise SubmissionInternalError(err)
+
     return SubmissionStruct(**SubmissionSerializer(submission).data)
 
 
@@ -100,9 +119,10 @@ def get_submissions(student_item_struct, limit=None):
     """
     try:
         student_item_model, _ = StudentItem.objects.get_or_create(
-            **student_item_struct._asdict())
+            **student_item_struct._asdict()
+        )
     except DatabaseError as err:
-        raise SubmissionAccessError(err)
+        raise SubmissionInternalError(err)
 
     try:
         submission_models = Submission.objects.filter(
@@ -127,3 +147,10 @@ def get_scores(course_id, student_id, types=None):
 
 def set_score(student_item):
     pass
+
+
+def _validate_student_item(student_item_struct):
+    student_item_serializer = StudentItemSerializer(data=student_item_struct._asdict())
+    student_item_serializer.is_valid()
+    if student_item_serializer.errors:
+        raise SubmissionRequestError(student_item_serializer.errors)
