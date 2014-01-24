@@ -44,7 +44,7 @@ def create_submission(student_item_struct, answer, submitted_at=None,
     """
     try:
         student_item_model, _ = StudentItem.objects.get_or_create(
-            student_item_struct._asdict())
+            **student_item_struct._asdict())
     except DatabaseError as err:
         raise SubmissionAccessError(err)
 
@@ -100,7 +100,7 @@ def get_submissions(student_item_struct, limit=None):
     """
     try:
         student_item_model, _ = StudentItem.objects.get_or_create(
-            student_item_struct._asdict())
+            **student_item_struct._asdict())
     except DatabaseError as err:
         raise SubmissionAccessError(err)
 
