@@ -3,12 +3,15 @@ Public interface for the submissions app.
 
 """
 import copy
+import logging
 
 from django.db import DatabaseError
 from django.utils.encoding import force_unicode
 
 from submissions.serializers import SubmissionSerializer, StudentItemSerializer
 from submissions.models import Submission, StudentItem
+
+logger = logging.getLogger(__name__)
 
 
 class SubmissionInternalError(Exception):
@@ -38,7 +41,7 @@ def create_submission(student_item_dict, answer, submitted_at=None,
     Generic means by which to submit an answer for evaluation.
 
     Args:
-        student_item_struct (StudentItemStruct): The student_item this
+        student_item_dict (dict): The student_item this
             submission is associated with. This is used to determine which
             course, student, and location this submission belongs to.
         answer (str): The answer given by the student to be evaluated.
@@ -50,11 +53,13 @@ def create_submission(student_item_dict, answer, submitted_at=None,
             number of submissions associated with this student_item.
 
     Returns:
-        SubmissionStruct: A representation of the created Submission.
+        dict: A representation of the created Submission.
 
     Raises:
-        SubmissionAccessError: Raised when information regarding the student
-            item cannot be accessed or the submission cannot be saved.
+        SubmissionRequestError: Raised when information regarding the student
+            item fails validation.
+        SubmissionInternalError: Raised when submission access causes an
+            internal error.
 
     """
     student_item_model = _get_or_create_student_item(student_item_dict)
@@ -63,7 +68,10 @@ def create_submission(student_item_dict, answer, submitted_at=None,
             submissions = Submission.objects.filter(
                 student_item=student_item_model)[:0]
         except DatabaseError as err:
-            raise SubmissionInternalError(err)
+            error_message = u"An unexpected error occurred while filtering "
+            u"submissions for a create submission request: {}".format(err)
+            logger.error(error_message)
+            raise SubmissionInternalError(error_message)
         attempt_number = submissions[0].attempt_number + 1 if submissions else 1
 
     model_kwargs = {
@@ -77,7 +85,10 @@ def create_submission(student_item_dict, answer, submitted_at=None,
     try:
         submission = Submission.objects.create(**model_kwargs)
     except DatabaseError as err:
-        raise SubmissionInternalError(err)
+        error_message = u"An unexpected error occurred while creating a "
+        u"submission for a create submission request: {}".format(err)
+        logger.error(error_message)
+        raise SubmissionInternalError(error_message)
 
     return SubmissionSerializer(submission).data
 
@@ -90,7 +101,7 @@ def get_submissions(student_item_dict, limit=None):
     thrown if no submission is found relative to this location.
 
     Args:
-        student_item_struct (StudentItemStruct): The location of the problem
+        student_item_dict (dict): The location of the problem
             this submission is associated with, as defined by a course, student,
             and item.
         limit (int): Optional parameter for limiting the returned number of
@@ -98,12 +109,11 @@ def get_submissions(student_item_dict, limit=None):
             associated submissions are returned.
 
     Returns:
-        List SubmissionStruct: A list of SubmissionStruct for the associated
-            student item.
+        List dict: A list of dicts for the associated student item.
 
     Raises:
-        SubmissionAccessError: Raised when the associated student item cannot
-            be accessed.
+        SubmissionRequestError: Raised when the associated student item fails
+            validation.
         SubmissionNotFoundError: Raised when a submission cannot be found for
             the associated student item.
 
@@ -112,8 +122,11 @@ def get_submissions(student_item_dict, limit=None):
     try:
         submission_models = Submission.objects.filter(
             student_item=student_item_model)
-    except DatabaseError:
-        raise SubmissionNotFoundError()
+    except DatabaseError as err:
+        error_message = u"An unexpected error occurred while filtering "
+        u"submissions for a get submissions request: {}".format(err)
+        logger.error(error_message)
+        raise SubmissionNotFoundError(error_message)
 
     if limit:
         submission_models = submission_models[:limit]
@@ -144,8 +157,8 @@ def _get_or_create_student_item(student_item_dict):
             raise SubmissionRequestError(student_item_serializer.errors)
         student_item_model = StudentItem.objects.create(**student_item_dict)
     except DatabaseError:
-        raise SubmissionInternalError(
-            "An error occurred creating a student "
-            "item for: {!r}".format(student_item_dict)
-        )
+        error_message = u"An error occurred creating a student item for: {!r}".format(
+            student_item_dict)
+        logger.error(error_message)
+        raise SubmissionInternalError(error_message)
     return student_item_model
