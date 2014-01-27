@@ -67,10 +67,10 @@ def create_submission(student_item_dict, answer, submitted_at=None,
         try:
             submissions = Submission.objects.filter(
                 student_item=student_item_model)[:0]
-        except DatabaseError as err:
-            error_message = u"An unexpected error occurred while filtering "
-            u"submissions for a create submission request: {}".format(err)
-            logger.error(error_message)
+        except DatabaseError:
+            error_message = u"An error occurred while filtering "
+            u"submissions for student item: {}".format(student_item_dict)
+            logger.exception(error_message)
             raise SubmissionInternalError(error_message)
         attempt_number = submissions[0].attempt_number + 1 if submissions else 1
 
@@ -84,10 +84,13 @@ def create_submission(student_item_dict, answer, submitted_at=None,
 
     try:
         submission = Submission.objects.create(**model_kwargs)
-    except DatabaseError as err:
-        error_message = u"An unexpected error occurred while creating a "
-        u"submission for a create submission request: {}".format(err)
-        logger.error(error_message)
+    except DatabaseError:
+        error_message = u"An error occurred while creating "
+        u"submission {} for student item: {}".format(
+            model_kwargs,
+            student_item_dict
+        )
+        logger.exception(error_message)
         raise SubmissionInternalError(error_message)
 
     return SubmissionSerializer(submission).data
@@ -122,10 +125,10 @@ def get_submissions(student_item_dict, limit=None):
     try:
         submission_models = Submission.objects.filter(
             student_item=student_item_model)
-    except DatabaseError as err:
-        error_message = u"An unexpected error occurred while filtering "
-        u"submissions for a get submissions request: {}".format(err)
-        logger.error(error_message)
+    except DatabaseError:
+        error_message = u"Error getting submission request for student item {}".format(
+            student_item_dict)
+        logger.exception(error_message)
         raise SubmissionNotFoundError(error_message)
 
     if limit:
@@ -149,16 +152,17 @@ def set_score(student_item):
 
 def _get_or_create_student_item(student_item_dict):
     try:
-        student_item_model = StudentItem.objects.get(**student_item_dict)
-    except StudentItem.DoesNotExist:
-        student_item_serializer = StudentItemSerializer(data=student_item_dict)
-        student_item_serializer.is_valid()
-        if student_item_serializer.errors:
-            raise SubmissionRequestError(student_item_serializer.errors)
-        student_item_model = StudentItem.objects.create(**student_item_dict)
+        try:
+            student_item_model = StudentItem.objects.get(**student_item_dict)
+        except StudentItem.DoesNotExist:
+            student_item_serializer = StudentItemSerializer(data=student_item_dict)
+            student_item_serializer.is_valid()
+            if student_item_serializer.errors:
+                raise SubmissionRequestError(student_item_serializer.errors)
+            student_item_model = StudentItem.objects.create(**student_item_dict)
     except DatabaseError:
-        error_message = u"An error occurred creating a student item for: {!r}".format(
+        error_message = u"An error occurred creating student item: {}".format(
             student_item_dict)
-        logger.error(error_message)
+        logger.exception(error_message)
         raise SubmissionInternalError(error_message)
     return student_item_model
