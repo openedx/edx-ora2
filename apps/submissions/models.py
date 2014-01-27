@@ -20,8 +20,6 @@ from collections import namedtuple
 from django.db import models
 from django.utils.timezone import now
 
-StudentItemStruct = namedtuple("StudentItemStruct", "student_id course_id item_id item_type")
-
 
 class StudentItem(models.Model):
     """Represents a single item for a single course for a single user.
@@ -49,8 +47,6 @@ class StudentItem(models.Model):
             ("course_id", "student_id", "item_id"),
         )
 
-SubmissionStruct = namedtuple("SubmissionStruct", "student_item attempt_number submitted_at created_at answer")
-
 
 class Submission(models.Model):
     """A single response by a student for a given problem in a given course.
@@ -76,6 +72,7 @@ class Submission(models.Model):
 
     class Meta:
         ordering = ["-submitted_at"]
+
 
 class Score(models.Model):
     """What the user scored for a given StudentItem.
