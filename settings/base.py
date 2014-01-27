@@ -129,10 +129,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'peer_grading',
-    'common_grading',
     'submissions',
-    'openresponse.peer',
+    'openassessment.peer',
 )
 
 # A sample logging configuration. The only tangible logging
