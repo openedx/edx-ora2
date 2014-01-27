@@ -15,14 +15,32 @@ logger = logging.getLogger(__name__)
 
 
 class SubmissionInternalError(Exception):
+    """An error internal to the Submission API has occurred.
+
+    This error is raised when an error occurs that is not caused by incorrect
+    use of the API, but rather internal implementation of the underlying
+    services.
+
+    """
     pass
 
 
 class SubmissionNotFoundError(Exception):
+    """This error is raised when no submission is found for the request.
+
+    If a state is specified in a call to the API that results in no matching
+    Submissions, this error may be raised.
+
+    """
     pass
 
 
 class SubmissionRequestError(Exception):
+    """This error is raised when there was a request-specific error
+
+    This error is reserved for problems specific to the use of the API.
+
+    """
     def __init__(self, field_errors):
         self.field_errors = copy.deepcopy(field_errors)
         super(SubmissionRequestError, self).__init__()
