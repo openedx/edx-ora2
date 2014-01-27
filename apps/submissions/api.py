@@ -18,6 +18,10 @@ class SubmissionInternalError(Exception):
     pass
 
 
+class SubmissionNotFoundError(Exception):
+    pass
+
+
 class SubmissionRequestError(Exception):
     def __init__(self, field_errors):
         self.field_errors = copy.deepcopy(field_errors)
@@ -28,10 +32,6 @@ class SubmissionRequestError(Exception):
 
     def __repr__(self):
         return "SubmissionRequestError({!r})".format(self.field_errors)
-
-
-class SubmissionNotFoundError(Exception):
-    pass
 
 
 def create_submission(student_item_dict, answer, submitted_at=None,
@@ -151,6 +151,25 @@ def set_score(student_item):
 
 
 def _get_or_create_student_item(student_item_dict):
+    """Gets or creates a Student Item that matches the values specified.
+
+    Attempts to get the specified Student Item. If it does not exist, the
+    specified parameters are validated, and a new Student Item is created.
+
+    Args:
+        student_item_dict (dict): The dict containing the student_id, item_id,
+            course_id, and item_type that uniquely defines a student item.
+
+    Returns:
+        StudentItem: The student item that was retrieved or created.
+
+    Raises:
+        SubmissionInternalError: Thrown if there was an internal error while
+            attempting to create or retrieve the specified student item.
+        SubmissionRequestError: Thrown if the given student item parameters fail
+            validation.
+
+    """
     try:
         try:
             student_item_model = StudentItem.objects.get(**student_item_dict)

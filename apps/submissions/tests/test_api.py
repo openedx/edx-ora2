@@ -1,6 +1,6 @@
 import datetime
-from django.db import DatabaseError
 
+from django.db import DatabaseError
 from django.test import TestCase
 from nose.tools import raises
 from mock import patch
@@ -71,7 +71,6 @@ class TestApi(TestCase):
     def test_error_on_create_student_item(self, mock_create):
         mock_create.side_effect = DatabaseError("Bad things happened")
         create_submission(STUDENT_ITEM, ANSWER_ONE)
-
 
     def _assert_submission(self, submission, expected_answer, expected_item,
                            expected_attempt):
