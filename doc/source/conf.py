@@ -22,11 +22,11 @@ import sys, os
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #needs_sphinx = '1.0'
-root = os.path.abspath('../..')
+root = os.path.abspath('../../apps')
 
 sys.path.append(root)
-sys.path.append(os.path.join(root, "common_grading"))
-sys.path.append(os.path.join(root, "peer_grading"))
+sys.path.append(os.path.join(root, "submissions"))
+sys.path.append(os.path.join(root, "openassessment/peer"))
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
