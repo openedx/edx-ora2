@@ -3,6 +3,7 @@ This holds generic submissions and scores information. Is is ignorant of
 workflows, ORA, etc. So the flow is this:
 
 Student submission:
+
 * XBlock creates a Submission
 * submissions app sends a general notification that a submission has happened
 * openassessment can listen for that signal if it wants, or query itself on demand
@@ -92,6 +93,9 @@ class Submission(models.Model):
 class Score(models.Model):
     """What the user scored for a given StudentItem.
 
+    TODO: Make a ScoreHistory that has more detailed log information so that we
+          can reconstruct what the state was at a given point in time and debug
+          more easily.
     """
     student_item = models.ForeignKey(StudentItem)
     submission = models.ForeignKey(Submission, null=True)
