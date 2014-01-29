@@ -14,7 +14,17 @@ from submissions.models import Submission, StudentItem
 logger = logging.getLogger(__name__)
 
 
-class SubmissionInternalError(Exception):
+class SubmissionError(Exception):
+    """An error that occurs during submission actions.
+
+    This error is raised when the submission API cannot perform a requested
+    action.
+
+    """
+    pass
+
+
+class SubmissionInternalError(SubmissionError):
     """An error internal to the Submission API has occurred.
 
     This error is raised when an error occurs that is not caused by incorrect
@@ -25,7 +35,7 @@ class SubmissionInternalError(Exception):
     pass
 
 
-class SubmissionNotFoundError(Exception):
+class SubmissionNotFoundError(SubmissionError):
     """This error is raised when no submission is found for the request.
 
     If a state is specified in a call to the API that results in no matching
@@ -35,21 +45,16 @@ class SubmissionNotFoundError(Exception):
     pass
 
 
-class SubmissionRequestError(Exception):
+class SubmissionRequestError(SubmissionError):
     """This error is raised when there was a request-specific error
 
     This error is reserved for problems specific to the use of the API.
 
     """
+
     def __init__(self, field_errors):
+        Exception.__init__(self, repr(field_errors))
         self.field_errors = copy.deepcopy(field_errors)
-        super(SubmissionRequestError, self).__init__()
-
-    def __unicode__(self):
-        return repr(self)
-
-    def __repr__(self):
-        return "SubmissionRequestError({!r})".format(self.field_errors)
 
 
 def create_submission(student_item_dict, answer, submitted_at=None,
@@ -63,12 +68,13 @@ def create_submission(student_item_dict, answer, submitted_at=None,
             submission is associated with. This is used to determine which
             course, student, and location this submission belongs to.
         answer (str): The answer given by the student to be evaluated.
-        submitted_at (date): The date in which this submission was submitted.
+        submitted_at (datetime): The date in which this submission was submitted.
             If not specified, defaults to the current date.
         attempt_number (int): A student may be able to submit multiple attempts
             per question. This allows the designated attempt to be overridden.
-            If the attempt is not specified, it will be incremented by the
-            number of submissions associated with this student_item.
+            If the attempt is not specified, it will take the most recent
+            submission, as specified by the submitted_at time, and use its
+            attempt_number plus one.
 
     Returns:
         dict: A representation of the created Submission.
@@ -84,27 +90,37 @@ def create_submission(student_item_dict, answer, submitted_at=None,
     if attempt_number is None:
         try:
             submissions = Submission.objects.filter(
-                student_item=student_item_model)[:0]
+                student_item=student_item_model)[:1]
         except DatabaseError:
-            error_message = u"An error occurred while filtering "
-            u"submissions for student item: {}".format(student_item_dict)
+            error_message = u"An error occurred while filtering submissions for student item: {}".format(
+                student_item_dict)
             logger.exception(error_message)
             raise SubmissionInternalError(error_message)
         attempt_number = submissions[0].attempt_number + 1 if submissions else 1
 
+    try:
+        answer = force_unicode(answer)
+    except UnicodeDecodeError:
+        raise SubmissionRequestError(u"Submission answer could not be properly decoded to unicode.")
+
     model_kwargs = {
         "student_item": student_item_model,
-        "answer": force_unicode(answer),
+        "answer": answer,
         "attempt_number": attempt_number,
     }
     if submitted_at:
         model_kwargs["submitted_at"] = submitted_at
 
     try:
+        validation_data = model_kwargs.copy()
+        validation_data["student_item"] = student_item_model.pk
+        submission_serializer = SubmissionSerializer(data=validation_data)
+        submission_serializer.is_valid()
+        if submission_serializer.errors:
+            raise SubmissionRequestError(submission_serializer.errors)
         submission = Submission.objects.create(**model_kwargs)
     except DatabaseError:
-        error_message = u"An error occurred while creating "
-        u"submission {} for student item: {}".format(
+        error_message = u"An error occurred while creating submission {} for student item: {}".format(
             model_kwargs,
             student_item_dict
         )
@@ -141,19 +157,19 @@ def get_submissions(student_item_dict, limit=None):
     """
     student_item_model = _get_or_create_student_item(student_item_dict)
     try:
-        submission_models = Submission.objects.filter(
-            student_item=student_item_model)
+        submission_models = Submission.objects.filter(student_item=student_item_model)
     except DatabaseError:
-        error_message = u"Error getting submission request for student item {}".format(
-            student_item_dict)
+        error_message = (
+            u"Error getting submission request for student item {}"
+            .format(student_item_dict)
+        )
         logger.exception(error_message)
         raise SubmissionNotFoundError(error_message)
 
     if limit:
         submission_models = submission_models[:limit]
 
-    return [SubmissionSerializer(submission).data for
-            submission in submission_models]
+    return [SubmissionSerializer(submission).data for submission in submission_models]
 
 
 def get_score(student_item):
@@ -186,6 +202,16 @@ def _get_or_create_student_item(student_item_dict):
             attempting to create or retrieve the specified student item.
         SubmissionRequestError: Thrown if the given student item parameters fail
             validation.
+
+    Examples:
+        >>> student_item_dict = dict(
+        >>>    student_id="Tim",
+        >>>    item_id="item_1",
+        >>>    course_id="course_1",
+        >>>    item_type="type_one"
+        >>> )
+        >>> _get_or_create_student_item(student_item_dict)
+        {'item_id': 'item_1', 'item_type': 'type_one', 'course_id': 'course_1', 'student_id': 'Tim'}
 
     """
     try:

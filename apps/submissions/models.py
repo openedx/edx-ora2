@@ -15,8 +15,6 @@ Things to consider probably aren't worth the extra effort/complexity in the MVP:
 * Version ID (this doesn't work until split-mongostore comes into being)
 
 """
-from collections import namedtuple
-
 from django.db import models
 from django.utils.timezone import now
 
@@ -40,6 +38,14 @@ class StudentItem(models.Model):
 
     # What kind of problem is this? The XBlock tag if it's an XBlock
     item_type = models.CharField(max_length=100)
+
+    def __repr__(self):
+        return repr(dict(
+            student_id=self.student_id,
+            course_id=self.course_id,
+            item_id=self.item_id,
+            item_type=self.item_type,
+        ))
 
     class Meta:
         unique_together = (
@@ -70,6 +76,15 @@ class Submission(models.Model):
     # The actual answer, assumed to be a JSON string
     answer = models.TextField(blank=True)
 
+    def __repr__(self):
+        return repr(dict(
+            student_item=self.student_item,
+            attempt_number=self.attempt_number,
+            submitted_at=self.submitted_at,
+            created_at=self.created_at,
+            answer=self.answer,
+        ))
+
     class Meta:
         ordering = ["-submitted_at"]
 
@@ -83,4 +98,13 @@ class Score(models.Model):
     points_earned = models.PositiveIntegerField(default=0)
     points_possible = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(editable=False, default=now, db_index=True)
+
+    def __repr__(self):
+        return repr(dict(
+            student_item=self.student_item,
+            submission=self.submission,
+            created_at=self.created_at,
+            points_earned=self.points_earned,
+            points_possible=self.points_possible,
+        ))
 
