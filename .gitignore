@@ -19,6 +19,10 @@ lib
 lib64
 __pycache__
 
+# Various common editor backups
+*.orig
+.*.swp
+
 # Installer logs
 pip-log.txt
 
@@ -35,4 +39,9 @@ nosetests.xml
 .project
 .pydevproject
 
+# some mac thing
 .DS_Store
+
+# If the XBlock repo is checked out here, ignore it
+XBlock
+XBlock/*

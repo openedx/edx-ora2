@@ -110,9 +110,10 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'common_grading.urls'
+#ROOT_URLCONF = 'urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'peer_grading.wsgi.application'
+# WSGI_APPLICATION = 'peer_grading.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -131,6 +132,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'submissions',
     'openassessment.peer',
+    'openasssessment_compose',
 )
 
 # A sample logging configuration. The only tangible logging
