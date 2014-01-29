@@ -77,7 +77,13 @@ def create_submission(student_item_dict, answer, submitted_at=None,
             attempt_number plus one.
 
     Returns:
-        dict: A representation of the created Submission.
+        dict: A representation of the created Submission. The submission
+        contains five attributes: student_item, attempt_number, submitted_at,
+        created_at, and answer. 'student_item' is the ID of the related student
+        item for the submission. 'attempt_number' is the attempt this submission
+        represents for this question. 'submitted_at' represents the time this
+        submission was submitted, which can be configured, versus the
+        'created_at' date, which is when the submission is first created.
 
     Raises:
         SubmissionRequestError: Raised when there are validation errors for the
@@ -86,6 +92,22 @@ def create_submission(student_item_dict, answer, submitted_at=None,
             attempt_number is negative, or the given submitted_at time is invalid.
         SubmissionInternalError: Raised when submission access causes an
             internal error.
+
+    Examples:
+        >>> student_item_dict = dict(
+        >>>    student_id="Tim",
+        >>>    item_id="item_1",
+        >>>    course_id="course_1",
+        >>>    item_type="type_one"
+        >>> )
+        >>> create_submission(student_item_dict, "The answer is 42.", datetime.utcnow, 1)
+        {
+            'student_item': 2,
+            'attempt_number': 1,
+            'submitted_at': datetime.datetime(2014, 1, 29, 17, 14, 52, 649284 tzinfo=<UTC>),
+            'created_at': datetime.datetime(2014, 1, 29, 17, 14, 52, 668850, tzinfo=<UTC>),
+            'answer': u'The answer is 42.'
+        }
 
     """
     student_item_model = _get_or_create_student_item(student_item_dict)
@@ -103,7 +125,8 @@ def create_submission(student_item_dict, answer, submitted_at=None,
     try:
         answer = force_unicode(answer)
     except UnicodeDecodeError:
-        raise SubmissionRequestError(u"Submission answer could not be properly decoded to unicode.")
+        raise SubmissionRequestError(
+            u"Submission answer could not be properly decoded to unicode.")
 
     model_kwargs = {
         "student_item": student_item_model,
@@ -147,7 +170,13 @@ def get_submissions(student_item_dict, limit=None):
             associated submissions are returned.
 
     Returns:
-        List dict: A list of dicts for the associated student item.
+        List dict: A list of dicts for the associated student item. The submission
+        contains five attributes: student_item, attempt_number, submitted_at,
+        created_at, and answer. 'student_item' is the ID of the related student
+        item for the submission. 'attempt_number' is the attempt this submission
+        represents for this question. 'submitted_at' represents the time this
+        submission was submitted, which can be configured, versus the
+        'created_at' date, which is when the submission is first created.
 
     Raises:
         SubmissionRequestError: Raised when the associated student item fails
@@ -155,10 +184,27 @@ def get_submissions(student_item_dict, limit=None):
         SubmissionNotFoundError: Raised when a submission cannot be found for
             the associated student item.
 
+    Examples:
+        >>> student_item_dict = dict(
+        >>>    student_id="Tim",
+        >>>    item_id="item_1",
+        >>>    course_id="course_1",
+        >>>    item_type="type_one"
+        >>> )
+        >>> get_submissions(student_item_dict, 3)
+        [{
+            'student_item': 2,
+            'attempt_number': 1,
+            'submitted_at': datetime.datetime(2014, 1, 29, 23, 14, 52, 649284, tzinfo=<UTC>),
+            'created_at': datetime.datetime(2014, 1, 29, 17, 14, 52, 668850, tzinfo=<UTC>),
+            'answer': u'The answer is 42.'
+        }]
+
     """
     student_item_model = _get_or_create_student_item(student_item_dict)
     try:
-        submission_models = Submission.objects.filter(student_item=student_item_model)
+        submission_models = Submission.objects.filter(
+            student_item=student_item_model)
     except DatabaseError:
         error_message = (
             u"Error getting submission request for student item {}"
@@ -170,7 +216,8 @@ def get_submissions(student_item_dict, limit=None):
     if limit:
         submission_models = submission_models[:limit]
 
-    return [SubmissionSerializer(submission).data for submission in submission_models]
+    return [SubmissionSerializer(submission).data for submission in
+            submission_models]
 
 
 def get_score(student_item):
@@ -219,7 +266,8 @@ def _get_or_create_student_item(student_item_dict):
         try:
             student_item_model = StudentItem.objects.get(**student_item_dict)
         except StudentItem.DoesNotExist:
-            student_item_serializer = StudentItemSerializer(data=student_item_dict)
+            student_item_serializer = StudentItemSerializer(
+                data=student_item_dict)
             student_item_serializer.is_valid()
             if student_item_serializer.errors:
                 raise SubmissionRequestError(student_item_serializer.errors)
