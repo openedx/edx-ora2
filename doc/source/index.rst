@@ -1,23 +1,41 @@
 .. edx-tim documentation master file, created by
    sphinx-quickstart on Fri Jan 17 08:32:59 2014.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
 
-Welcome to edx-tim's documentation!
-===================================
+edx-tim: Open Response Assessment (v2)
+======================================
 
-Contents:
+This is an initial prototype for redesigning Peer Grading and general Open Ended
+Submission Evaluation. This project is in the early stages of development and is
+not ready for general use.
+
+Setup
+-----
+
+  pip install -r requirements/dev.txt
+
+  python manage.py runserver
+
+User Guide
+----------
+
+
+Author Guide
+------------
+
+
+Developer Guide
+---------------
 
 .. toctree::
    :maxdepth: 2
-.. automodule:: api
-   :members:
 
+   dev/conventions
 
-Indices and tables
-==================
+API Documentation
+-----------------
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. toctree::
+   :maxdepth: 2
+
+   api
 
