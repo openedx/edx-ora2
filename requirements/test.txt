@@ -1,6 +1,7 @@
 # Grab everything in base requirements
 -r base.txt
 
+ddt==0.4.0
 django-nose==1.2
 mock==1.0.1
 nose==1.3.0

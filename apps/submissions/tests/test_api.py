@@ -7,7 +7,8 @@ from nose.tools import raises
 from mock import patch
 
 from submissions.api import create_submission, get_submissions, SubmissionRequestError, SubmissionInternalError
-from submissions.models import Submission, StudentItem
+from submissions.models import Submission
+from submissions.serializers import StudentItemSerializer
 
 STUDENT_ITEM = dict(
     student_id="Tim",
@@ -73,10 +74,10 @@ class TestApi(TestCase):
         mock_filter.side_effect = DatabaseError("Bad things happened")
         create_submission(STUDENT_ITEM, ANSWER_ONE)
 
-    @patch.object(StudentItem.objects, 'create')
+    @patch.object(StudentItemSerializer, 'save')
     @raises(SubmissionInternalError)
-    def test_create_student_item_validation(self, mock_create):
-        mock_create.side_effect = DatabaseError("Bad things happened")
+    def test_create_student_item_validation(self, mock_save):
+        mock_save.side_effect = DatabaseError("Bad things happened")
         create_submission(STUDENT_ITEM, ANSWER_ONE)
 
     def test_unicode_enforcement(self):
