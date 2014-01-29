@@ -4,8 +4,16 @@
 edx-tim: Open Response Assessment (v2)
 ======================================
 
-Introduction
+This is an initial prototype for redesigning Peer Grading and general Open Ended
+Submission Evaluation. This project is in the early stages of development and is
+not ready for general use.
 
+Setup
+-----
+
+  pip install -r requirements/dev.txt
+
+  python manage.py runserver
 
 User Guide
 ----------
