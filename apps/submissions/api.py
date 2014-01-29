@@ -80,8 +80,10 @@ def create_submission(student_item_dict, answer, submitted_at=None,
         dict: A representation of the created Submission.
 
     Raises:
-        SubmissionRequestError: Raised when information regarding the student
-            item fails validation.
+        SubmissionRequestError: Raised when there are validation errors for the
+            student item or submission. This can be caused by the student item
+            missing required values, the submission being too long, the
+            attempt_number is negative, or the given submitted_at time is invalid.
         SubmissionInternalError: Raised when submission access causes an
             internal error.
 
@@ -138,9 +140,8 @@ def get_submissions(student_item_dict, limit=None):
     thrown if no submission is found relative to this location.
 
     Args:
-        student_item_dict (dict): The location of the problem
-            this submission is associated with, as defined by a course, student,
-            and item.
+        student_item_dict (dict): The location of the problem this submission is
+            associated with, as defined by a course, student, and item.
         limit (int): Optional parameter for limiting the returned number of
             submissions associated with this student item. If not specified, all
             associated submissions are returned.
