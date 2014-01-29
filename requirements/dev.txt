@@ -1,0 +1,16 @@
+# Grab everything in test (which pulls everything in base)
+-r test.txt
+
+# Debug tools
+bpython==0.12
+django-debug-toolbar==0.11.0
+sqlparse==0.1.10
+
+# Doc generation
+docutils==0.11
+Jinja2==2.7.1
+MarkupSafe==0.18
+Pygments==1.6
+Sphinx==1.2
+sphinx-rtd-theme==0.1.5
+sphinxcontrib-napoleon==0.2.3
