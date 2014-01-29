@@ -137,13 +137,16 @@ def create_submission(student_item_dict, answer, submitted_at=None,
         model_kwargs["submitted_at"] = submitted_at
 
     try:
+        # Serializer validation requires the student item primary key, rather
+        # than the student item model itself. Create a copy of the submission
+        # kwargs and replace the student item model with it's primary key.
         validation_data = model_kwargs.copy()
         validation_data["student_item"] = student_item_model.pk
         submission_serializer = SubmissionSerializer(data=validation_data)
-        submission_serializer.is_valid()
-        if submission_serializer.errors:
+        if not submission_serializer.is_valid():
             raise SubmissionRequestError(submission_serializer.errors)
-        submission = Submission.objects.create(**model_kwargs)
+        submission_serializer.save()
+        return submission_serializer.data
     except DatabaseError:
         error_message = u"An error occurred while creating submission {} for student item: {}".format(
             model_kwargs,
@@ -151,8 +154,6 @@ def create_submission(student_item_dict, answer, submitted_at=None,
         )
         logger.exception(error_message)
         raise SubmissionInternalError(error_message)
-
-    return SubmissionSerializer(submission).data
 
 
 def get_submissions(student_item_dict, limit=None):
@@ -264,17 +265,14 @@ def _get_or_create_student_item(student_item_dict):
     """
     try:
         try:
-            student_item_model = StudentItem.objects.get(**student_item_dict)
+            return StudentItem.objects.get(**student_item_dict)
         except StudentItem.DoesNotExist:
-            student_item_serializer = StudentItemSerializer(
-                data=student_item_dict)
-            student_item_serializer.is_valid()
-            if student_item_serializer.errors:
+            student_item_serializer = StudentItemSerializer(data=student_item_dict)
+            if not student_item_serializer.is_valid():
                 raise SubmissionRequestError(student_item_serializer.errors)
-            student_item_model = StudentItem.objects.create(**student_item_dict)
+            return student_item_serializer.save()
     except DatabaseError:
         error_message = u"An error occurred creating student item: {}".format(
             student_item_dict)
         logger.exception(error_message)
         raise SubmissionInternalError(error_message)
-    return student_item_model
