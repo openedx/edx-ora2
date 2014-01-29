@@ -2,7 +2,7 @@
 
 from setuptools import setup
 
-PACKAGES = ['submissions', 'openassessment.peer']
+PACKAGES = ['submissions', 'openassessment.peer', 'openassessment_compose']
 
 
 def is_requirement(line):

@@ -1,0 +1,1 @@
+from .openassessment_compose import openassessmentComposeXBlock
