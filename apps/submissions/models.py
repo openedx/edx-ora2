@@ -6,8 +6,8 @@ Student submission:
 
 * XBlock creates a Submission
 * submissions app sends a general notification that a submission has happened
-* openresponse can listen for that signal if it wants, or query itself on demand
-* when openresponse is satistifed that it has collected enough information to
+* openassessment can listen for that signal if it wants, or query itself on demand
+* when openassessment is satisfied that it has collected enough information to
   score the student, it will push that score information back to this app.
 * when the LMS wants to know what raw scores a student has, it calls this app.
 
@@ -18,6 +18,7 @@ Things to consider probably aren't worth the extra effort/complexity in the MVP:
 """
 from django.db import models
 from django.utils.timezone import now
+
 
 class StudentItem(models.Model):
     """Represents a single item for a single course for a single user.
@@ -39,13 +40,18 @@ class StudentItem(models.Model):
     # What kind of problem is this? The XBlock tag if it's an XBlock
     item_type = models.CharField(max_length=100)
 
+    def __repr__(self):
+        return repr(dict(
+            student_id=self.student_id,
+            course_id=self.course_id,
+            item_id=self.item_id,
+            item_type=self.item_type,
+        ))
+
     class Meta:
         unique_together = (
             # For integrity reasons, and looking up all of a student's items
             ("course_id", "student_id", "item_id"),
-
-            # Composite index for getting information across a course
-            ("course_id", "item_id"),
         )
 
 
@@ -71,6 +77,18 @@ class Submission(models.Model):
     # The actual answer, assumed to be a JSON string
     answer = models.TextField(blank=True)
 
+    def __repr__(self):
+        return repr(dict(
+            student_item=self.student_item,
+            attempt_number=self.attempt_number,
+            submitted_at=self.submitted_at,
+            created_at=self.created_at,
+            answer=self.answer,
+        ))
+
+    class Meta:
+        ordering = ["-submitted_at"]
+
 
 class Score(models.Model):
     """What the user scored for a given StudentItem.
@@ -84,4 +102,13 @@ class Score(models.Model):
     points_earned = models.PositiveIntegerField(default=0)
     points_possible = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(editable=False, default=now, db_index=True)
+
+    def __repr__(self):
+        return repr(dict(
+            student_item=self.student_item,
+            submission=self.submission,
+            created_at=self.created_at,
+            points_earned=self.points_earned,
+            points_possible=self.points_possible,
+        ))
 

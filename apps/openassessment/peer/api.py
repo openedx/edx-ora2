@@ -10,8 +10,14 @@ might be tricky with XML import based courses).
 
 """
 
+
 def create_evaluation(submission_id, score, rubric):
     pass
+
+
+def get_evaluations(submission_id):
+    pass
+
 
 def get_submission_to_evaluate(student_item, scorer_student_id):
     pass
