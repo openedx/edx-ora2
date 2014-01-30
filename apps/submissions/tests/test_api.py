@@ -17,6 +17,13 @@ STUDENT_ITEM = dict(
     item_type="Peer_Submission",
 )
 
+SECOND_STUDENT_ITEM = dict(
+    student_id="Bob",
+    course_id="Demo_Course",
+    item_id="item_one",
+    item_type="Peer_Submission",
+)
+
 ANSWER_ONE = u"this is my answer!"
 ANSWER_TWO = u"this is my other answer!"
 
@@ -34,6 +41,19 @@ class TestApi(TestCase):
 
         self._assert_submission(submissions[1], ANSWER_ONE, 1, 1)
         self._assert_submission(submissions[0], ANSWER_TWO, 1, 2)
+
+    def test_two_students(self):
+        create_submission(STUDENT_ITEM, ANSWER_ONE)
+        create_submission(SECOND_STUDENT_ITEM, ANSWER_TWO)
+
+        submissions = get_submissions(STUDENT_ITEM)
+        self.assertEqual(1, len(submissions))
+        self._assert_submission(submissions[0], ANSWER_ONE, 1, 1)
+
+        submissions = get_submissions(SECOND_STUDENT_ITEM)
+        self.assertEqual(1, len(submissions))
+        self._assert_submission(submissions[0], ANSWER_TWO, 2, 1)
+
 
     @file_data('test_valid_student_items.json')
     def test_various_student_items(self, valid_student_item):

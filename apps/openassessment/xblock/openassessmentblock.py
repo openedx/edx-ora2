@@ -4,6 +4,8 @@ import pkg_resources
 
 from mako.template import Template
 
+from submissions import api
+
 from xblock.core import XBlock
 from xblock.fields import Scope, String
 from xblock.fragment import Fragment
@@ -52,12 +54,6 @@ class OpenAssessmentBlock(XBlock):
                        )
         frag = Fragment(html.render_unicode(xblock_trace=trace, question=self.question))
         frag.add_css(load("static/css/openassessment_compose.css"))
-        # XXX: I'm sure there's a more socially acceptable way to get our values
-        #      into the js. But once we've invoked mako it's so tempting....
-        #frag.add_javascript(Template(load("static/js/src/openassessment_compose.js"),
-        #                             default_filters=mako_default_filters,
-        #                             output_encoding='utf-8'
-        #                            ).render(xblock_trace=trace))
         frag.add_javascript(load("static/js/src/openassessment_compose.js"))
         frag.initialize_js('OpenassessmentComposeXBlock')
         return frag
@@ -67,10 +63,17 @@ class OpenAssessmentBlock(XBlock):
         """
         Place the submission text into Openassessment system
         """
-        # FIXME: Do something
         student_sub = data['submission']
-        self.student_sub = student_sub
-        return '{"sub": "%s"}' % student_sub
+        item_id, student_id = self._get_xblock_trace()
+        student_item_dict = dict(
+            student_id=student_id,
+            item_id=item_id,
+            # XXX: The XBlock API doesn't make course_id's available
+            course_id='TestCourse',
+            item_type='peer'        # XXX: FIXME this is the only implementation so far
+        )
+        response = api.create_submission(student_item_dict, student_sub)
+        return '{"sub": "%s"}' % response
 
     # TO-DO: change this to create the scenarios you'd like to see in the
     # workbench while developing your XBlock.
