@@ -1,5 +1,5 @@
 # edX Internal Requirements
--e git+https://github.com/edx/XBlock.git@0b6b0f3c#egg=XBlock
+-e git+https://github.com/edx/XBlock.git@8eb2c4a02b#egg=XBlock
 
 # Third Party Requirements
 django==1.4.8
