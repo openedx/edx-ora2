@@ -12,7 +12,7 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
 
     # Provided by XBlock
-    url(r'^workbench/', include(workbench.urls))
+    url(r'^workbench/', include(workbench.urls)),
 
     # edx-tim apps
     url(r'^submissions/', include(submissions.urls)),
