@@ -15,5 +15,5 @@ urlpatterns = patterns(
     url(r'^workbench/', include(workbench.urls))
 
     # edx-tim apps
-#    url(r'^submissions', include(submissions.urls)),
+    url(r'^submissions/', include(submissions.urls)),
 )
