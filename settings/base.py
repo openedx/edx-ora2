@@ -96,7 +96,7 @@ SECRET_KEY = ')68&amp;-c!+og)cy$o9pju_$c707+fett&amp;ph%t%gqgu-@5)!cl$cr'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -112,7 +112,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-# WSGI_APPLICATION = 'submissions.wsgi.application'
+# WSGI_APPLICATION = 'wsgi.application'
 
 TEMPLATE_DIRS = (
     "apps/submissions/templates",
@@ -127,6 +127,15 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
+
+    # Third party
+    'django_extensions',
+
+    # XBlock
+    'workbench',
+    'demo_xblocks',
+
+    # edx-tim apps
     'submissions',
     'openassessment.peer',
 )
@@ -159,3 +168,5 @@ LOGGING = {
         },
     }
 }
+
+# TODO: add config for XBLOCK_WORKBENCH { SCENARIO_CLASSES }
