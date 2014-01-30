@@ -7,6 +7,6 @@ admin.autodiscover()
 
 urlpatterns = patterns(
     '',
-    url(r'^submissions', include(submissions.urls)),
+    url(r'^submissions/', include(submissions.urls)),
     url(r'^admin/', include(admin.site.urls)),
 )
