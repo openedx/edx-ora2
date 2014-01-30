@@ -42,6 +42,3 @@ nosetests.xml
 # some mac thing
 .DS_Store
 
-# If the XBlock repo is checked out here, ignore it
-XBlock
-XBlock/*

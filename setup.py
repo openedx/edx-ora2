@@ -1,8 +1,21 @@
 #!/usr/bin/env python
-
+import os
 from setuptools import setup
 
-PACKAGES = ['submissions', 'openassessment.peer', 'openassessment_compose']
+PACKAGES = [
+    'submissions',
+    'openassessment.peer',
+    'openassessment.xblock'
+]
+
+def package_data(pkg, root):
+    """Generic function to find package_data for `pkg` under `root`."""
+    data = []
+    for dirname, _, files in os.walk(os.path.join(pkg, root)):
+        for fname in files:
+            data.append(os.path.relpath(os.path.join(dirname, fname), pkg))
+
+    return {pkg: data}
 
 
 def is_requirement(line):
@@ -41,4 +54,11 @@ setup(
     packages=PACKAGES,
     package_dir={'': 'apps'},
     install_requires=REQUIREMENTS,
+
+    entry_points={
+        'xblock.v1': [
+            'openassessment = openassessment.xblock.openassessmentblock:OpenAssessmentBlock',
+        ]
+    },
+    package_data=package_data("openassessment.xblock", "static"),
 )

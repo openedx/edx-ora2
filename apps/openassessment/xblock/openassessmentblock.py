@@ -12,12 +12,16 @@ from xblock.fragment import Fragment
 mako_default_filters = ['unicode', 'h', 'trim']
 
 
-class openassessmentComposeXBlock(XBlock):
+class OpenAssessmentBlock(XBlock):
     """
     Displays a question and gives an area where students can compose a response.
     """
 
-    question = String(default=u"Undefined question", scope=Scope.content, help="A question to display to a student")
+    question = String(
+        default=u"Undefined question",
+        scope=Scope.content,
+        help="A question to display to a student"
+    )
 
     def _get_xblock_trace(self):
         """Uniquely identify this xblock by context.
@@ -50,8 +54,8 @@ class openassessmentComposeXBlock(XBlock):
         frag.add_css(load("static/css/openassessment_compose.css"))
         # XXX: I'm sure there's a more socially acceptable way to get our values
         #      into the js. But once we've invoked mako it's so tempting....
-        #frag.add_javascript(Template(load("static/js/src/openassessment_compose.js"), 
-        #                             default_filters=mako_default_filters, 
+        #frag.add_javascript(Template(load("static/js/src/openassessment_compose.js"),
+        #                             default_filters=mako_default_filters,
         #                             output_encoding='utf-8'
         #                            ).render(xblock_trace=trace))
         frag.add_javascript(load("static/js/src/openassessment_compose.js"))
@@ -74,9 +78,9 @@ class openassessmentComposeXBlock(XBlock):
     def workbench_scenarios():
         """A canned scenario for display in the workbench."""
         return [
-            ("OpenassessmentComposeXBlock",
+            ("OpenAssessmentBlock",
              """<vertical_demo>
-                <openassessment_compose/>
+                <openassessment/>
                 </vertical_demo>
              """),
         ]
