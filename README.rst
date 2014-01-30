@@ -10,6 +10,10 @@ included in `edx-platform <https://github.com/edx/edx-platform>`_. To install
 for development purposes, run::
 
   pip install -r requirements/dev.txt
+  pip install -e .
+
+The second line is necessary to register edx-tim's XBlock so that it will show
+up in the XBlock workbench.
 
 License
 =======
