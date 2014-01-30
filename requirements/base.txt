@@ -3,5 +3,6 @@
 
 # Third Party Requirements
 django==1.4.8
+django-extensions==1.3.3
 djangorestframework==2.3.5
 Mako==0.9.1
