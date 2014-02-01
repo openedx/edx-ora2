@@ -27,7 +27,7 @@ def is_requirement(line):
     line = line.strip()
 
     # Skip blank lines, comments, and editable installs
-    return not (line == ''  or line.startswith('#') or line.startswith('-e'))
+    return not (line == ''  or line.startswith('#') or line.startswith('-e') or line.startswith('git+'))
 
 
 REQUIREMENTS = [
