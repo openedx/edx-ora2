@@ -1,4 +1,3 @@
-# Grab everything in test (which pulls everything in base)
 -r test.txt
 
 # Debug tools
