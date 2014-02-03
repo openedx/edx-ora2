@@ -9,3 +9,5 @@ coverage==3.7.1
 lettuce==0.2.19
 pep8==1.4.6
 pylint<1.0
+sure==1.2.3
+
