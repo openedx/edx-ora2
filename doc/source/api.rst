@@ -24,8 +24,9 @@ Submissions
 Peer Assessment
 ***************
 
-Apps
-----
+
+Django Apps
+-----------
 
 Submissions
 ***********
