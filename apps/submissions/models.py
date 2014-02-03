@@ -1,20 +1,7 @@
 """
-This holds generic submissions and scores information. Is is ignorant of
-workflows, ORA, etc. So the flow is this:
-
-Student submission:
-
-* XBlock creates a Submission
-* submissions app sends a general notification that a submission has happened
-* openassessment can listen for that signal if it wants, or query itself on demand
-* when openassessment is satisfied that it has collected enough information to
-  score the student, it will push that score information back to this app.
-* when the LMS wants to know what raw scores a student has, it calls this app.
-
-Things to consider probably aren't worth the extra effort/complexity in the MVP:
-* Many to Many relations for students-submissions, evaluations-submissions
-* Version ID (this doesn't work until split-mongostore comes into being)
-
+Submission models hold student responses to problems, scores, and a history of
+those scores. It is intended to be a general purpose store that is usable by
+different problem types, and is therefore ignorant of ORA workflow.
 """
 from django.db import models
 from django.utils.timezone import now
@@ -58,7 +45,11 @@ class StudentItem(models.Model):
 class Submission(models.Model):
     """A single response by a student for a given problem in a given course.
 
-    A student may have multiple submissions for the same problem.
+    A student may have multiple submissions for the same problem. Submissions
+    should never be mutated. If the student makes another Submission, or if we
+    have to make corrective Submissions to fix bugs, those should be new
+    objects. We want to keep Submissions immutable both for audit purposes, and
+    because it makes caching trivial.
 
     """
     student_item = models.ForeignKey(StudentItem)
@@ -94,8 +85,8 @@ class Score(models.Model):
     """What the user scored for a given StudentItem.
 
     TODO: Make a ScoreHistory that has more detailed log information so that we
-          can reconstruct what the state was at a given point in time and debug
-          more easily.
+    can reconstruct what the state was at a given point in time and debug
+    more easily.
     """
     student_item = models.ForeignKey(StudentItem)
     submission = models.ForeignKey(Submission, null=True)

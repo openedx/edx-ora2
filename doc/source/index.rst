@@ -10,9 +10,10 @@ not ready for general use.
 
 Setup
 -----
+::
 
   pip install -r requirements/dev.txt
-
+  pip install -e .
   python manage.py runserver
 
 User Guide
@@ -26,10 +27,6 @@ Author Guide
 Developer Guide
 ---------------
 
-.. toctree::
-   :maxdepth: 2
-
-   dev/conventions
 
 API Documentation
 -----------------
