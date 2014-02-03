@@ -4,6 +4,17 @@ The Peer Evaluation Workflow API exposes all public actions required to complete
 the workflow for a given submission.
 
 """
+import copy
+import logging
+
+from django.db import DatabaseError
+from openassessment.peer.models import PeerEvaluation
+
+from openassessment.peer.serializers import PeerEvaluationSerializer
+
+logger = logging.getLogger(__name__)
+
+PEER_TYPE = "Peer"
 
 
 class PeerEvaluationError(Exception):
@@ -23,7 +34,10 @@ class PeerEvaluationRequestError(PeerEvaluationError):
     information which does not allow the request to be processed.
 
     """
-    pass
+
+    def __init__(self, field_errors):
+        Exception.__init__(self, repr(field_errors))
+        self.field_errors = copy.deepcopy(field_errors)
 
 
 class PeerEvaluationWorkflowError(PeerEvaluationError):
@@ -46,7 +60,8 @@ class PeerEvaluationInternalError(PeerEvaluationError):
     pass
 
 
-def create_evaluation(submission_id, scorer_id, assessment_dict, scored_at=None):
+def create_evaluation(submission_id, scorer_id, assessment_dict,
+                      scored_at=None):
     """Creates an evaluation on the given submission.
 
     Evaluations are created based on feedback associated with a particular
@@ -92,10 +107,34 @@ def create_evaluation(submission_id, scorer_id, assessment_dict, scored_at=None)
         }
 
     """
-    pass
+    peer_evaluation = {
+        "scorer_id": scorer_id,
+        "submission_id": submission_id,
+        "points_earned": sum(assessment_dict["points_earned"]),
+        "points_possible": assessment_dict["points_possible"],
+        "score_type": PEER_TYPE,
+        "feedback": assessment_dict["feedback"],
+    }
+    if scored_at:
+        peer_evaluation["scored_at"] = scored_at
+
+    try:
+        peer_serializer = PeerEvaluationSerializer(data=peer_evaluation)
+        if not peer_serializer.is_valid():
+            raise PeerEvaluationRequestError(peer_serializer.errors)
+        peer_serializer.save()
+        return peer_serializer.data
+    except DatabaseError:
+        error_message = u"An error occurred while creating evaluation {} for submission: {} by: {}".format(
+            peer_evaluation,
+            submission_id,
+            scorer_id
+        )
+        logger.exception(error_message)
+        raise PeerEvaluationInternalError(error_message)
 
 
-def has_finished_required_evaluating(student_id):
+def has_finished_required_evaluating(student_id, required_evaluations):
     """Check if a student still needs to evaluate more submissions
 
     Per the contract of the peer assessment workflow, a student must evaluate a
@@ -104,6 +143,9 @@ def has_finished_required_evaluating(student_id):
     Args:
         student_id (str): The student in the peer grading workflow to check for
             peer workflow criteria. This argument is required.
+        required_evaluations (int): The number of evaluations a student has to
+            submit before receiving the feedback on their submission. This is a
+            required argument.
 
     Returns:
         bool: True if the student has evaluated enough peer submissions to move
@@ -111,7 +153,8 @@ def has_finished_required_evaluating(student_id):
             evaluate more peer submissions.
 
     Raises:
-        PeerEvaluationRequestError: Raised when the student_id is invalid
+        PeerEvaluationRequestError: Raised when the student_id is invalid, or
+            the required_evaluations is not a positive integer.
         PeerEvaluationInternalError: Raised when there is an internal error
             while evaluating this workflow rule.
 
@@ -120,7 +163,11 @@ def has_finished_required_evaluating(student_id):
         True
 
     """
-    pass
+    if required_evaluations < 0:
+        raise PeerEvaluationRequestError("Required Evaluation count must be a positive integer.")
+    return PeerEvaluation.objects.filter(
+        scorer_id=student_id
+    ).count() >= required_evaluations
 
 
 def get_evaluations(submission_id):
