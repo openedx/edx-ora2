@@ -133,7 +133,7 @@ INSTALLED_APPS = (
 
     # XBlock
     'workbench',
-    'demo_xblocks',
+    'sample_xblocks.basic',  # Needs to be an app for template lookup
 
     # edx-tim apps
     'submissions',
