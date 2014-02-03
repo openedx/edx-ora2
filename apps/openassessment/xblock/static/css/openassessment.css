@@ -1,0 +1,46 @@
+/* START CSS for OpenAssessmentBlock */
+
+.openassessment_block .openassessment_question {
+    font-weight: bold;
+}
+
+.openassessment_block textarea {
+    width: 80%;
+    height: 30%;
+}
+
+.openassessment_response_status_block {
+    background-color: white;
+    border: 4px solid black;
+    display: none;
+    position: absolute;
+    left: 75;
+    top: 75;
+    z-index: 100;
+}
+
+.openassessment_response_status_block p {
+    font-weight: bold;
+    font-size: xx-large;
+}
+
+.openassessment_response_status_block .clickhere {
+    font-size: small;
+    font-color: black;
+    font-weight: normal;
+    text-align: center;
+}
+
+.openassessment_response_status_block .success {
+    font-color: green;
+}
+
+.openassessment_response_status_block .failure {
+    font-color: red;
+}
+
+.clickhere_span {
+    font-size: small;
+    font-weight: normal;
+}
+/* END CSS for OpenAssessmentBlock */
