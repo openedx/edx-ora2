@@ -15,4 +15,3 @@ class PeerEvaluation(models.Model):
     scorer_id = models.CharField(max_length=255, db_index=True)
     score_type = models.CharField(max_length=2)
     feedback = models.TextField(max_length=10000, default="")
-
