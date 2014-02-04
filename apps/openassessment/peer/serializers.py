@@ -10,6 +10,7 @@ class PeerEvaluationSerializer(serializers.ModelSerializer):
     class Meta:
         model = PeerEvaluation
         fields = (
+            'submission',
             'points_earned',
             'points_possible',
             'scored_at',

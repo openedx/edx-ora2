@@ -129,7 +129,7 @@ def create_submission(student_item_dict, answer, submitted_at=None,
             u"Submission answer could not be properly decoded to unicode.")
 
     model_kwargs = {
-        "student_item": student_item_model,
+        "student_item": student_item_model.pk,
         "answer": answer,
         "attempt_number": attempt_number,
     }
@@ -137,12 +137,7 @@ def create_submission(student_item_dict, answer, submitted_at=None,
         model_kwargs["submitted_at"] = submitted_at
 
     try:
-        # Serializer validation requires the student item primary key, rather
-        # than the student item model itself. Create a copy of the submission
-        # kwargs and replace the student item model with it's primary key.
-        validation_data = model_kwargs.copy()
-        validation_data["student_item"] = student_item_model.pk
-        submission_serializer = SubmissionSerializer(data=validation_data)
+        submission_serializer = SubmissionSerializer(data=model_kwargs)
         if not submission_serializer.is_valid():
             raise SubmissionRequestError(submission_serializer.errors)
         submission_serializer.save()
