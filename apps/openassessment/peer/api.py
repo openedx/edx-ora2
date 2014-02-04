@@ -11,10 +11,11 @@ from django.db import DatabaseError
 from openassessment.peer.models import PeerEvaluation
 
 from openassessment.peer.serializers import PeerEvaluationSerializer
+from submissions.models import Submission, StudentItem
 
 logger = logging.getLogger(__name__)
 
-PEER_TYPE = "Peer"
+PEER_TYPE = "PE"
 
 
 class PeerEvaluationError(Exception):
@@ -97,7 +98,7 @@ def create_evaluation(submission_id, scorer_id, assessment_dict,
         >>>    points_possible=12,
         >>>    feedback="Your submission was thrilling.",
         >>> )
-        >>> create_evaluation("submission_one", "Tim", assessment_dict)
+        >>> create_evaluation("1", "Tim", assessment_dict)
         {
             'points_earned': 6,
             'points_possible': 12,
@@ -107,18 +108,19 @@ def create_evaluation(submission_id, scorer_id, assessment_dict,
         }
 
     """
-    peer_evaluation = {
-        "scorer_id": scorer_id,
-        "submission_id": submission_id,
-        "points_earned": sum(assessment_dict["points_earned"]),
-        "points_possible": assessment_dict["points_possible"],
-        "score_type": PEER_TYPE,
-        "feedback": assessment_dict["feedback"],
-    }
-    if scored_at:
-        peer_evaluation["scored_at"] = scored_at
-
     try:
+        submission = Submission.objects.get(pk=submission_id)
+        peer_evaluation = {
+            "scorer_id": scorer_id,
+            "submission": submission.pk,
+            "points_earned": sum(assessment_dict["points_earned"]),
+            "points_possible": assessment_dict["points_possible"],
+            "score_type": PEER_TYPE,
+            "feedback": assessment_dict["feedback"],
+        }
+        if scored_at:
+            peer_evaluation["scored_at"] = scored_at
+
         peer_serializer = PeerEvaluationSerializer(data=peer_evaluation)
         if not peer_serializer.is_valid():
             raise PeerEvaluationRequestError(peer_serializer.errors)
@@ -126,7 +128,7 @@ def create_evaluation(submission_id, scorer_id, assessment_dict,
         return peer_serializer.data
     except DatabaseError:
         error_message = u"An error occurred while creating evaluation {} for submission: {} by: {}".format(
-            peer_evaluation,
+            assessment_dict,
             submission_id,
             scorer_id
         )
@@ -192,7 +194,7 @@ def get_evaluations(submission_id):
             while retrieving the evaluations associated with this submission.
 
     Examples:
-        >>> get_evaluations("submission_one")
+        >>> get_evaluations("1")
         [
             {
                 'points_earned': 6,
@@ -211,10 +213,20 @@ def get_evaluations(submission_id):
         ]
 
     """
-    pass
+    try:
+        submission = Submission.objects.get(pk=submission_id)
+        evaluations = PeerEvaluation.objects.filter(submission=submission)
+        serializer = PeerEvaluationSerializer(evaluations, many=True)
+        return serializer.data
+    except DatabaseError:
+        error_message = (
+            u"Error getting evaluations for submission {}".format(submission_id)
+        )
+        logger.exception(error_message)
+        raise PeerEvaluationInternalError(error_message)
 
 
-def get_submission_to_evaluate(student_item, scorer_id):
+def get_submission_to_evaluate(student_item_dict):
     """Get a submission to peer evaluate.
 
     Retrieves a submission for evaluation for the given student_item. This will
@@ -224,7 +236,7 @@ def get_submission_to_evaluate(student_item, scorer_id):
     submissions from students who are not as active in the evaluation process.
 
     Args:
-        student_item (dict):
+        student_item_dict (dict):
         scorer_id (str):
 
     Returns:
@@ -239,9 +251,10 @@ def get_submission_to_evaluate(student_item, scorer_id):
         >>> student_item_dict = dict(
         >>>    item_id="item_1",
         >>>    course_id="course_1",
-        >>>    item_type="type_one"
+        >>>    item_type="type_one",
+        >>>    student_id="Bob",
         >>> )
-        >>> get_submission_to_evaluate(student_item_dict, "Bob")
+        >>> get_submission_to_evaluate(student_item_dict)
         {
             'student_item': 2,
             'attempt_number': 1,
@@ -253,4 +266,10 @@ def get_submission_to_evaluate(student_item, scorer_id):
 
 
     """
-    pass
+    student_items = StudentItem.objects.filter(
+        course_id=student_item_dict["course_id"],
+        item_id=student_item_dict["item_id"],
+    ).exclude(student_id=student_item_dict["student_id"])
+
+    # TODO: We need a priority queue.
+    return Submission.objects.filter(student_item__in=student_items)[:1]

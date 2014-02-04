@@ -6,9 +6,11 @@ be a lot here, like rubrics and such.
 from django.db import models
 from django.utils.timezone import now
 
+from submissions.models import Submission
+
 
 class PeerEvaluation(models.Model):
-    # submission = models.ForeignKey(Submission)
+    submission = models.ForeignKey(Submission)
     points_earned = models.PositiveIntegerField(default=0)
     points_possible = models.PositiveIntegerField(default=0)
     scored_at = models.DateTimeField(default=now, db_index=True)
