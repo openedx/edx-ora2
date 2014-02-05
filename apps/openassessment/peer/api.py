@@ -110,7 +110,7 @@ def create_evaluation(submission_uuid, scorer_id, assessment_dict,
 
     """
     try:
-        submission = Submission.objects.get(pk=submission_uuid)
+        submission = Submission.objects.get(uuid=submission_uuid)
         peer_evaluation = {
             "scorer_id": scorer_id,
             "submission": submission.pk,
@@ -216,7 +216,7 @@ def get_evaluations(submission_id):
 
     """
     try:
-        submission = Submission.objects.get(pk=submission_id)
+        submission = Submission.objects.get(uuid=submission_id)
         evaluations = PeerEvaluation.objects.filter(submission=submission)
         serializer = PeerEvaluationSerializer(evaluations, many=True)
         return serializer.data

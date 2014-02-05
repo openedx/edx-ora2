@@ -24,6 +24,8 @@ Submissions
 Peer Assessment
 ***************
 
+.. automodule:: openassessment.peer.api
+   :members:
 
 Django Apps
 -----------
