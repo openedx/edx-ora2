@@ -3,6 +3,7 @@
 {{ submissions|length }} total submissions. <br/>
 <br/>
 <table border=1>
+    <th>Submission UUID</th>
     <th>Student Item</th>
     <th>Attempt Number</th>
     <th>Answer</th>
@@ -10,6 +11,7 @@
     <th>Created At</th>
     {% for submission in submissions%}
         <tr>
+            <td>{{ submission.uuid }}</td>
             <td>{{ submission.student_item }}</td>
             <td>{{ submission.attempt_number }}</td>
             <td>{{ submission.answer }}</td>

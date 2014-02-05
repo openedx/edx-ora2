@@ -1,0 +1,22 @@
+<h3>Evaluations for {{ student_id }} > {{ course_id }} > {{ item_id }}:</h3>
+{{ error }} <br/>
+{{ evaluations|length }} total evaluations. <br/>
+<br/>
+<table border=1>
+    <th>Submission UUID</th>
+    <th>Points Earned</th>
+    <th>Points Possible</th>
+    <th>Scored At</th>
+    <th>Score Type</th>
+    <th>Feedback</th>
+    {% for evaluation in evaluations%}
+        <tr>
+            <td>{{ evaluation.submission_uuid }}</td>
+            <td>{{ evaluation.points_earned }}</td>
+            <td>{{ evaluation.points_possible }}</td>
+            <td>{{ evaluation.scorer_id }}</td>
+            <td>{{ evaluation.score_type }}</td>
+            <td>{{ evaluation.feedback }}</td>
+        </tr>
+    {% endfor %}
+</table>
