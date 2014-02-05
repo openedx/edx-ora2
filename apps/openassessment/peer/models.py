@@ -17,3 +17,17 @@ class PeerEvaluation(models.Model):
     scorer_id = models.CharField(max_length=255, db_index=True)
     score_type = models.CharField(max_length=2)
     feedback = models.TextField(max_length=10000, default="")
+
+    def __repr__(self):
+        return repr(dict(
+            submission=self.submission,
+            points_earned=self.points_earned,
+            points_possible=self.points_possible,
+            scored_at=self.scored_at,
+            scorer_id=self.scorer_id,
+            score_type=self.score_type,
+            feedback=self.feedback,
+        ))
+
+    class Meta:
+        ordering = ["-scored_at"]
