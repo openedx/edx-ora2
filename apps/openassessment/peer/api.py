@@ -238,14 +238,20 @@ def get_submission_to_evaluate(student_item_dict):
     submissions from students who are not as active in the evaluation process.
 
     Args:
-        student_item_dict (dict):
-        scorer_id (str):
+        student_item_dict (dict): The student item information from the student
+            requesting a submission for evaluation. The dict contains an
+            item_id, course_id, and item_type, used to identify the unique
+            question for the review, while the student_id is used to explicitly
+            avoid giving the student their own submission.
 
     Returns:
-        dict:
+        dict: A peer submission for evaluation. This contains a 'student_item',
+            'attempt_number', 'submitted_at', 'created_at', and 'answer' field to be
+            used for evaluation.
 
     Raises:
-        PeerEvaluationRequestError:
+        PeerEvaluationRequestError: Raised when the request parameters are
+            invalid for the request.
         PeerEvaluationInternalError:
         PeerEvaluationWorkflowError:
 
@@ -276,7 +282,7 @@ def get_submission_to_evaluate(student_item_dict):
     # TODO: We need a priority queue.
     submission = Submission.objects.filter(student_item__in=student_items).order_by(
         "submitted_at",
-        "attempt_number")[:1]
+        "-attempt_number")[:1]
     if not submission:
         raise PeerEvaluationWorkflowError(
             "There are no submissions available for evaluation."
