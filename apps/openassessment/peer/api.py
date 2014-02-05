@@ -62,7 +62,7 @@ class PeerEvaluationInternalError(PeerEvaluationError):
     pass
 
 
-def create_evaluation(submission_id, scorer_id, assessment_dict,
+def create_evaluation(submission_uuid, scorer_id, assessment_dict,
                       scored_at=None):
     """Creates an evaluation on the given submission.
 
@@ -70,8 +70,8 @@ def create_evaluation(submission_id, scorer_id, assessment_dict,
     rubric.
 
     Args:
-        submission_id (str): The submission id this assessment is associated
-            with. The submission_id is required and must already exist in the
+        submission_uuid (str): The submission uuid this assessment is associated
+            with. The submission uuid is required and must already exist in the
             Submission model.
         scorer_id (str): The user ID for the user giving this assessment. This
             is required to create an assessment on a submission.
@@ -110,7 +110,7 @@ def create_evaluation(submission_id, scorer_id, assessment_dict,
 
     """
     try:
-        submission = Submission.objects.get(pk=submission_id)
+        submission = Submission.objects.get(pk=submission_uuid)
         peer_evaluation = {
             "scorer_id": scorer_id,
             "submission": submission.pk,
@@ -130,7 +130,7 @@ def create_evaluation(submission_id, scorer_id, assessment_dict,
     except DatabaseError:
         error_message = u"An error occurred while creating evaluation {} for submission: {} by: {}".format(
             assessment_dict,
-            submission_id,
+            submission_uuid,
             scorer_id
         )
         logger.exception(error_message)

@@ -28,9 +28,9 @@ THURSDAY = datetime.datetime(2007, 9, 16, 0, 0, 0, 0, pytz.UTC)
 @ddt
 class TestApi(TestCase):
     def test_create_evaluation(self):
-        create_submission(STUDENT_ITEM, ANSWER_ONE)
+        submission = create_submission(STUDENT_ITEM, ANSWER_ONE)
         evaluation = api.create_evaluation(
-            "1",
+            submission["uuid"],
             STUDENT_ITEM["student_id"],
             ASSESSMENT_DICT
         )
@@ -38,33 +38,40 @@ class TestApi(TestCase):
 
     @file_data('test_valid_evaluations.json')
     def test_get_evaluations(self, assessment_dict):
-        create_submission(STUDENT_ITEM, ANSWER_ONE)
-        api.create_evaluation("1", STUDENT_ITEM["student_id"], assessment_dict)
-        evaluations = api.get_evaluations("1")
+        submission = create_submission(STUDENT_ITEM, ANSWER_ONE)
+        api.create_evaluation(
+            submission["uuid"],
+            STUDENT_ITEM["student_id"],
+            assessment_dict
+        )
+        evaluations = api.get_evaluations(submission["uuid"])
         self.assertEqual(1, len(evaluations))
         self._assert_evaluation(evaluations[0], **assessment_dict)
 
     @file_data('test_valid_evaluations.json')
     def test_get_evaluations_with_date(self, assessment_dict):
-        create_submission(STUDENT_ITEM, ANSWER_ONE)
+        submission = create_submission(STUDENT_ITEM, ANSWER_ONE)
         api.create_evaluation(
-            "1", STUDENT_ITEM["student_id"], assessment_dict, MONDAY
+            submission["uuid"],
+            STUDENT_ITEM["student_id"],
+            assessment_dict,
+            MONDAY
         )
-        evaluations = api.get_evaluations("1")
+        evaluations = api.get_evaluations(submission["uuid"])
         self.assertEqual(1, len(evaluations))
         self._assert_evaluation(evaluations[0], **assessment_dict)
         self.assertEqual(evaluations[0]["scored_at"], MONDAY)
 
     def test_student_finished_evaluating(self):
-        self._create_student_and_submission("Bob", "Bob's answer")
-        self._create_student_and_submission("Sally", "Sally's answer")
-        self._create_student_and_submission("Jim", "Jim's answer")
+        bob = self._create_student_and_submission("Bob", "Bob's answer")
+        sally = self._create_student_and_submission("Sally", "Sally's answer")
+        jim = self._create_student_and_submission("Jim", "Jim's answer")
 
         self.assertFalse(api.has_finished_required_evaluating("Tim", 3))
-        api.create_evaluation("1", "Tim", ASSESSMENT_DICT)
-        api.create_evaluation("2", "Tim", ASSESSMENT_DICT)
+        api.create_evaluation(bob["uuid"], "Tim", ASSESSMENT_DICT)
+        api.create_evaluation(sally["uuid"], "Tim", ASSESSMENT_DICT)
         self.assertFalse(api.has_finished_required_evaluating("Tim", 3))
-        api.create_evaluation("3", "Tim", ASSESSMENT_DICT)
+        api.create_evaluation(jim["uuid"], "Tim", ASSESSMENT_DICT)
         self.assertTrue(api.has_finished_required_evaluating("Tim", 3))
 
     @raises(api.PeerEvaluationRequestError)
@@ -97,25 +104,32 @@ class TestApi(TestCase):
     @raises(api.PeerEvaluationInternalError)
     def test_error_on_evaluation_creation(self, mock_filter):
         mock_filter.side_effect = DatabaseError("Bad things happened")
-        create_submission(STUDENT_ITEM, ANSWER_ONE)
+        submission = create_submission(STUDENT_ITEM, ANSWER_ONE)
         api.create_evaluation(
-            "1", STUDENT_ITEM["student_id"], ASSESSMENT_DICT, MONDAY
+            submission["uuid"],
+            STUDENT_ITEM["student_id"],
+            ASSESSMENT_DICT,
+            MONDAY
         )
 
     @patch.object(PeerEvaluation.objects, 'filter')
     @raises(api.PeerEvaluationInternalError)
     def test_error_on_get_evaluation(self, mock_filter):
-        create_submission(STUDENT_ITEM, ANSWER_ONE)
-        api.create_evaluation("1", STUDENT_ITEM["student_id"], ASSESSMENT_DICT,
-                          MONDAY)
+        submission = create_submission(STUDENT_ITEM, ANSWER_ONE)
+        api.create_evaluation(
+            submission["uuid"],
+            STUDENT_ITEM["student_id"],
+            ASSESSMENT_DICT,
+            MONDAY
+        )
         mock_filter.side_effect = DatabaseError("Bad things happened")
-        api.get_evaluations("1")
+        api.get_evaluations(submission["uuid"])
 
     @staticmethod
     def _create_student_and_submission(student, answer, date=None):
         new_student_item = STUDENT_ITEM.copy()
         new_student_item["student_id"] = student
-        create_submission(new_student_item, answer, date)
+        return create_submission(new_student_item, answer, date)
 
     def _assert_evaluation(self, evaluation, points_earned, points_possible,
                            feedback):
