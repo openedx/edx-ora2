@@ -5,6 +5,7 @@ different problem types, and is therefore ignorant of ORA workflow.
 """
 from django.db import models
 from django.utils.timezone import now
+from django_extensions.db.fields import UUIDField
 
 
 class StudentItem(models.Model):
@@ -52,6 +53,8 @@ class Submission(models.Model):
     because it makes caching trivial.
 
     """
+    uuid = UUIDField(primary_key=True)
+
     student_item = models.ForeignKey(StudentItem)
 
     # Which attempt is this? Consecutive Submissions do not necessarily have
