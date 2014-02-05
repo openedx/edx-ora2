@@ -1,5 +1,6 @@
 """
-Serializers are created to ensure models do not have to be accessed outside the scope of the Tim APIs.
+Serializers are created to ensure models do not have to be accessed outside the
+scope of the Tim APIs.
 """
 from rest_framework import serializers
 from submissions.models import StudentItem, Submission, Score
@@ -14,7 +15,14 @@ class StudentItemSerializer(serializers.ModelSerializer):
 class SubmissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Submission
-        fields = ('student_item', 'attempt_number', 'submitted_at', 'created_at', 'answer')
+        fields = (
+            'uuid',
+            'student_item',
+            'attempt_number',
+            'submitted_at',
+            'created_at',
+            'answer'
+        )
 
 
 class ScoreSerializer(serializers.ModelSerializer):
