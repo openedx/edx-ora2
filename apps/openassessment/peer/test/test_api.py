@@ -81,8 +81,9 @@ class TestApi(TestCase):
     def test_get_submission_to_evaluate(self):
         self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
         self._create_student_and_submission("Bob", "Bob's answer", TUESDAY)
-        self._create_student_and_submission("Sally", "Sally's answer",
-                                            WEDNESDAY)
+        self._create_student_and_submission(
+            "Sally", "Sally's answer", WEDNESDAY
+        )
         self._create_student_and_submission("Jim", "Jim's answer", THURSDAY)
 
         submission = api.get_submission_to_evaluate(STUDENT_ITEM)

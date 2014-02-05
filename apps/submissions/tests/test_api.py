@@ -5,6 +5,7 @@ from django.db import DatabaseError
 from django.test import TestCase
 from nose.tools import raises
 from mock import patch
+import pytz
 
 from submissions.api import create_submission, get_submissions, SubmissionRequestError, SubmissionInternalError
 from submissions.models import Submission
@@ -62,8 +63,8 @@ class TestApi(TestCase):
         self._assert_submission(submission, ANSWER_ONE, 1, 1)
 
     def test_get_latest_submission(self):
-        past_date = datetime.date(2007, 11, 23)
-        more_recent_date = datetime.date(2011, 10, 15)
+        past_date = datetime.datetime(2007, 9, 12, 0, 0, 0, 0, pytz.UTC)
+        more_recent_date = datetime.datetime(2007, 9, 13, 0, 0, 0, 0, pytz.UTC)
         create_submission(STUDENT_ITEM, ANSWER_ONE, more_recent_date)
         create_submission(STUDENT_ITEM, ANSWER_TWO, past_date)
 
