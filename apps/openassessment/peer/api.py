@@ -12,6 +12,7 @@ from openassessment.peer.models import PeerEvaluation
 
 from openassessment.peer.serializers import PeerEvaluationSerializer
 from submissions.models import Submission, StudentItem
+from submissions.serializers import SubmissionSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -166,7 +167,8 @@ def has_finished_required_evaluating(student_id, required_evaluations):
 
     """
     if required_evaluations < 0:
-        raise PeerEvaluationRequestError("Required Evaluation count must be a positive integer.")
+        raise PeerEvaluationRequestError(
+            "Required Evaluation count must be a positive integer.")
     return PeerEvaluation.objects.filter(
         scorer_id=student_id
     ).count() >= required_evaluations
@@ -272,4 +274,11 @@ def get_submission_to_evaluate(student_item_dict):
     ).exclude(student_id=student_item_dict["student_id"])
 
     # TODO: We need a priority queue.
-    return Submission.objects.filter(student_item__in=student_items)[:1]
+    submission = Submission.objects.filter(student_item__in=student_items).order_by(
+        "submitted_at",
+        "attempt_number")[:1]
+    if not submission:
+        raise PeerEvaluationWorkflowError(
+            "There are no submissions available for evaluation."
+        )
+    return SubmissionSerializer(submission[0]).data
