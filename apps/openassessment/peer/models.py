@@ -9,22 +9,6 @@ from django.utils.timezone import now
 from submissions.models import Submission
 
 
-#class Rubric(models.model):
-#    pass
-#
-#
-#class RubricScore(models.model):
-#    description = models.TextField(max_length=255, default="")
-#    point_value = models.PositiveIntegerField(default=0)
-#    section = models.ForeignKey(RubricScoredSection
-#
-#
-#class RubricScoredSection(models.model):
-#    points_earned = models.PositiveIntegerField(default=0)
-#    points_possible = models.PositiveIntegerField(default=0)
-#    rubric = models.ForeignKey(Rubric)
-#
-
 class PeerEvaluation(models.Model):
     submission = models.ForeignKey(Submission)
     points_earned = models.PositiveIntegerField(default=0)
