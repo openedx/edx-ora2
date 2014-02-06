@@ -279,12 +279,27 @@ def get_submission_to_evaluate(student_item_dict):
         item_id=student_item_dict["item_id"],
     ).exclude(student_id=student_item_dict["student_id"])
 
+    student_evaluations = PeerEvaluation.objects.filter(
+        scorer_id=student_item_dict["student_id"]
+    )
+
     # TODO: We need a priority queue.
-    submission = Submission.objects.filter(student_item__in=student_items).order_by(
+    submissions = Submission.objects.filter(student_item__in=student_items).order_by(
         "submitted_at",
-        "-attempt_number")[:1]
+        "-attempt_number"
+    )
+    submission = _get_first_submission_not_evaluated(submissions, student_evaluations)
     if not submission:
         raise PeerEvaluationWorkflowError(
             "There are no submissions available for evaluation."
         )
-    return SubmissionSerializer(submission[0]).data
+    return SubmissionSerializer(submission).data
+
+
+def _get_first_submission_not_evaluated(submissions, student_evaluations):
+    for submission in submissions:
+        already_evaluated = False
+        for evaluation in student_evaluations:
+            already_evaluated = already_evaluated or submission == evaluation.submission
+        if not already_evaluated:
+            return submission

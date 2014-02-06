@@ -10,8 +10,8 @@ function OpenAssessmentBlock(runtime, element) {
     function prepare_assessment_post(element) {
         selector = $("input[type=radio]:checked", element);
         values = [];
-        for (i=0; selector.length; i++) {
-            values.concat(selector[0].value);
+        for (i=0; i<selector.length; i++) {
+            values[i] = selector[i].value;
         }
         return {"submission_uuid":$("div#peer_submission_uuid")[0].innerText, "points_earned":values};
     }

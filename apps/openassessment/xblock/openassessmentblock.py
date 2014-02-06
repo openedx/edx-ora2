@@ -109,13 +109,17 @@ class OpenAssessmentBlock(XBlock):
         # TODO: We're not doing points possible, right way to do points possible
         # is to refactor the rubric criteria type, Joe has thoughts on this.
         student_item_dict = self._get_student_item_dict()
-        assessment_dict = {"points_earned": data["points_earned"],
-                           "points_possible": 12,
-                           "feedback": "",
+        assessment_dict = {
+            "points_earned": map(int, data["points_earned"]),
+            "points_possible": 12,
+            "feedback": "Not yet implemented.",
         }
-        evaluation = peer_api.create_evaluation(data["submission_uuid"], student_item_dict["student_id"], assessment_dict)
-        print "DEBUG: {}".format(evaluation)
-        return (evaluation, "Assessment handler is not implemented yet.")
+        evaluation = peer_api.create_evaluation(
+            data["submission_uuid"],
+            student_item_dict["student_id"],
+            assessment_dict
+        )
+        return evaluation, "Success"
 
     @XBlock.json_handler
     def submit(self, data, suffix=''):
