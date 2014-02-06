@@ -73,6 +73,7 @@ class Submission(models.Model):
 
     def __repr__(self):
         return repr(dict(
+            uuid=self.uuid,
             student_item=self.student_item,
             attempt_number=self.attempt_number,
             submitted_at=self.submitted_at,
