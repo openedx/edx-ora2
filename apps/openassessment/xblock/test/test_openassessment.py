@@ -10,7 +10,7 @@ from mock import patch
 
 from workbench.runtime import WorkbenchRuntime
 from submissions import api
-from submissions.api import SubmissionInternalError
+from submissions.api import SubmissionRequestError, SubmissionInternalError
 
 
 class TestOpenAssessment(TestCase):
@@ -28,6 +28,7 @@ class TestOpenAssessment(TestCase):
                 />
             """, self.runtime.id_generator)
         self.assessment = self.runtime.get_block(assessment_id)
+        self.default_json_submission = json.dumps({"submission": "This is my answer to this test question!"})
 
     def make_request(self, body):
         """Mock request method."""
@@ -35,49 +36,44 @@ class TestOpenAssessment(TestCase):
         request.body = body
         return request
 
-    def text_of_response(self, response):
-        """Return the text of response."""
-        return "".join(response.app_iter)
-
     def test_submit_submission(self):
-        """
-        Verify we can submit an answer to the XBlock and get the expected return
-        value.
-        """
-        json_data = json.dumps(
-            {"submission": "This is my answer to this test question!"}
-        )
-
+        """XBlock accepts response, returns true on success."""
         resp = self.runtime.handle(
             self.assessment, 'submit',
-            self.make_request(json_data)
+            self.make_request(self.default_json_submission)
         )
-        result = self.text_of_response(resp)
-        self.assertEqual("true", result)
+        result = json.loads(resp.body)
+        self.assertTrue(result[0])
 
     @patch.object(api, 'create_submission')
-    def test_submission_failure(self, mock_submit):
-        """
-        Nothing from the front end currently causes an exception. However the
-        backend could have an internal error that will bubble up. This will
-        mock an internal error and ensure the front end returns the proper
-        value.
-        """
+    def test_submission_general_failure(self, mock_submit):
+        """Internal errors return some code for submission failure."""
         mock_submit.side_effect = SubmissionInternalError("Cat on fire.")
-        json_data = json.dumps(
-            {"submission": "This is my answer to this test question!"}
-        )
-
         resp = self.runtime.handle(
             self.assessment, 'submit',
-            self.make_request(json_data)
+            self.make_request(self.default_json_submission)
         )
-        result = self.text_of_response(resp)
-        self.assertEquals("false", result)
+        result = json.loads(resp.body)
+        self.assertFalse(result[0])
+        self.assertEqual(result[1], "EUNKNOWN")
+        self.assertEqual(result[2], self.assessment.submit_errors["EUNKNOWN"])
 
+    @patch.object(api, 'create_submission')
+    def test_submission_API_failure(self, mock_submit):
+        """API usage errors return code and meaningful message."""
+        mock_submit.side_effect = SubmissionRequestError("Cat on fire.")
+        resp = self.runtime.handle(
+            self.assessment, 'submit',
+            self.make_request(self.default_json_submission)
+        )
+        result = json.loads(resp.body)
+        self.assertFalse(result[0])
+        self.assertEqual(result[1], "EBADFORM")
+        self.assertEqual(result[2], "Cat on fire.")
 
     def test_load_student_view(self):
-        """
+        """OA XBlock returns some HTML to the user.
+
         View basic test for verifying we're returned some HTML about the
         Open Assessment XBlock. We don't want to match too heavily against the
         contents.

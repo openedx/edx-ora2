@@ -1,6 +1,6 @@
 /* START CSS for OpenAssessmentBlock */
 
-.openassessment_block .openassessment_question {
+.openassessment_block .openassessment_prompt {
     font-weight: bold;
 }
 
@@ -26,17 +26,17 @@
 
 .openassessment_response_status_block .clickhere {
     font-size: small;
-    font-color: black;
+    color: black;
     font-weight: normal;
     text-align: center;
 }
 
 .openassessment_response_status_block .success {
-    font-color: green;
+    color: green;
 }
 
 .openassessment_response_status_block .failure {
-    font-color: red;
+    color: red;
 }
 
 .clickhere_span {

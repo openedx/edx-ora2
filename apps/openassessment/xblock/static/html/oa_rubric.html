@@ -1,0 +1,19 @@
+<!-- START OpenAssessmentBlock HTML -->
+<div class="openassessment_block" id="openassessment_block_${xblock_trace[0]}">
+    <p class="openassessment_prompt" 
+       id="openassessment_rubric_instructions_${xblock_trace[0]}">${rubric_instructions}</p>
+    % for criterion in rubric_criteria:
+     <div>
+      <p class="openassessment_prompt">${criterion["instructions"]}</p>
+      % for value in sorted([k for k in criterion.keys() if k != 'name' and k != 'instructions']):
+       <input type="radio" value="${value}">${criterion[value]}</input>
+      % endfor
+     </div>
+    % endfor 
+    <input type="button" 
+           class="openassessment_submit" id="openassessment_submit_${xblock_trace[0]}" value="Submit" />
+</div>
+<div class="openassessment_response_status_block" id=openassessment_response_status_block_${xblock_trace[0]}">
+    This message should be invisible; please upgrade your browser.
+</div> 
+<!-- END OpenAssessmentBlock HTML -->
