@@ -7,6 +7,15 @@ function OpenAssessmentBlock(runtime, element) {
     var click_msg = '<p class="clickhere">(click here to dismiss this message)</p>';
     /* Sample Debug Console: http://localhost:8000/submissions/Joe_Bloggs/TestCourse/u_3 */
 
+    function prepare_assessment_post(element) {
+        selector = $("input[type=radio]:checked", element);
+        values = [];
+        for (i=0; selector.length; i++) {
+            values.concat(selector[0].value);
+        }
+        return {"submission_uuid":$("div#peer_submission_uuid")[0].innerText, "points_earned":values};
+    }
+
     function displayStatus(result) {
         status = result[0]
         error_msg = result[1]
@@ -26,7 +35,7 @@ function OpenAssessmentBlock(runtime, element) {
             type: "POST",
             url: handlerUrl,
             /* data: JSON.stringify({"submission": $('.openassessment_submission', element).val()}), */
-            data: JSON.stringify({"assessment": "I'm not sure how to stringify a form"}),
+            data: JSON.stringify(prepare_assessment_post(element)),
             success: displayStatus
         });
     });

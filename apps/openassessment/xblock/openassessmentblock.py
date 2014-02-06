@@ -3,8 +3,10 @@
 import pkg_resources
 
 from mako.template import Template
+from openassessment.peer.api import PeerEvaluationWorkflowError
 
 from submissions import api
+from openassessment.peer import api as peer_api
 
 from xblock.core import XBlock
 from xblock.fields import List, Scope, String
@@ -69,18 +71,27 @@ class OpenAssessmentBlock(XBlock):
         trace = self._get_xblock_trace()
         student_item_dict = self._get_student_item_dict()
         previous_submissions = api.get_submissions(student_item_dict)
-        if previous_submissions:  # XXX: until workflow better, move on w/ prev submit
+        try:
+            peer_submission = peer_api.get_submission_to_evaluate(student_item_dict)
+        except PeerEvaluationWorkflowError:
+            peer_submission = False
+
+        if previous_submissions and peer_submission:  # XXX: until workflow better, move on w/ prev submit
             html = Template(load("static/html/oa_rubric.html"),
                             default_filters=mako_default_filters,
                             input_encoding='utf-8',
                            )
-            frag = Fragment(html.render_unicode(xblock_trace=trace, 
+            frag = Fragment(html.render_unicode(xblock_trace=trace,
+                                                peer_submission=peer_submission,
                                                 rubric_instructions=self.rubric_instructions,
                                                 rubric_criteria=self.rubric_criteria,
                                                ))
             frag.add_css(load("static/css/openassessment.css"))
             frag.add_javascript(load("static/js/src/oa_assessment.js"))
             frag.initialize_js('OpenAssessmentBlock')
+        elif previous_submissions:
+            # TODO: TIM-39 They're done grading or there is nothing to grade yet.
+            pass
         else:                     # XXX: until workflow better, submit until submitted
             html = Template(load("static/html/oa_submission.html"),
                             default_filters=mako_default_filters,
@@ -95,7 +106,16 @@ class OpenAssessmentBlock(XBlock):
     @XBlock.json_handler
     def assess(self, data, suffix=''):
         """Place an assessment into Openassessment system"""
-        return (False, "Assessment handler is not implemented yet.")
+        # TODO: We're not doing points possible, right way to do points possible
+        # is to refactor the rubric criteria type, Joe has thoughts on this.
+        student_item_dict = self._get_student_item_dict()
+        assessment_dict = {"points_earned": data["points_earned"],
+                           "points_possible": 12,
+                           "feedback": "",
+        }
+        evaluation = peer_api.create_evaluation(data["submission_uuid"], student_item_dict["student_id"], assessment_dict)
+        print "DEBUG: {}".format(evaluation)
+        return (evaluation, "Assessment handler is not implemented yet.")
 
     @XBlock.json_handler
     def submit(self, data, suffix=''):
