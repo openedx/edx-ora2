@@ -8,8 +8,8 @@ import logging
 from django.db import DatabaseError
 from django.utils.encoding import force_unicode
 
-from submissions.serializers import SubmissionSerializer, StudentItemSerializer
-from submissions.models import Submission, StudentItem
+from submissions.serializers import SubmissionSerializer, StudentItemSerializer, ScoreSerializer
+from submissions.models import Submission, StudentItem, Score
 
 logger = logging.getLogger(__name__)
 
@@ -217,7 +217,14 @@ def get_submissions(student_item_dict, limit=None):
 
 
 def get_score(student_item):
-    pass
+    student_item_model = StudentItem.objects.get(
+        student_id=student_item["student_id"],
+        course_id=student_item["course_id"],
+        item_id=student_item["item_id"],
+        item_type=student_item["item_type"]
+    )
+    scores = Score.objects.filter(student_item=student_item_model)
+    return ScoreSerializer(scores, many=True).data
 
 
 def get_scores(course_id, student_id, types=None):

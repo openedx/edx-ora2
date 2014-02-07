@@ -72,7 +72,9 @@ class OpenAssessmentBlock(XBlock):
         student_item_dict = self._get_student_item_dict()
         previous_submissions = api.get_submissions(student_item_dict)
         try:
-            peer_submission = peer_api.get_submission_to_evaluate(student_item_dict)
+            # HACK: Replace with proper workflow.
+            peer_eval = self._hack_get_peer_eval()
+            peer_submission = peer_api.get_submission_to_evaluate(student_item_dict, peer_eval["must_be_graded_by"])
         except PeerEvaluationWorkflowError:
             peer_submission = False
 
@@ -103,8 +105,16 @@ class OpenAssessmentBlock(XBlock):
             frag.initialize_js('OpenAssessmentBlock')
         return frag
 
+    def _hack_get_peer_eval(self):
+        # HACK: Forcing Peer Eval, we'll get the Eval config.
+        for next_eval in self.rubric_evals:
+            if next_eval["type"] == "peereval":
+                return next_eval
+
     @XBlock.json_handler
     def assess(self, data, suffix=''):
+        # HACK: Replace with proper workflow.
+        peer_eval = self._hack_get_peer_eval()
         """Place an assessment into Openassessment system"""
         # TODO: We're not doing points possible in a good way, need to refactor
         # the rubric criteria type, Joe has thoughts on this.
@@ -122,6 +132,8 @@ class OpenAssessmentBlock(XBlock):
         evaluation = peer_api.create_evaluation(
             data["submission_uuid"],
             student_item_dict["student_id"],
+            peer_eval["must_grade"],
+            peer_eval["must_be_graded_by"],
             assessment_dict
         )
 
@@ -215,7 +227,7 @@ class OpenAssessmentBlock(XBlock):
     </criterion>
     <criterion name="clearheaded">
       How clear is the thinking?
-      <option val="0">The Unabomber</option>
+      <option val="0">Yogi Berra</option>
       <option val="1">Hunter S. Thompson</option>
       <option val="2">Robert Heinlein</option>
       <option val="3">Isaac Asimov</option>
