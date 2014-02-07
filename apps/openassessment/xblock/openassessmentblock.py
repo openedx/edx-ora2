@@ -92,8 +92,7 @@ class OpenAssessmentBlock(XBlock):
             frag.add_javascript(load("static/js/src/oa_assessment.js"))
             frag.initialize_js('OpenAssessmentBlock')
         elif previous_submissions:
-            # TODO: TIM-39 They're done grading or there is nothing to grade yet.
-            pass
+            return Fragment(u"<div>There are no submissions to review.</div>")
         else:                     # XXX: until workflow better, submit until submitted
             html = Template(load("static/html/oa_submission.html"),
                             default_filters=mako_default_filters,
