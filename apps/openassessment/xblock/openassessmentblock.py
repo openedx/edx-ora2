@@ -49,7 +49,7 @@ class OpenAssessmentBlock(XBlock):
 
     def _get_student_item_dict(self):
         """Create a student_item_dict from our surrounding context.
-        
+
         See also: submissions.api for details.
         """
         item_id, student_id = self._get_xblock_trace()
@@ -106,12 +106,17 @@ class OpenAssessmentBlock(XBlock):
     @XBlock.json_handler
     def assess(self, data, suffix=''):
         """Place an assessment into Openassessment system"""
-        # TODO: We're not doing points possible, right way to do points possible
-        # is to refactor the rubric criteria type, Joe has thoughts on this.
+        # TODO: We're not doing points possible in a good way, need to refactor
+        # the rubric criteria type, Joe has thoughts on this.
         student_item_dict = self._get_student_item_dict()
+
+        points_possible = sum(
+             max(int(val) for val in criteria if val.isdigit())
+             for criteria in self.rubric_criteria
+        )
         assessment_dict = {
             "points_earned": map(int, data["points_earned"]),
-            "points_possible": 12,
+            "points_possible": points_possible,
             "feedback": "Not yet implemented.",
         }
         evaluation = peer_api.create_evaluation(
@@ -119,6 +124,10 @@ class OpenAssessmentBlock(XBlock):
             student_item_dict["student_id"],
             assessment_dict
         )
+
+        # Temp kludge until we fix JSON serialization for datetime
+        evaluation["scored_at"] = str(evaluation["scored_at"])
+
         return evaluation, "Success"
 
     @XBlock.json_handler
@@ -180,12 +189,12 @@ class OpenAssessmentBlock(XBlock):
                 block.runtime.add_node_as_child(block, child, id_generator)
         return block
 
-    # Arbitrary attributes can be defined on the 
+    # Arbitrary attributes can be defined on the
     @staticmethod
     def workbench_scenarios():
         """A canned scenario for display in the workbench."""
         return [
-            ("OpenAssessmentBlock Poverty Rubric", 
+            ("OpenAssessmentBlock Poverty Rubric",
              """
 <vertical_demo>
 
@@ -210,7 +219,7 @@ class OpenAssessmentBlock(XBlock):
       <option val="1">Hunter S. Thompson</option>
       <option val="2">Robert Heinlein</option>
       <option val="3">Isaac Asimov</option>
-      <option val="55">Spock</option>
+      <option val="10">Spock</option>
     </criterion>
     <criterion name="form">
       Lastly, how is it's form? Punctuation, grammar, and spelling all count.
@@ -219,7 +228,7 @@ class OpenAssessmentBlock(XBlock):
       <option val="2">Reddit</option>
       <option val="3">metafilter</option>
       <option val="4">Usenet, 1996</option>
-      <option val="99">The Elements of Style</option>
+      <option val="5">The Elements of Style</option>
     </criterion>
   </rubric>
   <evals>
@@ -233,7 +242,7 @@ class OpenAssessmentBlock(XBlock):
 
 </vertical_demo>
              """),
-            ("OpenAssessmentBlock Censorship Rubric", 
+            ("OpenAssessmentBlock Censorship Rubric",
              """
 <vertical_demo>
 
