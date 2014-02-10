@@ -8,6 +8,7 @@ import copy
 import logging
 
 from django.db import DatabaseError
+import math
 from openassessment.peer.models import PeerEvaluation
 
 from openassessment.peer.serializers import PeerEvaluationSerializer
@@ -194,7 +195,7 @@ def _check_if_finished_and_create_score(student_item,
         student_item.student_id,
         required_evaluations_for_student
     )
-    evaluations = PeerEvaluation.objects.filter(submission=submission).order_by("-points_earned")
+    evaluations = PeerEvaluation.objects.filter(submission=submission)
     submission_finished = evaluations.count() >= required_evaluations_for_submission
     scores = []
     for evaluation in evaluations:
@@ -217,12 +218,14 @@ def _calculate_final_score(scores):
 
     """
     total_scores = len(scores)
+    scores = sorted(scores)
+    median = int(math.ceil(total_scores / float(2)))
     if total_scores == 0:
         return 0
     elif total_scores % 2:
-        return scores[total_scores / 2]
+        return scores[median-1]
     else:
-        return (scores[total_scores / 2 - 1] + scores[total_scores / 2]) / 2
+        return int(math.ceil(sum(scores[median-1:median+1])/float(2)))
 
 
 def has_finished_required_evaluating(student_id, required_evaluations):
@@ -352,7 +355,7 @@ def get_submission_to_evaluate(student_item_dict, required_num_evaluations):
         >>>    item_type="type_one",
         >>>    student_id="Bob",
         >>> )
-        >>> get_submission_to_evaluate(student_item_dict)
+        >>> get_submission_to_evaluate(student_item_dict, 3)
         {
             'student_item': 2,
             'attempt_number': 1,
