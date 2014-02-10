@@ -8,11 +8,13 @@ import copy
 import logging
 
 from django.db import DatabaseError
+import math
 from openassessment.peer.models import PeerEvaluation
 
 from openassessment.peer.serializers import PeerEvaluationSerializer
-from submissions.models import Submission, StudentItem
-from submissions.serializers import SubmissionSerializer
+from submissions import api as submission_api
+from submissions.models import Submission, StudentItem, Score
+from submissions.serializers import SubmissionSerializer, StudentItemSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -62,8 +64,13 @@ class PeerEvaluationInternalError(PeerEvaluationError):
     pass
 
 
-def create_evaluation(submission_uuid, scorer_id, assessment_dict,
-                      scored_at=None):
+def create_evaluation(
+        submission_uuid,
+        scorer_id,
+        required_evaluations_for_student,
+        required_evaluations_for_submission,
+        assessment_dict,
+        scored_at=None):
     """Creates an evaluation on the given submission.
 
     Evaluations are created based on feedback associated with a particular
@@ -75,6 +82,10 @@ def create_evaluation(submission_uuid, scorer_id, assessment_dict,
             Submission model.
         scorer_id (str): The user ID for the user giving this assessment. This
             is required to create an assessment on a submission.
+        required_evaluations_for_student (int): The number of evaluations
+            required for the student to receive a score for their submission.
+        required_evaluations_for_submission (int): The number of evaluations
+            required on the submission for it to be scored.
         assessment_dict (dict): All related information for the assessment. An
             assessment contains points_earned, points_possible, and feedback.
         scored_at (datetime): Optional argument to override the time in which
@@ -126,6 +137,35 @@ def create_evaluation(submission_uuid, scorer_id, assessment_dict,
         if not peer_serializer.is_valid():
             raise PeerEvaluationRequestError(peer_serializer.errors)
         peer_serializer.save()
+
+        # Check if the submission is finished and its Author has graded enough.
+        student_item = submission.student_item
+        _check_if_finished_and_create_score(
+            student_item,
+            submission,
+            required_evaluations_for_student,
+            required_evaluations_for_submission
+        )
+
+        # Check if the grader is finished and has enough evaluations
+        scorer_item = StudentItem.objects.get(
+            student_id=scorer_id,
+            item_id=student_item.item_id,
+            course_id=student_item.course_id,
+            item_type=student_item.item_type
+        )
+
+        scorer_submissions = Submission.objects.filter(
+            student_item=scorer_item
+        ).order_by("-attempt_number")
+
+        _check_if_finished_and_create_score(
+            scorer_item,
+            scorer_submissions[0],
+            required_evaluations_for_student,
+            required_evaluations_for_submission
+        )
+
         return peer_serializer.data
     except DatabaseError:
         error_message = u"An error occurred while creating evaluation {} for submission: {} by: {}".format(
@@ -135,6 +175,57 @@ def create_evaluation(submission_uuid, scorer_id, assessment_dict,
         )
         logger.exception(error_message)
         raise PeerEvaluationInternalError(error_message)
+
+
+def _check_if_finished_and_create_score(student_item,
+                                        submission,
+                                        required_evaluations_for_student,
+                                        required_evaluations_for_submission):
+    """Basic function for checking if a student is finished with peer workflow.
+
+    Checks if the student is finished with the peer evaluation workflow. If the
+    student already has a final grade calculated, there is no need to proceed.
+    If they do not have a grade, the student has a final grade calculated.
+
+    """
+    if Score.objects.filter(student_item=student_item):
+        return
+
+    finished_evaluating = has_finished_required_evaluating(
+        student_item.student_id,
+        required_evaluations_for_student
+    )
+    evaluations = PeerEvaluation.objects.filter(submission=submission)
+    submission_finished = evaluations.count() >= required_evaluations_for_submission
+    scores = []
+    for evaluation in evaluations:
+        scores.append(evaluation.points_earned)
+    if finished_evaluating and submission_finished:
+        submission_api.set_score(
+            StudentItemSerializer(student_item).data,
+            SubmissionSerializer(submission).data,
+            _calculate_final_score(scores),
+            evaluations[0].points_possible
+        )
+
+
+def _calculate_final_score(scores):
+    """Final grade is calculated using integer values, rounding up.
+
+    If there is a true median score, it is returned. If there are two median
+    values, the average of those two values is returned, rounded up to the
+    greatest integer value.
+
+    """
+    total_scores = len(scores)
+    scores = sorted(scores)
+    median = int(math.ceil(total_scores / float(2)))
+    if total_scores == 0:
+        return 0
+    elif total_scores % 2:
+        return scores[median-1]
+    else:
+        return int(math.ceil(sum(scores[median-1:median+1])/float(2)))
 
 
 def has_finished_required_evaluating(student_id, required_evaluations):
@@ -162,7 +253,7 @@ def has_finished_required_evaluating(student_id, required_evaluations):
             while evaluating this workflow rule.
 
     Examples:
-        >>> has_finished_required_evaluating("Tim")
+        >>> has_finished_required_evaluating("Tim", 3)
         True
 
     """
@@ -228,7 +319,7 @@ def get_evaluations(submission_id):
         raise PeerEvaluationInternalError(error_message)
 
 
-def get_submission_to_evaluate(student_item_dict):
+def get_submission_to_evaluate(student_item_dict, required_num_evaluations):
     """Get a submission to peer evaluate.
 
     Retrieves a submission for evaluation for the given student_item. This will
@@ -243,6 +334,8 @@ def get_submission_to_evaluate(student_item_dict):
             item_id, course_id, and item_type, used to identify the unique
             question for the review, while the student_id is used to explicitly
             avoid giving the student their own submission.
+        required_num_evaluations (int): The number of evaluations a submission
+            requires before it has completed the peer evaluation process.
 
     Returns:
         dict: A peer submission for evaluation. This contains a 'student_item',
@@ -262,7 +355,7 @@ def get_submission_to_evaluate(student_item_dict):
         >>>    item_type="type_one",
         >>>    student_id="Bob",
         >>> )
-        >>> get_submission_to_evaluate(student_item_dict)
+        >>> get_submission_to_evaluate(student_item_dict, 3)
         {
             'student_item': 2,
             'attempt_number': 1,
@@ -279,12 +372,29 @@ def get_submission_to_evaluate(student_item_dict):
         item_id=student_item_dict["item_id"],
     ).exclude(student_id=student_item_dict["student_id"])
 
-    # TODO: We need a priority queue.
-    submission = Submission.objects.filter(student_item__in=student_items).order_by(
-        "submitted_at",
-        "-attempt_number")[:1]
+    submission = _get_first_submission_not_evaluated(
+        student_items,
+        student_item_dict["student_id"],
+        required_num_evaluations
+    )
     if not submission:
         raise PeerEvaluationWorkflowError(
             "There are no submissions available for evaluation."
         )
-    return SubmissionSerializer(submission[0]).data
+    return SubmissionSerializer(submission).data
+
+
+def _get_first_submission_not_evaluated(student_items, student_id, required_num_evaluations):
+    # TODO: We need a priority queue.
+    submissions = Submission.objects.filter(student_item__in=student_items).order_by(
+        "submitted_at",
+        "-attempt_number"
+    )
+    for submission in submissions:
+        evaluations = PeerEvaluation.objects.filter(submission=submission)
+        if evaluations.count() < required_num_evaluations:
+            already_evaluated = False
+            for evaluation in evaluations:
+                already_evaluated = already_evaluated or evaluation.scorer_id == student_id
+            if not already_evaluated:
+                return submission

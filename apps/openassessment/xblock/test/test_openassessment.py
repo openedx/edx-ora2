@@ -12,6 +12,50 @@ from workbench.runtime import WorkbenchRuntime
 from submissions import api
 from submissions.api import SubmissionRequestError, SubmissionInternalError
 
+RUBRIC_CONFIG = """
+    <openassessment start="2014-12-19T23:00-7:00" due="2014-12-21T23:00-7:00">
+        <prompt>
+            Given the state of the world today, what do you think should be done to
+            combat poverty? Please answer in a short essay of 200-300 words.
+        </prompt>
+        <rubric>
+            Read for conciseness, clarity of thought, and form.
+            <criterion name="concise">
+                How concise is it?
+                <option val="0">Neal Stephenson (late)</option>
+                <option val="1">HP Lovecraft</option>
+                <option val="3">Robert Heinlein</option>
+                <option val="4">Neal Stephenson (early)</option>
+                <option val="5">Earnest Hemingway</option>
+            </criterion>
+            <criterion name="clearheaded">
+                How clear is the thinking?
+                <option val="0">Yogi Berra</option>
+                <option val="1">Hunter S. Thompson</option>
+                <option val="2">Robert Heinlein</option>
+                <option val="3">Isaac Asimov</option>
+                <option val="10">Spock</option>
+            </criterion>
+            <criterion name="form">
+                Lastly, how is it's form? Punctuation, grammar, and spelling all count.
+                <option val="0">lolcats</option>
+                <option val="1">Facebook</option>
+                <option val="2">Reddit</option>
+                <option val="3">metafilter</option>
+                <option val="4">Usenet, 1996</option>
+                <option val="5">The Elements of Style</option>
+            </criterion>
+        </rubric>
+        <evals>
+            <peereval start="2014-12-20T19:00-7:00"
+              due="2014-12-21T22:22-7:00"
+              must_grade="5"
+              must_be_graded_by="3" />
+            <selfeval/>
+        </evals>
+    </openassessment>
+"""
+
 
 class TestOpenAssessment(TestCase):
 
@@ -22,11 +66,7 @@ class TestOpenAssessment(TestCase):
         self.runtime = WorkbenchRuntime()
         self.runtime.user_id = "Bob"
         assessment_id = self.runtime.parse_xml_string(
-            """<openassessment
-                  prompt="This is my prompt. There are many like it, but this one is mine."
-                  course_id="RopesCourse"
-                />
-            """, self.runtime.id_generator)
+            RUBRIC_CONFIG, self.runtime.id_generator)
         self.assessment = self.runtime.get_block(assessment_id)
         self.default_json_submission = json.dumps({"submission": "This is my answer to this test question!"})
 
