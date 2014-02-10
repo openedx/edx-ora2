@@ -9,7 +9,7 @@ from mock import patch
 
 from openassessment.peer import api
 from openassessment.peer.models import PeerEvaluation
-from submissions.api import create_submission
+from submissions.api import create_submission, SubmissionInternalError
 from submissions.models import Submission
 from submissions.tests.test_api import STUDENT_ITEM, ANSWER_ONE
 
@@ -18,6 +18,9 @@ ASSESSMENT_DICT = dict(
     points_possible=12,
     feedback="Your submission was thrilling.",
 )
+
+REQUIRED_GRADED = 5
+REQUIRED_GRADED_BY = 3
 
 MONDAY = datetime.datetime(2007, 9, 12, 0, 0, 0, 0, pytz.UTC)
 TUESDAY = datetime.datetime(2007, 9, 13, 0, 0, 0, 0, pytz.UTC)
@@ -32,6 +35,8 @@ class TestApi(TestCase):
         evaluation = api.create_evaluation(
             submission["uuid"],
             STUDENT_ITEM["student_id"],
+            REQUIRED_GRADED,
+            REQUIRED_GRADED_BY,
             ASSESSMENT_DICT
         )
         self._assert_evaluation(evaluation, **ASSESSMENT_DICT)
@@ -42,6 +47,8 @@ class TestApi(TestCase):
         api.create_evaluation(
             submission["uuid"],
             STUDENT_ITEM["student_id"],
+            REQUIRED_GRADED,
+            REQUIRED_GRADED_BY,
             assessment_dict
         )
         evaluations = api.get_evaluations(submission["uuid"])
@@ -54,6 +61,8 @@ class TestApi(TestCase):
         api.create_evaluation(
             submission["uuid"],
             STUDENT_ITEM["student_id"],
+            REQUIRED_GRADED,
+            REQUIRED_GRADED_BY,
             assessment_dict,
             MONDAY
         )
@@ -63,15 +72,34 @@ class TestApi(TestCase):
         self.assertEqual(evaluations[0]["scored_at"], MONDAY)
 
     def test_student_finished_evaluating(self):
+        bob = self._create_student_and_submission("Tim", "Tim's answer")
         bob = self._create_student_and_submission("Bob", "Bob's answer")
         sally = self._create_student_and_submission("Sally", "Sally's answer")
         jim = self._create_student_and_submission("Jim", "Jim's answer")
 
         self.assertFalse(api.has_finished_required_evaluating("Tim", 3))
-        api.create_evaluation(bob["uuid"], "Tim", ASSESSMENT_DICT)
-        api.create_evaluation(sally["uuid"], "Tim", ASSESSMENT_DICT)
+        api.create_evaluation(
+            bob["uuid"],
+            "Tim",
+            REQUIRED_GRADED,
+            REQUIRED_GRADED_BY,
+            ASSESSMENT_DICT
+        )
+        api.create_evaluation(
+            sally["uuid"],
+            "Tim",
+            REQUIRED_GRADED,
+            REQUIRED_GRADED_BY,
+            ASSESSMENT_DICT
+        )
         self.assertFalse(api.has_finished_required_evaluating("Tim", 3))
-        api.create_evaluation(jim["uuid"], "Tim", ASSESSMENT_DICT)
+        api.create_evaluation(
+            jim["uuid"],
+            "Tim",
+            REQUIRED_GRADED,
+            REQUIRED_GRADED_BY,
+            ASSESSMENT_DICT
+        )
         self.assertTrue(api.has_finished_required_evaluating("Tim", 3))
 
     @raises(api.PeerEvaluationRequestError)
@@ -86,7 +114,7 @@ class TestApi(TestCase):
         )
         self._create_student_and_submission("Jim", "Jim's answer", THURSDAY)
 
-        submission = api.get_submission_to_evaluate(STUDENT_ITEM)
+        submission = api.get_submission_to_evaluate(STUDENT_ITEM, 3)
         self.assertIsNotNone(submission)
         self.assertEqual(submission["answer"], u"Bob's answer")
         self.assertEqual(submission["student_item"], 2)
@@ -95,7 +123,7 @@ class TestApi(TestCase):
     @raises(api.PeerEvaluationWorkflowError)
     def test_no_submissions_to_evaluate_for_tim(self):
         self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
-        api.get_submission_to_evaluate(STUDENT_ITEM)
+        api.get_submission_to_evaluate(STUDENT_ITEM, 3)
 
     """
     Some Error Checking Tests against DB failures.
@@ -109,22 +137,35 @@ class TestApi(TestCase):
         api.create_evaluation(
             submission["uuid"],
             STUDENT_ITEM["student_id"],
+            REQUIRED_GRADED,
+            REQUIRED_GRADED_BY,
             ASSESSMENT_DICT,
             MONDAY
         )
 
     @patch.object(PeerEvaluation.objects, 'filter')
-    @raises(api.PeerEvaluationInternalError)
+    @raises(SubmissionInternalError)
     def test_error_on_get_evaluation(self, mock_filter):
         submission = create_submission(STUDENT_ITEM, ANSWER_ONE)
         api.create_evaluation(
             submission["uuid"],
             STUDENT_ITEM["student_id"],
+            REQUIRED_GRADED,
+            REQUIRED_GRADED_BY,
             ASSESSMENT_DICT,
             MONDAY
         )
         mock_filter.side_effect = DatabaseError("Bad things happened")
         api.get_evaluations(submission["uuid"])
+
+    def test_choose_score(self):
+        self.assertEqual(0, api._calculate_final_score([]))
+        self.assertEqual(5, api._calculate_final_score([5]))
+        # average of 5, 6, rounded down.
+        self.assertEqual(5, api._calculate_final_score([5, 6]))
+        self.assertEqual(14, api._calculate_final_score([5, 6, 12, 16, 22, 53]))
+        self.assertEqual(16, api._calculate_final_score([5, 6, 12, 16, 22, 53, 102]))
+
 
     @staticmethod
     def _create_student_and_submission(student, answer, date=None):

@@ -15,6 +15,99 @@ from xblock.fragment import Fragment
 
 mako_default_filters = ['unicode', 'h', 'trim']
 
+EXAMPLE_POVERTY_RUBRIC = (
+    "OpenAssessmentBlock Poverty Rubric",
+    """
+        <vertical_demo>
+
+            <openassessment start="2014-12-19T23:00-7:00" due="2014-12-21T23:00-7:00">
+                <prompt>
+                    Given the state of the world today, what do you think should be done to
+                    combat poverty? Please answer in a short essay of 200-300 words.
+                </prompt>
+                <rubric>
+                    Read for conciseness, clarity of thought, and form.
+                    <criterion name="concise">
+                        How concise is it?
+                        <option val="0">Neal Stephenson (late)</option>
+                        <option val="1">HP Lovecraft</option>
+                        <option val="3">Robert Heinlein</option>
+                        <option val="4">Neal Stephenson (early)</option>
+                        <option val="5">Earnest Hemingway</option>
+                    </criterion>
+                    <criterion name="clearheaded">
+                        How clear is the thinking?
+                        <option val="0">Yogi Berra</option>
+                        <option val="1">Hunter S. Thompson</option>
+                        <option val="2">Robert Heinlein</option>
+                        <option val="3">Isaac Asimov</option>
+                        <option val="10">Spock</option>
+                    </criterion>
+                    <criterion name="form">
+                        Lastly, how is it's form? Punctuation, grammar, and spelling all count.
+                        <option val="0">lolcats</option>
+                        <option val="1">Facebook</option>
+                        <option val="2">Reddit</option>
+                        <option val="3">metafilter</option>
+                        <option val="4">Usenet, 1996</option>
+                        <option val="5">The Elements of Style</option>
+                    </criterion>
+                </rubric>
+                <evals>
+                    <peereval start="2014-12-20T19:00-7:00"
+                      due="2014-12-21T22:22-7:00"
+                      must_grade="5"
+                      must_be_graded_by="3" />
+                    <selfeval/>
+                </evals>
+            </openassessment>
+
+        </vertical_demo>
+    """
+)
+
+EXAMPLE_CENSORSHIP_RUBRIC = (
+    "OpenAssessmentBlock Censorship Rubric",
+    """
+    <vertical_demo>
+
+        <openassessment start="2013-12-19T23:00-7:00" due="2014-12-21T23:00-7:00">
+            <prompt>
+                What do you think about censorship in libraries? I think it's pretty great.
+            </prompt>
+            <rubric>
+                Read for conciseness, clarity of thought, and form.
+                <criterion name="concise">
+                    How concise is it?
+                    <option val="0">The Bible</option>
+                    <option val="1">Earnest Hemingway</option>
+                    <option val="3">Matsuo Basho</option>
+                </criterion>
+                <criterion name="clearheaded">
+                    How clear is the thinking?
+                    <option val="0">Eric</option>
+                    <option val="1">John</option>
+                    <option val="2">Ian</option>
+                </criterion>
+                <criterion name="form">
+                    Lastly, how is it's form? Punctuation, grammar, and spelling all count.
+                    <option val="0">IRC</option>
+                    <option val="1">Real Email</option>
+                    <option val="2">Old-timey letters</option>
+                </criterion>
+            </rubric>
+            <evals>
+                <selfeval/>
+                <peereval start="2014-12-20T19:00-7:00"
+                  due="2014-12-21T22:22-7:00"
+                  must_grade="5"
+                  must_be_graded_by="3" />
+            </evals>
+        </openassessment>
+
+    </vertical_demo>
+    """
+)
 
 class OpenAssessmentBlock(XBlock):
     """Displays a question and gives an area where students can compose a response."""
@@ -131,8 +224,8 @@ class OpenAssessmentBlock(XBlock):
         evaluation = peer_api.create_evaluation(
             data["submission_uuid"],
             student_item_dict["student_id"],
-            peer_eval["must_grade"],
-            peer_eval["must_be_graded_by"],
+            int(peer_eval["must_grade"]),
+            int(peer_eval["must_be_graded_by"]),
             assessment_dict
         )
 
@@ -204,94 +297,5 @@ class OpenAssessmentBlock(XBlock):
     @staticmethod
     def workbench_scenarios():
         """A canned scenario for display in the workbench."""
-        return [
-            ("OpenAssessmentBlock Poverty Rubric",
-             """
-<vertical_demo>
-
-<openassessment start="2014-12-19T23:00-7:00" due="2014-12-21T23:00-7:00">
-  <prompt>
-    Given the state of the world today, what do you think should be done to
-    combat poverty? Please answer in a short essay of 200-300 words.
-  </prompt>
-  <rubric>
-    Read for conciseness, clarity of thought, and form.
-    <criterion name="concise">
-      How concise is it?
-      <option val="0">Neal Stephenson (late)</option>
-      <option val="1">HP Lovecraft</option>
-      <option val="3">Robert Heinlein</option>
-      <option val="4">Neal Stephenson (early)</option>
-      <option val="5">Earnest Hemingway</option>
-    </criterion>
-    <criterion name="clearheaded">
-      How clear is the thinking?
-      <option val="0">Yogi Berra</option>
-      <option val="1">Hunter S. Thompson</option>
-      <option val="2">Robert Heinlein</option>
-      <option val="3">Isaac Asimov</option>
-      <option val="10">Spock</option>
-    </criterion>
-    <criterion name="form">
-      Lastly, how is it's form? Punctuation, grammar, and spelling all count.
-      <option val="0">lolcats</option>
-      <option val="1">Facebook</option>
-      <option val="2">Reddit</option>
-      <option val="3">metafilter</option>
-      <option val="4">Usenet, 1996</option>
-      <option val="5">The Elements of Style</option>
-    </criterion>
-  </rubric>
-  <evals>
-    <peereval start="2014-12-20T19:00-7:00"
-              due="2014-12-21T22:22-7:00"
-              must_grade="5"
-              must_be_graded_by="3" />
-    <selfeval/>
-  </evals>
-</openassessment>
-
-</vertical_demo>
-             """),
-            ("OpenAssessmentBlock Censorship Rubric",
-             """
-<vertical_demo>
-
-<openassessment start="2013-12-19T23:00-7:00" due="2014-12-21T23:00-7:00">
-  <prompt>
-    What do you think about censorship in libraries? I think it's pretty great.
-  </prompt>
-  <rubric>
-    Read for conciseness, clarity of thought, and form.
-    <criterion name="concise">
-      How concise is it?
-      <option val="0">The Bible</option>
-      <option val="1">Earnest Hemingway</option>
-      <option val="3">Matsuo Basho</option>
-    </criterion>
-    <criterion name="clearheaded">
-      How clear is the thinking?
-      <option val="0">Eric</option>
-      <option val="1">John</option>
-      <option val="2">Ian</option>
-    </criterion>
-    <criterion name="form">
-      Lastly, how is it's form? Punctuation, grammar, and spelling all count.
-      <option val="0">IRC</option>
-      <option val="1">Real Email</option>
-      <option val="2">Old-timey letters</option>
-    </criterion>
-  </rubric>
-  <evals>
-    <selfeval/>
-    <peereval start="2014-12-20T19:00-7:00"
-              due="2014-12-21T22:22-7:00"
-              must_grade="5"
-              must_be_graded_by="3" />
-  </evals>
-</openassessment>
-
-</vertical_demo>
-             """),
-        ]
+        return [EXAMPLE_POVERTY_RUBRIC, EXAMPLE_CENSORSHIP_RUBRIC,]
 

@@ -11,8 +11,9 @@ from django.db import DatabaseError
 from openassessment.peer.models import PeerEvaluation
 
 from openassessment.peer.serializers import PeerEvaluationSerializer
+from submissions import api as submission_api
 from submissions.models import Submission, StudentItem, Score
-from submissions.serializers import SubmissionSerializer, ScoreSerializer
+from submissions.serializers import SubmissionSerializer, StudentItemSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -191,26 +192,20 @@ def _check_if_finished_and_create_score(student_item,
 
     finished_evaluating = has_finished_required_evaluating(
         student_item.student_id,
-        int(required_evaluations_for_student)
+        required_evaluations_for_student
     )
     evaluations = PeerEvaluation.objects.filter(submission=submission).order_by("-points_earned")
-    submission_finished = evaluations.count() >= int(required_evaluations_for_submission)
+    submission_finished = evaluations.count() >= required_evaluations_for_submission
     scores = []
     for evaluation in evaluations:
         scores.append(evaluation.points_earned)
     if finished_evaluating and submission_finished:
-        # Create a score for the submission author
-        score = ScoreSerializer(data={
-            "student_item": student_item.pk,
-            "submission": submission.pk,
-            "points_earned": _calculate_final_score(scores),
-            "points_possible": evaluations[0].points_possible,
-            })
-        if not score.is_valid():
-            raise PeerEvaluationInternalError(
-                "Could not create a score"
-            )
-        return score.save()
+        submission_api.set_score(
+            StudentItemSerializer(student_item).data,
+            SubmissionSerializer(submission).data,
+            _calculate_final_score(scores),
+            evaluations[0].points_possible
+        )
 
 
 def _calculate_final_score(scores):
@@ -222,10 +217,13 @@ def _calculate_final_score(scores):
 
     """
     total_scores = len(scores)
-    if total_scores % 2:
+    if total_scores == 0:
+        return 0
+    elif total_scores % 2:
         return scores[total_scores / 2]
     else:
-        return (scores[total_scores / 2] + scores[total_scores /2 + 1]) / 2
+        return (scores[total_scores / 2 - 1] + scores[total_scores / 2]) / 2
+
 
 def has_finished_required_evaluating(student_id, required_evaluations):
     """Check if a student still needs to evaluate more submissions
@@ -252,7 +250,7 @@ def has_finished_required_evaluating(student_id, required_evaluations):
             while evaluating this workflow rule.
 
     Examples:
-        >>> has_finished_required_evaluating("Tim")
+        >>> has_finished_required_evaluating("Tim", 3)
         True
 
     """
@@ -391,7 +389,7 @@ def _get_first_submission_not_evaluated(student_items, student_id, required_num_
     )
     for submission in submissions:
         evaluations = PeerEvaluation.objects.filter(submission=submission)
-        if evaluations.count() < int(required_num_evaluations):
+        if evaluations.count() < required_num_evaluations:
             already_evaluated = False
             for evaluation in evaluations:
                 already_evaluated = already_evaluated or evaluation.scorer_id == student_id
