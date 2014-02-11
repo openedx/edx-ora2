@@ -8,9 +8,9 @@ import webob
 from django.test import TestCase
 from mock import patch
 
-from workbench.runtime import WorkbenchRuntime
 from submissions import api
 from submissions.api import SubmissionRequestError, SubmissionInternalError
+from workbench.runtime import WorkbenchRuntime
 
 RUBRIC_CONFIG = """
     <openassessment start="2014-12-19T23:00-7:00" due="2014-12-21T23:00-7:00">
@@ -120,3 +120,4 @@ class TestOpenAssessment(TestCase):
         """
         xblock_fragment = self.runtime.render(self.assessment, "student_view")
         self.assertTrue(xblock_fragment.body_html().find("Openassessmentblock"))
+
