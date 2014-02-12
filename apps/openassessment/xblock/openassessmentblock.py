@@ -11,6 +11,7 @@ from openassessment.peer import api as peer_api
 from xblock.core import XBlock
 from xblock.fields import List, Scope, String
 from xblock.fragment import Fragment
+from submissions.api import SubmissionRequestError
 
 
 mako_default_filters = ['unicode', 'h', 'trim']
@@ -114,11 +115,11 @@ class OpenAssessmentBlock(XBlock):
 
     start_datetime = String(default=None, scope=Scope.content, help="ISO-8601 formatted string representing the start date of this assignment.")
     due_datetime = String(default=None, scope=Scope.content, help="ISO-8601 formatted string representing the end date of this assignment.")
-    prompt = String( default=None, scope=Scope.content, help="A prompt to display to a student (plain text).")
-    rubric = List( default=None, scope=Scope.content, help="Instructions and criteria for students giving feedback.")
-    rubric_instructions = String( default=None, scope=Scope.content, help="Instructions for self and peer assessment.")
-    rubric_criteria = List(default=None, scope=Scope.content, help="The different parts of grading for students giving feedback.")
-    rubric_evals = List(default=None, scope=Scope.content, help="The requested set of evaluations and the order in which to apply them.")
+    prompt = String( default="", scope=Scope.content, help="A prompt to display to a student (plain text).")
+    rubric = List( default=[], scope=Scope.content, help="Instructions and criteria for students giving feedback.")
+    rubric_instructions = String( default="", scope=Scope.content, help="Instructions for self and peer assessment.")
+    rubric_criteria = List(default=[], scope=Scope.content, help="The different parts of grading for students giving feedback.")
+    rubric_evals = List(default=[], scope=Scope.content, help="The requested set of evaluations and the order in which to apply them.")
     course_id = String( default=u"TestCourse", scope=Scope.content, help="The course_id associated with this prompt (until we can get it from runtime).",)
 
     submit_errors = {     # Reported to user sometimes, and useful in tests
@@ -163,13 +164,20 @@ class OpenAssessmentBlock(XBlock):
 
         trace = self._get_xblock_trace()
         student_item_dict = self._get_student_item_dict()
-        previous_submissions = api.get_submissions(student_item_dict)
+
+        try:
+            previous_submissions = api.get_submissions(student_item_dict)
+        except SubmissionRequestError:
+            previous_submissions = []
+
         try:
             # HACK: Replace with proper workflow.
-            peer_eval = self._hack_get_peer_eval()
-            peer_submission = peer_api.get_submission_to_evaluate(student_item_dict, peer_eval["must_be_graded_by"])
-        except PeerEvaluationWorkflowError:
             peer_submission = False
+            peer_eval = self._hack_get_peer_eval()
+            if peer_eval:
+                peer_submission = peer_api.get_submission_to_evaluate(student_item_dict, peer_eval["must_be_graded_by"])
+        except PeerEvaluationWorkflowError:
+            pass
 
         if previous_submissions and peer_submission:  # XXX: until workflow better, move on w/ prev submit
             html = Template(load("static/html/oa_rubric.html"),
@@ -297,5 +305,9 @@ class OpenAssessmentBlock(XBlock):
     @staticmethod
     def workbench_scenarios():
         """A canned scenario for display in the workbench."""
-        return [EXAMPLE_POVERTY_RUBRIC, EXAMPLE_CENSORSHIP_RUBRIC,]
+        return [EXAMPLE_POVERTY_RUBRIC, EXAMPLE_CENSORSHIP_RUBRIC, ]
+
+    def studio_view(self, context=None):
+        return Fragment(u"<div>Edit the XBlock.</div>")
+
 
