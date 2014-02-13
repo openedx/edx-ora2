@@ -12,7 +12,7 @@
 
 <!-- CASE: default/not started -->
 <li id="openassessment__peer-evaluation" class="openassessment__steps__step step--peer-evaluation">
-<header class="step__header">
+{#<header class="step__header">#}
     <h2 class="step__title">
         <span class="step__label">Evaluate Peers' Responses</span>
         <span class="step__deadline">due <span class="date">January 30, 2014</span> at <span class="time">15:00 UTC</span></span>
@@ -25,7 +25,7 @@
         <span class="step__status__value--required">5</span> completed
       </span>
     </span>
-</header>
+{#</header>#}
 
 <div class="step__instruction">
     <p>Please read and evaluate the following response from one of your peers in the course.</p>
@@ -49,170 +49,35 @@
 
                 <!-- ?: markup validating/copy cleaning upon submission -->
                 <div class="peer-evaluation__response">
-                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Nullam quis risus eget urna mollis ornare vel eu leo. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-
-                    <p>Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Etiam porta sem malesuada magna mollis euismod. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Cras mattis consectetur purus sit amet fermentum. Vestibulum id ligula porta felis euismod semper.</p>
-
-                    <p>Aenean lacinia bibendum nulla sed consectetur. Maecenas faucibus mollis interdum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-
-                    <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Nullam quis risus eget urna mollis ornare vel eu leo. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Vestibulum id ligula porta felis euismod semper.</p>
+                    {{ peer_submission.answer }}
                 </div>
 
                 <form id="peer-evaluation--001__evaluation" class="peer-evaluation__evaluation" method="post">
                     <fieldset class="evaluation__fields">
-                        <legend class="evaluation__instruction">Please provide your thoughts on the following (note: required questions are indicated by an asterisk *):</legend>
+                        <legend class="evaluation__instruction">{{ rubric_instructions }}</legend>
 
                         <ol class="list list--fields evaluation__rubric">
-
+                            {% for criterion in rubric_criteria %}
                             <!-- individual rubric question (radio-based choice) -->
-                            <li class="field field--radio is--required evaluation__rubric__question" id="evaluation__rubric__question--001">
+                            <li class="field field--radio is--required evaluation__rubric__question" id="evaluation__rubric__question--{{ criterion.name }}">
                                 <h4 class="question__title">
-                                    How well did this response answer the overall question?
+                                    {{ criterion.instructions }}
                                     <span class="label--required">* <span class="sr">(Required)</span></span>
                                 </h4>
 
-                                <ul class="question__answers">
+                                <ol class="question__answers">
+                                    {% for value, text in criterion.options %}
                                     <li class="answer">
                                         <div class="wrapper--input">
-                                            <input type="radio" name="evaluation__rubric__question--001" id="evaluation__rubric__question--001__option--01" class="answer__value" value="answer--001__option--01 - Very Well" />
-                                            <label for="evaluation__rubric__question--001__option--01" class="answer__label">Very Well</label>
+                                            <input type="radio" name="evaluation__rubric__question--{{ criterion.name }}" id="evaluation__rubric__question--{{ criterion.name }}--01" class="answer__value" value="answer--001__option--01 - Very Well" />
+                                            <label for="evaluation__rubric__question--001__option--01" class="answer__label">({{ value }}) {{ text }}</label>
                                         </div>
-                                        <span class="answer__tip">The response shows understanding of the main topics, provides clear trains of thought with supporting details/examples.</span>
+                                        <span class="answer__tip">TODO: Criterion Instructions</span>
                                     </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="evaluation__rubric__question--001" id="evaluation__rubric__question--001__option--02" class="answer__value" value="evaluation__rubric__question--001__option--02 - Well" />
-                                            <label for="evaluation__rubric__question--001__option--02" class="answer__label">Well</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="evaluation__rubric__question--001" id="evaluation__rubric__question--001__option--03" class="answer__value" value="evaluation__rubric__question--001__option--03 - Average" />
-                                            <label for="evaluation__rubric__question--001__option--03" class="answer__label">Average</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="answer--001" id="evaluation__rubric__question--001__option--04" class="answer__value" value="evaluation__rubric__question--001__option--04 - Not Well" />
-                                            <label for="evaluation__rubric__question--001_option--04" class="answer__label">Not Well</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="answer--001" id="evaluation__rubric__question--001__option--05" class="answer__value" value="evaluation__rubric__question--001__option--05 - Not at All" />
-                                            <label for="evaluation__rubric__question--001__option--05" class="answer__label">Not at All</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-                                </ul>
+                                    {% endfor %}
+                                </ol>
                             </li>
-
-                            <!-- individual rubric question (radio-based choice) -->
-                            <li class="field field--radio is--required evaluation__rubric__question" id="evaluation__rubric__question--002">
-                                <h4 class="question__title">
-                                    Please describe the quality of the grammar in this response
-                                    <span class="label--required">* <span class="sr">(Required)</span></span>
-                                </h4>
-
-                                <ul class="question__answers">
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="evaluation__rubric__question--002" id="evaluation__rubric__question--002__option--01" class="answer__value" value="evaluation__rubric__question--002__option--01 - Very Well" />
-                                            <label for="evaluation__rubric__question--002__option--01" class="answer__label">Very Well</label>
-                                        </div>
-                                        <span class="answer__tip">The response shows understanding of the main topics, provides clear trains of thought with supporting details/examples.</span>
-                                    </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="answer--002" id="answer--002__option--02" class="answer__value" value="answer--002__option--02 - Well" />
-                                            <label for="evaluation__rubric__question--002__option--02" class="answer__label">Well</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="evaluation__rubric__question--002" id="evaluation__rubric__question--002__option--03" class="answer__value" value="evaluation__rubric__question--002__option--03 - Average" />
-                                            <label for="evaluation__rubric__question--002__option--03" class="answer__label">Average</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="evaluation__rubric__question--002" id="evaluation__rubric__question--002__option--04" class="answer__value" value="evaluation__rubric__question--002__option--04 - Not Well" />
-                                            <label for="evaluation__rubric__question--002__option--04" class="answer__label">Not Well</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="evaluation__rubric__question--002" id="evaluation__rubric__question--002__option--05" class="answer__value" value="evaluation__rubric__question--002__option--05 - Not at All" />
-                                            <label for="evaluation__rubric__question--002__option--05" class="answer__label">Not at All</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <!-- individual rubric question (radio-based choice) -->
-                            <li class="field field--radio is--required evaluation__rubric__question" id="evaluation__rubric__question--003">
-                                <h4 class="question__title">
-                                    Please rate the organization of this response
-                                    <span class="label--required">* <span class="sr">(Required)</span></span>
-                                </h4>
-
-                                <ul class="question__answers">
-                                    <li class="question__answers__answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="answer--003" id="evaluation__rubric__question--003__option--01" class="answer__value" value="evaluation__rubric__question--003__option--01 - Very Well" />
-                                            <label for="evaluation__rubric__question--003__option--01" class="answer__label">Very Well</label>
-                                        </div>
-                                        <span class="answer__tip">The response shows understanding of the main topics, provides clear trains of thought with supporting details/examples.</span>
-                                    </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="answer--003" id="evaluation__rubric__question--003__option--02" class="answer__value" value="evaluation__rubric__question--003__option--02 - Well" />
-                                            <label for="evaluation__rubric__question--003__option--02" class="answer__label">Well</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="evaluation__rubric__question--003__answer" id="evaluation__rubric__question--003__option--03" class="answer__value" value="evaluation__rubric__question--003__option--03 - Average" />
-                                            <label for="evaluation__rubric__question--003__option--03" class="answer__label">Average</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="evaluation__rubric__question--003" id="evaluation__rubric__question--003__option--04" class="answer__value" value="evaluation__rubric__question--003__option--04 - Not Well" />
-                                            <label for="evaluation__rubric__question--003__option--04" class="answer__label">Not Well</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="evaluation__rubric__question--003" id="evaluation__rubric__question--003__option--05" class="answer__value" value="evaluation__rubric__question--003__option--05 - Not at All" />
-                                            <label for="evaluation__rubric__question--003__option--05" class="answer__label">Not at All</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-                                </ul>
-                            </li>
+                            {% endfor %}
 
                             <!-- individual rubric question (text) -->
                             <li class="field field--textarea evaluation__rubric__question" id="evaluation__rubric__question--004">
@@ -232,288 +97,4 @@
         </li>
     </ul>
 </div>
-</li>
-
-
-<!-- CASE: started, but incomplete -->
-<li id="openassessment__peer-evaluation" class="openassessment__steps__step step--peer-evaluation">
-<header class="step__header">
-    <h2 class="step__title">
-        <span class="step__label">Evaluate Peers' Responses</span>
-        <span class="step__deadline">due <span class="date">January 30, 2014</span> at <span class="time">15:00 UTC</span></span>
-    </h2>
-
-    <span class="step__status">
-      <span class="step__status__label">This step's status:</span>
-      <span class="step__status__value">
-        <span class="step__status__value--completed">1</span> of
-        <span class="step__status__value--required">3</span> completed
-      </span>
-    </span>
-</header>
-
-<div class="step__instruction">
-    <p>Please read and evaluate the following response from one of your peers in the course.</p>
-</div>
-
-<div class="step__content">
-    <ul class="list--peer-evaluations">
-        <li class="list--peer-evaluations__item">
-            <article class="peer-evaluation" id="peer-evaluation--002">
-                <header class="peer-evaluation__header">
-                    <h3 class="peer-evaluation__title">Evaluation #
-                        <span class="peer-evaluation__number--current">2</span> of
-                        <span class="peer-evaluation__number--required">3</span>
-                    </h3>
-
-            <span class="peer-evaluation__expected-time">
-              <span class="label">Expected Time Spent:</span>
-              <span class="value">20 Minutes</span>
-            </span>
-                </header>
-
-                <!-- ?: markup validating/copy cleaning upon submission -->
-                <div class="peer-evaluation__response">
-                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Nullam quis risus eget urna mollis ornare vel eu leo. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-
-                    <p>Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Etiam porta sem malesuada magna mollis euismod. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Cras mattis consectetur purus sit amet fermentum. Vestibulum id ligula porta felis euismod semper.</p>
-
-                    <p>Aenean lacinia bibendum nulla sed consectetur. Maecenas faucibus mollis interdum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-
-                    <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Nullam quis risus eget urna mollis ornare vel eu leo. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Vestibulum id ligula porta felis euismod semper.</p>
-                </div>
-
-                <form id="peer-evaluation--002__evaluation" class="peer-evaluation__evaluation" method="post">
-                    <fieldset class="evaluation__fields">
-                        <legend class="evaluation__instruction">Please provide your thoughts on the following (note: required questions are indicated by an asterisk *):</legend>
-
-                        <ol class="list list--fields evaluation__rubric">
-
-                            <!-- individual rubric question (radio-based choice) -->
-                            <li class="field field--radio is--required evaluation__rubric__question" id="evaluation__rubric__question--001">
-                                <h4 class="question__title">
-                                    How well did this response answer the overall question?
-                                    <span class="label--required">* <span class="sr">(Required)</span></span>
-                                </h4>
-
-                                <ul class="question__answers">
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="evaluation__rubric__question--001" id="evaluation__rubric__question--001__option--01" class="answer__value" value="answer--001__option--01 - Very Well" />
-                                            <label for="evaluation__rubric__question--001__option--01" class="answer__label">Very Well</label>
-                                        </div>
-                                        <span class="answer__tip">The response shows understanding of the main topics, provides clear trains of thought with supporting details/examples.</span>
-                                    </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="evaluation__rubric__question--001" id="evaluation__rubric__question--001__option--02" class="answer__value" value="evaluation__rubric__question--001__option--02 - Well" />
-                                            <label for="evaluation__rubric__question--001__option--02" class="answer__label">Well</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="evaluation__rubric__question--001" id="evaluation__rubric__question--001__option--03" class="answer__value" value="evaluation__rubric__question--001__option--03 - Average" />
-                                            <label for="evaluation__rubric__question--001__option--03" class="answer__label">Average</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="answer--001" id="evaluation__rubric__question--001__option--04" class="answer__value" value="evaluation__rubric__question--001__option--04 - Not Well" />
-                                            <label for="evaluation__rubric__question--001_option--04" class="answer__label">Not Well</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="answer--001" id="evaluation__rubric__question--001__option--05" class="answer__value" value="evaluation__rubric__question--001__option--05 - Not at All" />
-                                            <label for="evaluation__rubric__question--001__option--05" class="answer__label">Not at All</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <!-- individual rubric question (radio-based choice) -->
-                            <li class="field field--radio is--required evaluation__rubric__question" id="evaluation__rubric__question--002">
-                                <h4 class="question__title">
-                                    Please describe the quality of the grammar in this response
-                                    <span class="label--required">* <span class="sr">(Required)</span></span>
-                                </h4>
-
-                                <ul class="question__answers">
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="evaluation__rubric__question--002" id="evaluation__rubric__question--002__option--01" class="answer__value" value="evaluation__rubric__question--002__option--01 - Very Well" />
-                                            <label for="evaluation__rubric__question--002__option--01" class="answer__label">Very Well</label>
-                                        </div>
-                                        <span class="answer__tip">The response shows understanding of the main topics, provides clear trains of thought with supporting details/examples.</span>
-                                    </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="answer--002" id="answer--002__option--02" class="answer__value" value="answer--002__option--02 - Well" />
-                                            <label for="evaluation__rubric__question--002__option--02" class="answer__label">Well</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="evaluation__rubric__question--002" id="evaluation__rubric__question--002__option--03" class="answer__value" value="evaluation__rubric__question--002__option--03 - Average" />
-                                            <label for="evaluation__rubric__question--002__option--03" class="answer__label">Average</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="evaluation__rubric__question--002" id="evaluation__rubric__question--002__option--04" class="answer__value" value="evaluation__rubric__question--002__option--04 - Not Well" />
-                                            <label for="evaluation__rubric__question--002__option--04" class="answer__label">Not Well</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="evaluation__rubric__question--002" id="evaluation__rubric__question--002__option--05" class="answer__value" value="evaluation__rubric__question--002__option--05 - Not at All" />
-                                            <label for="evaluation__rubric__question--002__option--05" class="answer__label">Not at All</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <!-- individual rubric question (radio-based choice) -->
-                            <li class="field field--radio is--required evaluation__rubric__question" id="evaluation__rubric__question--003">
-                                <h4 class="question__title">
-                                    Please rate the organization of this response
-                                    <span class="label--required">* <span class="sr">(Required)</span></span>
-                                </h4>
-
-                                <ul class="question__answers">
-                                    <li class="question__answers__answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="answer--003" id="evaluation__rubric__question--003__option--01" class="answer__value" value="evaluation__rubric__question--003__option--01 - Very Well" />
-                                            <label for="evaluation__rubric__question--003__option--01" class="answer__label">Very Well</label>
-                                        </div>
-                                        <span class="answer__tip">The response shows understanding of the main topics, provides clear trains of thought with supporting details/examples.</span>
-                                    </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="answer--003" id="evaluation__rubric__question--003__option--02" class="answer__value" value="evaluation__rubric__question--003__option--02 - Well" />
-                                            <label for="evaluation__rubric__question--003__option--02" class="answer__label">Well</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="evaluation__rubric__question--003__answer" id="evaluation__rubric__question--003__option--03" class="answer__value" value="evaluation__rubric__question--003__option--03 - Average" />
-                                            <label for="evaluation__rubric__question--003__option--03" class="answer__label">Average</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="evaluation__rubric__question--003" id="evaluation__rubric__question--003__option--04" class="answer__value" value="evaluation__rubric__question--003__option--04 - Not Well" />
-                                            <label for="evaluation__rubric__question--003__option--04" class="answer__label">Not Well</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio" name="evaluation__rubric__question--003" id="evaluation__rubric__question--003__option--05" class="answer__value" value="evaluation__rubric__question--003__option--05 - Not at All" />
-                                            <label for="evaluation__rubric__question--003__option--05" class="answer__label">Not at All</label>
-                                        </div>
-                                        <span class="answer__tip">Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</span>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <!-- individual rubric question (text) -->
-                            <li class="field field--textarea evaluation__rubric__question" id="evaluation__rubric__question--004">
-                                <label for="evaluation__rubric__question--004__value">Please provide any other feedback you have around this response</label>
-                                <textarea id="evaluation__rubric__question--004__value" placeholder="I felt this response was..."></textarea>
-                            </li>
-                        </ol>
-                    </fieldset>
-
-                    <ul class="list list--actions">
-                        <li class="list--actions__item">
-                            <button type="submit" id="peer-evaluation--001__evaluation__submit" class="action action--submit">Submit your evaluation &amp; move to response #2</button>
-                        </li>
-                    </ul>
-                </form>
-            </article>
-        </li>
-    </ul>
-</div>
-</li>
-
-
-<!-- CASE: started, but incomplete and problem closed -->
-<li id="openassessment__peer-evaluation"class="openassessment__steps__step step--peer-evaluation is--unavailable">
-    <header class="step__header">
-        <h2 class="step__title">
-            <span class="step__label">Evaluate Peers' Responses</span>
-            <span class="step__deadline">due <span class="date">January 30, 2014</span> at <span class="time">15:00 UTC</span></span>
-        </h2>
-
-    <span class="step__status">
-      <span class="ico"><i class="fa fa-info-circle"></i></span>
-      <span class="step__status__label">This step's status:</span>
-      <span class="step__status__value">
-        <span class="step__status__value--completed">1</span> of
-        <span class="step__status__value--required">3</span> completed
-      </span>
-    </span>
-    </header>
-</li>
-
-
-<!-- CASE: no peer responses to evaluate -->
-<li id="openassessment__peer-evaluation" class="openassessment__steps__step step--peer-evaluation is--unavailable">
-    <header class="step__header">
-        <h2 class="step__title">
-            <span class="step__label">Evaluate Peers' Responses</span>
-            <span class="step__deadline">due <span class="date">January 30, 2014</span> at <span class="time">15:00 UTC</span></span>
-        </h2>
-
-    <span class="step__status">
-      <span class="ico"><i class="fa fa-info-circle"></i></span>
-      <span class="step__status__label">This step's status:</span>
-      <span class="step__status__value">
-        Awaiting Peer Resposes
-      </span>
-    </span>
-    </header>
-</li>
-
-
-<!-- CASE: completed -->
-<li id="openassessment__peer-evaluation" class="openassessment__steps__step step--peer-evaluation">
-    <header class="step__header">
-        <h2 class="step__title">
-            <span class="step__label">Evaluate Peers' Responses</span>
-            <span class="step__deadline">due <span class="date">January 30, 2014</span> at <span class="time">15:00 UTC</span></span>
-        </h2>
-
-    <span class="step__status">
-      <span class="ico"><i class="fa fa-check"></i></span>
-      <span class="step__status__label">This step's status:</span>
-      <span class="step__status__value">
-        <span class="step__status__value--completed">3</span> of
-        <span class="step__status__value--required">3</span> completed
-      </span>
-    </span>
-    </header>
 </li>

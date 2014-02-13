@@ -227,8 +227,7 @@ class OpenAssessmentBlock(XBlock):
         student_item_dict = self._get_student_item_dict()
 
         points_possible = sum(
-             max(int(val) for val in criteria if val.isdigit())
-             for criteria in self.rubric_criteria
+             int(val) for val, _ in self.rubric_criteria["options"]
         )
         assessment_dict = {
             "points_earned": map(int, data["points_earned"]),
@@ -290,8 +289,13 @@ class OpenAssessmentBlock(XBlock):
                     crit = {'name': criterion.attrib.get('name', ''),
                             'instructions': criterion.text.strip(),
                            }
+                    options = []
                     for option in criterion:
-                        crit[option.attrib['val']] = option.text.strip()
+                        options.append(
+                            (option.attrib['val'], option.text.strip(),)
+                        )
+
+                    crit["options"] = sorted(options)
                     block.rubric_criteria.append(crit)
             elif child.tag == 'evals':
                 block.rubric_evals = []
@@ -320,18 +324,13 @@ class OpenAssessmentBlock(XBlock):
         return [EXAMPLE_POVERTY_RUBRIC, EXAMPLE_CENSORSHIP_RUBRIC,]
 
     def _get_grade_state(self, student_item):
-        peer_eval = self._hack_get_peer_eval()
-        submissions = api.get_submissions(student_item, 1)
-        has_finished_evaluating = peer_api.has_finished_required_evaluating(
-            student_item["student_id"], peer_eval.must_grade
-        )
-        score = api.get_score(student_item)
+        # TODO: Determine if we want to build out grade state right now.
 
         grade_state = {
-            "style_class": "",
-            "value": "",
-            "title": "",
-            "message": "",
+            "style_class": "is--incomplete",
+            "value": "Incomplete",
+            "title": "Your Grade:",
+            "message": "You have not started this problem",
         }
         return grade_state
 
