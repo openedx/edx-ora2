@@ -4,16 +4,18 @@
     <p>${peer_submission["answer"]}</p>
     <p class="openassessment_prompt" 
        id="openassessment_rubric_instructions_${xblock_trace[0]}">${rubric_instructions}</p>
-    % for criterion in rubric_criteria:
-     <div>
-      <p class="openassessment_prompt">${criterion["instructions"]}</p>
-      % for value in sorted([k for k in criterion.keys() if k != 'name' and k != 'instructions']):
-       <input name="${criterion['name']}" type="radio" value="${value}">${criterion[value]}</input>
+    % for crit in rubric_criteria:
+    <div>
+      <p class="openassessment_prompt">${crit["instructions"]}</p>
+      % for o in crit['options']:
+        <div>
+          <input name="${crit['name']}" type="radio" value="${o[0]}">${o[1]}: ${o[2]}</input>
+        </div>
       % endfor
-     </div>
+    </div>
     % endfor
-        <input type="button"
-               class="openassessment_submit" id="openassessment_submit_${xblock_trace[0]}" value="Submit" />
+    <input type="button"
+           class="openassessment_submit" id="openassessment_submit_${xblock_trace[0]}" value="Submit" />
 </div>
 <div class="openassessment_response_status_block" id="openassessment_response_status_block_${xblock_trace[0]}">
     This message should be invisible; please upgrade your browser.
