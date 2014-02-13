@@ -1,0 +1,85 @@
+<!-- TEMPLATE: status messages -->
+
+
+<!-- NOTES:
+
+ * class of message--warning is added message is a warning/notification to user
+ * class of message--confirmation is added message is a confirmation to user
+ * class of has--actions is added when a message has actions associated with it for user to interact with
+
+ -->
+
+
+<div class="wrapper wrapper--openassessment theme--basic">
+    <div class="openassessment" id="openassessment">
+
+        <h1 class="openassessment__title">
+            <span class="openassessment__title--super">
+                {{ title }}
+            </span>
+
+            <span class="openassessment__title--sub">
+                <span class="problem-type problem-type--open-ended-response">Open Ended Response</span>
+                {%  for eval in rubric_evals %}
+                +
+                <span class="problem-type problem-type--{{ eval.type }}">{{ eval.name }}</span>
+                {% endfor %}
+            </span>
+        </h1>
+
+        <!--?: may have trouble with aync -->
+        <nav class="nav--contents">
+            <h2 class="title">Skip to a part of this problem:</h2>
+
+            <ol class="list list--nav">
+                <li class="list--nav__item">
+                    <a class="action" href="#openassessment__response">Your response to this problem</a>
+                </li>
+                {%  for eval in rubric_evals %}
+                <li class="list--nav__item">
+                    <a class="action" href="#openassessment__{{ eval.type }}">{{ eval.navigation_text }}</a>
+                </li>
+                {% endfor %}
+                <li class="list--nav__item">
+                    <a class="action" href="#openassessment__grade">Your grade for this problem</a>
+                </li>
+            </ol>
+        </nav>
+
+        <!-- STATUS: system messages -->
+        <!-- SEE t-messages.html for all cases -->
+
+        <!-- question -->
+        <div class="wrapper--openassessment__prompt">
+            <article class="openassessment__prompt ui-toggle-visibility">
+
+                <h2 class="openassessment__prompt__title">Open Assessment Problem</h2>
+
+                <div class="openassessment__prompt__copy ui-toggle-visibility__content">
+                    <p>{{ question }}</p>
+                </div>
+
+                <ul class="list list--controls">
+                    <li class="list--controls__item">
+                        <a href="" class="action action--toggle ui-toggle-visibility__control">Collapse/Expand This</a>
+                    </li>
+                </ul>
+            </article>
+        </div>
+
+        <!-- steps -->
+        <ol class="openassessment__steps" id="openassessment__steps">
+
+            <!-- STEP: response -->
+            {% include "static/html/oa_response.html" %}
+
+            {% for eval in rubric_evals %}
+            {% include eval.url %}
+            {% endfor %}
+
+        </ol>
+
+        <!-- STATUS: problem grade -->
+        {% include "static/html/oa_grade.html" %}
+    </div>
+</div>

@@ -47,11 +47,11 @@ RUBRIC_CONFIG = """
             </criterion>
         </rubric>
         <evals>
-            <peereval start="2014-12-20T19:00-7:00"
+            <peer-evaluation start="2014-12-20T19:00-7:00"
               due="2014-12-21T22:22-7:00"
               must_grade="5"
               must_be_graded_by="3" />
-            <selfeval/>
+            <self-evaluation/>
         </evals>
     </openassessment>
 """

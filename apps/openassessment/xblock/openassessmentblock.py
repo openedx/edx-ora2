@@ -1,8 +1,8 @@
 """An XBlock where students can read a question and compose their response"""
-
+from django.template.context import Context
 import pkg_resources
 
-from mako.template import Template
+from django.template.loader import get_template
 from openassessment.peer.api import PeerEvaluationWorkflowError
 
 from submissions import api
@@ -12,18 +12,18 @@ from xblock.core import XBlock
 from xblock.fields import List, Scope, String
 from xblock.fragment import Fragment
 
-
-mako_default_filters = ['unicode', 'h', 'trim']
-
 EXAMPLE_POVERTY_RUBRIC = (
     "OpenAssessmentBlock Poverty Rubric",
     """
         <vertical_demo>
 
             <openassessment start="2014-12-19T23:00-7:00" due="2014-12-21T23:00-7:00">
+                <title>
+                    Global Poverty
+                </title>
                 <prompt>
                     Given the state of the world today, what do you think should be done to
-                    combat poverty? Please answer in a short essay of 200-300 words.
+                    combat poverty?
                 </prompt>
                 <rubric>
                     Read for conciseness, clarity of thought, and form.
@@ -54,11 +54,12 @@ EXAMPLE_POVERTY_RUBRIC = (
                     </criterion>
                 </rubric>
                 <evals>
-                    <peereval start="2014-12-20T19:00-7:00"
+                    <peer-evaluation start="2014-12-20T19:00-7:00"
+                      name="Peer Evaluation"
                       due="2014-12-21T22:22-7:00"
                       must_grade="5"
                       must_be_graded_by="3" />
-                    <selfeval/>
+                    <self-evaluation name="Self Evaluation" />
                 </evals>
             </openassessment>
 
@@ -72,6 +73,9 @@ EXAMPLE_CENSORSHIP_RUBRIC = (
     <vertical_demo>
 
         <openassessment start="2013-12-19T23:00-7:00" due="2014-12-21T23:00-7:00">
+            <title>
+                Censorship in Public Libraries
+            </title>
             <prompt>
                 What do you think about censorship in libraries? I think it's pretty great.
             </prompt>
@@ -97,8 +101,9 @@ EXAMPLE_CENSORSHIP_RUBRIC = (
                 </criterion>
             </rubric>
             <evals>
-                <selfeval/>
-                <peereval start="2014-12-20T19:00-7:00"
+                <self-evaluation name="Self Evaluation" />
+                <peer-evaluation name="Peer Evaluation"
+                  start="2014-12-20T19:00-7:00"
                   due="2014-12-21T22:22-7:00"
                   must_grade="5"
                   must_be_graded_by="3" />
@@ -109,17 +114,19 @@ EXAMPLE_CENSORSHIP_RUBRIC = (
     """
 )
 
+
 class OpenAssessmentBlock(XBlock):
     """Displays a question and gives an area where students can compose a response."""
 
     start_datetime = String(default=None, scope=Scope.content, help="ISO-8601 formatted string representing the start date of this assignment.")
     due_datetime = String(default=None, scope=Scope.content, help="ISO-8601 formatted string representing the end date of this assignment.")
-    prompt = String( default=None, scope=Scope.content, help="A prompt to display to a student (plain text).")
-    rubric = List( default=None, scope=Scope.content, help="Instructions and criteria for students giving feedback.")
+    title = String(default="", scope=Scope.content, help="A title to display to a student (plain text).")
+    prompt = String(default="", scope=Scope.content, help="A prompt to display to a student (plain text).")
+    rubric = List(default=None, scope=Scope.content, help="Instructions and criteria for students giving feedback.")
     rubric_instructions = String( default=None, scope=Scope.content, help="Instructions for self and peer assessment.")
     rubric_criteria = List(default=None, scope=Scope.content, help="The different parts of grading for students giving feedback.")
     rubric_evals = List(default=None, scope=Scope.content, help="The requested set of evaluations and the order in which to apply them.")
-    course_id = String( default=u"TestCourse", scope=Scope.content, help="The course_id associated with this prompt (until we can get it from runtime).",)
+    course_id = String(default=u"TestCourse", scope=Scope.content, help="The course_id associated with this prompt (until we can get it from runtime).",)
 
     submit_errors = {     # Reported to user sometimes, and useful in tests
               'ENOSUB':   'API submission is unrequested',
@@ -164,34 +171,41 @@ class OpenAssessmentBlock(XBlock):
         trace = self._get_xblock_trace()
         student_item_dict = self._get_student_item_dict()
         previous_submissions = api.get_submissions(student_item_dict)
+
+        grade_state = self._get_grade_state(student_item_dict)
+        # All data we intend to pass to the front end.
+        context_dict = {
+            "xblock_trace": trace,
+            "title": self.title,
+            "question": self.prompt,
+            "rubric_instructions": self.rubric_instructions,
+            "rubric_criteria": self.rubric_criteria,
+            "rubric_evals": self.rubric_evals,
+            "grade_state": grade_state,
+        }
         try:
             # HACK: Replace with proper workflow.
             peer_eval = self._hack_get_peer_eval()
-            peer_submission = peer_api.get_submission_to_evaluate(student_item_dict, peer_eval["must_be_graded_by"])
+            peer_submission = peer_api.get_submission_to_evaluate(
+                student_item_dict, peer_eval.must_be_graded_by
+            )
+            context_dict["peer_submission"] = peer_submission
         except PeerEvaluationWorkflowError:
             peer_submission = False
 
         if previous_submissions and peer_submission:  # XXX: until workflow better, move on w/ prev submit
-            html = Template(load("static/html/oa_rubric.html"),
-                            default_filters=mako_default_filters,
-                            input_encoding='utf-8',
-                           )
-            frag = Fragment(html.render_unicode(xblock_trace=trace,
-                                                peer_submission=peer_submission,
-                                                rubric_instructions=self.rubric_instructions,
-                                                rubric_criteria=self.rubric_criteria,
-                                               ))
+            template = get_template("static/html/oa_base.html")
+            context = Context(context_dict)
+            frag = Fragment(template.render(context))
             frag.add_css(load("static/css/openassessment.css"))
             frag.add_javascript(load("static/js/src/oa_assessment.js"))
             frag.initialize_js('OpenAssessmentBlock')
         elif previous_submissions:
             return Fragment(u"<div>There are no submissions to review.</div>")
         else:                     # XXX: until workflow better, submit until submitted
-            html = Template(load("static/html/oa_submission.html"),
-                            default_filters=mako_default_filters,
-                            input_encoding='utf-8',
-                           )
-            frag = Fragment(html.render_unicode(xblock_trace=trace, question=self.prompt))
+            template = get_template("static/html/oa_base.html")
+            context = Context(context_dict)
+            frag = Fragment(template.render(context))
             frag.add_css(load("static/css/openassessment.css"))
             frag.add_javascript(load("static/js/src/oa_submission.js"))
             frag.initialize_js('OpenAssessmentBlock')
@@ -200,7 +214,7 @@ class OpenAssessmentBlock(XBlock):
     def _hack_get_peer_eval(self):
         # HACK: Forcing Peer Eval, we'll get the Eval config.
         for next_eval in self.rubric_evals:
-            if next_eval["type"] == "peereval":
+            if next_eval.eval_type == "peer-evaluation":
                 return next_eval
 
     @XBlock.json_handler
@@ -224,8 +238,8 @@ class OpenAssessmentBlock(XBlock):
         evaluation = peer_api.create_evaluation(
             data["submission_uuid"],
             student_item_dict["student_id"],
-            int(peer_eval["must_grade"]),
-            int(peer_eval["must_be_graded_by"]),
+            int(peer_eval.must_grade),
+            int(peer_eval.must_be_graded_by),
             assessment_dict
         )
 
@@ -258,14 +272,16 @@ class OpenAssessmentBlock(XBlock):
             status_tag = 'EUNKNOWN'
         # relies on success being orthogonal to errors
         status_text = status_text if status_text else self.submit_errors[status_tag]
-        return (status, status_tag, status_text)
+        return status, status_tag, status_text
 
     @classmethod
     def parse_xml(cls, node, runtime, keys, id_generator):
         """Instantiate xblock object from runtime XML definition."""
         block = runtime.construct_xblock_from_class(cls, keys)
         for child in node:
-            if child.tag == 'prompt':
+            if child.tag == 'title':
+                block.title = child.text.strip()
+            elif child.tag == 'prompt':
                 block.prompt = child.text.strip()
             elif child.tag == 'rubric':
                 block.rubric_instructions = child.text.strip()
@@ -280,13 +296,17 @@ class OpenAssessmentBlock(XBlock):
             elif child.tag == 'evals':
                 block.rubric_evals = []
                 for evaluation in child:
-                    e = {'type': evaluation.tag,
-                         'name': evaluation.attrib.get('name', ''),
-                         'start_datetime': evaluation.attrib.get('start', None),
-                         'due_datetime': evaluation.attrib.get('due', None),
-                         # These attrs are accepted for self, ai evals, but ignored:
-                         'must_grade': evaluation.attrib.get('must_grade', 1),
-                         'must_be_graded_by': evaluation.attrib.get('must_be_graded_by', 0), }
+                    e = EvaluationModule()
+                    if "peer-evaluation" == evaluation.tag:
+                        e = PeerEvaluation()
+                    elif "self-evaluation" == evaluation.tag:
+                        e = SelfEvaluation()
+
+                    e.name = evaluation.attrib.get('name', '')
+                    e.start_datetime = evaluation.attrib.get('start', None)
+                    e.due_datetime = evaluation.attrib.get('start', None)
+                    e.must_grade = evaluation.attrib.get('must_grade', 1)
+                    e.must_be_graded_by = evaluation.attrib.get('must_be_graded_by', 0)
                     block.rubric_evals.append(e)
             else:
                 # XXX: jrbl thinks this lets you embed other blocks inside this (?)
@@ -299,3 +319,42 @@ class OpenAssessmentBlock(XBlock):
         """A canned scenario for display in the workbench."""
         return [EXAMPLE_POVERTY_RUBRIC, EXAMPLE_CENSORSHIP_RUBRIC,]
 
+    def _get_grade_state(self, student_item):
+        peer_eval = self._hack_get_peer_eval()
+        submissions = api.get_submissions(student_item, 1)
+        has_finished_evaluating = peer_api.has_finished_required_evaluating(
+            student_item["student_id"], peer_eval.must_grade
+        )
+        score = api.get_score(student_item)
+
+        grade_state = {
+            "style_class": "",
+            "value": "",
+            "title": "",
+            "message": "",
+        }
+        return grade_state
+
+
+class EvaluationModule():
+
+    eval_type = None
+    name = ''
+    start_datetime = None
+    due_datetime = None
+    must_grade = 1
+    must_be_graded_by = 0
+
+
+class PeerEvaluation(EvaluationModule):
+
+    eval_type = "peer-evaluation"
+    navigation_text = "Your evaluation(s) of peer responses"
+    url = "static/html/oa_peer_evaluation.html"
+
+
+class SelfEvaluation(EvaluationModule):
+
+    eval_type = "self-evaluation"
+    navigation_text = "Your evaluation of your response"
+    url = "static/html/oa_self_evaluation.html"
