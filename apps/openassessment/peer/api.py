@@ -12,6 +12,9 @@ import math
 from openassessment.peer.models import PeerEvaluation
 
 from openassessment.peer.serializers import PeerAssessmentSerializer
+from openassessment.peer.serializers import (
+    PeerEvaluationSerializer, content_hash_for_rubric_dict
+)
 from submissions import api as submission_api
 from submissions.models import Submission, StudentItem, Score
 from submissions.serializers import SubmissionSerializer, StudentItemSerializer
@@ -70,6 +73,7 @@ def create_assessment(
         required_assessments_for_student,
         required_assessments_for_submission,
         assessment_dict,
+        rubric_dict,
         scored_at=None):
     """Creates an assessment on the given submission.
 

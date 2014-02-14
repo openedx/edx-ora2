@@ -37,7 +37,7 @@ class StudentItem(models.Model):
         ))
 
     def __unicode__(self):
-        return "({0.student_id}, {0.course_id}, {0.item_type}, {0.item_id})".format(self)
+        return u"({0.student_id}, {0.course_id}, {0.item_type}, {0.item_id})".format(self)
 
     class Meta:
         unique_together = (
