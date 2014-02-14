@@ -229,7 +229,7 @@ EXAMPLE_CENSORSHIP_RUBRIC = (
 class OpenAssessmentBlock(XBlock):
     """Displays a question and gives an area where students can compose a response."""
 
-    start_datetime = String(default=datetime.datetime.now, scope=Scope.content, help="ISO-8601 formatted string representing the start date of this assignment.")
+    start_datetime = String(default=datetime.datetime.now().isoformat(), scope=Scope.content, help="ISO-8601 formatted string representing the start date of this assignment.")
     due_datetime = String(default=None, scope=Scope.content, help="ISO-8601 formatted string representing the end date of this assignment.")
     prompt = String( default=DEFAULT_PROMPT, scope=Scope.content, help="A prompt to display to a student (plain text).")
     rubric = List( default=[], scope=Scope.content, help="Instructions and criteria for students giving feedback.")
@@ -293,6 +293,9 @@ class OpenAssessmentBlock(XBlock):
             if peer_eval:
                 peer_submission = peer_api.get_submission_to_evaluate(student_item_dict, peer_eval["must_be_graded_by"])
         except PeerEvaluationWorkflowError:
+            # Additional HACK: Without proper workflow, there may not be the
+            # correct information to complete the request for a peer submission.
+            # This error should be handled properly once we have a workflow API.
             pass
 
         if previous_submissions and peer_submission:  # XXX: until workflow better, move on w/ prev submit
