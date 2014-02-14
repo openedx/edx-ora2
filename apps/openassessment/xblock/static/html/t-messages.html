@@ -1,0 +1,60 @@
+<!-- TEMPLATE: status messages -->
+
+
+<!-- NOTES:
+
+ * class of message--warning is added message is a warning/notification to user
+ * class of message--confirmation is added message is a confirmation to user
+ * class of has--actions is added when a message has actions associated with it for user to interact with
+
+ -->
+
+
+ <!-- CASE: completion status is incomplete and peer evaluations are needed -->
+ <div class="message message--warning">
+   <h2 class="message__title">You still need to submit your response to this question</h2>
+
+   <div class="message__copy">
+     <p>Please note that self evaluations are due on: <span class="step__deadline">due <span class="date">Jan 24, 2014</span> at <span class="time">15:00 UTC</span></span></p>
+   </div>
+ </div>
+
+
+<!-- CASE: completion status is incomplete and peer evaluations are needed -->
+<div class="message message--warning">
+  <h2 class="message__title">You still need to evaluate 2 peers’ responses</h2>
+  <div class="message__copy">
+    <p>Please note that self evaluations are due on: <span class="step__deadline">due <span class="date">Jan 24, 2014</span> at <span class="time">15:00 UTC</span></span></p>
+  </div>
+</div>
+
+
+<!-- CASE: completion status is incomplete and self evaluation is needed -->
+<div class="message message--warning">
+  <h2 class="message__title">You still need to complete your self evaluation</h2>
+  <div class="message__copy">
+    <p>Please note that self evaluations are due on: <span class="step__deadline">due <span class="date">Jan 24, 2014</span> at <span class="time">15:00 UTC</span></span></p>
+  </div>
+</div>
+
+
+<!-- CASE: problem is closed and completion status is incomplete -->
+<div class="message message--warning">
+  <h2 class="message__title">This problem’s due date has past &amp; submissions are now closed</h2>
+
+  <div class="message__copy">
+    <p>You did not complete the necessary requirements and received an incomplete grade</p>
+  </div>
+</div>
+
+
+<!-- CASE: problem is closed/open and completion status is complete -->
+<div class="message message--confirmation has--actions">
+  <h2 class="message__title">You have completed this problem</h2>
+
+  <ul class="list--actions">
+    <li class="list--actions__item">
+      <a class="action" href="#openassessment__grade">View your grade</a>
+    </li>
+  </ul>
+</div>
