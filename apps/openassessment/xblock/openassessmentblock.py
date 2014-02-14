@@ -3,18 +3,19 @@
 import pkg_resources
 
 from mako.template import Template
-from openassessment.peer.api import PeerEvaluationWorkflowError
-
-from submissions import api
-from openassessment.peer import api as peer_api
-
 from xblock.core import XBlock
 from xblock.fields import List, Scope, String
 from xblock.fragment import Fragment
 from submissions.api import SubmissionRequestError
 
+from submissions import api
+from openassessment.peer import api as peer_api
+from openassessment.peer.api import PeerEvaluationWorkflowError
+from scenario_parser import ScenarioParser
+
 
 mako_default_filters = ['unicode', 'h', 'trim']
+
 
 EXAMPLE_POVERTY_RUBRIC = (
     "OpenAssessmentBlock Poverty Rubric",
@@ -30,28 +31,58 @@ EXAMPLE_POVERTY_RUBRIC = (
                     Read for conciseness, clarity of thought, and form.
                     <criterion name="concise">
                         How concise is it?
-                        <option val="0">Neal Stephenson (late)</option>
-                        <option val="1">HP Lovecraft</option>
-                        <option val="3">Robert Heinlein</option>
-                        <option val="4">Neal Stephenson (early)</option>
-                        <option val="5">Earnest Hemingway</option>
+                        <option val="0">(0) Neal Stephenson (late)
+                          <explain>
+                            In "Cryptonomicon", Stephenson spent multiple pages talking about breakfast cereal.  
+                            While hilarious, in recent years his work has been anything but 'concise'.
+                          </explain>
+                        </option>
+                        <option val="1">(1) HP Lovecraft
+                          <explain>
+                            If the author wrote something cyclopean that staggers the mind, score it thus.
+                          </explain>
+                        </option>
+                        <option val="3">(3) Robert Heinlein
+                          <explain>
+                            Tight prose that conveys a wealth of information about the world in relatively
+                            few words. Example, "The door irised open and he stepped inside."
+                          </explain>
+                        </option>
+                        <option val="4">(4) Neal Stephenson (early)
+                          <explain>
+                            When Stephenson still had an editor, his prose was dense, with anecdotes about 
+                            nitrox abuse implying main characters' whole life stories.
+                          </explain>
+                        </option>
+                        <option val="5">(5) Earnest Hemingway
+                          <explain>
+                            Score the work this way if it makes you weep, and the removal of a single 
+                            word would make you sneer.
+                          </explain>
+                        </option>
                     </criterion>
                     <criterion name="clearheaded">
                         How clear is the thinking?
-                        <option val="0">Yogi Berra</option>
-                        <option val="1">Hunter S. Thompson</option>
-                        <option val="2">Robert Heinlein</option>
-                        <option val="3">Isaac Asimov</option>
-                        <option val="10">Spock</option>
+                        <option val="0">(0) Yogi Berra</option>
+                        <option val="1">(1) Hunter S. Thompson</option>
+                        <option val="2">(2) Robert Heinlein</option>
+                        <option val="3">(3) Isaac Asimov</option>
+                        <option val="10">(10) Spock
+                          <explain>
+                            Coolly rational, with a firm grasp of the main topics, a crystal-clear train of thought,
+                            and unemotional examination of the facts.  This is the only item explained in this category,
+                            to show that explained and unexplained items can be mixed.
+                          </explain>
+                        </option>
                     </criterion>
                     <criterion name="form">
                         Lastly, how is it's form? Punctuation, grammar, and spelling all count.
-                        <option val="0">lolcats</option>
-                        <option val="1">Facebook</option>
-                        <option val="2">Reddit</option>
-                        <option val="3">metafilter</option>
-                        <option val="4">Usenet, 1996</option>
-                        <option val="5">The Elements of Style</option>
+                        <option val="0">(0) lolcats</option>
+                        <option val="1">(1) Facebook</option>
+                        <option val="2">(2) Reddit</option>
+                        <option val="3">(3) metafilter</option>
+                        <option val="4">(4) Usenet, 1996</option>
+                        <option val="5">(5) The Elements of Style</option>
                     </criterion>
                 </rubric>
                 <evals>
@@ -109,6 +140,7 @@ EXAMPLE_CENSORSHIP_RUBRIC = (
     </vertical_demo>
     """
 )
+
 
 class OpenAssessmentBlock(XBlock):
     """Displays a question and gives an area where students can compose a response."""
@@ -216,17 +248,11 @@ class OpenAssessmentBlock(XBlock):
         # HACK: Replace with proper workflow.
         peer_eval = self._hack_get_peer_eval()
         """Place an assessment into Openassessment system"""
-        # TODO: We're not doing points possible in a good way, need to refactor
-        # the rubric criteria type, Joe has thoughts on this.
         student_item_dict = self._get_student_item_dict()
 
-        points_possible = sum(
-             max(int(val) for val in criteria if val.isdigit())
-             for criteria in self.rubric_criteria
-        )
         assessment_dict = {
             "points_earned": map(int, data["points_earned"]),
-            "points_possible": points_possible,
+            "points_possible": sum(c['total_value'] for c in self.rubric_criteria),
             "feedback": "Not yet implemented.",
         }
         evaluation = peer_api.create_evaluation(
@@ -268,46 +294,22 @@ class OpenAssessmentBlock(XBlock):
         status_text = status_text if status_text else self.submit_errors[status_tag]
         return (status, status_tag, status_text)
 
-    @classmethod
-    def parse_xml(cls, node, runtime, keys, id_generator):
-        """Instantiate xblock object from runtime XML definition."""
-        block = runtime.construct_xblock_from_class(cls, keys)
-        for child in node:
-            if child.tag == 'prompt':
-                block.prompt = child.text.strip()
-            elif child.tag == 'rubric':
-                block.rubric_instructions = child.text.strip()
-                block.rubric_criteria = []
-                for criterion in child:
-                    crit = {'name': criterion.attrib.get('name', ''),
-                            'instructions': criterion.text.strip(),
-                           }
-                    for option in criterion:
-                        crit[option.attrib['val']] = option.text.strip()
-                    block.rubric_criteria.append(crit)
-            elif child.tag == 'evals':
-                block.rubric_evals = []
-                for evaluation in child:
-                    e = {'type': evaluation.tag,
-                         'name': evaluation.attrib.get('name', ''),
-                         'start_datetime': evaluation.attrib.get('start', None),
-                         'due_datetime': evaluation.attrib.get('due', None),
-                         # These attrs are accepted for self, ai evals, but ignored:
-                         'must_grade': evaluation.attrib.get('must_grade', 1),
-                         'must_be_graded_by': evaluation.attrib.get('must_be_graded_by', 0), }
-                    block.rubric_evals.append(e)
-            else:
-                # XXX: jrbl thinks this lets you embed other blocks inside this (?)
-                block.runtime.add_node_as_child(block, child, id_generator)
-        return block
-
-    # Arbitrary attributes can be defined on the
     @staticmethod
     def workbench_scenarios():
         """A canned scenario for display in the workbench."""
-        return [EXAMPLE_POVERTY_RUBRIC, EXAMPLE_CENSORSHIP_RUBRIC, ]
+        return [EXAMPLE_POVERTY_RUBRIC, EXAMPLE_CENSORSHIP_RUBRIC,]
 
-    def studio_view(self, context=None):
+    @staticmethod
+    def studio_view(context=None):
         return Fragment(u"<div>Edit the XBlock.</div>")
 
-
+    @classmethod
+    def parse_xml(cls, node, runtime, keys, id_generator):
+        """Instantiate xblock object from runtime XML definition."""
+        def unknown_handler(block, child):
+            """Recursively embed xblocks for nodes we don't recognize"""
+            block.runtime.add_node_as_child(block, child, id_generator)
+        block = runtime.construct_xblock_from_class(cls, keys)
+        sparser = ScenarioParser(block, node, unknown_handler)
+        block = sparser.parse()
+        return block
