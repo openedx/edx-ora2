@@ -433,27 +433,3 @@ class OpenAssessmentBlock(XBlock):
             "message": "You have not started this problem",
         }
         return grade_state
-
-
-class EvaluationModule():
-
-    eval_type = None
-    name = ''
-    start_datetime = None
-    due_datetime = None
-    must_grade = 1
-    must_be_graded_by = 0
-
-
-class PeerEvaluation(EvaluationModule):
-
-    eval_type = "peer-evaluation"
-    navigation_text = "Your evaluation(s) of peer responses"
-    url = "static/html/oa_peer_evaluation.html"
-
-
-class SelfEvaluation(EvaluationModule):
-
-    eval_type = "self-evaluation"
-    navigation_text = "Your evaluation of your response"
-    url = "static/html/oa_self_evaluation.html"

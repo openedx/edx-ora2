@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """XBlock scenario parsing routines"""
 
+
 class ScenarioParser(object):
     """Utility class to capture parsing of xml from runtime scenarios."""
 
@@ -20,6 +21,11 @@ class ScenarioParser(object):
 
     def get_prompt(self, e):
         """<prompt>This tells you what you should write about. There should be only one prompt.</prompt>"""
+        return e.text.strip()
+
+    def get_title(self, e):
+        """<title>The title of this block</title>
+        """
         return e.text.strip()
 
     def get_rubric(self, e):
@@ -68,14 +74,24 @@ class ScenarioParser(object):
                       must_grade="5"
                       must_be_graded_by="3" />
            </evals>"""
-        return [{'type': ev.tag,
-                  'name': ev.attrib.get('name', ''),
-                  'start_datetime': ev.attrib.get('start', None),
-                  'due_datetime': ev.attrib.get('due', None),
-                  # These attrs are accepted for self, ai evals, but ignored:
-                  'must_grade': int(ev.attrib.get('must_grade', 1) if ev.tag == 'peereval' else 1),
-                  'must_be_graded_by': int(ev.attrib.get('must_be_graded_by', 0) if ev.tag == 'peereval' else 0), 
-                } for ev in evaluations]
+        evaluation_list = []
+        for ev in evaluations:
+            evaluation = None
+            type = ev.tag
+            if 'peer-evaluation' == type:
+                evaluation = PeerEvaluation()
+            elif 'self-evaluation' == type:
+                evaluation = SelfEvaluation()
+
+            if evaluation:
+                evaluation.name = ev.attrib.get('name', '')
+                evaluation.start_datetime = ev.attrib.get('start', None)
+                evaluation.due_datetime = ev.attrib.get('due', None)
+                evaluation.must_grade = int(ev.attrib.get('must_grade', 1))
+                evaluation.must_be_graded_by = int(ev.attrib.get('must_be_graded_by', 0))
+                evaluation_list.append(evaluation)
+
+        return evaluation_list
 
     def parse(self):
         """Instantiate xblock object from runtime XML definition."""
@@ -85,9 +101,34 @@ class ScenarioParser(object):
             elif child.tag == 'rubric':
                 (self.xblock.rubric_instructions, 
                  self.xblock.rubric_criteria) = self.get_rubric(child)
+            elif child.tag == 'title':
+                self.xblock.title = self.get_title(child)
             elif child.tag == 'evals':
                 self.xblock.rubric_evals = self.get_evals(child)
             else:
                 self.unknown_handler(self.xblock, child)
         return self.xblock
 
+
+class EvaluationModule():
+
+    eval_type = None
+    name = ''
+    start_datetime = None
+    due_datetime = None
+    must_grade = 1
+    must_be_graded_by = 0
+
+
+class PeerEvaluation(EvaluationModule):
+
+    eval_type = "peer-evaluation"
+    navigation_text = "Your evaluation(s) of peer responses"
+    url = "static/html/oa_peer_evaluation.html"
+
+
+class SelfEvaluation(EvaluationModule):
+
+    eval_type = "self-evaluation"
+    navigation_text = "Your evaluation of your response"
+    url = "static/html/oa_self_evaluation.html"
