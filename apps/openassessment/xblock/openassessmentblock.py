@@ -1,18 +1,104 @@
 """An XBlock where students can read a question and compose their response"""
+
 from django.template.context import Context
 import pkg_resources
 
 from django.template.loader import get_template
 from openassessment.peer.api import PeerEvaluationWorkflowError
 
-from submissions import api
-from openassessment.peer import api as peer_api
+import datetime
 
 from xblock.core import XBlock
 from xblock.fields import List, Scope, String
 from xblock.fragment import Fragment
+from submissions.api import SubmissionRequestError
+from submissions import api
+from openassessment.peer import api as peer_api
 
 from scenario_parser import ScenarioParser
+
+DEFAULT_PROMPT = """
+    Censorship in the Libraries
+
+    'All of us can think of a book that we hope none of our children or any
+    other children have taken off the shelf. But if I have the right to remove
+    that book from the shelf -- that work I abhor -- then you also have exactly
+    the same right and so does everyone else. And then we have no books left on
+    the shelf for any of us.' --Katherine Paterson, Author
+
+    Write a persuasive essay to a newspaper reflecting your views on censorship
+    in libraries. Do you believe that certain materials, such as books, music,
+    movies, magazines, etc., should be removed from the shelves if they are
+    found offensive? Support your position with convincing arguments from your
+    own experience, observations, and/or reading.
+"""
+
+DEFAULT_RUBRIC_INSTRUCTIONS = "Read for conciseness, clarity of thought, and form."
+
+DEFAULT_RUBRIC_CRITERIA = [
+    {
+        'name': "Ideas",
+        'instructions': "Determine if there is a unifying theme or main idea.",
+        'total_value': 5,
+        'options': [
+            (0, "Poor", "Difficult for the reader to discern the main idea.  Too brief or too repetitive to establish or maintain a focus.",),
+            (3, "Fair", "Presents a unifying theme or main idea, but may include minor tangents.  Stays somewhat focused on topic and task.",),
+            (5, "Good", "Presents a unifying theme or main idea without going off on tangents.  Stays completely focused on topic and task.",),
+        ],
+    },
+    {
+        'name': "Content",
+        'instructions': "Evaluate the content of the submission",
+        'total_value': 5,
+        'options': [
+            (0, "Poor", "Includes little information with few or no details or unrelated details.  Unsuccessful in attempts to explore any facets of the topic.",),
+            (1, "Fair", "Includes little information and few or no details.  Explores only one or two facets of the topic.",),
+            (3, "Good", "Includes sufficient information and supporting details. (Details may not be fully developed; ideas may be listed.)  Explores some facets of the topic.",),
+            (5, "Excellent", "Includes in-depth information and exceptional supporting details that are fully developed.  Explores all facets of the topic.",),
+        ],
+    },
+    {
+        'name': "Organization",
+        'instructions': "Determine if the submission is well organized.",
+        'total_value': 2,
+        'options': [
+            (0, "Poor", "Ideas organized illogically, transitions weak, and response difficult to follow.",),
+            (1, "Fair", "Attempts to logically organize ideas.  Attempts to progress in an order that enhances meaning, and demonstrates use of transitions.",),
+            (2, "Good", "Ideas organized logically.  Progresses in an order that enhances meaning.  Includes smooth transitions.",),
+        ],
+    },
+    {
+        'name': "Style",
+        'instructions': "Read for style.",
+        'total_value': 2,
+        'options': [
+            (0, "Poor", "Contains limited vocabulary, with many words used incorrectly.  Demonstrates problems with sentence patterns.",),
+            (1, "Fair", "Contains basic vocabulary, with words that are predictable and common.  Contains mostly simple sentences (although there may be an attempt at more varied sentence patterns).",),
+            (2, "Good", "Includes vocabulary to make explanations detailed and precise.  Includes varied sentence patterns, including complex sentences.",),
+        ],
+    },
+    {
+        'name': "Voice",
+        'instructions': "Read for style.",
+        'total_value': 2,
+        'options': [
+            (0, "Poor", "Demonstrates language and tone that may be inappropriate to task and reader.",),
+            (1, "Fair", "Demonstrates an attempt to adjust language and tone to task and reader.",),
+            (2, "Good", "Demonstrates effective adjustment of language and tone to task and reader.",),
+        ],
+    }
+]
+
+DEFAULT_EVAL_MODULES = [
+    {
+        'type': "peereval",
+        'name': "peereval",
+        'start_datetime': datetime.datetime.now,
+        'due_datetime': None,
+        'must_grade': 5,
+        'must_be_graded_by': 3,
+    },
+]
 
 EXAMPLE_POVERTY_RUBRIC = (
     "OpenAssessmentBlock Poverty Rubric",
@@ -150,15 +236,16 @@ EXAMPLE_CENSORSHIP_RUBRIC = (
 class OpenAssessmentBlock(XBlock):
     """Displays a question and gives an area where students can compose a response."""
 
-    start_datetime = String(default=None, scope=Scope.content, help="ISO-8601 formatted string representing the start date of this assignment.")
+    start_datetime = String(default=datetime.datetime.now().isoformat(), scope=Scope.content, help="ISO-8601 formatted string representing the start date of this assignment.")
     due_datetime = String(default=None, scope=Scope.content, help="ISO-8601 formatted string representing the end date of this assignment.")
+
     title = String(default="", scope=Scope.content, help="A title to display to a student (plain text).")
-    prompt = String(default="", scope=Scope.content, help="A prompt to display to a student (plain text).")
-    rubric = List(default=None, scope=Scope.content, help="Instructions and criteria for students giving feedback.")
-    rubric_instructions = String( default=None, scope=Scope.content, help="Instructions for self and peer assessment.")
-    rubric_criteria = List(default=None, scope=Scope.content, help="The different parts of grading for students giving feedback.")
-    rubric_evals = List(default=None, scope=Scope.content, help="The requested set of evaluations and the order in which to apply them.")
-    course_id = String(default=u"TestCourse", scope=Scope.content, help="The course_id associated with this prompt (until we can get it from runtime).",)
+    prompt = String( default=DEFAULT_PROMPT, scope=Scope.content, help="A prompt to display to a student (plain text).")
+    rubric = List( default=[], scope=Scope.content, help="Instructions and criteria for students giving feedback.")
+    rubric_instructions = String( default=DEFAULT_RUBRIC_INSTRUCTIONS, scope=Scope.content, help="Instructions for self and peer assessment.")
+    rubric_criteria = List(default=DEFAULT_RUBRIC_CRITERIA, scope=Scope.content, help="The different parts of grading for students giving feedback.")
+    rubric_evals = List(default=DEFAULT_EVAL_MODULES, scope=Scope.content, help="The requested set of evaluations and the order in which to apply them.")
+    course_id = String( default=u"TestCourse", scope=Scope.content, help="The course_id associated with this prompt (until we can get it from runtime).",)
 
     submit_errors = {     # Reported to user sometimes, and useful in tests
               'ENOSUB':   'API submission is unrequested',
@@ -194,7 +281,8 @@ class OpenAssessmentBlock(XBlock):
         return student_item_dict
 
     def student_view(self, context=None):
-        """The main view of OpenAssessmentBlock, displayed when viewing courses."""
+        """The main view of OpenAssessmentBlock, displayed when viewing courses.
+        """
         def load(path):
             """Handy helper for getting resources from our kit."""
             data = pkg_resources.resource_string(__name__, path)
@@ -202,7 +290,6 @@ class OpenAssessmentBlock(XBlock):
 
         trace = self._get_xblock_trace()
         student_item_dict = self._get_student_item_dict()
-        previous_submissions = api.get_submissions(student_item_dict)
 
         grade_state = self._get_grade_state(student_item_dict)
         # All data we intend to pass to the front end.
@@ -215,15 +302,30 @@ class OpenAssessmentBlock(XBlock):
             "rubric_evals": self.rubric_evals,
             "grade_state": grade_state,
         }
+
+        try:
+            previous_submissions = api.get_submissions(student_item_dict)
+        except SubmissionRequestError:
+            previous_submissions = []
+
+        peer_submission = False
         try:
             # HACK: Replace with proper workflow.
             peer_eval = self._hack_get_peer_eval()
+
             peer_submission = peer_api.get_submission_to_evaluate(
                 student_item_dict, peer_eval.must_be_graded_by
             )
             context_dict["peer_submission"] = peer_submission
+
+            if peer_eval:
+                peer_submission = peer_api.get_submission_to_evaluate(student_item_dict, peer_eval["must_be_graded_by"])
+
         except PeerEvaluationWorkflowError:
-            peer_submission = False
+            # Additional HACK: Without proper workflow, there may not be the
+            # correct information to complete the request for a peer submission.
+            # This error should be handled properly once we have a workflow API.
+            pass
 
         if previous_submissions and peer_submission:  # XXX: until workflow better, move on w/ prev submit
             template = get_template("static/html/oa_base.html")
@@ -304,6 +406,10 @@ class OpenAssessmentBlock(XBlock):
     def workbench_scenarios():
         """A canned scenario for display in the workbench."""
         return [EXAMPLE_POVERTY_RUBRIC, EXAMPLE_CENSORSHIP_RUBRIC,]
+
+    @staticmethod
+    def studio_view(context=None):
+        return Fragment(u"<div>Edit the XBlock.</div>")
 
     @classmethod
     def parse_xml(cls, node, runtime, keys, id_generator):
