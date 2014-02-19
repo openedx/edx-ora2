@@ -11,7 +11,7 @@
 
 
 <!-- CASE: default/not started -->
-<li id="openassessment__peer-evaluation" class="openassessment__steps__step step--peer-evaluation">
+<li id="openassessment__peer-assessment" class="openassessment__steps__step step--peer-assessment">
 {#<header class="step__header">#}
     <h2 class="step__title">
         <span class="step__label">Evaluate Peers' Responses</span>
@@ -32,34 +32,34 @@
 </div>
 
 <div class="step__content">
-    <ul class="list--peer-evaluations">
-        <li class="list--peer-evaluations__item">
-            <article class="peer-evaluation" id="peer-evaluation--001">
-                <header class="peer-evaluation__header">
-                    <h3 class="peer-evaluation__title">Evaluation #
-                        <span class="peer-evaluation__number--current">1</span> of
-                        <span class="peer-evaluation__number--required">3</span>
+    <ul class="list--peer-assessments">
+        <li class="list--peer-assessments__item">
+            <article class="peer-assessment" id="peer-assessment--001">
+                <header class="peer-assessment__header">
+                    <h3 class="peer-assessment__title">Assessment #
+                        <span class="peer-assessment__number--current">1</span> of
+                        <span class="peer-assessment__number--required">3</span>
                     </h3>
 
-            <span class="peer-evaluation__expected-time">
+            <span class="peer-assessment__expected-time">
               <span class="label">Expected Time Spent:</span>
               <span class="value">20 Minutes</span>
             </span>
                 </header>
 
                 <!-- ?: markup validating/copy cleaning upon submission -->
-                <div class="peer-evaluation__response">
+                <div class="peer-assessment__response">
                     {{ peer_submission.answer }}
                 </div>
 
-                <form id="peer-evaluation--001__evaluation" class="peer-evaluation__evaluation" method="post">
-                    <fieldset class="evaluation__fields">
-                        <legend class="evaluation__instruction">{{ rubric_instructions }}</legend>
+                <form id="peer-assessment--001__assessment" class="peer-assessment__assessment" method="post">
+                    <fieldset class="assessment__fields">
+                        <legend class="assessment__instruction">{{ rubric_instructions }}</legend>
 
-                        <ol class="list list--fields evaluation__rubric">
+                        <ol class="list list--fields assessment__rubric">
                             {% for criterion in rubric_criteria %}
                             <!-- individual rubric question (radio-based choice) -->
-                            <li class="field field--radio is--required evaluation__rubric__question" id="evaluation__rubric__question--{{ criterion.name }}">
+                            <li class="field field--radio is--required assessment__rubric__question" id="assessment__rubric__question--{{ criterion.name }}">
                                 <h4 class="question__title">
                                     {{ criterion.instructions }}
                                     <span class="label--required">* <span class="sr">(Required)</span></span>
@@ -69,8 +69,8 @@
                                     {% for value, text in criterion.options %}
                                     <li class="answer">
                                         <div class="wrapper--input">
-                                            <input type="radio" name="evaluation__rubric__question--{{ criterion.name }}" id="evaluation__rubric__question--{{ criterion.name }}--01" class="answer__value" value="answer--001__option--01 - Very Well" />
-                                            <label for="evaluation__rubric__question--001__option--01" class="answer__label">({{ value }}) {{ text }}</label>
+                                            <input type="radio" name="assessment__rubric__question--{{ criterion.name }}" id="assessment__rubric__question--{{ criterion.name }}--01" class="answer__value" value="answer--001__option--01 - Very Well" />
+                                            <label for="assessment__rubric__question--001__option--01" class="answer__label">({{ value }}) {{ text }}</label>
                                         </div>
                                         <span class="answer__tip">TODO: Criterion Instructions</span>
                                     </li>
@@ -80,16 +80,16 @@
                             {% endfor %}
 
                             <!-- individual rubric question (text) -->
-                            <li class="field field--textarea evaluation__rubric__question" id="evaluation__rubric__question--004">
-                                <label for="evaluation__rubric__question--004__value">Please provide any other feedback you have around this response</label>
-                                <textarea id="evaluation__rubric__question--004__value" placeholder="I felt this response was..."></textarea>
+                            <li class="field field--textarea assessment__rubric__question" id="assessment__rubric__question--004">
+                                <label for="assessment__rubric__question--004__value">Please provide any other feedback you have around this response</label>
+                                <textarea id="assessment__rubric__question--004__value" placeholder="I felt this response was..."></textarea>
                             </li>
                         </ol>
                     </fieldset>
 
                     <ul class="list list--actions">
                         <li class="list--actions__item">
-                            <button type="submit" id="peer-evaluation--001__evaluation__submit" class="action action--submit">Submit your evaluation &amp; move to response #2</button>
+                            <button type="submit" id="peer-assessment--001__assessment__submit" class="action action--submit">Submit your assessment &amp; move to response #2</button>
                         </li>
                     </ul>
                 </form>

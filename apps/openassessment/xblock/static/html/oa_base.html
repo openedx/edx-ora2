@@ -20,9 +20,9 @@
 
             <span class="openassessment__title--sub">
                 <span class="problem-type problem-type--open-ended-response">Open Ended Response</span>
-                {%  for eval in rubric_evals %}
+                {%  for assessment in rubric_assessments %}
                 +
-                <span class="problem-type problem-type--{{ eval.type }}">{{ eval.name }}</span>
+                <span class="problem-type problem-type--{{ assessment.type }}">{{ assessment.name }}</span>
                 {% endfor %}
             </span>
         </h1>
@@ -35,9 +35,9 @@
                 <li class="list--nav__item">
                     <a class="action" href="#openassessment__response">Your response to this problem</a>
                 </li>
-                {%  for eval in rubric_evals %}
+                {%  for assessment in rubric_assessments %}
                 <li class="list--nav__item">
-                    <a class="action" href="#openassessment__{{ eval.type }}">{{ eval.navigation_text }}</a>
+                    <a class="action" href="#openassessment__{{ assessment.type }}">{{ assessment.navigation_text }}</a>
                 </li>
                 {% endfor %}
                 <li class="list--nav__item">
@@ -73,8 +73,8 @@
             <!-- STEP: response -->
             {% include "static/html/oa_response.html" %}
 
-            {% for eval in rubric_evals %}
-            {% include eval.url %}
+            {% for assessment in rubric_assessments %}
+            {% include assessment.path %}
             {% endfor %}
 
         </ol>

@@ -2,7 +2,7 @@ import logging
 from django.contrib.auth.decorators import login_required
 
 from django.shortcuts import render_to_response
-from openassessment.peer.api import get_evaluations
+from openassessment.peer.api import get_assessments
 from submissions.api import SubmissionRequestError, get_submissions
 
 log = logging.getLogger(__name__)
@@ -38,7 +38,7 @@ def get_evaluations_for_student_item(request, course_id, student_id, item_id):
         submissions = get_submissions(student_item_dict)
         evaluations = []
         for submission in submissions:
-            submission_evaluations = get_evaluations(submission["uuid"])
+            submission_evaluations = get_assessments(submission["uuid"])
             for evaluation in submission_evaluations:
                 evaluation["submission_uuid"] = submission["uuid"]
                 evaluations.append(evaluation)

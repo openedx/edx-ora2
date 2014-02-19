@@ -46,13 +46,14 @@ RUBRIC_CONFIG = """
                 <option val="5">The Elements of Style</option>
             </criterion>
         </rubric>
-        <evals>
-            <peer-evaluation start="2014-12-20T19:00-7:00"
+        <assessments>
+            <peer-assessment name="peer-assessment"
+              start="2014-12-20T19:00-7:00"
               due="2014-12-21T22:22-7:00"
               must_grade="5"
               must_be_graded_by="3" />
-            <self-evaluation/>
-        </evals>
+            <self-assessment/>
+        </assessments>
     </openassessment>
 """
 

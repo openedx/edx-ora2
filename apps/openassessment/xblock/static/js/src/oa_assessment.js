@@ -8,8 +8,8 @@ function OpenAssessmentBlock(runtime, element) {
     /* Sample Debug Console: http://localhost:8000/submissions/Joe_Bloggs/TestCourse/u_3 */
 
     function prepare_assessment_post(element) {
-        selector = $("input[type=radio]:checked", element);
-        values = [];
+        var selector = $("input[type=radio]:checked", element);
+        var values = [];
         for (i=0; i<selector.length; i++) {
             values[i] = selector[i].value;
         }
@@ -17,8 +17,8 @@ function OpenAssessmentBlock(runtime, element) {
     }
 
     function displayStatus(result) {
-        status = result[0]
-        error_msg = result[1]
+        var status = result[0];
+        var error_msg = result[1];
         if (status) {
             $('.openassessment_response_status_block', element).html(success_msg.concat(click_msg)); 
         } else {
