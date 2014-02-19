@@ -279,29 +279,26 @@ class OpenAssessmentBlock(XBlock):
         trace = self._get_xblock_trace()
         student_item_dict = self._get_student_item_dict()
         # This user's most recent previous submission
-        user_submission = self.__get_submission(student_item_dict)
+        user_submission = self._get_user_submission(student_item_dict)
         # This score for this user's user_submission
-        user_score = self.__get_score(student_item_dict, user_submission)
+        user_score = self._get_submission_score(student_item_dict, user_submission)
 
         peer_eval = self._hack_get_eval()   # HACK: Replace with proper workflow.
-        peer_submission = self.__get_peer_submission(student_item_dict, peer_eval)
+        peer_submission = self._get_peer_submission(student_item_dict, peer_eval)
 
-        if user_score:
-            # We're Done!
-            return self.__view_helper_show_scores(user_score, trace)
-        elif user_submission and peer_submission:
+        if user_submission and peer_submission:
             # We've submitted, but not finished assessing. Do assessments.
-            return self._view_helper_make_assessment(peer_submission, trace)
+            return self.show_assessment_html(peer_submission, trace)
         elif user_submission:
             # We've submitted, but there's no assesing to do yet.
-            return self.__view_helper_check_back()
+            return self.show_check_back_html(user_score)
         else:
             # We haven't submitted, so do that first.
             # XXX: In future, we'll support multiple submission and this will be wrong
-            return self._view_helper_make_submission(trace)
+            return self.show_submission_html(trace)
 
     @staticmethod
-    def __get_submission(student_item_dict):
+    def _get_user_submission(student_item_dict):
         """Return the most recent submission, if any, by user in student_item_dict"""
         submissions = []
         try:
@@ -312,7 +309,7 @@ class OpenAssessmentBlock(XBlock):
         return submissions[0] if submissions else None
 
     @staticmethod
-    def __get_score(student_item_dict, submission=False):
+    def _get_submission_score(student_item_dict, submission=False):
         """Return the most recent score, if any, for student item"""
         scores = False
         if submission:
@@ -320,7 +317,7 @@ class OpenAssessmentBlock(XBlock):
         return scores[0] if scores else None
 
     @staticmethod
-    def __get_peer_submission(student_item_dict, peer_eval):
+    def _get_peer_submission(student_item_dict, peer_eval):
         """Return a peer submission, if any, for user to assess"""
         peer_submission = None
         try:
@@ -332,18 +329,17 @@ class OpenAssessmentBlock(XBlock):
             pass
         return peer_submission
 
-    def __view_helper_show_check_back(self):
+    def show_check_back_html(self, user_score=None):
         """Return HTML saying no peer work to assess, check back later."""
         # This looks awful on purpose; XXX: should fix as shiny lands
-        return Fragment(u"<div>There are no submissions to review. Check back soon.</div>")
+        html = ""
+        if user_score:
+            html = u"<div>You've received the following score: %s/%s.</div" % (user_score['points_earned'],
+                                                                               user_score['points_possible'])
+        html += u"<div>There are no submissions to review. Check back soon.</div>"
+        return Fragment(html)
 
-    def __view_helper_show_scores(self, user_score, trace=None):
-        """Return HTML to display users's score to them."""
-        # This looks awful on purpose; XXX: should fix as shiny lands
-        return Fragment(u"<div>You've received the following score:"
-                " %s/%s.</div>" % (user_score['points_earned'], user_score['points_possible']))
-
-    def _view_helper_make_assessment(self, peer_submission, trace=None):
+    def show_assessment_html(self, peer_submission, user_score=None, trace=None):
         """Return HTML for rubric display and assessment solicitation."""
         # Submits to assess handler
         load = self._load
@@ -351,17 +347,19 @@ class OpenAssessmentBlock(XBlock):
                         default_filters=mako_default_filters,
                         input_encoding='utf-8',
                        )
-        frag = Fragment(html.render_unicode(xblock_trace=trace,
+        frag = Fragment(html.render_unicode(
+                                            xblock_trace=trace,
                                             peer_submission=peer_submission,
                                             rubric_instructions=self.rubric_instructions,
                                             rubric_criteria=self.rubric_criteria,
+                                            user_score=user_score
                                            ))
         frag.add_css(load("static/css/openassessment.css"))
         frag.add_javascript(load("static/js/src/oa_assessment.js"))
         frag.initialize_js('OpenAssessmentBlock')
         return frag
 
-    def _view_helper_make_submission(self, trace=None):
+    def show_submission_html(self, trace=None):
         """Return HTML for the page prompting the user and soliciting submissions."""
         # Submits to submission handler
         load = self._load
@@ -423,7 +421,7 @@ class OpenAssessmentBlock(XBlock):
         status_text = None
         student_sub = data['submission']
         student_item_dict = self._get_student_item_dict()
-        prev_sub = self.__get_submission(student_item_dict)
+        prev_sub = self._get_user_submission(student_item_dict)
 
         if prev_sub:
             # It is an error to submit multiple times for the same item

@@ -1,4 +1,7 @@
 <!-- START OpenAssessmentBlock HTML -->
+% if user_score:
+<div>You've received the following score: ${user_score['points_earned']}/${user_score['points_possible']}.</div>
+% endif
 <div class="openassessment_block" id="openassessment_block_${xblock_trace[0]}">
     <div id="peer_submission_uuid" hidden="true">${peer_submission["uuid"]}</div>
     <p>${peer_submission["answer"]}</p>
