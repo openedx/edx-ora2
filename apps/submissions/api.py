@@ -59,15 +59,15 @@ class SubmissionRequestError(SubmissionError):
 
 def create_submission(student_item_dict, answer, submitted_at=None,
                       attempt_number=None):
-    """Creates a submission for evaluation.
+    """Creates a submission for assessment.
 
-    Generic means by which to submit an answer for evaluation.
+    Generic means by which to submit an answer for assessment.
 
     Args:
         student_item_dict (dict): The student_item this
             submission is associated with. This is used to determine which
             course, student, and location this submission belongs to.
-        answer (str): The answer given by the student to be evaluated.
+        answer (str): The answer given by the student to be assessed.
         submitted_at (datetime): The date in which this submission was submitted.
             If not specified, defaults to the current date.
         attempt_number (int): A student may be able to submit multiple attempts
