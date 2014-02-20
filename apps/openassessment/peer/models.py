@@ -42,7 +42,8 @@ class Rubric(models.Model):
 
     @property
     def points_possible(self):
-        return sum(crit.points_possible for crit in self.criteria.all())
+        criteria_points = [crit.points_possible for crit in self.criteria.all()]
+        return sum(criteria_points) if criteria_points else 0
 
     @staticmethod
     def content_hash_for_rubric_dict(rubric_dict):
@@ -59,9 +60,28 @@ class Rubric(models.Model):
         return sha1(canonical_form).hexdigest()
 
 
+    def options_ids(self, crit_to_opt_names):
+        """
+        """
+        # Cache this
+        crit_to_all_opts = {
+            crit.name : {
+                option.name: option.id for option in crit.options.all()
+            }
+            for crit in self.criteria.all()
+        }
+
+        return [
+            crit_to_all_opts[crit][opt]
+            for crit, opt in crit_to_opt_names.items()
+        ]
+
+
 class Criterion(models.Model):
     # All Rubrics have at least one Criterion
     rubric = models.ForeignKey(Rubric, related_name="criteria")
+
+    name = models.CharField(max_length=100, blank=False)
 
     # 0-based order in the Rubric
     order_num = models.PositiveIntegerField()
@@ -128,15 +148,22 @@ class Assessment(models.Model):
 
     @property
     def points_earned(self):
-        return sum(part.points_earned for part in self.parts.all())
+        parts = [part.points_earned for part in self.parts.all()]
+        return sum(parts) if parts else 0
 
     @property
     def points_possible(self):
         return self.rubric.points_possible
 
+    @property
+    def submission_uuid(self):
+        return self.submission.uuid
+
 
 class AssessmentPart(models.Model):
     assessment = models.ForeignKey(Assessment, related_name='parts')
+
+    # criterion = models.ForeignKey(Criterion)
     option = models.ForeignKey(CriterionOption) # TODO: no reverse
 
     @property

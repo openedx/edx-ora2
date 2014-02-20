@@ -11,7 +11,9 @@ import math
 from django.db import DatabaseError
 
 from openassessment.peer.models import Assessment
-from openassessment.peer.serializers import AssessmentSerializer
+from openassessment.peer.serializers import (
+    AssessmentSerializer, RubricSerializer, rubric_from_dict
+)
 from submissions import api as submission_api
 from submissions.models import Submission, StudentItem, Score
 from submissions.serializers import SubmissionSerializer, StudentItemSerializer
@@ -70,7 +72,7 @@ def create_assessment(
         required_assessments_for_student,
         required_assessments_for_submission,
         assessment_dict,
- #       rubric_dict,
+        rubric_dict,
         scored_at=None):
     """Creates an assessment on the given submission.
 
@@ -123,18 +125,22 @@ def create_assessment(
     """
     try:
         submission = Submission.objects.get(uuid=submission_uuid)
+
+        rubric = rubric_from_dict(rubric_dict)
+        option_ids = rubric.options_ids(assessment_dict["options_selected"])
         peer_assessment = {
+            "rubric": rubric.id,
             "scorer_id": scorer_id,
             "submission": submission.pk,
             "points_earned": sum(assessment_dict["points_earned"]),
             "points_possible": assessment_dict["points_possible"],
             "score_type": PEER_TYPE,
-            "feedback": assessment_dict["feedback"],
+            "parts": [{"option": option_id} for option_id in option=_ids]
         }
         if scored_at:
             peer_assessment["scored_at"] = scored_at
 
-        peer_serializer = AssessmentSerializer(data=peer_evaluation)
+        peer_serializer = AssessmentSerializer(data=peer_assessment)
 
         if not peer_serializer.is_valid():
             raise PeerAssessmentRequestError(peer_serializer.errors)

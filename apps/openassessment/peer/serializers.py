@@ -63,7 +63,7 @@ class CriterionSerializer(NestedModelSerializer):
 
     class Meta:
         model = Criterion
-        fields = ('order_num', 'prompt', 'options')
+        fields = ('order_num', 'name', 'prompt', 'options')
 
 
     def validate_options(self, attrs, source):
@@ -77,10 +77,11 @@ class CriterionSerializer(NestedModelSerializer):
 
 class RubricSerializer(NestedModelSerializer):
     criteria = CriterionSerializer(required=True, many=True)
+    points_possible = serializers.Field(source='points_possible')
 
     class Meta:
         model = Rubric
-        fields = ('id', 'content_hash', 'criteria')
+        fields = ('id', 'content_hash', 'criteria', 'points_possible')
 
 
     def validate_criteria(self, attrs, source):
@@ -103,19 +104,39 @@ class RubricSerializer(NestedModelSerializer):
 
 
 class AssessmentPartSerializer(serializers.ModelSerializer):
-    option = CriterionOptionSerializer()
+#    criterion = CriterionSerializer()
+#    option = CriterionOptionSerializer()
 
     class Meta:
         model = AssessmentPart
+#        fields = ('criterion', 'option')
         fields = ('option',)
 
 
 class AssessmentSerializer(serializers.ModelSerializer):
+    submission_uuid = serializers.Field(source='submission_uuid')
+
     parts = AssessmentPartSerializer(required=True, many=True)
+    points_earned = serializers.Field(source='points_earned')
+    points_possible = serializers.Field(source='points_possible')
 
     class Meta:
         model = Assessment
-        fields = ('submission', 'rubric', 'scored_at', 'scorer_id', 'score_type')
+        fields = (
+            'submission',  # will go away shortly
+            'rubric',
+            'scored_at',
+            'scorer_id',
+            'score_type',
+
+            # Foreign Key
+            'parts',
+
+            # Computed, not part of the model
+            'submission_uuid',
+            'points_earned',
+            'points_possible',
+        )
 
 
 
@@ -133,6 +154,11 @@ def rubric_from_dict(rubric_dict):
         rubric = Rubric.objects.get(content_hash=content_hash)
     except Rubric.DoesNotExist:
         rubric_dict["content_hash"] = content_hash
+        for crit_idx, criterion in enumerate(rubric_dict["criteria"]):
+            criterion["order_num"] = crit_idx
+            for opt_idx, option in enumerate(criterion["options"]):
+                option["order_num"] = opt_idx
+
         rubric_serializer = RubricSerializer(data=rubric_dict)
         if not rubric_serializer.is_valid():
             raise InvalidRubric(rubric_serializer.errors)

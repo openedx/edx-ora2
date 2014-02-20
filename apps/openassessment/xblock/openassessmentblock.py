@@ -122,7 +122,6 @@ DEFAULT_ASSESSMENT_MODULES = [
     DEFAULT_PEER_ASSESSMENT,
 ]
 
-
 def load(path):
     """Handy helper for getting resources from our kit."""
     data = pkg_resources.resource_string(__name__, path)
@@ -223,6 +222,21 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
             "rubric_assessments": [assessment.create_ui_model() for assessment in self.rubric_assessments],
             "grade_state": grade_state,
         }
+
+        rubric_dict = {
+            'criteria': self.rubric_criteria
+        }
+        assessment = peer_api.create_assessment(
+            data["submission_uuid"],
+            student_item_dict["student_id"],
+            int(peer_eval["must_grade"]),
+            int(peer_eval["must_be_graded_by"]),
+            assessment_dict,
+            rubric_dict,
+        )
+
+        # Temp kludge until we fix JSON serialization for datetime
+        assessment["scored_at"] = str(assessment["scored_at"])
 
         template = get_template("static/html/oa_base.html")
         context = Context(context_dict)
