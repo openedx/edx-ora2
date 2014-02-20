@@ -32,9 +32,6 @@
             <h2 class="title">Skip to a part of this problem:</h2>
 
             <ol class="list list--nav">
-                <li class="list--nav__item">
-                    <a class="action" href="#openassessment__response">Your response to this problem</a>
-                </li>
                 {%  for assessment in rubric_assessments %}
                 <li class="list--nav__item">
                     <a class="action" href="#openassessment__{{ assessment.type }}">{{ assessment.navigation_text }}</a>
@@ -71,10 +68,8 @@
         <ol class="openassessment__steps" id="openassessment__steps">
 
             <!-- STEP: response -->
-            {% include "static/html/oa_response.html" %}
-
             {% for assessment in rubric_assessments %}
-            {% include assessment.path %}
+                <li id="{{ assessment.name }}">{{ assessment.title }}</li>
             {% endfor %}
 
         </ol>

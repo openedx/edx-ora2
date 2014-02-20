@@ -7,6 +7,7 @@ import webob
 
 from django.test import TestCase
 from mock import patch
+from openassessment.xblock.submission_block import SubmissionBlock
 
 from submissions import api
 from submissions.api import SubmissionRequestError, SubmissionInternalError
@@ -97,7 +98,7 @@ class TestOpenAssessment(TestCase):
         result = json.loads(resp.body)
         self.assertFalse(result[0])
         self.assertEqual(result[1], "EUNKNOWN")
-        self.assertEqual(result[2], self.assessment.submit_errors["EUNKNOWN"])
+        self.assertEqual(result[2], SubmissionBlock().submit_errors["EUNKNOWN"])
 
     @patch.object(api, 'create_submission')
     def test_submission_API_failure(self, mock_submit):

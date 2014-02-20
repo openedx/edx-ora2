@@ -1,4 +1,4 @@
-class Assessment(object):
+class AssessmentBlock(object):
     assessment_type = None
     name = ''
     start_datetime = None
@@ -7,6 +7,7 @@ class Assessment(object):
     must_be_graded_by = 0
     navigation_text = ""
     path = ""
+    title = ""
 
     def create_ui_model(self):
         return {
@@ -17,5 +18,6 @@ class Assessment(object):
             "must_grade": self.must_grade,
             "must_be_graded_by": self.must_be_graded_by,
             "navigation_text": self.navigation_text,
-            "path": self.path
+            "path": self.path,
+            "title": self.title
         }

@@ -1,18 +1,16 @@
 """An XBlock where students can read a question and compose their response"""
 
-from django.template.context import Context
-import pkg_resources
-
-from django.template.loader import get_template
-
 import datetime
+
+from django.template.context import Context
+from django.template.loader import get_template
 
 from xblock.core import XBlock
 from xblock.fields import List, Scope, String
 from xblock.fragment import Fragment
-from openassessment.xblock.peer_assessment import PeerAssessment
-from submissions.api import SubmissionRequestError
-from submissions import api
+from openassessment.xblock.peer_assessment_block import PeerAssessmentBlock
+from openassessment.xblock.submission_block import SubmissionBlock
+from openassessment.xblock.utils import load
 
 from scenario_parser import ScenarioParser
 
@@ -112,7 +110,7 @@ DEFAULT_RUBRIC_CRITERIA = [
     }
 ]
 
-DEFAULT_PEER_ASSESSMENT = PeerAssessment()
+DEFAULT_PEER_ASSESSMENT = PeerAssessmentBlock()
 DEFAULT_PEER_ASSESSMENT.name = "peer-assessment"
 DEFAULT_PEER_ASSESSMENT.start_datetime = datetime.datetime.now().isoformat()
 DEFAULT_PEER_ASSESSMENT.must_grade = 5
@@ -121,12 +119,6 @@ DEFAULT_PEER_ASSESSMENT.must_be_graded_by = 3
 DEFAULT_ASSESSMENT_MODULES = [
     DEFAULT_PEER_ASSESSMENT,
 ]
-
-
-def load(path):
-    """Handy helper for getting resources from our kit."""
-    data = pkg_resources.resource_string(__name__, path)
-    return data.decode("utf8")
 
 
 class OpenAssessmentBlock(XBlock):
@@ -179,13 +171,6 @@ class OpenAssessmentBlock(XBlock):
         help="The course_id associated with this prompt (until we can get it from runtime).",
     )
 
-    submit_errors = {     # Reported to user sometimes, and useful in tests
-              'ENOSUB':   'API submission is unrequested',
-              'ENODATA':  'API returned an empty response',
-              'EBADFORM': 'API Submission Request Error',
-              'EUNKNOWN': 'API returned unclassified exception',
-    }
-
     def _get_xblock_trace(self):
         """Uniquely identify this xblock by context.
 
@@ -231,29 +216,12 @@ class OpenAssessmentBlock(XBlock):
             "grade_state": grade_state,
         }
 
-        try:
-            previous_submissions = api.get_submissions(student_item_dict)
-        except SubmissionRequestError:
-            previous_submissions = []
-
-        peer_module = self._get_assessment_module('peer-assessment')
-        peer_assessment = peer_module.get_peer_submission(student_item_dict)
-        if previous_submissions and peer_assessment:  # XXX: until workflow better, move on w/ prev submit
-            template = get_template("static/html/oa_base.html")
-            context = Context(context_dict)
-            frag = Fragment(template.render(context))
-            frag.add_css(load("static/css/openassessment.css"))
-            frag.add_javascript(load("static/js/src/oa_assessment.js"))
-            frag.initialize_js('OpenAssessmentBlock')
-        elif previous_submissions:
-            return Fragment(u"<div>There are no submissions to review.</div>")
-        else:                     # XXX: until workflow better, submit until submitted
-            template = get_template("static/html/oa_base.html")
-            context = Context(context_dict)
-            frag = Fragment(template.render(context))
-            frag.add_css(load("static/css/openassessment.css"))
-            frag.add_javascript(load("static/js/src/oa_submission.js"))
-            frag.initialize_js('OpenAssessmentBlock')
+        template = get_template("static/html/oa_base.html")
+        context = Context(context_dict)
+        frag = Fragment(template.render(context))
+        frag.add_css(load("static/css/openassessment.css"))
+        frag.add_javascript(load("static/js/src/oa_base.js"))
+        frag.initialize_js('OpenAssessmentBlock')
         return frag
 
     @XBlock.json_handler
@@ -279,26 +247,7 @@ class OpenAssessmentBlock(XBlock):
         """
         Place the submission text into Openassessment system
         """
-        status = False
-        status_tag = 'ENOSUB'
-        status_text = None
-        student_sub = data['submission']
-        student_item_dict = self._get_student_item_dict()
-        try:
-            status_tag = 'ENODATA'
-            response = api.create_submission(student_item_dict, student_sub)
-            if response:
-                status = True
-                status_tag = response.get('student_item')
-                status_text = response.get('attempt_number')
-        except api.SubmissionRequestError, e:
-            status_tag = 'EBADFORM'
-            status_text = unicode(e.field_errors)
-        except api.SubmissionError:
-            status_tag = 'EUNKNOWN'
-        # relies on success being orthogonal to errors
-        status_text = status_text if status_text else self.submit_errors[status_tag]
-        return status, status_tag, status_text
+        return SubmissionBlock().submit(self._get_student_item_dict(), data)
 
     @staticmethod
     def workbench_scenarios():
@@ -328,6 +277,7 @@ class OpenAssessmentBlock(XBlock):
 
         sparser = ScenarioParser(block, node, unknown_handler)
         block = sparser.parse()
+        block.rubric_assessments.insert(0, SubmissionBlock())
         return block
 
     def _get_grade_state(self):

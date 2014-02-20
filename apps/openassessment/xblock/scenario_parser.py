@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """XBlock scenario parsing routines"""
-from openassessment.xblock.peer_assessment import PeerAssessment
-from openassessment.xblock.self_assessment import SelfAssessment
+from openassessment.xblock.peer_assessment_block import PeerAssessmentBlock
+from openassessment.xblock.self_assessment_block import SelfAssessmentBlock
 
 
 class ScenarioParser(object):
@@ -81,11 +81,11 @@ class ScenarioParser(object):
             assessment = None
             assessment_type = asmnt.tag
             if 'peer-assessment' == assessment_type:
-                assessment = PeerAssessment()
+                assessment = PeerAssessmentBlock()
                 assessment.must_grade = int(asmnt.attrib.get('must_grade', 1))
                 assessment.must_be_graded_by = int(asmnt.attrib.get('must_be_graded_by', 0))
             elif 'self-assessment' == assessment_type:
-                assessment = SelfAssessment()
+                assessment = SelfAssessmentBlock()
 
             if assessment:
                 assessment.name = asmnt.attrib.get('name', '')

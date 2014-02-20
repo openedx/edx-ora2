@@ -1,11 +1,18 @@
+from django.template import Context
+from django.template.loader import get_template
+
+from xblock.fragment import Fragment
+
 from openassessment.peer import api as peer_api
 from openassessment.peer.api import PeerAssessmentWorkflowError
-from openassessment.xblock.assessment import Assessment
+from openassessment.xblock.assessment_block import AssessmentBlock
+from openassessment.xblock.utils import load
 
 
-class PeerAssessment(Assessment):
+class PeerAssessmentBlock(AssessmentBlock):
 
     assessment_type = "peer-assessment"
+    title = "Assess Peers' Responses"
     navigation_text = "Your assessment(s) of peer responses"
     path = "static/html/oa_peer_assessment.html"
 
@@ -49,3 +56,12 @@ class PeerAssessment(Assessment):
             # TODO: Log?
             pass
         return peer_submission
+
+    def render(self, context_dict):
+        template = get_template("static/html/oa_peer_assessment.html")
+        context = Context(context_dict)
+        frag = Fragment(template.render(context))
+        frag.add_css(load("static/css/openassessment.css"))
+        frag.add_javascript(load("static/js/src/oa_assessment.js"))
+        frag.initialize_js('PeerAssessment')
+        return frag
