@@ -1,14 +1,9 @@
-from openassessment.xblock.assessment_block import AssessmentBlock
+from xblock.core import XBlock
+from openassessment.xblock.assessment_mixin import AssessmentMixin
 from submissions import api
 
 
-class SubmissionBlock(AssessmentBlock):
-
-    assessment_type = "submission"
-    name = "submission"
-    navigation_text = "Your response to this problem"
-    path = "static/html/oa_response.html"
-    title = "Your Response"
+class SubmissionMixin(AssessmentMixin):
 
     submit_errors = {
         # Reported to user sometimes, and useful in tests
@@ -18,10 +13,12 @@ class SubmissionBlock(AssessmentBlock):
         'EUNKNOWN': 'API returned unclassified exception',
     }
 
-    def submit(self, student_item_dict, data):
+    @XBlock.json_handler
+    def submit(self, data, suffix=''):
         """
         Place the submission text into Openassessment system
         """
+        student_item_dict = self._get_student_item_dict()
         status = False
         status_text = None
         student_sub = data['submission']
@@ -40,3 +37,7 @@ class SubmissionBlock(AssessmentBlock):
             # relies on success being orthogonal to errors
         status_text = status_text if status_text else self.submit_errors[status_tag]
         return status, status_tag, status_text
+
+    @XBlock.handler
+    def render_submission(self, data, suffix=''):
+        return super(SubmissionMixin, self).render('static/html/oa_response.html')
