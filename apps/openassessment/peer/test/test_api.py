@@ -8,7 +8,7 @@ from nose.tools import raises
 from mock import patch
 
 from openassessment.peer import api
-from openassessment.peer.models import PeerEvaluation
+from openassessment.peer.models import Assessment
 from submissions import api as sub_api
 from submissions.models import Submission
 from submissions.tests.test_api import STUDENT_ITEM, ANSWER_ONE
@@ -168,7 +168,7 @@ class TestApi(TestCase):
             MONDAY
         )
 
-    @patch.object(PeerEvaluation.objects, 'filter')
+    @patch.object(Assessment.objects, 'filter')
     @raises(sub_api.SubmissionInternalError)
     def test_error_on_get_evaluation(self, mock_filter):
         submission = sub_api.create_submission(STUDENT_ITEM, ANSWER_ONE)

@@ -1,5 +1,5 @@
 from django.contrib import admin
 
-from openassessment.peer.models import PeerEvaluation
+from openassessment.peer.models import Assessment
 
-admin.site.register(PeerEvaluation)
+admin.site.register(Assessment)

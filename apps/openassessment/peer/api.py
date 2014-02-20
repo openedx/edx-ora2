@@ -6,15 +6,12 @@ the workflow for a given submission.
 """
 import copy
 import logging
+import math
 
 from django.db import DatabaseError
-import math
-from openassessment.peer.models import PeerEvaluation
 
-from openassessment.peer.serializers import PeerAssessmentSerializer
-from openassessment.peer.serializers import (
-    PeerEvaluationSerializer, content_hash_for_rubric_dict
-)
+from openassessment.peer.models import Assessment
+from openassessment.peer.serializers import AssessmentSerializer
 from submissions import api as submission_api
 from submissions.models import Submission, StudentItem, Score
 from submissions.serializers import SubmissionSerializer, StudentItemSerializer
@@ -73,7 +70,7 @@ def create_assessment(
         required_assessments_for_student,
         required_assessments_for_submission,
         assessment_dict,
-        rubric_dict,
+ #       rubric_dict,
         scored_at=None):
     """Creates an assessment on the given submission.
 
@@ -137,7 +134,8 @@ def create_assessment(
         if scored_at:
             peer_assessment["scored_at"] = scored_at
 
-        peer_serializer = PeerAssessmentSerializer(data=peer_assessment)
+        peer_serializer = AssessmentSerializer(data=peer_evaluation)
+
         if not peer_serializer.is_valid():
             raise PeerAssessmentRequestError(peer_serializer.errors)
         peer_serializer.save()
@@ -199,7 +197,7 @@ def _check_if_finished_and_create_score(student_item,
         student_item.student_id,
         required_assessments_for_student
     )
-    assessments = PeerEvaluation.objects.filter(submission=submission)
+    assessments = Assessment.objects.filter(submission=submission)
     submission_finished = assessments.count() >= required_assessments_for_submission
     scores = []
     for assessment in assessments:
@@ -264,7 +262,7 @@ def has_finished_required_evaluating(student_id, required_assessments):
     if required_assessments < 0:
         raise PeerAssessmentRequestError(
             "Required Assessment count must be a positive integer.")
-    return PeerEvaluation.objects.filter(
+    return Assessment.objects.filter(
         scorer_id=student_id
     ).count() >= required_assessments
 
@@ -312,8 +310,8 @@ def get_assessments(submission_id):
     """
     try:
         submission = Submission.objects.get(uuid=submission_id)
-        assessments = PeerEvaluation.objects.filter(submission=submission)
-        serializer = PeerAssessmentSerializer(assessments, many=True)
+        assessments = Assessment.objects.filter(submission=submission)
+        serializer = AssessmentSerializer(assessments, many=True)
         return serializer.data
     except DatabaseError:
         error_message = (
@@ -395,7 +393,7 @@ def _get_first_submission_not_evaluated(student_items, student_id, required_num_
         "-attempt_number"
     )
     for submission in submissions:
-        assessments = PeerEvaluation.objects.filter(submission=submission)
+        assessments = Assessment.objects.filter(submission=submission)
         if assessments.count() < required_num_assessments:
             already_evaluated = False
             for assessment in assessments:

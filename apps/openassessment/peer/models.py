@@ -1,15 +1,10 @@
+# coding=utf-8
 """
-These Models have to capture not only the state of evaluations made for certain
-submissions, but also the state of the specific rubrics at the time those
-evaluations were made. This means we have a number of little models, and that
-much of this data is immutable once created, so that we don't lose historical
-information. This also means that if you change the Rubric in a problem and
-this system is seeing that new Rubric for the first time, we're going to be
-writing a whole little tree of objects into the database. Fortunately, we only
-need to write this when we see a changed problem (rare). Performance concerns
-when reading this data is mitigated by the fact that it's easy to cache the
-entire tree of objects (since everything is immutable).
+These models have to capture not only the state of assessments made for certain
+submissions, but also the state of the rubrics at the time those assessments
+were made.
 """
+from copy import deepcopy
 from hashlib import sha1
 import json
 
@@ -19,43 +14,49 @@ from django.utils.timezone import now
 from submissions.models import Submission
 
 
-class PeerEvaluation(models.Model):
-    submission = models.ForeignKey(Submission)
-    points_earned = models.PositiveIntegerField(default=0)
-    points_possible = models.PositiveIntegerField(default=0)
-    scored_at = models.DateTimeField(default=now, db_index=True)
-    scorer_id = models.CharField(max_length=255, db_index=True)
-    score_type = models.CharField(max_length=2)
-    feedback = models.TextField(max_length=10000, default="")
-
-    def __repr__(self):
-        return repr(dict(
-            submission=self.submission,
-            points_earned=self.points_earned,
-            points_possible=self.points_possible,
-            scored_at=self.scored_at,
-            scorer_id=self.scorer_id,
-            score_type=self.score_type,
-            feedback=self.feedback,
-        ))
-
-    class Meta:
-        ordering = ["-scored_at"]
-
-
 class Rubric(models.Model):
-    """
-    A Rubric
+    """A Rubric contains the guidelines on how to assess a submission.
+
+    Rubrics are composed of :class:`Criterion` objects which are in turn
+    composed of :class:`CriterionOption` objects.
+
+    This model is a bit unusual in that it is the representation of the rubric
+    that an assessment was made with *at the time of assessment*. The source
+    rubric data lives in the problem definition, which is in the
+    :class:`OpenAssessmentBlock`. When an assessment is made, the XBlock passes
+    that rubric information along as well. When this Django app records the
+    :class:`Assessment`, we do a lookup to see if the Rubric model object
+    already exists (using hashing). If the Rubric is not found, we create a new
+    one with the information OpenAssessmentBlock has passed in.
+
+    .. warning::
+       Never change Rubric model data after it's written!
+
+    The little tree of objects that compose a Rubric is meant to be immutable —
+    once created, they're never updated. When the problem changes, we end up
+    creating a new Rubric instead. This makes it easy to cache and do hash-based
+    lookups.
     """
     # SHA1 hash
     content_hash = models.CharField(max_length=40)
 
-    # This is actually the prompt for the whole question, which may be a
-    # complex, nested XML structure.
-    prompt = models.TextField(max_length=10000)
-
+    @property
     def points_possible(self):
-        return sum(crit.points_possible() for crit in self.criteria.all())
+        return sum(crit.points_possible for crit in self.criteria.all())
+
+    @staticmethod
+    def content_hash_for_rubric_dict(rubric_dict):
+        """
+
+        """
+        rubric_dict = deepcopy(rubric_dict)
+        # Neither "id" nor "content_hash" would count towards calculating the
+        # content_hash.
+        rubric_dict.pop("id", None)
+        rubric_dict.pop("content_hash", None)
+
+        canonical_form = json.dumps(rubric_dict, sort_keys=True)
+        return sha1(canonical_form).hexdigest()
 
 
 class Criterion(models.Model):
@@ -72,6 +73,7 @@ class Criterion(models.Model):
         ordering = ["rubric", "order_num"]
 
 
+    @property
     def points_possible(self):
         return max(option.points for option in self.options.all())
 
@@ -109,3 +111,38 @@ class CriterionOption(models.Model):
     def __unicode__(self):
         return repr(self)
 
+
+class Assessment(models.Model):
+    submission = models.ForeignKey(Submission)
+    rubric = models.ForeignKey(Rubric)
+
+    scored_at = models.DateTimeField(default=now, db_index=True)
+    scorer_id = models.CharField(max_length=40, db_index=True)
+    score_type = models.CharField(max_length=2)
+
+    # TODO: move this to its own model
+    feedback = models.TextField(max_length=10000, default="")
+
+    class Meta:
+        ordering = ["-scored_at"]
+
+    @property
+    def points_earned(self):
+        return sum(part.points_earned for part in self.parts.all())
+
+    @property
+    def points_possible(self):
+        return self.rubric.points_possible
+
+
+class AssessmentPart(models.Model):
+    assessment = models.ForeignKey(Assessment, related_name='parts')
+    option = models.ForeignKey(CriterionOption) # TODO: no reverse
+
+    @property
+    def points_earned(self):
+        return self.option.points
+
+    @property
+    def points_possible(self):
+        return self.option.criterion.points_possible
