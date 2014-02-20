@@ -7,11 +7,9 @@ from mako.template import Template
 from xblock.core import XBlock
 from xblock.fields import List, Scope, String
 from xblock.fragment import Fragment
-from submissions.api import SubmissionRequestError
 
-from submissions import api
+from submissions import api as submissions_api
 from openassessment.peer import api as peer_api
-from openassessment.peer.api import PeerEvaluationWorkflowError
 from scenario_parser import ScenarioParser
 
 
@@ -243,6 +241,7 @@ class OpenAssessmentBlock(XBlock):
               'ENODATA':  'API returned an empty response',
               'EBADFORM': 'API Submission Request Error',
               'EUNKNOWN': 'API returned unclassified exception',
+              'ENOMULTI': 'Multiple submissions are not allowed for this item',
     }
 
     def _get_xblock_trace(self):
@@ -273,59 +272,118 @@ class OpenAssessmentBlock(XBlock):
 
     def student_view(self, context=None):
         """The main view of OpenAssessmentBlock, displayed when viewing courses."""
-        def load(path):
-            """Handy helper for getting resources from our kit."""
-            data = pkg_resources.resource_string(__name__, path)
-            return data.decode("utf8")
+        # XXX: For the moment, the initializations and if/else tree below
+        #      embody a rough-and-ready workflow, which will be replaced in the
+        #      beatific future of a proper workflow module. Probably. HACK
 
         trace = self._get_xblock_trace()
         student_item_dict = self._get_student_item_dict()
+        # This user's most recent previous submission
+        user_submission = self.__get_submission(student_item_dict)
+        # This score for this user's user_submission
+        user_score = self.__get_score(student_item_dict, user_submission)
 
-        try:
-            previous_submissions = api.get_submissions(student_item_dict)
-        except SubmissionRequestError:
-            previous_submissions = []
+        peer_eval = self._hack_get_eval()   # HACK: Replace with proper workflow.
+        peer_submission = self.__get_peer_submission(student_item_dict, peer_eval)
 
+        if user_score:
+            # We're Done!
+            return self.__view_helper_show_scores(user_score, trace)
+        elif user_submission and peer_submission:
+            # We've submitted, but not finished assessing. Do assessments.
+            return self._view_helper_make_assessment(peer_submission, trace)
+        elif user_submission:
+            # We've submitted, but there's no assesing to do yet.
+            return self.__view_helper_check_back()
+        else:
+            # We haven't submitted, so do that first.
+            # XXX: In future, we'll support multiple submission and this will be wrong
+            return self._view_helper_make_submission(trace)
+
+    @staticmethod
+    def __get_submission(student_item_dict):
+        """Return the most recent submission, if any, by user in student_item_dict"""
+        submissions = []
         try:
-            # HACK: Replace with proper workflow.
-            peer_submission = False
-            peer_eval = self._hack_get_peer_eval()
-            if peer_eval:
-                peer_submission = peer_api.get_submission_to_evaluate(student_item_dict, peer_eval["must_be_graded_by"])
-        except PeerEvaluationWorkflowError:
+            submissions = submissions_api.get_submissions(student_item_dict)
+        except submissions_api.SubmissionRequestError:
+            # This error is actually ok.
+            pass
+        return submissions[0] if submissions else None
+
+    @staticmethod
+    def __get_score(student_item_dict, submission=False):
+        """Return the most recent score, if any, for student item"""
+        scores = False
+        if submission:
+            scores = submissions_api.get_score(student_item_dict)
+        return scores[0] if scores else None
+
+    @staticmethod
+    def __get_peer_submission(student_item_dict, peer_eval):
+        """Return a peer submission, if any, for user to assess"""
+        peer_submission = None
+        try:
+            peer_submission = peer_api.get_submission_to_evaluate(student_item_dict, peer_eval["must_be_graded_by"])
+        except peer_api.PeerEvaluationWorkflowError:
             # Additional HACK: Without proper workflow, there may not be the
             # correct information to complete the request for a peer submission.
             # This error should be handled properly once we have a workflow API.
             pass
+        return peer_submission
 
-        if previous_submissions and peer_submission:  # XXX: until workflow better, move on w/ prev submit
-            html = Template(load("static/html/oa_rubric.html"),
-                            default_filters=mako_default_filters,
-                            input_encoding='utf-8',
-                           )
-            frag = Fragment(html.render_unicode(xblock_trace=trace,
-                                                peer_submission=peer_submission,
-                                                rubric_instructions=self.rubric_instructions,
-                                                rubric_criteria=self.rubric_criteria,
-                                               ))
-            frag.add_css(load("static/css/openassessment.css"))
-            frag.add_javascript(load("static/js/src/oa_assessment.js"))
-            frag.initialize_js('OpenAssessmentBlock')
-        elif previous_submissions:
-            return Fragment(u"<div>There are no submissions to review.</div>")
-        else:                     # XXX: until workflow better, submit until submitted
-            html = Template(load("static/html/oa_submission.html"),
-                            default_filters=mako_default_filters,
-                            input_encoding='utf-8',
-                           )
-            frag = Fragment(html.render_unicode(xblock_trace=trace, question=self.prompt))
-            frag.add_css(load("static/css/openassessment.css"))
-            frag.add_javascript(load("static/js/src/oa_submission.js"))
-            frag.initialize_js('OpenAssessmentBlock')
+    def __view_helper_show_check_back(self):
+        """Return HTML saying no peer work to assess, check back later."""
+        # This looks awful on purpose; XXX: should fix as shiny lands
+        return Fragment(u"<div>There are no submissions to review. Check back soon.</div>")
+
+    def __view_helper_show_scores(self, user_score, trace=None):
+        """Return HTML to display users's score to them."""
+        # This looks awful on purpose; XXX: should fix as shiny lands
+        return Fragment(u"<div>You've received the following score:"
+                " %s/%s.</div>" % (user_score['points_earned'], user_score['points_possible']))
+
+    def _view_helper_make_assessment(self, peer_submission, trace=None):
+        """Return HTML for rubric display and assessment solicitation."""
+        # Submits to assess handler
+        load = self._load
+        html = Template(load("static/html/oa_rubric.html"),
+                        default_filters=mako_default_filters,
+                        input_encoding='utf-8',
+                       )
+        frag = Fragment(html.render_unicode(xblock_trace=trace,
+                                            peer_submission=peer_submission,
+                                            rubric_instructions=self.rubric_instructions,
+                                            rubric_criteria=self.rubric_criteria,
+                                           ))
+        frag.add_css(load("static/css/openassessment.css"))
+        frag.add_javascript(load("static/js/src/oa_assessment.js"))
+        frag.initialize_js('OpenAssessmentBlock')
         return frag
 
-    def _hack_get_peer_eval(self):
+    def _view_helper_make_submission(self, trace=None):
+        """Return HTML for the page prompting the user and soliciting submissions."""
+        # Submits to submission handler
+        load = self._load
+        html = Template(load("static/html/oa_submission.html"),
+                        default_filters=mako_default_filters,
+                        input_encoding='utf-8',
+                       )
+        frag = Fragment(html.render_unicode(xblock_trace=trace, question=self.prompt))
+        frag.add_css(load("static/css/openassessment.css"))
+        frag.add_javascript(load("static/js/src/oa_submission.js"))
+        frag.initialize_js('OpenAssessmentBlock')
+        return frag
+
+    @staticmethod
+    def _load(path):
+        """Help get resources from our package kit."""
+        data = pkg_resources.resource_string(__name__, path)
+        return data.decode("utf8")
+
+    def _hack_get_eval(self):
         # HACK: Forcing Peer Eval, we'll get the Eval config.
+        #       TODO: When this is smarter, remove 'hack' from name
         for next_eval in self.rubric_evals:
             if next_eval["type"] == "peereval":
                 return next_eval
@@ -333,7 +391,7 @@ class OpenAssessmentBlock(XBlock):
     @XBlock.json_handler
     def assess(self, data, suffix=''):
         # HACK: Replace with proper workflow.
-        peer_eval = self._hack_get_peer_eval()
+        peer_eval = self._hack_get_eval()
         """Place an assessment into Openassessment system"""
         student_item_dict = self._get_student_item_dict()
 
@@ -365,18 +423,25 @@ class OpenAssessmentBlock(XBlock):
         status_text = None
         student_sub = data['submission']
         student_item_dict = self._get_student_item_dict()
-        try:
+        prev_sub = self.__get_submission(student_item_dict)
+
+        if prev_sub:
+            # It is an error to submit multiple times for the same item
+            status_tag = 'ENOMULTI'
+        else:
             status_tag = 'ENODATA'
-            response = api.create_submission(student_item_dict, student_sub)
-            if response:
+            try:
+                response = submissions_api.create_submission(student_item_dict, student_sub)
+            except submissions_api.SubmissionRequestError, e:
+                status_tag = 'EBADFORM'
+                status_text = unicode(e.field_errors)
+            except submissions_api.SubmissionError:
+                status_tag = 'EUNKNOWN'
+            else:
                 status = True
                 status_tag = response.get('student_item')
                 status_text = response.get('attempt_number')
-        except api.SubmissionRequestError, e:
-            status_tag = 'EBADFORM'
-            status_text = unicode(e.field_errors)
-        except api.SubmissionError:
-            status_tag = 'EUNKNOWN'
+
         # relies on success being orthogonal to errors
         status_text = status_text if status_text else self.submit_errors[status_tag]
         return (status, status_tag, status_text)

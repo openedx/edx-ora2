@@ -8,9 +8,9 @@ function OpenAssessmentBlock(runtime, element) {
     /* Sample Debug Console: http://localhost:8000/submissions/Joe_Bloggs/TestCourse/u_3 */
 
     function displayStatus(result) {
-        status = result[0]
-        error_msg = result[2]
-        if (status) {
+        status = result[0];
+        error_msg = result[2];
+        if (status === 'true') {
             $('.openassessment_response_status_block', element).html(success_msg.concat(click_msg)); 
         } else {
             $('.openassessment_response_status_block', element).html(failure_msg.concat(error_msg).concat(click_msg));
