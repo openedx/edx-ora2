@@ -1,3 +1,7 @@
+from django.template import Context
+from django.template.loader import get_template
+
+
 class AssessmentBlock(object):
     assessment_type = None
     name = ''
@@ -18,6 +22,10 @@ class AssessmentBlock(object):
             "must_grade": self.must_grade,
             "must_be_graded_by": self.must_be_graded_by,
             "navigation_text": self.navigation_text,
-            "path": self.path,
             "title": self.title
         }
+
+    def render(self, context_dict):
+        template = get_template(self.path)
+        context = Context(context_dict)
+        return template.render(context)

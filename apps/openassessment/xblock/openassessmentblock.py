@@ -1,16 +1,18 @@
 """An XBlock where students can read a question and compose their response"""
 
 import datetime
+import json
 
 from django.template.context import Context
 from django.template.loader import get_template
+import pkg_resources
+from webob import Response
 
 from xblock.core import XBlock
 from xblock.fields import List, Scope, String
 from xblock.fragment import Fragment
 from openassessment.xblock.peer_assessment_block import PeerAssessmentBlock
 from openassessment.xblock.submission_block import SubmissionBlock
-from openassessment.xblock.utils import load
 
 from scenario_parser import ScenarioParser
 
@@ -120,6 +122,10 @@ DEFAULT_ASSESSMENT_MODULES = [
     DEFAULT_PEER_ASSESSMENT,
 ]
 
+def load(path):
+    """Handy helper for getting resources from our kit."""
+    data = pkg_resources.resource_string(__name__, path)
+    return data.decode("utf8")
 
 class OpenAssessmentBlock(XBlock):
     """Displays a question and gives an area where students can compose a response."""
@@ -224,12 +230,30 @@ class OpenAssessmentBlock(XBlock):
         frag.initialize_js('OpenAssessmentBlock')
         return frag
 
+    @XBlock.handler
+    def render_assessment(self, data, suffix=''):
+        """Render an Assessment Module's HTML
+
+        Given the name of an assessment module, find it in the list of
+        configured modules, and ask for its rendered HTML.
+
+        """
+        body = json.loads(data.body)
+        context_dict = {
+            "xblock_trace": self._get_xblock_trace(),
+            "rubric_instructions": self.rubric_instructions,
+            "rubric_criteria": self.rubric_criteria,
+        }
+        assessment = self._get_assessment_module(body['assessment'])
+        if assessment:
+            return Response(assessment.render(context_dict), content_type='application/html', charset="UTF-8")
+
     @XBlock.json_handler
     def assess(self, data, suffix=''):
         # TODO Pass name through the handler.
         assessment = self._get_assessment_module('peer-assessment')
         if assessment:
-            assessment.assess(
+            return assessment.assess(
                 self._get_student_item_dict(),
                 self.rubric_criteria,
                 data
