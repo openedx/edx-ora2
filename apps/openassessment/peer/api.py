@@ -135,7 +135,7 @@ def create_assessment(
             "points_earned": sum(assessment_dict["points_earned"]),
             "points_possible": assessment_dict["points_possible"],
             "score_type": PEER_TYPE,
-            "parts": [{"option": option_id} for option_id in option=_ids]
+            "parts": [{"option": option_id} for option_id in option_ids]
         }
         if scored_at:
             peer_assessment["scored_at"] = scored_at

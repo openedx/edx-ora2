@@ -19,7 +19,7 @@ ASSESSMENT_DICT = dict(
     feedback="Your submission was thrilling.",
     options_selected={
         "secret": "yes",
-        "safe": "no",
+        u"ⓢⓐⓕⓔ": "no",
         "giveup": "reluctant",
         "singing": "no",
     }
@@ -36,7 +36,7 @@ RUBRIC_DICT = dict(
             ]
         ),
         dict(
-            name="safe",
+            name=u"ⓢⓐⓕⓔ",
             prompt="Did the writer keep it safe?",
             options=[
                 dict(name="no", points="0", explanation=""),

@@ -2,7 +2,13 @@
     "unicode_evaluation": {
         "points_earned": [10, 0, 24, 36],
         "points_possible": 12,
-        "feedback": "这是中国"
+        "feedback": "这是中国",
+        "options_selected": {
+            "secret": "yes",
+            "ⓢⓐⓕⓔ": "no",
+            "giveup": "reluctant",
+            "singing": "no",
+        }
     },
     "basic_evaluation": {
         "points_earned": [1, 0, 3, 2],
