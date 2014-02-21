@@ -159,6 +159,9 @@ class Assessment(models.Model):
     def submission_uuid(self):
         return self.submission.uuid
 
+    def __unicode__(self):
+        return u"Assessment {}".format(self.id)
+
 
 class AssessmentPart(models.Model):
     assessment = models.ForeignKey(Assessment, related_name='parts')
