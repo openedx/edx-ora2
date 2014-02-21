@@ -1,0 +1,49 @@
+// xblock: elements - base
+// ====================
+
+// NOTES:
+// * all base set-up styles that can be applied to any xblock
+
+// --------------------
+// fonts
+// --------------------
+.wrapper--xblock {
+  @extend %t-copy-base;
+  overflow-y: scroll;
+  font-size: 62.5%;
+  background: $bg-view;
+}
+
+
+// --------------------
+// layout
+// --------------------
+[class^="wrapper-"] {
+  @extend %wrapper;
+  padding: 0;
+}
+
+
+// --------------------
+// semantic dividers
+// --------------------
+.sr, hr.divider {
+  @extend %ui-text-sr;
+}
+
+
+// --------------------
+// semantic lists used for UI
+// --------------------
+.list--actions,
+.list--docs,
+.list--steps,
+.list--controls,
+.list--fields,
+.list--help,
+.nav--wizard,
+.list--tips,
+.field--group {
+  @extend %ui-no-list;
+  @extend %wipe-last-child;
+}

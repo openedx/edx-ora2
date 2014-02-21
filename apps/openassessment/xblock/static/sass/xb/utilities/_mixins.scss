@@ -1,0 +1,36 @@
+// xblock: utilities - Sass mixins
+// ====================
+
+// NOTES:
+// * these are Sass-based mixins (http://sass-lang.com/documentation/file.SASS_REFERENCE.html#mixins) that can be applied to any xblock
+
+
+// --------------------
+// shorthand - absolute position
+// --------------------
+@mixin pos-abs ($top: auto, $right: auto, $bottom: auto, $left: auto) {
+  position: absolute;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+
+
+// --------------------
+// font-size (rems)
+// --------------------
+@mixin font-size($sizeValue: 16){
+  font-size: $sizeValue + px;
+  font-size: ($sizeValue/10) + rem;
+}
+
+
+// --------------------
+// line-height (rems)
+// --------------------
+@mixin lh($fontSize: auto){
+  line-height: ($fontSize*1.50) + px;
+  line-height: (($fontSize/10)*1.50) + rem;
+}
+
