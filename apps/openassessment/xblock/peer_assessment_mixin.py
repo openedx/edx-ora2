@@ -10,9 +10,8 @@ class PeerAssessmentMixin(AssessmentMixin):
     def assess(self, data, suffix=''):
         """Place an assessment into OpenAssessment system
         """
-#        with self.get_assessment_module('peer-assessment') as assessment:
-
         assessment_ui_model = self.get_assessment_module('peer-assessment')
+
         rubric_dict = {
             'criteria': self.rubric_criteria
         }
@@ -20,21 +19,22 @@ class PeerAssessmentMixin(AssessmentMixin):
             "points_earned": map(int, data["points_earned"]),
             "points_possible": sum(c['total_value'] for c in self.rubric_criteria),
             "feedback": "Not yet implemented.",
-            "options_selected": {},  # Placeholder
+            "options_selected": data["options_selected"],
         }
         assessment = peer_api.create_assessment(
             data["submission_uuid"],
             self.get_student_item_dict()["student_id"],
             int(assessment_ui_model.must_grade),
             int(assessment_ui_model.must_be_graded_by),
-            assessment_dict
+            assessment_dict,
             rubric_dict,
-        )
+        }
 
         # Temp kludge until we fix JSON serialization for datetime
         assessment["scored_at"] = str(assessment["scored_at"])
 
         return assessment_ui_model, "Success"
+
 
     @XBlock.handler
     def render_peer_assessment(self, data, suffix=''):

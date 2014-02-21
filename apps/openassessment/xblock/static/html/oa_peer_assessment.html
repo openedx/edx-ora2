@@ -69,10 +69,10 @@
                                     <li class="answer">
                                         <div class="wrapper--input">
                                             <input type="radio"
-                                                   name="assessment__rubric__question--{{ criterion.name }}"
-                                                   id="assessment__rubric__question--{{ criterion.name }}--01"
+                                                   name="{{ criterion.name }}"
+                                                   id="assessment__rubric__question--{{ criterion.name }}"
                                                    class="answer__value"
-                                                   value="answer--001__option--01 - Very Well" />
+                                                   value="{{ option.name }}" />
                                             ({{option.points}})
                                             <label for="assessment__rubric__question--001__option--01"
                                                    class="answer__label"
