@@ -1,13 +1,15 @@
-from ddt import ddt, file_data
-from django.db import DatabaseError
-import pytz
+# coding=utf-8
 import datetime
 
+from django.db import DatabaseError
 from django.test import TestCase
-from nose.tools import raises
-from mock import patch
+import pytz
 
-from openassessment.peer import api
+from ddt import ddt, file_data
+from mock import patch
+from nose.tools import raises
+
+from openassessment.peer import api as peer_api
 from openassessment.peer.models import Assessment
 from submissions import api as sub_api
 from submissions.models import Submission
@@ -88,7 +90,7 @@ THURSDAY = datetime.datetime(2007, 9, 16, 0, 0, 0, 0, pytz.UTC)
 class TestApi(TestCase):
     def test_create_evaluation(self):
         submission = sub_api.create_submission(STUDENT_ITEM, ANSWER_ONE)
-        evaluation = api.create_assessment(
+        evaluation = peer_api.create_assessment(
             submission["uuid"],
             STUDENT_ITEM["student_id"],
             REQUIRED_GRADED,
@@ -101,7 +103,7 @@ class TestApi(TestCase):
     @file_data('test_valid_evaluations.json')
     def test_get_evaluations(self, assessment_dict):
         submission = sub_api.create_submission(STUDENT_ITEM, ANSWER_ONE)
-        api.create_assessment(
+        peer_api.create_assessment(
             submission["uuid"],
             STUDENT_ITEM["student_id"],
             REQUIRED_GRADED,
@@ -109,14 +111,14 @@ class TestApi(TestCase):
             assessment_dict,
             RUBRIC_DICT,
         )
-        evaluations = api.get_assessments(submission["uuid"])
+        evaluations = peer_api.get_assessments(submission["uuid"])
         self.assertEqual(1, len(evaluations))
         self._assert_evaluation(evaluations[0], **assessment_dict)
 
     @file_data('test_valid_evaluations.json')
     def test_get_evaluations_with_date(self, assessment_dict):
         submission = sub_api.create_submission(STUDENT_ITEM, ANSWER_ONE)
-        api.create_assessment(
+        peer_api.create_assessment(
             submission["uuid"],
             STUDENT_ITEM["student_id"],
             REQUIRED_GRADED,
@@ -125,7 +127,7 @@ class TestApi(TestCase):
             RUBRIC_DICT,
             MONDAY
         )
-        evaluations = api.get_assessments(submission["uuid"])
+        evaluations = peer_api.get_assessments(submission["uuid"])
         self.assertEqual(1, len(evaluations))
         self._assert_evaluation(evaluations[0], **assessment_dict)
         self.assertEqual(evaluations[0]["scored_at"], MONDAY)
@@ -143,40 +145,40 @@ class TestApi(TestCase):
         scores = sub_api.get_score(STUDENT_ITEM)
         self.assertFalse(scores)
 
-        self.assertFalse(api.has_finished_required_evaluating("Tim", REQUIRED_GRADED))
-        api.create_assessment(
+        self.assertFalse(peer_api.has_finished_required_evaluating("Tim", REQUIRED_GRADED))
+        peer_api.create_assessment(
             bob["uuid"], "Tim", REQUIRED_GRADED, REQUIRED_GRADED_BY, ASSESSMENT_DICT, RUBRIC_DICT
         )
-        api.create_assessment(
+        peer_api.create_assessment(
             sally["uuid"], "Tim", REQUIRED_GRADED, REQUIRED_GRADED_BY, ASSESSMENT_DICT, RUBRIC_DICT
         )
-        self.assertFalse(api.has_finished_required_evaluating("Tim", REQUIRED_GRADED))
+        self.assertFalse(peer_api.has_finished_required_evaluating("Tim", REQUIRED_GRADED))
 
-        api.create_assessment(
+        peer_api.create_assessment(
             jim["uuid"], "Tim", REQUIRED_GRADED, REQUIRED_GRADED_BY, ASSESSMENT_DICT, RUBRIC_DICT
         )
-        self.assertFalse(api.has_finished_required_evaluating("Tim", REQUIRED_GRADED))
-        api.create_evaluation(
+        self.assertFalse(peer_api.has_finished_required_evaluating("Tim", REQUIRED_GRADED))
+        peer_api.create_assessment(
             buffy["uuid"], "Tim", REQUIRED_GRADED, REQUIRED_GRADED_BY, ASSESSMENT_DICT, RUBRIC_DICT
         )
-        self.assertFalse(api.has_finished_required_evaluating("Tim", REQUIRED_GRADED))
-        api.create_evaluation(
+        self.assertFalse(peer_api.has_finished_required_evaluating("Tim", REQUIRED_GRADED))
+        peer_api.create_assessment(
             xander["uuid"], "Tim", REQUIRED_GRADED, REQUIRED_GRADED_BY, ASSESSMENT_DICT, RUBRIC_DICT
         )
-        self.assertTrue(api.has_finished_required_evaluating("Tim", REQUIRED_GRADED))
+        self.assertTrue(peer_api.has_finished_required_evaluating("Tim", REQUIRED_GRADED))
 
         # Tim should not have a score, because his submission does not have
         # enough evaluations.
         scores = sub_api.get_score(STUDENT_ITEM)
         self.assertFalse(scores)
 
-        api.create_assessment(
+        peer_api.create_assessment(
             tim["uuid"], "Bob", REQUIRED_GRADED, REQUIRED_GRADED_BY, ASSESSMENT_DICT, RUBRIC_DICT
         )
-        api.create_assessment(
+        peer_api.create_assessment(
             tim["uuid"], "Sally", REQUIRED_GRADED, REQUIRED_GRADED_BY, ASSESSMENT_DICT, RUBRIC_DICT
         )
-        api.create_assessment(
+        peer_api.create_assessment(
             tim["uuid"], "Jim", REQUIRED_GRADED, REQUIRED_GRADED_BY, ASSESSMENT_DICT, RUBRIC_DICT
         )
 
@@ -187,9 +189,9 @@ class TestApi(TestCase):
         self.assertEqual(12, scores[0]["points_possible"])
 
 
-    @raises(api.PeerAssessmentRequestError)
+    @raises(peer_api.PeerAssessmentRequestError)
     def test_bad_configuration(self):
-        api.has_finished_required_evaluating("Tim", -1)
+        peer_api.has_finished_required_evaluating("Tim", -1)
 
     def test_get_submission_to_evaluate(self):
         self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
@@ -199,27 +201,27 @@ class TestApi(TestCase):
         )
         self._create_student_and_submission("Jim", "Jim's answer", THURSDAY)
 
-        submission = api.get_submission_to_assess(STUDENT_ITEM, 3)
+        submission = peer_api.get_submission_to_assess(STUDENT_ITEM, 3)
         self.assertIsNotNone(submission)
         self.assertEqual(submission["answer"], u"Bob's answer")
         self.assertEqual(submission["student_item"], 2)
         self.assertEqual(submission["attempt_number"], 1)
 
-    @raises(api.PeerAssessmentWorkflowError)
+    @raises(peer_api.PeerAssessmentWorkflowError)
     def test_no_submissions_to_evaluate_for_tim(self):
         self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
-        api.get_submission_to_assess(STUDENT_ITEM, 3)
+        peer_api.get_submission_to_assess(STUDENT_ITEM, 3)
 
     """
     Some Error Checking Tests against DB failures.
     """
 
     @patch.object(Submission.objects, 'get')
-    @raises(api.PeerAssessmentInternalError)
+    @raises(peer_api.PeerAssessmentInternalError)
     def test_error_on_evaluation_creation(self, mock_filter):
         mock_filter.side_effect = DatabaseError("Bad things happened")
         submission = sub_api.create_submission(STUDENT_ITEM, ANSWER_ONE)
-        api.create_assessment(
+        peer_api.create_assessment(
             submission["uuid"],
             STUDENT_ITEM["student_id"],
             REQUIRED_GRADED,
@@ -233,7 +235,7 @@ class TestApi(TestCase):
     @raises(sub_api.SubmissionInternalError)
     def test_error_on_get_evaluation(self, mock_filter):
         submission = sub_api.create_submission(STUDENT_ITEM, ANSWER_ONE)
-        api.create_assessment(
+        peer_api.create_assessment(
             submission["uuid"],
             STUDENT_ITEM["student_id"],
             REQUIRED_GRADED,
@@ -243,17 +245,17 @@ class TestApi(TestCase):
             MONDAY
         )
         mock_filter.side_effect = DatabaseError("Bad things happened")
-        api.get_assessments(submission["uuid"])
+        peer_api.get_assessments(submission["uuid"])
 
     def test_choose_score(self):
-        self.assertEqual(0, api._calculate_final_score([]))
-        self.assertEqual(5, api._calculate_final_score([5]))
+        self.assertEqual(0, peer_api._calculate_final_score([]))
+        self.assertEqual(5, peer_api._calculate_final_score([5]))
         # average of 5, 6, rounded down.
-        self.assertEqual(6, api._calculate_final_score([5, 6]))
-        self.assertEqual(14, api._calculate_final_score([5, 6, 12, 16, 22, 53]))
-        self.assertEqual(14, api._calculate_final_score([6, 5, 12, 53, 16, 22]))
-        self.assertEqual(16, api._calculate_final_score([5, 6, 12, 16, 22, 53, 102]))
-        self.assertEqual(16, api._calculate_final_score([16, 6, 12, 102, 22, 53, 5]))
+        self.assertEqual(6, peer_api._calculate_final_score([5, 6]))
+        self.assertEqual(14, peer_api._calculate_final_score([5, 6, 12, 16, 22, 53]))
+        self.assertEqual(14, peer_api._calculate_final_score([6, 5, 12, 53, 16, 22]))
+        self.assertEqual(16, peer_api._calculate_final_score([5, 6, 12, 16, 22, 53, 102]))
+        self.assertEqual(16, peer_api._calculate_final_score([16, 6, 12, 102, 22, 53, 5]))
 
 
     @staticmethod

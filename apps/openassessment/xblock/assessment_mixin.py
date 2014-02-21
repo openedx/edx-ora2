@@ -12,7 +12,10 @@ class AssessmentMixin(object):
         configured modules, and ask for its rendered HTML.
 
         """
-        if not context_dict: context_dict = {}
+        if not context_dict:
+            context_dict = {}
+
+        # TODO: these shouldn't overwrite
         context_dict["xblock_trace"] = self.get_xblock_trace()
         context_dict["rubric_instructions"] = self.rubric_instructions
         context_dict["rubric_criteria"] = self.rubric_criteria
@@ -20,3 +23,4 @@ class AssessmentMixin(object):
         template = get_template(path)
         context = Context(context_dict)
         return Response(template.render(context), content_type='application/html', charset='UTF-8')
+

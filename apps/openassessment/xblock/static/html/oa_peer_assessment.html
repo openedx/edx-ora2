@@ -61,18 +61,24 @@
                             <!-- individual rubric question (radio-based choice) -->
                             <li class="field field--radio is--required assessment__rubric__question" id="assessment__rubric__question--{{ criterion.name }}">
                                 <h4 class="question__title">
-                                    {{ criterion.instructions }}
+                                    {{ criterion.prompt }}
                                     <span class="label--required">* <span class="sr">(Required)</span></span>
                                 </h4>
-
                                 <ol class="question__answers">
-                                    {% for value, text in criterion.options %}
+                                    {% for option in criterion.options %}
                                     <li class="answer">
                                         <div class="wrapper--input">
-                                            <input type="radio" name="assessment__rubric__question--{{ criterion.name }}" id="assessment__rubric__question--{{ criterion.name }}--01" class="answer__value" value="answer--001__option--01 - Very Well" />
-                                            <label for="assessment__rubric__question--001__option--01" class="answer__label">({{ value }}) {{ text }}</label>
+                                            <input type="radio"
+                                                   name="assessment__rubric__question--{{ criterion.name }}"
+                                                   id="assessment__rubric__question--{{ criterion.name }}--01"
+                                                   class="answer__value"
+                                                   value="answer--001__option--01 - Very Well" />
+                                            ({{option.points}})
+                                            <label for="assessment__rubric__question--001__option--01"
+                                                   class="answer__label"
+                                                   >{{ option.name }}</label>
                                         </div>
-                                        <span class="answer__tip">TODO: Criterion Instructions</span>
+                                        <span class="answer__tip">{{ option.explanation }}</span>
                                     </li>
                                     {% endfor %}
                                 </ol>

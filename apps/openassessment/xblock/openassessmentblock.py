@@ -9,6 +9,7 @@ import pkg_resources
 from xblock.core import XBlock
 from xblock.fields import List, Scope, String
 from xblock.fragment import Fragment
+
 from openassessment.xblock.peer_assessment_mixin import PeerAssessmentMixin
 from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
@@ -207,7 +208,6 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
     def student_view(self, context=None):
         """The main view of OpenAssessmentBlock, displayed when viewing courses.
         """
-
         trace = self.get_xblock_trace()
         student_item_dict = self.get_student_item_dict()
 
@@ -222,21 +222,6 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
             "rubric_assessments": [assessment.create_ui_model() for assessment in self.rubric_assessments],
             "grade_state": grade_state,
         }
-
-        rubric_dict = {
-            'criteria': self.rubric_criteria
-        }
-        assessment = peer_api.create_assessment(
-            data["submission_uuid"],
-            student_item_dict["student_id"],
-            int(peer_eval["must_grade"]),
-            int(peer_eval["must_be_graded_by"]),
-            assessment_dict,
-            rubric_dict,
-        )
-
-        # Temp kludge until we fix JSON serialization for datetime
-        assessment["scored_at"] = str(assessment["scored_at"])
 
         template = get_template("static/html/oa_base.html")
         context = Context(context_dict)

@@ -7,12 +7,18 @@
             "secret": "yes",
             "ⓢⓐⓕⓔ": "no",
             "giveup": "reluctant",
-            "singing": "no",
+            "singing": "no"
         }
     },
     "basic_evaluation": {
         "points_earned": [1, 0, 3, 2],
         "points_possible": 12,
-        "feedback": "Your submission was thrilling."
+        "feedback": "Your submission was thrilling.",
+        "options_selected": {
+            "secret": "yes",
+            "ⓢⓐⓕⓔ": "no",
+            "giveup": "reluctant",
+            "singing": "no"
+        }
     }
 }
