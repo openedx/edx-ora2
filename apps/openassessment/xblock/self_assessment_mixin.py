@@ -6,5 +6,5 @@ class SelfAssessmentMixin(AssessmentMixin):
 
     @XBlock.handler
     def render_self_assessment(self, data, suffix=''):
-        return self.render('static/html/oa_self_assessment.html')
+        return super(SelfAssessmentMixin, self).render('static/html/oa_self_assessment.html')
 

@@ -132,8 +132,8 @@ def create_assessment(
             "rubric": rubric.id,
             "scorer_id": scorer_id,
             "submission": submission.pk,
-            "points_earned": sum(assessment_dict["points_earned"]),
-            "points_possible": assessment_dict["points_possible"],
+            #"points_earned": sum(assessment_dict["points_earned"]),
+            #"points_possible": assessment_dict["points_possible"],
             "score_type": PEER_TYPE,
             "parts": [{"option": option_id} for option_id in option_ids]
         }
