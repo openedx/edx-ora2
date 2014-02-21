@@ -8,9 +8,9 @@ class PeerAssessmentMixin(AssessmentMixin):
 
     @XBlock.json_handler
     def assess(self, data, suffix=''):
-        """Place an assessment into Openassessment system
+        """Place an assessment into OpenAssessment system
         """
-        with self._get_assessment_module('peer-assessment') as assessment:
+        with self.get_assessment_module('peer-assessment') as assessment:
 
             assessment_dict = {
                 "points_earned": map(int, data["points_earned"]),
@@ -19,7 +19,7 @@ class PeerAssessmentMixin(AssessmentMixin):
             }
             assessment = peer_api.create_assessment(
                 data["submission_uuid"],
-                self._get_student_item_dict()["student_id"],
+                self.get_student_item_dict()["student_id"],
                 int(assessment.must_grade),
                 int(assessment.must_be_graded_by),
                 assessment_dict
@@ -32,7 +32,14 @@ class PeerAssessmentMixin(AssessmentMixin):
 
     @XBlock.handler
     def render_peer_assessment(self, data, suffix=''):
-        return super(PeerAssessmentMixin, self).render('static/html/oa_peer_assessment.html')
+        with self.get_assessment_module('peer-assessment') as assessment:
+            context_dict = {"peer_submission": self.get_peer_submission(
+                self.get_student_item_dict(),
+                assessment
+            )}
+        return super(PeerAssessmentMixin, self).render(
+            'static/html/oa_peer_assessment.html',
+            context_dict)
 
     def get_peer_submission(self, student_item_dict, assessment):
         peer_submission = False
@@ -40,7 +47,6 @@ class PeerAssessmentMixin(AssessmentMixin):
             peer_submission = peer_api.get_submission_to_assess(
                 student_item_dict, assessment.must_be_graded_by
             )
-            # context_dict["peer_submission"] = peer_submission
 
             peer_submission = peer_api.get_submission_to_assess(
                 student_item_dict,
@@ -51,3 +57,10 @@ class PeerAssessmentMixin(AssessmentMixin):
             # TODO: Log?
             pass
         return peer_submission
+
+    def get_assessment_module(self, mixin_name):
+        """Get a configured assessment module by name.
+        """
+        for assessment in self.rubric_assessments:
+            if assessment.name == mixin_name:
+                return assessment

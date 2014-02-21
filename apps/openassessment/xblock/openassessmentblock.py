@@ -179,7 +179,7 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         help="The course_id associated with this prompt (until we can get it from runtime).",
     )
 
-    def _get_xblock_trace(self):
+    def get_xblock_trace(self):
         """Uniquely identify this xblock by context.
 
         Every XBlock has a scope_ids, which is a NamedTuple describing
@@ -191,12 +191,12 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         Useful for logging, debugging, and uniqueification."""
         return self.scope_ids.usage_id, self.scope_ids.user_id
 
-    def _get_student_item_dict(self):
+    def get_student_item_dict(self):
         """Create a student_item_dict from our surrounding context.
 
         See also: submissions.api for details.
         """
-        item_id, student_id = self._get_xblock_trace()
+        item_id, student_id = self.get_xblock_trace()
         student_item_dict = dict(
             student_id=student_id,
             item_id=item_id,
@@ -209,10 +209,10 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         """The main view of OpenAssessmentBlock, displayed when viewing courses.
         """
 
-        trace = self._get_xblock_trace()
-        student_item_dict = self._get_student_item_dict()
+        trace = self.get_xblock_trace()
+        student_item_dict = self.get_student_item_dict()
 
-        grade_state = self._get_grade_state()
+        grade_state = self.get_grade_state()
         # All data we intend to pass to the front end.
         context_dict = {
             "xblock_trace": trace,
@@ -262,7 +262,7 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         block = sparser.parse()
         return block
 
-    def _get_grade_state(self):
+    def get_grade_state(self):
         # TODO: Determine if we want to build out grade state right now.
 
         grade_state = {

@@ -18,7 +18,7 @@ class SubmissionMixin(AssessmentMixin):
         """
         Place the submission text into Openassessment system
         """
-        student_item_dict = self._get_student_item_dict()
+        student_item_dict = self.get_student_item_dict()
         status = False
         status_text = None
         student_sub = data['submission']

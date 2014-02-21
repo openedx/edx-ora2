@@ -1,4 +1,4 @@
-/* START Javascript for OpenassessmentXBlock. */
+/* START Javascript for OpenAssessmentXBlock. */
 function OpenAssessmentBlock(runtime, element) {
 
     var handlerUrl = runtime.handlerUrl(element, 'submit');
@@ -8,7 +8,7 @@ function OpenAssessmentBlock(runtime, element) {
     /* Sample Debug Console: http://localhost:8000/submissions/Joe_Bloggs/TestCourse/u_3 */
 
     /*
-        Submission Functions
+     *  Submission Functions
      */
     function render_submissions(data) {
         $('#submission', element).replaceWith(data);
@@ -38,8 +38,8 @@ function OpenAssessmentBlock(runtime, element) {
     }
 
     /*
-        Peer Assessment Functions
-    */
+     *  Peer Assessment Functions
+     */
     function render_peer_assessment(data) {
         $('#peer-assessment', element).replaceWith(data);
 
@@ -89,4 +89,4 @@ function OpenAssessmentBlock(runtime, element) {
         });
     });
 }
-/* END Javascript for OpenassessmentXBlock. */
+/* END Javascript for OpenAssessmentXBlock. */
