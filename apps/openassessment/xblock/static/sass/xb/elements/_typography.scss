@@ -29,6 +29,14 @@
   font-weight: 700;
 }
 
+// --------------------
+// titlecase
+// --------------------
+%t-titlecase {
+  text-transform: uppercase;
+  letter-spacing: 0.025rem;
+}
+
 
 // --------------------
 // canned icon sizes
@@ -54,88 +62,79 @@
 // canned headings
 // --------------------
 %hd-alpha {
-  @include font-size(48);
-  @include lh(48);
-  @extend %t-weight4;
-  text-transform: uppercase;
+  @extend %t-weight1;
+  @extend %t-titlecase;
+  @include font-size(24);
+  @include lh(24);
   font-family: $f-title;
-  letter-spacing: 0.50rem;
   color: $heading-primary-color;
 }
 
 %hd-bravo {
-  @extend %t-weight2;
-  @include font-size(24);
-  @include lh(24);
-  margin: 0 0 ($baseline-v/4) 0;
+  @extend %t-weight3;
+  @include font-size(21);
+  @include lh(21);
   font-family: $f-title;
   color: $heading-primary-color;
 }
 
 %hd-charlie {
   @extend %t-weight1;
+  @extend %t-titlecase;
   @include font-size(18);
   @include lh(18);
-  margin: 0 0 ($baseline-v/2) 0;
   font-family: $f-title;
   color: $heading-primary-color;
 }
 
-%hd-charlie-alt {
-  @extend %t-weight2;
-  @include font-size(18);
-  @include lh(18);
-  margin: 0 0 ($baseline-v/4) 0;
-  font-family: $f-title;
-  color: $heading-color;
-}
-
 %hd-delta {
-  @extend %t-weight1;
+  @extend %t-weight3;
   @include font-size(16);
   @include lh(16);
-  margin: 0 0 ($baseline-v/2) 0;
-  text-transform: uppercase;
   font-family: $f-title;
-  letter-spacing: 0.125rem;
-  color: $heading-tertiary-color;
+  color: $heading-primary-color;
 }
 
 %hd-epsilon {
   @extend %t-weight1;
-  @include font-size(14);
-  @include lh(14);
+  @extend %t-titlecase;
+  @include font-size(16);
+  @include lh(16);
   font-family: $f-title;
   color: $heading-secondary-color;
 }
 
 %hd-foxtrot {
-  @extend %t-weight1;
+  @extend %t-weight3;
   @include font-size(16);
   @include lh(16);
-  margin: 0 0 ($baseline-v/10) 0;
   font-family: $f-title;
   color: $heading-secondary-color;
 }
 
 %hd-golf {
   @extend %t-weight1;
-  @include font-size(14);
-  @include lh(14);
-  margin: 0 0 ($baseline-v/10) 0;
-  text-transform: uppercase;
+  @extend %t-titlecase;
+  @include font-size(13);
+  @include lh(13);
   font-family: $f-title;
-  letter-spacing: 0.25rem;
   color: $heading-tertiary-color;
 }
 
 %hd-hotel {
-  @include font-size(24);
-  @include lh(24);
-  @extend %t-weight4;
-  text-transform: uppercase;
+  @extend %t-weight1;
+  @include font-size(13);
+  @include lh(13);
   font-family: $f-title;
-  letter-spacing: 0.25rem;
+  color: $heading-tertiary-color;
+}
+
+%hd-india {
+  @extend %t-weight1;
+  @extend %t-titlecase;
+  @include font-size(11);
+  @include lh(11);
+  font-family: $f-title;
   color: $heading-tertiary-color;
 }
 
@@ -143,15 +142,7 @@
 // --------------------
 // canned copy
 // --------------------
-%copy-base {
-  @extend %t-weight1;
-  @include font-size(16);
-  @include lh(16);
-  font-family: $f-copy;
-  color: $copy-color;
-}
-
-%copy-lead {
+%copy-alpha {
   @extend %t-weight0;
   @include font-size(24);
   @include lh(24);
@@ -159,23 +150,38 @@
   color: $copy-color;
 }
 
-%copy-showcase {
+%copy-bravo {
   @include font-size(18);
   @include lh(18);
   color: $copy-color;
   font-family: $f-copy;
 }
 
-%copy-detail {
+%copy-charlie {
+  @extend %t-weight1;
+  @include font-size(16);
+  @include lh(16);
+  font-family: $f-copy;
+  color: $copy-color;
+}
+
+%copy-delta {
   @include font-size(14);
   @include lh(14);
   font-family: $f-copy;
   color: $copy-color;
 }
 
-%copy-metadata {
+%copy-epsilon {
   @include font-size(12);
   @include lh(12);
+  font-family: $f-copy;
+  color: $copy-supplemental-color;
+}
+
+%copy-foxtrot {
+  @include font-size(11);
+  @include lh(11);
   font-family: $f-copy;
   color: $copy-supplemental-color;
 }

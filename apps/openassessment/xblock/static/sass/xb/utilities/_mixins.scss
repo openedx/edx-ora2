@@ -22,7 +22,7 @@
 // --------------------
 @mixin font-size($sizeValue: 16){
   font-size: $sizeValue + px;
-  font-size: ($sizeValue/10) + rem;
+  // font-size: ($sizeValue/10) + rem; // since we don't control the root element of the DOM, we can't accurately get this fluid unit of measurement to render consistently
 }
 
 
@@ -31,6 +31,6 @@
 // --------------------
 @mixin lh($fontSize: auto){
   line-height: ($fontSize*1.50) + px;
-  line-height: (($fontSize/10)*1.50) + rem;
+  // line-height: (($fontSize/10)*1.50) + rem; // since we don't control the root element of the DOM, we can't accurately get this fluid unit of measurement to render consistently
 }
 
