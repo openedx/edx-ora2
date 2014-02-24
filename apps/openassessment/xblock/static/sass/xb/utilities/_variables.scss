@@ -1,0 +1,167 @@
+// xblock: utilities - Sass variables
+// ====================
+
+// NOTES:
+// * these are general variables to be set and overriden later by theming and particular xblock _variables.scss files
+
+// --------------------
+// units
+// --------------------
+$baseline-v: 20px;                                                  // vertical baseline
+$baseline-h: 40px;                                                  // horizontal baseline
+
+
+// --------------------
+// colors - basic
+// --------------------
+// grays
+$gray: rgb(55, 59, 68);
+$gray-l1: tint($gray,20%);
+$gray-l2: tint($gray,40%);
+$gray-l3: tint($gray,60%);
+$gray-l4: tint($gray,80%);
+$gray-l5: tint($gray,90%);
+$gray-l6: tint($gray,95%);
+$gray-l7: tint($gray,99.50%);
+$gray-d1: shade($gray,20%);
+$gray-d2: shade($gray,40%);
+$gray-d3: shade($gray,60%);
+$gray-d4: shade($gray,80%);
+$gray-d5: shade($gray,90%);
+$gray-d6: shade($gray,95%);
+$gray-d7: shade($gray,99%);
+$gray-t0: rgba($gray,0.125);
+$gray-t1: rgba($gray,0.25);
+$gray-t2: rgba($gray,0.50);
+$gray-t3: rgba($gray,0.75);
+
+// blacks
+$black: $gray-d6;                                                   // system black
+$black-t: $gray-d7;
+$black-t0: rgba($black,0.125);
+$black-t1: rgba($black,0.25);
+$black-t2: rgba($black,0.50);
+$black-t3: rgba($black,0.75);
+
+// whites
+$white: $gray-l6;                                                   // system white
+$white-t: $gray-l7;
+$white-t0: rgba($white,0.125);
+$white-t1: rgba($white,0.25);
+$white-t2: rgba($white,0.50);
+$white-t3: rgba($white,0.75);
+
+// shadows
+$shadow: rgba($black,0.2);
+$shadow-l1: rgba($black,0.1);
+$shadow-l2: rgba($black,0.05);
+$shadow-d1: rgba($black,0.4);
+$shadow-d2: rgba($black,0.6);
+
+// blue
+$blue: rgb(128, 169, 204);
+$blue-l1: tint($blue,20%);
+$blue-l2: tint($blue,40%);
+$blue-l3: tint($blue,60%);
+$blue-l4: tint($blue,80%);
+$blue-l5: tint($blue,90%);
+$blue-d1: shade($blue,20%);
+$blue-d2: shade($blue,40%);
+$blue-d3: shade($blue,60%);
+$blue-d4: shade($blue,80%);
+$blue-d5: shade($blue,90%);
+$blue-s1: saturate($blue,15%);
+$blue-s2: saturate($blue,30%);
+$blue-s3: saturate($blue,45%);
+$blue-u1: desaturate($blue,15%);
+$blue-u2: desaturate($blue,30%);
+$blue-u3: desaturate($blue,45%);
+$blue-t0: rgba($blue,0.125);
+$blue-t1: rgba($blue,0.25);
+$blue-t2: rgba($blue,0.50);
+$blue-t3: rgba($blue,0.75);
+
+// --------------------
+// fonts
+// --------------------
+$f-serif: 'Poly', Cambria, Georgia, 'Times New Roman', Times, serif;
+$f-sans-serif: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$f-monospace: 'Bitstream Vera Sans Mono', Consolas, Courier, monospace;
+
+
+// --------------------
+// animation/transitions
+// --------------------
+// timing - used for animation/transition mixin syncing
+$tmg-s3: 3.0s;
+$tmg-s2: 2.0s;
+$tmg-s1: 1.0s;
+$tmg-avg: 0.75s;
+$tmg-f1: 0.50s;
+$tmg-f2: 0.25s;
+$tmg-f3: 0.125s;
+
+// animation-based settings
+$anim-distance-offviewport: ($baseline-h*100);                      // for larger/page-level animations
+
+
+// --------------------
+// application - fonts
+// --------------------
+$f-title: $f-sans-serif;
+$f-copy: $f-serif;
+$f-action: $f-sans-serif;
+
+
+// --------------------
+// application - colors
+// --------------------
+$color-primary: $blue-s2;
+$color-secondary: $blue;
+$color-teritary: $blue-u2;
+
+// application - colors: decorative
+$color-decorative-primary: $blue-u2;
+$color-decorative-secondary: $gray-t0;
+
+// application - colors: actions
+$action-primary-color: tint($color-primary,10%);
+$action-primary-color-focus: saturate($color-primary,25%);
+$action-primary-color-active: $color-primary;
+$action-primary-color-visited: shade($color-primary,20%);
+
+$action-secondary-color: $color-secondary;
+$action-secondary-color-focus: saturate($color-secondary,25%);
+$action-secondary-color-active: $color-secondary;
+$action-secondary-color-visited: shade($color-secondary,20%);
+
+$action-tertiary-color: tint($color-teritary,10%);
+$action-tertiary-color-focus: saturate($color-teritary,25%);
+$action-tertiary-color-active: $color-teritary;
+$action-tertiary-color-visited: shade($color-teritary,20%);
+
+// application - colors: copy and headings
+$heading-color: $gray-d5;
+$heading-primary-color: $black;
+$heading-secondary-color: $gray-l3;
+$heading-tertiary-color: $gray-l4;
+
+$copy-color: $gray-l2;
+$copy-color-alt: $gray-d1;
+$copy-color-focus: $gray-d4;
+
+$copy-lead-color: $gray;
+$copy-lead-color: $gray-d1;
+$copy-lead-color-focus: $gray-d4;
+
+$copy-supplemental-color: $gray-l2;
+$copy-supplemental-color-alt: $gray-l2;
+$copy-supplemental-color-focus: $gray-d1;
+
+// application - colors: states
+$selected-bg: $blue-t1;
+$selected-color: $blue-s1;
+
+// application - colors: view-based elements
+$bg-view: $gray-l6;
+$bg-content: $white;

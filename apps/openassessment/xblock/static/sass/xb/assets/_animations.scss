@@ -1,0 +1,417 @@
+// xblock: assets - animations
+// ====================
+
+// NOTES:
+// * these are bourbon-translated animations that can be used on any xblock
+
+
+// --------------------
+// fade in
+// --------------------
+@include keyframes(fadeIn) {
+  0% {
+    opacity: 0.0;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1.0;
+  }
+}
+
+// canned animation - use if you want out of the box/non-customized anim
+%anim-fadeIn {
+  @include animation(fadeIn $tmg-f2 linear 1);
+}
+
+
+// --------------------
+// fade in + left
+// --------------------
+@include keyframes(fadeInLeft) {
+  0% {
+    @include transform(translateX(-($baseline-h)));
+    opacity: 0;
+  }
+
+  100% {
+    @include transform(translateX(0));
+    opacity: 1;
+  }
+}
+
+// canned animation - use if you want out of the box/non-customized anim
+%anim-fadeInLeft {
+  @include animation(fadeInLeft $tmg-f2 linear 1);
+}
+
+
+// --------------------
+// fade in + right
+// --------------------
+@include keyframes(fadeInRight) {
+  0% {
+    @include transform(translateX($baseline-h));
+    opacity: 0;
+  }
+
+  100% {
+    @include transform(translateX(0));
+    opacity: 1;
+  }
+}
+
+// canned animation - use if you want out of the box/non-customized anim
+%anim-fadeInRight {
+  @include animation(fadeInRight $tmg-f2 linear 1);
+}
+
+
+// --------------------
+// fade in + up
+// --------------------
+@include keyframes(fadeInUp) {
+  0% {
+    @include transform(translateY($baseline-v));
+    opacity: 0;
+  }
+
+  100% {
+    @include transform(translateY(0));
+    opacity: 1;
+  }
+}
+
+// canned animation - use if you want out of the box/non-customized anim
+%anim-fadeInUp {
+  @include animation(fadeInUp $tmg-f2 linear 1);
+}
+
+
+// --------------------
+// fade in + down
+// --------------------
+@include keyframes(fadeInDown) {
+  0% {
+    @include transform(translateY(-($baseline-v)));
+    opacity: 0;
+  }
+
+  100% {
+    @include transform(translateY(0));
+    opacity: 1;
+  }
+}
+
+// canned animation - use if you want out of the box/non-customized anim
+%anim-fadeInDown {
+  @include animation(fadeInDown $tmg-f2 linear 1);
+}
+
+
+// --------------------
+// fade out
+// --------------------
+@include keyframes(fadeOut) {
+  0% {
+    opacity: 1.0;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 0.0;
+  }
+}
+
+// canned animation - use if you want out of the box/non-customized anim
+%anim-fadeOut {
+  @include animation(fadeOut $tmg-f2 linear 1);
+}
+
+
+// --------------------
+// slide in left
+// --------------------
+@include keyframes(slideInLeft) {
+  0% {
+    @include transform(translateX(-($anim-distance-offviewport)));
+    opacity: 0;
+  }
+
+  100% {
+    @include transform(translateX(0));
+  }
+}
+
+// canned animation - use if you want out of the box/non-customized anim
+%anim-slideInLeft {
+  @include animation(slideInLeft $tmg-f2 linear 1);
+}
+
+
+// --------------------
+// slide in right
+// --------------------
+@include keyframes(slideInRight) {
+  0% {
+    @include transform(translateX($anim-distance-offviewport));
+    opacity: 0;
+  }
+
+  100% {
+    @include transform(translateX(0));
+  }
+}
+
+// canned animation - use if you want out of the box/non-customized anim
+%anim-slideInRight {
+  @include animation(slideInRight $tmg-f2 linear 1);
+}
+
+
+// --------------------
+// slide in down
+// --------------------
+@include keyframes(slideInDown) {
+  0% {
+    @include transform(translateY(-($anim-distance-offviewport)));
+    opacity: 0;
+  }
+
+  100% {
+    @include transform(translateY(0));
+  }
+}
+
+// canned animation - use if you want out of the box/non-customized anim
+%anim-slideInDown {
+  @include animation(slideInDown $tmg-f2 linear 1);
+}
+
+
+// --------------------
+// slide in up
+// --------------------
+@include keyframes(slideInUp) {
+  0% {
+    @include transform(translateY($anim-distance-offviewport));
+    opacity: 0;
+  }
+
+  100% {
+    @include transform(translateY(0));
+  }
+}
+
+// canned animation - use if you want out of the box/non-customized anim
+%anim-slideInUp {
+  @include animation(slideInUp $tmg-f2 linear 1);
+}
+
+
+// --------------------
+// slide out left
+// --------------------
+@include keyframes(slideOutLeft) {
+  0% {
+    @include transform(translateX(0));
+  }
+
+  100% {
+    @include transform(translateX(-($anim-distance-offviewport)));
+    opacity: 0;
+  }
+}
+
+// canned animation - use if you want out of the box/non-customized anim
+%anim-slideOutLeft {
+  @include animation(slideOutLeft $tmg-f2 linear 1);
+}
+
+
+// --------------------
+// slide out right
+// --------------------
+@include keyframes(slideOutRight) {
+  0% {
+      @include transform(translateX(0));
+    }
+
+    100% {
+      @include transform(translateX($anim-distance-offviewport));
+      opacity: 0;
+    }
+}
+
+// canned animation - use if you want out of the box/non-customized anim
+%anim-slideOutRight {
+  @include animation(slideOutRight $tmg-f2 linear 1);
+}
+
+
+// --------------------
+// slide out up
+// --------------------
+@include keyframes(slideOutUp) {
+  0% {
+    @include transform(translateY(0));
+  }
+
+  100% {
+    @include transform(translateY(-($anim-distance-offviewport)));
+    opacity: 0;
+  }
+}
+
+// canned animation - use if you want out of the box/non-customized anim
+%anim-slideOutUp {
+  @include animation(slideOutUp $tmg-f2 linear 1);
+}
+
+
+// --------------------
+// rotate up
+// --------------------
+@include keyframes(rotateUp) {
+  0% {
+    @include transform(rotate(0deg));
+  }
+
+  50% {
+    @include transform(rotate(-90deg));
+  }
+
+  100% {
+    @include transform(rotate(-180deg));
+  }
+}
+
+// canned animation - use if you want out of the box/non-customized anim
+%anim-rotateUp {
+  @include animation(rotateUp $tmg-f2 ease-in-out 1);
+}
+
+
+// --------------------
+// rotate down
+// --------------------
+@include keyframes(rotateDown) {
+  0% {
+    @include transform(rotate(0deg));
+  }
+
+  50% {
+    @include transform(rotate(90deg));
+  }
+
+  100% {
+    @include transform(rotate(180deg));
+  }
+}
+
+// canned animation - use if you want out of the box/non-customized anim
+%anim-rotateDown {
+  @include animation(rotateDown $tmg-f2 ease-in-out 1);
+}
+
+
+// --------------------
+// rotate clockwise
+// --------------------
+@include keyframes(rotateCW) {
+  0% {
+    @include transform(rotate(0deg));
+  }
+
+  50% {
+    @include transform(rotate(180deg));
+  }
+
+  100% {
+    @include transform(rotate(360deg));
+  }
+}
+
+// canned animation - use if you want out of the box/non-customized anim
+%anim-rotateCW {
+  @include animation(rotateCW $tmg-s1 linear infinite);
+}
+
+
+// --------------------
+// rotate counter-clockwise
+// --------------------
+@include keyframes(rotateCCW) {
+  0% {
+    @include transform(rotate(0deg));
+  }
+
+  50% {
+    @include transform(rotate(-180deg));
+  }
+
+  100% {
+    @include transform(rotate(-360deg));
+  }
+}
+
+// canned animation - use if you want out of the box/non-customized anim
+%anim-rotateCCW {
+  @include animation(rotateCCW $tmg-s1 linear infinite);
+}
+
+
+// --------------------
+// bounce in
+// --------------------
+@include keyframes(bounceIn) {
+  0% {
+    opacity: 0.0;
+    @include transform(scale(0.3));
+  }
+
+  50% {
+    opacity: 1.0;
+    @include transform(scale(1.05));
+  }
+
+  100% {
+    @include transform(scale(1));
+  }
+}
+
+// canned animation - use if you want out of the box/non-customized anim
+%anim-bounceIn {
+  @include animation(bounceIn $tmg-f1 ease-in-out 1);
+}
+
+
+// --------------------
+// bounce out
+// --------------------
+@include keyframes(bounceOut) {
+  0% {
+    @include transform(scale(1));
+  }
+
+  50% {
+    opacity: 1.0;
+    @include transform(scale(1.05));
+  }
+
+  100% {
+    opacity: 0.0;
+    @include transform(scale(0.3));
+  }
+}
+
+// canned animation - use if you want out of the box/non-customized anim
+%anim-bounceOut {
+  @include animation(bounceOut $tmg-f1 ease-in-out 1);
+}

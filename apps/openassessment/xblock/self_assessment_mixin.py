@@ -1,10 +1,9 @@
 from xblock.core import XBlock
-from openassessment.xblock.assessment_mixin import AssessmentMixin
 
 
-class SelfAssessmentMixin(AssessmentMixin):
+class SelfAssessmentMixin(object):
 
     @XBlock.handler
     def render_self_assessment(self, data, suffix=''):
-        return super(SelfAssessmentMixin, self).render('static/html/oa_self_assessment.html')
+        return self.render_assessment('static/html/oa_self_assessment.html')
 

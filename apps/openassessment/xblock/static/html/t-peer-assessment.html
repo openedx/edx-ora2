@@ -1,20 +1,20 @@
-<!-- TEMPLATE: peer evaluation -->
+<!-- TEMPLATE: peer assessment -->
 
 
 <!-- NOTES:
 
  * class of is--unavailable is added when step is not available
- * each .peer-evaluation item needs a unique id attribute formatted as #peer-evaluation--###
+ * each .peer-assessment item needs a unique id attribute formatted as #peer-assessment--###
  * individual rubric questions' answers need specific id attributes in several places
 
  -->
 
 
 <!-- CASE: default/not started -->
-<li id="openassessment__peer-evaluation" class="openassessment__steps__step step--peer-evaluation">
+<li id="openassessment__peer-assessment" class="openassessment__steps__step step--peer-assessment">
   <header class="step__header">
     <h2 class="step__title">
-      <span class="step__label">Evaluate Peers' Responses</span>
+      <span class="step__label">Assess Peers' Responses</span>
       <span class="step__deadline">due <span class="date">January 30, 2014</span> at <span class="time">15:00 UTC</span></span>
     </h2>
 
@@ -28,15 +28,15 @@
   </header>
 
   <div class="step__instruction">
-    <p>Please read and evaluate the following response from one of your peers in the course.</p>
+    <p>Please read and assess the following response from one of your peers in the course.</p>
   </div>
 
   <div class="step__content">
     <ul class="list--peer-evaluations">
       <li class="list--peer-evaluations__item">
-        <article class="peer-evaluation" id="peer-evaluation--001">
+        <article class="peer-assessment" id="peer-assessment--001">
           <header class="peer-evaluation__header">
-            <h3 class="peer-evaluation__title">Evaluation #
+            <h3 class="peer-evaluation__title">assessment #
               <span class="peer-evaluation__number--current">1</span> of
               <span class="peer-evaluation__number--required">3</span>
             </h3>
@@ -58,7 +58,7 @@
             <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Nullam quis risus eget urna mollis ornare vel eu leo. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Vestibulum id ligula porta felis euismod semper.</p>
           </div>
 
-          <form id="peer-evaluation--001__evaluation" class="peer-evaluation__evaluation" method="post">
+          <form id="peer-assessment--001__evaluation" class="peer-evaluation__evaluation" method="post">
             <fieldset class="evaluation__fields">
               <legend class="evaluation__instruction">Please provide your thoughts on the following (note: required questions are indicated by an asterisk *):</legend>
 
@@ -224,7 +224,7 @@
 
             <ul class="list list--actions">
               <li class="list--actions__item">
-                <button type="submit" id="peer-evaluation--001__evaluation__submit" class="action action--submit">Submit your evaluation &amp; move to response #2</button>
+                <button type="submit" id="peer-assessment--001__evaluation__submit" class="action action--submit">Submit your assessment &amp; move to response #2</button>
               </li>
             </ul>
           </form>
@@ -236,10 +236,10 @@
 
 
 <!-- CASE: started, but incomplete -->
-<li id="openassessment__peer-evaluation" class="openassessment__steps__step step--peer-evaluation">
+<li id="openassessment__peer-assessment" class="openassessment__steps__step step--peer-assessment">
   <header class="step__header">
     <h2 class="step__title">
-      <span class="step__label">Evaluate Peers' Responses</span>
+      <span class="step__label">Assess Peers' Responses</span>
       <span class="step__deadline">due <span class="date">January 30, 2014</span> at <span class="time">15:00 UTC</span></span>
     </h2>
 
@@ -253,15 +253,15 @@
   </header>
 
   <div class="step__instruction">
-    <p>Please read and evaluate the following response from one of your peers in the course.</p>
+    <p>Please read and assess the following response from one of your peers in the course.</p>
   </div>
 
   <div class="step__content">
     <ul class="list--peer-evaluations">
       <li class="list--peer-evaluations__item">
-        <article class="peer-evaluation" id="peer-evaluation--002">
+        <article class="peer-assessment" id="peer-assessment--002">
           <header class="peer-evaluation__header">
-            <h3 class="peer-evaluation__title">Evaluation #
+            <h3 class="peer-evaluation__title">assessment #
               <span class="peer-evaluation__number--current">2</span> of
               <span class="peer-evaluation__number--required">3</span>
             </h3>
@@ -283,7 +283,7 @@
             <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Nullam quis risus eget urna mollis ornare vel eu leo. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Vestibulum id ligula porta felis euismod semper.</p>
           </div>
 
-          <form id="peer-evaluation--002__evaluation" class="peer-evaluation__evaluation" method="post">
+          <form id="peer-assessment--002__evaluation" class="peer-evaluation__evaluation" method="post">
             <fieldset class="evaluation__fields">
               <legend class="evaluation__instruction">Please provide your thoughts on the following (note: required questions are indicated by an asterisk *):</legend>
 
@@ -449,7 +449,7 @@
 
             <ul class="list list--actions">
               <li class="list--actions__item">
-                <button type="submit" id="peer-evaluation--001__evaluation__submit" class="action action--submit">Submit your evaluation &amp; move to response #2</button>
+                <button type="submit" id="peer-assessment--001__evaluation__submit" class="action action--submit">Submit your assessment &amp; move to response #2</button>
               </li>
             </ul>
           </form>
@@ -461,10 +461,10 @@
 
 
 <!-- CASE: started, but incomplete and problem closed -->
-<li id="openassessment__peer-evaluation"class="openassessment__steps__step step--peer-evaluation is--unavailable">
+<li id="openassessment__peer-assessment"class="openassessment__steps__step step--peer-assessment is--unavailable">
   <header class="step__header">
     <h2 class="step__title">
-      <span class="step__label">Evaluate Peers' Responses</span>
+      <span class="step__label">Assess Peers' Responses</span>
       <span class="step__deadline">due <span class="date">January 30, 2014</span> at <span class="time">15:00 UTC</span></span>
     </h2>
 
@@ -480,11 +480,11 @@
 </li>
 
 
-<!-- CASE: no peer responses to evaluate -->
-<li id="openassessment__peer-evaluation" class="openassessment__steps__step step--peer-evaluation is--unavailable">
+<!-- CASE: no peer responses to assess -->
+<li id="openassessment__peer-assessment" class="openassessment__steps__step step--peer-assessment is--unavailable">
   <header class="step__header">
     <h2 class="step__title">
-      <span class="step__label">Evaluate Peers' Responses</span>
+      <span class="step__label">Assess Peers' Responses</span>
       <span class="step__deadline">due <span class="date">January 30, 2014</span> at <span class="time">15:00 UTC</span></span>
     </h2>
 
@@ -500,10 +500,10 @@
 
 
 <!-- CASE: completed -->
-<li id="openassessment__peer-evaluation" class="openassessment__steps__step step--peer-evaluation">
+<li id="openassessment__peer-assessment" class="openassessment__steps__step step--peer-assessment">
   <header class="step__header">
     <h2 class="step__title">
-      <span class="step__label">Evaluate Peers' Responses</span>
+      <span class="step__label">Assess Peers' Responses</span>
       <span class="step__deadline">due <span class="date">January 30, 2014</span> at <span class="time">15:00 UTC</span></span>
     </h2>
 

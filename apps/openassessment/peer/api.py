@@ -148,7 +148,7 @@ def create_assessment(
 
         # Check if the submission is finished and its Author has graded enough.
         student_item = submission.student_item
-        _check_if_finished_and_create_score(
+        _score_if_finished(
             student_item,
             submission,
             required_assessments_for_student,
@@ -167,7 +167,7 @@ def create_assessment(
             student_item=scorer_item
         ).order_by("-attempt_number")
 
-        _check_if_finished_and_create_score(
+        _score_if_finished(
             scorer_item,
             scorer_submissions[0],
             required_assessments_for_student,
@@ -185,11 +185,11 @@ def create_assessment(
         raise PeerAssessmentInternalError(error_message)
 
 
-def _check_if_finished_and_create_score(student_item,
-                                        submission,
-                                        required_assessments_for_student,
-                                        required_assessments_for_submission):
-    """Basic function for checking if a student is finished with peer workflow.
+def _score_if_finished(student_item,
+                       submission,
+                       required_assessments_for_student,
+                       required_assessments_for_submission):
+    """Calculate final grade iff peer evaluation flow is satisfied.
 
     Checks if the student is finished with the peer assessment workflow. If the
     student already has a final grade calculated, there is no need to proceed.
