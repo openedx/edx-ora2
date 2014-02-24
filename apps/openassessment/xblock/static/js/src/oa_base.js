@@ -11,7 +11,7 @@ function OpenAssessmentBlock(runtime, element) {
      *  Submission Functions
      */
     function render_submissions(data) {
-        $('#submission', element).replaceWith(data);
+        $('#openassessment__response', element).replaceWith(data);
         $('#step--response__submit', element).click(function(eventObject) {
             $.ajax({
                 type: "POST",
@@ -41,7 +41,7 @@ function OpenAssessmentBlock(runtime, element) {
      *  Peer Assessment Functions
      */
     function render_peer_assessment(data) {
-        $('#peer-assessment', element).replaceWith(data);
+        $('#openassessment__peer-assessment', element).replaceWith(data);
 
         function prepare_assessment_post(element) {
             var selector = $("input[type=radio]:checked", element);
@@ -70,7 +70,7 @@ function OpenAssessmentBlock(runtime, element) {
                         type: "POST",
                         url: renderSelfUrl,
                         success:  function(data) {
-                            $('#self-assessment', element).replaceWith(data);
+                            $('#openassessment__self-assessment', element).replaceWith(data);
                         }
                     });
                     $.ajax({

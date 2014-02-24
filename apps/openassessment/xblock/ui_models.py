@@ -17,6 +17,7 @@ class SubmissionUIModel(object):
 
     def __init__(self):
         self.assessment_type = "submission"
+        self.class_id = "openassessment__response"
         self.name = "submission"
         self.navigation_text = "Your response to this problem"
         self.title = "Your Response"
@@ -25,6 +26,7 @@ class SubmissionUIModel(object):
         return {
             "assessment_type": self.assessment_type,
             "name": self.name,
+            "class_id": self.class_id,
             "navigation_text": self.navigation_text,
             "title": self.title
         }
@@ -41,6 +43,7 @@ class AssessmentUIModel(object):
 
         self.assessment_type = None
         self.name = ''
+        self.class_id = None
         self.start_datetime = None
         self.due_datetime = None
         self.must_grade = 1
@@ -52,6 +55,7 @@ class AssessmentUIModel(object):
         return {
             "assessment_type": self.assessment_type,
             "name": self.name,
+            "class_id": self.class_id,
             "start_datetime": self.start_datetime,
             "due_datetime": self.due_datetime,
             "must_grade": self.must_grade,
@@ -72,6 +76,7 @@ class PeerAssessmentUIModel(AssessmentUIModel):
     def __init__(self):
         super(PeerAssessmentUIModel, self).__init__()
         self.assessment_type = "peer-assessment"
+        self.class_id = "openassessment__peer-assessment"
         self.title = "Assess Peers' Responses"
         self.navigation_text = "Your assessment(s) of peer responses"
 
@@ -87,5 +92,6 @@ class SelfAssessmentUIModel(AssessmentUIModel):
     def __init__(self):
         super(SelfAssessmentUIModel, self).__init__()
         self.assessment_type = "self-assessment"
+        self.class_id = "openassessment__self-assessment"
         self.navigation_text = "Your assessment of your response"
         self.title = "Assess Your Response"
