@@ -10,7 +10,7 @@ class SelfAssessmentMixin(object):
 
     SelfAssessmentMixin is a Mixin for the OpenAssessmentBlock. Functions in
     the SelfAssessmentMixin call into the OpenAssessmentBlock functions and
-    will not work outside this scope.
+    will not work outside of OpenAssessmentBlock.
 
     """
 

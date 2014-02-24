@@ -11,13 +11,12 @@ class SubmissionMixin(object):
 
     SubmissionMixin is a Mixin for the OpenAssessmentBlock. Functions in the
     SubmissionMixin call into the OpenAssessmentBlock functions and will not
-    work outside this scope.
+    work outside the scope of OpenAssessmentBlock.
 
     """
 
     submit_errors = {
         # Reported to user sometimes, and useful in tests
-        'ENOSUB':   'API submission is unrequested',
         'ENODATA':  'API returned an empty response',
         'EBADFORM': 'API Submission Request Error',
         'EUNKNOWN': 'API returned unclassified exception',
@@ -49,10 +48,9 @@ class SubmissionMixin(object):
         student_item_dict = self.get_student_item_dict()
         prev_sub = self._get_user_submission(student_item_dict)
 
-        if prev_sub:
-            # It is an error to submit multiple times for the same item
-            status_tag = 'ENOMULTI'
-        else:
+        status_tag = 'ENOMULTI'  # It is an error to submit multiple times for the same item
+        if not prev_sub:
+            status_tag = 'ENODATA'
             try:
                 response = api.create_submission(student_item_dict, student_sub)
             except api.SubmissionRequestError, e:
