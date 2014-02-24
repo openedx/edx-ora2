@@ -47,12 +47,16 @@ class Rubric(models.Model):
         return sum(criteria_points) if criteria_points else 0
 
     @staticmethod
-    def content_hash_for_rubric_dict(rubric_dict):
+    def content_hash_from_dict(rubric_dict):
         """Given a dict of rubric information, return a unique hash.
 
         This is a static method because we want to provide the `content_hash`
         when we create the rubric -- i.e. before the Rubric object could know or
-        access its child criteria or options.
+        access its child criteria or options. In Django, when you add child
+        elements to a model object using a foreign key relation, it will
+        immediately persist to the database. But in order to persist to the
+        database, the child object needs to have the ID of the parent, meaning
+        that Rubric would have to have already been created and persisted.
         """
         rubric_dict = deepcopy(rubric_dict)
 

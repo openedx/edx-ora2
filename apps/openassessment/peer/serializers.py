@@ -170,7 +170,7 @@ def rubric_from_dict(rubric_dict):
     rubric_dict = deepcopy(rubric_dict)
 
     # Calculate the hash based on the rubric content...
-    content_hash = Rubric.content_hash_for_rubric_dict(rubric_dict)
+    content_hash = Rubric.content_hash_from_dict(rubric_dict)
 
     try:
         rubric = Rubric.objects.get(content_hash=content_hash)
