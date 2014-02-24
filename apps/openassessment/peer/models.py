@@ -128,6 +128,10 @@ class CriterionOption(models.Model):
     CriterionOptions have a name, point value, and explanation associated with
     them. When you have to select between "Excellent", "Good", "Fair", "Bad" --
     those are options.
+
+    Note that this is the representation of the choice itself, *not* a
+    representation of a particular assessor's choice for a particular
+    Assessment. That state is stored in :class:`AssessmentPart`.
     """
     # All Criteria must have at least one CriterionOption.
     criterion = models.ForeignKey(Criterion, related_name="options")
@@ -162,7 +166,13 @@ class CriterionOption(models.Model):
 
 
 class Assessment(models.Model):
-    """An evaluation made against a particular Submission and Rubric."""
+    """An evaluation made against a particular Submission and Rubric.
+
+    This is student state information and is created when a student completes
+    an assessment of some submission. It is composed of :class:`AssessmentPart`
+    objects that map to each :class:`Criterion` in the :class:`Rubric` we're
+    assessing against.
+    """
     submission = models.ForeignKey(Submission)
     rubric = models.ForeignKey(Rubric)
 
@@ -194,7 +204,17 @@ class Assessment(models.Model):
 
 
 class AssessmentPart(models.Model):
-    """Part of an Assessment corresponding to a particular Criterion."""
+    """Part of an Assessment corresponding to a particular Criterion.
+
+    This is student state -- `AssessmentPart` represents what the student
+    assessed a submission with for a given `Criterion`. So an example would be::
+
+      5 pts: "Excellent"
+
+    It's implemented as a foreign key to the `CriterionOption` that was chosen
+    by this assessor for this `Criterion`. So basically, think of this class
+    as :class:`CriterionOption` + student state.
+    """
     assessment = models.ForeignKey(Assessment, related_name='parts')
 
     # criterion = models.ForeignKey(Criterion) ?
