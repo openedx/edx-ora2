@@ -48,20 +48,27 @@ class ScenarioParser(object):
            </rubric>"""
         rubric_criteria = []
         for criterion in e:
-            crit = {'name': criterion.attrib.get('name', ''),
-                    'instructions': criterion.text.strip(),
-                    'total_value': 0,
-                    'options': [],
-                   }
+            crit = {
+                'name': criterion.attrib.get('name', ''),
+                'prompt': criterion.text.strip(),
+                'options': [],
+            }
             for option in criterion:
                 explanations = option.getchildren()
                 if explanations and len(explanations) == 1 and explanations[0].tag == 'explain':
                     explanation = explanations[0].text.strip()
                 else: 
                     explanation = ''
-                crit['options'].append((option.attrib['val'], option.text.strip(), explanation))
-            crit['total_value'] = max(int(x[0]) for x in crit['options'])
+
+                crit['options'].append(
+                    {
+                        'name': option.text.strip(),
+                        'points': int(option.attrib['val']),
+                        'explanation': explanation,
+                    }
+                )
             rubric_criteria.append(crit)
+
         return (e.text.strip(), rubric_criteria)
 
     def get_assessments(self, assessments):

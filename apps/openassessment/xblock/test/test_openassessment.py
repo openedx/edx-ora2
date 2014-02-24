@@ -1,17 +1,16 @@
 """
 Tests the Open Assessment XBlock functionality.
 """
-
 import json
-import webob
 
 from django.test import TestCase
 from mock import patch
-from openassessment.xblock.submission_mixin import SubmissionMixin
-
-from submissions import api
-from submissions.api import SubmissionRequestError, SubmissionInternalError
 from workbench.runtime import WorkbenchRuntime
+import webob
+
+from openassessment.xblock.submission_mixin import SubmissionMixin
+from submissions import api as sub_api
+from submissions.api import SubmissionRequestError, SubmissionInternalError
 
 RUBRIC_CONFIG = """
     <openassessment start="2014-12-19T23:00-7:00" due="2014-12-21T23:00-7:00">
@@ -105,7 +104,7 @@ class TestOpenAssessment(TestCase):
         self.assertEqual(result[1], "ENOMULTI")
         self.assertEqual(result[2], self.assessment.submit_errors["ENOMULTI"])
 
-    @patch.object(api, 'create_submission')
+    @patch.object(sub_api, 'create_submission')
     def test_submission_general_failure(self, mock_submit):
         """Internal errors return some code for submission failure."""
         mock_submit.side_effect = SubmissionInternalError("Cat on fire.")
@@ -118,7 +117,7 @@ class TestOpenAssessment(TestCase):
         self.assertEqual(result[1], "EUNKNOWN")
         self.assertEqual(result[2], SubmissionMixin().submit_errors["EUNKNOWN"])
 
-    @patch.object(api, 'create_submission')
+    @patch.object(sub_api, 'create_submission')
     def test_submission_API_failure(self, mock_submit):
         """API usage errors return code and meaningful message."""
         mock_submit.side_effect = SubmissionRequestError("Cat on fire.")

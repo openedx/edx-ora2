@@ -42,3 +42,6 @@ nosetests.xml
 # some mac thing
 .DS_Store
 
+# PyCharm
+.idea
+

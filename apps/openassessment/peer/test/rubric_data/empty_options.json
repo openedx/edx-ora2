@@ -1,0 +1,37 @@
+{
+  "prompt": "Create a plan to deliver edx-tim!",
+  "criteria": [
+    {
+      "order_num": 0,
+      "name": "realistic",
+      "prompt": "Is the deadline realistic?",
+      "options": [
+        {
+          "order_num": 0,
+          "points": 0,
+          "name": "No",
+          "explanation": ""
+        },
+        {
+          "order_num": 1,
+          "points": 2,
+          "name": "Maybe",
+          "explanation": ""
+        },
+        {
+          "order_num": 2,
+          "points": 4,
+          "name": "Yes",
+          "explanation": ""
+        }
+      ]
+    },
+    {
+      "order_num": 1,
+      "name": "architecture",
+      "prompt": "Describe the architecture.",
+      "options": [
+      ]
+    }
+  ]
+}

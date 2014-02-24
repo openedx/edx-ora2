@@ -48,3 +48,6 @@ Models
 ++++++
 .. automodule:: submissions.models
    :members:
+
+.. automodule:: openassessment.peer.models
+   :members:
