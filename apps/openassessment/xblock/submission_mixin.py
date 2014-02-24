@@ -11,7 +11,7 @@ class SubmissionMixin(object):
 
     SubmissionMixin is a Mixin for the OpenAssessmentBlock. Functions in the
     SubmissionMixin call into the OpenAssessmentBlock functions and will not
-    work outside this scope.
+    work outside the scope of OpenAssessmentBlock.
 
     """
 
@@ -48,6 +48,7 @@ class SubmissionMixin(object):
         student_sub = data['submission']
         student_item_dict = self.get_student_item_dict()
         prev_sub = self._get_user_submission(student_item_dict)
+
 
         if prev_sub:
             # It is an error to submit multiple times for the same item
