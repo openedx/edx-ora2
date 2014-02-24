@@ -61,34 +61,37 @@ class TestScenarioParser(TestCase):
         self.assertEqual(int(criterion_option_value), 99)
         self.assertEqual(criterion_explanation, criterion_option_explain_text)
 
-    def test_get_evals(self):
-        """Given an <evals> list, return a list of evaluations."""
-        evals = """<evals>
-                <selfeval name='0382e03c808e4f2bb12dfdd2d45d5c4b' 
+    def test_get_assessments(self):
+        """Given an <assessments> list, return a list of assessment modules."""
+        assessments = """<assessments>
+                <self-assessment name='0382e03c808e4f2bb12dfdd2d45d5c4b'
                        must_grade="999"
                        must_be_graded_by="73" />
-                <peereval start="2014-12-20T19:00-7:00"
+                <peer-assessment start="2014-12-20T19:00-7:00"
                           due="2014-12-21T22:22-7:00"
                           must_grade="5"
                           must_be_graded_by="3" />
-                <selfeval />
-                </evals>"""
-        evals_xml = etree.fromstring(evals)
-        parsed_list = self.test_parser.get_evals(evals_xml)
+                <self-assessment />
+                </assessments>"""
+        assessments_xml = etree.fromstring(assessments)
+        parsed_list = self.test_parser.get_assessments(assessments_xml)
 
-        # Self evaluations take all the parameters, but mostly ignore them.
-        self.assertEqual(parsed_list[0]['type'], 'selfeval')
-        self.assertEqual(parsed_list[0]['name'], '0382e03c808e4f2bb12dfdd2d45d5c4b')
-        self.assertEqual(parsed_list[0]['must_grade'], 1)
-        self.assertEqual(parsed_list[0]['must_be_graded_by'], 0)
+        # Need to capture Submissions in Tests
+        self.assertEqual(parsed_list[0].assessment_type, 'submission')
 
-        # Peer evaluations are more interesting
-        self.assertEqual(parsed_list[1]['type'], 'peereval')
-        self.assertEqual(parsed_list[1]['name'], '')
-        self.assertEqual(parsed_list[1]['must_grade'], 5)
-        self.assertEqual(parsed_list[1]['must_be_graded_by'], 3)
+        # Self assessments take all the parameters, but mostly ignore them.
+        self.assertEqual(parsed_list[1].assessment_type, 'self-assessment')
+        self.assertEqual(parsed_list[1].name, '0382e03c808e4f2bb12dfdd2d45d5c4b')
+        self.assertEqual(parsed_list[1].must_grade, 1)
+        self.assertEqual(parsed_list[1].must_be_graded_by, 0)
 
-        # We can parse arbitrary workflow descriptions as a list of evaluations.
+        # Peer assessments are more interesting
+        self.assertEqual(parsed_list[2].assessment_type, 'peer-assessment')
+        self.assertEqual(parsed_list[2].name, '')
+        self.assertEqual(parsed_list[2].must_grade, 5)
+        self.assertEqual(parsed_list[2].must_be_graded_by, 3)
+
+        # We can parse arbitrary workflow descriptions as a list of assessments.
         # Whether or not the workflow system can use them is another matter
-        self.assertEqual(parsed_list[2]['type'], 'selfeval')
+        self.assertEqual(parsed_list[3].assessment_type, 'self-assessment')
 

@@ -1,6 +1,6 @@
 """Public interface managing the workflow for peer assessments.
 
-The Peer Evaluation Workflow API exposes all public actions required to complete
+The Peer Assessment Workflow API exposes all public actions required to complete
 the workflow for a given submission.
 
 """
@@ -11,7 +11,7 @@ from django.db import DatabaseError
 import math
 from openassessment.peer.models import PeerEvaluation
 
-from openassessment.peer.serializers import PeerEvaluationSerializer
+from openassessment.peer.serializers import PeerAssessmentSerializer
 from submissions import api as submission_api
 from submissions.models import Submission, StudentItem, Score
 from submissions.serializers import SubmissionSerializer, StudentItemSerializer
@@ -21,17 +21,17 @@ logger = logging.getLogger(__name__)
 PEER_TYPE = "PE"
 
 
-class PeerEvaluationError(Exception):
-    """Generic Peer Evaluation Error
+class PeerAssessmentError(Exception):
+    """Generic Peer Assessment Error
 
     Raised when an error occurs while processing a request related to the
-    Peer Evaluation Workflow.
+    Peer Assessment Workflow.
 
     """
     pass
 
 
-class PeerEvaluationRequestError(PeerEvaluationError):
+class PeerAssessmentRequestError(PeerAssessmentError):
     """Error indicating insufficient or incorrect parameters in the request.
 
     Raised when the request does not contain enough information, or incorrect
@@ -44,7 +44,7 @@ class PeerEvaluationRequestError(PeerEvaluationError):
         self.field_errors = copy.deepcopy(field_errors)
 
 
-class PeerEvaluationWorkflowError(PeerEvaluationError):
+class PeerAssessmentWorkflowError(PeerAssessmentError):
     """Error indicating a step in the workflow cannot be completed,
 
     Raised when the action taken cannot be completed in the workflow. This can
@@ -54,7 +54,7 @@ class PeerEvaluationWorkflowError(PeerEvaluationError):
     pass
 
 
-class PeerEvaluationInternalError(PeerEvaluationError):
+class PeerAssessmentInternalError(PeerAssessmentError):
     """Error indicating an internal problem independent of API use.
 
     Raised when an internal error has occurred. This should be independent of
@@ -64,16 +64,16 @@ class PeerEvaluationInternalError(PeerEvaluationError):
     pass
 
 
-def create_evaluation(
+def create_assessment(
         submission_uuid,
         scorer_id,
-        required_evaluations_for_student,
-        required_evaluations_for_submission,
+        required_assessments_for_student,
+        required_assessments_for_submission,
         assessment_dict,
         scored_at=None):
-    """Creates an evaluation on the given submission.
+    """Creates an assessment on the given submission.
 
-    Evaluations are created based on feedback associated with a particular
+    Assessments are created based on feedback associated with a particular
     rubric.
 
     Args:
@@ -82,27 +82,27 @@ def create_evaluation(
             Submission model.
         scorer_id (str): The user ID for the user giving this assessment. This
             is required to create an assessment on a submission.
-        required_evaluations_for_student (int): The number of evaluations
+        required_assessments_for_student (int): The number of assessments
             required for the student to receive a score for their submission.
-        required_evaluations_for_submission (int): The number of evaluations
+        required_assessments_for_submission (int): The number of assessments
             required on the submission for it to be scored.
         assessment_dict (dict): All related information for the assessment. An
             assessment contains points_earned, points_possible, and feedback.
         scored_at (datetime): Optional argument to override the time in which
-            the evaluation took place. If not specified, scored_at is set to
+            the assessment took place. If not specified, scored_at is set to
             now.
 
     Returns:
-        dict: The dictionary representing the evaluation. This includes the
+        dict: The dictionary representing the assessment. This includes the
             points earned, points possible, time scored, scorer id, score type,
             and feedback.
 
     Raises:
-        PeerEvaluationRequestError: Raised when the submission_id is invalid, or
+        PeerAssessmentRequestError: Raised when the submission_id is invalid, or
             the assessment_dict does not contain the required values to create
             an assessment.
-        PeerEvaluationInternalError: Raised when there is an internal error
-            while creating a new evaluation.
+        PeerAssessmentInternalError: Raised when there is an internal error
+            while creating a new assessment.
 
     Examples:
         >>> assessment_dict = dict(
@@ -110,7 +110,7 @@ def create_evaluation(
         >>>    points_possible=12,
         >>>    feedback="Your submission was thrilling.",
         >>> )
-        >>> create_evaluation("1", "Tim", assessment_dict)
+        >>> create_assessment("1", "Tim", assessment_dict)
         {
             'points_earned': 6,
             'points_possible': 12,
@@ -122,7 +122,7 @@ def create_evaluation(
     """
     try:
         submission = Submission.objects.get(uuid=submission_uuid)
-        peer_evaluation = {
+        peer_assessment = {
             "scorer_id": scorer_id,
             "submission": submission.pk,
             "points_earned": sum(assessment_dict["points_earned"]),
@@ -131,11 +131,11 @@ def create_evaluation(
             "feedback": assessment_dict["feedback"],
         }
         if scored_at:
-            peer_evaluation["scored_at"] = scored_at
+            peer_assessment["scored_at"] = scored_at
 
-        peer_serializer = PeerEvaluationSerializer(data=peer_evaluation)
+        peer_serializer = PeerAssessmentSerializer(data=peer_assessment)
         if not peer_serializer.is_valid():
-            raise PeerEvaluationRequestError(peer_serializer.errors)
+            raise PeerAssessmentRequestError(peer_serializer.errors)
         peer_serializer.save()
 
         # Check if the submission is finished and its Author has graded enough.
@@ -143,11 +143,11 @@ def create_evaluation(
         _score_if_finished(
             student_item,
             submission,
-            required_evaluations_for_student,
-            required_evaluations_for_submission
+            required_assessments_for_student,
+            required_assessments_for_submission
         )
 
-        # Check if the grader is finished and has enough evaluations
+        # Check if the grader is finished and has enough assessments
         scorer_item = StudentItem.objects.get(
             student_id=scorer_id,
             item_id=student_item.item_id,
@@ -162,28 +162,28 @@ def create_evaluation(
         _score_if_finished(
             scorer_item,
             scorer_submissions[0],
-            required_evaluations_for_student,
-            required_evaluations_for_submission
+            required_assessments_for_student,
+            required_assessments_for_submission
         )
 
         return peer_serializer.data
     except DatabaseError:
-        error_message = u"An error occurred while creating evaluation {} for submission: {} by: {}".format(
+        error_message = u"An error occurred while creating assessment {} for submission: {} by: {}".format(
             assessment_dict,
             submission_uuid,
             scorer_id
         )
         logger.exception(error_message)
-        raise PeerEvaluationInternalError(error_message)
+        raise PeerAssessmentInternalError(error_message)
 
 
 def _score_if_finished(student_item,
                        submission,
-                       required_evaluations_for_student,
-                       required_evaluations_for_submission):
+                       required_assessments_for_student,
+                       required_assessments_for_submission):
     """Calculate final grade iff peer evaluation flow is satisfied.
 
-    Checks if the student is finished with the peer evaluation workflow. If the
+    Checks if the student is finished with the peer assessment workflow. If the
     student already has a final grade calculated, there is no need to proceed.
     If they do not have a grade, the student has a final grade calculated.
 
@@ -193,19 +193,19 @@ def _score_if_finished(student_item,
 
     finished_evaluating = has_finished_required_evaluating(
         student_item.student_id,
-        required_evaluations_for_student
+        required_assessments_for_student
     )
-    evaluations = PeerEvaluation.objects.filter(submission=submission)
-    submission_finished = evaluations.count() >= required_evaluations_for_submission
+    assessments = PeerEvaluation.objects.filter(submission=submission)
+    submission_finished = assessments.count() >= required_assessments_for_submission
     scores = []
-    for evaluation in evaluations:
-        scores.append(evaluation.points_earned)
+    for assessment in assessments:
+        scores.append(assessment.points_earned)
     if finished_evaluating and submission_finished:
         submission_api.set_score(
             StudentItemSerializer(student_item).data,
             SubmissionSerializer(submission).data,
             _calculate_final_score(scores),
-            evaluations[0].points_possible
+            assessments[0].points_possible
         )
 
 
@@ -228,7 +228,7 @@ def _calculate_final_score(scores):
         return int(math.ceil(sum(scores[median-1:median+1])/float(2)))
 
 
-def has_finished_required_evaluating(student_id, required_evaluations):
+def has_finished_required_evaluating(student_id, required_assessments):
     """Check if a student still needs to evaluate more submissions
 
     Per the contract of the peer assessment workflow, a student must evaluate a
@@ -237,7 +237,7 @@ def has_finished_required_evaluating(student_id, required_evaluations):
     Args:
         student_id (str): The student in the peer grading workflow to check for
             peer workflow criteria. This argument is required.
-        required_evaluations (int): The number of evaluations a student has to
+        required_assessments (int): The number of assessments a student has to
             submit before receiving the feedback on their submission. This is a
             required argument.
 
@@ -247,9 +247,9 @@ def has_finished_required_evaluating(student_id, required_evaluations):
             evaluate more peer submissions.
 
     Raises:
-        PeerEvaluationRequestError: Raised when the student_id is invalid, or
-            the required_evaluations is not a positive integer.
-        PeerEvaluationInternalError: Raised when there is an internal error
+        PeerAssessmentRequestError: Raised when the student_id is invalid, or
+            the required_assessments is not a positive integer.
+        PeerAssessmentInternalError: Raised when there is an internal error
             while evaluating this workflow rule.
 
     Examples:
@@ -257,37 +257,37 @@ def has_finished_required_evaluating(student_id, required_evaluations):
         True
 
     """
-    if required_evaluations < 0:
-        raise PeerEvaluationRequestError(
-            "Required Evaluation count must be a positive integer.")
+    if required_assessments < 0:
+        raise PeerAssessmentRequestError(
+            "Required Assessment count must be a positive integer.")
     return PeerEvaluation.objects.filter(
         scorer_id=student_id
-    ).count() >= required_evaluations
+    ).count() >= required_assessments
 
 
-def get_evaluations(submission_id):
-    """Retrieve the evaluations for a submission.
+def get_assessments(submission_id):
+    """Retrieve the assessments for a submission.
 
-    Retrieves all the evaluations for a submissions. This API returns related
+    Retrieves all the assessments for a submissions. This API returns related
     feedback without making any assumptions about grading. Any outstanding
-    evaluations associated with this submission will not be returned.
+    assessments associated with this submission will not be returned.
 
     Args:
-        submission_id (str): The submission all the requested evaluations are
+        submission_id (str): The submission all the requested assessments are
             associated with. Required.
 
     Returns:
         list(dict): A list of dictionaries, where each dictionary represents a
-            separate evaluation. Each evaluation contains points earned, points
+            separate assessment. Each assessment contains points earned, points
             possible, time scored, scorer id, score type, and feedback.
 
     Raises:
-        PeerEvaluationRequestError: Raised when the submission_id is invalid.
-        PeerEvaluationInternalError: Raised when there is an internal error
-            while retrieving the evaluations associated with this submission.
+        PeerAssessmentRequestError: Raised when the submission_id is invalid.
+        PeerAssessmentInternalError: Raised when there is an internal error
+            while retrieving the assessments associated with this submission.
 
     Examples:
-        >>> get_evaluations("1")
+        >>> get_assessments("1")
         [
             {
                 'points_earned': 6,
@@ -308,45 +308,45 @@ def get_evaluations(submission_id):
     """
     try:
         submission = Submission.objects.get(uuid=submission_id)
-        evaluations = PeerEvaluation.objects.filter(submission=submission)
-        serializer = PeerEvaluationSerializer(evaluations, many=True)
+        assessments = PeerEvaluation.objects.filter(submission=submission)
+        serializer = PeerAssessmentSerializer(assessments, many=True)
         return serializer.data
     except DatabaseError:
         error_message = (
-            u"Error getting evaluations for submission {}".format(submission_id)
+            u"Error getting assessments for submission {}".format(submission_id)
         )
         logger.exception(error_message)
-        raise PeerEvaluationInternalError(error_message)
+        raise PeerAssessmentInternalError(error_message)
 
 
-def get_submission_to_evaluate(student_item_dict, required_num_evaluations):
+def get_submission_to_assess(student_item_dict, required_num_assessments):
     """Get a submission to peer evaluate.
 
-    Retrieves a submission for evaluation for the given student_item. This will
+    Retrieves a submission for assessment for the given student_item. This will
     not return a submission submitted by the requesting scorer. The submission
     returned (TODO: will be) is based on a priority queue. Submissions with the
-    fewest evaluations and the most active students will be prioritized over
-    submissions from students who are not as active in the evaluation process.
+    fewest assessments and the most active students will be prioritized over
+    submissions from students who are not as active in the assessment process.
 
     Args:
         student_item_dict (dict): The student item information from the student
-            requesting a submission for evaluation. The dict contains an
+            requesting a submission for assessment. The dict contains an
             item_id, course_id, and item_type, used to identify the unique
             question for the review, while the student_id is used to explicitly
             avoid giving the student their own submission.
-        required_num_evaluations (int): The number of evaluations a submission
-            requires before it has completed the peer evaluation process.
+        required_num_assessments (int): The number of assessments a submission
+            requires before it has completed the peer assessment process.
 
     Returns:
-        dict: A peer submission for evaluation. This contains a 'student_item',
+        dict: A peer submission for assessment. This contains a 'student_item',
             'attempt_number', 'submitted_at', 'created_at', and 'answer' field to be
-            used for evaluation.
+            used for assessment.
 
     Raises:
-        PeerEvaluationRequestError: Raised when the request parameters are
+        PeerAssessmentRequestError: Raised when the request parameters are
             invalid for the request.
-        PeerEvaluationInternalError:
-        PeerEvaluationWorkflowError:
+        PeerAssessmentInternalError:
+        PeerAssessmentWorkflowError:
 
     Examples:
         >>> student_item_dict = dict(
@@ -355,7 +355,7 @@ def get_submission_to_evaluate(student_item_dict, required_num_evaluations):
         >>>    item_type="type_one",
         >>>    student_id="Bob",
         >>> )
-        >>> get_submission_to_evaluate(student_item_dict, 3)
+        >>> get_submission_to_assess(student_item_dict, 3)
         {
             'student_item': 2,
             'attempt_number': 1,
@@ -375,26 +375,26 @@ def get_submission_to_evaluate(student_item_dict, required_num_evaluations):
     submission = _get_first_submission_not_evaluated(
         student_items,
         student_item_dict["student_id"],
-        required_num_evaluations
+        required_num_assessments
     )
     if not submission:
-        raise PeerEvaluationWorkflowError(
-            "There are no submissions available for evaluation."
+        raise PeerAssessmentWorkflowError(
+            "There are no submissions available for assessment."
         )
     return SubmissionSerializer(submission).data
 
 
-def _get_first_submission_not_evaluated(student_items, student_id, required_num_evaluations):
+def _get_first_submission_not_evaluated(student_items, student_id, required_num_assessments):
     # TODO: We need a priority queue.
     submissions = Submission.objects.filter(student_item__in=student_items).order_by(
         "submitted_at",
         "-attempt_number"
     )
     for submission in submissions:
-        evaluations = PeerEvaluation.objects.filter(submission=submission)
-        if evaluations.count() < required_num_evaluations:
+        assessments = PeerEvaluation.objects.filter(submission=submission)
+        if assessments.count() < required_num_assessments:
             already_evaluated = False
-            for evaluation in evaluations:
-                already_evaluated = already_evaluated or evaluation.scorer_id == student_id
+            for assessment in assessments:
+                already_evaluated = already_evaluated or assessment.scorer_id == student_id
             if not already_evaluated:
                 return submission

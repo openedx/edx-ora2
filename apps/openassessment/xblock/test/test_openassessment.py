@@ -7,6 +7,7 @@ import webob
 
 from django.test import TestCase
 from mock import patch
+from openassessment.xblock.submission_mixin import SubmissionMixin
 
 from submissions import api
 from submissions.api import SubmissionRequestError, SubmissionInternalError
@@ -46,13 +47,14 @@ RUBRIC_CONFIG = """
                 <option val="5">The Elements of Style</option>
             </criterion>
         </rubric>
-        <evals>
-            <peereval start="2014-12-20T19:00-7:00"
+        <assessments>
+            <peer-assessment name="peer-assessment"
+              start="2014-12-20T19:00-7:00"
               due="2014-12-21T22:22-7:00"
               must_grade="5"
               must_be_graded_by="3" />
-            <selfeval/>
-        </evals>
+            <self-assessment/>
+        </assessments>
     </openassessment>
 """
 
@@ -114,7 +116,7 @@ class TestOpenAssessment(TestCase):
         result = json.loads(resp.body)
         self.assertFalse(result[0])
         self.assertEqual(result[1], "EUNKNOWN")
-        self.assertEqual(result[2], self.assessment.submit_errors["EUNKNOWN"])
+        self.assertEqual(result[2], SubmissionMixin().submit_errors["EUNKNOWN"])
 
     @patch.object(api, 'create_submission')
     def test_submission_API_failure(self, mock_submit):

@@ -1,0 +1,58 @@
+<!-- TEMPLATE: student response -->
+
+
+<!-- NOTES:
+
+ * class of is--unavailable is added when step is not available
+ * class of is--saved is added when response is saved by system
+ * class of is--submitted is added when user has formally submitted response
+ * class of is--graded is added when user's response has proper amount of completed peer evaluations
+ * class of is--updated is added to the step__status element when a response is saved
+
+ -->
+
+
+<!-- CASE: default/unanswered -->
+<li id="openassessment__response" class="openassessment__steps__step step--response ui-toggle-visibility">
+    <!--header class="step__header ui-toggle-visibility__control"-->
+        <h2 class="step__title">
+            <span class="step__label">Your Response</span>
+            <span class="step__deadline">due <span class="date">January 24, 2014</span> at <span class="time">15:00 UTC</span></span>
+        </h2>
+
+    <span class="step__status">
+      <span class="step__status__label">This step's status:</span>
+      <span class="step__status__value">Incomplete</span>
+    </span>
+    <!--/header-->
+
+    <div class="step__instruction">
+        <p>Please provide your response to the following question. You may save your progress and return to complete your response anytime before the due date of <span class="step__deadline">due <span class="date">January 24, 2014</span></span>. <strong class="emphasis--beta">Once you submit, you may not edit your response</strong>.</p>
+    </div>
+
+    <div class="step__content">
+        <form id="response__submission" class="response__submission">
+            <ol class="list list--fields">
+                <li class="field field--textarea submission__answer" id="submission__answer">
+                    <label for="submission__answer__value">Please provide your response to the above question</label>
+                    <textarea id="submission__answer__value" placeholder=""></textarea>
+                </li>
+            </ol>
+
+            <ul class="list list--actions">
+                <li class="list--actions__item">
+                    <button type="submit" id="submission__submit" class="action action--submit submission__submit">Save Your Progress</button>
+                    <span class="tip">you may continue to work on your response until you submit</span>
+                </li>
+            </ul>
+        </form>
+    </div>
+
+    <div class="step__actions">
+        <ul class="list list--actions">
+            <li class="list--actions__item">
+                <a aria-role="button" href="#" id="step--response__submit" class="action action--submit step--response__submit">Submit your response &amp; move forward</a>
+            </li>
+        </ul>
+    </div>
+</li>

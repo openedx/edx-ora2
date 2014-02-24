@@ -116,6 +116,8 @@ ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
     "apps/submissions/templates",
+    "apps/openassessment/peer/templates",
+    "apps/openassessment/xblock",
 )
 
 INSTALLED_APPS = (

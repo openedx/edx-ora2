@@ -6,7 +6,7 @@ from rest_framework import serializers
 from openassessment.peer.models import PeerEvaluation
 
 
-class PeerEvaluationSerializer(serializers.ModelSerializer):
+class PeerAssessmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = PeerEvaluation
         fields = (
