@@ -49,11 +49,8 @@ class SubmissionMixin(object):
         student_item_dict = self.get_student_item_dict()
         prev_sub = self._get_user_submission(student_item_dict)
 
-
-        if prev_sub:
-            # It is an error to submit multiple times for the same item
-            status_tag = 'ENOMULTI'
-        else:
+        status_tag = 'ENOMULTI'  # It is an error to submit multiple times for the same item
+        if not prev_sub:
             status_tag = 'ENODATA'
             try:
                 response = api.create_submission(student_item_dict, student_sub)
