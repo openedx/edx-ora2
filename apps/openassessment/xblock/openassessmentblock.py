@@ -181,7 +181,7 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
     )
 
     def get_xblock_trace(self):
-        """Uniquely identify this xblock by context.
+        """Uniquely identify this XBlock by context.
 
         Every XBlock has a scope_ids, which is a NamedTuple describing
         important contextual information. Per @nedbat, the usage_id attribute
@@ -189,13 +189,19 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         identifies this student. With the two of them, we can trace all the
         interactions emanating from this interaction.
 
-        Useful for logging, debugging, and uniqueification."""
+        Useful for logging, debugging, and uniqueification.
+
+        """
         return self.scope_ids.usage_id, self.scope_ids.user_id
 
     def get_student_item_dict(self):
         """Create a student_item_dict from our surrounding context.
 
         See also: submissions.api for details.
+
+        Returns:
+            (dict): The student item associated with this XBlock instance. This
+                includes the student id, item id, and course id.
         """
         item_id, student_id = self.get_xblock_trace()
         student_item_dict = dict(
@@ -208,10 +214,20 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
 
     def student_view(self, context=None):
         """The main view of OpenAssessmentBlock, displayed when viewing courses.
+
+        The main view which displays the general layout for Open Ended
+        Assessment Questions. The contents of the XBlock are determined
+        dynamically based on the assessment workflow configured by the author.
+
+        Args:
+            context: Not used for this view.
+
+        Returns:
+            (Fragment): The HTML Fragment for this XBlock, which determines the
+            general frame of the Open Ended Assessment Question.
         """
 
         trace = self.get_xblock_trace()
-        student_item_dict = self.get_student_item_dict()
 
         grade_state = self.get_grade_state()
         # All data we intend to pass to the front end.
@@ -235,7 +251,12 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
 
     @staticmethod
     def workbench_scenarios():
-        """A canned scenario for display in the workbench."""
+        """A canned scenario for display in the workbench.
+
+        These scenarios are only intended to be used for Workbench XBlock
+        Development.
+
+        """
         return [
             (
                 "OpenAssessmentBlock Poverty Rubric",
@@ -249,11 +270,28 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
 
     @staticmethod
     def studio_view(context=None):
+        """Determines how the XBlock is rendered for editing in Studio.
+
+        Displays the section where Editing can occur within Studio to modify
+        this XBlock instance.
+
+        Args:
+            context: Not actively used for this view.
+
+        Returns:
+            (Fragment): An HTML fragment for editing the configuration of this
+                XBlock.
+
+        """
         return Fragment(u"<div>Edit the XBlock.</div>")
 
     @classmethod
     def parse_xml(cls, node, runtime, keys, id_generator):
-        """Instantiate xblock object from runtime XML definition."""
+        """Instantiate XBlock object from runtime XML definition.
+
+        Inherited by XBlock core.
+
+        """
         def unknown_handler(block, child):
             """Recursively embed xblocks for nodes we don't recognize"""
             block.runtime.add_node_as_child(block, child, id_generator)
@@ -279,6 +317,17 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
 
         Given the name of an assessment module, find it in the list of
         configured modules, and ask for its rendered HTML.
+
+        Args:
+            path (str): The path to the template used to render this HTML
+                section.
+            context_dict (dict): A dictionary of context variables used to
+                populate this HTML section.
+
+        Returns:
+            (Response): A Response Object with the generated HTML fragment. This
+                is intended for AJAX calls to load dynamically into a larger
+                document.
 
         """
         if not context_dict:
