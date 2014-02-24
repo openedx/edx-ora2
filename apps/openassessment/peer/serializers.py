@@ -1,3 +1,4 @@
+# coding=utf-8
 """
 Serializers are created to ensure models do not have to be accessed outside the
 scope of the Tim APIs.
@@ -12,26 +13,27 @@ from openassessment.peer.models import (
 )
 
 class InvalidRubric(Exception):
+    """This can be raised during the deserialization process."""
     def __init__(self, errors):
         Exception.__init__(self, repr(errors))
         self.errors = deepcopy(errors)
 
 
 class NestedModelSerializer(serializers.ModelSerializer):
-    """Model Serializer that supports arbitrary nesting.
+    """Model Serializer that supports deserialization with arbitrary nesting.
 
     The Django REST Framework does not currently support deserialization more
     than one level deep (so a parent and children). We want to be able to
-    create a Rubric -> Criterion -> CriterionOption hierarchy.
+    create a :class:`Rubric` → :class:`Criterion` → :class:`CriterionOption`
+    hierarchy.
 
     Much of the base logic already "just works" and serialization of arbritrary
     depth is supported. So we just override the save_object method to
     recursively link foreign key relations instead of doing it one level deep.
 
     We don't touch many-to-many relationships because we don't need to for our
-    purposes.
+    purposes, so those still only work one level deep.
     """
-
     def recursively_link_related(self, obj, **kwargs):
         if getattr(obj, '_related_data', None):
             for accessor_name, related in obj._related_data.items():
@@ -40,25 +42,29 @@ class NestedModelSerializer(serializers.ModelSerializer):
                     self.recursively_link_related(related_obj, **kwargs)
             del(obj._related_data)
 
-
     def save_object(self, obj, **kwargs):
         obj.save(**kwargs)
 
+        # The code for many-to-many relationships is just copy-pasted from the
+        # Django REST Framework ModelSerializer
         if getattr(obj, '_m2m_data', None):
             for accessor_name, object_list in obj._m2m_data.items():
                 setattr(obj, accessor_name, object_list)
             del(obj._m2m_data)
 
+        # This is our only real change from ModelSerializer
         self.recursively_link_related(obj, **kwargs)
 
 
 class CriterionOptionSerializer(NestedModelSerializer):
+    """Serializer for :class:`CriterionOption`"""
     class Meta:
         model = CriterionOption
         fields = ('order_num', 'points', 'name', 'explanation')
 
 
 class CriterionSerializer(NestedModelSerializer):
+    """Serializer for :class:`Criterion`"""
     options = CriterionOptionSerializer(required=True, many=True)
 
     class Meta:
@@ -67,6 +73,7 @@ class CriterionSerializer(NestedModelSerializer):
 
 
     def validate_options(self, attrs, source):
+        """Make sure we have at least one CriterionOption in a Criterion."""
         options = attrs[source]
         if not options:
             raise serializers.ValidationError(
@@ -76,6 +83,7 @@ class CriterionSerializer(NestedModelSerializer):
 
 
 class RubricSerializer(NestedModelSerializer):
+    """Serializer for :class:`Rubric`."""
     criteria = CriterionSerializer(required=True, many=True)
     points_possible = serializers.Field(source='points_possible')
 
@@ -85,35 +93,23 @@ class RubricSerializer(NestedModelSerializer):
 
 
     def validate_criteria(self, attrs, source):
+        """Make sure we have at least one Criterion in the Rubric."""
         criteria = attrs[source]
         if not criteria:
             raise serializers.ValidationError("Must have at least one criterion")
         return attrs
 
-    #def validate(self, attrs):
-        #total_possible = sum(
-        #    max(option.get("points", 0) for option in criterion["options"])
-        #    for criterion in attrs["criteria"]
-        #)
-    #    total_possible = sum(crit.points_possible() for crit in attrs['criteria'])
-
-    #    if total_possible <= 0:
-    #        raise serializers.ValidationError(
-    #            "Rubric must have > 0 possible points."
-    #        )
-
 
 class AssessmentPartSerializer(serializers.ModelSerializer):
-#    criterion = CriterionSerializer()
-#    option = CriterionOptionSerializer()
+    """Serializer for :class:`AssessmentPart`."""
 
     class Meta:
         model = AssessmentPart
-#        fields = ('criterion', 'option')
-        fields = ('option',)
+        fields = ('option',)  # TODO: Direct link to Criterion?
 
 
 class AssessmentSerializer(serializers.ModelSerializer):
+    """Serializer for :class:`Assessment`."""
     submission_uuid = serializers.Field(source='submission_uuid')
 
     parts = AssessmentPartSerializer(required=True, many=True)
@@ -138,12 +134,38 @@ class AssessmentSerializer(serializers.ModelSerializer):
             'points_possible',
         )
 
-
-
 def rubric_from_dict(rubric_dict):
-    """Given a rubric_dict, return the rubric ID we're going to submit against.
+    """Given a dict of rubric information, return the corresponding Rubric
 
     This will create the Rubric and its children if it does not exist already.
+
+    Sample data (one criterion, two options)::
+
+        {
+          "prompt": "Create a plan to deliver edx-tim!",
+          "criteria": [
+            {
+              "order_num": 0,
+              "name": "realistic",
+              "prompt": "Is the deadline realistic?",
+              "options": [
+                {
+                  "order_num": 0,
+                  "points": 0,
+                  "name": "No",
+                  "explanation": "We need more time!"
+                },
+                {
+                  "order_num": 1,
+                  "points": 2,
+                  "name": "Yes",
+                  "explanation": "We got this."
+                },
+              ]
+            }
+          ]
+        }
+
     """
     rubric_dict = deepcopy(rubric_dict)
 
@@ -155,9 +177,11 @@ def rubric_from_dict(rubric_dict):
     except Rubric.DoesNotExist:
         rubric_dict["content_hash"] = content_hash
         for crit_idx, criterion in enumerate(rubric_dict.get("criteria", {})):
-            criterion["order_num"] = crit_idx
+            if "order_num" not in criterion:
+                criterion["order_num"] = crit_idx
             for opt_idx, option in enumerate(criterion.get("options", {})):
-                option["order_num"] = opt_idx
+                if "order_num" not in option:
+                    option["order_num"] = opt_idx
 
         rubric_serializer = RubricSerializer(data=rubric_dict)
         if not rubric_serializer.is_valid():

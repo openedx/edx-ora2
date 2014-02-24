@@ -38,19 +38,24 @@ class Rubric(models.Model):
     lookups.
     """
     # SHA1 hash
-    content_hash = models.CharField(max_length=40)
+    content_hash = models.CharField(max_length=40, unique=True, db_index=True)
 
     @property
     def points_possible(self):
+        """The total number of points that could be earned in this Rubric."""
         criteria_points = [crit.points_possible for crit in self.criteria.all()]
         return sum(criteria_points) if criteria_points else 0
 
     @staticmethod
     def content_hash_for_rubric_dict(rubric_dict):
-        """
+        """Given a dict of rubric information, return a unique hash.
 
+        This is a static method because we want to provide the `content_hash`
+        when we create the rubric -- i.e. before the Rubric object could know or
+        access its child criteria or options.
         """
         rubric_dict = deepcopy(rubric_dict)
+
         # Neither "id" nor "content_hash" would count towards calculating the
         # content_hash.
         rubric_dict.pop("id", None)
@@ -59,11 +64,24 @@ class Rubric(models.Model):
         canonical_form = json.dumps(rubric_dict, sort_keys=True)
         return sha1(canonical_form).hexdigest()
 
+    def options_ids(self, options_selected):
+        """Given a mapping of selected options, return the option IDs.
 
-    def options_ids(self, crit_to_opt_names):
+        We use this to map user selection during assessment to the
+        :class:`CriterionOption` IDs that are in our database. These IDs are
+        never shown to the user.
+
+        Args:
+            options_selected (dict): Mapping of criteria names to the names of
+                the option that was selected for that criterion.
+
+        Examples:
+            >>> options_selected = {"secret": "yes", "safe": "no"}
+            >>> rubric.options_ids(options_selected)
+            [10, 12]
+
         """
-        """
-        # Cache this
+        # TODO: cache this
         crit_to_all_opts = {
             crit.name : {
                 option.name: option.id for option in crit.options.all()
@@ -73,12 +91,18 @@ class Rubric(models.Model):
 
         return [
             crit_to_all_opts[crit][opt]
-            for crit, opt in crit_to_opt_names.items()
+            for crit, opt in options_selected.items()
         ]
 
 
 class Criterion(models.Model):
-    # All Rubrics have at least one Criterion
+    """A single aspect of a submission that needs assessment.
+
+    As an example, an essay might be assessed separately for accuracy, brevity,
+    and clarity. Each of those would be separate criteria.
+
+    All Rubrics have at least one Criterion.
+    """
     rubric = models.ForeignKey(Rubric, related_name="criteria")
 
     name = models.CharField(max_length=100, blank=False)
@@ -92,13 +116,19 @@ class Criterion(models.Model):
     class Meta:
         ordering = ["rubric", "order_num"]
 
-
     @property
     def points_possible(self):
+        """The total number of points that could be earned in this Criterion."""
         return max(option.points for option in self.options.all())
 
 
 class CriterionOption(models.Model):
+    """What an assessor chooses when assessing against a Criteria.
+
+    CriterionOptions have a name, point value, and explanation associated with
+    them. When you have to select between "Excellent", "Good", "Fair", "Bad" --
+    those are options.
+    """
     # All Criteria must have at least one CriterionOption.
     criterion = models.ForeignKey(Criterion, related_name="options")
 
@@ -121,7 +151,6 @@ class CriterionOption(models.Model):
     class Meta:
         ordering = ["criterion", "order_num"]
 
-
     def __repr__(self):
         return (
             "CriterionOption(order_num={0.order_num}, points={0.points}, "
@@ -133,6 +162,7 @@ class CriterionOption(models.Model):
 
 
 class Assessment(models.Model):
+    """An evaluation made against a particular Submission and Rubric."""
     submission = models.ForeignKey(Submission)
     rubric = models.ForeignKey(Rubric)
 
@@ -164,9 +194,10 @@ class Assessment(models.Model):
 
 
 class AssessmentPart(models.Model):
+    """Part of an Assessment corresponding to a particular Criterion."""
     assessment = models.ForeignKey(Assessment, related_name='parts')
 
-    # criterion = models.ForeignKey(Criterion)
+    # criterion = models.ForeignKey(Criterion) ?
     option = models.ForeignKey(CriterionOption) # TODO: no reverse
 
     @property
