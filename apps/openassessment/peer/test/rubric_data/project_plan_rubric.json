@@ -3,6 +3,7 @@
   "criteria": [
     {
       "order_num": 0,
+      "name": "realistic",
       "prompt": "Is the deadline realistic?",
       "options": [
         {
@@ -27,6 +28,7 @@
     },
     {
       "order_num": 1,
+      "name": "architecture",
       "prompt": "Describe the architecture.",
       "options": [
         {

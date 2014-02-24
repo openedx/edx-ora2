@@ -154,9 +154,9 @@ def rubric_from_dict(rubric_dict):
         rubric = Rubric.objects.get(content_hash=content_hash)
     except Rubric.DoesNotExist:
         rubric_dict["content_hash"] = content_hash
-        for crit_idx, criterion in enumerate(rubric_dict["criteria"]):
+        for crit_idx, criterion in enumerate(rubric_dict.get("criteria", {})):
             criterion["order_num"] = crit_idx
-            for opt_idx, option in enumerate(criterion["options"]):
+            for opt_idx, option in enumerate(criterion.get("options", {})):
                 option["order_num"] = opt_idx
 
         rubric_serializer = RubricSerializer(data=rubric_dict)
