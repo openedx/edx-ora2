@@ -35,10 +35,6 @@ class TestRubricDeserialization(TestCase):
         with self.assertRaises(InvalidRubric):
             rubric_from_dict(json_data('rubric_data/no_points.json'))
 
-    def test_dont_accept_content_hash(self):
-        # we should always calculate this ourselves and not trust the user.
-        pass
-
 
 
 class TestCriterionDeserialization(TestCase):
