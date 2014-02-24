@@ -1,4 +1,19 @@
+"""UI Models constructed by the Open Assessment XBlock to generate HTML.
+
+These Models should be fully constructed before reaching any templates used by
+the XBlock, such that the templates should only have to render based on the
+information provided.  If any logic exists in the templates, it is likely that
+should be refactored into the XBlock, and the results stored in these models.
+
+"""
+
+
 class SubmissionUIModel(object):
+    """All data to be displayed to the front end regarding submissions.
+
+    All the data required to generate the Submission HTML.
+
+    """
 
     def __init__(self):
         self.assessment_type = "submission"
@@ -16,6 +31,11 @@ class SubmissionUIModel(object):
 
 
 class AssessmentUIModel(object):
+    """Generic Assessment UI Model.
+
+    Common attributes for displaying Assessment sections of the front end.
+
+    """
 
     def __init__(self):
 
@@ -42,6 +62,12 @@ class AssessmentUIModel(object):
 
 
 class PeerAssessmentUIModel(AssessmentUIModel):
+    """All data required to display the Peer Assessment front end.
+
+    Attributes and data specific to rendering the Peer Assessment section of
+    the front end.
+
+    """
 
     def __init__(self):
         super(PeerAssessmentUIModel, self).__init__()
@@ -51,6 +77,12 @@ class PeerAssessmentUIModel(AssessmentUIModel):
 
 
 class SelfAssessmentUIModel(AssessmentUIModel):
+    """All data required to display the Self Assessment front end.
+
+    Attributes and data specific to rendering the Self Assessment section of
+    the front end.
+
+    """
 
     def __init__(self):
         super(SelfAssessmentUIModel, self).__init__()

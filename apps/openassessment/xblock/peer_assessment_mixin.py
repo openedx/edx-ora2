@@ -4,10 +4,35 @@ from openassessment.peer.api import PeerAssessmentWorkflowError
 
 
 class PeerAssessmentMixin(object):
+    """The Peer Assessment Mixin for all Peer Functionality.
+
+    Abstracts all functionality and handlers associated with Peer Assessment.
+    All Peer Assessment API calls should be contained without this Mixin as
+    well.
+
+    PeerAssessmentMixin is a Mixin for the OpenAssessmentBlock. Functions in
+    the PeerAssessmentMixin call into the OpenAssessmentBlock functions and
+    will not work outside this scope.
+
+    """
 
     @XBlock.json_handler
     def assess(self, data, suffix=''):
         """Place an assessment into OpenAssessment system
+
+        Assess a Peer Submission.  Performs basic workflow validation to ensure
+        that an assessment can be performed as this time.
+
+        Args:
+            data (dict): A dictionary containing information required to create
+                a new peer assessment. Expecting attributes "points_earned",
+                "total_value", and "submission_uuid". If these attributes are
+                 not available, a new assessment cannot be stored.
+
+        Returns:
+            (tuple): A tuple containing the dictionary representation of the
+            newly created assessment, and a "Success" string.
+
         """
         assessment = self.get_assessment_module('peer-assessment')
         if assessment:
@@ -31,6 +56,13 @@ class PeerAssessmentMixin(object):
 
     @XBlock.handler
     def render_peer_assessment(self, data, suffix=''):
+        """Renders the Peer Assessment HTML section of the XBlock
+
+        Generates the peer assessment HTML for the first section of an Open
+        Assessment XBlock. See OpenAssessmentBlock.render_assessment() for
+        more information on rendering XBlock sections.
+
+        """
         assessment = self.get_assessment_module('peer-assessment')
         if assessment:
             peer_sub = self.get_peer_submission(self.get_student_item_dict(), assessment)
