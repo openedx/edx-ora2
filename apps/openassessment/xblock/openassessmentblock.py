@@ -302,7 +302,7 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         return block
 
     def get_grade_state(self):
-        # TODO: Determine if we want to build out grade state right now.
+        # TODO: Placeholder for workflow state.
 
         grade_state = {
             "style_class": "is--incomplete",

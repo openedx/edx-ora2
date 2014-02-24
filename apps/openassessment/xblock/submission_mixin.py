@@ -1,3 +1,4 @@
+import datetime
 from xblock.core import XBlock
 from submissions import api
 
@@ -48,9 +49,10 @@ class SubmissionMixin(object):
         student_item_dict = self.get_student_item_dict()
         prev_sub = self._get_user_submission(student_item_dict)
 
-        status_tag = 'ENOMULTI'  # It is an error to submit multiple times for the same item
-        if not prev_sub:
-            status_tag = 'ENODATA'
+        if prev_sub:
+            # It is an error to submit multiple times for the same item
+            status_tag = 'ENOMULTI'
+        else:
             try:
                 response = api.create_submission(student_item_dict, student_sub)
             except api.SubmissionRequestError, e:
@@ -121,5 +123,39 @@ class SubmissionMixin(object):
         Assessment XBlock. See OpenAssessmentBlock.render_assessment() for
         more information on rendering XBlock sections.
 
+        Needs to support the following scenarios:
+        Unanswered and Open
+        Unanswered and Closed
+        Saved
+        Saved and Closed
+        Submitted
+        Submitted and Closed
+        Submitted, waiting assessment
+        Submitted and graded
+
         """
-        return self.render_assessment('static/html/oa_response.html')
+        # TODO Check if Saved
+        student_item = self.get_student_item_dict()
+        # Has the student submitted?
+        student_submission = self._get_user_submission(student_item)
+        # Is the question closed?
+        due = datetime.datetime.strptime(self.due_datetime, "%Y-%m-%dT%H:%M:%S")
+        # Has it been graded yet?
+        student_score = self._get_submission_score(student_item)
+
+        step_status = "Submitted" if student_submission else "Incomplete"
+
+        context = {
+            "student_submission": student_submission,
+            "student_score": student_score,
+            "step_status": step_status,
+        }
+
+        path = 'static/html/oa_response.html'
+        if due < datetime.datetime.now() and not student_submission:
+            path = 'static/html/oa_response_closed.html'
+
+        if student_submission:
+            path = 'static/html/oa_response_submitted.html'
+
+        return self.render_assessment(path, context_dict=context)
