@@ -1,9 +1,8 @@
 from xblock.core import XBlock
-from openassessment.xblock.assessment_mixin import AssessmentMixin
 from submissions import api
 
 
-class SubmissionMixin(AssessmentMixin):
+class SubmissionMixin(object):
 
     submit_errors = {
         # Reported to user sometimes, and useful in tests
@@ -40,4 +39,4 @@ class SubmissionMixin(AssessmentMixin):
 
     @XBlock.handler
     def render_submission(self, data, suffix=''):
-        return self.render('static/html/oa_response.html')
+        return self.render_assessment('static/html/oa_response.html')

@@ -37,7 +37,7 @@ class PeerAssessmentMixin(object):
                 self.get_student_item_dict(),
                 assessment
             )}
-        return self.render('static/html/oa_peer_assessment.html', context_dict)
+        return self.render_assessment('static/html/oa_peer_assessment.html', context_dict)
 
     def get_peer_submission(self, student_item_dict, assessment):
         peer_submission = False

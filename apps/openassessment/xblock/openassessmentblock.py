@@ -274,7 +274,7 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         }
         return grade_state
 
-    def render(self, path, context_dict=None):
+    def render_assessment(self, path, context_dict=None):
         """Render an Assessment Module's HTML
 
         Given the name of an assessment module, find it in the list of
