@@ -1,0 +1,87 @@
+// xblock: openassessment - main style compile
+// ====================
+
+// NOTES:
+// * this Sass compiles into the static CSS needed for the openassessment xblock
+// * Sass partials that can be re-used are organized in the "xb/" directory and listed in "general xblock" segments
+// * theme-based Sass partials are noted by "theme - [theme name]" in the import order to override defaults
+// * openassessment-specific styles are collected within the "oa/" directory and listed in "app -" segment
+
+// * openassessment-based layouts are sized like media-query breakpoints, but will be applied by specific classes/variables
+// * the system/app digesting this xblock will control general page layout and overall screensize-based breakpoints
+
+// --------------------
+
+// KNOWN ISSUES/CONCERNS:
+// * manual syncing of a view's breakpoints/layout with openassessment's sizes is needed on a system/app basis
+// * the system/app ingesting this xblock may have conflicts/redundancies/versioning issues with the utilities used
+
+// --------------------
+// general - xblocks:
+// shared utilities, assets and set up
+// --------------------
+// xblocks: libraries and resets
+@import 'xb/libs/bourbon/bourbon';             // general sass utility (http://bourbon.io)
+@import 'xb/libs/neat/neat';                   // responsive grid utility (http://neat.bourbon.io)
+@import 'xb/libs/font-awesome/font-awesome';   // font-based icons (http://fontawesome.io/)
+
+// xblocks: utilities
+@import 'xb/utilities/reset';                  // xblocks-based reset
+@import 'xb/utilities/variables';              // default settings and values
+@import 'xb/utilities/mixins';                 // mixins and functions
+@import 'xb/utilities/extends';                // re-usable extends, placeholders, archetypes
+
+// general xblocks: assets
+@import 'xb/assets/fonts';                     // imported/used fonts
+@import 'xb/assets/graphics';                  // sprites, basic img/figure/svg styling
+@import 'xb/assets/animations';                // css-based animations
+
+
+// --------------------
+// theme - edx:
+// utilities and assets (needed in this order to override xb variables)
+// --------------------
+@import 'themes/edx/utilities';                // theme-based utilities (variables, mixins, extends)
+@import 'themes/edx/assets';                   // theme-based assets (fonts, graphics/sprites, animations)
+
+
+// --------------------
+// general - xblock:
+// shared base type, controls, and UI elements
+// --------------------
+// xblock: elements
+@import 'xb/elements/base';                    // basic styles
+@import 'xb/elements/typography';              // font sizes/scale and applied/canned definitions
+@import 'xb/elements/controls';                // buttons, link styles, sliders, etc.
+@import 'xb/elements/forms';                   // form elements
+
+// xblock: contextual
+@import 'xb/contexts/ie';                      // Internet Explorer-specific styling
+
+
+// --------------------
+// theme - edx:
+// elements, views, and contexts (needed in this order to override xb)
+// --------------------
+@import 'themes/edx/base';
+@import 'themes/edx/elements';
+
+
+// --------------------
+// app - openassessment:
+// specific UI for this application
+// --------------------
+@import 'oa/utilities/variables';              // specific variables and overrides
+@import 'oa/elements/header';                  // view/app headers
+@import 'oa/elements/footer';                  // view/app footers
+@import 'oa/elements/navigation';              // navigation sets
+@import 'oa/elements/layout';                  // applied layouts and deliberate class-based breakpoints
+@import 'oa/views/oa-base';                    // open assessment base view
+
+// openassessment: contextual
+@import 'oa/contexts/ie';                      // open assessment-specific Internet Explorer-specific styling
+@import 'oa/contexts/lms';                     // open assessment-specific LMS constraints
+
+// openassessment: misc.
+@import 'oa/utilities/developer';              // developer-friendly file: add rough/WIP styling that needs UI triage
+@import 'oa/utilities/shame';                  // used for any bad-form/orphaned css/clean up code needed

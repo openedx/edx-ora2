@@ -79,13 +79,31 @@ class TestOpenAssessment(TestCase):
         return request
 
     def test_submit_submission(self):
-        """XBlock accepts response, returns true on success."""
+        """XBlock accepts response, returns true on success"""
+        # This one should pass because we haven't submitted before
         resp = self.runtime.handle(
             self.assessment, 'submit',
             self.make_request(self.default_json_submission)
         )
         result = json.loads(resp.body)
         self.assertTrue(result[0])
+
+    def test_submission_multisubmit_failure(self):
+        """XBlock returns true on first, false on second submission"""
+        # We don't care about return value of first one
+        resp = self.runtime.handle(
+            self.assessment, 'submit',
+            self.make_request(self.default_json_submission)
+        )
+        # This one should fail becaus we're not allowed to submit multiple times
+        resp = self.runtime.handle(
+            self.assessment, 'submit',
+            self.make_request(self.default_json_submission)
+        )
+        result = json.loads(resp.body)
+        self.assertFalse(result[0])
+        self.assertEqual(result[1], "ENOMULTI")
+        self.assertEqual(result[2], self.assessment.submit_errors["ENOMULTI"])
 
     @patch.object(api, 'create_submission')
     def test_submission_general_failure(self, mock_submit):
