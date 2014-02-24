@@ -40,4 +40,4 @@ class SubmissionMixin(AssessmentMixin):
 
     @XBlock.handler
     def render_submission(self, data, suffix=''):
-        return super(SubmissionMixin, self).render('static/html/oa_response.html')
+        return self.render('static/html/oa_response.html')

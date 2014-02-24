@@ -1,10 +1,9 @@
 from xblock.core import XBlock
 from openassessment.peer import api as peer_api
 from openassessment.peer.api import PeerAssessmentWorkflowError
-from openassessment.xblock.assessment_mixin import AssessmentMixin
 
 
-class PeerAssessmentMixin(AssessmentMixin):
+class PeerAssessmentMixin(object):
 
     @XBlock.json_handler
     def assess(self, data, suffix=''):
@@ -25,6 +24,7 @@ class PeerAssessmentMixin(AssessmentMixin):
                 assessment_dict
             )
 
+
             # Temp kludge until we fix JSON serialization for datetime
             assessment["scored_at"] = str(assessment["scored_at"])
 
@@ -37,9 +37,7 @@ class PeerAssessmentMixin(AssessmentMixin):
                 self.get_student_item_dict(),
                 assessment
             )}
-        return super(PeerAssessmentMixin, self).render(
-            'static/html/oa_peer_assessment.html',
-            context_dict)
+        return self.render('static/html/oa_peer_assessment.html', context_dict)
 
     def get_peer_submission(self, student_item_dict, assessment):
         peer_submission = False

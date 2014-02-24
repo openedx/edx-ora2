@@ -1,8 +1,7 @@
 from xblock.core import XBlock
-from openassessment.xblock.assessment_mixin import AssessmentMixin
 
 
-class SelfAssessmentMixin(AssessmentMixin):
+class SelfAssessmentMixin(object):
 
     @XBlock.handler
     def render_self_assessment(self, data, suffix=''):
