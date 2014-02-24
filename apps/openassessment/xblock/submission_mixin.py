@@ -17,7 +17,6 @@ class SubmissionMixin(object):
 
     submit_errors = {
         # Reported to user sometimes, and useful in tests
-        'ENOSUB':   'API submission is unrequested',
         'ENODATA':  'API returned an empty response',
         'EBADFORM': 'API Submission Request Error',
         'EUNKNOWN': 'API returned unclassified exception',
