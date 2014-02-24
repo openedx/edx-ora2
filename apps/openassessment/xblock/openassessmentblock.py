@@ -10,6 +10,7 @@ from webob import Response
 from xblock.core import XBlock
 from xblock.fields import List, Scope, String
 from xblock.fragment import Fragment
+
 from openassessment.xblock.peer_assessment_mixin import PeerAssessmentMixin
 from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
@@ -123,7 +124,6 @@ DEFAULT_ASSESSMENT_MODULES = [
     DEFAULT_PEER_ASSESSMENT,
 ]
 
-
 def load(path):
     """Handy helper for getting resources from our kit."""
     data = pkg_resources.resource_string(__name__, path)
@@ -226,7 +226,6 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
             (Fragment): The HTML Fragment for this XBlock, which determines the
             general frame of the Open Ended Assessment Question.
         """
-
         trace = self.get_xblock_trace()
 
         grade_state = self.get_grade_state()

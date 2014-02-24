@@ -45,17 +45,24 @@ function OpenAssessmentBlock(runtime, element) {
 
         function prepare_assessment_post(element) {
             var selector = $("input[type=radio]:checked", element);
+            var criteriaChoices = {};
             var values = [];
             for (var i=0; i<selector.length; i++) {
                 values[i] = selector[i].value;
+                criteriaChoices[selector[i].name] = selector[i].value
             }
-            return {"submission_uuid":$("div#peer_submission_uuid")[0].innerText, "points_earned":values};
+            return {
+                "submission_uuid":$("div#peer_submission_uuid")[0].innerText,
+                "points_earned":values,
+                "options_selected":criteriaChoices
+            };
         }
 
         $('#peer-assessment--001__assessment__submit', element).click(function(eventObject) {
+            eventObject.preventDefault();
             $.ajax({
                 type: "POST",
-                url: handlerUrl,
+                url: runtime.handlerUrl(element, 'assess'),
                 /* data: JSON.stringify({"submission": $('.openassessment_submission', element).val()}), */
                 data: JSON.stringify(prepare_assessment_post(element)),
                 success: function(data) {
