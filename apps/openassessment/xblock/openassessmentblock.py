@@ -240,7 +240,7 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
             "grade_state": grade_state,
         }
 
-        template = get_template("static/html/oa_base.html")
+        template = get_template("oa_base.html")
         context = Context(context_dict)
         frag = Fragment(template.render(context))
         frag.add_css(load("static/css/openassessment.css"))
@@ -327,7 +327,6 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
             (Response): A Response Object with the generated HTML fragment. This
                 is intended for AJAX calls to load dynamically into a larger
                 document.
-
         """
         if not context_dict:
             context_dict = {}
