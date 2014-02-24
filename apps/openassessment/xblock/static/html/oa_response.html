@@ -17,7 +17,7 @@
     <!--header class="step__header ui-toggle-visibility__control"-->
         <h2 class="step__title">
             <span class="step__label">Your Response</span>
-            <span class="step__deadline">due <span class="date">January 24, 2014</span> at <span class="time">15:00 UTC</span></span>
+            <span class="step__deadline">due <span class="date">{{ formatted_due_datetime }}</span>
         </h2>
 
     <span class="step__status">
@@ -27,7 +27,7 @@
     <!--/header-->
 
     <div class="step__instruction">
-        <p>Please provide your response to the following question. You may save your progress and return to complete your response anytime before the due date of <span class="step__deadline">due <span class="date">January 24, 2014</span></span>. <strong class="emphasis--beta">Once you submit, you may not edit your response</strong>.</p>
+        <p>Please provide your response to the following question. You may save your progress and return to complete your response anytime before the due date of <span class="step__deadline">due <span class="date">{{ formatted_due_date }}</span></span>. <strong class="emphasis--beta">Once you submit, you may not edit your response</strong>.</p>
     </div>
 
     <div class="step__content">

@@ -53,7 +53,6 @@ class SubmissionMixin(object):
             # It is an error to submit multiple times for the same item
             status_tag = 'ENOMULTI'
         else:
-            status_tag = 'ENODATA'
             try:
                 response = api.create_submission(student_item_dict, student_sub)
             except api.SubmissionRequestError, e:
