@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 """XBlock scenario parsing routines"""
-from openassessment.xblock.ui_models import PeerAssessmentUIModel, SelfAssessmentUIModel, SubmissionUIModel
 
 
 class ScenarioParser(object):
@@ -82,21 +81,22 @@ class ScenarioParser(object):
                       must_grade="5"
                       must_be_graded_by="3" />
            </peer-assessment>"""
-        assessment_list = [SubmissionUIModel()]
+        assessment_list = []
         for asmnt in assessments:
             assessment = None
             assessment_type = asmnt.tag
             if 'peer-assessment' == assessment_type:
-                assessment = PeerAssessmentUIModel()
-                assessment.must_grade = int(asmnt.attrib.get('must_grade', 1))
-                assessment.must_be_graded_by = int(asmnt.attrib.get('must_be_graded_by', 0))
+                assessment = {
+                    "must_grade": int(asmnt.attrib.get('must_grade', 1)),
+                    "must_be_graded_by": int(asmnt.attrib.get('must_be_graded_by', 0))
+                }
             elif 'self-assessment' == assessment_type:
-                assessment = SelfAssessmentUIModel()
+                assessment = {}
 
-            if assessment:
-                assessment.name = asmnt.attrib.get('name', '')
-                assessment.start_datetime = asmnt.attrib.get('start', None)
-                assessment.due_datetime = asmnt.attrib.get('due', None)
+            if assessment is not None:
+                assessment["assessment_type"] = assessment_type
+                assessment["start_datetime"] = asmnt.attrib.get('start', None)
+                assessment["due_datetime"] = asmnt.attrib.get('due', None)
                 assessment_list.append(assessment)
 
         return assessment_list
