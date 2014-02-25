@@ -95,6 +95,7 @@ class ScenarioParser(object):
 
             if assessment is not None:
                 assessment["assessment_type"] = assessment_type
+                assessment["name"] = asmnt.attrib.get('name', None)
                 assessment["start_datetime"] = asmnt.attrib.get('start', None)
                 assessment["due_datetime"] = asmnt.attrib.get('due', None)
                 assessment_list.append(assessment)
