@@ -137,6 +137,11 @@ UI_MODELS = {
     }
 }
 
+"""
+The Default Peer Assessment is created as an example of how this XBlock can be
+configured. If no configuration is specified, this is the default assessment
+module(s) associated with the XBlock.
+"""
 DEFAULT_PEER_ASSESSMENT = {
     "start_datetime": datetime.datetime.now().isoformat(),
     "must_grade": 5,
@@ -274,6 +279,14 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         return frag
 
     def _create_ui_models(self):
+        """Combine UI attributes and XBlock configuration into a UI model.
+
+        This method takes all configuration for this XBlock instance and appends
+        UI attributes to create a UI Model for rendering all assessment modules.
+        This allows a clean separation of static UI attributes from persistent
+        XBlock configuration.
+
+        """
         ui_models = [UI_MODELS["submission"]]
         for assessment in self.rubric_assessments:
             ui_model = UI_MODELS[assessment["assessment_type"]]
