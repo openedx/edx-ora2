@@ -277,7 +277,7 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         ui_models = [UI_MODELS["submission"]]
         for assessment in self.rubric_assessments:
             ui_model = UI_MODELS[assessment["assessment_type"]]
-            ui_models.append(dict(assessment.items() + ui_model.items()))
+            ui_models.append(dict(assessment, **ui_model))
         return ui_models
 
     @staticmethod
