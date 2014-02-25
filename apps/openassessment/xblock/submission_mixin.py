@@ -49,10 +49,9 @@ class SubmissionMixin(object):
         student_item_dict = self.get_student_item_dict()
         prev_sub = self._get_user_submission(student_item_dict)
 
-        if prev_sub:
-            # It is an error to submit multiple times for the same item
-            status_tag = 'ENOMULTI'
-        else:
+        status_tag = 'ENOMULTI'  # It is an error to submit multiple times for the same item
+        if not prev_sub:
+            status_tag = 'ENODATA'
             try:
                 response = api.create_submission(student_item_dict, student_sub)
             except api.SubmissionRequestError, e:
@@ -151,11 +150,11 @@ class SubmissionMixin(object):
             "step_status": step_status,
         }
 
-        path = 'static/html/oa_response.html'
+        path = 'oa_response.html'
         if due < datetime.datetime.now() and not student_submission:
-            path = 'static/html/oa_response_closed.html'
+            path = 'oa_response_closed.html'
 
         if student_submission:
-            path = 'static/html/oa_response_submitted.html'
+            path = 'oa_response_submitted.html'
 
         return self.render_assessment(path, context_dict=context)
