@@ -6,6 +6,7 @@ git+https://github.com/ormsbee/xblock-sdk.git@4f62e508#egg=xblock-sdk
 defusedxml==0.4.1
 django==1.4.8
 django-extensions==1.2.5
+django-model-utils==1.4.0
 djangorestframework==2.3.5
 Mako==0.9.1
 python-dateutil==2.1

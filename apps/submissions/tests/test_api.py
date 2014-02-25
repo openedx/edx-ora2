@@ -31,7 +31,7 @@ ANSWER_TWO = u"this is my other answer!"
 
 
 @ddt
-class TestApi(TestCase):
+class TestSubmissionsApi(TestCase):
 
     """
     Testing Submissions
@@ -48,6 +48,31 @@ class TestApi(TestCase):
 
         self._assert_submission(submissions[1], ANSWER_ONE, 1, 1)
         self._assert_submission(submissions[0], ANSWER_TWO, 1, 2)
+
+    def test_get_submission(self):
+        # Test base case that we can create a submission and get it back
+        sub_dict1 = api.create_submission(STUDENT_ITEM, ANSWER_ONE)
+        sub_dict2 = api.get_submission(sub_dict1["uuid"])
+        self.assertEqual(sub_dict1, sub_dict2)
+
+        # Test invalid inputs
+        with self.assertRaises(api.SubmissionRequestError):
+            api.get_submission(20)
+        with self.assertRaises(api.SubmissionRequestError):
+            api.get_submission({})
+
+        # Test not found
+        with self.assertRaises(api.SubmissionNotFoundError):
+            api.get_submission("not a real uuid")
+        with self.assertRaises(api.SubmissionNotFoundError):
+            api.get_submission("0" * 50)  # This is bigger than our field size
+
+    @patch.object(Submission.objects, 'get')
+    @raises(api.SubmissionInternalError)
+    def test_get_submission_deep_error(self, mock_get):
+        # Test deep explosions are wrapped
+        mock_get.side_effect = DatabaseError("Kaboom!")
+        api.get_submission("000000000000000")
 
     def test_two_students(self):
         api.create_submission(STUDENT_ITEM, ANSWER_ONE)
@@ -127,12 +152,12 @@ class TestApi(TestCase):
         submission = api.create_submission(STUDENT_ITEM, ANSWER_ONE)
         self._assert_submission(submission, ANSWER_ONE, 1, 1)
 
-        score = api.set_score(STUDENT_ITEM, submission, 11, 12)
+        score = api.set_score(submission["uuid"], 11, 12)
         self._assert_score(score, 11, 12)
 
     def test_get_score(self):
         submission = api.create_submission(STUDENT_ITEM, ANSWER_ONE)
-        api.set_score(STUDENT_ITEM, submission, 11, 12)
+        api.set_score(submission["uuid"], 11, 12)
         scores = api.get_score(STUDENT_ITEM)
         self._assert_score(scores[0], 11, 12)
         self.assertEqual(scores[0]['submission_uuid'], submission['uuid'])

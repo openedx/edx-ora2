@@ -1,6 +1,6 @@
 from xblock.core import XBlock
-from openassessment.peer.api import get_assessments
-from submissions.api import get_score
+from openassessment.peer import api as peer_api
+from openassessment.workflow import api as workflow_api
 
 
 class GradeMixin(object):
@@ -17,23 +17,19 @@ class GradeMixin(object):
     @XBlock.handler
     def render_grade(self, data, suffix=''):
         problem_open, date = self.is_open()
-        workflowstate = "complete"  # TODO hook in workflow.
+        workflow = self.get_workflow_info()
         context = {}
-        if workflowstate == "complete":
+        if workflow.get('status') == "done":
             path = 'openassessmentblock/grade/oa_grade_complete.html'
-            student_item = self.get_student_item_dict()
-            scores = get_score(student_item)
-            if scores:
-                context = {
-                    "score": scores[0],
-                    "assessments": [],
-                }
-
-                # Look up assessment feedback
-                for assessment in get_assessments(scores[0]['submission_uuid']):
-                    context['assessments'].append(assessment)
-            else:
-                path = 'openassessmentblock/grade/oa_grade_waiting.html'
+            context = {
+                "score": workflow["score"],
+                "assessments": [
+                    assessment
+                    for assessment in peer_api.get_assessments(self.submission_uuid)
+                ],
+            }
+        elif workflow.get('status') == "waiting":
+            path = 'openassessmentblock/grade/oa_grade_waiting.html'
         elif not problem_open and date == "due":
             path = 'openassessmentblock/grade/oa_grade_closed.html'
         else:

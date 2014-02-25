@@ -5,7 +5,6 @@ Tests for peer assessment handlers in Open Assessment XBlock.
 
 import copy
 import json
-from submissions import api as submission_api
 from openassessment.peer import api as peer_api
 from .base import XBlockHandlerTestCase, scenario
 
@@ -26,12 +25,12 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         # Create a submission for this problem from another user
         student_item = xblock.get_student_item_dict()
         student_item['student_id'] = 'Sally'
-        submission = submission_api.create_submission(student_item, self.SUBMISSION)
+        submission = xblock.create_submission(student_item, self.SUBMISSION)
 
         # Create a submission for the scorer (required before assessing another student)
         another_student = copy.deepcopy(student_item)
         another_student['student_id'] = "Bob"
-        submission_api.create_submission(another_student, self.SUBMISSION)
+        xblock.create_submission(another_student, self.SUBMISSION)
 
         # Submit an assessment and expect a successful response
         assessment = copy.deepcopy(self.ASSESSMENT)
@@ -63,12 +62,12 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         # Create a submission for this problem from another user
         student_item = xblock.get_student_item_dict()
         student_item['student_id'] = 'Sally'
-        submission = submission_api.create_submission(student_item, self.SUBMISSION)
+        submission = xblock.create_submission(student_item, self.SUBMISSION)
 
         # Create a submission for the scorer (required before assessing another student)
         another_student = copy.deepcopy(student_item)
         another_student['student_id'] = "Bob"
-        submission_api.create_submission(another_student, self.SUBMISSION)
+        xblock.create_submission(another_student, self.SUBMISSION)
 
         # Submit an assessment, but mutate the options selected so they do NOT match the rubric
         assessment = copy.deepcopy(self.ASSESSMENT)

@@ -56,7 +56,7 @@ class Submission(models.Model):
     because it makes caching trivial.
 
     """
-    uuid = UUIDField()
+    uuid = UUIDField(version=1, db_index=True)
 
     student_item = models.ForeignKey(StudentItem)
 

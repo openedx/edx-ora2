@@ -11,6 +11,7 @@ from nose.tools import raises
 
 from openassessment.peer import api as peer_api
 from openassessment.peer.models import Assessment
+from openassessment.workflow import api as workflow_api
 from submissions import api as sub_api
 from submissions.models import Submission
 from submissions.tests.test_api import STUDENT_ITEM, ANSWER_ONE
@@ -109,7 +110,7 @@ THURSDAY = datetime.datetime(2007, 9, 16, 0, 0, 0, 0, pytz.UTC)
 
 
 @ddt
-class TestApi(TestCase):
+class TestPeerApi(TestCase):
     def test_create_assessment(self):
         submission = sub_api.create_submission(STUDENT_ITEM, ANSWER_ONE)
         assessment = peer_api.create_assessment(
@@ -164,8 +165,17 @@ class TestApi(TestCase):
 
         # Tim should not have a score, because he has not evaluated enough
         # peer submissions.
-        scores = sub_api.get_score(STUDENT_ITEM)
-        self.assertFalse(scores)
+        requirements = {
+            "peer": {
+                "must_grade": REQUIRED_GRADED,
+                "must_be_graded_by": REQUIRED_GRADED_BY,
+            }
+        }
+        # score = sub_api.get_score(STUDENT_ITEM)
+        score = workflow_api.get_workflow_for_submission(
+            tim["uuid"], requirements
+        )["score"]
+        self.assertIsNone(score)
 
         self.assertEquals((False, 0), peer_api.has_finished_required_evaluating(STUDENT_ITEM, REQUIRED_GRADED))
         peer_api.create_assessment(
@@ -191,8 +201,10 @@ class TestApi(TestCase):
 
         # Tim should not have a score, because his submission does not have
         # enough assessments.
-        scores = sub_api.get_score(STUDENT_ITEM)
-        self.assertFalse(scores)
+        score = workflow_api.get_workflow_for_submission(
+            tim["uuid"], requirements
+        )["score"]
+        self.assertIsNone(score)
 
         peer_api.create_assessment(
             tim["uuid"], "Bob", REQUIRED_GRADED, REQUIRED_GRADED_BY, ASSESSMENT_DICT, RUBRIC_DICT
@@ -205,10 +217,11 @@ class TestApi(TestCase):
         )
 
         # Tim has met the critera, and should now have a score.
-        scores = sub_api.get_score(STUDENT_ITEM)
-        self.assertTrue(scores)
-        self.assertEqual(6, scores[0]["points_earned"])
-        self.assertEqual(14, scores[0]["points_possible"])
+        score = workflow_api.get_workflow_for_submission(
+            tim["uuid"], requirements
+        )["score"]
+        self.assertEqual(score["points_earned"], 6)
+        self.assertEqual(score["points_possible"], 14)
 
 
     @raises(peer_api.PeerAssessmentRequestError)
@@ -264,7 +277,7 @@ class TestApi(TestCase):
         )
 
     @patch.object(Assessment.objects, 'filter')
-    @raises(sub_api.SubmissionInternalError)
+    @raises(peer_api.PeerAssessmentInternalError)
     def test_error_on_get_assessment(self, mock_filter):
         submission = sub_api.create_submission(STUDENT_ITEM, ANSWER_ONE)
         peer_api.create_assessment(
@@ -309,4 +322,6 @@ class TestApi(TestCase):
     def _create_student_and_submission(student, answer, date=None):
         new_student_item = STUDENT_ITEM.copy()
         new_student_item["student_id"] = student
-        return sub_api.create_submission(new_student_item, answer, date)
+        submission = sub_api.create_submission(new_student_item, answer, date)
+        workflow_api.create_workflow(submission["uuid"])
+        return submission

@@ -4,8 +4,8 @@ from submissions.models import Score, StudentItem, Submission
 
 class SubmissionAdmin(admin.ModelAdmin):
     list_display = (
-        'student_item', 'attempt_number', 'submitted_at', 'created_at', 'answer',
-        'scores'
+        'student_item', 'uuid', 'attempt_number', 'submitted_at', 'created_at',
+        'answer', 'scores'
     )
 
     def scores(self, obj):
