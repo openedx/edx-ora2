@@ -46,8 +46,8 @@ class PeerAssessmentMixin(object):
             assessment = peer_api.create_assessment(
                 data["submission_uuid"],
                 self.get_student_item_dict()["student_id"],
-                int(assessment_ui_model.must_grade),
-                int(assessment_ui_model.must_be_graded_by),
+                int(assessment_ui_model["must_grade"]),
+                int(assessment_ui_model["must_be_graded_by"]),
                 assessment_dict,
                 rubric_dict,
             )
@@ -77,12 +77,12 @@ class PeerAssessmentMixin(object):
         peer_submission = False
         try:
             peer_submission = peer_api.get_submission_to_assess(
-                student_item_dict, assessment.must_be_graded_by
+                student_item_dict, assessment["must_be_graded_by"]
             )
 
             peer_submission = peer_api.get_submission_to_assess(
                 student_item_dict,
-                assessment.must_be_graded_by
+                assessment["must_be_graded_by"]
             )
 
         except PeerAssessmentWorkflowError:
@@ -94,5 +94,5 @@ class PeerAssessmentMixin(object):
         """Get a configured assessment module by name.
         """
         for assessment in self.rubric_assessments:
-            if assessment.name == mixin_name:
+            if assessment["name"] == mixin_name:
                 return assessment

@@ -14,7 +14,6 @@ from xblock.fragment import Fragment
 from openassessment.xblock.peer_assessment_mixin import PeerAssessmentMixin
 from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
-from openassessment.xblock.ui_models import PeerAssessmentUIModel
 
 from scenario_parser import ScenarioParser
 
@@ -114,15 +113,46 @@ DEFAULT_RUBRIC_CRITERIA = [
     }
 ]
 
-DEFAULT_PEER_ASSESSMENT = PeerAssessmentUIModel()
-DEFAULT_PEER_ASSESSMENT.name = "peer-assessment"
-DEFAULT_PEER_ASSESSMENT.start_datetime = datetime.datetime.now().isoformat()
-DEFAULT_PEER_ASSESSMENT.must_grade = 5
-DEFAULT_PEER_ASSESSMENT.must_be_graded_by = 3
+UI_MODELS = {
+    "submission": {
+        "assessment_type": "submission",
+        "name": "submission",
+        "class_id": "",
+        "navigation_text": "Your response to this problem",
+        "title": "Your Response"
+    },
+    "peer-assessment": {
+        "assessment_type": "peer-assessment",
+        "namne": "peer-assessment",
+        "class_id": "",
+        "navigation_text": "Your assessment(s) of peer responses",
+        "title": "Assess Peers' Responses"
+    },
+    "self-assessment": {
+        "assessment_type": "self-assessment",
+        "name": "self-assessment",
+        "class_id": "",
+        "navigation_text": "Your assessment of your response",
+        "title": "Assess Your Response"
+    }
+}
+
+"""
+The Default Peer Assessment is created as an example of how this XBlock can be
+configured. If no configuration is specified, this is the default assessment
+module(s) associated with the XBlock.
+"""
+DEFAULT_PEER_ASSESSMENT = {
+    "start_datetime": datetime.datetime.now().isoformat(),
+    "must_grade": 5,
+    "must_be_graded_by": 3,
+}
+
 
 DEFAULT_ASSESSMENT_MODULES = [
     DEFAULT_PEER_ASSESSMENT,
 ]
+
 
 def load(path):
     """Handy helper for getting resources from our kit."""
@@ -227,7 +257,7 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
             general frame of the Open Ended Assessment Question.
         """
         trace = self.get_xblock_trace()
-
+        ui_models = self._create_ui_models()
         grade_state = self.get_grade_state()
         # All data we intend to pass to the front end.
         context_dict = {
@@ -236,7 +266,7 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
             "question": self.prompt,
             "rubric_instructions": self.rubric_instructions,
             "rubric_criteria": self.rubric_criteria,
-            "rubric_assessments": [assessment.create_ui_model() for assessment in self.rubric_assessments],
+            "rubric_assessments": ui_models,
             "grade_state": grade_state,
         }
 
@@ -247,6 +277,21 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         frag.add_javascript(load("static/js/src/oa_base.js"))
         frag.initialize_js('OpenAssessmentBlock')
         return frag
+
+    def _create_ui_models(self):
+        """Combine UI attributes and XBlock configuration into a UI model.
+
+        This method takes all configuration for this XBlock instance and appends
+        UI attributes to create a UI Model for rendering all assessment modules.
+        This allows a clean separation of static UI attributes from persistent
+        XBlock configuration.
+
+        """
+        ui_models = [UI_MODELS["submission"]]
+        for assessment in self.rubric_assessments:
+            ui_model = UI_MODELS[assessment["assessment_type"]]
+            ui_models.append(dict(assessment, **ui_model))
+        return ui_models
 
     @staticmethod
     def workbench_scenarios():
