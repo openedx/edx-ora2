@@ -141,6 +141,7 @@ def create_submission(student_item_dict, answer, submitted_at=None,
         if not submission_serializer.is_valid():
             raise SubmissionRequestError(submission_serializer.errors)
         submission_serializer.save()
+
         return submission_serializer.data
     except DatabaseError:
         error_message = u"An error occurred while creating submission {} for student item: {}".format(
@@ -150,6 +151,36 @@ def create_submission(student_item_dict, answer, submitted_at=None,
         logger.exception(error_message)
         raise SubmissionInternalError(error_message)
 
+def get_submission(submission_uuid):
+    """Retrieves a single submission by uuid.
+
+    Args:
+        submission_uuid (str): Identifier for the submission.
+
+    Raises:
+        SubmissionNotFoundError: Raised if the submission does not exist.
+        SubmissionRequestError: Raised if the search parameter is not a string.
+        SubmissionInternalError: Raised for unknown errors.
+    """
+    if not isinstance(submission_uuid, basestring):
+        raise SubmissionRequestError(
+            "submission_uuid ({!r}) must be a string type".format(submission_uuid)
+        )
+
+    try:
+        submission = Submission.objects.get(uuid=submission_uuid)
+    except Submission.DoesNotExist:
+        raise SubmissionNotFoundError(
+            u"No submission matching uuid {}".format(submission_uuid)
+        )
+    except Exception as exc:
+        # Something very unexpected has just happened (like DB misconfig)
+        logger.exception(exc)
+        raise SubmissionInternalError(
+            "Could not get submission due to error: {}".format(exc)
+        )
+
+    return SubmissionSerializer(submission).data
 
 def get_submissions(student_item_dict, limit=None):
     """Retrieves the submissions for the specified student item,
