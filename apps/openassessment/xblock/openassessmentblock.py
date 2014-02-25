@@ -143,6 +143,8 @@ configured. If no configuration is specified, this is the default assessment
 module(s) associated with the XBlock.
 """
 DEFAULT_PEER_ASSESSMENT = {
+    "assessment_type": "peer-assessment",
+    "name": "peer-assessment",
     "start_datetime": datetime.datetime.now().isoformat(),
     "must_grade": 5,
     "must_be_graded_by": 3,
