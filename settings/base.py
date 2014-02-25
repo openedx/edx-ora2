@@ -140,6 +140,7 @@ INSTALLED_APPS = (
     # edx-tim apps
     'submissions',
     'openassessment.peer',
+    'openassessment',
 )
 
 # A sample logging configuration. The only tangible logging
