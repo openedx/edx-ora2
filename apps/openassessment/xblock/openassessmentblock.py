@@ -117,21 +117,21 @@ UI_MODELS = {
     "submission": {
         "assessment_type": "submission",
         "name": "submission",
-        "class_id": "",
+        "class_id": "openassessment__response",
         "navigation_text": "Your response to this problem",
         "title": "Your Response"
     },
     "peer-assessment": {
         "assessment_type": "peer-assessment",
-        "namne": "peer-assessment",
-        "class_id": "",
+        "name": "peer-assessment",
+        "class_id": "openassessment__peer-assessment",
         "navigation_text": "Your assessment(s) of peer responses",
         "title": "Assess Peers' Responses"
     },
     "self-assessment": {
         "assessment_type": "self-assessment",
         "name": "self-assessment",
-        "class_id": "",
+        "class_id": "openassessment__self-assessment",
         "navigation_text": "Your assessment of your response",
         "title": "Assess Your Response"
     }
@@ -143,6 +143,8 @@ configured. If no configuration is specified, this is the default assessment
 module(s) associated with the XBlock.
 """
 DEFAULT_PEER_ASSESSMENT = {
+    "assessment_type": "peer-assessment",
+    "name": "peer-assessment",
     "start_datetime": datetime.datetime.now().isoformat(),
     "must_grade": 5,
     "must_be_graded_by": 3,
