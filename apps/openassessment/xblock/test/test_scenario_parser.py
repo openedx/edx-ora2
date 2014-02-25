@@ -77,7 +77,7 @@ class TestScenarioParser(TestCase):
 
         # Self assessments take all the parameters, but mostly ignore them.
         self.assertEqual(parsed_list[0]["assessment_type"], 'self-assessment')
-        self.assertEqual(parsed_list[1].name, '0382e03c808e4f2bb12dfdd2d45d5c4b')
+        self.assertEqual(parsed_list[1]["name"], '0382e03c808e4f2bb12dfdd2d45d5c4b')
 
         # Peer assessments are more interesting
         self.assertEqual(parsed_list[1]["assessment_type"], 'peer-assessment')
