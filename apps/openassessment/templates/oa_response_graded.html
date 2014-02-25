@@ -22,15 +22,17 @@
 <!-- individual question from rubric -->
 <li class="question question--001 ui-toggle-visibility">
     <h4 class="question__title ui-toggle-visibility__control">
-        <span class="title__copy">{{ criterion.instructions }}</span>
+        <span class="title__copy">{{ criterion.name }}</span>
             <span class="question__score">
               <span class="label sr">Overall Question Score</span>
-              <span class="question__score__value">10</span>
+              <span class="question__score__value">{% criterion.name in median_scores %}</span>
               <span class="label label--divider sr">out of</span>
-              <span class="question__score__potential">10</span>
+              <span class="question__score__potential">{{ student_score.points_possible }}</span>
             </span>
     </h4>
     {% for assessment in peer_assessments %}
+    {% for part in assessment.parts %}
+    {% if part.option.criterion.name == criterion.name %}
     <ul class="question__answers ui-toggle-visibility__content">
         <li class="answer peer-assessment--001" id="question--001__answer-001">
             <h5 class="answer__title">
@@ -40,15 +42,17 @@
                 </span>
                 <span class="answer__value">
                   <span class="label sr">Peer's Assessment: </span>
-                  <span class="value">{{ assessment }}</span>
+                  <span class="value">{{ part.option.name }}</span>
                 </span>
             </h5>
 
               <span class="answer__content">
-                {{ assessment }}
+                {{ part.option.explanation }}
               </span>
         </li>
     </ul>
+    {% endif %}
+    {% endfor %}
     {% endfor %}
 </li>
 {% endfor %}

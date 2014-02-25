@@ -1,6 +1,7 @@
 import datetime
 from xblock.core import XBlock
 from submissions import api
+from openassessment.peer import api as peer_api
 
 
 class SubmissionMixin(object):
@@ -69,7 +70,7 @@ class SubmissionMixin(object):
         return status, status_tag, status_text
 
     @staticmethod
-    def _get_submission_score(student_item_dict, submission=False):
+    def _get_submission_score(student_item_dict):
         """Return the most recent score, if any, for student item
 
         Gets the score, if available.
@@ -83,9 +84,7 @@ class SubmissionMixin(object):
                 question.
 
         """
-        scores = False
-        if submission:
-            scores = api.get_score(student_item_dict)
+        scores = api.get_score(student_item_dict)
         return scores[0] if scores else None
 
     @staticmethod
@@ -141,8 +140,8 @@ class SubmissionMixin(object):
         due = datetime.datetime.strptime(self.due_datetime, "%Y-%m-%dT%H:%M:%S")
         # Has it been graded yet?
         student_score = self._get_submission_score(student_item)
-
-        step_status = "Submitted" if student_submission else "Incomplete"
+        step_status = "Graded" if student_score else "Submitted"
+        step_status = step_status if student_submission else "Incomplete"
 
         context = {
             "student_submission": student_submission,
@@ -150,11 +149,16 @@ class SubmissionMixin(object):
             "step_status": step_status,
         }
 
-        path = 'oa_response.html'
-        if due < datetime.datetime.now() and not student_submission:
-            path = 'oa_response_closed.html'
-
-        if student_submission:
+        path = "oa_response.html"
+        if student_score:
+            assessments = peer_api.get_assessments(student_submission["uuid"])
+            context["peer_assessments"] = assessments
+            median_scores = peer_api.get_median_scores_for_assessments(student_submission["uuid"])
+            context["median_scores"] = median_scores
+            path = 'oa_response_graded.html'
+        elif student_submission:
             path = 'oa_response_submitted.html'
+        elif due < datetime.datetime.now() and not student_submission:
+            path = 'oa_response_closed.html'
 
         return self.render_assessment(path, context_dict=context)

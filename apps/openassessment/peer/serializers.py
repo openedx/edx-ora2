@@ -4,8 +4,7 @@ Serializers are created to ensure models do not have to be accessed outside the
 scope of the Tim APIs.
 """
 from copy import deepcopy
-from hashlib import sha1
-import json
+import math
 
 from rest_framework import serializers
 from openassessment.peer.models import (
@@ -71,7 +70,6 @@ class CriterionSerializer(NestedModelSerializer):
         model = Criterion
         fields = ('order_num', 'name', 'prompt', 'options')
 
-
     def validate_options(self, attrs, source):
         """Make sure we have at least one CriterionOption in a Criterion."""
         options = attrs[source]
@@ -90,7 +88,6 @@ class RubricSerializer(NestedModelSerializer):
     class Meta:
         model = Rubric
         fields = ('id', 'content_hash', 'criteria', 'points_possible')
-
 
     def validate_criteria(self, attrs, source):
         """Make sure we have at least one Criterion in the Rubric."""
@@ -133,6 +130,70 @@ class AssessmentSerializer(serializers.ModelSerializer):
             'points_earned',
             'points_possible',
         )
+
+
+def get_assessment_review(submission):
+    """Get all information pertaining to an assessment for review.
+
+    Given an assessment serializer, return a serializable formatted model of
+    the assessment, all assessment parts, all criterion options, and the
+    associated rubric.
+
+    """
+    reviews = []
+    assessments = Assessment.objects.filter(submission=submission)
+    for assessment in assessments:
+        assessment_dict = AssessmentSerializer(assessment).data
+        rubric_dict = RubricSerializer(assessment.rubric).data
+        assessment_dict["rubric"] = rubric_dict
+        parts = []
+        for part in AssessmentPart.objects.filter(assessment=assessment):
+            part_dict = AssessmentPartSerializer(part).data
+            options_dict = CriterionOptionSerializer(part.option).data
+            criterion_dict = CriterionSerializer(part.option.criterion).data
+            options_dict["criterion"] = criterion_dict
+            part_dict["option"] = options_dict
+            parts.append(part_dict)
+        assessment_dict["parts"] = parts
+        reviews.append(assessment_dict)
+    return reviews
+
+
+def get_assessment_median_scores(assessments):
+    """Get the median score for each rubric criterion
+
+    For a given assessment, collect the median score for each criterion on the
+    rubric. This set can be used to determine the overall score, as well as each
+    part of the individual rubric scores.
+
+    """
+    # Create a key value in a dict with a list of values, for every criterion
+    # found in an assessment.
+    scores = {}
+    median_scores = {}
+    for assessment in assessments:
+        for part in AssessmentPart.objects.filter(assessment=assessment):
+            criterion_name = part.option.criterion.name
+            if not scores.has_key(criterion_name):
+                scores[criterion_name] = []
+            scores[criterion_name].append(part.option.points)
+
+    # Once we have lists of values for each criterion, sort each value and set
+    # to the median value for each.
+    for criterion in scores.keys():
+        total_criterion_scores = len(scores[criterion])
+        criterion_scores = sorted(scores)
+        median = int(math.ceil(total_criterion_scores / float(2)))
+        if total_criterion_scores == 0:
+            criterion_score = 0
+        elif total_criterion_scores % 2:
+            criterion_score = criterion_scores[median-1]
+        else:
+            criterion_score = int(math.ceil(sum(criterion_scores[median-1:median+1])/float(2)))
+        median_scores[criterion] = criterion_score
+    return median_scores
+
+
 
 def rubric_from_dict(rubric_dict):
     """Given a dict of rubric information, return the corresponding Rubric

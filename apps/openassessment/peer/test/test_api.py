@@ -244,6 +244,7 @@ class TestApi(TestCase):
         peer_api.get_assessments(submission["uuid"])
 
     def test_choose_score(self):
+
         self.assertEqual(0, peer_api._calculate_final_score([]))
         self.assertEqual(5, peer_api._calculate_final_score([5]))
         # average of 5, 6, rounded down.

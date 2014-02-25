@@ -10,10 +10,10 @@ import math
 
 from django.db import DatabaseError
 
-from openassessment.peer.models import Assessment
+from openassessment.peer.models import Assessment, Rubric, AssessmentPart
 from openassessment.peer.serializers import (
-    AssessmentSerializer, RubricSerializer, rubric_from_dict
-)
+    AssessmentSerializer, RubricSerializer, rubric_from_dict,
+    AssessmentPartSerializer, CriterionOptionSerializer, get_assessment_review, get_assessment_median_scores)
 from submissions import api as submission_api
 from submissions.models import Submission, StudentItem, Score
 from submissions.serializers import SubmissionSerializer, StudentItemSerializer
@@ -205,19 +205,17 @@ def _score_if_finished(student_item,
     )
     assessments = Assessment.objects.filter(submission=submission)
     submission_finished = assessments.count() >= required_assessments_for_submission
-    scores = []
-    for assessment in assessments:
-        scores.append(assessment.points_earned)
+
     if finished_evaluating and submission_finished:
         submission_api.set_score(
             StudentItemSerializer(student_item).data,
             SubmissionSerializer(submission).data,
-            _calculate_final_score(scores),
+            _calculate_final_score(assessments),
             assessments[0].points_possible
         )
 
 
-def _calculate_final_score(scores):
+def _calculate_final_score(assessments):
     """Final grade is calculated using integer values, rounding up.
 
     If there is a true median score, it is returned. If there are two median
@@ -225,15 +223,8 @@ def _calculate_final_score(scores):
     greatest integer value.
 
     """
-    total_scores = len(scores)
-    scores = sorted(scores)
-    median = int(math.ceil(total_scores / float(2)))
-    if total_scores == 0:
-        return 0
-    elif total_scores % 2:
-        return scores[median-1]
-    else:
-        return int(math.ceil(sum(scores[median-1:median+1])/float(2)))
+    median_scores = get_assessment_median_scores(assessments)
+    return sum(median_scores)
 
 
 def has_finished_required_evaluating(student_id, required_assessments):
@@ -316,12 +307,40 @@ def get_assessments(submission_id):
     """
     try:
         submission = Submission.objects.get(uuid=submission_id)
-        assessments = Assessment.objects.filter(submission=submission)
-        serializer = AssessmentSerializer(assessments, many=True)
-        return serializer.data
+        return get_assessment_review(submission)
     except DatabaseError:
         error_message = (
             u"Error getting assessments for submission {}".format(submission_id)
+        )
+        logger.exception(error_message)
+        raise PeerAssessmentInternalError(error_message)
+
+
+def get_median_scores_for_assessments(submission_id):
+    """Returns a dictionary of scores per rubric criterion
+
+    Retrieve all the median scores for a particular submission, for each
+    criterion in the rubric.
+
+    Args:
+        submission_id (str): The submission uuid to get all rubric criterion
+            median scores.
+
+    Returns:
+        (dict): A dictionary of rubric criterion names, with a median score of
+            the peer assessments.
+
+    Raises:
+        PeerAssessmentInternalError: If any error occurs while retrieving
+            information to form the median scores, an error is raised.
+    """
+    try:
+        submission = Submission.objects.get(uuid=submission_id)
+        assessments = Assessment.objects.filter(submission=submission)
+        return get_assessment_median_scores(assessments)
+    except DatabaseError:
+        error_message = (
+            u"Error getting assessment median scores {}".format(submission_id)
         )
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
