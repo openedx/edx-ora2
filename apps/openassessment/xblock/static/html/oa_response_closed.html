@@ -1,18 +1,9 @@
-<!-- CASE: unaswered and problem closed -->
+{%  extends "static/html/oa_response.html" %}
+{% block list_item %}
 <li id="openassessment__response" class="openassessment__steps__step step--response is--unavailable ui-toggle-visibility">
-    <!--header class="step__header ui-toggle-visibility__control"-->
-        <h2 class="step__title">
-            <span class="step__label">Your Response</span>
-            <span class="step__deadline">due <span class="date">{{ formatted_due_datetime }}</span></span>
-        </h2>
-
-    <span class="step__status">
-      <span class="step__status__label">This step's status:</span>
-      <span class="step__status__value">{{ step_status }}</span>
-    </span>
-    <!--/header-->
-
+{% endblock %}
+{% block body %}
     <div class="step__instruction">
         <p>You did not complete this portion of the problem before its due date.</p>
     </div>
-</li>
+{% endblock %}

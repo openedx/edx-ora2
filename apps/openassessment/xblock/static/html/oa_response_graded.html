@@ -1,17 +1,8 @@
-<!-- CASE: is graded -->
+{%  extends "static/html/oa_response.html" %}
+{% block list_item %}
 <li id="openassessment__response" class="openassessment__steps__step step--response is--graded is--collapsed ui-toggle-visibility">
-<!--header class="step__header ui-toggle-visibility__control"-->
-    <h2 class="step__title">
-        <span class="step__title__label">Your Response</span>
-        <span class="step__title__deadline">due <span class="date">{{ formatted_due_datetime }}</span></span>
-    </h2>
-
-    <span class="step__status">
-      <span class="step__status__label">This step's status:</span>
-      <span class="step_status_value">{{ step_status }}</span>
-    </span>
-<!--/header-->
-
+{% endblock %}
+{% block body %}
 <div class="step__content">
 <!-- user's response -->
 <article class="submission__answer__display">
@@ -82,3 +73,4 @@
     </ul>
 </form>
 </div>
+{% endblock %}
