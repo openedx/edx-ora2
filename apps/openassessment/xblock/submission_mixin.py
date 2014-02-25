@@ -152,9 +152,13 @@ class SubmissionMixin(object):
         path = "oa_response.html"
         if student_score:
             assessments = peer_api.get_assessments(student_submission["uuid"])
-            context["peer_assessments"] = assessments
             median_scores = peer_api.get_median_scores_for_assessments(student_submission["uuid"])
-            context["median_scores"] = median_scores
+            context["peer_assessments"] = assessments
+            context["rubric_instructions"] = self.rubric_instructions
+            context["rubric_criteria"] = self.rubric_criteria
+            for criterion in context["rubric_criteria"]:
+                criterion["median_score"] = median_scores[criterion["name"]]
+
             path = 'oa_response_graded.html'
         elif student_submission:
             path = 'oa_response_submitted.html'

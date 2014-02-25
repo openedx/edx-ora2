@@ -50,6 +50,7 @@ class ScenarioParser(object):
             crit = {
                 'name': criterion.attrib.get('name', ''),
                 'prompt': criterion.text.strip(),
+                'total_value': criterion.attrib.get('total_value', None),
                 'options': [],
             }
             for option in criterion:

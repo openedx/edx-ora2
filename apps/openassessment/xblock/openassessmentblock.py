@@ -382,8 +382,6 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         due = datetime.datetime.strptime(self.due_datetime, "%Y-%m-%dT%H:%M:%S")
 
         context_dict["xblock_trace"] = self.get_xblock_trace()
-        context_dict["rubric_instructions"] = self.rubric_instructions
-        context_dict["rubric_criteria"] = self.rubric_criteria
         context_dict["formatted_start_date"] = start.strftime("%A, %B %d, %Y")
         context_dict["formatted_start_datetime"] = start.strftime("%A, %B %d, %Y %X")
         context_dict["formatted_due_date"] = due.strftime("%A, %B %d, %Y")

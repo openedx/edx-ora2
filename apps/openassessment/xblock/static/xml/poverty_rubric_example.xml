@@ -11,7 +11,7 @@
         </prompt>
         <rubric>
             Read for conciseness, clarity of thought, and form.
-            <criterion name="concise">
+            <criterion name="concise" total_value="5">
                 How concise is it?
                 <option val="0">Neal Stephenson (late)
                     <explain>
@@ -43,7 +43,7 @@
                     </explain>
                 </option>
             </criterion>
-            <criterion name="clearheaded">
+            <criterion name="clearheaded" total_value="10">
                 How clear is the thinking?
                 <option val="0">Yogi Berra</option>
                 <option val="1">Hunter S. Thompson</option>
@@ -57,7 +57,7 @@
                     </explain>
                 </option>
             </criterion>
-            <criterion name="form">
+            <criterion name="form" total_value="5">
                 Lastly, how is it's form? Punctuation, grammar, and spelling all count.
                 <option val="0">lolcats</option>
                 <option val="1">Facebook</option>

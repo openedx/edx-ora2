@@ -182,7 +182,7 @@ def get_assessment_median_scores(assessments):
     # to the median value for each.
     for criterion in scores.keys():
         total_criterion_scores = len(scores[criterion])
-        criterion_scores = sorted(scores)
+        criterion_scores = sorted(scores[criterion])
         median = int(math.ceil(total_criterion_scores / float(2)))
         if total_criterion_scores == 0:
             criterion_score = 0
