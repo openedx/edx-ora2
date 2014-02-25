@@ -121,5 +121,4 @@ class SubmissionMixin(object):
         Assessment XBlock. See OpenAssessmentBlock.render_assessment() for
         more information on rendering XBlock sections.
         """
-        return self.render_assessment('static/html/oa_response.html')
         return self.render_assessment('oa_response.html')
