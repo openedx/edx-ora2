@@ -29,7 +29,6 @@ function OpenAssessmentBlock(runtime, element) {
                     $.ajax({
                         type: "POST",
                         url: renderSubmissionUrl,
-                        dataType: "html",
                         success:  function(data) {
                             render_submissions(data);
                         }
@@ -97,6 +96,22 @@ function OpenAssessmentBlock(runtime, element) {
             dataType: "html",
             success:  function(data) {
                 render_submissions(data);
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: renderPeerCollapseUrl,
+            success:  function(data) {
+                $('#openassessment__peer-assessment', element).replaceWith(data);
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: renderSelfCollapseUrl,
+            success:  function(data) {
+                $('#openassessment__self-assessment', element).replaceWith(data);
             }
         });
     });
