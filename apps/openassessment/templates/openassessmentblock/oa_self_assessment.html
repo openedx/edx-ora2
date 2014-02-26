@@ -14,6 +14,7 @@
 {% block list_item %}
 <li id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment ui-toggle-visibility">
 {% endblock %}
+
     {%  block header %}
     <header class="step__header ui-toggle-visibility__control">
         <h2 class="step__title">
@@ -25,8 +26,10 @@
         </h2>
 
         <span class="step__status">
-          <span class="step__status__label">This step's status:</span>
-          <span class="step_status_value">Incomplete</span>
+            <span class="step__status__label">This step's status:</span>
+            <span class="step_status_value">
+                <span class="copy">{{ step_status }}</span>
+            </span>
         </span>
     </header>
     {% endblock %}
