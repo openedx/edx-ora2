@@ -30,6 +30,13 @@ hr.divider,
   @extend %text-sr;
 }
 
+// --------------------
+// system-needed elements, but visually hidden
+// --------------------
+.system__element {
+  @extend %text-sr;
+}
+
 
 // --------------------
 // semantic lists used for UI
