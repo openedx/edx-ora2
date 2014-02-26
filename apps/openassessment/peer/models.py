@@ -4,12 +4,14 @@ These models have to capture not only the state of assessments made for certain
 submissions, but also the state of the rubrics at the time those assessments
 were made.
 """
+from collections import defaultdict
 from copy import deepcopy
 from hashlib import sha1
 import json
 
 from django.db import models
 from django.utils.timezone import now
+import math
 
 from submissions.models import Submission
 
@@ -205,6 +207,78 @@ class Assessment(models.Model):
 
     def __unicode__(self):
         return u"Assessment {}".format(self.id)
+
+    @classmethod
+    def get_median_scores(cls, scores):
+        """Determine the median score in a dictionary of lists of scores
+
+        For a dictionary of lists, where each list contains a set of scores,
+        determine the median value in each list.
+
+        Args:
+            scores (dict): A dictionary of lists of int values. These int values
+                are reduced to a single value that represents the median.
+
+        Returns:
+            (dict): A dictionary with criterion name keys and median score
+                values.
+
+        Examples:
+            >>> scores = {
+            >>>     "foo": [1, 2, 3, 4, 5],
+            >>>     "bar": [6, 7, 8, 9, 10]
+            >>> }
+            >>> Attribute.get_median_scores(scores)
+            {"foo": 3, "bar": 8}
+
+        """
+        median_scores = {}
+        for criterion, criterion_scores in scores.iteritems():
+            total_criterion_scores = len(scores[criterion])
+            criterion_scores = sorted(criterion_scores)
+            median = int(math.ceil(total_criterion_scores / float(2)))
+            if total_criterion_scores == 0:
+                criterion_score = 0
+            elif total_criterion_scores % 2:
+                criterion_score = criterion_scores[median-1]
+            else:
+                criterion_score = int(math.ceil(sum(criterion_scores[median-1:median+1])/float(2)))
+            median_scores[criterion] = criterion_score
+        return median_scores
+
+    @classmethod
+    def get_assessment_scores_by_criterion(cls, submission, must_be_graded_by):
+        """Create a dictionary of lists for scores associated with criterion
+
+        Create a key value in a dict with a list of values, for every criterion
+        found in an assessment.
+
+        Iterate over every part of every assessment. Each part is associated with
+        a criterion name, which becomes a key in the score dictionary, with a list
+        of scores.
+
+        Args:
+            submission (Submission): Obtain assessments associated with this
+                submission
+            must_be_graded_by (int): The number of assessments to include in
+                this score analysis.
+
+        Examples:
+            >>> Attribute.get_assessment_scores_by_criterion(submission, 3)
+            {
+                "foo": [1, 2, 3],
+                "bar": [6, 7, 8]
+            }
+        """
+        assessments = cls.objects.filter(
+            submission=submission).order_by("scored_at")[:must_be_graded_by]
+
+        scores = defaultdict(list)
+        for assessment in assessments:
+            for part in assessment.parts.all():
+                criterion_name = part.option.criterion.name
+                scores[criterion_name].append(part.option.points)
+        return scores
 
 
 class AssessmentPart(models.Model):

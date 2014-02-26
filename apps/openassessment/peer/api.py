@@ -6,11 +6,10 @@ the workflow for a given submission.
 """
 import copy
 import logging
-import math
 
 from django.db import DatabaseError
 
-from openassessment.peer.models import Assessment, AssessmentPart
+from openassessment.peer.models import Assessment
 from openassessment.peer.serializers import (
     AssessmentSerializer, rubric_from_dict, get_assessment_review)
 from submissions import api as submission_api
@@ -246,43 +245,14 @@ def get_assessment_median_scores(submission_id, must_be_graded_by):
     # found in an assessment.
     try:
         submission = Submission.objects.get(uuid=submission_id)
-        assessments = Assessment.objects.filter(
-            submission=submission
-        ).order_by("scored_at")[:must_be_graded_by]
+        scores = Assessment.get_assessment_scores_by_criterion(submission, must_be_graded_by)
+        return Assessment.get_median_scores(scores)
     except DatabaseError:
         error_message = (
             u"Error getting assessment median scores {}".format(submission_id)
         )
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
-
-    # Iterate over every part of every assessment. Each part is associated with
-    # a criterion name, which becomes a key in the score dictionary, with a list
-    # of scores. These collected lists of scores are used to find a median value
-    # per criterion.
-    scores = {}
-    median_scores = {}
-    for assessment in assessments:
-        for part in assessment.parts.all():
-            criterion_name = part.option.criterion.name
-            if criterion_name not in scores:
-                scores[criterion_name] = []
-            scores[criterion_name].append(part.option.points)
-
-    # Once we have lists of values for each criterion, sort each value and set
-    # to the median value for each.
-    for criterion, criterion_scores in scores.iteritems():
-        total_criterion_scores = len(scores[criterion])
-        criterion_scores = sorted(criterion_scores)
-        median = int(math.ceil(total_criterion_scores / float(2)))
-        if total_criterion_scores == 0:
-            criterion_score = 0
-        elif total_criterion_scores % 2:
-            criterion_score = criterion_scores[median-1]
-        else:
-            criterion_score = int(math.ceil(sum(criterion_scores[median-1:median+1])/float(2)))
-        median_scores[criterion] = criterion_score
-    return median_scores
 
 
 def has_finished_required_evaluating(student_id, required_assessments):
