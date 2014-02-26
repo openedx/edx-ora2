@@ -254,7 +254,7 @@ def get_assessment_median_scores(submission_id, must_be_graded_by):
     for assessment in assessments:
         for part in AssessmentPart.objects.filter(assessment=assessment):
             criterion_name = part.option.criterion.name
-            if not scores.has_key(criterion_name):
+            if criterion_name not in scores:
                 scores[criterion_name] = []
             scores[criterion_name].append(part.option.points)
 
