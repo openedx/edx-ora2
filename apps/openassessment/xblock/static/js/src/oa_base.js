@@ -7,6 +7,16 @@ function OpenAssessmentBlock(runtime, element) {
     var renderSelfUrl = runtime.handlerUrl(element, 'render_self_assessment');
     /* Sample Debug Console: http://localhost:8000/submissions/Joe_Bloggs/TestCourse/u_3 */
 
+    /* Set a custom header on every other ajax call below */
+    $.ajaxSetup({
+        beforeSend: function(xhr) {
+            /* XXX: We could get this from an ajax handler, and then we
+             * wouldn't have to pass this information through the template */
+            var logToken = $('#edx_request_tracking_token', element).value
+            xhr.setRequestHeader('x-edx-log-token', logToken);
+        }
+    });
+
     /*
      *  Submission Functions
      */

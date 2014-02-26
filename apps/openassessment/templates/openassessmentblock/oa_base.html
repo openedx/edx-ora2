@@ -78,3 +78,9 @@
         {% include "openassessmentblock/oa_grade.html" %}
     </div>
 </div>
+{# this destroys static cacheability of the page, but is a reasonable first #}
+{# approximation to what we want. If this becomes a bottleneck, the right #}
+{# approach is probably to add a handler which gives this value and call it #}
+{# from within the javascript's ajaxSetup() call - which is using ajax to set #}
+{# up ajax. Which is wretched. But cacheable. #}
+<input type="hidden" id="edx_request_tracking_token" value="{{log_token}}" />

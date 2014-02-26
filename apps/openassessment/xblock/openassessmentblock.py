@@ -11,11 +11,13 @@ from xblock.core import XBlock
 from xblock.fields import List, Scope, String
 from xblock.fragment import Fragment
 
+from middleware.request_id import get_request
 from openassessment.xblock.peer_assessment_mixin import PeerAssessmentMixin
 from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
 
 from scenario_parser import ScenarioParser
+
 
 DEFAULT_PROMPT = """
     Censorship in the Libraries
@@ -150,7 +152,6 @@ DEFAULT_PEER_ASSESSMENT = {
     "must_be_graded_by": 3,
 }
 
-
 DEFAULT_ASSESSMENT_MODULES = [
     DEFAULT_PEER_ASSESSMENT,
 ]
@@ -222,12 +223,8 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         important contextual information. Per @nedbat, the usage_id attribute
         uniquely identifies this block in this course, and the user_id uniquely
         identifies this student. With the two of them, we can trace all the
-        interactions emanating from this interaction.
-
-        Useful for logging, debugging, and uniqueification.
-
-        """
-        return self.scope_ids.usage_id, self.scope_ids.user_id
+        interactions emanating from this interaction."""
+        return (self.scope_ids.usage_id, self.scope_ids.user_id)
 
     def get_student_item_dict(self):
         """Create a student_item_dict from our surrounding context.
@@ -262,6 +259,7 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
             general frame of the Open Ended Assessment Question.
         """
         trace = self.get_xblock_trace()
+        token = getattr(get_request(), 'META', {}).get('HTTP_X_EDX_LOG_TOKEN', None)
         ui_models = self._create_ui_models()
         grade_state = self.get_grade_state()
         # All data we intend to pass to the front end.
@@ -273,6 +271,7 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
             "rubric_criteria": self.rubric_criteria,
             "rubric_assessments": ui_models,
             "grade_state": grade_state,
+            "log_token": token,
         }
 
         template = get_template("openassessmentblock/oa_base.html")

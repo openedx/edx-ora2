@@ -5,7 +5,8 @@ from django.shortcuts import render_to_response
 from openassessment.peer.api import get_assessments
 from submissions.api import SubmissionRequestError, get_submissions
 
-log = logging.getLogger(__name__)
+
+logger = logging.getLogger(__name__)
 
 
 @login_required()
