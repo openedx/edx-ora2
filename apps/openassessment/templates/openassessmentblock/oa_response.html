@@ -17,7 +17,7 @@
 <li id="openassessment__response" class="openassessment__steps__step step--response ui-toggle-visibility">
 {% endblock %}
     {%  block header %}
-    <!--header class="step__header ui-toggle-visibility__control"-->
+    <header class="step__header ui-toggle-visibility__control">
         <h2 class="step__title">
             <span class="step__counter"></span>
             <span class="wrapper--copy">
@@ -28,11 +28,11 @@
             </span>
         </h2>
 
-    <span class="step__status">
-      <span class="step__status__label">This step's status:</span>
-      <span class="step__status__value">{{ step_status }}</span>
-    </span>
-    <!--/header-->
+        <span class="step__status">
+            <span class="step__status__label">This step's status:</span>
+            <span class="step__status__value">{{ step_status }}</span>
+        </span>
+    </header>
     {% endblock %}
 
     {% block body %}
