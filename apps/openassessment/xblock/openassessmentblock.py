@@ -395,3 +395,30 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         template = get_template(path)
         context = Context(context_dict)
         return Response(template.render(context), content_type='application/html', charset='UTF-8')
+
+    def is_open(self):
+        """Checks if the question is open.
+
+        Determines if the start date has occurred and the end date has not
+        passed.
+
+        Returns:
+            (tuple): True if the question is open, False if not. If False,
+                specifies if the "start" date or "due" date is the closing
+                factor.
+
+        Examples:
+            >>> is_open()
+            False, "due"
+
+        """
+        # Is the question closed?
+        if self.start_datetime:
+            start = datetime.datetime.strptime(self.start_datetime, TIME_PARSE_FORMAT)
+            if start > datetime.datetime.utcnow():
+                return False, "start"
+        if self.due_datetime:
+            due = datetime.datetime.strptime(self.due_datetime, TIME_PARSE_FORMAT)
+            if due < datetime.datetime.utcnow():
+                return False, "due"
+        return True, None

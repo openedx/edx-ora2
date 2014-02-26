@@ -2,11 +2,13 @@
 Tests the Open Assessment XBlock functionality.
 """
 import json
+import datetime
 
 from django.test import TestCase
 from mock import patch
 from workbench.runtime import WorkbenchRuntime
 import webob
+from openassessment.xblock.openassessmentblock import TIME_PARSE_FORMAT
 
 from openassessment.xblock.submission_mixin import SubmissionMixin
 from submissions import api as sub_api
@@ -144,5 +146,28 @@ class TestOpenAssessment(TestCase):
         self.assertIsNotNone(submission_response)
         self.assertTrue(submission_response.body.find("openassessment__response"))
 
+    def test_start_end_date_checks(self):
+        """
+        Check if the start and end date checks work appropriately.
+        """
+        now = datetime.datetime.utcnow()
+        past = now - datetime.timedelta(minutes = 10)
+        future = now + datetime.timedelta(minutes = 10)
+        way_future = now + datetime.timedelta(minutes = 20)
+        self.assessment.start_datetime = past.strftime(TIME_PARSE_FORMAT)
+        self.assessment.due_datetime = past.strftime(TIME_PARSE_FORMAT)
+        problem_open, reason = self.assessment.is_open()
+        self.assertFalse(problem_open)
+        self.assertEqual("due", reason)
 
+        self.assessment.start_datetime = past.strftime(TIME_PARSE_FORMAT)
+        self.assessment.due_datetime = future.strftime(TIME_PARSE_FORMAT)
+        problem_open, reason = self.assessment.is_open()
+        self.assertTrue(problem_open)
+        self.assertEqual(None, reason)
 
+        self.assessment.start_datetime = future.strftime(TIME_PARSE_FORMAT)
+        self.assessment.due_datetime = way_future.strftime(TIME_PARSE_FORMAT)
+        problem_open, reason = self.assessment.is_open()
+        self.assertFalse(problem_open)
+        self.assertEqual("start", reason)

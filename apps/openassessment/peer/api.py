@@ -245,7 +245,7 @@ def get_assessment_median_scores(submission_id, must_be_graded_by):
     # found in an assessment.
     try:
         submission = Submission.objects.get(uuid=submission_id)
-        scores = Assessment.get_assessment_scores_by_criterion(submission, must_be_graded_by)
+        scores = Assessment.scores_by_criterion(submission, must_be_graded_by)
         return Assessment.get_median_score_dict(scores)
     except DatabaseError:
         error_message = (

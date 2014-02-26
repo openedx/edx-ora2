@@ -273,7 +273,7 @@ class Assessment(models.Model):
         return median_score
 
     @classmethod
-    def get_assessment_scores_by_criterion(cls, submission, must_be_graded_by):
+    def scores_by_criterion(cls, submission, must_be_graded_by):
         """Create a dictionary of lists for scores associated with criterion
 
         Create a key value in a dict with a list of values, for every criterion
@@ -290,7 +290,7 @@ class Assessment(models.Model):
                 this score analysis.
 
         Examples:
-            >>> Attribute.get_assessment_scores_by_criterion(submission, 3)
+            >>> Assessment.scores_by_criterion(submission, 3)
             {
                 "foo": [1, 2, 3],
                 "bar": [6, 7, 8]

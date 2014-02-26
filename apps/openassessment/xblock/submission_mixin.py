@@ -136,14 +136,12 @@ class SubmissionMixin(object):
         student_item = self.get_student_item_dict()
         # Has the student submitted?
         student_submission = self._get_user_submission(student_item)
-        # Is the question closed?
-        due = datetime.datetime.strptime(self.due_datetime, "%Y-%m-%dT%H:%M:%S")
         # Has it been graded yet?
         student_score = self._get_submission_score(student_item)
         step_status = "Graded" if student_score else "Submitted"
         step_status = step_status if student_submission else "Incomplete"
         assessment_ui_model = self.get_assessment_module('peer-assessment')
-
+        problem_open, date = self.is_open()
         context = {
             "student_submission": student_submission,
             "student_score": student_score,
@@ -166,7 +164,7 @@ class SubmissionMixin(object):
             path = 'openassessmentblock/oa_response_graded.html'
         elif student_submission:
             path = 'openassessmentblock/oa_response_submitted.html'
-        elif due < datetime.datetime.now() and not student_submission:
+        elif not problem_open and date == "due" and not student_submission:
             path = 'openassessmentblock/oa_response_closed.html'
 
         return self.render_assessment(path, context_dict=context)
