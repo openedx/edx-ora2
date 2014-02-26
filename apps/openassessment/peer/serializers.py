@@ -159,41 +159,6 @@ def get_assessment_review(submission):
     return reviews
 
 
-def get_assessment_median_scores(assessments):
-    """Get the median score for each rubric criterion
-
-    For a given assessment, collect the median score for each criterion on the
-    rubric. This set can be used to determine the overall score, as well as each
-    part of the individual rubric scores.
-
-    """
-    # Create a key value in a dict with a list of values, for every criterion
-    # found in an assessment.
-    scores = {}
-    median_scores = {}
-    for assessment in assessments:
-        for part in AssessmentPart.objects.filter(assessment=assessment):
-            criterion_name = part.option.criterion.name
-            if not scores.has_key(criterion_name):
-                scores[criterion_name] = []
-            scores[criterion_name].append(part.option.points)
-
-    # Once we have lists of values for each criterion, sort each value and set
-    # to the median value for each.
-    for criterion in scores.keys():
-        total_criterion_scores = len(scores[criterion])
-        criterion_scores = sorted(scores[criterion])
-        median = int(math.ceil(total_criterion_scores / float(2)))
-        if total_criterion_scores == 0:
-            criterion_score = 0
-        elif total_criterion_scores % 2:
-            criterion_score = criterion_scores[median-1]
-        else:
-            criterion_score = int(math.ceil(sum(criterion_scores[median-1:median+1])/float(2)))
-        median_scores[criterion] = criterion_score
-    return median_scores
-
-
 
 def rubric_from_dict(rubric_dict):
     """Given a dict of rubric information, return the corresponding Rubric

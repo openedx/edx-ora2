@@ -77,6 +77,28 @@ ASSESSMENT_DICT = dict(
     }
 )
 
+# Answers are against RUBRIC_DICT -- this is worth 0 points
+ASSESSMENT_DICT_FAIL = dict(
+    feedback=u"fail",
+    options_selected={
+        "secret": "no",
+        u"ⓢⓐⓕⓔ": "no",
+        "giveup": "unwilling",
+        "singing": "yes",
+    }
+)
+
+# Answers are against RUBRIC_DICT -- this is worth 12 points
+ASSESSMENT_DICT_PASS = dict(
+    feedback=u"这是中国",
+    options_selected={
+        "secret": "yes",
+        u"ⓢⓐⓕⓔ": "yes",
+        "giveup": "eager",
+        "singing": "no",
+    }
+)
+
 REQUIRED_GRADED = 5
 REQUIRED_GRADED_BY = 3
 
@@ -175,10 +197,10 @@ class TestApi(TestCase):
             tim["uuid"], "Bob", REQUIRED_GRADED, REQUIRED_GRADED_BY, ASSESSMENT_DICT, RUBRIC_DICT
         )
         peer_api.create_assessment(
-            tim["uuid"], "Sally", REQUIRED_GRADED, REQUIRED_GRADED_BY, ASSESSMENT_DICT, RUBRIC_DICT
+            tim["uuid"], "Sally", REQUIRED_GRADED, REQUIRED_GRADED_BY, ASSESSMENT_DICT_FAIL, RUBRIC_DICT
         )
         peer_api.create_assessment(
-            tim["uuid"], "Jim", REQUIRED_GRADED, REQUIRED_GRADED_BY, ASSESSMENT_DICT, RUBRIC_DICT
+            tim["uuid"], "Jim", REQUIRED_GRADED, REQUIRED_GRADED_BY, ASSESSMENT_DICT_PASS, RUBRIC_DICT
         )
 
         # Tim has met the critera, and should now have a score.
@@ -211,6 +233,19 @@ class TestApi(TestCase):
         self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
         peer_api.get_submission_to_assess(STUDENT_ITEM, 3)
 
+    @patch.object(Assessment.objects, 'filter')
+    @raises(peer_api.PeerAssessmentInternalError)
+    def test_median_score_db_error(self, mock_filter):
+        mock_filter.side_effect = DatabaseError("Bad things happened")
+        tim = self._create_student_and_submission("Tim", "Tim's answer")
+        peer_api.get_assessment_median_scores(tim["uuid"], 3)
+
+    @patch.object(Assessment.objects, 'filter')
+    @raises(peer_api.PeerAssessmentInternalError)
+    def test_median_score_db_error(self, mock_filter):
+        mock_filter.side_effect = DatabaseError("Bad things happened")
+        tim = self._create_student_and_submission("Tim", "Tim's answer")
+        peer_api.get_assessments(tim["uuid"])
 
     @patch.object(Submission.objects, 'get')
     @raises(peer_api.PeerAssessmentInternalError)
@@ -242,17 +277,6 @@ class TestApi(TestCase):
         )
         mock_filter.side_effect = DatabaseError("Bad things happened")
         peer_api.get_assessments(submission["uuid"])
-
-    def test_choose_score(self):
-
-        self.assertEqual(0, peer_api._calculate_final_score([]))
-        self.assertEqual(5, peer_api._calculate_final_score([5]))
-        # average of 5, 6, rounded down.
-        self.assertEqual(6, peer_api._calculate_final_score([5, 6]))
-        self.assertEqual(14, peer_api._calculate_final_score([5, 6, 12, 16, 22, 53]))
-        self.assertEqual(14, peer_api._calculate_final_score([6, 5, 12, 53, 16, 22]))
-        self.assertEqual(16, peer_api._calculate_final_score([5, 6, 12, 16, 22, 53, 102]))
-        self.assertEqual(16, peer_api._calculate_final_score([16, 6, 12, 102, 22, 53, 5]))
 
 
     @staticmethod

@@ -13,7 +13,7 @@ from submissions import api as sub_api
 from submissions.api import SubmissionRequestError, SubmissionInternalError
 
 RUBRIC_CONFIG = """
-    <openassessment start="2014-12-19T23:00-7:00" due="2014-12-21T23:00-7:00">
+    <openassessment start="2014-12-19T23:00:00" due="2014-12-21T23:00:00">
         <prompt>
             Given the state of the world today, what do you think should be done to
             combat poverty? Please answer in a short essay of 200-300 words.
@@ -48,8 +48,8 @@ RUBRIC_CONFIG = """
         </rubric>
         <assessments>
             <peer-assessment name="peer-assessment"
-              start="2014-12-20T19:00-7:00"
-              due="2014-12-21T22:22-7:00"
+              start="2014-12-20T19:00"
+              due="2014-12-21T22:22"
               must_grade="5"
               must_be_graded_by="3" />
             <self-assessment/>
@@ -139,4 +139,10 @@ class TestOpenAssessment(TestCase):
         """
         xblock_fragment = self.runtime.render(self.assessment, "student_view")
         self.assertTrue(xblock_fragment.body_html().find("Openassessmentblock"))
+
+        submission_response = self.assessment.render_submission({})
+        self.assertIsNotNone(submission_response)
+        self.assertTrue(submission_response.body.find("openassessment__response"))
+
+
 

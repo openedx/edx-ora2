@@ -142,6 +142,7 @@ class SubmissionMixin(object):
         student_score = self._get_submission_score(student_item)
         step_status = "Graded" if student_score else "Submitted"
         step_status = step_status if student_submission else "Incomplete"
+        assessment_ui_model = self.get_assessment_module('peer-assessment')
 
         context = {
             "student_submission": student_submission,
@@ -152,7 +153,10 @@ class SubmissionMixin(object):
         path = "oa_response.html"
         if student_score:
             assessments = peer_api.get_assessments(student_submission["uuid"])
-            median_scores = peer_api.get_median_scores_for_assessments(student_submission["uuid"])
+            median_scores = peer_api.get_assessment_median_scores(
+                student_submission["uuid"],
+                assessment_ui_model["must_be_graded_by"]
+            )
             context["peer_assessments"] = assessments
             context["rubric_instructions"] = self.rubric_instructions
             context["rubric_criteria"] = self.rubric_criteria
