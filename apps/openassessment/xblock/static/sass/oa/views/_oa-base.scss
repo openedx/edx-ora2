@@ -40,11 +40,9 @@
     }
 
     @include media($bp-dl) {
-      @include span-columns(8 of 12);
     }
 
     @include media($bp-dx) {
-      @include span-columns(8 of 12);
     }
   }
 
@@ -62,15 +60,9 @@
     }
 
     @include media($bp-dl) {
-      @include span-columns(4 of 12);
-      margin-top: $spacing-delta;
-      text-align: right;
     }
 
     @include media($bp-dx) {
-      @include span-columns(4 of 12);
-      margin-top: $spacing-delta;
-      text-align: right;
     }
   }
 
