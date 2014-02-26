@@ -12,16 +12,15 @@
 
 <!-- CASE: default/not started -->
 {% block list_item %}
-<li id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment">
+<li id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment ui-toggle-visibility">
 {% endblock %}
-
     {%  block header %}
-    <header class="step__header">
+    <header class="step__header ui-toggle-visibility__control">
         <h2 class="step__title">
             <span class="step__counter"></span>
             <span class="wrapper--copy">
-                <span class="step__title__label">Evaluate Your Response</span>
-                <span class="step__title__deadline">due <span class="date">January 31, 2014</span> at <span class="time">15:00 UTC</span></span>
+                <span class="step__label">Evaluate Your Response</span>
+                <span class="step__deadline">due <span class="date">January 31, 2014</span> at <span class="time">15:00 UTC</span></span>
             </span>
         </h2>
 
