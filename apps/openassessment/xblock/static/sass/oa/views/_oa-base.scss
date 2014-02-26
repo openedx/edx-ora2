@@ -220,12 +220,8 @@
       @extend %text-sr;
     }
 
-    // STATE: step is unavailable
-    &.is--unavailable {
-
-      .step__status {
-        display: none;
-      }
+    // STATE: step is collapsed (not focused on)
+    &.is--collapsed {
 
       .step__label {
         color: $heading-tertiary-color;
@@ -234,10 +230,6 @@
       .step__counter:before {
         color: $color-disabled;
       }
-    }
-
-    // STATE: step is collapsed (disabled)
-    &.is--collapsed {
 
       .step__status__value {
         background: $color-disabled;
