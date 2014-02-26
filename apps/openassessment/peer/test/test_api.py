@@ -242,7 +242,7 @@ class TestApi(TestCase):
 
     @patch.object(Assessment.objects, 'filter')
     @raises(peer_api.PeerAssessmentInternalError)
-    def test_median_score_db_error(self, mock_filter):
+    def test_get_assessments_db_error(self, mock_filter):
         mock_filter.side_effect = DatabaseError("Bad things happened")
         tim = self._create_student_and_submission("Tim", "Tim's answer")
         peer_api.get_assessments(tim["uuid"])
