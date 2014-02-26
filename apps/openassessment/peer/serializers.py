@@ -10,6 +10,7 @@ from openassessment.peer.models import (
     Assessment, AssessmentPart, Criterion, CriterionOption, Rubric
 )
 
+
 class InvalidRubric(Exception):
     """This can be raised during the deserialization process."""
     def __init__(self, errors):
@@ -146,6 +147,40 @@ def get_assessment_review(submission):
         (list): A list of assessment reviews, combining assessments with
             rubrics and assessment parts, to allow a cohesive object for
             rendering the complete peer grading workflow.
+
+    Examples:
+        >>> get_assessment_review(submission)
+        {
+            'submission': 1,
+            'rubric': {
+                'id': 1,
+                'content_hash': u'45cc932c4da12a1c2b929018cd6f0785c1f8bc07',
+                'criteria': [{
+                    'order_num': 0,
+                    'name': u'Spelling',
+                    'prompt': u'Did the student have spelling errors?',
+                    'options': [{
+                        'order_num': 0,
+                        'points': 2,
+                        'name': u'No spelling errors',
+                        'explanation': u'No spelling errors were found in this submission.',
+                    }]
+                }]
+            },
+            'scored_at': datetime.datetime(2014, 2, 25, 19, 50, 7, 290464, tzinfo=<UTC>),
+            'scorer_id': u'Bob',
+            'score_type': u'PE',
+            'parts': [{
+                'option': {
+                    'order_num': 0,
+                    'points': 2,
+                    'name': u'No spelling errors',
+                    'explanation': u'No spelling errors were found in this submission.'}
+                }],
+            'submission_uuid': u'0a600160-be7f-429d-a853-1283d49205e7',
+            'points_earned': 9,
+            'points_possible': 20,
+        }
     """
     reviews = []
     assessments = Assessment.objects.filter(submission=submission)
@@ -154,7 +189,7 @@ def get_assessment_review(submission):
         rubric_dict = RubricSerializer(assessment.rubric).data
         assessment_dict["rubric"] = rubric_dict
         parts = []
-        for part in AssessmentPart.objects.filter(assessment=assessment):
+        for part in assessment.parts.all():
             part_dict = AssessmentPartSerializer(part).data
             options_dict = CriterionOptionSerializer(part.option).data
             criterion_dict = CriterionSerializer(part.option.criterion).data

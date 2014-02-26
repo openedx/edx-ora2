@@ -155,6 +155,9 @@ DEFAULT_ASSESSMENT_MODULES = [
     DEFAULT_PEER_ASSESSMENT,
 ]
 
+# Used to parse datetime strings from the XML configuration.
+TIME_PARSE_FORMAT = "%Y-%m-%dT%H:%M:%S"
+
 
 def load(path):
     """Handy helper for getting resources from our kit."""
@@ -378,14 +381,16 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         if not context_dict:
             context_dict = {}
 
-        start = datetime.datetime.strptime(self.start_datetime, "%Y-%m-%dT%H:%M:%S")
-        due = datetime.datetime.strptime(self.due_datetime, "%Y-%m-%dT%H:%M:%S")
-
         context_dict["xblock_trace"] = self.get_xblock_trace()
-        context_dict["formatted_start_date"] = start.strftime("%A, %B %d, %Y")
-        context_dict["formatted_start_datetime"] = start.strftime("%A, %B %d, %Y %X")
-        context_dict["formatted_due_date"] = due.strftime("%A, %B %d, %Y")
-        context_dict["formatted_due_datetime"] = due.strftime("%A, %B %d, %Y %X")
+
+        if self.start_datetime:
+            start = datetime.datetime.strptime(self.start_datetime, TIME_PARSE_FORMAT)
+            context_dict["formatted_start_date"] = start.strftime("%A, %B %d, %Y")
+            context_dict["formatted_start_datetime"] = start.strftime("%A, %B %d, %Y %X")
+        if self.due_datetime:
+            due = datetime.datetime.strptime(self.due_datetime, TIME_PARSE_FORMAT)
+            context_dict["formatted_due_date"] = due.strftime("%A, %B %d, %Y")
+            context_dict["formatted_due_datetime"] = due.strftime("%A, %B %d, %Y %X")
 
         template = get_template(path)
         context = Context(context_dict)

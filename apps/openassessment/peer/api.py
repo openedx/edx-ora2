@@ -223,6 +223,11 @@ def get_assessment_median_scores(submission_id, must_be_graded_by):
     values, the average of those two values is returned, rounded up to the
     greatest integer value.
 
+    If OverGrading occurs, the 'must_be_graded_by' parameter is the number of
+    assessments we want to use to calculate the median values. If this limit is
+    less than the total number of assessments available, the earliest
+    assessments are used.
+
     Args:
         submission_id (str): The submission uuid to get all rubric criterion
             median scores.
@@ -241,7 +246,9 @@ def get_assessment_median_scores(submission_id, must_be_graded_by):
     # found in an assessment.
     try:
         submission = Submission.objects.get(uuid=submission_id)
-        assessments = Assessment.objects.filter(submission=submission)[:must_be_graded_by]
+        assessments = Assessment.objects.filter(
+            submission=submission
+        ).order_by("scored_at")[:must_be_graded_by]
     except DatabaseError:
         error_message = (
             u"Error getting assessment median scores {}".format(submission_id)
@@ -249,10 +256,14 @@ def get_assessment_median_scores(submission_id, must_be_graded_by):
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
 
+    # Iterate over every part of every assessment. Each part is associated with
+    # a criterion name, which becomes a key in the score dictionary, with a list
+    # of scores. These collected lists of scores are used to find a median value
+    # per criterion.
     scores = {}
     median_scores = {}
     for assessment in assessments:
-        for part in AssessmentPart.objects.filter(assessment=assessment):
+        for part in assessment.parts.all():
             criterion_name = part.option.criterion.name
             if criterion_name not in scores:
                 scores[criterion_name] = []
