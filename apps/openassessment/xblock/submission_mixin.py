@@ -1,7 +1,5 @@
-import datetime
 from xblock.core import XBlock
 from submissions import api
-from openassessment.peer import api as peer_api
 
 
 class SubmissionMixin(object):
@@ -150,7 +148,7 @@ class SubmissionMixin(object):
             "step_status": step_status,
         }
 
-        path = "oa_response.html"
+        path = "openassessmentblock/oa_response.html"
         if student_score:
             assessments = peer_api.get_assessments(student_submission["uuid"])
             median_scores = peer_api.get_assessment_median_scores(
@@ -163,10 +161,10 @@ class SubmissionMixin(object):
             for criterion in context["rubric_criteria"]:
                 criterion["median_score"] = median_scores[criterion["name"]]
 
-            path = 'oa_response_graded.html'
+            path = 'openassessmentblock/oa_response_graded.html'
         elif student_submission:
             path = 'oa_response_submitted.html'
         elif due < datetime.datetime.now() and not student_submission:
-            path = 'oa_response_closed.html'
+            path = 'openassessmentblock/oa_response_closed.html'
 
         return self.render_assessment(path, context_dict=context)

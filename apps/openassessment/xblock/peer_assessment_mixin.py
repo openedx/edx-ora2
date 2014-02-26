@@ -75,7 +75,7 @@ class PeerAssessmentMixin(object):
                 "rubric_instructions": self.rubric_instructions,
                 "rubric_criteria": self.rubric_criteria
             }
-        return self.render_assessment('oa_peer_assessment.html', context_dict)
+        return self.render_assessment('openassessmentblock/oa_peer_assessment.html', context_dict)
 
     def get_peer_submission(self, student_item_dict, assessment):
         peer_submission = False

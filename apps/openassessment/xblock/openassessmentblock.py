@@ -272,7 +272,7 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
             "grade_state": grade_state,
         }
 
-        template = get_template("oa_base.html")
+        template = get_template("openassessmentblock/oa_base.html")
         context = Context(context_dict)
         frag = Fragment(template.render(context))
         frag.add_css(load("static/css/openassessment.css"))
