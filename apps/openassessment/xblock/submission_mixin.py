@@ -1,5 +1,7 @@
+import datetime
 from xblock.core import XBlock
 from submissions import api
+from openassessment.peer import api as peer_api
 
 
 class SubmissionMixin(object):
@@ -68,7 +70,7 @@ class SubmissionMixin(object):
         return status, status_tag, status_text
 
     @staticmethod
-    def _get_submission_score(student_item_dict, submission=False):
+    def _get_submission_score(student_item_dict):
         """Return the most recent score, if any, for student item
 
         Gets the score, if available.
@@ -82,9 +84,7 @@ class SubmissionMixin(object):
                 question.
 
         """
-        scores = False
-        if submission:
-            scores = api.get_score(student_item_dict)
+        scores = api.get_score(student_item_dict)
         return scores[0] if scores else None
 
     @staticmethod
@@ -120,5 +120,51 @@ class SubmissionMixin(object):
         Generates the submission HTML for the first section of an Open
         Assessment XBlock. See OpenAssessmentBlock.render_assessment() for
         more information on rendering XBlock sections.
+
+        Needs to support the following scenarios:
+        Unanswered and Open
+        Unanswered and Closed
+        Saved
+        Saved and Closed
+        Submitted
+        Submitted and Closed
+        Submitted, waiting assessment
+        Submitted and graded
+
         """
-        return self.render_assessment('openassessmentblock/oa_response.html')
+        # TODO Check if Saved
+        student_item = self.get_student_item_dict()
+        # Has the student submitted?
+        student_submission = self._get_user_submission(student_item)
+        # Has it been graded yet?
+        student_score = self._get_submission_score(student_item)
+        step_status = "Graded" if student_score else "Submitted"
+        step_status = step_status if student_submission else "Incomplete"
+        assessment_ui_model = self.get_assessment_module('peer-assessment')
+        problem_open, date = self.is_open()
+        context = {
+            "student_submission": student_submission,
+            "student_score": student_score,
+            "step_status": step_status,
+        }
+
+        path = "openassessmentblock/oa_response.html"
+        if student_score:
+            assessments = peer_api.get_assessments(student_submission["uuid"])
+            median_scores = peer_api.get_assessment_median_scores(
+                student_submission["uuid"],
+                assessment_ui_model["must_be_graded_by"]
+            )
+            context["peer_assessments"] = assessments
+            context["rubric_instructions"] = self.rubric_instructions
+            context["rubric_criteria"] = self.rubric_criteria
+            for criterion in context["rubric_criteria"]:
+                criterion["median_score"] = median_scores[criterion["name"]]
+
+            path = 'openassessmentblock/oa_response_graded.html'
+        elif student_submission:
+            path = 'openassessmentblock/oa_response_submitted.html'
+        elif not problem_open and date == "due" and not student_submission:
+            path = 'openassessmentblock/oa_response_closed.html'
+
+        return self.render_assessment(path, context_dict=context)

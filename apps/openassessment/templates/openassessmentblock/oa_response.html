@@ -13,21 +13,28 @@
 
 
 <!-- CASE: default/unanswered -->
+{% block list_item %}
 <li id="openassessment__response" class="openassessment__steps__step step--response ui-toggle-visibility">
+{% endblock %}
+    {%  block header %}
     <!--header class="step__header ui-toggle-visibility__control"-->
         <h2 class="step__title">
             <span class="step__label">Your Response</span>
-            <span class="step__deadline">due <span class="date">January 24, 2014</span> at <span class="time">15:00 UTC</span></span>
+            {% if formatted_due_datetime %}
+            <span class="step__deadline">due <span class="date">{{ formatted_due_datetime }}</span></span>
+            {% endif %}
         </h2>
 
     <span class="step__status">
       <span class="step__status__label">This step's status:</span>
-      <span class="step__status__value">Incomplete</span>
+      <span class="step__status__value">{{ step_status }}</span>
     </span>
     <!--/header-->
+    {% endblock %}
 
+    {% block body %}
     <div class="step__instruction">
-        <p>Please provide your response to the following question. You may save your progress and return to complete your response anytime before the due date of <span class="step__deadline">due <span class="date">January 24, 2014</span></span>. <strong class="emphasis--beta">Once you submit, you may not edit your response</strong>.</p>
+        <p>Please provide your response to the following question. You may save your progress and return to complete your response anytime before the due date of <span class="step__deadline">due <span class="date">{{ formatted_due_date }}</span></span>. <strong class="emphasis--beta">Once you submit, you may not edit your response</strong>.</p>
     </div>
 
     <div class="step__content">
@@ -55,4 +62,5 @@
             </li>
         </ul>
     </div>
+    {% endblock %}
 </li>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <vertical_demo>
 
-    <openassessment start="2013-12-19T23:00-7:00" due="2014-12-21T23:00-7:00">
+    <openassessment start="2013-02-24T13:53:50" due="2040-02-24T13:53:50">
         <title>
             Censorship in Public Libraries
         </title>
@@ -10,19 +10,19 @@
         </prompt>
         <rubric>
             Read for conciseness, clarity of thought, and form.
-            <criterion name="concise">
+            <criterion name="concise" total_value="3">
                 How concise is it?
                 <option val="0">The Bible</option>
                 <option val="1">Earnest Hemingway</option>
                 <option val="3">Matsuo Basho</option>
             </criterion>
-            <criterion name="clearheaded">
+            <criterion name="clearheaded" total_value="2">
                 How clear is the thinking?
                 <option val="0">Eric</option>
                 <option val="1">John</option>
                 <option val="2">Ian</option>
             </criterion>
-            <criterion name="form">
+            <criterion name="form" total_value="2">
                 Lastly, how is it's form? Punctuation, grammar, and spelling all count.
                 <option val="0">IRC</option>
                 <option val="1">Real Email</option>

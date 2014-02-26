@@ -4,13 +4,12 @@ Serializers are created to ensure models do not have to be accessed outside the
 scope of the Tim APIs.
 """
 from copy import deepcopy
-from hashlib import sha1
-import json
 
 from rest_framework import serializers
 from openassessment.peer.models import (
     Assessment, AssessmentPart, Criterion, CriterionOption, Rubric
 )
+
 
 class InvalidRubric(Exception):
     """This can be raised during the deserialization process."""
@@ -71,7 +70,6 @@ class CriterionSerializer(NestedModelSerializer):
         model = Criterion
         fields = ('order_num', 'name', 'prompt', 'options')
 
-
     def validate_options(self, attrs, source):
         """Make sure we have at least one CriterionOption in a Criterion."""
         options = attrs[source]
@@ -90,7 +88,6 @@ class RubricSerializer(NestedModelSerializer):
     class Meta:
         model = Rubric
         fields = ('id', 'content_hash', 'criteria', 'points_possible')
-
 
     def validate_criteria(self, attrs, source):
         """Make sure we have at least one Criterion in the Rubric."""
@@ -133,6 +130,77 @@ class AssessmentSerializer(serializers.ModelSerializer):
             'points_earned',
             'points_possible',
         )
+
+
+def get_assessment_review(submission):
+    """Get all information pertaining to an assessment for review.
+
+    Given an assessment serializer, return a serializable formatted model of
+    the assessment, all assessment parts, all criterion options, and the
+    associated rubric.
+
+    Args:
+        submission (Submission): The Submission Model object to get
+            assessment reviews for.
+
+    Returns:
+        (list): A list of assessment reviews, combining assessments with
+            rubrics and assessment parts, to allow a cohesive object for
+            rendering the complete peer grading workflow.
+
+    Examples:
+        >>> get_assessment_review(submission)
+        {
+            'submission': 1,
+            'rubric': {
+                'id': 1,
+                'content_hash': u'45cc932c4da12a1c2b929018cd6f0785c1f8bc07',
+                'criteria': [{
+                    'order_num': 0,
+                    'name': u'Spelling',
+                    'prompt': u'Did the student have spelling errors?',
+                    'options': [{
+                        'order_num': 0,
+                        'points': 2,
+                        'name': u'No spelling errors',
+                        'explanation': u'No spelling errors were found in this submission.',
+                    }]
+                }]
+            },
+            'scored_at': datetime.datetime(2014, 2, 25, 19, 50, 7, 290464, tzinfo=<UTC>),
+            'scorer_id': u'Bob',
+            'score_type': u'PE',
+            'parts': [{
+                'option': {
+                    'order_num': 0,
+                    'points': 2,
+                    'name': u'No spelling errors',
+                    'explanation': u'No spelling errors were found in this submission.'}
+                }],
+            'submission_uuid': u'0a600160-be7f-429d-a853-1283d49205e7',
+            'points_earned': 9,
+            'points_possible': 20,
+        }
+    """
+    reviews = []
+    assessments = Assessment.objects.filter(submission=submission)
+    for assessment in assessments:
+        assessment_dict = AssessmentSerializer(assessment).data
+        rubric_dict = RubricSerializer(assessment.rubric).data
+        assessment_dict["rubric"] = rubric_dict
+        parts = []
+        for part in assessment.parts.all():
+            part_dict = AssessmentPartSerializer(part).data
+            options_dict = CriterionOptionSerializer(part.option).data
+            criterion_dict = CriterionSerializer(part.option.criterion).data
+            options_dict["criterion"] = criterion_dict
+            part_dict["option"] = options_dict
+            parts.append(part_dict)
+        assessment_dict["parts"] = parts
+        reviews.append(assessment_dict)
+    return reviews
+
+
 
 def rubric_from_dict(rubric_dict):
     """Given a dict of rubric information, return the corresponding Rubric

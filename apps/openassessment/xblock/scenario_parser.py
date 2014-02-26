@@ -50,6 +50,7 @@ class ScenarioParser(object):
             crit = {
                 'name': criterion.attrib.get('name', ''),
                 'prompt': criterion.text.strip(),
+                'total_value': criterion.attrib.get('total_value', None),
                 'options': [],
             }
             for option in criterion:
@@ -104,6 +105,10 @@ class ScenarioParser(object):
 
     def parse(self):
         """Instantiate xblock object from runtime XML definition."""
+
+        self.xblock.start_datetime = self.root.attrib.get('start', None)
+        self.xblock.due_datetime = self.root.attrib.get('due', None)
+
         for child in self.root:
             if child.tag == 'prompt':
                 self.xblock.prompt = self.get_prompt(child)

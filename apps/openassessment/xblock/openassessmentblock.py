@@ -117,21 +117,21 @@ UI_MODELS = {
     "submission": {
         "assessment_type": "submission",
         "name": "submission",
-        "class_id": "",
+        "class_id": "openassessment__response",
         "navigation_text": "Your response to this problem",
         "title": "Your Response"
     },
     "peer-assessment": {
         "assessment_type": "peer-assessment",
-        "namne": "peer-assessment",
-        "class_id": "",
+        "name": "peer-assessment",
+        "class_id": "openassessment__peer-assessment",
         "navigation_text": "Your assessment(s) of peer responses",
         "title": "Assess Peers' Responses"
     },
     "self-assessment": {
         "assessment_type": "self-assessment",
         "name": "self-assessment",
-        "class_id": "",
+        "class_id": "openassessment__self-assessment",
         "navigation_text": "Your assessment of your response",
         "title": "Assess Your Response"
     }
@@ -154,6 +154,9 @@ DEFAULT_PEER_ASSESSMENT = {
 DEFAULT_ASSESSMENT_MODULES = [
     DEFAULT_PEER_ASSESSMENT,
 ]
+
+# Used to parse datetime strings from the XML configuration.
+TIME_PARSE_FORMAT = "%Y-%m-%dT%H:%M:%S"
 
 
 def load(path):
@@ -348,7 +351,7 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         return block
 
     def get_grade_state(self):
-        # TODO: Determine if we want to build out grade state right now.
+        # TODO: Placeholder for workflow state.
 
         grade_state = {
             "style_class": "is--incomplete",
@@ -379,9 +382,43 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
             context_dict = {}
 
         context_dict["xblock_trace"] = self.get_xblock_trace()
-        context_dict["rubric_instructions"] = self.rubric_instructions
-        context_dict["rubric_criteria"] = self.rubric_criteria
+
+        if self.start_datetime:
+            start = datetime.datetime.strptime(self.start_datetime, TIME_PARSE_FORMAT)
+            context_dict["formatted_start_date"] = start.strftime("%A, %B %d, %Y")
+            context_dict["formatted_start_datetime"] = start.strftime("%A, %B %d, %Y %X")
+        if self.due_datetime:
+            due = datetime.datetime.strptime(self.due_datetime, TIME_PARSE_FORMAT)
+            context_dict["formatted_due_date"] = due.strftime("%A, %B %d, %Y")
+            context_dict["formatted_due_datetime"] = due.strftime("%A, %B %d, %Y %X")
 
         template = get_template(path)
         context = Context(context_dict)
         return Response(template.render(context), content_type='application/html', charset='UTF-8')
+
+    def is_open(self):
+        """Checks if the question is open.
+
+        Determines if the start date has occurred and the end date has not
+        passed.
+
+        Returns:
+            (tuple): True if the question is open, False if not. If False,
+                specifies if the "start" date or "due" date is the closing
+                factor.
+
+        Examples:
+            >>> is_open()
+            False, "due"
+
+        """
+        # Is the question closed?
+        if self.start_datetime:
+            start = datetime.datetime.strptime(self.start_datetime, TIME_PARSE_FORMAT)
+            if start > datetime.datetime.utcnow():
+                return False, "start"
+        if self.due_datetime:
+            due = datetime.datetime.strptime(self.due_datetime, TIME_PARSE_FORMAT)
+            if due < datetime.datetime.utcnow():
+                return False, "due"
+        return True, None

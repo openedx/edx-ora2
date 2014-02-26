@@ -6,14 +6,12 @@ the workflow for a given submission.
 """
 import copy
 import logging
-import math
 
 from django.db import DatabaseError
 
 from openassessment.peer.models import Assessment
 from openassessment.peer.serializers import (
-    AssessmentSerializer, RubricSerializer, rubric_from_dict
-)
+    AssessmentSerializer, rubric_from_dict, get_assessment_review)
 from submissions import api as submission_api
 from submissions.models import Submission, StudentItem, Score
 from submissions.serializers import SubmissionSerializer, StudentItemSerializer
@@ -69,8 +67,8 @@ class PeerAssessmentInternalError(PeerAssessmentError):
 def create_assessment(
         submission_uuid,
         scorer_id,
-        required_assessments_for_student,
-        required_assessments_for_submission,
+        must_grade,
+        must_be_graded_by,
         assessment_dict,
         rubric_dict,
         scored_at=None):
@@ -85,9 +83,9 @@ def create_assessment(
             Submission model.
         scorer_id (str): The user ID for the user giving this assessment. This
             is required to create an assessment on a submission.
-        required_assessments_for_student (int): The number of assessments
+        must_grade (int): The number of assessments
             required for the student to receive a score for their submission.
-        required_assessments_for_submission (int): The number of assessments
+        must_be_graded_by (int): The number of assessments
             required on the submission for it to be scored.
         assessment_dict (dict): All related information for the assessment. An
             assessment contains points_earned, points_possible, and feedback.
@@ -132,8 +130,6 @@ def create_assessment(
             "rubric": rubric.id,
             "scorer_id": scorer_id,
             "submission": submission.pk,
-            #"points_earned": sum(assessment_dict["points_earned"]),
-            #"points_possible": assessment_dict["points_possible"],
             "score_type": PEER_TYPE,
             "parts": [{"option": option_id} for option_id in option_ids]
         }
@@ -151,8 +147,8 @@ def create_assessment(
         _score_if_finished(
             student_item,
             submission,
-            required_assessments_for_student,
-            required_assessments_for_submission
+            must_grade,
+            must_be_graded_by
         )
 
         # Check if the grader is finished and has enough assessments
@@ -170,8 +166,8 @@ def create_assessment(
         _score_if_finished(
             scorer_item,
             scorer_submissions[0],
-            required_assessments_for_student,
-            required_assessments_for_submission
+            must_grade,
+            must_be_graded_by
         )
 
         return peer_serializer.data
@@ -188,7 +184,7 @@ def create_assessment(
 def _score_if_finished(student_item,
                        submission,
                        required_assessments_for_student,
-                       required_assessments_for_submission):
+                       must_be_graded_by):
     """Calculate final grade iff peer evaluation flow is satisfied.
 
     Checks if the student is finished with the peer assessment workflow. If the
@@ -204,36 +200,59 @@ def _score_if_finished(student_item,
         required_assessments_for_student
     )
     assessments = Assessment.objects.filter(submission=submission)
-    submission_finished = assessments.count() >= required_assessments_for_submission
-    scores = []
-    for assessment in assessments:
-        scores.append(assessment.points_earned)
+    submission_finished = assessments.count() >= must_be_graded_by
+
     if finished_evaluating and submission_finished:
         submission_api.set_score(
             StudentItemSerializer(student_item).data,
             SubmissionSerializer(submission).data,
-            _calculate_final_score(scores),
+            sum(get_assessment_median_scores(submission.uuid, must_be_graded_by).values()),
             assessments[0].points_possible
         )
 
 
-def _calculate_final_score(scores):
-    """Final grade is calculated using integer values, rounding up.
+def get_assessment_median_scores(submission_id, must_be_graded_by):
+    """Get the median score for each rubric criterion
+
+    For a given assessment, collect the median score for each criterion on the
+    rubric. This set can be used to determine the overall score, as well as each
+    part of the individual rubric scores.
 
     If there is a true median score, it is returned. If there are two median
     values, the average of those two values is returned, rounded up to the
     greatest integer value.
 
+    If OverGrading occurs, the 'must_be_graded_by' parameter is the number of
+    assessments we want to use to calculate the median values. If this limit is
+    less than the total number of assessments available, the earliest
+    assessments are used.
+
+    Args:
+        submission_id (str): The submission uuid to get all rubric criterion
+            median scores.
+        must_be_graded_by (int): The number of assessments to include in this
+            score analysis.
+
+    Returns:
+        (dict): A dictionary of rubric criterion names, with a median score of
+            the peer assessments.
+
+    Raises:
+        PeerAssessmentInternalError: If any error occurs while retrieving
+            information to form the median scores, an error is raised.
     """
-    total_scores = len(scores)
-    scores = sorted(scores)
-    median = int(math.ceil(total_scores / float(2)))
-    if total_scores == 0:
-        return 0
-    elif total_scores % 2:
-        return scores[median-1]
-    else:
-        return int(math.ceil(sum(scores[median-1:median+1])/float(2)))
+    # Create a key value in a dict with a list of values, for every criterion
+    # found in an assessment.
+    try:
+        submission = Submission.objects.get(uuid=submission_id)
+        scores = Assessment.scores_by_criterion(submission, must_be_graded_by)
+        return Assessment.get_median_score_dict(scores)
+    except DatabaseError:
+        error_message = (
+            u"Error getting assessment median scores {}".format(submission_id)
+        )
+        logger.exception(error_message)
+        raise PeerAssessmentInternalError(error_message)
 
 
 def has_finished_required_evaluating(student_id, required_assessments):
@@ -316,9 +335,7 @@ def get_assessments(submission_id):
     """
     try:
         submission = Submission.objects.get(uuid=submission_id)
-        assessments = Assessment.objects.filter(submission=submission)
-        serializer = AssessmentSerializer(assessments, many=True)
-        return serializer.data
+        return get_assessment_review(submission)
     except DatabaseError:
         error_message = (
             u"Error getting assessments for submission {}".format(submission_id)
