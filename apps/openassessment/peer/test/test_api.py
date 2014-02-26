@@ -278,6 +278,15 @@ class TestApi(TestCase):
         mock_filter.side_effect = DatabaseError("Bad things happened")
         peer_api.get_assessments(submission["uuid"])
 
+    def test_choose_score(self):
+        self.assertEqual(0, Assessment.get_median_score([]))
+        self.assertEqual(5, Assessment.get_median_score([5]))
+        # average of 5, 6, rounded down.
+        self.assertEqual(6, Assessment.get_median_score([5, 6]))
+        self.assertEqual(14, Assessment.get_median_score([5, 6, 12, 16, 22, 53]))
+        self.assertEqual(14, Assessment.get_median_score([6, 5, 12, 53, 16, 22]))
+        self.assertEqual(16, Assessment.get_median_score([5, 6, 12, 16, 22, 53, 102]))
+        self.assertEqual(16, Assessment.get_median_score([16, 6, 12, 102, 22, 53, 5]))
 
     @staticmethod
     def _create_student_and_submission(student, answer, date=None):

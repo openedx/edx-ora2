@@ -209,15 +209,15 @@ class Assessment(models.Model):
         return u"Assessment {}".format(self.id)
 
     @classmethod
-    def get_median_scores(cls, scores):
+    def get_median_score_dict(cls, scores_dict):
         """Determine the median score in a dictionary of lists of scores
 
         For a dictionary of lists, where each list contains a set of scores,
         determine the median value in each list.
 
         Args:
-            scores (dict): A dictionary of lists of int values. These int values
-                are reduced to a single value that represents the median.
+            scores_dict (dict): A dictionary of lists of int values. These int
+                values are reduced to a single value that represents the median.
 
         Returns:
             (dict): A dictionary with criterion name keys and median score
@@ -228,23 +228,49 @@ class Assessment(models.Model):
             >>>     "foo": [1, 2, 3, 4, 5],
             >>>     "bar": [6, 7, 8, 9, 10]
             >>> }
-            >>> Attribute.get_median_scores(scores)
+            >>> Assessment.get_median_score_dict(scores)
             {"foo": 3, "bar": 8}
 
         """
         median_scores = {}
-        for criterion, criterion_scores in scores.iteritems():
-            total_criterion_scores = len(scores[criterion])
-            criterion_scores = sorted(criterion_scores)
-            median = int(math.ceil(total_criterion_scores / float(2)))
-            if total_criterion_scores == 0:
-                criterion_score = 0
-            elif total_criterion_scores % 2:
-                criterion_score = criterion_scores[median-1]
-            else:
-                criterion_score = int(math.ceil(sum(criterion_scores[median-1:median+1])/float(2)))
+        for criterion, criterion_scores in scores_dict.iteritems():
+            criterion_score = Assessment.get_median_score(criterion_scores)
             median_scores[criterion] = criterion_score
         return median_scores
+
+    @staticmethod
+    def get_median_score(scores):
+        """Determine the median score in a list of scores
+
+        Determine the median value in the list.
+
+        Args:
+            scores (list): A list of int values. These int values
+                are reduced to a single value that represents the median.
+
+        Returns:
+            (int): The median score.
+
+        Examples:
+            >>> scores = 1, 2, 3, 4, 5]
+            >>> Assessment.get_median_score(scores)
+            3
+
+        """
+        total_criterion_scores = len(scores)
+        sorted_scores = sorted(scores)
+        median = int(math.ceil(total_criterion_scores / float(2)))
+        if total_criterion_scores == 0:
+            median_score = 0
+        elif total_criterion_scores % 2:
+            median_score = sorted_scores[median-1]
+        else:
+            median_score = int(
+                math.ceil(
+                    sum(sorted_scores[median-1:median+1])/float(2)
+                )
+            )
+        return median_score
 
     @classmethod
     def get_assessment_scores_by_criterion(cls, submission, must_be_graded_by):

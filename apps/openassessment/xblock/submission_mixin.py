@@ -165,7 +165,7 @@ class SubmissionMixin(object):
 
             path = 'openassessmentblock/oa_response_graded.html'
         elif student_submission:
-            path = 'oa_response_submitted.html'
+            path = 'openassessmentblock/oa_response_submitted.html'
         elif due < datetime.datetime.now() and not student_submission:
             path = 'openassessmentblock/oa_response_closed.html'
 
