@@ -16,8 +16,8 @@ from submissions import api as submission_api
 from submissions.models import Submission, StudentItem, Score
 from submissions.serializers import SubmissionSerializer, StudentItemSerializer
 
-logger = logging.getLogger(__name__)
 
+logger = logging.getLogger(__name__)
 PEER_TYPE = "PE"
 
 
