@@ -18,3 +18,7 @@ class SelfAssessmentMixin(object):
     def render_self_assessment(self, data, suffix=''):
         return self.render_assessment('openassessmentblock/self/oa_self_assessment.html')
 
+    @XBlock.handler
+    def render_self_assessment_collapsed(self, data, suffix=''):
+        return self.render_assessment("openassessmentblock/oa_self_assessment_collapsed.html")
+
