@@ -43,10 +43,9 @@ class TestScenarioParser(TestCase):
                                cit=criterion_prompt_text,
                                coet=criterion_option_explain_text)
         rubric_xml = etree.fromstring(rubric_text)
-        rubric_prompt, rubric_criteria = self.test_parser.get_rubric(rubric_xml)
+        rubric_criteria = self.test_parser.get_rubric(rubric_xml)
 
         # Basic shape of the rubric: prompt and criteria
-        self.assertEqual(rubric_prompt, rubric_prompt_text)
         self.assertEqual(len(rubric_criteria), 1)
 
         # Look inside the criterion to make sure it's shaped correctly

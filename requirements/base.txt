@@ -3,6 +3,7 @@ git+https://github.com/edx/XBlock.git@923978c5#egg=XBlock
 git+https://github.com/ormsbee/xblock-sdk.git@295678ff#egg=xblock-sdk
 
 # Third Party Requirements
+defusedxml==0.4.1
 django==1.4.8
 django-extensions==1.2.5
 djangorestframework==2.3.5

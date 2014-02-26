@@ -156,7 +156,6 @@ class SubmissionMixin(object):
                 assessment_ui_model["must_be_graded_by"]
             )
             context["peer_assessments"] = assessments
-            context["rubric_instructions"] = self.rubric_instructions
             context["rubric_criteria"] = self.rubric_criteria
             for criterion in context["rubric_criteria"]:
                 criterion["median_score"] = median_scores[criterion["name"]]
