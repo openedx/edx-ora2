@@ -260,9 +260,9 @@ def get_assessment_median_scores(submission_id, must_be_graded_by):
 
     # Once we have lists of values for each criterion, sort each value and set
     # to the median value for each.
-    for criterion in scores.keys():
+    for criterion, criterion_scores in scores.iteritems():
         total_criterion_scores = len(scores[criterion])
-        criterion_scores = sorted(scores[criterion])
+        criterion_scores = sorted(criterion_scores)
         median = int(math.ceil(total_criterion_scores / float(2)))
         if total_criterion_scores == 0:
             criterion_score = 0

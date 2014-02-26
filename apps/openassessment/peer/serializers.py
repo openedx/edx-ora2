@@ -4,7 +4,6 @@ Serializers are created to ensure models do not have to be accessed outside the
 scope of the Tim APIs.
 """
 from copy import deepcopy
-import math
 
 from rest_framework import serializers
 from openassessment.peer.models import (
@@ -139,6 +138,14 @@ def get_assessment_review(submission):
     the assessment, all assessment parts, all criterion options, and the
     associated rubric.
 
+    Args:
+        submission (Submission): The Submission Model object to get
+            assessment reviews for.
+
+    Returns:
+        (list): A list of assessment reviews, combining assessments with
+            rubrics and assessment parts, to allow a cohesive object for
+            rendering the complete peer grading workflow.
     """
     reviews = []
     assessments = Assessment.objects.filter(submission=submission)
