@@ -5,6 +5,12 @@ function OpenAssessmentBlock(runtime, element) {
     var renderSubmissionUrl = runtime.handlerUrl(element, 'render_submission');
     var renderPeerUrl = runtime.handlerUrl(element, 'render_peer_assessment');
     var renderSelfUrl = runtime.handlerUrl(element, 'render_self_assessment');
+
+    /* Collapsed Handlers */
+    var renderSubmissionCollapseUrl = runtime.handlerUrl(element, 'render_submission_collapsed');
+    var renderPeerCollapseUrl = runtime.handlerUrl(element, 'render_peer_assessment_collapsed');
+    var renderSelfCollapseUrl = runtime.handlerUrl(element, 'render_self_assessment_collapsed');
+
     /* Sample Debug Console: http://localhost:8000/submissions/Joe_Bloggs/TestCourse/u_3 */
 
     /*
@@ -27,9 +33,9 @@ function OpenAssessmentBlock(runtime, element) {
                     });
                     $.ajax({
                         type: "POST",
-                        url: renderSubmissionUrl,
+                        url: renderSubmissionCollapseUrl,
                         success:  function(data) {
-                            render_submissions(data);
+                            $('#openassessment__response', element).replaceWith(data);
                         }
                     });
                 }
@@ -75,9 +81,9 @@ function OpenAssessmentBlock(runtime, element) {
                     });
                     $.ajax({
                         type: "POST",
-                        url: renderPeerUrl,
+                        url: renderPeerCollapseUrl,
                         success:  function(data) {
-                            render_peer_assessment(data)
+                            $('#openassessment__peer-assessment', element).replaceWith(data);
                         }
                     });
                 }
@@ -92,6 +98,22 @@ function OpenAssessmentBlock(runtime, element) {
             url: renderSubmissionUrl,
             success:  function(data) {
                 render_submissions(data);
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: renderPeerCollapseUrl,
+            success:  function(data) {
+                $('#openassessment__peer-assessment', element).replaceWith(data);
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: renderSelfCollapseUrl,
+            success:  function(data) {
+                $('#openassessment__self-assessment', element).replaceWith(data);
             }
         });
     });

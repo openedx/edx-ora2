@@ -168,3 +168,7 @@ class SubmissionMixin(object):
             path = 'openassessmentblock/oa_response_closed.html'
 
         return self.render_assessment(path, context_dict=context)
+
+    @XBlock.handler
+    def render_submission_collapsed(self, data, suffix=''):
+        return self.render_assessment("openassessmentblock/oa_response_collapsed.html")
