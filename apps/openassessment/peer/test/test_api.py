@@ -109,7 +109,7 @@ THURSDAY = datetime.datetime(2007, 9, 16, 0, 0, 0, 0, pytz.UTC)
 
 
 @ddt
-class TestApi(TestCase):
+class TestPeerApi(TestCase):
     def test_create_assessment(self):
         submission = sub_api.create_submission(STUDENT_ITEM, ANSWER_ONE)
         assessment = peer_api.create_assessment(

@@ -5,6 +5,7 @@ git+https://github.com/ormsbee/xblock-sdk.git@3c092c27#egg=xblock-sdk
 # Third Party Requirements
 django==1.4.8
 django-extensions==1.2.5
+django-model-utils==1.4.0
 djangorestframework==2.3.5
 Mako==0.9.1
 pytz==2012h

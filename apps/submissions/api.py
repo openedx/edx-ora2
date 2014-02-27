@@ -161,6 +161,17 @@ def get_submission(submission_uuid):
         SubmissionNotFoundError: Raised if the submission does not exist.
         SubmissionRequestError: Raised if the search parameter is not a string.
         SubmissionInternalError: Raised for unknown errors.
+
+    Examples:
+        >>> get_submission("20b78e0f32df805d21064fc912f40e9ae5ab260d")
+        {
+            'student_item': 2,
+            'attempt_number': 1,
+            'submitted_at': datetime.datetime(2014, 1, 29, 23, 14, 52, 649284, tzinfo=<UTC>),
+            'created_at': datetime.datetime(2014, 1, 29, 17, 14, 52, 668850, tzinfo=<UTC>),
+            'answer': u'The answer is 42.'
+        }
+
     """
     if not isinstance(submission_uuid, basestring):
         raise SubmissionRequestError(
@@ -175,10 +186,9 @@ def get_submission(submission_uuid):
         )
     except Exception as exc:
         # Something very unexpected has just happened (like DB misconfig)
-        logger.exception(exc)
-        raise SubmissionInternalError(
-            "Could not get submission due to error: {}".format(exc)
-        )
+        err_msg = "Could not get submission due to error: {}".format(exc)
+        logger.exception(err_msg)
+        raise SubmissionInternalError(err_msg)
 
     return SubmissionSerializer(submission).data
 
