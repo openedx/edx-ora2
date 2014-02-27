@@ -27,5 +27,5 @@ $bp-dx: new-breakpoint(min-width $grid-size-x 12);                        // lar
 // // application - colors: states
 // --------------------
 $color-incomplete: yellow;
-$color-complete: green;
-$color-focused: $black;
+$color-complete: rgb(96, 188, 97);
+$color-error: red;

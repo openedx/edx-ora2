@@ -237,7 +237,6 @@
     // step instructions
     .step__instruction {
       @extend %copy-delta;
-      margin-bottom: $spacing-bravo;
       color: $copy-color;
     }
 
@@ -273,7 +272,7 @@
     &.is--expanded {
 
       .step__header {
-        margin-bottom: $spacing-charlie;
+        margin-bottom: $spacing-bravo;
         opacity: 1.0;
 
         @include media($bp-ds) {
@@ -322,8 +321,13 @@
     // STATE: step is complete/submitted
     &.is--complete, &.is--submitted {
 
+      .step__counter:before {
+        border-color: $color-complete;
+        color: $color-complete;
+      }
+
       .step__status__value {
-        background: $color-primary;
+        background: $color-complete;
 
         .ico {
           display: inline-block;
@@ -446,10 +450,27 @@
       }
     }
 
-    // displayed response
+    // STATE: displayed response
     .submission__answer__display {
-
+      border: ($baseline-v/10) solid $color-complete;
+      border-radius: ($baseline-v/10);
     }
+
+    .submission__answer__display__title {
+      @extend %hd-golf;
+      @extend %t-weight3;
+      padding: $spacing-charlie $spacing-bravo;
+      background: $color-complete;
+      color: $white;
+    }
+
+    .submission__answer__display__content {
+      @extend %copy-charlie;
+      padding: $spacing-bravo;
+    }
+
+    // STATE: complete
+
   }
 
 
