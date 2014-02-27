@@ -196,7 +196,7 @@ def _score_if_finished(student_item,
         return
 
     finished_evaluating = has_finished_required_evaluating(
-        student_item.student_id,
+        StudentItemSerializer(student_item).data,
         required_assessments_for_student
     )
     assessments = Assessment.objects.filter(submission=submission)
@@ -255,23 +255,26 @@ def get_assessment_median_scores(submission_id, must_be_graded_by):
         raise PeerAssessmentInternalError(error_message)
 
 
-def has_finished_required_evaluating(student_id, required_assessments):
+def has_finished_required_evaluating(student_item_dict, required_assessments):
     """Check if a student still needs to evaluate more submissions
 
     Per the contract of the peer assessment workflow, a student must evaluate a
     number of peers before receiving feedback on their submission.
 
     Args:
-        student_id (str): The student in the peer grading workflow to check for
-            peer workflow criteria. This argument is required.
+        student_item (dict): The student id is required to determine if the
+            student has completed enough assessments, relative to the item id
+            and course id available in the student item. This argument is
+            required.
         required_assessments (int): The number of assessments a student has to
             submit before receiving the feedback on their submission. This is a
             required argument.
 
     Returns:
-        bool: True if the student has evaluated enough peer submissions to move
+        tuple: True if the student has evaluated enough peer submissions to move
             through the peer assessment workflow. False if the student needs to
-            evaluate more peer submissions.
+            evaluate more peer submissions. The second value is the count of
+            assessments completed.
 
     Raises:
         PeerAssessmentRequestError: Raised when the student_id is invalid, or
@@ -280,16 +283,31 @@ def has_finished_required_evaluating(student_id, required_assessments):
             while evaluating this workflow rule.
 
     Examples:
-        >>> has_finished_required_evaluating("Tim", 3)
-        True
+        >>> student_item_dict = dict(
+        >>>    item_id="item_1",
+        >>>    course_id="course_1",
+        >>>    item_type="type_one",
+        >>>    student_id="Bob",
+        >>> )
+        >>> has_finished_required_evaluating(student_item_dict, 3)
+        True, 3
 
     """
     if required_assessments < 0:
         raise PeerAssessmentRequestError(
             "Required Assessment count must be a positive integer.")
-    return Assessment.objects.filter(
-        scorer_id=student_id
-    ).count() >= required_assessments
+    student_items = StudentItem.objects.filter(
+        item_id=student_item_dict["item_id"],
+        course_id=student_item_dict["course_id"]
+    )
+    submissions = Submission.objects.filter(
+        student_item__in=student_items
+    )
+    count = Assessment.objects.filter(
+        submission__in=submissions,
+        scorer_id=student_item_dict["student_id"]
+    ).count()
+    return count >= required_assessments, count
 
 
 def get_assessments(submission_id):

@@ -1,0 +1,15 @@
+{%  extends "openassessmentblock/peer/oa_peer_assessment.html" %}
+<!-- CASE: no peer responses to assess -->
+{% block list_item %}
+<li id="openassessment__peer-assessment" class="openassessment__steps__step step--peer-assessment is--unavailable ui-toggle-visibility is--collapsed">
+{% endblock %}
+{% block title %}
+    <span class="step__status">
+      <span class="ico"><i class="fa fa-info-circle"></i></span>
+      <span class="step__status__label">This step's status:</span>
+      <span class="step__status__value">
+        Awaiting Peer Responses
+      </span>
+    </span>
+{% endblock %}
+{% block body %}{% endblock %}

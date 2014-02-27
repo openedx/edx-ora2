@@ -11,19 +11,17 @@
 
 <!-- CASE: default/not started -->
 {% block list_item %}
-<li id="openassessment__peer-assessment" class="openassessment__steps__step step--peer-assessment ui-toggle-visibility is--expanded">
+<li id="openassessment__peer-assessment" class="openassessment__steps__step step--peer-assessment ui-toggle-visibility">
 {% endblock %}
     <span class="system__element" id="peer_submission_uuid">
         {{ peer_submission.uuid }}
     </span>
-
-    {%  block header %}
     <header class="step__header ui-toggle-visibility__control">
         <h2 class="step__title">
             <span class="step__counter"></span>
             <span class="wrapper--copy">
                 <span class="step__label">Evaluate Peers' Responses</span>
-                <span class="step__deadline">due <span class="date">January 30, 2014</span> at <span class="time">15:00 UTC</span></span>
+                <span class="step__deadline">due <span class="date">{{ formatted_due_datetime }}</span></span>
             </span>
                 </header>
 
@@ -66,7 +64,7 @@
 
                         <ul class="list list--actions">
                             <li class="list--actions__item">
-                                <button type="submit" id="peer-assessment--001__assessment__submit" class="action action--submit">Submit your assessment &amp; move to response #2</button>
+                                <button type="submit" id="peer-assessment--001__assessment__submit" class="action action--submit">{{ submit_button_text }}</button>
                             </li>
                         </ul>
                     </form>

@@ -1,0 +1,16 @@
+{%  extends "openassessmentblock/peer/oa_peer_assessment.html" %}
+<!-- CASE: completed -->
+{% block list_item %}
+<li id="openassessment__peer-assessment" class="openassessment__steps__step step--peer-assessment ui-toggle-visibility is--collapsed">
+{% endblock %}
+{% block title %}
+    <span class="step__status">
+      <span class="ico"><i class="fa fa-check"></i></span>
+      <span class="step__status__label">This step's status:</span>
+      <span class="step__status__value">
+        <span class="step__status__value--completed">{{ graded }}</span> of
+        <span class="step__status__value--required">{{ must_grade }}</span> completed
+      </span>
+    </span>
+{% endblock %}
+{% block body %}{% endblock %}

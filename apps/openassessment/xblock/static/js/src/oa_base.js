@@ -53,7 +53,7 @@ function OpenAssessmentBlock(runtime, element) {
                 criteriaChoices[selector[i].name] = selector[i].value
             }
             return {
-                "submission_uuid":$("div#peer_submission_uuid")[0].innerText,
+                "submission_uuid":$("span#peer_submission_uuid")[0].innerText,
                 "points_earned":values,
                 "options_selected":criteriaChoices
             };
