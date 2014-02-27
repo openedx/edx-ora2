@@ -169,4 +169,4 @@ class SubmissionMixin(object):
 
     @XBlock.handler
     def render_submission_collapsed(self, data, suffix=''):
-        return self.render_assessment("openassessmentblock/oa_response_collapsed.html")
+        return self.render_assessment("openassessmentblock/response/oa_response_collapsed.html")
