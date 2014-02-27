@@ -231,12 +231,13 @@
     }
 
     .step__status__label {
-      @extend %text-sr;
+    @extend %text-sr;
     }
 
     // step instructions
     .step__instruction {
       @extend %copy-delta;
+      margin-bottom: $spacing-bravo;
       color: $copy-color;
     }
 
@@ -388,7 +389,7 @@
   }
 
   .openassessment__prompt {
-    margin-bottom: $spacing-alpha;
+    margin-bottom: $spacing-bravo;
   }
 
   .openassessment__prompt__title {

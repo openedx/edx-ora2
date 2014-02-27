@@ -14,17 +14,17 @@
 // --------------------
 // Views: Counterbalancing XBlock workbench styling
 // --------------------
-.workbench__header {
+.workbench .banner {
   @extend %depth5;
   height: auto;
   position: fixed;
 }
 
-.workbench__main, .workbench__debug {
+.workbench .main, .workbench .debug {
   @extend %depth1;
 }
 
-.workbench__preview {
+.workbench .preview {
 
   .vertical {
     border: none;
