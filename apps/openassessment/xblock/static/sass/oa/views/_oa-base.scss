@@ -95,11 +95,31 @@
     .step__header {
       @extend %trans-opacity;
       @include row();
+      margin-bottom: $spacing-bravo;
       opacity: 1.0;
 
-      // STATE: hover
-      &:hover {
+      @include media($bp-ds) {
+        border-bottom: ($baseline-v/10) solid $color-focused;
+        padding-bottom: $spacing-charlie;
+      }
 
+      @include media($bp-dm) {
+        border-bottom: ($baseline-v/10) solid $color-focused;
+        padding-bottom: $spacing-charlie;
+      }
+
+      @include media($bp-dl) {
+        border-bottom: ($baseline-v/10) solid $color-focused;
+        padding-bottom: $spacing-charlie;
+      }
+
+      @include media($bp-dx) {
+        border-bottom: ($baseline-v/10) solid $color-focused;
+        padding-bottom: $spacing-charlie;
+      }
+
+      .step__deadline {
+        color: $color-focused;
       }
     }
 
@@ -142,8 +162,10 @@
           counter-increment: item;
           margin-right: $spacing-delta;
           border-radius: ($baseline-v/10);
-          border: 1px solid rgba($heading-color, 0.5);
+          border: 1px solid rgba($color-focused, 0.5);
           padding: $spacing-delta $spacing-charlie;
+          color: $color-focused;
+
         }
       }
 
@@ -171,7 +193,7 @@
       .step__status__value {
         border-radius: ($baseline-v/5);
         padding: ($baseline-v/4) ($baseline-h/4);
-        background: $color-secondary;
+        background: $color-focused;
         color: $white-t;
 
         @include media($bp-m) {
@@ -194,6 +216,7 @@
       .copy {
         @extend %copy-foxtrot;
         @extend %t-titlecase;
+        color: $white-t;
       }
 
       @include media($bp-m) {
@@ -234,6 +257,13 @@
     @extend %text-sr;
     }
 
+    // STATE: default/visible/expanded
+    .step__instruction, .step__content, .step__actions {
+      display: block;
+      visibility: visible;
+      opacity: 1.0;
+    }
+
     // step instructions
     .step__instruction {
       @extend %copy-delta;
@@ -261,60 +291,60 @@
 
       .step__header {
         opacity: 0.4;
+        margin-bottom: 0;
+
+        @include media($bp-ds) {
+          border-bottom: none;
+          padding-bottom: 0;
+        }
+
+        @include media($bp-dm) {
+         border-bottom: none;
+         padding-bottom: 0;
+        }
+
+        @include media($bp-dl) {
+          border-bottom: none;
+          padding-bottom: 0;
+        }
+
+        @include media($bp-dx) {
+          border-bottom: none;
+          padding-bottom: 0;
+        }
+
+        .step__deadline {
+          color: $color-focused;
+        }
 
         // STATE: hover
         &:hover {
           opacity: 1.0;
         }
       }
+
+      .step__status__value {
+        background: $color-secondary;
+      }
+
+      // step counter
+      .step__counter:before {
+        border: 1px solid rgba($heading-color, 0.5);
+      }
+
+      .step__instruction, .step__content, .step__actions {
+        @extend %trans-opacity;
+        display: none;
+        visibility: hidden;
+        opacity: 0.0;
+      }
     }
 
     // STATE: step is expanded (focused)
     &.is--expanded {
 
-      .step__header {
-        margin-bottom: $spacing-bravo;
-        opacity: 1.0;
-
-        @include media($bp-ds) {
-          border-bottom: ($baseline-v/10) solid $color-focused;
-          padding-bottom: $spacing-charlie;
-        }
-
-        @include media($bp-dm) {
-          border-bottom: ($baseline-v/10) solid $color-focused;
-          padding-bottom: $spacing-charlie;
-        }
-
-        @include media($bp-dl) {
-          border-bottom: ($baseline-v/10) solid $color-focused;
-          padding-bottom: $spacing-charlie;
-        }
-
-        @include media($bp-dx) {
-          border-bottom: ($baseline-v/10) solid $color-focused;
-          padding-bottom: $spacing-charlie;
-        }
-
-        .step__deadline {
-          color: $color-focused;
-        }
-      }
-
-      .step__counter:before, .step__label .step__deadline {
-        color: $color-focused;
-      }
-
-      .step__counter:before {
-        border-color: rgba($color-focused, 0.5);
-      }
-
       .step__status__value {
-        background: $color-focused;
-
-        .copy {
-          color: $white-t;
-        }
+        background: $color-focus;
       }
     }
 
