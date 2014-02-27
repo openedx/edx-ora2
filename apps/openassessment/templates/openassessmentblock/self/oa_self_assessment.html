@@ -12,29 +12,23 @@
 
 <!-- CASE: default/not started -->
 {% block list_item %}
-<li id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment ui-toggle-visibility is--expanded">
+<li id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment">
 {% endblock %}
-
-    {%  block header %}
-    <header class="step__header ui-toggle-visibility__control">
+    <header class="step__header">
         <h2 class="step__title">
             <span class="step__counter"></span>
             <span class="wrapper--copy">
-                <span class="step__label">Evaluate Your Response</span>
-                <span class="step__deadline">due <span class="date">January 31, 2014</span> at <span class="time">15:00 UTC</span></span>
+                <span class="step__title__label">Evaluate Your Response</span>
+                <span class="step__deadline">due <span class="date">{{ formatted_due_datetime }}</span></span>
             </span>
         </h2>
-
+    {% block title %}
         <span class="step__status">
-            <span class="step__status__label">This step's status:</span>
-            <span class="step__status__value">
-                <i class="ico fa fa-check"></i>
-                <span class="copy">{{ step_status }}</span>
-            </span>
+          <span class="step__status__label">This step's status:</span>
+          <span class="step_status_value">{{ step_status }}</span>
         </span>
-    </header>
     {% endblock %}
-
+    </header>
     {% block body %}
     <div class="step--content">
         <article class="self-assessment" id="self-assessment">
@@ -56,18 +50,23 @@
                             <!-- individual rubric question (radio-based choice) -->
                             <li class="field field--radio is--required assessment__rubric__question" id="assessment__rubric__question--{{ criterion.name }}">
                                 <h4 class="question__title">
-                                    {{ criterion.instructions }}
+                                    {{ criterion.prompt }}
                                     <span class="label--required">* <span class="sr">(Required)</span></span>
                                 </h4>
 
                                 <ol class="question__answers">
-                                    {% for value, text in criterion.options %}
+                                    {% for option in criterion.options %}
                                         <li class="answer">
                                             <div class="wrapper--input">
-                                                <input type="radio" name="assessment__rubric__question--{{ criterion.name }}" id="assessment__rubric__question--{{ criterion.name }}--01" class="answer__value" value="answer--001__option--01 - Very Well" />
-                                                <label for="assessment__rubric__question--001__option--01" class="answer__label">({{ value }}) {{ text }}</label>
+                                                <input type="radio"
+                                                       name="{{ criterion.name }}"
+                                                       id="assessment__rubric__question--{{ criterion.name }}"
+                                                       class="answer__value"
+                                                       value="{{ option.name }}" />
+                                                <label for="assessment__rubric__question--001__option--01"
+                                                       class="answer__label">{{ option.name }}</label>
                                             </div>
-                                            <span class="answer__tip">TODO: Criterion Instructions</span>
+                                            <span class="answer__tip">{{ option.explanation }}</span>
                                         </li>
                                     {% endfor %}
                                 </ol>

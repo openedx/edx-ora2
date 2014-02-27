@@ -58,7 +58,7 @@ function OpenAssessmentBlock(runtime, element) {
                 criteriaChoices[selector[i].name] = selector[i].value
             }
             return {
-                "submission_uuid":$("div#peer_submission_uuid")[0].innerText,
+                "submission_uuid":$("span#peer_submission_uuid")[0].innerText,
                 "points_earned":values,
                 "options_selected":criteriaChoices
             };
@@ -81,9 +81,9 @@ function OpenAssessmentBlock(runtime, element) {
                     });
                     $.ajax({
                         type: "POST",
-                        url: renderPeerCollapseUrl,
+                        url: renderPeerUrl,
                         success:  function(data) {
-                            $('#openassessment__peer-assessment', element).replaceWith(data);
+                            render_peer_assessment(data);
                         }
                     });
                 }

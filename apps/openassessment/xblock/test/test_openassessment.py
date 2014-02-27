@@ -142,9 +142,20 @@ class TestOpenAssessment(TestCase):
         xblock_fragment = self.runtime.render(self.assessment, "student_view")
         self.assertTrue(xblock_fragment.body_html().find("Openassessmentblock"))
 
+        # Validate Submission Rendering.
         submission_response = self.assessment.render_submission({})
         self.assertIsNotNone(submission_response)
         self.assertTrue(submission_response.body.find("openassessment__response"))
+
+        # Validate Peer Rendering.
+        peer_response = self.assessment.render_peer_assessment({})
+        self.assertIsNotNone(peer_response)
+        self.assertTrue(peer_response.body.find("openassessment__peer-assessment"))
+
+        # Validate Self Rendering.
+        self_response = self.assessment.render_self_assessment({})
+        self.assertIsNotNone(self_response)
+        self.assertTrue(self_response.body.find("openassessment__peer-assessment"))
 
     def test_start_end_date_checks(self):
         """
