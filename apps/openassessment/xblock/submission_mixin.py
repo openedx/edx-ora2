@@ -47,7 +47,7 @@ class SubmissionMixin(object):
         status_text = None
         student_sub = data['submission']
         student_item_dict = self.get_student_item_dict()
-        prev_sub = self._get_user_submission(student_item_dict)
+        prev_sub = self.get_user_submission(student_item_dict)
 
         status_tag = 'ENOMULTI'  # It is an error to submit multiple times for the same item
         if not prev_sub:
@@ -87,7 +87,7 @@ class SubmissionMixin(object):
         return scores[0] if scores else None
 
     @staticmethod
-    def _get_user_submission(student_item_dict):
+    def get_user_submission(student_item_dict):
         """Return the most recent submission by user in student_item_dict
 
         Given a student item, return the most recent submission.  If no
@@ -134,7 +134,7 @@ class SubmissionMixin(object):
         # TODO Check if Saved
         student_item = self.get_student_item_dict()
         # Has the student submitted?
-        student_submission = self._get_user_submission(student_item)
+        student_submission = self.get_user_submission(student_item)
         # Has it been graded yet?
         student_score = self._get_submission_score(student_item)
         step_status = "Graded" if student_score else "Submitted"
