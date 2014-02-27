@@ -302,18 +302,16 @@ def get_scores(course_id, student_id, types=None):
     pass
 
 
-def set_score(student_item, submission, score, points_possible):
+# TODO: Update the example to something better. Also, we shouldn't be passing
+#       back internal IDs at all.
+def set_score(submission_uuid, score, points_possible):
     """Set a score for a particular student item, submission pair.
 
     Sets the score for a particular student item and submission pair. This score
     is calculated externally to the API.
 
     Args:
-        student_item (dict): The student item associated with this score. This
-            dictionary must contain a course_id, student_id, and item_id.
-        submission (dict): The submission associated with this score. This
-            dictionary must contain all submission fields to properly get a
-            unique submission item.
+        submission_uuid (str): UUID for the submission (must exist).
         score (int): The score to associate with the given submission and
             student item.
         points_possible (int): The total points possible for this particular
@@ -329,21 +327,7 @@ def set_score(student_item, submission, score, points_possible):
             are not found.
 
     Examples:
-        >>> student_item_dict = dict(
-        >>>    student_id="Tim",
-        >>>    item_id="item_1",
-        >>>    course_id="course_1",
-        >>>    item_type="type_one"
-        >>> )
-        >>>
-        >>> submission_dict = dict(
-        >>>    student_item=2,
-        >>>    attempt_number=1,
-        >>>    submitted_at=datetime.datetime(2014, 1, 29, 23, 14, 52, 649284, tzinfo=<UTC>),
-        >>>    created_at=datetime.datetime(2014, 1, 29, 17, 14, 52, 668850, tzinfo=<UTC>),
-        >>>    answer=u'The answer is 42.'
-        >>> )
-        >>> set_score(student_item_dict, submission_dict, 11, 12)
+        >>> set_score("a778b933-9fb3-11e3-9c0f-040ccee02800", 11, 12)
         {
             'student_item': 2,
             'submission': 1,
@@ -354,18 +338,15 @@ def set_score(student_item, submission, score, points_possible):
 
     """
     try:
-        student_item_model = StudentItem.objects.get(**student_item)
-        submission_model = Submission.objects.get(**submission)
+        submission_model = Submission.objects.get(uuid=submission_uuid)
     except DatabaseError:
-        error_msg = u"Could not retrieve student item: {} or submission {}.".format(
-            student_item, submission
-        )
+        error_msg = u"Could not retrieve submission {}.".format(submission)
         logger.exception(error_msg)
         raise SubmissionRequestError(error_msg)
 
     score = ScoreSerializer(
         data={
-            "student_item": student_item_model.pk,
+            "student_item": submission_model.student_item.pk,
             "submission": submission_model.pk,
             "points_earned": score,
             "points_possible": points_possible,

@@ -11,7 +11,9 @@ from django.db import DatabaseError
 
 from openassessment.peer.models import Assessment
 from openassessment.peer.serializers import (
-    AssessmentSerializer, rubric_from_dict, get_assessment_review)
+    AssessmentSerializer, rubric_from_dict, get_assessment_review
+)
+from openassessment.workflow.models import AssessmentWorkflow
 from submissions import api as submission_api
 from submissions.models import Submission, StudentItem, Score
 from submissions.serializers import SubmissionSerializer, StudentItemSerializer
@@ -65,7 +67,7 @@ class PeerAssessmentInternalError(PeerAssessmentError):
 
 
 def create_assessment(
-        submission_uuid,
+        workflow_uuid,
         scorer_id,
         must_grade,
         must_be_graded_by,
@@ -78,9 +80,9 @@ def create_assessment(
     rubric.
 
     Args:
-        submission_uuid (str): The submission uuid this assessment is associated
-            with. The submission uuid is required and must already exist in the
-            Submission model.
+        workflow_uuid (str): The assessment workflow uuid this assessment is
+            associated with. This is required and the workflow assessment
+            referenced must already exist.
         scorer_id (str): The user ID for the user giving this assessment. This
             is required to create an assessment on a submission.
         must_grade (int): The number of assessments
@@ -122,14 +124,14 @@ def create_assessment(
 
     """
     try:
-        submission = Submission.objects.get(uuid=submission_uuid)
+        workflow = AssessmentWorkflow.objects.get(uuid=workflow_uuid)
 
         rubric = rubric_from_dict(rubric_dict)
         option_ids = rubric.options_ids(assessment_dict["options_selected"])
         peer_assessment = {
             "rubric": rubric.id,
             "scorer_id": scorer_id,
-            "submission": submission.pk,
+            "workflow": workflow.pk,
             "score_type": PEER_TYPE,
             "parts": [{"option": option_id} for option_id in option_ids]
         }
@@ -142,6 +144,10 @@ def create_assessment(
             raise PeerAssessmentRequestError(peer_serializer.errors)
         peer_serializer.save()
 
+        # TODO: All of this information has to change, but it can do so when
+        #       we build out the real algorithm Peer is going to use to track
+        #       which assessments have been made.
+        submission = Submission.objects.get(uuid=workflow.submission_uuid)
         # Check if the submission is finished and its Author has graded enough.
         student_item = submission.student_item
         _score_if_finished(
@@ -172,9 +178,9 @@ def create_assessment(
 
         return peer_serializer.data
     except DatabaseError:
-        error_message = u"An error occurred while creating assessment {} for submission: {} by: {}".format(
+        error_message = u"An error occurred while creating assessment {} for workflow: {} by: {}".format(
             assessment_dict,
-            submission_uuid,
+            workflow_uuid,
             scorer_id
         )
         logger.exception(error_message)
@@ -182,7 +188,7 @@ def create_assessment(
 
 
 def _score_if_finished(student_item,
-                       submission,
+                       workflow,
                        required_assessments_for_student,
                        must_be_graded_by):
     """Calculate final grade iff peer evaluation flow is satisfied.
@@ -199,19 +205,19 @@ def _score_if_finished(student_item,
         student_item.student_id,
         required_assessments_for_student
     )
-    assessments = Assessment.objects.filter(submission=submission)
+    assessments = Assessment.objects.filter(workflow=workflow)
     submission_finished = assessments.count() >= must_be_graded_by
 
+    submission = Submission.objects.get(uuid=workflow.submission_uuid)
     if finished_evaluating and submission_finished:
         submission_api.set_score(
-            StudentItemSerializer(student_item).data,
-            SubmissionSerializer(submission).data,
-            sum(get_assessment_median_scores(submission.uuid, must_be_graded_by).values()),
+            workflow.submission_uuid,
+            sum(get_assessment_median_scores(workflow, must_be_graded_by).values()),
             assessments[0].points_possible
         )
 
 
-def get_assessment_median_scores(submission_id, must_be_graded_by):
+def get_assessment_median_scores(workflow, must_be_graded_by):
     """Get the median score for each rubric criterion
 
     For a given assessment, collect the median score for each criterion on the
@@ -228,8 +234,7 @@ def get_assessment_median_scores(submission_id, must_be_graded_by):
     assessments are used.
 
     Args:
-        submission_id (str): The submission uuid to get all rubric criterion
-            median scores.
+        assessments
         must_be_graded_by (int): The number of assessments to include in this
             score analysis.
 

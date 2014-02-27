@@ -11,6 +11,7 @@ from nose.tools import raises
 
 from openassessment.peer import api as peer_api
 from openassessment.peer.models import Assessment
+from openassessment.workflow import api as workflow_api
 from submissions import api as sub_api
 from submissions.models import Submission
 from submissions.tests.test_api import STUDENT_ITEM, ANSWER_ONE
@@ -112,8 +113,9 @@ THURSDAY = datetime.datetime(2007, 9, 16, 0, 0, 0, 0, pytz.UTC)
 class TestPeerApi(TestCase):
     def test_create_assessment(self):
         submission = sub_api.create_submission(STUDENT_ITEM, ANSWER_ONE)
+        workflow = workflow_api.create_assessment_workflow(submission["uuid"])
         assessment = peer_api.create_assessment(
-            submission["uuid"],
+            workflow["uuid"],
             STUDENT_ITEM["student_id"],
             REQUIRED_GRADED,
             REQUIRED_GRADED_BY,
@@ -126,8 +128,9 @@ class TestPeerApi(TestCase):
     @file_data('valid_assessments.json')
     def test_get_assessments(self, assessment_dict):
         submission = sub_api.create_submission(STUDENT_ITEM, ANSWER_ONE)
+        workflow = workflow_api.create_assessment_workflow(submission["uuid"])
         peer_api.create_assessment(
-            submission["uuid"],
+            workflow["uuid"],
             STUDENT_ITEM["student_id"],
             REQUIRED_GRADED,
             REQUIRED_GRADED_BY,
@@ -140,8 +143,9 @@ class TestPeerApi(TestCase):
     @file_data('valid_assessments.json')
     def test_get_assessments_with_date(self, assessment_dict):
         submission = sub_api.create_submission(STUDENT_ITEM, ANSWER_ONE)
+        workflow = workflow_api.create_assessment_workflow(submission["uuid"])
         peer_api.create_assessment(
-            submission["uuid"],
+            workflow["uuid"],
             STUDENT_ITEM["student_id"],
             REQUIRED_GRADED,
             REQUIRED_GRADED_BY,
@@ -154,12 +158,12 @@ class TestPeerApi(TestCase):
         self.assertEqual(assessments[0]["scored_at"], MONDAY)
 
     def test_peer_assessment_workflow(self):
-        tim = self._create_student_and_submission("Tim", "Tim's answer")
-        bob = self._create_student_and_submission("Bob", "Bob's answer")
-        sally = self._create_student_and_submission("Sally", "Sally's answer")
-        jim = self._create_student_and_submission("Jim", "Jim's answer")
-        buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
-        xander = self._create_student_and_submission("Xander", "Xander's answer")
+        tim = self._create_student_and_workflow("Tim", "Tim's answer")
+        bob = self._create_student_and_workflow("Bob", "Bob's answer")
+        sally = self._create_student_and_workflow("Sally", "Sally's answer")
+        jim = self._create_student_and_workflow("Jim", "Jim's answer")
+        buffy = self._create_student_and_workflow("Buffy", "Buffy's answer")
+        xander = self._create_student_and_workflow("Xander", "Xander's answer")
 
         # Tim should not have a score, because he has not evaluated enough
         # peer submissions.
@@ -215,12 +219,12 @@ class TestPeerApi(TestCase):
         peer_api.has_finished_required_evaluating("Tim", -1)
 
     def test_get_submission_to_evaluate(self):
-        self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
-        self._create_student_and_submission("Bob", "Bob's answer", TUESDAY)
-        self._create_student_and_submission(
+        self._create_student_and_workflow("Tim", "Tim's answer", MONDAY)
+        self._create_student_and_workflow("Bob", "Bob's answer", TUESDAY)
+        self._create_student_and_workflow(
             "Sally", "Sally's answer", WEDNESDAY
         )
-        self._create_student_and_submission("Jim", "Jim's answer", THURSDAY)
+        self._create_student_and_workflow("Jim", "Jim's answer", THURSDAY)
 
         submission = peer_api.get_submission_to_assess(STUDENT_ITEM, 3)
         self.assertIsNotNone(submission)
@@ -230,21 +234,21 @@ class TestPeerApi(TestCase):
 
     @raises(peer_api.PeerAssessmentWorkflowError)
     def test_no_submissions_to_evaluate_for_tim(self):
-        self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
+        self._create_student_and_workflow("Tim", "Tim's answer", MONDAY)
         peer_api.get_submission_to_assess(STUDENT_ITEM, 3)
 
     @patch.object(Assessment.objects, 'filter')
     @raises(peer_api.PeerAssessmentInternalError)
     def test_median_score_db_error(self, mock_filter):
         mock_filter.side_effect = DatabaseError("Bad things happened")
-        tim = self._create_student_and_submission("Tim", "Tim's answer")
+        tim = self._create_student_and_workflow("Tim", "Tim's answer")
         peer_api.get_assessment_median_scores(tim["uuid"], 3)
 
     @patch.object(Assessment.objects, 'filter')
     @raises(peer_api.PeerAssessmentInternalError)
     def test_get_assessments_db_error(self, mock_filter):
         mock_filter.side_effect = DatabaseError("Bad things happened")
-        tim = self._create_student_and_submission("Tim", "Tim's answer")
+        tim = self._create_student_and_workflow("Tim", "Tim's answer")
         peer_api.get_assessments(tim["uuid"])
 
     @patch.object(Submission.objects, 'get')
@@ -289,7 +293,9 @@ class TestPeerApi(TestCase):
         self.assertEqual(16, Assessment.get_median_score([16, 6, 12, 102, 22, 53, 5]))
 
     @staticmethod
-    def _create_student_and_submission(student, answer, date=None):
+    def _create_student_and_workflow(student, answer, date=None):
         new_student_item = STUDENT_ITEM.copy()
         new_student_item["student_id"] = student
-        return sub_api.create_submission(new_student_item, answer, date)
+        submission = sub_api.create_submission(new_student_item, answer, date)
+        return workflow_api.create_assessment_workflow(submission["uuid"])
+
