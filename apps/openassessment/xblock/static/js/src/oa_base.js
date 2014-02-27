@@ -11,13 +11,11 @@ function OpenAssessmentBlock(runtime, element) {
      * Utility functions
      */
     function collapse(element) {
-        element.removeClass("is--expanded");
         element.addClass("is--collapsed");
     }
 
     function expand(element) {
         element.addClass("is--collapsed");
-        element.removeClass("is--expanded");
     }
 
 
