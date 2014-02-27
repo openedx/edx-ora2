@@ -12,6 +12,26 @@
 // }
 
 // --------------------
+// Views: Counterbalancing XBlock workbench styling
+// --------------------
+.workbench__header {
+  @extend %depth5;
+  height: auto;
+  position: fixed;
+}
+
+.workbench__main, .workbench__debug {
+  @extend %depth1;
+}
+
+.workbench__preview {
+
+  .vertical {
+    border: none;
+  }
+}
+
+// --------------------
 // Views: Static HTML Page Display
 // --------------------
 .view--placeholder {
