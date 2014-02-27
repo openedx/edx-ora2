@@ -276,23 +276,27 @@
         opacity: 1.0;
 
         @include media($bp-ds) {
-          border-bottom: ($baseline-v/20) solid $color-focused;
+          border-bottom: ($baseline-v/10) solid $color-focused;
           padding-bottom: $spacing-charlie;
         }
 
         @include media($bp-dm) {
-          border-bottom: ($baseline-v/20) solid $color-focused;
+          border-bottom: ($baseline-v/10) solid $color-focused;
           padding-bottom: $spacing-charlie;
         }
 
         @include media($bp-dl) {
-          border-bottom: ($baseline-v/20) solid $color-focused;
+          border-bottom: ($baseline-v/10) solid $color-focused;
           padding-bottom: $spacing-charlie;
         }
 
         @include media($bp-dx) {
-          border-bottom: ($baseline-v/20) solid $color-focused;
+          border-bottom: ($baseline-v/10) solid $color-focused;
           padding-bottom: $spacing-charlie;
+        }
+
+        .step__deadline {
+          color: $color-focused;
         }
       }
 
