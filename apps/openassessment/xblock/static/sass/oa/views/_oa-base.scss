@@ -142,7 +142,7 @@
           counter-increment: item;
           margin-right: $spacing-delta;
           border-radius: ($baseline-v/10);
-          border: 1px solid $heading-color;
+          border: 1px solid rgba($heading-color, 0.5);
           padding: $spacing-delta $spacing-charlie;
         }
       }
@@ -301,7 +301,7 @@
       }
 
       .step__counter:before {
-        border-right-color: $color-focused;
+        border-color: rgba($color-focused, 0.5);
       }
 
       .step__status__value {
@@ -322,7 +322,7 @@
     &.is--complete, &.is--submitted {
 
       .step__counter:before {
-        border-color: $color-complete;
+        border-color: rgba($color-complete, 0.5);
         color: $color-complete;
       }
 
