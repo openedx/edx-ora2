@@ -15,6 +15,22 @@ for development purposes, run::
 The second line is necessary to register edx-tim's XBlock so that it will show
 up in the XBlock workbench.
 
+Running Tests
+=============
+
+To run the Python test suite:
+
+.. code:: bash
+
+    python manage.py test
+
+To run the JavaScript test suite (after installing `node <http://nodejs.org/download/>`_)
+
+.. code:: bash
+
+    npm install && npm test
+
+
 License
 =======
 

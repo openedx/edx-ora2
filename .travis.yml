@@ -4,7 +4,12 @@ python:
 install:
   - "pip install -r requirements/test.txt --use-mirrors"
   - "pip install -e ."
+  - "npm install"
+before_script:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
 script:
   - "python manage.py test"
   - "python manage.py harvest"
+  - "npm test"
   - "python setup.py install"
