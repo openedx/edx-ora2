@@ -14,16 +14,16 @@
     <div class="openassessment" id="openassessment">
         <div class="wrapper--grid">
             <h1 class="openassessment__title">
+                <span class="openassessment__title--super">
+                    {{ title }}
+                </span>
+
                 <span class="openassessment__title--sub">
                     <span class="problem-type problem-type--open-ended-response">Open Ended Response</span>
                     {%  for assessment in rubric_assessments %}
                     +
                     <span class="problem-type problem-type--{{ assessment.type }}">{{ assessment.name }}</span>
                     {% endfor %}
-                </span>
-
-                <span class="openassessment__title--super">
-                    {{ title }}
                 </span>
             </h1>
 

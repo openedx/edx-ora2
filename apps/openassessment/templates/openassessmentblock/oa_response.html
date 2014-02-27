@@ -14,7 +14,7 @@
 
 <!-- CASE: default/unanswered -->
 {% block list_item %}
-<li id="openassessment__response" class="openassessment__steps__step step--response ui-toggle-visibility">
+<li id="openassessment__response" class="openassessment__steps__step step--response ui-toggle-visibility is--expanded">
 {% endblock %}
 
     {%  block header %}
@@ -48,7 +48,7 @@
             <ol class="list list--fields">
                 <li class="field field--textarea submission__answer" id="submission__answer">
                     <label for="submission__answer__value">Please provide your response to the above question</label>
-                    <textarea id="submission__answer__value" placeholder=""></textarea>
+                    <textarea class="text" id="submission__answer__value" placeholder=""></textarea>
                 </li>
             </ol>
 
@@ -64,7 +64,10 @@
     <div class="step__actions">
         <ul class="list list--actions">
             <li class="list--actions__item">
-                <a aria-role="button" href="#" id="step--response__submit" class="action action--submit step--response__submit">Submit your response &amp; move forward</a>
+                <a aria-role="button" href="#" id="step--response__submit" class="action action--submit step--response__submit">
+                    <span class="copy">Submit your response &amp; move forward</span>
+                    <i class="ico fa fa-arrow-right"></i>
+                </a>
             </li>
         </ul>
     </div>

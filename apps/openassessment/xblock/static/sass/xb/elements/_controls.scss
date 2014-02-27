@@ -79,11 +79,17 @@
     cursor: default;
     pointer-events: none;
   }
+
+  // CASE: icons in buttons
+  .copy, .ico {
+    display: inline-block;
+    vertical-align: middle;
+  }
 }
 
 %btn-pill {
   @extend %btn;
-  border-radius: $baseline-v/5;
+  border-radius: ($baseline-v/5);
 }
 
 %btn-rounded {
@@ -97,20 +103,23 @@
 }
 
 
-// buttons - primary
+// buttons - primary (assuming dark bg/light copy)
 %btn--primary {
-  @extend %btn-edged;
+  @extend %btn-pill;
   @extend %t-weight3;
   padding: ($baseline-v/2) ($baseline-h);
   background: $action-primary-color;
-  border-color: saturate($action-primary-color, 15%);
+  border: 1px solid shade($action-primary-color, 15%);
   color: tint($action-primary-color, 90%);
 
+  .copy {
+    @extend %t-weight3;
+  }
 
   &:hover, &:active, &:focus {
     background: $action-primary-color-focus;
     border-color: $action-primary-color-focus;
-    color: tint($action-primary-color, 95%);
+    color: tint($action-primary-color, 99%);
   }
 
   &.current, &.active {
@@ -128,20 +137,23 @@
 }
 
 
-// buttons - secondary
+// buttons - secondary (assuming dark bg/light copy)
 %btn--secondary {
-  @extend %btn-edged;
+  @extend %btn-pill;
   @extend %t-weight3;
   padding: ($baseline-v/2) ($baseline-h);
   background: $action-secondary-color;
-  border-color: saturate($action-secondary-color, 15%);
+  border: 1px shade($action-secondary-color, 10%);
   color: tint($action-secondary-color, 90%);
 
+  .copy {
+    @extend %t-weight3;
+  }
 
   &:hover, &:active, &:focus {
     background: $action-secondary-color-focus;
     border-color: $action-secondary-color-focus;
-    color: tint($action-secondary-color, 95%);
+    color: tint($action-secondary-color, 99%);
   }
 
   &.current, &.active {
@@ -159,20 +171,23 @@
 }
 
 
-// buttons - tertiary
+// buttons - tertiary (assuming dark bg/light copy)
 %btn--tertiary {
   @extend %btn-edged;
   @extend %t-weight3;
-  padding: ($baseline-v/2) ($baseline-h);
+  padding: ($baseline-v/2) ($baseline-h/2);
   background: $action-tertiary-color;
-  border-color: saturate($action-tertiary-color, 15%);
+  border: 1px solid shade($action-tertiary-color, 10%);
   color: tint($action-tertiary-color, 90%);
 
+  .copy {
+    @extend %t-weight3;
+  }
 
   &:hover, &:active, &:focus {
     background: $action-tertiary-color-focus;
     border-color: $action-tertiary-color-focus;
-    color: tint($action-tertiary-color, 95%);
+    color: tint($action-tertiary-color, 99%);
   }
 
   &.current, &.active {

@@ -74,6 +74,12 @@ $edx-gray-t1: rgba($edx-gray,0.25);
 $edx-gray-t2: rgba($edx-gray,0.50);
 $edx-gray-t3: rgba($edx-gray,0.75);
 
+$edx-lms-header: rgb(100, 100, 100);
+$edx-lms-copy: rgb(60, 60, 60);
+$edx-lms-action-primary: rgb(29, 157, 217);
+$edx-lms-action-secondary: rgb(135, 135, 135);
+
+
 // --------------------
 // variables: overrides
 // --------------------
@@ -93,41 +99,62 @@ $f-copy: $f-sans-serif;
 $f-action: $f-sans-serif;
 
 // application - colors
-$color-primary: $edx-blue-d1;
-$color-secondary: $edx-blue-l1;
+$color-primary: $edx-lms-action-primary;
+$color-secondary: $edx-lms-action-secondary;
 $color-tertiary: $gray-l1;
 $color-quarternary: $gray-l2;
 
 // application - colors: decorative
-$color-decorative-primary: $edx-blue-u2;
-$color-decorative-secondary: $gray-l4;
+$color-decorative-primary: $gray-d3;
+$color-decorative-secondary: $gray-l3;
+$color-decorative-tertiary: $gray-l5;
+$color-decorative-quaternary: $gray-l7;
+
+// application - colors: states
+$color-disabled: $gray-l4;
+$color-focused: $edx-lms-header;
 
 // application - colors: copy and headings
-$heading-color: $gray-d3;
-$heading-primary-color: $black;
-$heading-secondary-color: $gray-l1;
-$heading-tertiary-color: $gray-l3;
+$heading-color: $edx-lms-header;
+$heading-primary-color: shade($edx-lms-header, 33%);
+$heading-secondary-color: tint($edx-lms-header, 33%);
+$heading-tertiary-color: tint($edx-lms-header, 66%);
 
-$copy-color: $gray-l1;
-$copy-color-alt: $gray-d1;
-$copy-color-focus: $gray-d4;
+$copy-color: $edx-lms-copy;
+$copy-color-alt: tint($edx-lms-copy, 33%);
+$copy-color-focus: shade($edx-lms-copy, 33%);
 
-$copy-lead-color: $gray;
-$copy-lead-color: $gray-d1;
-$copy-lead-color-focus: $gray-d4;
+$copy-lead-color: $edx-lms-copy;
+$copy-lead-color-focus: shade($edx-lms-copy, 33%);
 
-$copy-supplemental-color: $gray-l2;
-$copy-supplemental-color-alt: $gray-l2;
-$copy-supplemental-color-focus: $gray-d1;
+$copy-supplemental-color: tint($edx-lms-copy, 33%);
+$copy-supplemental-color-alt: tint($edx-lms-copy, 66%);
+$copy-supplemental-color-focus: $edx-lms-copy;
 
 // application - colors:states
 $selected-bg: $edx-blue-t1;
 $selected-color: $edx-blue-s1;
 
-// application - colors: view-based elements
-$bg-view: $gray-l6;
+// application - colors: actions
+$action-primary-color: tint($color-primary,10%);
+$action-primary-color-focus: saturate($color-primary,25%);
+$action-primary-color-active: $color-primary;
+$action-primary-color-visited: shade($color-primary,20%);
 
-$bg-header-main: $white;
+$action-secondary-color: $color-secondary;
+$action-secondary-color-focus: shade($color-secondary,25%);
+$action-secondary-color-active: $color-secondary;
+$action-secondary-color-visited: shade($color-secondary,20%);
+
+$action-tertiary-color: tint($color-teritary,10%);
+$action-tertiary-color-focus: shade($color-teritary,25%);
+$action-tertiary-color-active: $color-teritary;
+$action-tertiary-color-visited: shade($color-teritary,20%);
+
+// application - colors: view-based elements
+$bg-view: transparent;
+
+$bg-header-main: $white-t;
 $color-header-main: $black;
 
 $bg-content: $gray-l6;
