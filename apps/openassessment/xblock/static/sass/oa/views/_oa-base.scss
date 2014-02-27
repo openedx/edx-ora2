@@ -8,18 +8,15 @@
 // in-view extends
 // --------------------
 %ui--content--longanswer {
-  min-height: ($baseline-v*10);
   max-height: ($baseline-v*15);
   overflow-y: scroll;
 }
-
 
 .wrapper--openassessment {
   position: relative;
 }
 
 .openassessment {
-  @extend %copy--base;
 
   // --------------------
   // general
@@ -465,6 +462,7 @@
         textarea {
           @extend %ui--content--longanswer;
           width: 100%;
+          min-height: ($baseline-v*10);
         }
       }
 
@@ -505,8 +503,23 @@
       padding: $spacing-bravo;
     }
 
-    // STATE: complete
+    // STATE: complete/graded
+    &.is--graded {
 
+      .submission__answer__display {
+        margin-bottom: $spacing-bravo;
+      }
+
+      .submission__peer-evaluations {
+        margin-bottom: $spacing-bravo;
+      }
+
+      .submission__peer-evaluations__title {
+        @extend %hd-golf;
+        @extend %t-weight3;
+        color: $heading-secondary-color;
+      }
+    }
   }
 
 
@@ -557,16 +570,16 @@
       }
     }
 
-    // CASE: is not started
+    // STATE: is not started
     &.is--unstarted {
 
     }
 
-    // CASE: is incomplete
+    // STATE: is incomplete
     &.is--incomplete {
     }
 
-    // CASE: is complete
+    // STATE: is complete
     &.is--complete {
     }
   }
@@ -583,7 +596,7 @@
 
 
   // --------------------
-  // STATE: complete
+  // STATE: graded/complete
   // --------------------
 
 }
