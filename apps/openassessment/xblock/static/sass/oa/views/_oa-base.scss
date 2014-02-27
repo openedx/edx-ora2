@@ -7,9 +7,27 @@
 // --------------------
 // in-view extends
 // --------------------
-%ui--content--longanswer {
+%ui-content-longanswer {
   max-height: ($baseline-v*15);
   overflow-y: scroll;
+}
+
+%ui-section {
+  border: ($baseline-v/10) solid $color-decorative-tertiary;
+  border-radius: ($baseline-v/10);
+  margin-bottom: $spacing-bravo;
+}
+
+%ui-section-title {
+  @extend %hd-golf;
+  @extend %t-weight3;
+  padding: $spacing-charlie $spacing-bravo;
+  background: $color-decorative-tertiary;
+  color: $heading-secondary-color;
+}
+
+%ui-section-content {
+  padding: $spacing-bravo;
 }
 
 .wrapper--openassessment {
@@ -350,8 +368,8 @@
 
     }
 
-    // STATE: step is complete/submitted
-    &.is--complete, &.is--submitted {
+    // STATE: step is complete/submitted/graded
+    &.is--complete, &.is--submitted, &.is--graded {
 
       .step__counter:before {
         border-color: rgba($color-complete, 0.5);
@@ -460,7 +478,7 @@
         }
 
         textarea {
-          @extend %ui--content--longanswer;
+          @extend %ui-content-longanswer;
           width: 100%;
           min-height: ($baseline-v*10);
         }
@@ -485,40 +503,161 @@
 
     // STATE: displayed response
     .submission__answer__display {
-      border: ($baseline-v/10) solid $color-decorative-tertiary;
-      border-radius: ($baseline-v/10);
+      @extend %ui-section;
     }
 
     .submission__answer__display__title {
-      @extend %hd-golf;
-      @extend %t-weight3;
-      padding: $spacing-charlie $spacing-bravo;
-      background: $color-decorative-tertiary;
-      color: $heading-secondary-color;
+      @extend %ui-section-title;
     }
 
     .submission__answer__display__content {
       @extend %copy-charlie;
-      @extend %ui--content--longanswer;
-      padding: $spacing-bravo;
+      @extend %ui-content-longanswer;
+      @extend %ui-section-content;
     }
 
-    // STATE: complete/graded
-    &.is--graded {
+    // --------------------
+    // STATE: graded/complete
+    // --------------------
 
-      .submission__answer__display {
-        margin-bottom: $spacing-bravo;
+    // peer review summary
+    .submission__peer-evaluations {
+      @extend %ui-section;
+    }
+
+    .submission__peer-evaluations__title {
+      @extend %ui-section-title;
+    }
+
+    // rubric questions
+    .submission__peer-evaluations__questions {
+      @extend %no-list;
+      @extend %ui-section-content;
+      margin-bottom: $spacing-charlie; // override city
+
+      &:last-child {
+        margin-bottom: 0;
+        border-bottom: none;
+        padding-bottom: 0;
       }
 
-      .submission__peer-evaluations {
-        margin-bottom: $spacing-bravo;
+      // individual question
+      .question {
+        margin-bottom: $spacing-charlie;
+        @extend %wipe-last-child;
       }
 
-      .submission__peer-evaluations__title {
-        @extend %hd-golf;
+      .question__title {
+        @include clearfix();
+        margin-bottom: $spacing-bravo;
+        border-bottom: ($baseline-v/10) solid $color-decorative-tertiary;
+        padding-bottom: $spacing-delta;
+      }
+
+      .question__title__copy {
+        @extend %hd-delta;
         @extend %t-weight3;
+        float: left;
         color: $heading-secondary-color;
       }
+
+      .question__score {
+        @extend %copy-foxtrot;
+        @extend %t-titlecase;
+        float: right;
+        position: relative;
+        bottom: -($spacing-delta);
+        margin-left: $spacing-bravo;
+        padding: $spacing-delta $spacing-charlie;
+        background: $color-decorative-tertiary;
+        color: $white;
+      }
+
+      .question__score__value {
+        color: $color-complete;
+
+        &:after {
+          content: "/";
+          margin-left: $spacing-delta;
+          color: $heading-secondary-color;
+        }
+      }
+
+      .question__score__potential {
+        color: $heading-secondary-color;
+
+        .unit {
+          margin-left: $spacing-delta;
+        }
+      }
+
+      .question__answers {
+        @extend %no-list;
+        @extend %wipe-last-child;
+        @include row();
+      }
+
+      // individual answers
+      .answer {
+        margin-bottom: $spacing-bravo;
+
+        @include media($bp-m) {
+        }
+
+        @include media($bp-ds) {
+          @include span-columns(3 of 6);
+          @include omega(2n);
+        }
+
+        @include media($bp-dm) {
+          @include span-columns(3 of 12);
+          @include omega(3n);
+        }
+
+        @include media($bp-dl) {
+          @include span-columns(3 of 12);
+          @include omega(3n);
+        }
+
+        @include media($bp-dx) {
+          @include span-columns(3 of 12);
+          @include omega(3n);
+        }
+      }
+
+      .answer__source {
+        @extend %hd-golf;
+        display: block;
+        color: $heading-tertiary-color;
+      }
+
+      .answer__value {
+        @extend %copy-charlie;
+        display: block;
+        margin-bottom: $spacing-charlie;
+        color: $heading-primary-color;
+      }
+
+      .answer__content {
+        @extend %copy-delta;
+        display: block;
+        color: $copy-supplemental-color;
+      }
+    }
+
+    // feedback form
+    .submission__feeedback {
+      @extend %ui-section-content;
+      border-top: ($baseline-v/4) solid $color-decorative-tertiary;
+      padding-top: $spacing-bravo;
+    }
+
+    .submission__feeedback__title {
+
+    }
+
+    .submission__feeedback__content {
+
     }
   }
 
@@ -592,11 +731,6 @@
 
   // --------------------
   // STATE: waiting
-  // --------------------
-
-
-  // --------------------
-  // STATE: graded/complete
   // --------------------
 
 }
