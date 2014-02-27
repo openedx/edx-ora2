@@ -45,3 +45,6 @@ nosetests.xml
 # PyCharm
 .idea
 
+# node
+node_modules
+npm-debug.log
