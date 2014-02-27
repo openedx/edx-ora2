@@ -1,0 +1,6 @@
+[report]
+include = apps/*
+omit =
+    **/__init__.py
+    **/tests/*
+    **/test/*
