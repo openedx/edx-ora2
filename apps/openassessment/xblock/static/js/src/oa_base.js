@@ -101,7 +101,7 @@ function OpenAssessmentBlock(runtime, element) {
                         url: renderPeerUrl,
                         dataType: "html",
                         success:  function(data) {
-                            $('#openassessment__peer-assessment', element).replaceWith(data);
+                            render_peer_assessment(data);
                         }
                     });
                 }

@@ -11,30 +11,33 @@
 
 
 <!-- CASE: default/not started -->
+<li id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment">
+    <header class="step__header">
 {% block list_item %}
 <li id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment is--expanded">
 {% endblock %}
-    <header class="step__header ui-toggle-visibility__control">
+    <header class="step__header">
         <h2 class="step__title">
             <span class="step__counter"></span>
             <span class="wrapper--copy">
-                <span class="step__label">Evaluate Your Response</span>
+                <span class="step__title__label">Evaluate Your Response</span>
+                <span class="step__title__deadline">due <span class="date">January 31, 2014</span> at <span class="time">15:00 UTC</span></span>
+                <span class="step__title__label">Evaluate Your Response</span>
                 <span class="step__deadline">due <span class="date">{{ formatted_due_datetime }}</span></span>
             </span>
         </h2>
-
-        {% block title %}
+    {% block title %}
         <span class="step__status">
           <span class="step__status__label">This step's status:</span>
-          <span class="step__status__value">
-              <span class="copy">{{ step_status }}</span>
-          </span>
+          <span class="step_status_value">Incomplete</span>
+          <span class="step__status__label">This step's status:</span>
+          <span class="step_status_value">{{ step_status }}</span>
         </span>
-        {% endblock %}
     </header>
-
+    {% endblock %}
+    </header>
     {% block body %}
-    <div class="step__content">
+    <div class="step--content">
         <article class="self-assessment" id="self-assessment">
             <header class="self-assessment__header">
                 <h3 class="self-assessment__title">Your Submitted Response</h3>
