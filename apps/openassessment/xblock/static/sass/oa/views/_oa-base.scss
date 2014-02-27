@@ -171,7 +171,7 @@
       .step__status__value {
         border-radius: ($baseline-v/5);
         padding: ($baseline-v/4) ($baseline-h/4);
-        background: $color-disabled;
+        background: $color-secondary;
         color: $white-t;
 
         @include media($bp-m) {
@@ -187,6 +187,7 @@
 
       .ico {
         @extend %t-icon-m;
+        display: none; // hiding by default
         margin-right: $spacing-delta;
       }
 
@@ -318,13 +319,34 @@
 
     }
 
-    // STATE: step is complete
-    &.is--complete {
+    // STATE: step is complete/submitted
+    &.is--complete, &.is--submitted {
 
+      .step__status__value {
+        background: $color-primary;
+
+        .ico {
+          display: inline-block;
+        }
+
+        .copy {
+          color: $white-t;
+        }
+      }
+    }
+
+    // STATE: step is saved
+    &.is--saved {
+
+      .step__status__value {
+        background: $color-primary;
+
+        .copy {
+          color: $white-t;
+        }
+      }
     }
   }
-
-
 
 
   // --------------------
@@ -394,6 +416,19 @@
       padding: $spacing-charlie $spacing-charlie $spacing-bravo $spacing-charlie;
       background: $color-decorative-tertiary;
 
+      .submission__answer {
+        margin-bottom: $spacing-charlie;
+
+        label {
+          @extend %text-sr;
+        }
+
+        textarea {
+          width: 100%;
+          min-height: ($baseline-v*10);
+        }
+      }
+
       .action--submit, .tip {
         display: inline-block;
         vertical-align: middle;
@@ -409,20 +444,11 @@
         @extend %copy-epsilon;
         color: $copy-supplemental-color;
       }
+    }
 
+    // displayed response
+    .submission__answer__display {
 
-      .submission__answer {
-        margin-bottom: $spacing-charlie;
-
-        label {
-          @extend %text-sr;
-        }
-
-        textarea {
-          width: 100%;
-          min-height: ($baseline-v*10);
-        }
-      }
     }
   }
 
