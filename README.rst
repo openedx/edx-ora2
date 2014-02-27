@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/edx/edx-tim.png?branch=master
+    :alt: Travis build status
+
 This is an initial prototype for redesigning Peer Grading and general Open Ended
 Submission Evaluation. This project is in the early stages of development and is
 not ready for general use.
