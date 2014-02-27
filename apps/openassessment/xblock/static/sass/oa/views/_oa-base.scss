@@ -452,7 +452,7 @@
 
     // STATE: displayed response
     .submission__answer__display {
-      border: ($baseline-v/10) solid $color-complete;
+      border: ($baseline-v/10) solid $color-decorative-tertiary;
       border-radius: ($baseline-v/10);
     }
 
@@ -460,8 +460,8 @@
       @extend %hd-golf;
       @extend %t-weight3;
       padding: $spacing-charlie $spacing-bravo;
-      background: $color-complete;
-      color: $white;
+      background: $color-decorative-tertiary;
+      color: $heading-secondary-color;
     }
 
     .submission__answer__display__content {
