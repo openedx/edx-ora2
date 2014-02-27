@@ -156,6 +156,11 @@ class TestOpenAssessment(TestCase):
         self.assertIsNotNone(self_response)
         self.assertTrue(self_response.body.find("openassessment__peer-assessment"))
 
+        # Validate Grading.
+        grade_response = self.assessment.render_grade({})
+        self.assertIsNotNone(grade_response)
+        self.assertTrue(grade_response.body.find("openassessment__grade"))
+
     def test_start_end_date_checks(self):
         """
         Check if the start and end date checks work appropriately.
