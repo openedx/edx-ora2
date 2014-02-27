@@ -130,7 +130,3 @@ class PeerAssessmentMixin(object):
         for assessment in self.rubric_assessments:
             if assessment["name"] == mixin_name:
                 return assessment
-
-    @XBlock.handler
-    def render_peer_assessment_collapsed(self, data, suffix=''):
-        return self.render_assessment("openassessmentblock/peer/oa_peer_assessment_collapsed.html")

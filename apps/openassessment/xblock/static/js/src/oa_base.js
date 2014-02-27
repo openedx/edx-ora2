@@ -8,6 +8,20 @@ function OpenAssessmentBlock(runtime, element) {
     /* Sample Debug Console: http://localhost:8000/submissions/Joe_Bloggs/TestCourse/u_3 */
 
     /*
+     * Utility functions
+     */
+    function collapse(element) {
+        element.removeClass("is--expanded");
+        element.addClass("is--collapsed");
+    }
+
+    function expand(element) {
+        element.addClass("is--collapsed");
+        element.removeClass("is--expanded");
+    }
+
+
+    /*
      *  Submission Functions
      */
     function render_submissions(data) {
@@ -26,6 +40,7 @@ function OpenAssessmentBlock(runtime, element) {
                             render_peer_assessment(data);
                         }
                     });
+                    collapse($('#openassessment__response', element));
                     $.ajax({
                         type: "POST",
                         url: renderSubmissionUrl,
@@ -101,19 +116,23 @@ function OpenAssessmentBlock(runtime, element) {
 
         $.ajax({
             type: "POST",
-            url: renderPeerCollapseUrl,
+            url: renderPeerUrl,
             success:  function(data) {
                 $('#openassessment__peer-assessment', element).replaceWith(data);
+                collapse($('#openassessment__peer-assessment', element));
             }
         });
 
         $.ajax({
             type: "POST",
-            url: renderSelfCollapseUrl,
+            url: renderSelfUrl,
             success:  function(data) {
                 $('#openassessment__self-assessment', element).replaceWith(data);
+                collapse($('#openassessment__self-assessment', element));
             }
         });
     });
+
+
 }
 /* END Javascript for OpenAssessmentXBlock. */
