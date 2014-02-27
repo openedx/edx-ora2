@@ -7,10 +7,10 @@
 // --------------------
 // in-view extends
 // --------------------
-%oa--ui--window {
-  box-shadow: 0 1px 1px $shadow-l1;
-  border: ($baseline-v/10) solid $color-decorative-tertiary;
-  border-radius: ($baseline-v/10);
+%ui--content--longanswer {
+  min-height: ($baseline-v*10);
+  max-height: ($baseline-v*15);
+  overflow-y: scroll;
 }
 
 
@@ -428,8 +428,8 @@
         }
 
         textarea {
+          @extend %ui--content--longanswer;
           width: 100%;
-          min-height: ($baseline-v*10);
         }
       }
 
@@ -466,6 +466,7 @@
 
     .submission__answer__display__content {
       @extend %copy-charlie;
+      @extend %ui--content--longanswer;
       padding: $spacing-bravo;
     }
 
