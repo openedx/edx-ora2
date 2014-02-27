@@ -67,7 +67,6 @@
   @include font-size(24);
   @include lh(24);
   font-family: $f-title;
-  color: $heading-primary-color;
 }
 
 %hd-bravo {
@@ -75,7 +74,6 @@
   @include font-size(21);
   @include lh(21);
   font-family: $f-title;
-  color: $heading-primary-color;
 }
 
 %hd-charlie {
@@ -84,7 +82,6 @@
   @include font-size(18);
   @include lh(18);
   font-family: $f-title;
-  color: $heading-primary-color;
 }
 
 %hd-delta {
@@ -92,7 +89,6 @@
   @include font-size(16);
   @include lh(16);
   font-family: $f-title;
-  color: $heading-primary-color;
 }
 
 %hd-epsilon {
@@ -101,7 +97,6 @@
   @include font-size(16);
   @include lh(16);
   font-family: $f-title;
-  color: $heading-secondary-color;
 }
 
 %hd-foxtrot {
@@ -109,7 +104,6 @@
   @include font-size(16);
   @include lh(16);
   font-family: $f-title;
-  color: $heading-secondary-color;
 }
 
 %hd-golf {
@@ -118,7 +112,6 @@
   @include font-size(13);
   @include lh(13);
   font-family: $f-title;
-  color: $heading-tertiary-color;
 }
 
 %hd-hotel {
@@ -126,7 +119,6 @@
   @include font-size(13);
   @include lh(13);
   font-family: $f-title;
-  color: $heading-tertiary-color;
 }
 
 %hd-india {
@@ -135,7 +127,6 @@
   @include font-size(11);
   @include lh(11);
   font-family: $f-title;
-  color: $heading-tertiary-color;
 }
 
 
@@ -147,13 +138,11 @@
   @include font-size(24);
   @include lh(24);
   font-family: $f-copy;
-  color: $copy-color;
 }
 
 %copy-bravo {
   @include font-size(18);
   @include lh(18);
-  color: $copy-color;
   font-family: $f-copy;
 }
 
@@ -162,34 +151,59 @@
   @include font-size(16);
   @include lh(16);
   font-family: $f-copy;
-  color: $copy-color;
 }
 
 %copy-delta {
   @include font-size(14);
   @include lh(14);
   font-family: $f-copy;
-  color: $copy-color;
 }
 
 %copy-epsilon {
-  @include font-size(12);
+  @include font-size(13);
   @include lh(12);
   font-family: $f-copy;
-  color: $copy-supplemental-color;
 }
 
 %copy-foxtrot {
-  @include font-size(11);
-  @include lh(11);
+  @include font-size(12);
+  @include lh(12);
   font-family: $f-copy;
-  color: $copy-supplemental-color;
 }
 
 
 // --------------------
 // canned actions
 // --------------------
+%action-alpha {
+  @include font-size(18);
+  @include lh(18);
+  font-family: $f-action;
+}
+
+%action-bravo {
+  @include font-size(18);
+  @include lh(18);
+  font-family: $f-action;
+}
+
+%action-charlie {
+  @include font-size(16);
+  @include lh(16);
+  font-family: $f-action;
+}
+
+%action-delta {
+  @include font-size(14);
+  @include lh(14);
+  font-family: $f-action;
+}
+
+%action-epsilon {
+  @include font-size(12);
+  @include lh(12);
+  font-family: $f-action;
+}
 
 
 // --------------------

@@ -135,14 +135,15 @@ $f-action: $f-sans-serif;
 // application - colors
 // --------------------
 // application - colors: basic
-$color-primary: $blue-s2;
-$color-secondary: $blue;
+$color-primary: $blue;
+$color-secondary: $blue-u1;
 $color-teritary: $blue-u2;
 
 // application - colors: decorative
 $color-decorative-primary: $blue-u2;
 $color-decorative-secondary: $gray-l4;
 $color-decorative-tertiary: $gray-l6;
+$color-decorative-quaternary: $gray-l7;
 
 // application - colors: states
 $color-disabled: $gray-l4;

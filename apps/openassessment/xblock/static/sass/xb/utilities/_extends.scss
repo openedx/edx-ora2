@@ -136,6 +136,10 @@
   @include transition(width $tmg-f1 ease-in-out, height $tmg-f1 ease-in-out);
 }
 
+%trans-opacity {
+  @include transition(opacity $tmg-f1 ease-in-out);
+}
+
 %trans-color {
   @include transition(color $tmg-f1 ease-in-out);
 }
