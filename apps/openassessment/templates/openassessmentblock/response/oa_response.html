@@ -17,7 +17,6 @@
 <li id="openassessment__response" class="openassessment__steps__step step--response ui-toggle-visibility is--expanded">
 {% endblock %}
 
-    {%  block header %}
     <header class="step__header ui-toggle-visibility__control">
         <h2 class="step__title">
             <span class="step__counter"></span>
@@ -29,6 +28,7 @@
             </span>
         </h2>
 
+        {%  block title %}
         <span class="step__status">
             <span class="step__status__label">This step's status:</span>
             <span class="step__status__value">
@@ -36,8 +36,8 @@
                 <span class="copy">{{ step_status }}</span>
             </span>
         </span>
+        {% endblock %}
     </header>
-    {% endblock %}
 
     {% block body %}
     <div class="step__instruction">

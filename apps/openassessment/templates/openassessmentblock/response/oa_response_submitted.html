@@ -1,7 +1,19 @@
 {% extends "openassessmentblock/response/oa_response.html" %}
+
 {% block list_item %}
-<li id="openassessment__response" class="openassessment__steps__step step--response is--submitted is--unavailable ui-toggle-visibility">
+<li id="openassessment__response" class="openassessment__steps__step step--response is--submitted is--expanded ui-toggle-visibility">
 {% endblock %}
+
+{% block title %}
+    <span class="step__status">
+      <span class="step__status__label">This step's status:</span>
+      <span class="step__status__value">
+        <i class="ico fa fa-check"></i>
+        <span class="copy">{{ step_status }}</span>
+      </span>
+    </span>
+{% endblock %}
+
 {% block body %}
     <div class="step__content">
         <!-- user's response -->
