@@ -132,4 +132,4 @@ class PeerAssessmentMixin(object):
 
     @XBlock.handler
     def render_peer_assessment_collapsed(self, data, suffix=''):
-        return self.render_assessment("openassessmentblock/oa_peer_assessment_collapsed.html")
+        return self.render_assessment("openassessmentblock/peer/oa_peer_assessment_collapsed.html")
