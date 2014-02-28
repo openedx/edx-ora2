@@ -1,4 +1,5 @@
 import datetime
+import copy
 
 from ddt import ddt, file_data
 from django.db import DatabaseError
@@ -133,6 +134,11 @@ class TestApi(TestCase):
         self.test_create_score()
         scores = api.get_score(STUDENT_ITEM)
         self._assert_score(scores[0], 11, 12)
+
+    def test_get_score_no_student_id(self):
+        student_item = copy.deepcopy(STUDENT_ITEM)
+        student_item['student_id'] = None
+        self.assertIs(api.get_score(student_item), None)
 
     def _assert_score(
             self,

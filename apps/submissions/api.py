@@ -252,8 +252,13 @@ def get_score(student_item):
         }]
 
     """
-    student_item_model = StudentItem.objects.get(**student_item)
-    scores = Score.objects.filter(student_item=student_item_model)
+    try:
+        student_item_model = StudentItem.objects.get(**student_item)
+        scores = Score.objects.filter(student_item=student_item_model)
+
+    except StudentItem.DoesNotExist:
+        return None
+
     return ScoreSerializer(scores, many=True).data
 
 
