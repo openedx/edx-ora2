@@ -1,0 +1,20 @@
+{%  extends "openassessmentblock/response/oa_response.html" %}
+{% block list_item %}
+    <li id="openassessment__response" class="openassessment__steps__step step--response ui-toggle-visibility">
+{% endblock %}
+
+{% block title %}
+    <span class="step__status">
+      <span class="step__status__label">This step's status:</span>
+      <span class="step__status__value">
+        <i class="ico fa fa-exclamation-triangle"></i>
+        <span class="copy">{{ step_status }}</span>
+      </span>
+    </span>
+{% endblock %}
+
+{% block body %}
+    <div class="step__instruction">
+        <p>You did not complete this portion of the problem before its due date.</p>
+    </div>
+{% endblock %}
