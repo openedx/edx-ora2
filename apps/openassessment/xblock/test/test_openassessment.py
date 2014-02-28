@@ -53,7 +53,7 @@ RUBRIC_CONFIG = """
               due="2014-12-21T22:22"
               must_grade="5"
               must_be_graded_by="3" />
-            <self-assessment/>
+            <self-assessment name="self-assessment"/>
         </assessments>
     </openassessment>
 """

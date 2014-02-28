@@ -69,7 +69,7 @@ class ScenarioParser(object):
                 )
             rubric_criteria.append(crit)
 
-        return (e.text.strip(), rubric_criteria)
+        return rubric_criteria
 
     def get_assessments(self, assessments):
         """<assessments>
@@ -113,8 +113,7 @@ class ScenarioParser(object):
             if child.tag == 'prompt':
                 self.xblock.prompt = self.get_prompt(child)
             elif child.tag == 'rubric':
-                (self.xblock.rubric_instructions, 
-                 self.xblock.rubric_criteria) = self.get_rubric(child)
+                 self.xblock.rubric_criteria = self.get_rubric(child)
             elif child.tag == 'title':
                 self.xblock.title = self.get_title(child)
             elif child.tag == 'assessments':
