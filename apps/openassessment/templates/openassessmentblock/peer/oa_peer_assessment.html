@@ -23,44 +23,87 @@
                 <span class="step__label">Evaluate Peers' Responses</span>
                 <span class="step__deadline">due <span class="date">{{ formatted_due_datetime }}</span></span>
             </span>
-                </header>
+        </h2>
 
-                <!-- ?: markup validating/copy cleaning upon submission -->
-                <div class="peer-assessment__response">
-                    {{ peer_submission.answer }}
-                </div>
+        {% block title %}
+        <span class="step__status">
+          <span class="step__status__label">This step's status:</span>
+          <span class="step__status__value">
+            <span class="copy">
+                <span class="step__status__value--completed">{{ graded }}</span> of
+                <span class="step__status__value--required">{{ must_grade }}</span> completed
+            </span>
+          </span>
+        </span>
+        {% endblock %}
+    </header>
 
-                <form id="peer-assessment--001__assessment" class="peer-assessment__assessment" method="post">
-                    <fieldset class="assessment__fields">
+    {% block body %}
+    <div class="step__instruction">
+        <p>Please read and evaluate the following response from one of your peers in the course.</p>
+    </div>
 
-                        <ol class="list list--fields assessment__rubric">
-                            {% for criterion in rubric_criteria %}
-                            <!-- individual rubric question (radio-based choice) -->
-                            <li class="field field--radio is--required assessment__rubric__question" id="assessment__rubric__question--{{ criterion.name }}">
-                                <h4 class="question__title">
-                                    {{ criterion.prompt }}
-                                    <span class="label--required">* <span class="sr">(Required)</span></span>
-                                </h4>
-                                <ol class="question__answers">
-                                    {% for option in criterion.options %}
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio"
-                                                   name="{{ criterion.name }}"
-                                                   id="assessment__rubric__question--{{ criterion.name }}"
-                                                   class="answer__value"
-                                                   value="{{ option.name }}" />
-                                            ({{option.points}})
-                                            <label for="assessment__rubric__question--001__option--01"
-                                                   class="answer__label"
-                                                   >{{ option.name }}</label>
-                                        </div>
-                                        <span class="answer__tip">{{ option.explanation }}</span>
-                                    </li>
-                                    {% endfor %}
-                                </ol>
-                            </li>
-                            {% endfor %}
+    <div class="step__content">
+        <ul class="list--peer-assessments">
+            <li class="list--peer-assessments__item">
+                <article class="peer-assessment" id="peer-assessment--001">
+                    <header class="peer-assessment__header">
+                        <h3 class="peer-assessment__title">Assessment #
+                            <span class="peer-assessment__number--current">{{ graded }}</span> of
+                            <span class="peer-assessment__number--required">{{ must_grade }}</span>
+                        </h3>
+
+                <span class="peer-assessment__expected-time">
+                  <span class="label">Expected Time Spent:</span>
+                  <span class="value">{{ estimated_time }}</span>
+                </span>
+                    </header>
+
+                    <!-- ?: markup validating/copy cleaning upon submission -->
+                    <div class="peer-assessment__response">
+                        {{ peer_submission.answer }}
+                    </div>
+
+                    <form id="peer-assessment--001__assessment" class="peer-assessment__assessment" method="post">
+                        <fieldset class="assessment__fields">
+                            <legend class="assessment__instruction">{{ rubric_instructions }}</legend>
+
+                            <ol class="list list--fields assessment__rubric">
+                                {% for criterion in rubric_criteria %}
+                                <!-- individual rubric question (radio-based choice) -->
+                                <li class="field field--radio is--required assessment__rubric__question" id="assessment__rubric__question--{{ criterion.name }}">
+                                    <h4 class="question__title">
+                                        {{ criterion.prompt }}
+                                        <span class="label--required">* <span class="sr">(Required)</span></span>
+                                    </h4>
+                                    <ol class="question__answers">
+                                        {% for option in criterion.options %}
+                                        <li class="answer">
+                                            <div class="wrapper--input">
+                                                <input type="radio"
+                                                       name="{{ criterion.name }}"
+                                                       id="assessment__rubric__question--{{ criterion.name }}"
+                                                       class="answer__value"
+                                                       value="{{ option.name }}" />
+                                                ({{option.points}})
+                                                <label for="assessment__rubric__question--001__option--01"
+                                                       class="answer__label"
+                                                       >{{ option.name }}</label>
+                                            </div>
+                                            <span class="answer__tip">{{ option.explanation }}</span>
+                                        </li>
+                                        {% endfor %}
+                                    </ol>
+                                </li>
+                                {% endfor %}
+
+                                <!-- individual rubric question (text) -->
+                                <li class="field field--textarea assessment__rubric__question" id="assessment__rubric__question--004">
+                                    <label for="assessment__rubric__question--004__value">Please provide any other feedback you have around this response</label>
+                                    <textarea id="assessment__rubric__question--004__value" placeholder="I felt this response was..."></textarea>
+                                </li>
+                            </ol>
+                        </fieldset>
 
                         <ul class="list list--actions">
                             <li class="list--actions__item">

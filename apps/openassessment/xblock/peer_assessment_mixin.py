@@ -68,7 +68,6 @@ class PeerAssessmentMixin(object):
 
         """
         context_dict = {
-            "rubric_instructions": self.rubric_instructions,
             "rubric_criteria": self.rubric_criteria,
             "estimated_time": "20 minutes"  # TODO: Need to configure this.
         }
