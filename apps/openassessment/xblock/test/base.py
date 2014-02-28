@@ -92,12 +92,10 @@ class XBlockHandlerTestCase(TestCase):
         Returns:
             XBlock
         """
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        with open(os.path.join(base_dir, xml_path)) as xml_file:
-            block_id = self.runtime.parse_xml_string(
-                xml_file.read(), self.runtime.id_generator
-            )
-            return self.runtime.get_block(block_id)
+        block_id = self.runtime.parse_xml_string(
+            self.load_fixture_str(xml_path), self.runtime.id_generator
+        )
+        return self.runtime.get_block(block_id)
 
     def request(self, xblock, handler_name, content, response_format=None):
         """
@@ -133,3 +131,18 @@ class XBlockHandlerTestCase(TestCase):
             return json.loads(response.body)
         else:
             raise NotImplementedError("Response format '{format}' not supported".format(response_format))
+
+    @staticmethod
+    def load_fixture_str(path):
+        """
+        Load data from a fixture file.
+
+        Args:
+            path (str): Path to the file.
+
+        Returns:
+            unicode: contents of the file.
+        """
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        with open(os.path.join(base_dir, path)) as file_handle:
+            return file_handle.read()

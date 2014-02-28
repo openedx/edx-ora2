@@ -1,7 +1,7 @@
 {
     "simple": {
         "xml": [
-            "<openassessmentblock>",
+            "<openassessment>",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -16,7 +16,7 @@
                     "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
                 "</criterion>",
             "</rubric>",
-            "</openassessmentblock>"
+            "</openassessment>"
         ],
         "title": "Foo",
         "prompt": "Test prompt",
@@ -61,7 +61,7 @@
 
     "unicode": {
         "xml": [
-            "<openassessmentblock>",
+            "<openassessment>",
             "<title>िѻѻ</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -75,7 +75,7 @@
                     "<option points=\"2\"><name>ﻉร</name><explanation>ﻉร ﻉซρɭคกคՇٱѻก</explanation></option>",
                 "</criterion>",
             "</rubric>",
-            "</openassessmentblock>"
+            "</openassessment>"
         ],
         "title": "िѻѻ",
         "prompt": "ՇєรՇ קг๏๓קՇ",
@@ -113,7 +113,7 @@
 
     "multiple_criteria": {
         "xml": [
-            "<openassessmentblock>",
+            "<openassessment>",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -132,7 +132,7 @@
                     "<option points=\"1\"><name>Maybe</name><explanation>Maybe explanation</explanation></option>",
                 "</criterion>",
             "</rubric>",
-            "</openassessmentblock>"
+            "</openassessment>"
         ],
         "title": "Foo",
         "prompt": "Test prompt",
@@ -183,7 +183,7 @@
 
     "no_dates_specified": {
         "xml": [
-            "<openassessmentblock>",
+            "<openassessment>",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -197,7 +197,7 @@
                     "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
                 "</criterion>",
             "</rubric>",
-            "</openassessmentblock>"
+            "</openassessment>"
         ],
         "title": "Foo",
         "prompt": "Test prompt",

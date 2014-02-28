@@ -40,7 +40,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessmentblock>",
+            "<openassessment>",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -55,7 +55,7 @@
                     "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
                 "</criterion>",
             "</rubric>",
-            "</openassessmentblock>"
+            "</openassessment>"
         ]
     },
 
@@ -93,7 +93,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessmentblock>",
+            "<openassessment>",
             "<title>ƒσσ</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -107,7 +107,7 @@
                     "<option points=\"2\"><name>Чэѕ</name><explanation>Чэѕ эхрlаиатіои</explanation></option>",
                 "</criterion>",
             "</rubric>",
-            "</openassessmentblock>"
+            "</openassessment>"
         ]
     },
 
@@ -145,7 +145,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessmentblock>",
+            "<openassessment>",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-06-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -159,7 +159,7 @@
                     "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
                 "</criterion>",
             "</rubric>",
-            "</openassessmentblock>"
+            "</openassessment>"
         ]
     },
 
@@ -210,7 +210,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessmentblock>",
+            "<openassessment>",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-06-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -229,7 +229,7 @@
                     "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
                 "</criterion>",
             "</rubric>",
-            "</openassessmentblock>"
+            "</openassessment>"
         ]
     },
 
@@ -274,7 +274,7 @@
             }
         ],
         "expected_xml": [
-            "<openassessmentblock>",
+            "<openassessment>",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -289,7 +289,7 @@
                     "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
                 "</criterion>",
             "</rubric>",
-            "</openassessmentblock>"
+            "</openassessment>"
         ]
     }
 }

@@ -5,6 +5,8 @@ scope of the Tim APIs.
 """
 from copy import deepcopy
 
+import dateutil.parser
+from django.utils.translation import ugettext as _
 from rest_framework import serializers
 from openassessment.peer.models import (
     Assessment, AssessmentPart, Criterion, CriterionOption, Rubric
@@ -257,3 +259,51 @@ def rubric_from_dict(rubric_dict):
         rubric = rubric_serializer.save()
 
     return rubric
+
+
+def validate_assessment_dict(assessment_dict):
+    """
+    Check that the assessment dict is semantically valid.
+
+    Args:
+        assessment (dict): Serialized Assessment model.
+
+    Returns:
+        boolean indicating whether the assessment is semantically valid.
+    """
+    # Supported assessment
+    if not assessment_dict.get('name') in ['peer-assessment', 'self-assessment']:
+        return (False, _("Assessment type is not supported"))
+
+    # Number you need to grade is >= the number of people that need to grade you
+    must_grade = assessment_dict.get('must_grade')
+    must_be_graded_by = assessment_dict.get('must_be_graded_by')
+
+    if must_grade is None or must_grade < 1:
+        return (False, _('"must_grade" must be a positive integer'))
+
+    if must_be_graded_by is None or must_be_graded_by < 1:
+        return (False, _('"must_be_graded_by" must be a positive integer'))
+
+    if must_grade < must_be_graded_by:
+        return (False, _('"must_grade" should be greater than or equal to "must_be_graded_by"'))
+
+    return (True, u'')
+
+
+def validate_rubric_dict(rubric_dict):
+    """
+    Check that the rubric is semantically valid.
+
+    Args:
+        rubric_dict (dict): Serialized Rubric model
+
+    Returns:
+        boolean indicating whether the rubric is semantically valid.
+    """
+    try:
+        rubric_from_dict(rubric_dict)
+    except InvalidRubric as ex:
+        return (False, ex.message)
+    else:
+        return (True, u'')

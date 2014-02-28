@@ -397,7 +397,7 @@ def serialize_content(oa_block):
     Returns:
         xml (unicode)
     """
-    root = etree.Element('openassessmentblock')
+    root = etree.Element('openassessment')
 
     # Open assessment displayed title
     title = etree.SubElement(root, 'title')
@@ -433,7 +433,7 @@ def serialize_content(oa_block):
 
 
 def update_from_xml(
-    oa_block, xml,
+    oa_block, root,
     rubric_validator=lambda _: (True, ''),
     assessment_validator=lambda _: (True, '')
 ):
@@ -445,7 +445,7 @@ def update_from_xml(
 
     Args:
         oa_block (OpenAssessmentBlock): The open assessment block to update.
-        xml (unicode): The XML definition of the XBlock's content.
+        root (lxml.etree.Element): The XML definition of the XBlock's content.
 
     Kwargs:
         rubric_validator (callable): Function that accepts a rubric dict and returns
@@ -462,17 +462,10 @@ def update_from_xml(
         UpdateFromXmlError: The XML definition is invalid or the XBlock could not be updated.
         InvalidRubricError: The rubric was not semantically valid.
     """
-    # Parse the XML content definition
-    # Use the defusedxml library implementation to avoid known security vulnerabilities in ElementTree:
-    # http://docs.python.org/2/library/xml.html#xml-vulnerabilities
-    try:
-        root = safe_etree.fromstring(xml.encode('utf-8'))
-    except (ValueError, safe_etree.ParseError) as ex:
-        raise UpdateFromXmlError(_("An error occurred while parsing the XML content."))
 
     # Check that the root has the correct tag
-    if root.tag != 'openassessmentblock':
-        raise UpdateFromXmlError(_("XML content must contain an 'openassessmentblock' root element."))
+    if root.tag != 'openassessment':
+        raise UpdateFromXmlError(_("XML content must contain an 'openassessment' root element."))
 
     # Retrieve the title
     title_el = root.find('title')
@@ -503,3 +496,33 @@ def update_from_xml(
     oa_block.rubric_assessments = assessments
 
     return oa_block
+
+
+def update_from_xml_str(oa_block, xml, **kwargs):
+    """
+    Update the OpenAssessment XBlock's content from an XML string definition.
+    Parses the string using a library that avoids some known security vulnerabilities in etree.
+
+    Args:
+        oa_block (OpenAssessmentBlock): The open assessment block to update.
+        xml (unicode): The XML definition of the XBlock's content.
+
+    Kwargs:
+        Same as `update_from_xml`
+
+    Returns:
+        OpenAssessmentBlock
+
+    Raises:
+        UpdateFromXmlError: The XML definition is invalid or the XBlock could not be updated.
+        InvalidRubricError: The rubric was not semantically valid.
+    """
+    # Parse the XML content definition
+    # Use the defusedxml library implementation to avoid known security vulnerabilities in ElementTree:
+    # http://docs.python.org/2/library/xml.html#xml-vulnerabilities
+    try:
+        root = safe_etree.fromstring(xml.encode('utf-8'))
+    except (ValueError, safe_etree.ParseError) as ex:
+        raise UpdateFromXmlError(_("An error occurred while parsing the XML content."))
+
+    return update_from_xml(oa_block, root, **kwargs)
