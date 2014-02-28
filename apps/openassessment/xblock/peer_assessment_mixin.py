@@ -72,13 +72,14 @@ class PeerAssessmentMixin(object):
             "estimated_time": "20 minutes"  # TODO: Need to configure this.
         }
         path = 'openassessmentblock/peer/oa_peer_waiting.html'
+
         assessment = self.get_assessment_module('peer-assessment')
         if assessment:
 
             context_dict["must_grade"] = assessment["must_grade"]
 
             student_item = self.get_student_item_dict()
-
+            student_submission = self.get_user_submission(student_item)
 
             finished, count = peer_api.has_finished_required_evaluating(
                 student_item,
@@ -87,7 +88,7 @@ class PeerAssessmentMixin(object):
             context_dict["graded"] = count
             if finished:
                 path = "openassessmentblock/peer/oa_peer_complete.html"
-            else:
+            elif student_submission:
                 peer_sub = self.get_peer_submission(student_item, assessment)
                 if peer_sub:
                     path = 'openassessmentblock/peer/oa_peer_assessment.html'
@@ -98,11 +99,9 @@ class PeerAssessmentMixin(object):
             else:
                 context_dict["submit_button_text"] = "Submit your assessment & move to response #{}".format(count + 1)
 
-
             problem_open, date = self.is_open()
             if not problem_open and date == "due" and not finished:
                 path = 'openassessmentblock/peer/oa_peer_closed.html'
-
 
         return self.render_assessment(path, context_dict)
 
