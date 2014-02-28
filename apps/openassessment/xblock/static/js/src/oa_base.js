@@ -38,12 +38,12 @@ function OpenAssessmentBlock(runtime, element) {
                             render_peer_assessment(data);
                         }
                     });
-                    collapse($('#openassessment__response', element));
                     $.ajax({
                         type: "POST",
                         url: renderSubmissionUrl,
                         success:  function(data) {
                             render_submissions(data);
+                            collapse($('#openassessment__response', element));
                         }
                     });
                 }
