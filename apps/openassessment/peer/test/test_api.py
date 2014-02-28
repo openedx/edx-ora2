@@ -166,27 +166,27 @@ class TestApi(TestCase):
         scores = sub_api.get_score(STUDENT_ITEM)
         self.assertFalse(scores)
 
-        self.assertFalse(peer_api.has_finished_required_evaluating("Tim", REQUIRED_GRADED))
+        self.assertEquals((False, 0), peer_api.has_finished_required_evaluating(STUDENT_ITEM, REQUIRED_GRADED))
         peer_api.create_assessment(
             bob["uuid"], "Tim", REQUIRED_GRADED, REQUIRED_GRADED_BY, ASSESSMENT_DICT, RUBRIC_DICT
         )
         peer_api.create_assessment(
             sally["uuid"], "Tim", REQUIRED_GRADED, REQUIRED_GRADED_BY, ASSESSMENT_DICT, RUBRIC_DICT
         )
-        self.assertFalse(peer_api.has_finished_required_evaluating("Tim", REQUIRED_GRADED))
+        self.assertEquals((False, 2), peer_api.has_finished_required_evaluating(STUDENT_ITEM, REQUIRED_GRADED))
 
         peer_api.create_assessment(
             jim["uuid"], "Tim", REQUIRED_GRADED, REQUIRED_GRADED_BY, ASSESSMENT_DICT, RUBRIC_DICT
         )
-        self.assertFalse(peer_api.has_finished_required_evaluating("Tim", REQUIRED_GRADED))
+        self.assertEquals((False, 3), peer_api.has_finished_required_evaluating(STUDENT_ITEM, REQUIRED_GRADED))
         peer_api.create_assessment(
             buffy["uuid"], "Tim", REQUIRED_GRADED, REQUIRED_GRADED_BY, ASSESSMENT_DICT, RUBRIC_DICT
         )
-        self.assertFalse(peer_api.has_finished_required_evaluating("Tim", REQUIRED_GRADED))
+        self.assertEquals((False, 4), peer_api.has_finished_required_evaluating(STUDENT_ITEM, REQUIRED_GRADED))
         peer_api.create_assessment(
             xander["uuid"], "Tim", REQUIRED_GRADED, REQUIRED_GRADED_BY, ASSESSMENT_DICT, RUBRIC_DICT
         )
-        self.assertTrue(peer_api.has_finished_required_evaluating("Tim", REQUIRED_GRADED))
+        self.assertEquals((True, 5), peer_api.has_finished_required_evaluating(STUDENT_ITEM, REQUIRED_GRADED))
 
         # Tim should not have a score, because his submission does not have
         # enough assessments.
@@ -212,7 +212,7 @@ class TestApi(TestCase):
 
     @raises(peer_api.PeerAssessmentRequestError)
     def test_bad_configuration(self):
-        peer_api.has_finished_required_evaluating("Tim", -1)
+        peer_api.has_finished_required_evaluating(STUDENT_ITEM, -1)
 
     def test_get_submission_to_evaluate(self):
         self._create_student_and_submission("Tim", "Tim's answer", MONDAY)

@@ -3,3 +3,751 @@
 
 // NOTES:
 // * The basic view and all of its states of the openassessment xblock
+
+.wrapper--openassessment {
+  position: relative;
+}
+
+.openassessment {
+
+  // --------------------
+  // general
+  // --------------------
+
+  // chrome: title
+  .openassessment__title {
+    @include row();
+    margin-bottom: $spacing-bravo;
+    border-bottom: ($baseline-v/5) solid $color-decorative-tertiary;
+    padding-bottom: $spacing-charlie;
+  }
+
+  .openassessment__title--super {
+    @extend %hd-charlie;
+    display: block;
+    margin-bottom: $spacing-delta;
+  }
+
+  .openassessment__title--sub {
+    @extend %hd-golf;
+    display: block;
+    color: $heading-tertiary-color;
+  }
+
+  // steps
+  .openassessment__steps {
+    @extend %no-list;
+    counter-reset: item; // setting counter here
+  }
+
+  .openassessment__steps__step {
+    margin-bottom: $spacing-bravo;
+    border-bottom: ($baseline-v/10) solid $color-decorative-tertiary;
+    padding-bottom: $spacing-bravo;
+
+    &:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    // step header
+    .step__header {
+      @extend %trans-opacity;
+      @include row();
+      margin-bottom: $spacing-bravo;
+      opacity: 1.0;
+
+      @include media($bp-ds) {
+        border-bottom: ($baseline-v/10) solid $color-focused;
+        padding-bottom: $spacing-charlie;
+      }
+
+      @include media($bp-dm) {
+        border-bottom: ($baseline-v/10) solid $color-focused;
+        padding-bottom: $spacing-charlie;
+      }
+
+      @include media($bp-dl) {
+        border-bottom: ($baseline-v/10) solid $color-focused;
+        padding-bottom: $spacing-charlie;
+      }
+
+      @include media($bp-dx) {
+        border-bottom: ($baseline-v/10) solid $color-focused;
+        padding-bottom: $spacing-charlie;
+      }
+
+      .step__deadline {
+        color: $color-focused;
+      }
+    }
+
+    // step title/name
+    .step__title {
+
+      @include media($bp-ds) {
+        @include span-columns(4 of 6);
+        vertical-align: middle;
+      }
+
+      @include media($bp-dm) {
+        @include span-columns(9 of 12);
+        vertical-align: middle;
+      }
+
+      @include media($bp-dl) {
+        @include span-columns(9 of 12);
+        vertical-align: middle;
+      }
+
+      @include media($bp-dx) {
+        @include span-columns(9 of 12);
+        vertical-align: middle;
+      }
+
+      .step__counter, .wrapper--copy {
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      // step counter
+      .step__counter {
+
+        // increment: show numbers using parent list counter
+        &:before {
+          @extend %hd-foxtrot;
+          @extend %t-weight4;
+          content: counter(item, decimal);
+          counter-increment: item;
+          margin-right: $spacing-delta;
+          border-radius: ($baseline-v/10);
+          border: 1px solid rgba($color-focused, 0.5);
+          padding: $spacing-delta $spacing-charlie;
+          color: $color-focused;
+
+        }
+      }
+
+      .step__label, .step__deadline {
+        display: block;
+      }
+
+      .step__label {
+        @extend %hd-delta;
+        @extend %t-weight3;
+        @extend %trans-color;
+      }
+
+      .step__deadline {
+        @extend %hd-hotel;
+        @extend %trans-color;
+        color: $heading-secondary-color;
+      }
+    }
+
+
+    // step status
+    .step__status {
+
+      .step__status__value {
+        border-radius: ($baseline-v/5);
+        padding: ($baseline-v/4) ($baseline-h/4);
+        background: $color-focused;
+        color: $white-t;
+
+        @include media($bp-m) {
+          display: block;
+          margin-top: $spacing-charlie;
+        }
+      }
+
+      .ico, .copy {
+        display: inline-block;
+        vertical-align: bottom;
+      }
+
+      .ico {
+        @extend %t-icon-m;
+        display: none; // hiding by default
+        margin-right: $spacing-delta;
+      }
+
+      .copy {
+        @extend %copy-foxtrot;
+        @extend %t-titlecase;
+        color: $white-t;
+      }
+
+      @include media($bp-m) {
+        position: relative;
+        top: 2px;
+      }
+
+      @include media($bp-ds) {
+        @include span-columns(2 of 6);
+        @include omega();
+        margin-top: $spacing-delta;
+        text-align: right;
+      }
+
+      @include media($bp-dm) {
+        @include span-columns(3 of 12);
+        @include omega();
+        margin-top: $spacing-delta;
+        text-align: right;
+      }
+
+      @include media($bp-dl) {
+        @include span-columns(3 of 12);
+        @include omega();
+        margin-top: $spacing-delta;
+        text-align: right;
+      }
+
+      @include media($bp-dx) {
+        @include span-columns(3 of 12);
+        @include omega();
+        margin-top: $spacing-delta;
+        text-align: right;
+      }
+    }
+
+    .step__status__label {
+    @extend %text-sr;
+    }
+
+    // STATE: default/visible/expanded
+    .step__instruction, .step__content, .step__actions {
+      display: block;
+      visibility: visible;
+      opacity: 1.0;
+    }
+
+    // step instructions
+    .step__instruction {
+      @extend %copy-delta;
+      margin-bottom: $spacing-bravo;
+      color: $copy-color;
+    }
+
+    // step content
+    .step__content {
+      margin-bottom: $spacing-bravo;
+    }
+
+    // step actions
+    .step__actions {
+      text-align: center;
+
+      @include media($bp-ds) {
+        text-align: right;
+      }
+
+      @include media($bp-dm) {
+       text-align: right;
+      }
+
+      @include media($bp-dl) {
+        text-align: right;
+      }
+
+      @include media($bp-dx) {
+        text-align: right;
+      }
+
+      .action--submit {
+        @extend %btn--primary;
+        @extend %action-delta;
+      }
+    }
+
+    // STATE: step is collapsed (not focused on)
+    &.is--collapsed {
+
+      .step__header {
+        opacity: 0.4;
+        margin-bottom: 0;
+
+        @include media($bp-ds) {
+          border-bottom: none;
+          padding-bottom: 0;
+        }
+
+        @include media($bp-dm) {
+         border-bottom: none;
+         padding-bottom: 0;
+        }
+
+        @include media($bp-dl) {
+          border-bottom: none;
+          padding-bottom: 0;
+        }
+
+        @include media($bp-dx) {
+          border-bottom: none;
+          padding-bottom: 0;
+        }
+
+        .step__deadline {
+          color: $color-focused;
+        }
+
+        // STATE: hover
+        &:hover {
+          opacity: 1.0;
+        }
+      }
+
+      .step__status__value {
+        background: $color-secondary;
+      }
+
+      // step counter
+      .step__counter:before {
+        border: 1px solid rgba($heading-color, 0.5);
+      }
+
+      .step__instruction, .step__content, .step__actions {
+        @extend %trans-opacity;
+        display: none;
+        visibility: hidden;
+        opacity: 0.0;
+      }
+    }
+
+    // STATE: step is expanded (focused)
+    &.is--expanded {
+
+      .step__status__value {
+        background: $color-focused;
+      }
+    }
+
+    // STATE: step is incomplete
+    &.is--incomplete {
+
+    }
+
+    // STATE: step is complete/submitted/graded
+    &.is--complete, &.is--submitted, &.is--graded {
+
+      .step__counter:before {
+        border-color: rgba($color-complete, 0.5);
+        color: $color-complete;
+      }
+
+      .step__status__value {
+        background: $color-complete;
+
+        .ico {
+          display: inline-block;
+        }
+
+        .copy {
+          color: $white-t;
+        }
+      }
+    }
+
+    // STATE: step is saved
+    &.is--saved {
+
+      .step__status__value {
+        background: $color-primary;
+
+        .copy {
+          color: $white-t;
+        }
+      }
+    }
+  }
+
+
+  // --------------------
+  // messages
+  // --------------------
+  .message {
+
+
+    // CASE: has actions
+    &.has-actions {
+
+    }
+  }
+
+  // TYPE: warning
+  .message--warning {
+
+  }
+
+  // TYPE: confirmation
+  .message--confirmation {
+
+  }
+
+
+  // --------------------
+  // problem
+  // --------------------
+  .wrapper--openassessment__prompt {
+
+  }
+
+  .openassessment__prompt {
+    margin-bottom: $spacing-bravo;
+  }
+
+  .openassessment__prompt__title {
+    @extend %text-sr;
+  }
+
+  .openassessment__prompt__copy {
+    @extend %copy-bravo;
+    color: $copy-lead-color;
+
+    > * {
+      margin-bottom: $spacing-bravo;
+
+      &:last-child {
+        @extend %wipe-last-child;
+      }
+    }
+
+
+    a {
+      @extend %link-copy;
+    }
+  }
+
+
+  // --------------------
+  // response
+  // --------------------
+  .step--response {
+
+    // response form
+    .response__submission {
+      padding: $spacing-charlie;
+      background: $color-decorative-tertiary;
+      border-radius: ($baseline-v/10);
+
+      .submission__answer {
+        margin-bottom: $spacing-charlie;
+      }
+    }
+
+    .response__submission__content {
+      label {
+        @extend %text-sr;
+      }
+
+      textarea {
+        @extend %ui-content-longanswer;
+        min-height: ($baseline-v*10);
+      }
+    }
+
+    .response__submission__actions {
+
+      .action--submit, .tip {
+        display: block;
+        width: 100%;
+        margin-bottom: $spacing-charlie;
+
+        @include media($bp-ds) {
+          display: inline-block;
+          vertical-align: middle;
+          width: auto;
+        }
+
+        @include media($bp-dm) {
+          display: inline-block;
+          vertical-align: middle;
+          width: auto;
+        }
+
+        @include media($bp-dl) {
+          display: inline-block;
+          vertical-align: middle;
+          width: auto;
+        }
+
+        @include media($bp-dx) {
+          display: inline-block;
+          vertical-align: middle;
+          width: auto;
+        }
+      }
+
+      .action--submit {
+        @extend %btn--secondary;
+        @extend %action-delta;
+        display: block;
+        text-align: center;
+
+        @include media($bp-ds) {
+          display: inline-block;
+          margin-right: $spacing-charlie;
+        }
+
+        @include media($bp-dm) {
+          display: inline-block;
+          margin-right: $spacing-charlie;
+        }
+
+        @include media($bp-dl) {
+          display: inline-block;
+          margin-right: $spacing-charlie;
+        }
+
+        @include media($bp-dx) {
+          display: inline-block;
+          margin-right: $spacing-charlie;
+        }
+      }
+
+      .tip {
+        @extend %copy-epsilon;
+        color: $copy-supplemental-color;
+      }
+    }
+
+    // STATE: displayed response
+    .submission__answer__display {
+      @extend %ui-section;
+    }
+
+    .submission__answer__display__title {
+      @extend %ui-section-title;
+    }
+
+    .submission__answer__display__content {
+      @extend %copy-charlie;
+      @extend %ui-content-longanswer;
+      @extend %ui-section-content;
+    }
+  }
+
+
+  // --------------------
+  // peer assessment
+  // --------------------
+  .step--peer-assessment {
+
+  }
+
+
+  // --------------------
+  // self assessment
+  // --------------------
+  .step--self-assessment {
+
+  }
+
+
+  // --------------------
+  // status
+  // --------------------
+  .openassessment__grade {
+    @include row();
+    border-top: ($baseline-v/5) solid $color-decorative-tertiary;
+    padding-top: $spacing-bravo;
+
+    .openassessment__grade__title, .openassessment__grade__content {
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    .openassessment__grade__title {
+      @extend %hd-delta;
+      margin-right: $spacing-bravo;
+      color: $heading-tertiary-color;
+    }
+
+    .openassessment__grade__content {
+
+      .grade__value {
+        @extend %hd-delta;
+        margin-bottom: $spacing-charlie;
+      }
+
+      .grade__description {
+        @extend %copy-delta;
+      }
+    }
+
+    // STATE: is not started
+    &.is--unstarted {
+
+    }
+
+    // STATE: is incomplete
+    &.is--incomplete {
+    }
+
+    // STATE: is complete
+    &.is--complete {
+    }
+  }
+
+  // --------------------
+  // STATE: graded/complete
+  // --------------------
+
+  // peer review summary
+  .submission__peer-evaluations {
+    @extend %ui-section;
+  }
+
+  .submission__peer-evaluations__title {
+    @extend %ui-section-title;
+  }
+
+  // rubric questions
+  .submission__peer-evaluations__questions {
+    @extend %no-list;
+    @extend %ui-section-content;
+    margin-bottom: $spacing-charlie; // override city
+
+    &:last-child {
+      margin-bottom: 0;
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    // individual question
+    .question {
+      margin-bottom: $spacing-charlie;
+      @extend %wipe-last-child;
+    }
+
+    .question__title {
+      @include clearfix();
+      margin-bottom: $spacing-bravo;
+      border-bottom: ($baseline-v/10) solid $color-decorative-tertiary;
+      padding-bottom: $spacing-delta;
+    }
+
+    .question__title__copy {
+      @extend %hd-delta;
+      @extend %t-weight3;
+      float: left;
+      color: $heading-secondary-color;
+    }
+
+    .question__score {
+      @extend %copy-foxtrot;
+      @extend %t-titlecase;
+      float: right;
+      position: relative;
+      bottom: -($spacing-delta);
+      margin-left: $spacing-bravo;
+      padding: $spacing-delta $spacing-charlie ($spacing-delta/2)  $spacing-charlie;
+      background: $color-decorative-tertiary;
+      color: $white;
+    }
+
+    .question__score__value {
+      color: $color-complete;
+
+      &:after {
+        content: "/";
+        margin-left: $spacing-delta;
+        color: $heading-secondary-color;
+      }
+    }
+
+    .question__score__potential {
+      color: $heading-secondary-color;
+
+      .unit {
+        margin-left: $spacing-delta;
+      }
+    }
+
+    .question__answers {
+      @extend %no-list;
+      @extend %wipe-last-child;
+      @include row();
+    }
+
+    // individual answers
+    .answer {
+      margin-bottom: $spacing-bravo;
+
+      @include media($bp-ds) {
+        @include span-columns(3 of 6);
+        @include omega(2n);
+      }
+
+      @include media($bp-dm) {
+        @include span-columns(3 of 12);
+        @include omega(3n);
+      }
+
+      @include media($bp-dl) {
+        @include span-columns(3 of 12);
+        @include omega(3n);
+      }
+
+      @include media($bp-dx) {
+        @include span-columns(3 of 12);
+        @include omega(3n);
+      }
+    }
+
+    .answer__source {
+      @extend %hd-golf;
+      display: block;
+      color: $heading-tertiary-color;
+    }
+
+    .answer__value {
+      @extend %copy-charlie;
+      display: block;
+      margin-bottom: $spacing-charlie;
+      color: $heading-primary-color;
+    }
+
+    .answer__content {
+      @extend %copy-delta;
+      display: block;
+      color: $copy-supplemental-color;
+    }
+  }
+
+  // feedback form
+  .submission__feeedback {
+    @extend %ui-section;
+  }
+
+  .submission__feeedback__title {
+    @extend %ui-section-title;
+  }
+
+  .submission__feeedback__content {
+    @extend %ui-section-content;
+  }
+
+  .submission__feeedback__actions {
+    @extend %ui-section-content;
+    padding-top: 0;
+
+    .action--submit {
+      @extend %btn--secondary;
+      @extend %action-delta;
+      margin-right: $spacing-charlie;
+    }
+  }
+
+
+  // --------------------
+  // STATE: incomplete
+  // --------------------
+
+
+  // --------------------
+  // STATE: waiting
+  // --------------------
+
+}

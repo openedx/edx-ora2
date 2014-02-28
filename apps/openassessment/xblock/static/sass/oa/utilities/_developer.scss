@@ -11,3 +11,79 @@
 //   background: transparent;
 // }
 
+// --------------------
+// Views: Counterbalancing XBlock workbench styling
+// --------------------
+.workbench .vertical {
+  border: none;
+}
+
+
+// --------------------
+// Views: Static HTML Page Display
+// --------------------
+.view--placeholder {
+  background: $bg-view;
+  margin: ($baseline-v*2) $baseline-h;
+}
+
+.wrapper--xblock {
+  // typography tests
+  .h1 {
+    @extend %hd-alpha;
+  }
+
+  .h2 {
+    @extend %hd-bravo;
+  }
+
+  .h3 {
+    @extend %hd-charlie;
+  }
+
+  .h4 {
+    @extend %hd-delta;
+  }
+
+  .h5 {
+    @extend %hd-epsilon;
+  }
+
+  .h6 {
+    @extend %hd-foxtrot;
+  }
+
+  .h7 {
+    @extend %hd-golf;
+  }
+
+  .h8 {
+    @extend %hd-hotel;
+  }
+
+  .copy-1 {
+    @extend %copy-alpha;
+  }
+
+  .copy-2 {
+    @extend %copy-bravo;
+  }
+
+  .copy-3 {
+    @extend %copy-charlie;
+  }
+
+  .copy-4 {
+    @extend %copy-delta;
+  }
+
+  .copy-5 {
+    @extend %copy-epsilon;
+  }
+
+  .copy-6 {
+    @extend %copy-foxtrot;
+  }
+}
+
+// temp

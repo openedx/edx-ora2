@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]><html class="no-js lt-ie10 lt-ie9 lt-ie8 lt-ie7" lang="en"><![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie10 lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie10 lt-ie9" lang="en"><![endif]-->
+<!--[if IE 9]><html class="no-js lt-ie10" lang="en"><![endif]-->
+<!--[if gt IE 9]><!--><html class="no-js" lang="en"><!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Open Assessment Xblock Static View - Initial Problem</title>
+
+    <link rel="stylesheet" href="../css/openassessment.css" />
+  </head>
+
+  <body class="view--placeholder">
+
+    <!-- workbench xblock frame -->
+    <div class="xblock">
+      <div class="vertical">
+        <div class="xblock" data-runtime-version="1" data-usage="u_7" data-init="OpenAssessmentBlock" data-block-type="openassessment">
+
+          <!-- openassessment render start -->
+          <div class="wrapper wrapper--xblock wrapper--openassessment theme--basic">
+            <div class="openassessment" id="openassessment">
+              <div class="wrapper--grid">
+                <h1 class="openassessment__title">
+                  <span class="openassessment__title--super">
+                    Speech Assignment Number 1 - Tell Us About Yourself
+                  </span>
+
+                  <span class="openassessment__title--sub">
+                    <span class="problem-type problem-type--open-ended-response">Open Ended Response</span>
+                    +
+                    <span class="problem-type problem-type--peer-assessment">Peer</span>
+                    +
+                    <span class="problem-type problem-type--self-assessment">Self Assessment</span>
+                  </span>
+                </h1>
+
+                <nav class="nav--contents">
+                  <h2 class="title">Skip to a part of this problem:</h2>
+
+                  <ol class="list list--nav">
+                    <li class="list--nav__item">
+                      <a class="action" href="#openassessment__response">Your response to this problem</a>
+                    </li>
+                    <li class="list--nav__item">
+                      <a class="action" href="#openassessment__peer-assessment">Your assessment(s) of peer responses</a>
+                    </li>
+                    <li class="list--nav__item">
+                      <a class="action" href="#openassessment__self-assessment">Your assessment of your response</a>
+                    </li>
+                    <li class="list--nav__item">
+                      <a class="action" href="#openassessment__grade">Your grade for this problem</a>
+                    </li>
+                  </ol>
+                </nav>
+
+                <!-- question -->
+                <div class="wrapper--openassessment__prompt">
+                  <article class="openassessment__prompt ui-toggle-visibility">
+
+                    <h2 class="openassessment__prompt__title">Open Assessment Problem</h2>
+
+                    <div class="openassessment__prompt__copy ui-toggle-visibility__content">
+                      <blockquote>
+                        <p>All of us can think of a book that we hope none of our children or any other children have taken off the shelf. But if I have the right to remove that book from the shelf -- that work I abhor -- then you also have exactly the same right and so does everyone else. And then we have no books left on the shelf for any of us.</p>
+
+                        <footer>
+                          &mdash; <cite><a href="">Katherine Paterson, Author</a></cite>
+                        </footer>
+                      </blockquote>
+
+                      <p>Write a persuasive essay to a newspaper reflecting your vies on censorship in libraries. Do you believe that certain materials, such as books, music, movies, magazines, etc., should be removed from the shelves if they are found offensive? Support your position with convincing arguments from your own experience, observations, and/or reading.</p>
+                    </div>
+
+                    <!-- <ul class="list list--controls">
+                      <li class="list--controls__item">
+                        <a href="" class="action action--toggle ui-toggle-visibility__control">Collapse/Expand This</a>
+                      </li>
+                    </ul> -->
+                  </article>
+                </div>
+
+                <!-- steps -->
+                <ol class="openassessment__steps" id="openassessment__steps">
+
+                  <!-- STEP: response -->
+                  <li id="openassessment__response" class="openassessment__steps__step step--response ui-toggle-visibility">
+                    <header class="step__header ui-toggle-visibility__control">
+                      <h2 class="step__title">
+                        <span class="step__counter"></span>
+                        <span class="wrapper--copy">
+                          <span class="step__label">Your Response</span>
+                          <span class="step__deadline">due <span class="date">January 24, 2014</span> at <span class="time">15:00 UTC</span></span>
+                        </span>
+                      </h2>
+
+                      <span class="step__status">
+                        <span class="step__status__label">This step's status:</span>
+                        <span class="step__status__value">
+
+                          <span class="copy">Incomplete</span>
+                        </span>
+                      </span>
+                    </header>
+
+                    <div class="step__instruction">
+                      <p>Please provide your response to the following question. You may save your progress and return to complete your response anytime before the due date of <span class="step__deadline">due <span class="date">January 24, 2014</span></span>. <strong class="emphasis--beta">Once you submit, you may not edit your response</strong>.</p>
+                    </div>
+
+                    <div class="step__content">
+                      <form id="response__submission" class="response__submission" method="post">
+                        <ol class="list list--fields">
+                          <li class="field field--textarea submission__answer" id="submission__answer">
+                            <label for="submission__answer__value">Please provide your response to the above question</label>
+                            <textarea id="submission__answer__value" placeholder="Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."></textarea>
+                          </li>
+                        </ol>
+
+                        <ul class="list list--actions">
+                          <li class="list--actions__item">
+                            <button type="submit" id="submission__submit" class="action action--submit submission__submit">Save Your Progress</button>
+                            <span class="tip">you may continue to work on your response until you submit</span>
+                          </li>
+                        </ul>
+                      </form>
+                    </div>
+
+                    <div class="step__actions">
+                      <ul class="list list--actions">
+                        <li class="list--actions__item">
+                          <a aria-role="button" id="step--response__submit" class="action action--submit step--response__submit">Submit your response &amp; move forward</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+
+                  <!-- ==== -->
+
+                  <!-- STEP: peer assessment -->
+                  <li id="openassessment__peer-assessment"class="openassessment__steps__step step--peer-assessment is--unavailable ui-toggle-visibility is--collapsed">
+                    <header class="step__header">
+                      <h2 class="step__title">
+                        <span class="step__counter"></span>
+                        <span class="wrapper--copy">
+                          <span class="step__label">Assess Peers' Responses</span>
+                          <span class="step__deadline">due <span class="date">January 30, 2014</span> at <span class="time">15:00 UTC</span></span>
+                        </span>
+                      </h2>
+
+                      <span class="step__status">
+                        <span class="step__status__label">This step's status:</span>
+                        <span class="step__status__value">
+
+                          <span class="copy">
+                            <span class="step__status__value--completed">0</span> of
+                            <span class="step__status__value--required">3</span> completed
+                          </span>
+                        </span>
+                      </span>
+                    </header>
+                  </li>
+
+                  <!-- ==== -->
+
+                  <!-- STEP: self assessment -->
+                  <li id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment is--unavailable ui-toggle-visibility is--collapsed">
+                    <header class="step__header ui-toggle-visibility__control">
+                      <h2 class="step__title">
+                        <span class="step__counter"></span>
+                        <span class="wrapper--copy">
+                          <span class="step__label">Assess Your Response</span>
+                          <span class="step__deadline">due <span class="date">January 31, 2014</span> at <span class="time">15:00 UTC</span></span>
+                        </span>
+                      </h2>
+
+                      <span class="step__status">
+                        <span class="step__status__label">This step's status:</span>
+                        <span class="step__status__value">
+
+                          <span class="copy">Incomplete</span>
+                        </span>
+                      </span>
+                    </header>
+                  </li>
+                </ol>
+
+                <!-- STATUS: problem grade -->
+                <div id="openassessment__grade" class="openassessment__grade is--unstarted">
+                  <h2 class="openassessment__grade__title">Your Grade:</h2>
+
+                  <div class="openassessment__grade__content">
+                    <span class="grade__value">Incomplete</span>
+                    <p class="grade__description">You have not started this problem</p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="../js/design.min.js"></script>
+  </body>
+</html>

@@ -10,6 +10,24 @@
 $baseline-v: 20px;                                                  // vertical baseline
 $baseline-h: 40px;                                                  // horizontal baseline
 
+// units: spacing presets
+$spacing-alpha: ($baseline-v*2);
+$spacing-bravo: $baseline-v;
+$spacing-charlie: ($baseline-v/2);
+$spacing-delta: ($baseline-v/4);
+
+
+// --------------------
+// layout - grid (neat-based - http://neat.bourbon.io/)
+// --------------------
+// grid
+@import "neat/neat-helpers";
+$max-width: 100%;                                                   // http://gridcalculator.dk/#/1040/12/20/20
+$grid-columns: 12;                                                  // make grid 12 columns
+$column: $baseline-v;
+$gutter: $baseline-v;                                               // gutter b/t columns
+// $visual-grid: true;
+// $visual-grid-index: front;
 
 // --------------------
 // colors - basic
@@ -116,13 +134,20 @@ $f-action: $f-sans-serif;
 // --------------------
 // application - colors
 // --------------------
-$color-primary: $blue-s2;
-$color-secondary: $blue;
+// application - colors: basic
+$color-primary: $blue;
+$color-secondary: $blue-u1;
 $color-teritary: $blue-u2;
 
 // application - colors: decorative
 $color-decorative-primary: $blue-u2;
-$color-decorative-secondary: $gray-t0;
+$color-decorative-secondary: $gray-l4;
+$color-decorative-tertiary: $gray-l6;
+$color-decorative-quaternary: tint($gray-l6, 10%);
+
+// application - colors: states
+$color-disabled: $gray-l4;
+$color-focused: $blue-u2;
 
 // application - colors: actions
 $action-primary-color: tint($color-primary,10%);
@@ -143,10 +168,10 @@ $action-tertiary-color-visited: shade($color-teritary,20%);
 // application - colors: copy and headings
 $heading-color: $gray-d5;
 $heading-primary-color: $black;
-$heading-secondary-color: $gray-l3;
-$heading-tertiary-color: $gray-l4;
+$heading-secondary-color: $gray-l1;
+$heading-tertiary-color: $gray-l3;
 
-$copy-color: $gray-l2;
+$copy-color: $gray-l1;
 $copy-color-alt: $gray-d1;
 $copy-color-focus: $gray-d4;
 
@@ -163,5 +188,6 @@ $selected-bg: $blue-t1;
 $selected-color: $blue-s1;
 
 // application - colors: view-based elements
-$bg-view: $gray-l6;
+$bg-view: $gray-l7;
 $bg-content: $white;
+$bg-message: $black;

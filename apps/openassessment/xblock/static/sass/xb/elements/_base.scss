@@ -8,27 +8,32 @@
 // fonts
 // --------------------
 .wrapper--xblock {
-  @extend %t-copy-base;
-  overflow-y: scroll;
-  font-size: 62.5%;
   background: $bg-view;
 }
-
 
 // --------------------
 // layout
 // --------------------
-[class^="wrapper-"] {
-  @extend %wrapper;
-  padding: 0;
+// [class^="wrapper--"] {
+//   @extend %wrapper;
+//   padding: 0;
+// }
+
+
+// --------------------
+// semantic elements, but visually hidden
+// --------------------
+.sr,
+hr.divider,
+.nav--contents {
+  @extend %text-sr;
 }
 
-
 // --------------------
-// semantic dividers
+// system-needed elements, but visually hidden
 // --------------------
-.sr, hr.divider {
-  @extend %ui-text-sr;
+.system__element {
+  @extend %text-sr;
 }
 
 
@@ -44,6 +49,6 @@
 .nav--wizard,
 .list--tips,
 .field--group {
-  @extend %ui-no-list;
+  @extend %no-list;
   @extend %wipe-last-child;
 }

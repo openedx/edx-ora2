@@ -16,21 +16,28 @@
 {% block list_item %}
 <li id="openassessment__response" class="openassessment__steps__step step--response ui-toggle-visibility">
 {% endblock %}
-    {%  block header %}
-    <!--header class="step__header ui-toggle-visibility__control"-->
+
+    <header class="step__header ui-toggle-visibility__control">
         <h2 class="step__title">
-            <span class="step__label">Your Response</span>
-            {% if formatted_due_datetime %}
-            <span class="step__deadline">due <span class="date">{{ formatted_due_datetime }}</span></span>
-            {% endif %}
+            <span class="step__counter"></span>
+            <span class="wrapper--copy">
+                <span class="step__label">Your Response</span>
+                {% if formatted_due_datetime %}
+                <span class="step__deadline">due <span class="date">{{ formatted_due_datetime }}</span></span>
+                {% endif %}
+            </span>
         </h2>
 
-    <span class="step__status">
-      <span class="step__status__label">This step's status:</span>
-      <span class="step__status__value">{{ step_status }}</span>
-    </span>
-    <!--/header-->
-    {% endblock %}
+        {%  block title %}
+        <span class="step__status">
+            <span class="step__status__label">This step's status:</span>
+            <span class="step__status__value">
+                <i class="ico fa fa-check"></i>
+                <span class="copy">{{ step_status }}</span>
+            </span>
+        </span>
+        {% endblock %}
+    </header>
 
     {% block body %}
     <div class="step__instruction">
@@ -39,14 +46,14 @@
 
     <div class="step__content">
         <form id="response__submission" class="response__submission">
-            <ol class="list list--fields">
+            <ol class="list list--fields response__submission__content">
                 <li class="field field--textarea submission__answer" id="submission__answer">
-                    <label for="submission__answer__value">Please provide your response to the above question</label>
+                    <label class="sr" for="submission__answer__value">Please provide your response to the above question</label>
                     <textarea id="submission__answer__value" placeholder=""></textarea>
                 </li>
             </ol>
 
-            <ul class="list list--actions">
+            <ul class="list list--actions response__submission__actions">
                 <li class="list--actions__item">
                     <button type="submit" id="submission__submit" class="action action--submit submission__submit">Save Your Progress</button>
                     <span class="tip">you may continue to work on your response until you submit</span>
@@ -58,7 +65,10 @@
     <div class="step__actions">
         <ul class="list list--actions">
             <li class="list--actions__item">
-                <a aria-role="button" href="#" id="step--response__submit" class="action action--submit step--response__submit">Submit your response &amp; move forward</a>
+                <a aria-role="button" href="#" id="step--response__submit" class="action action--submit step--response__submit">
+                    <span class="copy">Submit your response &amp; move forward</span>
+                    <i class="ico fa fa-arrow-right"></i>
+                </a>
             </li>
         </ul>
     </div>

@@ -8,6 +8,18 @@ function OpenAssessmentBlock(runtime, element) {
     /* Sample Debug Console: http://localhost:8000/submissions/Joe_Bloggs/TestCourse/u_3 */
 
     /*
+     * Utility functions
+     */
+    function collapse(element) {
+        element.addClass("is--collapsed");
+    }
+
+    function expand(element) {
+        element.addClass("is--collapsed");
+    }
+
+
+    /*
      *  Submission Functions
      */
     function render_submissions(data) {
@@ -29,9 +41,9 @@ function OpenAssessmentBlock(runtime, element) {
                     $.ajax({
                         type: "POST",
                         url: renderSubmissionUrl,
-                        dataType: "html",
                         success:  function(data) {
                             render_submissions(data);
+                            collapse($('#openassessment__response', element));
                         }
                     });
                 }
@@ -54,7 +66,7 @@ function OpenAssessmentBlock(runtime, element) {
                 criteriaChoices[selector[i].name] = selector[i].value
             }
             return {
-                "submission_uuid":$("div#peer_submission_uuid")[0].innerText,
+                "submission_uuid":$("span#peer_submission_uuid")[0].innerText,
                 "points_earned":values,
                 "options_selected":criteriaChoices
             };
@@ -99,6 +111,26 @@ function OpenAssessmentBlock(runtime, element) {
                 render_submissions(data);
             }
         });
+
+        $.ajax({
+            type: "POST",
+            url: renderPeerUrl,
+            success:  function(data) {
+                $('#openassessment__peer-assessment', element).replaceWith(data);
+                collapse($('#openassessment__peer-assessment', element));
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: renderSelfUrl,
+            success:  function(data) {
+                $('#openassessment__self-assessment', element).replaceWith(data);
+                collapse($('#openassessment__self-assessment', element));
+            }
+        });
     });
+
+
 }
 /* END Javascript for OpenAssessmentXBlock. */

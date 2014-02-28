@@ -136,6 +136,10 @@
   @include transition(width $tmg-f1 ease-in-out, height $tmg-f1 ease-in-out);
 }
 
+%trans-opacity {
+  @include transition(opacity $tmg-f1 ease-in-out);
+}
+
 %trans-color {
   @include transition(color $tmg-f1 ease-in-out);
 }
@@ -160,9 +164,49 @@
   box-shadow: 0 1px 2px 0 $shadow-l1;
 }
 
+
 // --------------------
 // Decorative: round/circular elements
 // --------------------
 %deco-circle {
   border-radius: 99999em;
+}
+
+// --------------------
+// UI: content
+// --------------------
+%ui-content-longanswer {
+  max-height: ($baseline-v*15);
+  overflow-y: scroll;
+}
+
+
+// --------------------
+// UI: section
+// --------------------
+%ui-section {
+  border: ($baseline-v/10) solid $color-decorative-quaternary;
+  border-radius: ($baseline-v/10);
+  margin-bottom: $spacing-bravo;
+}
+
+%ui-section-focus {
+  border-color: $color-decorative-tertiary;
+}
+
+%ui-section-title {
+  @extend %hd-golf;
+  @extend %t-weight3;
+  padding: $spacing-charlie $spacing-bravo;
+  background: $color-decorative-quaternary;
+  color: $heading-tertiary-color;
+}
+
+%ui-section-title-focus {
+  background: $color-decorative-tertiary;
+  color: $heading-secondary-color;
+}
+
+%ui-section-content {
+  padding: $spacing-bravo;
 }

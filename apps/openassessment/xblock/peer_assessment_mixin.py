@@ -67,14 +67,44 @@ class PeerAssessmentMixin(object):
         more information on rendering XBlock sections.
 
         """
+        context_dict = {
+            "rubric_criteria": self.rubric_criteria,
+            "estimated_time": "20 minutes"  # TODO: Need to configure this.
+        }
+        path = 'openassessmentblock/peer/oa_peer_waiting.html'
         assessment = self.get_assessment_module('peer-assessment')
         if assessment:
-            peer_sub = self.get_peer_submission(self.get_student_item_dict(), assessment)
-            context_dict = {
-                "peer_submission": peer_sub,
-                "rubric_criteria": self.rubric_criteria
-            }
-        return self.render_assessment('openassessmentblock/oa_peer_assessment.html', context_dict)
+
+            context_dict["must_grade"] = assessment["must_grade"]
+
+            student_item = self.get_student_item_dict()
+
+
+            finished, count = peer_api.has_finished_required_evaluating(
+                student_item,
+                assessment["must_grade"]
+            )
+            context_dict["graded"] = count
+            if finished:
+                path = "openassessmentblock/peer/oa_peer_complete.html"
+            else:
+                peer_sub = self.get_peer_submission(student_item, assessment)
+                if peer_sub:
+                    path = 'openassessmentblock/peer/oa_peer_assessment.html'
+                    context_dict["peer_submission"] = peer_sub
+
+            if assessment["must_grade"] - count == 1:
+                context_dict["submit_button_text"] = "Submit your assessment & move onto next step."
+            else:
+                context_dict["submit_button_text"] = "Submit your assessment & move to response #{}".format(count + 1)
+
+
+            problem_open, date = self.is_open()
+            if not problem_open and date == "due" and not finished:
+                path = 'openassessmentblock/peer/oa_peer_closed.html'
+
+
+        return self.render_assessment(path, context_dict)
 
     def get_peer_submission(self, student_item_dict, assessment):
         peer_submission = False

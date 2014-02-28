@@ -1,0 +1,18 @@
+{%  extends "openassessmentblock/self/oa_self_assessment.html" %}
+
+<!-- CASE: complete -->
+{% block list_item %}
+<li id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment ui-toggle-visibility">
+{% endblock %}
+
+{% block title %}
+    <span class="step__status">
+      <span class="step__status__label">This step's status:</span>
+      <span class="step__status__value">
+        <i class="ico fa fa-check"></i>
+        <span class="copy">{{ step_status }}</span>
+      </span>
+    </span>
+{% endblock %}
+
+{% block body %}{% endblock %}
