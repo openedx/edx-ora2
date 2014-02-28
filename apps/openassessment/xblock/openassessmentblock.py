@@ -12,6 +12,7 @@ from webob import Response
 from xblock.core import XBlock
 from xblock.fields import List, Scope, String
 from xblock.fragment import Fragment
+from openassessment.xblock.grade_mixin import GradeMixin
 
 from openassessment.xblock.peer_assessment_mixin import PeerAssessmentMixin
 from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
@@ -139,7 +140,7 @@ def load(path):
     return data.decode("utf8")
 
 
-class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAssessmentMixin, StudioMixin):
+class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAssessmentMixin, StudioMixin, GradeMixin):
     """Displays a question and gives an area where students can compose a response."""
 
     start_datetime = String(

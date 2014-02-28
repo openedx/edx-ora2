@@ -5,6 +5,13 @@ function OpenAssessmentBlock(runtime, element) {
     var renderSubmissionUrl = runtime.handlerUrl(element, 'render_submission');
     var renderPeerUrl = runtime.handlerUrl(element, 'render_peer_assessment');
     var renderSelfUrl = runtime.handlerUrl(element, 'render_self_assessment');
+    var renderGradeUrl = runtime.handlerUrl(element, 'render_grade');
+
+    var submissionListItem = '#openassessment__response';
+    var peerListItem = '#openassessment__peer-assessment';
+    var selfListItem = '#openassessment__self-assessment';
+    var gradeListItem = '#openassessment__grade';
+
     /* Sample Debug Console: http://localhost:8000/submissions/Joe_Bloggs/TestCourse/u_3 */
 
     /*
@@ -23,7 +30,7 @@ function OpenAssessmentBlock(runtime, element) {
      *  Submission Functions
      */
     function render_submissions(data) {
-        $('#openassessment__response', element).replaceWith(data);
+        $(submissionListItem, element).replaceWith(data);
         $('#step--response__submit', element).click(function(eventObject) {
             $.ajax({
                 type: "POST",
@@ -38,12 +45,13 @@ function OpenAssessmentBlock(runtime, element) {
                             render_peer_assessment(data);
                         }
                     });
+                    collapse($(submissionListItem, element));
                     $.ajax({
                         type: "POST",
                         url: renderSubmissionUrl,
                         success:  function(data) {
                             render_submissions(data);
-                            collapse($('#openassessment__response', element));
+                            collapse($(submissionListItem, element));
                         }
                     });
                 }
@@ -55,7 +63,7 @@ function OpenAssessmentBlock(runtime, element) {
      *  Peer Assessment Functions
      */
     function render_peer_assessment(data) {
-        $('#openassessment__peer-assessment', element).replaceWith(data);
+        $(peerListItem, element).replaceWith(data);
 
         function prepare_assessment_post(element) {
             var selector = $("input[type=radio]:checked", element);
@@ -85,7 +93,7 @@ function OpenAssessmentBlock(runtime, element) {
                         url: renderSelfUrl,
                         dataType: "html",
                         success:  function(data) {
-                            $('#openassessment__self-assessment', element).replaceWith(data);
+                            $(selfListItem, element).replaceWith(data);
                         }
                     });
                     $.ajax({
@@ -116,8 +124,8 @@ function OpenAssessmentBlock(runtime, element) {
             type: "POST",
             url: renderPeerUrl,
             success:  function(data) {
-                $('#openassessment__peer-assessment', element).replaceWith(data);
-                collapse($('#openassessment__peer-assessment', element));
+                $(peerListItem, element).replaceWith(data);
+                collapse($(peerListItem, element));
             }
         });
 
@@ -125,8 +133,17 @@ function OpenAssessmentBlock(runtime, element) {
             type: "POST",
             url: renderSelfUrl,
             success:  function(data) {
-                $('#openassessment__self-assessment', element).replaceWith(data);
-                collapse($('#openassessment__self-assessment', element));
+                $(selfListItem, element).replaceWith(data);
+                collapse($(selfListItem, element));
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: renderGradeUrl,
+            success:  function(data) {
+                $(gradeListItem, element).replaceWith(data);
+                collapse($(gradeListItem, element));
             }
         });
     });
