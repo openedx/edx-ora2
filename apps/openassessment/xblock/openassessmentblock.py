@@ -113,6 +113,12 @@ UI_MODELS = {
         "class_id": "openassessment__self-assessment",
         "navigation_text": "Your assessment of your response",
         "title": "Assess Your Response"
+    },
+    "grade": {
+        "name": "grade",
+        "class_id": "openassessment__grade",
+        "navigation_text": "Your grade for this problem",
+        "title": "Your grade for this problem"
     }
 }
 
@@ -233,7 +239,6 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         """
         trace = self.get_xblock_trace()
         ui_models = self._create_ui_models()
-        grade_state = self.get_grade_state()
         # All data we intend to pass to the front end.
         context_dict = {
             "xblock_trace": trace,
@@ -241,7 +246,6 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
             "question": self.prompt,
             "rubric_criteria": self.rubric_criteria,
             "rubric_assessments": ui_models,
-            "grade_state": grade_state,
         }
 
         template = get_template("openassessmentblock/oa_base.html")
@@ -265,6 +269,7 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         for assessment in self.rubric_assessments:
             ui_model = UI_MODELS[assessment["name"]]
             ui_models.append(dict(assessment, **ui_model))
+        ui_models.append(UI_MODELS["grade"])
         return ui_models
 
     @staticmethod
@@ -301,17 +306,6 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         sparser = ScenarioParser(block, node, unknown_handler)
         block = sparser.parse()
         return block
-
-    def get_grade_state(self):
-        # TODO: Placeholder for workflow state.
-
-        grade_state = {
-            "style_class": "is--incomplete",
-            "value": "Incomplete",
-            "title": "Your Grade:",
-            "message": "You have not started this problem",
-        }
-        return grade_state
 
     def render_assessment(self, path, context_dict=None):
         """Render an Assessment Module's HTML

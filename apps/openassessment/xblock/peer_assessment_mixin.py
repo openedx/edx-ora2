@@ -86,6 +86,7 @@ class PeerAssessmentMixin(object):
                 assessment["must_grade"]
             )
             context_dict["graded"] = count
+            context_dict["review_num"] = count + 1
             if finished:
                 path = "openassessmentblock/peer/oa_peer_complete.html"
             elif student_submission:
@@ -97,7 +98,7 @@ class PeerAssessmentMixin(object):
             if assessment["must_grade"] - count == 1:
                 context_dict["submit_button_text"] = "Submit your assessment & move onto next step."
             else:
-                context_dict["submit_button_text"] = "Submit your assessment & move to response #{}".format(count + 1)
+                context_dict["submit_button_text"] = "Submit your assessment & move to response #{}".format(count + 2)
 
             problem_open, date = self.is_open()
             if not problem_open and date == "due" and not finished:

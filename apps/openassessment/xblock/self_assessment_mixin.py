@@ -23,7 +23,6 @@ class SelfAssessmentMixin(object):
         if student_submission:
             path = 'openassessmentblock/self/oa_self_assessment.html'
             context_dict = {
-                "rubric_instructions": self.rubric_instructions,
                 "rubric_criteria": self.rubric_criteria,
                 "estimated_time": "20 minutes",  # TODO: Need to configure this.
                 "self_submission": student_submission,
