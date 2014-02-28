@@ -108,6 +108,7 @@ class AssessmentPartSerializer(serializers.ModelSerializer):
 class AssessmentSerializer(serializers.ModelSerializer):
     """Serializer for :class:`Assessment`."""
     submission_uuid = serializers.Field(source='submission_uuid')
+    workflow_uuid = serializers.Field(source='workflow_uuid')
 
     parts = AssessmentPartSerializer(required=True, many=True)
     points_earned = serializers.Field(source='points_earned')
@@ -116,11 +117,11 @@ class AssessmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Assessment
         fields = (
-            'submission',  # will go away shortly
             'rubric',
             'scored_at',
             'scorer_id',
             'score_type',
+            'workflow',
 
             # Foreign Key
             'parts',
@@ -129,6 +130,7 @@ class AssessmentSerializer(serializers.ModelSerializer):
             'submission_uuid',
             'points_earned',
             'points_possible',
+            'workflow_uuid',
         )
 
 

@@ -183,6 +183,11 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         scope=Scope.content,
         help="The course_id associated with this prompt (until we can get it from runtime).",
     )
+    workflow_uuid = String(
+        default=None,
+        scope=Scope.user_state,
+        help="Identifier to query openassessment.workflow.api with."
+    )
 
     def get_xblock_trace(self):
         """Uniquely identify this XBlock by context.

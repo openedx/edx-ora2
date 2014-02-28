@@ -14,6 +14,7 @@ from django.utils.timezone import now
 import math
 
 from submissions.models import Submission
+from openassessment.workflow.models import AssessmentWorkflow
 
 
 class Rubric(models.Model):
@@ -179,7 +180,7 @@ class Assessment(models.Model):
     objects that map to each :class:`Criterion` in the :class:`Rubric` we're
     assessing against.
     """
-    submission = models.ForeignKey(Submission)
+    workflow = models.ForeignKey(AssessmentWorkflow, related_name="assessments")
     rubric = models.ForeignKey(Rubric)
 
     scored_at = models.DateTimeField(default=now, db_index=True)
@@ -203,7 +204,11 @@ class Assessment(models.Model):
 
     @property
     def submission_uuid(self):
-        return self.submission.uuid
+        return self.workflow.submission_uuid
+
+    @property
+    def workflow_uuid(self):
+        return self.workflow.uuid
 
     def __unicode__(self):
         return u"Assessment {}".format(self.id)

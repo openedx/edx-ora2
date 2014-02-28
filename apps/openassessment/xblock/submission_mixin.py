@@ -1,6 +1,7 @@
 from xblock.core import XBlock
 from submissions import api
 from openassessment.peer import api as peer_api
+from openassessment.workflow import api as workflow_api
 
 
 class SubmissionMixin(object):
@@ -53,16 +54,18 @@ class SubmissionMixin(object):
         if not prev_sub:
             status_tag = 'ENODATA'
             try:
-                response = api.create_submission(student_item_dict, student_sub)
-            except api.SubmissionRequestError, e:
+                submission = api.create_submission(student_item_dict, student_sub)
+                workflow = workflow_api.create_assessment_workflow(submission["uuid"])
+                self.workflow_uuid = workflow["uuid"]
+            except api.SubmissionRequestError as err:
                 status_tag = 'EBADFORM'
-                status_text = unicode(e.field_errors)
-            except api.SubmissionError:
+                status_text = unicode(err.field_errors)
+            except (api.SubmissionError, workflow_api.AssessmentWorkflowError):
                 status_tag = 'EUNKNOWN'
             else:
                 status = True
-                status_tag = response.get('student_item')
-                status_text = response.get('attempt_number')
+                status_tag = submission.get('student_item')
+                status_text = submission.get('attempt_number')
 
         # relies on success being orthogonal to errors
         status_text = status_text if status_text else self.submit_errors[status_tag]
