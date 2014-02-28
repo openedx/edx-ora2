@@ -11,20 +11,35 @@
   input[type="text"],
   input[type="email"],
   input[type="password"],
-  textarea.text {
+  textarea {
+    @extend %t-weight2;
     border: 1px solid $color-decorative-secondary;
     padding: $spacing-charlie;
     font-family: $f-copy;
     outline: 0;
 
     @include placeholder {
-      color: $copy-supplemental-color;
+      color: $copy-supplemental-color-alt;
     }
 
     &:focus {
       box-shadow: 0 0 6px 0 rgba(29,157,217,0.4),inset 0 0 4px 0 rgba(0,0,0,0.15);
       border-color: $selected-color;
       outline: 0;
+    }
+  }
+
+  .field {
+
+    label, .label {
+      @extend %copy-delta;
+      display: block;
+      margin-bottom: $spacing-charlie;
+      color: $copy-color;
+    }
+
+    textarea {
+      width: 100%;
     }
   }
 }

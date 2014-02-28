@@ -46,14 +46,14 @@
 
     <div class="step__content">
         <form id="response__submission" class="response__submission">
-            <ol class="list list--fields">
+            <ol class="list list--fields response__submission__content">
                 <li class="field field--textarea submission__answer" id="submission__answer">
-                    <label for="submission__answer__value">Please provide your response to the above question</label>
-                    <textarea class="text" id="submission__answer__value" placeholder=""></textarea>
+                    <label class="sr" for="submission__answer__value">Please provide your response to the above question</label>
+                    <textarea id="submission__answer__value" placeholder=""></textarea>
                 </li>
             </ol>
 
-            <ul class="list list--actions">
+            <ul class="list list--actions response__submission__actions">
                 <li class="list--actions__item">
                     <button type="submit" id="submission__submit" class="action action--submit submission__submit">Save Your Progress</button>
                     <span class="tip">you may continue to work on your response until you submit</span>

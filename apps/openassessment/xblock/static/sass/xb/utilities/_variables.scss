@@ -143,7 +143,7 @@ $color-teritary: $blue-u2;
 $color-decorative-primary: $blue-u2;
 $color-decorative-secondary: $gray-l4;
 $color-decorative-tertiary: $gray-l6;
-$color-decorative-quaternary: $gray-l7;
+$color-decorative-quaternary: tint($gray-l6, 10%);
 
 // application - colors: states
 $color-disabled: $gray-l4;
