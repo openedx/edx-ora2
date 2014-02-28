@@ -3,6 +3,8 @@
 import datetime
 import pkg_resources
 
+import dateutil.parser
+
 from django.template.context import Context
 from django.template.loader import get_template
 from webob import Response
@@ -154,9 +156,6 @@ DEFAULT_PEER_ASSESSMENT = {
 DEFAULT_ASSESSMENT_MODULES = [
     DEFAULT_PEER_ASSESSMENT,
 ]
-
-# Used to parse datetime strings from the XML configuration.
-TIME_PARSE_FORMAT = "%Y-%m-%dT%H:%M:%S"
 
 
 def load(path):
@@ -384,11 +383,11 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         context_dict["xblock_trace"] = self.get_xblock_trace()
 
         if self.start_datetime:
-            start = datetime.datetime.strptime(self.start_datetime, TIME_PARSE_FORMAT)
+            start = dateutil.parser.parse(self.start_datetime)
             context_dict["formatted_start_date"] = start.strftime("%A, %B %d, %Y")
             context_dict["formatted_start_datetime"] = start.strftime("%A, %B %d, %Y %X")
         if self.due_datetime:
-            due = datetime.datetime.strptime(self.due_datetime, TIME_PARSE_FORMAT)
+            due = dateutil.parser.parse(self.due_datetime)
             context_dict["formatted_due_date"] = due.strftime("%A, %B %d, %Y")
             context_dict["formatted_due_datetime"] = due.strftime("%A, %B %d, %Y %X")
 
@@ -414,11 +413,11 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         """
         # Is the question closed?
         if self.start_datetime:
-            start = datetime.datetime.strptime(self.start_datetime, TIME_PARSE_FORMAT)
+            start = dateutil.parser.parse(self.start_datetime)
             if start > datetime.datetime.utcnow():
                 return False, "start"
         if self.due_datetime:
-            due = datetime.datetime.strptime(self.due_datetime, TIME_PARSE_FORMAT)
+            due = dateutil.parser.parse(self.due_datetime)
             if due < datetime.datetime.utcnow():
                 return False, "due"
         return True, None
