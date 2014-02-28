@@ -21,6 +21,7 @@ function OpenAssessmentBlock(runtime, element) {
                     $.ajax({
                         type: "POST",
                         url: renderPeerUrl,
+                        dataType: "html",
                         success:  function(data) {
                             render_peer_assessment(data);
                         }
@@ -28,6 +29,7 @@ function OpenAssessmentBlock(runtime, element) {
                     $.ajax({
                         type: "POST",
                         url: renderSubmissionUrl,
+                        dataType: "html",
                         success:  function(data) {
                             render_submissions(data);
                         }
@@ -69,6 +71,7 @@ function OpenAssessmentBlock(runtime, element) {
                     $.ajax({
                         type: "POST",
                         url: renderSelfUrl,
+                        dataType: "html",
                         success:  function(data) {
                             $('#openassessment__self-assessment', element).replaceWith(data);
                         }
@@ -76,6 +79,7 @@ function OpenAssessmentBlock(runtime, element) {
                     $.ajax({
                         type: "POST",
                         url: renderPeerUrl,
+                        dataType: "html",
                         success:  function(data) {
                             render_peer_assessment(data)
                         }
@@ -90,6 +94,7 @@ function OpenAssessmentBlock(runtime, element) {
         $.ajax({
             type: "POST",
             url: renderSubmissionUrl,
+            dataType: "html",
             success:  function(data) {
                 render_submissions(data);
             }
