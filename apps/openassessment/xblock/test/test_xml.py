@@ -77,6 +77,11 @@ class TestSerializeContent(TestCase):
         # instead of a test failure.
         parsed_expected = etree.fromstring("".join(data['expected_xml']))
 
+        # Pretty-print and reparse the expected XML
+        pretty_expected = etree.tostring(parsed_expected, pretty_print=True, encoding='utf-8')
+        parsed_expected = etree.fromstring(pretty_expected)
+
+
         # Walk both trees, comparing elements and attributes
         actual_elements = [el for el in parsed_actual.getiterator()]
         expected_elements = [el for el in parsed_expected.getiterator()]
@@ -88,8 +93,14 @@ class TestSerializeContent(TestCase):
 
         for actual, expected in zip(actual_elements, expected_elements):
             self.assertEqual(actual.tag, expected.tag)
-            self.assertEqual(actual.text, expected.text)
-            self.assertItemsEqual(actual.items(), expected.items())
+            self.assertEqual(
+                actual.text, expected.text,
+                msg="Incorrect text for {tag}".format(tag=actual.tag)
+            )
+            self.assertItemsEqual(
+                actual.items(), expected.items(),
+                msg="Incorrect attributes for {tag}".format(tag=actual.tag)
+            )
 
     def test_mutated_criteria_dict(self):
         self.oa_block.title = "Test title"

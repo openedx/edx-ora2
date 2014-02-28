@@ -429,7 +429,7 @@ def serialize_content(oa_block):
     _serialize_rubric(rubric_root, oa_block)
 
     # Return a UTF-8 representation of the XML
-    return etree.tostring(root, encoding='utf-8')
+    return etree.tostring(root, pretty_print=True, encoding='utf-8')
 
 
 def update_from_xml(
