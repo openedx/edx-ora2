@@ -211,14 +211,14 @@ def _parse_options_xml(options_root):
         if option_name is not None:
             option_dict['name'] = _safe_get_text(option_name)
         else:
-            raise UpdateFromXmlError(_("XML option definition must contain a <name> element."))
+            raise UpdateFromXmlError(_("XML option definition must contain a 'name' element."))
 
         # Option explanation
         option_explanation = option.find('explanation')
         if option_explanation is not None:
             option_dict['explanation'] = _safe_get_text(option_explanation)
         else:
-            raise UpdateFromXmlError(_("XML option definition must contain an <explanation> element."))
+            raise UpdateFromXmlError(_("XML option definition must contain an 'explanation' element."))
 
         # Add the options dictionary to the list
         options_list.append(option_dict)
@@ -254,14 +254,14 @@ def _parse_criteria_xml(criteria_root):
         if criterion_name is not None:
             criterion_dict['name'] = _safe_get_text(criterion_name)
         else:
-            raise UpdateFromXmlError(_("XML criterion definition must contain a <name> element."))
+            raise UpdateFromXmlError(_("XML criterion definition must contain a 'name' element."))
 
         # Criterion prompt
         criterion_prompt = criterion.find('prompt')
         if criterion_prompt is not None:
             criterion_dict['prompt'] = _safe_get_text(criterion_prompt)
         else:
-            raise UpdateFromXmlError(_("XML criterion definition must contain a <prompt> element."))
+            raise UpdateFromXmlError(_("XML criterion definition must contain a 'prompt' element."))
 
         # Criterion options
         criterion_dict['options'] = _parse_options_xml(criterion)
@@ -296,7 +296,7 @@ def _parse_rubric_xml(rubric_root, validator):
     if prompt_el is not None:
         rubric_dict['prompt'] = _safe_get_text(prompt_el)
     else:
-        raise UpdateFromXmlError(_("XML rubric definition must contain a <prompt> element."))
+        raise UpdateFromXmlError(_("XML rubric definition must contain a 'prompt' element."))
 
     # Criteria
     rubric_dict['criteria'] = _parse_criteria_xml(rubric_root)
@@ -472,26 +472,26 @@ def update_from_xml(
 
     # Check that the root has the correct tag
     if root.tag != 'openassessmentblock':
-        raise UpdateFromXmlError(_("XML content must contain an <openassessmentblock> root element."))
+        raise UpdateFromXmlError(_("XML content must contain an 'openassessmentblock' root element."))
 
     # Retrieve the title
     title_el = root.find('title')
     if title_el is None:
-        raise UpdateFromXmlError(_("XML content must contain a <title> element."))
+        raise UpdateFromXmlError(_("XML content must contain a 'title' element."))
     else:
         title = _safe_get_text(title_el)
 
     # Retrieve the rubric
     rubric_el = root.find('rubric')
     if rubric_el is None:
-        raise UpdateFromXmlError(_("XML content must contain a <rubric> element."))
+        raise UpdateFromXmlError(_("XML content must contain a 'rubric' element."))
     else:
         rubric = _parse_rubric_xml(rubric_el, rubric_validator)
 
     # Retrieve the assessments
     assessments_el = root.find('assessments')
     if assessments_el is None:
-        raise UpdateFromXmlError(_("XML content must contain an <assessments> element."))
+        raise UpdateFromXmlError(_("XML content must contain an 'assessments' element."))
     else:
         assessments = _parse_assessments_xml(assessments_el, assessment_validator)
 
