@@ -122,22 +122,6 @@ function OpenAssessmentBlock(runtime, element) {
 
         $.ajax({
             type: "POST",
-            url: renderPeerCollapseUrl,
-            success:  function(data) {
-                $('#openassessment__peer-assessment', element).replaceWith(data);
-            }
-        });
-
-        $.ajax({
-            type: "POST",
-            url: renderSelfCollapseUrl,
-            success:  function(data) {
-                $('#openassessment__self-assessment', element).replaceWith(data);
-            }
-        });
-
-        $.ajax({
-            type: "POST",
             url: renderPeerUrl,
             success:  function(data) {
                 $(peerListItem, element).replaceWith(data);
