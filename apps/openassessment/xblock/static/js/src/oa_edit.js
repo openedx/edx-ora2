@@ -1,5 +1,5 @@
 /* JavaScript for Studio editing view of Open Assessment XBlock */
-function OpenAssessmentBlock(runtime, element) {
+function OpenAssessmentEditor(runtime, element) {
 
     function displayError(errorMsg) {
         runtime.notify('error', {msg: errorMsg});

@@ -39,7 +39,7 @@ class StudioMixin(object):
         rendered_template = get_template('openassessmentblock/oa_edit.html').render(Context({}))
         frag = Fragment(rendered_template)
         frag.add_javascript(pkg_resources.resource_string(__name__, "static/js/src/oa_edit.js"))
-        frag.initialize_js('OpenAssessmentBlock')
+        frag.initialize_js('OpenAssessmentEditor')
         return frag
 
     @XBlock.json_handler
