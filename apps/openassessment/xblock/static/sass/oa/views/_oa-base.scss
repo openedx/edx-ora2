@@ -534,6 +534,93 @@
   // --------------------
   .step--peer-assessment {
 
+    .list--peer-assessments {
+      @extend %no-list;
+    }
+
+    // peer submission
+    .peer-assessment__display {
+      @extend %ui-section;
+    }
+
+    .peer-assessment__display__header {
+      @extend %ui-section-title;
+      @include clearfix();
+
+      span {
+        @extend %t-weight3; // FIX: needed due to DOM structure
+      }
+
+      .peer-assessment__display__title {
+        @extend %hd-golf; // FIX: needed due to DOM structure
+        @extend %t-weight3;
+        float: left;
+      }
+
+      .peer-assessment__expected-time {
+        @extend %hd-golf;  // FIX: needed due to DOM structure
+        @extend %t-weight3;
+        float: right;
+      }
+    }
+
+    .peer-assessment__display__response {
+      @extend %ui-section-content;
+    }
+
+    // assessment form
+    .peer-assessment__assessment {
+
+      // fields
+      .assessment__fields {
+        margin-bottom: $spacing-bravo;
+      }
+
+      // rubric question
+      .assessment__rubric__question {
+        @extend %ui-rubric-question;
+      }
+
+      // rubric options
+      .question__answers {
+        @extend %ui-rubric-answers;
+      }
+
+      // genereal feedback question
+      .assessment__rubric__question--feedback {
+
+        textarea {
+          @extend %ui-content-longanswer;
+          min-height: ($baseline-v*5);
+        }
+      }
+    }
+
+    // step actions
+    .peer-assessment__actions {
+      text-align: center;
+
+      @include media($bp-ds) {
+        text-align: right;
+      }
+
+      @include media($bp-dm) {
+       text-align: right;
+      }
+
+      @include media($bp-dl) {
+        text-align: right;
+      }
+
+      @include media($bp-dx) {
+        text-align: right;
+      }
+
+      .action--submit {
+        @extend %btn--primary;
+        @extend %action-delta;
+      }
+    }
   }
 
 
@@ -607,7 +694,7 @@
   .submission__peer-evaluations__questions {
     @extend %no-list;
     @extend %ui-section-content;
-    margin-bottom: $spacing-charlie; // override city
+    margin-bottom: $spacing-charlie;
 
     &:last-child {
       margin-bottom: 0;

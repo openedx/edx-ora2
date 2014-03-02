@@ -4,17 +4,19 @@
 {% endblock %}
 
 {% block title %}
-    <span class="step__status">
-      <span class="step__status__label">This step's status:</span>
-      <span class="step__status__value">
-        <i class="ico fa fa-exclamation-triangle"></i>
-        <span class="copy">{{ step_status }}</span>
-      </span>
-    </span>
+<span class="step__status">
+  <span class="step__status__label">This step's status:</span>
+  <span class="step__status__value">
+    <i class="ico fa fa-exclamation-triangle"></i>
+    <span class="copy">{{ step_status }}</span>
+  </span>
+</span>
 {% endblock %}
 
 {% block body %}
-    <div class="step__instruction">
-        <p>You did not complete this portion of the problem before its due date.</p>
-    </div>
+<div class="ui-toggle-visibility__content">
+  <div class="step__instruction">
+      <p>You did not complete this portion of the problem before its due date.</p>
+  </div>
+</div>
 {% endblock %}

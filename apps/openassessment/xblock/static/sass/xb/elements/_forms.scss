@@ -17,6 +17,7 @@
     padding: $spacing-charlie;
     font-family: $f-copy;
     outline: 0;
+    color: $selected-color;
 
     @include placeholder {
       color: $copy-supplemental-color-alt;
