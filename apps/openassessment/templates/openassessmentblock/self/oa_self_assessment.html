@@ -26,9 +26,9 @@
         {% block title %}
         <span class="step__status">
           <span class="step__status__label">This step's status:</span>
-          <span class="step_status_value">Incomplete</span>
-          <span class="step__status__label">This step's status:</span>
-          <span class="step_status_value">{{ step_status }}</span>
+          <span class="step__status__value">
+              <span class="copy">{{ step_status }}</span>
+          </span>
         </span>
         {% endblock %}
     </header>
@@ -36,63 +36,75 @@
     {% block body %}
     <div class="ui-toggle-visibility__content">
         <div class="step__content">
-            <article class="self-assessment" id="self-assessment">
-                <header class="self-assessment__header">
-                    <h3 class="self-assessment__title">Your Submitted Response</h3>
+            <article class="self-assessment__display" id="self-assessment">
+                <header class="self-assessment__display__header">
+                    <h3 class="self-assessment__display__title">Your Submitted Response</h3>
                 </header>
 
                 <!-- ?: markup validating/copy cleaning upon submission -->
-                <div class="self-assessment__response">
+                <div class="self-assessment__display__response">
                     {{ self_submission.answer }}
                 </div>
+            </article>
 
-                <form id="self-assessment--001__assessment" class="self-assessment__assessment" method="post">
-                    <fieldset class="assessment__fields">
-                        <legend class="assessment__instruction">{{ rubric_instructions }}</legend>
+            <form id="self-assessment--001__assessment" class="self-assessment__assessment" method="post">
+                <fieldset class="assessment__fields">
+                    <legend class="assessment__instruction">{{ rubric_instructions }}</legend>
 
-                        <ol class="list list--fields assessment__rubric">
-                            {% for criterion in rubric_criteria %}
-                                <!-- individual rubric question (radio-based choice) -->
-                                <li class="field field--radio is--required assessment__rubric__question" id="assessment__rubric__question--{{ criterion.name }}">
-                                    <h4 class="question__title">
-                                        {{ criterion.prompt }}
-                                        <span class="label--required">* <span class="sr">(Required)</span></span>
-                                    </h4>
+                    <ol class="list list--fields assessment__rubric">
+                        {% for criterion in rubric_criteria %}
+                            <!-- individual rubric question (radio-based choice) -->
+                            <li class="field field--radio is--required assessment__rubric__question" id="assessment__rubric__question--{{ criterion.name }}">
+                                <h4 class="question__title">
+                                    <i class="ico fa fa-caret-right"></i>
+                                    <span class="question__title__copy">{{ criterion.prompt }}</span>
+                                    <span class="label--required sr">* (Required)</span>
+                                </h4>
 
-                                    <ol class="question__answers">
-                                        {% for option in criterion.options %}
-                                            <li class="answer">
-                                                <div class="wrapper--input">
-                                                    <input type="radio"
-                                                           name="{{ criterion.name }}"
-                                                           id="assessment__rubric__question--{{ criterion.name }}"
-                                                           class="answer__value"
-                                                           value="{{ option.name }}" />
-                                                    <label for="assessment__rubric__question--001__option--01"
-                                                           class="answer__label">{{ option.name }}</label>
-                                                </div>
+                                <ol class="question__answers">
+                                    {% for option in criterion.options %}
+                                        <li class="answer">
+                                            <div class="wrapper--input">
+                                                <input type="radio"
+                                                       name="{{ criterion.name }}"
+                                                       id="assessment__rubric__question--{{ criterion.name }}__{{ option.name }}"
+                                                       class="answer__value"
+                                                       value="{{ option.name }}" />
+                                                <label for="assessment__rubric__question--{{ criterion.name }}__{{ option.name }}"
+                                                       class="answer__label">{{ option.name }}</label>
+                                            </div>
+                                            <div class="wrapper--metadata">
                                                 <span class="answer__tip">{{ option.explanation }}</span>
-                                            </li>
-                                        {% endfor %}
-                                    </ol>
-                                </li>
-                            {% endfor %}
-
-                            <!-- individual rubric question (text) -->
-                            <li class="field field--textarea assessment__rubric__question" id="assessment__rubric__question--004">
-                                <label for="assessment__rubric__question--004__value">Please provide any other feedback you have around this response</label>
-                                <textarea id="assessment__rubric__question--004__value" placeholder="I felt this response was..."></textarea>
+                                                <span class="answer__points">{{option.points}} <span class="label">points</span></span>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ol>
                             </li>
-                        </ol>
-                    </fieldset>
+                        {% endfor %}
 
+                        <!-- individual rubric question (text) -->
+                        <li class="wrapper--input field field--textarea assessment__rubric__question" id="assessment__rubric__question--004">
+                            <label for="assessment__rubric__question--004__value">
+                                <i class="ico fa fa-caret-right"></i>
+                                <span class="question__title__copy">Please provide any other feedback you have around this response</span>
+                            </label>
+                            <textarea id="assessment__rubric__question--004__value" placeholder="I felt this response was..."></textarea>
+                        </li>
+                    </ol>
+                </fieldset>
+
+                <div class="self-assessment__actions">
                     <ul class="list list--actions">
                         <li class="list--actions__item">
-                            <button type="submit" id="self-assessment--001__assessment__submit" class="action action--submit">Submit your assessment</button>
+                            <button type="submit" id="self-assessment--001__assessment__submit" class="action action--submit">
+                                <span class="copy">{{ submit_button_text }}</span>
+                                <i class="ico fa fa-arrow-right"></i>
+                            </button>
                         </li>
                     </ul>
-                </form>
-            </article>
+                </div>
+            </form>
         </div>
     </div>
     {% endblock %}
