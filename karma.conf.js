@@ -11,7 +11,8 @@ files = [
 
 // list of files to exclude
 exclude = [
-    "karma.conf.js"
+    "karma.conf.js",
+    "./**/design*.js"
 ];
 
 // use dots reporter, as travis terminal does not support escaping sequences
