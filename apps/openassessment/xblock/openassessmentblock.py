@@ -252,6 +252,7 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         context = Context(context_dict)
         frag = Fragment(template.render(context))
         frag.add_css(load("static/css/openassessment.css"))
+        frag.add_javascript(load("static/js/src/oa_server.js"))
         frag.add_javascript(load("static/js/src/oa_base.js"))
         frag.initialize_js('OpenAssessmentBlock')
         return frag

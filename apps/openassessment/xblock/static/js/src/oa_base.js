@@ -123,6 +123,7 @@ function OpenAssessmentBlock(runtime, element) {
         $.ajax({
             type: "POST",
             url: renderPeerUrl,
+            dataType: "html",
             success:  function(data) {
                 $(peerListItem, element).replaceWith(data);
                 collapse($(peerListItem, element));
@@ -132,6 +133,7 @@ function OpenAssessmentBlock(runtime, element) {
         $.ajax({
             type: "POST",
             url: renderSelfUrl,
+            dataType: "html",
             success:  function(data) {
                 $(selfListItem, element).replaceWith(data);
                 collapse($(selfListItem, element));
@@ -140,6 +142,7 @@ function OpenAssessmentBlock(runtime, element) {
 
         $.ajax({
             type: "POST",
+            dataType: "html",
             url: renderGradeUrl,
             success:  function(data) {
                 $(gradeListItem, element).replaceWith(data);

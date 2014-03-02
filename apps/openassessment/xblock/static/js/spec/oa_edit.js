@@ -2,9 +2,49 @@
 Tests for OA XBlock editing.
 */
 
-describe("OpenAssessment editor", function() {
+describe("OpenAssessment.StudioUI", function() {
 
-    var runtime = null;
+    var runtime = {
+        notify: function(type, data) {}
+    };
+
+    // Stub server that returns dummy data or reports errors.
+    var StubServer = function() {
+        this.loadError = false;
+        this.updateError = false;
+        this.xml = '<openassessment></openassessment>';
+
+        this.errorPromise = $.Deferred(function(defer) {
+            defer.rejectWith(this, ['Test error']);
+        }).promise();
+
+        this.loadXml = function() {
+            var xml = this.xml;
+            if (!this.loadError) {
+                return $.Deferred(function(defer) {
+                    defer.resolveWith(this, [xml]);
+                }).promise();
+            }
+            else {
+                return this.errorPromise;
+            }
+        }
+
+        this.updateXml = function(xml) {
+            if (!this.updateError) {
+                this.xml = xml;
+                return $.Deferred(function(defer) {
+                    defer.resolve();
+                }).promise();
+            }
+            else {
+                return this.errorPromise;
+            }
+        }
+    };
+
+    var server = null;
+    var ui = null;
 
     beforeEach(function() {
 
@@ -12,47 +52,56 @@ describe("OpenAssessment editor", function() {
         jasmine.getFixtures().fixturesPath = 'base/fixtures'
         loadFixtures('oa_edit.html');
 
-        // Mock the runtime
-        runtime = {
-            notify: function(type, data) {},
+        // Create the stub server
+        server = new StubServer();
 
-            // Dummy handler URL returns whatever it's passed in for the handler name
-            handlerUrl: function(element, handler) {
-                return handler;
-            }
-        };
+        // Mock the runtime
         spyOn(runtime, 'notify');
 
+        // Create the object under test
+        var el = $('#openassessment-edit').get(0);
+        ui = new OpenAssessment.StudioUI(runtime, el, server);
     });
 
     it("loads the XML definition", function() {
-        // Stub AJAX calls to always return successful
-        spyOn($, 'ajax').andCallFake(function(params) {
-            params.success({
-                'success': true,
-                'xml': '<openassessment></openassessment>',
-                'msg': ''
-            });
-        });
-
-        // Initialize the editor
-        var editor = OpenAssessmentEditor(runtime, $('#openassessment-edit'));
+        // Initialize the UI
+        ui.load()
 
         // Expect that the XML definition was loaded
-        var editorContents = $('.openassessment-editor').text();
-        expect(editorContents).toEqual('<openassessment></openassessment>');
+        var contents = ui.codeBox.getValue();
+        expect(contents).toEqual('<openassessment></openassessment>');
     });
 
     it("saves the XML definition", function() {
-    expect(false).toBe(true);
+        // Update the XML
+        ui.codeBox.setValue('<openassessment>test!</openassessment>');
+
+        // Save the updated XML
+        ui.save();
+
+        // Expect the saving notification to start/end
+        expect(runtime.notify).toHaveBeenCalledWith('save', {state: 'start'});
+        expect(runtime.notify).toHaveBeenCalledWith('save', {state: 'end'});
+
+        // Expect the server's XML to have been updated
+        expect(server.xml).toEqual('<openassessment>test!</openassessment>');
     });
 
-    it("reverts the XML definition on cancellation", function() {
-    expect(false).toBe(true);
+    it("cancels editing", function() {
+        ui.cancel();
+        expect(runtime.notify).toHaveBeenCalledWith('cancel', {});
     });
 
-    it("displays validation errors but preserves the author's changes", function() {
-    expect(false).toBe(true);
+    it("displays an error when server reports a load XML error", function() {
+        server.loadError = true;
+        ui.load();
+        expect(runtime.notify).toHaveBeenCalledWith('error', {msg: 'Test error'});
+    });
+
+    it("displays an error when server reports an update XML error", function() {
+        server.updateError = true;
+        ui.save('<openassessment>test!</openassessment>');
+        expect(runtime.notify).toHaveBeenCalledWith('error', {msg: 'Test error'});
     });
 
 });
