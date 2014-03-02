@@ -5,16 +5,16 @@
 {% endblock %}
 
 {% block title %}
-    <span class="step__status">
-      <span class="step__status__label">This step's status:</span>
-      <span class="step__status__value">
-        <i class="ico fa fa-check"></i>
-        <span class="copy">
-          <span class="step__status__value--completed">{{ graded }}</span> of
-          <span class="step__status__value--required">{{ must_grade }}</span> completed
-        </span>
-      </span>
+<span class="step__status">
+  <span class="step__status__label">This step's status:</span>
+  <span class="step__status__value">
+    <i class="ico fa fa-check"></i>
+    <span class="copy">
+      <span class="step__status__value--completed">{{ graded }}</span> of
+      <span class="step__status__value--required">{{ must_grade }}</span> completed
     </span>
+  </span>
+</span>
 {% endblock %}
 
 {% block body %}{% endblock %}

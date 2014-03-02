@@ -5,16 +5,17 @@
 {% endblock %}
 
 {% block title %}
-    <span class="step__status">
-      <span class="step__status__label">This step's status:</span>
-      <span class="step__status__value">
-        <i class="ico fa fa-check"></i>
-        <span class="copy">{{ step_status }}</span>
-      </span>
-    </span>
+<span class="step__status">
+  <span class="step__status__label">This step's status:</span>
+  <span class="step__status__value">
+    <i class="ico fa fa-check"></i>
+    <span class="copy">{{ step_status }}</span>
+  </span>
+</span>
 {% endblock %}
 
 {% block body %}
+<div class="ui-toggle-visibility__content">
     <div class="step__content">
         <!-- user's response -->
         <article class="submission__answer__display">
@@ -25,4 +26,5 @@
             </div>
         </article>
     </div>
+</div>
 {% endblock %}

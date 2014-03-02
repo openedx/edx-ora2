@@ -9,92 +9,91 @@
 
  -->
 
-
 <!-- CASE: default/not started -->
-<li id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment">
-    <header class="step__header">
 {% block list_item %}
 <li id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment is--expanded">
 {% endblock %}
-    <header class="step__header">
+
+    <header class="step__header ui-toggle-visibility__control">
         <h2 class="step__title">
             <span class="step__counter"></span>
             <span class="wrapper--copy">
-                <span class="step__title__label">Evaluate Your Response</span>
-                <span class="step__title__deadline">due <span class="date">January 31, 2014</span> at <span class="time">15:00 UTC</span></span>
-                <span class="step__title__label">Evaluate Your Response</span>
+                <span class="step__label">Evaluate Your Response</span>
                 <span class="step__deadline">due <span class="date">{{ formatted_due_datetime }}</span></span>
             </span>
         </h2>
-    {% block title %}
+
+        {% block title %}
         <span class="step__status">
           <span class="step__status__label">This step's status:</span>
           <span class="step_status_value">Incomplete</span>
           <span class="step__status__label">This step's status:</span>
           <span class="step_status_value">{{ step_status }}</span>
         </span>
+        {% endblock %}
     </header>
-    {% endblock %}
-    </header>
+
     {% block body %}
-    <div class="step--content">
-        <article class="self-assessment" id="self-assessment">
-            <header class="self-assessment__header">
-                <h3 class="self-assessment__title">Your Submitted Response</h3>
-            </header>
+    <div class="ui-toggle-visibility__content">
+        <div class="step__content">
+            <article class="self-assessment" id="self-assessment">
+                <header class="self-assessment__header">
+                    <h3 class="self-assessment__title">Your Submitted Response</h3>
+                </header>
 
-            <!-- ?: markup validating/copy cleaning upon submission -->
-            <div class="self-assessment__response">
-                {{ self_submission.answer }}
-            </div>
+                <!-- ?: markup validating/copy cleaning upon submission -->
+                <div class="self-assessment__response">
+                    {{ self_submission.answer }}
+                </div>
 
-            <form id="self-assessment--001__assessment" class="self-assessment__assessment" method="post">
-                <fieldset class="assessment__fields">
-                    <legend class="assessment__instruction">{{ rubric_instructions }}</legend>
+                <form id="self-assessment--001__assessment" class="self-assessment__assessment" method="post">
+                    <fieldset class="assessment__fields">
+                        <legend class="assessment__instruction">{{ rubric_instructions }}</legend>
 
-                    <ol class="list list--fields assessment__rubric">
-                        {% for criterion in rubric_criteria %}
-                            <!-- individual rubric question (radio-based choice) -->
-                            <li class="field field--radio is--required assessment__rubric__question" id="assessment__rubric__question--{{ criterion.name }}">
-                                <h4 class="question__title">
-                                    {{ criterion.prompt }}
-                                    <span class="label--required">* <span class="sr">(Required)</span></span>
-                                </h4>
+                        <ol class="list list--fields assessment__rubric">
+                            {% for criterion in rubric_criteria %}
+                                <!-- individual rubric question (radio-based choice) -->
+                                <li class="field field--radio is--required assessment__rubric__question" id="assessment__rubric__question--{{ criterion.name }}">
+                                    <h4 class="question__title">
+                                        {{ criterion.prompt }}
+                                        <span class="label--required">* <span class="sr">(Required)</span></span>
+                                    </h4>
 
-                                <ol class="question__answers">
-                                    {% for option in criterion.options %}
-                                        <li class="answer">
-                                            <div class="wrapper--input">
-                                                <input type="radio"
-                                                       name="{{ criterion.name }}"
-                                                       id="assessment__rubric__question--{{ criterion.name }}"
-                                                       class="answer__value"
-                                                       value="{{ option.name }}" />
-                                                <label for="assessment__rubric__question--001__option--01"
-                                                       class="answer__label">{{ option.name }}</label>
-                                            </div>
-                                            <span class="answer__tip">{{ option.explanation }}</span>
-                                        </li>
-                                    {% endfor %}
-                                </ol>
+                                    <ol class="question__answers">
+                                        {% for option in criterion.options %}
+                                            <li class="answer">
+                                                <div class="wrapper--input">
+                                                    <input type="radio"
+                                                           name="{{ criterion.name }}"
+                                                           id="assessment__rubric__question--{{ criterion.name }}"
+                                                           class="answer__value"
+                                                           value="{{ option.name }}" />
+                                                    <label for="assessment__rubric__question--001__option--01"
+                                                           class="answer__label">{{ option.name }}</label>
+                                                </div>
+                                                <span class="answer__tip">{{ option.explanation }}</span>
+                                            </li>
+                                        {% endfor %}
+                                    </ol>
+                                </li>
+                            {% endfor %}
+
+                            <!-- individual rubric question (text) -->
+                            <li class="field field--textarea assessment__rubric__question" id="assessment__rubric__question--004">
+                                <label for="assessment__rubric__question--004__value">Please provide any other feedback you have around this response</label>
+                                <textarea id="assessment__rubric__question--004__value" placeholder="I felt this response was..."></textarea>
                             </li>
-                        {% endfor %}
+                        </ol>
+                    </fieldset>
 
-                        <!-- individual rubric question (text) -->
-                        <li class="field field--textarea assessment__rubric__question" id="assessment__rubric__question--004">
-                            <label for="assessment__rubric__question--004__value">Please provide any other feedback you have around this response</label>
-                            <textarea id="assessment__rubric__question--004__value" placeholder="I felt this response was..."></textarea>
+                    <ul class="list list--actions">
+                        <li class="list--actions__item">
+                            <button type="submit" id="self-assessment--001__assessment__submit" class="action action--submit">Submit your assessment</button>
                         </li>
-                    </ol>
-                </fieldset>
-
-                <ul class="list list--actions">
-                    <li class="list--actions__item">
-                        <button type="submit" id="self-assessment--001__assessment__submit" class="action action--submit">Submit your assessment</button>
-                    </li>
-                </ul>
-            </form>
-        </article>
+                    </ul>
+                </form>
+            </article>
+        </div>
     </div>
     {% endblock %}
 </li>

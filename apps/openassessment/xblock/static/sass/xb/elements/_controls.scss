@@ -85,6 +85,10 @@
     display: inline-block;
     vertical-align: middle;
   }
+
+  .copy {
+    margin-right: $spacing-charlie;
+  }
 }
 
 %btn-pill {
