@@ -26,6 +26,18 @@ class SubmissionSerializer(serializers.ModelSerializer):
 
 
 class ScoreSerializer(serializers.ModelSerializer):
+
+    submission_uuid = serializers.Field(source='submission_uuid')
+
     class Meta:
         model = Score
-        fields = ('student_item', 'submission', 'points_earned', 'points_possible', 'created_at')
+        fields = (
+            'student_item',
+            'submission',
+            'points_earned',
+            'points_possible',
+            'created_at',
+
+            # Computed
+            'submission_uuid',
+        )

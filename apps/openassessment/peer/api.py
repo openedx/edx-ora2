@@ -7,6 +7,7 @@ the workflow for a given submission.
 import copy
 import logging
 
+from django.utils.translation import ugettext as _
 from django.db import DatabaseError
 
 from openassessment.peer.models import Assessment
@@ -87,16 +88,15 @@ def create_assessment(
             required for the student to receive a score for their submission.
         must_be_graded_by (int): The number of assessments
             required on the submission for it to be scored.
-        assessment_dict (dict): All related information for the assessment. An
-            assessment contains points_earned, points_possible, and feedback.
+        assessment_dict (dict): All related information for the assessment.  The dictionary
+            must have the following keys: "options_selected" (mapping of criterion names to option values),
+            and "feedback" (string of written feedback for the submission).
         scored_at (datetime): Optional argument to override the time in which
             the assessment took place. If not specified, scored_at is set to
             now.
 
     Returns:
-        dict: The dictionary representing the assessment. This includes the
-            points earned, points possible, time scored, scorer id, score type,
-            and feedback.
+        dict: the Assessment model, serialized as a dict.
 
     Raises:
         PeerAssessmentRequestError: Raised when the submission_id is invalid, or
@@ -107,33 +107,33 @@ def create_assessment(
 
     Examples:
         >>> assessment_dict = dict(
-        >>>    points_earned=[1, 0, 3, 2],
-        >>>    points_possible=12,
+        >>>    options_selected={"clarity": "Very clear", "precision": "Somewhat precise"},
         >>>    feedback="Your submission was thrilling.",
         >>> )
-        >>> create_assessment("1", "Tim", assessment_dict)
-        {
-            'points_earned': 6,
-            'points_possible': 12,
-            'scored_at': datetime.datetime(2014, 1, 29, 17, 14, 52, 649284 tzinfo=<UTC>),
-            'scorer_id': u"Tim",
-            'feedback': u'Your submission was thrilling.'
-        }
-
+        >>> create_assessment("1", "Tim", 3, 2, assessment_dict, rubric_dict)
     """
     try:
         submission = Submission.objects.get(uuid=submission_uuid)
 
         rubric = rubric_from_dict(rubric_dict)
         option_ids = rubric.options_ids(assessment_dict["options_selected"])
+
+        # Validate that the selected options matched the rubric
+        # and raise an error if this is not the case
+        if None in option_ids:
+            raise PeerAssessmentRequestError(_("Selected options do not match the rubric options."))
+
+        feedback = assessment_dict.get('feedback', u'')
         peer_assessment = {
             "rubric": rubric.id,
             "scorer_id": scorer_id,
             "submission": submission.pk,
             "score_type": PEER_TYPE,
+            "feedback": feedback,
             "parts": [{"option": option_id} for option_id in option_ids]
         }
-        if scored_at:
+
+        if scored_at is not None:
             peer_assessment["scored_at"] = scored_at
 
         peer_serializer = AssessmentSerializer(data=peer_assessment)
@@ -152,23 +152,33 @@ def create_assessment(
         )
 
         # Check if the grader is finished and has enough assessments
-        scorer_item = StudentItem.objects.get(
-            student_id=scorer_id,
-            item_id=student_item.item_id,
-            course_id=student_item.course_id,
-            item_type=student_item.item_type
-        )
+        try:
+            scorer_item = StudentItem.objects.get(
+                student_id=scorer_id,
+                item_id=student_item.item_id,
+                course_id=student_item.course_id,
+                item_type=student_item.item_type
+            )
+
+        except StudentItem.DoesNotExist:
+            raise PeerAssessmentWorkflowError(_("You must make a submission before assessing another student"))
 
         scorer_submissions = Submission.objects.filter(
             student_item=scorer_item
         ).order_by("-attempt_number")
 
-        _score_if_finished(
-            scorer_item,
-            scorer_submissions[0],
-            must_grade,
-            must_be_graded_by
-        )
+        if len(scorer_submissions) > 0:
+            _score_if_finished(
+                scorer_item,
+                scorer_submissions[0],
+                must_grade,
+                must_be_graded_by
+            )
+
+        # Currently, this condition is unreachable, since the only way to create a StudentItem is to
+        # create a submission for that student.  We check anyway just in case this invariant changes.
+        else:
+            raise PeerAssessmentWorkflowError(_("You must make at least one submission before assessing another student"))
 
         return peer_serializer.data
     except DatabaseError:

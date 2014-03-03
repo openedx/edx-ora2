@@ -131,9 +131,11 @@ class TestApi(TestCase):
         self._assert_score(score, 11, 12)
 
     def test_get_score(self):
-        self.test_create_score()
+        submission = api.create_submission(STUDENT_ITEM, ANSWER_ONE)
+        api.set_score(STUDENT_ITEM, submission, 11, 12)
         scores = api.get_score(STUDENT_ITEM)
         self._assert_score(scores[0], 11, 12)
+        self.assertEqual(scores[0]['submission_uuid'], submission['uuid'])
 
     def test_get_score_no_student_id(self):
         student_item = copy.deepcopy(STUDENT_ITEM)

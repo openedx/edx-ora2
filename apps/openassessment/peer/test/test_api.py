@@ -122,6 +122,7 @@ class TestApi(TestCase):
         )
         self.assertEqual(assessment["points_earned"], 6)
         self.assertEqual(assessment["points_possible"], 14)
+        self.assertEqual(assessment["feedback"], ASSESSMENT_DICT["feedback"])
 
     @file_data('valid_assessments.json')
     def test_get_assessments(self, assessment_dict):
@@ -287,6 +288,22 @@ class TestApi(TestCase):
         self.assertEqual(14, Assessment.get_median_score([6, 5, 12, 53, 16, 22]))
         self.assertEqual(16, Assessment.get_median_score([5, 6, 12, 16, 22, 53, 102]))
         self.assertEqual(16, Assessment.get_median_score([16, 6, 12, 102, 22, 53, 5]))
+
+    @raises(peer_api.PeerAssessmentWorkflowError)
+    def test_assess_before_submitting(self):
+        # Create a submission for another student
+        submission = sub_api.create_submission(STUDENT_ITEM, ANSWER_ONE)
+
+        # Attempt to create the assessment from another student without first making a submission
+        peer_api.create_assessment(
+            submission["uuid"],
+            "another_student",
+            REQUIRED_GRADED,
+            REQUIRED_GRADED_BY,
+            ASSESSMENT_DICT,
+            RUBRIC_DICT,
+            MONDAY
+        )
 
     @staticmethod
     def _create_student_and_submission(student, answer, date=None):

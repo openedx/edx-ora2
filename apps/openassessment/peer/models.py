@@ -81,6 +81,9 @@ class Rubric(models.Model):
             options_selected (dict): Mapping of criteria names to the names of
                 the option that was selected for that criterion.
 
+        Returns:
+            list of option ids (set to None if the selected option does not match the rubric)
+
         Examples:
             >>> options_selected = {"secret": "yes", "safe": "no"}
             >>> rubric.options_ids(options_selected)
@@ -97,6 +100,8 @@ class Rubric(models.Model):
 
         return [
             crit_to_all_opts[crit][opt]
+            if crit in crit_to_all_opts and opt in crit_to_all_opts[crit]
+            else None
             for crit, opt in options_selected.items()
         ]
 
@@ -186,7 +191,6 @@ class Assessment(models.Model):
     scorer_id = models.CharField(max_length=40, db_index=True)
     score_type = models.CharField(max_length=2)
 
-    # TODO: move this to its own model
     feedback = models.TextField(max_length=10000, default="")
 
     class Meta:
