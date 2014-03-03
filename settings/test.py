@@ -10,7 +10,8 @@ TEST_APPS = ('openassessment.peer', 'submissions', "openassessment.xblock")
 # Configure nose
 NOSE_ARGS = [
     '--with-coverage',
-    '--cover-package=' + ",".join(TEST_APPS)
+    '--cover-package=' + ",".join(TEST_APPS),
+    '--cover-erase',
 ]
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'

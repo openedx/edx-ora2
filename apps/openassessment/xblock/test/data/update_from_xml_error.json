@@ -1,13 +1,13 @@
 {
     "empty_string": {"xml": [""]},
 
-    "invalid_syntax": {"xml": ["<openassessmentblock><div>no closing tag</openassessmentblock>"]},
+    "invalid_syntax": {"xml": ["<openassessment><div>no closing tag</openassessment>"]},
 
     "missing_root": {"xml": "<div>Incorrect</div>"},
 
     "missing_assessment_name": {
         "xml": [
-            "<openassessmentblock>",
+            "<openassessment>",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -20,13 +20,13 @@
                     "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
                 "</criterion>",
             "</rubric>",
-            "</openassessmentblock>"
+            "</openassessment>"
         ]
     },
 
     "missing_title": {
         "xml": [
-            "<openassessmentblock>",
+            "<openassessment>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
             "</assessments>",
@@ -38,24 +38,24 @@
                     "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
                 "</criterion>",
             "</rubric>",
-            "</openassessmentblock>"
+            "</openassessment>"
         ]
     },
 
     "missing_rubric": {
         "xml": [
-            "<openassessmentblock>",
+            "<openassessment>",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
             "</assessments>",
-            "</openassessmentblock>"
+            "</openassessment>"
         ]
     },
 
     "missing_assessments": {
         "xml": [
-            "<openassessmentblock>",
+            "<openassessment>",
             "<title>Foo</title>",
             "<rubric>",
                 "<prompt>Test prompt</prompt>",
@@ -65,13 +65,13 @@
                     "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
                 "</criterion>",
             "</rubric>",
-            "</openassessmentblock>"
+            "</openassessment>"
         ]
     },
 
     "non_numeric_points": {
         "xml": [
-            "<openassessmentblock>",
+            "<openassessment>",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -84,13 +84,13 @@
                     "<option points=\"non-numeric\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
                 "</criterion>",
             "</rubric>",
-            "</openassessmentblock>"
+            "</openassessment>"
         ]
     },
 
     "non_numeric_must_grade": {
         "xml": [
-            "<openassessmentblock>",
+            "<openassessment>",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"non-numeric\" must_be_graded_by=\"3\" />",
@@ -103,13 +103,13 @@
                     "<option points=\"5\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
                 "</criterion>",
             "</rubric>",
-            "</openassessmentblock>"
+            "</openassessment>"
         ]
     },
 
     "non_numeric_must_be_graded_by": {
         "xml": [
-            "<openassessmentblock>",
+            "<openassessment>",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"2\" must_be_graded_by=\"non-numeric\" />",
@@ -122,13 +122,13 @@
                     "<option points=\"5\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
                 "</criterion>",
             "</rubric>",
-            "</openassessmentblock>"
+            "</openassessment>"
         ]
     },
 
     "invalid_start_date": {
         "xml": [
-            "<openassessmentblock>",
+            "<openassessment>",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"non-date\" due=\"2014-03-01T00:00:00\" must_grade=\"2\" must_be_graded_by=\"5\" />",
@@ -141,13 +141,13 @@
                     "<option points=\"5\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
                 "</criterion>",
             "</rubric>",
-            "</openassessmentblock>"
+            "</openassessment>"
         ]
     },
 
     "invalid_due_date": {
         "xml": [
-            "<openassessmentblock>",
+            "<openassessment>",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-03-01T00:00:00\" due=\"non-date\" must_grade=\"2\" must_be_graded_by=\"5\" />",
@@ -160,7 +160,163 @@
                     "<option points=\"5\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
                 "</criterion>",
             "</rubric>",
-            "</openassessmentblock>"
+            "</openassessment>"
+        ]
+    },
+
+    "missing_rubric_prompt": {
+        "xml": [
+            "<openassessment>",
+            "<title>Foo</title>",
+            "<assessments>",
+                "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
+            "</assessments>",
+            "<rubric>",
+                "<criterion>",
+                    "<name>Test criterion</name>",
+                    "<prompt>Test criterion prompt</prompt>",
+                    "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+                    "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+                "</criterion>",
+            "</rubric>",
+            "</openassessment>"
+        ]
+    },
+
+    "missing_option_points": {
+        "xml": [
+            "<openassessment>",
+            "<title>Foo</title>",
+            "<assessments>",
+                "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
+            "</assessments>",
+            "<rubric>",
+                "<prompt>Test prompt</prompt>",
+                "<criterion>",
+                    "<name>Test criterion</name>",
+                    "<prompt>Test criterion prompt</prompt>",
+                    "<option><name>No</name><explanation>No explanation</explanation></option>",
+                "</criterion>",
+            "</rubric>",
+            "</openassessment>"
+        ]
+    },
+
+    "missing_option_name": {
+        "xml": [
+            "<openassessment>",
+            "<title>Foo</title>",
+            "<assessments>",
+                "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
+            "</assessments>",
+            "<rubric>",
+                "<prompt>Test prompt</prompt>",
+                "<criterion>",
+                    "<name>Test criterion</name>",
+                    "<prompt>Test criterion prompt</prompt>",
+                    "<option points=\"2\"><explanation>No explanation</explanation></option>",
+                "</criterion>",
+            "</rubric>",
+            "</openassessment>"
+        ]
+    },
+
+    "missing_option_explanation": {
+        "xml": [
+            "<openassessment>",
+            "<title>Foo</title>",
+            "<assessments>",
+                "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
+            "</assessments>",
+            "<rubric>",
+                "<prompt>Test prompt</prompt>",
+                "<criterion>",
+                    "<name>Test criterion</name>",
+                    "<prompt>Test criterion prompt</prompt>",
+                    "<option points=\"2\"><name>No</name></option>",
+                "</criterion>",
+            "</rubric>",
+            "</openassessment>"
+        ]
+    },
+
+    "missing_criterion_name": {
+        "xml": [
+            "<openassessment>",
+            "<title>Foo</title>",
+            "<assessments>",
+                "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
+                "<assessment name=\"self-assessment\" start=\"2014-04-01T00:00:00\" due=\"2014-06-01T00:00:00\" must_grade=\"2\" must_be_graded_by=\"1\" />",
+            "</assessments>",
+            "<rubric>",
+                "<prompt>Test prompt</prompt>",
+                "<criterion>",
+                    "<prompt>Test criterion prompt</prompt>",
+                    "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+                    "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+                "</criterion>",
+            "</rubric>",
+            "</openassessment>"
+        ]
+    },
+
+    "missing_criterion_prompt": {
+        "xml": [
+            "<openassessment>",
+            "<title>Foo</title>",
+            "<assessments>",
+                "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
+                "<assessment name=\"self-assessment\" start=\"2014-04-01T00:00:00\" due=\"2014-06-01T00:00:00\" must_grade=\"2\" must_be_graded_by=\"1\" />",
+            "</assessments>",
+            "<rubric>",
+                "<prompt>Test prompt</prompt>",
+                "<criterion>",
+                    "<name>Test criterion</name>",
+                    "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+                    "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+                "</criterion>",
+            "</rubric>",
+            "</openassessment>"
+        ]
+    },
+
+    "missing_must_grade": {
+        "xml": [
+            "<openassessment>",
+            "<title>Foo</title>",
+            "<assessments>",
+                "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_be_graded_by=\"3\" />",
+            "</assessments>",
+            "<rubric>",
+                "<prompt>Test prompt</prompt>",
+                "<criterion>",
+                    "<name>Test criterion</name>",
+                    "<prompt>Test criterion prompt</prompt>",
+                    "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+                    "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+                "</criterion>",
+            "</rubric>",
+            "</openassessment>"
+        ]
+    },
+
+    "missing_must_be_graded_by": {
+        "xml": [
+            "<openassessment>",
+            "<title>Foo</title>",
+            "<assessments>",
+                "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\"  />",
+            "</assessments>",
+            "<rubric>",
+                "<prompt>Test prompt</prompt>",
+                "<criterion>",
+                    "<name>Test criterion</name>",
+                    "<prompt>Test criterion prompt</prompt>",
+                    "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+                    "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+                "</criterion>",
+            "</rubric>",
+            "</openassessment>"
         ]
     }
 }

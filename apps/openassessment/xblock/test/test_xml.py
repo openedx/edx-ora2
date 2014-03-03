@@ -8,7 +8,7 @@ from django.test import TestCase
 from ddt import ddt, data, file_data, unpack
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock, UI_MODELS
 from openassessment.xblock.xml import (
-    serialize_content, update_from_xml,
+    serialize_content, update_from_xml_str,
     UpdateFromXmlError, InvalidRubricError, InvalidAssessmentError
 )
 
@@ -144,7 +144,7 @@ class TestSerializeContent(TestCase):
         self.oa_block.rubric_assessments = self.BASIC_ASSESSMENTS
 
         for mutated_value in [0, u"\u9282", None]:
-            setattr(self.oa_block, 'title', mutated_value)
+            setattr(self.oa_block, field, mutated_value)
             xml = serialize_content(self.oa_block)
 
             try:
@@ -267,7 +267,7 @@ class TestUpdateFromXml(TestCase):
     def test_update_from_xml(self, data):
 
         # Update the block based on the fixture XML definition
-        returned_block = update_from_xml(self.oa_block, "".join(data['xml']))
+        returned_block = update_from_xml_str(self.oa_block, "".join(data['xml']))
 
         # The block we passed in should be updated and returned
         self.assertEqual(self.oa_block, returned_block)
@@ -281,7 +281,7 @@ class TestUpdateFromXml(TestCase):
     @file_data('data/update_from_xml_error.json')
     def test_update_from_xml_error(self, data):
         with self.assertRaises(UpdateFromXmlError):
-            update_from_xml(self.oa_block, "".join(data['xml']))
+            update_from_xml_str(self.oa_block, "".join(data['xml']))
 
     @file_data('data/update_from_xml.json')
     def test_invalid_rubric(self, data):
@@ -289,7 +289,7 @@ class TestUpdateFromXml(TestCase):
         # We need to back this up with an integration test that checks whether the XBlock
         # provides an appropriate rubric validator.
         with self.assertRaises(InvalidRubricError):
-            update_from_xml(
+            update_from_xml_str(
                 self.oa_block, "".join(data['xml']),
                 rubric_validator=lambda _: (False, '')
             )
@@ -298,7 +298,7 @@ class TestUpdateFromXml(TestCase):
     def test_invalid_assessment(self, data):
         # Plug in an assessment validator that always reports that the assessment dict is invalid.
         with self.assertRaises(InvalidAssessmentError):
-            update_from_xml(
+            update_from_xml_str(
                 self.oa_block, "".join(data['xml']),
                 assessment_validator=lambda _: (False, '')
             )

@@ -1,0 +1,43 @@
+{
+    "zero_criteria": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": []
+        }
+    },
+
+    "zero_options": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": []
+                }
+            ]
+        }
+    },
+
+    "negative_points": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": -1,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

@@ -18,8 +18,8 @@ from openassessment.xblock.peer_assessment_mixin import PeerAssessmentMixin
 from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.studio_mixin import StudioMixin
+from openassessment.xblock.xml import update_from_xml
 
-from scenario_parser import ScenarioParser
 
 DEFAULT_PROMPT = """
     Censorship in the Libraries
@@ -303,10 +303,7 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
             """Recursively embed xblocks for nodes we don't recognize"""
             block.runtime.add_node_as_child(block, child, id_generator)
         block = runtime.construct_xblock_from_class(cls, keys)
-
-        sparser = ScenarioParser(block, node, unknown_handler)
-        block = sparser.parse()
-        return block
+        return update_from_xml(block, node)
 
     def render_assessment(self, path, context_dict=None):
         """Render an Assessment Module's HTML

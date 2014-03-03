@@ -1,0 +1,65 @@
+{
+    "empty_dict": {
+        "assessment": {}
+     },
+    "must_be_graded_by_zero": {
+        "assessment": {
+            "name": "self-assessment",
+            "must_grade": 1,
+            "must_be_graded_by": 0
+        }
+    },
+    "unsupported_type": {
+        "assessment": {
+            "name": "unsupported-assessment",
+            "must_grade": 5,
+            "must_be_graded_by": 3
+        }
+    },
+    "no_type": {
+        "assessment": {
+            "must_grade": 5,
+            "must_be_graded_by": 3
+        }
+    },
+    "unsupported_unicode_type": {
+        "assessment": {
+            "name": "𝓹𝓮𝓮𝓻-𝓪𝓼𝓼𝓮𝓼𝓼𝓶𝓮𝓷𝓽",
+            "must_grade": 5,
+            "must_be_graded_by": 3
+        }
+    },
+    "no_must_grade": {
+        "assessment": {
+            "name": "peer-assessment",
+            "must_be_graded_by": 3
+        }
+    },
+    "no_must_be_graded_by": {
+        "assessment": {
+            "name": "peer-assessment",
+            "must_grade": 5
+        }
+    },
+    "must_grade_less_than_must_be_graded_by": {
+        "assessment": {
+            "name": "peer-assessment",
+            "must_grade": 4,
+            "must_be_graded_by": 5
+        }
+    },
+    "must_grade_zero": {
+        "assessment": {
+            "name": "self-assessment",
+            "must_grade": 0,
+            "must_be_graded_by": 0
+        }
+    },
+    "must_be_graded_by_zero": {
+        "assessment": {
+            "name": "self-assessment",
+            "must_grade": 1,
+            "must_be_graded_by": 0
+        }
+    }
+}

@@ -1,0 +1,55 @@
+{
+    "simple": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+
+    "unicode": {
+        "rubric": {
+            "prompt": "☃",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "☃",
+                    "prompt": "☃",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "☃",
+                            "explanation": "☃"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "☃",
+                            "explanation": "☃"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
