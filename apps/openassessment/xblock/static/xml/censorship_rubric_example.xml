@@ -5,37 +5,71 @@
         <title>
             Censorship in Public Libraries
         </title>
-        <prompt>
-            What do you think about censorship in libraries? I think it's pretty great.
-        </prompt>
         <rubric>
-            Read for conciseness, clarity of thought, and form.
-            <criterion name="concise" total_value="3">
-                How concise is it?
-                <option val="0">The Bible</option>
-                <option val="1">Earnest Hemingway</option>
-                <option val="3">Matsuo Basho</option>
+            <prompt>
+                What do you think about censorship in libraries? I think it's pretty great.
+                Read for conciseness, clarity of thought, and form.
+            </prompt>
+            <criterion>
+                <name>concise</name>
+                <prompt>How concise is it?</prompt>
+                <option points="0">
+                    <name>The Bible</name>
+                    <explanation></explanation>
+                </option>
+                <option points="1">
+                    <name>Earnest Hemingway</name>
+                    <explanation></explanation>
+                </option>
+                <option points="3">
+                    <name>Matsuo Basho</name>
+                    <explanation></explanation>
+                </option>
             </criterion>
-            <criterion name="clearheaded" total_value="2">
-                How clear is the thinking?
-                <option val="0">Eric</option>
-                <option val="1">John</option>
-                <option val="2">Ian</option>
+            <criterion>
+                <name>clear-headed</name>
+                <prompt>How clear is the thinking?</prompt>
+                <option points="0">
+                    <name>Eric</name>
+                    <explanation></explanation>
+                </option>
+                <option points="1">
+                    <name>John</name>
+                    <explanation></explanation>
+                </option>
+                <option points="2">
+                    <name>Ian</name>
+                    <explanation></explanation>
+                </option>
             </criterion>
-            <criterion name="form" total_value="2">
-                Lastly, how is it's form? Punctuation, grammar, and spelling all count.
-                <option val="0">IRC</option>
-                <option val="1">Real Email</option>
-                <option val="2">Old-timey letters</option>
+            <criterion>
+                <name>form</name>
+                <prompt>Lastly, how is it's form? Punctuation, grammar, and spelling all count.</prompt>
+                <option points="0">
+                    <name>IRC</name>
+                    <explanation></explanation>
+                </option>
+                <option points="1">
+                    <name>Real Email</name>
+                    <explanation></explanation>
+                </option>
+                <option points="2">
+                    <name>Old-timey letters</name>
+                    <explanation></explanation>
+                </option>
             </criterion>
         </rubric>
         <assessments>
-            <self-assessment name="self-assessment" />
-            <peer-assessment name="peer-assessment"
-                             start="2014-12-20T19:00-7:00"
-                             due="2014-12-21T22:22-7:00"
-                             must_grade="5"
-                             must_be_graded_by="3" />
+            <assessment name="self-assessment"
+                        start="2014-12-20T19:00-7:00"
+                        due="2014-12-21T22:22-7:00"
+                        must_grade="5"
+                        must_be_graded_by="3" />
+            <assessment name="peer-assessment"
+                        start="2014-12-20T19:00-7:00"
+                        due="2014-12-21T22:22-7:00"
+                        must_grade="5"
+                        must_be_graded_by="3" />
         </assessments>
     </openassessment>
 
