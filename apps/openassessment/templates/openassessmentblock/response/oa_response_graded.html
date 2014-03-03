@@ -17,7 +17,6 @@
 {% block body %}
 <div class="ui-toggle-visibility__content">
     <div class="step__content">
-        <!-- user's response -->
         <article class="submission__answer__display">
             <h3 class="submission__answer__display__title">Your Submitted Response</h3>
 
@@ -26,14 +25,12 @@
             </div>
         </article>
 
-        <!-- peer evaluations -->
         <article class="submission__peer-evaluations">
             <h3 class="submission__peer-evaluations__title">Peer Evaluations Of Your Response</h3>
 
             <ol class="list submission__peer-evaluations__questions">
             {% for criterion in rubric_criteria %}
             {% with criterion_num=forloop.counter %}
-            <!-- individual question from rubric -->
             <li class="question question--{{ criterion_num }} ui-toggle-visibility">
                 <h4 class="question__title ui-toggle-visibility__control">
                     <span class="question__title__copy">{{ criterion.name }}</span>
@@ -82,7 +79,6 @@
             </ol>
         </article>
 
-        <!-- peer assessment feedback -->
         <form id="submission__feeedback" class="submission__feeedback ui-toggle-visibility" method="post">
             <h3 class="submission__feeedback__title ui-toggle-visibility__control">Give Feedback On Peer Evaluations</h3>
 

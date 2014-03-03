@@ -1,15 +1,3 @@
-<!-- TEMPLATE: self evaluation -->
-
-
-<!-- NOTES:
-
- * class of is--unavailable is added when step is not available
- * each .self-assessment item needs a unique id attribute formatted as #self-assessment--###
- * individual rubric questions' answers need specific id attributes in several places
-
- -->
-
-<!-- CASE: default/not started -->
 {% block list_item %}
 <li id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment is--expanded">
 {% endblock %}
@@ -41,7 +29,6 @@
                     <h3 class="self-assessment__display__title">Your Submitted Response</h3>
                 </header>
 
-                <!-- ?: markup validating/copy cleaning upon submission -->
                 <div class="self-assessment__display__response">
                     {{ self_submission.answer }}
                 </div>
@@ -53,37 +40,35 @@
 
                     <ol class="list list--fields assessment__rubric">
                         {% for criterion in rubric_criteria %}
-                            <!-- individual rubric question (radio-based choice) -->
-                            <li class="field field--radio is--required assessment__rubric__question" id="assessment__rubric__question--{{ criterion.name }}">
-                                <h4 class="question__title">
-                                    <i class="ico fa fa-caret-right"></i>
-                                    <span class="question__title__copy">{{ criterion.prompt }}</span>
-                                    <span class="label--required sr">* (Required)</span>
-                                </h4>
+                        <li class="field field--radio is--required assessment__rubric__question" id="assessment__rubric__question--{{ criterion.name }}">
+                             <h4 class="question__title">
+                                <i class="ico fa fa-caret-right"></i>
+                                <span class="question__title__copy">{{ criterion.prompt }}</span>
+                                <span class="label--required sr">* (Required)</span>
+                            </h4>
 
-                                <ol class="question__answers">
-                                    {% for option in criterion.options %}
-                                        <li class="answer">
-                                            <div class="wrapper--input">
-                                                <input type="radio"
-                                                       name="{{ criterion.name }}"
-                                                       id="assessment__rubric__question--{{ criterion.name }}__{{ option.name }}"
-                                                       class="answer__value"
-                                                       value="{{ option.name }}" />
-                                                <label for="assessment__rubric__question--{{ criterion.name }}__{{ option.name }}"
-                                                       class="answer__label">{{ option.name }}</label>
-                                            </div>
-                                            <div class="wrapper--metadata">
-                                                <span class="answer__tip">{{ option.explanation }}</span>
-                                                <span class="answer__points">{{option.points}} <span class="label">points</span></span>
-                                            </div>
-                                        </li>
-                                    {% endfor %}
-                                </ol>
-                            </li>
+                            <ol class="question__answers">
+                                {% for option in criterion.options %}
+                                <li class="answer">
+                                    <div class="wrapper--input">
+                                        <input type="radio"
+                                               name="{{ criterion.name }}"
+                                               id="assessment__rubric__question--{{ criterion.name }}__{{ option.name }}"
+                                               class="answer__value"
+                                               value="{{ option.name }}" />
+                                        <label for="assessment__rubric__question--{{ criterion.name }}__{{ option.name }}"
+                                               class="answer__label">{{ option.name }}</label>
+                                    </div>
+                                    <div class="wrapper--metadata">
+                                        <span class="answer__tip">{{ option.explanation }}</span>
+                                        <span class="answer__points">{{option.points}} <span class="label">points</span></span>
+                                    </div>
+                                </li>
+                                {% endfor %}
+                            </ol>
+                        </li>
                         {% endfor %}
 
-                        <!-- individual rubric question (text) -->
                         <li class="wrapper--input field field--textarea assessment__rubric__question" id="assessment__rubric__question--004">
                             <label for="assessment__rubric__question--004__value">
                                 <i class="ico fa fa-caret-right"></i>

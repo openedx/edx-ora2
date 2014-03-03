@@ -1,15 +1,3 @@
-<!-- TEMPLATE: peer evaluation -->
-
-
-<!-- NOTES:
-
- * class of is--unavailable is added when step is not available
- * each .peer-evaluation item needs a unique id attribute formatted as #peer-evaluation--###
- * individual rubric questions' answers need specific id attributes in several places
-
- -->
-
-<!-- CASE: default/not started -->
 {% block list_item %}
 <li id="openassessment__peer-assessment" class="openassessment__steps__step step--peer-assessment ui-toggle-visibility">
 {% endblock %}
@@ -62,7 +50,6 @@
                                 </span>
                             </header>
 
-                            <!-- ?: markup validating/copy cleaning upon submission -->
                             <div class="peer-assessment__display__response">
                                 {{ peer_submission.answer }}
                             </div>
@@ -104,7 +91,6 @@
                                     </li>
                                     {% endfor %}
 
-                                    <!-- individual rubric question (text) -->
                                     <li class="wrapper--input field field--textarea assessment__rubric__question assessment__rubric__question--feedback" id="assessment__rubric__question--004">
                                         <label class="question__title" for="assessment__rubric__question--004__value">
                                             <i class="ico fa fa-caret-right"></i>
