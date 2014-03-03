@@ -1,64 +1,80 @@
-// base path, that will be used to resolve files and exclude
-basePath = '.';
+// Karma configuration
 
-// list of files / patterns to load in the browser
-files = [
-  JASMINE,
-  JASMINE_ADAPTER,
-  './**/src/*.js',
-  './**/spec/*.js'
-];
+module.exports = function(config) {
+  config.set({
 
-// list of files to exclude
-exclude = [
-    "karma.conf.js"
-];
+    // base path that will be used to resolve all patterns (eg. files, exclude)
+    basePath: 'apps/openassessment/xblock/static/js',
 
-// use dots reporter, as travis terminal does not support escaping sequences
-// possible values: 'dots', 'progress', 'junit', 'teamcity'
-// CLI --reporters progress
-reporters = ['progress'];
 
-// web server port
-// CLI --port 9876
-port = 9876;
+    // frameworks to use
+    // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
+    frameworks: ['jasmine'],
 
-// cli runner port
-// CLI --runner-port 9100
-runnerPort = 9100;
 
-// enable / disable colors in the output (reporters and logs)
-// CLI --colors --no-colors
-colors = true;
+    // list of files / patterns to load in the browser
+    files: [
+      'lib/jquery.min.js',
+      'lib/*.js',
+      'src/*.js',
+      'spec/*.js',
 
-// level of logging
-// possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
-// CLI --log-level debug
-logLevel = LOG_INFO;
+      // fixtures
+      {
+        pattern: 'fixtures/*.html',
+        served: true, included: false
+      },
+    ],
 
-// enable / disable watching file and executing tests whenever any file changes
-// CLI --auto-watch --no-auto-watch
-autoWatch = true;
 
-// Start these browsers, currently available:
-// - Chrome
-// - ChromeCanary
-// - Firefox
-// - Opera
-// - Safari (only Mac)
-// - PhantomJS
-// - IE (only Windows)
-// CLI --browsers Chrome,Firefox,Safari
-browsers = ["Firefox"];
+    // list of files to exclude
+    exclude: [
 
-// If browser does not capture in given timeout [ms], kill it
-// CLI --capture-timeout 5000
-captureTimeout = 5000;
+    ],
 
-// Auto run tests on start (when browsers are captured) and exit
-// CLI --single-run --no-single-run
-singleRun = true;
 
-// report which specs are slower than 500ms
-// CLI --report-slower-than 500
-reportSlowerThan = 500;
+    // preprocess matching files before serving them to the browser
+    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
+    preprocessors: {
+      'src/*.js': 'coverage'
+    },
+
+
+    // test results reporter to use
+    // possible values: 'dots', 'progress'
+    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
+    reporters: ['progress', 'coverage'],
+
+    coverageReporter: {
+        type : 'text'
+    },
+
+    // web server port
+    port: 9876,
+
+
+    // enable / disable colors in the output (reporters and logs)
+    colors: true,
+
+
+    // level of logging
+    // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
+    logLevel: config.LOG_INFO,
+
+
+    // enable / disable watching file and executing tests whenever any file changes
+    autoWatch: false,
+
+
+    // start these browsers
+    // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
+    browsers: ['Firefox'],
+
+
+    // Continuous Integration mode
+    // if true, Karma captures browsers, runs the tests and exits
+    singleRun: true
+
+  });
+
+};
