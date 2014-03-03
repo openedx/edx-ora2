@@ -1,20 +1,21 @@
 {%  extends "openassessmentblock/response/oa_response.html" %}
 
 {% block list_item %}
-    <li id="openassessment__response" class="openassessment__steps__step step--response is--graded ui-toggle-visibility">
+<li id="openassessment__response" class="openassessment__steps__step step--response is--graded ui-toggle-visibility">
 {% endblock %}
 
 {% block title %}
-    <span class="step__status">
-      <span class="step__status__label">This step's status:</span>
-      <span class="step__status__value">
-        <i class="ico fa fa-check"></i>
-        <span class="copy">{{ step_status }}</span>
-      </span>
-    </span>
+<span class="step__status">
+  <span class="step__status__label">This step's status:</span>
+  <span class="step__status__value">
+    <i class="ico fa fa-check"></i>
+    <span class="copy">{{ step_status }}</span>
+  </span>
+</span>
 {% endblock %}
 
 {% block body %}
+<div class="ui-toggle-visibility__content">
     <div class="step__content">
         <!-- user's response -->
         <article class="submission__answer__display">
@@ -30,55 +31,54 @@
             <h3 class="submission__peer-evaluations__title">Peer Evaluations Of Your Response</h3>
 
             <ol class="list submission__peer-evaluations__questions">
+            {% for criterion in rubric_criteria %}
+            {% with criterion_num=forloop.counter %}
+            <!-- individual question from rubric -->
+            <li class="question question--{{ criterion_num }} ui-toggle-visibility">
+                <h4 class="question__title ui-toggle-visibility__control">
+                    <span class="question__title__copy">{{ criterion.name }}</span>
 
-                {% for criterion in rubric_criteria %}
-                    {% with criterion_num=forloop.counter %}
-                        <!-- individual question from rubric -->
-                        <li class="question question--{{ criterion_num }} ui-toggle-visibility">
-                            <h4 class="question__title ui-toggle-visibility__control">
-                                <span class="question__title__copy">{{ criterion.name }}</span>
-
-                <span class="question__score">
-                  <span class="label sr">Overall Question Score</span>
-                  <span class="question__score__value">{{ criterion.median_score }}</span>
-                  <span class="label label--divider sr">out of</span>
-                  <span class="question__score__potential">
-                    {{ criterion.total_value }}
-                    <span class="unit">Points</span>
-                  </span>
-                </span>
-                            </h4>
-
-                            <ul class="question__answers ui-toggle-visibility__content">
-                                {% for assessment in peer_assessments %}
-                                    {% with peer_num=forloop.counter %}
-                                        {% for part in assessment.parts %}
-                                            {% if part.option.criterion.name == criterion.name %}
-                                                <li class="answer peer-assessment--{{ peer_num}}"
-                                                    id="question--{{ criterion_num }}__answer-{{ peer_num }}">
-                                                    <h5 class="answer__title">
-                        <span class="answer__source">
-                          <span class="label sr">Assessor: </span>
-                          <span class="value">Peer {{ peer_num }}</span>
-                        </span>
-                        <span class="answer__value">
-                          <span class="label sr">Peer's Assessment: </span>
-                          <span class="value">{{ part.option.name }}</span>
-                        </span>
-                                                    </h5>
-
-                      <span class="answer__content">
-                        {{ part.option.explanation }}
+                    <span class="question__score">
+                      <span class="label sr">Overall Question Score</span>
+                      <span class="question__score__value">{{ criterion.median_score }}</span>
+                      <span class="label label--divider sr">out of</span>
+                      <span class="question__score__potential">
+                        {{ criterion.total_value }}
+                        <span class="unit">Points</span>
                       </span>
-                                                </li>
-                                            {% endif %}
-                                        {% endfor %}
-                                    {% endwith %}
-                                {% endfor %}
-                            </ul>
-                        </li>
+                    </span>
+                </h4>
+
+                <ul class="question__answers ui-toggle-visibility__content">
+                    {% for assessment in peer_assessments %}
+                    {% with peer_num=forloop.counter %}
+                    {% for part in assessment.parts %}
+                    {% if part.option.criterion.name == criterion.name %}
+                    <li class="answer peer-assessment--{{ peer_num}}"
+                        id="question--{{ criterion_num }}__answer-{{ peer_num }}">
+                        <h5 class="answer__title">
+                            <span class="answer__source">
+                              <span class="label sr">Assessor: </span>
+                              <span class="value">Peer {{ peer_num }}</span>
+                            </span>
+                            <span class="answer__value">
+                              <span class="label sr">Peer's Assessment: </span>
+                              <span class="value">{{ part.option.name }}</span>
+                            </span>
+                        </h5>
+
+                          <span class="answer__content">
+                            {{ part.option.explanation }}
+                          </span>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
                     {% endwith %}
-                {% endfor %}
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endwith %}
+            {% endfor %}
             </ol>
         </article>
 
@@ -100,4 +100,5 @@
             </ul>
         </form>
     </div>
+</div>
 {% endblock %}

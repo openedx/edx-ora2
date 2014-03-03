@@ -1,0 +1,215 @@
+// openassessment: utilities - extends
+// ====================
+
+// NOTES:
+// * these are Sass-placeholders (http://sass-lang.com/documentation/file.SASS_REFERENCE.html#placeholder_selectors_) that are meant for use with just openassessment UI
+
+
+// --------------------
+// UI: content
+// --------------------
+%ui-content-longanswer {
+  max-height: ($baseline-v*15);
+  overflow-y: scroll;
+}
+
+
+// --------------------
+// UI: section
+// --------------------
+%ui-section {
+  border: ($baseline-v/10) solid $color-decorative-tertiary;
+  border-radius: ($baseline-v/10);
+  margin-bottom: $spacing-bravo;
+}
+
+%ui-section-title {
+  @extend %hd-golf;
+  @extend %t-weight3;
+  padding: $spacing-charlie $spacing-bravo;
+  background: $color-decorative-tertiary;
+  color: $heading-secondary-color;
+}
+
+%ui-section-content {
+  padding: $spacing-bravo;
+}
+
+
+// --------------------
+// UI: rubric
+// --------------------
+// rubric question
+%ui-rubric-question {
+  @include clearfix();
+  margin-bottom: $spacing-bravo;
+  @extend %wipe-last-child;
+
+  .question__title {
+    margin-bottom: $spacing-bravo;
+    border-bottom: ($baseline-v/10) solid $color-decorative-tertiary;
+    padding-bottom: $spacing-delta;
+
+    .ico {
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: $spacing-delta;
+    }
+  }
+
+  .question__title__copy {
+    @extend %hd-delta;
+    @extend %t-weight3;
+    color: $heading-primary-color;
+  }
+}
+
+//  rubric answers
+%ui-rubric-answers {
+
+  .answer {
+    @include row();
+    @extend %trans-opacity;
+    @extend %wipe-last-child;
+    margin-bottom: $spacing-charlie;
+    border-bottom: ($baseline-v/20) solid $color-decorative-tertiary;
+    padding-bottom: $spacing-charlie;
+    opacity: 0.75;
+
+    &:hover {
+      opacity: 1.0;
+    }
+  }
+
+  .wrapper--input {
+    margin-bottom: $spacing-delta;
+
+    @include media($bp-ds) {
+      @include span-columns(6 of 6);
+    }
+
+    @include media($bp-dm) {
+      @include span-columns(4 of 12);
+      margin-bottom: 0;
+    }
+
+    @include media($bp-dl) {
+      @include span-columns(4 of 12);
+      margin-bottom: 0;
+    }
+
+    @include media($bp-dx) {
+      @include span-columns(4 of 12);
+      margin-bottom: 0;
+    }
+
+    .answer__value, .answer__label {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .answer__label {
+      @extend %copy-delta;
+      @extend %t-weight3;
+      margin-bottom: 0; // FIX: need to reset base label style
+      color: $color-unfocused;
+    }
+
+    .answer__value {
+      margin-right: $spacing-charlie;
+
+      // STATE: checked
+      &:checked {
+
+        + .answer__label {
+          color: $selected-color;
+        }
+      }
+    }
+  }
+
+  .wrapper--metadata {
+    display: block;
+
+    @include media($bp-dm) {
+      @include span-columns(8 of 12);
+      margin-bottom: 0;
+    }
+
+    @include media($bp-dl) {
+      @include span-columns(8 of 12);
+      margin-bottom: 0;
+    }
+
+    @include media($bp-dx) {
+      @include span-columns(8 of 12);
+      margin-bottom: 0;
+    }
+  }
+
+  .answer__tip, .answer__points {
+    display: block;
+  }
+
+  .answer__tip {
+    margin-bottom: $spacing-charlie;
+
+    @extend %copy-epsilon;
+    margin-right: $spacing-bravo;
+    color: $copy-supplemental-color;
+
+    @include media($bp-dm) {
+      @include span-columns(6 of 8);
+      float: left;
+      margin-bottom: 0;
+    }
+
+    @include media($bp-dl) {
+      @include span-columns(6 of 8);
+      float: left;
+      margin-bottom: 0;
+    }
+
+    @include media($bp-dx) {
+      @include span-columns(6 of 8);
+      float: left;
+      margin-bottom: 0;
+    }
+
+    &:after {
+      content: "";
+    }
+  }
+
+  .answer__points {
+    @extend %copy-epsilon;
+    color: $copy-color;
+
+    @extend %copy-epsilon;
+    margin-right: $spacing-bravo;
+    color: $copy-supplemental-color;
+
+    @include media($bp-dm) {
+      float: right;
+      text-align: right;
+    }
+
+    @include media($bp-dl) {
+      float: right;
+      text-align: right;
+    }
+
+    @include media($bp-dx) {
+      float: right;
+      text-align: right;
+    }
+
+    .label {
+      @extend %copy-epsilon; // FIX: need to reset base label style
+      display: inline-block; // FIX: need to reset base label style
+      margin-left: $spacing-delta;
+      color: $copy-supplemental-color;
+    }
+  }
+}
+
