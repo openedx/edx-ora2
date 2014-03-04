@@ -12,10 +12,8 @@
   input[type="email"],
   input[type="password"],
   textarea {
-    @extend %t-weight2;
     border: 1px solid $color-decorative-secondary;
     padding: ($baseline-v/2);
-    font-family: $f-copy;
     outline: 0;
     color: $selected-color;
 
@@ -31,6 +29,7 @@
   }
 
   .field {
+    font-family: $f-copy;
 
     label, .label {
       @extend %copy-delta;
