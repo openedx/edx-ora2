@@ -601,6 +601,8 @@
 
     .peer-assessment__display__response {
       @extend %ui-section-content;
+      @extend %copy-charlie;
+      @extend %ui-content-longanswer;
     }
 
     // assessment form
@@ -695,7 +697,7 @@
 
       // fields
       .assessment__fields {
-        margin-bottom: $spacing-bravo;
+        margin-bottom: $baseline-v;
       }
 
       // rubric question
