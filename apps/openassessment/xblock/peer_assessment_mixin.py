@@ -1,6 +1,14 @@
+import logging
+from django.utils.translation import ugettext as _
 from xblock.core import XBlock
 from openassessment.peer import api as peer_api
-from openassessment.peer.api import PeerAssessmentWorkflowError
+from openassessment.peer.api import (
+        PeerAssessmentWorkflowError, PeerAssessmentRequestError,
+        PeerAssessmentInternalError
+)
+
+
+logger = logging.getLogger(__name__)
 
 
 class PeerAssessmentMixin(object):
@@ -25,37 +33,59 @@ class PeerAssessmentMixin(object):
 
         Args:
             data (dict): A dictionary containing information required to create
-                a new peer assessment. Expecting attributes "points_earned",
-                "total_value", and "submission_uuid". If these attributes are
-                 not available, a new assessment cannot be stored.
+                a new peer assessment.  This dict should have the following attributes:
+                `submission_uuid` (string): The unique identifier for the submission being assessed.
+                `options_selected` (dict): Dictionary mapping criterion names to option values.
+                `feedback` (unicode): Written feedback for the submission.
 
         Returns:
-            (tuple): A tuple containing the dictionary representation of the
-            newly created assessment, and a "Success" string.
+            Dict with keys "success" (bool) indicating success/failure.
+            and "msg" (unicode) containing additional information if an error occurs.
 
         """
+        # Validate the request
+        if 'feedback' not in data:
+            return {'success': False, 'msg': _('Must provide feedback in the assessment')}
+
+        if 'options_selected' not in data:
+            return {'success': False, 'msg': _('Must provide options selected in the assessment')}
+
+        if 'submission_uuid' not in data:
+            return {'success': False, 'msg': _('Must provide submission uuid for the assessment')}
+
         assessment_ui_model = self.get_assessment_module('peer-assessment')
         if assessment_ui_model:
             rubric_dict = {
                 'criteria': self.rubric_criteria
             }
             assessment_dict = {
-                "feedback": "Not yet implemented.",
+                "feedback": data['feedback'],
                 "options_selected": data["options_selected"],
             }
-            assessment = peer_api.create_assessment(
-                data["submission_uuid"],
-                self.get_student_item_dict()["student_id"],
-                int(assessment_ui_model["must_grade"]),
-                int(assessment_ui_model["must_be_graded_by"]),
-                assessment_dict,
-                rubric_dict,
-            )
+
+            try:
+                assessment = peer_api.create_assessment(
+                    data["submission_uuid"],
+                    self.get_student_item_dict()["student_id"],
+                    int(assessment_ui_model["must_grade"]),
+                    int(assessment_ui_model["must_be_graded_by"]),
+                    assessment_dict,
+                    rubric_dict,
+                )
+            except PeerAssessmentRequestError as ex:
+                return {'success': False, 'msg': ex.message}
+            except PeerAssessmentInternalError as ex:
+                logger.exception()
+                return {'success': False, 'msg': _("Internal error occurred while creating the assessment")}
 
             # Temp kludge until we fix JSON serialization for datetime
             assessment["scored_at"] = str(assessment["scored_at"])
 
-        return {}
+            return {'success': True, 'msg': u''}
+
+        else:
+            return {'success': False, 'msg': _('Could not load peer assessment.')}
+
 
 
     @XBlock.handler

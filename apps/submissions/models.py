@@ -101,6 +101,10 @@ class Score(models.Model):
     points_possible = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(editable=False, default=now, db_index=True)
 
+    @property
+    def submission_uuid(self):
+        return self.submission.uuid
+
     def __repr__(self):
         return repr(dict(
             student_item=self.student_item,

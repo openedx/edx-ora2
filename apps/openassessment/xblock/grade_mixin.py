@@ -1,4 +1,5 @@
 from xblock.core import XBlock
+from openassessment.peer.api import get_assessments
 from submissions.api import get_score
 
 
@@ -23,7 +24,14 @@ class GradeMixin(object):
             student_item = self.get_student_item_dict()
             scores = get_score(student_item)
             if scores:
-                context = {"score": scores[0]}
+                context = {
+                    "score": scores[0],
+                    "assessments": [],
+                }
+
+                # Look up assessment feedback
+                for assessment in get_assessments(scores[0]['submission_uuid']):
+                    context['assessments'].append(assessment)
             else:
                 path = 'openassessmentblock/grade/oa_grade_waiting.html'
         elif not problem_open and date == "due":
@@ -33,4 +41,3 @@ class GradeMixin(object):
             # TODO: How do we determine which modules are incomplete?
 
         return self.render_assessment(path, context)
-

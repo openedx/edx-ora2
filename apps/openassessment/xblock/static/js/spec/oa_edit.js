@@ -1,6 +1,6 @@
-/*
+/**
 Tests for OA XBlock editing.
-*/
+**/
 
 describe("OpenAssessment.StudioUI", function() {
 

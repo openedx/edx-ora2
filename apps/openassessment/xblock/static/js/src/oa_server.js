@@ -85,7 +85,7 @@ OpenAssessment.Server.prototype = {
             $.ajax({
                 type: "POST",
                 url: url,
-                data: {submission: submission}
+                data: JSON.stringify({submission: submission})
             }).done(function(data) {
                 var success = data[0];
                 if (success) {
@@ -102,6 +102,51 @@ OpenAssessment.Server.prototype = {
                 defer.rejectWith(this, ["AJAX", "Could not contact server."]);
             })
         }).promise();
+    },
+
+    /**
+    Send an assessment to the XBlock.
+
+    Args:
+        submissionId (string): The UUID of the submission.
+        optionsSelected (object literal): Keys are criteria names,
+            values are the option text the user selected for the criterion.
+        feedback (string): Written feedback on the submission.
+
+    Returns:
+        A JQuery promise, which resolves with no args if successful
+        and fails with an error message otherise.
+
+    Example:
+        var options = { clarity: "Very clear", precision: "Somewhat precise" };
+        var feedback = "Good job!";
+        server.assess("abc123", options, feedback).done(
+            function() { console.log("Success!"); }
+        ).fail(
+            function(errorMsg) { console.log(errorMsg); }
+        );
+    **/
+    assess: function(submissionId, optionsSelected, feedback) {
+        var url = this.url('assess');
+        var payload = JSON.stringify({
+            submission_uuid: submissionId,
+            options_selected: optionsSelected,
+            feedback: feedback
+        });
+        return $.Deferred(function(defer) {
+            $.ajax({ type: "POST", url: url, data: payload }).done(
+                function(data) {
+                    if (data.success) {
+                        defer.resolve();
+                    }
+                    else {
+                        defer.rejectWith(this, [data.msg]);
+                    }
+                }
+            ).fail(function(data) {
+                defer.rejectWith(this, ['Could not contact server.']);
+            });
+        }).promise()
     },
 
     /**

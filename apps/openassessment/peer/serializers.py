@@ -123,6 +123,7 @@ class AssessmentSerializer(serializers.ModelSerializer):
             'scored_at',
             'scorer_id',
             'score_type',
+            'feedback', 
 
             # Foreign Key
             'parts',

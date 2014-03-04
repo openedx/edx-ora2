@@ -51,7 +51,7 @@ describe("OpenAssessment.Server", function() {
         });
     });
 
-    it("Sends a submission the XBlock", function() {
+    it("Sends a submission to the XBlock", function() {
         // Status, student ID, attempt number
         stubAjax(true, [true, 1, 2]);
 
@@ -69,7 +69,28 @@ describe("OpenAssessment.Server", function() {
         expect($.ajax).toHaveBeenCalledWith({
             url: '/submit',
             type: "POST",
-            data: {submission: "This is only a test"}
+            data: JSON.stringify({submission: "This is only a test"})
+        });
+    });
+
+    it("Sends an assessment to the XBlock", function() {
+        stubAjax(true, {success: true, msg:''});
+
+        var success = false;
+        var options = {clarity: "Very clear", precision: "Somewhat precise"}
+        server.assess("abc1234", options, "Excellent job!").done(function() {
+            success = true;
+        });
+
+        expect(success).toBe(true);
+        expect($.ajax).toHaveBeenCalledWith({
+            url: '/assess',
+            type: "POST",
+            data: JSON.stringify({
+                submission_uuid: "abc1234",
+                options_selected: options,
+                feedback: "Excellent job!"
+            })
         });
     });
 
@@ -182,5 +203,29 @@ describe("OpenAssessment.Server", function() {
         });
 
         expect(receivedMsg).toEqual("Test error");
+    });
+
+    it("informs the caller of a server error when sending an  assessment", function() {
+        stubAjax(true, {success:false, msg:'Test error!'});
+
+        var receivedMsg = null;
+        var options = {clarity: "Very clear", precision: "Somewhat precise"}
+        server.assess("abc1234", options, "Excellent job!").fail(function(msg) {
+            receivedMsg = msg;
+        });
+
+        expect(receivedMsg).toEqual("Test error!");
+    });
+
+    it("informs the caller of an AJAX error when sending an  assessment", function() {
+        stubAjax(false, null);
+
+        var receivedMsg = null;
+        var options = {clarity: "Very clear", precision: "Somewhat precise"}
+        server.assess("abc1234", options, "Excellent job!").fail(function(msg) {
+            receivedMsg = msg;
+        });
+
+        expect(receivedMsg).toEqual("Could not contact server.");
     });
 });
