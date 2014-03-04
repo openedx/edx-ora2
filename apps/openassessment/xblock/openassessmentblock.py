@@ -360,6 +360,20 @@ class OpenAssessmentBlock(
         context = Context(context_dict)
         return Response(template.render(context), content_type='application/html', charset='UTF-8')
 
+    def render_error(self, error_msg):
+        """
+        Render an error message.
+
+        Args:
+            error_msg (unicode): The error message to display.
+
+        Returns:
+            Response: A response object with an HTML body.
+        """
+        context = Context({'error_msg': error_msg})
+        template = get_template('openassessmentblock/oa_error.html')
+        return Response(template.render(context), content_type='application/html', charset='UTF-8')
+
     def is_open(self):
         """Checks if the question is open.
 

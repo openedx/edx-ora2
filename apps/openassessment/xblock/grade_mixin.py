@@ -1,5 +1,5 @@
 from xblock.core import XBlock
-from openassessment.peer import api as peer_api
+from openassessment.assessment.peer_api import get_assessments
 from openassessment.workflow import api as workflow_api
 
 
@@ -25,7 +25,7 @@ class GradeMixin(object):
                 "score": workflow["score"],
                 "assessments": [
                     assessment
-                    for assessment in peer_api.get_assessments(self.submission_uuid)
+                    for assessment in get_assessments(self.submission_uuid)
                 ],
             }
         elif workflow.get('status') == "waiting":

@@ -40,10 +40,6 @@
         </criterion>
     </rubric>
     <assessments>
-        <assessment name="peer-assessment"
-          start="2014-12-20T19:00"
-          due="2014-12-21T22:22"
-          must_grade="5"
-          must_be_graded_by="3" />
+        <assessment name="self-assessment" />
     </assessments>
 </openassessment>

@@ -1,7 +1,7 @@
 from xblock.core import XBlock
-from submissions import api
 from django.utils.translation import ugettext as _
-from openassessment.peer import api as peer_api
+from submissions import api
+from openassessment.assessment import peer_api
 from openassessment.workflow import api as workflow_api
 
 

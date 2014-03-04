@@ -13,6 +13,7 @@ class StudentItemSerializer(serializers.ModelSerializer):
 
 
 class SubmissionSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Submission
         fields = (
@@ -21,7 +22,7 @@ class SubmissionSerializer(serializers.ModelSerializer):
             'attempt_number',
             'submitted_at',
             'created_at',
-            'answer'
+            'answer',
         )
 
 

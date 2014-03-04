@@ -9,8 +9,8 @@ from ddt import ddt, file_data
 from mock import patch
 from nose.tools import raises
 
-from openassessment.peer import api as peer_api
-from openassessment.peer.models import Assessment
+from openassessment.assessment import peer_api
+from openassessment.assessment.models import Assessment
 from openassessment.workflow import api as workflow_api
 from submissions import api as sub_api
 from submissions.models import Submission

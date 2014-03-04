@@ -4,7 +4,7 @@ Test validation of serialized models.
 
 import ddt
 from django.test import TestCase
-from openassessment.peer.serializers import validate_assessment_dict, validate_rubric_dict
+from openassessment.assessment.serializers import validate_assessment_dict, validate_rubric_dict
 
 
 @ddt.ddt

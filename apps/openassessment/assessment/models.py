@@ -11,9 +11,17 @@ import json
 
 from django.db import models
 from django.utils.timezone import now
+from django.utils.translation import ugettext as _
 import math
 
 from submissions.models import Submission
+
+
+class InvalidOptionSelection(Exception):
+    """
+    The user selected options that do not match the rubric.
+    """
+    pass
 
 
 class Rubric(models.Model):
@@ -82,28 +90,50 @@ class Rubric(models.Model):
                 the option that was selected for that criterion.
 
         Returns:
-            list of option ids (set to None if the selected option does not match the rubric)
+            set of option ids
 
         Examples:
             >>> options_selected = {"secret": "yes", "safe": "no"}
             >>> rubric.options_ids(options_selected)
             [10, 12]
 
-        """
-        # TODO: cache this
-        crit_to_all_opts = {
-            crit.name : {
-                option.name: option.id for option in crit.options.all()
-            }
-            for crit in self.criteria.all()
-        }
+        Raises:
+            InvalidOptionSelection: the selected options do not match the rubric.
 
-        return [
-            crit_to_all_opts[crit][opt]
-            if crit in crit_to_all_opts and opt in crit_to_all_opts[crit]
-            else None
-            for crit, opt in options_selected.items()
-        ]
+        """
+        # Select all criteria and options for this rubric
+        # We use `select_related()` to minimize the number of database queries
+        rubric_options = CriterionOption.objects.filter(criterion__rubric=self).select_related()
+
+        # Create a dict of dicts that maps:
+        # criterion names --> option names --> option ids
+        rubric_criteria_dict = defaultdict(dict)
+
+        # Construct dictionaries for each option in the rubric
+        for option in rubric_options:
+            rubric_criteria_dict[option.criterion.name][option.name] = option.id
+
+        # Validate: are options selected for each criterion in the rubric?
+        if len(options_selected) != len(rubric_criteria_dict):
+            msg = _("Incorrect number of options for this rubric ({actual} instead of {expected}").format(
+                actual=len(options_selected), expected=len(rubric_criteria_dict))
+            raise InvalidOptionSelection(msg)
+
+        # Look up each selected option
+        option_id_set = set()
+        for criterion_name, option_name in options_selected.iteritems():
+            if (criterion_name in rubric_criteria_dict and
+                option_name in rubric_criteria_dict[criterion_name]
+            ):
+                option_id = rubric_criteria_dict[criterion_name][option_name]
+                option_id_set.add(option_id)
+            else:
+                msg = _("{criterion}: {option} not found in rubric").format(
+                    criterion=criterion_name, option=option_name
+                )
+                raise InvalidOptionSelection(msg)
+
+        return option_id_set
 
 
 class Criterion(models.Model):
@@ -191,7 +221,7 @@ class Assessment(models.Model):
     scorer_id = models.CharField(max_length=40, db_index=True)
     score_type = models.CharField(max_length=2)
 
-    feedback = models.TextField(max_length=10000, default="")
+    feedback = models.TextField(max_length=10000, default="", blank=True)
 
     class Meta:
         ordering = ["-scored_at"]

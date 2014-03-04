@@ -365,8 +365,6 @@ def _parse_assessments_xml(assessments_root, validator):
                 assessment_dict['must_grade'] = int(assessment.get('must_grade'))
             except ValueError:
                 raise UpdateFromXmlError(_('Assessment "must_grade" attribute must be an integer.'))
-        else:
-            raise UpdateFromXmlError(_('XML assessment definition must have a "must_grade" attribute'))
 
         # Assessment must_be_graded_by
         if 'must_be_graded_by' in assessment.attrib:
@@ -374,8 +372,6 @@ def _parse_assessments_xml(assessments_root, validator):
                 assessment_dict['must_be_graded_by'] = int(assessment.get('must_be_graded_by'))
             except ValueError:
                 raise UpdateFromXmlError(_('Assessment "must_be_graded_by" attribute must be an integer.'))
-        else:
-            raise UpdateFromXmlError(_('XML assessment definition must have a "must_be_graded_by" attribute'))
 
         # Validate the semantics of the assessment definition
         success, msg = validator(assessment_dict)

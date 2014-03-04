@@ -192,6 +192,29 @@ def get_submission(submission_uuid):
 
     return SubmissionSerializer(submission).data
 
+def get_submission_by_uuid(uuid):
+    """
+    Retrieve a submission by its unique identifier.
+
+    Args:
+        uuid (str): the unique identifier of the submission.
+
+    Returns:
+        Serialized Submission model (dict) containing a serialized StudentItem model
+        If the submission does not exist, return None
+    """
+    try:
+        submission = Submission.objects.get(uuid=uuid)
+    except Submission.DoesNotExist:
+        return None
+
+    # There is probably a more idiomatic way to do this using the Django REST framework
+    submission_dict = SubmissionSerializer(submission).data
+    submission_dict['student_item'] = StudentItemSerializer(submission.student_item).data
+
+    return submission_dict
+
+
 def get_submissions(student_item_dict, limit=None):
     """Retrieves the submissions for the specified student item,
     ordered by most recent submitted date.

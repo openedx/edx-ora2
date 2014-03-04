@@ -9,9 +9,9 @@ from django_extensions.db.fields import UUIDField
 from model_utils import Choices
 from model_utils.models import StatusModel, TimeStampedModel
 
-from openassessment.peer import api as peer_api
-from openassessment.peer import self_api
+from openassessment.assessment import peer_api, self_api
 from submissions import api as sub_api
+
 
 class AssessmentWorkflow(TimeStampedModel, StatusModel):
     """Tracks the open-ended assessment status of a student submission.

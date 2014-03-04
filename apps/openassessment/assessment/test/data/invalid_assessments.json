@@ -50,14 +50,14 @@
     },
     "must_grade_zero": {
         "assessment": {
-            "name": "self-assessment",
+            "name": "peer-assessment",
             "must_grade": 0,
             "must_be_graded_by": 0
         }
     },
     "must_be_graded_by_zero": {
         "assessment": {
-            "name": "self-assessment",
+            "name": "peer-assessment",
             "must_grade": 1,
             "must_be_graded_by": 0
         }
