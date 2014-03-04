@@ -162,6 +162,7 @@ OpenAssessment.BaseUI.prototype = {
         this.server.submit(submission).done(
             // When we have successfully sent the submission, expand the next step
             function(studentId, attemptNum) {
+                ui.renderSubmissionStep();
                 ui.renderPeerAssessmentStep(true);
             }
         ).fail(function(errMsg) {
@@ -182,13 +183,14 @@ OpenAssessment.BaseUI.prototype = {
                 optionsSelected[sel.name] = sel.value;
             }
         );
-        var feedback = $('#assessment__rubric__question--004__value', this.element).val();
+        var feedback = $('#assessment__rubric__question--feedback__value', this.element).val();
 
         // Send the assessment to the server
         var ui = this;
         this.server.assess(submissionId, optionsSelected, feedback).done(
             function() {
                 // When we have successfully sent the assessment, expand the next step
+                ui.renderPeerAssessmentStep(true);
                 ui.renderSelfAssessmentStep(true);
                 ui.renderGradeStep(true);
             }
