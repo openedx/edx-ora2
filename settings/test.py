@@ -11,6 +11,7 @@ TEST_APPS = ('openassessment.peer', 'submissions', "openassessment.xblock")
 NOSE_ARGS = [
     '--with-coverage',
     '--cover-package=' + ",".join(TEST_APPS),
+    '--cover-branches',
     '--cover-erase',
 ]
 

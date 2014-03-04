@@ -1,3 +1,6 @@
+[run]
+branch = True
+
 [report]
 include = apps/*
 omit =
