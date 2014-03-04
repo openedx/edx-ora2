@@ -20,19 +20,19 @@
 %ui-section {
   border: ($baseline-v/10) solid $color-decorative-tertiary;
   border-radius: ($baseline-v/10);
-  margin-bottom: $spacing-bravo;
+  margin-bottom: $baseline-v;
 }
 
 %ui-section-title {
   @extend %hd-golf;
   @extend %t-weight3;
-  padding: $spacing-charlie $spacing-bravo;
+  padding: ($baseline-v/2) $baseline-v;
   background: $color-decorative-tertiary;
   color: $heading-secondary-color;
 }
 
 %ui-section-content {
-  padding: $spacing-bravo;
+  padding: $baseline-v;
 }
 
 
@@ -42,18 +42,18 @@
 // rubric question
 %ui-rubric-question {
   @include clearfix();
-  margin-bottom: $spacing-bravo;
+  margin-bottom: $baseline-v;
   @extend %wipe-last-child;
 
   .question__title {
-    margin-bottom: $spacing-bravo;
+    margin-bottom: $baseline-v;
     border-bottom: ($baseline-v/10) solid $color-decorative-tertiary;
-    padding-bottom: $spacing-delta;
+    padding-bottom: ($baseline-v/4);
 
     .ico {
       display: inline-block;
       vertical-align: middle;
-      margin-right: $spacing-delta;
+      margin-right: ($baseline-v/4);
     }
   }
 
@@ -71,9 +71,9 @@
     @include row();
     @extend %trans-opacity;
     @extend %wipe-last-child;
-    margin-bottom: $spacing-charlie;
+    margin-bottom: ($baseline-v/2);
     border-bottom: ($baseline-v/20) solid $color-decorative-tertiary;
-    padding-bottom: $spacing-charlie;
+    padding-bottom: ($baseline-v/2);
     opacity: 0.75;
 
     &:hover {
@@ -82,7 +82,7 @@
   }
 
   .wrapper--input {
-    margin-bottom: $spacing-delta;
+    margin-bottom: ($baseline-v/4);
 
     @include media($bp-ds) {
       @include span-columns(6 of 6);
@@ -116,7 +116,7 @@
     }
 
     .answer__value {
-      margin-right: $spacing-charlie;
+      margin-right: ($baseline-v/2);
 
       // STATE: checked
       &:checked {
@@ -152,10 +152,10 @@
   }
 
   .answer__tip {
-    margin-bottom: $spacing-charlie;
+    margin-bottom: ($baseline-v/2);
 
     @extend %copy-epsilon;
-    margin-right: $spacing-bravo;
+    margin-right: $baseline-v;
     color: $copy-supplemental-color;
 
     @include media($bp-dm) {
@@ -186,7 +186,7 @@
     color: $copy-color;
 
     @extend %copy-epsilon;
-    margin-right: $spacing-bravo;
+    margin-right: $baseline-v;
     color: $copy-supplemental-color;
 
     @include media($bp-dm) {
@@ -207,7 +207,7 @@
     .label {
       @extend %copy-epsilon; // FIX: need to reset base label style
       display: inline-block; // FIX: need to reset base label style
-      margin-left: $spacing-delta;
+      margin-left: ($baseline-v/4);
       color: $copy-supplemental-color;
     }
   }

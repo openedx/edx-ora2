@@ -14,7 +14,7 @@
   textarea {
     @extend %t-weight2;
     border: 1px solid $color-decorative-secondary;
-    padding: $spacing-charlie;
+    padding: ($baseline-v/2);
     font-family: $f-copy;
     outline: 0;
     color: $selected-color;
@@ -35,7 +35,7 @@
     label, .label {
       @extend %copy-delta;
       display: block;
-      margin-bottom: $spacing-charlie;
+      margin-bottom: ($baseline-v/2);
       color: $copy-color;
     }
 

@@ -10,13 +10,6 @@
 $baseline-v: 20px;                                                  // vertical baseline
 $baseline-h: 40px;                                                  // horizontal baseline
 
-// units: spacing presets
-$spacing-alpha: ($baseline-v*2);
-$spacing-bravo: $baseline-v;
-$spacing-charlie: ($baseline-v/2);
-$spacing-delta: ($baseline-v/4);
-
-
 // --------------------
 // layout - grid (neat-based - http://neat.bourbon.io/)
 // --------------------
