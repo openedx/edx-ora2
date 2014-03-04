@@ -67,16 +67,15 @@ class PeerAssessmentMixin(object):
                 assessment = peer_api.create_assessment(
                     data["submission_uuid"],
                     self.get_student_item_dict()["student_id"],
-                    int(assessment_ui_model["must_grade"]),
-                    int(assessment_ui_model["must_be_graded_by"]),
                     assessment_dict,
                     rubric_dict,
                 )
             except PeerAssessmentRequestError as ex:
                 return {'success': False, 'msg': ex.message}
             except PeerAssessmentInternalError as ex:
-                logger.exception()
-                return {'success': False, 'msg': _("Internal error occurred while creating the assessment")}
+                msg = _("Internal error occurred while creating the assessment")
+                logger.exception(msg)
+                return {'success': False, 'msg': msg}
 
             # Update both the workflow that the submission we're assessing
             # belongs to, as well as our own (e.g. have we evaluated enough?)

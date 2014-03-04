@@ -9,7 +9,7 @@ from mock import patch
 import pytz
 
 from submissions import api as api
-from submissions.models import Submission
+from submissions.models import Submission, StudentItem
 from submissions.serializers import StudentItemSerializer
 
 STUDENT_ITEM = dict(
@@ -39,7 +39,8 @@ class TestSubmissionsApi(TestCase):
 
     def test_create_submission(self):
         submission = api.create_submission(STUDENT_ITEM, ANSWER_ONE)
-        self._assert_submission(submission, ANSWER_ONE, 1, 1)
+        student_item = self._get_student_item(STUDENT_ITEM)
+        self._assert_submission(submission, ANSWER_ONE, student_item.pk, 1)
 
     def test_get_submission_by_uuid(self):
         submission = api.create_submission(STUDENT_ITEM, ANSWER_ONE)
@@ -57,8 +58,9 @@ class TestSubmissionsApi(TestCase):
         api.create_submission(STUDENT_ITEM, ANSWER_TWO)
         submissions = api.get_submissions(STUDENT_ITEM)
 
-        self._assert_submission(submissions[1], ANSWER_ONE, 1, 1)
-        self._assert_submission(submissions[0], ANSWER_TWO, 1, 2)
+        student_item = self._get_student_item(STUDENT_ITEM)
+        self._assert_submission(submissions[1], ANSWER_ONE, student_item.pk, 1)
+        self._assert_submission(submissions[0], ANSWER_TWO, student_item.pk, 2)
 
     def test_get_submission(self):
         # Test base case that we can create a submission and get it back
@@ -85,24 +87,28 @@ class TestSubmissionsApi(TestCase):
         mock_get.side_effect = DatabaseError("Kaboom!")
         api.get_submission("000000000000000")
 
+
     def test_two_students(self):
         api.create_submission(STUDENT_ITEM, ANSWER_ONE)
         api.create_submission(SECOND_STUDENT_ITEM, ANSWER_TWO)
 
         submissions = api.get_submissions(STUDENT_ITEM)
         self.assertEqual(1, len(submissions))
-        self._assert_submission(submissions[0], ANSWER_ONE, 1, 1)
+        student_item = self._get_student_item(STUDENT_ITEM)
+        self._assert_submission(submissions[0], ANSWER_ONE, student_item.pk, 1)
 
         submissions = api.get_submissions(SECOND_STUDENT_ITEM)
         self.assertEqual(1, len(submissions))
-        self._assert_submission(submissions[0], ANSWER_TWO, 2, 1)
+        student_item = self._get_student_item(SECOND_STUDENT_ITEM)
+        self._assert_submission(submissions[0], ANSWER_TWO, student_item.pk, 1)
 
 
     @file_data('test_valid_student_items.json')
     def test_various_student_items(self, valid_student_item):
         api.create_submission(valid_student_item, ANSWER_ONE)
+        student_item = self._get_student_item(valid_student_item)
         submission = api.get_submissions(valid_student_item)[0]
-        self._assert_submission(submission, ANSWER_ONE, 1, 1)
+        self._assert_submission(submission, ANSWER_ONE, student_item.pk, 1)
 
     def test_get_latest_submission(self):
         past_date = datetime.datetime(2007, 9, 12, 0, 0, 0, 0, pytz.UTC)
@@ -120,7 +126,8 @@ class TestSubmissionsApi(TestCase):
     def test_set_attempt_number(self):
         api.create_submission(STUDENT_ITEM, ANSWER_ONE, None, 2)
         submissions = api.get_submissions(STUDENT_ITEM)
-        self._assert_submission(submissions[0], ANSWER_ONE, 1, 2)
+        student_item = self._get_student_item(STUDENT_ITEM)
+        self._assert_submission(submissions[0], ANSWER_ONE, student_item.pk, 2)
 
     @raises(api.SubmissionRequestError)
     @file_data('test_bad_student_items.json')
@@ -155,13 +162,21 @@ class TestSubmissionsApi(TestCase):
         self.assertEqual(submission["student_item"], expected_item)
         self.assertEqual(submission["attempt_number"], expected_attempt)
 
+    def _get_student_item(self, student_item):
+        return StudentItem.objects.get(
+            student_id=student_item["student_id"],
+            course_id=student_item["course_id"],
+            item_id=student_item["item_id"]
+        )
+
     """
     Testing Scores
     """
 
     def test_create_score(self):
         submission = api.create_submission(STUDENT_ITEM, ANSWER_ONE)
-        self._assert_submission(submission, ANSWER_ONE, 1, 1)
+        student_item = self._get_student_item(STUDENT_ITEM)
+        self._assert_submission(submission, ANSWER_ONE, student_item.pk, 1)
 
         score = api.set_score(submission["uuid"], 11, 12)
         self._assert_score(score, 11, 12)

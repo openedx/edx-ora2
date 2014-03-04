@@ -224,7 +224,7 @@ class Assessment(models.Model):
     feedback = models.TextField(max_length=10000, default="", blank=True)
 
     class Meta:
-        ordering = ["-scored_at"]
+        ordering = ["-scored_at", "-id"]
 
     @property
     def points_earned(self):
@@ -365,3 +365,67 @@ class AssessmentPart(models.Model):
     @property
     def points_possible(self):
         return self.option.criterion.points_possible
+
+
+class PeerWorkflow(models.Model):
+    """Internal Model for tracking Peer Assessment Workflow
+
+    This model can be used to determine the following information required
+    throughout the Peer Assessment Workflow:
+
+    1) Get next submission that requires assessment.
+    2) Does a submission have enough assessments?
+    3) Has a student completed enough assessments?
+    4) Does a student already have a submission open for assessment?
+    5) Close open assessments when completed.
+    6) Should 'over grading' be allowed for a submission?
+
+    The student item is the author of the submission.  Peer Workflow Items are
+    created for each assessment made by this student.
+
+    """
+    student_id = models.CharField(max_length=40, db_index=True)
+    item_id = models.CharField(max_length=128, db_index=True)
+    course_id = models.CharField(max_length=40, db_index=True)
+    submission_uuid = models.CharField(max_length=128, db_index=True, unique=True)
+    created_at = models.DateTimeField(default=now, db_index=True)
+
+    class Meta:
+        ordering = ["created_at", "id"]
+
+    def __repr__(self):
+        return (
+            "PeerWorkflow(student_id={0.student_id}, item_id={0.item_id}, "
+            "course_id={0.course_id}, submission_uuid={0.submission_uuid})"
+            "created_at={0.created_at}"
+        ).format(self)
+
+    def __unicode__(self):
+        return repr(self)
+
+
+class PeerWorkflowItem(models.Model):
+    """Represents an assessment associated with a particular workflow
+
+    Created every time a submission is requested for peer assessment. The
+    associated workflow represents the scorer of the given submission, and the
+    assessment represents the completed assessment for this work item.
+
+    """
+    scorer_id = models.ForeignKey(PeerWorkflow, related_name='items')
+    submission_uuid = models.CharField(max_length=128, db_index=True)
+    started_at = models.DateTimeField(default=now, db_index=True)
+    assessment = models.IntegerField(default=-1)
+
+    class Meta:
+        ordering = ["started_at", "id"]
+
+    def __repr__(self):
+        return (
+            "PeerWorkflowItem(scorer_id={0.scorer_id}, "
+            "submission_uuid={0.submission_uuid}, "
+            "started_at={0.started_at}, assessment={0.assessment})"
+        ).format(self)
+
+    def __unicode__(self):
+        return repr(self)

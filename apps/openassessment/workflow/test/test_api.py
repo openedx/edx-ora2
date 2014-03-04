@@ -3,6 +3,7 @@ from django.db import DatabaseError
 from django.test import TestCase
 from mock import patch
 from nose.tools import raises
+from openassessment.assessment import peer_api
 
 from openassessment.workflow.models import AssessmentWorkflow
 from submissions.models import Submission

@@ -350,6 +350,9 @@ def set_score(submission_uuid, score, points_possible):
     externally to the API.
 
     Args:
+        student_item (dict): The student item associated with this score. This
+            dictionary must contain a course_id, student_id, and item_id.
+        submission_uuid (str): The submission associated with this score.
         submission_uuid (str): UUID for the submission (must exist).
         score (int): The score to associate with the given submission and
             student item.
@@ -384,7 +387,7 @@ def set_score(submission_uuid, score, points_possible):
         )
     except DatabaseError:
         error_msg = u"Could not retrieve student item: {} or submission {}.".format(
-            student_item, submission
+            submission_uuid
         )
         logger.exception(error_msg)
         raise SubmissionRequestError(error_msg)
