@@ -30,59 +30,59 @@
 .wrapper--xblock {
   // typography tests
   .h1 {
-    @extend %hd-alpha;
+    @extend %hd-1;
   }
 
   .h2 {
-    @extend %hd-bravo;
+    @extend %hd-2;
   }
 
   .h3 {
-    @extend %hd-charlie;
+    @extend %hd-3;
   }
 
   .h4 {
-    @extend %hd-delta;
+    @extend %hd-4;
   }
 
   .h5 {
-    @extend %hd-epsilon;
+    @extend %hd-5;
   }
 
   .h6 {
-    @extend %hd-foxtrot;
+    @extend %hd-6;
   }
 
   .h7 {
-    @extend %hd-golf;
+    @extend %hd-7;
   }
 
   .h8 {
-    @extend %hd-hotel;
+    @extend %hd-8;
   }
 
   .copy-1 {
-    @extend %copy-alpha;
+    @extend %copy-1;
   }
 
   .copy-2 {
-    @extend %copy-bravo;
+    @extend %copy-2;
   }
 
   .copy-3 {
-    @extend %copy-charlie;
+    @extend %copy-3;
   }
 
   .copy-4 {
-    @extend %copy-delta;
+    @extend %copy-4;
   }
 
   .copy-5 {
-    @extend %copy-epsilon;
+    @extend %copy-5;
   }
 
   .copy-6 {
-    @extend %copy-foxtrot;
+    @extend %copy-6;
   }
 }
 

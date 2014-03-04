@@ -32,7 +32,7 @@
     font-family: $f-copy;
 
     label, .label {
-      @extend %copy-delta;
+      @extend %copy-4;
       display: block;
       margin-bottom: ($baseline-v/2);
       color: $copy-color;

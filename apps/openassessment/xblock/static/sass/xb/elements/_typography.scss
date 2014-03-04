@@ -61,7 +61,7 @@
 // --------------------
 // canned headings
 // --------------------
-%hd-alpha {
+%hd-1 {
   @extend %t-weight1;
   @extend %t-titlecase;
   @include font-size(24);
@@ -69,14 +69,14 @@
   font-family: $f-title;
 }
 
-%hd-bravo {
+%hd-2 {
   @extend %t-weight3;
   @include font-size(21);
   @include lh(21);
   font-family: $f-title;
 }
 
-%hd-charlie {
+%hd-3 {
   @extend %t-weight1;
   @extend %t-titlecase;
   @include font-size(18);
@@ -84,14 +84,14 @@
   font-family: $f-title;
 }
 
-%hd-delta {
+%hd-4 {
   @extend %t-weight3;
   @include font-size(16);
   @include lh(16);
   font-family: $f-title;
 }
 
-%hd-epsilon {
+%hd-5 {
   @extend %t-weight1;
   @extend %t-titlecase;
   @include font-size(16);
@@ -99,14 +99,14 @@
   font-family: $f-title;
 }
 
-%hd-foxtrot {
+%hd-6 {
   @extend %t-weight3;
   @include font-size(16);
   @include lh(16);
   font-family: $f-title;
 }
 
-%hd-golf {
+%hd-7 {
   @extend %t-weight1;
   @extend %t-titlecase;
   @include font-size(13);
@@ -114,18 +114,10 @@
   font-family: $f-title;
 }
 
-%hd-hotel {
+%hd-8 {
   @extend %t-weight1;
   @include font-size(13);
   @include lh(13);
-  font-family: $f-title;
-}
-
-%hd-india {
-  @extend %t-weight1;
-  @extend %t-titlecase;
-  @include font-size(11);
-  @include lh(11);
   font-family: $f-title;
 }
 
@@ -133,39 +125,39 @@
 // --------------------
 // canned copy
 // --------------------
-%copy-alpha {
+%copy-1 {
   @extend %t-weight0;
   @include font-size(24);
   @include lh(24);
   font-family: $f-copy;
 }
 
-%copy-bravo {
+%copy-2 {
   @include font-size(18);
   @include lh(18);
   font-family: $f-copy;
 }
 
-%copy-charlie {
+%copy-3 {
   @extend %t-weight1;
   @include font-size(16);
   @include lh(16);
   font-family: $f-copy;
 }
 
-%copy-delta {
+%copy-4 {
   @include font-size(14);
   @include lh(14);
   font-family: $f-copy;
 }
 
-%copy-epsilon {
+%copy-5 {
   @include font-size(13);
   @include lh(12);
   font-family: $f-copy;
 }
 
-%copy-foxtrot {
+%copy-6 {
   @include font-size(12);
   @include lh(12);
   font-family: $f-copy;
@@ -175,31 +167,31 @@
 // --------------------
 // canned actions
 // --------------------
-%action-alpha {
+%action-1 {
   @include font-size(18);
   @include lh(18);
   font-family: $f-action;
 }
 
-%action-bravo {
+%action-2 {
   @include font-size(18);
   @include lh(18);
   font-family: $f-action;
 }
 
-%action-charlie {
+%action-3 {
   @include font-size(16);
   @include lh(16);
   font-family: $f-action;
 }
 
-%action-delta {
+%action-4 {
   @include font-size(14);
   @include lh(14);
   font-family: $f-action;
 }
 
-%action-epsilon {
+%action-5 {
   @include font-size(12);
   @include lh(12);
   font-family: $f-action;
@@ -213,12 +205,12 @@
   font-style: normal;
 }
 
-%emphasis-alpha {
+%emphasis-1 {
   @extend %emphasis;
   @extend %t-weight3;
 }
 
-%emphasis-bravo {
+%emphasis-2 {
   @extend %emphasis;
   @extend %t-weight2;
 }

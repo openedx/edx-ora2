@@ -23,13 +23,13 @@
   }
 
   .openassessment__title--super {
-    @extend %hd-charlie;
+    @extend %hd-3;
     display: block;
     margin-bottom: ($baseline-v/4);
   }
 
   .openassessment__title--sub {
-    @extend %hd-golf;
+    @extend %hd-7;
     display: block;
     color: $heading-tertiary-color;
   }
@@ -115,7 +115,7 @@
 
         // increment: show numbers using parent list counter
         &:before {
-          @extend %hd-foxtrot;
+          @extend %hd-6;
           @extend %t-weight4;
           content: counter(item, decimal);
           counter-increment: item;
@@ -133,13 +133,13 @@
       }
 
       .step__label {
-        @extend %hd-delta;
+        @extend %hd-4;
         @extend %t-weight3;
         @extend %trans-color;
       }
 
       .step__deadline {
-        @extend %hd-hotel;
+        @extend %hd-8;
         @extend %trans-color;
         color: $heading-secondary-color;
       }
@@ -173,7 +173,7 @@
       }
 
       .copy {
-        @extend %copy-foxtrot;
+        @extend %copy-6;
         @extend %t-titlecase;
         color: $white-t;
       }
@@ -225,7 +225,7 @@
 
     // step instructions
     .step__instruction {
-      @extend %copy-delta;
+      @extend %copy-4;
       margin-bottom: $baseline-v;
       color: $copy-color;
     }
@@ -257,7 +257,7 @@
 
       .action--submit {
         @extend %btn--primary;
-        @extend %action-delta;
+        @extend %action-4;
       }
     }
 
@@ -402,7 +402,7 @@
   }
 
   .openassessment__prompt__copy {
-    @extend %copy-bravo;
+    @extend %copy-2;
     color: $copy-lead-color;
 
     > * {
@@ -481,7 +481,7 @@
 
       .action--save {
         @extend %btn--secondary;
-        @extend %action-delta;
+        @extend %action-4;
         display: block;
         text-align: center;
 
@@ -507,7 +507,7 @@
       }
 
       .tip {
-        @extend %copy-epsilon;
+        @extend %copy-5;
         color: $copy-supplemental-color;
       }
     }
@@ -522,7 +522,7 @@
     }
 
     .submission__answer__display__content {
-      @extend %copy-charlie;
+      @extend %copy-3;
       @extend %ui-content-longanswer;
       @extend %ui-section-content;
     }
@@ -552,7 +552,7 @@
       }
 
       .peer-assessment__display__title {
-        @extend %hd-golf; // FIX: needed due to DOM structure
+        @extend %hd-7; // FIX: needed due to DOM structure
         @extend %t-weight3;
         margin-bottom: ($baseline-v/4);
 
@@ -578,7 +578,7 @@
       }
 
       .peer-assessment__expected-time {
-        @extend %hd-golf;  // FIX: needed due to DOM structure
+        @extend %hd-7;  // FIX: needed due to DOM structure
         @extend %t-weight3;
 
         @include media($bp-ds) {
@@ -601,7 +601,7 @@
 
     .peer-assessment__display__response {
       @extend %ui-section-content;
-      @extend %copy-charlie;
+      @extend %copy-3;
       @extend %ui-content-longanswer;
     }
 
@@ -655,7 +655,7 @@
 
       .action--submit {
         @extend %btn--primary;
-        @extend %action-delta;
+        @extend %action-4;
       }
     }
   }
@@ -680,14 +680,14 @@
       }
 
       .self-assessment__display__title {
-        @extend %hd-golf; // FIX: needed due to DOM structure
+        @extend %hd-7; // FIX: needed due to DOM structure
         @extend %t-weight3;
         float: left;
       }
     }
 
     .self-assessment__display__response {
-      @extend %copy-charlie;
+      @extend %copy-3;
       @extend %ui-content-longanswer;
       @extend %ui-section-content;
     }
@@ -742,7 +742,7 @@
 
       .action--submit {
         @extend %btn--primary;
-        @extend %action-delta;
+        @extend %action-4;
       }
     }
   }
@@ -762,7 +762,7 @@
     }
 
     .openassessment__grade__title {
-      @extend %hd-delta;
+      @extend %hd-4;
       margin-right: $baseline-v;
       color: $heading-tertiary-color;
     }
@@ -770,12 +770,12 @@
     .openassessment__grade__content {
 
       .grade__value {
-        @extend %hd-delta;
+        @extend %hd-4;
         margin-bottom: ($baseline-v/2);
       }
 
       .grade__description {
-        @extend %copy-delta;
+        @extend %copy-4;
       }
     }
 
@@ -832,14 +832,14 @@
     }
 
     .question__title__copy {
-      @extend %hd-delta;
+      @extend %hd-4;
       @extend %t-weight3;
       float: left;
       color: $heading-secondary-color;
     }
 
     .question__score {
-      @extend %copy-foxtrot;
+      @extend %copy-6;
       @extend %t-titlecase;
       float: right;
       position: relative;
@@ -900,20 +900,20 @@
     }
 
     .answer__source {
-      @extend %hd-golf;
+      @extend %hd-7;
       display: block;
       color: $heading-tertiary-color;
     }
 
     .answer__value {
-      @extend %copy-charlie;
+      @extend %copy-3;
       display: block;
       margin-bottom: ($baseline-v/2);
       color: $heading-primary-color;
     }
 
     .answer__content {
-      @extend %copy-delta;
+      @extend %copy-4;
       display: block;
       color: $copy-supplemental-color;
     }
@@ -938,7 +938,7 @@
 
     .action--submit {
       @extend %btn--secondary;
-      @extend %action-delta;
+      @extend %action-4;
       margin-right: ($baseline-v/2);
     }
   }
