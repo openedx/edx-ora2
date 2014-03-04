@@ -50,6 +50,11 @@
       padding-bottom: 0;
     }
 
+    // grade divider UI
+    &:nth-last-child(2) {
+      border-bottom: ($baseline-v/10) solid $color-decorative-primary;
+    }
+
     // step header
     .step__header {
       @extend %trans-opacity;
@@ -59,22 +64,22 @@
 
       @include media($bp-ds) {
         border-bottom: ($baseline-v/10) solid $color-focused;
-        padding-bottom: ($baseline-v/2);
+        padding-bottom: ($baseline-v/1.5);
       }
 
       @include media($bp-dm) {
         border-bottom: ($baseline-v/10) solid $color-focused;
-        padding-bottom: ($baseline-v/2);
+        padding-bottom: ($baseline-v/1.5);
       }
 
       @include media($bp-dl) {
         border-bottom: ($baseline-v/10) solid $color-focused;
-        padding-bottom: ($baseline-v/2);
+        padding-bottom: ($baseline-v/1.5);
       }
 
       @include media($bp-dx) {
         border-bottom: ($baseline-v/10) solid $color-focused;
-        padding-bottom: ($baseline-v/2);
+        padding-bottom: ($baseline-v/1.5);
       }
 
       .step__deadline {
@@ -87,22 +92,18 @@
 
       @include media($bp-ds) {
         @include span-columns(4 of 6);
-        vertical-align: middle;
       }
 
       @include media($bp-dm) {
         @include span-columns(9 of 12);
-        vertical-align: middle;
       }
 
       @include media($bp-dl) {
         @include span-columns(9 of 12);
-        vertical-align: middle;
       }
 
       @include media($bp-dx) {
         @include span-columns(9 of 12);
-        vertical-align: middle;
       }
 
       .step__counter, .wrapper--copy {
@@ -511,21 +512,6 @@
         color: $copy-supplemental-color;
       }
     }
-
-    // STATE: displayed response
-    .submission__answer__display {
-      @extend %ui-section;
-    }
-
-    .submission__answer__display__title {
-      @extend %ui-section-title;
-    }
-
-    .submission__answer__display__content {
-      @extend %copy-3;
-      @extend %ui-content-longanswer;
-      @extend %ui-section-content;
-    }
   }
 
 
@@ -749,52 +735,119 @@
 
 
   // --------------------
-  // status
+  // grade status
   // --------------------
-  .openassessment__grade {
-    @include row();
-    border-top: ($baseline-v/5) solid $color-decorative-tertiary;
-    padding-top: $baseline-v;
+  .step--grade {
 
-    .openassessment__grade__title, .openassessment__grade__content {
-      display: inline-block;
-      vertical-align: top;
+    .step__header {
+      opacity: 1.0 !important;
     }
 
-    .openassessment__grade__title {
-      @extend %hd-4;
-      margin-right: $baseline-v;
-      color: $heading-tertiary-color;
-    }
+    .step__title {
 
-    .openassessment__grade__content {
-
-      .grade__value {
-        @extend %hd-4;
-        margin-bottom: ($baseline-v/2);
+      @include media($bp-ds) {
+        @include span-columns(6 of 6);
       }
 
-      .grade__description {
+      @include media($bp-dm) {
+        @include span-columns(12 of 12);
+      }
+
+      @include media($bp-dl) {
+        @include span-columns(12 of 12);
+      }
+
+      @include media($bp-dx) {
+        @include span-columns(12 of 12);
+      }
+
+      .wrapper--copy {
+        display: block;
+      }
+
+      .step__label, .grade__value {
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      .step__label {
+        margin-right: ($baseline-h/2);
+        margin-bottom: ($baseline-v/4);
+        color: $color-decorative-secondary;
+      }
+
+
+      .grade__value {
+        border-radius: ($baseline-v/10);
+        padding: ($baseline-v/2) ($baseline-h/2);
+        background: $color-decorative-tertiary;
+      }
+
+      .grade__value__title {
+        @extend %hd-6;
+      }
+
+      .grade__value__description {
         @extend %copy-4;
       }
     }
 
-    // STATE: is not started
+    .grade__summary {
+      @extend %copy-2;
+    }
+
+    .grade__status {
+
+    }
+
+    // CASE: is not started
     &.is--unstarted {
-
+      display: none;
     }
 
-    // STATE: is incomplete
+    // CASE: is incomplete
     &.is--incomplete {
+
+      .step__header {
+        border-bottom: none;
+        padding: 0;
+      }
     }
 
-    // STATE: is complete
+    // CASE: is complete
     &.is--complete {
+
+      .grade__value {
+        background: $color-complete;
+        color: $white;
+      }
+
+      .grade__value__earned, .grade__value__potential {
+        @extend %t-weight3;
+      }
     }
   }
 
   // --------------------
-  // STATE: graded/complete
+  // UI: submitted repsonse
+  // --------------------
+  .submission__answer__display {
+    @extend %ui-section;
+  }
+
+  .submission__answer__display__title {
+    @extend %ui-section-title;
+  }
+
+  .submission__answer__display__content {
+    @extend %copy-3;
+    @extend %ui-content-longanswer;
+    @extend %ui-section-content;
+  }
+
+
+  // --------------------
+  // UI: displayed peer assessments
   // --------------------
 
   // peer review summary
@@ -942,7 +995,6 @@
       margin-right: ($baseline-v/2);
     }
   }
-
 
   // --------------------
   // STATE: incomplete
