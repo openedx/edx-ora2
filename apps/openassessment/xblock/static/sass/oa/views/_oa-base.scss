@@ -17,19 +17,19 @@
   // chrome: title
   .openassessment__title {
     @include row();
-    margin-bottom: $spacing-bravo;
+    margin-bottom: $baseline-v;
     border-bottom: ($baseline-v/5) solid $color-decorative-tertiary;
-    padding-bottom: $spacing-charlie;
+    padding-bottom: ($baseline-v/2);
   }
 
   .openassessment__title--super {
-    @extend %hd-charlie;
+    @extend %hd-3;
     display: block;
-    margin-bottom: $spacing-delta;
+    margin-bottom: ($baseline-v/4);
   }
 
   .openassessment__title--sub {
-    @extend %hd-golf;
+    @extend %hd-7;
     display: block;
     color: $heading-tertiary-color;
   }
@@ -41,9 +41,9 @@
   }
 
   .openassessment__steps__step {
-    margin-bottom: $spacing-bravo;
+    margin-bottom: $baseline-v;
     border-bottom: ($baseline-v/10) solid $color-decorative-tertiary;
-    padding-bottom: $spacing-bravo;
+    padding-bottom: $baseline-v;
 
     &:last-child {
       border-bottom: none;
@@ -54,27 +54,27 @@
     .step__header {
       @extend %trans-opacity;
       @include row();
-      margin-bottom: $spacing-bravo;
+      margin-bottom: $baseline-v;
       opacity: 1.0;
 
       @include media($bp-ds) {
         border-bottom: ($baseline-v/10) solid $color-focused;
-        padding-bottom: $spacing-charlie;
+        padding-bottom: ($baseline-v/2);
       }
 
       @include media($bp-dm) {
         border-bottom: ($baseline-v/10) solid $color-focused;
-        padding-bottom: $spacing-charlie;
+        padding-bottom: ($baseline-v/2);
       }
 
       @include media($bp-dl) {
         border-bottom: ($baseline-v/10) solid $color-focused;
-        padding-bottom: $spacing-charlie;
+        padding-bottom: ($baseline-v/2);
       }
 
       @include media($bp-dx) {
         border-bottom: ($baseline-v/10) solid $color-focused;
-        padding-bottom: $spacing-charlie;
+        padding-bottom: ($baseline-v/2);
       }
 
       .step__deadline {
@@ -115,14 +115,14 @@
 
         // increment: show numbers using parent list counter
         &:before {
-          @extend %hd-foxtrot;
+          @extend %hd-6;
           @extend %t-weight4;
           content: counter(item, decimal);
           counter-increment: item;
-          margin-right: $spacing-delta;
+          margin-right: ($baseline-v/4);
           border-radius: ($baseline-v/10);
           border: 1px solid rgba($color-focused, 0.5);
-          padding: $spacing-delta $spacing-charlie;
+          padding: ($baseline-v/4) ($baseline-v/2);
           color: $color-focused;
 
         }
@@ -133,13 +133,13 @@
       }
 
       .step__label {
-        @extend %hd-delta;
+        @extend %hd-4;
         @extend %t-weight3;
         @extend %trans-color;
       }
 
       .step__deadline {
-        @extend %hd-hotel;
+        @extend %hd-8;
         @extend %trans-color;
         color: $heading-secondary-color;
       }
@@ -157,7 +157,7 @@
 
         @include media($bp-m) {
           display: block;
-          margin-top: $spacing-charlie;
+          margin-top: ($baseline-v/2);
         }
       }
 
@@ -169,11 +169,11 @@
       .ico {
         @extend %t-icon-m;
         display: none; // hiding by default
-        margin-right: $spacing-delta;
+        margin-right: ($baseline-v/4);
       }
 
       .copy {
-        @extend %copy-foxtrot;
+        @extend %copy-6;
         @extend %t-titlecase;
         color: $white-t;
       }
@@ -186,28 +186,28 @@
       @include media($bp-ds) {
         @include span-columns(2 of 6);
         @include omega();
-        margin-top: $spacing-delta;
+        margin-top: ($baseline-v/4);
         text-align: right;
       }
 
       @include media($bp-dm) {
         @include span-columns(3 of 12);
         @include omega();
-        margin-top: $spacing-delta;
+        margin-top: ($baseline-v/4);
         text-align: right;
       }
 
       @include media($bp-dl) {
         @include span-columns(3 of 12);
         @include omega();
-        margin-top: $spacing-delta;
+        margin-top: ($baseline-v/4);
         text-align: right;
       }
 
       @include media($bp-dx) {
         @include span-columns(3 of 12);
         @include omega();
-        margin-top: $spacing-delta;
+        margin-top: ($baseline-v/4);
         text-align: right;
       }
     }
@@ -225,14 +225,14 @@
 
     // step instructions
     .step__instruction {
-      @extend %copy-delta;
-      margin-bottom: $spacing-bravo;
+      @extend %copy-4;
+      margin-bottom: $baseline-v;
       color: $copy-color;
     }
 
     // step content
     .step__content {
-      margin-bottom: $spacing-bravo;
+      margin-bottom: $baseline-v;
     }
 
     // step actions
@@ -257,7 +257,7 @@
 
       .action--submit {
         @extend %btn--primary;
-        @extend %action-delta;
+        @extend %action-4;
       }
     }
 
@@ -394,7 +394,7 @@
   }
 
   .openassessment__prompt {
-    margin-bottom: $spacing-bravo;
+    margin-bottom: $baseline-v;
   }
 
   .openassessment__prompt__title {
@@ -402,11 +402,11 @@
   }
 
   .openassessment__prompt__copy {
-    @extend %copy-bravo;
+    @extend %copy-2;
     color: $copy-lead-color;
 
     > * {
-      margin-bottom: $spacing-bravo;
+      margin-bottom: $baseline-v;
 
       &:last-child {
         @extend %wipe-last-child;
@@ -427,12 +427,12 @@
 
     // response form
     .response__submission {
-      padding: $spacing-charlie;
+      padding: ($baseline-v/2);
       background: $color-decorative-tertiary;
       border-radius: ($baseline-v/10);
 
       .submission__answer {
-        margin-bottom: $spacing-charlie;
+        margin-bottom: ($baseline-v/2);
       }
     }
 
@@ -452,7 +452,7 @@
       .action--submit, .tip {
         display: block;
         width: 100%;
-        margin-bottom: $spacing-charlie;
+        margin-bottom: ($baseline-v/2);
 
         @include media($bp-ds) {
           display: inline-block;
@@ -479,35 +479,35 @@
         }
       }
 
-      .action--submit {
+      .action--save {
         @extend %btn--secondary;
-        @extend %action-delta;
+        @extend %action-4;
         display: block;
         text-align: center;
 
         @include media($bp-ds) {
           display: inline-block;
-          margin-right: $spacing-charlie;
+          margin-right: ($baseline-v/2);
         }
 
         @include media($bp-dm) {
           display: inline-block;
-          margin-right: $spacing-charlie;
+          margin-right: ($baseline-v/2);
         }
 
         @include media($bp-dl) {
           display: inline-block;
-          margin-right: $spacing-charlie;
+          margin-right: ($baseline-v/2);
         }
 
         @include media($bp-dx) {
           display: inline-block;
-          margin-right: $spacing-charlie;
+          margin-right: ($baseline-v/2);
         }
       }
 
       .tip {
-        @extend %copy-epsilon;
+        @extend %copy-5;
         color: $copy-supplemental-color;
       }
     }
@@ -522,7 +522,7 @@
     }
 
     .submission__answer__display__content {
-      @extend %copy-charlie;
+      @extend %copy-3;
       @extend %ui-content-longanswer;
       @extend %ui-section-content;
     }
@@ -552,9 +552,9 @@
       }
 
       .peer-assessment__display__title {
-        @extend %hd-golf; // FIX: needed due to DOM structure
+        @extend %hd-7; // FIX: needed due to DOM structure
         @extend %t-weight3;
-        margin-bottom: $spacing-delta;
+        margin-bottom: ($baseline-v/4);
 
         @include media($bp-ds) {
           float: left;
@@ -578,7 +578,7 @@
       }
 
       .peer-assessment__expected-time {
-        @extend %hd-golf;  // FIX: needed due to DOM structure
+        @extend %hd-7;  // FIX: needed due to DOM structure
         @extend %t-weight3;
 
         @include media($bp-ds) {
@@ -601,6 +601,8 @@
 
     .peer-assessment__display__response {
       @extend %ui-section-content;
+      @extend %copy-3;
+      @extend %ui-content-longanswer;
     }
 
     // assessment form
@@ -608,7 +610,7 @@
 
       // fields
       .assessment__fields {
-        margin-bottom: $spacing-bravo;
+        margin-bottom: $baseline-v;
       }
 
       // rubric question
@@ -653,7 +655,7 @@
 
       .action--submit {
         @extend %btn--primary;
-        @extend %action-delta;
+        @extend %action-4;
       }
     }
   }
@@ -678,14 +680,14 @@
       }
 
       .self-assessment__display__title {
-        @extend %hd-golf; // FIX: needed due to DOM structure
+        @extend %hd-7; // FIX: needed due to DOM structure
         @extend %t-weight3;
         float: left;
       }
     }
 
     .self-assessment__display__response {
-      @extend %copy-charlie;
+      @extend %copy-3;
       @extend %ui-content-longanswer;
       @extend %ui-section-content;
     }
@@ -695,7 +697,7 @@
 
       // fields
       .assessment__fields {
-        margin-bottom: $spacing-bravo;
+        margin-bottom: $baseline-v;
       }
 
       // rubric question
@@ -740,7 +742,7 @@
 
       .action--submit {
         @extend %btn--primary;
-        @extend %action-delta;
+        @extend %action-4;
       }
     }
   }
@@ -752,7 +754,7 @@
   .openassessment__grade {
     @include row();
     border-top: ($baseline-v/5) solid $color-decorative-tertiary;
-    padding-top: $spacing-bravo;
+    padding-top: $baseline-v;
 
     .openassessment__grade__title, .openassessment__grade__content {
       display: inline-block;
@@ -760,20 +762,20 @@
     }
 
     .openassessment__grade__title {
-      @extend %hd-delta;
-      margin-right: $spacing-bravo;
+      @extend %hd-4;
+      margin-right: $baseline-v;
       color: $heading-tertiary-color;
     }
 
     .openassessment__grade__content {
 
       .grade__value {
-        @extend %hd-delta;
-        margin-bottom: $spacing-charlie;
+        @extend %hd-4;
+        margin-bottom: ($baseline-v/2);
       }
 
       .grade__description {
-        @extend %copy-delta;
+        @extend %copy-4;
       }
     }
 
@@ -808,7 +810,7 @@
   .submission__peer-evaluations__questions {
     @extend %no-list;
     @extend %ui-section-content;
-    margin-bottom: $spacing-charlie;
+    margin-bottom: ($baseline-v/2);
 
     &:last-child {
       margin-bottom: 0;
@@ -818,32 +820,32 @@
 
     // individual question
     .question {
-      margin-bottom: $spacing-charlie;
+      margin-bottom: ($baseline-v/2);
       @extend %wipe-last-child;
     }
 
     .question__title {
       @include clearfix();
-      margin-bottom: $spacing-bravo;
+      margin-bottom: $baseline-v;
       border-bottom: ($baseline-v/10) solid $color-decorative-tertiary;
-      padding-bottom: $spacing-delta;
+      padding-bottom: ($baseline-v/4);
     }
 
     .question__title__copy {
-      @extend %hd-delta;
+      @extend %hd-4;
       @extend %t-weight3;
       float: left;
       color: $heading-secondary-color;
     }
 
     .question__score {
-      @extend %copy-foxtrot;
+      @extend %copy-6;
       @extend %t-titlecase;
       float: right;
       position: relative;
-      bottom: -($spacing-delta);
-      margin-left: $spacing-bravo;
-      padding: $spacing-delta $spacing-charlie ($spacing-delta/2)  $spacing-charlie;
+      bottom: -(($baseline-v/4));
+      margin-left: $baseline-v;
+      padding: ($baseline-v/4) ($baseline-v/2) (($baseline-v/4)/2)  ($baseline-v/2);
       background: $color-decorative-tertiary;
       color: $white;
     }
@@ -853,7 +855,7 @@
 
       &:after {
         content: "/";
-        margin-left: $spacing-delta;
+        margin-left: ($baseline-v/4);
         color: $heading-secondary-color;
       }
     }
@@ -862,7 +864,7 @@
       color: $heading-secondary-color;
 
       .unit {
-        margin-left: $spacing-delta;
+        margin-left: ($baseline-v/4);
       }
     }
 
@@ -874,7 +876,7 @@
 
     // individual answers
     .answer {
-      margin-bottom: $spacing-bravo;
+      margin-bottom: $baseline-v;
 
       @include media($bp-ds) {
         @include span-columns(3 of 6);
@@ -898,20 +900,20 @@
     }
 
     .answer__source {
-      @extend %hd-golf;
+      @extend %hd-7;
       display: block;
       color: $heading-tertiary-color;
     }
 
     .answer__value {
-      @extend %copy-charlie;
+      @extend %copy-3;
       display: block;
-      margin-bottom: $spacing-charlie;
+      margin-bottom: ($baseline-v/2);
       color: $heading-primary-color;
     }
 
     .answer__content {
-      @extend %copy-delta;
+      @extend %copy-4;
       display: block;
       color: $copy-supplemental-color;
     }
@@ -936,8 +938,8 @@
 
     .action--submit {
       @extend %btn--secondary;
-      @extend %action-delta;
-      margin-right: $spacing-charlie;
+      @extend %action-4;
+      margin-right: ($baseline-v/2);
     }
   }
 

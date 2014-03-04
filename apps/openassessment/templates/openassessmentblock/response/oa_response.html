@@ -1,18 +1,3 @@
-<!-- TEMPLATE: student response -->
-
-
-<!-- NOTES:
-
- * class of is--unavailable is added when step is not available
- * class of is--saved is added when response is saved by system
- * class of is--submitted is added when user has formally submitted response
- * class of is--graded is added when user's response has proper amount of completed peer evaluations
- * class of is--updated is added to the step__status element when a response is saved
-
- -->
-
-
-<!-- CASE: default/unanswered -->
 {% block list_item %}
 <li id="openassessment__response" class="openassessment__steps__step step--response ui-toggle-visibility">
 {% endblock %}
@@ -56,7 +41,7 @@
 
                 <ul class="list list--actions response__submission__actions">
                     <li class="list--actions__item">
-                        <button type="submit" id="submission__submit" class="action action--submit submission__submit">Save Your Progress</button>
+                        <button type="submit" id="submission__save" class="action action--save submission__save">Save Your Progress</button>
                         <span class="tip">you may continue to work on your response until you submit</span>
                     </li>
                 </ul>

@@ -82,7 +82,7 @@
 
 // openassessment: contextual
 @import 'oa/contexts/ie';                      // open assessment-specific Internet Explorer-specific styling
-@import 'oa/contexts/lms';                     // open assessment-specific LMS constraints
+@import 'oa/contexts/responsive';              // open assessment-specific UI sizes (faking responsive brakpoints)
 
 // openassessment: misc.
 @import 'oa/utilities/developer';              // developer-friendly file: add rough/WIP styling that needs UI triage
