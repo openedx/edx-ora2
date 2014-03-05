@@ -1,4 +1,6 @@
-include requirements/base.txt
+include requirements/*.txt
+recursive-include apps/openassessment/templates *.html
+recursive-include apps/openassessment/xblock/static *
 include LICENSE
 include AUTHORS
-include README.md
+include README.rst
