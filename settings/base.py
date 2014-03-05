@@ -173,3 +173,6 @@ LOGGING = {
 }
 
 # TODO: add config for XBLOCK_WORKBENCH { SCENARIO_CLASSES }
+WORKBENCH = {
+    'reset_state_on_restart': False,
+}
