@@ -105,14 +105,11 @@
         </criterion>
     </rubric>
     <assessments>
-        <assessment start="2014-12-20T19:00-7:00"
-                    name="peer-assessment"
+        <assessment name="peer-assessment"
+                    start="2014-12-20T19:00-7:00"
                     due="2014-12-21T22:22-7:00"
                     must_grade="5"
                     must_be_graded_by="3" />
-        <assessment name="self-assessment"
-                    due="2014-12-21T22:22-7:00"
-                    must_grade="5"
-                    must_be_graded_by="3" />
+        <assessment name="self-assessment" />
     </assessments>
 </openassessment>

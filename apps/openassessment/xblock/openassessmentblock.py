@@ -3,6 +3,7 @@
 import datetime
 import pkg_resources
 
+import pytz
 import dateutil.parser
 
 from django.template.context import Context
@@ -19,6 +20,9 @@ from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.studio_mixin import StudioMixin
 from openassessment.xblock.xml import update_from_xml
+from openassessment.peer.serializers import (
+    validate_assessments, validate_rubric, validate_dates
+)
 
 
 DEFAULT_PROMPT = """
@@ -129,7 +133,7 @@ module(s) associated with the XBlock.
 """
 DEFAULT_PEER_ASSESSMENT = {
     "name": "peer-assessment",
-    "start_datetime": datetime.datetime.now().isoformat(),
+    "start": datetime.datetime.now().replace(tzinfo=pytz.utc).isoformat(),
     "must_grade": 5,
     "must_be_graded_by": 3,
 }
@@ -149,16 +153,19 @@ def load(path):
 class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAssessmentMixin, StudioMixin, GradeMixin):
     """Displays a question and gives an area where students can compose a response."""
 
-    start_datetime = String(
-        default=datetime.datetime.now().isoformat(),
-        scope=Scope.content,
+    start = String(
+        default=None, scope=Scope.settings,
         help="ISO-8601 formatted string representing the start date of this assignment."
     )
 
-    due_datetime = String(
-        default=None,
-        scope=Scope.content,
-        help="ISO-8601 formatted string representing the end date of this assignment."
+    due = String(
+        default=None, scope=Scope.settings,
+        help="ISO-8601 formatted string representing the due date of this assignment."
+    )
+
+    submission_due = String(
+        default=None, scope=Scope.settings,
+        help="ISO-8601 formatted string representing the submission due date."
     )
 
     title = String(
@@ -303,7 +310,16 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
             """Recursively embed xblocks for nodes we don't recognize"""
             block.runtime.add_node_as_child(block, child, id_generator)
         block = runtime.construct_xblock_from_class(cls, keys)
-        return update_from_xml(block, node)
+
+        assessments_validator = \
+            lambda arg: validate_assessments(arg, enforce_peer_then_self=True)
+
+        return update_from_xml(
+            block, node,
+            rubric_validator=validate_rubric,
+            assessments_validator=assessments_validator,
+            dates_validator=validate_dates
+        )
 
     def render_assessment(self, path, context_dict=None):
         """Render an Assessment Module's HTML
@@ -327,12 +343,12 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
 
         context_dict["xblock_trace"] = self.get_xblock_trace()
 
-        if self.start_datetime:
-            start = dateutil.parser.parse(self.start_datetime)
+        if self.start:
+            start = dateutil.parser.parse(self.start)
             context_dict["formatted_start_date"] = start.strftime("%A, %B %d, %Y")
             context_dict["formatted_start_datetime"] = start.strftime("%A, %B %d, %Y %X")
-        if self.due_datetime:
-            due = dateutil.parser.parse(self.due_datetime)
+        if self.due:
+            due = dateutil.parser.parse(self.due)
             context_dict["formatted_due_date"] = due.strftime("%A, %B %d, %Y")
             context_dict["formatted_due_datetime"] = due.strftime("%A, %B %d, %Y %X")
 
@@ -357,12 +373,12 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
 
         """
         # Is the question closed?
-        if self.start_datetime:
-            start = dateutil.parser.parse(self.start_datetime)
-            if start > datetime.datetime.utcnow():
+        if self.start:
+            start = dateutil.parser.parse(self.start).replace(tzinfo=pytz.utc)
+            if start > datetime.datetime.utcnow().replace(tzinfo=pytz.utc):
                 return False, "start"
-        if self.due_datetime:
-            due = dateutil.parser.parse(self.due_datetime)
-            if due < datetime.datetime.utcnow():
+        if self.due:
+            due = dateutil.parser.parse(self.due).replace(tzinfo=pytz.utc)
+            if due < datetime.datetime.utcnow().replace(tzinfo=pytz.utc):
                 return False, "due"
         return True, None
