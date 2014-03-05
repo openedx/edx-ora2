@@ -1,8 +1,9 @@
 """An XBlock where students can read a question and compose their response"""
 
-import datetime
+import datetime as dt
 import pkg_resources
 
+import pytz
 import dateutil.parser
 
 from django.template.context import Context
@@ -21,6 +22,8 @@ from openassessment.xblock.studio_mixin import StudioMixin
 from openassessment.xblock.xml import update_from_xml
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.workflow import api as workflow_api
+from openassessment.xblock.validation import validator
+from openassessment.xblock.resolve_dates import resolve_dates
 
 
 DEFAULT_PROMPT = """
@@ -131,14 +134,20 @@ module(s) associated with the XBlock.
 """
 DEFAULT_PEER_ASSESSMENT = {
     "name": "peer-assessment",
-    "start_datetime": datetime.datetime.now().isoformat(),
+    "start": None,
+    "due": None,
     "must_grade": 5,
     "must_be_graded_by": 3,
+}
+
+DEFAULT_SELF_ASSESSMENT = {
+    "due": None,
 }
 
 
 DEFAULT_ASSESSMENT_MODULES = [
     DEFAULT_PEER_ASSESSMENT,
+    DEFAULT_SELF_ASSESSMENT,
 ]
 
 
@@ -158,16 +167,19 @@ class OpenAssessmentBlock(
     WorkflowMixin):
     """Displays a question and gives an area where students can compose a response."""
 
-    start_datetime = String(
-        default=datetime.datetime.now().isoformat(),
-        scope=Scope.content,
+    start = String(
+        default=None, scope=Scope.settings,
         help="ISO-8601 formatted string representing the start date of this assignment."
     )
 
-    due_datetime = String(
-        default=None,
-        scope=Scope.content,
-        help="ISO-8601 formatted string representing the end date of this assignment."
+    due = String(
+        default=None, scope=Scope.settings,
+        help="ISO-8601 formatted string representing the due date of this assignment."
+    )
+
+    submission_due = String(
+        default=None, scope=Scope.settings,
+        help="ISO-8601 formatted string representing the submission due date."
     )
 
     title = String(
@@ -323,7 +335,8 @@ class OpenAssessmentBlock(
             """Recursively embed xblocks for nodes we don't recognize"""
             block.runtime.add_node_as_child(block, child, id_generator)
         block = runtime.construct_xblock_from_class(cls, keys)
-        return update_from_xml(block, node)
+
+        return update_from_xml(block, node, validator=validator(block.start, block.due))
 
     def render_assessment(self, path, context_dict=None):
         """Render an Assessment Module's HTML
@@ -347,12 +360,12 @@ class OpenAssessmentBlock(
 
         context_dict["xblock_trace"] = self.get_xblock_trace()
 
-        if self.start_datetime:
-            start = dateutil.parser.parse(self.start_datetime)
+        if self.start:
+            start = dateutil.parser.parse(self.start)
             context_dict["formatted_start_date"] = start.strftime("%A, %B %d, %Y")
             context_dict["formatted_start_datetime"] = start.strftime("%A, %B %d, %Y %X")
-        if self.due_datetime:
-            due = dateutil.parser.parse(self.due_datetime)
+        if self.due:
+            due = dateutil.parser.parse(self.due)
             context_dict["formatted_due_date"] = due.strftime("%A, %B %d, %Y")
             context_dict["formatted_due_datetime"] = due.strftime("%A, %B %d, %Y %X")
 
@@ -374,11 +387,19 @@ class OpenAssessmentBlock(
         template = get_template('openassessmentblock/oa_error.html')
         return Response(template.render(context), content_type='application/html', charset='UTF-8')
 
-    def is_open(self):
-        """Checks if the question is open.
+    def is_open(self, step=None):
+        """
+        Checks if the question is open.
 
         Determines if the start date has occurred and the end date has not
-        passed.
+        passed.  Optionally limited to a particular step in the workflow.
+
+        Kwargs:
+            step (str): The step in the workflow to check.  Options are:
+                None: check whether the problem as a whole is open.
+                "submission": check whether the submission section is open.
+                "peer-assessment": check whether the peer-assessment section is open.
+                "self-assessment": check whether the self-assessment section is open.
 
         Returns:
             (tuple): True if the question is open, False if not. If False,
@@ -387,19 +408,42 @@ class OpenAssessmentBlock(
 
         Examples:
             >>> is_open()
+            True, None
+            >>> is_open(step="submission")
             False, "due"
+            >>> is_open(step="self-assessment")
+            False, "start"
 
         """
-        # Is the question closed?
-        if self.start_datetime:
-            start = dateutil.parser.parse(self.start_datetime)
-            if start > datetime.datetime.utcnow():
-                return False, "start"
-        if self.due_datetime:
-            due = dateutil.parser.parse(self.due_datetime)
-            if due < datetime.datetime.utcnow():
-                return False, "due"
-        return True, None
+        submission_range = (self.start, self.submission_due)
+        assessment_ranges = [
+            (asmnt.get('start'), asmnt.get('due'))
+            for asmnt in self.rubric_assessments
+        ]
+
+        # Resolve unspecified dates and date strings to datetimes
+        start, due, date_ranges = resolve_dates(self.start, self.due, [submission_range] + assessment_ranges)
+
+        # Based on the step, choose the date range to consider
+        # We hard-code this to the submission -> peer -> self workflow for now;
+        # later, we can revisit to make this more flexible.
+        open_range = (start, due)
+        if step == "submission":
+            open_range = date_ranges[0]
+        if step == "peer-assessment":
+            open_range = date_ranges[1]
+        if step == "self-assessment":
+            open_range = date_ranges[2]
+
+        # Check if we are in the open date range
+        now = dt.datetime.now().replace(tzinfo=pytz.utc)
+
+        if now < open_range[0]:
+            return False, "start"
+        elif now >= open_range[1]:
+            return False, "due"
+        else:
+            return True, None
 
     def update_workflow_status(self, submission_uuid):
         assessment_ui_model = self.get_assessment_module('peer-assessment')

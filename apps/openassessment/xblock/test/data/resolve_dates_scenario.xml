@@ -1,4 +1,4 @@
-<openassessment>
+<openassessment submission_due="2014-04-01">
     <title>Open Assessment Test</title>
     <prompt>
         Given the state of the world today, what do you think should be done to
@@ -84,11 +84,7 @@
         </criterion>
     </rubric>
     <assessments>
-        <assessment name="peer-assessment"
-          start="2014-12-20T19:00"
-          due="2014-12-21T22:22"
-          must_grade="5"
-          must_be_graded_by="3" />
-        <assessment name="self-assessment" />
+        <assessment name="peer-assessment" must_grade="5" must_be_graded_by="3" />
+        <assessment name="self-assessment" start="2016-01-01" due="2016-05-02"/>
     </assessments>
 </openassessment>

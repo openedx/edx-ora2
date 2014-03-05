@@ -172,7 +172,7 @@ class SubmissionMixin(object):
         step_status = "Graded" if student_score else "Submitted"
         step_status = step_status if student_submission else "Incomplete"
         assessment_ui_model = self.get_assessment_module('peer-assessment')
-        problem_open, date = self.is_open()
+        problem_open, date = self.is_open(step="submission")
         context = {
             "student_submission": student_submission,
             "student_score": student_score,

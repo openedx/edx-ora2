@@ -2,6 +2,7 @@
 Serialize and deserialize OpenAssessment XBlock content to/from XML.
 """
 import lxml.etree as etree
+import pytz
 import dateutil.parser
 import defusedxml.ElementTree as safe_etree
 from django.utils.translation import ugettext as _
@@ -14,16 +15,9 @@ class UpdateFromXmlError(Exception):
     pass
 
 
-class InvalidRubricError(UpdateFromXmlError):
+class ValidationError(UpdateFromXmlError):
     """
-    The rubric definition is semantically invalid.
-    """
-    pass
-
-
-class InvalidAssessmentError(UpdateFromXmlError):
-    """
-    The assessment definition is semantically invalid.
+    The XML definition is not semantically valid.
     """
     pass
 
@@ -167,7 +161,7 @@ def _parse_date(date_str):
     """
     try:
         # Get the date into ISO format
-        parsed_date = dateutil.parser.parse(unicode(date_str))
+        parsed_date = dateutil.parser.parse(unicode(date_str)).replace(tzinfo=pytz.utc)
         formatted_date = parsed_date.strftime("%Y-%m-%dT%H:%M:%S")
         return unicode(formatted_date)
     except (TypeError, ValueError):
@@ -272,7 +266,7 @@ def _parse_criteria_xml(criteria_root):
     return criteria_list
 
 
-def _parse_rubric_xml(rubric_root, validator):
+def _parse_rubric_xml(rubric_root):
     """
     Parse <rubric> element in the OpenAssessment XBlock's content XML.
 
@@ -301,29 +295,23 @@ def _parse_rubric_xml(rubric_root, validator):
     # Criteria
     rubric_dict['criteria'] = _parse_criteria_xml(rubric_root)
 
-    # Validate the rubric
-    success, msg = validator(rubric_dict)
-    if not success:
-        raise InvalidRubricError(msg)
-
     return rubric_dict
 
 
-def _parse_assessments_xml(assessments_root, validator):
+def _parse_assessments_xml(assessments_root, start, due):
     """
     Parse the <assessments> element in the OpenAssessment XBlock's content XML.
 
     Args:
         assessments_root (lxml.etree.Element): The root of the <assessments> node in the tree.
-        validator (callable): Function that accepts an assessment dict and returns
-            a boolean indicating whether the assessment is semantically valid
-            and an error message.
+        start (unicode): ISO-formatted date string representing the start time of the problem.
+        due (unicode): ISO-formatted date string representing the due date of the problem.
 
     Returns:
         list of assessment dicts
 
     Raises:
-        InvalidAssessmentError: Assessment definition was not semantically valid.
+        InvalidAssessmentsError: Assessment definitions were not semantically valid.
     """
     assessments_list = []
 
@@ -341,23 +329,21 @@ def _parse_assessments_xml(assessments_root, validator):
         if 'start' in assessment.attrib:
             parsed_start = _parse_date(assessment.get('start'))
             if parsed_start is not None:
-                assessment_dict['start_datetime'] = parsed_start
+                assessment_dict['start'] = parsed_start
             else:
                 raise UpdateFromXmlError(_("Could not parse 'start' attribute as a valid date time"))
         else:
-            # If no start is specified, default to None, meaning always open
-            assessment_dict['start_datetime'] = None
+            assessment_dict['start'] = None
 
         # Assessment due
         if 'due' in assessment.attrib:
             parsed_start = _parse_date(assessment.get('due'))
             if parsed_start is not None:
-                assessment_dict['due_datetime'] = parsed_start
+                assessment_dict['due'] = parsed_start
             else:
                 raise UpdateFromXmlError(_("Could not parse 'due' attribute as a valid date time"))
         else:
-            # If no due date is specified, default to None, meaning never due
-            assessment_dict['due_datetime'] = None
+            assessment_dict['due'] = None
 
         # Assessment must_grade
         if 'must_grade' in assessment.attrib:
@@ -373,11 +359,7 @@ def _parse_assessments_xml(assessments_root, validator):
             except ValueError:
                 raise UpdateFromXmlError(_('Assessment "must_be_graded_by" attribute must be an integer.'))
 
-        # Validate the semantics of the assessment definition
-        success, msg = validator(assessment_dict)
-        if not success:
-            raise InvalidAssessmentError(msg)
-
+        # Update the list of assessments
         assessments_list.append(assessment_dict)
 
     return assessments_list
@@ -395,6 +377,10 @@ def serialize_content(oa_block):
     """
     root = etree.Element('openassessment')
 
+    # Set submission due date
+    if oa_block.submission_due is not None:
+        root.set('submission_due', unicode(oa_block.submission_due))
+
     # Open assessment displayed title
     title = etree.SubElement(root, 'title')
     title.text = unicode(oa_block.title)
@@ -407,18 +393,18 @@ def serialize_content(oa_block):
 
         # Set assessment attributes, defaulting to empty values
         assessment.set('name', unicode(assessment_dict.get('name', '')))
-        assessment.set('must_grade', unicode(assessment_dict.get('must_grade', '')))
-        assessment.set('must_be_graded_by', unicode(assessment_dict.get('must_be_graded_by', '')))
 
-        # Start and due dates default to None, indicating always open / never closed respectively
-        start_datetime = assessment_dict.get('start_datetime')
-        due_datetime = assessment_dict.get('due_datetime')
+        if 'must_grade' in assessment_dict:
+            assessment.set('must_grade', unicode(assessment_dict['must_grade']))
 
-        if start_datetime is not None:
-            assessment.set('start', unicode(start_datetime))
+        if 'must_be_graded_by' in assessment_dict:
+            assessment.set('must_be_graded_by', unicode(assessment_dict['must_be_graded_by']))
 
-        if due_datetime is not None:
-            assessment.set('due', unicode(due_datetime))
+        if assessment_dict.get('start') is not None:
+            assessment.set('start', unicode(assessment_dict['start']))
+
+        if assessment_dict.get('due') is not None:
+            assessment.set('due', unicode(assessment_dict['due']))
 
     # Rubric
     rubric_root = etree.SubElement(root, 'rubric')
@@ -428,11 +414,9 @@ def serialize_content(oa_block):
     return etree.tostring(root, pretty_print=True, encoding='utf-8')
 
 
-def update_from_xml(
-    oa_block, root,
-    rubric_validator=lambda _: (True, ''),
-    assessment_validator=lambda _: (True, '')
-):
+DEFAULT_VALIDATOR = lambda *args: (True, '')
+
+def update_from_xml(oa_block, root, validator=DEFAULT_VALIDATOR):
     """
     Update the OpenAssessment XBlock's content from an XML definition.
 
@@ -444,24 +428,34 @@ def update_from_xml(
         root (lxml.etree.Element): The XML definition of the XBlock's content.
 
     Kwargs:
-        rubric_validator (callable): Function that accepts a rubric dict and returns
-            a boolean indicating whether the rubric is semantically valid and an error message.
-            The default implementation performs no validation.
-        assessment_validator (callable): Function that accepts an assessment dict and returns
-            a boolean indicating whether the assessment is semantically valid and an error message.
-            The default implementation performs no validation.
+        validator(callable): Function of the form:
+            (rubric_dict, submission_dict, assessments) -> (bool, unicode)
+            where the returned bool indicates whether the XML is semantically valid,
+            and the returned unicode is an error message.
+            `rubric_dict` is a serialized Rubric model
+            `submission_dict` contains a single key "due" which is an ISO-formatted date string.
+            `assessments` is a list of serialized Assessment models.
 
     Returns:
         OpenAssessmentBlock
 
     Raises:
         UpdateFromXmlError: The XML definition is invalid or the XBlock could not be updated.
-        InvalidRubricError: The rubric was not semantically valid.
+        ValidationError: The validator indicated that the XML was not semantically valid.
     """
 
     # Check that the root has the correct tag
     if root.tag != 'openassessment':
         raise UpdateFromXmlError(_("XML content must contain an 'openassessment' root element."))
+
+    # Retrieve the due date for the submission
+    # (assume that the start date of submission is the same as the start date of the problem)
+    # Set it to None by default; we will update it to the earliest deadline later on
+    submission_due = None
+    if 'submission_due' in root.attrib:
+        submission_due = _parse_date(unicode(root.attrib['submission_due']))
+        if submission_due is None:
+            raise UpdateFromXmlError(_("Invalid date format for submission due date"))
 
     # Retrieve the title
     title_el = root.find('title')
@@ -475,14 +469,19 @@ def update_from_xml(
     if rubric_el is None:
         raise UpdateFromXmlError(_("XML content must contain a 'rubric' element."))
     else:
-        rubric = _parse_rubric_xml(rubric_el, rubric_validator)
+        rubric = _parse_rubric_xml(rubric_el)
 
     # Retrieve the assessments
     assessments_el = root.find('assessments')
     if assessments_el is None:
         raise UpdateFromXmlError(_("XML content must contain an 'assessments' element."))
     else:
-        assessments = _parse_assessments_xml(assessments_el, assessment_validator)
+        assessments = _parse_assessments_xml(assessments_el, oa_block.start, oa_block.due)
+
+    # Validate
+    success, msg = validator(rubric, {'due': submission_due}, assessments)
+    if not success:
+        raise ValidationError(msg)
 
     # If we've gotten this far, then we've successfully parsed the XML
     # and validated the contents.  At long last, we can safely update the XBlock.
@@ -490,6 +489,7 @@ def update_from_xml(
     oa_block.prompt = rubric['prompt']
     oa_block.rubric_criteria = rubric['criteria']
     oa_block.rubric_assessments = assessments
+    oa_block.submission_due = submission_due
 
     return oa_block
 
@@ -504,7 +504,7 @@ def update_from_xml_str(oa_block, xml, **kwargs):
         xml (unicode): The XML definition of the XBlock's content.
 
     Kwargs:
-        Same as `update_from_xml`
+        same as `update_from_xml`
 
     Returns:
         OpenAssessmentBlock
@@ -512,13 +512,14 @@ def update_from_xml_str(oa_block, xml, **kwargs):
     Raises:
         UpdateFromXmlError: The XML definition is invalid or the XBlock could not be updated.
         InvalidRubricError: The rubric was not semantically valid.
+        InvalidAssessmentsError: The assessments are not semantically valid.
     """
     # Parse the XML content definition
     # Use the defusedxml library implementation to avoid known security vulnerabilities in ElementTree:
     # http://docs.python.org/2/library/xml.html#xml-vulnerabilities
     try:
         root = safe_etree.fromstring(xml.encode('utf-8'))
-    except (ValueError, safe_etree.ParseError) as ex:
+    except (ValueError, safe_etree.ParseError):
         raise UpdateFromXmlError(_("An error occurred while parsing the XML content."))
 
     return update_from_xml(oa_block, root, **kwargs)

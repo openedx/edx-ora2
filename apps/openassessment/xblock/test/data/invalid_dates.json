@@ -1,0 +1,162 @@
+{
+    "xblock_start_past_xblock_due": {
+        "xblock_start": 11,
+        "submission_start": 1,
+        "submission_due": 2,
+        "peer_start": 3,
+        "peer_due": 4,
+        "self_start": 5,
+        "self_due": 6,
+        "xblock_due": 10
+    },
+    "xblock_start_equals_xblock_due": {
+        "xblock_start": 10,
+        "submission_start": 1,
+        "submission_due": 2,
+        "peer_start": 3,
+        "peer_due": 4,
+        "self_start": 5,
+        "self_due": 6,
+        "xblock_due": 10
+    },
+    "submission_start_past_submission_due": {
+        "xblock_start": 0,
+        "submission_start": 3,
+        "submission_due": 2,
+        "peer_start": 4,
+        "peer_due": 5,
+        "self_start": 6,
+        "self_due": 7,
+        "xblock_due": 10
+    },
+    "submission_start_equals_submission_due": {
+        "xblock_start": 0,
+        "submission_start": 2,
+        "submission_due": 2,
+        "peer_start": 3,
+        "peer_due": 4,
+        "self_start": 5,
+        "self_due": 6,
+        "xblock_due": 10
+    },
+    "peer_start_past_peer_due": {
+        "xblock_start": 0,
+        "submission_start": 1,
+        "submission_due": 2,
+        "peer_start": 5,
+        "peer_due": 4,
+        "self_start": 6,
+        "self_due": 7,
+        "xblock_due": 10
+    },
+    "peer_start_equals_peer_due": {
+        "xblock_start": 0,
+        "submission_start": 1,
+        "submission_due": 2,
+        "peer_start": 4,
+        "peer_due": 4,
+        "self_start": 5,
+        "self_due": 6,
+        "xblock_due": 10
+    },
+    "self_start_past_self_due": {
+        "xblock_start": 0,
+        "submission_start": 1,
+        "submission_due": 2,
+        "peer_start": 3,
+        "peer_due": 4,
+        "self_start": 7,
+        "self_due": 6,
+        "xblock_due": 10
+    },
+    "self_start_equals_self_due": {
+        "xblock_start": 0,
+        "submission_start": 1,
+        "submission_due": 2,
+        "peer_start": 3,
+        "peer_due": 4,
+        "self_start": 6,
+        "self_due": 6,
+        "xblock_due": 10
+    },
+    "xblock_start_past_submission_start": {
+        "xblock_start": 2,
+        "submission_start": 1,
+        "submission_due": 3,
+        "peer_start": 4,
+        "peer_due": 5,
+        "self_start": 6,
+        "self_due": 7,
+        "xblock_due": 10
+    },
+    "submission_start_past_peer_start": {
+        "xblock_start": 0,
+        "submission_start": 4,
+        "submission_due": 2,
+        "peer_start": 3,
+        "peer_due": 5,
+        "self_start": 6,
+        "self_due": 7,
+        "xblock_due": 8
+    },
+    "peer_start_past_self_start": {
+        "xblock_start": 0,
+        "submission_start": 1,
+        "submission_due": 2,
+        "peer_start": 6,
+        "peer_due": 4,
+        "self_start": 5,
+        "self_due": 7,
+        "xblock_due": 10
+    },
+    "xblock_due_before_self_due": {
+        "xblock_start": 0,
+        "submission_start": 1,
+        "submission_due": 2,
+        "peer_start": 3,
+        "peer_due": 4,
+        "self_start": 5,
+        "self_due": 7,
+        "xblock_due": 6
+    },
+    "self_due_before_peer_due": {
+        "xblock_start": 0,
+        "submission_start": 1,
+        "submission_due": 2,
+        "peer_start": 3,
+        "peer_due": 9,
+        "self_start": 5,
+        "self_due": 6,
+        "xblock_due": 10
+    },
+    "peer_due_before_submission_due": {
+        "xblock_start": 0,
+        "submission_start": 1,
+        "submission_due": 7,
+        "peer_start": 2,
+        "peer_due": 6,
+        "self_start": 8,
+        "self_due": 9,
+        "xblock_due": 10
+    },
+    "xblock_start_set_but_submission_start_none": {
+        "xblock_start": 0,
+        "submission_start": null,
+        "submission_due": 7,
+        "peer_start": 2,
+        "peer_due": 6,
+        "self_start": 8,
+        "self_due": 9,
+        "xblock_due": 10
+    },
+    "xblock_due_set_but_self_due_none": {
+        "xblock_start": 0,
+        "submission_start": 1,
+        "submission_due": 7,
+        "peer_start": 2,
+        "peer_due": 6,
+        "self_start": 8,
+        "self_due": null,
+        "xblock_due": 10
+    }
+}

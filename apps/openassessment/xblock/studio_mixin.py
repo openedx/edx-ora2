@@ -8,12 +8,8 @@ from django.template.loader import get_template
 from django.utils.translation import ugettext as _
 from xblock.core import XBlock
 from xblock.fragment import Fragment
-from openassessment.xblock.xml import (
-    serialize_content, update_from_xml_str,
-    UpdateFromXmlError, InvalidRubricError
-)
-
-from openassessment.assessment.serializers import validate_assessment_dict, validate_rubric_dict
+from openassessment.xblock.xml import serialize_content, update_from_xml_str, ValidationError, UpdateFromXmlError
+from openassessment.xblock.validation import validator
 
 
 logger = logging.getLogger(__name__)
@@ -58,14 +54,10 @@ class StudioMixin(object):
         """
         if 'xml' in data:
             try:
-                update_from_xml_str(
-                    self, data['xml'],
-                    rubric_validator=validate_rubric_dict,
-                    assessment_validator=validate_assessment_dict
-                )
+                update_from_xml_str(self, data['xml'], validator=validator(self.start, self.due))
 
-            except InvalidRubricError:
-                return {'success': False, 'msg': _('Rubric definition was not valid.')}
+            except ValidationError as ex:
+                return {'success': False, 'msg': _('Validation error: {error}').format(error=ex.message)}
 
             except UpdateFromXmlError as ex:
                 return {'success': False, 'msg': _('An error occurred while saving: {error}').format(error=ex.message)}

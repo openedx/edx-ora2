@@ -1,0 +1,146 @@
+{
+    "all_specified": {
+        "start": 0,
+        "end": 10,
+        "date_ranges": [
+            [1, 3],
+            [2, 4],
+            [3, 5]
+        ],
+        "resolved_start": 0,
+        "resolved_end": 10,
+        "resolved_ranges": [
+            [1, 3],
+            [2, 4],
+            [3, 5]
+        ]
+    },
+    "start_none": {
+        "start": null,
+        "end": 10,
+        "date_ranges": [
+            [0, 10],
+            [0, 10],
+            [0, 10]
+        ],
+        "resolved_start": -1,
+        "resolved_end": 10,
+        "resolved_ranges": [
+            [0, 10],
+            [0, 10],
+            [0, 10]
+        ]
+    },
+    "end_none": {
+        "start": 0,
+        "end": null,
+        "date_ranges": [
+            [0, 10],
+            [0, 10],
+            [0, 10]
+        ],
+        "resolved_start": 0,
+        "resolved_end": 99,
+        "resolved_ranges": [
+            [0, 10],
+            [0, 10],
+            [0, 10]
+        ]
+    },
+    "start_and_due_none": {
+        "start": null,
+        "end": null,
+        "date_ranges": [
+            [0, 10],
+            [0, 10],
+            [0, 10]
+        ],
+        "resolved_start": -1,
+        "resolved_end": 99,
+        "resolved_ranges": [
+            [0, 10],
+            [0, 10],
+            [0, 10]
+        ]
+    },
+    "default_to_start": {
+        "start": 0,
+        "end": 10,
+        "date_ranges": [
+            [null, 3],
+            [2, 4],
+            [3, 5]
+        ],
+        "resolved_start": 0,
+        "resolved_end": 10,
+        "resolved_ranges": [
+            [0, 3],
+            [2, 4],
+            [3, 5]
+        ]
+    },
+    "default_to_end": {
+        "start": 0,
+        "end": null,
+        "date_ranges": [
+            [1, 3],
+            [2, 4],
+            [3, null]
+        ],
+        "resolved_start": 0,
+        "resolved_end": 99,
+        "resolved_ranges": [
+            [1, 3],
+            [2, 4],
+            [3, 99]
+        ]
+    },
+    "default_to_prev_start": {
+        "start": 0,
+        "end": 10,
+        "date_ranges": [
+            [1, 3],
+            [null, 4],
+            [3, 5]
+        ],
+        "resolved_start": 0,
+        "resolved_end": 10,
+        "resolved_ranges": [
+            [1, 3],
+            [1, 4],
+            [3, 5]
+        ]
+    },
+    "default_to_next_end": {
+        "start": 0,
+        "end": 10,
+        "date_ranges": [
+            [1, 3],
+            [2, null],
+            [3, 5]
+        ],
+        "resolved_start": 0,
+        "resolved_end": 10,
+        "resolved_ranges": [
+            [1, 3],
+            [2, 5],
+            [3, 5]
+        ]
+    },
+    "none_specified": {
+        "start": null,
+        "end": null,
+        "date_ranges": [
+            [null, null],
+            [null, null],
+            [null, null]
+        ],
+        "resolved_start": -1,
+        "resolved_end": 99,
+        "resolved_ranges": [
+            [-1, 99],
+            [-1, 99],
+            [-1, 99]
+        ]
+    }
+}
