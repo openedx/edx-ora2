@@ -157,3 +157,4 @@ class ScoreSummary(models.Model):
                 u"Error while updating score summary for student item {}"
                 .format(score.student_item)
             )
+

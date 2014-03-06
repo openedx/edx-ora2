@@ -42,3 +42,4 @@ class ScoreSerializer(serializers.ModelSerializer):
             # Computed
             'submission_uuid',
         )
+

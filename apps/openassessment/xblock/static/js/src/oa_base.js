@@ -98,6 +98,7 @@ OpenAssessment.BaseUI.prototype = {
                         ui.save();
                     }
                 );
+                
             }
         ).fail(function(errMsg) {
             ui.showLoadError('response');
@@ -150,6 +151,7 @@ OpenAssessment.BaseUI.prototype = {
                         ui.peerAssess();
                     }
                 );
+
             }
         ).fail(function(errMsg) {
             ui.showLoadError('peer-assessment');
@@ -255,10 +257,17 @@ OpenAssessment.BaseUI.prototype = {
                 // Install a click handler for collapse/expand
                 var sel = $('#openassessment__grade', ui.element);
                 ui.setUpCollapseExpand(sel);
+
+                // Install a click handler for assessment feedback
+                sel.find('#feedback__submit').click(function(eventObject) {
+                        eventObject.preventDefault();
+                        ui.feedback_assess();
+                });
             }
         ).fail(function(errMsg) {
             ui.showLoadError('grade', errMsg);
         });
+        
     },
 
     /**
@@ -308,8 +317,24 @@ OpenAssessment.BaseUI.prototype = {
     },
 
     /**
-     * Send an assessment to the server and update the UI.
-     */
+    Send assessment feedback to the server and update the UI.
+    **/
+    feedback_assess: function() {
+        // Send the submission to the server
+        var feedback = $('#feedback__remarks__value', this.element).val();
+        var ui = this;
+        this.server.feedback_submit(feedback).done(
+            // When we have successfully sent the submission, textarea no longer editable
+            console.log("Feedback to the assessments submitted, thanks!") // JRBL: FIXME: TODO: make this true
+        ).fail(function(errMsg) {
+            // TODO: display to the user
+            console.log(errMsg);
+        });
+    },
+
+    /**
+    Send an assessment to the server and update the UI.
+    **/
     peerAssess: function() {
         var ui = this;
         ui.peerAssessRequest(function() {

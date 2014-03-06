@@ -161,9 +161,35 @@ OpenAssessment.Server.prototype = {
         }).promise();
     },
 
+    /** 
+    Send feedback on assessments to the XBlock.
+    FIXME: JRBL: write documentation
+    **/
+    feedback_submit: function(feedback) {
+        var url = this.url('feedback_submit');
+        var payload = JSON.stringify({
+            feedback: feedback
+        });
+        return $.Deferred(function(defer) {
+            $.ajax({ type: "POST", url: url, data: payload }).done(
+                function(data) {
+                    if (data.success) {
+                        defer.resolve();
+                        alert("resolved!");
+                    }
+                    else {
+                        defer.rejectWith(this, [data.msg]);
+                        alert("rejected!");
+                    }
+                }
+            ).fail(function(data) {
+                defer.rejectWith(this, ['Could not contact server.']);
+            });
+        }).promise()
+    },
+
     /**
     Send a peer assessment to the XBlock.
-
     Args:
         submissionId (string): The UUID of the submission.
         optionsSelected (object literal): Keys are criteria names,

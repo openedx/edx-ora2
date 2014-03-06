@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from openassessment.assessment.models import Assessment, AssessmentPart, Rubric, Criterion, CriterionOption, PeerWorkflow, PeerWorkflowItem
+from openassessment.assessment.models import Assessment, AssessmentFeedback, AssessmentPart, Rubric, Criterion, CriterionOption, PeerWorkflow, PeerWorkflowItem
 
 admin.site.register(Assessment)
 admin.site.register(AssessmentPart)
@@ -10,3 +10,4 @@ admin.site.register(CriterionOption)
 admin.site.register(PeerWorkflow)
 admin.site.register(PeerWorkflowItem)
 
+admin.site.register(AssessmentFeedback)

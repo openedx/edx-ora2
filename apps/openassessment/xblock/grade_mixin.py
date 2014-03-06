@@ -1,6 +1,11 @@
 import copy
+
+from django.utils.translation import ugettext as _
 from xblock.core import XBlock
+
 from openassessment.assessment import peer_api
+from submissions import api as submissions_api
+
 
 
 class GradeMixin(object):
@@ -13,6 +18,11 @@ class GradeMixin(object):
     outside of OpenAssessmentBlock.
 
     """
+
+    def __stackinfo(self):
+        import inspect
+        stack = inspect.stack()
+        return str(stack[0][1]) +':L'+str(stack[0][2])+':'+ str(stack[0][3]) +'()'
 
     @XBlock.handler
     def render_grade(self, data, suffix=''):
@@ -65,3 +75,16 @@ class GradeMixin(object):
             path = 'openassessmentblock/grade/oa_grade_incomplete.html'
 
         return self.render_assessment(path, context)
+
+    @XBlock.json_handler
+    def feedback_submit(self, data, suffix=''):
+        """Attach the Assessment Feedback text to some submission."""
+        submission_uuid = self.submission_uuid
+        assessment_feedback = data.get('feedback', '')
+        raise Exception, "jrbl everything worked up to here" # DEBUG
+        if not assessment_feedback:
+            return {'success': False, 'msg': _(u"No feedback given, so none recorded")}
+        feedback_dict = submissions_api.get_assessment_feedback(submission_uuid)
+        feedback_dict['feedback'] = assessment_feedback
+        __ = submissions_api.set_assessment_feedback(feedback_dict)
+        return {'success': True, 'msg': _(u"Feedback saved!")}

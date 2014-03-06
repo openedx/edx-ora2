@@ -1,8 +1,10 @@
 import copy
-import logging
 import dateutil
-from xblock.core import XBlock
+import logging
+
 from django.utils.translation import ugettext as _
+from xblock.core import XBlock
+
 from submissions import api
 from openassessment.assessment import peer_api
 from openassessment.workflow import api as workflow_api
