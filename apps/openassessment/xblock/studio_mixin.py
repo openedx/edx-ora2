@@ -10,10 +10,13 @@ from xblock.core import XBlock
 from xblock.fragment import Fragment
 from openassessment.xblock.xml import (
     serialize_content, update_from_xml_str,
-    UpdateFromXmlError, InvalidRubricError
+    UpdateFromXmlError, InvalidRubricError,
+    InvalidAssessmentsError, InvalidDatesError
 )
 
-from openassessment.peer.serializers import validate_assessment_dict, validate_rubric_dict
+from openassessment.peer.serializers import (
+    validate_assessments, validate_rubric, validate_dates
+)
 
 
 logger = logging.getLogger(__name__)
@@ -58,14 +61,27 @@ class StudioMixin(object):
         """
         if 'xml' in data:
             try:
+                # Temporary: enforce the requirement that there must be exactly
+                # two assessments: peer followed by self.
+                assessments_validator = \
+                    lambda arg: validate_assessments(arg, enforce_peer_then_self=True)
+
                 update_from_xml_str(
                     self, data['xml'],
-                    rubric_validator=validate_rubric_dict,
-                    assessment_validator=validate_assessment_dict
+                    rubric_validator=validate_rubric,
+                    assessments_validator=assessments_validator,
+                    dates_validator=validate_dates
                 )
 
             except InvalidRubricError:
                 return {'success': False, 'msg': _('Rubric definition was not valid.')}
+
+            except InvalidAssessmentsError as ex:
+                return {'success': False,
+                        'msg': _('Assessment definitions were not valid: {error}').format(error=ex.message)}
+
+            except InvalidDatesError as ex:
+                return {'success': False, 'msg': _('Dates were not valid: {error}').format(error=ex.message)}
 
             except UpdateFromXmlError as ex:
                 return {'success': False, 'msg': _('An error occurred while saving: {error}').format(error=ex.message)}

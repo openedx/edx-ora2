@@ -84,7 +84,8 @@
         </criterion>
     </rubric>
     <assessments>
+        <!-- start date is after due date -->
         <assessment name="peer-assessment" must_grade="5" must_be_graded_by="3" />
-        <assessment name="self-assessment" />
+        <assessment name="self-assessment" start="2010-01-01" due="2003-01-01"/>
     </assessments>
 </openassessment>

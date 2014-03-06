@@ -3,9 +3,11 @@
 Serializers are created to ensure models do not have to be accessed outside the
 scope of the Tim APIs.
 """
+import datetime as dt
 from copy import deepcopy
+import pytz
 
-import dateutil.parser
+from dateutil.parser import parse as parse_date
 from django.utils.translation import ugettext as _
 from rest_framework import serializers
 from openassessment.peer.models import (
@@ -123,7 +125,7 @@ class AssessmentSerializer(serializers.ModelSerializer):
             'scored_at',
             'scorer_id',
             'score_type',
-            'feedback', 
+            'feedback',
 
             # Foreign Key
             'parts',
@@ -262,37 +264,56 @@ def rubric_from_dict(rubric_dict):
     return rubric
 
 
-def validate_assessment_dict(assessment_dict):
+def validate_assessments(assessments, enforce_peer_then_self=False):
     """
     Check that the assessment dict is semantically valid.
 
     Args:
-        assessment (dict): Serialized Assessment model.
+        assessments (list of dict): list of serialized assessment models.
+
+    Kwargs:
+        enforce_peer_then_self (bool): If True, enforce the requirement that there
+            must be exactly two assessments: first, a peer-assessment, then a self-assessment.
 
     Returns:
-        boolean indicating whether the assessment is semantically valid.
+        tuple (is_valid, msg) where
+            is_valid is a boolean indicating whether the assessment is semantically valid
+            and msg describes any validation errors found.
     """
-    # Supported assessment
-    if not assessment_dict.get('name') in ['peer-assessment', 'self-assessment']:
-        return (False, _("Assessment type is not supported"))
+    if enforce_peer_then_self:
+        if len(assessments) != 2:
+            return (False, _("Problem must have exactly two assessments"))
+        if assessments[0].get('name') != 'peer-assessment':
+            return (False, _("The first assessment must be a peer-assessment"))
+        if assessments[1].get('name') != 'self-assessment':
+            return (False, _("The second assessment must be a self-assessment"))
 
-    # Number you need to grade is >= the number of people that need to grade you
-    must_grade = assessment_dict.get('must_grade')
-    must_be_graded_by = assessment_dict.get('must_be_graded_by')
+    if len(assessments) == 0:
+        return (False, _("Problem must include at least one assessment"))
 
-    if must_grade is None or must_grade < 1:
-        return (False, _('"must_grade" must be a positive integer'))
+    for assessment_dict in assessments:
+        # Supported assessment
+        if not assessment_dict.get('name') in ['peer-assessment', 'self-assessment']:
+            return (False, _("Assessment type is not supported"))
 
-    if must_be_graded_by is None or must_be_graded_by < 1:
-        return (False, _('"must_be_graded_by" must be a positive integer'))
+        # Number you need to grade is >= the number of people that need to grade you
+        if assessment_dict.get('name') == 'peer-assessment':
+            must_grade = assessment_dict.get('must_grade')
+            must_be_graded_by = assessment_dict.get('must_be_graded_by')
 
-    if must_grade < must_be_graded_by:
-        return (False, _('"must_grade" should be greater than or equal to "must_be_graded_by"'))
+            if must_grade is None or must_grade < 1:
+                return (False, _('"must_grade" must be a positive integer'))
+
+            if must_be_graded_by is None or must_be_graded_by < 1:
+                return (False, _('"must_be_graded_by" must be a positive integer'))
+
+            if must_grade < must_be_graded_by:
+                return (False, _('"must_grade" should be greater than or equal to "must_be_graded_by"'))
 
     return (True, u'')
 
 
-def validate_rubric_dict(rubric_dict):
+def validate_rubric(rubric_dict):
     """
     Check that the rubric is semantically valid.
 
@@ -300,7 +321,9 @@ def validate_rubric_dict(rubric_dict):
         rubric_dict (dict): Serialized Rubric model
 
     Returns:
-        boolean indicating whether the rubric is semantically valid.
+        tuple (is_valid, msg) where
+            is_valid is a boolean indicating whether the assessment is semantically valid
+            and msg describes any validation errors found.
     """
     try:
         rubric_from_dict(rubric_dict)
@@ -308,3 +331,88 @@ def validate_rubric_dict(rubric_dict):
         return (False, ex.message)
     else:
         return (True, u'')
+
+
+def _parse_date(date_string):
+    """
+    Parse an ISO formatted datestring into a datetime object with timezone set to UTC.
+
+    Args:
+        date_string (str): The ISO formatted date string.
+
+    Returns:
+        datetime.datetime
+    """
+    return parse_date(date_string).replace(tzinfo=pytz.utc)
+
+
+DISTANT_PAST = dt.datetime(dt.MINYEAR, 1, 1, tzinfo=pytz.utc)
+DISTANT_FUTURE = dt.datetime(dt.MAXYEAR, 1, 1, tzinfo=pytz.utc)
+
+def validate_dates(start, end, date_ranges):
+    """
+    Check that date ranges of submission and assessments satisfy the following rules:
+        1) Start dates are before due dates.
+        2) Problem start <= submission start <= peer start <= self start
+        3) Submission due <= peer due <= self due <= problem due
+
+    Args:
+        start (str, ISO date format): When the problem opens.  A value of None indicates that the problem is always open.
+        end (str, ISO date format): When the problem closes.  A value of None indicates that the problem never closes.
+        date_ranges (list of tuples): list of (start, end) ISO date string tuples indicating
+            the start/end timestamps of each submission/assessment.
+
+    Returns:
+        tuple (is_valid, msg) where
+            is_valid is a boolean indicating whether the assessment is semantically valid
+            and msg describes any validation errors found.
+    """
+    try:
+
+        # Handle no start/due date by setting the dates to the distant past/future
+        if start is None:
+            start = DISTANT_PAST
+        else:
+            start = _parse_date(start)
+
+        if end is None:
+            end = DISTANT_FUTURE
+        else:
+            end = _parse_date(end)
+
+        if start >= end:
+            return (False, _(u"The problem's start date must be before the problem's due date"))
+
+        prev_start = start
+        prev_end = None
+        for step_start, step_end in date_ranges:
+
+            if step_start is None:
+                step_start = DISTANT_PAST
+            else:
+                step_start = _parse_date(step_start)
+
+            if step_end is None:
+                step_end = DISTANT_FUTURE
+            else:
+                step_end = _parse_date(step_end)
+
+            if step_end > end:
+                return (False, _(u"The due date cannot be after the problem's due date"))
+
+            if step_end <= step_start:
+                return (False, _(u"The due date must be after the start date."))
+
+            if step_start < prev_start:
+                return (False, _(u'The start date cannot be before a previous start date.'))
+
+            if prev_end is not None and step_end < prev_end:
+                return (False, _(u'The due date cannot be before a previous due date.'))
+
+            prev_start = step_start
+            prev_end = step_end
+
+        return (True, u'')
+
+    except ValueError:
+        return (False, u'Could not parse date string')
