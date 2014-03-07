@@ -21,7 +21,7 @@ OpenAssessment.BaseUI = function(runtime, element, server) {
     this.runtime = runtime;
     this.element = element;
     this.server = server;
-}
+};
 
 
 OpenAssessment.BaseUI.prototype = {
@@ -71,8 +71,15 @@ OpenAssessment.BaseUI.prototype = {
 
                 // Install a click handler for submission
                 $('#step--response__submit', ui.element).click(
+                    function(eventObject) { ui.submit(); }
+                );
+
+                // Install a click handler for the save button
+                $('#submission__save', ui.element).click(
                     function(eventObject) {
-                        ui.submit();
+                        // Override default form submission
+                        eventObject.preventDefault();
+                        ui.save();
                     }
                 );
             }
@@ -153,6 +160,23 @@ OpenAssessment.BaseUI.prototype = {
     },
 
     /**
+    Save a response without submitting it.
+    **/
+    save: function() {
+        // Retrieve the student's response from the DOM
+        var submission = $('#submission__answer__value', this.element).val();
+        var ui = this;
+        this.server.save(submission).done(function() {
+            // Update the "saved" icon
+            $('#response__save_status', this.element).replaceWith("Saved");
+        }).fail(function(errMsg) {
+            // TODO: display to the user
+            console.log(errMsg);
+        });
+
+    },
+
+    /**
     Send a submission to the server and update the UI.
     **/
     submit: function() {
@@ -199,7 +223,7 @@ OpenAssessment.BaseUI.prototype = {
             console.log(errMsg);
         });
     }
-}
+};
 
 /* XBlock JavaScript entry point for OpenAssessmentXBlock. */
 function OpenAssessmentBlock(runtime, element) {

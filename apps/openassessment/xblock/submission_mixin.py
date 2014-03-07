@@ -1,5 +1,6 @@
 from xblock.core import XBlock
 from submissions import api
+from django.utils.translation import ugettext as _
 from openassessment.peer import api as peer_api
 
 
@@ -67,6 +68,30 @@ class SubmissionMixin(object):
         # relies on success being orthogonal to errors
         status_text = status_text if status_text else self.submit_errors[status_tag]
         return status, status_tag, status_text
+
+    @XBlock.json_handler
+    def save_submission(self, data, suffix=''):
+        """
+        Save the current student's response submission.
+        If the student already has a response saved, this will overwrite it.
+
+        Args:
+            data (dict): Data should have a single key 'submission' that contains
+                the text of the student's response.
+            suffix (str): Not used.
+
+        Returns:
+            dict: Contains a bool 'success' and unicode string 'msg'.
+        """
+        if 'submission' in data:
+            try:
+                self.saved_response = unicode(data['submission'])
+            except:
+                return {'success': False, 'msg': _(u"Could not save response submission")}
+            else:
+                return {'success': True, 'msg': u''}
+        else:
+            return {'success': False, 'msg': _(u"Missing required key 'submission'")}
 
     @staticmethod
     def _get_submission_score(student_item_dict):
@@ -145,6 +170,8 @@ class SubmissionMixin(object):
             "student_submission": student_submission,
             "student_score": student_score,
             "step_status": step_status,
+            "saved_response": self.saved_response,
+            "save_status": _('Saved but not submitted') if len(self.saved_response) > 0 else _("Not saved"),
         }
 
         path = "openassessmentblock/response/oa_response.html"
