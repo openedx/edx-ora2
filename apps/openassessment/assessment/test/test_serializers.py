@@ -4,8 +4,8 @@ import os.path
 from ddt import ddt, file_data
 from django.test import TestCase
 
-from openassessment.peer.models import Criterion, CriterionOption, Rubric
-from openassessment.peer.serializers import (
+from openassessment.assessment.models import Criterion, CriterionOption, Rubric
+from openassessment.assessment.serializers import (
     InvalidRubric, RubricSerializer, rubric_from_dict
 )
 

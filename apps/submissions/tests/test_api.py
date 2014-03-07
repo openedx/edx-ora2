@@ -41,6 +41,17 @@ class TestSubmissionsApi(TestCase):
         submission = api.create_submission(STUDENT_ITEM, ANSWER_ONE)
         self._assert_submission(submission, ANSWER_ONE, 1, 1)
 
+    def test_get_submission_by_uuid(self):
+        submission = api.create_submission(STUDENT_ITEM, ANSWER_ONE)
+
+        # Retrieve the submission by its uuid
+        retrieved = api.get_submission_by_uuid(submission['uuid'])
+        self.assertItemsEqual(submission, retrieved)
+
+        # Should get None if we retrieve a submission that doesn't exist
+        retrieved = api.get_submission_by_uuid(u'no such uuid')
+        self.assertIs(retrieved, None)
+
     def test_get_submissions(self):
         api.create_submission(STUDENT_ITEM, ANSWER_ONE)
         api.create_submission(STUDENT_ITEM, ANSWER_TWO)

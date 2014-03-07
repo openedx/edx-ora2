@@ -1,8 +1,8 @@
 import logging
 from django.utils.translation import ugettext as _
 from xblock.core import XBlock
-from openassessment.peer import api as peer_api
-from openassessment.peer.api import (
+from openassessment.assessment import peer_api
+from openassessment.assessment.peer_api import (
         PeerAssessmentWorkflowError, PeerAssessmentRequestError,
         PeerAssessmentInternalError
 )
@@ -25,8 +25,8 @@ class PeerAssessmentMixin(object):
     """
 
     @XBlock.json_handler
-    def assess(self, data, suffix=''):
-        """Place an assessment into OpenAssessment system
+    def peer_assess(self, data, suffix=''):
+        """Place a peer assessment into OpenAssessment system
 
         Assess a Peer Submission.  Performs basic workflow validation to ensure
         that an assessment can be performed as this time.

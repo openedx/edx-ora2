@@ -13,7 +13,7 @@ from openassessment.xblock.xml import (
     UpdateFromXmlError, InvalidRubricError
 )
 
-from openassessment.peer.serializers import validate_assessment_dict, validate_rubric_dict
+from openassessment.assessment.serializers import validate_assessment_dict, validate_rubric_dict
 
 
 logger = logging.getLogger(__name__)

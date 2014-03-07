@@ -4,7 +4,7 @@ from setuptools import setup
 
 PACKAGES = [
     'submissions',
-    'openassessment.peer',
+    'openassessment.assessment',
     'openassessment.xblock'
 ]
 

@@ -111,7 +111,7 @@ OpenAssessment.BaseUI.prototype = {
                         eventObject.preventDefault();
 
                         // Handle the click
-                        ui.assess();
+                        ui.peerAssess();
                     }
                 );
             }
@@ -133,6 +133,17 @@ OpenAssessment.BaseUI.prototype = {
             function(html) {
                 $('#openassessment__self-assessment', ui.element).replaceWith(html);
                 ui.setExpanded('self-assessment', expand);
+
+                // Install a click handler for the submit button
+                $('#self-assessment--001__assessment__submit', ui.element).click(
+                    function(eventObject) {
+                        // Override default form submission
+                        eventObject.preventDefault();
+
+                        // Handle the click
+                        ui.selfAssess();
+                    }
+                );
             }
         ).fail(function(errMsg) {
             // TODO: display to the user
@@ -198,11 +209,11 @@ OpenAssessment.BaseUI.prototype = {
     /**
     Send an assessment to the server and update the UI.
     **/
-    assess: function() {
+    peerAssess: function() {
         // Retrieve assessment info from the DOM
         var submissionId = $("span#peer_submission_uuid", this.element)[0].innerText;
         var optionsSelected = {};
-        $("input[type=radio]:checked", this.element).each(
+        $("#peer-assessment--001__assessment input[type=radio]:checked", this.element).each(
             function(index, sel) {
                 optionsSelected[sel.name] = sel.value;
             }
@@ -211,15 +222,44 @@ OpenAssessment.BaseUI.prototype = {
 
         // Send the assessment to the server
         var ui = this;
-        this.server.assess(submissionId, optionsSelected, feedback).done(
+        this.server.peerAssess(submissionId, optionsSelected, feedback).done(
             function() {
-                // When we have successfully sent the assessment, expand the next step
-                ui.renderPeerAssessmentStep(true);
+                // When we have successfully sent the assessment,
+                // collapse the current step and expand the next step
+                ui.renderPeerAssessmentStep(false);
                 ui.renderSelfAssessmentStep(true);
-                ui.renderGradeStep(true);
+                ui.renderGradeStep(false);
             }
         ).fail(function(errMsg) {
             // TODO: display to the user
+            console.log(errMsg);
+        });
+    },
+
+    /**
+    Send a self-assessment to the server and update the UI.
+    **/
+    selfAssess: function() {
+        // Retrieve self-assessment info from the DOM
+        var submissionId = $("span#self_submission_uuid", this.element)[0].innerText;
+        var optionsSelected = {};
+        $("#self-assessment--001__assessment input[type=radio]:checked", this.element).each(
+            function(index, sel) {
+                optionsSelected[sel.name] = sel.value;
+            }
+        );
+
+        // Send the assessment to the server
+        var ui = this;
+        this.server.selfAssess(submissionId, optionsSelected).done(
+            function() {
+                // When we have successfully sent the assessment,
+                // collapse the current step and expand the next step
+                ui.renderSelfAssessmentStep(false);
+                ui.renderGradeStep(true);
+            }
+        ).fail(function(errMsg) {
+            // TODO: display to user
             console.log(errMsg);
         });
     }

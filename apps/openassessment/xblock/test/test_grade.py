@@ -4,7 +4,7 @@ Tests for grade handlers in Open Assessment XBlock.
 """
 import copy
 import json
-from openassessment.peer import api as peer_api
+from openassessment.assessment import peer_api
 from submissions import api as sub_api
 from .base import XBlockHandlerTestCase, scenario
 

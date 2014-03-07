@@ -131,7 +131,7 @@ OpenAssessment.Server.prototype = {
     },
 
     /**
-    Send an assessment to the XBlock.
+    Send a peer assessment to the XBlock.
 
     Args:
         submissionId (string): The UUID of the submission.
@@ -146,14 +146,14 @@ OpenAssessment.Server.prototype = {
     Example:
         var options = { clarity: "Very clear", precision: "Somewhat precise" };
         var feedback = "Good job!";
-        server.assess("abc123", options, feedback).done(
+        server.peerAssess("abc123", options, feedback).done(
             function() { console.log("Success!"); }
         ).fail(
             function(errorMsg) { console.log(errorMsg); }
         );
     **/
-    assess: function(submissionId, optionsSelected, feedback) {
-        var url = this.url('assess');
+    peerAssess: function(submissionId, optionsSelected, feedback) {
+        var url = this.url('peer_assess');
         var payload = JSON.stringify({
             submission_uuid: submissionId,
             options_selected: optionsSelected,
@@ -173,6 +173,48 @@ OpenAssessment.Server.prototype = {
                 defer.rejectWith(this, ['Could not contact server.']);
             });
         }).promise()
+    },
+
+    /**
+    Send a self-assessment to the XBlock.
+
+    Args:
+        submissionId (string): The UUID of the submission.
+        optionsSelected (object literal): Keys are criteria names,
+            values are the option text the user selected for the criterion.
+
+    Returns:
+        A JQuery promise, which resolves with no args if successful
+        and fails with an error message otherwise.
+
+    Example:
+        var options = { clarity: "Very clear", precision: "Somewhat precise" };
+        server.selfAssess("abc123", options).done(
+            function() { console.log("Success!"); }
+        ).fail(
+            function(errorMsg) { console.log(errorMsg); }
+        );
+    **/
+    selfAssess: function(submissionId, optionsSelected) {
+        var url = this.url('self_assess');
+        var payload = JSON.stringify({
+            submission_uuid: submissionId,
+            options_selected: optionsSelected
+        });
+        return $.Deferred(function(defer) {
+            $.ajax({ type: "POST", url: url, data: payload }).done(
+                function(data) {
+                    if (data.success) {
+                        defer.resolve();
+                    }
+                    else {
+                        defer.rejectWith(this, [data.msg]);
+                    }
+                }
+            ).fail(function(data) {
+                defer.rejectWith(this, ['Could not contact server.']);
+            });
+        });
     },
 
     /**

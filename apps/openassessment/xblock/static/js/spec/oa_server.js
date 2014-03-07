@@ -90,13 +90,13 @@ describe("OpenAssessment.Server", function() {
 
         var success = false;
         var options = {clarity: "Very clear", precision: "Somewhat precise"};
-        server.assess("abc1234", options, "Excellent job!").done(function() {
+        server.peerAssess("abc1234", options, "Excellent job!").done(function() {
             success = true;
         });
 
         expect(success).toBe(true);
         expect($.ajax).toHaveBeenCalledWith({
-            url: '/assess',
+            url: '/peer_assess',
             type: "POST",
             data: JSON.stringify({
                 submission_uuid: "abc1234",
@@ -231,24 +231,24 @@ describe("OpenAssessment.Server", function() {
         expect(receivedMsg).toEqual("Test error");
     });
 
-    it("informs the caller of a server error when sending an assessment", function() {
+    it("informs the caller of a server error when sending a peer assessment", function() {
         stubAjax(true, {success:false, msg:'Test error!'});
 
         var receivedMsg = null;
-        var options = {clarity: "Very clear", precision: "Somewhat precise"};
-        server.assess("abc1234", options, "Excellent job!").fail(function(msg) {
+        var options = {clarity: "Very clear", precision: "Somewhat precise"}
+        server.peerAssess("abc1234", options, "Excellent job!").fail(function(msg) {
             receivedMsg = msg;
         });
 
         expect(receivedMsg).toEqual("Test error!");
     });
 
-    it("informs the caller of an AJAX error when sending an assessment", function() {
+    it("informs the caller of an AJAX error when sending a peer assessment", function() {
         stubAjax(false, null);
 
         var receivedMsg = null;
-        var options = {clarity: "Very clear", precision: "Somewhat precise"};
-        server.assess("abc1234", options, "Excellent job!").fail(function(msg) {
+        var options = {clarity: "Very clear", precision: "Somewhat precise"}
+        server.peerAssess("abc1234", options, "Excellent job!").fail(function(msg) {
             receivedMsg = msg;
         });
 

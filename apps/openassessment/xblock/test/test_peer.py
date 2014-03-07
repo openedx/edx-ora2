@@ -5,7 +5,8 @@ Tests for peer assessment handlers in Open Assessment XBlock.
 
 import copy
 import json
-from openassessment.peer import api as peer_api
+from openassessment.assessment import peer_api
+from submissions import api as submission_api
 from .base import XBlockHandlerTestCase, scenario
 
 
@@ -19,7 +20,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
 
     SUBMISSION = u'ՇﻉรՇ รપ๒๓ٱรรٱѻก'
 
-    @scenario('data/assessment_scenario.xml', user_id='Bob')
+    @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_assess_handler(self, xblock):
 
         # Create a submission for this problem from another user
@@ -35,7 +36,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         # Submit an assessment and expect a successful response
         assessment = copy.deepcopy(self.ASSESSMENT)
         assessment['submission_uuid'] = submission['uuid']
-        resp = self.request(xblock, 'assess', json.dumps(assessment), response_format='json')
+        resp = self.request(xblock, 'peer_assess', json.dumps(assessment), response_format='json')
         self.assertTrue(resp['success'])
 
         # Retrieve the assessment and check that it matches what we sent
@@ -56,7 +57,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
 
         self.assertEqual(actual[0]['feedback'], assessment['feedback'])
 
-    @scenario('data/assessment_scenario.xml', user_id='Bob')
+    @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_assess_rubric_option_mismatch(self, xblock):
 
         # Create a submission for this problem from another user
@@ -73,16 +74,16 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         assessment = copy.deepcopy(self.ASSESSMENT)
         assessment['submission_uuid'] = submission['uuid']
         assessment['options_selected']['invalid'] = 'not a part of the rubric!'
-        resp = self.request(xblock, 'assess', json.dumps(assessment), response_format='json')
+        resp = self.request(xblock, 'peer_assess', json.dumps(assessment), response_format='json')
 
         # Expect an error response
         self.assertFalse(resp['success'])
 
 
-    @scenario('data/assessment_scenario.xml', user_id='Bob')
+    @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_missing_keys_in_request(self, xblock):
         for missing in ['feedback', 'submission_uuid', 'options_selected']:
             assessment = copy.deepcopy(self.ASSESSMENT)
             del assessment[missing]
-            resp = self.request(xblock, 'assess', json.dumps(assessment), response_format='json')
+            resp = self.request(xblock, 'peer_assess', json.dumps(assessment), response_format='json')
             self.assertEqual(resp['success'], False)

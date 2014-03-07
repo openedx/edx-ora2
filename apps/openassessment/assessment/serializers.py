@@ -8,7 +8,7 @@ from copy import deepcopy
 import dateutil.parser
 from django.utils.translation import ugettext as _
 from rest_framework import serializers
-from openassessment.peer.models import (
+from openassessment.assessment.models import (
     Assessment, AssessmentPart, Criterion, CriterionOption, Rubric
 )
 
@@ -123,7 +123,7 @@ class AssessmentSerializer(serializers.ModelSerializer):
             'scored_at',
             'scorer_id',
             'score_type',
-            'feedback', 
+            'feedback',
 
             # Foreign Key
             'parts',
@@ -153,7 +153,7 @@ def get_assessment_review(submission):
 
     Examples:
         >>> get_assessment_review(submission)
-        {
+        [{
             'submission': 1,
             'rubric': {
                 'id': 1,
@@ -183,26 +183,38 @@ def get_assessment_review(submission):
             'submission_uuid': u'0a600160-be7f-429d-a853-1283d49205e7',
             'points_earned': 9,
             'points_possible': 20,
-        }
+        }]
     """
-    reviews = []
-    assessments = Assessment.objects.filter(submission=submission)
-    for assessment in assessments:
-        assessment_dict = AssessmentSerializer(assessment).data
-        rubric_dict = RubricSerializer(assessment.rubric).data
-        assessment_dict["rubric"] = rubric_dict
-        parts = []
-        for part in assessment.parts.all():
-            part_dict = AssessmentPartSerializer(part).data
-            options_dict = CriterionOptionSerializer(part.option).data
-            criterion_dict = CriterionSerializer(part.option.criterion).data
-            options_dict["criterion"] = criterion_dict
-            part_dict["option"] = options_dict
-            parts.append(part_dict)
-        assessment_dict["parts"] = parts
-        reviews.append(assessment_dict)
-    return reviews
+    return [
+        full_assessment_dict(assessment)
+        for assessment in Assessment.objects.filter(submission=submission)
+    ]
 
+
+def full_assessment_dict(assessment):
+    """
+    Return a dict representation of the Assessment model,
+    including nested assessment parts.
+
+    Args:
+        assessment (Assessment): The Assessment model to serialize
+
+    Returns:
+        dict with keys 'rubric' (serialized Rubric model) and 'parts' (serialized assessment parts)
+    """
+    assessment_dict = AssessmentSerializer(assessment).data
+    rubric_dict = RubricSerializer(assessment.rubric).data
+    assessment_dict["rubric"] = rubric_dict
+    parts = []
+    for part in assessment.parts.all():
+        part_dict = AssessmentPartSerializer(part).data
+        options_dict = CriterionOptionSerializer(part.option).data
+        criterion_dict = CriterionSerializer(part.option.criterion).data
+        options_dict["criterion"] = criterion_dict
+        part_dict["option"] = options_dict
+        parts.append(part_dict)
+    assessment_dict["parts"] = parts
+    return assessment_dict
 
 
 def rubric_from_dict(rubric_dict):
@@ -276,18 +288,27 @@ def validate_assessment_dict(assessment_dict):
     if not assessment_dict.get('name') in ['peer-assessment', 'self-assessment']:
         return (False, _("Assessment type is not supported"))
 
-    # Number you need to grade is >= the number of people that need to grade you
-    must_grade = assessment_dict.get('must_grade')
-    must_be_graded_by = assessment_dict.get('must_be_graded_by')
+    # Peer assessments need to specify must_grade and must_be_graded_by
+    if assessment_dict.get('name') == 'peer-assessment':
 
-    if must_grade is None or must_grade < 1:
-        return (False, _('"must_grade" must be a positive integer'))
+        if 'must_grade' not in assessment_dict:
+            return (False, _(u'Attribute "must_grade" is missing from peer assessment.'))
 
-    if must_be_graded_by is None or must_be_graded_by < 1:
-        return (False, _('"must_be_graded_by" must be a positive integer'))
+        if 'must_be_graded_by' not in assessment_dict:
+            return (False, _(u'Attribute "must_be_graded_by" is missing from peer assessment.'))
 
-    if must_grade < must_be_graded_by:
-        return (False, _('"must_grade" should be greater than or equal to "must_be_graded_by"'))
+        # Number you need to grade is >= the number of people that need to grade you
+        must_grade = assessment_dict.get('must_grade')
+        must_be_graded_by = assessment_dict.get('must_be_graded_by')
+
+        if must_grade is None or must_grade < 1:
+            return (False, _('"must_grade" must be a positive integer'))
+
+        if must_be_graded_by is None or must_be_graded_by < 1:
+            return (False, _('"must_be_graded_by" must be a positive integer'))
+
+        if must_grade < must_be_graded_by:
+            return (False, _('"must_grade" should be greater than or equal to "must_be_graded_by"'))
 
     return (True, u'')
 

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from openassessment.peer.models import Assessment, AssessmentPart, Rubric, Criterion, CriterionOption
+from openassessment.assessment.models import Assessment, AssessmentPart, Rubric, Criterion, CriterionOption
 
 admin.site.register(Assessment)
 admin.site.register(AssessmentPart)

@@ -10,8 +10,8 @@ import logging
 from django.utils.translation import ugettext as _
 from django.db import DatabaseError
 
-from openassessment.peer.models import Assessment
-from openassessment.peer.serializers import (
+from openassessment.assessment.models import Assessment, InvalidOptionSelection
+from openassessment.assessment.serializers import (
     AssessmentSerializer, rubric_from_dict, get_assessment_review)
 from submissions import api as submission_api
 from submissions.models import Submission, StudentItem, Score
@@ -73,6 +73,7 @@ def is_complete(submission_uuid, requirements):
     )
     return finished_evaluating
 
+
 def get_score(submission_uuid, requirements):
     # User hasn't completed their own submission yet
     if not is_complete(submission_uuid, requirements):
@@ -117,9 +118,10 @@ def create_assessment(
             required for the student to receive a score for their submission.
         must_be_graded_by (int): The number of assessments
             required on the submission for it to be scored.
-        assessment_dict (dict): All related information for the assessment.  The dictionary
-            must have the following keys: "options_selected" (mapping of criterion names to option values),
-            and "feedback" (string of written feedback for the submission).
+        assessment_dict (dict): All related information for the assessment. An
+            assessment contains points_earned, points_possible, and feedback.
+
+    Kwargs:
         scored_at (datetime): Optional argument to override the time in which
             the assessment took place. If not specified, scored_at is set to
             now.
@@ -145,12 +147,14 @@ def create_assessment(
         submission = Submission.objects.get(uuid=submission_uuid)
         student_item = submission.student_item
         rubric = rubric_from_dict(rubric_dict)
-        option_ids = rubric.options_ids(assessment_dict["options_selected"])
 
         # Validate that the selected options matched the rubric
         # and raise an error if this is not the case
-        if None in option_ids:
-            raise PeerAssessmentRequestError(_("Selected options do not match the rubric options."))
+        try:
+            option_ids = rubric.options_ids(assessment_dict["options_selected"])
+        except InvalidOptionSelection as ex:
+            msg = _("Selected options do not match the rubric: {error}").format(error=ex.message)
+            raise PeerAssessmentRequestError(msg)
 
         # Check if the grader has even submitted an answer themselves...
         try:
@@ -193,6 +197,36 @@ def create_assessment(
         )
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
+
+
+def _score_if_finished(student_item,
+                       submission,
+                       required_assessments_for_student,
+                       must_be_graded_by):
+    """Calculate final grade iff peer evaluation flow is satisfied.
+
+    Checks if the student is finished with the peer assessment workflow. If the
+    student already has a final grade calculated, there is no need to proceed.
+    If they do not have a grade, the student has a final grade calculated.
+
+    """
+    if Score.objects.filter(student_item=student_item):
+        return
+
+    finished_evaluating = has_finished_required_evaluating(
+        StudentItemSerializer(student_item).data,
+        required_assessments_for_student
+    )
+    assessments = Assessment.objects.filter(submission=submission, score_type=PEER_TYPE)
+    submission_finished = assessments.count() >= must_be_graded_by
+
+    if finished_evaluating and submission_finished:
+        submission_api.set_score(
+            StudentItemSerializer(student_item).data,
+            SubmissionSerializer(submission).data,
+            sum(get_assessment_median_scores(submission.uuid, must_be_graded_by).values()),
+            assessments[0].points_possible
+        )
 
 
 def get_assessment_median_scores(submission_id, must_be_graded_by):
@@ -289,7 +323,8 @@ def has_finished_required_evaluating(student_item_dict, required_assessments):
     )
     count = Assessment.objects.filter(
         submission__in=submissions,
-        scorer_id=student_item_dict["student_id"]
+        scorer_id=student_item_dict["student_id"],
+        score_type=PEER_TYPE
     ).count()
     return count >= required_assessments, count
 
@@ -418,7 +453,7 @@ def _get_first_submission_not_evaluated(student_items, student_id, required_num_
         "-attempt_number"
     )
     for submission in submissions:
-        assessments = Assessment.objects.filter(submission=submission)
+        assessments = Assessment.objects.filter(submission=submission, score_type=PEER_TYPE)
         if assessments.count() < required_num_assessments:
             already_evaluated = False
             for assessment in assessments:

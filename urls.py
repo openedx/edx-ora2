@@ -1,7 +1,7 @@
 from django.conf.urls import include, patterns, url
 from django.contrib import admin
 
-import openassessment.peer.urls
+import openassessment.assessment.urls
 import submissions.urls
 import workbench.urls
 
@@ -19,5 +19,5 @@ urlpatterns = patterns(
     url(r'^submissions/', include(submissions.urls)),
 
     # edx-tim apps
-    url(r'^peer/evaluations/', include(openassessment.peer.urls)),
+    url(r'^peer/evaluations/', include(openassessment.assessment.urls)),
 )
