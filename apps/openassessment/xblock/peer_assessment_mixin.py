@@ -78,6 +78,11 @@ class PeerAssessmentMixin(object):
                 logger.exception()
                 return {'success': False, 'msg': _("Internal error occurred while creating the assessment")}
 
+            # Update both the workflow that the submission we're assessing
+            # belongs to, as well as our own (e.g. have we evaluated enough?)
+            self.update_workflow_status(data["submission_uuid"])
+            self.update_workflow_status(self.submission_uuid)
+
             # Temp kludge until we fix JSON serialization for datetime
             assessment["scored_at"] = str(assessment["scored_at"])
 
@@ -142,15 +147,8 @@ class PeerAssessmentMixin(object):
             peer_submission = peer_api.get_submission_to_assess(
                 student_item_dict, assessment["must_be_graded_by"]
             )
-
-            peer_submission = peer_api.get_submission_to_assess(
-                student_item_dict,
-                assessment["must_be_graded_by"]
-            )
-
-        except PeerAssessmentWorkflowError:
-            # TODO: Log?
-            pass
+        except PeerAssessmentWorkflowError as err:
+            logger.exception(err)
         return peer_submission
 
     def get_assessment_module(self, mixin_name):

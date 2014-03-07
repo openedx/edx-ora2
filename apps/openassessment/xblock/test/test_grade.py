@@ -4,8 +4,8 @@ Tests for grade handlers in Open Assessment XBlock.
 """
 import copy
 import json
-from submissions import api as submission_api
 from openassessment.peer import api as peer_api
+from submissions import api as sub_api
 from .base import XBlockHandlerTestCase, scenario
 
 
@@ -29,14 +29,14 @@ class TestGrade(XBlockHandlerTestCase):
 
         # Create a submission from the user
         student_item = xblock.get_student_item_dict()
-        submission = submission_api.create_submission(student_item, self.SUBMISSION)
+        submission = xblock.create_submission(student_item, self.SUBMISSION)
 
         scorer_submissions = []
         for scorer_name, assessment in zip(['McNulty', 'Freamon'], self.ASSESSMENTS):
             # Create a submission for each scorer
             scorer = copy.deepcopy(student_item)
             scorer['student_id'] = scorer_name
-            scorer_sub = submission_api.create_submission(scorer, self.SUBMISSION)
+            scorer_sub = sub_api.create_submission(scorer, self.SUBMISSION)
 
             # Store the scorer's submission so our user can assess it later
             scorer_submissions.append(scorer_sub)

@@ -141,6 +141,7 @@ def create_submission(student_item_dict, answer, submitted_at=None,
         if not submission_serializer.is_valid():
             raise SubmissionRequestError(submission_serializer.errors)
         submission_serializer.save()
+
         return submission_serializer.data
     except DatabaseError:
         error_message = u"An error occurred while creating submission {} for student item: {}".format(
@@ -150,6 +151,46 @@ def create_submission(student_item_dict, answer, submitted_at=None,
         logger.exception(error_message)
         raise SubmissionInternalError(error_message)
 
+def get_submission(submission_uuid):
+    """Retrieves a single submission by uuid.
+
+    Args:
+        submission_uuid (str): Identifier for the submission.
+
+    Raises:
+        SubmissionNotFoundError: Raised if the submission does not exist.
+        SubmissionRequestError: Raised if the search parameter is not a string.
+        SubmissionInternalError: Raised for unknown errors.
+
+    Examples:
+        >>> get_submission("20b78e0f32df805d21064fc912f40e9ae5ab260d")
+        {
+            'student_item': 2,
+            'attempt_number': 1,
+            'submitted_at': datetime.datetime(2014, 1, 29, 23, 14, 52, 649284, tzinfo=<UTC>),
+            'created_at': datetime.datetime(2014, 1, 29, 17, 14, 52, 668850, tzinfo=<UTC>),
+            'answer': u'The answer is 42.'
+        }
+
+    """
+    if not isinstance(submission_uuid, basestring):
+        raise SubmissionRequestError(
+            "submission_uuid ({!r}) must be a string type".format(submission_uuid)
+        )
+
+    try:
+        submission = Submission.objects.get(uuid=submission_uuid)
+    except Submission.DoesNotExist:
+        raise SubmissionNotFoundError(
+            u"No submission matching uuid {}".format(submission_uuid)
+        )
+    except Exception as exc:
+        # Something very unexpected has just happened (like DB misconfig)
+        err_msg = "Could not get submission due to error: {}".format(exc)
+        logger.exception(err_msg)
+        raise SubmissionInternalError(err_msg)
+
+    return SubmissionSerializer(submission).data
 
 def get_submissions(student_item_dict, limit=None):
     """Retrieves the submissions for the specified student item,
@@ -262,22 +303,31 @@ def get_score(student_item):
     return ScoreSerializer(scores, many=True).data
 
 
+def get_latest_score_for_submission(submission_uuid):
+    try:
+        submission = Submission.objects.get(uuid=submission_uuid)
+        score = Score.objects.filter(submission=submission).order_by("-id")[0]
+    except IndexError:
+        return None
+    except Submission.DoesNotExist:
+        raise SubmissionNotFoundError(
+            u"No submission matching uuid {}".format(submission_uuid)
+        )
+
+    return ScoreSerializer(score).data
+
 def get_scores(course_id, student_id, types=None):
     pass
 
 
-def set_score(student_item, submission, score, points_possible):
-    """Set a score for a particular student item, submission pair.
+def set_score(submission_uuid, score, points_possible):
+    """Set a score for a particular submission.
 
-    Sets the score for a particular student item and submission pair. This score
-    is calculated externally to the API.
+    Sets the score for a particular submission. This score is calculated
+    externally to the API.
 
     Args:
-        student_item (dict): The student item associated with this score. This
-            dictionary must contain a course_id, student_id, and item_id.
-        submission (dict): The submission associated with this score. This
-            dictionary must contain all submission fields to properly get a
-            unique submission item.
+        submission_uuid (str): UUID for the submission (must exist).
         score (int): The score to associate with the given submission and
             student item.
         points_possible (int): The total points possible for this particular
@@ -293,21 +343,7 @@ def set_score(student_item, submission, score, points_possible):
             are not found.
 
     Examples:
-        >>> student_item_dict = dict(
-        >>>    student_id="Tim",
-        >>>    item_id="item_1",
-        >>>    course_id="course_1",
-        >>>    item_type="type_one"
-        >>> )
-        >>>
-        >>> submission_dict = dict(
-        >>>    student_item=2,
-        >>>    attempt_number=1,
-        >>>    submitted_at=datetime.datetime(2014, 1, 29, 23, 14, 52, 649284, tzinfo=<UTC>),
-        >>>    created_at=datetime.datetime(2014, 1, 29, 17, 14, 52, 668850, tzinfo=<UTC>),
-        >>>    answer=u'The answer is 42.'
-        >>> )
-        >>> set_score(student_item_dict, submission_dict, 11, 12)
+        >>> set_score("a778b933-9fb3-11e3-9c0f-040ccee02800", 11, 12)
         {
             'student_item': 2,
             'submission': 1,
@@ -318,8 +354,11 @@ def set_score(student_item, submission, score, points_possible):
 
     """
     try:
-        student_item_model = StudentItem.objects.get(**student_item)
-        submission_model = Submission.objects.get(**submission)
+        submission_model = Submission.objects.get(uuid=submission_uuid)
+    except Submission.DoesNotExist:
+        raise SubmissionNotFoundError(
+            u"No submission matching uuid {}".format(submission_uuid)
+        )
     except DatabaseError:
         error_msg = u"Could not retrieve student item: {} or submission {}.".format(
             student_item, submission
@@ -329,7 +368,7 @@ def set_score(student_item, submission, score, points_possible):
 
     score = ScoreSerializer(
         data={
-            "student_item": student_item_model.pk,
+            "student_item": submission_model.student_item.pk,
             "submission": submission_model.pk,
             "points_earned": score,
             "points_possible": points_possible,

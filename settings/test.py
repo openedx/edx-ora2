@@ -5,7 +5,12 @@ Test-specific Django settings.
 # Inherit from base settings
 from .base import *
 
-TEST_APPS = ('openassessment.peer', 'submissions', "openassessment.xblock")
+TEST_APPS = (
+    'openassessment.peer',
+    'openassessment.workflow',
+    'openassessment.xblock',
+    'submissions',
+)
 
 # Configure nose
 NOSE_ARGS = [

@@ -19,6 +19,8 @@ from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.studio_mixin import StudioMixin
 from openassessment.xblock.xml import update_from_xml
+from openassessment.xblock.workflow_mixin import WorkflowMixin
+from openassessment.workflow import api as workflow_api
 
 
 DEFAULT_PROMPT = """
@@ -146,7 +148,14 @@ def load(path):
     return data.decode("utf8")
 
 
-class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAssessmentMixin, StudioMixin, GradeMixin):
+class OpenAssessmentBlock(
+    XBlock,
+    SubmissionMixin,
+    PeerAssessmentMixin,
+    SelfAssessmentMixin,
+    StudioMixin,
+    GradeMixin,
+    WorkflowMixin):
     """Displays a question and gives an area where students can compose a response."""
 
     start_datetime = String(
@@ -189,6 +198,11 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         default=u"TestCourse",
         scope=Scope.content,
         help="The course_id associated with this prompt (until we can get it from runtime).",
+    )
+    submission_uuid = String(
+        default=None,
+        scope=Scope.user_state,
+        help="The student's submission that others will be assessing."
     )
 
     saved_response = String(
@@ -372,3 +386,13 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
             if due < datetime.datetime.utcnow():
                 return False, "due"
         return True, None
+
+    def update_workflow_status(self, submission_uuid):
+        assessment_ui_model = self.get_assessment_module('peer-assessment')
+        requirements = {
+            "peer": {
+                "must_grade": assessment_ui_model["must_grade"],
+                "must_be_graded_by": assessment_ui_model["must_be_graded_by"]
+            }
+        }
+        return workflow_api.update_from_assessments(submission_uuid, requirements)

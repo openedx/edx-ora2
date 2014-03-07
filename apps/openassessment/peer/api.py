@@ -65,6 +65,35 @@ class PeerAssessmentInternalError(PeerAssessmentError):
     pass
 
 
+def is_complete(submission_uuid, requirements):
+    submission = Submission.objects.get(uuid=submission_uuid)
+    finished_evaluating, _count = has_finished_required_evaluating(
+        StudentItemSerializer(submission.student_item).data,
+        requirements["must_grade"]
+    )
+    return finished_evaluating
+
+def get_score(submission_uuid, requirements):
+    # User hasn't completed their own submission yet
+    if not is_complete(submission_uuid, requirements):
+        return None
+
+    submission = Submission.objects.get(uuid=submission_uuid)
+    assessments = Assessment.objects.filter(submission=submission)
+    submission_finished = assessments.count() >= requirements["must_be_graded_by"]
+
+    if not submission_finished:
+        return None
+
+    return {
+        "points_earned": sum(
+            get_assessment_median_scores(
+                submission.uuid, requirements["must_be_graded_by"]
+            ).values()
+        ),
+        "points_possible": assessments[0].points_possible,
+    }
+
 def create_assessment(
         submission_uuid,
         scorer_id,
@@ -114,7 +143,7 @@ def create_assessment(
     """
     try:
         submission = Submission.objects.get(uuid=submission_uuid)
-
+        student_item = submission.student_item
         rubric = rubric_from_dict(rubric_dict)
         option_ids = rubric.options_ids(assessment_dict["options_selected"])
 
@@ -122,6 +151,19 @@ def create_assessment(
         # and raise an error if this is not the case
         if None in option_ids:
             raise PeerAssessmentRequestError(_("Selected options do not match the rubric options."))
+
+        # Check if the grader has even submitted an answer themselves...
+        try:
+            scorer_item = StudentItem.objects.get(
+                student_id=scorer_id,
+                item_id=student_item.item_id,
+                course_id=student_item.course_id,
+                item_type=student_item.item_type
+            )
+        except StudentItem.DoesNotExist:
+            raise PeerAssessmentWorkflowError(
+                _("You must make a submission before assessing another student")
+            )
 
         feedback = assessment_dict.get('feedback', u'')
         peer_assessment = {
@@ -142,44 +184,6 @@ def create_assessment(
             raise PeerAssessmentRequestError(peer_serializer.errors)
         peer_serializer.save()
 
-        # Check if the submission is finished and its Author has graded enough.
-        student_item = submission.student_item
-        _score_if_finished(
-            student_item,
-            submission,
-            must_grade,
-            must_be_graded_by
-        )
-
-        # Check if the grader is finished and has enough assessments
-        try:
-            scorer_item = StudentItem.objects.get(
-                student_id=scorer_id,
-                item_id=student_item.item_id,
-                course_id=student_item.course_id,
-                item_type=student_item.item_type
-            )
-
-        except StudentItem.DoesNotExist:
-            raise PeerAssessmentWorkflowError(_("You must make a submission before assessing another student"))
-
-        scorer_submissions = Submission.objects.filter(
-            student_item=scorer_item
-        ).order_by("-attempt_number")
-
-        if len(scorer_submissions) > 0:
-            _score_if_finished(
-                scorer_item,
-                scorer_submissions[0],
-                must_grade,
-                must_be_graded_by
-            )
-
-        # Currently, this condition is unreachable, since the only way to create a StudentItem is to
-        # create a submission for that student.  We check anyway just in case this invariant changes.
-        else:
-            raise PeerAssessmentWorkflowError(_("You must make at least one submission before assessing another student"))
-
         return peer_serializer.data
     except DatabaseError:
         error_message = u"An error occurred while creating assessment {} for submission: {} by: {}".format(
@@ -189,36 +193,6 @@ def create_assessment(
         )
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
-
-
-def _score_if_finished(student_item,
-                       submission,
-                       required_assessments_for_student,
-                       must_be_graded_by):
-    """Calculate final grade iff peer evaluation flow is satisfied.
-
-    Checks if the student is finished with the peer assessment workflow. If the
-    student already has a final grade calculated, there is no need to proceed.
-    If they do not have a grade, the student has a final grade calculated.
-
-    """
-    if Score.objects.filter(student_item=student_item):
-        return
-
-    finished_evaluating = has_finished_required_evaluating(
-        StudentItemSerializer(student_item).data,
-        required_assessments_for_student
-    )
-    assessments = Assessment.objects.filter(submission=submission)
-    submission_finished = assessments.count() >= must_be_graded_by
-
-    if finished_evaluating and submission_finished:
-        submission_api.set_score(
-            StudentItemSerializer(student_item).data,
-            SubmissionSerializer(submission).data,
-            sum(get_assessment_median_scores(submission.uuid, must_be_graded_by).values()),
-            assessments[0].points_possible
-        )
 
 
 def get_assessment_median_scores(submission_id, must_be_graded_by):
