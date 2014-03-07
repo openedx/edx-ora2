@@ -191,6 +191,12 @@ class OpenAssessmentBlock(XBlock, SubmissionMixin, PeerAssessmentMixin, SelfAsse
         help="The course_id associated with this prompt (until we can get it from runtime).",
     )
 
+    saved_response = String(
+        default=u"",
+        scope=Scope.user_state,
+        help="Saved response submission for the current user."
+    )
+
     def get_xblock_trace(self):
         """Uniquely identify this XBlock by context.
 

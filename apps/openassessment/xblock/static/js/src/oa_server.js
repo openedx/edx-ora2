@@ -100,7 +100,33 @@ OpenAssessment.Server.prototype = {
                 }
             }).fail(function(data) {
                 defer.rejectWith(this, ["AJAX", "Could not contact server."]);
-            })
+            });
+        }).promise();
+    },
+
+    /**
+    Save a response without submitting it.
+
+    Args:
+        submission (string): The text of the student's response.
+
+    Returns:
+        A JQuery promise, which resolves with no arguments on success and
+        fails with an error message.
+    **/
+    save: function(submission) {
+        var url = this.url('save_submission');
+        return $.Deferred(function(defer) {
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: JSON.stringify({submission: submission})
+            }).done(function(data) {
+                if (data.success) { defer.resolve(); }
+                else { defer.rejectWith(this, [data.msg]); }
+            }).fail(function(data) {
+                defer.rejectWith(this, ["Could not contact server."]);
+            });
         }).promise();
     },
 

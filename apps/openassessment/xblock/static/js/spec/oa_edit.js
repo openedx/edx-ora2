@@ -28,7 +28,7 @@ describe("OpenAssessment.StudioUI", function() {
             else {
                 return this.errorPromise;
             }
-        }
+        };
 
         this.updateXml = function(xml) {
             if (!this.updateError) {
@@ -40,7 +40,7 @@ describe("OpenAssessment.StudioUI", function() {
             else {
                 return this.errorPromise;
             }
-        }
+        };
     };
 
     var server = null;
@@ -49,7 +49,7 @@ describe("OpenAssessment.StudioUI", function() {
     beforeEach(function() {
 
         // Load the DOM fixture
-        jasmine.getFixtures().fixturesPath = 'base/fixtures'
+        jasmine.getFixtures().fixturesPath = 'base/fixtures';
         loadFixtures('oa_edit.html');
 
         // Create the stub server
@@ -65,7 +65,7 @@ describe("OpenAssessment.StudioUI", function() {
 
     it("loads the XML definition", function() {
         // Initialize the UI
-        ui.load()
+        ui.load();
 
         // Expect that the XML definition was loaded
         var contents = ui.codeBox.getValue();
