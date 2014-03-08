@@ -10,7 +10,7 @@ from django.template.loader import get_template
 from webob import Response
 
 from xblock.core import XBlock
-from xblock.fields import List, Scope, String
+from xblock.fields import List, Scope, String, Boolean
 from xblock.fragment import Fragment
 from openassessment.xblock.grade_mixin import GradeMixin
 
@@ -203,6 +203,12 @@ class OpenAssessmentBlock(
         default=None,
         scope=Scope.user_state,
         help="The student's submission that others will be assessing."
+    )
+
+    has_saved = Boolean(
+        default=False,
+        scope=Scope.user_state,
+        help="Indicates whether the user has saved a response"
     )
 
     saved_response = String(

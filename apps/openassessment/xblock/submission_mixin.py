@@ -87,6 +87,7 @@ class SubmissionMixin(object):
         if 'submission' in data:
             try:
                 self.saved_response = unicode(data['submission'])
+                self.has_saved = True
             except:
                 return {'success': False, 'msg': _(u"Could not save response submission")}
             else:
@@ -144,6 +145,16 @@ class SubmissionMixin(object):
             pass
         return submissions[0] if submissions else None
 
+    @property
+    def save_status(self):
+        """
+        Return a string indicating whether the response has been saved.
+
+        Returns:
+            unicode
+        """
+        return _(u'Saved but not submitted') if self.has_saved else _(u'Not saved')
+
     @XBlock.handler
     def render_submission(self, data, suffix=''):
         """Renders the Submission HTML section of the XBlock
@@ -178,7 +189,7 @@ class SubmissionMixin(object):
             "student_score": student_score,
             "step_status": step_status,
             "saved_response": self.saved_response,
-            "save_status": _('Saved but not submitted') if len(self.saved_response) > 0 else _("Not saved"),
+            "save_status": self.save_status
         }
 
         path = "openassessmentblock/response/oa_response.html"

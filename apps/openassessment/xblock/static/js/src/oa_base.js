@@ -177,9 +177,10 @@ OpenAssessment.BaseUI.prototype = {
         // Retrieve the student's response from the DOM
         var submission = $('#submission__answer__value', this.element).val();
         var ui = this;
+        $('#response__save_status', this.element).html('Saving...');
         this.server.save(submission).done(function() {
             // Update the "saved" icon
-            $('#response__save_status', this.element).replaceWith("Saved");
+            $('#response__save_status', this.element).html("Saved but not submitted");
         }).fail(function(errMsg) {
             // TODO: display to the user
             console.log(errMsg);
