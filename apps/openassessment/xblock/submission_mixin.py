@@ -1,8 +1,12 @@
+import logging
 from xblock.core import XBlock
 from django.utils.translation import ugettext as _
 from submissions import api
 from openassessment.assessment import peer_api
 from openassessment.workflow import api as workflow_api
+
+
+logger = logging.getLogger(__name__)
 
 
 class SubmissionMixin(object):
@@ -60,6 +64,7 @@ class SubmissionMixin(object):
                 status_tag = 'EBADFORM'
                 status_text = unicode(err.field_errors)
             except (api.SubmissionError, workflow_api.AssessmentWorkflowError):
+                logger.exception("Error occurred while submitting.")
                 status_tag = 'EUNKNOWN'
             else:
                 status = True
