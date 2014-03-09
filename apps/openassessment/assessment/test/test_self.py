@@ -9,7 +9,7 @@ import pytz
 from django.test import TestCase
 from submissions.api import create_submission
 from openassessment.assessment.self_api import (
-    create_assessment, get_submission_and_assessment,
+    create_assessment, get_submission_and_assessment, is_complete,
     SelfAssessmentRequestError
 )
 
@@ -62,6 +62,7 @@ class TestSelfApi(TestCase):
         received_submission, assessment = get_submission_and_assessment(self.STUDENT_ITEM)
         self.assertItemsEqual(received_submission, submission)
         self.assertIs(assessment, None)
+        self.assertFalse(is_complete(submission['uuid']))
 
         # Create a self-assessment for the submission
         assessment = create_assessment(
@@ -69,6 +70,9 @@ class TestSelfApi(TestCase):
             self.OPTIONS_SELECTED, self.RUBRIC,
             scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
         )
+
+        # Self-assessment should be complete
+        self.assertTrue(is_complete(submission['uuid']))
 
         # Retrieve the self-assessment
         received_submission, retrieved = get_submission_and_assessment(self.STUDENT_ITEM)
@@ -194,3 +198,7 @@ class TestSelfApi(TestCase):
         # Expect that we still have the original assessment
         _, retrieved = get_submission_and_assessment(self.STUDENT_ITEM)
         self.assertItemsEqual(assessment, retrieved)
+
+    def test_is_complete_no_submission(self):
+        # This submission uuid does not exist
+        self.assertFalse(is_complete('abc1234'))

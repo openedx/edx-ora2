@@ -4,7 +4,7 @@ Tests for grade handlers in Open Assessment XBlock.
 """
 import copy
 import json
-from openassessment.assessment import peer_api
+from openassessment.assessment import peer_api, self_api
 from submissions import api as sub_api
 from .base import XBlockHandlerTestCase, scenario
 
@@ -48,11 +48,18 @@ class TestGrade(XBlockHandlerTestCase):
             )
 
         # Have our user make assessments (so she can get a score)
-        for submission in scorer_submissions:
+        for scorer_sub in scorer_submissions:
             peer_api.create_assessment(
-                submission['uuid'], 'Greggs', 2, 2,
+                scorer_sub['uuid'], 'Greggs', 2, 2,
                 self.ASSESSMENTS[0], {'criteria': xblock.rubric_criteria}
             )
+
+        # Have the user submit a self-assessment (so she can get a score)
+        self_api.create_assessment(
+            submission['uuid'], 'Greggs',
+            self.ASSESSMENTS[0]['options_selected'],
+            {'criteria': xblock.rubric_criteria}
+        )
 
         # Render the view
         resp = self.request(xblock, 'render_grade', json.dumps(dict()))

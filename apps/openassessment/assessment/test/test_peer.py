@@ -217,9 +217,11 @@ class TestPeerApi(TestCase):
         )
 
         # Tim has met the critera, and should now have a score.
-        score = workflow_api.get_workflow_for_submission(
-            tim["uuid"], requirements
-        )["score"]
+        # We patch the call to `self_api.is_complete()` simulate having completed a self-assessment.
+        with patch('openassessment.workflow.models.self_api.is_complete') as mock_complete:
+            mock_complete.return_value = True
+            score = workflow_api.get_workflow_for_submission(tim["uuid"], requirements)["score"]
+
         self.assertEqual(score["points_earned"], 6)
         self.assertEqual(score["points_possible"], 14)
 

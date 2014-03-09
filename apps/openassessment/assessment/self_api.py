@@ -144,6 +144,16 @@ def get_submission_and_assessment(student_item_dict):
         return (submissions[0], None)
 
 
-# TODO: fill in this stub
 def is_complete(submission_uuid):
-    return True
+    """
+    Check whether a self-assessment has been completed for a submission.
+
+    Args:
+        submission_uuid (str): The unique identifier of the submission.
+
+    Returns:
+        bool
+    """
+    return Assessment.objects.filter(
+        score_type=SELF_TYPE, submission__uuid=submission_uuid
+    ).exists()
