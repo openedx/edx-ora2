@@ -35,14 +35,12 @@
                 </header>
 
                 <div class="self-assessment__display__response">
-                    {{ self_submission.answer }}
+                    {{ self_submission.answer|linebreaks }}
                 </div>
             </article>
 
             <form id="self-assessment--001__assessment" class="self-assessment__assessment" method="post">
                 <fieldset class="assessment__fields">
-                    <legend class="assessment__instruction">{{ rubric_instructions }}</legend>
-
                     <ol class="list list--fields assessment__rubric">
                         {% for criterion in rubric_criteria %}
                         <li class="field field--radio is--required assessment__rubric__question" id="assessment__rubric__question--{{ criterion.name }}">
