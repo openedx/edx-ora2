@@ -141,6 +141,7 @@ DEFAULT_PEER_ASSESSMENT = {
 }
 
 DEFAULT_SELF_ASSESSMENT = {
+    "name": "self-assessment",
     "due": None,
 }
 

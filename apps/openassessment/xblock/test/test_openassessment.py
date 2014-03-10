@@ -89,6 +89,17 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         self.assertIsNotNone(grade_response)
         self.assertTrue(grade_response.body.find("openassessment__grade"))
 
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_default_fields(self, xblock):
+
+        # Reset all fields in the XBlock to their default values
+        for field_name, field in xblock.fields.iteritems():
+            setattr(xblock, field_name, field.default)
+
+        # Validate Submission Rendering.
+        student_view = xblock.student_view({})
+        self.assertIsNotNone(student_view)
+
 
 class TestDates(XBlockHandlerTestCase):
 
