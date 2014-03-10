@@ -1,0 +1,537 @@
+[
+    {
+        "pk": 1,
+        "model": "assessment.rubric",
+        "fields": {
+            "content_hash": "a303b0f01ffbcc61d5023274e1ffc9b635532365"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "assessment.rubric",
+        "fields": {
+            "content_hash": "fc0312f2002355aebaa1b97aca7b93282cb3bccb"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "assessment.criterion",
+        "fields": {
+            "order_num": 0,
+            "prompt": "Determine if there is a unifying theme or main idea.",
+            "rubric": 1,
+            "name": "Ideas"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "assessment.criterion",
+        "fields": {
+            "order_num": 1,
+            "prompt": "Assess the content of the submission",
+            "rubric": 1,
+            "name": "Content"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "assessment.criterion",
+        "fields": {
+            "order_num": 0,
+            "prompt": "Determine if there is a unifying theme or main idea.",
+            "rubric": 2,
+            "name": "Ideas"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "assessment.criterion",
+        "fields": {
+            "order_num": 1,
+            "prompt": "Assess the content of the submission",
+            "rubric": 2,
+            "name": "Content"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "assessment.criterionoption",
+        "fields": {
+            "order_num": 0,
+            "explanation": "Difficult for the reader to discern the main idea.\n                Too brief or too repetitive to establish or maintain a focus.",
+            "points": 0,
+            "criterion": 1,
+            "name": "Poor"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "assessment.criterionoption",
+        "fields": {
+            "order_num": 1,
+            "explanation": "Presents a unifying theme or main idea, but may\n                include minor tangents.  Stays somewhat focused on topic and\n                task.",
+            "points": 3,
+            "criterion": 1,
+            "name": "Fair"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "assessment.criterionoption",
+        "fields": {
+            "order_num": 2,
+            "explanation": "Presents a unifying theme or main idea without going\n                off on tangents.  Stays completely focused on topic and task.",
+            "points": 5,
+            "criterion": 1,
+            "name": "Good"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "assessment.criterionoption",
+        "fields": {
+            "order_num": 0,
+            "explanation": "Includes little information with few or no details or\n                unrelated details.  Unsuccessful in attempts to explore any\n                facets of the topic.",
+            "points": 0,
+            "criterion": 2,
+            "name": "Poor"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "assessment.criterionoption",
+        "fields": {
+            "order_num": 1,
+            "explanation": "Includes little information and few or no details.\n                Explores only one or two facets of the topic.",
+            "points": 1,
+            "criterion": 2,
+            "name": "Fair"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "assessment.criterionoption",
+        "fields": {
+            "order_num": 2,
+            "explanation": "Includes sufficient information and supporting\n                details. (Details may not be fully developed; ideas may be\n                listed.)  Explores some facets of the topic.",
+            "points": 3,
+            "criterion": 2,
+            "name": "Good"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "assessment.criterionoption",
+        "fields": {
+            "order_num": 3,
+            "explanation": "Includes in-depth information and exceptional\n                supporting details that are fully developed.  Explores all\n                facets of the topic.",
+            "points": 3,
+            "criterion": 2,
+            "name": "Excellent"
+        }
+    },
+    {
+        "pk": 8,
+        "model": "assessment.criterionoption",
+        "fields": {
+            "order_num": 0,
+            "explanation": "Difficult for the reader to discern the main idea.\n                Too brief or too repetitive to establish or maintain a focus.",
+            "points": 0,
+            "criterion": 3,
+            "name": "Poor"
+        }
+    },
+    {
+        "pk": 9,
+        "model": "assessment.criterionoption",
+        "fields": {
+            "order_num": 1,
+            "explanation": "Presents a unifying theme or main idea, but may\n                include minor tangents.  Stays somewhat focused on topic and\n                task.",
+            "points": 3,
+            "criterion": 3,
+            "name": "Fair"
+        }
+    },
+    {
+        "pk": 10,
+        "model": "assessment.criterionoption",
+        "fields": {
+            "order_num": 2,
+            "explanation": "Presents a unifying theme or main idea without going\n                off on tangents.  Stays completely focused on topic and task.",
+            "points": 5,
+            "criterion": 3,
+            "name": "Good"
+        }
+    },
+    {
+        "pk": 11,
+        "model": "assessment.criterionoption",
+        "fields": {
+            "order_num": 0,
+            "explanation": "Includes little information with few or no details or\n                unrelated details.  Unsuccessful in attempts to explore any\n                facets of the topic.",
+            "points": 0,
+            "criterion": 4,
+            "name": "Poor"
+        }
+    },
+    {
+        "pk": 12,
+        "model": "assessment.criterionoption",
+        "fields": {
+            "order_num": 1,
+            "explanation": "Includes little information and few or no details.\n                Explores only one or two facets of the topic.",
+            "points": 1,
+            "criterion": 4,
+            "name": "Fair"
+        }
+    },
+    {
+        "pk": 13,
+        "model": "assessment.criterionoption",
+        "fields": {
+            "order_num": 2,
+            "explanation": "Includes sufficient information and supporting\n                details. (Details may not be fully developed; ideas may be\n                listed.)  Explores some facets of the topic.",
+            "points": 3,
+            "criterion": 4,
+            "name": "Good"
+        }
+    },
+    {
+        "pk": 14,
+        "model": "assessment.criterionoption",
+        "fields": {
+            "order_num": 3,
+            "explanation": "Includes in-depth information and exceptional\n                supporting details that are fully developed.  Explores all\n                facets of the topic.",
+            "points": 3,
+            "criterion": 4,
+            "name": "Excellent"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "assessment.assessment",
+        "fields": {
+            "scorer_id": "3",
+            "feedback": "Test feedback",
+            "submission": 8,
+            "score_type": "PE",
+            "rubric": 2,
+            "scored_at": "2014-03-12T11:38:26Z"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "assessment.assessment",
+        "fields": {
+            "scorer_id": "2",
+            "feedback": "",
+            "submission": 8,
+            "score_type": "SE",
+            "rubric": 2,
+            "scored_at": "2014-03-12T11:38:13Z"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "assessment.assessment",
+        "fields": {
+            "scorer_id": "2",
+            "feedback": "Test feedback",
+            "submission": 9,
+            "score_type": "PE",
+            "rubric": 2,
+            "scored_at": "2014-03-12T11:38:08Z"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "assessment.assessment",
+        "fields": {
+            "scorer_id": "2",
+            "feedback": "",
+            "submission": 6,
+            "score_type": "SE",
+            "rubric": 2,
+            "scored_at": "2014-03-12T11:37:37Z"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "assessment.assessment",
+        "fields": {
+            "scorer_id": "2",
+            "feedback": "Test feedback",
+            "submission": 7,
+            "score_type": "PE",
+            "rubric": 2,
+            "scored_at": "2014-03-12T11:37:33Z"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "assessment.assessment",
+        "fields": {
+            "scorer_id": "2",
+            "feedback": "Test feedback",
+            "submission": 4,
+            "score_type": "PE",
+            "rubric": 2,
+            "scored_at": "2014-03-12T11:36:19Z"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "assessment.assessmentpart",
+        "fields": {
+            "assessment": 1,
+            "option": 10
+        }
+    },
+    {
+        "pk": 2,
+        "model": "assessment.assessmentpart",
+        "fields": {
+            "assessment": 1,
+            "option": 14
+        }
+    },
+    {
+        "pk": 3,
+        "model": "assessment.assessmentpart",
+        "fields": {
+            "assessment": 2,
+            "option": 10
+        }
+    },
+    {
+        "pk": 4,
+        "model": "assessment.assessmentpart",
+        "fields": {
+            "assessment": 2,
+            "option": 14
+        }
+    },
+    {
+        "pk": 5,
+        "model": "assessment.assessmentpart",
+        "fields": {
+            "assessment": 3,
+            "option": 10
+        }
+    },
+    {
+        "pk": 6,
+        "model": "assessment.assessmentpart",
+        "fields": {
+            "assessment": 3,
+            "option": 13
+        }
+    },
+    {
+        "pk": 7,
+        "model": "assessment.assessmentpart",
+        "fields": {
+            "assessment": 4,
+            "option": 10
+        }
+    },
+    {
+        "pk": 8,
+        "model": "assessment.assessmentpart",
+        "fields": {
+            "assessment": 4,
+            "option": 14
+        }
+    },
+    {
+        "pk": 9,
+        "model": "assessment.assessmentpart",
+        "fields": {
+            "assessment": 5,
+            "option": 10
+        }
+    },
+    {
+        "pk": 10,
+        "model": "assessment.assessmentpart",
+        "fields": {
+            "assessment": 5,
+            "option": 14
+        }
+    },
+    {
+        "pk": 11,
+        "model": "assessment.assessmentpart",
+        "fields": {
+            "assessment": 6,
+            "option": 10
+        }
+    },
+    {
+        "pk": 12,
+        "model": "assessment.assessmentpart",
+        "fields": {
+            "assessment": 6,
+            "option": 14
+        }
+    },
+    {
+        "pk": 1,
+        "model": "assessment.peerworkflow",
+        "fields": {
+            "item_id": "i4x://edx/101/openassessment/bc11258e5c0a4b54a72e8fe62448bc79",
+            "student_id": "2",
+            "created_at": "2014-03-12T11:34:55Z",
+            "submission_uuid": "55c6f020-a9da-11e3-976d-080027880ca6",
+            "course_id": "TestCourse"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "assessment.peerworkflow",
+        "fields": {
+            "item_id": "i4x://edx/101/openassessment/043040c0511549539c604878f51422e1",
+            "student_id": "2",
+            "created_at": "2014-03-12T11:35:03Z",
+            "submission_uuid": "5a14d39a-a9da-11e3-b964-080027880ca6",
+            "course_id": "TestCourse"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "assessment.peerworkflow",
+        "fields": {
+            "item_id": "i4x://edx/101/openassessment/bc11258e5c0a4b54a72e8fe62448bc79",
+            "student_id": "3",
+            "created_at": "2014-03-12T11:35:22Z",
+            "submission_uuid": "65650b3e-a9da-11e3-8b23-080027880ca6",
+            "course_id": "TestCourse"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "assessment.peerworkflow",
+        "fields": {
+            "item_id": "i4x://edx/101/openassessment/b34af6dbbfa34ad88afe2df3bfc0c6e3",
+            "student_id": "3",
+            "created_at": "2014-03-12T11:36:04Z",
+            "submission_uuid": "7e8ededc-a9da-11e3-89ce-080027880ca6",
+            "course_id": "TestCourse"
+        }
+    },
+    {
+        "pk": 9,
+        "model": "assessment.peerworkflow",
+        "fields": {
+            "item_id": "i4x://edx/101/openassessment/b34af6dbbfa34ad88afe2df3bfc0c6e3",
+            "student_id": "2",
+            "created_at": "2014-03-12T11:36:10Z",
+            "submission_uuid": "822a5224-a9da-11e3-8f75-080027880ca6",
+            "course_id": "TestCourse"
+        }
+    },
+    {
+        "pk": 11,
+        "model": "assessment.peerworkflow",
+        "fields": {
+            "item_id": "i4x://edx/101/openassessment/3557aa209bf04920947d77547aa428f1",
+            "student_id": "2",
+            "created_at": "2014-03-12T11:36:52Z",
+            "submission_uuid": "9af86840-a9da-11e3-b156-080027880ca6",
+            "course_id": "TestCourse"
+        }
+    },
+    {
+        "pk": 13,
+        "model": "assessment.peerworkflow",
+        "fields": {
+            "item_id": "i4x://edx/101/openassessment/3557aa209bf04920947d77547aa428f1",
+            "student_id": "3",
+            "created_at": "2014-03-12T11:37:20Z",
+            "submission_uuid": "ac0539f6-a9da-11e3-af02-080027880ca6",
+            "course_id": "TestCourse"
+        }
+    },
+    {
+        "pk": 15,
+        "model": "assessment.peerworkflow",
+        "fields": {
+            "item_id": "i4x://edx/101/openassessment/0b205c211e6e4606b0df248ee03df558",
+            "student_id": "2",
+            "created_at": "2014-03-12T11:37:51Z",
+            "submission_uuid": "beb581f0-a9da-11e3-9b83-080027880ca6",
+            "course_id": "TestCourse"
+        }
+    },
+    {
+        "pk": 17,
+        "model": "assessment.peerworkflow",
+        "fields": {
+            "item_id": "i4x://edx/101/openassessment/0b205c211e6e4606b0df248ee03df558",
+            "student_id": "3",
+            "created_at": "2014-03-12T11:37:56Z",
+            "submission_uuid": "c18b952c-a9da-11e3-9ccf-080027880ca6",
+            "course_id": "TestCourse"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "assessment.peerworkflowitem",
+        "fields": {
+            "scorer_id": 5,
+            "started_at": "2014-03-12T11:35:22Z",
+            "assessment": -1,
+            "submission_uuid": "55c6f020-a9da-11e3-976d-080027880ca6"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "assessment.peerworkflowitem",
+        "fields": {
+            "scorer_id": 1,
+            "started_at": "2014-03-12T11:35:36Z",
+            "assessment": -1,
+            "submission_uuid": "65650b3e-a9da-11e3-8b23-080027880ca6"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "assessment.peerworkflowitem",
+        "fields": {
+            "scorer_id": 9,
+            "started_at": "2014-03-12T11:36:10Z",
+            "assessment": 1,
+            "submission_uuid": "7e8ededc-a9da-11e3-89ce-080027880ca6"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "assessment.peerworkflowitem",
+        "fields": {
+            "scorer_id": 11,
+            "started_at": "2014-03-12T11:37:24Z",
+            "assessment": 2,
+            "submission_uuid": "ac0539f6-a9da-11e3-af02-080027880ca6"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "assessment.peerworkflowitem",
+        "fields": {
+            "scorer_id": 15,
+            "started_at": "2014-03-12T11:38:01Z",
+            "assessment": 4,
+            "submission_uuid": "c18b952c-a9da-11e3-9ccf-080027880ca6"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "assessment.peerworkflowitem",
+        "fields": {
+            "scorer_id": 17,
+            "started_at": "2014-03-12T11:38:18Z",
+            "assessment": 6,
+            "submission_uuid": "beb581f0-a9da-11e3-9b83-080027880ca6"
+        }
+    }
+]
