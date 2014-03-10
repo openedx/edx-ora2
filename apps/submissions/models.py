@@ -85,7 +85,7 @@ class Submission(models.Model):
         ))
 
     class Meta:
-        ordering = ["-submitted_at"]
+        ordering = ["-submitted_at", "-id"]
 
 
 class Score(models.Model):

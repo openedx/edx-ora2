@@ -18,7 +18,7 @@ NOSE_ARGS = [
     '--cover-package=' + ",".join(TEST_APPS),
     '--cover-branches',
     '--cover-erase',
-]
+    ]
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 

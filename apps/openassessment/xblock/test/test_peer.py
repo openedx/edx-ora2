@@ -26,12 +26,16 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         # Create a submission for this problem from another user
         student_item = xblock.get_student_item_dict()
         student_item['student_id'] = 'Sally'
-        submission = xblock.create_submission(student_item, self.SUBMISSION)
 
+        submission = xblock.create_submission(student_item, self.SUBMISSION)
+        xblock.get_workflow_info()
         # Create a submission for the scorer (required before assessing another student)
         another_student = copy.deepcopy(student_item)
         another_student['student_id'] = "Bob"
         xblock.create_submission(another_student, self.SUBMISSION)
+        xblock.get_workflow_info()
+        peer_api.get_submission_to_assess(another_student, 3)
+        
 
         # Submit an assessment and expect a successful response
         assessment = copy.deepcopy(self.ASSESSMENT)

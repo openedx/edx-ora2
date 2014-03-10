@@ -4,7 +4,6 @@ assessment process. The submission state is not explicitly tracked because
 the assessment workflow only begins after a submission has been created.
 """
 from django.db import models
-from django.utils.timezone import now
 from django_extensions.db.fields import UUIDField
 from model_utils import Choices
 from model_utils.models import StatusModel, TimeStampedModel
@@ -82,6 +81,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         else:
             # Default starting status is peer
             new_status = self.STATUS.peer
+            peer_api.create_peer_workflow(self.submission_uuid)
 
         # If we're at least waiting, let's check if we have a peer score and
         # can move all the way to done

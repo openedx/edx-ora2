@@ -5,7 +5,6 @@ Tests for grade handlers in Open Assessment XBlock.
 import copy
 import json
 from openassessment.assessment import peer_api, self_api
-from submissions import api as sub_api
 from .base import XBlockHandlerTestCase, scenario
 
 
@@ -30,27 +29,33 @@ class TestGrade(XBlockHandlerTestCase):
         # Create a submission from the user
         student_item = xblock.get_student_item_dict()
         submission = xblock.create_submission(student_item, self.SUBMISSION)
-
+        xblock.get_workflow_info()
         scorer_submissions = []
         for scorer_name, assessment in zip(['McNulty', 'Freamon'], self.ASSESSMENTS):
             # Create a submission for each scorer
             scorer = copy.deepcopy(student_item)
             scorer['student_id'] = scorer_name
-            scorer_sub = sub_api.create_submission(scorer, self.SUBMISSION)
-
+            scorer_sub = xblock.create_submission(scorer, self.SUBMISSION)
+            xblock.get_workflow_info()
+            submission = peer_api.get_submission_to_assess(scorer, 2)
             # Store the scorer's submission so our user can assess it later
             scorer_submissions.append(scorer_sub)
 
             # Create an assessment of the user's submission
             peer_api.create_assessment(
-                submission['uuid'], scorer_name, 2, 2,
+                submission['uuid'], scorer_name,
                 assessment, {'criteria': xblock.rubric_criteria}
             )
 
+        # Since xblock.create_submission sets the xblock's submission_uuid,
+        # we need to set it back to the proper user for this test.
+        xblock.submission_uuid = submission["uuid"]
+
         # Have our user make assessments (so she can get a score)
-        for scorer_sub in scorer_submissions:
+        for _ in range(2):
+            new_submission = peer_api.get_submission_to_assess(student_item, 2)
             peer_api.create_assessment(
-                scorer_sub['uuid'], 'Greggs', 2, 2,
+                new_submission['uuid'], 'Greggs',
                 self.ASSESSMENTS[0], {'criteria': xblock.rubric_criteria}
             )
 
