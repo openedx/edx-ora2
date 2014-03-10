@@ -53,10 +53,10 @@ class SubmissionMixin(object):
         status_text = None
         student_sub = data['submission']
         student_item_dict = self.get_student_item_dict()
-        prev_sub = self.get_user_submission(student_item_dict)
+        workflow = self.get_workflow_info()
 
         status_tag = 'ENOMULTI'  # It is an error to submit multiple times for the same item
-        if not prev_sub:
+        if not workflow:
             status_tag = 'ENODATA'
             try:
                 submission = self.create_submission(student_item_dict, student_sub)
@@ -125,30 +125,27 @@ class SubmissionMixin(object):
         return scores[0] if scores else None
 
     @staticmethod
-    def get_user_submission(student_item_dict):
-        """Return the most recent submission by user in student_item_dict
+    def get_user_submission(submission_uuid):
+        """Return the most recent submission by user in workflow
 
-        Given a student item, return the most recent submission.  If no
-        submission is available, return None. All submissions are preserved, but
-        only the most recent will be returned in this function, since the active
-        workflow will only be concerned with the most recent submission.
+        Return the most recent submission.  If no submission is available,
+        return None. All submissions are preserved, but only the most recent
+        will be returned in this function, since the active workflow will only
+        be concerned with the most recent submission.
 
         Args:
-            student_item_dict (dict): The student item we want to get the
-                latest submission for.
+            submission_uuid (str): The uuid for the submission to retrieve.
 
         Returns:
             (dict): A dictionary representation of a submission to render to
                 the front end.
 
         """
-        submissions = []
         try:
-            submissions = api.get_submissions(student_item_dict)
+            return api.get_submission(submission_uuid)
         except api.SubmissionRequestError:
             # This error is actually ok.
-            pass
-        return submissions[0] if submissions else None
+            return None
 
     @property
     def save_status(self):
@@ -179,40 +176,40 @@ class SubmissionMixin(object):
         Submitted and graded
 
         """
-        # TODO Check if Saved
-        student_item = self.get_student_item_dict()
-        # Has the student submitted?
-        student_submission = self.get_user_submission(student_item)
-        # Has it been graded yet?
-        student_score = self._get_submission_score(student_item)
-        step_status = "Graded" if student_score else "Submitted"
-        step_status = step_status if student_submission else "Incomplete"
-        assessment_ui_model = self.get_assessment_module('peer-assessment')
-        problem_open, date = self.is_open(step="submission")
+        workflow = self.get_workflow_info()
+        problem_open, date = self.is_open()
         context = {
-            "student_submission": student_submission,
-            "student_score": student_score,
-            "step_status": step_status,
             "saved_response": self.saved_response,
             "save_status": self.save_status
         }
 
-        path = "openassessmentblock/response/oa_response.html"
-        if student_score:
+        if not workflow and not problem_open:
+            path = 'openassessmentblock/response/oa_response_closed.html'
+        elif not workflow:
+            path = "openassessmentblock/response/oa_response.html"
+        elif workflow["status"] == "done":
+            assessment_ui_model = self.get_assessment_module('peer-assessment')
+            student_submission = self.get_user_submission(
+                workflow["submission_uuid"]
+            )
+            student_score = workflow["score"]
             assessments = peer_api.get_assessments(student_submission["uuid"])
             median_scores = peer_api.get_assessment_median_scores(
                 student_submission["uuid"],
                 assessment_ui_model["must_be_graded_by"]
             )
+            context["student_submission"] = student_submission
             context["peer_assessments"] = assessments
             context["rubric_criteria"] = self.rubric_criteria
+            context["student_score"] = student_score
             for criterion in context["rubric_criteria"]:
                 criterion["median_score"] = median_scores[criterion["name"]]
 
             path = 'openassessmentblock/response/oa_response_graded.html'
-        elif student_submission:
+        else:
+            context["student_submission"] = self.get_user_submission(
+                workflow["submission_uuid"]
+            )
             path = 'openassessmentblock/response/oa_response_submitted.html'
-        elif not problem_open and date == "due" and not student_submission:
-            path = 'openassessmentblock/response/oa_response_closed.html'
 
         return self.render_assessment(path, context_dict=context)

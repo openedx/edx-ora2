@@ -22,41 +22,37 @@ class SelfAssessmentMixin(object):
 
     @XBlock.handler
     def render_self_assessment(self, data, suffix=''):
-        student = self.get_student_item_dict()
-        path = 'openassessmentblock/self/oa_self_closed.html'
-        context = {"step_status": "Incomplete"}
+    # Retrieve the self-assessment, if there is one
 
-        # If we are not logged in (as in Studio preview mode),
-        # we cannot interact with the self-assessment API.
-        if student['student_id'] is not None:
+        workflow = self.get_workflow_info()
+        if workflow:
+            return self._determine_assessment_state(workflow)
 
-            # Retrieve the self-assessment, if there is one
-            try:
-                submission, assessment = self_api.get_submission_and_assessment(student)
-            except self_api.SelfAssessmentRequestError:
-                logger.exception(u"Could not retrieve self assessment for {student_item}".format(student_item=student))
-                return self.render_error(_(u"An unexpected error occurred."))
+        return self.render_assessment('openassessmentblock/self/oa_self_closed.html')
 
-            # If we haven't submitted yet, we cannot self-assess
-            if submission is None:
-                path = 'openassessmentblock/self/oa_self_closed.html'
-                context = {"step_status": "Incomplete"}
-
-            # If we have already submitted, then we're complete
-            elif assessment is not None:
-                path = 'openassessmentblock/self/oa_self_complete.html'
-                context = {"step_status": "Complete"}
-
-            # Otherwise, we can submit a self-assessment
-            else:
-                path = 'openassessmentblock/self/oa_self_assessment.html'
-                context = {
-                    "rubric_criteria": self.rubric_criteria,
-                    "estimated_time": "20 minutes",  # TODO: Need to configure this.
-                    "self_submission": submission,
-                    "step_status": "Grading"
-                }
-
+    def _determine_assessment_state(self, workflow):
+        context = {}
+        try:
+            submission, assessment = self_api.get_submission_and_assessment(
+                workflow["submission_uuid"]
+            )
+        except self_api.SelfAssessmentRequestError:
+            logger.exception(
+                u"Could not retrieve self assessment for submission {}"
+                .format(workflow["submission_uuid"])
+            )
+            return self.render_error(_(u"An unexpected error occurred."))
+        if workflow["status"] == "self":
+            path = 'openassessmentblock/self/oa_self_assessment.html'
+            context = {
+                "rubric_criteria": self.rubric_criteria,
+                "estimated_time": "20 minutes",  # TODO: Need to configure this.
+                "self_submission": submission,
+            }
+        elif assessment:
+            path = 'openassessmentblock/self/oa_self_complete.html'
+        else:
+            path = 'openassessmentblock/self/oa_self_closed.html'
         return self.render_assessment(path, context)
 
     @XBlock.json_handler

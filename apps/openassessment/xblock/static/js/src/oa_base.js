@@ -67,7 +67,6 @@ OpenAssessment.BaseUI.prototype = {
                 // Load the HTML
                 var sel = $('#openassessment__response', ui.element);
                 sel.replaceWith(html);
-                ui.setExpanded('response', expand);
 
                 // Install a click handler for submission
                 $('#step--response__submit', ui.element).click(
@@ -102,7 +101,6 @@ OpenAssessment.BaseUI.prototype = {
                 // Load the HTML
                 var sel = $('#openassessment__peer-assessment', ui.element);
                 sel.replaceWith(html);
-                ui.setExpanded('peer-assessment', expand);
 
                 // Install a click handler for assessment
                 $('#peer-assessment--001__assessment__submit', ui.element).click(
@@ -132,7 +130,6 @@ OpenAssessment.BaseUI.prototype = {
         this.server.render('self_assessment').done(
             function(html) {
                 $('#openassessment__self-assessment', ui.element).replaceWith(html);
-                ui.setExpanded('self-assessment', expand);
 
                 // Install a click handler for the submit button
                 $('#self-assessment--001__assessment__submit', ui.element).click(
@@ -162,7 +159,6 @@ OpenAssessment.BaseUI.prototype = {
         this.server.render('grade').done(
             function(html) {
                 $('#openassessment__grade', ui.element).replaceWith(html);
-                ui.setExpanded('grade', expand);
             }
         ).fail(function(errMsg) {
             // TODO: display to the user

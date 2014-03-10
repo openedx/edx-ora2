@@ -32,7 +32,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # We don't care about return value of first one
         self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
 
-        # This one should fail becaus we're not allowed to submit multiple times
+        # This one should fail because we're not allowed to submit multiple times
         resp = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
         self.assertFalse(resp[0])
         self.assertEqual(resp[1], "ENOMULTI")

@@ -1,7 +1,7 @@
 {%  extends "openassessmentblock/response/oa_response.html" %}
 
 {% block list_item %}
-<li id="openassessment__response" class="openassessment__steps__step step--response is--graded ui-toggle-visibility">
+<li id="openassessment__response" class="openassessment__steps__step step--response is--graded ui-toggle-visibility is--collapsed">
 {% endblock %}
 
 {% block title %}
@@ -9,7 +9,7 @@
   <span class="step__status__label">This step's status:</span>
   <span class="step__status__value">
     <i class="ico icon-ok"></i>
-    <span class="copy">{{ step_status }}</span>
+    <span class="copy">Graded</span>
   </span>
 </span>
 {% endblock %}

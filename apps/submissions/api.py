@@ -151,6 +151,7 @@ def create_submission(student_item_dict, answer, submitted_at=None,
         logger.exception(error_message)
         raise SubmissionInternalError(error_message)
 
+
 def get_submission(submission_uuid):
     """Retrieves a single submission by uuid.
 
@@ -191,6 +192,7 @@ def get_submission(submission_uuid):
         raise SubmissionInternalError(err_msg)
 
     return SubmissionSerializer(submission).data
+
 
 def get_submission_and_student(uuid):
     """
