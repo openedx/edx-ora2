@@ -43,6 +43,9 @@ def scenario(scenario_path, user_id=None):
                 self = args[0]
                 if isinstance(self, XBlockHandlerTestCase):
 
+                    # Print a debug message
+                    print "Loading scenario from {path}".format(path=scenario_path)
+
                     # Configure the runtime with our user id
                     self.set_user(user_id)
 

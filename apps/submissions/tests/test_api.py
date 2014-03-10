@@ -32,7 +32,6 @@ ANSWER_TWO = u"this is my other answer!"
 
 @ddt
 class TestSubmissionsApi(TestCase):
-
     """
     Testing Submissions
     """

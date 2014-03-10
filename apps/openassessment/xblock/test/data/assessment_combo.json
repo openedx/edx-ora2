@@ -1,0 +1,61 @@
+{
+    "peer_then_self": {
+        "valid": true,
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment"
+            }
+        ]
+    },
+    "peer_only": {
+        "valid": false,
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            }
+        ]
+    },
+    "self_only": {
+        "valid": false,
+        "assessments": [
+            {
+                "name": "self-assessment"
+            }
+        ]
+    },
+    "self_before_peer": {
+        "valid": false,
+        "assessments": [
+            {
+                "name": "self-assessment"
+            },
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            }
+        ]
+    },
+    "peer_then_peer": {
+        "valid": false,
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            }
+        ]
+    }
+}

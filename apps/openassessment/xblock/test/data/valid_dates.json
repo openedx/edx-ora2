@@ -1,0 +1,102 @@
+{
+    "overlap": {
+        "xblock_start": 0,
+        "submission_start": 1,
+        "submission_due": 3,
+        "peer_start": 2,
+        "peer_due": 4,
+        "self_start": 3,
+        "self_due":5,
+        "xblock_due": 10
+    },
+    "adjacent": {
+        "xblock_start": 0,
+        "submission_start": 0,
+        "submission_due": 1,
+        "peer_start": 1,
+        "peer_due": 2,
+        "self_start": 2,
+        "self_due":3,
+        "xblock_due": 3
+    },
+    "distinct": {
+        "xblock_start": 0,
+        "submission_start": 1,
+        "submission_due": 2,
+        "peer_start": 3,
+        "peer_due": 4,
+        "self_start": 5,
+        "self_due": 6,
+        "xblock_due": 10
+    },
+    "starts_equal": {
+        "xblock_start": 0,
+        "submission_start": 0,
+        "submission_due": 2,
+        "peer_start": 0,
+        "peer_due": 3,
+        "self_start": 0,
+        "self_due": 4,
+        "xblock_due": 5
+    },
+    "dues_equal": {
+        "xblock_start": 0,
+        "xblock_due": 10,
+        "submission_start": 1,
+        "submission_due": 10,
+        "peer_start": 2,
+        "peer_due": 10,
+        "self_start": 3,
+        "self_due": 10
+    },
+    "starts_and_dues_equal": {
+        "xblock_start": 0,
+        "xblock_due": 10,
+        "submission_start": 0,
+        "submission_due": 10,
+        "peer_start": 0,
+        "peer_due": 10,
+        "self_start": 0,
+        "self_due": 10
+    },
+    "xblock_start_none": {
+        "xblock_start": null,
+        "xblock_due": 10,
+        "submission_start": 0,
+        "submission_due": 10,
+        "peer_start": 0,
+        "peer_due": 10,
+        "self_start": 0,
+        "self_due": 10
+    },
+    "xblock_due_none": {
+        "xblock_start": 0,
+        "xblock_due": null,
+        "submission_start": 0,
+        "submission_due": 10,
+        "peer_start": 0,
+        "peer_due": 10,
+        "self_start": 0,
+        "self_due": 10
+    },
+    "xblock_start_and_due_none": {
+        "xblock_start": null,
+        "xblock_due": null,
+        "submission_start": 0,
+        "submission_due": 10,
+        "peer_start": 0,
+        "peer_due": 10,
+        "self_start": 0,
+        "self_due": 10
+    },
+    "all_start_and_due_none": {
+        "xblock_start": null,
+        "xblock_due": null,
+        "submission_start": null,
+        "submission_due": null,
+        "peer_start": null,
+        "peer_due": null,
+        "self_start": null,
+        "self_due": null
+    }
+}

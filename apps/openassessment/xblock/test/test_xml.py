@@ -8,8 +8,7 @@ from django.test import TestCase
 from ddt import ddt, data, file_data, unpack
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock, UI_MODELS
 from openassessment.xblock.xml import (
-    serialize_content, update_from_xml_str,
-    UpdateFromXmlError, InvalidRubricError, InvalidAssessmentError
+    serialize_content, update_from_xml_str, ValidationError, UpdateFromXmlError
 )
 
 
@@ -37,15 +36,15 @@ class TestSerializeContent(TestCase):
     BASIC_ASSESSMENTS = [
         {
             "name": "peer-assessment",
-            "start_datetime": "2014-02-27T09:46:28.873926",
-            "due_datetime": "2014-05-30T00:00:00.92926",
+            "start": "2014-02-27T09:46:28.873926",
+            "due": "2014-05-30T00:00:00.92926",
             "must_grade": 5,
             "must_be_graded_by": 3,
         },
         {
             "name": "self-assessment",
-            "start_datetime": '2014-04-01T00:00:00.000000',
-            "due_datetime": "2014-06-01T00:00:00.92926",
+            "start": '2014-04-01T00:00:00.000000',
+            "due": "2014-06-01T00:00:00.92926",
             "must_grade": 5,
             "must_be_graded_by": 3,
         }
@@ -61,6 +60,9 @@ class TestSerializeContent(TestCase):
     def test_serialize(self, data):
         self.oa_block.title = data['title']
         self.oa_block.prompt = data['prompt']
+        self.oa_block.start = data['start']
+        self.oa_block.due = data['due']
+        self.oa_block.submission_due = data['submission_due']
         self.oa_block.rubric_criteria = data['criteria']
         self.oa_block.rubric_assessments = data['assessments']
         xml = serialize_content(self.oa_block)
@@ -81,7 +83,6 @@ class TestSerializeContent(TestCase):
         pretty_expected = etree.tostring(parsed_expected, pretty_print=True, encoding='utf-8')
         parsed_expected = etree.fromstring(pretty_expected)
 
-
         # Walk both trees, comparing elements and attributes
         actual_elements = [el for el in parsed_actual.getiterator()]
         expected_elements = [el for el in parsed_expected.getiterator()]
@@ -95,16 +96,23 @@ class TestSerializeContent(TestCase):
             self.assertEqual(actual.tag, expected.tag)
             self.assertEqual(
                 actual.text, expected.text,
-                msg="Incorrect text for {tag}".format(tag=actual.tag)
+                msg=u"Incorrect text for {tag}.  Expected '{expected}' but found '{actual}'".format(
+                    tag=actual.tag, expected=expected.text, actual=actual.text
+                )
             )
             self.assertItemsEqual(
                 actual.items(), expected.items(),
-                msg="Incorrect attributes for {tag}".format(tag=actual.tag)
+                msg=u"Incorrect attributes for {tag}.  Expected {expected} but found {actual}".format(
+                    tag=actual.tag, expected=expected.items(), actual=actual.items()
+                )
             )
 
     def test_mutated_criteria_dict(self):
         self.oa_block.title = "Test title"
         self.oa_block.rubric_assessments = self.BASIC_ASSESSMENTS
+        self.oa_block.start = None
+        self.oa_block.due = None
+        self.oa_block.submission_due = None
 
         # We have to be really permissive with the data we'll accept.
         # If the data we're retrieving is somehow corrupted,
@@ -126,6 +134,9 @@ class TestSerializeContent(TestCase):
     def test_mutated_assessments_dict(self):
         self.oa_block.title = "Test title"
         self.oa_block.rubric_criteria = self.BASIC_CRITERIA
+        self.oa_block.start = None
+        self.oa_block.due = None
+        self.oa_block.submission_due = None
 
         for assessment_dict in self.BASIC_ASSESSMENTS:
             for mutated_dict in self._dict_mutations(assessment_dict):
@@ -138,10 +149,13 @@ class TestSerializeContent(TestCase):
                     msg = "Could not parse mutated assessment dict {assessment}\n{ex}".format(assessment=mutated_dict, ex=ex)
                     self.fail(msg)
 
-    @data("title", "prompt")
+    @data("title", "prompt", "start", "due", "submission_due")
     def test_mutated_field(self, field):
         self.oa_block.rubric_criteria = self.BASIC_CRITERIA
         self.oa_block.rubric_assessments = self.BASIC_ASSESSMENTS
+        self.oa_block.start = None
+        self.oa_block.due = None
+        self.oa_block.submission_due = None
 
         for mutated_value in [0, u"\u9282", None]:
             setattr(self.oa_block, field, mutated_value)
@@ -246,6 +260,7 @@ class TestSerializeContent(TestCase):
         mutated[key] = new_val
         return mutated
 
+
 @ddt
 class TestUpdateFromXml(TestCase):
     """
@@ -263,6 +278,10 @@ class TestUpdateFromXml(TestCase):
         self.oa_block.rubric_criteria = dict()
         self.oa_block.rubric_assessments = list()
 
+        self.oa_block.start = "2000-01-01T00:00:00"
+        self.oa_block.due = "3000-01-01T00:00:00"
+        self.oa_block.submission_due = "2000-01-01T00:00:00"
+
     @file_data('data/update_from_xml.json')
     def test_update_from_xml(self, data):
 
@@ -275,6 +294,9 @@ class TestUpdateFromXml(TestCase):
         # Check that the contents of the modified XBlock are correct
         self.assertEqual(self.oa_block.title, data['title'])
         self.assertEqual(self.oa_block.prompt, data['prompt'])
+        self.assertEqual(self.oa_block.start, data['start'])
+        self.assertEqual(self.oa_block.due, data['due'])
+        self.assertEqual(self.oa_block.submission_due, data['submission_due'])
         self.assertEqual(self.oa_block.rubric_criteria, data['criteria'])
         self.assertEqual(self.oa_block.rubric_assessments, data['assessments'])
 
@@ -284,21 +306,12 @@ class TestUpdateFromXml(TestCase):
             update_from_xml_str(self.oa_block, "".join(data['xml']))
 
     @file_data('data/update_from_xml.json')
-    def test_invalid_rubric(self, data):
+    def test_invalid(self, data):
         # Plug in a rubric validator that always reports that the rubric dict is invalid.
         # We need to back this up with an integration test that checks whether the XBlock
         # provides an appropriate rubric validator.
-        with self.assertRaises(InvalidRubricError):
+        with self.assertRaises(ValidationError):
             update_from_xml_str(
                 self.oa_block, "".join(data['xml']),
-                rubric_validator=lambda _: (False, '')
-            )
-
-    @file_data('data/update_from_xml.json')
-    def test_invalid_assessment(self, data):
-        # Plug in an assessment validator that always reports that the assessment dict is invalid.
-        with self.assertRaises(InvalidAssessmentError):
-            update_from_xml_str(
-                self.oa_block, "".join(data['xml']),
-                assessment_validator=lambda _: (False, '')
+                validator=lambda *args: (False, '')
             )
