@@ -43,6 +43,11 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
 
     @property
     def score(self):
+        """Latest score for the submission we're tracking.
+
+        Note that while it is usually the case that we're setting the score,
+        that may not always be the case. We may have some course staff override.
+        """
         return sub_api.get_latest_score_for_submission(self.submission_uuid)
 
     def status_details(self, assessment_requirements):
@@ -63,6 +68,36 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         return self_api.is_complete(self.submission_uuid)
 
     def update_from_assessments(self, assessment_requirements):
+        """Query self and peer APIs and change our status if appropriate.
+
+        If the status is done, we do nothing. Once something is done, we never
+        move back to any other status.
+
+        By default, an `AssessmentWorkflow` starts with status `peer`.
+
+        If the peer API says that our submitter's requirements are met -- that
+        the submitter of the submission we're tracking has assessed the required
+        number of other submissions -- then the status will move to `self`.
+
+        If the self API says that the person who created the submission we're
+        tracking has assessed themselves, then we move to `waiting`.
+
+        If we're in the `waiting` status, and the peer API says it can score
+        this submission (meaning other students have created enough assessments
+        of it), then we record the score in the submissions API and move our
+        `status` to `done`.
+
+        Args:
+            assessment_requirements (dict): Dictionary that currently looks like:
+                `{"peer": {"must_grade": <int>, "must_be_graded_by": <int>}}`
+                `must_grade` is the number of assessments a student must complete.
+                `must_be_graded_by` is the number of assessments a submission must
+                receive to be scored. `must_grade` should be greater than
+                `must_be_graded_by` to ensure that everyone will get scored.
+                The intention is to eventually pass in more assessment sequence
+                specific requirements in this dict.
+
+        """
         # If we're done, we're done -- it doesn't matter if requirements have
         # changed because we've already written a score.
         if self.status == self.STATUS.done:
