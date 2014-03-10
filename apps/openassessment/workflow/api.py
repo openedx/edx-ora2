@@ -68,8 +68,18 @@ def create_workflow(submission_uuid):
             assessments will be evaluating.
 
     Returns:
-        dict: Assessment workflow information containing the keys
-            `submission_uuid`, `uuid`, `status`, `created`, `modified`
+        dict: Assessment workflow information with the following
+            `uuid` = UUID of this `AssessmentWorkflow`
+            `submission_uuid` = UUID of submission this workflow tracks
+            `status` = Active step, always "peer" when created.
+            `created` = created datetime
+            'modified' = modified datetime (same as `created` for this method)
+            'score' = should be None in the usual case, but could be a dict
+                with keys "points_earned" and "points_possible` and int values.
+                The latter will only happen on workflow creation if something
+                else has already written the score for this submission (such as
+                a professor manually entering it). There is no support for such
+                a feature at present, but it may be added later.
 
     Raises:
         AssessmentWorkflowRequestError: If the `submission_uuid` passed in does
@@ -78,15 +88,6 @@ def create_workflow(submission_uuid):
             submissions app not being available or a database configuation
             problem.
 
-    Examples:
-        >>> create_assessment_workflow('e12bd3ee-9fb0-11e3-9f68-040ccee02800')
-        {
-            'submission_uuid': u'e12bd3ee-9fb0-11e3-9f68-040ccee02800',
-            'uuid': u'e12ef27a-9fb0-11e3-aad4-040ccee02800',
-            'status': u'peer',
-            'created': datetime.datetime(2014, 2, 27, 13, 12, 59, 225359, tzinfo=<UTC>),
-            'modified': datetime.datetime(2014, 2, 27, 13, 12, 59, 225675, tzinfo=<UTC>)
-        }
     """
     def sub_err_msg(specific_err_msg):
         return (
@@ -133,15 +134,43 @@ def get_workflow_for_submission(submission_uuid, assessment_requirements):
     """Returns Assessment Workflow information
 
     This will implicitly call `update_from_assessments()` to make sure we
-    give the most current information.
+    give the most current information. Unlike `create_workflow()`, this function
+    will check our assessment sequences to see if they are complete. We pass
+    in the `assessment_requirements` each time we make the request because the
+    canonical requirements are stored in the `OpenAssessmentBlock` problem
+    definition and may change over time.
 
     Args:
-        student_item_dict (dict):
-        submission_uuid (str):
+        submission_uuid (str): Identifier for the submission the
+            `AssessmentWorkflow` was created to track. There is a 1:1
+            relationship between submissions and workflows, so this uniquely
+            identifies the `AssessmentWorkflow`.
+        assessment_requirements (dict): Dictionary that currently looks like:
+            `{"peer": {"must_grade": <int>, "must_be_graded_by": <int>}}`
+            `must_grade` is the number of assessments a student must complete.
+            `must_be_graded_by` is the number of assessments a submission must
+            receive to be scored. `must_grade` should be greater than
+            `must_be_graded_by` to ensure that everyone will get scored.
+            The intention is to eventually pass in more assessment sequence
+            specific requirements in this dict.
 
     Returns:
-        dict: Assessment workflow information containing the keys
-            `submission_uuid`, `uuid`, `status`, `created`, `modified`
+        dict: Assessment workflow information with the following
+            `uuid` = UUID of this `AssessmentWorkflow`
+            `submission_uuid` = UUID of submission this workflow tracks
+            `status` = Active step, always "peer" when created.
+            `created` = created datetime
+            'modified' = modified datetime (same as `created` for this method)
+            'score' = None if no score is present. A dict with keys
+                `points_earned` and `points_possible` and int values if a score
+                has been created for this submission. We only do this when we
+                mark a workflow `done`, but it is possible that other processes
+                will later manually write that score information.
+            `status_details` = dict with the keys `peer` and `self`, each of
+                which has a dict with a key of `complete` and a boolean value.
+                The intention is to tell you the completion status of each
+                assessment sequence, but we will likely use this for extra
+                information later on.
 
     Raises:
         AssessmentWorkflowRequestError: If the `workflow_uuid` passed in is not
@@ -153,13 +182,26 @@ def get_workflow_for_submission(submission_uuid, assessment_requirements):
             problem.
 
     Examples:
-        >>> get_assessment_workflow('e12ef27a-9fb0-11e3-aad4-040ccee02800')
+        >>> get_workflow_for_submission(
+        ...     '222bdf3d-a88e-11e3-859e-040ccee02800',
+        ...     {"peer": {"must_grade":5, "must_be_graded_by":3}}
+        ... )
+        ...
         {
-            'submission_uuid': u'e12bd3ee-9fb0-11e3-9f68-040ccee02800',
-            'uuid': u'e12ef27a-9fb0-11e3-aad4-040ccee02800',
+            'uuid': u'53f27ecc-a88e-11e3-8543-040ccee02800',
+            'submission_uuid': u'222bdf3d-a88e-11e3-859e-040ccee02800',
             'status': u'peer',
-            'created': datetime.datetime(2014, 2, 27, 13, 12, 59, 225359, tzinfo=<UTC>),
-            'modified': datetime.datetime(2014, 2, 27, 13, 12, 59, 225675, tzinfo=<UTC>)
+            'created': datetime.datetime(2014, 3, 10, 19, 58, 19, 846684, tzinfo=<UTC>),
+            'modified': datetime.datetime(2014, 3, 10, 19, 58, 19, 846957, tzinfo=<UTC>),
+            'score': None,
+            'status_details': {
+                'peer': {
+                    'complete': False
+                },
+                'self': {
+                    'complete': False
+                }
+            }
         }
 
     """
@@ -167,12 +209,116 @@ def get_workflow_for_submission(submission_uuid, assessment_requirements):
 
 
 def update_from_assessments(submission_uuid, assessment_requirements):
+    """Update our workflow status based on the status of peer and self assessments.
+
+    We pass in the `assessment_requirements` each time we make the request
+    because the canonical requirements are stored in the `OpenAssessmentBlock`
+    problem definition and may change over time. Because this method also
+    returns a copy of the `WorkflowAssessment` information as a convenience,
+    it's functionally equivalent to calling `get_workflow_for_submission()`.
+    This is a little wonky from a REST, get-doesn't-change-state point of view,
+    except that what's stored in the `AssessmentWorkflow` isn't the canonical
+    true value -- it's just the most recently known state of it based on the
+    last known requirments. For now, we have to query for truth.
+
+    Args:
+        submission_uuid (str): Identifier for the submission the
+            `AssessmentWorkflow` was created to track. There is a 1:1
+            relationship between submissions and workflows, so this uniquely
+            identifies the `AssessmentWorkflow`.
+        assessment_requirements (dict): Dictionary that currently looks like:
+            `{"peer": {"must_grade": <int>, "must_be_graded_by": <int>}}`
+            `must_grade` is the number of assessments a student must complete.
+            `must_be_graded_by` is the number of assessments a submission must
+            receive to be scored. `must_grade` should be greater than
+            `must_be_graded_by` to ensure that everyone will get scored.
+            The intention is to eventually pass in more assessment sequence
+            specific requirements in this dict.
+
+    Returns:
+        dict: Assessment workflow information with the following
+            `uuid` = UUID of this `AssessmentWorkflow`
+            `submission_uuid` = UUID of submission this workflow tracks
+            `status` = Active step, always "peer" when created.
+            `created` = created datetime
+            'modified' = modified datetime (same as `created` for this method)
+            'score' = None if no score is present. A dict with keys
+                `points_earned` and `points_possible` and int values if a score
+                has been created for this submission. We only do this when we
+                mark a workflow `done`, but it is possible that other processes
+                will later manually write that score information.
+            `status_details` = dict with the keys `peer` and `self`, each of
+                which has a dict with a key of `complete` and a boolean value.
+                The intention is to tell you the completion status of each
+                assessment sequence, but we will likely use this for extra
+                information later on.
+
+    Raises:
+        AssessmentWorkflowRequestError: If the `workflow_uuid` passed in is not
+            a string type.
+        AssessmentWorkflowNotFoundError: No assessment workflow matching the
+            requested UUID exists.
+        AssessmentWorkflowInternalError: Unexpected internal error, such as the
+            submissions app not being available or a database configuation
+            problem.
+
+    Examples:
+        >>> get_workflow_for_submission(
+        ...     '222bdf3d-a88e-11e3-859e-040ccee02800',
+        ...     {"peer": {"must_grade":5, "must_be_graded_by":3}}
+        ... )
+        ...
+        {
+            'uuid': u'53f27ecc-a88e-11e3-8543-040ccee02800',
+            'submission_uuid': u'222bdf3d-a88e-11e3-859e-040ccee02800',
+            'status': u'peer',
+            'created': datetime.datetime(2014, 3, 10, 19, 58, 19, 846684, tzinfo=<UTC>),
+            'modified': datetime.datetime(2014, 3, 10, 19, 58, 19, 846957, tzinfo=<UTC>),
+            'score': None,
+            'status_details': {
+                'peer': {
+                    'complete': False
+                },
+                'self': {
+                    'complete': False
+                }
+            }
+        }
+
+    """
     workflow = _get_workflow_model(submission_uuid)
     workflow.update_from_assessments(assessment_requirements)
     return _serialized_with_details(workflow, assessment_requirements)
 
 
 def _get_workflow_model(submission_uuid):
+    """Return the `AssessmentWorkflow` model for a given `submission_uuid`.
+
+    This method will raise the appropriate `AssessmentWorkflowError` while
+    trying to fetch the model object. This method assumes the object already
+    exists and will not attempt to create one.
+
+    Args:
+        submission_uuid (str): Identifier for the submission the
+            `AssessmentWorkflow` was created to track. There is a 1:1
+            relationship between submissions and workflows, so this uniquely
+            identifies the `AssessmentWorkflow`.
+
+    Returns:
+        `AssessmentWorkflow`: The workflow used to track the global progress of
+            this submission as it works its way through the peer and self
+            assessment sequences.
+
+    Raises:
+        AssessmentWorkflowRequestError: If the `workflow_uuid` passed in is not
+            a string type.
+        AssessmentWorkflowNotFoundError: No assessment workflow matching the
+            requested UUID exists.
+        AssessmentWorkflowInternalError: Unexpected internal error, such as the
+            submissions app not being available or a database configuation
+            problem.
+
+    """
     if not isinstance(submission_uuid, basestring):
         raise AssessmentWorkflowRequestError("submission_uuid must be a string type")
 
@@ -194,6 +340,10 @@ def _get_workflow_model(submission_uuid):
     return workflow
 
 def _serialized_with_details(workflow, assessment_requirements):
+    """Given a workflow and assessment requirements, return the serialized
+    version of an `AssessmentWorkflow` and add in the status details. See
+    `update_from_assessments()` for details on params and return values.
+    """
     data_dict = AssessmentWorkflowSerializer(workflow).data
     data_dict["status_details"] = workflow.status_details(assessment_requirements)
     return data_dict
