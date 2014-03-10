@@ -11,7 +11,7 @@
         {% for asmnt in assessments %}
         <div class="openassessment__peer_assessment_{{ forloop.counter }}">
             <div>Peer #{{ forloop.counter }}</div>
-            <div>Feedback: {{ asmnt.feedback }}</div>
+            <div>Feedback: {{ asmnt.feedback|linebreaks }}</div>
         </div>
         {% endfor %}
     </div>
