@@ -365,17 +365,19 @@ def _parse_assessments_xml(assessments_root, start, due):
     return assessments_list
 
 
-def serialize_content(oa_block):
+def serialize_content_to_xml(oa_block, root):
     """
     Serialize the OpenAssessment XBlock's content to XML.
 
     Args:
         oa_block (OpenAssessmentBlock): The open assessment block to serialize.
+        root (etree.Element): The XML root node to update.
 
     Returns:
-        xml (unicode)
+        etree.Element
+
     """
-    root = etree.Element('openassessment')
+    root.tag = 'openassessment'
 
     # Set submission due date
     if oa_block.submission_due is not None:
@@ -409,6 +411,20 @@ def serialize_content(oa_block):
     # Rubric
     rubric_root = etree.SubElement(root, 'rubric')
     _serialize_rubric(rubric_root, oa_block)
+
+
+def serialize_content(oa_block):
+    """
+    Serialize the OpenAssessment XBlock's content to an XML string.
+
+    Args:
+        oa_block (OpenAssessmentBlock): The open assessment block to serialize.
+
+    Returns:
+        xml (unicode)
+    """
+    root = etree.Element('openassessment')
+    serialize_content_to_xml(oa_block, root)
 
     # Return a UTF-8 representation of the XML
     return etree.tostring(root, pretty_print=True, encoding='utf-8')

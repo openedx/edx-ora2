@@ -19,7 +19,7 @@ from openassessment.xblock.peer_assessment_mixin import PeerAssessmentMixin
 from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.studio_mixin import StudioMixin
-from openassessment.xblock.xml import update_from_xml
+from openassessment.xblock.xml import update_from_xml, serialize_content_to_xml
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.workflow import api as workflow_api
 from openassessment.xblock.validation import validator
@@ -379,6 +379,12 @@ class OpenAssessmentBlock(
         template = get_template(path)
         context = Context(context_dict)
         return Response(template.render(context), content_type='application/html', charset='UTF-8')
+
+    def add_xml_to_node(self, node):
+        """
+        Serialize the XBlock to XML for exporting.
+        """
+        serialize_content_to_xml(self, node)
 
     def render_error(self, error_msg):
         """
