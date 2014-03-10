@@ -88,7 +88,6 @@ $f-serif: 'PT Serif', Cambria, Georgia, 'Times New Roman', Times, serif;
 $f-sans-serif: 'Open Sans','Helvetica Neue', Helvetica, Arial, sans-serif;
 
 // layout - grid
-@import "neat/neat-helpers";
 $max-width: 100%;
 $grid-columns: 12;
 $gutter: $baseline-v;

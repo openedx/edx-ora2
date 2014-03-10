@@ -14,7 +14,6 @@ $baseline-h: 40px;                                                  // horizonta
 // layout - grid (neat-based - http://neat.bourbon.io/)
 // --------------------
 // grid
-@import "neat/neat-helpers";
 $max-width: 100%;                                                   // http://gridcalculator.dk/#/1040/12/20/20
 $grid-columns: 12;                                                  // make grid 12 columns
 $column: $baseline-v;

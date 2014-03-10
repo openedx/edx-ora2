@@ -39,6 +39,10 @@ htmlcov
 .project
 .pydevproject
 
+# Sass/Codekit
+apps/openassessment/xblock/static/sass/.sass-cache/
+config.codekit
+
 # some mac thing
 .DS_Store
 
