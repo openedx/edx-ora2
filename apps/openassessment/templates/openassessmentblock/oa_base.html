@@ -19,7 +19,7 @@
                 </span>
 
                 <span class="openassessment__title--sub">
-                    <span class="problem-type problem-type--open-ended-response">Open Ended Response</span>
+                    <span class="problem-type problem-type--open-ended-response">Open Response</span>
                     {%  for assessment in rubric_assessments %}
                     +
                     <span class="problem-type problem-type--{{ assessment.type }}">{{ assessment.name }}</span>
@@ -29,7 +29,7 @@
 
             <!--?: may have trouble with aync -->
             <nav class="nav--contents">
-                <h2 class="title">Skip to a part of this problem:</h2>
+                <h2 class="title">Skip to a specific step:</h2>
 
                 <ol class="list list--nav">
                     {%  for assessment in rubric_assessments %}
@@ -50,7 +50,7 @@
             <div class="wrapper--openassessment__prompt">
                 <article class="openassessment__prompt ui-toggle-visibility">
 
-                    <h2 class="openassessment__prompt__title">Open Assessment Problem</h2>
+                    <h2 class="openassessment__prompt__title">Open Response Assessment Problem</h2>
 
                     <div class="openassessment__prompt__copy ui-toggle-visibility__content">
                         <p>{{ question }}</p>

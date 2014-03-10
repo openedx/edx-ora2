@@ -26,7 +26,7 @@
         </article>
 
         <article class="submission__peer-evaluations">
-            <h3 class="submission__peer-evaluations__title">Peer Evaluations Of Your Response</h3>
+            <h3 class="submission__peer-evaluations__title">Peer Assessments of Your Response</h3>
 
             <ol class="list submission__peer-evaluations__questions">
             {% for criterion in rubric_criteria %}
@@ -55,11 +55,11 @@
                         id="question--{{ criterion_num }}__answer-{{ peer_num }}">
                         <h5 class="answer__title">
                             <span class="answer__source">
-                              <span class="label sr">Assessor: </span>
+                              <span class="label sr">Peer Assessor: </span>
                               <span class="value">Peer {{ peer_num }}</span>
                             </span>
                             <span class="answer__value">
-                              <span class="label sr">Peer's Assessment: </span>
+                              <span class="label sr">Assessment: </span>
                               <span class="value">{{ part.option.name }}</span>
                             </span>
                         </h5>
@@ -80,18 +80,18 @@
         </article>
 
         <form id="submission__feeedback" class="submission__feeedback ui-toggle-visibility" method="post">
-            <h3 class="submission__feeedback__title ui-toggle-visibility__control">Give Feedback On Peer Evaluations</h3>
+            <h3 class="submission__feeedback__title ui-toggle-visibility__control">Provide Feedback on Peer Assessments</h3>
 
             <ol class="list list--fields submission__feeedback__content ui-toggle-visibility__content">
                 <li class="field field--textarea feedback__remarks" id="feedback__remarks">
-                    <label for="feedback__remarks__value">Please provide any thoughts or comments on the feedback you received from your peers here.</label>
-                    <textarea id="feedback__remarks__value" placeholder="I feel the feedback I received was..."></textarea>
+                    <label for="feedback__remarks__value">Please provide feedback on the score and comments you received from your peers.</label>
+                    <textarea id="feedback__remarks__value" placeholder="I feel the score and comments I received were..."></textarea>
                 </li>
             </ol>
 
             <ul class="list list--actions submission__feeedback__actions">
                 <li class="list--actions__item">
-                    <button type="submit" id="feedback__submit" class="action action--submit feedback__submit">Submit Feedback On Peer Evaluations</button>
+                    <button type="submit" id="feedback__submit" class="action action--submit feedback__submit">Submit Feedback on Peer Assessments</button>
                 </li>
             </ul>
         </form>
