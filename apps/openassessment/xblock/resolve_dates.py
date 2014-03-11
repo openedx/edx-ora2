@@ -25,12 +25,12 @@ DISTANT_PAST = dt.datetime(dt.MINYEAR, 1, 1, tzinfo=pytz.utc)
 DISTANT_FUTURE = dt.datetime(dt.MAXYEAR, 1, 1, tzinfo=pytz.utc)
 
 
-def _parse_date(date_string):
+def _parse_date(value):
     """
     Parse an ISO formatted datestring into a datetime object with timezone set to UTC.
 
     Args:
-        date_string (str): The ISO formatted date string.
+        value (str or datetime): The ISO formatted date string or datetime object.
 
     Returns:
         datetime.datetime
@@ -38,10 +38,17 @@ def _parse_date(date_string):
     Raises:
         InvalidDateFormat: The date string could not be parsed.
     """
-    try:
-        return parse_date(date_string).replace(tzinfo=pytz.utc)
-    except ValueError:
-        raise InvalidDateFormat(_("Could not parse date '{date}'").format(date=date_string))
+    if isinstance(value, dt.datetime):
+        return value.replace(tzinfo=pytz.utc)
+
+    elif isinstance(value, basestring):
+        try:
+            return parse_date(value).replace(tzinfo=pytz.utc)
+        except ValueError:
+            raise InvalidDateFormat(_("Could not parse date '{date}'").format(date=value))
+
+    else:
+        raise InvalidDateFormat(_("'{date}' must be a date string or datetime").format(date=value))
 
 
 def resolve_dates(start, end, date_ranges):
@@ -90,10 +97,10 @@ def resolve_dates(start, end, date_ranges):
 
 
     Args:
-        start (str, ISO date format): When the problem opens.  A value of None indicates that the problem is always open.
-        end (str, ISO date format): When the problem closes.  A value of None indicates that the problem never closes.
+        start (str, ISO date format, or datetime): When the problem opens.  A value of None indicates that the problem is always open.
+        end (str, ISO date format, or datetime): When the problem closes.  A value of None indicates that the problem never closes.
         date_ranges (list of tuples): list of (start, end) ISO date string tuples indicating
-            the start/end timestamps of each submission/assessment.
+            the start/end timestamps (date string or datetime) of each submission/assessment.
 
     Returns:
         start (datetime): The resolved start date

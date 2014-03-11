@@ -2,14 +2,33 @@
 Tests for serializing to/from XML.
 """
 import copy
+import datetime as dt
 import mock
 import lxml.etree as etree
+import pytz
+import dateutil.parser
 from django.test import TestCase
 from ddt import ddt, data, file_data, unpack
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock, UI_MODELS
 from openassessment.xblock.xml import (
     serialize_content, update_from_xml_str, ValidationError, UpdateFromXmlError
 )
+
+
+def _parse_date(value):
+    """
+    Parse test-data date into a TZ-aware datetime.
+
+    Args:
+        value (string or None): The value to parse.
+
+    Returns:
+        TZ-aware datetime or None.
+    """
+    if value is None:
+        return value
+    else:
+        return dateutil.parser.parse(value).replace(tzinfo=pytz.utc)
 
 
 @ddt
@@ -56,12 +75,13 @@ class TestSerializeContent(TestCase):
         """
         self.oa_block = mock.MagicMock(OpenAssessmentBlock)
 
+
     @file_data('data/serialize.json')
     def test_serialize(self, data):
         self.oa_block.title = data['title']
         self.oa_block.prompt = data['prompt']
-        self.oa_block.start = data['start']
-        self.oa_block.due = data['due']
+        self.oa_block.start = _parse_date(data['start'])
+        self.oa_block.due = _parse_date(data['due'])
         self.oa_block.submission_due = data['submission_due']
         self.oa_block.rubric_criteria = data['criteria']
         self.oa_block.rubric_assessments = data['assessments']
@@ -278,8 +298,8 @@ class TestUpdateFromXml(TestCase):
         self.oa_block.rubric_criteria = dict()
         self.oa_block.rubric_assessments = list()
 
-        self.oa_block.start = "2000-01-01T00:00:00"
-        self.oa_block.due = "3000-01-01T00:00:00"
+        self.oa_block.start = dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc)
+        self.oa_block.due = dt.datetime(3000, 1, 1).replace(tzinfo=pytz.utc)
         self.oa_block.submission_due = "2000-01-01T00:00:00"
 
     @file_data('data/update_from_xml.json')
@@ -294,8 +314,8 @@ class TestUpdateFromXml(TestCase):
         # Check that the contents of the modified XBlock are correct
         self.assertEqual(self.oa_block.title, data['title'])
         self.assertEqual(self.oa_block.prompt, data['prompt'])
-        self.assertEqual(self.oa_block.start, data['start'])
-        self.assertEqual(self.oa_block.due, data['due'])
+        self.assertEqual(self.oa_block.start, _parse_date(data['start']))
+        self.assertEqual(self.oa_block.due, _parse_date(data['due']))
         self.assertEqual(self.oa_block.submission_due, data['submission_due'])
         self.assertEqual(self.oa_block.rubric_criteria, data['criteria'])
         self.assertEqual(self.oa_block.rubric_assessments, data['assessments'])
