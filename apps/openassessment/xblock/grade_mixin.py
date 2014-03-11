@@ -1,6 +1,5 @@
 import copy
 from xblock.core import XBlock
-from openassessment.assessment.peer_api import get_assessments
 from openassessment.assessment import peer_api
 
 class GradeMixin(object):
@@ -17,10 +16,10 @@ class GradeMixin(object):
     @XBlock.handler
     def render_grade(self, data, suffix=''):
         workflow = self.get_workflow_info()
-
         status = workflow.get('status')
         context = {}
         if status == "done":
+            max_scores = peer_api.get_rubric_max_scores(self.submission_uuid)
             path = 'openassessmentblock/grade/oa_grade_complete.html'
             assessment_ui_model = self.get_assessment_module('peer-assessment')
             student_submission = self.get_user_submission(
@@ -44,8 +43,12 @@ class GradeMixin(object):
             context["self_assessment"] = self_assessment
             context["rubric_criteria"] = copy.deepcopy(self.rubric_criteria)
             context["score"] = student_score
-            for criterion in context["rubric_criteria"]:
-                criterion["median_score"] = median_scores[criterion["name"]]
+
+            if median_scores is not None and max_scores is not None:
+                for criterion in context["rubric_criteria"]:
+                    criterion["median_score"] = median_scores[criterion["name"]]
+                    criterion["total_value"] = max_scores[criterion["name"]]
+
         elif workflow.get('status') == "waiting":
             path = 'openassessmentblock/grade/oa_grade_waiting.html'
         elif not status:

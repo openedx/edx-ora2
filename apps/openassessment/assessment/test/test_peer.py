@@ -534,6 +534,31 @@ class TestPeerApi(TestCase):
         submission = peer_api.get_submission_to_assess(STUDENT_ITEM, 3)
         self.assertIsNone(submission)
 
+    def test_get_max_scores(self):
+        self._create_student_and_submission("Tim", "Tim's answer")
+        bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
+        sub = peer_api.get_submission_to_assess(bob, 1)
+        assessment = peer_api.create_assessment(
+            sub["uuid"],
+            bob["student_id"],
+            ASSESSMENT_DICT,
+            RUBRIC_DICT,
+        )
+        self.assertEqual(assessment["points_earned"], 6)
+        self.assertEqual(assessment["points_possible"], 14)
+        self.assertEqual(assessment["feedback"], ASSESSMENT_DICT["feedback"])
+
+        max_scores = peer_api.get_rubric_max_scores(sub["uuid"])
+        self.assertEqual(max_scores['secret'], 1)
+        self.assertEqual(max_scores['giveup'], 10)
+
+    @patch.object(Assessment.objects, 'filter')
+    @raises(peer_api.PeerAssessmentInternalError)
+    def test_max_score_db_error(self, mock_filter):
+        mock_filter.side_effect = DatabaseError("Bad things happened")
+        tim, _ = self._create_student_and_submission("Tim", "Tim's answer")
+        peer_api.get_rubric_max_scores(tim["uuid"])
+
     @patch.object(Assessment.objects, 'filter')
     @raises(peer_api.PeerAssessmentInternalError)
     def test_median_score_db_error(self, mock_filter):
