@@ -3,7 +3,7 @@ Public interface for self-assessment.
 """
 from django.utils.translation import ugettext as _
 from submissions.api import (
-    get_submission_by_uuid, get_submissions,
+    get_submission_and_student, get_submissions,
     SubmissionNotFoundError, SubmissionRequestError
 )
 from openassessment.assessment.serializers import (
@@ -52,7 +52,7 @@ def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, s
 
     # Check that the student is allowed to assess this submission
     try:
-        submission = get_submission_by_uuid(submission_uuid)
+        submission = get_submission_and_student(submission_uuid)
         if submission is None or submission['student_item']['student_id'] != user_id:
             raise SelfAssessmentRequestError(_("Cannot self-assess this submission"))
     except SubmissionNotFoundError:

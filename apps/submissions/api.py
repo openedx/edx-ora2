@@ -192,9 +192,9 @@ def get_submission(submission_uuid):
 
     return SubmissionSerializer(submission).data
 
-def get_submission_by_uuid(uuid):
+def get_submission_and_student(uuid):
     """
-    Retrieve a submission by its unique identifier.
+    Retrieve a submission by its unique identifier, including the associated student item.
 
     Args:
         uuid (str): the unique identifier of the submission.
