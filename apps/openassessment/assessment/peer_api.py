@@ -646,7 +646,7 @@ def _get_submission_for_review(workflow, graded_by, over_grading=False):
         "1"
 
     """
-    order = " having count(1) < %s order by pw.created_at, pw.id "
+    order = " having count(pwi.id) < %s order by pw.created_at, pw.id "
     timeout = (datetime.utcnow().replace(tzinfo=UTC) - TIME_LIMIT).strftime("%Y-%m-%d %H:%M:%S")
     sub = _get_next_submission(
         order,
@@ -710,7 +710,7 @@ def _get_next_submission(order, workflow, *args):
     and pw.submission_uuid<>'cdd6cf7a-2787-43ec-8d31-62fdb14d4e09'
     and pw.submission_uuid<>'ebc7d4e1-1577-4443-ab58-2caad9a10837'
     and (pwi.scorer_id_id is NULL or pwi.assessment<>-1 or pwi.started_at > '2014-03-04 20:09:04')
-    group by pw.submission_uuid having count(1) < 3
+    group by pw.submission_uuid having count(pwi.id) < 3
     order by pw.created_at, pw.id
     limit 1;
 
