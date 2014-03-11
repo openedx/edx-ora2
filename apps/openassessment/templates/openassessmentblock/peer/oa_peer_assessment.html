@@ -96,35 +96,34 @@
                                         </li>
                                         {% endfor %}
 
-                                        <li class="wrapper--input field field--textarea assessment__rubric__question assessment__rubric__question--feedback ui-toggle-visibility" id="assessment__rubric__question--feedback">
-                                            <label class="question__title" for="assessment__rubric__question--feedback__value ui-toggle-visibility__control">
-                                                <i class="ico icon-caret-right"></i>
+                                        <li class="wrapper--input field field--textarea assessment__rubric__question assessment__rubric__question--feedback" id="assessment__rubric__question--feedback">
+                                            <label class="question__title" for="assessment__rubric__question--feedback__value">
                                                 <span class="question__title__copy">Please provide additional feedback for this response.</span>
                                             </label>
-                                            <div class="ui-toggle-visibility__content">
-                                                <textarea class="question__answers" id="assessment__rubric__question--feedback__value" placeholder="I felt this response was..."></textarea>
+                                            <div>
+                                                <textarea id="assessment__rubric__question--feedback__value" placeholder="I felt this response was..."></textarea>
                                             </div>
                                         </li>
                                     </ol>
                                 </fieldset>
-
-                                <div class="peer-assessment__actions">
-                                    <div class="message message--error message--error-server">
-                                        <h3 class="message__title">We could not submit your assessment</h3>
-                                        <div class="message__content"></div>
-                                    </div>
-
-                                    <ul class="list list--actions">
-                                        <li class="list--actions__item">
-                                            <button type="submit" id="peer-assessment--001__assessment__submit" class="action action--submit is--disabled">
-                                                <span class="copy">{{ submit_button_text }}</span>
-                                                <i class="ico icon-caret-right"></i>
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
                             </form>
                         </article>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="step__actions">
+                <div class="message message--error message--error-server">
+                    <h3 class="message__title">We could not submit your assessment</h3>
+                    <div class="message__content"></div>
+                </div>
+
+                <ul class="list list--actions">
+                    <li class="list--actions__item">
+                        <button type="submit" id="peer-assessment--001__assessment__submit" class="action action--submit is--disabled">
+                            <span class="copy">{{ submit_button_text }}</span>
+                            <i class="ico icon-caret-right"></i>
+                        </button>
                     </li>
                 </ul>
             </div>

@@ -99,7 +99,7 @@ class TestSelfAssessment(XBlockHandlerTestCase):
             mock_complete.return_value = True
             # Expect that the self-assessment step is open
             resp = self.request(xblock, 'render_self_assessment', json.dumps(dict()))
-            self.assertIn("Grading", resp)
+            self.assertIn("Not Completed", resp)
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_render_self_assessment_no_submission(self, xblock):
