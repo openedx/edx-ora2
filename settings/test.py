@@ -6,6 +6,7 @@ Test-specific Django settings.
 from .base import *
 
 TEST_APPS = (
+    'openassessment',
     'openassessment.assessment',
     'openassessment.workflow',
     'openassessment.xblock',
