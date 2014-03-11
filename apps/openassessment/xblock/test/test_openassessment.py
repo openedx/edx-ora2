@@ -46,6 +46,23 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         self.assertIsNotNone(grade_response)
         self.assertTrue(grade_response.body.find("openassessment__grade"))
 
+    @scenario('data/dates_scenario.xml')
+    def test_load_student_view_with_dates(self, xblock):
+        """OA XBlock returns some HTML to the user.
+
+        View basic test for verifying we're returned some HTML about the
+        Open Assessment XBlock. We don't want to match too heavily against the
+        contents.
+        """
+        xblock_fragment = self.runtime.render(xblock, "student_view")
+        self.assertTrue(xblock_fragment.body_html().find("Openassessmentblock"))
+
+        # Validate Submission Rendering.
+        submission_response = xblock.render_submission({})
+        self.assertIsNotNone(submission_response)
+        self.assertTrue(submission_response.body.find("openassessment__response"))
+        self.assertTrue(submission_response.body.find("April"))
+
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_default_fields(self, xblock):
 

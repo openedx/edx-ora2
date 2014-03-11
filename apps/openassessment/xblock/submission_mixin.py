@@ -1,5 +1,6 @@
 import copy
 import logging
+import dateutil
 from xblock.core import XBlock
 from django.utils.translation import ugettext as _
 from submissions import api
@@ -186,9 +187,14 @@ class SubmissionMixin(object):
         """
         workflow = self.get_workflow_info()
         problem_open, date = self.is_open()
+        sub_due = None
+        if self.submission_due is not None:
+            submission_deadline = dateutil.parser.parse(self.submission_due)
+            sub_due = submission_deadline.strftime("%A, %B %d, %Y %X")
         context = {
             "saved_response": self.saved_response,
-            "save_status": self.save_status
+            "save_status": self.save_status,
+            "submission_due": sub_due,
         }
 
         if not workflow and not problem_open:

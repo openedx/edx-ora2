@@ -145,10 +145,14 @@ class PeerAssessmentMixin(object):
         return self.render_assessment(path, context_dict)
 
     def get_peer_submission(self, student_item_dict, assessment):
+        submissions_open, __ = self.is_open(step="submission")
+        over_grading = not submissions_open
         peer_submission = False
         try:
             peer_submission = peer_api.get_submission_to_assess(
-                student_item_dict, assessment["must_be_graded_by"]
+                student_item_dict,
+                assessment["must_be_graded_by"],
+                over_grading
             )
         except PeerAssessmentWorkflowError as err:
             logger.exception(err)
