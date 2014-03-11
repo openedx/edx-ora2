@@ -347,7 +347,7 @@ def get_assessments(submission_id):
     """
     try:
         submission = Submission.objects.get(uuid=submission_id)
-        return get_assessment_review(submission)
+        return get_assessment_review(submission, "PE")
     except DatabaseError:
         error_message = _(
             u"Error getting assessments for submission {}".format(submission_id)

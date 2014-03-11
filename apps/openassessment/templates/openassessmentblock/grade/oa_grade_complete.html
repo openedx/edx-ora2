@@ -83,6 +83,32 @@
                 </li>
                 {% endwith %}
                 {% endfor %}
+                    <li class="question question--001 question--feedback ui-toggle-visibility">
+                        <h4 class="question__title ui-toggle-visibility__control">How well did this response answer the overall question?</h4>
+                        {% for assessment in peer_assessments %}
+                        {% with peer_num=forloop.counter %}
+                        {% if assessment.feedback %}
+                        <ul class="question__answers ui-toggle-visibility__content">
+                            <li class="answer peer-evaluation--{{ peer_num }}" id="question--001__answer-{{ peer_num }}">
+                                <h5 class="answer__title">
+                                    <span class="answer__source">
+                                      <span class="label sr">Evaluator: </span>
+                                      <span class="value">Peer {{ peer_num }}</span>
+                                    </span>
+                                </h5>
+
+                                <div class="answer__value">
+                                    <h6 class="label sr">Evaluator's Assessment: </h6>
+                                    <div class="value">
+                                        <p>{{ assessment.feedback }}</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        {% endif %}
+                        {% endwith %}
+                        {% endfor %}
+                    </li>
                 </ol>
             </article>
 
