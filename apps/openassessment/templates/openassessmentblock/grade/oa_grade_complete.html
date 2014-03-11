@@ -68,6 +68,22 @@
                                     {% endfor %}
                                 {% endwith %}
                             {% endfor %}
+
+                            <li class="answer self-assessment"
+                                id="question--{{ criterion_num }}__answer--self">
+                                <h5 class="answer__title">
+                                    <span class="answer__source">
+                                      <span class="value">Your Answer</span>
+                                    </span>
+                                    <span class="answer__value">
+                                      <span class="label sr">Your Assessment: </span>
+                                      <span class="value">{{ part.option.name }}</span>
+                                    </span>
+                                </h5>
+                                <span class="answer__content">
+                                    {{ part.option.explanation }}
+                                </span>
+                            </li>
                         </ul>
                     </li>
                     {% endwith %}
