@@ -134,7 +134,7 @@ class AssessmentSerializer(serializers.ModelSerializer):
         )
 
 
-def get_assessment_review(submission, score_type):
+def get_assessment_review(submission):
     """Get all information pertaining to an assessment for review.
 
     Given an assessment serializer, return a serializable formatted model of
@@ -144,8 +144,6 @@ def get_assessment_review(submission, score_type):
     Args:
         submission (Submission): The Submission Model object to get
             assessment reviews for.
-        score_type (str): The score type we want to get assessments back for
-            to review.
 
     Returns:
         (list): A list of assessment reviews, combining assessments with
@@ -188,9 +186,7 @@ def get_assessment_review(submission, score_type):
     """
     return [
         full_assessment_dict(assessment)
-        for assessment in Assessment.objects.filter(
-            submission=submission, score_type=score_type
-        )
+        for assessment in Assessment.objects.filter(submission=submission)
     ]
 
 

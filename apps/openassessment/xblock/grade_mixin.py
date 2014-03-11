@@ -27,12 +27,20 @@ class GradeMixin(object):
             )
             student_score = workflow["score"]
             assessments = peer_api.get_assessments(student_submission["uuid"])
+            peer_assessments = []
+            self_assessment = None
+            for assessment in assessments:
+                if assessment["score_type"] == "PE":
+                    peer_assessments.append(assessment)
+                else:
+                    self_assessment = assessment
             median_scores = peer_api.get_assessment_median_scores(
                 student_submission["uuid"],
                 assessment_ui_model["must_be_graded_by"]
             )
             context["student_submission"] = student_submission
-            context["peer_assessments"] = assessments
+            context["peer_assessments"] = peer_assessments
+            context["self_assessment"] = self_assessment
             context["rubric_criteria"] = self.rubric_criteria
             context["score"] = student_score
             for criterion in context["rubric_criteria"]:
