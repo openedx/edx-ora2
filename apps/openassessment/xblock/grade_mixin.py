@@ -1,4 +1,5 @@
 from xblock.core import XBlock
+from openassessment.assessment.peer_api import get_assessments
 from openassessment.assessment import peer_api
 
 class GradeMixin(object):
