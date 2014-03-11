@@ -938,17 +938,17 @@
 
       @include media($bp-dm) {
         @include span-columns(3 of 12);
-        @include omega(3n);
+        @include omega(4n);
       }
 
       @include media($bp-dl) {
         @include span-columns(3 of 12);
-        @include omega(3n);
+        @include omega(4n);
       }
 
       @include media($bp-dx) {
         @include span-columns(3 of 12);
-        @include omega(3n);
+        @include omega(4n);
       }
     }
 
