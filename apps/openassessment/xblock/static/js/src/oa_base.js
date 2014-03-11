@@ -262,6 +262,12 @@ OpenAssessment.BaseUI.prototype = {
     }
 };
 
+/* collapse/expand UI functionality */
+function $toggleExpansion(e) {
+    e.preventDefault();
+    $(e.target).closest('.ui-toggle-visibility').toggleClass('is--collapsed');
+}
+
 /* XBlock JavaScript entry point for OpenAssessmentXBlock. */
 function OpenAssessmentBlock(runtime, element) {
     /**
@@ -271,5 +277,8 @@ function OpenAssessmentBlock(runtime, element) {
         var server = new OpenAssessment.Server(runtime, element);
         var ui = new OpenAssessment.BaseUI(runtime, element, server);
         ui.load();
+
+        /* TODO: refactor this event based on workflow and logic steps */
+        $(document).on('click', '.ui-toggle-visibility .ui-toggle-visibility__control', $toggleExpansion);
     });
 }

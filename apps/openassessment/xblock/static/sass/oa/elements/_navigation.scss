@@ -3,3 +3,64 @@
 
 // NOTES:
 // * openassessment-specific navigation UI
+
+// --------------------
+// collapse/expand
+// --------------------
+.ui-toggle-visibility {
+
+  // control to toggle
+  .ui-toggle-visibility__control {
+    @extend %fake-link;
+    color: $action-primary-color;
+    text-decoration: none;
+
+    // optional icon
+    .ico, .ui-toggle-visibility__control__copy {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .ico {
+      @include transition(all $tmg-f2 ease-in-out 0s);
+      margin-right: ($baseline-h/8);
+    }
+
+    &:hover, &:focus {
+      color: $action-primary-color-focus;
+    }
+
+    &:active, &.is--current {
+      color: $action-primary-color-active;
+    }
+  }
+
+  // item being toggled
+  .ui-toggle-visibility__content {
+    @include transition(opacity $tmg-f1 ease-in 0, max-height $tmg-f2 ease-in 0);
+    @extend %trans-opacity;
+    max-height: ($baseline-v*2000);
+    overflow: auto;
+    opacity: 1.0;
+    padding-left: ($baseline-h/20);
+    padding-right: ($baseline-h/20);
+  }
+
+  // STATE: is collapsed
+  &.is--collapsed {
+
+    .ui-toggle-visibility__control .ico {
+      @include transform(rotate(-90deg));
+      @include transform-origin(50% 50%);
+    }
+
+    // item being toggled
+    .ui-toggle-visibility__content {
+      @include transition(opacity $tmg-f2 ease-in 0, max-height $tmg-f1 ease-in 0);
+      @extend %trans-opacity;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0.0;
+    }
+  }
+}

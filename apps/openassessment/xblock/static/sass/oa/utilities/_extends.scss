@@ -42,13 +42,12 @@
 // rubric question
 %ui-rubric-question {
   @include clearfix();
-  margin-bottom: $baseline-v;
+  margin-bottom: ($baseline-v/2);
   @extend %wipe-last-child;
 
   .question__title {
-    margin-bottom: $baseline-v;
     border-bottom: ($baseline-v/10) solid $color-decorative-tertiary;
-    padding-bottom: ($baseline-v/4);
+    padding-bottom: ($baseline-v/2);
 
     .ico {
       display: inline-block;
@@ -60,12 +59,13 @@
   .question__title__copy {
     @extend %hd-4;
     @extend %t-weight3;
-    color: $heading-primary-color;
   }
 }
 
 //  rubric answers
 %ui-rubric-answers {
+  margin-top: $baseline-v;
+  margin-bottom: $baseline-v;
 
   .answer {
     @include row();

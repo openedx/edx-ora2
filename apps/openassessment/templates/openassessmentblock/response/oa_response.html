@@ -26,39 +26,41 @@
 
     {% block body %}
     <div class="ui-toggle-visibility__content">
-        <div class="step__instruction">
-            <p>Please provide your response to the following question. You can save your progress and return to complete your response at any time before the due date of <span class="step__deadline"><span class="date">{{ formatted_due_date }}</span></span>. <strong class="emphasis--beta">After you submit your response, you cannot edit it</strong>.</p>
-        </div>
+        <div class="wrapper--step__content">
+            <div class="step__instruction">
+                <p>Please provide your response to the following question. You can save your progress and return to complete your response at any time before the due date of <span class="step__deadline"><span class="date">{{ formatted_due_date }}</span></span>. <strong class="emphasis--beta">After you submit your response, you cannot edit it</strong>.</p>
+            </div>
 
-        <div class="step__content">
-            <!-- @talbs: This is some more ugly placeholder stuff that you can replace -->
-            <div id="response__save_status">{{ save_status }}</div>
-            <form id="response__submission" class="response__submission">
-                <ol class="list list--fields response__submission__content">
-                    <li class="field field--textarea submission__answer" id="submission__answer">
-                        <label class="sr" for="submission__answer__value">Please provide your response to the question.</label>
-                        <textarea id="submission__answer__value" placeholder="">{{ saved_response }}</textarea>
-                    </li>
-                </ol>
+            <div class="step__content">
+                <!-- @talbs: This is some more ugly placeholder stuff that you can replace -->
+                <div id="response__save_status">{{ save_status }}</div>
+                <form id="response__submission" class="response__submission">
+                    <ol class="list list--fields response__submission__content">
+                        <li class="field field--textarea submission__answer" id="submission__answer">
+                            <label class="sr" for="submission__answer__value">Please provide your response to the question.</label>
+                            <textarea id="submission__answer__value" placeholder="">{{ saved_response }}</textarea>
+                        </li>
+                    </ol>
 
-                <ul class="list list--actions response__submission__actions">
+                    <ul class="list list--actions response__submission__actions">
+                        <li class="list--actions__item">
+                            <button type="submit" id="submission__save" class="action action--save submission__save">Save Your Progress</button>
+                            <span class="tip">You may continue to work on your response until you submit it.</span>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+
+            <div class="step__actions">
+                <ul class="list list--actions">
                     <li class="list--actions__item">
-                        <button type="submit" id="submission__save" class="action action--save submission__save">Save Your Progress</button>
-                        <span class="tip">You may continue to work on your response until you submit it.</span>
+                        <a aria-role="button" href="#" id="step--response__submit" class="action action--submit step--response__submit">
+                            <span class="copy">Submit your response and move to the next step</span>
+                            <i class="ico icon-caret-right"></i>
+                        </a>
                     </li>
                 </ul>
-            </form>
-        </div>
-
-        <div class="step__actions">
-            <ul class="list list--actions">
-                <li class="list--actions__item">
-                    <a aria-role="button" href="#" id="step--response__submit" class="action action--submit step--response__submit">
-                        <span class="copy">Submit your response and move to the next step</span>
-                        <i class="ico icon-caret-right"></i>
-                    </a>
-                </li>
-            </ul>
+            </div>
         </div>
     </div>
     {% endblock %}
