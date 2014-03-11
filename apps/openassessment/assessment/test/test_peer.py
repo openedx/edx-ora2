@@ -254,7 +254,7 @@ class TestPeerApi(TestCase):
                 "must_be_graded_by": REQUIRED_GRADED_BY,
                 }
         }
-        
+
         # 1) Angel Submits
         angel_sub, angel = self._create_student_and_submission("Angel", "Angel's answer")
 

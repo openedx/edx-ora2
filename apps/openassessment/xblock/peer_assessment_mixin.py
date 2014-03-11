@@ -150,9 +150,4 @@ class PeerAssessmentMixin(object):
             logger.exception(err)
         return peer_submission
 
-    def get_assessment_module(self, mixin_name):
-        """Get a configured assessment module by name.
-        """
-        for assessment in self.rubric_assessments:
-            if assessment["name"] == mixin_name:
-                return assessment
+
