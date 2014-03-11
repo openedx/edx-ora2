@@ -50,11 +50,6 @@
       padding-bottom: 0;
     }
 
-    // grade divider UI
-    &:nth-last-child(2) {
-      border-bottom: ($baseline-v/10) solid $color-decorative-primary;
-    }
-
     // step header
     .step__header {
       @extend %trans-opacity;
