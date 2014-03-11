@@ -89,6 +89,16 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         self.assertIsNotNone(grade_response)
         self.assertTrue(grade_response.body.find("openassessment__grade"))
 
+    @scenario('data/basic_scenario.xml')
+    def test_course_id_from_runtime(self, xblock):
+
+        # Check the default course ID (runtime does not support it)
+        self.assertEqual('not supported', xblock.get_student_item_dict()['course_id'])
+
+        # Simulate a runtime that supports course IDs
+        xblock.runtime.course_id = 'Test Course'
+        self.assertEqual('Test Course', xblock.get_student_item_dict()['course_id'])
+
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_default_fields(self, xblock):
 
