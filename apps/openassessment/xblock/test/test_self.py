@@ -35,7 +35,7 @@ class TestSelfAssessment(XBlockHandlerTestCase):
         self.assertTrue(resp['success'])
 
         # Expect that a self-assessment was created
-        _, assessment = self_api.get_submission_and_assessment(student_item)
+        _, assessment = self_api.get_submission_and_assessment(submission["uuid"])
         self.assertEqual(assessment['submission_uuid'], submission['uuid'])
         self.assertEqual(assessment['points_earned'], 5)
         self.assertEqual(assessment['points_possible'], 6)
@@ -70,14 +70,14 @@ class TestSelfAssessment(XBlockHandlerTestCase):
     @scenario('data/self_assessment_scenario.xml')
     def test_render_self_assessment_preview(self, xblock):
         resp = self.request(xblock, 'render_self_assessment', json.dumps(dict()))
-        self.assertIn("Incomplete", resp)
+        self.assertIn("Not Completed", resp)
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_render_self_assessment_complete(self, xblock):
         student_item = xblock.get_student_item_dict()
 
         # Create a submission for the student
-        submission = submission_api.create_submission(student_item, self.SUBMISSION)
+        submission = xblock.create_submission(student_item, self.SUBMISSION)
 
         # Self-assess the submission
         assessment = copy.deepcopy(self.ASSESSMENT)
@@ -94,24 +94,25 @@ class TestSelfAssessment(XBlockHandlerTestCase):
         student_item = xblock.get_student_item_dict()
 
         # Create a submission for the student
-        submission = submission_api.create_submission(student_item, self.SUBMISSION)
-
-        # Expect that the self-assessment step is open
-        resp = self.request(xblock, 'render_self_assessment', json.dumps(dict()))
-        self.assertIn("Grading", resp)
+        submission = xblock.create_submission(student_item, self.SUBMISSION)
+        with mock.patch('openassessment.assessment.peer_api.is_complete') as mock_complete:
+            mock_complete.return_value = True
+            # Expect that the self-assessment step is open
+            resp = self.request(xblock, 'render_self_assessment', json.dumps(dict()))
+            self.assertIn("Grading", resp)
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_render_self_assessment_no_submission(self, xblock):
         # Without creating a submission, render the self-assessment step
         # Expect that the step is closed
         resp = self.request(xblock, 'render_self_assessment', json.dumps(dict()))
-        self.assertIn("Incomplete", resp)
+        self.assertIn("Not Completed", resp)
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_render_self_assessessment_api_error(self, xblock):
         # Create a submission for the student
         student_item = xblock.get_student_item_dict()
-        submission = submission_api.create_submission(student_item, self.SUBMISSION)
+        submission = xblock.create_submission(student_item, self.SUBMISSION)
 
         # Simulate an error and expect a failure response
         with mock.patch('openassessment.xblock.self_assessment_mixin.self_api') as mock_api:

@@ -169,8 +169,8 @@ LOGGING = {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
             'propagate': True,
-            },
-        }
+        },
+    },
 }
 
 # TODO: add config for XBLOCK_WORKBENCH { SCENARIO_CLASSES }

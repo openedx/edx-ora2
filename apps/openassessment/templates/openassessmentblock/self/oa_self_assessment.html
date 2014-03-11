@@ -1,7 +1,7 @@
 {% load i18n %}
 
 {% block list_item %}
-<li id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment is--expanded">
+<li id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment">
 {% endblock %}
     <span class="system__element" id="self_submission_uuid">
         {{ self_submission.uuid }}
@@ -20,7 +20,7 @@
         <span class="step__status">
           <span class="step__status__label">This step's status:</span>
           <span class="step__status__value">
-              <span class="copy">{{ step_status }}</span>
+              <span class="copy">Grading</span>
           </span>
         </span>
         {% endblock %}

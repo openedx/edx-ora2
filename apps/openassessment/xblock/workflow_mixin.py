@@ -13,6 +13,10 @@ class WorkflowMixin(object):
 
     def workflow_requirements(self):
         assessment_ui_model = self.get_assessment_module('peer-assessment')
+
+        if not assessment_ui_model:
+            return {}
+
         return {
             "peer": {
                 "must_grade": assessment_ui_model["must_grade"],

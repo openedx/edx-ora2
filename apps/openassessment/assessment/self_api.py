@@ -3,7 +3,7 @@ Public interface for self-assessment.
 """
 from django.utils.translation import ugettext as _
 from submissions.api import (
-    get_submission_and_student, get_submissions,
+    get_submission_and_student, get_submission,
     SubmissionNotFoundError, SubmissionRequestError
 )
 from openassessment.assessment.serializers import (
@@ -97,12 +97,13 @@ def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, s
     return serializer.data
 
 
-def get_submission_and_assessment(student_item_dict):
+def get_submission_and_assessment(submission_uuid):
     """
     Retrieve a submission and self-assessment for a student item.
 
     Args:
-        student_item_dict (dict): serialized StudentItem model
+        submission_uuid (str): The submission uuid for we want information for
+            regarding self assessment.
 
     Returns:
         A tuple `(submission, assessment)` where:
@@ -116,15 +117,13 @@ def get_submission_and_assessment(student_item_dict):
     """
     # Look up the most recent submission from the student item
     try:
-        submissions = get_submissions(student_item_dict, limit=1)
-        if not submissions:
+        submission = get_submission(submission_uuid)
+        if not submission:
             return (None, None)
     except SubmissionNotFoundError:
         return (None, None)
-    except SubmissionRequestError as ex:
+    except SubmissionRequestError:
         raise SelfAssessmentRequestError(_('Could not retrieve submission'))
-
-    submission_uuid = submissions[0]['uuid']
 
     # Retrieve assessments for the submission
     # We weakly enforce that number of self-assessments per submission is <= 1,
@@ -139,9 +138,9 @@ def get_submission_and_assessment(student_item_dict):
         # TODO -- remove once Dave's changes land
         assessment_dict = full_assessment_dict(assessments[0])
         assessment_dict['submission_uuid'] = submission_uuid
-        return (submissions[0], assessment_dict)
+        return submission, assessment_dict
     else:
-        return (submissions[0], None)
+        return submission, None
 
 
 def is_complete(submission_uuid):

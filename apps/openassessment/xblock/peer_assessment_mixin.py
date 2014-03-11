@@ -101,19 +101,19 @@ class PeerAssessmentMixin(object):
         more information on rendering XBlock sections.
 
         """
+        student_item = None
+        workflow = self.get_workflow_info()
+        problem_open, date = self.is_open(step="peer")
         context_dict = {
             "rubric_criteria": self.rubric_criteria,
             "estimated_time": "20 minutes"  # TODO: Need to configure this.
         }
-        path = 'openassessmentblock/peer/oa_peer_waiting.html'
 
         assessment = self.get_assessment_module('peer-assessment')
         if assessment:
 
             context_dict["must_grade"] = assessment["must_grade"]
-
             student_item = self.get_student_item_dict()
-            student_submission = self.get_user_submission(student_item)
 
             finished, count = peer_api.has_finished_required_evaluating(
                 student_item,
@@ -121,22 +121,26 @@ class PeerAssessmentMixin(object):
             )
             context_dict["graded"] = count
             context_dict["review_num"] = count + 1
-            if finished:
-                path = "openassessmentblock/peer/oa_peer_complete.html"
-            elif student_submission:
-                peer_sub = self.get_peer_submission(student_item, assessment)
-                if peer_sub:
-                    path = 'openassessmentblock/peer/oa_peer_assessment.html'
-                    context_dict["peer_submission"] = peer_sub
 
             if assessment["must_grade"] - count == 1:
-                context_dict["submit_button_text"] = "Submit your assessment & move onto next step."
+                context_dict["submit_button_text"] = (
+                    "Submit your assessment & move onto next step."
+                )
             else:
-                context_dict["submit_button_text"] = "Submit your assessment & move to response #{}".format(count + 2)
+                context_dict["submit_button_text"] = (
+                    "Submit your assessment & move to response #{}"
+                ).format(count + 2)
+        path = 'openassessmentblock/peer/oa_peer_waiting.html'
 
-            problem_open, date = self.is_open(step="peer")
-            if not problem_open and date == "due" and not finished:
-                path = 'openassessmentblock/peer/oa_peer_closed.html'
+        if date == "due" and not problem_open:
+            path = 'openassessmentblock/peer/oa_peer_closed.html'
+        elif workflow and workflow["status"] == "peer" and student_item:
+            peer_sub = self.get_peer_submission(student_item, assessment)
+            if peer_sub:
+                path = 'openassessmentblock/peer/oa_peer_assessment.html'
+                context_dict["peer_submission"] = peer_sub
+        elif workflow and workflow["status"] == "done":
+            path = "openassessmentblock/peer/oa_peer_complete.html"
 
         return self.render_assessment(path, context_dict)
 

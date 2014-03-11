@@ -53,13 +53,15 @@ class TestSelfApi(TestCase):
 
     def test_create_assessment(self):
         # Initially, there should be no submission or self assessment
-        self.assertEqual(get_submission_and_assessment(self.STUDENT_ITEM), (None, None))
+        self.assertEqual(get_submission_and_assessment("5"), (None, None))
 
         # Create a submission to self-assess
         submission = create_submission(self.STUDENT_ITEM, "Test answer")
 
         # Now there should be a submission, but no self-assessment
-        received_submission, assessment = get_submission_and_assessment(self.STUDENT_ITEM)
+        received_submission, assessment = get_submission_and_assessment(
+            submission["uuid"]
+        )
         self.assertItemsEqual(received_submission, submission)
         self.assertIs(assessment, None)
         self.assertFalse(is_complete(submission['uuid']))
@@ -75,7 +77,9 @@ class TestSelfApi(TestCase):
         self.assertTrue(is_complete(submission['uuid']))
 
         # Retrieve the self-assessment
-        received_submission, retrieved = get_submission_and_assessment(self.STUDENT_ITEM)
+        received_submission, retrieved = get_submission_and_assessment(
+            submission["uuid"]
+        )
         self.assertItemsEqual(received_submission, submission)
 
         # Check that the assessment we created matches the assessment we retrieved
@@ -171,7 +175,7 @@ class TestSelfApi(TestCase):
         )
 
         # Retrieve the self-assessment
-        _, retrieved = get_submission_and_assessment(self.STUDENT_ITEM)
+        _, retrieved = get_submission_and_assessment(submission["uuid"])
 
         # Expect that both the created and retrieved assessments have the same
         # timestamp, and it's >= our recorded time.
@@ -196,7 +200,7 @@ class TestSelfApi(TestCase):
             )
 
         # Expect that we still have the original assessment
-        _, retrieved = get_submission_and_assessment(self.STUDENT_ITEM)
+        _, retrieved = get_submission_and_assessment(submission["uuid"])
         self.assertItemsEqual(assessment, retrieved)
 
     def test_is_complete_no_submission(self):
