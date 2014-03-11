@@ -1,6 +1,6 @@
 from xblock.core import XBlock
 from openassessment.assessment.peer_api import get_assessments
-
+from openassessment.assessment import peer_api
 
 class GradeMixin(object):
     """Grade Mixin introduces all handlers for displaying grades
@@ -21,14 +21,31 @@ class GradeMixin(object):
         context = {}
         if status == "done":
             path = 'openassessmentblock/grade/oa_grade_complete.html'
-            context = {
-                "score": workflow["score"],
-                "assessments": [
-                    assessment
-                    for assessment in get_assessments(self.submission_uuid)
-                ],
-            }
-        elif status == "waiting":
+            assessment_ui_model = self.get_assessment_module('peer-assessment')
+            student_submission = self.get_user_submission(
+                workflow["submission_uuid"]
+            )
+            student_score = workflow["score"]
+            assessments = peer_api.get_assessments(student_submission["uuid"])
+            peer_assessments = []
+            self_assessment = None
+            for assessment in assessments:
+                if assessment["score_type"] == "PE":
+                    peer_assessments.append(assessment)
+                else:
+                    self_assessment = assessment
+            median_scores = peer_api.get_assessment_median_scores(
+                student_submission["uuid"],
+                assessment_ui_model["must_be_graded_by"]
+            )
+            context["student_submission"] = student_submission
+            context["peer_assessments"] = peer_assessments
+            context["self_assessment"] = self_assessment
+            context["rubric_criteria"] = self.rubric_criteria
+            context["score"] = student_score
+            for criterion in context["rubric_criteria"]:
+                criterion["median_score"] = median_scores[criterion["name"]]
+        elif workflow.get('status') == "waiting":
             path = 'openassessmentblock/grade/oa_grade_waiting.html'
         elif not status:
             path = 'openassessmentblock/grade/oa_grade_not_started.html'

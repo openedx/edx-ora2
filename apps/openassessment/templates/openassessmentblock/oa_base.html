@@ -1,15 +1,3 @@
-<!-- TEMPLATE: status messages -->
-
-
-<!-- NOTES:
-
- * class of message--warning is added message is a warning/notification to user
- * class of message--confirmation is added message is a confirmation to user
- * class of has--actions is added when a message has actions associated with it for user to interact with
-
- -->
-
-
 <div class="wrapper wrapper--xblock wrapper--openassessment theme--basic">
     <div class="openassessment" id="openassessment">
         <div class="wrapper--grid">
@@ -27,7 +15,6 @@
                 </span>
             </h1>
 
-            <!--?: may have trouble with aync -->
             <nav class="nav--contents">
                 <h2 class="title">Skip to a specific step:</h2>
 
@@ -43,10 +30,6 @@
                 </ol>
             </nav>
 
-            <!-- STATUS: system messages -->
-            <!-- SEE t-messages.html for all cases -->
-
-            <!-- question -->
             <div class="wrapper--openassessment__prompt">
                 <article class="openassessment__prompt ui-toggle-visibility">
 
@@ -58,14 +41,10 @@
                 </article>
             </div>
 
-            <!-- steps -->
             <ol class="openassessment__steps" id="openassessment__steps">
-
-                <!-- STEP: response -->
                 {% for assessment in rubric_assessments %}
                     <li id="{{ assessment.class_id }}">{{ assessment.title }}</li>
                 {% endfor %}
-
             </ol>
         </div>
     </div>

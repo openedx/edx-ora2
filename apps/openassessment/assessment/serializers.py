@@ -151,7 +151,7 @@ def get_assessment_review(submission):
             rendering the complete peer grading workflow.
 
     Examples:
-        >>> get_assessment_review(submission)
+        >>> get_assessment_review(submission, score_type)
         [{
             'submission': 1,
             'rubric': {

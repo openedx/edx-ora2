@@ -1,9 +1,13 @@
-<!-- CASE: is in-progress and incomplete (peer responses to assess) -->
-<div id="openassessment__grade" class="openassessment__grade is--incomplete awaiting--peer-responses">
-    <h2 class="openassessment__grade__title">Your Grade:</h2>
-
-    <div class="openassessment__grade__content">
-        <span class="grade__value">Not Completed</span>
-        <p>You have not completed the {% for step in incomplete_steps %}<span class="step">{{ step }} step </span> {% if not forloop.last %} and {% endif %}{% endfor %} of this problem.</p>
-    </div>
-</div>
+<li id="openassessment__grade" class="openassessment__steps__step step--grade is--incomplete">
+    <header class="step__header ui-toggle-visibility__control">
+        <h2 class="step__title">
+            <span class="wrapper--copy">
+                <span class="step__label">Your Grade: </span>
+                <span class="grade__value">
+                    <span class="grade__value__title">Not Completed</span>
+                        <p class="grade__value__description">You have not completed the {% for step in incomplete_steps %}<span class="step">{{ step }} step </span> {% if not forloop.last %} and {% endif %}{% endfor %} of this problem.</p>
+                </span>
+            </span>
+        </h2>
+    </header>
+</li>
