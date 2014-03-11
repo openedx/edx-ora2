@@ -207,11 +207,6 @@ class OpenAssessmentBlock(
         help="The requested set of assessments and the order in which to apply them."
     )
 
-    course_id = String(
-        default=u"TestCourse",
-        scope=Scope.content,
-        help="The course_id associated with this prompt (until we can get it from runtime).",
-    )
     submission_uuid = String(
         default=None,
         scope=Scope.user_state,
@@ -257,7 +252,10 @@ class OpenAssessmentBlock(
         student_item_dict = dict(
             student_id=student_id,
             item_id=item_id,
-            course_id=self.course_id,
+
+            # Runtimes are not required to provide a course_id, so we provide a default value.
+            course_id=getattr(self.runtime, 'course_id', 'not supported'),
+
             item_type='openassessment'      # XXX: Is this the tag we want? Why?
         )
         return student_item_dict
