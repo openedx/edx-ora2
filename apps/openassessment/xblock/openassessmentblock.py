@@ -71,7 +71,7 @@ DEFAULT_RUBRIC_CRITERIA = [
     {
         'name': "Content",
         'prompt': "Assess the content of the submission",
-        'order_num': 0,
+        'order_num': 1,
         'options': [
             {
                 'order_num': 0, 'points': 0, 'name': 'Poor',
@@ -80,18 +80,18 @@ DEFAULT_RUBRIC_CRITERIA = [
                 facets of the topic."""
             },
             {
-                'order_num': 0, 'points': 1, 'name': 'Fair',
+                'order_num': 1, 'points': 1, 'name': 'Fair',
                 'explanation': """Includes little information and few or no details.
                 Explores only one or two facets of the topic."""
             },
             {
-                'order_num': 0, 'points': 3, 'name': 'Good',
+                'order_num': 2, 'points': 3, 'name': 'Good',
                 'explanation': """Includes sufficient information and supporting
                 details. (Details may not be fully developed; ideas may be
                 listed.)  Explores some facets of the topic."""
             },
             {
-                'order_num': 0, 'points': 3, 'name': 'Excellent',
+                'order_num': 3, 'points': 3, 'name': 'Excellent',
                 'explanation': """Includes in-depth information and exceptional
                 supporting details that are fully developed.  Explores all
                 facets of the topic."""
@@ -467,3 +467,10 @@ class OpenAssessmentBlock(
             }
         }
         return workflow_api.update_from_assessments(submission_uuid, requirements)
+
+    def get_assessment_module(self, mixin_name):
+        """Get a configured assessment module by name.
+        """
+        for assessment in self.rubric_assessments:
+            if assessment["name"] == mixin_name:
+                return assessment

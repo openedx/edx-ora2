@@ -8,6 +8,7 @@ django==1.4.8
 django-extensions==1.2.5
 django-model-utils==1.4.0
 djangorestframework==2.3.5
+loremipsum==1.0.2
 Mako==0.9.1
 python-dateutil==2.1
 pytz==2012h
