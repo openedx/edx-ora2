@@ -4,6 +4,6 @@
 
     <div class="openassessment__grade__content">
         <span class="grade__value">Not Completed</span>
-        <p>You have not completed the <span class="step">Peer Assessment</span> and <span class="step">Self Assessment</span> steps of this problem.</p>
+        <p>You have not completed the {% for step in incomplete_steps %}<span class="step">{{ step }} step </span> {% if not forloop.last %} and {% endif %}{% endfor %} of this problem.</p>
     </div>
 </div>
