@@ -56,13 +56,17 @@ class CreateScenarioTest(TestCase):
             has_self_assessment=True
         )
 
-        # Retrieve the self assessment
-        submission, assessment = self_api.get_submission_and_assessment({
+        # Retrieve the submission
+        submissions = sub_api.get_submissions({
             'student_id': 'test_user',
             'course_id': 'test_course',
             'item_id': 'test_problem',
             'item_type': 'openassessment',
-        })
+        }, limit=1)
+        self.assertEqual(len(submissions), 1)
+
+        # Retrieve the self assessment
+        submission, assessment = self_api.get_submission_and_assessment(submissions[0]['uuid'])
 
         # Verify that the assessment exists and has content
         self.assertIsNot(submission, None)
