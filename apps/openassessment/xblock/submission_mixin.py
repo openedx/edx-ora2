@@ -1,3 +1,4 @@
+import copy
 import logging
 from xblock.core import XBlock
 from django.utils.translation import ugettext as _
@@ -200,7 +201,7 @@ class SubmissionMixin(object):
             )
             context["student_submission"] = student_submission
             context["peer_assessments"] = assessments
-            context["rubric_criteria"] = self.rubric_criteria
+            context["rubric_criteria"] = copy.deepcopy(self.rubric_criteria)
             context["student_score"] = student_score
             for criterion in context["rubric_criteria"]:
                 criterion["median_score"] = median_scores[criterion["name"]]
