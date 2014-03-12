@@ -294,7 +294,7 @@
         }
 
         // STATE: hover
-        &:hover {
+        &:hover, &:focus {
           opacity: 1.0;
         }
       }
@@ -313,6 +313,15 @@
     &.is--incomplete {
 
     }
+
+    // STATE: step is unavailable
+    &.is--unavailable {
+
+      .step__header:hover, .step__header:focus {
+        opacity: 0.4;
+      }
+    }
+
 
     // STATE: step is complete/submitted/graded
     &.is--complete, &.is--submitted, &.is--graded {
