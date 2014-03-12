@@ -7,8 +7,8 @@
             <span class="step__counter"></span>
             <span class="wrapper--copy">
                 <span class="step__label">Your Response</span>
-                {% if formatted_due_datetime %}
-                <span class="step__deadline">due <span class="date">{{ formatted_due_datetime }}</span></span>
+                {% if submission_due %}
+                <span class="step__deadline">due <span class="date">{{ submission_due }}</span></span>
                 {% endif %}
             </span>
         </h2>
