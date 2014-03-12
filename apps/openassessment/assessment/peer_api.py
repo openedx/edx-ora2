@@ -16,7 +16,6 @@ from pytz import UTC
 from openassessment.assessment.models import Assessment, InvalidOptionSelection, PeerWorkflow, PeerWorkflowItem
 from openassessment.assessment.serializers import (
     AssessmentSerializer, rubric_from_dict, get_assessment_review)
-from submissions.api import get_submission_and_student
 from submissions.models import Submission, StudentItem
 from submissions.serializers import SubmissionSerializer, StudentItemSerializer
 
@@ -118,7 +117,6 @@ def create_assessment(
             is required to create an assessment on a submission.
         assessment_dict (dict): All related information for the assessment. An
             assessment contains points_earned, points_possible, and feedback.
-        rubric_dict (dict): A serialized Rubric model.
 
     Kwargs:
         scored_at (datetime): Optional argument to override the time in which
@@ -482,30 +480,6 @@ def create_peer_workflow(submission_uuid):
         )
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
-
-
-def create_peer_workflow_item(scorer_id, submission_uuid):
-    """
-    Begin peer-assessing a particular submission.
-    Note that this does NOT pick the submission from the prioritized list of available submissions.
-    Mainly useful for testing.
-
-    Args:
-        scorer_id (str): The ID of the scoring student.
-        submission_uuid (str): The unique identifier of the submission being scored
-
-    Returns:
-        None
-
-    Raises:
-        PeerAssessmentWorkflowError: Could not find the workflow for the student.
-        PeerAssessmentInternalError: Could not create the peer workflow item.
-    """
-    submission = get_submission_and_student(submission_uuid)
-    student_item_dict = copy.copy(submission['student_item'])
-    student_item_dict['student_id'] = scorer_id
-    workflow = _get_latest_workflow(student_item_dict)
-    _create_peer_workflow_item(workflow, submission_uuid)
 
 
 def _get_latest_workflow(student_item_dict):
