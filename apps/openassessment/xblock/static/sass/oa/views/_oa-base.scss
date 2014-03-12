@@ -124,6 +124,7 @@
     // step status
     .step__status {
 
+
       .step__status__value {
         display: block;
         border-radius: ($baseline-v/5);
@@ -134,16 +135,27 @@
         @include media($bp-m) {
           margin-top: ($baseline-v/2);
         }
-      }
 
-      .ico, .copy {
-        display: inline-block;
-        vertical-align: bottom;
+        @include media($bp-ds) {
+          display: inline-block;
+          vertical-align: bottom;
+        }
+
+        @include media($bp-dm) {
+          display: inline-block;
+          vertical-align: bottom;
+        }
+
+        @include media($bp-dl) {
+          display: inline-block;
+          vertical-align: bottom;
+        }
       }
 
       .ico {
         @extend %t-icon-m;
-        display: none; // hiding by default
+        display: inline-block;
+        vertical-align: bottom;
         margin-left: ($baseline-v/4);
       }
 
@@ -605,11 +617,17 @@
       padding: ($baseline-v/2) ($baseline-h/2);
       background: transparent;
 
+      .action--save, .tip {
+        display: block;
+        width: 100%;
+      }
+
       .action--save {
         @extend %btn--secondary;
         @extend %action-4;
         display: block;
         text-align: center;
+        margin-bottom: ($baseline-v/2);
 
         @include media($bp-ds) {
           display: inline-block;
