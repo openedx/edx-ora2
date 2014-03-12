@@ -403,15 +403,28 @@
       }
     }
 
-    // STATE: step is saved
-    &.is--saved {
+    // STATE: has error
+    &.has--error {
+
+      .step__counter:before {
+        border-color: rgba($color-error, 0.5);
+        color: $color-error;
+      }
 
       .step__status__value {
-        background: $color-primary;
+        background: $color-error;
 
         .copy {
           color: $white-t;
         }
+      }
+
+      .step__label {
+        color: $color-error;
+      }
+
+      .message {
+
       }
     }
   }
