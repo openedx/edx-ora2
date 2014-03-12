@@ -208,7 +208,7 @@ OpenAssessment.BaseUI.prototype = {
     **/
     peerAssess: function() {
         // Retrieve assessment info from the DOM
-        var submissionId = $("span#peer_submission_uuid", this.element)[0].innerText;
+        var submissionId = $("span#peer_submission_uuid", this.element)[0].innerHTML.trim();
         var optionsSelected = {};
         $("#peer-assessment--001__assessment input[type=radio]:checked", this.element).each(
             function(index, sel) {
@@ -238,7 +238,7 @@ OpenAssessment.BaseUI.prototype = {
     **/
     selfAssess: function() {
         // Retrieve self-assessment info from the DOM
-        var submissionId = $("span#self_submission_uuid", this.element)[0].innerText;
+        var submissionId = $("span#self_submission_uuid", this.element)[0].innerHTML.trim();
         var optionsSelected = {};
         $("#self-assessment--001__assessment input[type=radio]:checked", this.element).each(
             function(index, sel) {
