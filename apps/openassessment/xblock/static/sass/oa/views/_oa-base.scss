@@ -245,26 +245,29 @@
         .message {
           display: block;
           margin-bottom: ($baseline-v/2);
-          text-align: left;
 
           @include media($bp-ds) {
             @include span-columns(3 of 6);
             margin-bottom: 0;
+            text-align: left;
           }
 
           @include media($bp-dm) {
             @include span-columns(6 of 12);
             margin-bottom: 0;
+            text-align: left;
           }
 
           @include media($bp-dl) {
             @include span-columns(6 of 12);
             margin-bottom: 0;
+            text-align: left;
           }
 
           @include media($bp-dx) {
             @include span-columns(6 of 12);
             margin-bottom: 0;
+            text-align: left;
           }
         }
 
