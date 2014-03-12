@@ -54,7 +54,7 @@ class StudioMixin(object):
         """
         if 'xml' in data:
             try:
-                update_from_xml_str(self, data['xml'], validator=validator(self.start, self.due))
+                update_from_xml_str(self, data['xml'], validator=validator(self))
 
             except ValidationError as ex:
                 return {'success': False, 'msg': _('Validation error: {error}').format(error=ex.message)}

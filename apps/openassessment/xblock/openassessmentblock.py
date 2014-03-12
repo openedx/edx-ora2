@@ -346,7 +346,7 @@ class OpenAssessmentBlock(
             block.runtime.add_node_as_child(block, child, id_generator)
         block = runtime.construct_xblock_from_class(cls, keys)
 
-        return update_from_xml(block, node, validator=validator(block.start, block.due))
+        return update_from_xml(block, node, validator=validator(block, strict_post_release=False))
 
     def render_assessment(self, path, context_dict=None):
         """Render an Assessment Module's HTML
@@ -460,6 +460,25 @@ class OpenAssessmentBlock(
             return False, "due"
         else:
             return True, None
+
+    def is_released(self, step=None):
+        """
+        Check if a question has been released.
+
+        Kwargs:
+            step (str): The step in the workflow to check.
+                None: check whether the problem as a whole is open.
+                "submission": check whether the submission section is open.
+                "peer-assessment": check whether the peer-assessment section is open.
+                "self-assessment": check whether the self-assessment section is open.
+
+        Returns:
+            bool
+        """
+        # By default, assume that we're published, in case the runtime doesn't support publish date.
+        is_published = getattr(self, 'published_date', True) is not None
+        is_open, reason = self.is_open(step=step)
+        return is_published and (is_open or reason == 'due')
 
     def update_workflow_status(self, submission_uuid):
         assessment_ui_model = self.get_assessment_module('peer-assessment')
