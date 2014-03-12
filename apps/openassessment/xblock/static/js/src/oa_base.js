@@ -151,6 +151,17 @@ OpenAssessment.BaseUI.prototype = {
             function(html) {
                 $('#openassessment__self-assessment', ui.element).replaceWith(html);
 
+                // Install a change handler for rubric options to enable/disable the submit button
+                $("#self-assessment--001__assessment", ui.element).change(
+                    function() {
+                        var numChecked = $('input[type=radio]:checked', this).length;
+                        var numAvailable = $('.field--radio.assessment__rubric__question', this).length;
+                        $("#self-assessment--001__assessment__submit", ui.element).toggleClass(
+                            'is--disabled', numChecked != numAvailable
+                        );
+                    }
+                );
+
                 // Install a click handler for the submit button
                 $('#self-assessment--001__assessment__submit', ui.element).click(
                     function(eventObject) {
