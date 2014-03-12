@@ -234,6 +234,34 @@
       }
     }
 
+    // STATE: step is loading
+    &.is--loading {
+      opacity: 0.3;
+
+      .step__header {
+
+        @include media($bp-ds) {
+          border-bottom: none;
+          padding-bottom: 0;
+        }
+
+        @include media($bp-dm) {
+         border-bottom: none;
+         padding-bottom: 0;
+        }
+
+        @include media($bp-dl) {
+          border-bottom: none;
+          padding-bottom: 0;
+        }
+
+        @include media($bp-dx) {
+          border-bottom: none;
+          padding-bottom: 0;
+        }
+      }
+    }
+
     // STATE: step is collapsed (not focused on)
     &.is--collapsed {
 
@@ -278,14 +306,6 @@
       // step counter
       .step__counter:before {
         border: 1px solid rgba($heading-color, 0.5);
-      }
-    }
-
-    // STATE: step is expanded (focused)
-    &.is--expanded {
-
-      .step__status__value {
-        background: $color-focused;
       }
     }
 

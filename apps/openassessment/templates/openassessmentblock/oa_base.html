@@ -43,7 +43,26 @@
 
             <ol class="openassessment__steps" id="openassessment__steps">
                 {% for assessment in rubric_assessments %}
-                    <li id="{{ assessment.class_id }}">{{ assessment.title }}</li>
+                    <li id="{{ assessment.class_id }}" class="openassessment__steps__step is--loading">
+                        <header class="step__header">
+                            <h2 class="step__title">
+                                <span class="step__counter"></span>
+                                <span class="wrapper--copy">
+                                    <span class="step__label">{{ assessment.title }}</span>
+                                </span>
+                            </h2>
+
+
+                            <span class="step__status">
+                                <span class="step__status__label">This step's status:</span>
+                                    <span class="step__status__value">
+                                        <i class="ico icon-cog icon-spin"></i>
+                                        <span class="copy">Loading</span>
+                                    </span>
+                                </span>
+                            </span>
+                        </header>
+                    </li>
                 {% endfor %}
             </ol>
         </div>
