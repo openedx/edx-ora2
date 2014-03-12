@@ -22,16 +22,12 @@ class SelfAssessmentMixin(object):
 
     @XBlock.handler
     def render_self_assessment(self, data, suffix=''):
-    # Retrieve the self-assessment, if there is one
-
-        workflow = self.get_workflow_info()
-        if workflow:
-            return self._determine_assessment_state(workflow)
-
-        return self.render_assessment('openassessmentblock/self/oa_self_closed.html')
-
-    def _determine_assessment_state(self, workflow):
         context = {}
+        path = 'openassessmentblock/self/oa_self_unavailable.html'
+        problem_open, date = self.is_open(step="self")
+        workflow = self.get_workflow_info()
+        if not workflow:
+            return self.render_assessment(path, context)
         try:
             submission, assessment = self_api.get_submission_and_assessment(
                 workflow["submission_uuid"]
@@ -49,10 +45,11 @@ class SelfAssessmentMixin(object):
                 "estimated_time": "20 minutes",  # TODO: Need to configure this.
                 "self_submission": submission,
             }
-        elif assessment:
+        elif assessment is not None:
             path = 'openassessmentblock/self/oa_self_complete.html'
-        else:
+        elif date == "due" and not problem_open:
             path = 'openassessmentblock/self/oa_self_closed.html'
+
         return self.render_assessment(path, context)
 
     @XBlock.json_handler

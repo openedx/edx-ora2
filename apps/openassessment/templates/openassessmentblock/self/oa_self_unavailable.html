@@ -1,15 +1,15 @@
 {%  extends "openassessmentblock/self/oa_self_assessment.html" %}
 
 {% block list_item %}
-<li id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment ui-toggle-visibility is--collapsed is--complete">
+<li id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment ui-toggle-visibility is--collapsed is--unavailable">
 {% endblock %}
 
 {% block title %}
 <span class="step__status">
   <span class="step__status__label">This step's status:</span>
   <span class="step__status__value">
-    <i class="ico icon-ok"></i>
-    <span class="copy">Complete</span>
+    <i class="ico icon-warning-sign"></i>
+    <span class="copy">Unavailable</span>
   </span>
 </span>
 {% endblock %}

@@ -108,7 +108,7 @@ class PeerAssessmentMixin(object):
             "rubric_criteria": self.rubric_criteria,
             "estimated_time": "20 minutes"  # TODO: Need to configure this.
         }
-
+        finished = False
         assessment = self.get_assessment_module('peer-assessment')
         if assessment:
 
@@ -130,7 +130,7 @@ class PeerAssessmentMixin(object):
                 context_dict["submit_button_text"] = (
                     "Submit your assessment & move to response #{}"
                 ).format(count + 2)
-        path = 'openassessmentblock/peer/oa_peer_waiting.html'
+        path = 'openassessmentblock/peer/oa_peer_unavailable.html'
 
         if date == "due" and not problem_open:
             path = 'openassessmentblock/peer/oa_peer_closed.html'
@@ -141,6 +141,8 @@ class PeerAssessmentMixin(object):
                 context_dict["peer_submission"] = peer_sub
         elif workflow and workflow["status"] == "done":
             path = "openassessmentblock/peer/oa_peer_complete.html"
+        elif workflow and finished:
+            path = 'openassessmentblock/peer/oa_peer_waiting.html'
 
         return self.render_assessment(path, context_dict)
 
