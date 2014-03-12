@@ -211,6 +211,40 @@ def create_assessment(
         raise PeerAssessmentInternalError(error_message)
 
 
+def get_rubric_max_scores(submission_uuid):
+    """Gets the maximum possible value for each criterion option
+
+    Iterates over the rubric used to grade the given submission, and creates a
+    dictionary of maximum possible values.
+
+    Args:
+        submission_uuid: The submission to get the associated rubric max scores.
+    Returns:
+        A dictionary of max scores for this rubric's criteria options. Returns
+            None if no assessments are found for this submission.
+    Raises:
+        PeerAssessmentInternalError: Raised when there is an error retrieving
+            the submission, or its associated rubric.
+    """
+    try:
+        submission = Submission.objects.get(uuid=submission_uuid)
+        assessments = Assessment.objects.filter(submission=submission).order_by( "-scored_at", "-id")
+        if assessments:
+            return {
+                criterion.name: criterion.points_possible
+                for criterion in assessments[0].rubric.criteria.all()
+            }
+    except Submission.DoesNotExist:
+        return None
+    except DatabaseError:
+        error_message = _(
+            u"Error getting rubric options max scores for submission uuid "
+            u"[{}]".format(submission_uuid)
+        )
+        logger.exception(error_message)
+        raise PeerAssessmentInternalError(error_message)
+
+
 def get_assessment_median_scores(submission_id, must_be_graded_by):
     """Get the median score for each rubric criterion
 
