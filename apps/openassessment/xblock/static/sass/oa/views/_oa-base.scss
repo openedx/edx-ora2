@@ -210,6 +210,10 @@
 
     // step actions
     .step__actions {
+      @include transition(background-color $tmg-f1 ease-in-out 0s);
+      border-radius: ($baseline-v/5);
+      padding: ($baseline-v/2) ($baseline-h/2);
+      background: transparent;
       text-align: center;
 
       @include media($bp-ds) {
@@ -231,6 +235,58 @@
       .action--submit {
         @extend %btn--primary;
         @extend %action-4;
+      }
+
+      // STATE: has error
+      &.has--error {
+        @include row();
+        background: tint($color-error, 90%);
+
+        .message {
+          display: block;
+          margin-bottom: ($baseline-v/2);
+          text-align: left;
+
+          @include media($bp-ds) {
+            @include span-columns(3 of 6);
+            margin-bottom: 0;
+          }
+
+          @include media($bp-dm) {
+            @include span-columns(6 of 12);
+            margin-bottom: 0;
+          }
+
+          @include media($bp-dl) {
+            @include span-columns(6 of 12);
+            margin-bottom: 0;
+          }
+
+          @include media($bp-dx) {
+            @include span-columns(6 of 12);
+            margin-bottom: 0;
+          }
+        }
+
+        .list--actions {
+          display: block;
+
+          @include media($bp-ds) {
+            @include span-columns(3 of 6);
+          }
+
+          @include media($bp-dm) {
+            @include span-columns(6 of 12);
+          }
+
+          @include media($bp-dl) {
+            @include span-columns(6 of 12);
+          }
+
+          @include media($bp-dx) {
+            @include span-columns(6 of 12);
+          }
+        }
       }
     }
 
@@ -363,10 +419,25 @@
   // --------------------
   .message {
 
+    .message__title {
+      @extend %hd-6;
+    }
 
-    // CASE: has actions
-    &.has-actions {
+    .message__content {
+      @extend %copy-4;
+    }
+  }
 
+  // TYPE: error
+  .message--error {
+
+
+    .message__title {
+      color: $color-error;
+    }
+
+    .message__content {
+      color: tint($color-error, 33%);
     }
   }
 

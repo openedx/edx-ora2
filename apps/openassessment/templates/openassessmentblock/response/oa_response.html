@@ -51,7 +51,14 @@
                 </form>
             </div>
 
-            <div class="step__actions">
+            <div class="step__actions has--error">
+                <div class="message message--error message--error-server">
+                    <h3 class="message__title">We could not submit your response</h3>
+                    <div class="message__content">
+                        <p>There was a problem communicating with the server. Please try again.</p>
+                    </div>
+                </div>
+
                 <ul class="list list--actions">
                     <li class="list--actions__item">
                         <a aria-role="button" href="#" id="step--response__submit" class="action action--submit step--response__submit is--disabled">
