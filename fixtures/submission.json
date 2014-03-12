@@ -1,0 +1,211 @@
+[
+    {
+        "pk": 1,
+        "model": "submissions.studentitem",
+        "fields": {
+            "course_id": "TestCourse",
+            "student_id": "2",
+            "item_id": "i4x://edx/101/openassessment/bc11258e5c0a4b54a72e8fe62448bc79",
+            "item_type": "openassessment"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "submissions.studentitem",
+        "fields": {
+            "course_id": "TestCourse",
+            "student_id": "2",
+            "item_id": "i4x://edx/101/openassessment/043040c0511549539c604878f51422e1",
+            "item_type": "openassessment"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "submissions.studentitem",
+        "fields": {
+            "course_id": "TestCourse",
+            "student_id": "3",
+            "item_id": "i4x://edx/101/openassessment/bc11258e5c0a4b54a72e8fe62448bc79",
+            "item_type": "openassessment"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "submissions.studentitem",
+        "fields": {
+            "course_id": "TestCourse",
+            "student_id": "3",
+            "item_id": "i4x://edx/101/openassessment/b34af6dbbfa34ad88afe2df3bfc0c6e3",
+            "item_type": "openassessment"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "submissions.studentitem",
+        "fields": {
+            "course_id": "TestCourse",
+            "student_id": "2",
+            "item_id": "i4x://edx/101/openassessment/b34af6dbbfa34ad88afe2df3bfc0c6e3",
+            "item_type": "openassessment"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "submissions.studentitem",
+        "fields": {
+            "course_id": "TestCourse",
+            "student_id": "2",
+            "item_id": "i4x://edx/101/openassessment/3557aa209bf04920947d77547aa428f1",
+            "item_type": "openassessment"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "submissions.studentitem",
+        "fields": {
+            "course_id": "TestCourse",
+            "student_id": "3",
+            "item_id": "i4x://edx/101/openassessment/3557aa209bf04920947d77547aa428f1",
+            "item_type": "openassessment"
+        }
+    },
+    {
+        "pk": 8,
+        "model": "submissions.studentitem",
+        "fields": {
+            "course_id": "TestCourse",
+            "student_id": "2",
+            "item_id": "i4x://edx/101/openassessment/0b205c211e6e4606b0df248ee03df558",
+            "item_type": "openassessment"
+        }
+    },
+    {
+        "pk": 9,
+        "model": "submissions.studentitem",
+        "fields": {
+            "course_id": "TestCourse",
+            "student_id": "3",
+            "item_id": "i4x://edx/101/openassessment/0b205c211e6e4606b0df248ee03df558",
+            "item_type": "openassessment"
+        }
+    },
+    {
+        "pk": 9,
+        "model": "submissions.submission",
+        "fields": {
+            "submitted_at": "2014-03-12T11:37:56Z",
+            "created_at": "2014-03-12T11:37:56Z",
+            "student_item": 9,
+            "answer": "Test submission",
+            "attempt_number": 1,
+            "uuid": "c18b952c-a9da-11e3-9ccf-080027880ca6"
+        }
+    },
+    {
+        "pk": 8,
+        "model": "submissions.submission",
+        "fields": {
+            "submitted_at": "2014-03-12T11:37:51Z",
+            "created_at": "2014-03-12T11:37:51Z",
+            "student_item": 8,
+            "answer": "Test submission",
+            "attempt_number": 1,
+            "uuid": "beb581f0-a9da-11e3-9b83-080027880ca6"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "submissions.submission",
+        "fields": {
+            "submitted_at": "2014-03-12T11:37:20Z",
+            "created_at": "2014-03-12T11:37:20Z",
+            "student_item": 7,
+            "answer": "Test submission",
+            "attempt_number": 1,
+            "uuid": "ac0539f6-a9da-11e3-af02-080027880ca6"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "submissions.submission",
+        "fields": {
+            "submitted_at": "2014-03-12T11:36:51Z",
+            "created_at": "2014-03-12T11:36:51Z",
+            "student_item": 6,
+            "answer": "Test submission",
+            "attempt_number": 1,
+            "uuid": "9af86840-a9da-11e3-b156-080027880ca6"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "submissions.submission",
+        "fields": {
+            "submitted_at": "2014-03-12T11:36:10Z",
+            "created_at": "2014-03-12T11:36:10Z",
+            "student_item": 5,
+            "answer": "Test submission",
+            "attempt_number": 1,
+            "uuid": "822a5224-a9da-11e3-8f75-080027880ca6"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "submissions.submission",
+        "fields": {
+            "submitted_at": "2014-03-12T11:36:04Z",
+            "created_at": "2014-03-12T11:36:04Z",
+            "student_item": 4,
+            "answer": "Test submission",
+            "attempt_number": 1,
+            "uuid": "7e8ededc-a9da-11e3-89ce-080027880ca6"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "submissions.submission",
+        "fields": {
+            "submitted_at": "2014-03-12T11:35:22Z",
+            "created_at": "2014-03-12T11:35:22Z",
+            "student_item": 3,
+            "answer": "Test submission",
+            "attempt_number": 1,
+            "uuid": "65650b3e-a9da-11e3-8b23-080027880ca6"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "submissions.submission",
+        "fields": {
+            "submitted_at": "2014-03-12T11:35:03Z",
+            "created_at": "2014-03-12T11:35:03Z",
+            "student_item": 2,
+            "answer": "Test submission",
+            "attempt_number": 1,
+            "uuid": "5a14d39a-a9da-11e3-b964-080027880ca6"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "submissions.submission",
+        "fields": {
+            "submitted_at": "2014-03-12T11:34:55Z",
+            "created_at": "2014-03-12T11:34:55Z",
+            "student_item": 1,
+            "answer": "Test submision",
+            "attempt_number": 1,
+            "uuid": "55c6f020-a9da-11e3-976d-080027880ca6"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "submissions.score",
+        "fields": {
+            "created_at": "2014-03-12T11:38:27Z",
+            "points_possible": 8,
+            "points_earned": 8,
+            "student_item": 8,
+            "submission": 8
+        }
+    }
+]
