@@ -496,9 +496,9 @@
 
     // response form
     .response__submission {
-      margin-top: ($baseline-v*1.5);
+      margin-top: ($baseline-v*2.5);
       position: relative;
-      padding: ($baseline-v/2);
+      padding: ($baseline-v*1.5);
       background: $color-decorative-tertiary;
       border-radius: ($baseline-v/10);
     }
