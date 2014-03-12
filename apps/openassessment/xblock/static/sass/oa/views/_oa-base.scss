@@ -54,28 +54,7 @@
     .step__header {
       @extend %trans-opacity;
       @include row();
-      margin-bottom: $baseline-v;
       opacity: 1.0;
-
-      @include media($bp-ds) {
-        border-bottom: ($baseline-v/10) solid $color-focused;
-        padding-bottom: ($baseline-v/1.5);
-      }
-
-      @include media($bp-dm) {
-        border-bottom: ($baseline-v/10) solid $color-focused;
-        padding-bottom: ($baseline-v/1.5);
-      }
-
-      @include media($bp-dl) {
-        border-bottom: ($baseline-v/10) solid $color-focused;
-        padding-bottom: ($baseline-v/1.5);
-      }
-
-      @include media($bp-dx) {
-        border-bottom: ($baseline-v/10) solid $color-focused;
-        padding-bottom: ($baseline-v/1.5);
-      }
 
       .step__deadline {
         color: $color-focused;
@@ -146,13 +125,13 @@
     .step__status {
 
       .step__status__value {
+        display: block;
         border-radius: ($baseline-v/5);
         padding: ($baseline-v/4) ($baseline-h/4);
         background: $color-focused;
         color: $white-t;
 
         @include media($bp-m) {
-          display: block;
           margin-top: ($baseline-v/2);
         }
       }
@@ -212,11 +191,9 @@
     @extend %text-sr;
     }
 
-    // STATE: default/visible/expanded
-    .step__instruction, .step__content, .step__actions {
-      display: block;
-      visibility: visible;
-      opacity: 1.0;
+    // step content wrapper
+    .wrapper--step__content {
+      margin-top: $baseline-v;
     }
 
     // step instructions
@@ -254,6 +231,34 @@
       .action--submit {
         @extend %btn--primary;
         @extend %action-4;
+      }
+    }
+
+    // STATE: step is loading
+    &.is--loading {
+      opacity: 0.3;
+
+      .step__header {
+
+        @include media($bp-ds) {
+          border-bottom: none;
+          padding-bottom: 0;
+        }
+
+        @include media($bp-dm) {
+         border-bottom: none;
+         padding-bottom: 0;
+        }
+
+        @include media($bp-dl) {
+          border-bottom: none;
+          padding-bottom: 0;
+        }
+
+        @include media($bp-dx) {
+          border-bottom: none;
+          padding-bottom: 0;
+        }
       }
     }
 
@@ -301,21 +306,6 @@
       // step counter
       .step__counter:before {
         border: 1px solid rgba($heading-color, 0.5);
-      }
-
-      .step__instruction, .step__content, .step__actions {
-        @extend %trans-opacity;
-        display: none;
-        visibility: hidden;
-        opacity: 0.0;
-      }
-    }
-
-    // STATE: step is expanded (focused)
-    &.is--expanded {
-
-      .step__status__value {
-        background: $color-focused;
       }
     }
 
@@ -883,7 +873,6 @@
       @extend %hd-4;
       @extend %t-weight3;
       float: left;
-      color: $heading-secondary-color;
     }
 
     .question__score {
