@@ -496,16 +496,16 @@
 
     // response form
     .response__submission {
+      margin-top: ($baseline-v*1.5);
+      position: relative;
       padding: ($baseline-v/2);
       background: $color-decorative-tertiary;
       border-radius: ($baseline-v/10);
-
-      .submission__answer {
-        margin-bottom: ($baseline-v/2);
-      }
     }
 
     .response__submission__content {
+      margin-bottom: ($baseline-v/2);
+
       label {
         @extend %text-sr;
       }
@@ -514,6 +514,21 @@
         @extend %ui-content-longanswer;
         min-height: ($baseline-v*10);
       }
+    }
+
+    .response__submission__status {
+      position: absolute;
+      top: -($baseline-v*1.5);
+      right: 0;
+      background: $color-decorative-tertiary;
+      padding: ($baseline-v/2) ($baseline-h/2);
+      margin-bottom: ($baseline-v/2);
+    }
+
+    .response__submission__status__title {
+      @extend %hd-7;
+      @extend %t-weight3;
+      color: $copy-supplemental-color;
     }
 
     .response__submission__actions {
