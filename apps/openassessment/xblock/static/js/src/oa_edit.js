@@ -60,9 +60,44 @@ OpenAssessment.StudioUI.prototype = {
     },
 
     /**
-    Save the updated XML definition to the server.
+    Save the problem's XML definition to the server.
+    If the problem has been released, make the user confirm the save.
     **/
     save: function() {
+        var ui = this;
+
+        // Check whether the problem has been released; if not,
+        // warn the user and allow them to cancel.
+        this.server.checkReleased().done(
+            function(isReleased) {
+                if (isReleased) { ui.confirmPostReleaseUpdate($.proxy(ui.updateXml, ui)); }
+                else { ui.updateXml(); }
+            }
+        ).fail(function(errMsg) {
+                // TODO: error message in the UI
+                console.log(errMsg);
+            }
+        );
+    },
+
+    /**
+    Make the user confirm that he/she wants to update a problem
+    that has already been released.
+
+    Args:
+        onConfirm (function): A function that accepts no arguments,
+            executed if the user confirms the update.
+    **/
+    confirmPostReleaseUpdate: function(onConfirm) {
+        var msg = "This problem has already been released.  Any changes will apply only to future assessments.";
+        // TODO: classier confirm dialog
+        if (confirm(msg)) { onConfirm(); }
+    },
+
+    /**
+    Save the updated XML definition to the server.
+    **/
+    updateXml: function() {
         // Notify the client-side runtime that we are starting
         // to save so it can show the "Saving..." notification
         this.runtime.notify('save', {state: 'start'});
