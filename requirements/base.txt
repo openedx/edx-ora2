@@ -11,3 +11,4 @@ djangorestframework==2.3.5
 Mako==0.9.1
 python-dateutil==2.1
 pytz==2012h
+South==0.7.6

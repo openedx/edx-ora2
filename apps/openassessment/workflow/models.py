@@ -2,6 +2,12 @@
 Workflow models are intended to track which step the student is in during the
 assessment process. The submission state is not explicitly tracked because
 the assessment workflow only begins after a submission has been created.
+
+NOTE: We've switched to migrations, so if you make any edits to this file, you
+need to then generate a matching migration for it using:
+
+    ./manage.py schemamigration openassessment.workflow --auto
+
 """
 from django.db import models
 from django_extensions.db.fields import UUIDField

@@ -2,6 +2,12 @@
 Submission models hold student responses to problems, scores, and a history of
 those scores. It is intended to be a general purpose store that is usable by
 different problem types, and is therefore ignorant of ORA workflow.
+
+NOTE: We've switched to migrations, so if you make any edits to this file, you
+need to then generate a matching migration for it using:
+
+    ./manage.py schemamigration submissions --auto
+
 """
 from django.db import models
 from django.utils.timezone import now
