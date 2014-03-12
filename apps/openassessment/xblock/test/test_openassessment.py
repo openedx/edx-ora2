@@ -1,7 +1,6 @@
 """
 Tests the Open Assessment XBlock functionality.
 """
-import json
 import datetime as dt
 import pytz
 
@@ -9,54 +8,12 @@ from mock import Mock, patch
 
 from openassessment.xblock import openassessmentblock
 from openassessment.xblock.submission_mixin import SubmissionMixin
-from submissions import api as sub_api
-from submissions.api import SubmissionRequestError, SubmissionInternalError
+
 
 from .base import XBlockHandlerTestCase, scenario
 
 
 class TestOpenAssessment(XBlockHandlerTestCase):
-
-    SUBMISSION = json.dumps({"submission": "This is my answer to this test question!"})
-
-    @scenario('data/basic_scenario.xml', user_id='Bob')
-    def test_submit_submission(self, xblock):
-        """XBlock accepts response, returns true on success"""
-        resp = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
-        self.assertTrue(resp[0])
-
-    @scenario('data/basic_scenario.xml', user_id='Bob')
-    def test_submission_multisubmit_failure(self, xblock):
-        """XBlock returns true on first, false on second submission"""
-
-        # We don't care about return value of first one
-        self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
-
-        # This one should fail because we're not allowed to submit multiple times
-        resp = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
-        self.assertFalse(resp[0])
-        self.assertEqual(resp[1], "ENOMULTI")
-        self.assertEqual(resp[2], xblock.submit_errors["ENOMULTI"])
-
-    @scenario('data/basic_scenario.xml')
-    @patch.object(sub_api, 'create_submission')
-    def test_submission_general_failure(self, xblock, mock_submit):
-        """Internal errors return some code for submission failure."""
-        mock_submit.side_effect = SubmissionInternalError("Cat on fire.")
-        resp = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
-        self.assertFalse(resp[0])
-        self.assertEqual(resp[1], "EUNKNOWN")
-        self.assertEqual(resp[2], SubmissionMixin().submit_errors["EUNKNOWN"])
-
-    @scenario('data/basic_scenario.xml')
-    @patch.object(sub_api, 'create_submission')
-    def test_submission_API_failure(self, xblock, mock_submit):
-        """API usage errors return code and meaningful message."""
-        mock_submit.side_effect = SubmissionRequestError("Cat on fire.")
-        resp = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
-        self.assertFalse(resp[0])
-        self.assertEqual(resp[1], "EBADFORM")
-        self.assertEqual(resp[2], "Cat on fire.")
 
     @scenario('data/basic_scenario.xml')
     def test_load_student_view(self, xblock):

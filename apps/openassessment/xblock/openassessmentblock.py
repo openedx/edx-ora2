@@ -242,7 +242,10 @@ class OpenAssessmentBlock(
         Useful for logging, debugging, and uniqueification.
 
         """
-        return unicode(self.scope_ids.usage_id), unicode(self.scope_ids.user_id)
+        return (
+            unicode(self.scope_ids.usage_id),
+            unicode(self.scope_ids.user_id) if self.scope_ids.user_id is not None else None,
+        )
 
     def get_student_item_dict(self):
         """Create a student_item_dict from our surrounding context.
