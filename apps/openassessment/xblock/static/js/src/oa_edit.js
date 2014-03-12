@@ -74,6 +74,9 @@ OpenAssessment.StudioUI.prototype = {
             // Notify the client-side runtime that we finished saving
             // so it can hide the "Saving..." notification.
             ui.runtime.notify('save', {state: 'end'});
+
+            // Reload the XML definition in the editor
+            ui.load();
         }).fail(function(msg) {
             ui.showError(msg);
         });

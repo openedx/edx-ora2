@@ -1,0 +1,737 @@
+{
+    "simple": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "current_rubric": null,
+        "is_released": false
+    },
+
+    "unicode": {
+        "rubric": {
+            "prompt": "☃",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "☃",
+                    "prompt": "☃",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "☃",
+                            "explanation": "☃"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "☃",
+                            "explanation": "☃"
+                        }
+                    ]
+                }
+            ]
+        },
+        "current_rubric": null,
+        "is_released": false
+    },
+
+    "change_points_before_release": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "current_rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 2,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "is_released": false
+    },
+
+    "add_criteria_before_release": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "current_rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                },
+                {
+                    "order_num": 1,
+                    "name": "Another criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "is_released": false
+    },
+
+    "remove_criteria_before_release": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                },
+                {
+                    "order_num": 1,
+                    "name": "Another criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "current_rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "is_released": false
+    },
+
+    "add_options_before_release": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "current_rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "current_rubric": null,
+        "is_released": false
+
+    },
+
+    "remove_options_before_release": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "current_rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "is_released": false
+    },
+
+    "change_text_before_release": {
+        "rubric": {
+            "prompt": "Changed Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Changed criterion",
+                    "prompt": "Changed criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "Changed No",
+                            "explanation": "Changed no explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Changed yes",
+                            "explanation": "Changed yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "current_rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "is_released": false
+    },
+
+    "change_criteria_prompt_after_release": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Changed criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "current_rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "is_released": true
+    },
+
+    "change_criteria_name_after_release": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Changed criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "current_rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "is_released": true
+    },
+
+    "change_option_name_after_release": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "Changed No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "current_rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "is_released": true
+    },
+
+    "change_option_explanation_after_release": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "Changed No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "current_rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "is_released": true
+    },
+
+    "reorder_criteria_after_release": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                },
+                {
+                    "order_num": 1,
+                    "name": "Another criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "current_rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Another criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        }
+                    ]
+                },
+                {
+                    "order_num": 1,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "is_released": true
+    },
+
+    "reorder_options_after_release": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "current_rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "is_released": true
+    }
+}

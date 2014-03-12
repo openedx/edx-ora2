@@ -41,18 +41,19 @@ class AssessmentValidationTest(TestCase):
             self.assertGreater(len(msg), 0)
 
 
+
 @ddt.ddt
 class RubricValidationTest(TestCase):
 
     @ddt.file_data('data/valid_rubrics.json')
     def test_valid_assessment(self, data):
-        success, msg = validate_rubric(data['rubric'])
+        success, msg = validate_rubric(data['rubric'], data['current_rubric'], data['is_released'])
         self.assertTrue(success)
         self.assertEqual(msg, u'')
 
     @ddt.file_data('data/invalid_rubrics.json')
     def test_invalid_assessment(self, data):
-        success, msg = validate_rubric(data['rubric'])
+        success, msg = validate_rubric(data['rubric'], data['current_rubric'], data['is_released'])
         self.assertFalse(success)
         self.assertGreater(len(msg), 0)
 

@@ -119,25 +119,29 @@ class TestDates(XBlockHandlerTestCase):
         self.assert_is_open(
             xblock,
             dt.datetime(2014, 2, 28, 23, 59, 59),
-            None, False, "start"
+            None, False, "start",
+            released=False
         )
 
         self.assert_is_open(
             xblock,
             dt.datetime(2014, 3, 1, 1, 1, 1),
-            None, True, None
+            None, True, None,
+            released=True
         )
 
         self.assert_is_open(
             xblock,
             dt.datetime(2014, 3, 4, 23, 59, 59),
-            None, True, None
+            None, True, None,
+            released=True
         )
 
         self.assert_is_open(
             xblock,
             dt.datetime(2014, 3, 5, 1, 1, 1),
-            None, False, "due"
+            None, False, "due",
+            released=True
         )
 
     @scenario('data/dates_scenario.xml')
@@ -149,25 +153,29 @@ class TestDates(XBlockHandlerTestCase):
         self.assert_is_open(
             xblock,
             dt.datetime(2014, 2, 28, 23, 59, 59).replace(tzinfo=pytz.utc),
-            "submission", False, "start"
+            "submission", False, "start",
+            released=False
         )
 
         self.assert_is_open(
             xblock,
             dt.datetime(2014, 3, 1, 1, 1, 1).replace(tzinfo=pytz.utc),
-            "submission", True, None
+            "submission", True, None,
+            released=True
         )
 
         self.assert_is_open(
             xblock,
             dt.datetime(2014, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc),
-            "submission", True, None
+            "submission", True, None,
+            released=True
         )
 
         self.assert_is_open(
             xblock,
             dt.datetime(2014, 4, 1, 1, 1, 1, 1).replace(tzinfo=pytz.utc),
-            "submission", False, "due"
+            "submission", False, "due",
+            released=True
         )
 
     @scenario('data/dates_scenario.xml')
@@ -179,25 +187,29 @@ class TestDates(XBlockHandlerTestCase):
         self.assert_is_open(
             xblock,
             dt.datetime(2015, 1, 1, 23, 59, 59).replace(tzinfo=pytz.utc),
-            "peer-assessment", False, "start"
+            "peer-assessment", False, "start",
+            released=False
         )
 
         self.assert_is_open(
             xblock,
             dt.datetime(2015, 1, 2, 1, 1, 1).replace(tzinfo=pytz.utc),
-            "peer-assessment", True, None
+            "peer-assessment", True, None,
+            released=True
         )
 
         self.assert_is_open(
             xblock,
             dt.datetime(2015, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc),
-            "peer-assessment", True, None
+            "peer-assessment", True, None,
+            released=True
         )
 
         self.assert_is_open(
             xblock,
             dt.datetime(2015, 4, 1, 1, 1, 1, 1).replace(tzinfo=pytz.utc),
-            "peer-assessment", False, "due"
+            "peer-assessment", False, "due",
+            released=True
         )
 
     @scenario('data/dates_scenario.xml')
@@ -209,25 +221,29 @@ class TestDates(XBlockHandlerTestCase):
         self.assert_is_open(
             xblock,
             dt.datetime(2016, 1, 1, 23, 59, 59).replace(tzinfo=pytz.utc),
-            "self-assessment", False, "start"
+            "self-assessment", False, "start",
+            released=False
         )
 
         self.assert_is_open(
             xblock,
             dt.datetime(2016, 1, 2, 1, 1, 1).replace(tzinfo=pytz.utc),
-            "self-assessment", True, None
+            "self-assessment", True, None,
+            released=True
         )
 
         self.assert_is_open(
             xblock,
             dt.datetime(2016, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc),
-            "self-assessment", True, None
+            "self-assessment", True, None,
+            released=True
         )
 
         self.assert_is_open(
             xblock,
             dt.datetime(2016, 4, 1, 1, 1, 1, 1).replace(tzinfo=pytz.utc),
-            "self-assessment", False, "due"
+            "self-assessment", False, "due",
+            released=True
         )
 
     @scenario('data/resolve_dates_scenario.xml')
@@ -241,28 +257,53 @@ class TestDates(XBlockHandlerTestCase):
         self.assert_is_open(
             xblock,
             dt.datetime(2014, 2, 28, 23, 59, 59).replace(tzinfo=pytz.utc),
-            "peer-assessment", False, "start"
+            "peer-assessment", False, "start",
+            released=False
         )
 
         self.assert_is_open(
             xblock,
             dt.datetime(2014, 3, 1, 1, 1, 1).replace(tzinfo=pytz.utc),
-            "peer-assessment", True, None
+            "peer-assessment", True, None,
+            released=True
         )
 
         self.assert_is_open(
             xblock,
             dt.datetime(2016, 5, 1, 23, 59, 59).replace(tzinfo=pytz.utc),
-            "peer-assessment", True, None
+            "peer-assessment", True, None,
+            released=True
         )
 
         self.assert_is_open(
             xblock,
             dt.datetime(2016, 5, 2, 1, 1, 1).replace(tzinfo=pytz.utc),
-            "peer-assessment", False, "due"
+            "peer-assessment", False, "due",
+            released=True
         )
 
-    def assert_is_open(self, xblock, now, step, expected_is_open, expected_reason):
+    @scenario('data/basic_scenario.xml')
+    def test_is_released_unpublished(self, xblock):
+        # Simulate the runtime published_date mixin field
+        # The scenario doesn't provide a start date, so `is_released()`
+        # should be controlled only by the published date.
+        xblock.published_date = None
+        self.assertFalse(xblock.is_released())
+
+    @scenario('data/basic_scenario.xml')
+    def test_is_released_published(self, xblock):
+        # Simulate the runtime published_date mixin field
+        # The scenario doesn't provide a start date, so `is_released()`
+        # should be controlled only by the published date.
+        xblock.published_date = dt.datetime(2013, 1, 1).replace(tzinfo=pytz.utc)
+        self.assertTrue(xblock.is_released())
+
+    @scenario('data/basic_scenario.xml')
+    def test_is_released_no_published_date_field(self, xblock):
+        # If the runtime doesn't provide a published_date field, assume we've been published
+        self.assertTrue(xblock.is_released())
+
+    def assert_is_open(self, xblock, now, step, expected_is_open, expected_reason, released=None):
         """
         Assert whether the XBlock step is open/closed.
 
@@ -272,6 +313,9 @@ class TestDates(XBlockHandlerTestCase):
             step (str): The step in the workflow (e.g. "submission", "self-assessment")
             expected_is_open (bool): Do we expect the step to be open or closed?
             expecetd_reason (str): Either "start", "due", or None.
+
+        Kwargs:
+            released (bool): If set, check whether the XBlock has been released.
 
         Raises:
             AssertionError
@@ -287,3 +331,6 @@ class TestDates(XBlockHandlerTestCase):
         is_open, reason = xblock.is_open(step=step)
         self.assertEqual(is_open, expected_is_open)
         self.assertEqual(reason, expected_reason)
+
+        if released is not None:
+            self.assertEqual(xblock.is_released(step=step), released)

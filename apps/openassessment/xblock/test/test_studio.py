@@ -3,8 +3,10 @@ View-level tests for Studio view of OpenAssessment XBlock.
 """
 
 import json
+import datetime as dt
 import lxml.etree as etree
 import mock
+import pytz
 from ddt import ddt, data
 from .base import scenario, XBlockHandlerTestCase
 
@@ -44,6 +46,10 @@ class StudioViewTest(XBlockHandlerTestCase):
     @scenario('data/basic_scenario.xml')
     def test_update_xml(self, xblock):
 
+        # Set the XBlock's release date to the future,
+        # so we are not restricted in what we can edit
+        xblock.start = dt.datetime(3000, 1, 1).replace(tzinfo=pytz.utc).isoformat()
+
         request = json.dumps({'xml': self.load_fixture_str('data/updated_block.xml')})
 
         # Verify the response is successfully
@@ -58,6 +64,17 @@ class StudioViewTest(XBlockHandlerTestCase):
         self.assertEqual(xblock.prompt, u'Test prompt')
         self.assertEqual(xblock.rubric_assessments[0]['name'], 'peer-assessment')
         self.assertEqual(xblock.rubric_criteria[0]['prompt'], 'Test criterion prompt')
+
+    @scenario('data/basic_scenario.xml')
+    def test_update_xml_post_release(self, xblock):
+
+        # XBlock start date defaults to already open,
+        # so we should get an error when trying to update anything that change the number of points
+        request = json.dumps({'xml': self.load_fixture_str('data/updated_block.xml')})
+
+        # Verify the response is successfully
+        resp = self.request(xblock, 'update_xml', request, response_format='json')
+        self.assertFalse(resp['success'])
 
     @scenario('data/basic_scenario.xml')
     def test_update_xml_invalid_request_data(self, xblock):

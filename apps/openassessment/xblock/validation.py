@@ -1,8 +1,30 @@
 """
+Validate changes to an XBlock before it is updated.
 """
 from django.utils.translation import ugettext as _
 from openassessment.assessment.serializers import rubric_from_dict, InvalidRubric
 from openassessment.xblock.resolve_dates import resolve_dates, DateValidationError, InvalidDateFormat
+
+
+def _match_by_name(items, others):
+    """
+    Given two lists of dictionaries, each containing "name" keys,
+    return a set of tuples, where the items in the tuple are dictionaries
+    with the same "name" keys.
+
+    Args:
+        items (list of dict): Items to match, each of which must contain a "name" key.
+        others (list of dict): Items to match, each of which must contain a "name" key.
+
+    Returns:
+        list of tuples, each containing two dictionaries
+
+    Raises:
+        IndexError: A dictionary does no contain a 'name' key.
+    """
+    # Sort each dictionary by its "name" key, then zip them and return
+    key_func = lambda x: x['name']
+    return zip(sorted(items, key=key_func), sorted(others, key=key_func))
 
 
 def validate_assessments(assessments, enforce_peer_then_self=False):
@@ -54,12 +76,14 @@ def validate_assessments(assessments, enforce_peer_then_self=False):
     return (True, u'')
 
 
-def validate_rubric(rubric_dict):
+def validate_rubric(rubric_dict, current_rubric, is_released):
     """
     Check that the rubric is semantically valid.
 
     Args:
-        rubric_dict (dict): Serialized Rubric model
+        rubric_dict (dict): Serialized Rubric model representing the updated state of the rubric.
+        current_rubric (dict): Serialized Rubric model representing the current state of the rubric.
+        is_released (bool): True if and only if the problem has been released.
 
     Returns:
         tuple (is_valid, msg) where
@@ -70,8 +94,26 @@ def validate_rubric(rubric_dict):
         rubric_from_dict(rubric_dict)
     except InvalidRubric:
         return (False, u'Rubric definition is not valid')
-    else:
-        return (True, u'')
+
+    # After a problem is released, authors are allowed to change text,
+    # but nothing that would change the point value of a rubric.
+    if is_released:
+
+        # Number of criteria must be the same
+        if len(rubric_dict['criteria']) != len(current_rubric['criteria']):
+            return (False, u'Number of criteria cannot be changed after a problem is released.')
+
+        # Number of options for each criterion must be the same
+        for new_criterion, old_criterion in _match_by_name(rubric_dict['criteria'], current_rubric['criteria']):
+            if len(new_criterion['options']) != len(old_criterion['options']):
+                return (False, u'Number of options cannot be changed after a problem is released.')
+
+            else:
+                for new_option, old_option in _match_by_name(new_criterion['options'], old_criterion['options']):
+                    if new_option['points'] != old_option['points']:
+                        return (False, u'Point values cannot be changed after a problem is released.')
+
+    return (True, u'')
 
 
 def validate_dates(start, end, date_ranges):
@@ -96,30 +138,41 @@ def validate_dates(start, end, date_ranges):
         return (True, u'')
 
 
-def validator(start, due):
+def validator(oa_block, strict_post_release=True):
     """
-    Return a validator function configured with the problem's start and end dates.
+    Return a validator function configured for the XBlock.
     This will validate assessments, rubrics, and dates.
 
     Args:
-        start (str): ISO-formatted date string indicating when the problem opens.
-        end (str): ISO-formatted date string indicating when the problem closes.
+        oa_block (OpenAssessmentBlock): The XBlock being updated.
+
+    Kwargs:
+        strict_post_release (bool): If true, restrict what authors can update once
+            a problem has been released.
 
     Returns:
         callable, of a form that can be passed to `update_from_xml`.
     """
+
     def _inner(rubric_dict, submission_dict, assessments):
         success, msg = validate_assessments(assessments, enforce_peer_then_self=True)
         if not success:
             return (False, msg)
 
-        success, msg = validate_rubric(rubric_dict)
+        current_rubric = {
+            'prompt': oa_block.prompt,
+            'criteria': oa_block.rubric_criteria
+        }
+        success, msg = validate_rubric(
+            rubric_dict, current_rubric,
+            strict_post_release and oa_block.is_released()
+        )
         if not success:
             return (False, msg)
 
-        submission_dates = [(start, submission_dict['due'])]
+        submission_dates = [(oa_block.start, submission_dict['due'])]
         assessment_dates = [(asmnt['start'], asmnt['due']) for asmnt in assessments]
-        success, msg = validate_dates(start, due, submission_dates + assessment_dates)
+        success, msg = validate_dates(oa_block.start, oa_block.due, submission_dates + assessment_dates)
         if not success:
             return (False, msg)
 
