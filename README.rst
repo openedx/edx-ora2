@@ -24,6 +24,11 @@ for development purposes, run::
 The second line is necessary to register edx-tim's XBlock so that it will show
 up in the XBlock workbench.
 
+To setup the database, run::
+
+  python manage.py syncdb --migrate
+
+
 Running Tests
 =============
 

@@ -3,6 +3,12 @@
 These models have to capture not only the state of assessments made for certain
 submissions, but also the state of the rubrics at the time those assessments
 were made.
+
+NOTE: We've switched to migrations, so if you make any edits to this file, you
+need to then generate a matching migration for it using:
+
+    ./manage.py schemamigration openassessment.assessment --auto
+
 """
 from collections import defaultdict
 from copy import deepcopy
