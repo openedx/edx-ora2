@@ -68,6 +68,15 @@ OpenAssessment.BaseUI.prototype = {
                 var sel = $('#openassessment__response', ui.element);
                 sel.replaceWith(html);
 
+                // Install change handler for textarea (to enable submission button)
+                $('#submission__answer__value', ui.element).keyup(
+                    function(eventData) {
+                        var blankSubmission = ($(this).val() === '');
+                        $('#step--response__submit', ui.element).toggleClass('is--disabled', blankSubmission);
+                        $('#submission__save', ui.element).toggleClass('is--disabled', blankSubmission);
+                    }
+                );
+
                 // Install a click handler for submission
                 $('#step--response__submit', ui.element).click(
                     function(eventObject) { ui.submit(); }
