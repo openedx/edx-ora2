@@ -1,3 +1,4 @@
+import copy
 from xblock.core import XBlock
 from openassessment.assessment.peer_api import get_assessments
 from openassessment.assessment import peer_api
@@ -41,7 +42,7 @@ class GradeMixin(object):
             context["student_submission"] = student_submission
             context["peer_assessments"] = peer_assessments
             context["self_assessment"] = self_assessment
-            context["rubric_criteria"] = self.rubric_criteria
+            context["rubric_criteria"] = copy.deepcopy(self.rubric_criteria)
             context["score"] = student_score
             for criterion in context["rubric_criteria"]:
                 criterion["median_score"] = median_scores[criterion["name"]]
