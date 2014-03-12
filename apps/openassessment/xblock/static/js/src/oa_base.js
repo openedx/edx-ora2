@@ -111,6 +111,17 @@ OpenAssessment.BaseUI.prototype = {
                 var sel = $('#openassessment__peer-assessment', ui.element);
                 sel.replaceWith(html);
 
+                // Install a change handler for rubric options to enable/disable the submit button
+                $("#peer-assessment--001__assessment", ui.element).change(
+                    function() {
+                        var numChecked = $('input[type=radio]:checked', this).length;
+                        var numAvailable = $('.field--radio.assessment__rubric__question', this).length;
+                        $("#peer-assessment--001__assessment__submit", ui.element).toggleClass(
+                            'is--disabled', numChecked != numAvailable
+                        );
+                    }
+                );
+
                 // Install a click handler for assessment
                 $('#peer-assessment--001__assessment__submit', ui.element).click(
                     function(eventObject) {
