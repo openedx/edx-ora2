@@ -25,10 +25,11 @@ class SubmissionMixin(object):
 
     submit_errors = {
         # Reported to user sometimes, and useful in tests
-        'ENODATA':  'API returned an empty response',
-        'EBADFORM': 'API Submission Request Error',
-        'EUNKNOWN': 'API returned unclassified exception',
-        'ENOMULTI': 'Multiple submissions are not allowed for this item',
+        'ENODATA':  _(u'API returned an empty response.'),
+        'EBADFORM': _(u'API Submission Request Error.'),
+        'EUNKNOWN': _(u'API returned unclassified exception.'),
+        'ENOMULTI': _(u'Multiple submissions are not allowed.'),
+        'ENOPREVIEW': _(u'You cannot make a submission while in Preview mode.'),
     }
 
     @XBlock.json_handler
@@ -54,6 +55,12 @@ class SubmissionMixin(object):
         status_text = None
         student_sub = data['submission']
         student_item_dict = self.get_student_item_dict()
+
+        # Short-circuit if no user is defined (as in Studio Preview mode)
+        # Since students can't submit, they will never be able to progress in the workflow
+        if student_item_dict['student_id'] is None:
+            return False, 'ENOPREVIEW', self.submit_errors['ENOPREVIEW']
+
         workflow = self.get_workflow_info()
 
         status_tag = 'ENOMULTI'  # It is an error to submit multiple times for the same item

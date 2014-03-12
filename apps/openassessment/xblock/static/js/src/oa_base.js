@@ -197,9 +197,9 @@ OpenAssessment.BaseUI.prototype = {
                 ui.renderSubmissionStep();
                 ui.renderPeerAssessmentStep(true);
             }
-        ).fail(function(errMsg) {
-            // TODO: display to the user
-            console.log(errMsg);
+        ).fail(function(errCode, errMsg) {
+            // TODO: display to the user in a classier way
+            alert(errMsg);
         });
     },
 

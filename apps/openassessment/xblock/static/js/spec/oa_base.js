@@ -35,7 +35,7 @@ describe("OpenAssessment.BaseUI", function() {
                 defer.resolveWith(this, [server.fragments[component]]);
             }).promise();
         };
-    }
+    };
 
     // Stub runtime
     var runtime = {};
@@ -56,7 +56,7 @@ describe("OpenAssessment.BaseUI", function() {
 
         waitsFor(function() {
             var subviewHasHtml = $("#openassessment-base").children().map(
-                function(index, el) { return el.innerHTML != ''; }
+                function(index, el) { return el.innerHTML !== ''; }
             );
             return Array(subviewHasHtml).every(function(hasHtml) { return hasHtml; });
         });
@@ -64,11 +64,11 @@ describe("OpenAssessment.BaseUI", function() {
         runs(function() {
             return callback();
         });
-    }
+    };
 
     beforeEach(function() {
         // Load the DOM fixture
-        jasmine.getFixtures().fixturesPath = 'base/fixtures'
+        jasmine.getFixtures().fixturesPath = 'base/fixtures';
         loadFixtures('oa_base.html');
 
         // Create a new stub server
@@ -91,7 +91,7 @@ describe("OpenAssessment.BaseUI", function() {
         loadSubviews(function() {
             spyOn(server, 'peerAssess').andCallThrough();
             ui.peerAssess();
-            expect(server.peerAssess).toHaveBeenCalled()
+            expect(server.peerAssess).toHaveBeenCalled();
         });
     });
 
