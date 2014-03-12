@@ -100,6 +100,14 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         student_view = xblock.student_view({})
         self.assertIsNotNone(student_view)
 
+    @scenario('data/basic_scenario.xml', user_id=2)
+    def test_numeric_scope_ids(self, xblock):
+        # Even if we're passed a numeric user ID, we should store it as a string
+        # because that's what our models expect.
+        student_item = xblock.get_student_item_dict()
+        self.assertEqual(student_item['student_id'], '2')
+        self.assertIsInstance(student_item['item_id'], unicode)
+
 
 class TestDates(XBlockHandlerTestCase):
 
