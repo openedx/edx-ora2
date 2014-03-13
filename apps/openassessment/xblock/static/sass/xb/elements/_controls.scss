@@ -75,7 +75,7 @@
     text-decoration: none;
   }
 
-  &.disabled, &[disabled] {
+  &.disabled, &[disabled], &.is--disabled {
     cursor: default;
     pointer-events: none;
   }
@@ -135,8 +135,8 @@
     }
   }
 
-  &.disabled, &.is-disabled, &[disabled] {
-    opacity: 0.5;
+  &.disabled, &.is--disabled, &[disabled] {
+    opacity: 0.4;
   }
 }
 
@@ -169,8 +169,8 @@
     }
   }
 
-  &.disabled, &.is-disabled, &[disabled] {
-    opacity: 0.5;
+  &.disabled, &.is--disabled, &[disabled] {
+    opacity: 0.4;
   }
 }
 

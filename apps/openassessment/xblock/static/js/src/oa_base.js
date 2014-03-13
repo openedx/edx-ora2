@@ -68,9 +68,22 @@ OpenAssessment.BaseUI.prototype = {
                 var sel = $('#openassessment__response', ui.element);
                 sel.replaceWith(html);
 
+                // If we have a saved submission, enable the submit button
+                ui.responseChanged();
+
+                // Install change handler for textarea (to enable submission button)
+                $('#submission__answer__value', ui.element).keyup(
+                    function(eventData) { ui.responseChanged(); }
+                );
+
                 // Install a click handler for submission
                 $('#step--response__submit', ui.element).click(
-                    function(eventObject) { ui.submit(); }
+                    function(eventObject) {
+                        // Override default form submission
+                        eventObject.preventDefault();
+
+                        ui.submit();
+                    }
                 );
 
                 // Install a click handler for the save button
@@ -83,9 +96,18 @@ OpenAssessment.BaseUI.prototype = {
                 );
             }
         ).fail(function(errMsg) {
-            // TODO: display to the user
-            console.log(errMsg);
+            ui.showLoadError('response');
         });
+    },
+
+    /**
+    Enable/disable the submission and save buttons based on whether
+    the user has entered a response.
+    **/
+    responseChanged: function() {
+        var blankSubmission = ($('#submission__answer__value', this.element).val() === '');
+        $('#step--response__submit', this.element).toggleClass('is--disabled', blankSubmission);
+        $('#submission__save', this.element).toggleClass('is--disabled', blankSubmission);
     },
 
     /**
@@ -102,6 +124,17 @@ OpenAssessment.BaseUI.prototype = {
                 var sel = $('#openassessment__peer-assessment', ui.element);
                 sel.replaceWith(html);
 
+                // Install a change handler for rubric options to enable/disable the submit button
+                $("#peer-assessment--001__assessment", ui.element).change(
+                    function() {
+                        var numChecked = $('input[type=radio]:checked', this).length;
+                        var numAvailable = $('.field--radio.assessment__rubric__question', this).length;
+                        $("#peer-assessment--001__assessment__submit", ui.element).toggleClass(
+                            'is--disabled', numChecked != numAvailable
+                        );
+                    }
+                );
+
                 // Install a click handler for assessment
                 $('#peer-assessment--001__assessment__submit', ui.element).click(
                     function(eventObject) {
@@ -114,8 +147,7 @@ OpenAssessment.BaseUI.prototype = {
                 );
             }
         ).fail(function(errMsg) {
-            // TODO: display to the user
-            console.log(errMsg);
+            ui.showLoadError('peer-assessment');
         });
     },
 
@@ -131,6 +163,17 @@ OpenAssessment.BaseUI.prototype = {
             function(html) {
                 $('#openassessment__self-assessment', ui.element).replaceWith(html);
 
+                // Install a change handler for rubric options to enable/disable the submit button
+                $("#self-assessment--001__assessment", ui.element).change(
+                    function() {
+                        var numChecked = $('input[type=radio]:checked', this).length;
+                        var numAvailable = $('.field--radio.assessment__rubric__question', this).length;
+                        $("#self-assessment--001__assessment__submit", ui.element).toggleClass(
+                            'is--disabled', numChecked != numAvailable
+                        );
+                    }
+                );
+
                 // Install a click handler for the submit button
                 $('#self-assessment--001__assessment__submit', ui.element).click(
                     function(eventObject) {
@@ -143,8 +186,7 @@ OpenAssessment.BaseUI.prototype = {
                 );
             }
         ).fail(function(errMsg) {
-            // TODO: display to the user
-            console.log(errMsg);
+            ui.showLoadError('self-assessment');
         });
     },
 
@@ -161,8 +203,7 @@ OpenAssessment.BaseUI.prototype = {
                 $('#openassessment__grade', ui.element).replaceWith(html);
             }
         ).fail(function(errMsg) {
-            // TODO: display to the user
-            console.log(errMsg);
+            ui.showLoadError('grade', errMsg);
         });
     },
 
@@ -174,14 +215,13 @@ OpenAssessment.BaseUI.prototype = {
         var submission = $('#submission__answer__value', this.element).val();
         var ui = this;
         $('#response__save_status', this.element).html('Saving...');
+        this.toggleActionError('save', null);
         this.server.save(submission).done(function() {
-            // Update the "saved" icon
             $('#response__save_status', this.element).html("Saved but not submitted");
         }).fail(function(errMsg) {
-            // TODO: display to the user
-            console.log(errMsg);
+            $("#response__save_status", ui.element).html('Error');
+            ui.toggleActionError('save', errMsg);
         });
-
     },
 
     /**
@@ -191,6 +231,7 @@ OpenAssessment.BaseUI.prototype = {
         // Send the submission to the server
         var submission = $('#submission__answer__value', this.element).val();
         var ui = this;
+        this.toggleActionError('response', null);
         this.server.submit(submission).done(
             // When we have successfully sent the submission, expand the next step
             function(studentId, attemptNum) {
@@ -198,8 +239,7 @@ OpenAssessment.BaseUI.prototype = {
                 ui.renderPeerAssessmentStep(true);
             }
         ).fail(function(errCode, errMsg) {
-            // TODO: display to the user in a classier way
-            alert(errMsg);
+            ui.toggleActionError('submit', errMsg);
         });
     },
 
@@ -219,6 +259,7 @@ OpenAssessment.BaseUI.prototype = {
 
         // Send the assessment to the server
         var ui = this;
+        this.toggleActionError('peer', null);
         this.server.peerAssess(submissionId, optionsSelected, feedback).done(
             function() {
                 // When we have successfully sent the assessment,
@@ -228,8 +269,7 @@ OpenAssessment.BaseUI.prototype = {
                 ui.renderGradeStep(false);
             }
         ).fail(function(errMsg) {
-            // TODO: display to the user
-            console.log(errMsg);
+            ui.toggleActionError('peer', errMsg);
         });
     },
 
@@ -248,6 +288,7 @@ OpenAssessment.BaseUI.prototype = {
 
         // Send the assessment to the server
         var ui = this;
+        this.toggleActionError('self', null);
         this.server.selfAssess(submissionId, optionsSelected).done(
             function() {
                 // When we have successfully sent the assessment,
@@ -256,9 +297,52 @@ OpenAssessment.BaseUI.prototype = {
                 ui.renderGradeStep(true);
             }
         ).fail(function(errMsg) {
-            // TODO: display to user
-            console.log(errMsg);
+            ui.toggleActionError('self', errMsg);
         });
+    },
+
+
+    /**
+    Report an error to the user.
+
+    Args:
+        type (str): Which type of error.  Options are "save", submit", "peer", and "self".
+        msg (str or null): The error message to display.
+            If null, hide the error message (with one exception: loading errors are never hidden once displayed)
+    **/
+    toggleActionError: function(type, msg) {
+        var container = null;
+        if (type == 'save') { container = '.response__submission__actions'; }
+        else if (type == 'submit') { container = '.step__actions'; }
+        else if (type == 'peer') { container = '.peer-assessment__actions'; }
+        else if (type == 'self') { container = '.self-assessment__actions'; }
+
+        // If we don't have anywhere to put the message, just log it to the console
+        if (container === null) {
+            if (msg !== null) { console.log(msg); }
+        }
+
+        else {
+            // Insert the error message
+            var msgHtml = (msg === null) ? "" : msg;
+            $(container + " .message__content").html('<p>' + msg + '</p>');
+
+            // Toggle the error class
+            $(container).toggleClass('has--error', msg !== null);
+        }
+    },
+
+    /**
+    Report an error loading a step.
+
+    Args:
+        step (str): the step that could not be loaded.
+    **/
+    showLoadError: function(step) {
+        var container = '#openassessment__' + step;
+        $(container).toggleClass('has--error', true);
+        $(container + ' .step__status__value i').removeClass().addClass('icon-warning-sign');
+        $(container + ' .step__status__value').html('Unable to Load');
     }
 };
 

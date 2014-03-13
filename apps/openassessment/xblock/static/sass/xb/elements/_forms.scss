@@ -41,6 +41,12 @@
     textarea {
       width: 100%;
     }
+
+    .tip {
+      display: block;
+      @extend %copy-5;
+      color: $copy-supplemental-color;
+    }
   }
 }
 

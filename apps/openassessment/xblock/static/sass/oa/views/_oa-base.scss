@@ -210,6 +210,10 @@
 
     // step actions
     .step__actions {
+      @include transition(background-color $tmg-f1 ease-in-out 0s);
+      border-radius: ($baseline-v/5);
+      padding: ($baseline-v/2) ($baseline-h/2);
+      background: transparent;
       text-align: center;
 
       @include media($bp-ds) {
@@ -231,6 +235,61 @@
       .action--submit {
         @extend %btn--primary;
         @extend %action-4;
+      }
+
+      // STATE: has error
+      &.has--error {
+        @include row();
+        background: tint($color-error, 90%);
+
+        .message {
+          display: block;
+          margin-bottom: ($baseline-v/2);
+
+          @include media($bp-ds) {
+            @include span-columns(3 of 6);
+            margin-bottom: 0;
+            text-align: left;
+          }
+
+          @include media($bp-dm) {
+            @include span-columns(6 of 12);
+            margin-bottom: 0;
+            text-align: left;
+          }
+
+          @include media($bp-dl) {
+            @include span-columns(6 of 12);
+            margin-bottom: 0;
+            text-align: left;
+          }
+
+          @include media($bp-dx) {
+            @include span-columns(6 of 12);
+            margin-bottom: 0;
+            text-align: left;
+          }
+        }
+
+        .list--actions {
+          display: block;
+
+          @include media($bp-ds) {
+            @include span-columns(3 of 6);
+          }
+
+          @include media($bp-dm) {
+            @include span-columns(6 of 12);
+          }
+
+          @include media($bp-dl) {
+            @include span-columns(6 of 12);
+          }
+
+          @include media($bp-dx) {
+            @include span-columns(6 of 12);
+          }
+        }
       }
     }
 
@@ -344,15 +403,28 @@
       }
     }
 
-    // STATE: step is saved
-    &.is--saved {
+    // STATE: has error
+    &.has--error {
+
+      .step__counter:before {
+        border-color: rgba($color-error, 0.5);
+        color: $color-error;
+      }
 
       .step__status__value {
-        background: $color-primary;
+        background: $color-error;
 
         .copy {
           color: $white-t;
         }
+      }
+
+      .step__label {
+        color: $color-error;
+      }
+
+      .message {
+
       }
     }
   }
@@ -363,10 +435,25 @@
   // --------------------
   .message {
 
+    .message__title {
+      @extend %hd-6;
+    }
 
-    // CASE: has actions
-    &.has-actions {
+    .message__content {
+      @extend %copy-4;
+    }
+  }
 
+  // TYPE: error
+  .message--error {
+
+
+    .message__title {
+      color: $color-error;
+    }
+
+    .message__content {
+      color: tint($color-error, 33%);
     }
   }
 
@@ -378,6 +465,25 @@
   // TYPE: confirmation
   .message--confirmation {
 
+  }
+
+  // --------------------
+  // errors
+  // --------------------
+  // CASE: default error display (hidden)
+  .message--error {
+    @extend %trans-opacity;
+    display: none;
+    opacity: 0.0;
+  }
+
+  // CASE: error is shown
+  .has--error {
+
+    .message--error {
+      display: block;
+      opacity: 1.0;
+    }
   }
 
 
@@ -422,16 +528,16 @@
 
     // response form
     .response__submission {
-      padding: ($baseline-v/2);
+      margin-top: ($baseline-v*2.5);
+      position: relative;
+      padding: ($baseline-v*0.75);
       background: $color-decorative-tertiary;
       border-radius: ($baseline-v/10);
-
-      .submission__answer {
-        margin-bottom: ($baseline-v/2);
-      }
     }
 
     .response__submission__content {
+      margin-bottom: ($baseline-v/2);
+
       label {
         @extend %text-sr;
       }
@@ -439,40 +545,30 @@
       textarea {
         @extend %ui-content-longanswer;
         min-height: ($baseline-v*10);
+        margin-bottom: ($baseline-v/2);
       }
     }
 
+    .response__submission__status {
+      position: absolute;
+      top: -($baseline-v*1.5);
+      right: 0;
+      background: $color-decorative-tertiary;
+      padding: ($baseline-v/2) ($baseline-h/2);
+      margin-bottom: ($baseline-v/2);
+    }
+
+    .response__submission__status__title {
+      @extend %hd-7;
+      @extend %t-weight3;
+      color: $copy-supplemental-color;
+    }
+
     .response__submission__actions {
-
-      .action--submit, .tip {
-        display: block;
-        width: 100%;
-        margin-bottom: ($baseline-v/2);
-
-        @include media($bp-ds) {
-          display: inline-block;
-          vertical-align: middle;
-          width: auto;
-        }
-
-        @include media($bp-dm) {
-          display: inline-block;
-          vertical-align: middle;
-          width: auto;
-        }
-
-        @include media($bp-dl) {
-          display: inline-block;
-          vertical-align: middle;
-          width: auto;
-        }
-
-        @include media($bp-dx) {
-          display: inline-block;
-          vertical-align: middle;
-          width: auto;
-        }
-      }
+      @include transition(background-color $tmg-f1 ease-in-out 0s);
+      border-radius: ($baseline-v/5);
+      padding: ($baseline-v/2) ($baseline-h/2);
+      background: transparent;
 
       .action--save {
         @extend %btn--secondary;
@@ -501,9 +597,60 @@
         }
       }
 
-      .tip {
-        @extend %copy-5;
-        color: $copy-supplemental-color;
+      // STATE: has error
+      &.has--error {
+        @include row();
+        background: tint($color-error, 90%);
+
+        .message {
+          display: block;
+
+          @include media($bp-ds) {
+            @include span-columns(3 of 6);
+            text-align: left;
+          }
+
+          @include media($bp-dm) {
+            @include span-columns(6 of 12);
+            margin-bottom: 0;
+            text-align: left;
+          }
+
+          @include media($bp-dl) {
+            @include span-columns(6 of 12);
+            text-align: left;
+          }
+
+          @include media($bp-dx) {
+            @include span-columns(6 of 12);
+            text-align: left;
+          }
+        }
+
+        .list--actions {
+          display: block;
+          margin-bottom: ($baseline-v/2);
+
+          @include media($bp-ds) {
+            @include span-columns(3 of 6);
+            margin-bottom: 0;
+          }
+
+          @include media($bp-dm) {
+            @include span-columns(6 of 12);
+            margin-bottom: 0;
+          }
+
+          @include media($bp-dl) {
+            @include span-columns(6 of 12);
+            margin-bottom: 0;
+          }
+
+          @include media($bp-dx) {
+            @include span-columns(6 of 12);
+            margin-bottom: 0;
+          }
+        }
       }
     }
   }
@@ -615,6 +762,10 @@
 
     // step actions
     .peer-assessment__actions {
+      @include transition(background-color $tmg-f1 ease-in-out 0s);
+      border-radius: ($baseline-v/5);
+      padding: ($baseline-v/2) ($baseline-h/2);
+      background: transparent;
       text-align: center;
 
       @include media($bp-ds) {
@@ -636,6 +787,61 @@
       .action--submit {
         @extend %btn--primary;
         @extend %action-4;
+      }
+
+      // STATE: has error
+      &.has--error {
+        @include row();
+        background: tint($color-error, 90%);
+
+        .message {
+          display: block;
+          margin-bottom: ($baseline-v/2);
+
+          @include media($bp-ds) {
+            @include span-columns(3 of 6);
+            margin-bottom: 0;
+            text-align: left;
+          }
+
+          @include media($bp-dm) {
+            @include span-columns(6 of 12);
+            margin-bottom: 0;
+            text-align: left;
+          }
+
+          @include media($bp-dl) {
+            @include span-columns(6 of 12);
+            margin-bottom: 0;
+            text-align: left;
+          }
+
+          @include media($bp-dx) {
+            @include span-columns(6 of 12);
+            margin-bottom: 0;
+            text-align: left;
+          }
+        }
+
+        .list--actions {
+          display: block;
+
+          @include media($bp-ds) {
+            @include span-columns(3 of 6);
+          }
+
+          @include media($bp-dm) {
+            @include span-columns(6 of 12);
+          }
+
+          @include media($bp-dl) {
+            @include span-columns(6 of 12);
+          }
+
+          @include media($bp-dx) {
+            @include span-columns(6 of 12);
+          }
+        }
       }
     }
   }
@@ -702,6 +908,10 @@
 
     // step actions
     .self-assessment__actions {
+      @include transition(background-color $tmg-f1 ease-in-out 0s);
+      border-radius: ($baseline-v/5);
+      padding: ($baseline-v/2) ($baseline-h/2);
+      background: transparent;
       text-align: center;
 
       @include media($bp-ds) {
@@ -723,6 +933,61 @@
       .action--submit {
         @extend %btn--primary;
         @extend %action-4;
+      }
+
+      // STATE: has error
+      &.has--error {
+        @include row();
+        background: tint($color-error, 90%);
+
+        .message {
+          display: block;
+          margin-bottom: ($baseline-v/2);
+
+          @include media($bp-ds) {
+            @include span-columns(3 of 6);
+            margin-bottom: 0;
+            text-align: left;
+          }
+
+          @include media($bp-dm) {
+            @include span-columns(6 of 12);
+            margin-bottom: 0;
+            text-align: left;
+          }
+
+          @include media($bp-dl) {
+            @include span-columns(6 of 12);
+            margin-bottom: 0;
+            text-align: left;
+          }
+
+          @include media($bp-dx) {
+            @include span-columns(6 of 12);
+            margin-bottom: 0;
+            text-align: left;
+          }
+        }
+
+        .list--actions {
+          display: block;
+
+          @include media($bp-ds) {
+            @include span-columns(3 of 6);
+          }
+
+          @include media($bp-dm) {
+            @include span-columns(6 of 12);
+          }
+
+          @include media($bp-dl) {
+            @include span-columns(6 of 12);
+          }
+
+          @include media($bp-dx) {
+            @include span-columns(6 of 12);
+          }
+        }
       }
     }
   }
