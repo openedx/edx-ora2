@@ -2,6 +2,7 @@
 """
 Tests for peer assessment handlers in Open Assessment XBlock.
 """
+from collections import namedtuple
 
 import copy
 import json
@@ -63,7 +64,9 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         self.assertEqual(workflow_info["status"], u'peer')
 
         # Validate Submission Rendering.
-        peer_response = xblock.render_peer_assessment({})
+        request = namedtuple('Request', 'params')
+        request.params = {}
+        peer_response = xblock.render_peer_assessment(request)
         self.assertIsNotNone(peer_response)
         self.assertNotIn(submission["answer"].encode('utf-8'), peer_response.body)
 

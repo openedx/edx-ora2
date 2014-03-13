@@ -27,6 +27,9 @@
     {% block body %}
     <div class="ui-toggle-visibility__content">
         <div class="wrapper--step__content">
+            {% block message %}
+            {% endblock %}
+
             <div class="step__instruction">
                 <p>Please provide your response to the following question. You can save your progress and return to complete your response at any time before the due date of <span class="step__deadline"><span class="date">{{ formatted_due_date }}</span></span>. <strong class="emphasis--beta">After you submit your response, you cannot edit it</strong>.</p>
             </div>
