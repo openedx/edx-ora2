@@ -257,11 +257,19 @@ class OpenAssessmentBlock(
                 includes the student id, item id, and course id.
         """
         item_id, student_id = self.get_xblock_trace()
+
+        # This is not the real way course_ids should work, but this is a
+        # temporary expediency for LMS integratino
+        if hasattr(self, "xmodule_runtime"):
+            course_id = self.xmodule_runtime.course_id
+        else:
+            course_id = "edX/Enchantment_101/April_1"
+
         student_item_dict = dict(
             student_id=student_id,
             item_id=item_id,
-            course_id=self.course_id,
-            item_type='openassessment'      # XXX: Is this the tag we want? Why?
+            course_id=course_id,
+            item_type='openassessment'
         )
         return student_item_dict
 

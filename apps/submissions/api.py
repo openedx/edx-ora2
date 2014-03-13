@@ -8,8 +8,10 @@ import logging
 from django.db import DatabaseError
 from django.utils.encoding import force_unicode
 
-from submissions.serializers import SubmissionSerializer, StudentItemSerializer, ScoreSerializer
-from submissions.models import Submission, StudentItem, Score
+from submissions.serializers import (
+    SubmissionSerializer, StudentItemSerializer, ScoreSerializer
+)
+from submissions.models import Submission, StudentItem, Score, ScoreSummary
 
 logger = logging.getLogger(__name__)
 
@@ -320,12 +322,49 @@ def get_score(student_item):
     """
     try:
         student_item_model = StudentItem.objects.get(**student_item)
-        scores = Score.objects.filter(student_item=student_item_model)
-
-    except StudentItem.DoesNotExist:
+        score = ScoreSummary.objects.get(student_item=student_item_model).latest
+    except (ScoreSummary.DoesNotExist, StudentItem.DoesNotExist):
         return None
 
-    return ScoreSerializer(scores, many=True).data
+    return ScoreSerializer(score).data
+
+
+def get_scores(course_id, student_id):
+    """Return a dict mapping item_ids -> (points_earned, points_possible).
+
+    This method would be used by an LMS to find all the scores for a given
+    student in a given course.
+
+    Args:
+        course_id (str): Course ID, used to do a lookup on the `StudentItem`.
+        student_id (str): Student ID, used to do a lookup on the `StudentItem`.
+
+    Returns:
+        dict: The keys are `item_id`s (`str`) and the values are tuples of
+        `(points_earned, points_possible)`. All points are integer values and
+        represent the raw, unweighted scores. Submissions does not have any
+        concept of weights. If there are no entries matching the `course_id` or
+        `student_id`, we simply return an empty dictionary. This is not
+        considered an error because there might be many queries for the progress
+        page of a person who has never submitted anything.
+    """
+    try:
+        score_summaries = ScoreSummary.objects.filter(
+            student_item__course_id=course_id,
+            student_item__student_id=student_id,
+        ).select_related('latest', 'student_item')
+    except DatabaseError:
+        msg = u"Could not fetch scores for course {}, student {}".format(
+            course_id, student_id
+        )
+        logger.exception(msg)
+        raise SubmissionInternalError(msg)
+    scores = {
+        summary.student_item.item_id:
+            (summary.latest.points_earned, summary.latest.points_possible)
+        for summary in score_summaries
+    }
+    return scores
 
 
 def get_latest_score_for_submission(submission_uuid):
@@ -340,9 +379,6 @@ def get_latest_score_for_submission(submission_uuid):
         )
 
     return ScoreSerializer(score).data
-
-def get_scores(course_id, student_id, types=None):
-    pass
 
 
 def set_score(submission_uuid, score, points_possible):

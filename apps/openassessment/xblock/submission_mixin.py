@@ -116,24 +116,6 @@ class SubmissionMixin(object):
         return submission
 
     @staticmethod
-    def _get_submission_score(student_item_dict):
-        """Return the most recent score, if any, for student item
-
-        Gets the score, if available.
-
-        Args:
-            student_item_dict (dict): The student item we want to check for a
-                score.
-
-        Returns:
-            (dict): Dictionary representing the score for this particular
-                question.
-
-        """
-        scores = api.get_score(student_item_dict)
-        return scores[0] if scores else None
-
-    @staticmethod
     def get_user_submission(submission_uuid):
         """Return the most recent submission by user in workflow
 

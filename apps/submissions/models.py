@@ -9,9 +9,16 @@ need to then generate a matching migration for it using:
     ./manage.py schemamigration submissions --auto
 
 """
-from django.db import models
+import logging
+
+from django.db import models, DatabaseError
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.timezone import now
 from django_extensions.db.fields import UUIDField
+
+
+logger = logging.getLogger(__name__)
 
 
 class StudentItem(models.Model):
@@ -95,12 +102,7 @@ class Submission(models.Model):
 
 
 class Score(models.Model):
-    """What the user scored for a given StudentItem.
-
-    TODO: Make a ScoreHistory that has more detailed log information so that we
-    can reconstruct what the state was at a given point in time and debug
-    more easily.
-    """
+    """What the user scored for a given StudentItem at a given time."""
     student_item = models.ForeignKey(StudentItem)
     submission = models.ForeignKey(Submission, null=True)
     points_earned = models.PositiveIntegerField(default=0)
@@ -111,6 +113,11 @@ class Score(models.Model):
     def submission_uuid(self):
         return self.submission.uuid
 
+    def to_float(self):
+        if self.points_possible == 0:
+            return None
+        return float(self.points_earned) / self.points_possible
+
     def __repr__(self):
         return repr(dict(
             student_item=self.student_item,
@@ -120,3 +127,33 @@ class Score(models.Model):
             points_possible=self.points_possible,
         ))
 
+
+class ScoreSummary(models.Model):
+    """Running store of the highest and most recent Scores for a StudentItem."""
+    student_item = models.ForeignKey(StudentItem, unique=True)
+    highest = models.ForeignKey(Score, related_name="+")
+    latest = models.ForeignKey(Score, related_name="+")
+
+    @receiver(post_save, sender=Score)
+    def update_score_summary(sender, **kwargs):
+        """Listen for new Scores and update the relevant ScoreSummary."""
+        score = kwargs['instance']
+        try:
+            score_summary = ScoreSummary.objects.get(
+                student_item=score.student_item
+            )
+            score_summary.latest = score
+            if score.to_float() > score_summary.highest.to_float():
+                score_summary.highest = score
+            score_summary.save()
+        except ScoreSummary.DoesNotExist:
+            ScoreSummary.objects.create(
+                student_item=score.student_item,
+                highest=score,
+                latest=score,
+            )
+        except DatabaseError as err:
+            logger.exception(
+                u"Error while updating score summary for student item {}"
+                .format(score.student_item)
+            )

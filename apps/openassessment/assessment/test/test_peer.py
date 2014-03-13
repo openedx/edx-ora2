@@ -171,7 +171,6 @@ class TestPeerApi(TestCase):
                 "must_be_graded_by": REQUIRED_GRADED_BY,
             }
         }
-        # score = sub_api.get_score(STUDENT_ITEM)
         score = workflow_api.get_workflow_for_submission(
             tim_sub["uuid"], requirements
         )["score"]
@@ -188,8 +187,7 @@ class TestPeerApi(TestCase):
 
         # Tim should not have a score, because his submission does not have
         # enough assessments.
-        scores = sub_api.get_score(STUDENT_ITEM)
-        self.assertFalse(scores)
+        self.assertIsNone(sub_api.get_score(STUDENT_ITEM))
 
         sub = peer_api.get_submission_to_assess(bob, REQUIRED_GRADED)
         self.assertEqual(sub["uuid"], tim_sub["uuid"])
@@ -254,7 +252,7 @@ class TestPeerApi(TestCase):
                 "must_be_graded_by": REQUIRED_GRADED_BY,
                 }
         }
-        
+
         # 1) Angel Submits
         angel_sub, angel = self._create_student_and_submission("Angel", "Angel's answer")
 
