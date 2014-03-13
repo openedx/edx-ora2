@@ -16,6 +16,7 @@ from xblock.fragment import Fragment
 from openassessment.xblock.grade_mixin import GradeMixin
 
 from openassessment.xblock.peer_assessment_mixin import PeerAssessmentMixin
+from openassessment.xblock.lms_mixin import LmsCompatibilityMixin
 from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.studio_mixin import StudioMixin
@@ -165,7 +166,8 @@ class OpenAssessmentBlock(
     SelfAssessmentMixin,
     StudioMixin,
     GradeMixin,
-    WorkflowMixin):
+    WorkflowMixin,
+    LmsCompatibilityMixin):
     """Displays a question and gives an area where students can compose a response."""
 
     start = String(
