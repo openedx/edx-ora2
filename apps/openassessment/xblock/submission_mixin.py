@@ -184,23 +184,10 @@ class SubmissionMixin(object):
         elif not workflow:
             path = "openassessmentblock/response/oa_response.html"
         elif workflow["status"] == "done":
-            assessment_ui_model = self.get_assessment_module('peer-assessment')
             student_submission = self.get_user_submission(
                 workflow["submission_uuid"]
             )
-            student_score = workflow["score"]
-            assessments = peer_api.get_assessments(student_submission["uuid"])
-            median_scores = peer_api.get_assessment_median_scores(
-                student_submission["uuid"],
-                assessment_ui_model["must_be_graded_by"]
-            )
             context["student_submission"] = student_submission
-            context["peer_assessments"] = assessments
-            context["rubric_criteria"] = copy.deepcopy(self.rubric_criteria)
-            context["student_score"] = student_score
-            for criterion in context["rubric_criteria"]:
-                criterion["median_score"] = median_scores[criterion["name"]]
-
             path = 'openassessmentblock/response/oa_response_graded.html'
         else:
             context["student_submission"] = self.get_user_submission(
