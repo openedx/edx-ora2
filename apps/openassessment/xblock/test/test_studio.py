@@ -137,7 +137,7 @@ class StudioViewTest(XBlockHandlerTestCase):
 
         # Set the problem to unpublished with a start date in the future
         xblock.published_date = None
-        xblock.start = dt.datetime(3000, 1, 1).replace(tzinfo=pytz.utc).isoformat()
+        xblock.start = dt.datetime(3000, 1, 1).replace(tzinfo=pytz.utc)
         resp = self.request(xblock, 'check_released', json.dumps(""), response_format='json')
         self.assertTrue(resp['success'])
         self.assertFalse(resp['is_released'])
