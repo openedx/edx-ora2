@@ -467,6 +467,28 @@
 
   }
 
+  // --------------------
+  // errors
+  // --------------------
+
+  // CASE: default error display (hidden)
+  .message--error {
+    @extend %trans-opacity;
+    display: none;
+    opacity: 0.0;
+  }
+
+  // CASE: error is shown
+ .has--error {
+
+    .message--error {
+      display: block;
+      opacity: 1.0;
+    }
+  }
+
+
+
 
   // --------------------
   // problem
