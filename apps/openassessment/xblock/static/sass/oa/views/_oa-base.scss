@@ -478,14 +478,14 @@
     opacity: 0.0;
   }
 
-  // CASE: error is shown
- .has--error {
+    // CASE: error is shown
+   .has--error {
 
-    .message--error {
-      display: block;
-      opacity: 1.0;
+      .message--error {
+        display: block;
+        opacity: 1.0;
+      }
     }
-  }
 
 
 
@@ -739,6 +739,10 @@
 
     // step actions
     .peer-assessment__actions {
+      @include transition(background-color $tmg-f1 ease-in-out 0s);
+      border-radius: ($baseline-v/5);
+      padding: ($baseline-v/2) ($baseline-h/2);
+      background: transparent;
       text-align: center;
 
       @include media($bp-ds) {
@@ -760,6 +764,61 @@
       .action--submit {
         @extend %btn--primary;
         @extend %action-4;
+      }
+
+      // STATE: has error
+      &.has--error {
+        @include row();
+        background: tint($color-error, 90%);
+
+        .message {
+          display: block;
+          margin-bottom: ($baseline-v/2);
+
+          @include media($bp-ds) {
+            @include span-columns(3 of 6);
+            margin-bottom: 0;
+            text-align: left;
+          }
+
+          @include media($bp-dm) {
+            @include span-columns(6 of 12);
+            margin-bottom: 0;
+            text-align: left;
+          }
+
+          @include media($bp-dl) {
+            @include span-columns(6 of 12);
+            margin-bottom: 0;
+            text-align: left;
+          }
+
+          @include media($bp-dx) {
+            @include span-columns(6 of 12);
+            margin-bottom: 0;
+            text-align: left;
+          }
+        }
+
+        .list--actions {
+          display: block;
+
+          @include media($bp-ds) {
+            @include span-columns(3 of 6);
+          }
+
+          @include media($bp-dm) {
+            @include span-columns(6 of 12);
+          }
+
+          @include media($bp-dl) {
+            @include span-columns(6 of 12);
+          }
+
+          @include media($bp-dx) {
+            @include span-columns(6 of 12);
+          }
+        }
       }
     }
   }
@@ -826,6 +885,10 @@
 
     // step actions
     .self-assessment__actions {
+      @include transition(background-color $tmg-f1 ease-in-out 0s);
+      border-radius: ($baseline-v/5);
+      padding: ($baseline-v/2) ($baseline-h/2);
+      background: transparent;
       text-align: center;
 
       @include media($bp-ds) {
@@ -847,6 +910,61 @@
       .action--submit {
         @extend %btn--primary;
         @extend %action-4;
+      }
+
+      // STATE: has error
+      &.has--error {
+        @include row();
+        background: tint($color-error, 90%);
+
+        .message {
+          display: block;
+          margin-bottom: ($baseline-v/2);
+
+          @include media($bp-ds) {
+            @include span-columns(3 of 6);
+            margin-bottom: 0;
+            text-align: left;
+          }
+
+          @include media($bp-dm) {
+            @include span-columns(6 of 12);
+            margin-bottom: 0;
+            text-align: left;
+          }
+
+          @include media($bp-dl) {
+            @include span-columns(6 of 12);
+            margin-bottom: 0;
+            text-align: left;
+          }
+
+          @include media($bp-dx) {
+            @include span-columns(6 of 12);
+            margin-bottom: 0;
+            text-align: left;
+          }
+        }
+
+        .list--actions {
+          display: block;
+
+          @include media($bp-ds) {
+            @include span-columns(3 of 6);
+          }
+
+          @include media($bp-dm) {
+            @include span-columns(6 of 12);
+          }
+
+          @include media($bp-dl) {
+            @include span-columns(6 of 12);
+          }
+
+          @include media($bp-dx) {
+            @include span-columns(6 of 12);
+          }
+        }
       }
     }
   }
