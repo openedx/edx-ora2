@@ -75,10 +75,16 @@
                     </ol>
                 </fieldset>
 
-                <div class="self-assessment__actions">
+                <div class="self-assessment__actions has--error">
+                    <div class="message message--error message--error-server">
+                        <h3 class="message__title">We could not submit your assessment</h3>
+                        <div class="message__content">
+                            <p>There was a problem communicating with the server. Please try again.</p>
+                        </div>
+                    </div>
                     <ul class="list list--actions">
                         <li class="list--actions__item">
-                            <button type="submit" id="self-assessment--001__assessment__submit" class="action action--submit">
+                            <button type="submit" id="self-assessment--001__assessment__submit" class="action action--submit is--disabled">
                                 <span class="copy">{% trans "Submit Your Assessment" %}</span>
                                 <i class="ico icon-caret-right"></i>
                             </button>
