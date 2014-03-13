@@ -332,7 +332,7 @@ def has_finished_required_evaluating(student_item_dict, required_assessments):
     count = 0
     if workflow:
         done = _check_student_done_grading(workflow, required_assessments)
-        count = workflow.items.all().count()
+        count = workflow.items.all().exclude(assessment=-1).count()
     return done, count
 
 
