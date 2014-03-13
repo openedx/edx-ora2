@@ -35,6 +35,7 @@ class GradeMixin(object):
                     peer_assessments.append(assessment)
                 else:
                     self_assessment = assessment
+            peer_assessments = peer_assessments[:assessment_ui_model["must_grade"]]
             median_scores = peer_api.get_assessment_median_scores(
                 student_submission["uuid"],
                 assessment_ui_model["must_be_graded_by"]
