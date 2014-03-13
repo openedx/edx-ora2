@@ -42,7 +42,7 @@
         </criterion>
         <criterion>
             <name>form</name>
-            <prompt>Lastly, how is it's form? Punctuation, grammar, and spelling all count.</prompt>
+            <prompt>Lastly, how is its form? Punctuation, grammar, and spelling all count.</prompt>
             <option points="0">
                 <name>IRC</name>
                 <explanation></explanation>
