@@ -9,7 +9,7 @@ from mock import patch
 import pytz
 
 from submissions import api as api
-from submissions.models import Submission, StudentItem
+from submissions.models import ScoreSummary, Submission, StudentItem
 from submissions.serializers import StudentItemSerializer
 
 STUDENT_ITEM = dict(
@@ -183,14 +183,54 @@ class TestSubmissionsApi(TestCase):
     def test_get_score(self):
         submission = api.create_submission(STUDENT_ITEM, ANSWER_ONE)
         api.set_score(submission["uuid"], 11, 12)
-        scores = api.get_score(STUDENT_ITEM)
-        self._assert_score(scores[0], 11, 12)
-        self.assertEqual(scores[0]['submission_uuid'], submission['uuid'])
+        score = api.get_score(STUDENT_ITEM)
+        self._assert_score(score, 11, 12)
+        self.assertEqual(score['submission_uuid'], submission['uuid'])
 
     def test_get_score_no_student_id(self):
         student_item = copy.deepcopy(STUDENT_ITEM)
         student_item['student_id'] = None
         self.assertIs(api.get_score(student_item), None)
+
+    def test_get_scores(self):
+        student_item = copy.deepcopy(STUDENT_ITEM)
+        student_item["course_id"] = "get_scores_course"
+
+        student_item["item_id"] = "i4x://a/b/c/s1"
+        s1 = api.create_submission(student_item, "Hello World")
+
+        student_item["item_id"] = "i4x://a/b/c/s2"
+        s2 = api.create_submission(student_item, "Hello World")
+
+        student_item["item_id"] = "i4x://a/b/c/s3"
+        s3 = api.create_submission(student_item, "Hello World")
+
+        api.set_score(s1['uuid'], 3, 5)
+        api.set_score(s1['uuid'], 4, 5)
+        api.set_score(s1['uuid'], 2, 5)  # Should overwrite previous lines
+
+        api.set_score(s2['uuid'], 0, 10)
+        api.set_score(s3['uuid'], 4, 4)
+
+        # Getting the scores for a user should never take more than one query
+        with self.assertNumQueries(1):
+            scores = api.get_scores(
+                student_item["course_id"], student_item["student_id"]
+            )
+            self.assertEqual(
+                scores,
+                {
+                    u"i4x://a/b/c/s1": (2, 5),
+                    u"i4x://a/b/c/s2": (0, 10),
+                    u"i4x://a/b/c/s3": (4, 4),
+                }
+            )
+
+    @patch.object(ScoreSummary.objects, 'filter')
+    @raises(api.SubmissionInternalError)
+    def test_error_on_get_scores(self, mock_filter):
+        mock_filter.side_effect = DatabaseError("Bad things happened")
+        api.get_scores("some_course", "some_student")
 
     def _assert_score(
             self,
