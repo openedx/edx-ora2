@@ -417,6 +417,10 @@ class PeerWorkflowItem(models.Model):
     associated workflow represents the scorer of the given submission, and the
     assessment represents the completed assessment for this work item.
 
+    Assessments are represented as their ID, defaulting to -1. This is done to
+    optimized complex queries against PeerWorkflowItems with the Assessments
+    indexed, whereas a Null reference would be costly.
+
     """
     scorer_id = models.ForeignKey(PeerWorkflow, related_name='items')
     submission_uuid = models.CharField(max_length=128, db_index=True)

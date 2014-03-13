@@ -155,6 +155,25 @@ class TestPeerApi(TestCase):
         self.assertEqual(1, len(assessments))
         self.assertEqual(assessments[0]["scored_at"], MONDAY)
 
+    def test_has_finished_evaluation(self):
+        """
+        Verify unfinished assessments do not get counted when determining a
+        complete workflow.
+        """
+        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
+        sub = peer_api.get_submission_to_assess(bob, REQUIRED_GRADED)
+        self.assertEqual(sub["uuid"], tim_sub["uuid"])
+        finished, count = peer_api.has_finished_required_evaluating(bob, 1)
+        self.assertFalse(finished)
+        self.assertEqual(count, 0)
+        peer_api.create_assessment(
+            sub["uuid"], bob["student_id"], ASSESSMENT_DICT, RUBRIC_DICT
+        )
+        finished, count = peer_api.has_finished_required_evaluating(bob, 1)
+        self.assertTrue(finished)
+        self.assertEqual(count, 1)
+
     def test_peer_assessment_workflow(self):
         tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
