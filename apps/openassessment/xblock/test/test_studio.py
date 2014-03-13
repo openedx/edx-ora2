@@ -48,7 +48,7 @@ class StudioViewTest(XBlockHandlerTestCase):
 
         # Set the XBlock's release date to the future,
         # so we are not restricted in what we can edit
-        xblock.start = dt.datetime(3000, 1, 1).replace(tzinfo=pytz.utc).isoformat()
+        xblock.start = dt.datetime(3000, 1, 1).replace(tzinfo=pytz.utc)
 
         request = json.dumps({'xml': self.load_fixture_str('data/updated_block.xml')})
 

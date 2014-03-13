@@ -63,6 +63,17 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         self.assertTrue(submission_response.body.find("openassessment__response"))
         self.assertTrue(submission_response.body.find("April"))
 
+    @scenario('data/basic_scenario.xml')
+    def test_formatted_dates(self, xblock):
+
+        # Set start/due dates
+        xblock.start = dt.datetime(2014, 4, 1, 1, 1, 1)
+        xblock.due = dt.datetime(2014, 5, 1)
+
+        resp = xblock.render_peer_assessment({})
+        self.assertTrue(resp.body.find('Tuesday, April 01, 2014'))
+        self.assertTrue(resp.body.find('Thursday, May 01, 2014'))
+
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_default_fields(self, xblock):
 

@@ -1,6 +1,7 @@
 """An XBlock where students can read a question and compose their response"""
 
 import datetime as dt
+import json
 import pkg_resources
 
 import pytz
@@ -11,7 +12,7 @@ from django.template.loader import get_template
 from webob import Response
 
 from xblock.core import XBlock
-from xblock.fields import List, Scope, String, Boolean
+from xblock.fields import DateTime, List, Scope, String, Boolean
 from xblock.fragment import Fragment
 from openassessment.xblock.grade_mixin import GradeMixin
 
@@ -170,12 +171,12 @@ class OpenAssessmentBlock(
     LmsCompatibilityMixin):
     """Displays a question and gives an area where students can compose a response."""
 
-    start = String(
+    start = DateTime(
         default=None, scope=Scope.settings,
         help="ISO-8601 formatted string representing the start date of this assignment."
     )
 
-    due = String(
+    due = DateTime(
         default=None, scope=Scope.settings,
         help="ISO-8601 formatted string representing the due date of this assignment."
     )
@@ -381,13 +382,11 @@ class OpenAssessmentBlock(
         context_dict["xblock_trace"] = self.get_xblock_trace()
 
         if self.start:
-            start = dateutil.parser.parse(self.start)
-            context_dict["formatted_start_date"] = start.strftime("%A, %B %d, %Y")
-            context_dict["formatted_start_datetime"] = start.strftime("%A, %B %d, %Y %X")
+            context_dict["formatted_start_date"] = self.start.strftime("%A, %B %d, %Y")
+            context_dict["formatted_start_datetime"] = self.start.strftime("%A, %B %d, %Y %X")
         if self.due:
-            due = dateutil.parser.parse(self.due)
-            context_dict["formatted_due_date"] = due.strftime("%A, %B %d, %Y")
-            context_dict["formatted_due_datetime"] = due.strftime("%A, %B %d, %Y %X")
+            context_dict["formatted_due_date"] = self.due.strftime("%A, %B %d, %Y")
+            context_dict["formatted_due_datetime"] = self.due.strftime("%A, %B %d, %Y %X")
 
         template = get_template(path)
         context = Context(context_dict)
