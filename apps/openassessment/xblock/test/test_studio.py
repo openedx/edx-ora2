@@ -125,3 +125,20 @@ class StudioViewTest(XBlockHandlerTestCase):
         self.assertEqual(xblock.prompt, old_prompt)
         self.assertItemsEqual(xblock.rubric_assessments, old_assessments)
         self.assertItemsEqual(xblock.rubric_criteria, old_criteria)
+
+
+    @scenario('data/basic_scenario.xml')
+    def test_check_released(self, xblock):
+        # By default, the problem should be released
+        resp = self.request(xblock, 'check_released', json.dumps(""), response_format='json')
+        self.assertTrue(resp['success'])
+        self.assertTrue(resp['is_released'])
+        self.assertIn('msg', resp)
+
+        # Set the problem to unpublished with a start date in the future
+        xblock.published_date = None
+        xblock.start = dt.datetime(3000, 1, 1).replace(tzinfo=pytz.utc).isoformat()
+        resp = self.request(xblock, 'check_released', json.dumps(""), response_format='json')
+        self.assertTrue(resp['success'])
+        self.assertFalse(resp['is_released'])
+        self.assertIn('msg', resp)

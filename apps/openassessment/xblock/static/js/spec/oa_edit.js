@@ -13,6 +13,7 @@ describe("OpenAssessment.StudioUI", function() {
         this.loadError = false;
         this.updateError = false;
         this.xml = '<openassessment></openassessment>';
+        this.isReleased = false;
 
         this.errorPromise = $.Deferred(function(defer) {
             defer.rejectWith(this, ['Test error']);
@@ -40,6 +41,13 @@ describe("OpenAssessment.StudioUI", function() {
             else {
                 return this.errorPromise;
             }
+        };
+
+        this.checkReleased = function() {
+            var server = this;
+            return $.Deferred(function(defer) {
+                defer.resolveWith(this, [server.isReleased]);
+            }).promise();
         };
     };
 
@@ -85,6 +93,22 @@ describe("OpenAssessment.StudioUI", function() {
 
         // Expect the server's XML to have been updated
         expect(server.xml).toEqual('<openassessment>test!</openassessment>');
+    });
+
+    it("confirms changes for a released problem", function() {
+        // Simulate an XBlock that has been released
+        server.isReleased = true;
+
+        // Stub the confirmation step (avoid showing the dialog)
+        spyOn(ui, 'confirmPostReleaseUpdate').andCallFake(
+            function(onConfirm) { onConfirm(); }
+        );
+
+        // Save the updated XML
+        ui.save();
+
+        // Verify that the user was asked to confirm the changes
+        expect(ui.confirmPostReleaseUpdate).toHaveBeenCalled();
     });
 
     it("cancels editing", function() {

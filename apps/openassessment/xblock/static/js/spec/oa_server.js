@@ -130,6 +130,20 @@ describe("OpenAssessment.Server", function() {
         });
     });
 
+    it("Checks whether the XBlock has been released", function() {
+        stubAjax(true, { success: true, is_released: true });
+
+        var receivedIsReleased = null;
+        server.checkReleased().done(function(isReleased) {
+            receivedIsReleased = isReleased;
+        });
+
+        expect(receivedIsReleased).toBe(true);
+        expect($.ajax).toHaveBeenCalledWith({
+            url: '/check_released', type: "POST", data: "\"\""
+        });
+    });
+
     it("informs the caller of an Ajax error when rendering as HTML", function() {
         stubAjax(false, null);
 
@@ -235,7 +249,7 @@ describe("OpenAssessment.Server", function() {
         stubAjax(true, {success:false, msg:'Test error!'});
 
         var receivedMsg = null;
-        var options = {clarity: "Very clear", precision: "Somewhat precise"}
+        var options = {clarity: "Very clear", precision: "Somewhat precise"};
         server.peerAssess("abc1234", options, "Excellent job!").fail(function(msg) {
             receivedMsg = msg;
         });
@@ -247,11 +261,34 @@ describe("OpenAssessment.Server", function() {
         stubAjax(false, null);
 
         var receivedMsg = null;
-        var options = {clarity: "Very clear", precision: "Somewhat precise"}
+        var options = {clarity: "Very clear", precision: "Somewhat precise"};
         server.peerAssess("abc1234", options, "Excellent job!").fail(function(msg) {
             receivedMsg = msg;
         });
 
         expect(receivedMsg).toEqual("Could not contact server.");
+    });
+
+    it("informs the caller of an AJAX error when checking whether the XBlock has been released", function() {
+        stubAjax(false, null);
+
+        var receivedMsg = null;
+        server.checkReleased().fail(function(errMsg) {
+            receivedMsg = errMsg;
+        });
+
+        expect(receivedMsg).toEqual("Could not contact server.");
+
+    });
+
+    it("informs the caller of a server error when checking whether the XBlock has been released", function() {
+        stubAjax(true, { success: false, msg: "Test error" });
+
+        var receivedMsg = null;
+        server.checkReleased().fail(function(errMsg) {
+            receivedMsg = errMsg;
+        });
+
+        expect(receivedMsg).toEqual("Test error");
     });
 });

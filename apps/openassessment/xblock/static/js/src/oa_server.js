@@ -266,10 +266,40 @@ OpenAssessment.Server.prototype = {
             $.ajax({
                 type: "POST", url: url, data: payload
             }).done(function(data) {
-                if (data.success) { defer.resolve() }
+                if (data.success) { defer.resolve(); }
                 else { defer.rejectWith(this, [data.msg]); }
             }).fail(function(data) {
                 defer.rejectWith(this, ['Could not contact server.']);
+            });
+        }).promise();
+    },
+
+    /**
+    Check whether the XBlock has been released.
+
+    Returns:
+        A JQuery promise, which resolves with a boolean indicating
+        whether the XBlock has been released.  On failure, the promise
+        provides an error message.
+
+    Example:
+        server.checkReleased().done(
+            function(isReleased) {}
+        ).fail(
+            function(errMsg) {}
+        )
+    **/
+    checkReleased: function() {
+        var url = this.url('check_released');
+        var payload = "\"\"";
+        return $.Deferred(function(defer) {
+            $.ajax({
+                type: "POST", url: url, data: payload
+            }).done(function(data) {
+                if (data.success) { defer.resolveWith(this, [data.is_released]); }
+                else { defer.rejectWith(this, [data.msg]); }
+            }).fail(function(data) {
+                defer.rejectWith(this, ["Could not contact server."]);
             });
         }).promise();
     }

@@ -93,3 +93,24 @@ class StudioMixin(object):
             return {'success': False, 'msg': msg, 'xml': u''}
         else:
             return {'success': True, 'msg': '', 'xml': xml}
+
+    @XBlock.json_handler
+    def check_released(self, data, suffix=''):
+        """
+        Check whether the problem has been released.
+
+        Args:
+            data (dict): Not used
+
+        Kwargs:
+            suffix (str): Not used
+
+        Returns:
+            dict with keys 'success' (bool), 'message' (unicode), and 'is_released' (bool)
+        """
+        # There aren't currently any server-side error conditions we report to the client,
+        # but we send success/msg values anyway for consistency with other handlers.
+        return {
+            'success': True, 'msg': u'',
+            'is_released': self.is_released()
+        }
