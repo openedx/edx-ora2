@@ -70,6 +70,37 @@ OpenAssessment.Server.prototype = {
     },
 
     /**
+     Render the Peer Assessment Section after a complete workflow, in order to
+     continue grading peers.
+
+     Returns:
+     A JQuery promise, which resolves with the HTML of the rendered peer
+     assessment section or fails with an error message.
+
+     Example:
+     server.render_continued_peer().done(
+     function(html) { console.log(html); }
+     ).fail(
+     function(err) { console.log(err); }
+     )
+     **/
+    renderContinuedPeer: function() {
+        var url = this.url('render_peer_assessment');
+        return $.Deferred(function(defer) {
+            $.ajax({
+                url: url,
+                type: "POST",
+                dataType: "html",
+                data: {continue_grading: true}
+            }).done(function(data) {
+                    defer.resolveWith(this, [data]);
+                }).fail(function(data) {
+                    defer.rejectWith(this, ['Could not contact server.']);
+                })
+        }).promise();
+    },
+
+    /**
     Send a submission to the XBlock.
 
     Args:

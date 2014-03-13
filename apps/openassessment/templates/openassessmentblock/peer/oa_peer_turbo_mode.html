@@ -1,0 +1,22 @@
+{%  extends "openassessmentblock/peer/oa_peer_assessment.html" %}
+
+{% block list_item %}
+<li id="openassessment__peer-assessment"class="openassessment__steps__step step--peer-assessment ui-toggle-visibility is--complete">
+{% endblock %}
+
+{% block title %}
+<span class="step__status">
+  <span class="step__status__label">This step's status:</span>
+  <span class="step__status__value">
+  <span class="copy">Turbo Mode</span>
+  </span>
+</span>
+{% endblock %}
+
+{% block message %}
+<div class="step__message message message--confirmation message--confirmation-turbo-mode">
+    <h3 class="message__title">Congratulations!</h3>
+    <div class="message__content">You have successfully completed all of the peer assessment that you have been asked to do for this step. If you would like to continue providing feedback to your peers you may do so here, but it will not influence your final grade.</div>
+</div>
+{% endblock %}
+

@@ -196,6 +196,18 @@
       margin-top: $baseline-v;
     }
 
+    // step message
+    .step__message {
+      @include row();
+      margin-bottom: $baseline-v;
+      border-radius: ($baseline-v/5);
+      padding: $baseline-v ($baseline-h/2);
+
+      &.message--confirmation {
+        background: tint($color-complete, 90%);
+      }
+    }
+
     // step instructions
     .step__instruction {
       @extend %copy-4;
@@ -465,6 +477,9 @@
   // TYPE: confirmation
   .message--confirmation {
 
+    .message__title {
+      color: $color-complete;
+    }
   }
 
   // --------------------

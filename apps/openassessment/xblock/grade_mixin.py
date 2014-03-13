@@ -2,6 +2,7 @@ import copy
 from xblock.core import XBlock
 from openassessment.assessment import peer_api
 
+
 class GradeMixin(object):
     """Grade Mixin introduces all handlers for displaying grades
 

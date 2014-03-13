@@ -1,15 +1,12 @@
 """
 Tests the Open Assessment XBlock functionality.
 """
+from collections import namedtuple
 import datetime as dt
 import pytz
-
 from mock import Mock, patch
 
 from openassessment.xblock import openassessmentblock
-from openassessment.xblock.submission_mixin import SubmissionMixin
-
-
 from .base import XBlockHandlerTestCase, scenario
 
 
@@ -32,12 +29,14 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         self.assertTrue(submission_response.body.find("openassessment__response"))
 
         # Validate Peer Rendering.
-        peer_response = xblock.render_peer_assessment({})
+        request = namedtuple('Request', 'params')
+        request.params = {}
+        peer_response = xblock.render_peer_assessment(request)
         self.assertIsNotNone(peer_response)
         self.assertTrue(peer_response.body.find("openassessment__peer-assessment"))
 
         # Validate Self Rendering.
-        self_response = xblock.render_self_assessment({})
+        self_response = xblock.render_self_assessment(request)
         self.assertIsNotNone(self_response)
         self.assertTrue(self_response.body.find("openassessment__peer-assessment"))
 
@@ -70,7 +69,9 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         xblock.start = dt.datetime(2014, 4, 1, 1, 1, 1)
         xblock.due = dt.datetime(2014, 5, 1)
 
-        resp = xblock.render_peer_assessment({})
+        request = namedtuple('Request', 'params')
+        request.params = {}
+        resp = xblock.render_peer_assessment(request)
         self.assertTrue(resp.body.find('Tuesday, April 01, 2014'))
         self.assertTrue(resp.body.find('Thursday, May 01, 2014'))
 
