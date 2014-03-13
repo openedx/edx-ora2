@@ -30,7 +30,7 @@ class SubmissionMixin(object):
         'EBADFORM': _(u'API Submission Request Error.'),
         'EUNKNOWN': _(u'API returned unclassified exception.'),
         'ENOMULTI': _(u'Multiple submissions are not allowed.'),
-        'ENOPREVIEW': _(u'You cannot make a submission while in Preview mode.'),
+        'ENOPREVIEW': _(u'To submit a response, view this component in Preview or Live mode.'),
     }
 
     @XBlock.json_handler

@@ -53,4 +53,4 @@ class SubmissionTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
         self.assertFalse(resp[0])
         self.assertEqual(resp[1], "ENOPREVIEW")
-        self.assertEqual(resp[2], "You cannot make a submission while in Preview mode.")
+        self.assertEqual(resp[2], "To submit a response, view this component in Preview or Live mode.")
