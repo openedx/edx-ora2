@@ -57,7 +57,7 @@ setup(
 
     entry_points={
         'xblock.v1': [
-            'openassessment = openassessment.xblock.openassessmentblock:OpenAssessmentBlock',
+            'peer_assessment = openassessment.xblock.openassessmentblock:OpenAssessmentBlock',
         ]
     },
     package_data=package_data("openassessment.xblock", "static"),
