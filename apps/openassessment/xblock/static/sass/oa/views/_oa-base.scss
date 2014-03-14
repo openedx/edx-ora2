@@ -241,19 +241,19 @@
           }
 
           @include media($bp-dm) {
-            @include span-columns(4 of 12);
+            @include span-columns(6 of 12);
             margin-bottom: 0;
             text-align: left;
           }
 
           @include media($bp-dl) {
-            @include span-columns(4 of 12);
+            @include span-columns(6 of 12);
             margin-bottom: 0;
             text-align: left;
           }
 
           @include media($bp-dx) {
-            @include span-columns(4 of 12);
+            @include span-columns(6 of 12);
             margin-bottom: 0;
             text-align: left;
           }
@@ -263,19 +263,19 @@
           display: block;
 
           @include media($bp-ds) {
-            @include span-columns(4 of 6);
+            @include span-columns(3 of 6);
           }
 
           @include media($bp-dm) {
-            @include span-columns(8 of 12);
+            @include span-columns(6 of 12);
           }
 
           @include media($bp-dl) {
-            @include span-columns(8 of 12);
+            @include span-columns(6 of 12);
           }
 
           @include media($bp-dx) {
-            @include span-columns(8 of 12);
+            @include span-columns(6 of 12);
           }
         }
       }
@@ -568,10 +568,6 @@
     }
 
     .response__submission__actions {
-      @include transition(background-color $tmg-f1 ease-in-out 0s);
-      border-radius: ($baseline-v/5);
-      padding: ($baseline-v/2) ($baseline-h/2);
-      background: transparent;
 
       .action--save {
         @extend %btn--secondary;
@@ -711,36 +707,6 @@
         }
       }
     }
-
-    // step actions
-    .peer-assessment__actions {
-      @include transition(background-color $tmg-f1 ease-in-out 0s);
-      border-radius: ($baseline-v/5);
-      padding: ($baseline-v/2) ($baseline-h/2);
-      background: transparent;
-      text-align: center;
-
-      @include media($bp-ds) {
-        text-align: right;
-      }
-
-      @include media($bp-dm) {
-       text-align: right;
-      }
-
-      @include media($bp-dl) {
-        text-align: right;
-      }
-
-      @include media($bp-dx) {
-        text-align: right;
-      }
-
-      .action--submit {
-        @extend %btn--primary;
-        @extend %action-4;
-      }
-    }
   }
 
 
@@ -800,36 +766,6 @@
           @extend %ui-content-longanswer;
           min-height: ($baseline-v*5);
         }
-      }
-    }
-
-    // step actions
-    .self-assessment__actions {
-      @include transition(background-color $tmg-f1 ease-in-out 0s);
-      border-radius: ($baseline-v/5);
-      padding: ($baseline-v/2) ($baseline-h/2);
-      background: transparent;
-      text-align: center;
-
-      @include media($bp-ds) {
-        text-align: right;
-      }
-
-      @include media($bp-dm) {
-       text-align: right;
-      }
-
-      @include media($bp-dl) {
-        text-align: right;
-      }
-
-      @include media($bp-dx) {
-        text-align: right;
-      }
-
-      .action--submit {
-        @extend %btn--primary;
-        @extend %action-4;
       }
     }
   }
