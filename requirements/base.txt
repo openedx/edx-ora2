@@ -1,5 +1,5 @@
 # edX Internal Requirements
-git+https://github.com/edx/XBlock.git@c7ef611727d89887a258c5d4774a6efbda36cb13#egg=XBlock
+git+https://github.com/edx/XBlock.git@2ac249d5af0cd42adf766bfb1c6858354bbcccd9#egg=XBlock
 git+https://github.com/ormsbee/xblock-sdk.git@4f62e508#egg=xblock-sdk
 
 # Third Party Requirements
