@@ -51,19 +51,16 @@ OpenAssessment.BaseUI.prototype = {
      * Asynchronously load each sub-view into the DOM.
      */
     load: function() {
-        this.renderSubmissionStep(true);
-        this.renderPeerAssessmentStep(false);
-        this.renderSelfAssessmentStep(false);
+        this.renderSubmissionStep();
+        this.renderPeerAssessmentStep();
+        this.renderSelfAssessmentStep();
         this.renderGradeStep();
     },
 
     /**
     Render the submission step.
-
-    Args:
-        expanded (bool): If true, expand the step.
     **/
-    renderSubmissionStep: function(expand) {
+    renderSubmissionStep: function() {
         var ui = this;
         this.server.render('submission').done(
             function(html) {
@@ -119,11 +116,8 @@ OpenAssessment.BaseUI.prototype = {
 
     /**
     Render the peer-assessment step.
-
-    Args:
-        expand (bool): If true, expand the step.
     **/
-    renderPeerAssessmentStep: function(expand) {
+    renderPeerAssessmentStep: function() {
         var ui = this;
         this.server.render('peer_assessment').done(
             function(html) {
@@ -208,11 +202,8 @@ OpenAssessment.BaseUI.prototype = {
 
     /**
     Render the self-assessment step.
-
-    Args:
-        expand (bool): If true, expand the step.
     **/
-    renderSelfAssessmentStep: function(expand) {
+    renderSelfAssessmentStep: function() {
         var ui = this;
         this.server.render('self_assessment').done(
             function(html) {
@@ -304,7 +295,7 @@ OpenAssessment.BaseUI.prototype = {
             // When we have successfully sent the submission, expand the next step
             function(studentId, attemptNum) {
                 ui.renderSubmissionStep();
-                ui.renderPeerAssessmentStep(true);
+                ui.renderPeerAssessmentStep();
             }
         ).fail(function(errCode, errMsg) {
             ui.toggleActionError('submit', errMsg);
@@ -317,11 +308,8 @@ OpenAssessment.BaseUI.prototype = {
     peerAssess: function() {
         var ui = this;
         ui.peerAssessRequest(function() {
-            // We leave the peer assessment step expanded, because (a) there might
-            // be more peers for the student to grade, and (b) the "completed" state
-            // contains no content, so it will look collapsed anyway.
-            ui.renderPeerAssessmentStep(true);
-            ui.renderSelfAssessmentStep(true);
+            ui.renderPeerAssessmentStep();
+            ui.renderSelfAssessmentStep();
             ui.renderGradeStep();
         });
     },
@@ -386,10 +374,8 @@ OpenAssessment.BaseUI.prototype = {
         this.toggleActionError('self', null);
         this.server.selfAssess(submissionId, optionsSelected).done(
             function() {
-                // When we have successfully sent the assessment,
-                // collapse the current and previous steps and expand the next step
-                ui.renderPeerAssessmentStep(false);
-                ui.renderSelfAssessmentStep(false);
+                ui.renderPeerAssessmentStep();
+                ui.renderSelfAssessmentStep();
                 ui.renderGradeStep();
             }
         ).fail(function(errMsg) {

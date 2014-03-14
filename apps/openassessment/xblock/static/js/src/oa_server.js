@@ -65,7 +65,7 @@ OpenAssessment.Server.prototype = {
                 defer.resolveWith(this, [data]);
             }).fail(function(data) {
                 defer.rejectWith(this, ['Could not contact server.']);
-            })
+            });
         }).promise();
     },
 
@@ -96,7 +96,7 @@ OpenAssessment.Server.prototype = {
                     defer.resolveWith(this, [data]);
                 }).fail(function(data) {
                     defer.rejectWith(this, ['Could not contact server.']);
-                })
+                });
         }).promise();
     },
 
@@ -203,7 +203,7 @@ OpenAssessment.Server.prototype = {
             ).fail(function(data) {
                 defer.rejectWith(this, ['Could not contact server.']);
             });
-        }).promise()
+        }).promise();
     },
 
     /**
