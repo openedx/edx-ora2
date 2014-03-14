@@ -281,14 +281,24 @@ OpenAssessment.BaseUI.prototype = {
         // Retrieve the student's response from the DOM
         var submission = $('#submission__answer__value', this.element).val();
         var ui = this;
-        $('#response__save_status', this.element).html('Saving...');
+        this.setSaveStatus('Saving...');
         this.toggleActionError('save', null);
         this.server.save(submission).done(function() {
-            $('#response__save_status', this.element).html("Saved but not submitted");
+            ui.setSaveStatus("Saved but not submitted");
         }).fail(function(errMsg) {
-            $("#response__save_status", ui.element).html('Error');
+            ui.setSaveStatus('Error');
             ui.toggleActionError('save', errMsg);
         });
+    },
+
+    /**
+    Display a save status message.
+
+    Args:
+        msg (str): The message to display.
+    **/
+    setSaveStatus: function(msg) {
+        $('#response__save_status h3', this.element).html(msg);
     },
 
     /**
