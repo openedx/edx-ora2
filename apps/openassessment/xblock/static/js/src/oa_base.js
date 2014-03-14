@@ -424,7 +424,7 @@ OpenAssessment.BaseUI.prototype = {
         var container = '#openassessment__' + step;
         $(container).toggleClass('has--error', true);
         $(container + ' .step__status__value i').removeClass().addClass('icon-warning-sign');
-        $(container + ' .step__status__value').html('Unable to Load');
+        $(container + ' .step__status__value .copy').html('Unable to Load');
     }
 };
 

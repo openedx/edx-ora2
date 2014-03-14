@@ -60,69 +60,26 @@
         color: $color-focused;
       }
 
+      .step__label, .step__deadline {
+        display: block;
+      }
 
-      // step title/name - TODO: nesting needed due to LMS CSS overrides
-      .step__title {
+      .step__label {
+        @extend %hd-4;
+        @extend %t-weight3;
+        @extend %trans-color;
+      }
 
-        @include media($bp-ds) {
-          @include span-columns(4 of 6);
-        }
-
-        @include media($bp-dm) {
-          @include span-columns(9 of 12);
-        }
-
-        @include media($bp-dl) {
-          @include span-columns(9 of 12);
-        }
-
-        @include media($bp-dx) {
-          @include span-columns(9 of 12);
-        }
-
-        .step__counter, .wrapper--copy {
-          display: inline-block;
-          vertical-align: middle;
-        }
-
-        // step counter
-        .step__counter {
-
-          // increment: show numbers using parent list counter
-          &:before {
-            @extend %hd-6;
-            @extend %t-weight4;
-            content: counter(item, decimal);
-            counter-increment: item;
-            margin-right: ($baseline-v/4);
-            border-radius: ($baseline-v/10);
-            border: 1px solid rgba($color-focused, 0.5);
-            padding: ($baseline-v/4) ($baseline-v/2);
-            color: $color-focused;
-
-          }
-        }
-
-        .step__label, .step__deadline {
-          display: block;
-        }
-
-        .step__label {
-          @extend %hd-4;
-          @extend %t-weight3;
-          @extend %trans-color;
-        }
-
-        .step__deadline {
-          @extend %hd-8;
-          @extend %trans-color;
-          color: $heading-secondary-color;
-        }
+      .step__deadline {
+        @extend %hd-8;
+        @extend %trans-color;
+        color: $heading-secondary-color;
       }
     }
 
     // step status
     .step__status {
+
 
       .step__status__value {
         display: block;
@@ -134,16 +91,27 @@
         @include media($bp-m) {
           margin-top: ($baseline-v/2);
         }
-      }
 
-      .ico, .copy {
-        display: inline-block;
-        vertical-align: bottom;
+        @include media($bp-ds) {
+          display: inline-block;
+          vertical-align: bottom;
+        }
+
+        @include media($bp-dm) {
+          display: inline-block;
+          vertical-align: bottom;
+        }
+
+        @include media($bp-dl) {
+          display: inline-block;
+          vertical-align: bottom;
+        }
       }
 
       .ico {
         @extend %t-icon-m;
-        display: none; // hiding by default
+        display: inline-block;
+        vertical-align: bottom;
         margin-left: ($baseline-v/4);
       }
 
@@ -267,7 +235,7 @@
           margin-bottom: ($baseline-v/2);
 
           @include media($bp-ds) {
-            @include span-columns(4 of 6);
+            @include span-columns(3 of 6);
             margin-bottom: 0;
             text-align: left;
           }
@@ -600,35 +568,36 @@
     }
 
     .response__submission__actions {
-      @include transition(background-color $tmg-f1 ease-in-out 0s);
-      border-radius: ($baseline-v/5);
-      padding: ($baseline-v/2) ($baseline-h/2);
-      background: transparent;
 
       .action--save {
         @extend %btn--secondary;
         @extend %action-4;
         display: block;
         text-align: center;
+        margin-bottom: ($baseline-v/2);
 
         @include media($bp-ds) {
           display: inline-block;
           margin-right: ($baseline-v/2);
+          margin-bottom: 0;
         }
 
         @include media($bp-dm) {
           display: inline-block;
           margin-right: ($baseline-v/2);
+          margin-bottom: 0;
         }
 
         @include media($bp-dl) {
           display: inline-block;
           margin-right: ($baseline-v/2);
+          margin-bottom: 0;
         }
 
         @include media($bp-dx) {
           display: inline-block;
           margin-right: ($baseline-v/2);
+          margin-bottom: 0;
         }
       }
     }
@@ -738,36 +707,6 @@
         }
       }
     }
-
-    // step actions
-    .peer-assessment__actions {
-      @include transition(background-color $tmg-f1 ease-in-out 0s);
-      border-radius: ($baseline-v/5);
-      padding: ($baseline-v/2) ($baseline-h/2);
-      background: transparent;
-      text-align: center;
-
-      @include media($bp-ds) {
-        text-align: right;
-      }
-
-      @include media($bp-dm) {
-       text-align: right;
-      }
-
-      @include media($bp-dl) {
-        text-align: right;
-      }
-
-      @include media($bp-dx) {
-        text-align: right;
-      }
-
-      .action--submit {
-        @extend %btn--primary;
-        @extend %action-4;
-      }
-    }
   }
 
 
@@ -827,36 +766,6 @@
           @extend %ui-content-longanswer;
           min-height: ($baseline-v*5);
         }
-      }
-    }
-
-    // step actions
-    .self-assessment__actions {
-      @include transition(background-color $tmg-f1 ease-in-out 0s);
-      border-radius: ($baseline-v/5);
-      padding: ($baseline-v/2) ($baseline-h/2);
-      background: transparent;
-      text-align: center;
-
-      @include media($bp-ds) {
-        text-align: right;
-      }
-
-      @include media($bp-dm) {
-       text-align: right;
-      }
-
-      @include media($bp-dl) {
-        text-align: right;
-      }
-
-      @include media($bp-dx) {
-        text-align: right;
-      }
-
-      .action--submit {
-        @extend %btn--primary;
-        @extend %action-4;
       }
     }
   }
