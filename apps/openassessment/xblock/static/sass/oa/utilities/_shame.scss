@@ -2,3 +2,136 @@
 // ====================
 
 // NOTES: use for any bad-form/orphaned scss that knowingly violate edX FED architecture/standards (see - http://csswizardry.com/2013/04/shame-css)
+
+// --------------------
+// LMS countermeasures
+// --------------------
+// rules ot overcome any poorly defined, scoped, or architected edX LMS-based CSS. Ideally this file will be removed when the LMS Front End is re-visited.
+
+.openassessment {
+
+  // headers
+  .self-assessment__display__header, .peer-assessment__display__header, .step__header {
+    margin-bottom: 0 !important;
+    border-radius: 0 !important;
+    padding-bottom: 0 !important;
+    font-size: inherit !important;
+    border-bottom: none !important;
+  }
+
+  span {
+    line-height: normal;
+  }
+
+  h2 {
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
+
+  // title
+  .openassessment__title--sub span {
+    color: $heading-tertiary-color !important;
+  }
+
+  h1.openassessment__title {
+    margin-bottom: $baseline-v !important;
+    border-bottom: ($baseline-v/5) solid $color-decorative-tertiary !important;
+    padding-bottom: ($baseline-v/2) !important;
+  }
+
+  // step header
+  .step__header {
+
+    .step__deadline {
+      color: $color-focused;
+    }
+
+    // step title/name
+    .step__title {
+      margin-top: 0 !important;
+      text-align: left !important;
+
+      @include media($bp-ds) {
+        @include span-columns(4 of 6);
+      }
+
+      @include media($bp-dm) {
+        @include span-columns(9 of 12);
+      }
+
+      @include media($bp-dl) {
+        @include span-columns(9 of 12);
+      }
+
+      @include media($bp-dx) {
+        @include span-columns(9 of 12);
+      }
+
+      .step__label {
+        text-transform: none;
+        letter-spacing: normal;
+      }
+    }
+
+    .step__status__value {
+      line-height: 0;
+    }
+  }
+
+  .list--actions {
+    list-style: none !important;
+    padding-left: 0 !important;
+    text-indent: 0 !important;
+
+    li {
+      margin-bottom: 0 !important;
+    }
+
+    button, .button, .action {
+
+      span {
+        color: inherit;
+      }
+    }
+  }
+
+  span {
+    color: inherit;
+  }
+
+  .ui-toggle-visibility .ui-toggle-visibility__control, .ui-toggle-visibility .ui-toggle-visibility__control .step__label {
+    color: $action-primary-color;
+
+    &:hover, &:focus {
+      color: $action-primary-color-focus;
+    }
+
+    &:active, &.is--current {
+      color: $action-primary-color-active;
+    }
+  }
+
+  // self assessment
+  .self-assessment__display__header, .peer-assessment__display__header {
+    padding-bottom: ($baseline-v/2) !important;
+  }
+
+  .self-assessment__display__title, .peer-assessment__display__title {
+    color: $heading-secondary-color !important;
+    font-weight: 600 !important;
+  }
+
+  // shown submission/results
+  .question__answers {
+    padding-left: 0 !important;
+  }
+
+  .step--grade .step__title {
+    width: 100% !important;
+
+    .wrapper--copy {
+      display: block !important;
+    }
+  }
+}

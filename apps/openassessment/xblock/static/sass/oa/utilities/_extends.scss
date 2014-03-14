@@ -33,6 +33,10 @@
 
 %ui-section-content {
   padding: $baseline-v;
+
+  p {
+    margin-bottom: $baseline-v;
+  }
 }
 
 

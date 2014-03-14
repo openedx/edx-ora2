@@ -59,67 +59,67 @@
       .step__deadline {
         color: $color-focused;
       }
-    }
 
-    // step title/name
-    .step__title {
 
-      @include media($bp-ds) {
-        @include span-columns(4 of 6);
-      }
+      // step title/name - TODO: nesting needed due to LMS CSS overrides
+      .step__title {
 
-      @include media($bp-dm) {
-        @include span-columns(9 of 12);
-      }
+        @include media($bp-ds) {
+          @include span-columns(4 of 6);
+        }
 
-      @include media($bp-dl) {
-        @include span-columns(9 of 12);
-      }
+        @include media($bp-dm) {
+          @include span-columns(9 of 12);
+        }
 
-      @include media($bp-dx) {
-        @include span-columns(9 of 12);
-      }
+        @include media($bp-dl) {
+          @include span-columns(9 of 12);
+        }
 
-      .step__counter, .wrapper--copy {
-        display: inline-block;
-        vertical-align: middle;
-      }
+        @include media($bp-dx) {
+          @include span-columns(9 of 12);
+        }
 
-      // step counter
-      .step__counter {
+        .step__counter, .wrapper--copy {
+          display: inline-block;
+          vertical-align: middle;
+        }
 
-        // increment: show numbers using parent list counter
-        &:before {
-          @extend %hd-6;
-          @extend %t-weight4;
-          content: counter(item, decimal);
-          counter-increment: item;
-          margin-right: ($baseline-v/4);
-          border-radius: ($baseline-v/10);
-          border: 1px solid rgba($color-focused, 0.5);
-          padding: ($baseline-v/4) ($baseline-v/2);
-          color: $color-focused;
+        // step counter
+        .step__counter {
 
+          // increment: show numbers using parent list counter
+          &:before {
+            @extend %hd-6;
+            @extend %t-weight4;
+            content: counter(item, decimal);
+            counter-increment: item;
+            margin-right: ($baseline-v/4);
+            border-radius: ($baseline-v/10);
+            border: 1px solid rgba($color-focused, 0.5);
+            padding: ($baseline-v/4) ($baseline-v/2);
+            color: $color-focused;
+
+          }
+        }
+
+        .step__label, .step__deadline {
+          display: block;
+        }
+
+        .step__label {
+          @extend %hd-4;
+          @extend %t-weight3;
+          @extend %trans-color;
+        }
+
+        .step__deadline {
+          @extend %hd-8;
+          @extend %trans-color;
+          color: $heading-secondary-color;
         }
       }
-
-      .step__label, .step__deadline {
-        display: block;
-      }
-
-      .step__label {
-        @extend %hd-4;
-        @extend %t-weight3;
-        @extend %trans-color;
-      }
-
-      .step__deadline {
-        @extend %hd-8;
-        @extend %trans-color;
-        color: $heading-secondary-color;
-      }
     }
-
 
     // step status
     .step__status {
@@ -144,7 +144,7 @@
       .ico {
         @extend %t-icon-m;
         display: none; // hiding by default
-        margin-right: ($baseline-v/4);
+        margin-left: ($baseline-v/4);
       }
 
       .copy {
@@ -247,6 +247,10 @@
       .action--submit {
         @extend %btn--primary;
         @extend %action-4;
+
+        .ico {
+          @extend %t-icon-l;
+        }
       }
 
       // STATE: has error
@@ -308,6 +312,18 @@
     // STATE: step is loading
     &.is--loading {
       opacity: 0.3;
+
+      .step__status__value {
+        background: $color-primary;
+
+        .ico {
+          display: inline-block;
+        }
+
+        .copy {
+          color: $white-t;
+        }
+      }
 
       .step__header {
 
@@ -1018,6 +1034,9 @@
     }
 
     .step__title {
+      @include media($bp-m) {
+        @include span-columns(4 of 4);
+      }
 
       @include media($bp-ds) {
         @include span-columns(6 of 6);
@@ -1040,12 +1059,10 @@
       }
 
       .step__label, .grade__value {
-        display: inline-block;
-        vertical-align: middle;
+        display: block;
       }
 
       .step__label {
-        margin-right: ($baseline-h/2);
         margin-bottom: ($baseline-v/4);
         color: $color-decorative-secondary;
       }
@@ -1059,10 +1076,12 @@
 
       .grade__value__title {
         @extend %hd-6;
+        color: $heading-primary-color;
       }
 
       .grade__value__description {
         @extend %copy-4;
+        color: $copy-lead-color;
       }
     }
 
@@ -1089,15 +1108,34 @@
     }
 
     // CASE: is complete
-    &.is--complete {
+    &.is--complete, &.has--grade {
 
-      .grade__value {
-        background: $color-complete;
-        color: $white;
-      }
+        .step__title {
+          margin-bottom: $baseline-v;
 
-      .grade__value__earned, .grade__value__potential {
-        @extend %t-weight3;
+        .step__label, .grade__value {
+          display: inline-block;
+          vertical-align: middle;
+        }
+
+        .step__label {
+          margin-right: ($baseline-h/8);
+          margin-bottom: 0;
+          color: $heading-primary-color;
+        }
+
+        .grade__value {
+          background: $color-complete;
+          color: $white;
+        }
+
+        .grade__value__title {
+          color: $white;
+        }
+
+        .grade__value__earned, .grade__value__potential {
+          @extend %t-weight3;
+        }
       }
     }
   }
@@ -1161,7 +1199,7 @@
     .question__title__copy {
       @extend %hd-4;
       @extend %t-weight3;
-      float: left;
+      // float: left;
     }
 
     .question__score {
@@ -1256,11 +1294,20 @@
 
   .submission__feeedback__content {
     @extend %ui-section-content;
+
+    textarea {
+      @extend %ui-content-longanswer;
+      min-height: ($baseline-v*10);
+    }
   }
 
   .submission__feeedback__actions {
     @extend %ui-section-content;
     padding-top: 0;
+
+   .list--actions {
+      padding: 0;
+    }
 
     .action--submit {
       @extend %btn--secondary;

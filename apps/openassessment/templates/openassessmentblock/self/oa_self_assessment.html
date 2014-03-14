@@ -20,7 +20,7 @@
         <span class="step__status">
           <span class="step__status__label">This step's status:</span>
           <span class="step__status__value">
-              <span class="copy">Grading</span>
+              <span class="copy">Not Completed</span>
           </span>
         </span>
         {% endblock %}
@@ -47,51 +47,55 @@
                     <fieldset class="assessment__fields">
                         <ol class="list list--fields assessment__rubric">
                             {% for criterion in rubric_criteria %}
-                            <li class="field field--radio is--required assessment__rubric__question" id="assessment__rubric__question--{{ criterion.name }}">
-                                 <h4 class="question__title">
+                            <li class="field field--radio is--required assessment__rubric__question ui-toggle-visibility" id="assessment__rubric__question--{{ criterion.name }}">
+                                 <h4 class="question__title ui-toggle-visibility__control">
                                     <i class="ico icon-caret-right"></i>
                                     <span class="question__title__copy">{{ criterion.prompt }}</span>
                                     <span class="label--required sr">* (Required)</span>
                                 </h4>
 
-                                <ol class="question__answers">
-                                    {% for option in criterion.options %}
-                                    <li class="answer">
-                                        <div class="wrapper--input">
-                                            <input type="radio"
-                                                   name="{{ criterion.name }}"
-                                                   id="assessment__rubric__question--{{ criterion.name }}"
-                                                   class="answer__value"
-                                                   value="{{ option.name }}" />
-                                            <label for="assessment__rubric__question--{{ criterion.name }}"
-                                                   class="answer__label">{{ option.name }}</label>
-                                        </div>
-                                        <div class="wrapper--metadata">
-                                            <span class="answer__tip">{{ option.explanation }}</span>
-                                            <span class="answer__points">{{option.points}} <span class="label">points</span></span>
-                                        </div>
-                                    </li>
-                                    {% endfor %}
-                                </ol>
+                                <div class="ui-toggle-visibility__content">
+                                    <ol class="question__answers">
+                                        {% for option in criterion.options %}
+                                        <li class="answer">
+                                            <div class="wrapper--input">
+                                                <input type="radio"
+                                                       name="{{ criterion.name }}"
+                                                       id="assessment__rubric__question--{{ criterion.name }}"
+                                                       class="answer__value"
+                                                       value="{{ option.name }}" />
+                                                <label for="assessment__rubric__question--{{ criterion.name }}"
+                                                       class="answer__label">{{ option.name }}</label>
+                                            </div>
+                                            <div class="wrapper--metadata">
+                                                <span class="answer__tip">{{ option.explanation }}</span>
+                                                <span class="answer__points">{{option.points}} <span class="label">points</span></span>
+                                            </div>
+                                        </li>
+                                        {% endfor %}
+                                    </ol>
+                                </div>
                             </li>
                             {% endfor %}
                         </ol>
                     </fieldset>
-                <div class="self-assessment__actions">
-                    <div class="message message--error message--error-server">
-                        <h3 class="message__title">We could not submit your assessment</h3>
-                        <div class="message__content"></div>
-                    </div>
-                    <ul class="list list--actions">
-                        <li class="list--actions__item">
-                            <button type="submit" id="self-assessment--001__assessment__submit" class="action action--submit is--disabled">
-                                <span class="copy">{% trans "Submit Your Assessment" %}</span>
-                                <i class="ico icon-caret-right"></i>
-                            </button>
-                        </li>
-                    </ul>
+                </form>
+            </div>
+
+            <div class="step__actions">
+                <div class="message message--error message--error-server">
+                    <h3 class="message__title">We could not submit your assessment</h3>
+                    <div class="message__content"></div>
                 </div>
-            </form>
+                <ul class="list list--actions">
+                    <li class="list--actions__item">
+                        <button type="submit" id="self-assessment--001__assessment__submit" class="action action--submit is--disabled">
+                            <span class="copy">{% trans "Submit Your Assessment" %}</span>
+                            <i class="ico icon-caret-right"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
     {% endblock %}

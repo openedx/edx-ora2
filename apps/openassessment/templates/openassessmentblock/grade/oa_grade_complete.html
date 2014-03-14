@@ -30,6 +30,7 @@
                     {% with criterion_num=forloop.counter %}
                     <li class="question question--{{ criterion_num }} ui-toggle-visibility">
                         <h4 class="question__title ui-toggle-visibility__control">
+                            <i class="ico icon-caret-right"></i>
                             <span class="question__title__copy">{{ criterion.name }}</span>
 
                             <span class="question__score">
@@ -94,6 +95,7 @@
                     {% endfor %}
                     <li class="question question--feedback ui-toggle-visibility">
                         <h4 class="question__title ui-toggle-visibility__control">
+                            <i class="ico icon-caret-right"></i>
                             <span class="question__title__copy">Additional feedback on your response</span>
                         </h4>
 
@@ -125,21 +127,23 @@
                 </ol>
             </article>
 
-            <form id="submission__feeedback" class="submission__feeedback ui-toggle-visibility" method="post">
-                <h3 class="submission__feeedback__title ui-toggle-visibility__control">Give Feedback On Peer Evaluations</h3>
+            <form id="submission__feeedback" class="submission__feeedback" method="post">
+                <h3 class="submission__feeedback__title">Give Feedback On Peer Evaluations</h3>
 
-                <ol class="list list--fields submission__feeedback__content ui-toggle-visibility__content">
+                <ol class="list list--fields submission__feeedback__content">
                     <li class="field field--textarea feedback__remarks" id="feedback__remarks">
                         <label for="feedback__remarks__value">Please provide any thoughts or comments on the feedback you received from your peers here.</label>
                         <textarea id="feedback__remarks__value" placeholder="I feel the feedback I received was..."></textarea>
                     </li>
                 </ol>
 
-                <ul class="list list--actions submission__feeedback__actions">
-                    <li class="list--actions__item">
-                        <button type="submit" id="feedback__submit" class="action action--submit feedback__submit">Submit Feedback On Peer Evaluations</button>
-                    </li>
-                </ul>
+                <div class="submission__feeedback__actions">
+                    <ul class="list list--actions submission__feeedback__actions">
+                        <li class="list--actions__item">
+                            <button type="submit" id="feedback__submit" class="action action--submit feedback__submit">Submit Feedback On Peer Evaluations</button>
+                        </li>
+                    </ul>
+                </div>
             </form>
         </div>
     </div>
