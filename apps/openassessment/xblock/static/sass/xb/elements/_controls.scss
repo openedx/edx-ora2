@@ -115,7 +115,6 @@
   background: $action-primary-color;
   border: 1px solid shade($action-primary-color, 15%);
   color: tint($action-primary-color, 90%);
-  box-shadow: none; // needed for LMS override
 
   .copy {
     @extend %t-weight3;
@@ -150,7 +149,6 @@
   background: $action-secondary-color;
   border: 1px shade($action-secondary-color, 10%);
   color: tint($action-secondary-color, 90%);
-  box-shadow: none; // needed for LMS override
 
   .copy {
     @extend %t-weight3;
