@@ -41,7 +41,7 @@
   }
 
   // step header
-  .step__header {
+  .openassessment__steps .openassessment__steps__step .step__header {
 
     .step__deadline {
       color: $color-focused;
@@ -71,6 +71,29 @@
       .step__label {
         text-transform: none;
         letter-spacing: normal;
+      }
+
+      .step__counter, .wrapper--copy {
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      // step counter
+      .step__counter {
+
+        // increment: show numbers using parent list counter
+        &:before {
+          @extend %hd-6;
+          @extend %t-weight4;
+          content: counter(item, decimal);
+          counter-increment: item;
+          margin-right: ($baseline-v/4);
+          border-radius: ($baseline-v/10);
+          border: 1px solid rgba($color-focused, 0.5);
+          padding: ($baseline-v/4) ($baseline-v/2);
+          color: $color-focused;
+
+        }
       }
     }
 
