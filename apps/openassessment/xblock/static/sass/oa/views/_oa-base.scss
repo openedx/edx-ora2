@@ -248,6 +248,10 @@
         @extend %btn--primary;
         @extend %action-4;
 
+        .copy, .ico {
+          display: inline;
+        }
+
         .ico {
           @extend %t-icon-l;
         }
@@ -263,7 +267,7 @@
           margin-bottom: ($baseline-v/2);
 
           @include media($bp-ds) {
-            @include span-columns(3 of 6);
+            @include span-columns(4 of 6);
             margin-bottom: 0;
             text-align: left;
           }
@@ -627,62 +631,6 @@
           margin-right: ($baseline-v/2);
         }
       }
-
-      // STATE: has error
-      &.has--error {
-        @include row();
-        background: tint($color-error, 90%);
-
-        .message {
-          display: block;
-
-          @include media($bp-ds) {
-            @include span-columns(3 of 6);
-            text-align: left;
-          }
-
-          @include media($bp-dm) {
-            @include span-columns(6 of 12);
-            margin-bottom: 0;
-            text-align: left;
-          }
-
-          @include media($bp-dl) {
-            @include span-columns(6 of 12);
-            text-align: left;
-          }
-
-          @include media($bp-dx) {
-            @include span-columns(6 of 12);
-            text-align: left;
-          }
-        }
-
-        .list--actions {
-          display: block;
-          margin-bottom: ($baseline-v/2);
-
-          @include media($bp-ds) {
-            @include span-columns(3 of 6);
-            margin-bottom: 0;
-          }
-
-          @include media($bp-dm) {
-            @include span-columns(6 of 12);
-            margin-bottom: 0;
-          }
-
-          @include media($bp-dl) {
-            @include span-columns(6 of 12);
-            margin-bottom: 0;
-          }
-
-          @include media($bp-dx) {
-            @include span-columns(6 of 12);
-            margin-bottom: 0;
-          }
-        }
-      }
     }
   }
 
@@ -819,61 +767,6 @@
         @extend %btn--primary;
         @extend %action-4;
       }
-
-      // STATE: has error
-      &.has--error {
-        @include row();
-        background: tint($color-error, 90%);
-
-        .message {
-          display: block;
-          margin-bottom: ($baseline-v/2);
-
-          @include media($bp-ds) {
-            @include span-columns(3 of 6);
-            margin-bottom: 0;
-            text-align: left;
-          }
-
-          @include media($bp-dm) {
-            @include span-columns(6 of 12);
-            margin-bottom: 0;
-            text-align: left;
-          }
-
-          @include media($bp-dl) {
-            @include span-columns(6 of 12);
-            margin-bottom: 0;
-            text-align: left;
-          }
-
-          @include media($bp-dx) {
-            @include span-columns(6 of 12);
-            margin-bottom: 0;
-            text-align: left;
-          }
-        }
-
-        .list--actions {
-          display: block;
-
-          @include media($bp-ds) {
-            @include span-columns(3 of 6);
-          }
-
-          @include media($bp-dm) {
-            @include span-columns(6 of 12);
-          }
-
-          @include media($bp-dl) {
-            @include span-columns(6 of 12);
-          }
-
-          @include media($bp-dx) {
-            @include span-columns(6 of 12);
-          }
-        }
-      }
     }
   }
 
@@ -964,61 +857,6 @@
       .action--submit {
         @extend %btn--primary;
         @extend %action-4;
-      }
-
-      // STATE: has error
-      &.has--error {
-        @include row();
-        background: tint($color-error, 90%);
-
-        .message {
-          display: block;
-          margin-bottom: ($baseline-v/2);
-
-          @include media($bp-ds) {
-            @include span-columns(3 of 6);
-            margin-bottom: 0;
-            text-align: left;
-          }
-
-          @include media($bp-dm) {
-            @include span-columns(6 of 12);
-            margin-bottom: 0;
-            text-align: left;
-          }
-
-          @include media($bp-dl) {
-            @include span-columns(6 of 12);
-            margin-bottom: 0;
-            text-align: left;
-          }
-
-          @include media($bp-dx) {
-            @include span-columns(6 of 12);
-            margin-bottom: 0;
-            text-align: left;
-          }
-        }
-
-        .list--actions {
-          display: block;
-
-          @include media($bp-ds) {
-            @include span-columns(3 of 6);
-          }
-
-          @include media($bp-dm) {
-            @include span-columns(6 of 12);
-          }
-
-          @include media($bp-dl) {
-            @include span-columns(6 of 12);
-          }
-
-          @include media($bp-dx) {
-            @include span-columns(6 of 12);
-          }
-        }
       }
     }
   }
