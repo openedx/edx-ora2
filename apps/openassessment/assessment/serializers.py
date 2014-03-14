@@ -277,9 +277,9 @@ class AssessmentFeedbackSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AssessmentFeedback
-        fields = ('id',
-                  'peerworkflows',
-                  'helpfulness',
-                  'feedback',
-                 )
+        fields = (
+            'submission_uuid',
+            'helpfulness',
+            'feedback',
+        )
 

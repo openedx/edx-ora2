@@ -10,8 +10,6 @@ from django.utils.encoding import force_unicode
 
 from submissions.serializers import SubmissionSerializer, StudentItemSerializer, ScoreSerializer
 from submissions.models import Submission, StudentItem, Score, ScoreSummary
-from openassessment.assessment.serializers import AssessmentFeedbackSerializer
-from openassessment.assessment.models import AssessmentFeedback
 
 logger = logging.getLogger(__name__)
 
@@ -489,25 +487,3 @@ def _get_or_create_student_item(student_item_dict):
             student_item_dict)
         logger.exception(error_message)
         raise SubmissionInternalError(error_message)
-
-def get_assessment_feedback(submission_uuid):
-    """Retrieve a feedback object for an assessment whether it exists or not."""
-    try:
-        submission = Submission.objects.get(uuid=submission_uuid)
-        feedback_obj, feedback_created = AssessmentFeedback.objects.get_or_create(submission=submission)
-        return AssessmentFeedbackSerializer(feedback_obj).data
-    except DatabaseError, msg:
-        error_message = u"An error occurred retrieving assessment feedback for {}.".format(submission_uuid)
-        logger.exception(error_message)
-        raise DatabaseError, msg
-
-def set_assessment_feedback(feedback_dict):
-    """Set a feedback object for an assessment to have some new values."""
-    submission = Submission.objects.get(submission_uuid=feedback_dict['submission_uuid'])
-    feedback_obj = AssessmentFeedback.objects.get(pk=feedback_dict['id'])
-    if feedback_obj.submission != submission:
-        raise Exception, "Can't re-associate a piece of feedback" # TODO: less generic
-    feedback_obj.helpfulness = feedback_dict['helpfulness']
-    feedback_obj.feedback = feedback_dict['feedback']
-    feedback_obj.save()
-    return AssessmentFeedbackSerializer(feedback_obj).data

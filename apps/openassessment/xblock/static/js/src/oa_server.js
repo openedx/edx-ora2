@@ -162,9 +162,8 @@ OpenAssessment.Server.prototype = {
     },
 
     /** 
-    Send feedback on assessments to the XBlock.
-    FIXME: JRBL: write documentation
-    **/
+     * Send feedback on assessments to the XBlock.
+     */
     feedback_submit: function(feedback) {
         var url = this.url('feedback_submit');
         var payload = JSON.stringify({
@@ -175,11 +174,9 @@ OpenAssessment.Server.prototype = {
                 function(data) {
                     if (data.success) {
                         defer.resolve();
-                        alert("resolved!");
                     }
                     else {
                         defer.rejectWith(this, [data.msg]);
-                        alert("rejected!");
                     }
                 }
             ).fail(function(data) {

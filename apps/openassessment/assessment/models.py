@@ -373,6 +373,21 @@ class AssessmentPart(models.Model):
         return self.option.criterion.points_possible
 
 
+class AssessmentFeedback(models.Model):
+    """A response to a submission's feedback, judging accuracy or helpfulness."""
+    submission_uuid = models.CharField(max_length=128, unique=True, db_index=True)
+    assessments = models.ManyToManyField(Assessment, related_name='assessment_feedback')
+    HELPFULNESS_CHOICES = (
+        (0, 'These results were not at all helpful'),
+        (1, 'These results were somewhat helpful'),
+        (2, 'These results were helpful'),
+        (3, 'These results were very helpful'),
+        (4, 'These results were extremely helpful'),
+    )
+    helpfulness = models.IntegerField(choices=HELPFULNESS_CHOICES, default=2)
+    feedback = models.TextField(max_length=10000, default="")
+
+
 class PeerWorkflow(models.Model):
     """Internal Model for tracking Peer Assessment Workflow
 
@@ -439,18 +454,3 @@ class PeerWorkflowItem(models.Model):
 
     def __unicode__(self):
         return repr(self)
-
-
-class AssessmentFeedback(models.Model):
-    """A response to a submission's feedback, judging accuracy or helpfulness."""
-    peerworkflows = models.ManyToManyField(PeerWorkflowItem)
-    HELPFULNESS_CHOICES = (
-        (0, 'These results were not at all helpful'),
-        (1, 'These results were somewhat helpful'),
-        (2, 'These results were helpful'),
-        (3, 'These results were very helpful'),
-        (4, 'These results were extremely helpful'),
-    )
-    helpfulness = models.IntegerField(choices=HELPFULNESS_CHOICES, default=2)
-    feedback = models.TextField(max_length=10000, default="")
-

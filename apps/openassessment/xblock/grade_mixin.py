@@ -4,8 +4,6 @@ from django.utils.translation import ugettext as _
 from xblock.core import XBlock
 
 from openassessment.assessment import peer_api
-from submissions import api as submissions_api
-
 
 
 class GradeMixin(object):
@@ -30,6 +28,7 @@ class GradeMixin(object):
         status = workflow.get('status')
         context = {}
         if status == "done":
+            feedback = peer_api.get_assessment_feedback(self.submission_uuid)
             max_scores = peer_api.get_rubric_max_scores(self.submission_uuid)
             path = 'openassessmentblock/grade/oa_grade_complete.html'
             assessment_ui_model = self.get_assessment_module('peer-assessment')
@@ -50,6 +49,7 @@ class GradeMixin(object):
                 student_submission["uuid"],
                 assessment_ui_model["must_be_graded_by"]
             )
+            context["feedback_text"] = feedback.get('feedback', '')
             context["student_submission"] = student_submission
             context["peer_assessments"] = peer_assessments
             context["self_assessment"] = self_assessment
@@ -79,12 +79,25 @@ class GradeMixin(object):
     @XBlock.json_handler
     def feedback_submit(self, data, suffix=''):
         """Attach the Assessment Feedback text to some submission."""
-        submission_uuid = self.submission_uuid
+        assessment_ui_model = self.get_assessment_module('peer-assessment') or {}
+
         assessment_feedback = data.get('feedback', '')
-        raise Exception, "jrbl everything worked up to here" # DEBUG
         if not assessment_feedback:
-            return {'success': False, 'msg': _(u"No feedback given, so none recorded")}
-        feedback_dict = submissions_api.get_assessment_feedback(submission_uuid)
-        feedback_dict['feedback'] = assessment_feedback
-        __ = submissions_api.set_assessment_feedback(feedback_dict)
-        return {'success': True, 'msg': _(u"Feedback saved!")}
+            return {
+                'success': False,
+                'msg': _(u"No feedback given, so none recorded")
+            }
+
+        peer_api.set_assessment_feedback(
+            assessment_ui_model.get('must_grade', 0),
+            {
+                'submission_uuid': self.submission_uuid,
+                'feedback': assessment_feedback,
+                'helpfulness': 0
+            }
+        )
+
+        return {
+            'success': True,
+            'msg': _(u"Feedback saved!")
+        }

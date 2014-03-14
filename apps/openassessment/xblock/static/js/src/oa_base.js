@@ -253,7 +253,7 @@ OpenAssessment.BaseUI.prototype = {
             function(html) {
                 // Load the HTML
                 $('#openassessment__grade', ui.element).replaceWith(html);
-
+                
                 // Install a click handler for collapse/expand
                 var sel = $('#openassessment__grade', ui.element);
                 ui.setUpCollapseExpand(sel);
@@ -322,10 +322,9 @@ OpenAssessment.BaseUI.prototype = {
     feedback_assess: function() {
         // Send the submission to the server
         var feedback = $('#feedback__remarks__value', this.element).val();
-        var ui = this;
         this.server.feedback_submit(feedback).done(
             // When we have successfully sent the submission, textarea no longer editable
-            console.log("Feedback to the assessments submitted, thanks!") // JRBL: FIXME: TODO: make this true
+            console.log("Feedback to the assessments submitted, thanks!")
         ).fail(function(errMsg) {
             // TODO: display to the user
             console.log(errMsg);
