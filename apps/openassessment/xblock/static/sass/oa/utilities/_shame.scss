@@ -3,12 +3,12 @@
 
 // NOTES: use for any bad-form/orphaned scss that knowingly violate edX FED architecture/standards (see - http://csswizardry.com/2013/04/shame-css)
 
-// --------------------
-// LMS countermeasures
-// --------------------
-// rules ot overcome any poorly defined, scoped, or architected edX LMS-based CSS. Ideally this file will be removed when the LMS Front End is re-visited.
-
 .openassessment {
+
+  // --------------------
+  // LMS countermeasures
+  // --------------------
+  // rules to overcome any poorly defined, scoped, or architected edX LMS-based CSS. Ideally this file will be removed when the LMS Front End is re-visited.
 
   // headers
   .self-assessment__display__header, .peer-assessment__display__header, .step__header {
@@ -133,5 +133,19 @@
     .wrapper--copy {
       display: block !important;
     }
+  }
+
+  // --------------------
+  // Studio countermeasures
+  // --------------------
+  // rules to overcome any poorly defined, scoped, or architected edX Studio problem preview/rendering CSS.
+
+  .ico {
+    font-style: normal;
+  }
+
+  .step__title .step__deadline {
+    letter-spacing: normal;
+    text-transform: none;
   }
 }
