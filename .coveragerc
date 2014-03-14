@@ -7,3 +7,4 @@ omit =
     **/__init__.py
     **/tests/*
     **/test/*
+    **/migrations/*
