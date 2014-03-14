@@ -934,18 +934,33 @@ def set_assessment_feedback(must_grade, feedback_dict):
     Returns:
         The modified or created feedback.
     """
-    feedback_model = AssessmentFeedback.objects.get(
-        submission_uuid=feedback_dict['submission_uuid']
-    )
-    submission = Submission.objects.get(uuid=feedback_dict['submission_uuid'])
-    feedback_dict['assessments'] = [
-        assessment.pk for assessment in Assessment.objects.filter(
-            submission=submission,
-            score_type="PE"
-        )[:must_grade]
-    ]
+    submission_uuid = feedback_dict.get('submission_uuid', '')
+    if not submission_uuid:
+        error_message = u"An error occurred creating assessment feedback: bad or missing submission_uuid."
+        logger.exception(error_message)
+        raise PeerAssessmentInternalError(error_message)
+    try:
+        feedback_model = AssessmentFeedback.objects.get_or_create(submission_uuid=submission_uuid)
+        submission = Submission.objects.get(uuid=submission_uuid)
+        assessments = Assessment.objects.filter(submission=submission, score_type="PE")
+    except DatabaseError:
+        error_message = (
+            u"An error occurred getting database state to set assessment feedback for {}."
+            .format(submission_uuid)
+        )
+        logger.exception(error_message)
+        raise PeerAssessmentInternalError(error_message)
+    feedback_dict['assessments'] = [ assessment.pk for assessment in assessments[:must_grade] ]
     feedback = AssessmentFeedbackSerializer(feedback_model, data=feedback_dict)
     if not feedback.is_valid():
         raise PeerAssessmentRequestError(feedback.errors)
-    feedback.save()
+    try:
+        feedback.save()
+    except DatabaseError:
+        error_message = (
+            u"An error occurred saving assessment feedback for {}."
+            .format(submission_uuid)
+        )
+        logger.exception(error_message)
+        raise PeerAssessmentInternalError(error_message)
     return feedback.data

@@ -17,11 +17,6 @@ class GradeMixin(object):
 
     """
 
-    def __stackinfo(self):
-        import inspect
-        stack = inspect.stack()
-        return str(stack[0][1]) +':L'+str(stack[0][2])+':'+ str(stack[0][3]) +'()'
-
     @XBlock.handler
     def render_grade(self, data, suffix=''):
         workflow = self.get_workflow_info()
@@ -88,16 +83,29 @@ class GradeMixin(object):
                 'msg': _(u"No feedback given, so none recorded")
             }
 
-        peer_api.set_assessment_feedback(
-            assessment_ui_model.get('must_grade', 0),
-            {
-                'submission_uuid': self.submission_uuid,
-                'feedback': assessment_feedback,
-                'helpfulness': 0
+        peer_assessment_error_message = ''
+        try:
+            peer_api.set_assessment_feedback(
+                assessment_ui_model.get('must_grade', 0),
+                {
+                    'submission_uuid': self.submission_uuid,
+                    'feedback': assessment_feedback,
+                    'helpfulness': 0
+                }
+            )
+        except peer_api.PeerAssessmentInternalError, msg:
+            peer_assessment_error_message = msg
+        except peer_api.PeerAsessmentRequestError, msg:
+            peer_assessment_error_message = msg
+        
+        if peer_assessment_error_message:
+            return {
+                'success': False,
+                'msg': peer_assessment_error_message,
             }
-        )
-
-        return {
-            'success': True,
-            'msg': _(u"Feedback saved!")
-        }
+        else:
+            # Success!
+            return {
+                'success': True,
+                'msg': _(u"Feedback saved!")
+            }
