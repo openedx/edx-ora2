@@ -26,11 +26,25 @@ OpenAssessment.BaseUI = function(runtime, element, server) {
 
 OpenAssessment.BaseUI.prototype = {
     /**
-     * collapse/expand UI functionality
-     */
-    toggleExpansion: function(component) {
-        component.toggleClass('is--collapsed');
+    Install click handlers to expand/collapse a section.
 
+    Args:
+        parentSel (JQuery selector): CSS selector for the container element.
+        onExpand (function): Function to execute when expanding (if provided).  Accepts no args.
+    **/
+    setUpCollapseExpand: function(parentSel, onExpand) {
+        parentSel.find('.ui-toggle-visibility__control').click(
+            function(eventData) {
+                var sel = $(eventData.target).closest('.ui-toggle-visibility');
+
+                // If we're expanding and have an `onExpand` callback defined, execute it.
+                if (sel.hasClass('is--collapsed') && onExpand !== undefined) {
+                    onExpand();
+                }
+
+                sel.toggleClass('is--collapsed');
+            }
+        );
     },
 
     /**
@@ -40,7 +54,7 @@ OpenAssessment.BaseUI.prototype = {
         this.renderSubmissionStep(true);
         this.renderPeerAssessmentStep(false);
         this.renderSelfAssessmentStep(false);
-        this.renderGradeStep(false);
+        this.renderGradeStep();
     },
 
     /**
@@ -53,15 +67,13 @@ OpenAssessment.BaseUI.prototype = {
         var ui = this;
         this.server.render('submission').done(
             function(html) {
+
                 // Load the HTML
                 $('#openassessment__response', ui.element).replaceWith(html);
                 var sel = $('#openassessment__response', ui.element);
+
                 // Install a click handler for collapse/expand
-                sel.find('.step__header', '.ui-toggle-visibility__control').click(
-                    function(eventObject) {
-                        ui.toggleExpansion($('#openassessment__response'));
-                    }
-                );
+                ui.setUpCollapseExpand(sel);
 
                 // If we have a saved submission, enable the submit button
                 ui.responseChanged();
@@ -115,26 +127,13 @@ OpenAssessment.BaseUI.prototype = {
         var ui = this;
         this.server.render('peer_assessment').done(
             function(html) {
+
                 // Load the HTML
                 $('#openassessment__peer-assessment', ui.element).replaceWith(html);
                 var sel = $('#openassessment__peer-assessment', ui.element);
-                // Install a click handler for collapse/expand
-                sel.find('.step__header', '.ui-toggle-visibility__control').click(
-                    function(eventObject) {
-                        if (sel.hasClass('is--collapsed')) {
-                            // We're expanded into turbo mode. Get a new peer
-                            ui.renderContinuedPeerAssessmentStep()
-                        } else {
-                            sel.toggleClass('is--collapsed');
-                        }
-                    }
-                );
 
-                sel.find('.assessment__rubric__question', '.ui-toggle-visibility').click(
-                    function(eventObject) {
-                        ui.toggleExpansion($(this));
-                    }
-                );
+                // Install a click handler for collapse/expand
+                ui.setUpCollapseExpand(sel, $.proxy(ui.renderContinuedPeerAssessmentStep, ui));
 
                 // Install a change handler for rubric options to enable/disable the submit button
                 sel.find("#peer-assessment--001__assessment").change(
@@ -172,21 +171,13 @@ OpenAssessment.BaseUI.prototype = {
         var ui = this;
         this.server.renderContinuedPeer().done(
             function(html) {
+
                 // Load the HTML
                 $('#openassessment__peer-assessment', ui.element).replaceWith(html);
                 var sel = $('#openassessment__peer-assessment', ui.element);
-                // Install a click handler for collapse/expand
-                sel.find('.step__header', '.ui-toggle-visibility__control').click(
-                    function(eventObject) {
-                        sel.toggleClass('is--collapsed');
-                    }
-                );
 
-                sel.find('.assessment__rubric__question', '.ui-toggle-visibility').click(
-                    function(eventObject) {
-                        ui.toggleExpansion($(this));
-                    }
-                );
+                // Install a click handler for collapse/expand
+                ui.setUpCollapseExpand(sel);
 
                 // Install a click handler for assessment
                 sel.find('#peer-assessment--001__assessment__submit').click(
@@ -198,11 +189,21 @@ OpenAssessment.BaseUI.prototype = {
                         ui.continuedPeerAssess();
                     }
                 );
+
+                // Install a change handler for rubric options to enable/disable the submit button
+                sel.find("#peer-assessment--001__assessment").change(
+                    function() {
+                        var numChecked = $('input[type=radio]:checked', this).length;
+                        var numAvailable = $('.field--radio.assessment__rubric__question', this).length;
+                        $("#peer-assessment--001__assessment__submit", ui.element).toggleClass(
+                            'is--disabled', numChecked != numAvailable
+                        );
+                    }
+                );
             }
         ).fail(function(errMsg) {
-                // TODO: display to the user
-                console.log(errMsg);
-            });
+            ui.showLoadError('peer-assessment');
+        });
     },
 
     /**
@@ -215,20 +216,13 @@ OpenAssessment.BaseUI.prototype = {
         var ui = this;
         this.server.render('self_assessment').done(
             function(html) {
-                $('#openassessment__self-assessment', ui.element).replaceWith(html);
-                var sel = $('#openassessment__self-assessment', ui.element)
-                // Install a click handler for collapse/expand
-                sel.find('.step__header', '.ui-toggle-visibility__control').click(
-                    function(eventObject) {
-                        ui.toggleExpansion($('#openassessment__self-assessment'));
-                    }
-                );
 
-                sel.find('.assessment__rubric__question', '.ui-toggle-visibility').click(
-                    function(eventObject) {
-                        ui.toggleExpansion($('#' + eventObject.id));
-                    }
-                );
+                // Load the HTML
+                $('#openassessment__self-assessment', ui.element).replaceWith(html);
+                var sel = $('#openassessment__self-assessment', ui.element);
+
+                // Install a click handler for collapse/expand
+                ui.setUpCollapseExpand(sel);
 
                 // Install a change handler for rubric options to enable/disable the submit button
                 $("#self-assessment--001__assessment", ui.element).change(
@@ -259,11 +253,8 @@ OpenAssessment.BaseUI.prototype = {
 
     /**
     Render the grade step.
-
-    Args:
-        expand (bool): If true, expand the step.
     **/
-    renderGradeStep: function(expand) {
+    renderGradeStep: function() {
         var ui = this;
         this.server.render('grade').done(
             function(html) {
@@ -316,11 +307,12 @@ OpenAssessment.BaseUI.prototype = {
     peerAssess: function() {
         var ui = this;
         ui.peerAssessRequest(function() {
-            // When we have successfully sent the assessment,
-            // collapse the current step and expand the next step
-            ui.renderPeerAssessmentStep(false);
+            // We leave the peer assessment step expanded, because (a) there might
+            // be more peers for the student to grade, and (b) the "completed" state
+            // contains no content, so it will look collapsed anyway.
+            ui.renderPeerAssessmentStep(true);
             ui.renderSelfAssessmentStep(true);
-            ui.renderGradeStep(false);
+            ui.renderGradeStep();
         });
     },
 
@@ -331,10 +323,8 @@ OpenAssessment.BaseUI.prototype = {
     continuedPeerAssess: function() {
         var ui = this;
         ui.peerAssessRequest(function() {
-            // When we have successfully sent the assessment,
-            // collapse the current step and expand the next step
             ui.renderContinuedPeerAssessmentStep();
-            ui.renderGradeStep(false);
+            ui.renderGradeStep();
         });
     },
 
@@ -362,7 +352,7 @@ OpenAssessment.BaseUI.prototype = {
         var ui = this;
         this.toggleActionError('peer', null);
         this.server.peerAssess(submissionId, optionsSelected, feedback).done(
-                successFunction()
+                successFunction
             ).fail(function(errMsg) {
                 ui.toggleActionError('peer', errMsg);
             });
@@ -387,9 +377,10 @@ OpenAssessment.BaseUI.prototype = {
         this.server.selfAssess(submissionId, optionsSelected).done(
             function() {
                 // When we have successfully sent the assessment,
-                // collapse the current step and expand the next step
+                // collapse the current and previous steps and expand the next step
+                ui.renderPeerAssessmentStep(false);
                 ui.renderSelfAssessmentStep(false);
-                ui.renderGradeStep(true);
+                ui.renderGradeStep();
             }
         ).fail(function(errMsg) {
             ui.toggleActionError('self', errMsg);
