@@ -53,3 +53,6 @@ config.codekit
 node_modules
 npm-debug.log
 coverage
+
+# Dev database
+timdb

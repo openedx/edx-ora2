@@ -21,7 +21,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '../timdb',                      # Or path to database file if using sqlite3.
+        'NAME': 'timdb',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -94,9 +94,10 @@ SECRET_KEY = ')68&amp;-c!+og)cy$o9pju_$c707+fett&amp;ph%t%gqgu-@5)!cl$cr'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-    'django.template.loaders.eggs.Loader',
+    ('django.template.loaders.cached.Loader', (
+        'django.template.loaders.filesystem.Loader',
+        'django.template.loaders.app_directories.Loader',
+    )),
 )
 
 MIDDLEWARE_CLASSES = (
@@ -113,12 +114,6 @@ ROOT_URLCONF = 'urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
 # WSGI_APPLICATION = 'wsgi.application'
-
-TEMPLATE_DIRS = (
-    "apps/submissions/templates",
-    "apps/openassessment/peer/templates",
-    "apps/openassessment/xblock",
-)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -177,4 +172,4 @@ LOGGING = {
 # TODO: add config for XBLOCK_WORKBENCH { SCENARIO_CLASSES }
 WORKBENCH = {
     'reset_state_on_restart': False,
-    }
+}

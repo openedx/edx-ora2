@@ -1,11 +1,9 @@
 """An XBlock where students can read a question and compose their response"""
 
 import datetime as dt
-import json
 import pkg_resources
 
 import pytz
-import dateutil.parser
 
 from django.template.context import Context
 from django.template.loader import get_template
@@ -305,8 +303,7 @@ class OpenAssessmentBlock(
         context = Context(context_dict)
         frag = Fragment(template.render(context))
         frag.add_css(load("static/css/openassessment.css"))
-        frag.add_javascript(load("static/js/src/oa_server.js"))
-        frag.add_javascript(load("static/js/src/oa_base.js"))
+        frag.add_javascript(load("static/js/openassessment.min.js"))
         frag.initialize_js('OpenAssessmentBlock')
         return frag
 
