@@ -39,6 +39,28 @@ To run the unit test suite:
     python manage.py test
 
 
+Quality Check
+=============
+
+Install pylint:
+
+.. code:: bash
+
+    pip install pylint==0.28.0
+
+Check for quality violations:
+
+.. code:: bash
+
+    pylint apps
+
+Disable quality violations on a line or file:
+
+.. code:: python
+
+    # pylint: disable=W0123,E4567
+
+
 License
 =======
 
