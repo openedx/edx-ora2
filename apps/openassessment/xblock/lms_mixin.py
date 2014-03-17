@@ -1,8 +1,31 @@
-from xblock.core import XBlock
-from xblock.fields import Float, Scope
+"""
+Fields and methods used by the LMS and Studio.
+"""
+
+from xblock.fields import String, Float, Scope, DateTime
+
 
 class LmsCompatibilityMixin(object):
-    """Extra methods we tack on because the LMS expects them for grading."""
+    """
+    Extra fields and methods used by LMS/Studio.
+    """
+    # Studio the default value for this field to show this XBlock
+    # in the list of "Advanced Components"
+    display_name = String(
+        default="Peer Assessment", scope=Scope.settings,
+        help="Display name"
+    )
+
+    start = DateTime(
+        default=None, scope=Scope.settings,
+        help="ISO-8601 formatted string representing the start date of this assignment."
+    )
+
+    due = DateTime(
+        default=None, scope=Scope.settings,
+        help="ISO-8601 formatted string representing the due date of this assignment."
+    )
+
     weight = Float(
         display_name="Problem Weight",
         help=("Defines the number of points each problem is worth. "
