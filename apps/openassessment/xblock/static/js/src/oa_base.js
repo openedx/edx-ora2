@@ -249,7 +249,12 @@ OpenAssessment.BaseUI.prototype = {
         var ui = this;
         this.server.render('grade').done(
             function(html) {
+                // Load the HTML
                 $('#openassessment__grade', ui.element).replaceWith(html);
+
+                // Install a click handler for collapse/expand
+                var sel = $('#openassessment__grade', ui.element);
+                ui.setUpCollapseExpand(sel);
             }
         ).fail(function(errMsg) {
             ui.showLoadError('grade', errMsg);
