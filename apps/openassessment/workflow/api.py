@@ -7,7 +7,7 @@ import logging
 
 from django.db import DatabaseError
 
-
+from openassessment.assessment import peer_api
 from submissions import api as sub_api
 from .models import AssessmentWorkflow
 from .serializers import AssessmentWorkflowSerializer
@@ -118,11 +118,12 @@ def create_workflow(submission_uuid):
     # we're getting from the outside is the submission_uuid, which is already
     # validated by this point.
     try:
+        peer_api.create_peer_workflow(submission_uuid)
         workflow = AssessmentWorkflow.objects.create(
             submission_uuid=submission_uuid,
             status=AssessmentWorkflow.STATUS.peer
         )
-    except DatabaseError as err:
+    except (DatabaseError, peer_api.PeerAssessmentError) as err:
         err_msg = u"Could not create assessment workflow: {}".format(err)
         logger.exception(err_msg)
         raise AssessmentWorkflowInternalError(err_msg)
