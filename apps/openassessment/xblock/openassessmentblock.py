@@ -10,7 +10,7 @@ from django.template.loader import get_template
 from webob import Response
 
 from xblock.core import XBlock
-from xblock.fields import DateTime, List, Scope, String, Boolean
+from xblock.fields import List, Scope, String, Boolean
 from xblock.fragment import Fragment
 from openassessment.xblock.grade_mixin import GradeMixin
 
@@ -168,16 +168,6 @@ class OpenAssessmentBlock(
     WorkflowMixin,
     LmsCompatibilityMixin):
     """Displays a question and gives an area where students can compose a response."""
-
-    start = DateTime(
-        default=None, scope=Scope.settings,
-        help="ISO-8601 formatted string representing the start date of this assignment."
-    )
-
-    due = DateTime(
-        default=None, scope=Scope.settings,
-        help="ISO-8601 formatted string representing the due date of this assignment."
-    )
 
     submission_due = String(
         default=None, scope=Scope.settings,
