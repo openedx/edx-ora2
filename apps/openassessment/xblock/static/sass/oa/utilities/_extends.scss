@@ -36,6 +36,10 @@
 
   p {
     margin-bottom: $baseline-v;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }
 

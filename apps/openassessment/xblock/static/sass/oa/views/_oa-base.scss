@@ -1040,6 +1040,15 @@
 
   .submission__feeedback__content {
     @extend %ui-section-content;
+  }
+
+  .submission__feeedback__instructions {
+    @extend %copy-4;
+    color: $copy-color;
+    margin-bottom: $baseline-v;
+  }
+
+  .submission__feeedback__fields {
 
     .field {
       margin-bottom: ($baseline-v*1.5);
@@ -1051,7 +1060,6 @@
 
     select {
       display: block;
-      width: 100%;
     }
 
     textarea {
