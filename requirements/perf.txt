@@ -1,5 +1,4 @@
 -r base.txt
 
 locustio==0.7.0
-loremipsum==1.0.2
 pyzmq==14.0.1
