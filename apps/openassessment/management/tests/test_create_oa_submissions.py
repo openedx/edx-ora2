@@ -29,20 +29,17 @@ class CreateSubmissionsTest(TestCase):
             self.assertGreater(len(submissions[0]['answer']), 0)
 
             # Check that peer and self assessments were created
-            assessments = peer_api.get_assessments(submissions[0]['uuid'])
+            assessments = peer_api.get_assessments(submissions[0]['uuid'], scored_only=False)
 
             # Verify that the assessments exist and have content
-            # TODO: currently peer_api.get_assessments() returns both peer- and self-assessments
-            # When this call gets split, we'll need to update the test
-            self.assertEqual(len(assessments), cmd.NUM_PEER_ASSESSMENTS + 1)
+            self.assertEqual(len(assessments), cmd.NUM_PEER_ASSESSMENTS)
 
             for assessment in assessments:
                 self.assertGreater(assessment['points_possible'], 0)
 
             # Check that a self-assessment was created
-            submission, assessment = self_api.get_submission_and_assessment(submissions[0]['uuid'])
+            assessment = self_api.get_assessment(submissions[0]['uuid'])
 
             # Verify that the assessment exists and has content
-            self.assertIsNot(submission, None)
             self.assertIsNot(assessment, None)
             self.assertGreater(assessment['points_possible'], 0)

@@ -35,7 +35,7 @@ class TestSelfAssessment(XBlockHandlerTestCase):
         self.assertTrue(resp['success'])
 
         # Expect that a self-assessment was created
-        _, assessment = self_api.get_submission_and_assessment(submission["uuid"])
+        assessment = self_api.get_assessment(submission["uuid"])
         self.assertEqual(assessment['submission_uuid'], submission['uuid'])
         self.assertEqual(assessment['points_earned'], 5)
         self.assertEqual(assessment['points_possible'], 6)
@@ -117,7 +117,7 @@ class TestSelfAssessment(XBlockHandlerTestCase):
         # Simulate an error and expect a failure response
         with mock.patch('openassessment.xblock.self_assessment_mixin.self_api') as mock_api:
             mock_api.SelfAssessmentRequestError = self_api.SelfAssessmentRequestError
-            mock_api.get_submission_and_assessment.side_effect = self_api.SelfAssessmentRequestError
+            mock_api.get_assessment.side_effect = self_api.SelfAssessmentRequestError
             resp = self.request(xblock, 'render_self_assessment', json.dumps(dict()))
         self.assertIn("error", resp.lower())
 

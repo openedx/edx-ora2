@@ -307,7 +307,7 @@ class Assessment(models.Model):
         return median_score
 
     @classmethod
-    def scores_by_criterion(cls, submission_uuid, must_be_graded_by):
+    def scores_by_criterion(cls, assessments):
         """Create a dictionary of lists for scores associated with criterion
 
         Create a key value in a dict with a list of values, for every criterion
@@ -318,18 +318,17 @@ class Assessment(models.Model):
         of scores.
 
         Args:
-            submission_uuid (str): Obtain assessments associated with this submission.
-            must_be_graded_by (int): The number of assessments to include in this score analysis.
+            assessments (list): List of assessments to sort scores by their
+                associated criteria.
 
         Examples:
-            >>> Assessment.scores_by_criterion('abcd', 3)
+            >>> assessments = Assessment.objects.all()
+            >>> Assessment.scores_by_criterion(assessments)
             {
                 "foo": [1, 2, 3],
                 "bar": [6, 7, 8]
             }
         """
-        assessments = cls.objects.filter(submission_uuid=submission_uuid).order_by("scored_at")[:must_be_graded_by]
-
         scores = defaultdict(list)
         for assessment in assessments:
             for part in assessment.parts.all():
@@ -401,6 +400,7 @@ class PeerWorkflow(models.Model):
     course_id = models.CharField(max_length=40, db_index=True)
     submission_uuid = models.CharField(max_length=128, db_index=True, unique=True)
     created_at = models.DateTimeField(default=now, db_index=True)
+    completed_at = models.DateTimeField(null=True)
 
     class Meta:
         ordering = ["created_at", "id"]
@@ -432,6 +432,18 @@ class PeerWorkflowItem(models.Model):
     submission_uuid = models.CharField(max_length=128, db_index=True)
     started_at = models.DateTimeField(default=now, db_index=True)
     assessment = models.IntegerField(default=-1)
+
+    # This WorkflowItem was used to determine the final score for the Workflow.
+    scored = models.BooleanField(default=False)
+
+    @classmethod
+    def get_scored_assessments(cls, submission_uuid):
+        workflow_items = PeerWorkflowItem.objects.filter(
+            submission_uuid=submission_uuid, scored=True
+        )
+        return Assessment.objects.filter(
+            pk__in=[item.pk for item in workflow_items]
+        )
 
     class Meta:
         ordering = ["started_at", "id"]

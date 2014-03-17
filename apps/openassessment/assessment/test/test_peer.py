@@ -10,7 +10,7 @@ from mock import patch
 from nose.tools import raises
 
 from openassessment.assessment import peer_api
-from openassessment.assessment.models import Assessment, PeerWorkflow, PeerWorkflowItem
+from openassessment.assessment.models import Assessment, PeerWorkflow, PeerWorkflowItem, AssessmentFeedback
 from openassessment.workflow import api as workflow_api
 from submissions import api as sub_api
 from submissions.models import Submission
@@ -136,7 +136,7 @@ class TestPeerApi(TestCase):
             assessment_dict,
             RUBRIC_DICT,
         )
-        assessments = peer_api.get_assessments(sub["uuid"])
+        assessments = peer_api.get_assessments(sub["uuid"], scored_only=False)
         self.assertEqual(1, len(assessments))
 
     @file_data('valid_assessments.json')
@@ -151,7 +151,7 @@ class TestPeerApi(TestCase):
             RUBRIC_DICT,
             MONDAY
         )
-        assessments = peer_api.get_assessments(sub["uuid"])
+        assessments = peer_api.get_assessments(sub["uuid"], scored_only=False)
         self.assertEqual(1, len(assessments))
         self.assertEqual(assessments[0]["scored_at"], MONDAY)
 
@@ -480,6 +480,45 @@ class TestPeerApi(TestCase):
         submission_uuid = peer_api._get_submission_for_over_grading(xander_workflow)
         self.assertEqual(buffy_answer["uuid"], submission_uuid)
 
+    def test_create_assessment_feedback(self):
+        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
+        sub = peer_api.get_submission_to_assess(bob, 1)
+        assessment = peer_api.create_assessment(
+            sub["uuid"],
+            bob["student_id"],
+            ASSESSMENT_DICT,
+            RUBRIC_DICT,
+        )
+        sub = peer_api.get_submission_to_assess(tim, 1)
+        peer_api.create_assessment(
+            sub["uuid"],
+            tim["student_id"],
+            ASSESSMENT_DICT,
+            RUBRIC_DICT,
+        )
+        peer_api.get_score(
+            tim_sub["uuid"],
+            {
+                'must_grade': 1,
+                'must_be_graded_by': 1
+            }
+        )
+        feedback = peer_api.get_assessment_feedback(tim_sub['uuid'])
+        self.assertIsNone(feedback)
+        feedback = peer_api.set_assessment_feedback(
+            {
+                'submission_uuid': tim_sub['uuid'],
+                'helpfulness': 0,
+                'feedback': 'Bob is a jerk!'
+            }
+        )
+        self.assertIsNotNone(feedback)
+        self.assertEquals(feedback["assessments"][0]["submission_uuid"], assessment["submission_uuid"])
+
+        saved_feedback = peer_api.get_assessment_feedback(tim_sub['uuid'])
+        self.assertEquals(feedback, saved_feedback)
+
     def test_close_active_assessment(self):
         buffy_answer, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
         xander_answer, xander = self._create_student_and_submission("Xander", "Xander's answer")
@@ -511,6 +550,33 @@ class TestPeerApi(TestCase):
         tim_workflow = peer_api._get_latest_workflow(tim)
         mock_filter.side_effect = DatabaseError("Oh no.")
         peer_api._get_submission_for_review(tim_workflow, 3)
+
+    @patch.object(AssessmentFeedback.objects, 'get')
+    @raises(peer_api.PeerAssessmentInternalError)
+    def test_get_assessment_feedback_error(self, mock_filter):
+        mock_filter.side_effect = DatabaseError("Oh no.")
+        tim_answer, tim = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
+        peer_api.get_assessment_feedback(tim_answer['uuid'])
+
+    @patch.object(PeerWorkflowItem, 'get_scored_assessments')
+    @raises(peer_api.PeerAssessmentInternalError)
+    def test_set_assessment_feedback_error(self, mock_filter):
+        mock_filter.side_effect = DatabaseError("Oh no.")
+        tim_answer, tim = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
+        peer_api.set_assessment_feedback({'submission_uuid': tim_answer['uuid']})
+
+    @patch.object(AssessmentFeedback, 'save')
+    @raises(peer_api.PeerAssessmentInternalError)
+    def test_set_assessment_feedback_error_on_save(self, mock_filter):
+        mock_filter.side_effect = DatabaseError("Oh no.")
+        tim_answer, tim = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
+        peer_api.set_assessment_feedback(
+            {
+                'submission_uuid': tim_answer['uuid'],
+                'helpfulness': 0,
+                'feedback': 'Boo',
+            }
+        )
 
     @patch.object(PeerWorkflow.objects, 'filter')
     @raises(peer_api.PeerAssessmentWorkflowError)
@@ -581,7 +647,7 @@ class TestPeerApi(TestCase):
     def test_median_score_db_error(self, mock_filter):
         mock_filter.side_effect = DatabaseError("Bad things happened")
         tim, _ = self._create_student_and_submission("Tim", "Tim's answer")
-        peer_api.get_assessment_median_scores(tim["uuid"], 3)
+        peer_api.get_assessment_median_scores(tim["uuid"])
 
     @patch.object(Assessment.objects, 'filter')
     @raises(peer_api.PeerAssessmentInternalError)

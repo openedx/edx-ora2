@@ -6,16 +6,20 @@ the workflow for a given submission.
 """
 import copy
 import logging
-from datetime import datetime, timedelta
+from datetime import timedelta
+from django.utils import timezone
 
 from django.utils.translation import ugettext as _
 from django.db import DatabaseError
 from django.db.models import Q
-from pytz import UTC
 
-from openassessment.assessment.models import Assessment, InvalidOptionSelection, PeerWorkflow, PeerWorkflowItem, AssessmentFeedback
+from openassessment.assessment.models import (
+    Assessment, InvalidOptionSelection, PeerWorkflow, PeerWorkflowItem,
+    AssessmentFeedback
+)
 from openassessment.assessment.serializers import (
-    AssessmentSerializer, rubric_from_dict, get_assessment_review, AssessmentFeedbackSerializer)
+    AssessmentSerializer, rubric_from_dict, AssessmentFeedbackSerializer,
+    full_assessment_dict)
 from submissions.api import get_submission_and_student
 from submissions.models import Submission, StudentItem
 from submissions.serializers import SubmissionSerializer, StudentItemSerializer
@@ -93,17 +97,25 @@ def get_score(submission_uuid, requirements):
     if not is_complete(submission_uuid, requirements):
         return None
 
-    assessments = Assessment.objects.filter(submission_uuid=submission_uuid, score_type=PEER_TYPE)
-    submission_finished = _check_submission_graded(submission_uuid, requirements["must_be_graded_by"])
+    assessments = Assessment.objects.filter(
+        submission_uuid=submission_uuid, score_type=PEER_TYPE
+    )[:requirements["must_be_graded_by"]]
+
+    submission_finished = assessments.count() >= requirements["must_be_graded_by"]
 
     if not submission_finished:
         return None
 
+    PeerWorkflowItem.objects.filter(
+        assessment__in=[a.pk for a in assessments]
+    ).update(scored=True)
+
+    PeerWorkflow.objects.filter(submission_uuid=submission_uuid).update(
+        completed_at=timezone.now()
+    )
     return {
         "points_earned": sum(
-            get_assessment_median_scores(
-                submission_uuid, requirements["must_be_graded_by"]
-            ).values()
+            get_assessment_median_scores(submission_uuid).values()
         ),
         "points_possible": assessments[0].points_possible,
     }
@@ -255,7 +267,7 @@ def get_rubric_max_scores(submission_uuid):
         raise PeerAssessmentInternalError(error_message)
 
 
-def get_assessment_median_scores(submission_uuid, must_be_graded_by):
+def get_assessment_median_scores(submission_uuid):
     """Get the median score for each rubric criterion
 
     For a given assessment, collect the median score for each criterion on the
@@ -266,14 +278,10 @@ def get_assessment_median_scores(submission_uuid, must_be_graded_by):
     values, the average of those two values is returned, rounded up to the
     greatest integer value.
 
-    If OverGrading occurs, the 'must_be_graded_by' parameter is the number of
-    assessments we want to use to calculate the median values. If this limit is
-    less than the total number of assessments available, the earliest
-    assessments are used.
-
     Args:
-        submission_uuid (str): The submission uuid to get all rubric criterion median scores.
-        must_be_graded_by (int): The number of assessments to include in this score analysis.
+        submission_uuid (str): The submission uuid is used to get the
+            assessments used to score this submission, and generate the
+            appropriate median score.
 
     Returns:
         (dict): A dictionary of rubric criterion names, with a median score of
@@ -283,10 +291,9 @@ def get_assessment_median_scores(submission_uuid, must_be_graded_by):
         PeerAssessmentInternalError: If any error occurs while retrieving
             information to form the median scores, an error is raised.
     """
-    # Create a key value in a dict with a list of values, for every criterion
-    # found in an assessment.
     try:
-        scores = Assessment.scores_by_criterion(submission_uuid, must_be_graded_by)
+        assessments = PeerWorkflowItem.get_scored_assessments(submission_uuid)
+        scores = Assessment.scores_by_criterion(assessments)
         return Assessment.get_median_score_dict(scores)
     except DatabaseError:
         error_message = _(u"Error getting assessment median scores {}".format(submission_uuid))
@@ -341,7 +348,7 @@ def has_finished_required_evaluating(student_item_dict, required_assessments):
     return done, count
 
 
-def get_assessments(submission_uuid):
+def get_assessments(submission_uuid, scored_only=True, limit=None):
     """Retrieve the assessments for a submission.
 
     Retrieves all the assessments for a submissions. This API returns related
@@ -349,8 +356,13 @@ def get_assessments(submission_uuid):
     assessments associated with this submission will not be returned.
 
     Args:
-        submission_uuid (str): The UUID of the submission all the
-            requested assessments are associated with.
+        submission_uuid (str): The submission all the requested assessments are
+            associated with. Required.
+
+    Kwargs:
+        scored (boolean): Only retrieve the assessments used to generate a score
+            for this submission.
+        limit (int): Limit the returned assessments. If None, returns all.
 
     Returns:
         list(dict): A list of dictionaries, where each dictionary represents a
@@ -363,7 +375,7 @@ def get_assessments(submission_uuid):
             while retrieving the assessments associated with this submission.
 
     Examples:
-        >>> get_assessments("1")
+        >>> get_assessments("1", scored_only=True, limit=2)
         [
             {
                 'points_earned': 6,
@@ -383,7 +395,16 @@ def get_assessments(submission_uuid):
 
     """
     try:
-        return get_assessment_review(submission_uuid)
+        if scored_only:
+            assessments = PeerWorkflowItem.get_scored_assessments(
+                submission_uuid
+            )
+        else:
+            assessments = Assessment.objects.filter(
+                submission_uuid=submission_uuid,
+                score_type=PEER_TYPE
+            )
+        return [full_assessment_dict(assessment) for assessment in assessments[:limit]]
     except DatabaseError:
         error_message = _(
             u"Error getting assessments for submission {}".format(submission_uuid)
@@ -672,7 +693,7 @@ def _find_active_assessments(workflow):
     """
     workflows = workflow.items.filter(
         assessment=-1,
-        started_at__gt=datetime.utcnow().replace(tzinfo=UTC) - TIME_LIMIT
+        started_at__gt=timezone.now() - TIME_LIMIT
     )
     return workflows[0].submission_uuid if workflows else None
 
@@ -709,7 +730,7 @@ def _get_submission_for_review(workflow, graded_by, over_grading=False):
 
     """
     order = " having count(pwi.id) < %s order by pw.created_at, pw.id "
-    timeout = (datetime.utcnow().replace(tzinfo=UTC) - TIME_LIMIT).strftime("%Y-%m-%d %H:%M:%S")
+    timeout = (timezone.now() - TIME_LIMIT).strftime("%Y-%m-%d %H:%M:%S")
     sub = _get_next_submission(
         order,
         workflow,
@@ -738,7 +759,7 @@ def _get_submission_for_over_grading(workflow):
 
     """
     order = " order by c, pw.created_at, pw.id "
-    timeout = (datetime.utcnow().replace(tzinfo=UTC) - TIME_LIMIT).strftime("%Y-%m-%d %H:%M:%S")
+    timeout = (timezone.now() - TIME_LIMIT).strftime("%Y-%m-%d %H:%M:%S")
     return _get_next_submission(
         order,
         workflow,
@@ -826,7 +847,7 @@ def _get_next_submission(order, workflow, *args):
 def _assessors_count(peer_workflow):
     return PeerWorkflowItem.objects.filter(
         ~Q(assessment=-1) |
-        Q(assessment=-1, started_at__gt=datetime.utcnow().replace(tzinfo=UTC) - TIME_LIMIT),
+        Q(assessment=-1, started_at__gt=timezone.now() - TIME_LIMIT),
         submission_uuid=peer_workflow.submission_uuid).count()
 
 
@@ -897,28 +918,6 @@ def _check_student_done_grading(workflow, must_grade):
     return workflow.items.all().exclude(assessment=-1).count() >= must_grade
 
 
-def _check_submission_graded(submission_uuid, must_be_graded_by):
-    """Checks to see if the submission has enough grades.
-
-    Determine if the given submission has enough grades.
-
-    Args:
-        submission_uuid (str): The submission we want to check to see if it has
-            been graded by enough peers.
-        must_be_graded_by (int): The number of peer assessments there should be.
-
-    Returns:
-        True if the submission is finished, False if not.
-
-    Examples:
-        >>> _check_submission_graded("1", 3)
-        True
-    """
-    return PeerWorkflowItem.objects.filter(
-        submission_uuid=submission_uuid
-    ).exclude(assessment=-1).count() >= must_be_graded_by
-
-
 def get_assessment_feedback(submission_uuid):
     """Retrieve a feedback object for an assessment whether it exists or not.
 
@@ -950,15 +949,13 @@ def get_assessment_feedback(submission_uuid):
         raise PeerAssessmentInternalError(error_message)
 
 
-def set_assessment_feedback(must_grade, feedback_dict):
+def set_assessment_feedback(feedback_dict):
     """Set a feedback object for an assessment to have some new values.
 
     Sets or updates the assessment feedback with the given values in the
     dict.
 
     Args:
-        must_grade (int): The required number of assessments for the associated
-            submission.
         feedback_dict (dict): A dictionary of all the values to update or create
             a new assessment feedback.
     Returns:
@@ -970,7 +967,7 @@ def set_assessment_feedback(must_grade, feedback_dict):
         logger.error(error_message)
         raise PeerAssessmentRequestError(error_message)
     try:
-        assessments = Assessment.objects.filter(submission__uuid=submission_uuid, score_type="PE")
+        assessments = PeerWorkflowItem.get_scored_assessments(submission_uuid)
     except DatabaseError:
         error_message = (
             u"An error occurred getting database state to set assessment feedback for {}."
@@ -987,7 +984,7 @@ def set_assessment_feedback(must_grade, feedback_dict):
         # Assessments associated with feedback must be saved after the row is
         # committed to the database in order to associated the PKs across both
         # tables.
-        feedback_model.assessments.add(*[assessment.id for assessment in assessments[:must_grade]])
+        feedback_model.assessments.add(*assessments)
     except DatabaseError:
         error_message = (
             u"An error occurred saving assessment feedback for {}."

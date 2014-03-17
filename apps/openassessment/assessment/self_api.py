@@ -92,35 +92,22 @@ def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, s
     return serializer.data
 
 
-def get_submission_and_assessment(submission_uuid):
+def get_assessment(submission_uuid):
     """
-    Retrieve a submission and self-assessment for a student item.
+    Retrieve a self-assessment for a submission_uuid.
 
     Args:
-        submission_uuid (str): The submission uuid for we want information for
+        submission_uuid (str): The submission UUID for we want information for
             regarding self assessment.
 
     Returns:
-        A tuple `(submission, assessment)` where:
-            submission (dict) is a serialized Submission model, or None (if the user has not yet made a submission)
-            assessment (dict) is a serialized Assessment model, or None (if the user has not yet self-assessed)
-
+        assessment (dict) is a serialized Assessment model, or None (if the user has not yet self-assessed)
         If multiple submissions or self-assessments are found, returns the most recent one.
 
     Raises:
-        SelfAssessmentRequestError: Student item dict was invalid.
+        SelfAssessmentRequestError: submission_uuid was invalid.
     """
-    # Look up the most recent submission from the student item
-    try:
-        submission = get_submission(submission_uuid)
-        if not submission:
-            return (None, None)
-    except SubmissionNotFoundError:
-        return (None, None)
-    except SubmissionRequestError:
-        raise SelfAssessmentRequestError(_('Could not retrieve submission'))
-
-    # Retrieve assessments for the submission
+    # Retrieve assessments for the submission UUID
     # We weakly enforce that number of self-assessments per submission is <= 1,
     # but not at the database level.  Someone could take advantage of the race condition
     # between checking the number of self-assessments and creating a new self-assessment.
@@ -131,9 +118,8 @@ def get_submission_and_assessment(submission_uuid):
 
     if assessments.exists():
         assessment_dict = full_assessment_dict(assessments[0])
-        return submission, assessment_dict
-    else:
-        return submission, None
+        return assessment_dict
+    return None
 
 
 def is_complete(submission_uuid):
