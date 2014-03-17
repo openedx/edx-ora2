@@ -163,6 +163,20 @@ OpenAssessment.Server.prototype = {
 
     /** 
      * Send feedback on assessments to the XBlock.
+     * Args:
+     *      feedback: The feedback given on a series of assessments associated
+     *          with this current submission.
+     *
+     * Returns:
+     *      A JQuery promise, which resolves with no args if successful and
+     *          fails with an error message otherwise.
+     *
+     * Example:
+     *      server.feedback_submit("I dislike my reviews.").done(
+     *          console.log("Success!");
+     *      ).fail(function(errMsg) {
+     *          console.log("Error: " + errMsg);
+     *      });
      */
     feedback_submit: function(feedback) {
         var url = this.url('feedback_submit');

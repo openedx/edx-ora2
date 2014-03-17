@@ -274,6 +274,10 @@ def rubric_from_dict(rubric_dict):
 
 
 class AssessmentFeedbackSerializer(serializers.ModelSerializer):
+    submission_uuid = serializers.CharField(source='submission_uuid')
+    helpfulness = serializers.IntegerField(source='helpfulness')
+    feedback = serializers.CharField(source='feedback')
+    assessments = AssessmentSerializer(many=True, default=None, required=False)
 
     class Meta:
         model = AssessmentFeedback
@@ -281,5 +285,6 @@ class AssessmentFeedbackSerializer(serializers.ModelSerializer):
             'submission_uuid',
             'helpfulness',
             'feedback',
+            'assessments',
         )
 

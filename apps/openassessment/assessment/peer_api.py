@@ -907,10 +907,12 @@ def get_assessment_feedback(submission_uuid):
 
     """
     try:
-        feedback, feedback_created = AssessmentFeedback.objects.get_or_create(
+        feedback = AssessmentFeedback.objects.get(
             submission_uuid=submission_uuid
         )
         return AssessmentFeedbackSerializer(feedback).data
+    except AssessmentFeedback.DoesNotExist:
+        return None
     except DatabaseError:
         error_message = (
             u"An error occurred retrieving assessment feedback for {}."
@@ -934,15 +936,13 @@ def set_assessment_feedback(must_grade, feedback_dict):
     Returns:
         The modified or created feedback.
     """
-    submission_uuid = feedback_dict.get('submission_uuid', '')
+    submission_uuid = feedback_dict.get('submission_uuid')
     if not submission_uuid:
         error_message = u"An error occurred creating assessment feedback: bad or missing submission_uuid."
-        logger.exception(error_message)
-        raise PeerAssessmentInternalError(error_message)
+        logger.error(error_message)
+        raise PeerAssessmentRequestError(error_message)
     try:
-        feedback_model = AssessmentFeedback.objects.get_or_create(submission_uuid=submission_uuid)
-        submission = Submission.objects.get(uuid=submission_uuid)
-        assessments = Assessment.objects.filter(submission=submission, score_type="PE")
+        assessments = Assessment.objects.filter(submission__uuid=submission_uuid, score_type="PE")
     except DatabaseError:
         error_message = (
             u"An error occurred getting database state to set assessment feedback for {}."
@@ -950,12 +950,16 @@ def set_assessment_feedback(must_grade, feedback_dict):
         )
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
-    feedback_dict['assessments'] = [ assessment.pk for assessment in assessments[:must_grade] ]
-    feedback = AssessmentFeedbackSerializer(feedback_model, data=feedback_dict)
+    feedback = AssessmentFeedbackSerializer(data=feedback_dict)
     if not feedback.is_valid():
         raise PeerAssessmentRequestError(feedback.errors)
+
     try:
-        feedback.save()
+        feedback_model = feedback.save()
+        # Assessments associated with feedback must be saved after the row is
+        # committed to the database in order to associated the PKs across both
+        # tables.
+        feedback_model.assessments.add(*[assessment.id for assessment in assessments[:must_grade]])
     except DatabaseError:
         error_message = (
             u"An error occurred saving assessment feedback for {}."

@@ -322,12 +322,13 @@ OpenAssessment.BaseUI.prototype = {
     feedback_assess: function() {
         // Send the submission to the server
         var feedback = $('#feedback__remarks__value', this.element).val();
+        var ui = this;
         this.server.feedback_submit(feedback).done(
             // When we have successfully sent the submission, textarea no longer editable
             console.log("Feedback to the assessments submitted, thanks!")
         ).fail(function(errMsg) {
             // TODO: display to the user
-            console.log(errMsg);
+            ui.toggleActionError('feedback_assess', errMsg);
         });
     },
 
