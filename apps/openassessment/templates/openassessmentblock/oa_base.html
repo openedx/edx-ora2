@@ -2,19 +2,9 @@
 <div class="wrapper wrapper--xblock wrapper--openassessment theme--basic">
     <div class="openassessment" id="openassessment">
         <div class="wrapper--grid">
-            <h1 class="openassessment__title">
-                <span class="openassessment__title--super">
-                    {{ title }}
-                </span>
-
-                <span class="openassessment__title--sub">
-                    <span class="problem-type problem-type--open-ended-response">Open Response</span>
-                    {%  for assessment in rubric_assessments %}
-                    +
-                    <span class="problem-type problem-type--{{ assessment.type }}">{{ assessment.name }}</span>
-                    {% endfor %}
-                </span>
-            </h1>
+            <h2 class="openassessment__title ">
+                <span class="problem-header">{{ title }}</span>
+            </h2>
 
             <nav class="nav--contents">
                 <h2 class="title">Skip to a specific step:</h2>

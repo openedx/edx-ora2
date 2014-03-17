@@ -17,21 +17,10 @@
   // chrome: title
   .openassessment__title {
     @include row();
-    margin-bottom: $baseline-v;
-    border-bottom: ($baseline-v/5) solid $color-decorative-tertiary;
-    padding-bottom: ($baseline-v/2);
-  }
 
-  .openassessment__title--super {
-    @extend %hd-3;
-    display: block;
-    margin-bottom: ($baseline-v/4);
-  }
-
-  .openassessment__title--sub {
-    @extend %hd-7;
-    display: block;
-    color: $heading-tertiary-color;
+    .problem-header {
+      text-transform: uppercase;
+    }
   }
 
   // steps
