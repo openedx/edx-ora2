@@ -8,7 +8,7 @@ from copy import deepcopy
 from django.utils.translation import ugettext as _
 from rest_framework import serializers
 from openassessment.assessment.models import (
-    Assessment, AssessmentPart, Criterion, CriterionOption, Rubric
+    Assessment, AssessmentFeedback, AssessmentPart, Criterion, CriterionOption, Rubric
 )
 
 
@@ -271,3 +271,20 @@ def rubric_from_dict(rubric_dict):
         rubric = rubric_serializer.save()
 
     return rubric
+
+
+class AssessmentFeedbackSerializer(serializers.ModelSerializer):
+    submission_uuid = serializers.CharField(source='submission_uuid')
+    helpfulness = serializers.IntegerField(source='helpfulness')
+    feedback = serializers.CharField(source='feedback')
+    assessments = AssessmentSerializer(many=True, default=None, required=False)
+
+    class Meta:
+        model = AssessmentFeedback
+        fields = (
+            'submission_uuid',
+            'helpfulness',
+            'feedback',
+            'assessments',
+        )
+

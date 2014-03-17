@@ -13,9 +13,9 @@ from django.db import DatabaseError
 from django.db.models import Q
 from pytz import UTC
 
-from openassessment.assessment.models import Assessment, InvalidOptionSelection, PeerWorkflow, PeerWorkflowItem
+from openassessment.assessment.models import Assessment, InvalidOptionSelection, PeerWorkflow, PeerWorkflowItem, AssessmentFeedback
 from openassessment.assessment.serializers import (
-    AssessmentSerializer, rubric_from_dict, get_assessment_review)
+    AssessmentSerializer, rubric_from_dict, get_assessment_review, AssessmentFeedbackSerializer)
 from submissions.models import Submission, StudentItem
 from submissions.serializers import SubmissionSerializer, StudentItemSerializer
 
@@ -889,3 +889,82 @@ def _check_submission_graded(submission_uuid, must_be_graded_by):
     return PeerWorkflowItem.objects.filter(
         submission_uuid=submission_uuid
     ).exclude(assessment=-1).count() >= must_be_graded_by
+
+
+def get_assessment_feedback(submission_uuid):
+    """Retrieve a feedback object for an assessment whether it exists or not.
+
+    Gets or creates a new Assessment Feedback model for the given submission.
+
+    Args:
+        submission_uuid: The submission we want to create assessment feedback
+            for.
+    Returns:
+        The assessment feedback object that exists, or a newly created model.
+    Raises:
+        PeerAssessmentInternalError: Raised when the AssessmentFeedback cannot
+            be created or retrieved because of internal exceptions.
+
+    """
+    try:
+        feedback = AssessmentFeedback.objects.get(
+            submission_uuid=submission_uuid
+        )
+        return AssessmentFeedbackSerializer(feedback).data
+    except AssessmentFeedback.DoesNotExist:
+        return None
+    except DatabaseError:
+        error_message = (
+            u"An error occurred retrieving assessment feedback for {}."
+            .format(submission_uuid)
+        )
+        logger.exception(error_message)
+        raise PeerAssessmentInternalError(error_message)
+
+
+def set_assessment_feedback(must_grade, feedback_dict):
+    """Set a feedback object for an assessment to have some new values.
+
+    Sets or updates the assessment feedback with the given values in the
+    dict.
+
+    Args:
+        must_grade (int): The required number of assessments for the associated
+            submission.
+        feedback_dict (dict): A dictionary of all the values to update or create
+            a new assessment feedback.
+    Returns:
+        The modified or created feedback.
+    """
+    submission_uuid = feedback_dict.get('submission_uuid')
+    if not submission_uuid:
+        error_message = u"An error occurred creating assessment feedback: bad or missing submission_uuid."
+        logger.error(error_message)
+        raise PeerAssessmentRequestError(error_message)
+    try:
+        assessments = Assessment.objects.filter(submission__uuid=submission_uuid, score_type="PE")
+    except DatabaseError:
+        error_message = (
+            u"An error occurred getting database state to set assessment feedback for {}."
+            .format(submission_uuid)
+        )
+        logger.exception(error_message)
+        raise PeerAssessmentInternalError(error_message)
+    feedback = AssessmentFeedbackSerializer(data=feedback_dict)
+    if not feedback.is_valid():
+        raise PeerAssessmentRequestError(feedback.errors)
+
+    try:
+        feedback_model = feedback.save()
+        # Assessments associated with feedback must be saved after the row is
+        # committed to the database in order to associated the PKs across both
+        # tables.
+        feedback_model.assessments.add(*[assessment.id for assessment in assessments[:must_grade]])
+    except DatabaseError:
+        error_message = (
+            u"An error occurred saving assessment feedback for {}."
+            .format(submission_uuid)
+        )
+        logger.exception(error_message)
+        raise PeerAssessmentInternalError(error_message)
+    return feedback.data

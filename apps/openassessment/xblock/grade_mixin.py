@@ -1,5 +1,8 @@
 import copy
+
+from django.utils.translation import ugettext as _
 from xblock.core import XBlock
+
 from openassessment.assessment import peer_api
 
 
@@ -20,6 +23,8 @@ class GradeMixin(object):
         status = workflow.get('status')
         context = {}
         if status == "done":
+            feedback = peer_api.get_assessment_feedback(self.submission_uuid)
+            feedback_text = feedback.get('feedback', '') if feedback else ''
             max_scores = peer_api.get_rubric_max_scores(self.submission_uuid)
             path = 'openassessmentblock/grade/oa_grade_complete.html'
             assessment_ui_model = self.get_assessment_module('peer-assessment')
@@ -40,6 +45,7 @@ class GradeMixin(object):
                 student_submission["uuid"],
                 assessment_ui_model["must_be_graded_by"]
             )
+            context["feedback_text"] = feedback_text
             context["student_submission"] = student_submission
             context["peer_assessments"] = peer_assessments
             context["self_assessment"] = self_assessment
@@ -65,3 +71,39 @@ class GradeMixin(object):
             path = 'openassessmentblock/grade/oa_grade_incomplete.html'
 
         return self.render_assessment(path, context)
+
+    @XBlock.json_handler
+    def feedback_submit(self, data, suffix=''):
+        """Attach the Assessment Feedback text to some submission."""
+        assessment_ui_model = self.get_assessment_module('peer-assessment') or {}
+        assessment_feedback = data.get('feedback', '')
+        if not assessment_feedback:
+            return {
+                'success': False,
+                'msg': _(u"No feedback given, so none recorded")
+            }
+        try:
+            peer_api.set_assessment_feedback(
+                assessment_ui_model['must_grade'],
+                {
+                    'submission_uuid': self.submission_uuid,
+                    'feedback': assessment_feedback,
+                    'helpfulness': 0
+                }
+            )
+        except (
+            peer_api.PeerAssessmentInternalError,
+            peer_api.PeerAssessmentRequestError
+        ):
+            return {
+                'success': False,
+                'msg': _(
+                    u"Assessment Feedback could not be saved due to an internal "
+                    u"server error."
+                ),
+            }
+
+        return {
+            'success': True,
+            'msg': _(u"Feedback saved!")
+        }

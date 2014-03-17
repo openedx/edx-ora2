@@ -161,9 +161,46 @@ OpenAssessment.Server.prototype = {
         }).promise();
     },
 
+    /** 
+     * Send feedback on assessments to the XBlock.
+     * Args:
+     *      feedback: The feedback given on a series of assessments associated
+     *          with this current submission.
+     *
+     * Returns:
+     *      A JQuery promise, which resolves with no args if successful and
+     *          fails with an error message otherwise.
+     *
+     * Example:
+     *      server.feedback_submit("I dislike my reviews.").done(
+     *          console.log("Success!");
+     *      ).fail(function(errMsg) {
+     *          console.log("Error: " + errMsg);
+     *      });
+     */
+    feedback_submit: function(feedback) {
+        var url = this.url('feedback_submit');
+        var payload = JSON.stringify({
+            feedback: feedback
+        });
+        return $.Deferred(function(defer) {
+            $.ajax({ type: "POST", url: url, data: payload }).done(
+                function(data) {
+                    if (data.success) {
+                        defer.resolve();
+                    }
+                    else {
+                        defer.rejectWith(this, [data.msg]);
+                    }
+                }
+            ).fail(function(data) {
+                defer.rejectWith(this, ['Could not contact server.']);
+            });
+        }).promise()
+    },
+
     /**
     Send a peer assessment to the XBlock.
-
     Args:
         submissionId (string): The UUID of the submission.
         optionsSelected (object literal): Keys are criteria names,

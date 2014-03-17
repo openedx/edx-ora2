@@ -8,9 +8,7 @@ import logging
 from django.db import DatabaseError
 from django.utils.encoding import force_unicode
 
-from submissions.serializers import (
-    SubmissionSerializer, StudentItemSerializer, ScoreSerializer
-)
+from submissions.serializers import SubmissionSerializer, StudentItemSerializer, ScoreSerializer
 from submissions.models import Submission, StudentItem, Score, ScoreSummary
 
 logger = logging.getLogger(__name__)
