@@ -935,12 +935,12 @@
     .question__title__copy {
       @extend %hd-4;
       @extend %t-weight3;
-      // float: left;
     }
 
     .question__score {
-      @extend %copy-6;
+      @extend %hd-7;
       @extend %t-titlecase;
+      @extend %t-weight4;
       float: right;
       position: relative;
       bottom: -(($baseline-v/4));
@@ -951,7 +951,7 @@
     }
 
     .question__score__value {
-      color: $color-complete;
+      color: $heading-primary-color;
 
       &:after {
         content: "/";
@@ -1009,6 +1009,16 @@
       @extend %copy-3;
       display: block;
       margin-bottom: ($baseline-v/2);
+      color: $heading-primary-color;
+    }
+
+    .answer__score {
+      @extend %hd-7;
+      @extend %t-titlecase;
+      @extend %t-weight4;
+      display: block;
+      padding: ($baseline-v/4) ($baseline-h/4);
+      background: $color-decorative-tertiary;
       color: $heading-primary-color;
     }
 

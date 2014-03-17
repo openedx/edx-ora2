@@ -65,6 +65,10 @@
                                             <span class="answer__content">
                                                 {{ part.option.explanation }}
                                             </span>
+                                            <span class="answer__score">
+                                                <span class="label sr">Score Earned: </span>
+                                                <span class="value">{{ part.option.points }} points</span>
+                                            </span>
                                         </li>
                                         {% endif %}
                                     {% endfor %}
@@ -148,5 +152,5 @@
             </form>
         </div>
     </div>
-</li> 
+</li>
 {% endspaceless %}
