@@ -11,32 +11,42 @@ This is an initial prototype for redesigning Peer Grading and general Open Ended
 Submission Evaluation. This project is in the early stages of development and is
 not ready for general use.
 
+
 Installation
 ============
 
 The intent of this project is to be installed as Django apps that will be
-included in `edx-platform <https://github.com/edx/edx-platform>`_. To install
-for development purposes, run::
+included in `edx-platform <https://github.com/edx/edx-platform>`_.
 
-  pip install -r requirements/dev.txt
-  pip install -e .
+To install dependencies and start the development ("workbench") server:
 
-The second line is necessary to register edx-tim's XBlock so that it will show
-up in the XBlock workbench.
+.. code:: bash
 
-To setup the database, run::
+    ./scripts/workbench.sh
 
-  python manage.py syncdb --migrate
+By default, the XBlock JavaScript will be combined and minified.  To
+preserve indentation and line breaks in JavaScript source files:
+
+.. code:: bash
+
+    DEBUG_JS=1 ./scripts/workbench.sh
+
+Additional arguments are passed to ``runserver``.  For example,
+to start the server on port 8001:
+
+.. code:: bash
+
+    ./scripts/workbench.sh 8001
 
 
 Running Tests
 =============
 
-To run the unit test suite:
+To run the Python and Javascript unit test suites:
 
 .. code:: bash
 
-    python manage.py test
+    ./scripts/test.sh
 
 
 Quality Check
