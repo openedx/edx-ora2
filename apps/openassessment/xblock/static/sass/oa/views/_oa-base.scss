@@ -1041,6 +1041,19 @@
   .submission__feeedback__content {
     @extend %ui-section-content;
 
+    .field {
+      margin-bottom: ($baseline-v*1.5);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    select {
+      display: block;
+      width: 100%;
+    }
+
     textarea {
       @extend %ui-content-longanswer;
       min-height: ($baseline-v*10);
