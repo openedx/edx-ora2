@@ -221,23 +221,6 @@ class OpenAssessmentBlock(
         help="Saved response submission for the current user."
     )
 
-    def get_xblock_trace(self):
-        """Uniquely identify this XBlock by context.
-
-        Every XBlock has a scope_ids, which is a NamedTuple describing
-        important contextual information. Per @nedbat, the usage_id attribute
-        uniquely identifies this block in this course, and the user_id uniquely
-        identifies this student. With the two of them, we can trace all the
-        interactions emanating from this interaction.
-
-        Useful for logging, debugging, and uniqueification.
-
-        """
-        return (
-            unicode(self.scope_ids.usage_id),
-            unicode(self.scope_ids.user_id) if self.scope_ids.user_id is not None else None,
-        )
-
     def get_student_item_dict(self):
         """Create a student_item_dict from our surrounding context.
 
@@ -247,14 +230,19 @@ class OpenAssessmentBlock(
             (dict): The student item associated with this XBlock instance. This
                 includes the student id, item id, and course id.
         """
-        item_id, student_id = self.get_xblock_trace()
+        item_id = unicode(self.scope_ids.usage_id)
 
         # This is not the real way course_ids should work, but this is a
         # temporary expediency for LMS integratino
         if hasattr(self, "xmodule_runtime"):
             course_id = self.xmodule_runtime.course_id
+            student_id = self.xmodule_runtime.anonymous_student_id
         else:
             course_id = "edX/Enchantment_101/April_1"
+            if self.scope_ids.user_id is None:
+                student_id = None
+            else:
+                student_id = unicode(self.scope_ids.user_id)
 
         student_item_dict = dict(
             student_id=student_id,
@@ -278,11 +266,9 @@ class OpenAssessmentBlock(
             (Fragment): The HTML Fragment for this XBlock, which determines the
             general frame of the Open Ended Assessment Question.
         """
-        trace = self.get_xblock_trace()
         ui_models = self._create_ui_models()
         # All data we intend to pass to the front end.
         context_dict = {
-            "xblock_trace": trace,
             "title": self.title,
             "question": self.prompt,
             "rubric_criteria": self.rubric_criteria,
@@ -365,8 +351,6 @@ class OpenAssessmentBlock(
         """
         if not context_dict:
             context_dict = {}
-
-        context_dict["xblock_trace"] = self.get_xblock_trace()
 
         if self.start:
             context_dict["formatted_start_date"] = self.start.strftime("%A, %B %d, %Y")
