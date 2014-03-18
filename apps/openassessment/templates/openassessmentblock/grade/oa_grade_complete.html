@@ -135,12 +135,27 @@
             <form id="submission__feeedback" class="submission__feeedback" method="post">
                 <h3 class="submission__feeedback__title">Give Feedback On Peer Evaluations</h3>
 
-                <ol class="list list--fields submission__feeedback__content">
-                    <li class="field field--textarea feedback__remarks" id="feedback__remarks">
-                        <label for="feedback__remarks__value">Please provide any thoughts or comments on the feedback you received from your peers here.</label>
-                        <textarea id="feedback__remarks__value" placeholder="I feel the feedback I received was...">{{ feedback_text }}</textarea>
-                    </li>
-                </ol>
+                <div class="submission__feeedback__content">
+                    <div class="submission__feeedback__instructions">
+                        <p>You can provide feedback about this student's assessment of your response. Course staff will be able to see any feedback that you provide here when they review course records.</p>
+                    </div>
+
+                    <ol class="list list--fields submission__feeedback__fields">
+                        <li class="field field--select feedback__overall" id="feedback__overall">
+                            <label for="feedback__overall__value">Overall how do you consider your peers’ assessments of your response?</label>
+                            <select id="feedback__overall__value">
+                                <option value="This assessment was useful">This assessment was useful</option>
+                                <option value="This assessment was not useful">This assessment was not useful</option>
+                                <option value="I disagree with this assessment">I disagree with this assessment</option>
+                                <option value="This assessment was inappropriate">This assessment was inappropriate</option>
+                            </select>
+                        </li>
+                        <li class="field field--textarea feedback__remarks" id="feedback__remarks">
+                            <label for="feedback__remarks__value">Please provide any thoughts or comments on the feedback you received from your peers here.</label>
+                            <textarea id="feedback__remarks__value" placeholder="I feel the feedback I received was...">{{ feedback_text }}</textarea>
+                        </li>
+                    </ol>
+                </div>
 
                 <div class="submission__feeedback__actions">
                     <ul class="list list--actions submission__feeedback__actions">

@@ -33,6 +33,7 @@
 
     label, .label {
       @extend %copy-4;
+      @extend %t-weight3;
       display: block;
       margin-bottom: ($baseline-v/2);
       color: $copy-color;

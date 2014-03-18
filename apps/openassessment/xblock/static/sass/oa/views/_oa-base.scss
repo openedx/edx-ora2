@@ -1040,6 +1040,27 @@
 
   .submission__feeedback__content {
     @extend %ui-section-content;
+  }
+
+  .submission__feeedback__instructions {
+    @extend %copy-4;
+    color: $copy-color;
+    margin-bottom: $baseline-v;
+  }
+
+  .submission__feeedback__fields {
+
+    .field {
+      margin-bottom: ($baseline-v*1.5);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    select {
+      display: block;
+    }
 
     textarea {
       @extend %ui-content-longanswer;
