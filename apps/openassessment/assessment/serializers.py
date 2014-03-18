@@ -8,8 +8,8 @@ from copy import deepcopy
 from django.utils.translation import ugettext as _
 from rest_framework import serializers
 from openassessment.assessment.models import (
-    Assessment, AssessmentFeedback, AssessmentPart, Criterion, CriterionOption, Rubric
-)
+    Assessment, AssessmentFeedback, AssessmentPart, Criterion, CriterionOption, Rubric,
+    PeerWorkflowItem, PeerWorkflow)
 
 
 class InvalidRubric(Exception):
@@ -132,61 +132,6 @@ class AssessmentSerializer(serializers.ModelSerializer):
         )
 
 
-def get_assessment_review(submission_uuid):
-    """Get all information pertaining to an assessment for review.
-
-    Given an assessment serializer, return a serializable formatted model of
-    the assessment, all assessment parts, all criterion options, and the
-    associated rubric.
-
-    Args:
-        submission_uuid (str): The UUID of the submission whose assessment reviews we want to retrieve.
-
-    Returns:
-        (list): A list of assessment reviews, combining assessments with
-            rubrics and assessment parts, to allow a cohesive object for
-            rendering the complete peer grading workflow.
-
-    Examples:
-        >>> get_assessment_review(submission, score_type)
-        [{
-            'submission': 1,
-            'rubric': {
-                'id': 1,
-                'content_hash': u'45cc932c4da12a1c2b929018cd6f0785c1f8bc07',
-                'criteria': [{
-                    'order_num': 0,
-                    'name': u'Spelling',
-                    'prompt': u'Did the student have spelling errors?',
-                    'options': [{
-                        'order_num': 0,
-                        'points': 2,
-                        'name': u'No spelling errors',
-                        'explanation': u'No spelling errors were found in this submission.',
-                    }]
-                }]
-            },
-            'scored_at': datetime.datetime(2014, 2, 25, 19, 50, 7, 290464, tzinfo=<UTC>),
-            'scorer_id': u'Bob',
-            'score_type': u'PE',
-            'parts': [{
-                'option': {
-                    'order_num': 0,
-                    'points': 2,
-                    'name': u'No spelling errors',
-                    'explanation': u'No spelling errors were found in this submission.'}
-                }],
-            'submission_uuid': u'0a600160-be7f-429d-a853-1283d49205e7',
-            'points_earned': 9,
-            'points_possible': 20,
-        }]
-    """
-    return [
-        full_assessment_dict(assessment)
-        for assessment in Assessment.objects.filter(submission_uuid=submission_uuid)
-    ]
-
-
 def full_assessment_dict(assessment):
     """
     Return a dict representation of the Assessment model,
@@ -278,10 +223,41 @@ class AssessmentFeedbackSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AssessmentFeedback
+        fields = ('submission_uuid', 'helpfulness', 'feedback', 'assessments',)
+
+
+class PeerWorkflowSerializer(serializers.ModelSerializer):
+    """Representation of the PeerWorkflow.
+
+    A PeerWorkflow should not be exposed to the front end of any question.  This
+    model should only be exposed externally for administrative views, in order
+    to visualize the Peer Workflow.
+
+    """
+
+    class Meta:
+        model = PeerWorkflow
         fields = (
+            'student_id',
+            'item_id',
+            'course_id',
             'submission_uuid',
-            'helpfulness',
-            'feedback',
-            'assessments',
+            'created_at',
+            'completed_at'
         )
 
+
+class PeerWorkflowItemSerializer(serializers.ModelSerializer):
+    """Representation of the PeerWorkflowItem
+
+    As with the PeerWorkflow, this should not be exposed to the front end. This
+    should only be used to visualize the Peer Workflow in an administrative
+    view.
+
+    """
+
+    class Meta:
+        model = PeerWorkflowItem
+        fields = (
+            'scorer_id', 'submission_uuid', 'started_at', 'assessment', 'scored'
+        )

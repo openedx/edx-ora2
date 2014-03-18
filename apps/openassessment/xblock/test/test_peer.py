@@ -7,7 +7,6 @@ from collections import namedtuple
 import copy
 import json
 from openassessment.assessment import peer_api
-from submissions import api as submission_api
 from .base import XBlockHandlerTestCase, scenario
 
 
@@ -97,7 +96,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         self.assertTrue(resp['success'])
 
         # Retrieve the assessment and check that it matches what we sent
-        actual = peer_api.get_assessments(submission['uuid'])
+        actual = peer_api.get_assessments(submission['uuid'], scored_only=False)
         self.assertEqual(len(actual), 1)
         self.assertEqual(actual[0]['submission_uuid'], assessment['submission_uuid'])
         self.assertEqual(actual[0]['points_earned'], 5)

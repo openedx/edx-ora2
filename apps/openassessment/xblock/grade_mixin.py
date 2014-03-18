@@ -4,6 +4,8 @@ from django.utils.translation import ugettext as _
 from xblock.core import XBlock
 
 from openassessment.assessment import peer_api
+from openassessment.assessment import self_api
+from submissions import api as submission_api
 
 
 class GradeMixin(object):
@@ -23,28 +25,24 @@ class GradeMixin(object):
         status = workflow.get('status')
         context = {}
         if status == "done":
-            feedback = peer_api.get_assessment_feedback(self.submission_uuid)
-            feedback_text = feedback.get('feedback', '') if feedback else ''
-            max_scores = peer_api.get_rubric_max_scores(self.submission_uuid)
-            path = 'openassessmentblock/grade/oa_grade_complete.html'
-            assessment_ui_model = self.get_assessment_module('peer-assessment')
-            student_submission = self.get_user_submission(
-                workflow["submission_uuid"]
-            )
-            student_score = workflow["score"]
-            assessments = peer_api.get_assessments(student_submission["uuid"])
-            peer_assessments = []
-            self_assessment = None
-            for assessment in assessments:
-                if assessment["score_type"] == "PE":
-                    peer_assessments.append(assessment)
-                else:
-                    self_assessment = assessment
-            peer_assessments = peer_assessments[:assessment_ui_model["must_grade"]]
-            median_scores = peer_api.get_assessment_median_scores(
-                student_submission["uuid"],
-                assessment_ui_model["must_be_graded_by"]
-            )
+            try:
+                feedback = peer_api.get_assessment_feedback(self.submission_uuid)
+                feedback_text = feedback.get('feedback', '') if feedback else ''
+                max_scores = peer_api.get_rubric_max_scores(self.submission_uuid)
+                path = 'openassessmentblock/grade/oa_grade_complete.html'
+                student_submission = submission_api.get_submission(workflow["submission_uuid"])
+                student_score = workflow["score"]
+                peer_assessments = peer_api.get_assessments(student_submission["uuid"])
+                self_assessment = self_api.get_assessment(student_submission["uuid"])
+                median_scores = peer_api.get_assessment_median_scores(
+                    student_submission["uuid"]
+                )
+            except (
+                submission_api.SubmissionError,
+                peer_api.PeerAssessmentError,
+                self_api.SelfAssessmentRequestError
+            ):
+                return self.render_error(_(u"An unexpected error occurred."))
             context["feedback_text"] = feedback_text
             context["student_submission"] = student_submission
             context["peer_assessments"] = peer_assessments
@@ -75,7 +73,6 @@ class GradeMixin(object):
     @XBlock.json_handler
     def feedback_submit(self, data, suffix=''):
         """Attach the Assessment Feedback text to some submission."""
-        assessment_ui_model = self.get_assessment_module('peer-assessment') or {}
         assessment_feedback = data.get('feedback', '')
         if not assessment_feedback:
             return {
@@ -84,7 +81,6 @@ class GradeMixin(object):
             }
         try:
             peer_api.set_assessment_feedback(
-                assessment_ui_model['must_grade'],
                 {
                     'submission_uuid': self.submission_uuid,
                     'feedback': assessment_feedback,

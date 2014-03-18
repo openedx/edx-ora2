@@ -3,7 +3,7 @@ from django.utils.translation import ugettext as _
 
 from xblock.core import XBlock
 from openassessment.assessment import self_api
-
+from submissions import api as submission_api
 
 logger = logging.getLogger(__name__)
 
@@ -29,10 +29,11 @@ class SelfAssessmentMixin(object):
         if not workflow:
             return self.render_assessment(path, context)
         try:
-            submission, assessment = self_api.get_submission_and_assessment(
+            submission = submission_api.get_submission(self.submission_uuid)
+            assessment = self_api.get_assessment(
                 workflow["submission_uuid"]
             )
-        except self_api.SelfAssessmentRequestError:
+        except (submission_api.SubmissionError, self_api.SelfAssessmentRequestError):
             logger.exception(
                 u"Could not retrieve self assessment for submission {}"
                 .format(workflow["submission_uuid"])
