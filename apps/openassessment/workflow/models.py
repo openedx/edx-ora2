@@ -122,7 +122,6 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         else:
             # Default starting status is peer
             new_status = self.STATUS.peer
-            peer_api.create_peer_workflow(self.submission_uuid)
 
         # If we're at least waiting, let's check if we have a peer score and
         # can move all the way to done
