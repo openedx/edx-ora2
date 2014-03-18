@@ -9,6 +9,7 @@ need to then generate a matching migration for it using:
     ./manage.py schemamigration submissions --auto
 
 """
+import json
 import logging
 
 from django.db import models, DatabaseError
@@ -84,8 +85,8 @@ class Submission(models.Model):
     # When this row was created.
     created_at = models.DateTimeField(editable=False, default=now, db_index=True)
 
-    # The actual answer, assumed to be a JSON string
-    answer = models.TextField(blank=True)
+    # The answer (JSON-serialized)
+    raw_answer = models.TextField(blank=True)
 
     def __repr__(self):
         return repr(dict(
@@ -94,7 +95,7 @@ class Submission(models.Model):
             attempt_number=self.attempt_number,
             submitted_at=self.submitted_at,
             created_at=self.created_at,
-            answer=self.answer,
+            raw_answer=self.raw_answer,
         ))
 
     class Meta:

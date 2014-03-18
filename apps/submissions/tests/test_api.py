@@ -41,6 +41,7 @@ class TestSubmissionsApi(TestCase):
         student_item = self._get_student_item(STUDENT_ITEM)
         self._assert_submission(submission, ANSWER_ONE, student_item.pk, 1)
 
+
     def test_get_submission_and_student(self):
         submission = api.create_submission(STUDENT_ITEM, ANSWER_ONE)
 
@@ -142,6 +143,24 @@ class TestSubmissionsApi(TestCase):
     def test_error_on_submission_creation(self, mock_filter):
         mock_filter.side_effect = DatabaseError("Bad things happened")
         api.create_submission(STUDENT_ITEM, ANSWER_ONE)
+
+    def test_create_non_json_answer(self):
+        with self.assertRaises(api.SubmissionRequestError):
+            api.create_submission(STUDENT_ITEM, datetime.datetime.now())
+
+    def test_load_non_json_answer(self):
+        # This should never happen, if folks are using the public API.
+        # Create a submission with a raw answer that is NOT valid JSON
+        submission = api.create_submission(STUDENT_ITEM, ANSWER_ONE)
+        sub_model = Submission.objects.get(uuid=submission['uuid'])
+        sub_model.raw_answer = ''
+        sub_model.save()
+
+        with self.assertRaises(api.SubmissionInternalError):
+            api.get_submission(sub_model.uuid)
+
+        with self.assertRaises(api.SubmissionInternalError):
+            api.get_submission_and_student(sub_model.uuid)
 
     @patch.object(StudentItemSerializer, 'save')
     @raises(api.SubmissionInternalError)

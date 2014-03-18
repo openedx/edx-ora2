@@ -8,7 +8,9 @@ import logging
 from django.db import DatabaseError
 from django.utils.encoding import force_unicode
 
-from submissions.serializers import SubmissionSerializer, StudentItemSerializer, ScoreSerializer
+from submissions.serializers import (
+    SubmissionSerializer, StudentItemSerializer, ScoreSerializer, JsonFieldError
+)
 from submissions.models import Submission, StudentItem, Score, ScoreSummary
 
 logger = logging.getLogger(__name__)
@@ -67,7 +69,7 @@ def create_submission(student_item_dict, answer, submitted_at=None,
         student_item_dict (dict): The student_item this
             submission is associated with. This is used to determine which
             course, student, and location this submission belongs to.
-        answer (str): The answer given by the student to be assessed.
+        answer (JSON-serializable): The answer given by the student to be assessed.
         submitted_at (datetime): The date in which this submission was submitted.
             If not specified, defaults to the current date.
         attempt_number (int): A student may be able to submit multiple attempts
@@ -122,12 +124,6 @@ def create_submission(student_item_dict, answer, submitted_at=None,
             raise SubmissionInternalError(error_message)
         attempt_number = submissions[0].attempt_number + 1 if submissions else 1
 
-    try:
-        answer = force_unicode(answer)
-    except UnicodeDecodeError:
-        raise SubmissionRequestError(
-            u"Submission answer could not be properly decoded to unicode.")
-
     model_kwargs = {
         "student_item": student_item_model.pk,
         "answer": answer,
@@ -143,6 +139,11 @@ def create_submission(student_item_dict, answer, submitted_at=None,
         submission_serializer.save()
 
         return submission_serializer.data
+    except JsonFieldError:
+        error_message = u"Could not serialize JSON field in submission {} for student item {}".format(
+            model_kwargs, student_item_dict
+        )
+        raise SubmissionRequestError(error_message)
     except DatabaseError:
         error_message = u"An error occurred while creating submission {} for student item: {}".format(
             model_kwargs,
@@ -181,6 +182,7 @@ def get_submission(submission_uuid):
 
     try:
         submission = Submission.objects.get(uuid=submission_uuid)
+        return SubmissionSerializer(submission).data
     except Submission.DoesNotExist:
         raise SubmissionNotFoundError(
             u"No submission matching uuid {}".format(submission_uuid)
@@ -190,8 +192,6 @@ def get_submission(submission_uuid):
         err_msg = "Could not get submission due to error: {}".format(exc)
         logger.exception(err_msg)
         raise SubmissionInternalError(err_msg)
-
-    return SubmissionSerializer(submission).data
 
 
 def get_submission_and_student(uuid):
@@ -211,8 +211,13 @@ def get_submission_and_student(uuid):
         return None
 
     # There is probably a more idiomatic way to do this using the Django REST framework
-    submission_dict = SubmissionSerializer(submission).data
-    submission_dict['student_item'] = StudentItemSerializer(submission.student_item).data
+    try:
+        submission_dict = SubmissionSerializer(submission).data
+        submission_dict['student_item'] = StudentItemSerializer(submission.student_item).data
+    except Exception as ex:
+        err_msg = "Could not get submission due to error: {}".format(ex)
+        logger.exception(err_msg)
+        raise SubmissionInternalError(err_msg)
 
     return submission_dict
 

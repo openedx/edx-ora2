@@ -5,7 +5,7 @@ from submissions.models import Score, StudentItem, Submission
 class SubmissionAdmin(admin.ModelAdmin):
     list_display = (
         'student_item', 'uuid', 'attempt_number', 'submitted_at', 'created_at',
-        'answer', 'scores'
+        'raw_answer', 'scores'
     )
 
     def scores(self, obj):
