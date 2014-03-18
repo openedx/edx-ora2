@@ -112,7 +112,12 @@ class SubmissionMixin(object):
             return {'success': False, 'msg': _(u"Missing required key 'submission'")}
 
     def create_submission(self, student_item_dict, student_sub):
-        submission = api.create_submission(student_item_dict, student_sub)
+
+        # Store the student's response text in a JSON-encodable dict
+        # so that later we can add additional response fields.
+        student_sub_dict = {'text': student_sub}
+
+        submission = api.create_submission(student_item_dict, student_sub_dict)
         workflow = workflow_api.create_workflow(submission["uuid"])
         self.submission_uuid = submission["uuid"]
         return submission

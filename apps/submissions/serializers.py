@@ -2,8 +2,57 @@
 Serializers are created to ensure models do not have to be accessed outside the
 scope of the Tim APIs.
 """
+import json
 from rest_framework import serializers
 from submissions.models import StudentItem, Submission, Score
+
+
+class JsonFieldError(Exception):
+    """
+    An error occurred while serializing/deserializing JSON.
+    """
+    pass
+
+
+class JsonField(serializers.WritableField):
+    """
+    JSON-serializable field.
+    """
+    def to_native(self, obj):
+        """
+        Deserialize the JSON string.
+
+        Args:
+            obj (str): The JSON string stored in the database.
+
+        Returns:
+            JSON-serializable
+
+        Raises:
+            JsonFieldError: The field could not be deserialized.
+        """
+        try:
+            return json.loads(obj)
+        except (TypeError, ValueError):
+            raise JsonFieldError(u"Could not deserialize as JSON: {}".format(obj))
+
+    def from_native(self, data):
+        """
+        Serialize an object to JSON.
+
+        Args:
+            data (JSON-serializable): The data to serialize.
+
+        Returns:
+            str
+
+        Raises:
+            ValueError: The data could not be serialized as JSON.
+        """
+        try:
+            return json.dumps(data)
+        except (TypeError, ValueError):
+            raise JsonFieldError(u"Could not serialize as JSON: {}".format(data))
 
 
 class StudentItemSerializer(serializers.ModelSerializer):
@@ -14,6 +63,8 @@ class StudentItemSerializer(serializers.ModelSerializer):
 
 class SubmissionSerializer(serializers.ModelSerializer):
 
+    answer = JsonField(source='raw_answer')
+
     class Meta:
         model = Submission
         fields = (
@@ -22,6 +73,8 @@ class SubmissionSerializer(serializers.ModelSerializer):
             'attempt_number',
             'submitted_at',
             'created_at',
+
+            # Computed
             'answer',
         )
 

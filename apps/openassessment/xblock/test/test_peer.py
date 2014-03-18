@@ -68,12 +68,10 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         request.params = {}
         peer_response = xblock.render_peer_assessment(request)
         self.assertIsNotNone(peer_response)
-        self.assertNotIn(submission["answer"].encode('utf-8'), peer_response.body)
+        self.assertNotIn(submission["answer"]["text"].encode('utf-8'), peer_response.body)
 
         #Validate Peer Rendering.
         self.assertIn("Sally".encode('utf-8'), peer_response.body)
-
-
 
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_assess_handler(self, xblock):
