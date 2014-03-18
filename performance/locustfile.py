@@ -43,7 +43,7 @@ class OpenAssessmentPage(object):
         """
         Log in as a unique user with access to the XBlock(s) under test.
         """
-        self.client.get("auto_auth", params={'course_id': self.COURSE_ID})
+        self.client.get("auto_auth", params={'course_id': self.COURSE_ID}, verify=False)
         return self
 
     def load_steps(self):
@@ -51,7 +51,7 @@ class OpenAssessmentPage(object):
         Load all steps in the OpenAssessment flow.
         """
         # Load the container page
-        self.client.get(self.BASE_URL)
+        self.client.get(self.BASE_URL, verify=False)
 
         # Load each of the steps
         step_dict = {
@@ -62,7 +62,7 @@ class OpenAssessmentPage(object):
         }
 
         self.step_resp_dict = {
-            name: self.client.get(self.handler_url(handler))
+            name: self.client.get(self.handler_url(handler), verify=False)
             for name, handler in step_dict.iteritems()
         }
 
@@ -118,7 +118,7 @@ class OpenAssessmentPage(object):
         payload = json.dumps({
             'submission': loremipsum.get_paragraphs(random.randint(1, 10)),
         })
-        self.client.post(self.handler_url('submit'), data=payload, headers=self._post_headers)
+        self.client.post(self.handler_url('submit'), data=payload, headers=self._post_headers, verify=False)
 
     def peer_assess(self):
         """
@@ -129,7 +129,7 @@ class OpenAssessmentPage(object):
             'options_selected': self.OPTIONS_SELECTED,
             'feedback': loremipsum.get_paragraphs(random.randint(1, 3)),
         })
-        self.client.post(self.handler_url('peer_assess'), data=payload, headers=self._post_headers)
+        self.client.post(self.handler_url('peer_assess'), data=payload, headers=self._post_headers, verify=False)
 
     def self_assess(self):
         """
@@ -139,7 +139,7 @@ class OpenAssessmentPage(object):
             'submission_uuid': self._submission_uuid('self'),
             'options_selected': self.OPTIONS_SELECTED,
         })
-        self.client.post(self.handler_url('self_assess'), data=payload, headers=self._post_headers)
+        self.client.post(self.handler_url('self_assess'), data=payload, headers=self._post_headers, verify=False)
 
     def handler_url(self, handler_name):
         """
