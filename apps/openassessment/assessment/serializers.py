@@ -108,7 +108,6 @@ class AssessmentPartSerializer(serializers.ModelSerializer):
 
 class AssessmentSerializer(serializers.ModelSerializer):
     """Serializer for :class:`Assessment`."""
-    submission_uuid = serializers.Field(source='submission_uuid')
 
     parts = AssessmentPartSerializer(required=True, many=True)
     points_earned = serializers.Field(source='points_earned')
@@ -117,7 +116,7 @@ class AssessmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Assessment
         fields = (
-            'submission',  # will go away shortly
+            'submission_uuid',
             'rubric',
             'scored_at',
             'scorer_id',
@@ -128,13 +127,12 @@ class AssessmentSerializer(serializers.ModelSerializer):
             'parts',
 
             # Computed, not part of the model
-            'submission_uuid',
             'points_earned',
             'points_possible',
         )
 
 
-def get_assessment_review(submission):
+def get_assessment_review(submission_uuid):
     """Get all information pertaining to an assessment for review.
 
     Given an assessment serializer, return a serializable formatted model of
@@ -142,8 +140,7 @@ def get_assessment_review(submission):
     associated rubric.
 
     Args:
-        submission (Submission): The Submission Model object to get
-            assessment reviews for.
+        submission_uuid (str): The UUID of the submission whose assessment reviews we want to retrieve.
 
     Returns:
         (list): A list of assessment reviews, combining assessments with
@@ -186,7 +183,7 @@ def get_assessment_review(submission):
     """
     return [
         full_assessment_dict(assessment)
-        for assessment in Assessment.objects.filter(submission=submission)
+        for assessment in Assessment.objects.filter(submission_uuid=submission_uuid)
     ]
 
 

@@ -213,7 +213,7 @@
         "fields": {
             "scorer_id": "3",
             "feedback": "Test feedback",
-            "submission": 8,
+            "submission_uuid": "beb581f0-a9da-11e3-9b83-080027880ca6",
             "score_type": "PE",
             "rubric": 2,
             "scored_at": "2014-03-12T11:38:26Z"
@@ -225,7 +225,7 @@
         "fields": {
             "scorer_id": "2",
             "feedback": "",
-            "submission": 8,
+            "submission_uuid": "beb581f0-a9da-11e3-9b83-080027880ca6",
             "score_type": "SE",
             "rubric": 2,
             "scored_at": "2014-03-12T11:38:13Z"
@@ -237,7 +237,7 @@
         "fields": {
             "scorer_id": "2",
             "feedback": "Test feedback",
-            "submission": 9,
+            "submission_uuid": "c18b952c-a9da-11e3-9ccf-080027880ca6",
             "score_type": "PE",
             "rubric": 2,
             "scored_at": "2014-03-12T11:38:08Z"
@@ -249,7 +249,7 @@
         "fields": {
             "scorer_id": "2",
             "feedback": "",
-            "submission": 6,
+            "submission_uuid": "9af86840-a9da-11e3-b156-080027880ca6",
             "score_type": "SE",
             "rubric": 2,
             "scored_at": "2014-03-12T11:37:37Z"
@@ -261,7 +261,7 @@
         "fields": {
             "scorer_id": "2",
             "feedback": "Test feedback",
-            "submission": 7,
+            "submission_uuid": "ac0539f6-a9da-11e3-af02-080027880ca6",
             "score_type": "PE",
             "rubric": 2,
             "scored_at": "2014-03-12T11:37:33Z"
@@ -273,7 +273,7 @@
         "fields": {
             "scorer_id": "2",
             "feedback": "Test feedback",
-            "submission": 4,
+            "submission_uuid": "7e8ededc-a9da-11e3-89ce-080027880ca6",
             "score_type": "PE",
             "rubric": 2,
             "scored_at": "2014-03-12T11:36:19Z"

@@ -90,7 +90,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         xblock.create_submission(another_student, self.SUBMISSION)
         xblock.get_workflow_info()
         peer_api.get_submission_to_assess(another_student, 3)
-        
+
 
         # Submit an assessment and expect a successful response
         assessment = copy.deepcopy(self.ASSESSMENT)

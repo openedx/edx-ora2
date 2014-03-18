@@ -11,9 +11,6 @@ from openassessment.assessment.serializers import (
 )
 from openassessment.assessment.models import Assessment, InvalidOptionSelection
 
-# TODO -- remove once Dave's changes land
-from submissions.models import Submission
-
 
 # Assessments are tagged as "self-evaluation"
 SELF_TYPE = "SE"
@@ -46,8 +43,7 @@ def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, s
         SelfAssessmentRequestError: Could not retrieve a submission that the user is allowed to score.
     """
     # Check that there are not any assessments for this submission
-    # TODO -- change key lookup for submission UUID once Dave's changes land
-    if Assessment.objects.filter(submission__uuid=submission_uuid, score_type=SELF_TYPE).exists():
+    if Assessment.objects.filter(submission_uuid=submission_uuid, score_type=SELF_TYPE).exists():
         raise SelfAssessmentRequestError(_("Self assessment already exists for this submission"))
 
     # Check that the student is allowed to assess this submission
@@ -75,8 +71,7 @@ def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, s
     self_assessment = {
         "rubric": rubric.id,
         "scorer_id": user_id,
-        # TODO -- replace once Dave adds submission_uuid as a field on the assessment
-        "submission": Submission.objects.get(uuid=submission_uuid).pk,
+        "submission_uuid": submission_uuid,
         "score_type": SELF_TYPE,
         "feedback": u"",
         "parts": [{"option": option_id} for option_id in option_ids],
@@ -131,13 +126,11 @@ def get_submission_and_assessment(submission_uuid):
     # between checking the number of self-assessments and creating a new self-assessment.
     # To be safe, we retrieve just the most recent submission.
     assessments = Assessment.objects.filter(
-        score_type=SELF_TYPE, submission__uuid=submission_uuid
+        score_type=SELF_TYPE, submission_uuid=submission_uuid
     ).order_by('-scored_at')
 
     if assessments.exists():
-        # TODO -- remove once Dave's changes land
         assessment_dict = full_assessment_dict(assessments[0])
-        assessment_dict['submission_uuid'] = submission_uuid
         return submission, assessment_dict
     else:
         return submission, None
@@ -154,5 +147,5 @@ def is_complete(submission_uuid):
         bool
     """
     return Assessment.objects.filter(
-        score_type=SELF_TYPE, submission__uuid=submission_uuid
+        score_type=SELF_TYPE, submission_uuid=submission_uuid
     ).exists()
