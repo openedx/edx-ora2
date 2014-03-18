@@ -78,12 +78,22 @@ def is_complete(submission_uuid, requirements):
 
 
 def get_score(submission_uuid, requirements):
+    """
+    Retrieve a score for a submission if requirements have been satisfied.
+
+    Args:
+        submission_uuid (str): The UUID of the submission.
+        requirements (dict): Description of requirements for receiving a score,
+            specific to the particular kind of submission (e.g. self or peer).
+
+    Returns:
+        dict with keys "points_earned" and "points_possible".
+    """
     # User hasn't completed their own submission yet
     if not is_complete(submission_uuid, requirements):
         return None
 
-    submission = Submission.objects.get(uuid=submission_uuid)
-    assessments = Assessment.objects.filter(submission=submission, score_type=PEER_TYPE)
+    assessments = Assessment.objects.filter(submission_uuid=submission_uuid, score_type=PEER_TYPE)
     submission_finished = _check_submission_graded(submission_uuid, requirements["must_be_graded_by"])
 
     if not submission_finished:
@@ -92,7 +102,7 @@ def get_score(submission_uuid, requirements):
     return {
         "points_earned": sum(
             get_assessment_median_scores(
-                submission.uuid, requirements["must_be_graded_by"]
+                submission_uuid, requirements["must_be_graded_by"]
             ).values()
         ),
         "points_possible": assessments[0].points_possible,
@@ -157,7 +167,7 @@ def create_assessment(
         peer_assessment = {
             "rubric": rubric.id,
             "scorer_id": scorer_id,
-            "submission": submission.pk,
+            "submission_uuid": submission.uuid,
             "score_type": PEER_TYPE,
             "feedback": feedback,
             "parts": [{"option": option_id} for option_id in option_ids]
@@ -228,8 +238,7 @@ def get_rubric_max_scores(submission_uuid):
             the submission, or its associated rubric.
     """
     try:
-        submission = Submission.objects.get(uuid=submission_uuid)
-        assessments = Assessment.objects.filter(submission=submission).order_by( "-scored_at", "-id")
+        assessments = Assessment.objects.filter(submission_uuid=submission_uuid).order_by( "-scored_at", "-id")
         if assessments:
             return {
                 criterion.name: criterion.points_possible
@@ -246,7 +255,7 @@ def get_rubric_max_scores(submission_uuid):
         raise PeerAssessmentInternalError(error_message)
 
 
-def get_assessment_median_scores(submission_id, must_be_graded_by):
+def get_assessment_median_scores(submission_uuid, must_be_graded_by):
     """Get the median score for each rubric criterion
 
     For a given assessment, collect the median score for each criterion on the
@@ -263,10 +272,8 @@ def get_assessment_median_scores(submission_id, must_be_graded_by):
     assessments are used.
 
     Args:
-        submission_id (str): The submission uuid to get all rubric criterion
-            median scores.
-        must_be_graded_by (int): The number of assessments to include in this
-            score analysis.
+        submission_uuid (str): The submission uuid to get all rubric criterion median scores.
+        must_be_graded_by (int): The number of assessments to include in this score analysis.
 
     Returns:
         (dict): A dictionary of rubric criterion names, with a median score of
@@ -279,13 +286,10 @@ def get_assessment_median_scores(submission_id, must_be_graded_by):
     # Create a key value in a dict with a list of values, for every criterion
     # found in an assessment.
     try:
-        submission = Submission.objects.get(uuid=submission_id)
-        scores = Assessment.scores_by_criterion(submission, must_be_graded_by)
+        scores = Assessment.scores_by_criterion(submission_uuid, must_be_graded_by)
         return Assessment.get_median_score_dict(scores)
     except DatabaseError:
-        error_message = _(
-            u"Error getting assessment median scores {}".format(submission_id)
-        )
+        error_message = _(u"Error getting assessment median scores {}".format(submission_uuid))
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
 
@@ -337,7 +341,7 @@ def has_finished_required_evaluating(student_item_dict, required_assessments):
     return done, count
 
 
-def get_assessments(submission_id):
+def get_assessments(submission_uuid):
     """Retrieve the assessments for a submission.
 
     Retrieves all the assessments for a submissions. This API returns related
@@ -345,8 +349,8 @@ def get_assessments(submission_id):
     assessments associated with this submission will not be returned.
 
     Args:
-        submission_id (str): The submission all the requested assessments are
-            associated with. Required.
+        submission_uuid (str): The UUID of the submission all the
+            requested assessments are associated with.
 
     Returns:
         list(dict): A list of dictionaries, where each dictionary represents a
@@ -379,11 +383,10 @@ def get_assessments(submission_id):
 
     """
     try:
-        submission = Submission.objects.get(uuid=submission_id)
-        return get_assessment_review(submission)
+        return get_assessment_review(submission_uuid)
     except DatabaseError:
         error_message = _(
-            u"Error getting assessments for submission {}".format(submission_id)
+            u"Error getting assessments for submission {}".format(submission_uuid)
         )
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)

@@ -20,8 +20,6 @@ from django.utils.timezone import now
 from django.utils.translation import ugettext as _
 import math
 
-from submissions.models import Submission
-
 
 class InvalidOptionSelection(Exception):
     """
@@ -220,7 +218,7 @@ class Assessment(models.Model):
     objects that map to each :class:`Criterion` in the :class:`Rubric` we're
     assessing against.
     """
-    submission = models.ForeignKey(Submission)
+    submission_uuid = models.CharField(max_length=128, db_index=True)
     rubric = models.ForeignKey(Rubric)
 
     scored_at = models.DateTimeField(default=now, db_index=True)
@@ -240,10 +238,6 @@ class Assessment(models.Model):
     @property
     def points_possible(self):
         return self.rubric.points_possible
-
-    @property
-    def submission_uuid(self):
-        return self.submission.uuid
 
     def __unicode__(self):
         return u"Assessment {}".format(self.id)
@@ -313,7 +307,7 @@ class Assessment(models.Model):
         return median_score
 
     @classmethod
-    def scores_by_criterion(cls, submission, must_be_graded_by):
+    def scores_by_criterion(cls, submission_uuid, must_be_graded_by):
         """Create a dictionary of lists for scores associated with criterion
 
         Create a key value in a dict with a list of values, for every criterion
@@ -324,20 +318,17 @@ class Assessment(models.Model):
         of scores.
 
         Args:
-            submission (Submission): Obtain assessments associated with this
-                submission
-            must_be_graded_by (int): The number of assessments to include in
-                this score analysis.
+            submission_uuid (str): Obtain assessments associated with this submission.
+            must_be_graded_by (int): The number of assessments to include in this score analysis.
 
         Examples:
-            >>> Assessment.scores_by_criterion(submission, 3)
+            >>> Assessment.scores_by_criterion('abcd', 3)
             {
                 "foo": [1, 2, 3],
                 "bar": [6, 7, 8]
             }
         """
-        assessments = cls.objects.filter(
-            submission=submission).order_by("scored_at")[:must_be_graded_by]
+        assessments = cls.objects.filter(submission_uuid=submission_uuid).order_by("scored_at")[:must_be_graded_by]
 
         scores = defaultdict(list)
         for assessment in assessments:
