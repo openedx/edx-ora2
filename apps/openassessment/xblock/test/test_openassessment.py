@@ -94,6 +94,18 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         self.assertEqual(student_item['student_id'], '2')
         self.assertIsInstance(student_item['item_id'], unicode)
 
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_use_xmodule_runtime(self, xblock):
+        # Prefer course ID and student ID provided by the XModule runtime
+        xblock.xmodule_runtime = Mock(
+            course_id='test_course',
+            anonymous_student_id='test_student'
+        )
+
+        student_item = xblock.get_student_item_dict()
+        self.assertEqual(student_item['course_id'], 'test_course')
+        self.assertEqual(student_item['student_id'], 'test_student')
+
 
 class TestDates(XBlockHandlerTestCase):
 
