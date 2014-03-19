@@ -171,3 +171,10 @@ LOGGING = {
 WORKBENCH = {
     'reset_state_on_restart': False,
 }
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'default_loc_mem',
+    },
+}

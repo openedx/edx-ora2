@@ -29,3 +29,4 @@ LETTUCE_SERVER_PORT = 8005
 
 # Install test-specific Django apps
 INSTALLED_APPS += ('django_nose', 'lettuce.django',)
+
