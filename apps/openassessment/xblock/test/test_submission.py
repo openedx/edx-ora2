@@ -3,7 +3,7 @@ Test submission to the OpenAssessment XBlock.
 """
 
 import json
-from mock import patch
+from mock import patch, Mock
 from submissions import api as sub_api
 from submissions.api import SubmissionRequestError, SubmissionInternalError
 from openassessment.xblock.submission_mixin import SubmissionMixin
@@ -50,6 +50,15 @@ class SubmissionTest(XBlockHandlerTestCase):
     # In Studio preview mode, the runtime sets the user ID to None
     @scenario('data/basic_scenario.xml', user_id=None)
     def test_cannot_submit_in_preview_mode(self, xblock,):
+
+        # The Studio runtime apparently provides an anonymous student ID,
+        # even though we're running in Preview mode.  We should check the scope id
+        # to determine whether we're in Preview mode or not.
+        xblock.xmodule_runtime = Mock(
+            course_id='test_course',
+            anonymous_student_id='test_student'
+        )
+
         resp = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
         self.assertFalse(resp[0])
         self.assertEqual(resp[1], "ENOPREVIEW")
