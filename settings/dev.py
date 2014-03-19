@@ -1,14 +1,13 @@
 """
 Dev-specific Django settings.
 """
-
 # Inherit from base settings
 from .base import *
 
 INSTALLED_APPS += (
     'django_pdb',            # Allows post-mortem debugging on exceptions
-    'debug_panel',
     'debug_toolbar',
+    'debug_panel',
 )
 
 MIDDLEWARE_CLASSES += (
@@ -16,20 +15,9 @@ MIDDLEWARE_CLASSES += (
     'debug_panel.middleware.DebugPanelMiddleware',
 )
 
+# We need to use explicit discovery or we'll have problems with syncdb and
+# displaying the admin site. See:
+# http://django-debug-toolbar.readthedocs.org/en/1.0/installation.html#explicit-setup
+DEBUG_TOOLBAR_PATCH_SETTINGS = False
+
 INTERNAL_IPS = ('127.0.0.1',)
-
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'debug-panel',
-    },
-
-    # this cache backend will be used by django-debug-panel
-    'debug-panel': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'debug-panel',
-        'OPTIONS': {
-            'MAX_ENTRIES': 200
-        }
-    }
-}
