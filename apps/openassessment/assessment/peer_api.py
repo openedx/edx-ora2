@@ -20,6 +20,7 @@ from openassessment.assessment.models import (
 from openassessment.assessment.serializers import (
     AssessmentSerializer, rubric_from_dict, AssessmentFeedbackSerializer,
     full_assessment_dict)
+from submissions import api as sub_api
 from submissions.api import get_submission_and_student
 from submissions.models import Submission, StudentItem
 from submissions.serializers import SubmissionSerializer, StudentItemSerializer
@@ -486,10 +487,10 @@ def get_submission_to_assess(
         submission_uuid = _get_submission_for_over_grading(workflow)
     if submission_uuid:
         try:
-            submission = Submission.objects.get(uuid=submission_uuid)
+            submission_data = sub_api.get_submission(submission_uuid)
             _create_peer_workflow_item(workflow, submission_uuid)
-            return SubmissionSerializer(submission).data
-        except Submission.DoesNotExist:
+            return submission_data
+        except sub_api.SubmissionDoesNotExist:
             error_message = _(
                 u"Could not find a submission with the uuid {} for student {} "
                 u"in the peer workflow."
