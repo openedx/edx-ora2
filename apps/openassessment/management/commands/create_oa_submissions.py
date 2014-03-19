@@ -95,7 +95,7 @@ class Command(BaseCommand):
                 # Create the peer assessment
                 assessment = {
                     'options_selected': options_selected,
-                    'feedback': loremipsum.get_paragraphs(2)
+                    'feedback': "  ".join(loremipsum.get_paragraphs(2))
                 }
                 peer_api.create_assessment(submission_uuid, scorer_id, assessment, rubric)
 
@@ -127,7 +127,8 @@ class Command(BaseCommand):
         Returns:
             str: submission UUID
         """
-        submission = sub_api.create_submission(student_item, loremipsum.get_paragraphs(5))
+        answer = {'text': "  ".join(loremipsum.get_paragraphs(5))}
+        submission = sub_api.create_submission(student_item, answer)
         workflow_api.create_workflow(submission['uuid'])
         workflow_api.update_from_assessments(
             submission['uuid'], {'peer': {'must_grade': 1, 'must_be_graded_by': 1}}
@@ -149,7 +150,7 @@ class Command(BaseCommand):
         for criteria_num in range(self.NUM_CRITERIA):
             criterion = {
                 'name': words[criteria_num],
-                'prompt': loremipsum.get_sentences(1),
+                'prompt': "  ".join(loremipsum.get_sentences(2)),
                 'order_num': criteria_num,
                 'options': list()
             }
@@ -159,7 +160,7 @@ class Command(BaseCommand):
                     'order_num': option_num,
                     'points': option_num,
                     'name': words[option_num],
-                    'explanation': loremipsum.get_sentences(1)
+                    'explanation': "  ".join(loremipsum.get_sentences(2))
                 })
 
             rubric['criteria'].append(criterion)
