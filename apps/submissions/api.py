@@ -5,6 +5,7 @@ Public interface for the submissions app.
 import copy
 import logging
 
+from django.core.cache import cache
 from django.db import DatabaseError
 from django.utils.encoding import force_unicode
 
@@ -180,9 +181,15 @@ def get_submission(submission_uuid):
             "submission_uuid ({!r}) must be a string type".format(submission_uuid)
         )
 
+    cache_key = "submissions.submission.{}".format(submission_uuid)
+    cached_submission_data = cache.get(cache_key)
+    if cached_submission_data:
+        return cached_submission_data
+
     try:
         submission = Submission.objects.get(uuid=submission_uuid)
-        return SubmissionSerializer(submission).data
+        submission_data = SubmissionSerializer(submission).data
+        cache.set(cache_key, submission_data)
     except Submission.DoesNotExist:
         raise SubmissionNotFoundError(
             u"No submission matching uuid {}".format(submission_uuid)
@@ -192,6 +199,8 @@ def get_submission(submission_uuid):
         err_msg = "Could not get submission due to error: {}".format(exc)
         logger.exception(err_msg)
         raise SubmissionInternalError(err_msg)
+
+    return submission_data
 
 
 def get_submission_and_student(uuid):
