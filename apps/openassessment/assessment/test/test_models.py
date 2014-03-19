@@ -1,10 +1,12 @@
+# -*- coding: utf-8 -*-
 """
 Tests for assessment models.
 """
 
 from django.test import TestCase
 from openassessment.assessment.models import (
-    Rubric, Criterion, CriterionOption, InvalidOptionSelection
+    Rubric, Criterion, CriterionOption, InvalidOptionSelection,
+    AssessmentFeedback, AssessmentFeedbackOption,
 )
 
 
@@ -103,3 +105,96 @@ class TestRubricOptionIds(TestCase):
                 "test criterion 2": "test option 2",
                 "test criterion 3": "test option 1",
             })
+
+
+class AssessmentFeedbackTest(TestCase):
+    """
+    Tests for assessment feedback.
+    This is feedback that students give in response to the peer assessments they receive.
+    """
+
+    def setUp(self):
+        self.feedback = AssessmentFeedback.objects.create(
+            submission_uuid='test_submission',
+            feedback_text='test feedback',
+        )
+
+    def test_default_options(self):
+        self.assertEqual(self.feedback.options.count(), 0)
+
+    def test_add_options_all_new(self):
+        # We haven't created any feedback options yet, so these should be created.
+        self.feedback.add_options(['I liked my assessment', 'I thought my assessment was unfair'])
+
+        # Check the feedback options
+        options = self.feedback.options.all()
+        self.assertEqual(len(options), 2)
+        self.assertEqual(options[0].text, 'I liked my assessment')
+        self.assertEqual(options[1].text, 'I thought my assessment was unfair')
+
+    def test_add_options_some_new(self):
+        # Create one feedback option in the database
+        AssessmentFeedbackOption.objects.create(text='I liked my assessment')
+
+        # Add feedback options.  The one that's new should be created.
+        self.feedback.add_options(['I liked my assessment', 'I thought my assessment was unfair'])
+
+        # Check the feedback options
+        options = self.feedback.options.all()
+        self.assertEqual(len(options), 2)
+        self.assertEqual(options[0].text, 'I liked my assessment')
+        self.assertEqual(options[1].text, 'I thought my assessment was unfair')
+
+    def test_add_options_empty(self):
+        # No options
+        self.feedback.add_options([])
+        self.assertEqual(len(self.feedback.options.all()), 0)
+
+        # Add an option
+        self.feedback.add_options(['test'])
+        self.assertEqual(len(self.feedback.options.all()), 1)
+
+        # Add an empty list of options
+        self.feedback.add_options([])
+        self.assertEqual(len(self.feedback.options.all()), 1)
+
+    def test_add_options_duplicates(self):
+
+        # Add some options, which will be created
+        self.feedback.add_options(['I liked my assessment', 'I thought my assessment was unfair'])
+
+        # Add some more options, one of which is a duplicate
+        self.feedback.add_options(['I liked my assessment', 'I disliked my assessment'])
+
+        # There should be three options
+        options = self.feedback.options.all()
+        self.assertEqual(len(options), 3)
+        self.assertEqual(options[0].text, 'I liked my assessment')
+        self.assertEqual(options[1].text, 'I thought my assessment was unfair')
+        self.assertEqual(options[2].text, 'I disliked my assessment')
+
+        # There should be only three options in the database
+        self.assertEqual(AssessmentFeedbackOption.objects.count(), 3)
+
+    def test_add_options_all_old(self):
+        # Add some options, which will be created
+        self.feedback.add_options(['I liked my assessment', 'I thought my assessment was unfair'])
+
+        # Add some more options, all of which are duplicates
+        self.feedback.add_options(['I liked my assessment', 'I thought my assessment was unfair'])
+
+        # There should be two options
+        options = self.feedback.options.all()
+        self.assertEqual(len(options), 2)
+        self.assertEqual(options[0].text, 'I liked my assessment')
+        self.assertEqual(options[1].text, 'I thought my assessment was unfair')
+
+        # There should be two options in the database
+        self.assertEqual(AssessmentFeedbackOption.objects.count(), 2)
+
+    def test_unicode(self):
+        # Create options with unicode
+        self.feedback.add_options([u'𝓘 𝓵𝓲𝓴𝓮𝓭 𝓶𝔂 𝓪𝓼𝓼𝓮𝓼𝓼𝓶𝓮𝓷𝓽', u'ﾉ ｲんougんｲ ﾶﾘ ﾑ丂丂乇丂丂ﾶ乇刀ｲ wﾑ丂 u刀ｷﾑﾉ尺'])
+
+        # There should be two options in the database
+        self.assertEqual(AssessmentFeedbackOption.objects.count(), 2)

@@ -71,35 +71,30 @@ class GradeMixin(object):
         return self.render_assessment(path, context)
 
     @XBlock.json_handler
-    def feedback_submit(self, data, suffix=''):
-        """Attach the Assessment Feedback text to some submission."""
-        assessment_feedback = data.get('feedback', '')
-        if not assessment_feedback:
-            return {
-                'success': False,
-                'msg': _(u"No feedback given, so none recorded")
-            }
-        try:
-            peer_api.set_assessment_feedback(
-                {
-                    'submission_uuid': self.submission_uuid,
-                    'feedback': assessment_feedback,
-                    'helpfulness': 0
-                }
-            )
-        except (
-            peer_api.PeerAssessmentInternalError,
-            peer_api.PeerAssessmentRequestError
-        ):
-            return {
-                'success': False,
-                'msg': _(
-                    u"Assessment Feedback could not be saved due to an internal "
-                    u"server error."
-                ),
-            }
+    def submit_feedback(self, data, suffix=''):
+        """
+        Submit feedback on an assessment.
 
-        return {
-            'success': True,
-            'msg': _(u"Feedback saved!")
-        }
+        Args:
+            data (dict): Can provide keys 'feedback_text' (unicode) and 'feedback_options' (list of unicode).
+
+        Kwargs:
+            suffix (str): Unused
+
+        Returns:
+            Dict with keys 'success' (bool) and 'msg' (unicode)
+
+        """
+        feedback_text = data.get('feedback_text', u'')
+        feedback_options = data.get('feedback_options', list())
+
+        try:
+            peer_api.set_assessment_feedback({
+                'submission_uuid': self.submission_uuid,
+                'feedback_text': feedback_text,
+                'options': feedback_options,
+            })
+        except (peer_api.PeerAssessmentInternalError, peer_api.PeerAssessmentRequestError):
+            return {'success': False, 'msg': _(u"Assessment feedback could not be saved.")}
+        else:
+            return {'success': True, 'msg': _(u"Feedback saved!")}

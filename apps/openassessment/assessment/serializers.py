@@ -10,8 +10,10 @@ from django.core.cache import cache
 from django.utils.translation import ugettext as _
 from rest_framework import serializers
 from openassessment.assessment.models import (
-    Assessment, AssessmentFeedback, AssessmentPart, Criterion, CriterionOption, Rubric,
-    PeerWorkflowItem, PeerWorkflow)
+    Assessment, AssessmentPart, Criterion, CriterionOption, Rubric,
+    AssessmentFeedback, AssessmentFeedbackOption,
+    PeerWorkflowItem, PeerWorkflow
+)
 
 
 logger = logging.getLogger(__name__)
@@ -299,15 +301,26 @@ def rubric_from_dict(rubric_dict):
     return rubric
 
 
+class AssessmentFeedbackOptionSerializer(serializers.ModelSerializer):
+    """
+    Serialize an `AssessmentFeedbackOption` model.
+    """
+
+    class Meta:
+        model = AssessmentFeedbackOption
+        fields = ('text',)
+
+
 class AssessmentFeedbackSerializer(serializers.ModelSerializer):
-    submission_uuid = serializers.CharField(source='submission_uuid')
-    helpfulness = serializers.IntegerField(source='helpfulness')
-    feedback = serializers.CharField(source='feedback')
+    """
+    Serialize feedback in response to an assessment.
+    """
     assessments = AssessmentSerializer(many=True, default=None, required=False)
+    options = AssessmentFeedbackOptionSerializer(many=True, default=None, required=False)
 
     class Meta:
         model = AssessmentFeedback
-        fields = ('submission_uuid', 'helpfulness', 'feedback', 'assessments',)
+        fields = ('submission_uuid', 'feedback_text', 'assessments', 'options')
 
 
 class PeerWorkflowSerializer(serializers.ModelSerializer):

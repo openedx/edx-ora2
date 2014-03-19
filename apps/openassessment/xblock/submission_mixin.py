@@ -120,7 +120,7 @@ class SubmissionMixin(object):
         student_sub_dict = {'text': student_sub}
 
         submission = api.create_submission(student_item_dict, student_sub_dict)
-        workflow = workflow_api.create_workflow(submission["uuid"])
+        workflow_api.create_workflow(submission["uuid"])
         self.submission_uuid = submission["uuid"]
         return submission
 

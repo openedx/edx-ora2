@@ -35,6 +35,15 @@ describe("OpenAssessment.BaseUI", function() {
                 defer.resolveWith(this, [server.fragments[component]]);
             }).promise();
         };
+
+        this.submitFeedbackOnAssessment = function(text, options) {
+            // Store the args we receive so we can check them later
+            this.feedbackText = text;
+            this.feedbackOptions = options;
+
+            // Return a promise that always resolves successfully
+            return $.Deferred(function(defer) { defer.resolve() }).promise();
+        };
     };
 
     // Stub runtime
@@ -101,5 +110,32 @@ describe("OpenAssessment.BaseUI", function() {
             ui.selfAssess();
             expect(server.selfAssess).toHaveBeenCalled();
         });
+    });
+
+    it("Sends feedback on a submission to the server", function() {
+        jasmine.getFixtures().fixturesPath = 'base/fixtures';
+        loadFixtures('grade_complete.html');
+
+        // Simulate user feedback
+        $('#feedback__remarks__value').val('I disliked the feedback I received.');
+        $('#feedback__overall__value--notuseful').attr('checked','checked');
+        $('#feedback__overall__value--disagree').attr('checked','checked');
+
+        // Create a new stub server
+        server = new StubServer();
+
+        // Create the object under test
+        var el = $("#openassessment-base").get(0);
+        ui = new OpenAssessment.BaseUI(runtime, el, server);
+
+        // Submit feedback on an assessment
+        ui.submitFeedbackOnAssessment();
+
+        // Expect that the feedback was retrieved from the DOM and sent to the server
+        expect(server.feedbackText).toEqual('I disliked the feedback I received.');
+        expect(server.feedbackOptions).toEqual([
+            'These assessments were not useful.',
+            'I disagree with the ways that my peers assessed me.'
+        ]);
     });
 });

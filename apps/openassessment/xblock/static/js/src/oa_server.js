@@ -161,42 +161,41 @@ OpenAssessment.Server.prototype = {
         }).promise();
     },
 
-    /** 
+    /**
      * Send feedback on assessments to the XBlock.
      * Args:
-     *      feedback: The feedback given on a series of assessments associated
-     *          with this current submission.
+     *      text (string): Written feedback from the student.
+     *      options (list of strings): One or more options the student selected.
      *
      * Returns:
      *      A JQuery promise, which resolves with no args if successful and
      *          fails with an error message otherwise.
      *
      * Example:
-     *      server.feedback_submit("I dislike my reviews.").done(
+     *      server.submit_feedback(
+     *          "Good feedback!", ["I liked the feedback I received"]
+     *      ).done(function() {
      *          console.log("Success!");
-     *      ).fail(function(errMsg) {
+     *      }).fail(function(errMsg) {
      *          console.log("Error: " + errMsg);
      *      });
      */
-    feedback_submit: function(feedback) {
-        var url = this.url('feedback_submit');
+     submitFeedbackOnAssessment: function(text, options) {
+        var url = this.url('submit_feedback');
         var payload = JSON.stringify({
-            feedback: feedback
+            'feedback_text': text,
+            'feedback_options': options
         });
         return $.Deferred(function(defer) {
             $.ajax({ type: "POST", url: url, data: payload }).done(
                 function(data) {
-                    if (data.success) {
-                        defer.resolve();
-                    }
-                    else {
-                        defer.rejectWith(this, [data.msg]);
-                    }
+                    if (data.success) { defer.resolve(); }
+                    else { defer.rejectWith(this, [data.msg]); }
                 }
             ).fail(function(data) {
                 defer.rejectWith(this, ['Could not contact server.']);
             });
-        }).promise()
+        }).promise();
     },
 
     /**
