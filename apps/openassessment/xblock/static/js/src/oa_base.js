@@ -258,6 +258,8 @@ OpenAssessment.BaseUI.prototype = {
                 var sel = $('#openassessment__grade', ui.element);
                 ui.setUpCollapseExpand(sel);
 
+                console.log($('#feedback__overall__value')) // DEBUG
+
                 // Install a click handler for assessment feedback
                 sel.find('#feedback__submit').click(function(eventObject) {
                         eventObject.preventDefault();
@@ -275,11 +277,11 @@ OpenAssessment.BaseUI.prototype = {
     **/
     save: function() {
         // Retrieve the student's response from the DOM
-        var submission = $('#submission__answer__value', this.element).val();
         var ui = this;
-        this.setSaveStatus('Saving...');
-        this.toggleActionError('save', null);
-        this.server.save(submission).done(function() {
+        var submission = $('#submission__answer__value', ui.element).val();
+        ui.setSaveStatus('Saving...');
+        ui.toggleActionError('save', null);
+        ui.server.save(submission).done(function() {
             ui.setSaveStatus("Saved but not submitted");
         }).fail(function(errMsg) {
             ui.setSaveStatus('Error');
@@ -302,10 +304,10 @@ OpenAssessment.BaseUI.prototype = {
     **/
     submit: function() {
         // Send the submission to the server
-        var submission = $('#submission__answer__value', this.element).val();
         var ui = this;
-        this.toggleActionError('response', null);
-        this.server.submit(submission).done(
+        var submission = $('#submission__answer__value', ui.element).val();
+        ui.toggleActionError('response', null);
+        ui.server.submit(submission).done(
             // When we have successfully sent the submission, expand the next step
             function(studentId, attemptNum) {
                 ui.renderSubmissionStep();
@@ -321,9 +323,11 @@ OpenAssessment.BaseUI.prototype = {
     **/
     feedback_assess: function() {
         // Send the submission to the server
-        var feedback = $('#feedback__remarks__value', this.element).val();
         var ui = this;
-        this.server.feedback_submit(feedback).done(
+        var feedback_text = $('#feedback__remarks__value', ui.element).val();
+        var helpfulness = $('#feedback__overall__value', ui.element).val();
+        var feedback_dict = {'feedback': feedback_text, 'helpfulness': helpfulness}
+        ui.server.feedback_submit(feedback_dict).done(
             // When we have successfully sent the submission, textarea no longer editable
             console.log("Feedback to the assessments submitted, thanks!")
         ).fail(function(errMsg) {

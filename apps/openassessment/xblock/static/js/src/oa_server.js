@@ -178,13 +178,11 @@ OpenAssessment.Server.prototype = {
      *          console.log("Error: " + errMsg);
      *      });
      */
-    feedback_submit: function(feedback) {
+    feedback_submit: function(feedback_dict) {
         var url = this.url('feedback_submit');
-        var payload = JSON.stringify({
-            feedback: feedback
-        });
+        var params = JSON.stringify(feedback_dict);
         return $.Deferred(function(defer) {
-            $.ajax({ type: "POST", url: url, data: payload }).done(
+            $.ajax({ type: "POST", url: url, data: params }).done(
                 function(data) {
                     if (data.success) {
                         defer.resolve();

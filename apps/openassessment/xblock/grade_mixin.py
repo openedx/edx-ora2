@@ -74,6 +74,7 @@ class GradeMixin(object):
     def feedback_submit(self, data, suffix=''):
         """Attach the Assessment Feedback text to some submission."""
         assessment_feedback = data.get('feedback', '')
+        assessment_helpfulness = int(data.get('helpfulness', 0))
         if not assessment_feedback:
             return {
                 'success': False,
@@ -84,7 +85,7 @@ class GradeMixin(object):
                 {
                     'submission_uuid': self.submission_uuid,
                     'feedback': assessment_feedback,
-                    'helpfulness': 0
+                    'helpfulness': assessment_helpfulness,
                 }
             )
         except (
