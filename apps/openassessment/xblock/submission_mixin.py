@@ -61,7 +61,9 @@ class SubmissionMixin(object):
 
         # Short-circuit if no user is defined (as in Studio Preview mode)
         # Since students can't submit, they will never be able to progress in the workflow
-        if student_item_dict['student_id'] is None:
+        # Studio Preview provides an anonymous student ID, so we need to check the scope ids directly
+        # to check that we are in preview mode.
+        if self.scope_ids.user_id is None:
             return False, 'ENOPREVIEW', self.submit_errors['ENOPREVIEW']
 
         workflow = self.get_workflow_info()
