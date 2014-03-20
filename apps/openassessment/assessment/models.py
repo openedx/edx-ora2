@@ -15,6 +15,7 @@ from copy import deepcopy
 from hashlib import sha1
 import json
 
+from django.core.cache import cache
 from django.db import models
 from django.utils.timezone import now
 from django.utils.translation import ugettext as _
@@ -105,17 +106,30 @@ class Rubric(models.Model):
             InvalidOptionSelection: the selected options do not match the rubric.
 
         """
-        # Select all criteria and options for this rubric
-        # We use `select_related()` to minimize the number of database queries
-        rubric_options = CriterionOption.objects.filter(criterion__rubric=self).select_related()
-
         # Create a dict of dicts that maps:
         # criterion names --> option names --> option ids
-        rubric_criteria_dict = defaultdict(dict)
+        rubric_criteria_dict_cache_key = (
+            "assessment.rubric_criteria_dict.{}".format(self.content_hash)
+        )
+        # If we've already generated one of these for this rubric, grab it from
+        # the cache instead of hitting the database again.
+        rubric_criteria_dict = cache.get(rubric_criteria_dict_cache_key)
 
-        # Construct dictionaries for each option in the rubric
-        for option in rubric_options:
-            rubric_criteria_dict[option.criterion.name][option.name] = option.id
+        if not rubric_criteria_dict:
+            rubric_criteria_dict = defaultdict(dict)
+
+            # Select all criteria and options for this rubric
+            # We use `select_related()` to minimize the number of database queries
+            rubric_options = CriterionOption.objects.filter(
+                criterion__rubric=self
+            ).select_related()
+
+            # Construct dictionaries for each option in the rubric
+            for option in rubric_options:
+                rubric_criteria_dict[option.criterion.name][option.name] = option.id
+
+            # Save it in our cache
+            cache.set(rubric_criteria_dict_cache_key, rubric_criteria_dict)
 
         # Validate: are options selected for each criterion in the rubric?
         if len(options_selected) != len(rubric_criteria_dict):
