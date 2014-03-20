@@ -211,7 +211,8 @@ class TestSubmissionsApi(TestCase):
         student_item = self._get_student_item(STUDENT_ITEM)
         self._assert_submission(submission, ANSWER_ONE, student_item.pk, 1)
 
-        score = api.set_score(submission["uuid"], 11, 12)
+        api.set_score(submission["uuid"], 11, 12)
+        score = api.get_latest_score_for_submission(submission["uuid"])
         self._assert_score(score, 11, 12)
 
     def test_get_score(self):

@@ -6,6 +6,9 @@ from collections import namedtuple
 
 import copy
 import json
+import mock
+import submissions.api as sub_api
+from openassessment.workflow import api as workflow_api
 from openassessment.assessment import peer_api
 from .base import XBlockHandlerTestCase, scenario
 
@@ -27,13 +30,11 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         sally_student_item = copy.deepcopy(student_item)
         sally_student_item['student_id'] = "Sally"
         sally_submission = xblock.create_submission(sally_student_item, u"Sally's answer")
-        xblock.get_workflow_info()
 
         # Hal comes and submits a response.
         hal_student_item = copy.deepcopy(student_item)
         hal_student_item['student_id'] = "Hal"
         hal_submission = xblock.create_submission(hal_student_item, u"Hal's answer")
-        xblock.get_workflow_info()
 
         # Now Hal will assess Sally.
         assessment = copy.deepcopy(self.ASSESSMENT)
@@ -73,19 +74,18 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         self.assertIn("Sally".encode('utf-8'), peer_response.body)
 
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
-    def test_assess_handler(self, xblock):
+    def test_peer_assess_handler(self, xblock):
 
         # Create a submission for this problem from another user
         student_item = xblock.get_student_item_dict()
         student_item['student_id'] = 'Sally'
 
         submission = xblock.create_submission(student_item, self.SUBMISSION)
-        xblock.get_workflow_info()
+
         # Create a submission for the scorer (required before assessing another student)
         another_student = copy.deepcopy(student_item)
         another_student['student_id'] = "Bob"
         xblock.create_submission(another_student, self.SUBMISSION)
-        xblock.get_workflow_info()
         peer_api.get_submission_to_assess(another_student, 3)
 
 
@@ -114,7 +114,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         self.assertEqual(actual[0]['feedback'], assessment['feedback'])
 
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
-    def test_assess_rubric_option_mismatch(self, xblock):
+    def test_peer_assess_rubric_option_mismatch(self, xblock):
 
         # Create a submission for this problem from another user
         student_item = xblock.get_student_item_dict()
@@ -134,7 +134,6 @@ class TestPeerAssessment(XBlockHandlerTestCase):
 
         # Expect an error response
         self.assertFalse(resp['success'])
-
 
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_missing_keys_in_request(self, xblock):
