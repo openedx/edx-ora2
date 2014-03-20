@@ -9,7 +9,9 @@ from submissions.api import (
 from openassessment.assessment.serializers import (
     rubric_from_dict, AssessmentSerializer, full_assessment_dict, InvalidRubric
 )
-from openassessment.assessment.models import Assessment, InvalidOptionSelection
+from openassessment.assessment.models import (
+    Assessment, AssessmentPart, InvalidOptionSelection
+)
 
 
 # Assessments are tagged as "self-evaluation"
@@ -74,7 +76,6 @@ def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, s
         "submission_uuid": submission_uuid,
         "score_type": SELF_TYPE,
         "feedback": u"",
-        "parts": [{"option": option_id} for option_id in option_ids],
     }
 
     if scored_at is not None:
@@ -86,7 +87,15 @@ def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, s
         msg = _("Could not create self assessment: {errors}").format(errors=serializer.errors)
         raise SelfAssessmentRequestError(msg)
 
-    serializer.save()
+    assessment = serializer.save()
+
+    # We do this to do a run around django-rest-framework serializer
+    # validation, which would otherwise require two DB queries per
+    # option to do validation. We already validated these options above.
+    AssessmentPart.objects.bulk_create([
+        AssessmentPart(assessment=assessment, option_id=option_id)
+        for option_id in option_ids
+    ])
 
     # Return the serialized assessment
     return serializer.data

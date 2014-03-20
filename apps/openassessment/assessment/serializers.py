@@ -109,7 +109,7 @@ class AssessmentPartSerializer(serializers.ModelSerializer):
 class AssessmentSerializer(serializers.ModelSerializer):
     """Serializer for :class:`Assessment`."""
 
-    parts = AssessmentPartSerializer(required=True, many=True)
+    parts = AssessmentPartSerializer(many=True, read_only=True)
     points_earned = serializers.Field(source='points_earned')
     points_possible = serializers.Field(source='points_possible')
 

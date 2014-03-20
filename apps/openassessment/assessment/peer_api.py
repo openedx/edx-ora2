@@ -14,8 +14,8 @@ from django.db import DatabaseError
 from django.db.models import Q
 
 from openassessment.assessment.models import (
-    Assessment, InvalidOptionSelection, PeerWorkflow, PeerWorkflowItem,
-    AssessmentFeedback
+    Assessment, AssessmentFeedback, AssessmentPart,
+    InvalidOptionSelection, PeerWorkflow, PeerWorkflowItem,
 )
 from openassessment.assessment.serializers import (
     AssessmentSerializer, rubric_from_dict, AssessmentFeedbackSerializer,
@@ -183,7 +183,6 @@ def create_assessment(
             "submission_uuid": submission.uuid,
             "score_type": PEER_TYPE,
             "feedback": feedback,
-            "parts": [{"option": option_id} for option_id in option_ids]
         }
 
         if scored_at is not None:
@@ -193,7 +192,16 @@ def create_assessment(
 
         if not peer_serializer.is_valid():
             raise PeerAssessmentRequestError(peer_serializer.errors)
+
         assessment = peer_serializer.save()
+
+        # We do this to do a run around django-rest-framework serializer
+        # validation, which would otherwise require two DB queries per
+        # option to do validation. We already validated these options above.
+        AssessmentPart.objects.bulk_create([
+            AssessmentPart(assessment=assessment, option_id=option_id)
+            for option_id in option_ids
+        ])
 
         student_item = submission.student_item
         student_item_dict = StudentItemSerializer(student_item).data
