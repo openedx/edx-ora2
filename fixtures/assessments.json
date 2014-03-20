@@ -478,7 +478,8 @@
         "pk": 1,
         "model": "assessment.peerworkflowitem",
         "fields": {
-            "scorer_id": 5,
+            "scorer": 5,
+            "author": 1,
             "started_at": "2014-03-12T11:35:22Z",
             "assessment": -1,
             "submission_uuid": "55c6f020-a9da-11e3-976d-080027880ca6"
@@ -488,7 +489,8 @@
         "pk": 2,
         "model": "assessment.peerworkflowitem",
         "fields": {
-            "scorer_id": 1,
+            "scorer": 1,
+            "author": 5,
             "started_at": "2014-03-12T11:35:36Z",
             "assessment": -1,
             "submission_uuid": "65650b3e-a9da-11e3-8b23-080027880ca6"
@@ -498,7 +500,8 @@
         "pk": 3,
         "model": "assessment.peerworkflowitem",
         "fields": {
-            "scorer_id": 9,
+            "scorer": 9,
+            "author": 7,
             "started_at": "2014-03-12T11:36:10Z",
             "assessment": 1,
             "submission_uuid": "7e8ededc-a9da-11e3-89ce-080027880ca6"
@@ -508,7 +511,8 @@
         "pk": 4,
         "model": "assessment.peerworkflowitem",
         "fields": {
-            "scorer_id": 11,
+            "scorer": 11,
+            "author": 13,
             "started_at": "2014-03-12T11:37:24Z",
             "assessment": 2,
             "submission_uuid": "ac0539f6-a9da-11e3-af02-080027880ca6"
@@ -518,7 +522,8 @@
         "pk": 5,
         "model": "assessment.peerworkflowitem",
         "fields": {
-            "scorer_id": 15,
+            "scorer": 15,
+            "author": 17,
             "started_at": "2014-03-12T11:38:01Z",
             "assessment": 4,
             "submission_uuid": "c18b952c-a9da-11e3-9ccf-080027880ca6"
@@ -528,7 +533,8 @@
         "pk": 6,
         "model": "assessment.peerworkflowitem",
         "fields": {
-            "scorer_id": 17,
+            "scorer": 17,
+            "author": 15,
             "started_at": "2014-03-12T11:38:18Z",
             "assessment": 6,
             "submission_uuid": "beb581f0-a9da-11e3-9b83-080027880ca6"

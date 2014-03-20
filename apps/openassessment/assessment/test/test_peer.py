@@ -599,7 +599,7 @@ class TestPeerApi(TestCase):
     def test_create_workflow_item_error(self, mock_filter):
         mock_filter.side_effect = DatabaseError("Oh no.")
         tim_answer, tim = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
-        peer_api._create_peer_workflow_item(tim, "5")
+        peer_api._create_peer_workflow_item(tim, tim_answer['uuid'])
 
     def test_get_submission_to_evaluate(self):
         self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
@@ -645,14 +645,14 @@ class TestPeerApi(TestCase):
         tim, _ = self._create_student_and_submission("Tim", "Tim's answer")
         peer_api.get_rubric_max_scores(tim["uuid"])
 
-    @patch.object(Assessment.objects, 'filter')
+    @patch.object(PeerWorkflow.objects, 'get')
     @raises(peer_api.PeerAssessmentInternalError)
     def test_median_score_db_error(self, mock_filter):
         mock_filter.side_effect = DatabaseError("Bad things happened")
         tim, _ = self._create_student_and_submission("Tim", "Tim's answer")
         peer_api.get_assessment_median_scores(tim["uuid"])
 
-    @patch.object(Assessment.objects, 'filter')
+    @patch.object(PeerWorkflowItem, 'get_scored_assessments')
     @raises(peer_api.PeerAssessmentInternalError)
     def test_get_assessments_db_error(self, mock_filter):
         mock_filter.side_effect = DatabaseError("Bad things happened")
@@ -673,7 +673,7 @@ class TestPeerApi(TestCase):
             MONDAY
         )
 
-    @patch.object(Assessment.objects, 'filter')
+    @patch.object(PeerWorkflowItem, 'get_scored_assessments')
     @raises(peer_api.PeerAssessmentInternalError)
     def test_error_on_get_assessment(self, mock_filter):
         self._create_student_and_submission("Tim", "Tim's answer")
