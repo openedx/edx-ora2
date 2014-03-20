@@ -76,7 +76,7 @@ class TestSubmissionsApi(TestCase):
 
         # Test not found
         with self.assertRaises(api.SubmissionNotFoundError):
-            api.get_submission("not a real uuid")
+            api.get_submission("notarealuuid")
         with self.assertRaises(api.SubmissionNotFoundError):
             api.get_submission("0" * 50)  # This is bigger than our field size
 
@@ -186,6 +186,21 @@ class TestSubmissionsApi(TestCase):
             course_id=student_item["course_id"],
             item_id=student_item["item_id"]
         )
+
+    def test_caching(self):
+        sub = api.create_submission(STUDENT_ITEM, "Hello World!")
+
+        # The first request to get the submission hits the database...
+        with self.assertNumQueries(1):
+            db_sub = api.get_submission(sub["uuid"])
+
+        # The next one hits the cache only...
+        with self.assertNumQueries(0):
+            cached_sub = api.get_submission(sub["uuid"])
+
+        # The data that gets passed back matches the original in both cases
+        self.assertEqual(sub, db_sub)
+        self.assertEqual(sub, cached_sub)
 
     """
     Testing Scores

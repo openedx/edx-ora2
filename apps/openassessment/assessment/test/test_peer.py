@@ -345,7 +345,10 @@ class TestPeerApi(TestCase):
 
         # Tim has met the critera, and should now have a score.
         # We patch the call to `self_api.is_complete()` simulate having completed a self-assessment.
-        with patch('openassessment.workflow.models.self_api.is_complete') as mock_complete:
+        # TODO: currently, we need to import `self_api` within the `_is_self_complete` method
+        # to avoid circular imports.  This means we can't patch self_api directly.
+        from openassessment.workflow.models import AssessmentWorkflow
+        with patch.object(AssessmentWorkflow, '_is_self_complete') as mock_complete:
             mock_complete.return_value = True
             score = workflow_api.get_workflow_for_submission(sub["uuid"], requirements)["score"]
 

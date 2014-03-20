@@ -101,16 +101,6 @@ class OpenAssessmentPage(object):
         resp = self.step_resp_dict.get('self')
         return resp is not None and resp.content is not None and 'class="assessment__fields"' in resp.content.lower()
 
-    def has_grade(self):
-        """
-        Check whether the user has a grade.
-
-        Returns:
-            bool
-        """
-        resp = self.step_resp_dict.get('grade')
-        return resp is not None and resp.content is not None and "has--grade" in resp.content.lower()
-
     def submit_response(self):
         """
         Submit a response.
@@ -221,10 +211,6 @@ class OpenAssessmentTasks(TaskSet):
 
         if self.page.can_self_assess():
             self.page.self_assess()
-
-        # At the end of the workflow, log in as a new user
-        # so we can continue to make new submissions
-        if self.page.has_grade():
             self.page.log_in()
 
 

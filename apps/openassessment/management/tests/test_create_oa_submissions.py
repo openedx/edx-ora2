@@ -26,7 +26,10 @@ class CreateSubmissionsTest(TestCase):
             # Check that a submission was created
             submissions = sub_api.get_submissions(student_item)
             self.assertEqual(len(submissions), 1)
-            self.assertGreater(len(submissions[0]['answer']), 0)
+
+            answer_dict = submissions[0]['answer']
+            self.assertIsInstance(answer_dict['text'], basestring)
+            self.assertGreater(len(answer_dict['text']), 0)
 
             # Check that peer and self assessments were created
             assessments = peer_api.get_assessments(submissions[0]['uuid'], scored_only=False)

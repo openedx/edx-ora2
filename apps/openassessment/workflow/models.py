@@ -14,7 +14,6 @@ from django_extensions.db.fields import UUIDField
 from model_utils import Choices
 from model_utils.models import StatusModel, TimeStampedModel
 
-from openassessment.assessment import peer_api, self_api
 from submissions import api as sub_api
 
 
@@ -67,10 +66,12 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         }
 
     def _is_peer_complete(self, assessment_requirements):
+        from openassessment.assessment import peer_api
         peer_requirements = assessment_requirements["peer"]
         return peer_api.is_complete(self.submission_uuid, peer_requirements)
 
     def _is_self_complete(self):
+        from openassessment.assessment import self_api
         return self_api.is_complete(self.submission_uuid)
 
     def update_from_assessments(self, assessment_requirements):
@@ -104,6 +105,8 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 specific requirements in this dict.
 
         """
+        from openassessment.assessment import peer_api
+
         # If we're done, we're done -- it doesn't matter if requirements have
         # changed because we've already written a score.
         if self.status == self.STATUS.done:
