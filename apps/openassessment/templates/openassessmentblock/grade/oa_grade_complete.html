@@ -14,157 +14,167 @@
     </header>
 
     <div class="ui-toggle-visibility__content">
-        <div class="step__content">
-            <article class="submission__answer__display">
-                <h3 class="submission__answer__display__title">Your Submitted Response</h3>
+        <div class="wrapper--step__content">
+            <div class="step__content">
+                <article class="submission__answer__display">
+                    <h3 class="submission__answer__display__title">Your Submitted Response</h3>
 
-                <div class="submission__answer__display__content">
-                    {{ student_submission.answer.text|linebreaks }}
-                </div>
-            </article>
-
-            <article class="submission__peer-evaluations">
-                <h3 class="submission__peer-evaluations__title">Peer Evaluations Of Your Response</h3>
-
-                <ol class="list submission__peer-evaluations__questions">
-                    {% for criterion in rubric_criteria %}
-                    {% with criterion_num=forloop.counter %}
-                    <li class="question question--{{ criterion_num }} ui-toggle-visibility">
-                        <h4 class="question__title ui-toggle-visibility__control">
-                            <i class="ico icon-caret-right"></i>
-                            <span class="question__title__copy">{{ criterion.name }}</span>
-
-                            <span class="question__score">
-                              <span class="label sr">Overall Question Score</span>
-                              <span class="question__score__value">{{ criterion.median_score }}</span>
-                              <span class="label label--divider sr">out of</span>
-                              <span class="question__score__potential">
-                                {{ criterion.total_value }}
-                                <span class="unit">Points</span>
-                              </span>
-                            </span>
-                        </h4>
-
-                        <ul class="question__answers ui-toggle-visibility__content">
-                            {% for assessment in peer_assessments %}
-                                {% with peer_num=forloop.counter %}
-                                    {% for part in assessment.parts %}
-                                        {% if part.option.criterion.name == criterion.name %}
-                                        <li class="answer peer-assessment--{{ peer_num}}"
-                                            id="question--{{ criterion_num }}__answer-{{ peer_num }}">
-                                            <h5 class="answer__title">
-                                                <span class="answer__source">
-                                                  <span class="label sr">Assessor: </span>
-                                                  <span class="value">Peer {{ peer_num }}</span>
-                                                </span>
-                                                <span class="answer__value">
-                                                  <span class="label sr">Peer's Assessment: </span>
-                                                  <span class="value">{{ part.option.name }}</span>
-                                                </span>
-                                            </h5>
-                                            <span class="answer__content">
-                                                {{ part.option.explanation }}
-                                            </span>
-                                            <span class="answer__score">
-                                                <span class="label sr">Score Earned: </span>
-                                                <span class="value">{{ part.option.points }} points</span>
-                                            </span>
-                                        </li>
-                                        {% endif %}
-                                    {% endfor %}
-                                {% endwith %}
-                            {% endfor %}
-
-                            {% for part in self_assessment.parts %}
-                                {% if part.option.criterion.name == criterion.name %}
-                            <li class="answer self-assessment"
-                                id="question--{{ criterion_num }}__answer--self">
-                                <h5 class="answer__title">
-                                    <span class="answer__source">
-                                      <span class="value">Your Self Assessment</span>
-                                    </span>
-                                    <span class="answer__value">
-                                      <span class="label sr">Your Assessment: </span>
-                                      <span class="value">{{ part.option.name }}</span>
-                                    </span>
-                                </h5>
-                                <span class="answer__content">
-                                    {{ part.option.explanation }}
-                                </span>
-                            </li>
-                                {% endif %}
-                            {% endfor %}
-                        </ul>
-                    </li>
-                    {% endwith %}
-                    {% endfor %}
-                    <li class="question question--feedback ui-toggle-visibility">
-                        <h4 class="question__title ui-toggle-visibility__control">
-                            <i class="ico icon-caret-right"></i>
-                            <span class="question__title__copy">Additional feedback on your response</span>
-                        </h4>
-
-                        <ul class="question__answers ui-toggle-visibility__content">
-                            {% for assessment in peer_assessments %}
-                            {% with peer_num=forloop.counter %}
-                            {% if assessment.feedback %}
-                            <li class="answer peer-evaluation--{{ peer_num }}" id="question--feedback__answer-{{ peer_num }}">
-                                <h5 class="answer__title">
-                                    <span class="answer__source">
-                                      <span class="label sr">Evaluator: </span>
-                                      <span class="value">Peer {{ peer_num }}</span>
-                                    </span>
-                                </h5>
-
-                                <div class="answer__value">
-                                    <h6 class="label sr">Evaluator's Assessment: </h6>
-                                    <div class="value">
-                                        <p>{{ assessment.feedback }}</p>
-                                    </div>
-                                </div>
-                            </li>
-                            {% endif %}
-                            {% endwith %}
-                            {% endfor %}
-                        </ul>
-
-                    </li>
-                </ol>
-            </article>
-
-            <form id="submission__feeedback" class="submission__feeedback" method="post">
-                <h3 class="submission__feeedback__title">Give Feedback On Peer Evaluations</h3>
-
-                <div class="submission__feeedback__content">
-                    <div class="submission__feeedback__instructions">
-                        <p>Course staff will be able to see any feedback that you provide here when they review course records.</p>
+                    <div class="submission__answer__display__content">
+                        {{ student_submission.answer.text|linebreaks }}
                     </div>
+                </article>
 
-                    <ol class="list list--fields submission__feeedback__fields">
-                        <li class="field field--select feedback__overall" id="feedback__overall">
-                            <label for="feedback__overall__value">Overall how do you consider your peers’ assessments of your response?</label>
-                            <select id="feedback__overall__value">
-                                <option value="This assessment was useful">This assessment was useful</option>
-                                <option value="This assessment was not useful">This assessment was not useful</option>
-                                <option value="I disagree with this assessment">I disagree with this assessment</option>
-                                <option value="This assessment was inappropriate">This assessment was inappropriate</option>
-                            </select>
+                <article class="submission__peer-evaluations">
+                    <h3 class="submission__peer-evaluations__title">Peer Evaluations Of Your Response</h3>
+
+                    <ol class="list submission__peer-evaluations__questions">
+                        {% for criterion in rubric_criteria %}
+                        {% with criterion_num=forloop.counter %}
+                        <li class="question question--{{ criterion_num }} ui-toggle-visibility">
+                            <h4 class="question__title ui-toggle-visibility__control">
+                                <i class="ico icon-caret-right"></i>
+                                <span class="question__title__copy">{{ criterion.name }}</span>
+
+                                <span class="question__score">
+                                  <span class="label sr">Overall Question Score</span>
+                                  <span class="question__score__value">{{ criterion.median_score }}</span>
+                                  <span class="label label--divider sr">out of</span>
+                                  <span class="question__score__potential">
+                                    {{ criterion.total_value }}
+                                    <span class="unit">Points</span>
+                                  </span>
+                                </span>
+                            </h4>
+
+                            <ul class="question__answers ui-toggle-visibility__content">
+                                {% for assessment in peer_assessments %}
+                                    {% with peer_num=forloop.counter %}
+                                        {% for part in assessment.parts %}
+                                            {% if part.option.criterion.name == criterion.name %}
+                                            <li class="answer peer-assessment--{{ peer_num}}"
+                                                id="question--{{ criterion_num }}__answer-{{ peer_num }}">
+                                                <h5 class="answer__title">
+                                                    <span class="answer__source">
+                                                      <span class="answer__source__label sr">Assessor: </span>
+                                                      <span class="answer__source__value">Peer {{ peer_num }}</span>
+                                                    </span>
+                                                    <span class="answer__value">
+                                                        <span class="answer__value__label sr">Peer's Assessment: </span>
+                                                        <span class="answer__value__value">
+                                                            {{ part.option.name }}
+
+                                                            <span class="ui-tooltip" title="{{ part.option.explanation }}">
+                                                                <i class="ico icon-info-sign" title="More Information on {{ part.option.name }}"></i>
+                                                            </span>
+                                                        </span>
+                                                    </span>
+                                                </h5>
+                                                <span class="answer__score">
+                                                    <span class="answer__score__label sr">Score Earned: </span>
+                                                    <span class="answer__score__value">{{ part.option.points }} points</span>
+                                                </span>
+                                            </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endwith %}
+                                {% endfor %}
+
+                                {% for part in self_assessment.parts %}
+                                    {% if part.option.criterion.name == criterion.name %}
+                                <li class="answer self-assessment"
+                                    id="question--{{ criterion_num }}__answer--self">
+                                    <h5 class="answer__title">
+                                        <span class="answer__source">
+                                          <span class="answer__source__value">Your Self Assessment</span>
+                                        </span>
+                                        <span class="answer__value">
+                                            <span class="answer__value__label sr">Your Assessment: </span>
+                                            <span class="answer__value__value">
+                                                {{ part.option.name }}
+
+                                                <span class="ui-tooltip" title="{{ part.option.explanation }}">
+                                                    <i class="ico icon-info-sign" title="More Information on {{ part.option.name }}"></i>
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </h5>
+                                </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
                         </li>
-                        <li class="field field--textarea feedback__remarks" id="feedback__remarks">
-                            <label for="feedback__remarks__value">Please provide any thoughts or comments on the feedback you received from your peers here.</label>
-                            <textarea id="feedback__remarks__value" placeholder="I feel the feedback I received was...">{{ feedback_text }}</textarea>
+                        {% endwith %}
+                        {% endfor %}
+                        <li class="question question--feedback ui-toggle-visibility">
+                            <h4 class="question__title ui-toggle-visibility__control">
+                                <i class="ico icon-caret-right"></i>
+                                <span class="question__title__copy">Additional feedback on your response</span>
+                            </h4>
+
+                            <ul class="question__answers ui-toggle-visibility__content">
+                                {% for assessment in peer_assessments %}
+                                {% with peer_num=forloop.counter %}
+                                {% if assessment.feedback %}
+                                <li class="answer peer-evaluation--{{ peer_num }}" id="question--feedback__answer-{{ peer_num }}">
+                                    <h5 class="answer__title">
+                                        <span class="answer__source">
+                                          <span class="label sr">Evaluator: </span>
+                                          <span class="value">Peer {{ peer_num }}</span>
+                                        </span>
+                                    </h5>
+
+                                    <div class="answer__value">
+                                        <h6 class="label sr">Evaluator's Assessment: </h6>
+                                        <div class="value">
+                                            <p>{{ assessment.feedback }}</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                {% endif %}
+                                {% endwith %}
+                                {% endfor %}
+                            </ul>
+
                         </li>
                     </ol>
-                </div>
+                </article>
 
-                <div class="submission__feeedback__actions">
-                    <ul class="list list--actions submission__feeedback__actions">
-                        <li class="list--actions__item">
-                            <button type="submit" id="feedback__submit" class="action action--submit feedback__submit">Submit Feedback On Peer Evaluations</button>
-                        </li>
-                    </ul>
-                </div>
-            </form>
+                <form id="submission__feeedback" class="submission__feeedback" method="post">
+                    <h3 class="submission__feeedback__title">Give Feedback On Peer Evaluations</h3>
+
+                    <div class="submission__feeedback__content">
+                        <div class="submission__feeedback__instructions">
+                            <p>Course staff will be able to see any feedback that you provide here when they review course records.</p>
+                        </div>
+
+                        <div class="submission__feedback__elements">
+                            <ol class="list list--fields submission__feeedback__fields">
+                                <li class="field field--select feedback__overall" id="feedback__overall">
+                                    <label for="feedback__overall__value">Overall how do you consider your peers’ assessments of your response?</label>
+                                    <select id="feedback__overall__value">
+                                        <option value="This assessment was useful">This assessment was useful</option>
+                                        <option value="This assessment was not useful">This assessment was not useful</option>
+                                        <option value="I disagree with this assessment">I disagree with this assessment</option>
+                                        <option value="This assessment was inappropriate">This assessment was inappropriate</option>
+                                    </select>
+                                </li>
+                                <li class="field field--textarea feedback__remarks" id="feedback__remarks">
+                                    <label for="feedback__remarks__value">Please provide any thoughts or comments on the feedback you received from your peers here.</label>
+                                    <textarea id="feedback__remarks__value" placeholder="I feel the feedback I received was...">{{ feedback_text }}</textarea>
+                                </li>
+                            </ol>
+
+                            <div class="submission__feeedback__actions">
+                                <ul class="list list--actions submission__feeedback__actions">
+                                    <li class="list--actions__item">
+                                        <button type="submit" id="feedback__submit" class="action action--submit feedback__submit">Submit Feedback On Peer Evaluations</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </li>

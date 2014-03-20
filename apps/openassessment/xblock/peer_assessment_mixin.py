@@ -139,11 +139,11 @@ class PeerAssessmentMixin(object):
 
             if continue_grading:
                 context_dict["submit_button_text"] = (
-                    "Submit your assessment & review another response."
+                    "Submit your assessment & review another response"
                 )
             elif assessment["must_grade"] - count == 1:
                 context_dict["submit_button_text"] = (
-                    "Submit your assessment & move onto next step."
+                    "Submit your assessment & move onto next step"
                 )
             else:
                 context_dict["submit_button_text"] = (

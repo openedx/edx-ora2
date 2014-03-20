@@ -437,12 +437,12 @@
   article, aside, canvas, details, figcaption, figure,
   footer, header, hgroup, menu, nav, section, summary,
   time, mark, audio, video {
-    @extend %t-weight1;
     margin: 0;
     vertical-align: baseline;
     border: 0;
     padding: 0;
     outline: 0;
+    font-weight: 400;
   }
 
   abbr[title] {
@@ -451,8 +451,8 @@
     cursor: help;
   }
 
-  strong {
-    @extend %t-weight3;
+  strong, .emphasis {
+    @extend %t-strong;
   }
 
 

@@ -6,11 +6,28 @@
 
 
 // --------------------
-// UI: content
+// typography: subheading
 // --------------------
-%ui-content-longanswer {
-  max-height: ($baseline-v*15);
-  overflow-y: scroll;
+%t-superheading {
+  @extend %hd-2;
+  @extend %t-strong;
+}
+
+%t-heading {
+  @extend %hd-4;
+  @extend %t-strong;
+  @extend %t-titlecase;
+}
+
+%t-subheading {
+  @extend %hd-4;
+  @extend %t-strong;
+}
+
+%t-score {
+  @extend %copy-4;
+  @extend %t-strong;
+  @extend %t-titlecase;
 }
 
 
@@ -18,21 +35,85 @@
 // UI: section
 // --------------------
 %ui-section {
-  border: ($baseline-v/10) solid $color-decorative-tertiary;
+  @include transition(all $tmg-f1 ease-in-out);
+  @include transform(scale(1.0));
   border-radius: ($baseline-v/10);
+  box-shadow: 0 1px 1px $shadow-l1;
+  margin-bottom: $baseline-v;
+  border: 1px solid $color-decorative-tertiary;
+  border-top: ($baseline-v/4) solid $color-decorative-tertiary;
+  padding: ($baseline-v/2) ($baseline-h/2);
+  background: $bg-content;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  // STATE: hover and focus
+  &:hover, &:focus {
+    @include transform(scale(1.0));
+    border-color: $color-decorative-tertiary;
+    box-shadow: 0 1px 1px $shadow-l2;
+  }
+
+  // STATE: is collapsed
+  &.is--collapsed {
+    @include transform(scale(0.99));
+    box-shadow: 0 1px 1px $shadow-l2;
+
+    &:hover, &:focus {
+      @include transform(scale(1.0));
+    }
+  }
+
+  // STATE: is loading
+  &.is--loading {
+    @include transform(scale(0.99));
+    box-shadow: 0 1px 1px $shadow-l2;
+  }
+
+  // STATE: is empty
+  &.is--empty {
+
+    &:hover, &:focus {
+      @include transform(scale(0.99));
+    }
+  }
+
+  // STATE: is unavailable
+  &.is--unavailable {
+    border-top-color: $color-unavailable;
+
+    &:hover, &:focus {
+      @include transform(scale(0.99));
+    }
+  }
+
+  // STATE: is unavailable
+  &.is--complete {
+    border-top-color: $color-complete;
+  }
+
+  // STATE: is incomplete
+  &.is--closed, &.is--incomplete {
+    border-top-color: $color-incomplete;
+  }
+}
+
+// --------------------
+// UI: subsection
+// --------------------
+%ui-subsection {
   margin-bottom: $baseline-v;
 }
 
-%ui-section-title {
-  @extend %hd-7;
-  @extend %t-weight3;
-  padding: ($baseline-v/2) $baseline-v;
-  background: $color-decorative-tertiary;
-  color: $heading-secondary-color;
+%ui-subsection-title {
+  margin-bottom: ($baseline-v/2);
+  border-bottom: ($baseline-v/10) solid $color-decorative-tertiary;
+  padding-bottom: ($baseline-v/2);
 }
 
-%ui-section-content {
-  padding: $baseline-v;
+%ui-subsection-content {
 
   p {
     margin-bottom: $baseline-v;
@@ -43,6 +124,23 @@
   }
 }
 
+// --------------------
+// UI: well
+// --------------------
+%ui-well {
+  box-shadow: inset 0 1px 2px 1px $shadow-l1;
+  padding: $baseline-v ($baseline-h/2);
+  background: $color-decorative-quinternary;
+}
+
+
+// --------------------
+// UI: content
+// --------------------
+%ui-content-longanswer {
+  max-height: ($baseline-v*15);
+  overflow-y: scroll;
+}
 
 // --------------------
 // UI: rubric
@@ -54,19 +152,19 @@
   @extend %wipe-last-child;
 
   .question__title {
-    border-bottom: ($baseline-v/10) solid $color-decorative-tertiary;
-    padding-bottom: ($baseline-v/2);
+    border-bottom: ($baseline-v/10) solid $heading-color;
+    padding-bottom: ($baseline-v/4);
 
     .ico {
       display: inline-block;
       vertical-align: middle;
-      margin-right: ($baseline-v/4);
+      margin-right: ($baseline-h/8);
     }
   }
 
   .question__title__copy {
-    @extend %hd-4;
-    @extend %t-weight3;
+    @extend %t-heading;
+    color: $heading-color;
   }
 }
 
@@ -77,16 +175,10 @@
 
   .answer {
     @include row();
-    @extend %trans-opacity;
     @extend %wipe-last-child;
     margin-bottom: ($baseline-v/2);
-    border-bottom: ($baseline-v/20) solid $color-decorative-tertiary;
+    border-bottom: ($baseline-v/20) solid $color-decorative-quaternary;
     padding-bottom: ($baseline-v/2);
-    opacity: 0.75;
-
-    &:hover {
-      opacity: 1.0;
-    }
   }
 
   .wrapper--input {
@@ -117,10 +209,10 @@
     }
 
     .answer__label {
-      @extend %copy-4;
-      @extend %t-weight3;
+      @extend %copy-3;
+      @extend %t-strong;
       margin-bottom: 0; // FIX: need to reset base label style
-      color: $color-unfocused;
+      color: $copy-color;
     }
 
     .answer__value {
@@ -162,9 +254,9 @@
   .answer__tip {
     margin-bottom: ($baseline-v/2);
 
-    @extend %copy-5;
+    @extend %copy-3;
     margin-right: $baseline-v;
-    color: $copy-supplemental-color;
+    color: $copy-secondary-color;
 
     @include media($bp-dm) {
       @include span-columns(6 of 8);
@@ -190,12 +282,8 @@
   }
 
   .answer__points {
-    @extend %copy-5;
-    color: $copy-color;
-
-    @extend %copy-5;
-    margin-right: $baseline-v;
-    color: $copy-supplemental-color;
+    @extend %t-score;
+    color: $copy-secondary-color;
 
     @include media($bp-dm) {
       float: right;
@@ -211,13 +299,11 @@
       float: right;
       text-align: right;
     }
+  }
 
-    .label {
-      @extend %copy-5; // FIX: need to reset base label style
-      display: inline-block; // FIX: need to reset base label style
-      margin-left: ($baseline-v/4);
-      color: $copy-supplemental-color;
-    }
+  .answer__points__label {
+    display: inline-block; // FIX: need to reset base label style
+    margin-left: ($baseline-v/4);
+    color: $copy-secondary-color;
   }
 }
-

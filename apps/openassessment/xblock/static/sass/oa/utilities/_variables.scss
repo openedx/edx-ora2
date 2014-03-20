@@ -29,3 +29,5 @@ $bp-dx: new-breakpoint(min-width $grid-size-x 12);                              
 $color-incomplete: rgb(188, 85, 71);
 $color-complete: rgb(98, 194, 74);
 $color-error: rgb(188, 85, 71);
+$color-confirm: $heading-primary-color;
+$color-unavailable: tint($copy-color, 85%);

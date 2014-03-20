@@ -20,8 +20,9 @@
           <span class="step__status__label">This step's status:</span>
           <span class="step__status__value">
             <span class="copy">
-                <span class="step__status__value--completed">{{ graded }}</span> of
-                <span class="step__status__value--required">{{ must_grade }}</span> completed
+                In Progress
+                (<span class="step__status__value--completed">{{ graded }}</span> of
+                <span class="step__status__value--required">{{ must_grade }}</span>)
             </span>
           </span>
         </span>
@@ -48,11 +49,6 @@
                                         <span class="peer-assessment__number--current">{{ review_num }}</span> of
                                         <span class="peer-assessment__number--required">{{ must_grade }}</span>
                                     </h3>
-
-                                    <span class="peer-assessment__expected-time">
-                                        <span class="label">Expected Time:</span>
-                                        <span class="value">{{ estimated_time }}</span>
-                                    </span>
                                 </header>
 
                                 <div class="peer-assessment__display__response">
@@ -88,7 +84,7 @@
                                                         </div>
                                                         <div class="wrapper--metadata">
                                                             <span class="answer__tip">{{ option.explanation }}</span>
-                                                            <span class="answer__points">{{option.points}} <span class="label">points</span></span>
+                                                            <span class="answer__points">{{option.points}} <span class="answer__points__label">points</span></span>
                                                         </div>
                                                     </li>
                                                     {% endfor %}
@@ -101,7 +97,8 @@
                                             <label class="question__title" for="assessment__rubric__question--feedback__value">
                                                 <span class="question__title__copy">(Optional) What aspects of this response stood out to you? What did it do well? How could it improve?</span>
                                             </label>
-                                            <div>
+
+                                            <div class="wrapper--input">
                                                 <textarea id="assessment__rubric__question--feedback__value" placeholder="I noticed that this response..."></textarea>
                                             </div>
                                         </li>

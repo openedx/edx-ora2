@@ -17,10 +17,7 @@
   // chrome: title
   .openassessment__title {
     @include row();
-
-    .problem-header {
-      text-transform: uppercase;
-    }
+    @extend %t-regular;
   }
 
   // steps
@@ -30,23 +27,59 @@
   }
 
   .openassessment__steps__step {
-    margin-bottom: $baseline-v;
-    border-bottom: ($baseline-v/10) solid $color-decorative-tertiary;
-    padding-bottom: $baseline-v;
-
-    &:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
+    @extend %ui-section;
 
     // step header
     .step__header {
-      @extend %trans-opacity;
       @include row();
-      opacity: 1.0;
+    }
 
-      .step__deadline {
-        color: $color-focused;
+    // step title
+    .step__title {
+      margin-bottom: ($baseline-v/2);
+
+      @include media($bp-ds) {
+        @include span-columns(4 of 6);
+        margin-bottom: 0;
+      }
+
+      @include media($bp-dm) {
+        @include span-columns(9 of 12);
+        margin-bottom: 0;
+      }
+
+      @include media($bp-dl) {
+        @include span-columns(9 of 12);
+        margin-bottom: 0;
+      }
+
+      @include media($bp-dx) {
+        @include span-columns(9 of 12);
+        margin-bottom: 0;
+      }
+
+      .step__counter, .wrapper--copy {
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      .wrapper--copy {
+        margin-left: ($baseline-h/2);
+        border-left: 1px solid $color-decorative-tertiary;
+        padding-left: ($baseline-h/2);
+      }
+
+      .step__counter {
+
+        // increment: show numbers using parent list counter
+        &:before {
+          @extend %hd-2;
+          @extend %t-strong;
+          content: counter(item, decimal);
+          counter-increment: item;
+          color: $color-decorative-tertiary;
+
+        }
       }
 
       .step__label, .step__deadline {
@@ -54,14 +87,12 @@
       }
 
       .step__label {
-        @extend %hd-4;
-        @extend %t-weight3;
-        @extend %trans-color;
+        @extend %t-superheading;
+        color: $heading-primary-color;
       }
 
       .step__deadline {
-        @extend %hd-8;
-        @extend %trans-color;
+        @extend %hd-4;
         color: $heading-secondary-color;
       }
     }
@@ -69,105 +100,81 @@
     // step status
     .step__status {
 
-
       .step__status__value {
-        display: block;
-        border-radius: ($baseline-v/5);
+        border-radius: ($baseline-v/10);
         padding: ($baseline-v/4) ($baseline-h/4);
-        background: $color-focused;
-        color: $white-t;
-
-        @include media($bp-m) {
-          margin-top: ($baseline-v/2);
-        }
-
-        @include media($bp-ds) {
-          display: inline-block;
-          vertical-align: bottom;
-        }
-
-        @include media($bp-dm) {
-          display: inline-block;
-          vertical-align: bottom;
-        }
-
-        @include media($bp-dl) {
-          display: inline-block;
-          vertical-align: bottom;
-        }
+        background: $color-decorative-tertiary;
       }
 
       .ico {
-        @extend %t-icon-m;
+        @extend %icon-2;
         display: inline-block;
         vertical-align: bottom;
         margin-left: ($baseline-v/4);
       }
 
       .copy {
-        @extend %copy-6;
-        @extend %t-titlecase;
-        color: $white-t;
+        @extend %t-score;
+        color: $heading-color;
       }
 
       @include media($bp-m) {
         position: relative;
-        top: 2px;
       }
 
       @include media($bp-ds) {
         @include span-columns(2 of 6);
         @include omega();
-        margin-top: ($baseline-v/4);
+        position: relative;
+        top: -($baseline-v/2);
         text-align: right;
       }
 
       @include media($bp-dm) {
         @include span-columns(3 of 12);
         @include omega();
-        margin-top: ($baseline-v/4);
+        position: relative;
+        top: -($baseline-v/2);
         text-align: right;
       }
 
       @include media($bp-dl) {
         @include span-columns(3 of 12);
         @include omega();
-        margin-top: ($baseline-v/4);
+        position: relative;
+        top: -($baseline-v/2);
         text-align: right;
       }
 
       @include media($bp-dx) {
         @include span-columns(3 of 12);
         @include omega();
-        margin-top: ($baseline-v/4);
+        position: relative;
+        top: -($baseline-v/2);
         text-align: right;
       }
     }
 
     .step__status__label {
-    @extend %text-sr;
+      @extend %text-sr;
     }
 
     // step content wrapper
     .wrapper--step__content {
-      margin-top: $baseline-v;
+      margin-top: ($baseline-v/2);
+      padding-top: $baseline-v;
+      border-top: 1px solid $color-decorative-tertiary;
     }
 
     // step message
     .step__message {
       @include row();
       margin-bottom: $baseline-v;
-      border-radius: ($baseline-v/5);
-      padding: $baseline-v ($baseline-h/2);
-
-      &.message--confirmation {
-        background: tint($color-complete, 90%);
-      }
     }
 
     // step instructions
     .step__instruction {
-      @extend %copy-4;
+      @extend %copy-2;
       margin-bottom: $baseline-v;
       color: $copy-color;
     }
@@ -203,14 +210,14 @@
 
       .action--submit {
         @extend %btn--primary;
-        @extend %action-4;
+        @extend %action-2;
 
         .copy, .ico {
           display: inline;
         }
 
         .ico {
-          @extend %t-icon-l;
+          @extend %icon-1;
         }
       }
 
@@ -246,6 +253,10 @@
             margin-bottom: 0;
             text-align: left;
           }
+
+          .message__title {
+            @extend %hd-4;
+          }
         }
 
         .list--actions {
@@ -272,40 +283,27 @@
 
     // STATE: step is loading
     &.is--loading {
-      opacity: 0.3;
+
+      .step__header {
+        padding-bottom: 0;
+        border-bottom: none;
+        margin-bottom: 0;
+      }
+
+      .step__counter:before, .step__label, .step__deadline {
+        color: $color-unavailable;
+      }
 
       .step__status__value {
-        background: $color-primary;
+        background: $color-unavailable;
 
         .ico {
           display: inline-block;
+          color: $copy-color;
         }
 
         .copy {
-          color: $white-t;
-        }
-      }
-
-      .step__header {
-
-        @include media($bp-ds) {
-          border-bottom: none;
-          padding-bottom: 0;
-        }
-
-        @include media($bp-dm) {
-         border-bottom: none;
-         padding-bottom: 0;
-        }
-
-        @include media($bp-dl) {
-          border-bottom: none;
-          padding-bottom: 0;
-        }
-
-        @include media($bp-dx) {
-          border-bottom: none;
-          padding-bottom: 0;
+          color: $copy-color;
         }
       }
     }
@@ -314,46 +312,9 @@
     &.is--collapsed {
 
       .step__header {
-        opacity: 0.4;
+        padding-bottom: 0;
+        border-bottom: none;
         margin-bottom: 0;
-
-        @include media($bp-ds) {
-          border-bottom: none;
-          padding-bottom: 0;
-        }
-
-        @include media($bp-dm) {
-         border-bottom: none;
-         padding-bottom: 0;
-        }
-
-        @include media($bp-dl) {
-          border-bottom: none;
-          padding-bottom: 0;
-        }
-
-        @include media($bp-dx) {
-          border-bottom: none;
-          padding-bottom: 0;
-        }
-
-        .step__deadline {
-          color: $color-focused;
-        }
-
-        // STATE: hover
-        &:hover, &:focus {
-          opacity: 1.0;
-        }
-      }
-
-      .step__status__value {
-        background: $color-secondary;
-      }
-
-      // step counter
-      .step__counter:before {
-        border: 1px solid rgba($heading-color, 0.5);
       }
     }
 
@@ -365,17 +326,57 @@
     // STATE: step is unavailable
     &.is--unavailable {
 
-      .step__header:hover, .step__header:focus {
-        opacity: 0.4;
+      .step__counter:before, .step__label, .step__deadline {
+        color: $color-unavailable;
+      }
+
+      .step__status__value {
+        background: $color-unavailable;
+
+        .ico {
+          display: inline-block;
+          color: $copy-secondary-color;
+        }
+
+        .copy {
+          color: $copy-secondary-color;
+        }
       }
     }
 
+    // STATE: step is unavailable
+    &.is--waiting {
+
+      .step__counter:before, .step__label, .step__deadline {
+        color: $color-unavailable;
+      }
+
+      .step__status__value {
+        background: $color-unavailable;
+
+        .ico {
+          display: inline-block;
+          color: $copy-secondary-color;
+        }
+
+        .copy {
+          color: $copy-secondary-color;
+        }
+      }
+
+      .step__title .grade__value__title {
+        color: $color-unavailable;
+      }
+
+      .step__instruction, .grade__value__description {
+        color: $copy-secondary-color;
+      }
+    }
 
     // STATE: step is complete/submitted/graded
-    &.is--complete, &.is--submitted, &.is--graded {
+    &.is--complete {
 
       .step__counter:before {
-        border-color: rgba($color-complete, 0.5);
         color: $color-complete;
       }
 
@@ -423,19 +424,20 @@
   // messages
   // --------------------
   .message {
+    margin-bottom: ($baseline-v*1.5);
 
     .message__title {
-      @extend %hd-6;
+      @extend %hd-3;
+      @extend %t-strong;
     }
 
     .message__content {
-      @extend %copy-4;
+      @extend %copy-3;
     }
   }
 
   // TYPE: error
   .message--error {
-
 
     .message__title {
       color: $color-error;
@@ -487,6 +489,7 @@
   }
 
   .openassessment__prompt {
+    @extend %ui-well;
     margin-bottom: $baseline-v;
   }
 
@@ -496,7 +499,7 @@
 
   .openassessment__prompt__copy {
     @extend %copy-2;
-    color: $copy-lead-color;
+    color: $copy-color;
 
     > * {
       margin-bottom: $baseline-v;
@@ -520,15 +523,13 @@
 
     // response form
     .response__submission {
-      margin-top: ($baseline-v*2.5);
-      position: relative;
-      padding: ($baseline-v*0.75);
-      background: $color-decorative-tertiary;
+      padding: ($baseline-v/2) ($baseline-h/4) $baseline-v ($baseline-h/4);
+      background: $color-decorative-quaternary;
       border-radius: ($baseline-v/10);
     }
 
     .response__submission__content {
-      margin-bottom: ($baseline-v/2);
+      margin-bottom: $baseline-v;
 
       label {
         @extend %text-sr;
@@ -537,30 +538,32 @@
       textarea {
         @extend %ui-content-longanswer;
         min-height: ($baseline-v*10);
-        margin-bottom: ($baseline-v/2);
+      }
+
+      .tip {
+        @extend %t-score;
+        padding: ($baseline-v/4) ($baseline-h/4);
+        background: $color-decorative-secondary;
+        color: $white-t;
       }
     }
 
     .response__submission__status {
-      position: absolute;
-      top: -($baseline-v*1.5);
-      right: 0;
-      background: $color-decorative-tertiary;
-      padding: ($baseline-v/2) ($baseline-h/2);
-      margin-bottom: ($baseline-v/2);
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: ($baseline-h/4);
     }
 
     .response__submission__status__title {
-      @extend %hd-7;
-      @extend %t-weight3;
-      color: $copy-supplemental-color;
+      @extend %t-score;
+      color: $action-secondary-color;
     }
 
     .response__submission__actions {
 
       .action--save {
         @extend %btn--secondary;
-        @extend %action-4;
+        @extend %action-2;
         display: block;
         text-align: center;
         margin-bottom: ($baseline-v/2);
@@ -604,69 +607,29 @@
 
     // peer submission
     .peer-assessment__display {
-      @extend %ui-section;
+      @extend %ui-subsection;
     }
 
     .peer-assessment__display__header {
-      @extend %ui-section-title;
       @include clearfix();
 
       span {
-        @extend %t-weight3; // FIX: needed due to DOM structure
+        @extend %t-strong; // FIX: needed due to DOM structure
       }
 
       .peer-assessment__display__title {
-        @extend %hd-7; // FIX: needed due to DOM structure
-        @extend %t-weight3;
-        margin-bottom: ($baseline-v/4);
-
-        @include media($bp-ds) {
-          float: left;
-          margin-bottom: 0;
-        }
-
-        @include media($bp-dm) {
-          float: left;
-          margin-bottom: 0;
-        }
-
-        @include media($bp-dl) {
-          float: left;
-          margin-bottom: 0;
-        }
-
-        @include media($bp-dx) {
-          float: left;
-          margin-bottom: 0;
-        }
-      }
-
-      .peer-assessment__expected-time {
-        @extend %hd-7;  // FIX: needed due to DOM structure
-        @extend %t-weight3;
-
-        @include media($bp-ds) {
-          float: right;
-        }
-
-        @include media($bp-dm) {
-          float: right;
-        }
-
-        @include media($bp-dl) {
-          float: right;
-        }
-
-        @include media($bp-dx) {
-          float: right;
-        }
+        @extend %t-heading;
+        margin-bottom: ($baseline-v/2);
+        color: $heading-secondary-color;
       }
     }
 
     .peer-assessment__display__response {
-      @extend %ui-section-content;
+      @extend %ui-subsection-content;
       @extend %copy-3;
       @extend %ui-content-longanswer;
+      @extend %ui-well;
+      color: $copy-color;
     }
 
     // assessment form
@@ -690,6 +653,10 @@
       // genereal feedback question
       .assessment__rubric__question--feedback {
 
+        .wrapper--input {
+          margin-top: $baseline-v;
+        }
+
         textarea {
           @extend %ui-content-longanswer;
           min-height: ($baseline-v*5);
@@ -706,28 +673,25 @@
 
     // submission
     .self-assessment__display {
-      @extend %ui-section;
+      @extend %ui-subsection;
     }
 
     .self-assessment__display__header {
-      @extend %ui-section-title;
       @include clearfix();
+    }
 
-      span {
-        @extend %t-weight3; // FIX: needed due to DOM structure
-      }
-
-      .self-assessment__display__title {
-        @extend %hd-7; // FIX: needed due to DOM structure
-        @extend %t-weight3;
-        float: left;
-      }
+    .self-assessment__display__title {
+      @extend %t-heading;
+      margin-bottom: ($baseline-v/2);
+      color: $heading-secondary-color;
     }
 
     .self-assessment__display__response {
+      @extend %ui-subsection-content;
       @extend %copy-3;
       @extend %ui-content-longanswer;
-      @extend %ui-section-content;
+      @extend %ui-well;
+      color: $copy-color;
     }
 
     // assessment form
@@ -763,11 +727,21 @@
   // --------------------
   // grade status
   // --------------------
-  .step--grade {
+  // TODO: clean this up - need to make sure counter doens't show when loading or in other states
+  #openassessment__grade {
 
-    .step__header {
-      opacity: 1.0 !important;
+    .step__counter, .step__counter:before {
+      display: none;
     }
+
+    .wrapper--copy {
+      margin-left: 0;
+      border-left: none;
+      padding-left: 0;
+    }
+  }
+
+  .step--grade {
 
     .step__title {
       @include media($bp-m) {
@@ -790,35 +764,33 @@
         @include span-columns(12 of 12);
       }
 
-      .wrapper--copy {
-        display: block;
-      }
-
       .step__label, .grade__value {
-        display: block;
+        display: inline-block;
+        vertical-align: middle;
       }
 
       .step__label {
-        margin-bottom: ($baseline-v/4);
-        color: $color-decorative-secondary;
-      }
-
-
-      .grade__value {
-        border-radius: ($baseline-v/10);
-        padding: ($baseline-v/2) ($baseline-h/2);
-        background: $color-decorative-tertiary;
+        margin-right: ($baseline-h/4);
       }
 
       .grade__value__title {
-        @extend %hd-6;
+        @extend %t-superheading;
         color: $heading-primary-color;
-      }
 
-      .grade__value__description {
-        @extend %copy-4;
-        color: $copy-lead-color;
+        .grade__value__earned {
+          @extend %t-strong;
+        }
+
+        .grade__value__potential {
+          @extend %t-strong;
+        }
       }
+    }
+
+    .grade__value__description {
+      @extend %copy-2;
+      margin-bottom: $baseline-v;
+      color: $copy-color;
     }
 
     .grade__summary {
@@ -831,48 +803,17 @@
 
     // CASE: is not started
     &.is--unstarted {
-      display: none;
+
     }
 
     // CASE: is incomplete
     &.is--incomplete {
 
-      .step__header {
-        border-bottom: none;
-        padding: 0;
-      }
     }
 
-    // CASE: is complete
-    &.is--complete, &.has--grade {
+    // CASE: is closed
+    &.is--closed {
 
-        .step__title {
-          margin-bottom: $baseline-v;
-
-        .step__label, .grade__value {
-          display: inline-block;
-          vertical-align: middle;
-        }
-
-        .step__label {
-          margin-right: ($baseline-h/8);
-          margin-bottom: 0;
-          color: $heading-primary-color;
-        }
-
-        .grade__value {
-          background: $color-complete;
-          color: $white;
-        }
-
-        .grade__value__title {
-          color: $white;
-        }
-
-        .grade__value__earned, .grade__value__potential {
-          @extend %t-weight3;
-        }
-      }
     }
   }
 
@@ -880,17 +821,20 @@
   // UI: submitted repsonse
   // --------------------
   .submission__answer__display {
-    @extend %ui-section;
+    @extend %ui-subsection;
   }
 
   .submission__answer__display__title {
-    @extend %ui-section-title;
+    @extend %t-heading;
+    margin-bottom: ($baseline-v/2);
+    color: $heading-secondary-color;
   }
 
   .submission__answer__display__content {
     @extend %copy-3;
     @extend %ui-content-longanswer;
-    @extend %ui-section-content;
+    @extend %ui-subsection-content;
+    @extend %ui-well;
   }
 
 
@@ -900,17 +844,19 @@
 
   // peer review summary
   .submission__peer-evaluations {
-    @extend %ui-section;
+    @extend %ui-subsection;
   }
 
   .submission__peer-evaluations__title {
-    @extend %ui-section-title;
+    @extend %t-heading;
+    margin-bottom: ($baseline-v/2);
+    color: $heading-secondary-color;
   }
 
   // rubric questions
   .submission__peer-evaluations__questions {
     @extend %no-list;
-    @extend %ui-section-content;
+    @extend %ui-subsection-content;
     margin-bottom: ($baseline-v/2);
 
     &:last-child {
@@ -921,36 +867,30 @@
 
     // individual question
     .question {
-      margin-bottom: ($baseline-v/2);
+      margin-bottom: $baseline-v;
       @extend %wipe-last-child;
     }
 
     .question__title {
       @include clearfix();
       margin-bottom: $baseline-v;
-      border-bottom: ($baseline-v/10) solid $color-decorative-tertiary;
+      border-bottom: ($baseline-v/10) solid $heading-color;
       padding-bottom: ($baseline-v/4);
     }
 
     .question__title__copy {
-      @extend %hd-4;
-      @extend %t-weight3;
+      @extend %t-heading;
+      color: $heading-color;
     }
 
     .question__score {
-      @extend %hd-7;
-      @extend %t-titlecase;
-      @extend %t-weight4;
+      @extend %t-score;
       float: right;
-      position: relative;
-      bottom: -(($baseline-v/4));
       margin-left: $baseline-v;
-      padding: ($baseline-v/4) ($baseline-v/2) (($baseline-v/4)/2)  ($baseline-v/2);
-      background: $color-decorative-tertiary;
-      color: $white;
     }
 
     .question__score__value {
+      @extend %t-strong;
       color: $heading-primary-color;
 
       &:after {
@@ -961,9 +901,11 @@
     }
 
     .question__score__potential {
+      @extend %t-strong;
       color: $heading-secondary-color;
 
       .unit {
+        @extend %t-strong;
         margin-left: ($baseline-v/4);
       }
     }
@@ -1000,55 +942,70 @@
     }
 
     .answer__source {
-      @extend %hd-7;
+      @extend %hd-5;
+      @extend %t-strong;
+      @extend %t-titlecase;
       display: block;
-      color: $heading-tertiary-color;
+      color: $heading-secondary-color;
     }
 
     .answer__value {
-      @extend %copy-3;
       display: block;
       margin-bottom: ($baseline-v/2);
       color: $heading-primary-color;
     }
 
-    .answer__score {
-      @extend %hd-7;
-      @extend %t-titlecase;
-      @extend %t-weight4;
+    .answer__value__value {
+      @extend %hd-3;
+      @extend %t-strong;
+      color: $heading-color;
+    }
+
+    .answer__score, .answer__score__value {
+      @extend %t-score;
       display: block;
-      padding: ($baseline-v/4) ($baseline-h/4);
-      background: $color-decorative-tertiary;
       color: $heading-primary-color;
     }
 
-    .answer__content {
-      @extend %copy-4;
-      display: block;
-      color: $copy-supplemental-color;
+    // open feedback question
+    .question--feedback {
+
+      .answer__value {
+        @extend %copy-3;
+      }
     }
   }
 
   // feedback form
   .submission__feeedback {
-    @extend %ui-section;
+    @extend %ui-subsection;
   }
 
   .submission__feeedback__title {
-    @extend %ui-section-title;
+    @extend %ui-subsection-title;
+    @extend %t-heading;
+    margin-bottom: ($baseline-v/2);
+    color: $heading-secondary-color;
   }
 
   .submission__feeedback__content {
-    @extend %ui-section-content;
+    @extend %ui-subsection-content;
   }
 
   .submission__feeedback__instructions {
-    @extend %copy-4;
-    color: $copy-color;
+    @extend %copy-2;
     margin-bottom: $baseline-v;
+    color: $copy-color;
+  }
+
+  .submission__feedback__elements {
+    padding: $baseline-v ($baseline-h/2) $baseline-v ($baseline-h/2);
+    background: $color-decorative-quaternary;
+    border-radius: ($baseline-v/10);
   }
 
   .submission__feeedback__fields {
+    margin-bottom: $baseline-v;
 
     .field {
       margin-bottom: ($baseline-v*1.5);
@@ -1069,7 +1026,7 @@
   }
 
   .submission__feeedback__actions {
-    @extend %ui-section-content;
+    @extend %ui-subsection-content;
     padding-top: 0;
 
    .list--actions {
@@ -1078,7 +1035,7 @@
 
     .action--submit {
       @extend %btn--secondary;
-      @extend %action-4;
+      @extend %action-2;
       margin-right: ($baseline-v/2);
     }
   }

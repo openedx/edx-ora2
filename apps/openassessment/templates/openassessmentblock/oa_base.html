@@ -1,10 +1,8 @@
 {% spaceless %}
 <div class="wrapper wrapper--xblock wrapper--openassessment theme--basic">
-    <div class="openassessment" id="openassessment">
+    <div class="openassessment problem" id="openassessment">
         <div class="wrapper--grid">
-            <h2 class="openassessment__title ">
-                <span class="problem-header">{{ title }}</span>
-            </h2>
+            <h2 class="openassessment__title problem__header">{{ title }}</h2>
 
             <nav class="nav--contents">
                 <h2 class="title">Skip to a specific step:</h2>
@@ -24,10 +22,10 @@
             <div class="wrapper--openassessment__prompt">
                 <article class="openassessment__prompt ui-toggle-visibility">
 
-                    <h2 class="openassessment__prompt__title">Open Response Assessment Problem</h2>
+                    <h2 class="openassessment__prompt__title">This Problem's Prompt/Question</h2>
 
                     <div class="openassessment__prompt__copy ui-toggle-visibility__content">
-                        <p>{{ question|linebreaks }}</p>
+                        <p>{{ question }}</p>
                     </div>
                 </article>
             </div>
@@ -48,7 +46,7 @@
                                 <span class="step__status__label">This step's status:</span>
                                     <span class="step__status__value">
                                         <span class="copy">Loading</span>
-                                        <i class="ico icon-cog icon-spin"></i>
+                                        <i class="icon-refresh icon-spin"></i>
                                     </span>
                                 </span>
                             </span>

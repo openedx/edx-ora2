@@ -12,13 +12,15 @@
   input[type="email"],
   input[type="password"],
   textarea {
+    @extend %t-strong;
     border: 1px solid $color-decorative-secondary;
     padding: ($baseline-v/2);
     outline: 0;
-    color: $selected-color;
+    color: $copy-color;
 
     @include placeholder {
-      color: $copy-supplemental-color-alt;
+      @extend %t-regular;
+      color: $copy-secondary-color;
     }
 
     &:focus {
@@ -32,8 +34,8 @@
     font-family: $f-copy;
 
     label, .label {
-      @extend %copy-4;
-      @extend %t-weight3;
+      @extend %copy-3;
+      @extend %t-strong;
       display: block;
       margin-bottom: ($baseline-v/2);
       color: $copy-color;
@@ -45,8 +47,8 @@
 
     .tip {
       display: block;
-      @extend %copy-5;
-      color: $copy-supplemental-color;
+      @extend %copy-4;
+      color: $copy-secondary-color;
     }
   }
 }

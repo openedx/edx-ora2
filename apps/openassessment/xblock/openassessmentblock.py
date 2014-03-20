@@ -127,7 +127,7 @@ UI_MODELS = {
         "name": "grade",
         "class_id": "openassessment__grade",
         "navigation_text": "Your grade for this problem",
-        "title": "Your grade for this problem"
+        "title": "Your Grade:"
     }
 }
 

@@ -1,7 +1,7 @@
 {%  extends "openassessmentblock/peer/oa_peer_assessment.html" %}
 
 {% block list_item %}
-<li id="openassessment__peer-assessment"class="openassessment__steps__step step--peer-assessment is--collapsed">
+<li id="openassessment__peer-assessment"class="openassessment__steps__step step--peer-assessment is--incomplete is--collapsed">
 {% endblock %}
 
 {% block title %}
@@ -9,8 +9,9 @@
   <span class="step__status__label">This step's status:</span>
   <span class="step__status__value">
     <span class="copy">
-      <span class="step__status__value--completed">{{ graded }}</span> of
-      <span class="step__status__value--required">{{ must_grade }}</span> completed
+      Incomplete
+      (<span class="step__status__value--completed">{{ graded }}</span> of
+      <span class="step__status__value--required">{{ must_grade }}</span>)
     </span>
     <i class="ico icon-warning-sign"></i>
   </span>

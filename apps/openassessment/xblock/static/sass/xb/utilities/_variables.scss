@@ -121,6 +121,15 @@ $anim-distance-offviewport: ($baseline-h*100);                      // for large
 $f-title: $f-sans-serif;
 $f-copy: $f-serif;
 $f-action: $f-sans-serif;
+$f-base-color: $gray-l2;
+
+// type sizes
+$f-size-xsmall: 10;
+$f-size-small: 12;
+$f-size-base: 14;
+$f-size-medium: 18;
+$f-size-large: 22;
+$f-size-xlarge: 28;
 
 
 // --------------------
@@ -133,9 +142,10 @@ $color-teritary: $blue-u2;
 
 // application - colors: decorative
 $color-decorative-primary: $blue-u2;
-$color-decorative-secondary: $gray-l4;
-$color-decorative-tertiary: $gray-l6;
-$color-decorative-quaternary: tint($gray-l6, 10%);
+$color-decorative-secondary: tint($color-decorative-primary, 30%);
+$color-decorative-tertiary: tint($color-decorative-primary, 60%);
+$color-decorative-quaternary: tint($color-decorative-primary, 90%);
+$color-decorative-quinternary: tint($color-decorative-primary, 98%);
 
 // application - colors: states
 $color-disabled: $gray-l4;
@@ -159,22 +169,11 @@ $action-tertiary-color-active: $color-teritary;
 $action-tertiary-color-visited: shade($color-teritary,20%);
 
 // application - colors: copy and headings
-$heading-color: $gray-d5;
-$heading-primary-color: $black;
-$heading-secondary-color: $gray-l1;
-$heading-tertiary-color: $gray-l3;
-
-$copy-color: $gray-l1;
-$copy-color-alt: $gray-d1;
-$copy-color-focus: $gray-d4;
-
-$copy-lead-color: $gray;
-$copy-lead-color: $gray-d1;
-$copy-lead-color-focus: $gray-d4;
-
-$copy-supplemental-color: $gray-l2;
-$copy-supplemental-color-alt: $gray-l2;
-$copy-supplemental-color-focus: $gray-d1;
+$heading-color: shade($f-base-color, 50%);
+$heading-primary-color: shade($f-base-color, 66%);
+$heading-secondary-color: tint($f-base-color, 33%);
+$copy-color: $f-base-color;
+$copy-secondary-color: tint($copy-color, 25%);
 
 // application - colors: states
 $selected-bg: $blue-t1;

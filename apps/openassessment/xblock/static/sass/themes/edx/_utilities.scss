@@ -83,6 +83,10 @@ $edx-lms-action-secondary: rgb(135, 135, 135);
 // --------------------
 // variables: overrides
 // --------------------
+// colors
+$white-t: rgb(255,255,255);
+$black-t: rgb(0,0,0);
+
 // fonts
 $f-serif: 'PT Serif', Cambria, Georgia, 'Times New Roman', Times, serif;
 $f-sans-serif: 'Open Sans','Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -96,6 +100,7 @@ $gutter: $baseline-v;
 $f-title: $f-sans-serif;
 $f-copy: $f-sans-serif;
 $f-action: $f-sans-serif;
+$f-base-color: $edx-gray;
 
 // application - colors
 $color-primary: $edx-lms-action-primary;
@@ -105,9 +110,6 @@ $color-quarternary: $gray-l2;
 
 // application - colors: decorative
 $color-decorative-primary: $gray-d3;
-$color-decorative-secondary: $gray-l3;
-$color-decorative-tertiary: $gray-l5;
-$color-decorative-quaternary: $gray-l7;
 
 // application - colors: states
 $color-disabled: $edx-gray-l4;
@@ -115,24 +117,11 @@ $color-focused: $edx-gray;
 
 // application - colors: copy and headings
 $heading-color: $edx-lms-header;
-$heading-primary-color: shade($edx-lms-header, 33%);
-$heading-secondary-color: tint($edx-lms-header, 33%);
-$heading-tertiary-color: tint($edx-lms-header, 66%);
-
 $copy-color: $edx-lms-copy;
-$copy-color-alt: tint($edx-lms-copy, 33%);
-$copy-color-focus: shade($edx-lms-copy, 33%);
-
-$copy-lead-color: $edx-lms-copy;
-$copy-lead-color-focus: shade($edx-lms-copy, 33%);
-
-$copy-supplemental-color: tint($edx-lms-copy, 33%);
-$copy-supplemental-color-alt: tint($edx-lms-copy, 66%);
-$copy-supplemental-color-focus: $edx-lms-copy;
 
 // application - colors:states
 $selected-bg: $edx-blue-t1;
-$selected-color: $edx-blue-s1;
+$selected-color: $edx-blue;
 
 // application - colors: actions
 $action-primary-color: tint($color-primary,10%);
@@ -156,7 +145,7 @@ $bg-view: transparent;
 $bg-header-main: $white-t;
 $color-header-main: $black;
 
-$bg-content: $gray-l6;
+$bg-content: $white-t;
 $color-content: $gray-d1;
 
 $bg-content-main: $gray-l5;
@@ -170,3 +159,9 @@ $color-content-main: $gray-d1;
 // --------------------
 // extends:
 // --------------------
+%hd-problem {
+  @extend %hd-3;
+  @extend %t-titlecase;
+  margin-bottom: $baseline-v;
+  color: $heading-secondary-color;
+}

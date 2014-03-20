@@ -11,8 +11,8 @@
 
   // control to toggle
   .ui-toggle-visibility__control {
+    @include transition(color $tmg-f2 ease-in);
     @extend %fake-link;
-    color: $action-primary-color;
     text-decoration: none;
 
     // optional icon

@@ -110,14 +110,14 @@
 // buttons - primary (assuming dark bg/light copy)
 %btn--primary {
   @extend %btn-pill;
-  @extend %t-weight3;
+  @extend %t-strong;
   padding: ($baseline-v/2) ($baseline-h);
   background: $action-primary-color;
   border: 1px solid shade($action-primary-color, 15%);
   color: tint($action-primary-color, 90%);
 
   .copy {
-    @extend %t-weight3;
+    @extend %t-strong;
   }
 
   &:hover, &:active, &:focus {
@@ -144,14 +144,14 @@
 // buttons - secondary (assuming dark bg/light copy)
 %btn--secondary {
   @extend %btn-pill;
-  @extend %t-weight3;
+  @extend %t-strong;
   padding: ($baseline-v/2) ($baseline-h);
   background: $action-secondary-color;
   border: 1px shade($action-secondary-color, 10%);
   color: tint($action-secondary-color, 90%);
 
   .copy {
-    @extend %t-weight3;
+    @extend %t-strong;
   }
 
   &:hover, &:active, &:focus {
@@ -178,14 +178,14 @@
 // buttons - tertiary (assuming dark bg/light copy)
 %btn--tertiary {
   @extend %btn-edged;
-  @extend %t-weight3;
+  @extend %t-strong;
   padding: ($baseline-v/2) ($baseline-h/2);
   background: $action-tertiary-color;
   border: 1px solid shade($action-tertiary-color, 10%);
   color: tint($action-tertiary-color, 90%);
 
   .copy {
-    @extend %t-weight3;
+    @extend %t-strong;
   }
 
   &:hover, &:active, &:focus {
