@@ -348,11 +348,24 @@ class Assessment(models.Model):
                 "bar": [6, 7, 8]
             }
         """
+        assessments = list(assessments)  # Force us to read it all
+        if not assessments:
+            return []
+
+        cache_key = "assessments.scores_by_criterion.{}".format(
+            ",".join(str(assessment.id) for assessment in assessments)
+        )
+        scores = cache.get(cache_key)
+        if scores:
+            return scores
+
         scores = defaultdict(list)
         for assessment in assessments:
             for part in assessment.parts.all().select_related("option__criterion"):
                 criterion_name = part.option.criterion.name
                 scores[criterion_name].append(part.option.points)
+
+        cache.set(cache_key, scores)
         return scores
 
 
