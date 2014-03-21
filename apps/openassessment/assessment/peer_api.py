@@ -80,7 +80,7 @@ def is_complete(submission_uuid, requirements):
         workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
     except PeerWorkflow.DoesNotExist:
         return False
-    return _check_student_done_grading(workflow, requirements["must_grade"])
+    return _num_peers_graded(workflow) >= requirements["must_grade"]
 
 
 def get_score(submission_uuid, requirements):
@@ -359,11 +359,11 @@ def has_finished_required_evaluating(student_item_dict, required_assessments):
     """
     workflow = _get_latest_workflow(student_item_dict)
     done = False
-    count = 0
+    peers_graded = 0
     if workflow:
-        done = _check_student_done_grading(workflow, required_assessments)
-        count = workflow.items.all().exclude(assessment=-1).count()
-    return done, count
+        peers_graded = _num_peers_graded(workflow)
+        done = (peers_graded >= required_assessments)
+    return done, peers_graded
 
 
 def get_assessments(submission_uuid, scored_only=True, limit=None):
@@ -908,16 +908,14 @@ def _close_active_assessment(workflow, submission_uuid, assessment):
         raise PeerAssessmentWorkflowError(error_message)
 
 
-def _check_student_done_grading(workflow, must_grade):
-    """Checks if the student has graded enough peers.
+def _num_peers_graded(workflow):
+    """Returns the number of peers the student owning the workflow has graded.
 
     Determines if the student has graded enough peers.
 
     Args:
         workflow (PeerWorkflow): The workflow associated with the current
             student.
-        must_grade (int): The number of submissions the student has to peer
-            assess before they are finished.
 
     Returns:
         True if the student is done peer assessing, False if not.
@@ -930,10 +928,10 @@ def _check_student_done_grading(workflow, must_grade):
         >>>    student_id="Bob",
         >>> )
         >>> workflow = _get_latest_workflow(student_item_dict)
-        >>> _check_student_done_grading(workflow, 3)
+        >>> _num_peers_graded(workflow, 3)
         True
     """
-    return workflow.items.all().exclude(assessment=-1).count() >= must_grade
+    return workflow.items.all().exclude(assessment=-1).count()
 
 
 def get_assessment_feedback(submission_uuid):
