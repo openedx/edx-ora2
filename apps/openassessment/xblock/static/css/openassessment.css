@@ -1203,6 +1203,15 @@ hr.divider,
     color: white; }
 .openassessment .openassessment__steps__step.has--error .step__label {
   color: #bc5547; }
+.openassessment .ui-toggle-visibility .ui-toggle-visibility__control .step__label {
+  -webkit-transition: color 0.25s ease-in;
+  -moz-transition: color 0.25s ease-in;
+  transition: color 0.25s ease-in;
+  color: #33a6dc; }
+  .openassessment .ui-toggle-visibility .ui-toggle-visibility__control .step__label:hover, .openassessment .ui-toggle-visibility .ui-toggle-visibility__control .step__label:focus {
+    color: #00a7f6; }
+  .openassessment .ui-toggle-visibility .ui-toggle-visibility__control .step__label:active, .openassessment .ui-toggle-visibility .ui-toggle-visibility__control .step__label.is--current {
+    color: #1d9dd9; }
 .openassessment .message {
   margin-bottom: 30px; }
 .openassessment .message--error .message__title {

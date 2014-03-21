@@ -221,7 +221,7 @@
         }
       }
 
-      // STATE: has error
+      // STATE: actions has an error
       &.has--error {
         @include row();
         background: tint($color-error, 90%);
@@ -416,6 +416,24 @@
       .message {
 
       }
+    }
+  }
+
+
+  // --------------------
+  // collapse and expand styling for step labels
+  // --------------------
+  // TODO: clean this scope up
+  .ui-toggle-visibility .ui-toggle-visibility__control .step__label {
+    @include transition(color $tmg-f2 ease-in);
+    color: $action-primary-color;
+
+    &:hover, &:focus {
+      color: $action-primary-color-focus;
+    }
+
+    &:active, &.is--current {
+      color: $action-primary-color-active;
     }
   }
 
