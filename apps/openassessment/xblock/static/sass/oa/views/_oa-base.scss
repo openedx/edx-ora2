@@ -970,6 +970,29 @@
     // open feedback question
     .question--feedback {
 
+      // individual answers
+      .answer {
+
+        @include media($bp-ds) {
+          @include fill-parent();
+        }
+
+        @include media($bp-dm) {
+          @include span-columns(6 of 12);
+          @include omega(2n);
+        }
+
+        @include media($bp-dl) {
+          @include span-columns(6 of 12);
+          @include omega(2n);
+        }
+
+        @include media($bp-dx) {
+          @include span-columns(6 of 12);
+          @include omega(2n);
+        }
+      }
+
       .answer__value {
         @extend %copy-3;
       }

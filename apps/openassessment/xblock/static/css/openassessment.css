@@ -1464,6 +1464,45 @@ hr.divider,
   .openassessment .submission__peer-evaluations__questions .answer__score, .openassessment .submission__peer-evaluations__questions .answer__score__value {
     display: block;
     color: #2d2e30; }
+  @media screen and (min-width: 530px) and (max-width: 759px) {
+    .openassessment .submission__peer-evaluations__questions .question--feedback .answer {
+      width: 100%; } }
+  @media screen and (min-width: 760px) and (max-width: 924px) {
+    .openassessment .submission__peer-evaluations__questions .question--feedback .answer {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 48.82117%; }
+      .openassessment .submission__peer-evaluations__questions .question--feedback .answer:last-child {
+        margin-right: 0; }
+      .openassessment .submission__peer-evaluations__questions .question--feedback .answer:nth-child(2n) {
+        margin-right: 0; }
+      .openassessment .submission__peer-evaluations__questions .question--feedback .answer:nth-child(2n+1) {
+        clear: left; } }
+  @media screen and (min-width: 925px) and (max-width: 1299px) {
+    .openassessment .submission__peer-evaluations__questions .question--feedback .answer {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 48.82117%; }
+      .openassessment .submission__peer-evaluations__questions .question--feedback .answer:last-child {
+        margin-right: 0; }
+      .openassessment .submission__peer-evaluations__questions .question--feedback .answer:nth-child(2n) {
+        margin-right: 0; }
+      .openassessment .submission__peer-evaluations__questions .question--feedback .answer:nth-child(2n+1) {
+        clear: left; } }
+  @media screen and (min-width: 1300px) {
+    .openassessment .submission__peer-evaluations__questions .question--feedback .answer {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 48.82117%; }
+      .openassessment .submission__peer-evaluations__questions .question--feedback .answer:last-child {
+        margin-right: 0; }
+      .openassessment .submission__peer-evaluations__questions .question--feedback .answer:nth-child(2n) {
+        margin-right: 0; }
+      .openassessment .submission__peer-evaluations__questions .question--feedback .answer:nth-child(2n+1) {
+        clear: left; } }
 .openassessment .submission__feeedback__title {
   margin-bottom: 10px;
   color: #aeafb3; }
