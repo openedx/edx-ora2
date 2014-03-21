@@ -105,6 +105,22 @@ class RubricSerializer(NestedModelSerializer):
 
     @classmethod
     def serialized_from_cache(cls, rubric, local_cache=None):
+        """For a given `Rubric` model object, return a serialized version.
+
+        This method will attempt to use the cache if possible, first looking at
+        the `local_cache` dict you can pass in, and then looking at whatever
+        Django cache is configured.
+
+        Args:
+            rubric (Rubric): The Rubric model to get the serialized form of.
+            local_cach (dict): Mapping of `rubric.content_hash` to serialized
+                rubric dictionary. We include this so that we can call this
+                method in a loop.
+
+        Returns:
+            dict: `Rubric` fields as a dictionary, with `criteria` and `options`
+                relations followed.
+        """
         # Optional local cache you can send in (for when you're calling this
         # in a loop).
         local_cache = local_cache or {}

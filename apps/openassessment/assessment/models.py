@@ -106,7 +106,7 @@ class Rubric(models.Model):
             InvalidOptionSelection: the selected options do not match the rubric.
 
         """
-        # Cache based on the content_hash, not the id. It's slighlty safer, and
+        # Cache based on the content_hash, not the id. It's slightly safer, and
         # we don't have to worry about invalidation of the cache while running
         # tests.
         rubric_criteria_dict_cache_key = (
