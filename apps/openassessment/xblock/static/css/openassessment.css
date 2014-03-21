@@ -1441,7 +1441,7 @@ hr.divider,
           clear: left; } }
     .openassessment .submission__peer-evaluations__questions .answer.self-assessment {
       border-radius: 2px;
-      background: #fdfdfd;
+      background: #f5f6f7;
       padding: 10px 20px; }
   .openassessment .submission__peer-evaluations__questions .answer__source {
     display: block;
