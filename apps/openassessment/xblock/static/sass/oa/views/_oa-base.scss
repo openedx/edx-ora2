@@ -176,7 +176,7 @@
     .step__instruction {
       @extend %copy-2;
       margin-bottom: $baseline-v;
-      color: $copy-color;
+      color: $copy-secondary-color;
     }
 
     // step content
@@ -1025,7 +1025,7 @@
   .submission__feeedback__instructions {
     @extend %copy-2;
     margin-bottom: $baseline-v;
-    color: $copy-color;
+    color: $copy-secondary-color;
   }
 
   .submission__feedback__elements {

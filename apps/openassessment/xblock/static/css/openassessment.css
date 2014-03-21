@@ -1036,7 +1036,7 @@ hr.divider,
     clear: both; }
 .openassessment .openassessment__steps__step .step__instruction {
   margin-bottom: 20px;
-  color: #3c3c3c; }
+  color: #a5a6aa; }
 .openassessment .openassessment__steps__step .step__content {
   margin-bottom: 20px; }
 .openassessment .openassessment__steps__step .step__actions {
@@ -1512,7 +1512,7 @@ hr.divider,
   color: #aeafb3; }
 .openassessment .submission__feeedback__instructions {
   margin-bottom: 20px;
-  color: #3c3c3c; }
+  color: #a5a6aa; }
 .openassessment .submission__feedback__elements {
   padding: 20px 20px 20px 20px;
   background: #f5f6f7;
