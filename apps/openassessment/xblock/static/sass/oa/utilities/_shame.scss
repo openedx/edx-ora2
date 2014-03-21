@@ -28,23 +28,11 @@
     letter-spacing: normal;
   }
 
-
-  // title
-  .openassessment__title--sub span {
-    color: $heading-secondary-color !important;
-  }
-
-  h1.openassessment__title {
-    margin-bottom: $baseline-v !important;
-    border-bottom: ($baseline-v/5) solid $color-decorative-tertiary !important;
-    padding-bottom: ($baseline-v/2) !important;
-  }
-
   // step header
   .openassessment__steps .openassessment__steps__step .step__header {
 
     .step__deadline {
-      color: $color-focused;
+      color: $heading-secondary-color;
     }
 
     // step title/name
@@ -83,16 +71,11 @@
 
         // increment: show numbers using parent list counter
         &:before {
-          @extend %hd-3;
+          @extend %hd-2;
           @extend %t-strong;
           content: counter(item, decimal);
           counter-increment: item;
-          margin-right: ($baseline-v/4);
-          border-radius: ($baseline-v/10);
-          border: 1px solid rgba($color-focused, 0.5);
-          padding: ($baseline-v/4) ($baseline-v/2);
-          color: $color-focused;
-
+          color: $color-decorative-tertiary;
         }
       }
     }
@@ -136,13 +119,10 @@
   }
 
   // self assessment
-  .self-assessment__display__header, .peer-assessment__display__header {
-    padding-bottom: ($baseline-v/2) !important;
-  }
 
   .self-assessment__display__title, .peer-assessment__display__title {
+    margin-bottom: ($baseline-v/2) !important;
     color: $heading-secondary-color !important;
-    font-weight: 600 !important;
   }
 
   // shown submission/results
