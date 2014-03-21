@@ -19,7 +19,7 @@ from openassessment.assessment.models import (
 )
 from openassessment.assessment.serializers import (
     AssessmentSerializer, AssessmentFeedbackSerializer, RubricSerializer,
-    rubric_from_dict, serialize_assessments
+    full_assessment_dict, rubric_from_dict, serialize_assessments,
 )
 from submissions import api as sub_api
 from submissions.api import get_submission_and_student
@@ -233,7 +233,7 @@ def create_assessment(
         # Close the active assessment
         _close_active_assessment(scorer_workflow, submission_uuid, assessment)
 
-        return peer_serializer.data
+        return full_assessment_dict(assessment)
     except DatabaseError:
         error_message = _(
             u"An error occurred while creating assessment {} for submission: "

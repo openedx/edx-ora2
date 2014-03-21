@@ -9,7 +9,7 @@ from submissions.api import (
 )
 from openassessment.assessment.serializers import (
     AssessmentSerializer, InvalidRubric, RubricSerializer,
-    rubric_from_dict, serialize_assessments
+    full_assessment_dict, rubric_from_dict, serialize_assessments
 )
 from openassessment.assessment.models import (
     Assessment, AssessmentPart, InvalidOptionSelection
@@ -100,7 +100,7 @@ def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, s
     ])
 
     # Return the serialized assessment
-    return serializer.data
+    return full_assessment_dict(assessment)
 
 
 def get_assessment(submission_uuid):

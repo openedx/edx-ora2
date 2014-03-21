@@ -140,11 +140,7 @@ class AssessmentPartSerializer(serializers.ModelSerializer):
 
 
 class AssessmentSerializer(serializers.ModelSerializer):
-    """Serializer for :class:`Assessment`."""
-
-    # parts = AssessmentPartSerializer(many=True, read_only=True)
-    # points_earned = serializers.Field(source='points_earned')
-    # points_possible = serializers.Field(source='points_possible')
+    """Simplified serializer for :class:`Assessment` that's lighter on the DB."""
 
     class Meta:
         model = Assessment
@@ -155,13 +151,6 @@ class AssessmentSerializer(serializers.ModelSerializer):
             'scorer_id',
             'score_type',
             'feedback',
-
-            # Foreign Key
-            # 'parts',
-
-            # Computed, not part of the model
-            #'points_earned',
-            #'points_possible',
         )
 
 
