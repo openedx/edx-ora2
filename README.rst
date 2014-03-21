@@ -18,6 +18,8 @@ Installation
 The intent of this project is to be installed as Django apps that will be
 included in `edx-platform <https://github.com/edx/edx-platform>`_.
 
+For JavaScript minification and unit tests, you must `install NodeJS <http://nodejs.org/>`_.
+
 To install dependencies and start the development ("workbench") server:
 
 .. code:: bash
