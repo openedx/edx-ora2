@@ -36,7 +36,8 @@
     }
 
     // step title/name
-    .step__title {
+    h2.step__title {
+      @include span-columns(3 of 4);
       margin-top: 0 !important;
       text-align: left !important;
 
@@ -79,11 +80,17 @@
         }
       }
     }
-
-    .step__status__value {
-      line-height: 0;
-    }
   }
+
+  .step__status {
+
+  }
+
+  .step__status__value {
+    line-height: 0;
+  }
+
+
 
   .list--actions {
     list-style: none !important;
