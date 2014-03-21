@@ -1,15 +1,19 @@
 """
 Public interface for self-assessment.
 """
+from django.core.cache import cache
 from django.utils.translation import ugettext as _
 from submissions.api import (
     get_submission_and_student, get_submission,
     SubmissionNotFoundError, SubmissionRequestError
 )
 from openassessment.assessment.serializers import (
-    rubric_from_dict, AssessmentSerializer, full_assessment_dict, InvalidRubric
+    AssessmentSerializer, InvalidRubric, RubricSerializer,
+    full_assessment_dict, rubric_from_dict, serialize_assessments
 )
-from openassessment.assessment.models import Assessment, InvalidOptionSelection
+from openassessment.assessment.models import (
+    Assessment, AssessmentPart, InvalidOptionSelection
+)
 
 
 # Assessments are tagged as "self-evaluation"
@@ -74,7 +78,6 @@ def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, s
         "submission_uuid": submission_uuid,
         "score_type": SELF_TYPE,
         "feedback": u"",
-        "parts": [{"option": option_id} for option_id in option_ids],
     }
 
     if scored_at is not None:
@@ -86,10 +89,15 @@ def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, s
         msg = _("Could not create self assessment: {errors}").format(errors=serializer.errors)
         raise SelfAssessmentRequestError(msg)
 
-    serializer.save()
+    assessment = serializer.save()
+
+    # We do this to do a run around django-rest-framework serializer
+    # validation, which would otherwise require two DB queries per
+    # option to do validation. We already validated these options above.
+    AssessmentPart.add_to_assessment(assessment, option_ids)
 
     # Return the serialized assessment
-    return serializer.data
+    return full_assessment_dict(assessment)
 
 
 def get_assessment(submission_uuid):
@@ -112,14 +120,11 @@ def get_assessment(submission_uuid):
     # but not at the database level.  Someone could take advantage of the race condition
     # between checking the number of self-assessments and creating a new self-assessment.
     # To be safe, we retrieve just the most recent submission.
-    assessments = Assessment.objects.filter(
+    serialized_assessments = serialize_assessments(Assessment.objects.filter(
         score_type=SELF_TYPE, submission_uuid=submission_uuid
-    ).order_by('-scored_at')
+    ).order_by('-scored_at')[:1])
 
-    if assessments.exists():
-        assessment_dict = full_assessment_dict(assessments[0])
-        return assessment_dict
-    return None
+    return serialized_assessments[0] if serialized_assessments else None
 
 
 def is_complete(submission_uuid):

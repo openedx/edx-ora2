@@ -14,12 +14,14 @@ from django.db import DatabaseError
 from django.db.models import Q
 
 from openassessment.assessment.models import (
-    Assessment, InvalidOptionSelection, PeerWorkflow, PeerWorkflowItem,
-    AssessmentFeedback
+    Assessment, AssessmentFeedback, AssessmentPart,
+    InvalidOptionSelection, PeerWorkflow, PeerWorkflowItem,
 )
 from openassessment.assessment.serializers import (
-    AssessmentSerializer, rubric_from_dict, AssessmentFeedbackSerializer,
-    full_assessment_dict)
+    AssessmentSerializer, AssessmentFeedbackSerializer, RubricSerializer,
+    full_assessment_dict, rubric_from_dict, serialize_assessments,
+)
+from submissions import api as sub_api
 from submissions.api import get_submission_and_student
 from submissions.models import Submission, StudentItem
 from submissions.serializers import SubmissionSerializer, StudentItemSerializer
@@ -78,7 +80,7 @@ def is_complete(submission_uuid, requirements):
         workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
     except PeerWorkflow.DoesNotExist:
         return False
-    return _check_student_done_grading(workflow, requirements["must_grade"])
+    return _num_peers_graded(workflow) >= requirements["must_grade"]
 
 
 def get_score(submission_uuid, requirements):
@@ -182,7 +184,6 @@ def create_assessment(
             "submission_uuid": submission.uuid,
             "score_type": PEER_TYPE,
             "feedback": feedback,
-            "parts": [{"option": option_id} for option_id in option_ids]
         }
 
         if scored_at is not None:
@@ -192,7 +193,13 @@ def create_assessment(
 
         if not peer_serializer.is_valid():
             raise PeerAssessmentRequestError(peer_serializer.errors)
+
         assessment = peer_serializer.save()
+
+        # We do this to do a run around django-rest-framework serializer
+        # validation, which would otherwise require two DB queries per
+        # option to do validation. We already validated these options above.
+        AssessmentPart.add_to_assessment(assessment, option_ids)
 
         student_item = submission.student_item
         student_item_dict = StudentItemSerializer(student_item).data
@@ -223,7 +230,7 @@ def create_assessment(
         # Close the active assessment
         _close_active_assessment(scorer_workflow, submission_uuid, assessment)
 
-        return peer_serializer.data
+        return full_assessment_dict(assessment)
     except DatabaseError:
         error_message = _(
             u"An error occurred while creating assessment {} for submission: "
@@ -250,12 +257,20 @@ def get_rubric_max_scores(submission_uuid):
             the submission, or its associated rubric.
     """
     try:
-        assessments = Assessment.objects.filter(submission_uuid=submission_uuid).order_by( "-scored_at", "-id")
-        if assessments:
-            return {
-                criterion.name: criterion.points_possible
-                for criterion in assessments[0].rubric.criteria.all()
-            }
+        assessments = list(
+            Assessment.objects.filter(
+                submission_uuid=submission_uuid
+            ).order_by( "-scored_at", "-id").select_related("rubric")[:1]
+        )
+        if not assessments:
+            return None
+
+        assessment = assessments[0]
+        rubric_dict = RubricSerializer.serialized_from_cache(assessment.rubric)
+        return {
+            criterion["name"]: criterion["points_possible"]
+            for criterion in rubric_dict["criteria"]
+        }
     except Submission.DoesNotExist:
         return None
     except DatabaseError:
@@ -341,11 +356,11 @@ def has_finished_required_evaluating(student_item_dict, required_assessments):
     """
     workflow = _get_latest_workflow(student_item_dict)
     done = False
-    count = 0
+    peers_graded = 0
     if workflow:
-        done = _check_student_done_grading(workflow, required_assessments)
-        count = workflow.items.all().exclude(assessment=-1).count()
-    return done, count
+        peers_graded = _num_peers_graded(workflow)
+        done = (peers_graded >= required_assessments)
+    return done, peers_graded
 
 
 def get_assessments(submission_uuid, scored_only=True, limit=None):
@@ -398,13 +413,13 @@ def get_assessments(submission_uuid, scored_only=True, limit=None):
         if scored_only:
             assessments = PeerWorkflowItem.get_scored_assessments(
                 submission_uuid
-            )
+            )[:limit]
         else:
             assessments = Assessment.objects.filter(
                 submission_uuid=submission_uuid,
                 score_type=PEER_TYPE
-            )
-        return [full_assessment_dict(assessment) for assessment in assessments[:limit]]
+            )[:limit]
+        return serialize_assessments(assessments)
     except DatabaseError:
         error_message = _(
             u"Error getting assessments for submission {}".format(submission_uuid)
@@ -486,10 +501,10 @@ def get_submission_to_assess(
         submission_uuid = _get_submission_for_over_grading(workflow)
     if submission_uuid:
         try:
-            submission = Submission.objects.get(uuid=submission_uuid)
+            submission_data = sub_api.get_submission(submission_uuid)
             _create_peer_workflow_item(workflow, submission_uuid)
-            return SubmissionSerializer(submission).data
-        except Submission.DoesNotExist:
+            return submission_data
+        except sub_api.SubmissionDoesNotExist:
             error_message = _(
                 u"Could not find a submission with the uuid {} for student {} "
                 u"in the peer workflow."
@@ -890,16 +905,14 @@ def _close_active_assessment(workflow, submission_uuid, assessment):
         raise PeerAssessmentWorkflowError(error_message)
 
 
-def _check_student_done_grading(workflow, must_grade):
-    """Checks if the student has graded enough peers.
+def _num_peers_graded(workflow):
+    """Returns the number of peers the student owning the workflow has graded.
 
     Determines if the student has graded enough peers.
 
     Args:
         workflow (PeerWorkflow): The workflow associated with the current
             student.
-        must_grade (int): The number of submissions the student has to peer
-            assess before they are finished.
 
     Returns:
         True if the student is done peer assessing, False if not.
@@ -912,10 +925,10 @@ def _check_student_done_grading(workflow, must_grade):
         >>>    student_id="Bob",
         >>> )
         >>> workflow = _get_latest_workflow(student_item_dict)
-        >>> _check_student_done_grading(workflow, 3)
+        >>> _num_peers_graded(workflow, 3)
         True
     """
-    return workflow.items.all().exclude(assessment=-1).count() >= must_grade
+    return workflow.items.all().exclude(assessment=-1).count()
 
 
 def get_assessment_feedback(submission_uuid):
