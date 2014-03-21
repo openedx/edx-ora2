@@ -1452,6 +1452,10 @@ hr.divider,
           margin-right: 0; }
         .openassessment .submission__peer-evaluations__questions .answer:nth-child(4n+1) {
           clear: left; } }
+    .openassessment .submission__peer-evaluations__questions .answer.self-assessment {
+      border-radius: 2px;
+      background: #fdfdfd;
+      padding: 10px 20px; }
   .openassessment .submission__peer-evaluations__questions .answer__source {
     display: block;
     color: #aeafb3; }

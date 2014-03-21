@@ -939,6 +939,13 @@
         @include span-columns(3 of 12);
         @include omega(4n);
       }
+
+      // CASE: self assessment
+      &.self-assessment {
+        border-radius: ($baseline-v/10);
+        background: $color-decorative-quinternary;
+        padding: ($baseline-v/2) ($baseline-h/2);
+      }
     }
 
     .answer__source {
