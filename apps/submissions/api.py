@@ -381,14 +381,11 @@ def get_scores(course_id, student_id):
 
 def get_latest_score_for_submission(submission_uuid):
     try:
-        submission = Submission.objects.get(uuid=submission_uuid)
-        score = Score.objects.filter(submission=submission).order_by("-id")[0]
+        score = Score.objects.filter(
+            submission__uuid=submission_uuid
+        ).order_by("-id").select_related("submission")[0]
     except IndexError:
         return None
-    except Submission.DoesNotExist:
-        raise SubmissionNotFoundError(
-            u"No submission matching uuid {}".format(submission_uuid)
-        )
 
     return ScoreSerializer(score).data
 
