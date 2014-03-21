@@ -18,7 +18,7 @@ from openassessment.assessment.models import (
     InvalidOptionSelection, PeerWorkflow, PeerWorkflowItem,
 )
 from openassessment.assessment.serializers import (
-    AssessmentSerializer, AssessmentFeedbackSerializer,
+    AssessmentSerializer, AssessmentFeedbackSerializer, RubricSerializer,
     rubric_from_dict, serialize_assessments
 )
 from submissions import api as sub_api
@@ -260,16 +260,19 @@ def get_rubric_max_scores(submission_uuid):
             the submission, or its associated rubric.
     """
     try:
-        serialized_assessments = serialize_assessments(
-            Assessment.objects.filter(submission_uuid=submission_uuid).order_by( "-scored_at", "-id")[:1]
+        assessments = list(
+            Assessment.objects.filter(
+                submission_uuid=submission_uuid
+            ).order_by( "-scored_at", "-id").select_related("rubric")[:1]
         )
-        if not serialized_assessments:
+        if not assessments:
             return None
 
-        assessment = serialized_assessments[0]
+        assessment = assessments[0]
+        rubric_dict = RubricSerializer.serialized_from_cache(assessment.rubric)
         return {
             criterion["name"]: criterion["points_possible"]
-            for criterion in assessment["rubric"]["criteria"]
+            for criterion in rubric_dict["criteria"]
         }
     except Submission.DoesNotExist:
         return None

@@ -195,6 +195,13 @@ def full_assessment_dict(assessment, rubric_dict=None):
     Returns:
         dict with keys 'rubric' (serialized Rubric model) and 'parts' (serialized assessment parts)
     """
+    assessment_cache_key = "assessment.full_assessment_dict.{}.{}.{}".format(
+        assessment.id, assessment.submission_uuid, assessment.scored_at.isoformat()
+    )
+    assessment_dict = cache.get(assessment_cache_key)
+    if assessment_dict:
+        return assessment_dict
+
     assessment_dict = AssessmentSerializer(assessment).data
     if not rubric_dict:
         rubric_dict = RubricSerializer.serialized_from_cache(assessment.rubric)
@@ -224,6 +231,8 @@ def full_assessment_dict(assessment, rubric_dict=None):
         part_dict["option"]["points"] for part_dict in parts
     )
     assessment_dict["points_possible"] = rubric_dict["points_possible"]
+
+    cache.set(assessment_cache_key, assessment_dict)
 
     return assessment_dict
 
