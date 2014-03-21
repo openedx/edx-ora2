@@ -416,7 +416,7 @@ hr.divider,
   font-size: 12px;
   line-height: 18px; }
 
-.openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .message .message__title, .openassessment .step--peer-assessment .peer-assessment__display__header .peer-assessment__display__title, .openassessment .step--self-assessment .self-assessment__display__title, .openassessment .submission__answer__display__title, .openassessment .submission__peer-evaluations__title, .openassessment .submission__peer-evaluations__questions .question__title__copy, .openassessment .submission__feeedback__title, .openassessment .openassessment__steps__step .step__title .step__deadline, .openassessment .openassessment__steps__step .step__actions.has--error .message .message__title, .wrapper--xblock .field label, .wrapper--xblock .field .label, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input .answer__label, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input .answer__label, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip, .openassessment .message .message__content, .openassessment .step--peer-assessment .peer-assessment__display__response, .openassessment .step--self-assessment .self-assessment__display__response, .openassessment .submission__answer__display__content, .openassessment .submission__peer-evaluations__questions .question--feedback .answer__value, .openassessment .openassessment__steps__step .step__actions .action--submit, .openassessment .step--response .response__submission__actions .action--save, .openassessment .submission__feeedback__actions .action--submit, .openassessment .openassessment__steps__step .step__status .ico {
+.openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .message .message__title, .openassessment .step--peer-assessment .peer-assessment__display__header .peer-assessment__display__title, .openassessment .step--self-assessment .self-assessment__display__title, .openassessment .submission__answer__display__title, .openassessment .submission__peer-evaluations__title, .openassessment .submission__peer-evaluations__questions .question__title__copy, .openassessment .submission__feeedback__title, .openassessment .openassessment__steps__step .step__title .step__deadline, .wrapper--xblock .field label, .wrapper--xblock .field .label, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input .answer__label, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input .answer__label, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip, .openassessment .message .message__content, .openassessment .step--peer-assessment .peer-assessment__display__response, .openassessment .step--self-assessment .self-assessment__display__response, .openassessment .submission__answer__display__content, .openassessment .submission__peer-evaluations__questions .question--feedback .answer__value, .openassessment .openassessment__steps__step .step__actions .action--submit, .openassessment .step--response .response__submission__actions .action--save, .openassessment .submission__feeedback__actions .action--submit, .openassessment .openassessment__steps__step .step__status .ico {
   font-size: 14px;
   line-height: 21px; }
 
@@ -438,7 +438,7 @@ hr.divider,
 .wrapper--xblock .problem__header, .openassessment .submission__peer-evaluations__questions .answer__value__value {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
-.openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .message .message__title, .openassessment .step--peer-assessment .peer-assessment__display__header .peer-assessment__display__title, .openassessment .step--self-assessment .self-assessment__display__title, .openassessment .submission__answer__display__title, .openassessment .submission__peer-evaluations__title, .openassessment .submission__peer-evaluations__questions .question__title__copy, .openassessment .submission__feeedback__title, .openassessment .openassessment__steps__step .step__title .step__deadline, .openassessment .openassessment__steps__step .step__actions.has--error .message .message__title {
+.openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .message .message__title, .openassessment .step--peer-assessment .peer-assessment__display__header .peer-assessment__display__title, .openassessment .step--self-assessment .self-assessment__display__title, .openassessment .submission__answer__display__title, .openassessment .submission__peer-evaluations__title, .openassessment .submission__peer-evaluations__questions .question__title__copy, .openassessment .submission__feeedback__title, .openassessment .openassessment__steps__step .step__title .step__deadline {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
 .openassessment .submission__peer-evaluations__questions .answer__source {
@@ -903,7 +903,7 @@ hr.divider,
   .openassessment .message .message__content {
     color: #a5a6aa; }
 .openassessment .message--error {
-  background: #f4f4f4; }
+  background: #fbf6f5; }
   .openassessment .message--error .message__title {
     color: #bc5547;
     border-bottom-color: #bc5547; }
@@ -933,6 +933,21 @@ hr.divider,
 .openassessment .has--error .message--error {
   display: block;
   opacity: 1.0; }
+.openassessment .message--inline {
+  padding: 10px 20px;
+  background: #4c4d4f; }
+  .openassessment .message--inline .message__title {
+    margin-bottom: 0;
+    border: none;
+    padding-bottom: 0;
+    color: white;
+    text-align: center; }
+  .openassessment .message--inline.message--error {
+    background: #c66e62; }
+  .openassessment .message--inline.message--warning {
+    background: #e8b353; }
+  .openassessment .message--inline.message--confirm {
+    background: #e8b353; }
 .openassessment .openassessment__title {
   *zoom: 1;
   display: block; }
@@ -1096,12 +1111,7 @@ hr.divider,
 .openassessment .openassessment__steps__step .step__content {
   margin-bottom: 20px; }
 .openassessment .openassessment__steps__step .step__actions {
-  -webkit-transition: background-color 0.5s ease-in-out 0s;
-  -moz-transition: background-color 0.5s ease-in-out 0s;
-  transition: background-color 0.5s ease-in-out 0s;
-  border-radius: 4px;
-  padding: 10px 20px;
-  background: transparent;
+  margin-bottom: 10px;
   text-align: center; }
   @media screen and (min-width: 530px) and (max-width: 759px) {
     .openassessment .openassessment__steps__step .step__actions {
@@ -1117,92 +1127,9 @@ hr.divider,
       text-align: right; } }
   .openassessment .openassessment__steps__step .step__actions .action--submit .copy, .openassessment .openassessment__steps__step .step__actions .action--submit .ico {
     display: inline; }
-  .openassessment .openassessment__steps__step .step__actions.has--error {
-    *zoom: 1;
-    display: block;
-    background: #f8eeec; }
-    .openassessment .openassessment__steps__step .step__actions.has--error:before, .openassessment .openassessment__steps__step .step__actions.has--error:after {
-      content: " ";
-      display: table; }
-    .openassessment .openassessment__steps__step .step__actions.has--error:after {
-      clear: both; }
-    .openassessment .openassessment__steps__step .step__actions.has--error .message {
-      display: block;
-      margin-bottom: 10px; }
-      @media screen and (min-width: 530px) and (max-width: 759px) {
-        .openassessment .openassessment__steps__step .step__actions.has--error .message {
-          float: left;
-          display: block;
-          margin-right: 4.82916%;
-          width: 47.58542%;
-          margin-bottom: 0;
-          text-align: left; }
-          .openassessment .openassessment__steps__step .step__actions.has--error .message:last-child {
-            margin-right: 0; } }
-      @media screen and (min-width: 760px) and (max-width: 924px) {
-        .openassessment .openassessment__steps__step .step__actions.has--error .message {
-          float: left;
-          display: block;
-          margin-right: 2.35765%;
-          width: 48.82117%;
-          margin-bottom: 0;
-          text-align: left; }
-          .openassessment .openassessment__steps__step .step__actions.has--error .message:last-child {
-            margin-right: 0; } }
-      @media screen and (min-width: 925px) and (max-width: 1299px) {
-        .openassessment .openassessment__steps__step .step__actions.has--error .message {
-          float: left;
-          display: block;
-          margin-right: 2.35765%;
-          width: 48.82117%;
-          margin-bottom: 0;
-          text-align: left; }
-          .openassessment .openassessment__steps__step .step__actions.has--error .message:last-child {
-            margin-right: 0; } }
-      @media screen and (min-width: 1300px) {
-        .openassessment .openassessment__steps__step .step__actions.has--error .message {
-          float: left;
-          display: block;
-          margin-right: 2.35765%;
-          width: 48.82117%;
-          margin-bottom: 0;
-          text-align: left; }
-          .openassessment .openassessment__steps__step .step__actions.has--error .message:last-child {
-            margin-right: 0; } }
-    .openassessment .openassessment__steps__step .step__actions.has--error .list--actions {
-      display: block; }
-      @media screen and (min-width: 530px) and (max-width: 759px) {
-        .openassessment .openassessment__steps__step .step__actions.has--error .list--actions {
-          float: left;
-          display: block;
-          margin-right: 4.82916%;
-          width: 47.58542%; }
-          .openassessment .openassessment__steps__step .step__actions.has--error .list--actions:last-child {
-            margin-right: 0; } }
-      @media screen and (min-width: 760px) and (max-width: 924px) {
-        .openassessment .openassessment__steps__step .step__actions.has--error .list--actions {
-          float: left;
-          display: block;
-          margin-right: 2.35765%;
-          width: 48.82117%; }
-          .openassessment .openassessment__steps__step .step__actions.has--error .list--actions:last-child {
-            margin-right: 0; } }
-      @media screen and (min-width: 925px) and (max-width: 1299px) {
-        .openassessment .openassessment__steps__step .step__actions.has--error .list--actions {
-          float: left;
-          display: block;
-          margin-right: 2.35765%;
-          width: 48.82117%; }
-          .openassessment .openassessment__steps__step .step__actions.has--error .list--actions:last-child {
-            margin-right: 0; } }
-      @media screen and (min-width: 1300px) {
-        .openassessment .openassessment__steps__step .step__actions.has--error .list--actions {
-          float: left;
-          display: block;
-          margin-right: 2.35765%;
-          width: 48.82117%; }
-          .openassessment .openassessment__steps__step .step__actions.has--error .list--actions:last-child {
-            margin-right: 0; } }
+  .openassessment .openassessment__steps__step .step__actions.has--error .message {
+    margin-bottom: 20px;
+    text-align: left; }
 .openassessment .openassessment__steps__step.is--loading .step__header {
   padding-bottom: 0;
   border-bottom: none;

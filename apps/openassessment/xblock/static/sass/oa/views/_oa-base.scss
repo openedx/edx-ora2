@@ -38,7 +38,7 @@
 
   // TYPE: error
   .message--error {
-    background: tint($color-confirm, 95%);
+    background: tint($color-error, 95%);
 
     .message__title {
       color: $color-error;
@@ -86,22 +86,44 @@
     }
   }
 
-  // --------------------
-  // errors
-  // --------------------
-  // CASE: default error display (hidden)
+  // CASE: showing errors is shown
   .message--error {
     @extend %trans-opacity;
     display: none;
     opacity: 0.0;
   }
 
-  // CASE: error is shown
   .has--error {
 
     .message--error {
       display: block;
       opacity: 1.0;
+    }
+  }
+
+  // TYPE: inline message
+  .message--inline {
+    padding: ($baseline-v/2) ($baseline-h/2);
+    background: tint($color-confirm, 15%);
+
+    .message__title {
+      margin-bottom: 0;
+      border: none;
+      padding-bottom: 0;
+      color: $white-t;
+      text-align: center;
+    }
+
+    &.message--error {
+      background: tint($color-error, 15%);
+    }
+
+    &.message--warning {
+      background: tint($color-warning, 15%);
+    }
+
+    &.message--confirm {
+      background: tint($color-warning, 15%);
     }
   }
 
@@ -293,10 +315,7 @@
 
     // step actions
     .step__actions {
-      @include transition(background-color $tmg-f1 ease-in-out 0s);
-      border-radius: ($baseline-v/5);
-      padding: ($baseline-v/2) ($baseline-h/2);
-      background: transparent;
+      margin-bottom: ($baseline-v/2);
       text-align: center;
 
       @include media($bp-ds) {
@@ -330,60 +349,10 @@
 
       // STATE: actions has an error
       &.has--error {
-        @include row();
-        background: tint($color-error, 90%);
 
         .message {
-          display: block;
-          margin-bottom: ($baseline-v/2);
-
-          @include media($bp-ds) {
-            @include span-columns(3 of 6);
-            margin-bottom: 0;
-            text-align: left;
-          }
-
-          @include media($bp-dm) {
-            @include span-columns(6 of 12);
-            margin-bottom: 0;
-            text-align: left;
-          }
-
-          @include media($bp-dl) {
-            @include span-columns(6 of 12);
-            margin-bottom: 0;
-            text-align: left;
-          }
-
-          @include media($bp-dx) {
-            @include span-columns(6 of 12);
-            margin-bottom: 0;
-            text-align: left;
-          }
-
-          .message__title {
-            @extend %hd-4;
-          }
-        }
-
-        .list--actions {
-          display: block;
-
-          @include media($bp-ds) {
-            @include span-columns(3 of 6);
-          }
-
-          @include media($bp-dm) {
-            @include span-columns(6 of 12);
-          }
-
-          @include media($bp-dl) {
-            @include span-columns(6 of 12);
-          }
-
-          @include media($bp-dx) {
-            @include span-columns(6 of 12);
-          }
+          margin-bottom: $baseline-v;
+          text-align: left;
         }
       }
     }

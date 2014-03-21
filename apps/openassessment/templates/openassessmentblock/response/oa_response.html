@@ -42,6 +42,10 @@
                     </ol>
 
                     <div class="response__submission__actions">
+                        <div class="message message--inline message--error message--error-server">
+                            <h3 class="message__title">We could not save your progress</h3>
+                        </div>
+
                         <ul class="list list--actions">
                             <li class="list--actions__item">
                                 <button type="submit" id="submission__save" class="action action--save submission__save is--disabled">Save Your Progress</button>
@@ -54,19 +58,13 @@
                                 </div>
                             </li>
                         </ul>
-
-                        <div class="message message--error message--error-server">
-                            <h3 class="message__title">We could not save your progress</h3>
-                            <div class="message__content"></div>
-                        </div>
                     </div>
                 </form>
             </div>
 
             <div class="step__actions">
-                <div class="message message--error message--error-server">
+                <div class="message message--inline message--error message--error-server">
                     <h3 class="message__title">We could not submit your response</h3>
-                    <div class="message__content"></div>
                 </div>
 
                 <ul class="list list--actions">
