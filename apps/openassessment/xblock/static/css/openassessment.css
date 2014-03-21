@@ -1525,9 +1525,6 @@ hr.divider,
   background: transparent;
   margin: 40px 40px; }
 
-.workbench .banner, .workbench .debug {
-  display: none; }
-
 .openassessment .self-assessment__display__header, .openassessment .peer-assessment__display__header, .openassessment .step__header {
   margin-bottom: 0 !important;
   border-radius: 0 !important;
