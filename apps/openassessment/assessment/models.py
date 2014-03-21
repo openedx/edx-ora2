@@ -473,7 +473,7 @@ class PeerWorkflowItem(models.Model):
     scorer_id = models.ForeignKey(PeerWorkflow, related_name='items')
     submission_uuid = models.CharField(max_length=128, db_index=True)
     started_at = models.DateTimeField(default=now, db_index=True)
-    assessment = models.IntegerField(default=-1)
+    assessment = models.IntegerField(default=-1, db_index=True)
 
     # This WorkflowItem was used to determine the final score for the Workflow.
     scored = models.BooleanField(default=False)
