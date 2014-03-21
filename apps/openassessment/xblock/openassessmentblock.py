@@ -1,6 +1,7 @@
 """An XBlock where students can read a question and compose their response"""
 
 import datetime as dt
+import logging
 import pkg_resources
 
 import pytz
@@ -24,6 +25,9 @@ from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.workflow import api as workflow_api
 from openassessment.xblock.validation import validator
 from openassessment.xblock.resolve_dates import resolve_dates
+
+
+logger = logging.getLogger(__name__)
 
 
 DEFAULT_PROMPT = """
@@ -266,6 +270,15 @@ class OpenAssessmentBlock(
             (Fragment): The HTML Fragment for this XBlock, which determines the
             general frame of the Open Ended Assessment Question.
         """
+        # On page load, update the workflow status.
+        # We need to do this here because peers may have graded us, in which
+        # case we may have a score available.
+        try:
+            self.update_workflow_status()
+        except workflow_api.AssessmentWorkflowError:
+            # Log the exception, but continue loading the page
+            logger.exception('An error occurred while updating the workflow on page load.')
+
         ui_models = self._create_ui_models()
         # All data we intend to pass to the front end.
         context_dict = {
@@ -460,18 +473,25 @@ class OpenAssessmentBlock(
         is_open, reason = self.is_open(step=step)
         return is_published and (is_open or reason == 'due')
 
-    def update_workflow_status(self, submission_uuid):
-        assessment_ui_model = self.get_assessment_module('peer-assessment')
-        requirements = {
-            "peer": {
-                "must_grade": assessment_ui_model["must_grade"],
-                "must_be_graded_by": assessment_ui_model["must_be_graded_by"]
-            }
-        }
-        return workflow_api.update_from_assessments(submission_uuid, requirements)
-
     def get_assessment_module(self, mixin_name):
-        """Get a configured assessment module by name.
+        """
+        Get a configured assessment module by name.
+
+        Args:
+            mixin_name (str): The name of the mixin (e.g. "self-assessment" or "peer-assessment")
+
+        Returns:
+            dict
+
+        Example:
+            >>> self.get_assessment_module('peer-assessment')
+            {
+                "name": "peer-assessment",
+                "start": None,
+                "due": None,
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+            }
         """
         for assessment in self.rubric_assessments:
             if assessment["name"] == mixin_name:

@@ -6,6 +6,7 @@ from openassessment.assessment.peer_api import (
     PeerAssessmentInternalError, PeerAssessmentRequestError,
     PeerAssessmentWorkflowError
 )
+import openassessment.workflow.api as workflow_api
 
 logger = logging.getLogger(__name__)
 
@@ -78,8 +79,13 @@ class PeerAssessmentMixin(object):
 
             # Update both the workflow that the submission we're assessing
             # belongs to, as well as our own (e.g. have we evaluated enough?)
-            self.update_workflow_status(data["submission_uuid"])
-            self.update_workflow_status(self.submission_uuid)
+            try:
+                self.update_workflow_status(submission_uuid=data["submission_uuid"])
+                self.update_workflow_status()
+            except workflow_api.AssessmentWorkflowError:
+                msg = _('Could not update workflow status.')
+                logger.exception(msg)
+                return {'success': False, 'msg': msg}
 
             # Temp kludge until we fix JSON serialization for datetime
             assessment["scored_at"] = str(assessment["scored_at"])

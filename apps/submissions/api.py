@@ -6,7 +6,7 @@ import copy
 import logging
 
 from django.core.cache import cache
-from django.db import DatabaseError
+from django.db import IntegrityError, DatabaseError
 from django.utils.encoding import force_unicode
 
 from submissions.serializers import (
@@ -410,7 +410,7 @@ def set_score(submission_uuid, score, points_possible):
             student item.
 
     Returns:
-        (dict): The dictionary representation of the saved score.
+        None
 
     Raises:
         SubmissionInternalError: Thrown if there was an internal error while
@@ -453,8 +453,18 @@ def set_score(submission_uuid, score, points_possible):
     if not score.is_valid():
         logger.exception(score.errors)
         raise SubmissionInternalError(score.errors)
-    score.save()
-    return score.data
+
+    # When we save the score, a score summary will be created if
+    # it does not already exist.
+    # When the database's isolation level is set to repeatable-read,
+    # it's possible for a score summary to exist for this student item,
+    # even though we cannot retrieve it.
+    # In this case, we assume that someone else has already created
+    # a score summary and ignore the error.
+    try:
+        score.save()
+    except IntegrityError:
+        pass
 
 
 def _get_or_create_student_item(student_item_dict):

@@ -7,6 +7,7 @@ import pytz
 from mock import Mock, patch
 
 from openassessment.xblock import openassessmentblock
+from openassessment.workflow import api as workflow_api
 from .base import XBlockHandlerTestCase, scenario
 
 
@@ -44,6 +45,37 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         grade_response = xblock.render_grade({})
         self.assertIsNotNone(grade_response)
         self.assertTrue(grade_response.body.find("openassessment__grade"))
+
+    @scenario('data/basic_scenario.xml')
+    def test_page_load_updates_workflow(self, xblock):
+
+        # No submission made, so don't update the workflow
+        with patch('openassessment.xblock.workflow_mixin.workflow_api') as mock_api:
+            self.runtime.render(xblock, "student_view")
+            self.assertEqual(mock_api.update_from_assessments.call_count, 0)
+
+        # Simulate one submission made (we have a submission ID)
+        xblock.submission_uuid = 'test_submission'
+
+        # Now that we have a submission, the workflow should get updated
+        with patch('openassessment.xblock.workflow_mixin.workflow_api') as mock_api:
+            self.runtime.render(xblock, "student_view")
+            expected_reqs = {
+                "peer": { "must_grade": 5, "must_be_graded_by": 3 }
+            }
+            mock_api.update_from_assessments.assert_called_once_with('test_submission', expected_reqs)
+
+    @scenario('data/basic_scenario.xml')
+    def test_student_view_workflow_error(self, xblock):
+
+        # Simulate an error from updating the workflow
+        xblock.submission_uuid = 'test_submission'
+        with patch('openassessment.xblock.workflow_mixin.workflow_api') as mock_api:
+            mock_api.update_from_assessments.side_effect = workflow_api.AssessmentWorkflowError
+            xblock_fragment = self.runtime.render(xblock, "student_view")
+
+        # Expect that the page renders even if the update fails
+        self.assertTrue(xblock_fragment.body_html().find("Openassessmentblock"))
 
     @scenario('data/dates_scenario.xml')
     def test_load_student_view_with_dates(self, xblock):

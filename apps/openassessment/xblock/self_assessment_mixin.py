@@ -3,6 +3,7 @@ from django.utils.translation import ugettext as _
 
 from xblock.core import XBlock
 from openassessment.assessment import self_api
+from openassessment.workflow import api as workflow_api
 from submissions import api as submission_api
 
 logger = logging.getLogger(__name__)
@@ -79,8 +80,14 @@ class SelfAssessmentMixin(object):
                 data['options_selected'],
                 {"criteria": self.rubric_criteria}
             )
+
+            # After we've created the self-assessment, we need to update the workflow.
+            self.update_workflow_status()
         except self_api.SelfAssessmentRequestError as ex:
             msg = _(u"Could not create self assessment: {error}").format(error=ex.message)
+            return {'success': False, 'msg': msg}
+        except workflow_api.AssessmentWorkflowError as ex:
+            msg = _(u"Could not update workflow: {error}").format(error=ex.message)
             return {'success': False, 'msg': msg}
         else:
             return {'success': True, 'msg': u""}
