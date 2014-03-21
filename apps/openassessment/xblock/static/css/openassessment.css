@@ -456,17 +456,17 @@ hr.divider,
 .openassessment .openassessment__steps__step .step__actions .action--submit, .openassessment .step--response .response__submission__actions .action--save, .openassessment .submission__feeedback__actions .action--submit {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
-.openassessment .openassessment__prompt__copy a {
+.openassessment .message .message__content a, .openassessment .openassessment__prompt__copy a {
   -webkit-transition: color 0.5s ease-in-out, border 0.5s ease-in-out;
   -moz-transition: color 0.5s ease-in-out, border 0.5s ease-in-out;
   transition: color 0.5s ease-in-out, border 0.5s ease-in-out;
   border-bottom: 1px solid transparent;
   color: #33a6dc;
   text-decoration: none; }
-  .openassessment .openassessment__prompt__copy a:hover, .openassessment .openassessment__prompt__copy a:focus {
+  .openassessment .message .message__content a:hover, .openassessment .openassessment__prompt__copy a:hover, .openassessment .message .message__content a:focus, .openassessment .openassessment__prompt__copy a:focus {
     color: #00a7f6;
     border-color: #00a7f6; }
-  .openassessment .openassessment__prompt__copy a:active, .openassessment .openassessment__prompt__copy a.is--current {
+  .openassessment .message .message__content a:active, .openassessment .openassessment__prompt__copy a:active, .openassessment .message .message__content a.is--current, .openassessment .openassessment__prompt__copy a.is--current {
     color: #1d9dd9;
     border-color: #1d9dd9; }
 
@@ -891,6 +891,48 @@ hr.divider,
 .wrapper--openassessment {
   position: relative; }
 
+.openassessment .message {
+  margin-bottom: 30px;
+  border-radius: 2px;
+  padding: 20px 20px;
+  background: #f5f6f7; }
+  .openassessment .message .message__title {
+    margin-bottom: 5px;
+    border-bottom: 2px solid #d7dbdf;
+    padding-bottom: 5px; }
+  .openassessment .message .message__content {
+    color: #a5a6aa; }
+.openassessment .message--error {
+  background: #f4f4f4; }
+  .openassessment .message--error .message__title {
+    color: #bc5547;
+    border-bottom-color: #bc5547; }
+.openassessment .message--warning {
+  background: #fdfaf4; }
+  .openassessment .message--warning .message__title {
+    color: #e5a635;
+    border-bottom-color: #e5a635; }
+.openassessment .message--confirmation {
+  background: #f4f4f4; }
+  .openassessment .message--confirmation .message__title {
+    color: #2d2e30;
+    border-bottom-color: #2d2e30; }
+.openassessment .message--complete {
+  background: #f7fbf5; }
+  .openassessment .message--complete .message__title {
+    color: #62c24a;
+    border-bottom-color: #62c24a; }
+.openassessment .message--incomplete {
+  background: #fdfaf4; }
+  .openassessment .message--incomplete .message__title {
+    color: #e5a635;
+    border-bottom-color: #e5a635; }
+.openassessment .message--error {
+  display: none;
+  opacity: 0.0; }
+.openassessment .has--error .message--error {
+  display: block;
+  opacity: 1.0; }
 .openassessment .openassessment__title {
   *zoom: 1;
   display: block; }
@@ -898,6 +940,16 @@ hr.divider,
     content: " ";
     display: table; }
   .openassessment .openassessment__title:after {
+    clear: both; }
+.openassessment .openassessment__message {
+  *zoom: 1;
+  display: block;
+  background: none;
+  padding: 0; }
+  .openassessment .openassessment__message:before, .openassessment .openassessment__message:after {
+    content: " ";
+    display: table; }
+  .openassessment .openassessment__message:after {
     clear: both; }
 .openassessment .openassessment__steps {
   counter-reset: item; }
@@ -1225,48 +1277,6 @@ hr.divider,
     color: #00a7f6; }
   .openassessment .ui-toggle-visibility .ui-toggle-visibility__control .step__label:active, .openassessment .ui-toggle-visibility .ui-toggle-visibility__control .step__label.is--current {
     color: #1d9dd9; }
-.openassessment .message {
-  margin-bottom: 30px;
-  border-radius: 2px;
-  padding: 20px 20px;
-  background: #f5f6f7; }
-  .openassessment .message .message__title {
-    margin-bottom: 5px;
-    border-bottom: 2px solid #d7dbdf;
-    padding-bottom: 5px; }
-  .openassessment .message .message__content {
-    color: #a5a6aa; }
-.openassessment .message--error {
-  background: #f4f4f4; }
-  .openassessment .message--error .message__title {
-    color: #bc5547;
-    border-bottom-color: #bc5547; }
-.openassessment .message--warning {
-  background: #fdfaf4; }
-  .openassessment .message--warning .message__title {
-    color: #e5a635;
-    border-bottom-color: #e5a635; }
-.openassessment .message--confirmation {
-  background: #f4f4f4; }
-  .openassessment .message--confirmation .message__title {
-    color: #2d2e30;
-    border-bottom-color: #2d2e30; }
-.openassessment .message--complete {
-  background: #f7fbf5; }
-  .openassessment .message--complete .message__title {
-    color: #62c24a;
-    border-bottom-color: #62c24a; }
-.openassessment .message--incomplete {
-  background: #fdfaf4; }
-  .openassessment .message--incomplete .message__title {
-    color: #e5a635;
-    border-bottom-color: #e5a635; }
-.openassessment .message--error {
-  display: none;
-  opacity: 0.0; }
-.openassessment .has--error .message--error {
-  display: block;
-  opacity: 1.0; }
 .openassessment .openassessment__prompt {
   margin-bottom: 20px; }
 .openassessment .openassessment__prompt__copy {
