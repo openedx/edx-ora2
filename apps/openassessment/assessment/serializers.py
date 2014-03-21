@@ -180,7 +180,6 @@ def serialize_assessments(assessments_qset):
     ]
 
 
-
 def full_assessment_dict(assessment, rubric_dict=None):
     """
     Return a dict representation of the Assessment model, including nested
@@ -198,27 +197,28 @@ def full_assessment_dict(assessment, rubric_dict=None):
     """
     assessment_dict = AssessmentSerializer(assessment).data
     if not rubric_dict:
-        rubric_dict = RubricSerializer(assessment.rubric).data
+        rubric_dict = RubricSerializer.serialized_from_cache(assessment.rubric)
 
     assessment_dict["rubric"] = rubric_dict
 
+    # This part looks a little goofy, but it's in the name of saving dozens of
+    # SQL lookups. The rubric_dict has the entire serialized output of the
+    # `Rubric`, its child `Criterion` and grandchild `CriterionOption`. This
+    # includes calculated things like `points_possible` which aren't actually in
+    # the DB model. Instead of invoking the serializers for `Criterion` and
+    # `CriterionOption` again, we simply index into the places we expect them to
+    # be from the big, saved `Rubric` serialization.
     parts = []
     for part in assessment.parts.all().select_related("option__criterion"):
-        criterion_dict = next(
-            crit
-            for crit in rubric_dict["criteria"]
-            if crit["name"] == part.option.criterion.name
-        )
-        options_dict = next(
-            option
-            for option in criterion_dict["options"]
-            if option["name"] == part.option.name
-        )
+        criterion_dict = rubric_dict["criteria"][part.option.criterion.order_num]
+        options_dict = criterion_dict["options"][part.option.order_num]
         options_dict["criterion"] = criterion_dict
         parts.append({
             "option": options_dict
         })
 
+    # Now manually built up the dynamically calculated values on the
+    # `Assessment` so we can again avoid DB calls.
     assessment_dict["parts"] = parts
     assessment_dict["points_earned"] = sum(
         part_dict["option"]["points"] for part_dict in parts
