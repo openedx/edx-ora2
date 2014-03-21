@@ -1,24 +1,33 @@
-{% spaceless %}
-<li id="openassessment__grade" class="openassessment__steps__step step--grade is--waiting">
-    <header class="step__header ui-toggle-visibility__control">
-        <h2 class="step__title">
-            <span class="wrapper--copy">
-                <span class="step__label">Your Grade:</span>
-                <span class="grade__value">
-                    <span class="grade__value__title">Waiting for Peer Responses to Assess</span>
-                </span>
-            </span>
-        </h2>
-    </header>
+{%  extends "openassessmentblock/peer/oa_peer_assessment.html" %}
 
-    <div class="ui-toggle-visibility__content">
-        <div class="wrapper--step__content">
-            <div class="step__content">
-                <div class="grade__value__description">
-                    <p>There are currently no responses for you to assess. This should change momentarily. Check back shortly to continue completing this problem. One this and all other steps are completed, you will receive a grade.</p>
-                </div>
+{% block list_item %}
+<li id="openassessment__peer-assessment" class="openassessment__steps__step step--peer-assessment is--waiting is--empty is--collapsed">
+{% endblock %}
+
+{% block title %}
+<span class="step__status">
+  <span class="step__status__label">This step's status:</span>
+  <span class="step__status__value">
+    <span class="copy">
+        In Progress
+        (<span class="step__status__value--completed">{{ graded }}</span> of
+        <span class="step__status__value--required">{{ must_grade }}</span>)
+    </span>
+  </span>
+</span>
+{% endblock %}
+
+{% block body %}
+<div class="ui-toggle-visibility__content">
+    <div class="wrapper--step__content">
+
+        <div class="step__message message message--incomplete">
+            <h3 class="message__title">Waiting for more peer responses</h3>
+
+            <div class="message__content">
+              <p>There are currently no responses for you to assess. This should change momentarily. Check back shortly to continue completing this problem. One this and all other steps are completed, you will receive a grade.</p>
             </div>
         </div>
     </div>
-</li>
-{% endspaceless %}
+</div>
+{% block body %}
