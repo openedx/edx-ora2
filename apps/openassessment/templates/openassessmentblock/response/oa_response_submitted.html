@@ -1,7 +1,7 @@
 {% extends "openassessmentblock/response/oa_response.html" %}
 
 {% block list_item %}
-<li id="openassessment__response" class="openassessment__steps__step step--response ui-toggle-visibility is--complete is--collapsed">
+<li id="openassessment__response" class="openassessment__steps__step step--response is--complete ui-toggle-visibility is--collapsed">
 {% endblock %}
 
 {% block title %}
@@ -17,6 +17,12 @@
 {% block body %}
 <div class="ui-toggle-visibility__content">
     <div class="wrapper--step__content">
+
+        <div class="step__message message message--complete">
+            <h3 class="message__title">Your response has been successfully submitted</h3>
+            <div class="message__content">Your peers in this class will now grade this response and you will receive feedback shortly</div>
+        </div>
+
         <div class="step__content">
             <article class="submission__answer__display">
                 <h3 class="submission__answer__display__title">Your Submitted Response</h3>

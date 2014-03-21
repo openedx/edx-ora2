@@ -321,6 +321,22 @@
     // STATE: step is incomplete
     &.is--incomplete {
 
+      .step__counter:before {
+        border-color: rgba($color-incomplete, 0.5);
+        color: $color-incomplete;
+      }
+
+      .step__status__value {
+        background: $color-incomplete;
+
+        .copy {
+          color: $white-t;
+        }
+      }
+
+      .step__label {
+        color: $color-incomplete;
+      }
     }
 
     // STATE: step is unavailable
@@ -443,39 +459,70 @@
   // --------------------
   .message {
     margin-bottom: ($baseline-v*1.5);
+    border-radius: ($baseline-v/10);
+    padding: $baseline-v ($baseline-h/2);
+    background: $color-decorative-quaternary;
 
     .message__title {
-      @extend %hd-3;
-      @extend %t-strong;
+      @extend %t-heading;
+      margin-bottom: ($baseline-v/4);
+      border-bottom: ($baseline-v/10) solid $color-decorative-tertiary;
+      padding-bottom: ($baseline-v/4);
     }
 
     .message__content {
       @extend %copy-3;
+      color: $copy-secondary-color;
     }
   }
 
   // TYPE: error
   .message--error {
+    background: tint($color-confirm, 95%);
 
     .message__title {
       color: $color-error;
-    }
-
-    .message__content {
-      color: tint($color-error, 33%);
+      border-bottom-color: $color-error;
     }
   }
 
   // TYPE: warning
   .message--warning {
+    background: tint($color-warning, 95%);
 
+    .message__title {
+      color: $color-warning;
+      border-bottom-color: $color-warning;
+    }
   }
 
   // TYPE: confirmation
   .message--confirmation {
+    background: tint($color-confirm, 95%);
+
+    .message__title {
+      color: $color-confirm;
+      border-bottom-color: $color-confirm;
+    }
+  }
+
+  // TYPE: complete
+  .message--complete {
+    background: tint($color-complete, 95%);
 
     .message__title {
       color: $color-complete;
+      border-bottom-color: $color-complete;
+    }
+  }
+
+  // TYPE: incomplete
+  .message--incomplete {
+    background: tint($color-incomplete, 95%);
+
+    .message__title {
+      color: $color-incomplete;
+      border-bottom-color: $color-incomplete;
     }
   }
 

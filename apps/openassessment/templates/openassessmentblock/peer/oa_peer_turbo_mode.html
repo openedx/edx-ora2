@@ -1,7 +1,7 @@
 {%  extends "openassessmentblock/peer/oa_peer_assessment.html" %}
 
 {% block list_item %}
-<li id="openassessment__peer-assessment"class="openassessment__steps__step step--peer-assessment ui-toggle-visibility is--complete">
+<li id="openassessment__peer-assessment"class="openassessment__steps__step step--peer-assessment ui-toggle-visibility is--complete is--collapsed">
 {% endblock %}
 
 {% block title %}
@@ -17,10 +17,105 @@
 </span>
 {% endblock %}
 
-{% block message %}
-<div class="step__message message message--confirmation message--confirmation-turbo-mode">
-    <h3 class="message__title">Congratulations!</h3>
-    <div class="message__content">You have successfully completed all of the peer assessment that you have been asked to do for this step. If you would like to continue providing feedback to your peers you may do so here, but it will not influence your final grade.</div>
+{% block body %}
+<div class="ui-toggle-visibility__content">
+    <div class="wrapper--step__content">
+
+        <div class="step__message message message--complete">
+            <h3 class="message__title">Congratulations!</h3>
+            <div class="message__content">You have successfully completed all of the peer assessment that you have been asked to do for this step. If you would like to continue providing feedback to your peers you may do so here, but it will not influence your final grade.</div>
+        </div>
+
+        <div class="step__instruction">
+            <p>Please read and assess the following response from one of your peers.</p>
+        </div>
+
+        <div class="step__content">
+            <ul class="list--peer-assessments">
+                <li class="list--peer-assessments__item">
+                    <article class="peer-assessment" id="peer-assessment--001">
+                        <div class="peer-assessment__display">
+                            <header class="peer-assessment__display__header">
+                                <h3 class="peer-assessment__display__title">Assessment #
+                                    <span class="peer-assessment__number--current">{{ review_num }}</span> of
+                                    <span class="peer-assessment__number--required">{{ must_grade }}</span>
+                                </h3>
+                            </header>
+
+                            <div class="peer-assessment__display__response">
+                                {{ peer_submission.answer.text|linebreaks }}
+                            </div>
+                        </div>
+
+                        <form id="peer-assessment--001__assessment" class="peer-assessment__assessment" method="post">
+                            <fieldset class="assessment__fields">
+                                <ol class="list list--fields assessment__rubric">
+
+                                    {% for criterion in rubric_criteria %}
+                                    <li class="field field--radio is--required assessment__rubric__question ui-toggle-visibility" id="assessment__rubric__question--{{ criterion.name }}">
+                                        <h4 class="question__title ui-toggle-visibility__control">
+                                            <i class="ico icon-caret-right"></i>
+                                            <span class="ui-toggle-visibility__control__copy question__title__copy">{{ criterion.prompt }}</span>
+                                            <span class="label--required sr">* (Required)</span>
+                                        </h4>
+
+                                        <div class="ui-toggle-visibility__content">
+                                            <ol class="question__answers">
+                                                {% for option in criterion.options %}
+                                                <li class="answer">
+                                                    <div class="wrapper--input">
+                                                        <input type="radio"
+                                                               name="{{ criterion.name }}"
+                                                               id="assessment__rubric__question--{{ criterion.name }}__{{ option.name }}"
+                                                               class="answer__value"
+                                                               value="{{ option.name }}" />
+                                                        <label for="assessment__rubric__question--{{ criterion.name }}__{{ option.name }}"
+                                                               class="answer__label"
+                                                               >{{ option.name }}</label>
+                                                    </div>
+                                                    <div class="wrapper--metadata">
+                                                        <span class="answer__tip">{{ option.explanation }}</span>
+                                                        <span class="answer__points">{{option.points}} <span class="answer__points__label">points</span></span>
+                                                    </div>
+                                                </li>
+                                                {% endfor %}
+                                            </ol>
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+
+                                    <li class="wrapper--input field field--textarea assessment__rubric__question assessment__rubric__question--feedback" id="assessment__rubric__question--feedback">
+                                        <label class="question__title" for="assessment__rubric__question--feedback__value">
+                                            <span class="question__title__copy">Please provide additional feedback for this response</span>
+                                        </label>
+                                        <div class="wrapper--input">
+                                            <textarea id="assessment__rubric__question--feedback__value" placeholder="I felt this response was..."></textarea>
+                                        </div>
+                                    </li>
+                                </ol>
+                            </fieldset>
+                        </form>
+                    </article>
+                </li>
+            </ul>
+        </div>
+
+        <div class="step__actions">
+            <div class="message message--error message--error-server">
+                <h3 class="message__title">We could not submit your assessment</h3>
+                <div class="message__content"></div>
+            </div>
+
+            <ul class="list list--actions">
+                <li class="list--actions__item">
+                    <button type="submit" id="peer-assessment--001__assessment__submit" class="action action--submit is--disabled">
+                        <span class="copy">{{ submit_button_text }}</span>
+                        <i class="ico icon-caret-right"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
 {% endblock %}
 

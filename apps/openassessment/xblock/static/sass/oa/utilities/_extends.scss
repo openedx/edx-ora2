@@ -89,9 +89,20 @@
     }
   }
 
-  // STATE: is unavailable
+  // STATE: is complete
   &.is--complete {
     border-top-color: $color-complete;
+  }
+
+  // STATE: is incomplete
+  &.is--incomplete {
+    border-top-color: $color-incomplete;
+  }
+
+
+  // STATE: has errors
+  &.has--error {
+    border-top-color: $color-error;
   }
 
   // STATE: is incomplete
