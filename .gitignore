@@ -54,5 +54,7 @@ node_modules
 npm-debug.log
 coverage
 
-# Dev database
+# tim-specific
 timdb
+testdb
+fixture_err.log
