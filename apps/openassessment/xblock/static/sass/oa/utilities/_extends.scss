@@ -212,7 +212,7 @@
       @extend %copy-3;
       @extend %t-strong;
       margin-bottom: 0; // FIX: need to reset base label style
-      color: $copy-color;
+      color: $copy-secondary-color;
     }
 
     .answer__value {

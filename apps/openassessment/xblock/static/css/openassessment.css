@@ -557,7 +557,7 @@ hr.divider,
   .wrapper--xblock input[type="password"]:focus,
   .wrapper--xblock textarea:focus {
     box-shadow: 0 0 6px 0 rgba(29, 157, 217, 0.4), inset 0 0 4px 0 rgba(0, 0, 0, 0.15);
-    border-color: #3aa2e0;
+    border-color: black;
     outline: 0; }
 .wrapper--xblock .field {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; }
@@ -743,11 +743,11 @@ hr.divider,
       vertical-align: middle; }
     .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input .answer__label, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input .answer__label {
       margin-bottom: 0;
-      color: #3c3c3c; }
+      color: #a5a6aa; }
     .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input .answer__value, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input .answer__value {
       margin-right: 10px; }
       .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input .answer__value:checked + .answer__label, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input .answer__value:checked + .answer__label {
-        color: #3aa2e0; }
+        color: black; }
   .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--metadata, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--metadata {
     display: block; }
     @media screen and (min-width: 760px) and (max-width: 924px) {
