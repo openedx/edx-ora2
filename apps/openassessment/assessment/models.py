@@ -352,6 +352,8 @@ class Assessment(models.Model):
         if not assessments:
             return []
 
+        # Generate a cache key that represents all the assessments we're being
+        # asked to grab scores from (comma separated list of assessment IDs)
         cache_key = "assessments.scores_by_criterion.{}".format(
             ",".join(str(assessment.id) for assessment in assessments)
         )
@@ -393,6 +395,14 @@ class AssessmentPart(models.Model):
     @property
     def points_possible(self):
         return self.option.criterion.points_possible
+
+    @classmethod
+    def add_to_assessment(cls, assessment, option_ids):
+        """Creates AssessmentParts and adds them to `assessment`."""
+        cls.objects.bulk_create([
+            cls(assessment=assessment, option_id=option_id)
+            for option_id in option_ids
+        ])
 
 
 class AssessmentFeedback(models.Model):

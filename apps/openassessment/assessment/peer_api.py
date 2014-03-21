@@ -199,10 +199,7 @@ def create_assessment(
         # We do this to do a run around django-rest-framework serializer
         # validation, which would otherwise require two DB queries per
         # option to do validation. We already validated these options above.
-        AssessmentPart.objects.bulk_create([
-            AssessmentPart(assessment=assessment, option_id=option_id)
-            for option_id in option_ids
-        ])
+        AssessmentPart.add_to_assessment(assessment, option_ids)
 
         student_item = submission.student_item
         student_item_dict = StudentItemSerializer(student_item).data
