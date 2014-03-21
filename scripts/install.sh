@@ -16,6 +16,11 @@ echo "Installing XBlock..."
 pip install -q -e .
 
 echo "Installing Node requirements..."
+if [ -z `which npm` ]; then
+    echo "Please install NodeJS: http://nodejs.org/"
+    exit 1
+fi
+
 npm config set loglevel warn
 npm install
 
