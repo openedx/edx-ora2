@@ -1,13 +1,15 @@
 """
 Public interface for self-assessment.
 """
+from django.core.cache import cache
 from django.utils.translation import ugettext as _
 from submissions.api import (
     get_submission_and_student, get_submission,
     SubmissionNotFoundError, SubmissionRequestError
 )
 from openassessment.assessment.serializers import (
-    rubric_from_dict, AssessmentSerializer, full_assessment_dict, InvalidRubric
+    AssessmentSerializer, InvalidRubric, RubricSerializer,
+    rubric_from_dict, serialize_assessments
 )
 from openassessment.assessment.models import (
     Assessment, AssessmentPart, InvalidOptionSelection
@@ -121,14 +123,11 @@ def get_assessment(submission_uuid):
     # but not at the database level.  Someone could take advantage of the race condition
     # between checking the number of self-assessments and creating a new self-assessment.
     # To be safe, we retrieve just the most recent submission.
-    assessments = Assessment.objects.filter(
+    serialized_assessments = serialize_assessments(Assessment.objects.filter(
         score_type=SELF_TYPE, submission_uuid=submission_uuid
-    ).order_by('-scored_at')
+    ).order_by('-scored_at')[:1])
 
-    if assessments.exists():
-        assessment_dict = full_assessment_dict(assessments[0])
-        return assessment_dict
-    return None
+    return serialized_assessments[0] if serialized_assessments else None
 
 
 def is_complete(submission_uuid):

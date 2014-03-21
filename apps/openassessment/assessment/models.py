@@ -106,11 +106,16 @@ class Rubric(models.Model):
             InvalidOptionSelection: the selected options do not match the rubric.
 
         """
-        # Create a dict of dicts that maps:
-        # criterion names --> option names --> option ids
+        # Cache based on the content_hash, not the id. It's slighlty safer, and
+        # we don't have to worry about invalidation of the cache while running
+        # tests.
         rubric_criteria_dict_cache_key = (
             "assessment.rubric_criteria_dict.{}".format(self.content_hash)
         )
+
+        # Create a dict of dicts that maps:
+        # criterion names --> option names --> option ids
+        #
         # If we've already generated one of these for this rubric, grab it from
         # the cache instead of hitting the database again.
         rubric_criteria_dict = cache.get(rubric_criteria_dict_cache_key)
@@ -345,7 +350,7 @@ class Assessment(models.Model):
         """
         scores = defaultdict(list)
         for assessment in assessments:
-            for part in assessment.parts.all():
+            for part in assessment.parts.all().select_related("option__criterion"):
                 criterion_name = part.option.criterion.name
                 scores[criterion_name].append(part.option.points)
         return scores

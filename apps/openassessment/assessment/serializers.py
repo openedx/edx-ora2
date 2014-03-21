@@ -4,12 +4,17 @@ Serializers are created to ensure models do not have to be accessed outside the
 scope of the Tim APIs.
 """
 from copy import deepcopy
+import logging
 
+from django.core.cache import cache
 from django.utils.translation import ugettext as _
 from rest_framework import serializers
 from openassessment.assessment.models import (
     Assessment, AssessmentFeedback, AssessmentPart, Criterion, CriterionOption, Rubric,
     PeerWorkflowItem, PeerWorkflow)
+
+
+logger = logging.getLogger(__name__)
 
 
 class InvalidRubric(Exception):
@@ -66,10 +71,11 @@ class CriterionOptionSerializer(NestedModelSerializer):
 class CriterionSerializer(NestedModelSerializer):
     """Serializer for :class:`Criterion`"""
     options = CriterionOptionSerializer(required=True, many=True)
+    points_possible = serializers.Field(source='points_possible')
 
     class Meta:
         model = Criterion
-        fields = ('order_num', 'name', 'prompt', 'options')
+        fields = ('order_num', 'name', 'prompt', 'options', 'points_possible')
 
     def validate_options(self, attrs, source):
         """Make sure we have at least one CriterionOption in a Criterion."""
@@ -97,6 +103,33 @@ class RubricSerializer(NestedModelSerializer):
             raise serializers.ValidationError("Must have at least one criterion")
         return attrs
 
+    @classmethod
+    def serialized_from_cache(cls, rubric, local_cache=None):
+        # Optional local cache you can send in (for when you're calling this
+        # in a loop).
+        local_cache = local_cache or {}
+
+        # Check our in-memory cache...
+        if rubric.content_hash in local_cache:
+            return local_cache[rubric.content_hash]
+
+        # Check the external cache (e.g. memcached)
+        rubric_dict_cache_key = (
+            "RubricSerializer.serialized_from_cache.{}"
+            .format(rubric.content_hash)
+        )
+        rubric_dict = cache.get(rubric_dict_cache_key)
+        if rubric_dict:
+            local_cache[rubric.content_hash] = rubric_dict
+            return rubric_dict
+
+        # Grab it from the database
+        rubric_dict = RubricSerializer(rubric).data
+        cache.set(rubric_dict_cache_key, rubric_dict)
+        local_cache[rubric.content_hash] = rubric_dict
+
+        return rubric_dict
+
 
 class AssessmentPartSerializer(serializers.ModelSerializer):
     """Serializer for :class:`AssessmentPart`."""
@@ -109,9 +142,9 @@ class AssessmentPartSerializer(serializers.ModelSerializer):
 class AssessmentSerializer(serializers.ModelSerializer):
     """Serializer for :class:`Assessment`."""
 
-    parts = AssessmentPartSerializer(many=True, read_only=True)
-    points_earned = serializers.Field(source='points_earned')
-    points_possible = serializers.Field(source='points_possible')
+    # parts = AssessmentPartSerializer(many=True, read_only=True)
+    # points_earned = serializers.Field(source='points_earned')
+    # points_possible = serializers.Field(source='points_possible')
 
     class Meta:
         model = Assessment
@@ -124,18 +157,38 @@ class AssessmentSerializer(serializers.ModelSerializer):
             'feedback',
 
             # Foreign Key
-            'parts',
+            # 'parts',
 
             # Computed, not part of the model
-            'points_earned',
-            'points_possible',
+            #'points_earned',
+            #'points_possible',
         )
 
 
-def full_assessment_dict(assessment):
+def serialize_assessments(assessments_qset):
+    assessments = list(assessments_qset.select_related("rubric"))
+    rubric_cache = {}
+
+    return [
+        full_assessment_dict(
+            assessment,
+            RubricSerializer.serialized_from_cache(
+                assessment.rubric, rubric_cache
+            )
+        )
+        for assessment in assessments
+    ]
+
+
+
+def full_assessment_dict(assessment, rubric_dict=None):
     """
-    Return a dict representation of the Assessment model,
-    including nested assessment parts.
+    Return a dict representation of the Assessment model, including nested
+    assessment parts. We do some of the serialization ourselves here instead
+    of relying on the Django REST Framework serializers. This is for performance
+    reasons -- we have a cached rubric easily available, and we don't want to
+    follow all the DB relations from assessment -> assessment part -> option ->
+    criterion.
 
     Args:
         assessment (Assessment): The Assessment model to serialize
@@ -144,17 +197,34 @@ def full_assessment_dict(assessment):
         dict with keys 'rubric' (serialized Rubric model) and 'parts' (serialized assessment parts)
     """
     assessment_dict = AssessmentSerializer(assessment).data
-    rubric_dict = RubricSerializer(assessment.rubric).data
+    if not rubric_dict:
+        rubric_dict = RubricSerializer(assessment.rubric).data
+
     assessment_dict["rubric"] = rubric_dict
+
     parts = []
-    for part in assessment.parts.all():
-        part_dict = AssessmentPartSerializer(part).data
-        options_dict = CriterionOptionSerializer(part.option).data
-        criterion_dict = CriterionSerializer(part.option.criterion).data
+    for part in assessment.parts.all().select_related("option__criterion"):
+        criterion_dict = next(
+            crit
+            for crit in rubric_dict["criteria"]
+            if crit["name"] == part.option.criterion.name
+        )
+        options_dict = next(
+            option
+            for option in criterion_dict["options"]
+            if option["name"] == part.option.name
+        )
         options_dict["criterion"] = criterion_dict
-        part_dict["option"] = options_dict
-        parts.append(part_dict)
+        parts.append({
+            "option": options_dict
+        })
+
     assessment_dict["parts"] = parts
+    assessment_dict["points_earned"] = sum(
+        part_dict["option"]["points"] for part_dict in parts
+    )
+    assessment_dict["points_possible"] = rubric_dict["points_possible"]
+
     return assessment_dict
 
 

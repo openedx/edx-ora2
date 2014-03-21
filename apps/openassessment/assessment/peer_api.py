@@ -18,8 +18,9 @@ from openassessment.assessment.models import (
     InvalidOptionSelection, PeerWorkflow, PeerWorkflowItem,
 )
 from openassessment.assessment.serializers import (
-    AssessmentSerializer, rubric_from_dict, AssessmentFeedbackSerializer,
-    full_assessment_dict)
+    AssessmentSerializer, AssessmentFeedbackSerializer,
+    rubric_from_dict, serialize_assessments
+)
 from submissions import api as sub_api
 from submissions.api import get_submission_and_student
 from submissions.models import Submission, StudentItem
@@ -259,12 +260,17 @@ def get_rubric_max_scores(submission_uuid):
             the submission, or its associated rubric.
     """
     try:
-        assessments = Assessment.objects.filter(submission_uuid=submission_uuid).order_by( "-scored_at", "-id")
-        if assessments:
-            return {
-                criterion.name: criterion.points_possible
-                for criterion in assessments[0].rubric.criteria.all()
-            }
+        serialized_assessments = serialize_assessments(
+            Assessment.objects.filter(submission_uuid=submission_uuid).order_by( "-scored_at", "-id")[:1]
+        )
+        if not serialized_assessments:
+            return None
+
+        assessment = serialized_assessments[0]
+        return {
+            criterion["name"]: criterion["points_possible"]
+            for criterion in assessment["rubric"]["criteria"]
+        }
     except Submission.DoesNotExist:
         return None
     except DatabaseError:
@@ -407,13 +413,13 @@ def get_assessments(submission_uuid, scored_only=True, limit=None):
         if scored_only:
             assessments = PeerWorkflowItem.get_scored_assessments(
                 submission_uuid
-            )
+            )[:limit]
         else:
             assessments = Assessment.objects.filter(
                 submission_uuid=submission_uuid,
                 score_type=PEER_TYPE
-            )
-        return [full_assessment_dict(assessment) for assessment in assessments[:limit]]
+            )[:limit]
+        return serialize_assessments(assessments)
     except DatabaseError:
         error_message = _(
             u"Error getting assessments for submission {}".format(submission_uuid)
