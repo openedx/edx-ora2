@@ -263,7 +263,7 @@
         @include span-columns(3 of 12);
         @include omega();
         position: relative;
-        top: -($baseline-v/2);
+        top: -($baseline-v/4);
         text-align: right;
       }
 
@@ -271,7 +271,7 @@
         @include span-columns(3 of 12);
         @include omega();
         position: relative;
-        top: -($baseline-v/2);
+        top: -($baseline-v/4);
         text-align: right;
       }
 
@@ -279,7 +279,7 @@
         @include span-columns(3 of 12);
         @include omega();
         position: relative;
-        top: -($baseline-v/2);
+        top: -($baseline-v/4);
         text-align: right;
       }
     }
