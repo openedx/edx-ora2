@@ -394,7 +394,7 @@ hr.divider,
 .wrapper--xblock strong, .wrapper--xblock .emphasis, .openassessment .openassessment__steps__step .step__actions .action--submit, .openassessment .openassessment__steps__step .step__actions .action--submit .copy, .openassessment .step--response .response__submission__actions .action--save, .openassessment .submission__feeedback__actions .action--submit, .openassessment .step--response .response__submission__actions .action--save .copy, .openassessment .submission__feeedback__actions .action--submit .copy, .wrapper--xblock input[type="text"],
 .wrapper--xblock input[type="email"],
 .wrapper--xblock input[type="password"],
-.wrapper--xblock textarea, .wrapper--xblock .field label, .wrapper--xblock .field .label, .openassessment .openassessment__steps__step .step__title .step__label, .openassessment .step--grade .step__title .grade__value__title, .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .message .message__title, .openassessment .step--peer-assessment .peer-assessment__display__header .peer-assessment__display__title, .openassessment .step--self-assessment .self-assessment__display__title, .openassessment .submission__answer__display__title, .openassessment .submission__peer-evaluations__title, .openassessment .submission__peer-evaluations__questions .question__title__copy, .openassessment .submission__feeedback__title, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__points, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__points, .openassessment .openassessment__steps__step .step__status .copy, .openassessment .step--response .response__submission__content .tip, .openassessment .step--response .response__submission__status__title, .openassessment .submission__peer-evaluations__questions .question__score, .openassessment .submission__peer-evaluations__questions .answer__score, .openassessment .submission__peer-evaluations__questions .answer__score__value, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input .answer__label, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input .answer__label, .openassessment .openassessment__steps__step .step__title .step__counter:before, .openassessment .step--peer-assessment .peer-assessment__display__header span, .openassessment .step--grade .step__title .grade__value__title .grade__value__earned, .openassessment .step--grade .step__title .grade__value__title .grade__value__potential, .openassessment .submission__peer-evaluations__questions .question__score__value, .openassessment .submission__peer-evaluations__questions .question__score__potential, .openassessment .submission__peer-evaluations__questions .question__score__potential .unit, .openassessment .submission__peer-evaluations__questions .answer__source, .openassessment .submission__peer-evaluations__questions .answer__value__value {
+.wrapper--xblock textarea, .wrapper--xblock .field label, .wrapper--xblock .field .label, .openassessment .openassessment__steps__step .step__title .step__label, .openassessment .step--grade .step__title .grade__value__title, .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .message .message__title, .openassessment .step--peer-assessment .peer-assessment__display__header .peer-assessment__display__title, .openassessment .step--self-assessment .self-assessment__display__title, .openassessment .submission__answer__display__title, .openassessment .submission__peer-evaluations__title, .openassessment .submission__peer-evaluations__questions .question__title__copy, .openassessment .submission__feeedback__title, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__points, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__points, .openassessment .openassessment__steps__step .step__status .copy, .openassessment .step--response .response__submission__content .tip, .openassessment .step--response .response__submission__status__title, .openassessment .submission__peer-evaluations__questions .question__score, .openassessment .submission__peer-evaluations__questions .answer__score, .openassessment .submission__peer-evaluations__questions .answer__score__value, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input .answer__label, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input .answer__label, .openassessment .openassessment__steps__step .step__title .step__counter:before, .openassessment .step--peer-assessment .peer-assessment__display__header span, .openassessment .step--grade .step__title .grade__value__title .grade__value__earned, .openassessment .step--grade .step__title .grade__value__title .grade__value__potential, .openassessment .submission__peer-evaluations__questions .question__score__value, .openassessment .submission__peer-evaluations__questions .question__score__potential, .openassessment .submission__peer-evaluations__questions .question__score__potential .unit, .openassessment .submission__peer-evaluations__questions .answer__source, .openassessment .submission__peer-evaluations__questions .answer__value__value, .openassessment .openassessment__steps .openassessment__steps__step .step__header .step__title .step__counter:before {
   font-weight: 600; }
 
 .wrapper--xblock input[type="text"]::-webkit-input-placeholder,
@@ -420,7 +420,7 @@ hr.divider,
   font-size: 14px;
   line-height: 21px; }
 
-.wrapper--xblock .problem__header, .openassessment .submission__peer-evaluations__questions .answer__value__value, .openassessment .openassessment__steps__step .step__instruction, .openassessment .openassessment__prompt__copy, .openassessment .step--grade .grade__value__description, .openassessment .step--grade .grade__summary, .openassessment .submission__feeedback__instructions, .openassessment .openassessment__steps__step .step__actions .action--submit .ico {
+.wrapper--xblock .problem__header, .openassessment .submission__peer-evaluations__questions .answer__value__value, .openassessment .openassessment__steps .openassessment__steps__step .step__header .step__title .step__counter:before, .openassessment .openassessment__steps__step .step__instruction, .openassessment .openassessment__prompt__copy, .openassessment .step--grade .grade__value__description, .openassessment .step--grade .grade__summary, .openassessment .submission__feeedback__instructions, .openassessment .openassessment__steps__step .step__actions .action--submit .ico {
   font-size: 18px;
   line-height: 27px; }
 
@@ -435,7 +435,7 @@ hr.divider,
 .openassessment .openassessment__steps__step .step__title .step__label, .openassessment .step--grade .step__title .grade__value__title, .openassessment .openassessment__steps__step .step__title .step__counter:before {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
-.wrapper--xblock .problem__header, .openassessment .submission__peer-evaluations__questions .answer__value__value {
+.wrapper--xblock .problem__header, .openassessment .submission__peer-evaluations__questions .answer__value__value, .openassessment .openassessment__steps .openassessment__steps__step .step__header .step__title .step__counter:before {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
 .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .message .message__title, .openassessment .step--peer-assessment .peer-assessment__display__header .peer-assessment__display__title, .openassessment .step--self-assessment .self-assessment__display__title, .openassessment .submission__answer__display__title, .openassessment .submission__peer-evaluations__title, .openassessment .submission__peer-evaluations__questions .question__title__copy, .openassessment .submission__feeedback__title, .openassessment .openassessment__steps__step .step__title .step__deadline {
@@ -1527,3 +1527,108 @@ hr.divider,
 
 .workbench .banner, .workbench .debug {
   display: none; }
+
+.openassessment .self-assessment__display__header, .openassessment .peer-assessment__display__header, .openassessment .step__header {
+  margin-bottom: 0 !important;
+  border-radius: 0 !important;
+  padding-bottom: 0 !important;
+  font-size: inherit !important;
+  border-bottom: none !important; }
+.openassessment span {
+  line-height: normal; }
+.openassessment h2 {
+  text-transform: none;
+  letter-spacing: normal; }
+.openassessment .openassessment__title--sub span {
+  color: #aeafb3 !important; }
+.openassessment h1.openassessment__title {
+  margin-bottom: 20px !important;
+  border-bottom: 4px solid #d7dbdf !important;
+  padding-bottom: 10px !important; }
+.openassessment .openassessment__steps .openassessment__steps__step .step__header .step__deadline {
+  color: #a4a5a8; }
+.openassessment .openassessment__steps .openassessment__steps__step .step__header .step__title {
+  margin-top: 0 !important;
+  text-align: left !important; }
+  @media screen and (min-width: 530px) and (max-width: 759px) {
+    .openassessment .openassessment__steps .openassessment__steps__step .step__header .step__title {
+      float: left;
+      display: block;
+      margin-right: 4.82916%;
+      width: 65.05695%; }
+      .openassessment .openassessment__steps .openassessment__steps__step .step__header .step__title:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 760px) and (max-width: 924px) {
+    .openassessment .openassessment__steps .openassessment__steps__step .step__header .step__title {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 74.41059%; }
+      .openassessment .openassessment__steps .openassessment__steps__step .step__header .step__title:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 925px) and (max-width: 1299px) {
+    .openassessment .openassessment__steps .openassessment__steps__step .step__header .step__title {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 74.41059%; }
+      .openassessment .openassessment__steps .openassessment__steps__step .step__header .step__title:last-child {
+        margin-right: 0; } }
+  @media screen and (min-width: 1300px) {
+    .openassessment .openassessment__steps .openassessment__steps__step .step__header .step__title {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 74.41059%; }
+      .openassessment .openassessment__steps .openassessment__steps__step .step__header .step__title:last-child {
+        margin-right: 0; } }
+  .openassessment .openassessment__steps .openassessment__steps__step .step__header .step__title .step__label {
+    text-transform: none;
+    letter-spacing: normal; }
+  .openassessment .openassessment__steps .openassessment__steps__step .step__header .step__title .step__counter, .openassessment .openassessment__steps .openassessment__steps__step .step__header .step__title .wrapper--copy {
+    display: inline-block;
+    vertical-align: middle; }
+  .openassessment .openassessment__steps .openassessment__steps__step .step__header .step__title .step__counter:before {
+    content: counter(item,decimal);
+    counter-increment: item;
+    margin-right: 5px;
+    border-radius: 2px;
+    border: 1px solid rgba(164, 165, 168, 0.5);
+    padding: 5px 10px;
+    color: #a4a5a8; }
+.openassessment .openassessment__steps .openassessment__steps__step .step__header .step__status__value {
+  line-height: 0; }
+.openassessment .list--actions {
+  list-style: none !important;
+  padding-left: 0 !important;
+  text-indent: 0 !important; }
+  .openassessment .list--actions li {
+    margin-bottom: 0 !important; }
+  .openassessment .list--actions button span, .openassessment .list--actions .button span, .openassessment .list--actions .action span {
+    color: inherit; }
+.openassessment span {
+  color: inherit; }
+.openassessment .ui-toggle-visibility .ui-toggle-visibility__control, .openassessment .ui-toggle-visibility .ui-toggle-visibility__control .step__label {
+  color: #33a6dc; }
+  .openassessment .ui-toggle-visibility .ui-toggle-visibility__control:hover, .openassessment .ui-toggle-visibility .ui-toggle-visibility__control:focus, .openassessment .ui-toggle-visibility .ui-toggle-visibility__control .step__label:hover, .openassessment .ui-toggle-visibility .ui-toggle-visibility__control .step__label:focus {
+    color: #00a7f6; }
+  .openassessment .ui-toggle-visibility .ui-toggle-visibility__control:active, .openassessment .ui-toggle-visibility .ui-toggle-visibility__control.is--current, .openassessment .ui-toggle-visibility .ui-toggle-visibility__control .step__label:active, .openassessment .ui-toggle-visibility .ui-toggle-visibility__control .step__label.is--current {
+    color: #1d9dd9; }
+.openassessment .self-assessment__display__header, .openassessment .peer-assessment__display__header {
+  padding-bottom: 10px !important; }
+.openassessment .self-assessment__display__title, .openassessment .peer-assessment__display__title {
+  color: #aeafb3 !important;
+  font-weight: 600 !important; }
+.openassessment .question__answers {
+  padding-left: 0 !important; }
+.openassessment .step--grade .step__title {
+  width: 100% !important; }
+  .openassessment .step--grade .step__title .wrapper--copy {
+    display: block !important; }
+.openassessment .action--submit, .openassessment .action--save {
+  box-shadow: none; }
+.openassessment .ico {
+  font-style: normal; }
+.openassessment .step__title .step__deadline {
+  letter-spacing: normal;
+  text-transform: none; }
