@@ -442,7 +442,7 @@ class PeerWorkflow(models.Model):
     course_id = models.CharField(max_length=40, db_index=True)
     submission_uuid = models.CharField(max_length=128, db_index=True, unique=True)
     created_at = models.DateTimeField(default=now, db_index=True)
-    completed_at = models.DateTimeField(null=True)
+    completed_at = models.DateTimeField(null=True, db_index=True)
 
     class Meta:
         ordering = ["created_at", "id"]
@@ -450,8 +450,8 @@ class PeerWorkflow(models.Model):
     def __repr__(self):
         return (
             "PeerWorkflow(student_id={0.student_id}, item_id={0.item_id}, "
-            "course_id={0.course_id}, submission_uuid={0.submission_uuid})"
-            "created_at={0.created_at}"
+            "course_id={0.course_id}, submission_uuid={0.submission_uuid}"
+            "created_at={0.created_at}, completed_at={0.completed_at})"
         ).format(self)
 
     def __unicode__(self):
@@ -465,26 +465,24 @@ class PeerWorkflowItem(models.Model):
     associated workflow represents the scorer of the given submission, and the
     assessment represents the completed assessment for this work item.
 
-    Assessments are represented as their ID, defaulting to -1. This is done to
-    optimized complex queries against PeerWorkflowItems with the Assessments
-    indexed, whereas a Null reference would be costly.
-
     """
-    scorer_id = models.ForeignKey(PeerWorkflow, related_name='items')
+    scorer = models.ForeignKey(PeerWorkflow, related_name='graded')
+    author = models.ForeignKey(PeerWorkflow, related_name='graded_by')
     submission_uuid = models.CharField(max_length=128, db_index=True)
     started_at = models.DateTimeField(default=now, db_index=True)
-    assessment = models.IntegerField(default=-1)
+    assessment = models.ForeignKey(Assessment, null=True)
 
     # This WorkflowItem was used to determine the final score for the Workflow.
     scored = models.BooleanField(default=False)
 
     @classmethod
     def get_scored_assessments(cls, submission_uuid):
-        workflow_items = PeerWorkflowItem.objects.filter(
-            submission_uuid=submission_uuid, scored=True
-        )
         return Assessment.objects.filter(
-            pk__in=[item.pk for item in workflow_items]
+            pk__in=[
+                item.assessment.pk for item in PeerWorkflowItem.objects.filter(
+                    submission_uuid=submission_uuid, scored=True
+                )
+            ]
         )
 
     class Meta:
@@ -492,9 +490,10 @@ class PeerWorkflowItem(models.Model):
 
     def __repr__(self):
         return (
-            "PeerWorkflowItem(scorer_id={0.scorer_id}, "
+            "PeerWorkflowItem(scorer={0.scorer}, author={0.author}, "
             "submission_uuid={0.submission_uuid}, "
-            "started_at={0.started_at}, assessment={0.assessment})"
+            "started_at={0.started_at}, assessment={0.assessment}, "
+            "scored={0.scored})"
         ).format(self)
 
     def __unicode__(self):

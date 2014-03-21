@@ -343,5 +343,10 @@ class PeerWorkflowItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = PeerWorkflowItem
         fields = (
-            'scorer_id', 'submission_uuid', 'started_at', 'assessment', 'scored'
+            'scorer',
+            'author',
+            'submission_uuid',
+            'started_at',
+            'assessment',
+            'scored'
         )
