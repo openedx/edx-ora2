@@ -183,4 +183,11 @@
     @extend %copy-4;
     @extend %deco-shadow-down;
   }
+
+  .is--collapsed {
+
+    .question__answers {
+      overflow: auto; // needed for ui-hints to show and for the document flow to clear
+    }
+  }
 }
