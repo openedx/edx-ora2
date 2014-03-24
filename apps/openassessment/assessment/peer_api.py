@@ -100,16 +100,26 @@ def get_score(submission_uuid, requirements):
         return None
 
     workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
-    assessments = Assessment.objects.filter(
-        submission_uuid=submission_uuid, score_type=PEER_TYPE
-    )[:requirements["must_be_graded_by"]]
-    items = workflow.graded_by.filter(assessment__in=assessments)
+    items = workflow.graded_by.filter(
+        assessment__submission_uuid=submission_uuid,
+        assessment__score_type=PEER_TYPE
+    ).order_by('assessment')
 
     submission_finished = items.count() >= requirements["must_be_graded_by"]
     if not submission_finished:
         return None
 
-    items.update(scored=True)
+    # Unfortunately, we cannot use update() after taking a slice,
+    # so we need to update the and save the items individually.
+    # One might be tempted to first query for the first n assessments,
+    # then select items that have those assessments.
+    # However, this generates a SQL query with a LIMIT in a subquery,
+    # which is not supported by some versions of MySQL.
+    # Although this approach generates more database queries, the number is likely to
+    # be relatively small (at least 1 and very likely less than 5).
+    for scored_item in items[:requirements["must_be_graded_by"]]:
+        scored_item.scored = True
+        scored_item.save()
 
     workflow.completed_at = timezone.now()
     workflow.save()
