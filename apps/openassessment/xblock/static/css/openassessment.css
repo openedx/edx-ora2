@@ -1589,3 +1589,5 @@ hr.divider,
 .openassessment .step__title .step__deadline {
   letter-spacing: normal;
   text-transform: none; }
+.openassessment .openassessment__steps__step .step__header .step__title {
+  margin-bottom: 0; }

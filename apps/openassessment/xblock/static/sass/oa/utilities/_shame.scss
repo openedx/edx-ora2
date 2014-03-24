@@ -143,6 +143,7 @@
     padding-left: 0 !important;
   }
 
+
   .step--grade .step__title {
     width: 100% !important;
 
@@ -168,5 +169,9 @@
   .step__title .step__deadline {
     letter-spacing: normal;
     text-transform: none;
+  }
+
+  .openassessment__steps__step .step__header .step__title {
+    margin-bottom: 0;
   }
 }
