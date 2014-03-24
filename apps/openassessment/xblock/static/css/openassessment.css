@@ -892,7 +892,7 @@ hr.divider,
   position: relative; }
 
 .openassessment .message {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   border-radius: 2px;
   padding: 20px 20px;
   background: #f5f6f7; }
@@ -1038,7 +1038,7 @@ hr.divider,
 .openassessment .openassessment__steps__step .step__status .ico {
   display: inline-block;
   vertical-align: bottom;
-  margin-left: 5px; }
+  margin-left: 10px; }
 .openassessment .openassessment__steps__step .step__status .copy {
   color: #646464; }
 @media screen and (max-width: 529px) {
@@ -1052,7 +1052,7 @@ hr.divider,
     width: 30.11389%;
     margin-right: 0;
     position: relative;
-    top: -5px;
+    top: -8px;
     text-align: right; }
     .openassessment .openassessment__steps__step .step__status:last-child {
       margin-right: 0; } }
@@ -1064,7 +1064,7 @@ hr.divider,
     width: 23.23176%;
     margin-right: 0;
     position: relative;
-    top: -5px;
+    top: -8px;
     text-align: right; }
     .openassessment .openassessment__steps__step .step__status:last-child {
       margin-right: 0; } }
@@ -1076,7 +1076,7 @@ hr.divider,
     width: 23.23176%;
     margin-right: 0;
     position: relative;
-    top: -5px;
+    top: -8px;
     text-align: right; }
     .openassessment .openassessment__steps__step .step__status:last-child {
       margin-right: 0; } }
@@ -1088,7 +1088,7 @@ hr.divider,
     width: 23.23176%;
     margin-right: 0;
     position: relative;
-    top: -5px;
+    top: -8px;
     text-align: right; }
     .openassessment .openassessment__steps__step .step__status:last-child {
       margin-right: 0; } }
@@ -1152,7 +1152,7 @@ hr.divider,
   color: #e5a635; }
 .openassessment .openassessment__steps__step.is--incomplete .step__status__value {
   background: #e5a635; }
-  .openassessment .openassessment__steps__step.is--incomplete .step__status__value .copy {
+  .openassessment .openassessment__steps__step.is--incomplete .step__status__value .copy, .openassessment .openassessment__steps__step.is--incomplete .step__status__value .ico {
     color: white; }
 .openassessment .openassessment__steps__step.is--incomplete .step__label {
   color: #e5a635; }
@@ -1184,14 +1184,14 @@ hr.divider,
   background: #62c24a; }
   .openassessment .openassessment__steps__step.is--complete .step__status__value .ico {
     display: inline-block; }
-  .openassessment .openassessment__steps__step.is--complete .step__status__value .copy {
+  .openassessment .openassessment__steps__step.is--complete .step__status__value .copy, .openassessment .openassessment__steps__step.is--complete .step__status__value .ico {
     color: white; }
 .openassessment .openassessment__steps__step.has--error .step__counter:before {
   border-color: rgba(188, 85, 71, 0.5);
   color: #bc5547; }
 .openassessment .openassessment__steps__step.has--error .step__status__value {
   background: #bc5547; }
-  .openassessment .openassessment__steps__step.has--error .step__status__value .copy {
+  .openassessment .openassessment__steps__step.has--error .step__status__value .copy, .openassessment .openassessment__steps__step.has--error .step__status__value .ico {
     color: white; }
 .openassessment .openassessment__steps__step.has--error .step__label {
   color: #bc5547; }
