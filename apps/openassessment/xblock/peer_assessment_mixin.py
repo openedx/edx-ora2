@@ -118,12 +118,16 @@ class PeerAssessmentMixin(object):
             "estimated_time": "20 minutes"  # TODO: Need to configure this.
         }
 
+        submissions_open, __ = self.is_open(step="submission")
+        over_grading = not submissions_open
+
         workflow = self.get_workflow_info()
         if workflow is None:
             return self.render_assessment(path, context_dict)
         continue_grading = (
             data.params.get('continue_grading', False)
             and workflow["status_details"]["peer"]["complete"]
+            and over_grading
         )
 
         student_item = self.get_student_item_dict()
@@ -156,7 +160,7 @@ class PeerAssessmentMixin(object):
         if date == "due" and not problem_open:
             path = 'openassessmentblock/peer/oa_peer_closed.html'
         elif workflow.get("status") == "peer":
-            peer_sub = self.get_peer_submission(student_item, assessment)
+            peer_sub = self.get_peer_submission(student_item, assessment, over_grading)
             if peer_sub:
                 path = 'openassessmentblock/peer/oa_peer_assessment.html'
                 context_dict["peer_submission"] = peer_sub
@@ -180,8 +184,6 @@ class PeerAssessmentMixin(object):
             assessment,
             over_grading=False
     ):
-        submissions_open, __ = self.is_open(step="submission")
-        over_grading = over_grading or not submissions_open
         peer_submission = False
         try:
             peer_submission = peer_api.get_submission_to_assess(
