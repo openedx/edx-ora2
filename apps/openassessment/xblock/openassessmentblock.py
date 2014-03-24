@@ -380,25 +380,20 @@ class OpenAssessmentBlock(
         context = Context(context_dict)
         return Response(template.render(context), content_type='application/html', charset='UTF-8')
 
-    def format_date_string(self, date):
-        """Takes a date string, and formats it to be a user facing date.
-
-        Format a date string to be user facing.
-
-        """
-        return dateutil.parser.parse(
-            unicode(date)
-        ).replace(tzinfo=pytz.utc).strftime(DATE_FORMAT)
-
     def format_datetime_string(self, datetime):
         """Takes a datetime string, and formats it to be a user facing time.
 
         Format a datetime string to be user facing.
 
+        Args:
+            datetime (str): A ISO formatted Datetime String, to be converted to
+                a datetime object with UTC timezone.
+
+        Returns:
+            datetime with UTC timezone from the given string.
+
         """
-        return dateutil.parser.parse(
-            unicode(datetime)
-        ).replace(tzinfo=pytz.utc).strftime(DATETIME_FORMAT)
+        return dateutil.parser.parse(unicode(datetime)).replace(tzinfo=pytz.utc)
 
     def add_xml_to_node(self, node):
         """

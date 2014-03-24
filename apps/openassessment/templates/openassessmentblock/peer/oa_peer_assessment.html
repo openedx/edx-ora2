@@ -12,7 +12,12 @@
             <span class="wrapper--copy">
                 <span class="step__label">Assess Peers</span>
                 {% if peer_due %}
-                <span class="step__deadline">due <span class="date">{{ peer_due }}</span></span>
+                <span class="step__deadline">due
+                    <span class="date">
+                        {{ peer_due }}
+                        (in {{ peer_due|timeuntil }})
+                    </span>
+                </span>
                 {% endif %}
             </span>
         </h2>

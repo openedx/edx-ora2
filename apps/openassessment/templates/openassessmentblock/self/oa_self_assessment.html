@@ -13,7 +13,12 @@
             <span class="wrapper--copy">
                 <span class="step__label">Assess Yourself</span>
                 {% if self_due %}
-                <span class="step__deadline">due <span class="date">{{ self_due }}</span></span>
+                <span class="step__deadline">due
+                    <span class="date">
+                        {{ self_due }}
+                        (in {{ self_due|timeuntil }})
+                    </span>
+                </span>
                 {% endif %}
             </span>
         </h2>
