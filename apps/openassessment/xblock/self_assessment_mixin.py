@@ -24,11 +24,17 @@ class SelfAssessmentMixin(object):
     @XBlock.handler
     def render_self_assessment(self, data, suffix=''):
         context = {}
+
+        assessment_module = self.get_assessment_module('self-assessment')
+        if assessment_module and assessment_module.get('due'):
+            context["self_due"] = self.format_datetime_string(assessment_module["due"])
+
         path = 'openassessmentblock/self/oa_self_unavailable.html'
         problem_open, date = self.is_open(step="self")
         workflow = self.get_workflow_info()
         if not workflow:
             return self.render_assessment(path, context)
+
         try:
             submission = submission_api.get_submission(self.submission_uuid)
             assessment = self_api.get_assessment(

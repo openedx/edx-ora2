@@ -149,6 +149,9 @@ class PeerAssessmentMixin(object):
                 context_dict["submit_button_text"] = (
                     "Submit your assessment & move to response #{}"
                 ).format(count + 2)
+            if assessment.get('due'):
+                context_dict["peer_due"] = self.format_datetime_string(assessment["due"])
+
 
         if date == "due" and not problem_open:
             path = 'openassessmentblock/peer/oa_peer_closed.html'
