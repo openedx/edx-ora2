@@ -929,7 +929,6 @@
 
     .question__title__copy {
       @extend %t-heading;
-      margin-left: ($baseline-h/4);
       color: $heading-color;
     }
 

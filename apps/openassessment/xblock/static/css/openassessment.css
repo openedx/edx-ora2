@@ -688,7 +688,6 @@ hr.divider,
       display: inline-block;
       vertical-align: middle; }
   .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question .question__title__copy {
-    margin-left: 10px;
     color: #646464; }
 
 .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers, .openassessment .step--self-assessment .self-assessment__assessment .question__answers {
@@ -856,7 +855,7 @@ hr.divider,
     -o-transform: rotate(90deg);
     transform: rotate(90deg); }
   .ui-toggle-visibility .ui-toggle-visibility__control .ui-toggle-visibility__control__copy {
-    margin-left: 5px; }
+    margin-left: 10px; }
   .ui-toggle-visibility .ui-toggle-visibility__control:hover, .ui-toggle-visibility .ui-toggle-visibility__control:focus {
     color: #00a7f6; }
   .ui-toggle-visibility .ui-toggle-visibility__control:active, .ui-toggle-visibility .ui-toggle-visibility__control.is--current {
@@ -1368,7 +1367,6 @@ hr.divider,
     .openassessment .submission__peer-evaluations__questions .question__title:after {
       clear: both; }
   .openassessment .submission__peer-evaluations__questions .question__title__copy {
-    margin-left: 10px;
     color: #646464; }
   .openassessment .submission__peer-evaluations__questions .question__score {
     float: right;
@@ -1585,7 +1583,7 @@ hr.divider,
   .openassessment .step--grade .step__title .wrapper--copy {
     display: block !important; }
 .openassessment .action--submit, .openassessment .action--save {
-  box-shadow: none; }
+  box-shadow: none !important; }
 .openassessment .ico {
   font-style: normal; }
 .openassessment .step__title .step__deadline {
