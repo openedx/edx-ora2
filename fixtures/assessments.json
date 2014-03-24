@@ -481,7 +481,7 @@
             "scorer": 5,
             "author": 1,
             "started_at": "2014-03-12T11:35:22Z",
-            "assessment": -1,
+            "assessment": null,
             "submission_uuid": "55c6f020-a9da-11e3-976d-080027880ca6"
         }
     },
@@ -492,7 +492,7 @@
             "scorer": 1,
             "author": 5,
             "started_at": "2014-03-12T11:35:36Z",
-            "assessment": -1,
+            "assessment": null,
             "submission_uuid": "65650b3e-a9da-11e3-8b23-080027880ca6"
         }
     },
