@@ -1367,6 +1367,7 @@ hr.divider,
     .openassessment .submission__peer-evaluations__questions .question__title:after {
       clear: both; }
   .openassessment .submission__peer-evaluations__questions .question__title__copy {
+    margin-left: 10px;
     color: #646464; }
   .openassessment .submission__peer-evaluations__questions .question__score {
     float: right;
