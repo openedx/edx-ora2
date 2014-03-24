@@ -854,8 +854,9 @@ hr.divider,
     -moz-transform: rotate(90deg);
     -ms-transform: rotate(90deg);
     -o-transform: rotate(90deg);
-    transform: rotate(90deg);
-    margin-right: 5px; }
+    transform: rotate(90deg); }
+  .ui-toggle-visibility .ui-toggle-visibility__control .ui-toggle-visibility__control__copy {
+    margin-left: 5px; }
   .ui-toggle-visibility .ui-toggle-visibility__control:hover, .ui-toggle-visibility .ui-toggle-visibility__control:focus {
     color: #00a7f6; }
   .ui-toggle-visibility .ui-toggle-visibility__control:active, .ui-toggle-visibility .ui-toggle-visibility__control.is--current {
@@ -1570,6 +1571,9 @@ hr.divider,
     color: #00a7f6; }
   .openassessment .ui-toggle-visibility .ui-toggle-visibility__control:active, .openassessment .ui-toggle-visibility .ui-toggle-visibility__control.is--current, .openassessment .ui-toggle-visibility .ui-toggle-visibility__control .step__label:active, .openassessment .ui-toggle-visibility .ui-toggle-visibility__control .step__label.is--current {
     color: #1d9dd9; }
+.openassessment .step--peer-assessment .list--peer-assessments {
+  list-style: none outside none !important;
+  padding-left: 0 !important; }
 .openassessment .self-assessment__display__title, .openassessment .peer-assessment__display__title {
   margin-bottom: 10px !important;
   color: #aeafb3 !important; }

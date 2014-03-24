@@ -125,6 +125,12 @@
     }
   }
 
+  // peer assessment
+  .step--peer-assessment .list--peer-assessments {
+    list-style: none outside none !important;
+    padding-left: 0 !important;;
+  }
+
   // self assessment
 
   .self-assessment__display__title, .peer-assessment__display__title {

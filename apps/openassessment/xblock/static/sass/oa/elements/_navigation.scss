@@ -24,7 +24,10 @@
     > .ico {
       @include transition(all $tmg-f2 ease-in-out 0s);
       @include transform(rotate(90deg));
-      margin-right: ($baseline-h/8);
+    }
+
+    .ui-toggle-visibility__control__copy {
+      margin-left: ($baseline-h/8);
     }
 
     &:hover, &:focus {
