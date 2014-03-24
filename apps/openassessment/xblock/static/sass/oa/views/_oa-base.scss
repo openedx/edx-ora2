@@ -239,7 +239,7 @@
         @extend %icon-2;
         display: inline-block;
         vertical-align: bottom;
-        margin-left: ($baseline-v/2);
+        margin-left: ($baseline-v/4);
       }
 
       .copy {
@@ -929,6 +929,7 @@
 
     .question__title__copy {
       @extend %t-heading;
+      margin-left: ($baseline-h/4);
       color: $heading-color;
     }
 

@@ -169,12 +169,12 @@
     .ico {
       display: inline-block;
       vertical-align: middle;
-      margin-right: ($baseline-h/8);
     }
   }
 
   .question__title__copy {
     @extend %t-heading;
+    margin-left: ($baseline-h/4);
     color: $heading-color;
   }
 }
