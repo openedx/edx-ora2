@@ -20,7 +20,7 @@
         <span class="step__status">
           <span class="step__status__label">This step's status:</span>
           <span class="step__status__value">
-              <span class="copy">Not Completed</span>
+              <span class="copy">In Progress</span>
           </span>
         </span>
         {% endblock %}
@@ -29,9 +29,6 @@
     {% block body %}
     <div class="ui-toggle-visibility__content">
         <div class="wrapper--step__content">
-            {% block message %}
-            {% endblock %}
-
             <div class="step__content">
                 <article class="self-assessment__display" id="self-assessment">
                     <header class="self-assessment__display__header">
@@ -61,15 +58,15 @@
                                             <div class="wrapper--input">
                                                 <input type="radio"
                                                        name="{{ criterion.name }}"
-                                                       id="assessment__rubric__question--{{ criterion.name }}"
+                                                       id="assessment__rubric__question--{{ criterion.name }}__{{ option.name }}"
                                                        class="answer__value"
                                                        value="{{ option.name }}" />
-                                                <label for="assessment__rubric__question--{{ criterion.name }}"
+                                                <label for="assessment__rubric__question--{{ criterion.name }}__{{ option.name }}"
                                                        class="answer__label">{{ option.name }}</label>
                                             </div>
                                             <div class="wrapper--metadata">
                                                 <span class="answer__tip">{{ option.explanation }}</span>
-                                                <span class="answer__points">{{option.points}} <span class="label">points</span></span>
+                                                <span class="answer__points">{{option.points}} <span class="answer__points__label">points</span></span>
                                             </div>
                                         </li>
                                         {% endfor %}
@@ -83,10 +80,10 @@
             </div>
 
             <div class="step__actions">
-                <div class="message message--error message--error-server">
+                <div class="message message--inline message--error message--error-server">
                     <h3 class="message__title">We could not submit your assessment</h3>
-                    <div class="message__content"></div>
                 </div>
+
                 <ul class="list list--actions">
                     <li class="list--actions__item">
                         <button type="submit" id="self-assessment--001__assessment__submit" class="action action--submit is--disabled">

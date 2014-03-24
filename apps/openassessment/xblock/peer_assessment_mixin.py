@@ -139,11 +139,11 @@ class PeerAssessmentMixin(object):
 
             if continue_grading:
                 context_dict["submit_button_text"] = (
-                    "Submit your assessment & review another response."
+                    "Submit your assessment & review another response"
                 )
             elif assessment["must_grade"] - count == 1:
                 context_dict["submit_button_text"] = (
-                    "Submit your assessment & move onto next step."
+                    "Submit your assessment & move onto next step"
                 )
             else:
                 context_dict["submit_button_text"] = (
@@ -165,11 +165,9 @@ class PeerAssessmentMixin(object):
                 path = 'openassessmentblock/peer/oa_peer_turbo_mode.html'
                 context_dict["peer_submission"] = peer_sub
             else:
-                path = 'openassessmentblock/peer/oa_peer_complete.html'
-        elif workflow.get("status") == "done":
+                path = 'openassessmentblock/peer/oa_peer_waiting.html'
+        elif workflow.get("status") == "done" or finished:
             path = "openassessmentblock/peer/oa_peer_complete.html"
-        elif finished:
-            path = 'openassessmentblock/peer/oa_peer_waiting.html'
 
         return self.render_assessment(path, context_dict)
 

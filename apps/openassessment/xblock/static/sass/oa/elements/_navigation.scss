@@ -11,8 +11,8 @@
 
   // control to toggle
   .ui-toggle-visibility__control {
+    @include transition(color $tmg-f2 ease-in);
     @extend %fake-link;
-    color: $action-primary-color;
     text-decoration: none;
 
     // optional icon
@@ -24,7 +24,10 @@
     > .ico {
       @include transition(all $tmg-f2 ease-in-out 0s);
       @include transform(rotate(90deg));
-      margin-right: ($baseline-h/8);
+    }
+
+    .ui-toggle-visibility__control__copy {
+      margin-left: ($baseline-h/4);
     }
 
     &:hover, &:focus {

@@ -1,7 +1,7 @@
 {%  extends "openassessmentblock/peer/oa_peer_assessment.html" %}
 
 {% block list_item %}
-<li id="openassessment__peer-assessment"class="openassessment__steps__step step--peer-assessment is--collapsed">
+<li id="openassessment__peer-assessment"class="openassessment__steps__step step--peer-assessment is--incomplete ui-toggle-visibility">
 {% endblock %}
 
 {% block title %}
@@ -9,8 +9,9 @@
   <span class="step__status__label">This step's status:</span>
   <span class="step__status__value">
     <span class="copy">
-      <span class="step__status__value--completed">{{ graded }}</span> of
-      <span class="step__status__value--required">{{ must_grade }}</span> completed
+      Incomplete
+      (<span class="step__status__value--completed">{{ graded }}</span> of
+      <span class="step__status__value--required">{{ must_grade }}</span>)
     </span>
     <i class="ico icon-warning-sign"></i>
   </span>
@@ -18,4 +19,15 @@
 {% endblock %}
 
 {% block body %}
+<div class="ui-toggle-visibility__content">
+    <div class="wrapper--step__content">
+
+        <div class="step__message message message--incomplete">
+            <h3 class="message__title">The deadline for this part of the problem has passed</h3>
+            <div class="message__content">
+              <p> You can no longer assess your peers' responses or continue with the problem's next steps. Any progress you've made to this point is saved however.</p>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -98,7 +98,7 @@ OpenAssessment.BaseUI.prototype = {
                         ui.save();
                     }
                 );
-                
+
             }
         ).fail(function(errMsg) {
             ui.showLoadError('response');
@@ -253,7 +253,7 @@ OpenAssessment.BaseUI.prototype = {
             function(html) {
                 // Load the HTML
                 $('#openassessment__grade', ui.element).replaceWith(html);
-                
+
                 // Install a click handler for collapse/expand
                 var sel = $('#openassessment__grade', ui.element);
                 ui.setUpCollapseExpand(sel);
@@ -267,7 +267,7 @@ OpenAssessment.BaseUI.prototype = {
         ).fail(function(errMsg) {
             ui.showLoadError('grade', errMsg);
         });
-        
+
     },
 
     /**
@@ -453,7 +453,7 @@ OpenAssessment.BaseUI.prototype = {
     showLoadError: function(step) {
         var container = '#openassessment__' + step;
         $(container).toggleClass('has--error', true);
-        $(container + ' .step__status__value i').removeClass().addClass('icon-warning-sign');
+        $(container + ' .step__status__value i').removeClass().addClass('ico icon-warning-sign');
         $(container + ' .step__status__value .copy').html('Unable to Load');
     }
 };

@@ -112,7 +112,7 @@ class TestSelfAssessment(XBlockHandlerTestCase):
     @scenario('data/self_assessment_scenario.xml')
     def test_render_self_assessment_preview(self, xblock):
         resp = self.request(xblock, 'render_self_assessment', json.dumps(dict()))
-        self.assertIn("Unavailable", resp)
+        self.assertIn("Not Available", resp)
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_render_self_assessment_complete(self, xblock):
@@ -141,14 +141,14 @@ class TestSelfAssessment(XBlockHandlerTestCase):
             mock_complete.return_value = True
             # Expect that the self-assessment step is open
             resp = self.request(xblock, 'render_self_assessment', json.dumps(dict()))
-            self.assertIn("Not Completed", resp)
+            self.assertIn("In Progress", resp)
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_render_self_assessment_no_submission(self, xblock):
         # Without creating a submission, render the self-assessment step
         # Expect that the step is closed
         resp = self.request(xblock, 'render_self_assessment', json.dumps(dict()))
-        self.assertIn("Unavailable", resp)
+        self.assertIn("Not Available", resp)
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_render_self_assessessment_api_error(self, xblock):

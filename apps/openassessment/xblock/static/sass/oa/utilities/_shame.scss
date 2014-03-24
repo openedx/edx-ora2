@@ -28,27 +28,16 @@
     letter-spacing: normal;
   }
 
-
-  // title
-  .openassessment__title--sub span {
-    color: $heading-tertiary-color !important;
-  }
-
-  h1.openassessment__title {
-    margin-bottom: $baseline-v !important;
-    border-bottom: ($baseline-v/5) solid $color-decorative-tertiary !important;
-    padding-bottom: ($baseline-v/2) !important;
-  }
-
   // step header
   .openassessment__steps .openassessment__steps__step .step__header {
 
     .step__deadline {
-      color: $color-focused;
+      color: $heading-secondary-color;
     }
 
     // step title/name
-    .step__title {
+    h2.step__title {
+      @include span-columns(3 of 4);
       margin-top: 0 !important;
       text-align: left !important;
 
@@ -83,24 +72,25 @@
 
         // increment: show numbers using parent list counter
         &:before {
-          @extend %hd-6;
-          @extend %t-weight4;
+          @extend %hd-2;
+          @extend %t-strong;
           content: counter(item, decimal);
           counter-increment: item;
-          margin-right: ($baseline-v/4);
-          border-radius: ($baseline-v/10);
-          border: 1px solid rgba($color-focused, 0.5);
-          padding: ($baseline-v/4) ($baseline-v/2);
-          color: $color-focused;
-
+          color: $color-decorative-tertiary;
         }
       }
     }
-
-    .step__status__value {
-      line-height: 0;
-    }
   }
+
+  .step__status {
+
+  }
+
+  .step__status__value {
+    line-height: 0;
+  }
+
+
 
   .list--actions {
     list-style: none !important;
@@ -135,20 +125,24 @@
     }
   }
 
-  // self assessment
-  .self-assessment__display__header, .peer-assessment__display__header {
-    padding-bottom: ($baseline-v/2) !important;
+  // peer assessment
+  .step--peer-assessment .list--peer-assessments {
+    list-style: none outside none !important;
+    padding-left: 0 !important;;
   }
 
+  // self assessment
+
   .self-assessment__display__title, .peer-assessment__display__title {
+    margin-bottom: ($baseline-v/2) !important;
     color: $heading-secondary-color !important;
-    font-weight: 600 !important;
   }
 
   // shown submission/results
   .question__answers {
     padding-left: 0 !important;
   }
+
 
   .step--grade .step__title {
     width: 100% !important;
@@ -160,7 +154,7 @@
 
   // actions
   .action--submit, .action--save {
-    box-shadow: none;
+    box-shadow: none !important;;
   }
 
   // --------------------
@@ -175,5 +169,9 @@
   .step__title .step__deadline {
     letter-spacing: normal;
     text-transform: none;
+  }
+
+  .openassessment__steps__step .step__header .step__title {
+    margin-bottom: 0;
   }
 }

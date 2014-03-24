@@ -1,10 +1,8 @@
 {% spaceless %}
 <div class="wrapper wrapper--xblock wrapper--openassessment theme--basic">
-    <div class="openassessment" id="openassessment">
+    <div class="openassessment problem" id="openassessment">
         <div class="wrapper--grid">
-            <h2 class="openassessment__title ">
-                <span class="problem-header">{{ title }}</span>
-            </h2>
+            <h2 class="openassessment__title problem__header">{{ title }}</h2>
 
             <nav class="nav--contents">
                 <h2 class="title">Skip to a specific step:</h2>
@@ -21,13 +19,22 @@
                 </ol>
             </nav>
 
+            {% block message %}
+            <!-- if the problem is unstarted or response hasn't been submitted -->
+            <div id="openassessment__message" class="openassessment__message message">
+                <div class="message__content">
+                    <p>This problem requires that you work through 3 parts. You can begin by reading the question below and <a data-behavior="ui-scroll" href="#openassessment__response">providing your response</a>.</p>
+                </div>
+            </div>
+            {% endblock %}
+
             <div class="wrapper--openassessment__prompt">
                 <article class="openassessment__prompt ui-toggle-visibility">
 
-                    <h2 class="openassessment__prompt__title">Open Response Assessment Problem</h2>
+                    <h2 class="openassessment__prompt__title">This Problem's Prompt/Question</h2>
 
                     <div class="openassessment__prompt__copy ui-toggle-visibility__content">
-                        <p>{{ question|linebreaks }}</p>
+                        <p>{{ question }}</p>
                     </div>
                 </article>
             </div>
@@ -46,10 +53,9 @@
 
                             <span class="step__status">
                                 <span class="step__status__label">This step's status:</span>
-                                    <span class="step__status__value">
-                                        <span class="copy">Loading</span>
-                                        <i class="ico icon-cog icon-spin"></i>
-                                    </span>
+                                <span class="step__status__value">
+                                  <span class="copy">Loading</span>
+                                  <i class="ico icon-refresh icon-spin"></i>
                                 </span>
                             </span>
                         </header>
