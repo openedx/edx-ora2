@@ -174,4 +174,13 @@
   .openassessment__steps__step .step__header .step__title {
     margin-bottom: 0;
   }
+
+
+  // --------------------
+  // needed overrides
+  // --------------------
+  .ui-hint:after {
+    @extend %copy-4;
+    @extend %deco-shadow-down;
+  }
 }
