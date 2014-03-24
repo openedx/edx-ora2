@@ -1,0 +1,34 @@
+{%  extends "openassessmentblock/peer/oa_peer_assessment.html" %}
+
+{% block list_item %}
+<li id="openassessment__peer-assessment" class="openassessment__steps__step step--peer-assessment is--waiting is--complete is--collapsed">
+{% endblock %}
+
+{% block title %}
+<span class="step__status">
+  <span class="step__status__label">This step's status:</span>
+  <span class="step__status__value">
+    <span class="copy">
+      Complete
+      (<span class="step__status__value--completed">{{ graded }}</span>)
+    </span>
+    <i class="ico icon-ok"></i>
+  </span>
+</span>
+{% endblock %}
+
+{% block body %}
+<div class="ui-toggle-visibility__content">
+    <div class="wrapper--step__content">
+
+        <div class="step__message message message--complete">
+            <h3 class="message__title">Congratulations!</h3>
+            <div class="message__content">
+              <p>You have successfully completed all of the peer assessment that you have been asked to do for this step. If you would like to continue providing feedback to your peers you may do so here, but it will not influence your final grade.</p>
+
+              <p><strong>Currently there are no responses for you to assess. This should change momentarily. Check back shortly to provide feedback on more of your peers' responses.</strong></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
