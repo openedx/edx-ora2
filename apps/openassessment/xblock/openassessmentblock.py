@@ -2,6 +2,7 @@
 
 import datetime as dt
 import logging
+import dateutil
 import pkg_resources
 
 import pytz
@@ -154,6 +155,9 @@ DEFAULT_ASSESSMENT_MODULES = [
     DEFAULT_PEER_ASSESSMENT,
     DEFAULT_SELF_ASSESSMENT,
 ]
+
+DATE_FORMAT = "%A, %B %d, %Y"
+DATETIME_FORMAT = "%A, %B %d, %Y %X"
 
 
 def load(path):
@@ -366,15 +370,33 @@ class OpenAssessmentBlock(
             context_dict = {}
 
         if self.start:
-            context_dict["formatted_start_date"] = self.start.strftime("%A, %B %d, %Y")
-            context_dict["formatted_start_datetime"] = self.start.strftime("%A, %B %d, %Y %X")
+            context_dict["formatted_start_date"] = self.start.strftime(DATE_FORMAT)
+            context_dict["formatted_start_datetime"] = self.start.strftime(DATETIME_FORMAT)
         if self.due:
-            context_dict["formatted_due_date"] = self.due.strftime("%A, %B %d, %Y")
-            context_dict["formatted_due_datetime"] = self.due.strftime("%A, %B %d, %Y %X")
+            context_dict["formatted_due_date"] = self.due.strftime(DATE_FORMAT)
+            context_dict["formatted_due_datetime"] = self.due.strftime(DATETIME_FORMAT)
 
         template = get_template(path)
         context = Context(context_dict)
         return Response(template.render(context), content_type='application/html', charset='UTF-8')
+
+    def format_datetime_string(self, datetime_str):
+        """Takes a datetime string, and formats it to be a user facing time.
+
+        Format a datetime string to be user facing. Datetimes are stored as
+        strings in the XBlock configuration for an assessment module. This
+        function is used to get back the Datetime object for rendering the start
+        and due dates on the front end.
+
+        Args:
+            datetime_str (str): A ISO formatted Datetime String, to be converted
+                to a datetime object with UTC timezone.
+
+        Returns:
+            datetime with UTC timezone from the given string.
+
+        """
+        return dateutil.parser.parse(unicode(datetime_str)).replace(tzinfo=pytz.utc)
 
     def add_xml_to_node(self, node):
         """

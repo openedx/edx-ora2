@@ -12,7 +12,14 @@
             <span class="step__counter"></span>
             <span class="wrapper--copy">
                 <span class="step__label">Assess Yourself</span>
-                <span class="step__deadline">due <span class="date">{{ formatted_due_datetime }}</span></span>
+                {% if self_due %}
+                <span class="step__deadline">due
+                    <span class="date">
+                        {{ self_due }}
+                        (in {{ self_due|timeuntil }})
+                    </span>
+                </span>
+                {% endif %}
             </span>
         </h2>
 
