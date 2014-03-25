@@ -106,6 +106,26 @@ describe("OpenAssessment.Server", function() {
         });
     });
 
+    it("Sends feedback on an assessment to the XBlock", function() {
+        stubAjax(true, {success: true, msg: ''});
+
+        var success = false;
+        var options = ["Option 1", "Option 2"];
+        server.submitFeedbackOnAssessment("test feedback", options).done(function() {
+            success = true;
+        });
+
+        expect(success).toBe(true);
+        expect($.ajax).toHaveBeenCalledWith({
+            url: '/submit_feedback',
+            type: "POST",
+            data: JSON.stringify({
+                feedback_text: "test feedback",
+                feedback_options: options,
+            })
+        });
+    });
+
     it("loads the XBlock's XML definition", function() {
         stubAjax(true, { success: true, xml: "<openassessment />" });
 
@@ -289,6 +309,28 @@ describe("OpenAssessment.Server", function() {
             receivedMsg = errMsg;
         });
 
+        expect(receivedMsg).toEqual("Test error");
+    });
+
+    it("informs the caller of an AJAX error when sending feedback on submission", function() {
+        stubAjax(false, null);
+
+        var receivedMsg = null;
+        var options = ["Option 1", "Option 2"];
+        server.submitFeedbackOnAssessment("test feedback", options).fail(
+            function(errMsg) { receivedMsg = errMsg; }
+        );
+        expect(receivedMsg).toEqual("Could not contact server.");
+    });
+
+    it("informs the caller of a server error when sending feedback on submission", function() {
+        stubAjax(true, { success: false, msg: "Test error" });
+
+        var receivedMsg = null;
+        var options = ["Option 1", "Option 2"];
+        server.submitFeedbackOnAssessment("test feedback", options).fail(
+            function(errMsg) { receivedMsg = errMsg; }
+        );
         expect(receivedMsg).toEqual("Test error");
     });
 });

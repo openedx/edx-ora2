@@ -936,19 +936,17 @@ def _num_peers_graded(workflow):
 
 
 def get_assessment_feedback(submission_uuid):
-    """Retrieve a feedback object for an assessment whether it exists or not.
-
-    Gets or creates a new Assessment Feedback model for the given submission.
+    """
+    Retrieve a feedback on an assessment.
 
     Args:
-        submission_uuid: The submission we want to create assessment feedback
-            for.
-    Returns:
-        The assessment feedback object that exists, or a newly created model.
-    Raises:
-        PeerAssessmentInternalError: Raised when the AssessmentFeedback cannot
-            be created or retrieved because of internal exceptions.
+        submission_uuid: The submission we want to retrieve assessment feedback for.
 
+    Returns:
+        dict or None
+
+    Raises:
+        PeerAssessmentInternalError: Error occurred while retrieving the feedback.
     """
     try:
         feedback = AssessmentFeedback.objects.get(
@@ -967,46 +965,52 @@ def get_assessment_feedback(submission_uuid):
 
 
 def set_assessment_feedback(feedback_dict):
-    """Set a feedback object for an assessment to have some new values.
+    """
+    Set a feedback object for an assessment to have some new values.
 
-    Sets or updates the assessment feedback with the given values in the
-    dict.
+    Sets or updates the assessment feedback with the given values in the dict.
 
     Args:
         feedback_dict (dict): A dictionary of all the values to update or create
             a new assessment feedback.
+
     Returns:
-        The modified or created feedback.
+        None
+
+    Raises:
+        PeerAssessmentRequestError
+        PeerAssessmentInternalError
     """
     submission_uuid = feedback_dict.get('submission_uuid')
-    if not submission_uuid:
-        error_message = u"An error occurred creating assessment feedback: bad or missing submission_uuid."
-        logger.error(error_message)
-        raise PeerAssessmentRequestError(error_message)
-    try:
-        assessments = PeerWorkflowItem.get_scored_assessments(submission_uuid)
-    except DatabaseError:
-        error_message = (
-            u"An error occurred getting database state to set assessment feedback for {}."
-            .format(submission_uuid)
-        )
-        logger.exception(error_message)
-        raise PeerAssessmentInternalError(error_message)
-    feedback = AssessmentFeedbackSerializer(data=feedback_dict)
-    if not feedback.is_valid():
-        raise PeerAssessmentRequestError(feedback.errors)
+    feedback_text = feedback_dict.get('feedback_text')
+    selected_options = feedback_dict.get('options', list())
 
     try:
-        feedback_model = feedback.save()
-        # Assessments associated with feedback must be saved after the row is
-        # committed to the database in order to associated the PKs across both
-        # tables.
-        feedback_model.assessments.add(*assessments)
+        # Get or create the assessment model for this submission
+        # If we receive an integrity error, assume that someone else is trying to create
+        # another feedback model for this submission, and raise an exception.
+        if submission_uuid:
+            feedback, created = AssessmentFeedback.objects.get_or_create(submission_uuid=submission_uuid)
+        else:
+            error_message = u"An error occurred creating assessment feedback: bad or missing submission_uuid."
+            logger.error(error_message)
+            raise PeerAssessmentRequestError(error_message)
+
+        # Update the feedback text
+        if feedback_text is not None:
+            feedback.feedback_text = feedback_text
+
+        # Save the feedback model.  We need to do this before setting m2m relations.
+        if created or feedback_text is not None:
+            feedback.save()
+
+        # Associate the feedback with selected options
+        feedback.add_options(selected_options)
+
+        # Associate the feedback with scored assessments
+        assessments = PeerWorkflowItem.get_scored_assessments(submission_uuid)
+        feedback.assessments.add(*assessments)
     except DatabaseError:
-        error_message = (
-            u"An error occurred saving assessment feedback for {}."
-            .format(submission_uuid)
-        )
-        logger.exception(error_message)
-        raise PeerAssessmentInternalError(error_message)
-    return feedback.data
+        msg = u"Error occurred while creating or updating feedback on assessment: {}".format(feedback_dict)
+        logger.exception(msg)
+        raise PeerAssessmentInternalError(msg)

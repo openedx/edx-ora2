@@ -405,19 +405,60 @@ class AssessmentPart(models.Model):
         ])
 
 
+class AssessmentFeedbackOption(models.Model):
+    """
+    Option a student can select to provide feedback on the feedback they received.
+
+    `AssessmentFeedback` stands in a one-to-many relationship with `AssessmentFeedbackOption`s:
+    a student can select zero or more `AssessmentFeedbackOption`s when providing feedback.
+
+    Over time, we may decide to add, delete, or reword assessment feedback options.
+    To preserve data integrity, we will always get-or-create `AssessmentFeedbackOption`s
+    based on the option text.
+    """
+    text = models.CharField(max_length=255, unique=True)
+
+
 class AssessmentFeedback(models.Model):
-    """A response to a submission's feedback, judging accuracy or helpfulness."""
+    """
+    Feedback on feedback.  When students receive their grades, they
+    can provide feedback on how they were assessed, to be reviewed by course staff.
+
+    This consists of free-form written feedback
+    ("Please provide any thoughts or comments on the feedback you received from your peers")
+    as well as zero or more feedback options
+    ("Please select the statements below that reflect what you think of this peer grading experience")
+    """
     submission_uuid = models.CharField(max_length=128, unique=True, db_index=True)
     assessments = models.ManyToManyField(Assessment, related_name='assessment_feedback', default=None)
-    HELPFULNESS_CHOICES = (
-        (0, 'These results were not at all helpful'),
-        (1, 'These results were somewhat helpful'),
-        (2, 'These results were helpful'),
-        (3, 'These results were very helpful'),
-        (4, 'These results were extremely helpful'),
-    )
-    helpfulness = models.IntegerField(choices=HELPFULNESS_CHOICES, default=2)
-    feedback = models.TextField(max_length=10000, default="")
+    feedback_text = models.TextField(max_length=10000, default="")
+    options = models.ManyToManyField(AssessmentFeedbackOption, related_name='assessment_feedback', default=None)
+
+    def add_options(self, selected_options):
+        """
+        Select feedback options for this assessment.
+        Students can select zero or more options.
+
+        Note: you *must* save the model before calling this method.
+
+        Args:
+            option_text_list (list of unicode): List of options that the user selected.
+
+        Raises:
+            DatabaseError
+        """
+        # First, retrieve options that already exist
+        options = list(AssessmentFeedbackOption.objects.filter(text__in=selected_options))
+
+        # If there are additional options that do not yet exist, create them
+        new_options = [text for text in selected_options if text not in [opt.text for opt in options]]
+        for new_option_text in new_options:
+            options.append(AssessmentFeedbackOption.objects.create(text=new_option_text))
+
+        # Add all options to the feedback model
+        # Note that we've already saved each of the AssessmentFeedbackOption models, so they have primary keys
+        # (required for adding to a many-to-many relationship)
+        self.options.add(*options)
 
 
 class PeerWorkflow(models.Model):

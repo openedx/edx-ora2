@@ -134,7 +134,6 @@
                                 {% endwith %}
                                 {% endfor %}
                             </ul>
-
                         </li>
                     </ol>
                 </article>
@@ -147,31 +146,56 @@
                             <p>Course staff will be able to see any feedback that you provide here when they review course records.</p>
                         </div>
 
-                        <div class="submission__feedback__elements">
-                            <ol class="list list--fields submission__feeedback__fields">
-                                <li class="field field--select feedback__overall" id="feedback__overall">
-                                    <label for="feedback__overall__value">Overall how do you consider your peers’ assessments of your response?</label>
-                                    <select id="feedback__overall__value">
-                                        <option value="This assessment was useful">This assessment was useful</option>
-                                        <option value="This assessment was not useful">This assessment was not useful</option>
-                                        <option value="I disagree with this assessment">I disagree with this assessment</option>
-                                        <option value="This assessment was inappropriate">This assessment was inappropriate</option>
-                                    </select>
-                                </li>
-                                <li class="field field--textarea feedback__remarks" id="feedback__remarks">
-                                    <label for="feedback__remarks__value">Provide any thoughts or comments on the feedback you received from your peers here.</label>
-                                    <textarea id="feedback__remarks__value" placeholder="I feel the feedback I received was...">{{ feedback_text }}</textarea>
-                                </li>
-                            </ol>
-
-                            <div class="submission__feeedback__actions">
-                                <ul class="list list--actions submission__feeedback__actions">
-                                    <li class="list--actions__item">
-                                        <button type="submit" id="feedback__submit" class="action action--submit feedback__submit">Submit Feedback On Peer Evaluations</button>
+                        <ol class="list list--fields submission__feedback__fields">
+                            <li class="field field--radio feedback__overall" id="feedback__overall">
+                                <h4>Please select the statements below that reflect what you think of this peer grading experience:</h4>
+                                <ol class="list--options">
+                                    <li class="option option--useful">
+                                        <input type="checkbox"
+                                            name="feedback__overall__value"
+                                            id="feedback__overall__value--useful"
+                                            class="feedback__overall__value"
+                                            value="These assessments were useful." />
+                                        <label for="feedback__overall__value--useful">These assessments were useful.</label>
                                     </li>
-                                </ul>
-                            </div>
-                        </div>
+                                    <li class="option option--notuseful">
+                                        <input type="checkbox"
+                                            name="feedback__overall__value"
+                                            id="feedback__overall__value--notuseful"
+                                            class="feedback__overall__value"
+                                            value="These assessments were not useful." />
+                                        <label for="feedback__overall__value--notuseful">These assessments were not useful.</label>
+                                    </li>
+                                    <li class="option option--disagree">
+                                        <input type="checkbox"
+                                            name="feedback__overall__value"
+                                            id="feedback__overall__value--disagree"
+                                            class="feedback__overall__value"
+                                            value="I disagree with the ways that my peers assessed me." />
+                                        <label for="feedback__overall__value--notuseful">I disagree with the ways that my peers assessed me.</label>
+                                    </li>
+                                    <li class="option option--inappropriate">
+                                        <input type="checkbox"
+                                            name="feedback__overall__value"
+                                            id="feedback__overall__value--inappropriate"
+                                            class="feedback__overall__value"
+                                            value="I received some inappropriate comments." />
+                                        <label for="feedback__overall__value--notuseful">I received some inappropriate comments.</label>
+                                    </li>
+                                </ol>
+                            </li>
+                            <li class="field field--textarea feedback__remarks" id="feedback__remarks">
+                                <label for="feedback__remarks__value">Please provide any thoughts or comments on the feedback you received from your peers here.</label>
+                                <textarea id="feedback__remarks__value" placeholder="I feel the feedback I received was...">{{ feedback_text }}</textarea>
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="submission__feeedback__actions">
+                        <ul class="list list--actions submission__feeedback__actions">
+                            <li class="list--actions__item">
+                                <button type="submit" id="feedback__submit" class="action action--submit feedback__submit">Submit Feedback On Peer Evaluations</button>
+                            </li>
+                        </ul>
                     </div>
                 </form>
             </div>

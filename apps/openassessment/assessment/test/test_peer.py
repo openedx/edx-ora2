@@ -509,18 +509,25 @@ class TestPeerApi(TestCase):
         )
         feedback = peer_api.get_assessment_feedback(tim_sub['uuid'])
         self.assertIsNone(feedback)
-        feedback = peer_api.set_assessment_feedback(
+        peer_api.set_assessment_feedback(
             {
                 'submission_uuid': tim_sub['uuid'],
-                'helpfulness': 0,
-                'feedback': 'Bob is a jerk!'
+                'feedback_text': 'Bob is a jerk!',
+                'options': [
+                    'I disliked this assessment',
+                    'I felt this assessment was unfair',
+                ]
             }
         )
-        self.assertIsNotNone(feedback)
-        self.assertEquals(feedback["assessments"][0]["submission_uuid"], assessment["submission_uuid"])
-
         saved_feedback = peer_api.get_assessment_feedback(tim_sub['uuid'])
-        self.assertEquals(feedback, saved_feedback)
+        self.assertIsNot(saved_feedback, None)
+        self.assertEquals(saved_feedback['submission_uuid'], assessment['submission_uuid'])
+        self.assertEquals(saved_feedback['feedback_text'], 'Bob is a jerk!')
+        self.assertItemsEqual(saved_feedback['options'], [
+            {'text': 'I disliked this assessment'},
+            {'text': 'I felt this assessment was unfair'},
+        ])
+        self.assertEquals(saved_feedback["assessments"][0]["submission_uuid"], assessment["submission_uuid"])
 
     def test_close_active_assessment(self):
         buffy_answer, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
@@ -576,8 +583,7 @@ class TestPeerApi(TestCase):
         peer_api.set_assessment_feedback(
             {
                 'submission_uuid': tim_answer['uuid'],
-                'helpfulness': 0,
-                'feedback': 'Boo',
+                'feedback_text': 'Boo',
             }
         )
 

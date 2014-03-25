@@ -4,9 +4,10 @@ import os.path
 from ddt import ddt, file_data
 from django.test import TestCase
 
-from openassessment.assessment.models import Criterion, CriterionOption, Rubric
+from openassessment.assessment.models import Criterion, CriterionOption, Rubric, AssessmentFeedback
 from openassessment.assessment.serializers import (
-    InvalidRubric, RubricSerializer, rubric_from_dict
+    InvalidRubric, RubricSerializer, rubric_from_dict,
+    AssessmentFeedbackSerializer
 )
 
 def json_data(filename):
@@ -82,3 +83,36 @@ class TestCriterionOptionDeserialization(TestCase):
                 ]
             }
         )
+
+
+class TestAssessmentFeedbackSerializer(TestCase):
+
+    def test_serialize(self):
+        feedback = AssessmentFeedback.objects.create(
+            submission_uuid='abc123', feedback_text='Test feedback'
+        )
+        feedback.add_options(['I liked my assessment', 'I thought my assessment was unfair'])
+
+        serialized = AssessmentFeedbackSerializer(feedback).data
+        self.assertItemsEqual(serialized, {
+            'submission_uuid': 'abc123',
+            'feedback_text': 'Test feedback',
+            'options': [
+                {'text': 'I liked my assessment'},
+                {'text': 'I thought my assessment was unfair'},
+            ],
+            'assessments': [],
+        })
+
+    def test_empty_options(self):
+        feedback = AssessmentFeedback.objects.create(
+            submission_uuid='abc123', feedback_text='Test feedback'
+        )
+
+        serialized = AssessmentFeedbackSerializer(feedback).data
+        self.assertItemsEqual(serialized, {
+            'submission_uuid': 'abc123',
+            'feedback_text': 'Test feedback',
+            'options': [],
+            'assessments': [],
+        })
