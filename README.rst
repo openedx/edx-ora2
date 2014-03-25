@@ -1,9 +1,9 @@
-.. image:: https://travis-ci.org/edx/ora2.png?branch=master
+.. image:: https://travis-ci.org/edx/edx-ora2.png?branch=master
     :alt: Travis build status
 
 
-.. image:: https://coveralls.io/repos/edx/ora2/badge.png?branch=master
-    :target: https://coveralls.io/r/edx/ora2?branch=master
+.. image:: https://coveralls.io/repos/edx/edx-ora2/badge.png?branch=master
+    :target: https://coveralls.io/r/edx/edx-ora2?branch=master
     :alt: Coverage badge
 
 

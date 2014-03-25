@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# ora2 documentation build configuration file, created by
+# edx-ora2 documentation build configuration file, created by
 # sphinx-quickstart on Fri Jan 17 08:32:59 2014.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -57,7 +57,7 @@ if not on_rtd: # only import and set the theme if we're building docs locally
   html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 # General information about the project.
-project = u'ora2'
+project = u'edx-ora2'
 copyright = u'2014, edX.org'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -181,7 +181,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'ora2-doc'
+htmlhelp_basename = 'edx-ora2-doc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -201,7 +201,7 @@ latex_elements = {
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
     ('index',
-     'ora2.tex',
+     'edx-ora2.tex',
      u'edX ORA 2 Documentation',
      u'edX.org',
      'manual'),
@@ -233,7 +233,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'ora2', u'edX ORA 2 Documentation',
+    ('index', 'edx-ora2', u'edX ORA 2 Documentation',
      [u'edX.org'], 1)
 ]
 
@@ -248,10 +248,10 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     ('index',
-     'ora2',
+     'edx-ora2',
      u'edX ORA 2 Documentation',
      u'edX.org',
-     'ora2',
+     'edx-ora2',
      'Grading Modules',
      'Miscellaneous'),
     ]

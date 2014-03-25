@@ -3,7 +3,7 @@
 Public API
 ----------
 
-Every Django application in ora2 has an `api.py` that is its public
+Every Django application in edx-ora2 has an `api.py` that is its public
 interface. If you are using one of these applications from the outside, you
 should only import things from that module. The ground rules for api modules
 are:
