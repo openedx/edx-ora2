@@ -74,10 +74,8 @@ OpenAssessment.StudioUI.prototype = {
                 else { ui.updateXml(); }
             }
         ).fail(function(errMsg) {
-                // TODO: error message in the UI
-                console.log(errMsg);
-            }
-        );
+            ui.showError(msg);
+        });
     },
 
     /**
