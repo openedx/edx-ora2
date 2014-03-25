@@ -77,17 +77,17 @@ qthelp:
 	@echo
 	@echo "Build finished; now you can run "qcollectiongenerator" with the" \
 	      ".qhcp project file in $(BUILDDIR)/qthelp, like this:"
-	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/edx-tim.qhcp"
+	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/ora2.qhcp"
 	@echo "To view the help file:"
-	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/edx-tim.qhc"
+	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/ora2.qhc"
 
 devhelp:
 	$(SPHINXBUILD) -b devhelp $(ALLSPHINXOPTS) $(BUILDDIR)/devhelp
 	@echo
 	@echo "Build finished."
 	@echo "To view the help file:"
-	@echo "# mkdir -p $$HOME/.local/share/devhelp/edx-tim"
-	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/edx-tim"
+	@echo "# mkdir -p $$HOME/.local/share/devhelp/ora2"
+	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/ora2"
 	@echo "# devhelp"
 
 epub:
