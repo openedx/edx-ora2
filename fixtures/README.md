@@ -12,7 +12,7 @@ Usage
 
 1. Run the installation script.
 ```
-cd ora2
+cd edx-ora2
 ./fixtures/install.sh
 ```
 **WARNING**: This will wipe out all student and course state before installing the fixtures.
@@ -34,9 +34,9 @@ Generating fixtures
 
 To regenerate test fixtures (perhaps after running a database migration):
 ```
-cd ora2
+cd edx-ora2
 ./fixtures/dump.sh
 ```
 
-This will create new JSON fixtures in ora2/fixtures, which you can commit
-to the ora2 repo.
+This will create new JSON fixtures in edx-ora2/fixtures, which you can commit
+to the edx-ora2 repo.

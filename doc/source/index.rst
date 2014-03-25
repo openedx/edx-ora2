@@ -1,4 +1,4 @@
-.. ora2 documentation master file, created by
+.. edx-ora2 documentation master file, created by
    sphinx-quickstart on Fri Jan 17 08:32:59 2014.
 
 Open Response Assessment (v2)
