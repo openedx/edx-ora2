@@ -25,6 +25,20 @@ OpenAssessment.BaseUI = function(runtime, element, server) {
 
 
 OpenAssessment.BaseUI.prototype = {
+
+    /**
+     * Checks to see if the scrollTo function is available, then scrolls to the
+     * top of the list of steps for this display.
+     *
+     * Ideally, we would not need to check if the function exists, and could
+     * import scrollTo, or other dependencies, into workbench.
+     */
+    scrollToTop: function() {
+        if ($.scrollTo instanceof Function) {
+            $(window).scrollTo($("#openassessment__steps"), 800, {offset:-50});
+        }
+    },
+
     /**
     Install click handlers to expand/collapse a section.
 
@@ -346,6 +360,7 @@ OpenAssessment.BaseUI.prototype = {
             ui.renderPeerAssessmentStep();
             ui.renderSelfAssessmentStep();
             ui.renderGradeStep();
+            ui.scrollToTop();
         });
     },
 
@@ -412,6 +427,7 @@ OpenAssessment.BaseUI.prototype = {
                 ui.renderPeerAssessmentStep();
                 ui.renderSelfAssessmentStep();
                 ui.renderGradeStep();
+                ui.scrollToTop();
             }
         ).fail(function(errMsg) {
             ui.toggleActionError('self', errMsg);
