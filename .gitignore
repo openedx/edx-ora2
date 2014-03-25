@@ -55,6 +55,6 @@ npm-debug.log
 coverage
 
 # tim-specific
-timdb
+ora2db
 testdb
 fixture_err.log
