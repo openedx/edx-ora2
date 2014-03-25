@@ -85,13 +85,35 @@ class SelfAssessmentMixin(object):
             return {'success': False, 'msg': _(u"Missing options_selected key in request")}
 
         try:
-            self_api.create_assessment(
+            assessment = self_api.create_assessment(
                 data['submission_uuid'],
                 self.get_student_item_dict()['student_id'],
                 data['options_selected'],
                 {"criteria": self.rubric_criteria}
             )
-
+            self.runtime.publish(
+                self,
+                "openassessmentblock.self_assess",
+                {
+                    "feedback": assessment["feedback"],
+                    "rubric": {
+                        "content_hash": assessment["rubric"]["content_hash"],
+                    },
+                    "scorer_id": assessment["scorer_id"],
+                    "score_type": assessment["score_type"],
+                    "scored_at": assessment["scored_at"],
+                    "submission_uuid": assessment["submission_uuid"],
+                    "parts": [
+                        {
+                            "option": {
+                                "name": part["option"]["name"],
+                                "points": part["option"]["points"]
+                            }
+                        }
+                        for part in assessment["parts"]
+                    ]
+                }
+            )
             # After we've created the self-assessment, we need to update the workflow.
             self.update_workflow_status()
         except self_api.SelfAssessmentRequestError as ex:

@@ -6,6 +6,7 @@ import copy
 import logging
 
 from django.core.cache import cache
+from django.conf import settings
 from django.db import IntegrityError, DatabaseError
 from django.utils.encoding import force_unicode
 
@@ -14,8 +15,7 @@ from submissions.serializers import (
 )
 from submissions.models import Submission, StudentItem, Score, ScoreSummary
 
-
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("submissions.api")
 
 
 class SubmissionError(Exception):
@@ -140,7 +140,21 @@ def create_submission(student_item_dict, answer, submitted_at=None,
             raise SubmissionRequestError(submission_serializer.errors)
         submission_serializer.save()
 
-        return submission_serializer.data
+        sub_data = submission_serializer.data
+        logger.info(
+            u"Created submission uuid={submission_uuid} for "
+            u"(course_id={course_id}, item_id={item_id}, "
+            u"anonymous_student_id={anonymous_student_id})"
+            .format(
+                submission_uuid=sub_data["uuid"],
+                course_id=student_item_dict["course_id"],
+                item_id=student_item_dict["item_id"],
+                anonymous_student_id=student_item_dict["student_id"]
+            )
+        )
+
+        return sub_data
+
     except JsonFieldError:
         error_message = u"Could not serialize JSON field in submission {} for student item {}".format(
             model_kwargs, student_item_dict
@@ -185,6 +199,7 @@ def get_submission(submission_uuid):
     cache_key = "submissions.submission.{}".format(submission_uuid)
     cached_submission_data = cache.get(cache_key)
     if cached_submission_data:
+        logger.info("Get submission {} (cached)".format(submission_uuid))
         return cached_submission_data
 
     try:
@@ -192,6 +207,7 @@ def get_submission(submission_uuid):
         submission_data = SubmissionSerializer(submission).data
         cache.set(cache_key, submission_data)
     except Submission.DoesNotExist:
+        logger.error("Submission {} not found.".format(submission_uuid))
         raise SubmissionNotFoundError(
             u"No submission matching uuid {}".format(submission_uuid)
         )
@@ -201,6 +217,7 @@ def get_submission(submission_uuid):
         logger.exception(err_msg)
         raise SubmissionInternalError(err_msg)
 
+    logger.info("Get submission {}".format(submission_uuid))
     return submission_data
 
 
@@ -391,7 +408,7 @@ def get_latest_score_for_submission(submission_uuid):
     return ScoreSerializer(score).data
 
 
-def set_score(submission_uuid, score, points_possible):
+def set_score(submission_uuid, points_earned, points_possible):
     """Set a score for a particular submission.
 
     Sets the score for a particular submission. This score is calculated
@@ -402,8 +419,7 @@ def set_score(submission_uuid, score, points_possible):
             dictionary must contain a course_id, student_id, and item_id.
         submission_uuid (str): The submission associated with this score.
         submission_uuid (str): UUID for the submission (must exist).
-        score (int): The score to associate with the given submission and
-            student item.
+        points_earned (int): The earned points for this submission.
         points_possible (int): The total points possible for this particular
             student item.
 
@@ -444,7 +460,7 @@ def set_score(submission_uuid, score, points_possible):
         data={
             "student_item": submission_model.student_item.pk,
             "submission": submission_model.pk,
-            "points_earned": score,
+            "points_earned": points_earned,
             "points_possible": points_possible,
         }
     )
@@ -461,6 +477,10 @@ def set_score(submission_uuid, score, points_possible):
     # a score summary and ignore the error.
     try:
         score.save()
+        logger.info(
+            "Score of ({}/{}) set for submission {}"
+            .format(points_earned, points_possible, submission_uuid)
+        )
     except IntegrityError:
         pass
 

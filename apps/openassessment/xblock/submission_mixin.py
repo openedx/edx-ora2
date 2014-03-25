@@ -104,6 +104,13 @@ class SubmissionMixin(object):
             try:
                 self.saved_response = unicode(data['submission'])
                 self.has_saved = True
+
+                # Emit analytics event...
+                self.runtime.publish(
+                    self,
+                    "openassessmentblock.save_submission",
+                    {"saved_response": self.saved_response}
+                )
             except:
                 return {'success': False, 'msg': _(u"Could not save response submission")}
             else:
@@ -120,6 +127,20 @@ class SubmissionMixin(object):
         submission = api.create_submission(student_item_dict, student_sub_dict)
         workflow_api.create_workflow(submission["uuid"])
         self.submission_uuid = submission["uuid"]
+
+        # Emit analytics event...
+        self.runtime.publish(
+            self,
+            "openassessmentblock.create_submission",
+            {
+                "submission_uuid": submission["uuid"],
+                "attempt_number": submission["attempt_number"],
+                "created_at": submission["created_at"],
+                "submitted_at": submission["submitted_at"],
+                "answer": submission["answer"],
+            }
+        )
+
         return submission
 
     @staticmethod

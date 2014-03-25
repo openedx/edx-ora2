@@ -26,7 +26,7 @@ from submissions.api import get_submission_and_student
 from submissions.models import Submission, StudentItem
 from submissions.serializers import SubmissionSerializer, StudentItemSerializer
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("openassessment.assessment.peer_api")
 
 PEER_TYPE = "PE"
 TIME_LIMIT = timedelta(hours=8)
@@ -240,8 +240,23 @@ def create_assessment(
                 "submission came from the peer workflow."))
         # Close the active assessment
         _close_active_assessment(scorer_workflow, submission_uuid, assessment)
+        assessment_dict = full_assessment_dict(assessment)
+        logger.info(
+            u"Created peer-assessment {assessment_id} for student {user} on "
+            u"submission {submission_uuid}, course {course_id}, item {item_id} "
+            u"with rubric {rubric_content_hash}; scored by {scorer}"
+            .format(
+                assessment_id=assessment.id,
+                user=student_item_dict['student_id'],
+                submission_uuid=submission_uuid,
+                course_id=student_item_dict['course_id'],
+                item_id=student_item_dict['item_id'],
+                rubric_content_hash=rubric.content_hash,
+                scorer=scorer_id,
+            )
+        )
 
-        return full_assessment_dict(assessment)
+        return assessment_dict
     except DatabaseError:
         error_message = _(
             u"An error occurred while creating assessment {} for submission: "
@@ -516,6 +531,15 @@ def get_submission_to_assess(
         try:
             submission_data = sub_api.get_submission(submission_uuid)
             _create_peer_workflow_item(workflow, submission_uuid)
+            logger.info(
+                u"Retrieved submission {} ({}, {}) to be assessed by {}"
+                .format(
+                    submission_uuid,
+                    student_item_dict["course_id"],
+                    student_item_dict["item_id"],
+                    student_item_dict["student_id"],
+                )
+            )
             return submission_data
         except sub_api.SubmissionDoesNotExist:
             error_message = _(
@@ -526,6 +550,14 @@ def get_submission_to_assess(
             logger.exception(error_message)
             raise PeerAssessmentWorkflowError(error_message)
     else:
+        logger.info(
+            u"No submission found for {} to assess ({}, {})"
+            .format(
+                student_item_dict["student_id"],
+                student_item_dict["course_id"],
+                student_item_dict["item_id"],
+            )
+        )
         return None
 
 
