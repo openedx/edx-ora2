@@ -30,6 +30,14 @@
       @extend %copy-3;
       color: $copy-secondary-color;
 
+      p {
+        margin-bottom: ($baseline-v/2);
+
+        &:last-child {
+          @extend %wipe-last-child;
+        }
+      }
+
       a {
         @extend %link-copy;
       }
