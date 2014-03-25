@@ -5,7 +5,7 @@ Performance Tests
 
 .. code:: bash
 
-    cd edx-tim
+    cd ora2
     pip install -r requirements/perf.txt
 
 2. Import ``course.tar.gz`` into Studio:

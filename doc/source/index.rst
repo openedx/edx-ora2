@@ -1,7 +1,7 @@
-.. edx-tim documentation master file, created by
+.. ora2 documentation master file, created by
    sphinx-quickstart on Fri Jan 17 08:32:59 2014.
 
-edx-tim: Open Response Assessment (v2)
+Open Response Assessment (v2)
 ======================================
 
 This is an initial prototype for redesigning Peer Grading and general Open Ended

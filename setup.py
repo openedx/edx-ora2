@@ -38,11 +38,11 @@ REQUIREMENTS = [
 
 
 setup(
-    name='edx-tim',
+    name='ora2',
     version='0.0.1',
     author='edX',
-    url='http://github.com/edx/edx-tim',
-    description='edx-tim',
+    url='http://github.com/edx/ora2',
+    description='ora2',
     license='AGPL',
     classifiers=[
         'Development Status :: 3 - Alpha',

@@ -250,7 +250,7 @@ def rubric_from_dict(rubric_dict):
     Sample data (one criterion, two options)::
 
         {
-          "prompt": "Create a plan to deliver edx-tim!",
+          "prompt": "Create a plan to deliver ora2!",
           "criteria": [
             {
               "order_num": 0,

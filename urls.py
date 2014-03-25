@@ -16,10 +16,8 @@ urlpatterns = patterns(
     # Provided by XBlock
     url(r'^workbench/', include(workbench.urls)),
 
-    # edx-tim apps
+    # ora2 apps
     url(r'^submissions/', include(submissions.urls)),
-
-    # edx-tim apps
     url(r'^peer/evaluations/', include(openassessment.assessment.urls)),
 )
 
