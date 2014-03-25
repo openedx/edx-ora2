@@ -11,132 +11,6 @@
 .openassessment {
 
   // --------------------
-  // general: messages
-  // --------------------
-  .message {
-    margin-bottom: $baseline-v;
-    border-radius: ($baseline-v/10);
-    padding: $baseline-v ($baseline-h/2);
-    background: $color-decorative-quaternary;
-
-    .message__title {
-      @extend %t-heading;
-      margin-bottom: ($baseline-v/4);
-      border-bottom: ($baseline-v/10) solid $color-decorative-tertiary;
-      padding-bottom: ($baseline-v/4);
-    }
-
-    .message__content {
-      @extend %copy-3;
-      color: $copy-secondary-color;
-
-      p {
-        margin-bottom: ($baseline-v/2);
-
-        &:last-child {
-          @extend %wipe-last-child;
-        }
-      }
-
-      a {
-        @extend %link-copy;
-      }
-    }
-  }
-
-  // TYPE: error
-  .message--error {
-    background: tint($color-error, 95%);
-
-    .message__title {
-      color: $color-error;
-      border-bottom-color: $color-error;
-    }
-  }
-
-  // TYPE: warning
-  .message--warning {
-    background: tint($color-warning, 95%);
-
-    .message__title {
-      color: $color-warning;
-      border-bottom-color: $color-warning;
-    }
-  }
-
-  // TYPE: confirmation
-  .message--confirmation {
-    background: tint($color-confirm, 95%);
-
-    .message__title {
-      color: $color-confirm;
-      border-bottom-color: $color-confirm;
-    }
-  }
-
-  // TYPE: complete
-  .message--complete {
-    background: tint($color-complete, 95%);
-
-    .message__title {
-      color: $color-complete;
-      border-bottom-color: $color-complete;
-    }
-  }
-
-  // TYPE: incomplete
-  .message--incomplete {
-    background: tint($color-incomplete, 95%);
-
-    .message__title {
-      color: $color-incomplete;
-      border-bottom-color: $color-incomplete;
-    }
-  }
-
-  // CASE: showing errors is shown
-  .message--error {
-    @extend %trans-opacity;
-    display: none;
-    opacity: 0.0;
-  }
-
-  .has--error {
-
-    .message--error {
-      display: block;
-      opacity: 1.0;
-    }
-  }
-
-  // TYPE: inline message
-  .message--inline {
-    padding: ($baseline-v/2) ($baseline-h/2);
-    background: tint($color-confirm, 15%);
-
-    .message__title {
-      margin-bottom: 0;
-      border: none;
-      padding-bottom: 0;
-      color: $white-t;
-      text-align: center;
-    }
-
-    &.message--error {
-      background: tint($color-error, 15%);
-    }
-
-    &.message--warning {
-      background: tint($color-warning, 15%);
-    }
-
-    &.message--confirm {
-      background: tint($color-warning, 15%);
-    }
-  }
-
-
-  // --------------------
   // general: chrome
   // --------------------
   .openassessment__title {
@@ -244,7 +118,7 @@
       }
 
       .ico {
-        @extend %icon-2;
+        @extend %icon-3;
         display: inline-block;
         vertical-align: bottom;
         margin-left: ($baseline-v/4);
@@ -351,7 +225,7 @@
         }
 
         .ico {
-          @extend %icon-1;
+          @extend %icon-2;
         }
       }
 
@@ -381,13 +255,17 @@
       .step__status__value {
         background: $color-unavailable;
 
+        .wrapper--anim {
+          @include animation(pulse $tmg-s3 ease-in-out infinite);
+        }
+
         .ico {
           display: inline-block;
-          color: $copy-color;
+          color: $copy-secondary-color;
         }
 
         .copy {
-          color: $copy-color;
+          color: $copy-secondary-color;
         }
       }
     }
@@ -1062,6 +940,7 @@
 
   .submission__feeedback__content {
     @extend %ui-subsection-content;
+    margin-bottom: $baseline-v;
   }
 
   .submission__feeedback__instructions {

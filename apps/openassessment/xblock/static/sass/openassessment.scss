@@ -29,6 +29,7 @@
 @import 'xb/utilities/variables';              // default settings and values
 @import 'xb/utilities/mixins';                 // mixins and functions
 @import 'xb/utilities/extends';                // re-usable extends, placeholders, archetypes
+@import 'xb/utilities/animations';             // re-usable CSS-based animations
 
 // general xblocks: assets
 @import 'xb/assets/fonts';                     // imported/used fonts
@@ -52,6 +53,7 @@
 @import 'xb/elements/typography';              // font sizes/scale and applied/canned definitions
 @import 'xb/elements/controls';                // buttons, link styles, sliders, etc.
 @import 'xb/elements/forms';                   // form elements
+@import 'xb/elements/system-feedback';         // system messages, feedback, transitions
 @import 'xb/elements/layout';                  // applied layouts and deliberate class-based breakpoints
 
 // xblock: contextual
