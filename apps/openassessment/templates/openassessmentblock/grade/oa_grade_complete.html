@@ -46,7 +46,7 @@
                                 </span>
                             </h4>
 
-                            <ul class="question__answers ui-toggle-visibility__content">
+                            <ul class="question__answers ui-toggle-visibility__content has--hints">
                                 {% for assessment in peer_assessments %}
                                     {% with peer_num=forloop.counter %}
                                         {% for part in assessment.parts %}
@@ -63,8 +63,8 @@
                                                         <span class="answer__value__value">
                                                             {{ part.option.name }}
 
-                                                            <span class="ui-tooltip" title="{{ part.option.explanation }}">
-                                                                <i class="ico icon-info-sign" title="More Information on {{ part.option.name }}"></i>
+                                                            <span class="ui-hint hint--top" data-hint="{{ part.option.explanation }}">
+                                                              <i class="ico icon-info-sign" title="More Information on {{ part.option.name }}"></i>
                                                             </span>
                                                         </span>
                                                     </span>
@@ -92,8 +92,8 @@
                                             <span class="answer__value__value">
                                                 {{ part.option.name }}
 
-                                                <span class="ui-tooltip" title="{{ part.option.explanation }}">
-                                                    <i class="ico icon-info-sign" title="More Information on {{ part.option.name }}"></i>
+                                                <span class="ui-hint hint--top" data-hint="{{ part.option.explanation }}">
+                                                  <i class="ico icon-info-sign" title="More Information on {{ part.option.name }}"></i>
                                                 </span>
                                             </span>
                                         </span>
