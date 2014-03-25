@@ -380,20 +380,23 @@ class OpenAssessmentBlock(
         context = Context(context_dict)
         return Response(template.render(context), content_type='application/html', charset='UTF-8')
 
-    def format_datetime_string(self, datetime):
+    def format_datetime_string(self, datetime_str):
         """Takes a datetime string, and formats it to be a user facing time.
 
-        Format a datetime string to be user facing.
+        Format a datetime string to be user facing. Datetimes are stored as
+        strings in the XBlock configuration for an assessment module. This
+        function is used to get back the Datetime object for rendering the start
+        and due dates on the front end.
 
         Args:
-            datetime (str): A ISO formatted Datetime String, to be converted to
-                a datetime object with UTC timezone.
+            datetime_str (str): A ISO formatted Datetime String, to be converted
+                to a datetime object with UTC timezone.
 
         Returns:
             datetime with UTC timezone from the given string.
 
         """
-        return dateutil.parser.parse(unicode(datetime)).replace(tzinfo=pytz.utc)
+        return dateutil.parser.parse(unicode(datetime_str)).replace(tzinfo=pytz.utc)
 
     def add_xml_to_node(self, node):
         """
