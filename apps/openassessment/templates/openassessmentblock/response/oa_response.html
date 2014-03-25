@@ -71,7 +71,8 @@
 
                 <ul class="list list--actions">
                     <li class="list--actions__item">
-                        <a aria-role="button" href="#" id="step--response__submit" class="action action--submit step--response__submit is--disabled">
+                        <a aria-role="button" href="#" id="step--response__submit"
+                            class="action action--submit step--response__submit {{ submit_enabled|yesno:",is--disabled" }}">
                             <span class="copy">Submit your response and move to the next step</span>
                             <i class="ico icon-caret-right"></i>
                         </a>

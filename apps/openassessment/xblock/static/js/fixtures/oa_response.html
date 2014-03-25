@@ -1,0 +1,55 @@
+<div id="openassessment-base">
+    <ol>
+        <li id="openassessment__response" class="openassessment__steps__step step--response ui-toggle-visibility">
+            <div class="ui-toggle-visibility__content">
+                <div class="wrapper--step__content">
+                    <div class="step__content">
+                        <form id="response__submission" class="response__submission">
+                            <ol class="list list--fields response__submission__content">
+                                <li class="field field--textarea submission__answer" id="submission__answer">
+                                    <label class="sr" for="submission__answer__value">Provide your response to the question.</label>
+                                    <textarea id="submission__answer__value" placeholder=""></textarea>
+                                    <span class="tip">You may continue to work on your response until you submit it.</span>
+                                </li>
+                            </ol>
+
+                            <div class="response__submission__actions">
+                                <div class="message message--inline message--error message--error-server">
+                                    <h3 class="message__title">We could not save your progress</h3>
+                                </div>
+
+                                <ul class="list list--actions">
+                                    <li class="list--actions__item">
+                                        <button type="submit" id="submission__save" class="action action--save submission__save is--disabled">Save Your Progress</button>
+
+                                        <div id="response__save_status" class="response__submission__status">
+                                            <h3 class="response__submission__status__title">
+                                                <span class="sr">Your Working Submission Status:</span>
+                                                Unsaved draft
+                                            </h3>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="step__actions">
+                        <div class="message message--inline message--error message--error-server">
+                            <h3 class="message__title">We could not submit your response</h3>
+                        </div>
+
+                        <ul class="list list--actions">
+                            <li class="list--actions__item">
+                                <a aria-role="button" href="#" id="step--response__submit" class="action action--submit step--response__submit is--disabled">
+                                    <span class="copy">Submit your response and move to the next step</span>
+                                    <i class="ico icon-caret-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ol>
+</div>

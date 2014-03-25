@@ -155,7 +155,7 @@ class SubmissionMixin(object):
         Returns:
             unicode
         """
-        return _(u'Saved but not submitted') if self.has_saved else _(u'Not saved')
+        return _(u'Saved but not submitted') if self.has_saved else _(u'Unsaved draft')
 
     @XBlock.handler
     def render_submission(self, data, suffix=''):
@@ -185,6 +185,7 @@ class SubmissionMixin(object):
         context = {
             "saved_response": self.saved_response,
             "save_status": self.save_status,
+            "submit_enabled": self.saved_response != '',
             "submission_due": sub_due,
         }
 

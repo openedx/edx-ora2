@@ -2,7 +2,7 @@
 Tests for OA student-facing views.
 **/
 
-describe("OpenAssessment.BaseUI", function() {
+describe("OpenAssessment.BaseView", function() {
 
     // Stub server that returns dummy data
     var StubServer = function() {
@@ -13,12 +13,6 @@ describe("OpenAssessment.BaseUI", function() {
             self_assessment: readFixtures("self_assessment_frag.html"),
             peer_assessment: readFixtures("peer_assessment_frag.html"),
             grade: "Test fragment"
-        };
-
-        this.submit = function(submission) {
-            return $.Deferred(function(defer) {
-                 defer.resolveWith(this, ['student', 0]);
-            }).promise();
         };
 
         this.peerAssess = function(submissionId, optionsSelected, feedback) {
@@ -42,7 +36,7 @@ describe("OpenAssessment.BaseUI", function() {
             this.feedbackOptions = options;
 
             // Return a promise that always resolves successfully
-            return $.Deferred(function(defer) { defer.resolve() }).promise();
+            return $.Deferred(function(defer) { defer.resolve(); }).promise();
         };
     };
 
@@ -50,7 +44,7 @@ describe("OpenAssessment.BaseUI", function() {
     var runtime = {};
 
     var server = null;
-    var ui = null;
+    var view = null;
 
     /**
     Wait for subviews to load before executing callback.
@@ -60,7 +54,7 @@ describe("OpenAssessment.BaseUI", function() {
     **/
     var loadSubviews = function(callback) {
         runs(function() {
-            ui.load();
+            view.load();
         });
 
         waitsFor(function() {
@@ -85,21 +79,13 @@ describe("OpenAssessment.BaseUI", function() {
 
         // Create the object under test
         var el = $("#openassessment-base").get(0);
-        ui = new OpenAssessment.BaseUI(runtime, el, server);
-    });
-
-    it("Sends a submission to the server", function() {
-        loadSubviews(function() {
-            spyOn(server, 'submit').andCallThrough();
-            ui.submit();
-            expect(server.submit).toHaveBeenCalled();
-        });
+        view = new OpenAssessment.BaseView(runtime, el, server);
     });
 
     it("Sends a peer assessment to the server", function() {
         loadSubviews(function() {
             spyOn(server, 'peerAssess').andCallThrough();
-            ui.peerAssess();
+            view.peerAssess();
             expect(server.peerAssess).toHaveBeenCalled();
         });
     });
@@ -107,7 +93,7 @@ describe("OpenAssessment.BaseUI", function() {
     it("Sends a self assessment to the server", function() {
         loadSubviews(function() {
             spyOn(server, 'selfAssess').andCallThrough();
-            ui.selfAssess();
+            view.selfAssess();
             expect(server.selfAssess).toHaveBeenCalled();
         });
     });
@@ -126,10 +112,10 @@ describe("OpenAssessment.BaseUI", function() {
 
         // Create the object under test
         var el = $("#openassessment-base").get(0);
-        ui = new OpenAssessment.BaseUI(runtime, el, server);
+        view = new OpenAssessment.BaseView(runtime, el, server);
 
         // Submit feedback on an assessment
-        ui.submitFeedbackOnAssessment();
+        view.submitFeedbackOnAssessment();
 
         // Expect that the feedback was retrieved from the DOM and sent to the server
         expect(server.feedbackText).toEqual('I disliked the feedback I received.');

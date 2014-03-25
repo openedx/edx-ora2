@@ -8,7 +8,7 @@ if (typeof OpenAssessment == "undefined" || !OpenAssessment) {
 
 
 /**
-Interface for editing UI in Studio.
+Interface for editing view in Studio.
 The constructor initializes the DOM for editing.
 
 Args:
@@ -17,9 +17,9 @@ Args:
     server (OpenAssessment.Server): The interface to the XBlock server.
 
 Returns:
-    OpenAssessment.StudioUI
+    OpenAssessment.StudioView
 **/
-OpenAssessment.StudioUI = function(runtime, element, server) {
+OpenAssessment.StudioView = function(runtime, element, server) {
     this.runtime = runtime;
     this.server = server;
 
@@ -30,31 +30,31 @@ OpenAssessment.StudioUI = function(runtime, element, server) {
     );
 
     // Install click handlers
-    var ui = this;
+    var view = this;
     $(element).find('.openassessment-save-button').click(
         function(eventData) {
-            ui.save();
+            view.save();
     });
 
     $(element).find('.openassessment-cancel-button').click(
         function(eventData) {
-            ui.cancel();
+            view.cancel();
     });
 };
 
 
-OpenAssessment.StudioUI.prototype = {
+OpenAssessment.StudioView.prototype = {
 
     /**
-    Load the XBlock XML definition from the server and display it in the UI.
+    Load the XBlock XML definition from the server and display it in the view.
     **/
     load: function() {
-        var ui = this;
+        var view = this;
         this.server.loadXml().done(
             function(xml) {
-                ui.codeBox.setValue(xml);
+                view.codeBox.setValue(xml);
             }).fail(function(msg) {
-                ui.showError(msg);
+                view.showError(msg);
             }
         );
     },
@@ -64,17 +64,17 @@ OpenAssessment.StudioUI.prototype = {
     If the problem has been released, make the user confirm the save.
     **/
     save: function() {
-        var ui = this;
+        var view = this;
 
         // Check whether the problem has been released; if not,
         // warn the user and allow them to cancel.
         this.server.checkReleased().done(
             function(isReleased) {
-                if (isReleased) { ui.confirmPostReleaseUpdate($.proxy(ui.updateXml, ui)); }
-                else { ui.updateXml(); }
+                if (isReleased) { view.confirmPostReleaseUpdate($.proxy(view.updateXml, view)); }
+                else { view.updateXml(); }
             }
         ).fail(function(errMsg) {
-            ui.showError(msg);
+            view.showError(msg);
         });
     },
 
@@ -102,16 +102,16 @@ OpenAssessment.StudioUI.prototype = {
 
         // Send the updated XML to the server
         var xml = this.codeBox.getValue();
-        var ui = this;
+        var view = this;
         this.server.updateXml(xml).done(function() {
             // Notify the client-side runtime that we finished saving
             // so it can hide the "Saving..." notification.
-            ui.runtime.notify('save', {state: 'end'});
+            view.runtime.notify('save', {state: 'end'});
 
             // Reload the XML definition in the editor
-            ui.load();
+            view.load();
         }).fail(function(msg) {
-            ui.showError(msg);
+            view.showError(msg);
         });
     },
 
@@ -143,7 +143,7 @@ function OpenAssessmentEditor(runtime, element) {
     **/
     $(function($) {
         var server = new OpenAssessment.Server(runtime, element);
-        var ui = new OpenAssessment.StudioUI(runtime, element, server);
-        ui.load();
+        var view = new OpenAssessment.StudioView(runtime, element, server);
+        view.load();
     });
 }

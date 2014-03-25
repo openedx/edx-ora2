@@ -2,7 +2,7 @@
 Tests for OA XBlock editing.
 **/
 
-describe("OpenAssessment.StudioUI", function() {
+describe("OpenAssessment.StudioView", function() {
 
     var runtime = {
         notify: function(type, data) {}
@@ -52,7 +52,7 @@ describe("OpenAssessment.StudioUI", function() {
     };
 
     var server = null;
-    var ui = null;
+    var view = null;
 
     beforeEach(function() {
 
@@ -68,24 +68,24 @@ describe("OpenAssessment.StudioUI", function() {
 
         // Create the object under test
         var el = $('#openassessment-edit').get(0);
-        ui = new OpenAssessment.StudioUI(runtime, el, server);
+        view = new OpenAssessment.StudioView(runtime, el, server);
     });
 
     it("loads the XML definition", function() {
-        // Initialize the UI
-        ui.load();
+        // Initialize the view
+        view.load();
 
         // Expect that the XML definition was loaded
-        var contents = ui.codeBox.getValue();
+        var contents = view.codeBox.getValue();
         expect(contents).toEqual('<openassessment></openassessment>');
     });
 
     it("saves the XML definition", function() {
         // Update the XML
-        ui.codeBox.setValue('<openassessment>test!</openassessment>');
+        view.codeBox.setValue('<openassessment>test!</openassessment>');
 
         // Save the updated XML
-        ui.save();
+        view.save();
 
         // Expect the saving notification to start/end
         expect(runtime.notify).toHaveBeenCalledWith('save', {state: 'start'});
@@ -100,31 +100,31 @@ describe("OpenAssessment.StudioUI", function() {
         server.isReleased = true;
 
         // Stub the confirmation step (avoid showing the dialog)
-        spyOn(ui, 'confirmPostReleaseUpdate').andCallFake(
+        spyOn(view, 'confirmPostReleaseUpdate').andCallFake(
             function(onConfirm) { onConfirm(); }
         );
 
         // Save the updated XML
-        ui.save();
+        view.save();
 
         // Verify that the user was asked to confirm the changes
-        expect(ui.confirmPostReleaseUpdate).toHaveBeenCalled();
+        expect(view.confirmPostReleaseUpdate).toHaveBeenCalled();
     });
 
     it("cancels editing", function() {
-        ui.cancel();
+        view.cancel();
         expect(runtime.notify).toHaveBeenCalledWith('cancel', {});
     });
 
     it("displays an error when server reports a load XML error", function() {
         server.loadError = true;
-        ui.load();
+        view.load();
         expect(runtime.notify).toHaveBeenCalledWith('error', {msg: 'Test error'});
     });
 
     it("displays an error when server reports an update XML error", function() {
         server.updateError = true;
-        ui.save('<openassessment>test!</openassessment>');
+        view.save('<openassessment>test!</openassessment>');
         expect(runtime.notify).toHaveBeenCalledWith('error', {msg: 'Test error'});
     });
 
