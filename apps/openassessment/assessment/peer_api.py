@@ -759,19 +759,43 @@ def _get_submission_for_review(workflow, graded_by, over_grading=False):
         "1"
 
     """
-    order = " having count(pwi.id) < %s order by pw.created_at, pw.id "
     timeout = (timezone.now() - TIME_LIMIT).strftime("%Y-%m-%d %H:%M:%S")
-    sub = _get_next_submission(
-        order,
-        workflow,
-        workflow.item_id,
-        workflow.course_id,
-        workflow.student_id,
-        workflow.id,
-        timeout,
-        graded_by
-    )
-    return sub
+    try:
+        peer_workflows = list(PeerWorkflow.objects.raw(
+            "select pw.id, pw.submission_uuid "
+            "from assessment_peerworkflow pw "
+            "left join assessment_peerworkflowitem pwi "
+            "on pw.id=pwi.author_id "
+            "where pw.item_id=%s "
+            "and pw.course_id=%s "
+            "and pw.student_id<>%s "
+            "and pw.graded_count < %s "
+            "and pw.id not in (select pwi.author_id from assessment_peerworkflowitem pwi where pwi.scorer_id=%s) "
+            "and (pwi.scorer_id is NULL or pwi.assessment_id is not NULL or pwi.started_at > %s) "
+            "group by pw.id "
+            "having count(pwi.id) < %s "
+            "limit 1; ",
+            [
+                workflow.item_id,
+                workflow.course_id,
+                workflow.student_id,
+                graded_by,
+                workflow.id,
+                timeout,
+                graded_by
+            ]
+        ))
+        if not peer_workflows:
+            return None
+
+        return peer_workflows[0].submission_uuid
+    except DatabaseError:
+        error_message = _(
+            u"An internal error occurred while retrieving a peer submission "
+            u"for student {}".format(workflow)
+        )
+        logger.exception(error_message)
+        raise PeerAssessmentInternalError(error_message)
 
 
 def _get_submission_for_over_grading(workflow):
@@ -789,17 +813,37 @@ def _get_submission_for_over_grading(workflow):
     6) Returns the workflow with the fewest assessments.
 
     """
-    order = " order by c, pw.created_at, pw.id "
-    timeout = (timezone.now() - TIME_LIMIT).strftime("%Y-%m-%d %H:%M:%S")
-    return _get_next_submission(
-        order,
-        workflow,
-        workflow.item_id,
-        workflow.course_id,
-        workflow.student_id,
-        workflow.id,
-        timeout
-    )
+    try:
+        peer_workflows = list(PeerWorkflow.objects.raw(
+            "select pw.id, pw.submission_uuid "
+            "from assessment_peerworkflow pw "
+            "left join assessment_peerworkflowitem pwi "
+            "on pw.id=pwi.author_id "
+            "where pw.item_id=%s "
+            "and pw.course_id=%s "
+            "and pw.student_id<>%s "
+            "and pw.id not in (select pwi.author_id from assessment_peerworkflowitem pwi where pwi.scorer_id=%s) "
+            "group by pw.id "
+            "order by count(pwi.id), pw.created_at, pw.id "
+            "limit 1; ",
+            [
+                workflow.item_id,
+                workflow.course_id,
+                workflow.student_id,
+                workflow.id
+            ]
+        ))
+        if not peer_workflows:
+            return None
+
+        return peer_workflows[0].submission_uuid
+    except DatabaseError:
+        error_message = _(
+            u"An internal error occurred while retrieving a peer submission "
+            u"for student {}".format(workflow)
+        )
+        logger.exception(error_message)
+        raise PeerAssessmentInternalError(error_message)
 
 
 def _get_next_submission(order, workflow, *args):
@@ -812,17 +856,15 @@ def _get_next_submission(order, workflow, *args):
     For example, for a general peer assessment query, the following would be
     the generated SQL query:
 
-    select pw.id, pw.submission_uuid , pw.student_id, count(pwi.id) as c
+    select pw.id, pw.submission_uuid , pw.student_id
     from assessment_peerworkflow pw
-    left join assessment_peerworkflowitem pwi
-    on pw.id=pwi.author_id
     where pw.completed_at is NULL
     and pw.item_id='item_one'
     and pw.course_id='Demo_Course'
     and pw.student_id<>'Tim'
     and pw.id not in (select pwi.author_id from assessment_peerworkflowitem pwi where pwi.scorer_id=3159)
-    and (pwi.scorer_id is NULL or pwi.assessment_id is not NULL or pwi.started_at > '2014-03-04 20:09:04')
-    group by pw.id having count(pwi.id) < 3
+    and (select count(pwi.id) from assessment_peerworkflowitem pwi where pwi.scorer_id=3159)
+    and (pw.started_at is NULL or pw.graded_count < 3 or (pw.graded_count = 3 and pw.started_at < '2014-03-14 20:09:04'))
     order by pw.created_at, pw.id
     limit 1;
 
@@ -838,36 +880,7 @@ def _get_next_submission(order, workflow, *args):
         A submission uuid for the submission that should be peer assessed.
 
     """
-    try:
-        raw_query = (
-            "select pw.id, pw.submission_uuid, count(pwi.id) as c "
-            "from assessment_peerworkflow pw "
-            "left join assessment_peerworkflowitem pwi "
-            "on pw.id=pwi.author_id "
-            "where pw.completed_at is NULL "
-            "and pw.item_id=%s "
-            "and pw.course_id=%s "
-            "and pw.student_id<>%s "
-            "and pw.id not in (select pwi.author_id from assessment_peerworkflowitem pwi where pwi.scorer_id=%s) "
-            "and (pwi.scorer_id is NULL or pwi.assessment_id is not NULL or pwi.started_at > %s) "
-            "group by pw.id "
-            "{} "
-            "limit 1; "
-        )
 
-        query = raw_query.format(order)
-        peer_workflows = list(PeerWorkflow.objects.raw(query, args))
-        if not peer_workflows:
-            return None
-
-        return peer_workflows[0].submission_uuid
-    except DatabaseError:
-        error_message = _(
-            u"An internal error occurred while retrieving a peer submission "
-            u"for student {}".format(workflow)
-        )
-        logger.exception(error_message)
-        raise PeerAssessmentInternalError(error_message)
 
 
 def _close_active_assessment(workflow, submission_uuid, assessment):
@@ -897,6 +910,7 @@ def _close_active_assessment(workflow, submission_uuid, assessment):
     try:
         item = workflow.graded.get(submission_uuid=submission_uuid)
         item.assessment = assessment
+        item.scorer.graded_count += 1
         item.save()
     except (DatabaseError, PeerWorkflowItem.DoesNotExist):
         error_message = _(
