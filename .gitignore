@@ -40,7 +40,7 @@ htmlcov
 .pydevproject
 
 # Sass/Codekit
-apps/openassessment/xblock/static/sass/.sass-cache/
+.sass-cache/
 config.codekit
 
 # some mac thing
