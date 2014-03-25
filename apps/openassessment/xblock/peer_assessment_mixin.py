@@ -168,7 +168,7 @@ class PeerAssessmentMixin(object):
                 path = 'openassessmentblock/peer/oa_peer_turbo_mode.html'
                 context_dict["peer_submission"] = peer_sub
             else:
-                path = 'openassessmentblock/peer/oa_peer_waiting.html'
+                path = 'openassessmentblock/peer/oa_peer_turbo_mode_waiting.html'
         elif workflow.get("status") == "done" or finished:
             path = "openassessmentblock/peer/oa_peer_complete.html"
 
