@@ -100,6 +100,9 @@ def get_score(submission_uuid, requirements):
         return None
 
     workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
+
+    # This query will use the ordering defined by the assessment model
+    # (descending scored_at, then descending id)
     items = workflow.graded_by.filter(
         assessment__submission_uuid=submission_uuid,
         assessment__score_type=PEER_TYPE
