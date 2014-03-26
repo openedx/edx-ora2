@@ -594,7 +594,11 @@
 
   .openassessment__prompt {
     @extend %ui-well;
+    position: relative;
     margin-bottom: $baseline-v;
+    border: 1px solid $color-decorative-tertiary;
+    border-left: ($baseline-h/4) solid $color-decorative-secondary;
+    padding-left: ($baseline-h*0.75);
   }
 
   .openassessment__prompt__title {
@@ -612,7 +616,6 @@
         @extend %wipe-last-child;
       }
     }
-
 
     a {
       @extend %link-copy;
