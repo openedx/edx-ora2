@@ -49,26 +49,6 @@
     .step__title {
       margin-bottom: ($baseline-v/2);
 
-      @include media($bp-ds) {
-        @include span-columns(4 of 6);
-        margin-bottom: 0;
-      }
-
-      @include media($bp-dm) {
-        @include span-columns(9 of 12);
-        margin-bottom: 0;
-      }
-
-      @include media($bp-dl) {
-        @include span-columns(9 of 12);
-        margin-bottom: 0;
-      }
-
-      @include media($bp-dx) {
-        @include span-columns(9 of 12);
-        margin-bottom: 0;
-      }
-
       .step__counter, .wrapper--copy {
         display: inline-block;
         vertical-align: middle;
@@ -124,7 +104,7 @@
 
     // step status
     .step__status {
-      display: inline-block;
+      position: relative;
 
       .step__status__value {
         border-radius: ($baseline-v/10);
@@ -159,38 +139,6 @@
       .copy {
         @extend %t-score;
         color: $heading-color;
-      }
-
-      @include media($bp-m) {
-        position: relative;
-      }
-
-      @include media($bp-ds) {
-        @include span-columns(2 of 6);
-        @include omega();
-        position: relative;
-        top: -12px;
-      }
-
-      @include media($bp-dm) {
-        @include span-columns(3 of 12);
-        @include omega();
-        position: relative;
-        top:-12px;
-      }
-
-      @include media($bp-dl) {
-        @include span-columns(3 of 12);
-        @include omega();
-        position: relative;
-        top: -12px;
-      }
-
-      @include media($bp-dx) {
-        @include span-columns(3 of 12);
-        @include omega();
-        position: relative;
-        top: -12px;
       }
     }
 
@@ -235,22 +183,6 @@
     .step__actions {
       margin-bottom: ($baseline-v/2);
       text-align: center;
-
-      @include media($bp-ds) {
-        text-align: right;
-      }
-
-      @include media($bp-dm) {
-       text-align: right;
-      }
-
-      @include media($bp-dl) {
-        text-align: right;
-      }
-
-      @include media($bp-dx) {
-        text-align: right;
-      }
 
       .action--submit {
         @extend %btn--primary;
@@ -541,30 +473,6 @@
         display: block;
         text-align: center;
         margin-bottom: ($baseline-v/2);
-
-        @include media($bp-ds) {
-          display: inline-block;
-          margin-right: ($baseline-v/2);
-          margin-bottom: 0;
-        }
-
-        @include media($bp-dm) {
-          display: inline-block;
-          margin-right: ($baseline-v/2);
-          margin-bottom: 0;
-        }
-
-        @include media($bp-dl) {
-          display: inline-block;
-          margin-right: ($baseline-v/2);
-          margin-bottom: 0;
-        }
-
-        @include media($bp-dx) {
-          display: inline-block;
-          margin-right: ($baseline-v/2);
-          margin-bottom: 0;
-        }
       }
     }
   }
@@ -723,25 +631,6 @@
   .step--grade {
 
     .step__title {
-      @include media($bp-m) {
-        @include span-columns(4 of 4);
-      }
-
-      @include media($bp-ds) {
-        @include span-columns(6 of 6);
-      }
-
-      @include media($bp-dm) {
-        @include span-columns(12 of 12);
-      }
-
-      @include media($bp-dl) {
-        @include span-columns(12 of 12);
-      }
-
-      @include media($bp-dx) {
-        @include span-columns(12 of 12);
-      }
 
       .step__label, .grade__value {
         display: inline-block;
@@ -897,26 +786,6 @@
     // individual answers
     .answer {
       margin-bottom: $baseline-v;
-
-      @include media($bp-ds) {
-        @include span-columns(3 of 6);
-        @include omega(2n);
-      }
-
-      @include media($bp-dm) {
-        @include span-columns(4 of 12);
-        @include omega(3n);
-      }
-
-      @include media($bp-dl) {
-        @include span-columns(4 of 12);
-        @include omega(3n);
-      }
-
-      @include media($bp-dx) {
-        @include span-columns(4 of 12);
-        @include omega(3n);
-      }
 
       // CASE: self assessment
       &.self-assessment {
@@ -1093,14 +962,4 @@
       margin-right: ($baseline-v/2);
     }
   }
-
-  // --------------------
-  // STATE: incomplete
-  // --------------------
-
-
-  // --------------------
-  // STATE: waiting
-  // --------------------
-
 }

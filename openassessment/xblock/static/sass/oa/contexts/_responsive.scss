@@ -1,0 +1,273 @@
+// openassessment: contexts - responsive sizing
+// ====================
+
+// NOTES:
+// * this creates different sized layouts/grid based to use in lieu of native media queries (since XBlocks don't control the chrome they are rendered in)
+
+.xblock {
+
+  // --------------------
+  // CASE: extra small digital screen
+  // --------------------
+  &.ui-size-xs .wrapper--grid {
+
+    .step--grade .step__title {
+      @include span-columns(4 of 4);
+    }
+  }
+
+  // --------------------
+  // CASE: small desktop screen
+  // --------------------
+  &.ui-size-s .wrapper--grid {
+
+    .step__title {
+      @include span-columns(4 of 6);
+      margin-bottom: 0;
+    }
+
+    .step__status {
+      @include span-columns(2 of 6);
+      @include omega();
+      top: -8px;
+      text-align: right;
+    }
+
+    .step__actions {
+      text-align: right;
+    }
+
+    .response__submission__actions .action--save {
+      display: inline-block;
+      margin-right: ($baseline-v/2);
+      margin-bottom: 0;
+    }
+
+    .step--grade .step__title {
+      @include span-columns(6 of 6);
+    }
+
+    .submission__peer-evaluations__questions .answer {
+      @include span-columns(3 of 6);
+      @include omega(2n);
+    }
+
+    %ui-rubric-answers {
+
+      .wrapper--input {
+        @include span-columns(6 of 6);
+      }
+
+      .answer__tip {
+
+      }
+
+      .answer__points {
+
+      }
+    }
+
+    // shame-based override (inherited from _shame.scss mediaquery)
+    .openassessment__steps .openassessment__steps__step .step__header  h2.step__title {
+      @include span-columns(4 of 6);
+    }
+  }
+
+  // --------------------
+  // CASE: medium desktop screen
+  // --------------------
+  &.ui-size-m .wrapper--grid {
+
+    .step__title {
+      @include span-columns(9 of 12);
+      margin-bottom: 0;
+    }
+
+    .step__status {
+      @include span-columns(3 of 12);
+      @include omega();
+      top:-8px;
+      text-align: right;
+    }
+
+    .step__actions {
+      text-align: right;
+    }
+
+    .response__submission__actions .action--save {
+      display: inline-block;
+      margin-right: ($baseline-v/2);
+      margin-bottom: 0;
+    }
+
+    .step--grade .step__title {
+      @include span-columns(12 of 12);
+    }
+
+    .submission__peer-evaluations__questions .answer {
+      @include span-columns(3 of 12);
+      @include omega(4n);
+    }
+
+    %ui-rubric-answers {
+
+      .wrapper--input {
+        @include span-columns(4 of 12);
+        margin-bottom: 0;
+      }
+
+      .wrapper--metadata {
+        @include span-columns(8 of 12);
+        margin-bottom: 0;
+      }
+
+      .answer__tip {
+        @include span-columns(6 of 8);
+        float: left;
+        margin-bottom: 0;
+      }
+
+      .answer__points {
+        float: right;
+        text-align: right;
+      }
+    }
+
+    // shame-based override (inherited from _shame.scss mediaquery)
+    .openassessment__steps .openassessment__steps__step .step__header  h2.step__title {
+      @include span-columns(9 of 12);
+    }
+  }
+
+  // --------------------
+  // CASE: large desktop screen
+  // --------------------
+  &.ui-size-l .wrapper--grid {
+
+    .step__title {
+      @include span-columns(9 of 12);
+      margin-bottom: 0;
+    }
+
+    .step__status {
+      @include span-columns(3 of 12);
+      @include omega();
+      top: -8px;
+      text-align: right;
+    }
+
+    .step__actions {
+      text-align: right;
+    }
+
+    .response__submission__actions .action--save {
+      display: inline-block;
+      margin-right: ($baseline-v/2);
+      margin-bottom: 0;
+    }
+
+    .step--grade .step__title {
+      @include span-columns(12 of 12);
+    }
+
+    .submission__peer-evaluations__questions .answer {
+      @include span-columns(3 of 12);
+      @include omega(4n);
+    }
+
+    %ui-rubric-answers {
+
+      .wrapper--input {
+        @include span-columns(4 of 12);
+        margin-bottom: 0;
+      }
+
+      .wrapper--metadata {
+        @include span-columns(8 of 12);
+        margin-bottom: 0;
+      }
+
+      .answer__tip {
+        @include span-columns(6 of 8);
+        float: left;
+        margin-bottom: 0;
+      }
+
+      .answer__points {
+        float: right;
+        text-align: right;
+      }
+    }
+
+    // shame-based override (inherited from _shame.scss mediaquery)
+    .openassessment__steps .openassessment__steps__step .step__header  h2.step__title {
+      @include span-columns(9 of 12);
+    }
+  }
+
+  // --------------------
+  // CASE: extra large desktop screen
+  // --------------------
+  &.ui-size-xl .wrapper--grid {
+
+    .step__title {
+      @include span-columns(9 of 12);
+      margin-bottom: 0;
+    }
+
+    .step__status {
+      @include span-columns(3 of 12);
+      @include omega();
+      top: -8px;
+      text-align: right;
+    }
+
+    .step__actions {
+      text-align: right;
+    }
+
+    .response__submission__actions .action--save {
+      display: inline-block;
+      margin-right: ($baseline-v/2);
+      margin-bottom: 0;
+    }
+
+    .step--grade .step__title {
+      @include span-columns(12 of 12);
+    }
+
+    .submission__peer-evaluations__questions .answer {
+      @include span-columns(3 of 12);
+      @include omega(4n);
+    }
+
+    %ui-rubric-answers {
+
+      .wrapper--input {
+        @include span-columns(4 of 12);
+        margin-bottom: 0;
+      }
+
+      .wrapper--metadata {
+        @include span-columns(8 of 12);
+        margin-bottom: 0;
+      }
+
+      .answer__tip {
+        @include span-columns(6 of 8);
+        float: left;
+        margin-bottom: 0;
+      }
+
+      .answer__points {
+        float: right;
+        text-align: right;
+      }
+    }
+
+    // shame-based override (inherited from _shame.scss mediaquery)
+    .openassessment__steps .openassessment__steps__step .step__header  h2.step__title {
+      @include span-columns(9 of 12);
+    }
+  }
+}

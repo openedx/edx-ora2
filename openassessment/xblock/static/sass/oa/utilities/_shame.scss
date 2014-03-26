@@ -40,26 +40,6 @@
       margin-top: 0 !important;
       text-align: left !important;
 
-      @include media($bp-m) {
-        margin-bottom: ($baseline-v/2);
-      }
-
-      @include media($bp-ds) {
-        @include span-columns(4 of 6);
-      }
-
-      @include media($bp-dm) {
-        @include span-columns(9 of 12);
-      }
-
-      @include media($bp-dl) {
-        @include span-columns(9 of 12);
-      }
-
-      @include media($bp-dx) {
-        @include span-columns(9 of 12);
-      }
-
       .step__label {
         text-transform: none;
         letter-spacing: normal;
