@@ -215,6 +215,12 @@
         margin-left: ($baseline-h/2);
         border-left: 1px solid $color-decorative-tertiary;
         padding-left: ($baseline-h/2);
+
+        @include media($bp-m) {
+          margin-left: 0;
+          border-left: none;
+          padding-left: 0;
+        }
       }
 
       .step__counter {
@@ -226,7 +232,15 @@
           content: counter(item, decimal);
           counter-increment: item;
           color: $color-decorative-tertiary;
+        }
 
+        @include media($bp-m) {
+          display: none;
+
+
+          &:before {
+            display: none;
+          }
         }
       }
 
@@ -247,13 +261,29 @@
 
     // step status
     .step__status {
-      display: block;
+      display: inline-block;
 
       .step__status__value {
-        display: block;
         border-radius: ($baseline-v/10);
         padding: ($baseline-v/4) ($baseline-h/4);
         background: $color-decorative-tertiary;
+        position: relative;
+
+        @include media($bp-ds) {
+          display: block;
+        }
+
+        @include media($bp-dm) {
+          display: block;
+        }
+
+        @include media($bp-dl) {
+          display: block;
+        }
+
+        @include media($bp-dx) {
+          display: block;
+        }
       }
 
       .ico {
