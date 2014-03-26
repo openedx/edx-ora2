@@ -37,6 +37,13 @@ OpenAssessment.Server.prototype = {
         return this.runtime.handlerUrl(this.element, handler);
     },
 
+    /* 
+     * Get maximum size of input
+     */
+    get_max_input_size: function() {
+        return 1024 * 64;    /* 64KB should be enough for anybody, right? ;^P */
+    },
+
     /**
     Render the XBlock.
 
@@ -112,7 +119,7 @@ OpenAssessment.Server.prototype = {
     **/
     submit: function(submission) {
         var url = this.url('submit');
-        if (submission.length > 1024*256) {
+        if (submission.length > this.get_max_input_size()) {
             return $.Deferred(function(defer) {
                 defer.rejectWith(this, ["submit", "Text input too large."]);
             }).promise();
@@ -152,7 +159,7 @@ OpenAssessment.Server.prototype = {
     **/
     save: function(submission) {
         var url = this.url('save_submission');
-        if (submission.length > 1024*256) {
+        if (submission.length > this.get_max_input_size()) {
             return $.Deferred(function(defer) {
                 defer.rejectWith(this, ["Text input too large."]);
             }).promise();
@@ -192,7 +199,7 @@ OpenAssessment.Server.prototype = {
      */
      submitFeedbackOnAssessment: function(text, options) {
         var url = this.url('submit_feedback');
-        if (text.length > 1024*256) {
+        if (text.length > this.get_max_input_size()) {
             return $.Deferred(function(defer) {
                 defer.rejectWith(this, ["Text input too large."]);
             }).promise();
@@ -236,7 +243,7 @@ OpenAssessment.Server.prototype = {
     **/
     peerAssess: function(submissionId, optionsSelected, feedback) {
         var url = this.url('peer_assess');
-        if (feedback.length > 1024*256) {
+        if (feedback.length > this.get_max_input_size()) {
             return $.Deferred(function(defer) {
                 defer.rejectWith(this, ["Text input too large."]);
             }).promise();

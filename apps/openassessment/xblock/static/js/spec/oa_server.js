@@ -195,7 +195,8 @@ describe("OpenAssessment.Server", function() {
         var receivedErrorCode = "";
         var receivedErrorMsg = "";
         var test_string = '';
-        for (i = 0; i < (1024 * 1024 + 1); i++) { test_string += 'x'; }
+        var test_string_size = server.get_max_input_size() + 1;
+        for (i = 0; i < (test_string_size); i++) { test_string += 'x'; }
         server.submit(test_string).fail(
             function(errorCode, errorMsg) {
                 receivedErrorCode = errorCode;
@@ -225,7 +226,8 @@ describe("OpenAssessment.Server", function() {
     it("confirms that very long saves fail with an error without ajax", function() {
         var receivedErrorMsg = "";
         var test_string = '';
-        for (i = 0; i < (1024 * 1024 + 1); i++) { test_string += 'x'; }
+        var test_string_size = server.get_max_input_size() + 1;
+        for (i = 0; i < (test_string_size); i++) { test_string += 'x'; }
         server.save(test_string).fail(
             function(errorMsg) { receivedErrorMsg = errorMsg; }
         );
@@ -294,7 +296,8 @@ describe("OpenAssessment.Server", function() {
         var options = {clarity: "Very clear", precision: "Somewhat precise"};
         var receivedErrorMsg = "";
         var test_string = '';
-        for (i = 0; i < (1024 * 1024 + 1); i++) { test_string += 'x'; }
+        var test_string_size = server.get_max_input_size() + 1;
+        for (i = 0; i < (test_string_size); i++) { test_string += 'x'; }
         server.peerAssess("abc1234", options, test_string).fail(
             function(errorMsg) {
                 receivedErrorMsg = errorMsg;
@@ -354,7 +357,8 @@ describe("OpenAssessment.Server", function() {
         var options = ["Option 1", "Option 2"];
         var receivedErrorMsg = "";
         var test_string = '';
-        for (i = 0; i < (1024 * 1024 + 1); i++) { test_string += 'x'; }
+        var test_string_size = server.get_max_input_size() + 1;
+        for (i = 0; i < (test_string_size); i++) { test_string += 'x'; }
         server.submitFeedbackOnAssessment(test_string, options).fail(
             function(errorMsg) {
                 receivedErrorMsg = errorMsg;
