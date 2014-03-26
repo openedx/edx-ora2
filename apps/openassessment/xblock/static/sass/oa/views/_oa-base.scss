@@ -362,6 +362,10 @@
 
     .step__content__section {
       margin-bottom: ($baseline-v*2);
+
+      &:last-child {
+        @extend %wipe-last-child;
+      }
     }
 
     // step actions

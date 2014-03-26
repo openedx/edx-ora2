@@ -138,87 +138,91 @@
                     </ol>
                 </article>
 
-                <form id="submission__feedback" class="submission__feedback ui-toggle-visibility step__content__section" method="post">
+                <form id="submission__feedback" class="submission__feedback ui-toggle-visibility step__content__section is--collapsed" method="post">
                     <i class="ico icon-caret-right"></i>
                     <h3 class="submission__feedback__title ui-toggle-visibility__control">Give Feedback On Peer Evaluations</h3>
 
-                    <div class="submission__feedback__content {{ has_submitted_feedback|yesno:"is--submitted," }}">
-                        <span class="transition__status is--hidden" aria-hidden="true">
-                            <span class="wrapper--anim">
-                                <i class="ico icon-refresh icon-spin"></i>
-                                <span class="copy">Submitting Feedback</span>
+                    <div class="ui-toggle-visibility__content">
+
+                        <div class="submission__feedback__content {{ has_submitted_feedback|yesno:"is--submitted," }}">
+                            <span class="transition__status is--hidden" aria-hidden="true">
+                                <span class="wrapper--anim">
+                                    <i class="ico icon-refresh icon-spin"></i>
+                                    <span class="copy">Submitting Feedback</span>
+                                </span>
                             </span>
-                        </span>
 
-                        <div class="message message--complete {{ has_submitted_feedback|yesno:",is--hidden" }}"
-                            {{ has_submitted_feedback|yesno:'aria-hidden=false,aria-hidden=true' }}>
-                            <h3 class="message__title">Your Feedback Has Been Submitted</h3>
-                            <div class="message__content">
-                                <p>Your feedback will be sent to this course's staff for use when they review course records.</p>
-                            </div>
-                        </div>
-
-                        <div class="submission__feedback__instructions {{ has_submitted_feedback|yesno:"is--hidden," }}"
-                            {{ has_submitted_feedback|yesno:'aria-hidden=true,aria-hidden=false' }}>
-                            <p>Course staff will be able to see any feedback that you provide here when they review course records.</p>
-                        </div>
-
-                        <ol class="list list--fields submission__feedback__fields {{ has_submitted_feedback|yesno:"is--hidden," }}"
-                            {{ has_submitted_feedback|yesno:'aria-hidden=true,aria-hidden=false' }}>
-                            <li class="field field-group field--radio feedback__overall" id="feedback__overall">
-                                <h4 class="field-group__label">Please select the statements below that reflect what you think of this peer grading experience:</h4>
-                                <ol class="list--options">
-                                    <li class="option option--useful">
-                                        <input type="checkbox"
-                                            name="feedback__overall__value"
-                                            id="feedback__overall__value--useful"
-                                            class="option__input feedback__overall__value"
-                                            value="These assessments were useful." />
-                                        <label class="option__label" for="feedback__overall__value--useful">These assessments were useful.</label>
-                                    </li>
-                                    <li class="option option--notuseful">
-                                        <input type="checkbox"
-                                            name="feedback__overall__value"
-                                            id="feedback__overall__value--notuseful"
-                                            class="option__input feedback__overall__value"
-                                            value="These assessments were not useful." />
-                                        <label class="option__label" for="feedback__overall__value--notuseful">These assessments were not useful.</label>
-                                    </li>
-                                    <li class="option option--disagree">
-                                        <input type="checkbox"
-                                            name="feedback__overall__value"
-                                            id="feedback__overall__value--disagree"
-                                            class="option__input feedback__overall__value"
-                                            value="I disagree with the ways that my peers assessed me." />
-                                        <label class="option__label" for="feedback__overall__value--disagree">I disagree with the ways that my peers assessed me.</label>
-                                    </li>
-                                    <li class="option option--inappropriate">
-                                        <input type="checkbox"
-                                            name="feedback__overall__value"
-                                            id="feedback__overall__value--inappropriate"
-                                            class="option__input feedback__overall__value"
-                                            value="I received some inappropriate comments." />
-                                        <label class="option__label" for="feedback__overall__value--inappropriate">I received some inappropriate comments.</label>
-                                    </li>
-                                </ol>
-                            </li>
-                            <li class="field field--textarea feedback__remarks" id="feedback__remarks">
-                                <label for="feedback__remarks__value">Please provide any thoughts or comments on the feedback you received from your peers here.</label>
-                                <textarea id="feedback__remarks__value" placeholder="I feel the feedback I received was...">{{ feedback_text }}</textarea>
-                            </li>
-                        </ol>
-                        <div class="submission__feedback__actions {{ has_submitted_feedback|yesno:"is--hidden," }}"
-                            {{ has_submitted_feedback|yesno:'aria-hidden=true,aria-hidden=false' }}>
-                            <div class="message message--inline message--error message--error-server">
-                                <h3 class="message__title">We could not submit your feedback</h3>
-                                <div class="message__content"></div>
+                            <div class="message message--complete {{ has_submitted_feedback|yesno:",is--hidden" }}"
+                                {{ has_submitted_feedback|yesno:'aria-hidden=false,aria-hidden=true' }}>
+                                <h3 class="message__title">Your Feedback Has Been Submitted</h3>
+                                <div class="message__content">
+                                    <p>Your feedback will be sent to this course's staff for use when they review course records.</p>
+                                </div>
                             </div>
 
-                            <ul class="list list--actions submission__feedback__actions">
-                                <li class="list--actions__item">
-                                    <button type="submit" id="feedback__submit" class="action action--submit feedback__submit">Submit Feedback On Peer Evaluations</button>
+                            <div class="submission__feedback__instructions {{ has_submitted_feedback|yesno:"is--hidden," }}"
+                                {{ has_submitted_feedback|yesno:'aria-hidden=true,aria-hidden=false' }}>
+                                <p>Course staff will be able to see any feedback that you provide here when they review course records.</p>
+                            </div>
+
+                            <ol class="list list--fields submission__feedback__fields {{ has_submitted_feedback|yesno:"is--hidden," }}"
+                                {{ has_submitted_feedback|yesno:'aria-hidden=true,aria-hidden=false' }}>
+                                <li class="field field-group field--radio feedback__overall" id="feedback__overall">
+                                    <h4 class="field-group__label">Please select the statements below that reflect what you think of this peer grading experience:</h4>
+                                    <ol class="list--options">
+                                        <li class="option option--useful">
+                                            <input type="checkbox"
+                                                name="feedback__overall__value"
+                                                id="feedback__overall__value--useful"
+                                                class="option__input feedback__overall__value"
+                                                value="These assessments were useful." />
+                                            <label class="option__label" for="feedback__overall__value--useful">These assessments were useful.</label>
+                                        </li>
+                                        <li class="option option--notuseful">
+                                            <input type="checkbox"
+                                                name="feedback__overall__value"
+                                                id="feedback__overall__value--notuseful"
+                                                class="option__input feedback__overall__value"
+                                                value="These assessments were not useful." />
+                                            <label class="option__label" for="feedback__overall__value--notuseful">These assessments were not useful.</label>
+                                        </li>
+                                        <li class="option option--disagree">
+                                            <input type="checkbox"
+                                                name="feedback__overall__value"
+                                                id="feedback__overall__value--disagree"
+                                                class="option__input feedback__overall__value"
+                                                value="I disagree with the ways that my peers assessed me." />
+                                            <label class="option__label" for="feedback__overall__value--disagree">I disagree with the ways that my peers assessed me.</label>
+                                        </li>
+                                        <li class="option option--inappropriate">
+                                            <input type="checkbox"
+                                                name="feedback__overall__value"
+                                                id="feedback__overall__value--inappropriate"
+                                                class="option__input feedback__overall__value"
+                                                value="I received some inappropriate comments." />
+                                            <label class="option__label" for="feedback__overall__value--inappropriate">I received some inappropriate comments.</label>
+                                        </li>
+                                    </ol>
                                 </li>
-                            </ul>
+                                <li class="field field--textarea feedback__remarks" id="feedback__remarks">
+                                    <label for="feedback__remarks__value">Please provide any thoughts or comments on the feedback you received from your peers here.</label>
+                                    <textarea id="feedback__remarks__value" placeholder="I feel the feedback I received was...">{{ feedback_text }}</textarea>
+                                </li>
+                            </ol>
+
+                            <div class="submission__feedback__actions {{ has_submitted_feedback|yesno:"is--hidden," }}"
+                                {{ has_submitted_feedback|yesno:'aria-hidden=true,aria-hidden=false' }}>
+                                <div class="message message--inline message--error message--error-server">
+                                    <h3 class="message__title">We could not submit your feedback</h3>
+                                    <div class="message__content"></div>
+                                </div>
+
+                                <ul class="list list--actions submission__feedback__actions">
+                                    <li class="list--actions__item">
+                                        <button type="submit" id="feedback__submit" class="action action--submit feedback__submit">Submit Feedback On Peer Evaluations</button>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </form>
