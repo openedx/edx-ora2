@@ -117,6 +117,15 @@
   outline: invert none medium;
 }
 
+// --------------------
+// UI: element rendering/visibility
+// --------------------
+%state-hidden {
+  @extend %state-disabled;
+  display: none;
+  visibility: hidden;
+}
+
 
 // --------------------
 // UI: element depth
