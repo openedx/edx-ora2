@@ -1123,7 +1123,11 @@
     color: $heading-secondary-color;
   }
 
-  .submission__feedback__content {
+  .submission__feeedback__title__copy {
+    margin-left: ($baseline-h/4);
+  }
+
+  .submission__feeedback__content {
     @extend %ui-subsection-content;
     margin-bottom: $baseline-v;
   }
