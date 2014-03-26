@@ -142,3 +142,83 @@ class TestPeerAssessment(XBlockHandlerTestCase):
             del assessment[missing]
             resp = self.request(xblock, 'peer_assess', json.dumps(assessment), response_format='json')
             self.assertEqual(resp['success'], False)
+
+    @scenario('data/over_grade_scenario.xml', user_id='Bob')
+    def test_turbo_grading(self, xblock):
+        student_item = xblock.get_student_item_dict()
+
+        sally_student_item = copy.deepcopy(student_item)
+        sally_student_item['student_id'] = "Sally"
+        sally_submission = xblock.create_submission(sally_student_item, u"Sally's answer")
+
+        # Hal comes and submits a response.
+        hal_student_item = copy.deepcopy(student_item)
+        hal_student_item['student_id'] = "Hal"
+        hal_submission = xblock.create_submission(hal_student_item, u"Hal's answer")
+
+        # Now Hal will assess Sally.
+        assessment = copy.deepcopy(self.ASSESSMENT)
+        sally_sub = peer_api.get_submission_to_assess(hal_student_item, 1)
+        assessment['submission_uuid'] = sally_sub['uuid']
+        peer_api.create_assessment(
+            sally_sub['uuid'],
+            hal_student_item['student_id'],
+            assessment,
+            {'criteria': xblock.rubric_criteria}
+        )
+
+        # Now Sally will assess Hal.
+        assessment = copy.deepcopy(self.ASSESSMENT)
+        hal_sub = peer_api.get_submission_to_assess(sally_student_item, 1)
+        assessment['submission_uuid'] = hal_sub['uuid']
+        peer_api.create_assessment(
+            hal_sub['uuid'],
+            sally_student_item['student_id'],
+            assessment,
+            {'criteria': xblock.rubric_criteria}
+        )
+
+        # If Over Grading is on, this should now return Sally's response to Bob.
+        submission = xblock.create_submission(student_item, u"Bob's answer")
+        workflow_info = xblock.get_workflow_info()
+        self.assertEqual(workflow_info["status"], u'peer')
+
+        # Validate Submission Rendering.
+        request = namedtuple('Request', 'params')
+        request.params = {'continue_grading': True}
+        peer_response = xblock.render_peer_assessment(request)
+        self.assertIsNotNone(peer_response)
+        self.assertNotIn(submission["answer"]["text"].encode('utf-8'), peer_response.body)
+
+        #Validate Peer Rendering.
+        self.assertIn("Sally".encode('utf-8'), peer_response.body)
+        peer_api.create_assessment(
+            sally_sub['uuid'],
+            student_item['student_id'],
+            assessment,
+            {'criteria': xblock.rubric_criteria}
+        )
+
+        # Validate Submission Rendering.
+        request = namedtuple('Request', 'params')
+        request.params = {'continue_grading': True}
+        peer_response = xblock.render_peer_assessment(request)
+        self.assertIsNotNone(peer_response)
+        self.assertNotIn(submission["answer"]["text"].encode('utf-8'), peer_response.body)
+
+        #Validate Peer Rendering.
+        self.assertIn("Hal".encode('utf-8'), peer_response.body)
+        peer_api.create_assessment(
+            hal_sub['uuid'],
+            student_item['student_id'],
+            assessment,
+            {'criteria': xblock.rubric_criteria}
+        )
+
+        # A Final over grading will not return anything.
+        request = namedtuple('Request', 'params')
+        request.params = {'continue_grading': True}
+        peer_response = xblock.render_peer_assessment(request)
+        self.assertIsNotNone(peer_response)
+        self.assertNotIn(submission["answer"]["text"].encode('utf-8'), peer_response.body)
+        self.assertIn("Congratulations".encode('utf-8'), peer_response.body)
