@@ -19,13 +19,13 @@
     <div class="wrapper--step__content">
 
         <div class="step__message message message--complete">
-            <h3 class="message__title">Your response has been successfully submitted</h3>
-            <div class="message__content">Your peers in this class will now grade this response and you will receive feedback shortly</div>
+            <h3 class="message__title">Your Response Has Been Submitted</h3>
+            <div class="message__content">You'll receive your grade after some of your peers have assessed your response and you complete the <a data-behavior="ui-scroll" href="#openassessment__peer-assessment">peer assessment</a> and <a data-behavior="ui-scroll" href="#openassessment__self-assessment">self assessment</a> steps.</div>
         </div>
 
         <div class="step__content">
             <article class="submission__answer__display">
-                <h3 class="submission__answer__display__title">Your Submitted Response</h3>
+                <h3 class="submission__answer__display__title">Your Response</h3>
 
                 <div class="submission__answer__display__content">
                     {{ student_submission.answer.text|linebreaks }}
