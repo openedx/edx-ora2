@@ -112,6 +112,11 @@ OpenAssessment.Server.prototype = {
     **/
     submit: function(submission) {
         var url = this.url('submit');
+        if (submission.length > 1024*256) {
+            return $.Deferred(function(defer) {
+                defer.rejectWith(this, ["submit", "Text input too large."]);
+            }).promise();
+        }
         return $.Deferred(function(defer) {
             $.ajax({
                 type: "POST",
@@ -147,6 +152,11 @@ OpenAssessment.Server.prototype = {
     **/
     save: function(submission) {
         var url = this.url('save_submission');
+        if (submission.length > 1024*256) {
+            return $.Deferred(function(defer) {
+                defer.rejectWith(this, ["Text input too large."]);
+            }).promise();
+        }
         return $.Deferred(function(defer) {
             $.ajax({
                 type: "POST",
@@ -182,6 +192,11 @@ OpenAssessment.Server.prototype = {
      */
      submitFeedbackOnAssessment: function(text, options) {
         var url = this.url('submit_feedback');
+        if (text.length > 1024*256) {
+            return $.Deferred(function(defer) {
+                defer.rejectWith(this, ["Text input too large."]);
+            }).promise();
+        }
         var payload = JSON.stringify({
             'feedback_text': text,
             'feedback_options': options
@@ -221,6 +236,11 @@ OpenAssessment.Server.prototype = {
     **/
     peerAssess: function(submissionId, optionsSelected, feedback) {
         var url = this.url('peer_assess');
+        if (feedback.length > 1024*256) {
+            return $.Deferred(function(defer) {
+                defer.rejectWith(this, ["Text input too large."]);
+            }).promise();
+        }
         var payload = JSON.stringify({
             submission_uuid: submissionId,
             options_selected: optionsSelected,

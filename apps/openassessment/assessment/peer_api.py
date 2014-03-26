@@ -999,6 +999,10 @@ def set_assessment_feedback(feedback_dict):
     feedback_text = feedback_dict.get('feedback_text')
     selected_options = feedback_dict.get('options', list())
 
+    if feedback_text and len(feedback_text) > AssessmentFeedback.MAXSIZE:
+        error_message = u"Assessment feedback too large."
+        raise PeerAssessmentRequestError(error_message)
+
     try:
         # Get or create the assessment model for this submission
         # If we receive an integrity error, assume that someone else is trying to create

@@ -191,6 +191,21 @@ describe("OpenAssessment.Server", function() {
         expect(receivedErrorMsg).toEqual("Could not contact server.");
     });
 
+    it("confirms that very long submissions fail with an error without ajax", function() {
+        var receivedErrorCode = "";
+        var receivedErrorMsg = "";
+        var test_string = '';
+        for (i = 0; i < (1024 * 1024 + 1); i++) { test_string += 'x'; }
+        server.submit(test_string).fail(
+            function(errorCode, errorMsg) {
+                receivedErrorCode = errorCode;
+                receivedErrorMsg = errorMsg;
+            }
+        );
+        expect(receivedErrorCode).toEqual("submit");
+        expect(receivedErrorMsg).toEqual("Text input too large.");
+    });
+
     it("informs the caller of an server error when sending a submission", function() {
         stubAjax(true, [false, "ENODATA", "Error occurred!"]);
 
@@ -205,6 +220,16 @@ describe("OpenAssessment.Server", function() {
 
         expect(receivedErrorCode).toEqual("ENODATA");
         expect(receivedErrorMsg).toEqual("Error occurred!");
+    });
+
+    it("confirms that very long saves fail with an error without ajax", function() {
+        var receivedErrorMsg = "";
+        var test_string = '';
+        for (i = 0; i < (1024 * 1024 + 1); i++) { test_string += 'x'; }
+        server.save(test_string).fail(
+            function(errorMsg) { receivedErrorMsg = errorMsg; }
+        );
+        expect(receivedErrorMsg).toEqual("Text input too large.");
     });
 
     it("informs the caller of an AJAX error when sending a submission", function() {
@@ -265,6 +290,19 @@ describe("OpenAssessment.Server", function() {
         expect(receivedMsg).toEqual("Test error");
     });
 
+    it("confirms that very long peer assessments fail with an error without ajax", function() {
+        var options = {clarity: "Very clear", precision: "Somewhat precise"};
+        var receivedErrorMsg = "";
+        var test_string = '';
+        for (i = 0; i < (1024 * 1024 + 1); i++) { test_string += 'x'; }
+        server.peerAssess("abc1234", options, test_string).fail(
+            function(errorMsg) {
+                receivedErrorMsg = errorMsg;
+            }
+        );
+        expect(receivedErrorMsg).toEqual("Text input too large.");
+    });
+
     it("informs the caller of a server error when sending a peer assessment", function() {
         stubAjax(true, {success:false, msg:'Test error!'});
 
@@ -310,6 +348,19 @@ describe("OpenAssessment.Server", function() {
         });
 
         expect(receivedMsg).toEqual("Test error");
+    });
+
+    it("confirms that very long assessment feedback fails with an error without ajax", function() {
+        var options = ["Option 1", "Option 2"];
+        var receivedErrorMsg = "";
+        var test_string = '';
+        for (i = 0; i < (1024 * 1024 + 1); i++) { test_string += 'x'; }
+        server.submitFeedbackOnAssessment(test_string, options).fail(
+            function(errorMsg) {
+                receivedErrorMsg = errorMsg;
+            }
+        );
+        expect(receivedErrorMsg).toEqual("Text input too large.");
     });
 
     it("informs the caller of an AJAX error when sending feedback on submission", function() {

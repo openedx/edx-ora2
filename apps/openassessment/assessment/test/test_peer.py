@@ -100,6 +100,17 @@ ASSESSMENT_DICT_PASS = dict(
     }
 )
 
+# Answers are against RUBRIC_DICT -- this is worth 12 points
+ASSESSMENT_DICT_PASS_HUGE = dict(
+    feedback=u"这是中国" * Assessment.MAXSIZE,
+    options_selected={
+        "secret": "yes",
+        u"ⓢⓐⓕⓔ": "yes",
+        "giveup": "eager",
+        "singing": "no",
+    }
+)
+
 REQUIRED_GRADED = 5
 REQUIRED_GRADED_BY = 3
 
@@ -124,6 +135,18 @@ class TestPeerApi(TestCase):
         self.assertEqual(assessment["points_earned"], 6)
         self.assertEqual(assessment["points_possible"], 14)
         self.assertEqual(assessment["feedback"], ASSESSMENT_DICT["feedback"])
+
+    def test_create_huge_assessment_fails(self):
+        self._create_student_and_submission("Tim", "Tim's answer")
+        bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
+        sub = peer_api.get_submission_to_assess(bob, 1)
+        with self.assertRaises(peer_api.PeerAssessmentRequestError):
+            peer_api.create_assessment(
+                sub["uuid"],
+                bob["student_id"],
+                ASSESSMENT_DICT_PASS_HUGE,
+                RUBRIC_DICT,
+            )
 
     @file_data('valid_assessments.json')
     def test_get_assessments(self, assessment_dict):
@@ -584,6 +607,17 @@ class TestPeerApi(TestCase):
             {
                 'submission_uuid': tim_answer['uuid'],
                 'feedback_text': 'Boo',
+            }
+        )
+
+    @patch.object(AssessmentFeedback, 'save')
+    @raises(peer_api.PeerAssessmentRequestError)
+    def test_set_assessment_feedback_error_on_huge_save(self, mock_filter):
+        tim_answer, tim = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
+        peer_api.set_assessment_feedback(
+            {
+                'submission_uuid': tim_answer['uuid'],
+                'feedback_text': 'Boo'*AssessmentFeedback.MAXSIZE,
             }
         )
 

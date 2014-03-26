@@ -237,6 +237,8 @@ class Assessment(models.Model):
     objects that map to each :class:`Criterion` in the :class:`Rubric` we're
     assessing against.
     """
+    MAXSIZE = 1024*1024
+
     submission_uuid = models.CharField(max_length=128, db_index=True)
     rubric = models.ForeignKey(Rubric)
 
@@ -429,6 +431,8 @@ class AssessmentFeedback(models.Model):
     as well as zero or more feedback options
     ("Please select the statements below that reflect what you think of this peer grading experience")
     """
+    MAXSIZE = 1024*1024
+
     submission_uuid = models.CharField(max_length=128, unique=True, db_index=True)
     assessments = models.ManyToManyField(Assessment, related_name='assessment_feedback', default=None)
     feedback_text = models.TextField(max_length=10000, default="")

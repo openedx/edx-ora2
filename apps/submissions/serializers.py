@@ -65,6 +65,13 @@ class SubmissionSerializer(serializers.ModelSerializer):
 
     answer = JsonField(source='raw_answer')
 
+    def validate_answer(self, attrs, source):
+        """Check that the answer is within an acceptable size range."""
+        value = attrs[source]
+        if len(value) > Submission.MAXSIZE:
+            raise serializers.ValidationError("Maximum answer size exceeded.")
+        return attrs
+
     class Meta:
         model = Submission
         fields = (

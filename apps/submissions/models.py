@@ -70,6 +70,8 @@ class Submission(models.Model):
     because it makes caching trivial.
 
     """
+    MAXSIZE = 1024*1024 # Used by validators to cap maximum answer size
+
     uuid = UUIDField(version=1, db_index=True)
 
     student_item = models.ForeignKey(StudentItem)
