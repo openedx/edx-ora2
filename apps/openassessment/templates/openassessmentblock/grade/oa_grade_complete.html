@@ -141,6 +141,27 @@
                 <form id="submission__feeedback" class="submission__feeedback" method="post">
                     <h3 class="submission__feeedback__title">Give Feedback On Peer Evaluations</h3>
 
+                    <!-- CASE: transitioning/submitting. TODO: wire this up and remove static bits -->
+                    <div class="submission__feeedback__content is--transitioning is--submitting">
+                        <span class="transition__status">
+                            <span class="wrapper--anim">
+                                <i class="ico icon-refresh icon-spin"></i>
+                                <span class="copy">Submitting Feedback</span>
+                            </span>
+                        </span>
+                    </div>
+
+                    <!-- CASE: feedback (already) submitted. TODO: wire this up and remove static bits -->
+                    <div class="submission__feeedback__content is--submitted">
+                        <div class="message message--complete">
+                            <h3 class="message__title">Your Feedback Has Been Submitted</h3>
+                            <div class="message__content">
+                                <p>Your feedback will be sent to this course's staff for use when they review course records.</p>
+                            </div>
+                      </div>
+                    </div>
+
+                    <!-- TODO: wire up error handling (similar to response, but add .has-error to .submission__feeedback element) -->
                     <div class="submission__feeedback__content">
                         <div class="submission__feeedback__instructions">
                             <p>Course staff will be able to see any feedback that you provide here when they review course records.</p>
@@ -191,6 +212,10 @@
                         </ol>
                     </div>
                     <div class="submission__feeedback__actions">
+                        <div class="message message--inline message--error message--error-server">
+                            <h3 class="message__title">We could not submit your feedback</h3>
+                        </div>
+
                         <ul class="list list--actions submission__feeedback__actions">
                             <li class="list--actions__item">
                                 <button type="submit" id="feedback__submit" class="action action--submit feedback__submit">Submit Feedback On Peer Evaluations</button>

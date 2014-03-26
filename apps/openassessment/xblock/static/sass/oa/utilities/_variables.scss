@@ -21,14 +21,3 @@ $bp-ds: new-breakpoint(min-width $grid-size-s max-width ($grid-size-m - 1) 6);  
 $bp-dm: new-breakpoint(min-width $grid-size-m max-width ($grid-size-l - 1) 12);         // medium displays - make grid 12 columns
 $bp-dl: new-breakpoint(min-width $grid-size-l max-width ($grid-size-x - 1) 12);         // large displays - make grid 12 columns
 $bp-dx: new-breakpoint(min-width $grid-size-x 12);                                      // large displays - make grid 12 columns
-
-
-// --------------------
-// // application - colors: states
-// --------------------
-$color-error: rgb(188, 85, 71);
-$color-warning: rgb(229, 166, 53);
-$color-complete: rgb(98, 194, 74);
-$color-incomplete: $color-warning;
-$color-confirm: $heading-primary-color;
-$color-unavailable: tint($copy-color, 85%);
