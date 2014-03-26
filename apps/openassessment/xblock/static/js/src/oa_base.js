@@ -15,16 +15,16 @@ Args:
     server (OpenAssessment.Server): The interface to the XBlock server.
 
 Returns:
-    OpenAssessment.BaseUI
+    OpenAssessment.BaseView
 **/
-OpenAssessment.BaseUI = function(runtime, element, server) {
+OpenAssessment.BaseView = function(runtime, element, server) {
     this.runtime = runtime;
     this.element = element;
     this.server = server;
 };
 
 
-OpenAssessment.BaseUI.prototype = {
+OpenAssessment.BaseView.prototype = {
 
     /**
      * Checks to see if the scrollTo function is available, then scrolls to the
@@ -65,91 +65,35 @@ OpenAssessment.BaseUI.prototype = {
      * Asynchronously load each sub-view into the DOM.
      */
     load: function() {
-        this.renderSubmissionStep();
+        this.responseView = new OpenAssessment.ResponseView(this.element, this.server, this);
+        this.responseView.load();
+
         this.renderPeerAssessmentStep();
         this.renderSelfAssessmentStep();
         this.renderGradeStep();
     },
 
     /**
-    Render the submission step.
-    **/
-    renderSubmissionStep: function() {
-        var ui = this;
-        this.server.render('submission').done(
-            function(html) {
-
-                // Load the HTML
-                $('#openassessment__response', ui.element).replaceWith(html);
-                var sel = $('#openassessment__response', ui.element);
-
-                // Install a click handler for collapse/expand
-                ui.setUpCollapseExpand(sel);
-
-                // If we have a saved submission, enable the submit button
-                ui.responseChanged();
-
-                // Install change handler for textarea (to enable submission button)
-                sel.find('#submission__answer__value').keyup(
-                    function(eventData) { ui.responseChanged(); }
-                );
-
-                // Install a click handler for submission
-                sel.find('#step--response__submit').click(
-                    function(eventObject) {
-                        // Override default form submission
-                        eventObject.preventDefault();
-
-                        ui.submit();
-                    }
-                );
-
-                // Install a click handler for the save button
-                sel.find('#submission__save').click(
-                    function(eventObject) {
-                        // Override default form submission
-                        eventObject.preventDefault();
-                        ui.save();
-                    }
-                );
-
-            }
-        ).fail(function(errMsg) {
-            ui.showLoadError('response');
-        });
-    },
-
-    /**
-    Enable/disable the submission and save buttons based on whether
-    the user has entered a response.
-    **/
-    responseChanged: function() {
-        var blankSubmission = ($('#submission__answer__value', this.element).val() === '');
-        $('#step--response__submit', this.element).toggleClass('is--disabled', blankSubmission);
-        $('#submission__save', this.element).toggleClass('is--disabled', blankSubmission);
-    },
-
-    /**
     Render the peer-assessment step.
     **/
     renderPeerAssessmentStep: function() {
-        var ui = this;
+        var view = this;
         this.server.render('peer_assessment').done(
             function(html) {
 
                 // Load the HTML
-                $('#openassessment__peer-assessment', ui.element).replaceWith(html);
-                var sel = $('#openassessment__peer-assessment', ui.element);
+                $('#openassessment__peer-assessment', view.element).replaceWith(html);
+                var sel = $('#openassessment__peer-assessment', view.element);
 
                 // Install a click handler for collapse/expand
-                ui.setUpCollapseExpand(sel, $.proxy(ui.renderContinuedPeerAssessmentStep, ui));
+                view.setUpCollapseExpand(sel, $.proxy(view.renderContinuedPeerAssessmentStep, view));
 
                 // Install a change handler for rubric options to enable/disable the submit button
                 sel.find("#peer-assessment--001__assessment").change(
                     function() {
                         var numChecked = $('input[type=radio]:checked', this).length;
                         var numAvailable = $('.field--radio.assessment__rubric__question', this).length;
-                        $("#peer-assessment--001__assessment__submit", ui.element).toggleClass(
+                        $("#peer-assessment--001__assessment__submit", view.element).toggleClass(
                             'is--disabled', numChecked != numAvailable
                         );
                     }
@@ -162,13 +106,13 @@ OpenAssessment.BaseUI.prototype = {
                         eventObject.preventDefault();
 
                         // Handle the click
-                        ui.peerAssess();
+                        view.peerAssess();
                     }
                 );
 
             }
         ).fail(function(errMsg) {
-            ui.showLoadError('peer-assessment');
+            view.showLoadError('peer-assessment');
         });
     },
 
@@ -178,16 +122,16 @@ OpenAssessment.BaseUI.prototype = {
      * peer grading process.
      */
     renderContinuedPeerAssessmentStep: function() {
-        var ui = this;
+        var view = this;
         this.server.renderContinuedPeer().done(
             function(html) {
 
                 // Load the HTML
-                $('#openassessment__peer-assessment', ui.element).replaceWith(html);
-                var sel = $('#openassessment__peer-assessment', ui.element);
+                $('#openassessment__peer-assessment', view.element).replaceWith(html);
+                var sel = $('#openassessment__peer-assessment', view.element);
 
                 // Install a click handler for collapse/expand
-                ui.setUpCollapseExpand(sel);
+                view.setUpCollapseExpand(sel);
 
                 // Install a click handler for assessment
                 sel.find('#peer-assessment--001__assessment__submit').click(
@@ -196,7 +140,7 @@ OpenAssessment.BaseUI.prototype = {
                         eventObject.preventDefault();
 
                         // Handle the click
-                        ui.continuedPeerAssess();
+                        view.continuedPeerAssess();
                     }
                 );
 
@@ -205,14 +149,14 @@ OpenAssessment.BaseUI.prototype = {
                     function() {
                         var numChecked = $('input[type=radio]:checked', this).length;
                         var numAvailable = $('.field--radio.assessment__rubric__question', this).length;
-                        $("#peer-assessment--001__assessment__submit", ui.element).toggleClass(
+                        $("#peer-assessment--001__assessment__submit", view.element).toggleClass(
                             'is--disabled', numChecked != numAvailable
                         );
                     }
                 );
             }
         ).fail(function(errMsg) {
-            ui.showLoadError('peer-assessment');
+            view.showLoadError('peer-assessment');
         });
     },
 
@@ -220,23 +164,23 @@ OpenAssessment.BaseUI.prototype = {
     Render the self-assessment step.
     **/
     renderSelfAssessmentStep: function() {
-        var ui = this;
+        var view = this;
         this.server.render('self_assessment').done(
             function(html) {
 
                 // Load the HTML
-                $('#openassessment__self-assessment', ui.element).replaceWith(html);
-                var sel = $('#openassessment__self-assessment', ui.element);
+                $('#openassessment__self-assessment', view.element).replaceWith(html);
+                var sel = $('#openassessment__self-assessment', view.element);
 
                 // Install a click handler for collapse/expand
-                ui.setUpCollapseExpand(sel);
+                view.setUpCollapseExpand(sel);
 
                 // Install a change handler for rubric options to enable/disable the submit button
-                $("#self-assessment--001__assessment", ui.element).change(
+                $("#self-assessment--001__assessment", view.element).change(
                     function() {
                         var numChecked = $('input[type=radio]:checked', this).length;
                         var numAvailable = $('.field--radio.assessment__rubric__question', this).length;
-                        $("#self-assessment--001__assessment__submit", ui.element).toggleClass(
+                        $("#self-assessment--001__assessment__submit", view.element).toggleClass(
                             'is--disabled', numChecked != numAvailable
                         );
                     }
@@ -249,12 +193,12 @@ OpenAssessment.BaseUI.prototype = {
                         eventObject.preventDefault();
 
                         // Handle the click
-                        ui.selfAssess();
+                        view.selfAssess();
                     }
                 );
             }
         ).fail(function(errMsg) {
-            ui.showLoadError('self-assessment');
+            view.showLoadError('self-assessment');
         });
     },
 
@@ -262,116 +206,71 @@ OpenAssessment.BaseUI.prototype = {
     Render the grade step.
     **/
     renderGradeStep: function() {
-        var ui = this;
+        var view = this;
         this.server.render('grade').done(
             function(html) {
                 // Load the HTML
-                $('#openassessment__grade', ui.element).replaceWith(html);
+                $('#openassessment__grade', view.element).replaceWith(html);
 
                 // Install a click handler for collapse/expand
-                var sel = $('#openassessment__grade', ui.element);
-                ui.setUpCollapseExpand(sel);
+                var sel = $('#openassessment__grade', view.element);
+                view.setUpCollapseExpand(sel);
 
                 // Install a click handler for assessment feedback
                 sel.find('#feedback__submit').click(function(eventObject) {
                     eventObject.preventDefault();
-                    ui.submitFeedbackOnAssessment();
+                    view.submitFeedbackOnAssessment();
                 });
             }
         ).fail(function(errMsg) {
-            ui.showLoadError('grade', errMsg);
+            view.showLoadError('grade', errMsg);
         });
 
     },
 
     /**
-    Save a response without submitting it.
-    **/
-    save: function() {
-        // Retrieve the student's response from the DOM
-        var ui = this;
-        var submission = $('#submission__answer__value', ui.element).val();
-        ui.setSaveStatus('Saving...');
-        ui.toggleActionError('save', null);
-        ui.server.save(submission).done(function() {
-            ui.setSaveStatus("Saved but not submitted");
-        }).fail(function(errMsg) {
-            ui.setSaveStatus('Error');
-            ui.toggleActionError('save', errMsg);
-        });
-    },
-
-    /**
-    Display a save status message.
-
-    Args:
-        msg (str): The message to display.
-    **/
-    setSaveStatus: function(msg) {
-        $('#response__save_status h3', this.element).html(msg);
-    },
-
-    /**
-    Send a submission to the server and update the UI.
-    **/
-    submit: function() {
-        // Send the submission to the server
-        var ui = this;
-        var submission = $('#submission__answer__value', ui.element).val();
-        ui.toggleActionError('response', null);
-        ui.server.submit(submission).done(
-            // When we have successfully sent the submission, expand the next step
-            function(studentId, attemptNum) {
-                ui.renderSubmissionStep();
-                ui.renderPeerAssessmentStep();
-            }
-        ).fail(function(errCode, errMsg) {
-            ui.toggleActionError('submit', errMsg);
-        });
-    },
-
-    /**
-    Send assessment feedback to the server and update the UI.
+    Send assessment feedback to the server and update the view.
     **/
     submitFeedbackOnAssessment: function() {
         // Send the submission to the server
-        var ui = this;
-        var text = $('#feedback__remarks__value', ui.element).val();
+        var view = this;
+        var text = $('#feedback__remarks__value', view.element).val();
         var options = $.map(
-            $('.feedback__overall__value:checked', ui.element),
+            $('.feedback__overall__value:checked', view.element),
             function(element, index) { return $(element).val(); }
         );
-        ui.server.submitFeedbackOnAssessment(text, options).done(function() {
+        view.server.submitFeedbackOnAssessment(text, options).done(function() {
+            // When we have successfully sent the submission, textarea no longer editable
             // TODO
             // When we have successfully sent the submission, textarea no longer editable
             // console.log("Feedback to the assessments submitted, thanks!");
         }).fail(function(errMsg) {
-            ui.toggleActionError('feedback_assess', errMsg);
+            view.toggleActionError('feedback_assess', errMsg);
         });
     },
 
     /**
-    Send an assessment to the server and update the UI.
+    Send an assessment to the server and update the view.
     **/
     peerAssess: function() {
-        var ui = this;
-        ui.peerAssessRequest(function() {
-            ui.renderPeerAssessmentStep();
-            ui.renderSelfAssessmentStep();
-            ui.renderGradeStep();
-            ui.scrollToTop();
+        var view = this;
+        this.peerAssessRequest(function() {
+            view.renderPeerAssessmentStep();
+            view.renderSelfAssessmentStep();
+            view.renderGradeStep();
+            view.scrollToTop();
         });
     },
 
     /**
-     * Send an assessment to the server and update the UI, with the assumption
+     * Send an assessment to the server and update the view, with the assumption
      * that we are continuing peer assessments beyond the required amount.
      */
     continuedPeerAssess: function() {
-        var ui = this;
-        ui.peerAssessRequest(function() {
-            ui.renderContinuedPeerAssessmentStep();
-            ui.renderGradeStep();
+        var view = this;
+        view.peerAssessRequest(function() {
+            view.renderContinuedPeerAssessmentStep();
+            view.renderGradeStep();
         });
     },
 
@@ -396,17 +295,17 @@ OpenAssessment.BaseUI.prototype = {
         var feedback = $('#assessment__rubric__question--feedback__value', this.element).val();
 
         // Send the assessment to the server
-        var ui = this;
+        var view = this;
         this.toggleActionError('peer', null);
         this.server.peerAssess(submissionId, optionsSelected, feedback).done(
                 successFunction
             ).fail(function(errMsg) {
-                ui.toggleActionError('peer', errMsg);
+                view.toggleActionError('peer', errMsg);
             });
     },
 
     /**
-    Send a self-assessment to the server and update the UI.
+    Send a self-assessment to the server and update the view.
     **/
     selfAssess: function() {
         // Retrieve self-assessment info from the DOM
@@ -419,17 +318,17 @@ OpenAssessment.BaseUI.prototype = {
         );
 
         // Send the assessment to the server
-        var ui = this;
+        var view = this;
         this.toggleActionError('self', null);
         this.server.selfAssess(submissionId, optionsSelected).done(
             function() {
-                ui.renderPeerAssessmentStep();
-                ui.renderSelfAssessmentStep();
-                ui.renderGradeStep();
-                ui.scrollToTop();
+                view.renderPeerAssessmentStep();
+                view.renderSelfAssessmentStep();
+                view.renderGradeStep();
+                view.scrollToTop();
             }
         ).fail(function(errMsg) {
-            ui.toggleActionError('self', errMsg);
+            view.toggleActionError('self', errMsg);
         });
     },
 
@@ -486,7 +385,7 @@ function OpenAssessmentBlock(runtime, element) {
     **/
     $(function($) {
         var server = new OpenAssessment.Server(runtime, element);
-        var ui = new OpenAssessment.BaseUI(runtime, element, server);
-        ui.load();
+        var view = new OpenAssessment.BaseView(runtime, element, server);
+        view.load();
     });
 }
