@@ -289,8 +289,8 @@
       .ico {
         @extend %icon-3;
         display: inline-block;
-        vertical-align: bottom;
-        margin-left: ($baseline-v/4);
+        vertical-align: baseline;
+        margin-right: ($baseline-v/4);
       }
 
       .copy {
@@ -307,7 +307,6 @@
         @include omega();
         position: relative;
         top: -12px;
-        text-align: right;
       }
 
       @include media($bp-dm) {
@@ -315,7 +314,6 @@
         @include omega();
         position: relative;
         top:-12px;
-        text-align: right;
       }
 
       @include media($bp-dl) {
@@ -323,7 +321,6 @@
         @include omega();
         position: relative;
         top: -12px;
-        text-align: right;
       }
 
       @include media($bp-dx) {
@@ -331,7 +328,6 @@
         @include omega();
         position: relative;
         top: -8px;
-        text-align: right;
       }
     }
 
