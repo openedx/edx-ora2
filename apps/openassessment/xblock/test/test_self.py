@@ -180,3 +180,18 @@ class TestSelfAssessment(XBlockHandlerTestCase):
             resp = self.request(xblock, 'self_assess', json.dumps(assessment), response_format='json')
 
         self.assertFalse(resp['success'])
+
+    @scenario('data/assessment_not_started.xml', user_id='Bob')
+    def test_start_dates(self, xblock):
+        student_item = xblock.get_student_item_dict()
+
+        submission = xblock.create_submission(student_item, u"Bob's answer")
+        workflow_info = xblock.get_workflow_info()
+        self.assertEqual(workflow_info["status"], u'peer')
+
+        self_response = xblock.render_self_assessment({})
+        self.assertIsNotNone(self_response)
+        self.assertNotIn(submission["answer"]["text"].encode('utf-8'), self_response.body)
+
+        #Validate Self Rendering.
+        self.assertIn("available".encode('utf-8'), self_response.body)
