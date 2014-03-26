@@ -15,9 +15,9 @@ class Migration(SchemaMigration):
 
         if not db.dry_run:
             for workflow in orm.PeerWorkflow.objects.all():
-                graded_by = workflow.graded_by.all().order_by('id')
+                graded_by = workflow.graded_by.filter(assessment__isnull=False).order_by('assessment')
                 if graded_by:
-                    workflow.graded_count = workflow.graded_by.filter(assessment__null=False).count()
+                    workflow.graded_count = workflow.graded_by.filter(assessment__isnull=False).count()
                     workflow.save()
 
     def backwards(self, orm):

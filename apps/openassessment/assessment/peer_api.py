@@ -910,7 +910,8 @@ def _close_active_assessment(workflow, submission_uuid, assessment):
     try:
         item = workflow.graded.get(submission_uuid=submission_uuid)
         item.assessment = assessment
-        item.scorer.graded_count += 1
+        item.author.graded_count += 1
+        item.author.save()
         item.save()
     except (DatabaseError, PeerWorkflowItem.DoesNotExist):
         error_message = _(
