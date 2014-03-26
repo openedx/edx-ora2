@@ -20,7 +20,7 @@ STUDENT_ITEM = dict(
 )
 
 SECOND_STUDENT_ITEM = dict(
-    student_id="Bob",
+    student_id="Alice",
     course_id="Demo_Course",
     item_id="item_one",
     item_type="Peer_Submission",
@@ -28,6 +28,7 @@ SECOND_STUDENT_ITEM = dict(
 
 ANSWER_ONE = u"this is my answer!"
 ANSWER_TWO = u"this is my other answer!"
+ANSWER_THREE = u'' + 'c' * (Submission.MAXSIZE + 1)
 
 
 @ddt
@@ -41,6 +42,9 @@ class TestSubmissionsApi(TestCase):
         student_item = self._get_student_item(STUDENT_ITEM)
         self._assert_submission(submission, ANSWER_ONE, student_item.pk, 1)
 
+    def test_create_huge_submission_fails(self):
+        with self.assertRaises(api.SubmissionRequestError):
+            api.create_submission(STUDENT_ITEM, ANSWER_THREE)
 
     def test_get_submission_and_student(self):
         submission = api.create_submission(STUDENT_ITEM, ANSWER_ONE)

@@ -37,6 +37,11 @@ OpenAssessment.Server.prototype = {
         return this.runtime.handlerUrl(this.element, handler);
     },
 
+    /* 
+     * Get maximum size of input
+     */
+    maxInputSize: 1024 * 64,    /* 64KB should be enough for anybody, right? ;^P */
+
     /**
     Render the XBlock.
 
@@ -112,6 +117,11 @@ OpenAssessment.Server.prototype = {
     **/
     submit: function(submission) {
         var url = this.url('submit');
+        if (submission.length > this.maxInputSize) {
+            return $.Deferred(function(defer) {
+                defer.rejectWith(this, ["submit", "Response text is too large. Please reduce the size of your response and try to submit again."]);
+            }).promise();
+        }
         return $.Deferred(function(defer) {
             $.ajax({
                 type: "POST",
@@ -147,6 +157,11 @@ OpenAssessment.Server.prototype = {
     **/
     save: function(submission) {
         var url = this.url('save_submission');
+        if (submission.length > this.maxInputSize) {
+            return $.Deferred(function(defer) {
+                defer.rejectWith(this, ["Response text is too large. Please reduce the size of your response and try to submit again."]);
+            }).promise();
+        }
         return $.Deferred(function(defer) {
             $.ajax({
                 type: "POST",
@@ -182,6 +197,11 @@ OpenAssessment.Server.prototype = {
      */
      submitFeedbackOnAssessment: function(text, options) {
         var url = this.url('submit_feedback');
+        if (text.length > this.maxInputSize) {
+            return $.Deferred(function(defer) {
+                defer.rejectWith(this, ["Response text is too large. Please reduce the size of your response and try to submit again."]);
+            }).promise();
+        }
         var payload = JSON.stringify({
             'feedback_text': text,
             'feedback_options': options
@@ -221,6 +241,11 @@ OpenAssessment.Server.prototype = {
     **/
     peerAssess: function(submissionId, optionsSelected, feedback) {
         var url = this.url('peer_assess');
+        if (feedback.length > this.maxInputSize) {
+            return $.Deferred(function(defer) {
+                defer.rejectWith(this, ["Response text is too large. Please reduce the size of your response and try to submit again."]);
+            }).promise();
+        }
         var payload = JSON.stringify({
             submission_uuid: submissionId,
             options_selected: optionsSelected,

@@ -70,6 +70,8 @@ class Submission(models.Model):
     because it makes caching trivial.
 
     """
+    MAXSIZE = 1024*100  # 100KB
+
     uuid = UUIDField(version=1, db_index=True)
 
     student_item = models.ForeignKey(StudentItem)

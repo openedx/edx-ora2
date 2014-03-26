@@ -342,11 +342,10 @@ OpenAssessment.BaseUI.prototype = {
             function(element, index) { return $(element).val(); }
         );
         ui.server.submitFeedbackOnAssessment(text, options).done(function() {
-            // When we have successfully sent the submission, textarea no longer editable
             // TODO
-            console.log("Feedback to the assessments submitted, thanks!");
+            // When we have successfully sent the submission, textarea no longer editable
+            // console.log("Feedback to the assessments submitted, thanks!");
         }).fail(function(errMsg) {
-            // TODO: display to the user
             ui.toggleActionError('feedback_assess', errMsg);
         });
     },
@@ -447,8 +446,9 @@ OpenAssessment.BaseUI.prototype = {
         var container = null;
         if (type == 'save') { container = '.response__submission__actions'; }
         else if (type == 'submit') { container = '.step__actions'; }
-        else if (type == 'peer') { container = '.peer-assessment__actions'; }
+        else if (type == 'peer') { container = '.step__actions'; }
         else if (type == 'self') { container = '.self-assessment__actions'; }
+        else if (type == 'feedback_assess') { container = '.submission__feedback__actions'; }
 
         // If we don't have anywhere to put the message, just log it to the console
         if (container === null) {
@@ -458,7 +458,7 @@ OpenAssessment.BaseUI.prototype = {
         else {
             // Insert the error message
             var msgHtml = (msg === null) ? "" : msg;
-            $(container + " .message__content").html('<p>' + msg + '</p>');
+            $(container + " .message__content").html('<p>' + msgHtml + '</p>');
 
             // Toggle the error class
             $(container).toggleClass('has--error', msg !== null);
