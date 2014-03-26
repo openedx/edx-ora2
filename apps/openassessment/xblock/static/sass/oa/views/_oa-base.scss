@@ -986,25 +986,28 @@
       }
 
       @include media($bp-dm) {
-        @include span-columns(3 of 12);
-        @include omega(4n);
+        @include span-columns(4 of 12);
+        @include omega(3n);
       }
 
       @include media($bp-dl) {
-        @include span-columns(3 of 12);
-        @include omega(4n);
+        @include span-columns(4 of 12);
+        @include omega(3n);
       }
 
       @include media($bp-dx) {
-        @include span-columns(3 of 12);
-        @include omega(4n);
+        @include span-columns(4 of 12);
+        @include omega(3n);
       }
 
       // CASE: self assessment
       &.self-assessment {
-        border-radius: ($baseline-v/10);
-        background: $color-decorative-quaternary;
-        padding: ($baseline-v/2) ($baseline-h/2);
+        border-left: ($baseline-h/8) solid $color-decorative-quaternary;
+        padding-left: ($baseline-h/2);
+
+        .answer__source {
+          color: $color-decorative-tertiary;
+        }
       }
     }
 
@@ -1023,9 +1026,19 @@
     }
 
     .answer__value__value {
-      @extend %hd-3;
+      @extend %hd-2;
       @extend %t-strong;
       color: $heading-color;
+
+      .ui-hint {
+        @extend %trans-color;
+        color: $color-decorative-tertiary;
+
+        // STATE: hover - needed to reset color to what's expected from _navigation.scss (TODO: clean up specificity)
+        &:hover, &:focus {
+          color: $action-primary-color-focus;
+        }
+      }
     }
 
     .answer__score, .answer__score__value {
@@ -1043,7 +1056,7 @@
       }
 
       .answer__value {
-        @extend %copy-3;
+        @extend %copy-2;
       }
     }
   }
