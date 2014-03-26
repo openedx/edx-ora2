@@ -63,3 +63,9 @@ class SubmissionTest(XBlockHandlerTestCase):
         self.assertFalse(resp[0])
         self.assertEqual(resp[1], "ENOPREVIEW")
         self.assertEqual(resp[2], "To submit a response, view this component in Preview or Live mode.")
+
+    # In Studio preview mode, the runtime sets the user ID to None
+    @scenario('data/over_grade_scenario.xml', user_id='Alice')
+    def test_closed_submissions(self, xblock,):
+        resp = self.request(xblock, 'render_submission', json.dumps(dict()))
+        self.assertIn("Incomplete", resp)
