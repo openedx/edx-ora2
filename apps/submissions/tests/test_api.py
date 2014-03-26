@@ -28,7 +28,7 @@ SECOND_STUDENT_ITEM = dict(
 
 ANSWER_ONE = u"this is my answer!"
 ANSWER_TWO = u"this is my other answer!"
-ANSWER_THREE = u'' + 'c' * (Submission.MAXSIZE+1)
+ANSWER_THREE = u'' + 'c' * (Submission.MAXSIZE + 1)
 
 
 @ddt

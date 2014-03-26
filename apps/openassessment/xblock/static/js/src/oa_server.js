@@ -40,9 +40,7 @@ OpenAssessment.Server.prototype = {
     /* 
      * Get maximum size of input
      */
-    get_max_input_size: function() {
-        return 1024 * 64;    /* 64KB should be enough for anybody, right? ;^P */
-    },
+    maxInputSize: 1024 * 64,    /* 64KB should be enough for anybody, right? ;^P */
 
     /**
     Render the XBlock.
@@ -119,7 +117,7 @@ OpenAssessment.Server.prototype = {
     **/
     submit: function(submission) {
         var url = this.url('submit');
-        if (submission.length > this.get_max_input_size()) {
+        if (submission.length > this.maxInputSize) {
             return $.Deferred(function(defer) {
                 defer.rejectWith(this, ["submit", "Response text is too large. Please reduce the size of your response and try to submit again."]);
             }).promise();
@@ -159,7 +157,7 @@ OpenAssessment.Server.prototype = {
     **/
     save: function(submission) {
         var url = this.url('save_submission');
-        if (submission.length > this.get_max_input_size()) {
+        if (submission.length > this.maxInputSize) {
             return $.Deferred(function(defer) {
                 defer.rejectWith(this, ["Response text is too large. Please reduce the size of your response and try to submit again."]);
             }).promise();
@@ -199,7 +197,7 @@ OpenAssessment.Server.prototype = {
      */
      submitFeedbackOnAssessment: function(text, options) {
         var url = this.url('submit_feedback');
-        if (text.length > this.get_max_input_size()) {
+        if (text.length > this.maxInputSize) {
             return $.Deferred(function(defer) {
                 defer.rejectWith(this, ["Response text is too large. Please reduce the size of your response and try to submit again."]);
             }).promise();
@@ -243,7 +241,7 @@ OpenAssessment.Server.prototype = {
     **/
     peerAssess: function(submissionId, optionsSelected, feedback) {
         var url = this.url('peer_assess');
-        if (feedback.length > this.get_max_input_size()) {
+        if (feedback.length > this.maxInputSize) {
             return $.Deferred(function(defer) {
                 defer.rejectWith(this, ["Response text is too large. Please reduce the size of your response and try to submit again."]);
             }).promise();

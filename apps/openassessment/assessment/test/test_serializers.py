@@ -3,7 +3,6 @@ import os.path
 
 from ddt import ddt, file_data
 from django.test import TestCase
-from rest_framework.serializers import ValidationError
 
 from openassessment.assessment.models import Criterion, CriterionOption, Rubric, AssessmentFeedback
 from openassessment.assessment.serializers import (

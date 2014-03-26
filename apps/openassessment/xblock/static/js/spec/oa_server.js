@@ -30,6 +30,19 @@ describe("OpenAssessment.Server", function() {
         );
     };
 
+    var getHugeTestString = function() {
+        var testStringSize = server.maxInputSize + 1;
+        var testString = '';
+        for (i = 0; i < (testStringSize); i++) { testString += 'x'; }
+        return testString;
+    }
+    
+    var getHugeStringError = function() {
+        // return a string that can be used with .toContain()
+        // "Response text is too large. Please reduce the size of your response and try to submit again.";
+        return "text is too large"
+    }
+
     beforeEach(function() {
         // Create the server
         // Since the runtime is a stub implementation that ignores the element passed to it,
@@ -194,17 +207,15 @@ describe("OpenAssessment.Server", function() {
     it("confirms that very long submissions fail with an error without ajax", function() {
         var receivedErrorCode = "";
         var receivedErrorMsg = "";
-        var test_string = '';
-        var test_string_size = server.get_max_input_size() + 1;
-        for (i = 0; i < (test_string_size); i++) { test_string += 'x'; }
-        server.submit(test_string).fail(
+        var testString = getHugeTestString();
+        server.submit(testString).fail(
             function(errorCode, errorMsg) {
                 receivedErrorCode = errorCode;
                 receivedErrorMsg = errorMsg;
             }
         );
         expect(receivedErrorCode).toEqual("submit");
-        expect(receivedErrorMsg).toEqual("Response text is too large. Please reduce the size of your response and try to submit again.");
+        expect(receivedErrorMsg).toContain(getHugeStringError());
     });
 
     it("informs the caller of an server error when sending a submission", function() {
@@ -225,13 +236,11 @@ describe("OpenAssessment.Server", function() {
 
     it("confirms that very long saves fail with an error without ajax", function() {
         var receivedErrorMsg = "";
-        var test_string = '';
-        var test_string_size = server.get_max_input_size() + 1;
-        for (i = 0; i < (test_string_size); i++) { test_string += 'x'; }
-        server.save(test_string).fail(
+        var testString = getHugeTestString();
+        server.save(testString).fail(
             function(errorMsg) { receivedErrorMsg = errorMsg; }
         );
-        expect(receivedErrorMsg).toEqual("Response text is too large. Please reduce the size of your response and try to submit again.");
+        expect(receivedErrorMsg).toContain(getHugeStringError());
     });
 
     it("informs the caller of an AJAX error when sending a submission", function() {
@@ -295,15 +304,13 @@ describe("OpenAssessment.Server", function() {
     it("confirms that very long peer assessments fail with an error without ajax", function() {
         var options = {clarity: "Very clear", precision: "Somewhat precise"};
         var receivedErrorMsg = "";
-        var test_string = '';
-        var test_string_size = server.get_max_input_size() + 1;
-        for (i = 0; i < (test_string_size); i++) { test_string += 'x'; }
-        server.peerAssess("abc1234", options, test_string).fail(
+        var testString = getHugeTestString();
+        server.peerAssess("abc1234", options, testString).fail(
             function(errorMsg) {
                 receivedErrorMsg = errorMsg;
             }
         );
-        expect(receivedErrorMsg).toEqual("Response text is too large. Please reduce the size of your response and try to submit again.");
+        expect(receivedErrorMsg).toContain(getHugeStringError());
     });
 
     it("informs the caller of a server error when sending a peer assessment", function() {
@@ -356,15 +363,13 @@ describe("OpenAssessment.Server", function() {
     it("confirms that very long assessment feedback fails with an error without ajax", function() {
         var options = ["Option 1", "Option 2"];
         var receivedErrorMsg = "";
-        var test_string = '';
-        var test_string_size = server.get_max_input_size() + 1;
-        for (i = 0; i < (test_string_size); i++) { test_string += 'x'; }
-        server.submitFeedbackOnAssessment(test_string, options).fail(
+        var testString = getHugeTestString();
+        server.submitFeedbackOnAssessment(testString, options).fail(
             function(errorMsg) {
                 receivedErrorMsg = errorMsg;
             }
         );
-        expect(receivedErrorMsg).toEqual("Response text is too large. Please reduce the size of your response and try to submit again.");
+        expect(receivedErrorMsg).toContain(getHugeStringError());
     });
 
     it("informs the caller of an AJAX error when sending feedback on submission", function() {
