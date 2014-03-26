@@ -119,19 +119,30 @@
       border: none;
       padding-bottom: 0;
       color: $white-t;
-      text-align: center;
     }
 
     &.message--error {
       background: tint($color-error, 15%);
+
+      .message__content {
+        color: tint($color-error, 90%);
+      }
     }
 
     &.message--warning {
       background: tint($color-warning, 15%);
+
+      .message__content {
+        color: tint($color-warning, 90%);
+      }
     }
 
     &.message--confirm {
-      background: tint($color-warning, 15%);
+      background: tint($color-confirm, 15%);
+
+      .message__content {
+        color: tint($color-confirm, 90%);
+      }
     }
   }
 
