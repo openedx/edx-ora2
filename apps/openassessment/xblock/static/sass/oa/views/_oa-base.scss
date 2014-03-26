@@ -247,8 +247,10 @@
 
     // step status
     .step__status {
+      display: block;
 
       .step__status__value {
+        display: block;
         border-radius: ($baseline-v/10);
         padding: ($baseline-v/4) ($baseline-h/4);
         background: $color-decorative-tertiary;
@@ -274,7 +276,7 @@
         @include span-columns(2 of 6);
         @include omega();
         position: relative;
-        top: -8px;
+        top: -12px;
         text-align: right;
       }
 
@@ -282,7 +284,7 @@
         @include span-columns(3 of 12);
         @include omega();
         position: relative;
-        top:-8px;
+        top:-12px;
         text-align: right;
       }
 
@@ -290,7 +292,7 @@
         @include span-columns(3 of 12);
         @include omega();
         position: relative;
-        top: -8px;
+        top: -12px;
         text-align: right;
       }
 
