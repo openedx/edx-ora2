@@ -121,7 +121,7 @@ OpenAssessment.Server.prototype = {
         var url = this.url('submit');
         if (submission.length > this.get_max_input_size()) {
             return $.Deferred(function(defer) {
-                defer.rejectWith(this, ["submit", "Text input too large."]);
+                defer.rejectWith(this, ["submit", "Response text is too large. Please reduce the size of your response and try to submit again."]);
             }).promise();
         }
         return $.Deferred(function(defer) {
@@ -161,7 +161,7 @@ OpenAssessment.Server.prototype = {
         var url = this.url('save_submission');
         if (submission.length > this.get_max_input_size()) {
             return $.Deferred(function(defer) {
-                defer.rejectWith(this, ["Text input too large."]);
+                defer.rejectWith(this, ["Response text is too large. Please reduce the size of your response and try to submit again."]);
             }).promise();
         }
         return $.Deferred(function(defer) {
@@ -201,7 +201,7 @@ OpenAssessment.Server.prototype = {
         var url = this.url('submit_feedback');
         if (text.length > this.get_max_input_size()) {
             return $.Deferred(function(defer) {
-                defer.rejectWith(this, ["Text input too large."]);
+                defer.rejectWith(this, ["Response text is too large. Please reduce the size of your response and try to submit again."]);
             }).promise();
         }
         var payload = JSON.stringify({
@@ -245,7 +245,7 @@ OpenAssessment.Server.prototype = {
         var url = this.url('peer_assess');
         if (feedback.length > this.get_max_input_size()) {
             return $.Deferred(function(defer) {
-                defer.rejectWith(this, ["Text input too large."]);
+                defer.rejectWith(this, ["Response text is too large. Please reduce the size of your response and try to submit again."]);
             }).promise();
         }
         var payload = JSON.stringify({

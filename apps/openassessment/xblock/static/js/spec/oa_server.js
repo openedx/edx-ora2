@@ -204,7 +204,7 @@ describe("OpenAssessment.Server", function() {
             }
         );
         expect(receivedErrorCode).toEqual("submit");
-        expect(receivedErrorMsg).toEqual("Text input too large.");
+        expect(receivedErrorMsg).toEqual("Response text is too large. Please reduce the size of your response and try to submit again.");
     });
 
     it("informs the caller of an server error when sending a submission", function() {
@@ -231,7 +231,7 @@ describe("OpenAssessment.Server", function() {
         server.save(test_string).fail(
             function(errorMsg) { receivedErrorMsg = errorMsg; }
         );
-        expect(receivedErrorMsg).toEqual("Text input too large.");
+        expect(receivedErrorMsg).toEqual("Response text is too large. Please reduce the size of your response and try to submit again.");
     });
 
     it("informs the caller of an AJAX error when sending a submission", function() {
@@ -303,7 +303,7 @@ describe("OpenAssessment.Server", function() {
                 receivedErrorMsg = errorMsg;
             }
         );
-        expect(receivedErrorMsg).toEqual("Text input too large.");
+        expect(receivedErrorMsg).toEqual("Response text is too large. Please reduce the size of your response and try to submit again.");
     });
 
     it("informs the caller of a server error when sending a peer assessment", function() {
@@ -364,7 +364,7 @@ describe("OpenAssessment.Server", function() {
                 receivedErrorMsg = errorMsg;
             }
         );
-        expect(receivedErrorMsg).toEqual("Text input too large.");
+        expect(receivedErrorMsg).toEqual("Response text is too large. Please reduce the size of your response and try to submit again.");
     });
 
     it("informs the caller of an AJAX error when sending feedback on submission", function() {
