@@ -360,6 +360,10 @@
       margin-bottom: $baseline-v;
     }
 
+    .step__content__section {
+      margin-bottom: ($baseline-v*2);
+    }
+
     // step actions
     .step__actions {
       margin-bottom: ($baseline-v/2);
@@ -921,13 +925,10 @@
     }
   }
 
+
   // --------------------
   // UI: submitted repsonse
   // --------------------
-  .submission__answer__display {
-    @extend %ui-subsection;
-  }
-
   .submission__answer__display__title {
     @extend %t-heading;
     margin-bottom: ($baseline-v/2);
