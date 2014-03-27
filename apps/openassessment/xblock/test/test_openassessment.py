@@ -138,6 +138,37 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         self.assertEqual(student_item['course_id'], 'test_course')
         self.assertEqual(student_item['student_id'], 'test_student')
 
+    @scenario('data/basic_scenario.xml')
+    def test_is_course_staff(self, xblock):
+        # By default, we shouldn't be course staff
+        self.assertFalse(xblock.is_course_staff)
+
+        # If the LMS runtime tells us we're not course staff,
+        # we shouldn't be course staff.
+        xblock.xmodule_runtime = Mock(user_is_staff=False)
+        self.assertFalse(xblock.is_course_staff)
+
+        # If the LMS runtime tells us that we ARE course staff,
+        # then we're course staff.
+        xblock.xmodule_runtime.user_is_staff = True
+        self.assertTrue(xblock.is_course_staff)
+
+    @scenario('data/basic_scenario.xml')
+    def test_course_staff_debug_info(self, xblock):
+        # If we're not course staff, we shouldn't see the debug info
+        xblock.xmodule_runtime = Mock(
+            course_id='test_course',
+            anonymous_student_id='test_student',
+            user_is_staff=False
+        )
+        xblock_fragment = self.runtime.render(xblock, "student_view")
+        self.assertNotIn("course staff information", xblock_fragment.body_html().lower())
+
+        # If we ARE course staff, then we should see the debug info
+        xblock.xmodule_runtime.user_is_staff = True
+        xblock_fragment = self.runtime.render(xblock, "student_view")
+        self.assertIn("course staff information", xblock_fragment.body_html().lower())
+
 
 class TestDates(XBlockHandlerTestCase):
 

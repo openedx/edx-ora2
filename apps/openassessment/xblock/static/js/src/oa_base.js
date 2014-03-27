@@ -72,6 +72,12 @@ OpenAssessment.BaseView.prototype = {
         this.renderPeerAssessmentStep();
         this.renderSelfAssessmentStep();
         this.gradeView.load();
+
+        // Set up expand/collapse for course staff debug, if available
+        courseStaffDebug = $('.wrapper--staff-info');
+        if (courseStaffDebug.length > 0) {
+            this.setUpCollapseExpand(courseStaffDebug, function() {});
+        }
     },
 
     /**

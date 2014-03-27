@@ -61,6 +61,10 @@
                     </li>
                 {% endfor %}
             </ol>
+
+            {% if is_course_staff %}
+            {% include 'openassessmentblock/staff_debug.html' %}
+            {% endif %}
         </div>
     </div>
 </div>

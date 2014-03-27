@@ -3,14 +3,14 @@
 Tests for assessment models.
 """
 
-from django.test import TestCase
+from openassessment.test_utils import CacheResetTest
 from openassessment.assessment.models import (
     Rubric, Criterion, CriterionOption, InvalidOptionSelection,
     AssessmentFeedback, AssessmentFeedbackOption,
 )
 
 
-class TestRubricOptionIds(TestCase):
+class TestRubricOptionIds(CacheResetTest):
     """
     Test selection of options from a rubric.
     """
@@ -107,7 +107,7 @@ class TestRubricOptionIds(TestCase):
             })
 
 
-class AssessmentFeedbackTest(TestCase):
+class AssessmentFeedbackTest(CacheResetTest):
     """
     Tests for assessment feedback.
     This is feedback that students give in response to the peer assessments they receive.

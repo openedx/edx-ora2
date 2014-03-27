@@ -53,7 +53,7 @@ def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, s
     # Check that the student is allowed to assess this submission
     try:
         submission = get_submission_and_student(submission_uuid)
-        if submission is None or submission['student_item']['student_id'] != user_id:
+        if submission['student_item']['student_id'] != user_id:
             raise SelfAssessmentRequestError(_("Cannot self-assess this submission"))
     except SubmissionNotFoundError:
         raise SelfAssessmentRequestError(_("Could not retrieve the submission."))

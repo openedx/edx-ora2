@@ -5,7 +5,7 @@ import os.path
 import json
 from functools import wraps
 
-from django.test import TestCase
+from openassessment.test_utils import CacheResetTest
 from workbench.runtime import WorkbenchRuntime
 import webob
 
@@ -61,7 +61,7 @@ def scenario(scenario_path, user_id=None):
     return _decorator
 
 
-class XBlockHandlerTestCase(TestCase):
+class XBlockHandlerTestCase(CacheResetTest):
     """
     Load the XBlock in the workbench runtime to test its handler.
     """
