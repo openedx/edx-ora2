@@ -315,10 +315,16 @@ class OpenAssessmentBlock(
         Returns:
             bool
         """
+        # This is the LMS...
         if hasattr(self, 'xmodule_runtime'):
             return getattr(self.xmodule_runtime, 'user_is_staff', False)
-        else:
-            return False
+
+        # Workbench case...
+        student_id = unicode(self.get_student_item_dict()["student_id"])
+        if student_id.startswith("staff"):
+            return True
+
+        return False
 
     def _create_ui_models(self):
         """Combine UI attributes and XBlock configuration into a UI model.
