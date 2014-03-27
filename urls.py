@@ -3,6 +3,7 @@ from django.conf.urls import include, patterns, url
 from django.contrib import admin
 
 import openassessment.assessment.urls
+from openassessment.workflow.admin import WORKFLOW_ADMIN_SITE
 import submissions.urls
 import workbench.urls
 
@@ -19,6 +20,7 @@ urlpatterns = patterns(
     # edx-ora2 apps
     url(r'^submissions/', include(submissions.urls)),
     url(r'^peer/evaluations/', include(openassessment.assessment.urls)),
+    url(r'^workflow/admin/', include(WORKFLOW_ADMIN_SITE.urls)),
 )
 
 # We need to do explicit setup of the Django debug toolbar because autodiscovery

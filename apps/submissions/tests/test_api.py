@@ -177,6 +177,61 @@ class TestSubmissionsApi(TestCase):
         submissions = api.get_submissions(STUDENT_ITEM, 1)
         self.assertEqual(u"Testing unicode answers.", submissions[0]["answer"])
 
+    def test_get_course_items(self):
+        # Initially, no course items available
+        self.assertEqual(api.get_course_items(), dict())
+
+        # Same course, same item
+        api.create_submission({
+            'student_id': 'Tim',
+            'course_id': 'Foo',
+            'item_id': 'Bar',
+            'item_type': 'openassessment'
+        }, "answer 1")
+        api.create_submission({
+            'student_id': 'Alice',
+            'course_id': 'Foo',
+            'item_id': 'Bar',
+            'item_type': 'openassessment'
+        }, "answer 2")
+        self.assertItemsEqual(api.get_course_items(), {"Foo": ["Bar"]})
+
+        # Same course, different items
+        api.create_submission({
+            'student_id': 'Alice',
+            'course_id': 'Foo',
+            'item_id': 'Different',
+            'item_type': 'openassessment'
+        }, "answer 3")
+        course_items = api.get_course_items()
+        self.assertItemsEqual(course_items.keys(), ["Foo"])
+        self.assertItemsEqual(api.get_course_items()["Foo"], ["Bar", "Different"])
+
+        # Different course, same item
+        api.create_submission({
+            'student_id': 'Alice',
+            'course_id': 'Lorem',
+            'item_id': 'Bar',
+            'item_type': 'openassessment'
+        }, "answer 3")
+        course_items = api.get_course_items()
+        self.assertItemsEqual(course_items.keys(), ["Foo", "Lorem"])
+        self.assertItemsEqual(api.get_course_items()["Foo"], ["Bar", "Different"])
+        self.assertItemsEqual(api.get_course_items()["Lorem"], ["Bar"])
+
+        # Different course, different item
+        api.create_submission({
+            'student_id': 'Alice',
+            'course_id': 'Ipsum',
+            'item_id': 'Dolar',
+            'item_type': 'openassessment'
+        }, "answer 3")
+        course_items = api.get_course_items()
+        self.assertItemsEqual(course_items.keys(), ["Foo", "Lorem", "Ipsum"])
+        self.assertItemsEqual(api.get_course_items()["Foo"], ["Bar", "Different"])
+        self.assertItemsEqual(api.get_course_items()["Lorem"], ["Bar"])
+        self.assertItemsEqual(api.get_course_items()["Ipsum"], ["Dolar"])
+
     def _assert_submission(self, submission, expected_answer, expected_item,
                            expected_attempt):
         self.assertIsNotNone(submission)
