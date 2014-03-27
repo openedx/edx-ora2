@@ -145,20 +145,24 @@
 // --------------------
 // canned icons
 // --------------------
+%icon-0 {
+  @extend %t-xlarge;
+}
+
 %icon-1 {
-  @extend %t-medium;
+  @extend %t-large;
 }
 
 %icon-2 {
-  @extend %t-base;
+  @extend %t-medium;
 }
 
 %icon-3 {
-  @extend %t-small;
+  @extend %t-base;
 }
 
 %icon-4 {
-  @extend %t-xsmall;
+  @extend %t-small;
 }
 
 

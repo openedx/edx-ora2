@@ -21,6 +21,9 @@ OpenAssessment.BaseView = function(runtime, element, server) {
     this.runtime = runtime;
     this.element = element;
     this.server = server;
+
+    this.responseView = new OpenAssessment.ResponseView(this.element, this.server, this);
+    this.gradeView = new OpenAssessment.GradeView(this.element, this.server, this);
 };
 
 
@@ -65,12 +68,10 @@ OpenAssessment.BaseView.prototype = {
      * Asynchronously load each sub-view into the DOM.
      */
     load: function() {
-        this.responseView = new OpenAssessment.ResponseView(this.element, this.server, this);
         this.responseView.load();
-
         this.renderPeerAssessmentStep();
         this.renderSelfAssessmentStep();
-        this.renderGradeStep();
+        this.gradeView.load();
     },
 
     /**
@@ -203,53 +204,6 @@ OpenAssessment.BaseView.prototype = {
     },
 
     /**
-    Render the grade step.
-    **/
-    renderGradeStep: function() {
-        var view = this;
-        this.server.render('grade').done(
-            function(html) {
-                // Load the HTML
-                $('#openassessment__grade', view.element).replaceWith(html);
-
-                // Install a click handler for collapse/expand
-                var sel = $('#openassessment__grade', view.element);
-                view.setUpCollapseExpand(sel);
-
-                // Install a click handler for assessment feedback
-                sel.find('#feedback__submit').click(function(eventObject) {
-                    eventObject.preventDefault();
-                    view.submitFeedbackOnAssessment();
-                });
-            }
-        ).fail(function(errMsg) {
-            view.showLoadError('grade', errMsg);
-        });
-
-    },
-
-    /**
-    Send assessment feedback to the server and update the view.
-    **/
-    submitFeedbackOnAssessment: function() {
-        // Send the submission to the server
-        var view = this;
-        var text = $('#feedback__remarks__value', view.element).val();
-        var options = $.map(
-            $('.feedback__overall__value:checked', view.element),
-            function(element, index) { return $(element).val(); }
-        );
-        view.server.submitFeedbackOnAssessment(text, options).done(function() {
-            // When we have successfully sent the submission, textarea no longer editable
-            // TODO
-            // When we have successfully sent the submission, textarea no longer editable
-            // console.log("Feedback to the assessments submitted, thanks!");
-        }).fail(function(errMsg) {
-            view.toggleActionError('feedback_assess', errMsg);
-        });
-    },
-
-    /**
     Send an assessment to the server and update the view.
     **/
     peerAssess: function() {
@@ -257,7 +211,7 @@ OpenAssessment.BaseView.prototype = {
         this.peerAssessRequest(function() {
             view.renderPeerAssessmentStep();
             view.renderSelfAssessmentStep();
-            view.renderGradeStep();
+            view.gradeView.load();
             view.scrollToTop();
         });
     },
@@ -270,7 +224,7 @@ OpenAssessment.BaseView.prototype = {
         var view = this;
         view.peerAssessRequest(function() {
             view.renderContinuedPeerAssessmentStep();
-            view.renderGradeStep();
+            view.gradeView.load();
         });
     },
 
@@ -285,7 +239,7 @@ OpenAssessment.BaseView.prototype = {
      */
     peerAssessRequest: function(successFunction) {
         // Retrieve assessment info from the DOM
-        var submissionId = $("span#peer_submission_uuid", this.element)[0].innerHTML.trim();
+        var submissionId = $("#peer_submission_uuid", this.element)[0].innerHTML.trim();
         var optionsSelected = {};
         $("#peer-assessment--001__assessment input[type=radio]:checked", this.element).each(
             function(index, sel) {
@@ -309,7 +263,7 @@ OpenAssessment.BaseView.prototype = {
     **/
     selfAssess: function() {
         // Retrieve self-assessment info from the DOM
-        var submissionId = $("span#self_submission_uuid", this.element)[0].innerHTML.trim();
+        var submissionId = $("#self_submission_uuid", this.element)[0].innerHTML.trim();
         var optionsSelected = {};
         $("#self-assessment--001__assessment input[type=radio]:checked", this.element).each(
             function(index, sel) {
@@ -324,7 +278,7 @@ OpenAssessment.BaseView.prototype = {
             function() {
                 view.renderPeerAssessmentStep();
                 view.renderSelfAssessmentStep();
-                view.renderGradeStep();
+                view.gradeView.load();
                 view.scrollToTop();
             }
         ).fail(function(errMsg) {

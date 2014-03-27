@@ -1,5 +1,5 @@
 /**
-Tests for OpenAssessment response (submission) step.
+Tests for OpenAssessment response (submission) view.
 **/
 
 describe("OpenAssessment.ResponseView", function() {

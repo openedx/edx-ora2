@@ -183,3 +183,13 @@ $selected-color: $blue-s1;
 $bg-view: $gray-l7;
 $bg-content: $white;
 $bg-message: $black;
+
+// --------------------
+// // application - colors: states
+// --------------------
+$color-error: rgb(188, 85, 71);
+$color-warning: rgb(229, 166, 53);
+$color-complete: rgb(98, 194, 74);
+$color-incomplete: $color-warning;
+$color-confirm: $heading-primary-color;
+$color-unavailable: tint($copy-color, 85%);

@@ -255,7 +255,7 @@
       }
 
       .ico {
-        @extend %icon-2;
+        @extend %icon-3;
         display: inline-block;
         vertical-align: bottom;
         margin-left: ($baseline-v/4);
@@ -362,7 +362,7 @@
         }
 
         .ico {
-          @extend %icon-1;
+          @extend %icon-2;
         }
       }
 
@@ -392,13 +392,17 @@
       .step__status__value {
         background: $color-unavailable;
 
+        .wrapper--anim {
+          @include animation(pulse $tmg-s3 ease-in-out infinite);
+        }
+
         .ico {
           display: inline-block;
-          color: $copy-color;
+          color: $copy-secondary-color;
         }
 
         .copy {
-          color: $copy-color;
+          color: $copy-secondary-color;
         }
       }
     }
@@ -1073,22 +1077,23 @@
   }
 
   // feedback form
-  .submission__feeedback {
+  .submission__feedback {
     @extend %ui-subsection;
   }
 
-  .submission__feeedback__title {
+  .submission__feedback__title {
     @extend %ui-subsection-title;
     @extend %t-heading;
     margin-bottom: ($baseline-v/2);
     color: $heading-secondary-color;
   }
 
-  .submission__feeedback__content {
+  .submission__feedback__content {
     @extend %ui-subsection-content;
+    margin-bottom: $baseline-v;
   }
 
-  .submission__feeedback__instructions {
+  .submission__feedback__instructions {
     @extend %copy-2;
     margin-bottom: $baseline-v;
     color: $copy-secondary-color;
@@ -1121,7 +1126,7 @@
     }
   }
 
-  .submission__feeedback__actions {
+  .submission__feedback__actions {
     @extend %ui-subsection-content;
     padding-top: 0;
 

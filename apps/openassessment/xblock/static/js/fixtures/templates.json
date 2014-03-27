@@ -1,0 +1,81 @@
+[
+    {
+        "template": "openassessmentblock/oa_base.html",
+        "context": {
+            "title": "Test title",
+            "question": "Test prompt",
+            "rubric_criteria": [],
+            "rubric_assessments": [
+                {
+                    "name": "submission",
+                    "class_id": "openassessment__response",
+                    "navigation_text": "Your response to this problem",
+                    "title": "Your Response"
+                },
+                {
+                    "name": "peer-assessment",
+                    "class_id": "openassessment__peer-assessment",
+                    "navigation_text": "Your assessment(s) of peer responses",
+                    "title": "Assess Peers' Responses"
+                },
+                {
+                    "name": "self-assessment",
+                    "class_id": "openassessment__self-assessment",
+                    "navigation_text": "Your assessment of your response",
+                    "title": "Assess Your Response"
+                },
+                {
+                    "name": "grade",
+                    "class_id": "openassessment__grade",
+                    "navigation_text": "Your grade for this problem",
+                    "title": "Your Grade:"
+                }
+            ]
+        },
+        "output": "oa_base.html"
+    },
+    {
+        "template": "openassessmentblock/response/oa_response.html",
+        "context": {
+            "saved_response": "",
+            "save_status": "Unsaved draft",
+            "submit_enabled": false,
+            "submission_due": ""
+        },
+        "output": "oa_response.html"
+    },
+    {
+        "template": "openassessmentblock/self/oa_self_assessment.html",
+        "context": {
+            "rubric_criteria": [],
+            "self_submission": {}
+        },
+        "output": "oa_self_assessment.html"
+    },
+    {
+        "template": "openassessmentblock/peer/oa_peer_assessment.html",
+        "context": {
+            "rubric_criteria": [],
+            "peer_submission": {}
+        },
+        "output": "oa_peer_assessment.html"
+    },
+    {
+        "template": "openassessmentblock/grade/oa_grade_complete.html",
+        "context": {
+            "score": "",
+            "feedback_text": "",
+            "student_submission": "",
+            "peer_assessments": [],
+            "self_assessment": {},
+            "rubric_criteria": [],
+            "has_submitted_feedback": false
+        },
+        "output": "oa_grade_complete.html"
+    },
+    {
+        "template": "openassessmentblock/oa_edit.html",
+        "context": {},
+        "output": "oa_edit.html"
+    }
+]
