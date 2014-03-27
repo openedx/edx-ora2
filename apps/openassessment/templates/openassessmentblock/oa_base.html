@@ -64,6 +64,25 @@
                     </li>
                 {% endfor %}
             </ol>
+
+            {% if is_course_staff %}
+            <div>
+                <h2>Course Staff Debug Information</h2>
+                <p><b>Total number of submissions</b>: {{ num_submissions }}</p>
+                <table border="1">
+                    <tr>
+                        <th>Step</th>
+                        <th>Number of students</th>
+                    </tr>
+                    {% for item in status_counts %}
+                    <tr>
+                        <td>{{ item.status }}</td>
+                        <td>{{ item.count }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>

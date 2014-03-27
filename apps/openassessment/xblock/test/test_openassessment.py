@@ -333,6 +333,37 @@ class TestDates(XBlockHandlerTestCase):
         # If the runtime doesn't provide a published_date field, assume we've been published
         self.assertTrue(xblock.is_released())
 
+    @scenario('data/basic_scenario.xml')
+    def test_is_course_staff(self, xblock):
+        # By default, we shouldn't be course staff
+        self.assertFalse(xblock.is_course_staff)
+
+        # If the LMS runtime tells us we're not course staff,
+        # we shouldn't be course staff.
+        xblock.xmodule_runtime = Mock(user_is_staff=False)
+        self.assertFalse(xblock.is_course_staff)
+
+        # If the LMS runtime tells us that we ARE course staff,
+        # then we're course staff.
+        xblock.xmodule_runtime.user_is_staff = True
+        self.assertTrue(xblock.is_course_staff)
+
+    @scenario('data/basic_scenario.xml')
+    def test_course_staff_debug_info(self, xblock):
+        # If we're not course staff, we shouldn't see the debug info
+        xblock.xmodule_runtime = Mock(
+            course_id='test_course',
+            anonymous_student_id='test_student',
+            user_is_staff=False
+        )
+        xblock_fragment = self.runtime.render(xblock, "student_view")
+        self.assertNotIn("course staff debug", xblock_fragment.body_html().lower())
+
+        # If we ARE course staff, then we should see the debug info
+        xblock.xmodule_runtime.user_is_staff = True
+        xblock_fragment = self.runtime.render(xblock, "student_view")
+        self.assertIn("course staff debug", xblock_fragment.body_html().lower())
+
     def assert_is_open(self, xblock, now, step, expected_is_open, expected_reason, released=None):
         """
         Assert whether the XBlock step is open/closed.

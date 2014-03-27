@@ -292,6 +292,36 @@ def update_from_assessments(submission_uuid, assessment_requirements):
     return _serialized_with_details(workflow, assessment_requirements)
 
 
+def get_status_counts(**kwargs):
+    """
+    Count how many workflows have each status, for a given item in a course.
+
+    Kwargs:
+        course_id (unicode): The ID of the course.
+        item_id (unicode): The ID of the item in the course.
+        item_type (unicode): The type of the item.
+
+    Returns:
+        list of dictionaries with keys "status" (str) and "count" (int)
+
+    Example usage:
+        >>> get_status_counts("ora2/1/1", "peer-assessment-problem")
+        [
+            {"status": "peer", "count": 5},
+            {"status": "self", "count": 10},
+            {"status": "waiting", "count": 43},
+            {"status": "done", "count": 12},
+        ]
+
+    """
+    submission_uuids = sub_api.get_submission_uuids(**kwargs)
+    workflows = AssessmentWorkflow.objects.filter(submission_uuid__in=submission_uuids)
+    return [
+        {"status": status, "count": workflows.filter(status=status).count()}
+        for status in AssessmentWorkflow.STATUS_VALUES
+    ]
+
+
 def _get_workflow_model(submission_uuid):
     """Return the `AssessmentWorkflow` model for a given `submission_uuid`.
 

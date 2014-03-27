@@ -290,7 +290,14 @@ class OpenAssessmentBlock(
             "question": self.prompt,
             "rubric_criteria": self.rubric_criteria,
             "rubric_assessments": ui_models,
+            "is_course_staff": False,
         }
+
+        if self.is_course_staff:
+            status_counts, num_submissions = self.get_workflow_status_counts()
+            context_dict['is_course_staff'] = True
+            context_dict['status_counts'] = status_counts
+            context_dict['num_submissions'] = num_submissions
 
         template = get_template("openassessmentblock/oa_base.html")
         context = Context(context_dict)
@@ -299,6 +306,19 @@ class OpenAssessmentBlock(
         frag.add_javascript(load("static/js/openassessment.min.js"))
         frag.initialize_js('OpenAssessmentBlock')
         return frag
+
+    @property
+    def is_course_staff(self):
+        """
+        Check whether the user has course staff permissions for this XBlock.
+
+        Returns:
+            bool
+        """
+        if hasattr(self, 'xmodule_runtime'):
+            return getattr(self.xmodule_runtime, 'user_is_staff', False)
+        else:
+            return False
 
     def _create_ui_models(self):
         """Combine UI attributes and XBlock configuration into a UI model.

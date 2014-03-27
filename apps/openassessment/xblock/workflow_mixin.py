@@ -67,3 +67,33 @@ class WorkflowMixin(object):
         return workflow_api.get_workflow_for_submission(
             self.submission_uuid, self.workflow_requirements()
         )
+
+    def get_workflow_status_counts(self):
+        """
+        Retrieve the counts of students in each step of the workflow.
+
+        Returns:
+            tuple of (list, int), where the list contains dicts with keys
+            "status" (unicode value) and "count" (int value), and the
+            integer represents the total number of submissions.
+
+        Example Usage:
+            >>> status_counts, num_submissions = xblock.get_workflow_status_counts()
+            >>> num_submissions
+                12
+            >>> status_counts
+                [
+                    {"status": "peer", "count": 2},
+                    {"status": "self", "count": 1},
+                    {"status": "waiting": "count": 4},
+                    {"status": "done", "count": 5}
+                ]
+        """
+        student_item = self.get_student_item_dict()
+        status_counts = workflow_api.get_status_counts(
+            course_id=student_item['course_id'],
+            item_id=student_item['item_id'],
+            item_type=student_item['item_type'],
+        )
+        num_submissions = sum(item['count'] for item in status_counts)
+        return status_counts, num_submissions
