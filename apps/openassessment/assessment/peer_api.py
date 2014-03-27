@@ -760,20 +760,34 @@ def _get_submission_for_review(workflow, graded_by, over_grading=False):
 
     """
     timeout = (timezone.now() - TIME_LIMIT).strftime("%Y-%m-%d %H:%M:%S")
+    # The follow query behaves as the Peer Assessment Queue. This will
+    # find the next submission (via PeerWorkflow) in this course / question
+    # that:
+    #  1) Does not belong to you
+    #  2) Does not have enough completed assessments
+    #  3) Is not something you have already scored.
+    #  4) Does not have a combination of completed assessments or open
+    #     assessments equal to or more than the requirement.
     try:
         peer_workflows = list(PeerWorkflow.objects.raw(
             "select pw.id, pw.submission_uuid "
             "from assessment_peerworkflow pw "
-            "left join assessment_peerworkflowitem pwi "
-            "on pw.id=pwi.author_id "
             "where pw.item_id=%s "
             "and pw.course_id=%s "
             "and pw.student_id<>%s "
             "and pw.graded_count < %s "
-            "and pw.id not in (select pwi.author_id from assessment_peerworkflowitem pwi where pwi.scorer_id=%s) "
-            "and (pwi.scorer_id is NULL or pwi.assessment_id is not NULL or pwi.started_at > %s) "
-            "group by pw.id "
-            "having count(pwi.id) < %s "
+            "and pw.id not in ("
+            "   select pwi.author_id "
+            "   from assessment_peerworkflowitem pwi "
+            "   where pwi.scorer_id=%s "
+            ") "
+            "and ("
+            "   select count(pwi.id) as c "
+            "   from assessment_peerworkflowitem pwi "
+            "   where pwi.author_id=pw.id "
+            "   and (pwi.assessment_id is not NULL or pwi.started_at > %s) "
+            ") < %s "
+            "order by pw.created_at, pw.id "
             "limit 1; ",
             [
                 workflow.item_id,
@@ -813,19 +827,31 @@ def _get_submission_for_over_grading(workflow):
     6) Returns the workflow with the fewest assessments.
 
     """
+    # The follow query behaves as the Peer Assessment Over Grading Queue. This
+    # will find the next submission (via PeerWorkflow) in this course / question
+    # that:
+    #  1) Does not belong to you
+    #  2) Is not something you have already scored
+    #  3) Has the fewest current assessments.
     try:
         peer_workflows = list(PeerWorkflow.objects.raw(
-            "select pw.id, pw.submission_uuid "
+            "select pw.id, pw.submission_uuid, ("
+            "   select count(pwi.id) as c "
+            "   from assessment_peerworkflowitem pwi "
+            "   where pwi.author_id=pw.id "
+            ") as c "
             "from assessment_peerworkflow pw "
-            "left join assessment_peerworkflowitem pwi "
-            "on pw.id=pwi.author_id "
             "where pw.item_id=%s "
             "and pw.course_id=%s "
             "and pw.student_id<>%s "
-            "and pw.id not in (select pwi.author_id from assessment_peerworkflowitem pwi where pwi.scorer_id=%s) "
-            "group by pw.id "
-            "order by count(pwi.id), pw.created_at, pw.id "
+            "and pw.id not in ("
+            "   select pwi.author_id "
+            "   from assessment_peerworkflowitem pwi "
+            "   where pwi.scorer_id=%s "
+            ") "
+            "order by c, pw.created_at, pw.id "
             "limit 1; ",
+
             [
                 workflow.item_id,
                 workflow.course_id,
@@ -844,43 +870,6 @@ def _get_submission_for_over_grading(workflow):
         )
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
-
-
-def _get_next_submission(order, workflow, *args):
-    """Constructs a raw SQL query for over grading or general peer review
-
-    Refactored function for retrieving the first submission that meets the
-    criteria of the query, which is altered based on the parameters passed
-    into the function.
-
-    For example, for a general peer assessment query, the following would be
-    the generated SQL query:
-
-    select pw.id, pw.submission_uuid , pw.student_id
-    from assessment_peerworkflow pw
-    where pw.completed_at is NULL
-    and pw.item_id='item_one'
-    and pw.course_id='Demo_Course'
-    and pw.student_id<>'Tim'
-    and pw.id not in (select pwi.author_id from assessment_peerworkflowitem pwi where pwi.scorer_id=3159)
-    and (select count(pwi.id) from assessment_peerworkflowitem pwi where pwi.scorer_id=3159)
-    and (pw.started_at is NULL or pw.graded_count < 3 or (pw.graded_count = 3 and pw.started_at < '2014-03-14 20:09:04'))
-    order by pw.created_at, pw.id
-    limit 1;
-
-    Args:
-        order (str): A piece of the query that is unique to over grading or
-            general peer review. This is inserted in the otherwise identical
-            query.
-        workflow (PeerWorkflow): The workflow associated with the student
-            requesting a submission for peer assessment. Used to parametrize
-            the query.
-
-    Returns:
-        A submission uuid for the submission that should be peer assessed.
-
-    """
-
 
 
 def _close_active_assessment(workflow, submission_uuid, assessment):
