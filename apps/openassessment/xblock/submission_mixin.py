@@ -177,7 +177,7 @@ class SubmissionMixin(object):
 
         """
         workflow = self.get_workflow_info()
-        problem_open, date = self.is_open()
+        problem_open, date = self.is_open('submission')
         sub_due = None
         if self.submission_due is not None:
             submission_deadline = dateutil.parser.parse(self.submission_due)
