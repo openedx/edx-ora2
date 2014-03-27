@@ -9,10 +9,10 @@ describe("OpenAssessment.BaseView", function() {
 
         // Dummy fragments to return from the render func
         this.fragments = {
-            submission: "Test submission",
-            self_assessment: readFixtures("self_assessment_frag.html"),
-            peer_assessment: readFixtures("peer_assessment_frag.html"),
-            grade: "Test fragment"
+            submission: readFixtures("oa_response.html"),
+            self_assessment: readFixtures("oa_self_assessment.html"),
+            peer_assessment: readFixtures("oa_peer_assessment.html"),
+            grade: readFixtures("oa_grade_complete.html")
         };
 
         this.peerAssess = function(submissionId, optionsSelected, feedback) {
@@ -49,10 +49,7 @@ describe("OpenAssessment.BaseView", function() {
         });
 
         waitsFor(function() {
-            var subviewHasHtml = $("#openassessment-base").children().map(
-                function(index, el) { return el.innerHTML !== ''; }
-            );
-            return Array(subviewHasHtml).every(function(hasHtml) { return hasHtml; });
+            return !$(".openassessment__steps__step").hasClass('is--loading');
         });
 
         runs(function() {
@@ -69,7 +66,7 @@ describe("OpenAssessment.BaseView", function() {
         server = new StubServer();
 
         // Create the object under test
-        var el = $("#openassessment-base").get(0);
+        var el = $("#openassessment").get(0);
         view = new OpenAssessment.BaseView(runtime, el, server);
     });
 

@@ -58,3 +58,4 @@ coverage
 ora2db
 testdb
 fixture_err.log
+apps/openassessment/xblock/static/js/fixtures/*.html

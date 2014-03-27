@@ -239,7 +239,7 @@ OpenAssessment.BaseView.prototype = {
      */
     peerAssessRequest: function(successFunction) {
         // Retrieve assessment info from the DOM
-        var submissionId = $("span#peer_submission_uuid", this.element)[0].innerHTML.trim();
+        var submissionId = $("#peer_submission_uuid", this.element)[0].innerHTML.trim();
         var optionsSelected = {};
         $("#peer-assessment--001__assessment input[type=radio]:checked", this.element).each(
             function(index, sel) {
@@ -263,7 +263,7 @@ OpenAssessment.BaseView.prototype = {
     **/
     selfAssess: function() {
         // Retrieve self-assessment info from the DOM
-        var submissionId = $("span#self_submission_uuid", this.element)[0].innerHTML.trim();
+        var submissionId = $("#self_submission_uuid", this.element)[0].innerHTML.trim();
         var optionsSelected = {};
         $("#self-assessment--001__assessment input[type=radio]:checked", this.element).each(
             function(index, sel) {
