@@ -7,7 +7,16 @@
 // contains all form elements inside of the main xblock wrapper
 .wrapper--xblock {
 
+
   // forms - general
+
+  // placeholder transitions
+  [placeholder]:focus::-webkit-input-placeholder {
+    @extend %trans-opacity;
+    opacity: 0.0;
+  }
+
+  // common inputs
   input[type="text"],
   input[type="email"],
   input[type="password"],
@@ -23,6 +32,7 @@
       color: $copy-secondary-color;
     }
 
+    // STATE: focus
     &:focus {
       box-shadow: 0 0 6px 0 rgba(29,157,217,0.4),inset 0 0 4px 0 rgba(0,0,0,0.15);
       border-color: $selected-color;

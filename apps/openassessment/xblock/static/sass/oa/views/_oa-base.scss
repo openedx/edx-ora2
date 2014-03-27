@@ -215,6 +215,12 @@
         margin-left: ($baseline-h/2);
         border-left: 1px solid $color-decorative-tertiary;
         padding-left: ($baseline-h/2);
+
+        @include media($bp-m) {
+          margin-left: 0;
+          border-left: none;
+          padding-left: 0;
+        }
       }
 
       .step__counter {
@@ -226,7 +232,15 @@
           content: counter(item, decimal);
           counter-increment: item;
           color: $color-decorative-tertiary;
+        }
 
+        @include media($bp-m) {
+          display: none;
+
+
+          &:before {
+            display: none;
+          }
         }
       }
 
@@ -247,18 +261,36 @@
 
     // step status
     .step__status {
+      display: inline-block;
 
       .step__status__value {
         border-radius: ($baseline-v/10);
         padding: ($baseline-v/4) ($baseline-h/4);
         background: $color-decorative-tertiary;
+        position: relative;
+
+        @include media($bp-ds) {
+          display: block;
+        }
+
+        @include media($bp-dm) {
+          display: block;
+        }
+
+        @include media($bp-dl) {
+          display: block;
+        }
+
+        @include media($bp-dx) {
+          display: block;
+        }
       }
 
       .ico {
         @extend %icon-3;
         display: inline-block;
-        vertical-align: bottom;
-        margin-left: ($baseline-v/4);
+        vertical-align: baseline;
+        margin-right: ($baseline-v/4);
       }
 
       .copy {
@@ -274,32 +306,28 @@
         @include span-columns(2 of 6);
         @include omega();
         position: relative;
-        top: -8px;
-        text-align: right;
+        top: -12px;
       }
 
       @include media($bp-dm) {
         @include span-columns(3 of 12);
         @include omega();
         position: relative;
-        top:-8px;
-        text-align: right;
+        top:-12px;
       }
 
       @include media($bp-dl) {
         @include span-columns(3 of 12);
         @include omega();
         position: relative;
-        top: -8px;
-        text-align: right;
+        top: -12px;
       }
 
       @include media($bp-dx) {
         @include span-columns(3 of 12);
         @include omega();
         position: relative;
-        top: -8px;
-        text-align: right;
+        top: -12px;
       }
     }
 
@@ -330,6 +358,14 @@
     // step content
     .step__content {
       margin-bottom: $baseline-v;
+    }
+
+    .step__content__section {
+      margin-bottom: ($baseline-v*2);
+
+      &:last-child {
+        @extend %wipe-last-child;
+      }
     }
 
     // step actions
@@ -562,7 +598,11 @@
 
   .openassessment__prompt {
     @extend %ui-well;
+    position: relative;
     margin-bottom: $baseline-v;
+    border: 1px solid $color-decorative-tertiary;
+    border-left: ($baseline-h/4) solid $color-decorative-secondary;
+    padding-left: ($baseline-h*0.75);
   }
 
   .openassessment__prompt__title {
@@ -580,7 +620,6 @@
         @extend %wipe-last-child;
       }
     }
-
 
     a {
       @extend %link-copy;
@@ -890,13 +929,10 @@
     }
   }
 
+
   // --------------------
   // UI: submitted repsonse
   // --------------------
-  .submission__answer__display {
-    @extend %ui-subsection;
-  }
-
   .submission__answer__display__title {
     @extend %t-heading;
     margin-bottom: ($baseline-v/2);
@@ -1088,7 +1124,11 @@
     color: $heading-secondary-color;
   }
 
-  .submission__feedback__content {
+  .submission__feeedback__title__copy {
+    margin-left: ($baseline-h/4);
+  }
+
+  .submission__feeedback__content {
     @extend %ui-subsection-content;
     margin-bottom: $baseline-v;
   }

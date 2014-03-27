@@ -23,14 +23,13 @@
             <!-- if the problem is unstarted or response hasn't been submitted -->
             <div id="openassessment__message" class="openassessment__message message">
                 <div class="message__content">
-                    <p>This problem requires that you work through multiple parts. You can begin by reading the question below and <a data-behavior="ui-scroll" href="#openassessment__response">providing your response</a>.</p>
+                    <p>This problem requires that you work through multiple parts. <strong>You can begin by reading the question below and providing your response.</strong></p>
                 </div>
             </div>
             {% endblock %}
 
             <div class="wrapper--openassessment__prompt">
                 <article class="openassessment__prompt ui-toggle-visibility">
-
                     <h2 class="openassessment__prompt__title">This Problem's Prompt/Question</h2>
 
                     <div class="openassessment__prompt__copy ui-toggle-visibility__content">
@@ -54,10 +53,8 @@
                             <span class="step__status">
                                 <span class="step__status__label">This step's status:</span>
                                 <span class="step__status__value">
-                                    <span class="wrapper--anim">
-                                        <span class="copy">Loading</span>
-                                        <i class="ico icon-refresh icon-spin"></i>
-                                    </span>
+                                  <i class="ico icon-refresh icon-spin"></i>
+                                  <span class="copy">Loading</span>
                                 </span>
                             </span>
                         </header>

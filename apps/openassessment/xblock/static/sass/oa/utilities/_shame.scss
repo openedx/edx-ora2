@@ -37,9 +37,12 @@
 
     // step title/name
     h2.step__title {
-      @include span-columns(3 of 4);
       margin-top: 0 !important;
       text-align: left !important;
+
+      @include media($bp-m) {
+        margin-bottom: ($baseline-v/2);
+      }
 
       @include media($bp-ds) {
         @include span-columns(4 of 6);
