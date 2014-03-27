@@ -4,6 +4,7 @@ Public interface for the submissions app.
 """
 import copy
 import logging
+from collections import defaultdict
 
 from django.core.cache import cache
 from django.db import IntegrityError, DatabaseError
@@ -463,6 +464,60 @@ def set_score(submission_uuid, score, points_possible):
         score.save()
     except IntegrityError:
         pass
+
+
+def get_submission_uuids(course_id=None, item_id=None, item_type=None):
+    """
+    Return a list of submission UUIDs that have a particular course_id, item_id, and/or item_type.
+
+    Kwargs:
+        course_id (unicode): The ID of the course.
+        item_id (unicode): The ID of the item in the course.
+        item_type (unicode): The type of the item.
+
+    Returns:
+        list of submission UUIDs
+
+    Example Usage:
+        >>> get_submissions_for_course_item(course_id="ora2/1/1", item_id="peer-assessment-problem")
+        [
+            'de97b11169ab4761b80b56cc42f6cb4a',
+            'bcb9fcae309a4628859c72f1d33eb89c',
+            ...
+        ]
+
+    """
+    kwargs = {}
+    if course_id is not None:
+        kwargs['student_item__course_id'] = course_id
+    if item_id is not None:
+        kwargs['student_item__item_id'] = item_id
+    if item_type is not None:
+        kwargs['student_item__item_type'] = item_type
+
+    return Submission.objects.filter(**kwargs).values_list('uuid', flat=True)
+
+
+def get_course_items():
+    """
+    Retrieve the IDs of all items with workflows, grouped by course.
+
+    Returns:
+        dict
+
+    Example Usage:
+        >>> get_course_items()
+        {
+            "test/course/1": ["item-1", "item-2", "item-3"],
+            "test/course/2": ["item-4", "item-5", "item-6"],
+            ...
+        }
+    """
+    courses_dict = defaultdict(list)
+    items = StudentItem.objects.values_list('course_id', 'item_id').distinct()
+    for course_id, item_id in items:
+        courses_dict[course_id].append(item_id)
+    return courses_dict
 
 
 def _get_or_create_student_item(student_item_dict):

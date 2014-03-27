@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Workflows Admin</title>
+    </head>
+    <body>
+        <h1>Workflow admin page</h1>
+
+        <p>Workflow info for:</p>
+        <ul>
+            <li><b>Course</b>: {{ course_id }}</li>
+            <li><b>Item</b>: {{ item_id }}</li>
+        </ul>
+
+        <table border="1">
+            <tr>
+                {% for item in status_counts %}
+                <th>Num with status "{{ item.status }}"</th>
+                {% endfor %}
+            </tr>
+            <tr>
+                {% for item in status_counts %}
+                <td>{{ item.count }}</td>
+                {% endfor %}
+            </tr>
+        </table>
+
+        <p><b>Total submissions</b>: {{ num_submissions }}
+    </body>
+</html>

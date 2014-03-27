@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Workflows Admin</title>
+    </head>
+    <body>
+
+        <h1>Workflow admin page</h1>
+
+        <ul>
+            {% for course in courses %}
+            <li>{{ course.course_id }}
+            <ul>
+                {% for item in course.items %}
+                <li><a href="{{ item.url }}">{{ item.item_id }}</a></li>
+                {% endfor %}
+            </ul>
+            {% endfor %}
+        </ul>
+    </body>
+</html>

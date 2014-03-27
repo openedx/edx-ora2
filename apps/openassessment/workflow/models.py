@@ -30,14 +30,16 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
     an after the fact recording of the last known state of that information so
     we can search easily.
     """
-    STATUS = Choices(  # implicit "status" field
+    STATUS_VALUES = [
         "peer",  # User needs to assess peer submissions
         "self",  # User needs to assess themselves
         "waiting",  # User has done all necessary assessment but hasn't been
                     # graded yet -- we're waiting for assessments of their
                     # submission by others.
         "done",  # Complete
-    )
+    ]
+
+    STATUS = Choices(*STATUS_VALUES)  # implicit "status" field
 
     submission_uuid = models.CharField(max_length=36, db_index=True, unique=True)
     uuid = UUIDField(version=1, db_index=True, unique=True)
