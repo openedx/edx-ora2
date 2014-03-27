@@ -12,7 +12,14 @@
             <span class="step__counter"></span>
             <span class="wrapper--copy">
                 <span class="step__label">Assess Yourself</span>
-                {% if self_due %}
+                {% if self_start %}
+                <span class="step__deadline">available
+                    <span class="date">
+                        {{ self_start }}
+                        (in {{ self_start|timeuntil }})
+                    </span>
+                </span>
+                {% elif self_due %}
                 <span class="step__deadline">due
                     <span class="date">
                         {{ self_due }}

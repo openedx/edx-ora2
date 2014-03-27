@@ -11,7 +11,14 @@
             <span class="step__counter"></span>
             <span class="wrapper--copy">
                 <span class="step__label">Assess Peers</span>
-                {% if peer_due %}
+                {% if peer_start %}
+                <span class="step__deadline">available
+                    <span class="date">
+                        {{ peer_start }}
+                        (in {{ peer_start|timeuntil }})
+                    </span>
+                </span>
+                {% elif peer_due %}
                 <span class="step__deadline">due
                     <span class="date">
                         {{ peer_due }}

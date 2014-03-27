@@ -112,7 +112,7 @@ class PeerAssessmentMixin(object):
         path = 'openassessmentblock/peer/oa_peer_unavailable.html'
         finished = False
 
-        problem_open, date = self.is_open(step="peer")
+        problem_open, date = self.is_open(step="peer-assessment")
         context_dict = {
             "rubric_criteria": self.rubric_criteria,
             "estimated_time": "20 minutes"  # TODO: Need to configure this.
@@ -153,12 +153,16 @@ class PeerAssessmentMixin(object):
                 context_dict["submit_button_text"] = (
                     "Submit your assessment & move to response #{}"
                 ).format(count + 2)
+
             if assessment.get('due'):
                 context_dict["peer_due"] = self.format_datetime_string(assessment["due"])
 
-
-        if date == "due" and not problem_open:
+        if date == 'due' and not problem_open:
             path = 'openassessmentblock/peer/oa_peer_closed.html'
+        elif date == 'start' and not problem_open:
+            if assessment.get('start'):
+                context_dict["peer_start"] = self.format_datetime_string(assessment["start"])
+            path = 'openassessmentblock/peer/oa_peer_unavailable.html'
         elif workflow.get("status") == "peer":
             peer_sub = self.get_peer_submission(student_item, assessment, over_grading)
             if peer_sub:

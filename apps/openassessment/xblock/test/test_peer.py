@@ -143,6 +143,24 @@ class TestPeerAssessment(XBlockHandlerTestCase):
             resp = self.request(xblock, 'peer_assess', json.dumps(assessment), response_format='json')
             self.assertEqual(resp['success'], False)
 
+    @scenario('data/assessment_not_started.xml', user_id='Bob')
+    def test_start_dates(self, xblock):
+        student_item = xblock.get_student_item_dict()
+
+        submission = xblock.create_submission(student_item, u"Bob's answer")
+        workflow_info = xblock.get_workflow_info()
+        self.assertEqual(workflow_info["status"], u'peer')
+
+        # Validate Submission Rendering.
+        request = namedtuple('Request', 'params')
+        request.params = {}
+        peer_response = xblock.render_peer_assessment(request)
+        self.assertIsNotNone(peer_response)
+        self.assertNotIn(submission["answer"]["text"].encode('utf-8'), peer_response.body)
+
+        # Validate Peer Rendering.
+        self.assertIn("available".encode('utf-8'), peer_response.body)
+        
     @scenario('data/over_grade_scenario.xml', user_id='Bob')
     def test_turbo_grading(self, xblock):
         student_item = xblock.get_student_item_dict()
@@ -190,7 +208,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         self.assertIsNotNone(peer_response)
         self.assertNotIn(submission["answer"]["text"].encode('utf-8'), peer_response.body)
 
-        #Validate Peer Rendering.
+        # Validate Peer Rendering.
         self.assertIn("Sally".encode('utf-8'), peer_response.body)
         peer_api.create_assessment(
             sally_sub['uuid'],
@@ -206,7 +224,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         self.assertIsNotNone(peer_response)
         self.assertNotIn(submission["answer"]["text"].encode('utf-8'), peer_response.body)
 
-        #Validate Peer Rendering.
+        # Validate Peer Rendering.
         self.assertIn("Hal".encode('utf-8'), peer_response.body)
         peer_api.create_assessment(
             hal_sub['uuid'],
