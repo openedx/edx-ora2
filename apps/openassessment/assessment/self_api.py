@@ -1,6 +1,7 @@
 """
 Public interface for self-assessment.
 """
+import logging
 from django.core.cache import cache
 from django.utils.translation import ugettext as _
 from submissions.api import (
@@ -18,6 +19,8 @@ from openassessment.assessment.models import (
 
 # Assessments are tagged as "self-evaluation"
 SELF_TYPE = "SE"
+
+logger = logging.getLogger("openassessment.assessment.self_api")
 
 
 class SelfAssessmentRequestError(Exception):
@@ -96,8 +99,24 @@ def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, s
     # option to do validation. We already validated these options above.
     AssessmentPart.add_to_assessment(assessment, option_ids)
 
+    assessment_dict = full_assessment_dict(assessment)
+
+    logger.info(
+        u"Created self-assessment {assessment_id} for student {user} on "
+        u"submission {submission_uuid}, course {course_id}, item {item_id} "
+        u"with rubric {rubric_content_hash}"
+        .format(
+            assessment_id=assessment.id,
+            user=user_id,
+            submission_uuid=submission_uuid,
+            course_id=submission['student_item']['course_id'],
+            item_id=submission['student_item']['item_id'],
+            rubric_content_hash=rubric.content_hash
+        )
+    )
+
     # Return the serialized assessment
-    return full_assessment_dict(assessment)
+    return assessment_dict
 
 
 def get_assessment(submission_uuid):
@@ -124,7 +143,16 @@ def get_assessment(submission_uuid):
         score_type=SELF_TYPE, submission_uuid=submission_uuid
     ).order_by('-scored_at')[:1])
 
-    return serialized_assessments[0] if serialized_assessments else None
+    if not serialized_assessments:
+        logger.info(
+            u"No self-assessment found for submission {}".format(submission_uuid)
+        )
+        return None
+
+    serialized_assessment = serialized_assessments[0]
+    logger.info(u"Retrieved self-assessment for submission {}".format(submission_uuid))
+
+    return serialized_assessment
 
 
 def is_complete(submission_uuid):

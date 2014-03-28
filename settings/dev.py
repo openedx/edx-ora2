@@ -29,3 +29,70 @@ CACHES = {
         'TIMEOUT': 60 * 60 * 8
     }
 }
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'apps_info': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/apps_info.log',
+            'formatter': 'simple',
+        },
+        'apps_debug': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/apps_debug.log',
+            'formatter': 'simple',
+        },
+        'trace': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': 'logs/trace.log',
+            'formatter': 'simple',
+            'maxBytes': 1000000,
+            'backupCount': 2,
+        },
+        'events': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/events.log',
+            'formatter': 'simple',
+        },
+        'errors': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/errors.log',
+            'formatter': 'simple',
+        }
+    },
+    'formatters': {
+        'simple': {
+            'format': '%(asctime)s %(name)s [%(levelname)s] %(message)s'
+        }
+    },
+    'loggers': {
+        '': {
+            'handlers': ['trace', 'errors'],
+            'propagate': True,
+        },
+        'openassessment': {
+            'handlers': ['apps_debug', 'apps_info'],
+            'propagate': True,
+        },
+        'submissions': {
+            'handlers': ['apps_debug', 'apps_info'],
+            'propagate': True,
+        },
+        'workbench.runtime': {
+            'handlers': ['apps_debug', 'apps_info', 'events'],
+            'propogate': True,
+        }
+    },
+}

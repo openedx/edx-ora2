@@ -70,6 +70,30 @@ class PeerAssessmentMixin(object):
                     assessment_dict,
                     rubric_dict,
                 )
+                # Emit analytics event...
+                self.runtime.publish(
+                    self,
+                    "openassessmentblock.peer_assess",
+                    {
+                        "feedback": assessment["feedback"],
+                        "rubric": {
+                            "content_hash": assessment["rubric"]["content_hash"],
+                        },
+                        "scorer_id": assessment["scorer_id"],
+                        "score_type": assessment["score_type"],
+                        "scored_at": assessment["scored_at"],
+                        "submission_uuid": assessment["submission_uuid"],
+                        "parts": [
+                            {
+                                "option": {
+                                    "name": part["option"]["name"],
+                                    "points": part["option"]["points"]
+                                }
+                            }
+                            for part in assessment["parts"]
+                        ]
+                    }
+                )
             except PeerAssessmentRequestError as ex:
                 return {'success': False, 'msg': ex.message}
             except PeerAssessmentInternalError as ex:
@@ -191,6 +215,19 @@ class PeerAssessmentMixin(object):
                 assessment["must_be_graded_by"],
                 over_grading
             )
+            self.runtime.publish(
+                self,
+                "openassessmentblock.get_peer_submission",
+                {
+                    "requesting_student_id": student_item_dict["student_id"],
+                    "course_id": student_item_dict["course_id"],
+                    "item_id": student_item_dict["item_id"],
+                    "submission_returned_uuid": (
+                        peer_submission["uuid"] if peer_submission else None
+                    )
+                }
+            )
         except PeerAssessmentWorkflowError as err:
             logger.exception(err)
+
         return peer_submission
