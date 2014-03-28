@@ -66,20 +66,20 @@
             </ol>
 
             {% if is_course_staff %}
-            <div class="wrapper--staff-info">
-            <div class="staff-info">
-                <h2 class="staff-info__title">Course Staff Information:</h2>
+            <div class="wrapper--staff-info wrapper--ui-staff">
+            <div class="staff-info ui-staff">
+                <h2 class="staff-info__title ui-staff__title">Course Staff Information</h2>
 
-                <div class="staff-info__content">
+                <div class="staff-info__content ui-staff__content">
 
-                    <div class="staff-info__summary">
+                    <div class="staff-info__summary ui-staff__content__section">
                         <dl class="submissions--total">
-                            <dt class="submissions--total__label">Total number of submissions</dt>
-                            <dd class="submissions--total__value">{{ num_submissions }}</dd>
+                            <dt class="label">Total number of submissions:</dt>
+                            <dd class="value">{{ num_submissions }}</dd>
                         </dl>
                     </div>
 
-                    <div class="staff-info__status">
+                    <div class="staff-info__status ui-staff__content__section">
                         <table class="staff-info__status__table" summary="Where are your students currently in this problem">
 
                             <caption class="title">Student Progress/Step Status</caption>
@@ -90,12 +90,12 @@
                                     <th abbr="# of Students" scope="col">Number of Students Actively in Step</th>
                                 </tr>
                             </thead>
-                            
+
                             <tbody>
                               {% for item in status_counts %}
                               <tr>
-                                  <td>{{ item.status }}</td>
-                                  <td>{{ item.count }}</td>
+                                  <td class="label">{{ item.status }}</td>
+                                  <td class="value">{{ item.count }}</td>
                               </tr>
                               {% endfor %}
                             </tbody>
