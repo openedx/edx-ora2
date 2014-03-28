@@ -66,23 +66,46 @@
             </ol>
 
             {% if is_course_staff %}
-            <div>
-                <h2>Course Staff Debug Information</h2>
-                <p><b>Total number of submissions</b>: {{ num_submissions }}</p>
-                <table border="1">
-                    <tr>
-                        <th>Step</th>
-                        <th>Number of students</th>
-                    </tr>
-                    {% for item in status_counts %}
-                    <tr>
-                        <td>{{ item.status }}</td>
-                        <td>{{ item.count }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
-            {% endif %}
+            <div class="wrapper--staff-info">
+            <div class="staff-info">
+                <h2 class="staff-info__title">Course Staff Information:</h2>
+
+                <div class="staff-info__content">
+
+                    <div class="staff-info__summary">
+                        <dl class="submissions--total">
+                            <dt class="submissions--total__label">Total number of submissions</dt>
+                            <dd class="submissions--total__value">{{ num_submissions }}</dd>
+                        </dl>
+                    </div>
+
+                    <div class="staff-info__status">
+                        <table class="staff-info__status__table" summary="Where are your students currently in this problem">
+
+                            <caption class="title">Student Progress/Step Status</caption>
+
+                            <thead>
+                                <tr>
+                                    <th abbr="Step" scope="col">Problem Step</th>
+                                    <th abbr="# of Students" scope="col">Number of Students Actively in Step</th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                              {% for item in status_counts %}
+                              <tr>
+                                  <td>{{ item.status }}</td>
+                                  <td>{{ item.count }}</td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+              </div>
+          </div>
+          {% endif %}
         </div>
     </div>
 </div>
