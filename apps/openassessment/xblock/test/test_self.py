@@ -4,6 +4,7 @@ Tests for self assessment handlers in Open Assessment XBlock.
 """
 import copy
 import json
+import datetime
 import mock
 from openassessment.assessment import self_api
 from openassessment.workflow import api as workflow_api
@@ -193,5 +194,15 @@ class TestSelfAssessment(XBlockHandlerTestCase):
         self.assertIsNotNone(self_response)
         self.assertNotIn(submission["answer"]["text"].encode('utf-8'), self_response.body)
 
-        #Validate Self Rendering.
+        # Validate Self Rendering.
+        self.assertIn("available".encode('utf-8'), self_response.body)
+
+    @scenario('data/self_assessment_default_dates.xml', user_id='Bob')
+    def test_no_dates(self, xblock):
+        # In this scenario, the self-assessment has no dates specified,
+        # but the module before it specifies a start date, and the
+        # problem itself specifies a due date.
+        xblock.due = datetime.datetime(4000, 1, 1, 1)
+        self_response = xblock.render_self_assessment({})
+        self.assertIsNotNone(self_response)
         self.assertIn("available".encode('utf-8'), self_response.body)

@@ -175,11 +175,8 @@ class SubmissionMixin(object):
 
         """
         workflow = self.get_workflow_info()
-        problem_closed, date = self.is_closed('submission')
-        sub_due = None
-        if self.submission_due is not None:
-            submission_deadline = dateutil.parser.parse(self.submission_due)
-            sub_due = submission_deadline.strftime("%A, %B %d, %Y %X")
+        problem_closed, __, date = self.is_closed('submission')
+        sub_due = date.strftime("%A, %B %d, %Y %X") if date is not None else None
         context = {
             "saved_response": self.saved_response,
             "save_status": self.save_status,

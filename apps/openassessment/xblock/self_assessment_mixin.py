@@ -28,13 +28,13 @@ class SelfAssessmentMixin(object):
         assessment_module = self.get_assessment_module('self-assessment')
 
         path = 'openassessmentblock/self/oa_self_unavailable.html'
-        problem_closed, date = self.is_closed(step="self-assessment")
-        
-        due_date = assessment_module.get('due')
-        if date == 'start' and problem_closed:
-            context["self_start"] = self.format_datetime_string(assessment_module["start"])
-        elif due_date:
-            context["self_due"] = self.format_datetime_string(assessment_module["due"])
+        problem_closed, reason, date = self.is_closed(step="self-assessment")
+
+        if problem_closed:
+            if date == 'start':
+                context["self_start"] = self.format_datetime_string(date)
+            elif date == 'due':
+                context["self_due"] = self.format_datetime_string(date)
 
         workflow = self.get_workflow_info()
         if not workflow:
