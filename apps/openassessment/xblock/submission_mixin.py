@@ -1,4 +1,3 @@
-import copy
 import dateutil
 import logging
 
@@ -6,7 +5,6 @@ from django.utils.translation import ugettext as _
 from xblock.core import XBlock
 
 from submissions import api
-from openassessment.assessment import peer_api
 from openassessment.workflow import api as workflow_api
 
 
@@ -177,7 +175,7 @@ class SubmissionMixin(object):
 
         """
         workflow = self.get_workflow_info()
-        problem_open, date = self.is_open('submission')
+        problem_closed, date = self.is_closed('submission')
         sub_due = None
         if self.submission_due is not None:
             submission_deadline = dateutil.parser.parse(self.submission_due)
@@ -189,7 +187,7 @@ class SubmissionMixin(object):
             "submission_due": sub_due,
         }
 
-        if not workflow and not problem_open:
+        if not workflow and problem_closed:
             path = 'openassessmentblock/response/oa_response_closed.html'
         elif not workflow:
             path = "openassessmentblock/response/oa_response.html"

@@ -112,14 +112,13 @@ class PeerAssessmentMixin(object):
         path = 'openassessmentblock/peer/oa_peer_unavailable.html'
         finished = False
 
-        problem_open, date = self.is_open(step="peer-assessment")
+        problem_closed, date = self.is_closed(step="peer-assessment")
         context_dict = {
             "rubric_criteria": self.rubric_criteria,
             "estimated_time": "20 minutes"  # TODO: Need to configure this.
         }
 
-        submissions_open, __ = self.is_open(step="submission")
-        over_grading = not submissions_open
+        submissions_closed, __ = self.is_closed(step="submission")
 
         workflow = self.get_workflow_info()
         if workflow is None:
@@ -127,7 +126,7 @@ class PeerAssessmentMixin(object):
         continue_grading = (
             data.params.get('continue_grading', False)
             and workflow["status_details"]["peer"]["complete"]
-            and over_grading
+            and submissions_closed
         )
 
         student_item = self.get_student_item_dict()
@@ -157,14 +156,15 @@ class PeerAssessmentMixin(object):
             if assessment.get('due'):
                 context_dict["peer_due"] = self.format_datetime_string(assessment["due"])
 
-        if date == 'due' and not problem_open:
+
+        if date == "due" and problem_closed:
             path = 'openassessmentblock/peer/oa_peer_closed.html'
-        elif date == 'start' and not problem_open:
+        elif date == 'start' and problem_closed:
             if assessment.get('start'):
                 context_dict["peer_start"] = self.format_datetime_string(assessment["start"])
             path = 'openassessmentblock/peer/oa_peer_unavailable.html'
         elif workflow.get("status") == "peer":
-            peer_sub = self.get_peer_submission(student_item, assessment, over_grading)
+            peer_sub = self.get_peer_submission(student_item, assessment, submissions_closed)
             if peer_sub:
                 path = 'openassessmentblock/peer/oa_peer_assessment.html'
                 context_dict["peer_submission"] = peer_sub
@@ -186,8 +186,9 @@ class PeerAssessmentMixin(object):
             self,
             student_item_dict,
             assessment,
-            over_grading=False
+            over_grading
     ):
+        submissions_closed, __ = self.is_closed(step="submission")
         peer_submission = False
         try:
             peer_submission = peer_api.get_submission_to_assess(

@@ -418,12 +418,12 @@ class OpenAssessmentBlock(
         template = get_template('openassessmentblock/oa_error.html')
         return Response(template.render(context), content_type='application/html', charset='UTF-8')
 
-    def is_open(self, step=None):
+    def is_closed(self, step=None):
         """
-        Checks if the question is open.
+        Checks if the question is closed.
 
-        Determines if the start date has occurred and the end date has not
-        passed.  Optionally limited to a particular step in the workflow.
+        Determines if the start date is in the future or the end date has
+            passed.  Optionally limited to a particular step in the workflow.
 
         Kwargs:
             step (str): The step in the workflow to check.  Options are:
@@ -433,17 +433,17 @@ class OpenAssessmentBlock(
                 "self-assessment": check whether the self-assessment section is open.
 
         Returns:
-            (tuple): True if the question is open, False if not. If False,
+            (tuple): True if the question is closed, False if not. If True,
                 specifies if the "start" date or "due" date is the closing
                 factor.
 
         Examples:
-            >>> is_open()
-            True, None
-            >>> is_open(step="submission")
-            False, "due"
-            >>> is_open(step="self-assessment")
-            False, "start"
+            >>> is_closed()
+            False, None
+            >>> is_closed(step="submission")
+            True, "due"
+            >>> is_closed(step="self-assessment")
+            True, "start"
 
         """
         submission_range = (self.start, self.submission_due)
@@ -470,11 +470,11 @@ class OpenAssessmentBlock(
         now = dt.datetime.now().replace(tzinfo=pytz.utc)
 
         if now < open_range[0]:
-            return False, "start"
+            return True, "start"
         elif now >= open_range[1]:
-            return False, "due"
+            return True, "due"
         else:
-            return True, None
+            return False, None
 
     def is_released(self, step=None):
         """
@@ -492,8 +492,8 @@ class OpenAssessmentBlock(
         """
         # By default, assume that we're published, in case the runtime doesn't support publish date.
         is_published = getattr(self, 'published_date', True) is not None
-        is_open, reason = self.is_open(step=step)
-        return is_published and (is_open or reason == 'due')
+        is_closed, reason = self.is_closed(step=step)
+        return is_published and (not is_closed or reason == 'due')
 
     def get_assessment_module(self, mixin_name):
         """

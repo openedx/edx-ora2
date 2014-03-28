@@ -28,10 +28,10 @@ class SelfAssessmentMixin(object):
         assessment_module = self.get_assessment_module('self-assessment')
 
         path = 'openassessmentblock/self/oa_self_unavailable.html'
-        problem_open, date = self.is_open(step="self-assessment")
-
+        problem_closed, date = self.is_closed(step="self-assessment")
+        
         due_date = assessment_module.get('due')
-        if date == 'start' and not problem_open:
+        if date == 'start' and problem_closed:
             context["self_start"] = self.format_datetime_string(assessment_module["start"])
         elif due_date:
             context["self_due"] = self.format_datetime_string(assessment_module["due"])
@@ -60,7 +60,7 @@ class SelfAssessmentMixin(object):
             }
         elif assessment is not None:
             path = 'openassessmentblock/self/oa_self_complete.html'
-        elif date == 'due' and not problem_open:
+        elif date == "due" and problem_closed:
             path = 'openassessmentblock/self/oa_self_closed.html'
 
         return self.render_assessment(path, context)
