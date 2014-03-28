@@ -66,23 +66,49 @@
             </ol>
 
             {% if is_course_staff %}
-            <div>
-                <h2>Course Staff Debug Information</h2>
-                <p><b>Total number of submissions</b>: {{ num_submissions }}</p>
-                <table border="1">
-                    <tr>
-                        <th>Step</th>
-                        <th>Number of students</th>
-                    </tr>
-                    {% for item in status_counts %}
-                    <tr>
-                        <td>{{ item.status }}</td>
-                        <td>{{ item.count }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
-            {% endif %}
+            <div class="wrapper--staff-info wrapper--ui-staff">
+            <div class="staff-info ui-staff ui-toggle-visibility">
+                <h2 class="staff-info__title ui-staff__title ui-toggle-visibility__control">
+                  <i class="ico icon-caret-right"></i>
+                  <span class="staff-info__title__copy">Course Staff Information</span>
+                </h2>
+
+                <div class="staff-info__content ui-staff__content ui-toggle-visibility__content">
+
+                    <div class="staff-info__summary ui-staff__content__section">
+                        <dl class="submissions--total">
+                            <dt class="label">Total number of submissions:</dt>
+                            <dd class="value">{{ num_submissions }}</dd>
+                        </dl>
+                    </div>
+
+                    <div class="staff-info__status ui-staff__content__section">
+                        <table class="staff-info__status__table" summary="Where are your students currently in this problem">
+
+                            <caption class="title">Student Progress/Step Status</caption>
+
+                            <thead>
+                                <tr>
+                                    <th abbr="Step" scope="col">Problem Step</th>
+                                    <th abbr="# of Students" scope="col">Number of Students Actively in Step</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                              {% for item in status_counts %}
+                              <tr>
+                                  <td class="label">{{ item.status }}</td>
+                                  <td class="value">{{ item.count }}</td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+              </div>
+          </div>
+          {% endif %}
         </div>
     </div>
 </div>

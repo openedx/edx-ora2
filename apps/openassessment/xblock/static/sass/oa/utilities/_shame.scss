@@ -191,4 +191,8 @@
       overflow: auto; // needed for ui-hints to show and for the document flow to clear
     }
   }
+
+  .ui-staff__title {
+    color: $copy-staff-color !important;
+  }
 }
