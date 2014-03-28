@@ -67,10 +67,13 @@
 
             {% if is_course_staff %}
             <div class="wrapper--staff-info wrapper--ui-staff">
-            <div class="staff-info ui-staff">
-                <h2 class="staff-info__title ui-staff__title">Course Staff Information</h2>
+            <div class="staff-info ui-staff ui-toggle-visibility">
+                <h2 class="staff-info__title ui-staff__title ui-toggle-visibility__control">
+                  <i class="ico icon-caret-right"></i>
+                  <span class="staff-info__title__copy">Course Staff Information</span>
+                </h2>
 
-                <div class="staff-info__content ui-staff__content">
+                <div class="staff-info__content ui-staff__content ui-toggle-visibility__content">
 
                     <div class="staff-info__summary ui-staff__content__section">
                         <dl class="submissions--total">

@@ -22,6 +22,13 @@
 
   .ui-staff {
 
+    // CASE: area is collapse/expand friendly
+    &.ui-toggle-visibility {
+
+      .staff-info__title__copy {
+        margin-left: ($baseline-h/4);
+      }
+    }
   }
 
   .ui-staff__title {
@@ -75,8 +82,8 @@
     color: $copy-staff-color;
 
     .title {
-      text-align: left;
       @extend %hd-2;
+      text-align: left;
       color: $heading-staff-color;
       margin-bottom: ($baseline-v/2);
     }
@@ -102,7 +109,6 @@
 
     th {
       @extend %copy-4;
-      @extend %t-strong;
       @extend %t-titlecase;
     }
 
