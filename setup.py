@@ -38,7 +38,7 @@ REQUIREMENTS = [
 
 
 setup(
-    name='edx-ora2',
+    name='ora2',
     version='0.0.1',
     author='edX',
     url='http://github.com/edx/edx-ora2',
