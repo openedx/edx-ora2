@@ -1,0 +1,131 @@
+// openassessment: elements - staff
+// ====================
+
+// NOTES:
+// * staff-centric UI used for reporting/debugging
+
+.wrapper--xblock {
+
+
+  // --------------------
+  // general: staff UI
+  // --------------------
+  .wrapper--ui-staff {
+    box-shadow: inset 0 1px -2px 1px $shadow-d1;
+    margin-top: ($baseline-v*2);
+    border-radius: ($baseline-v/10);
+    border: 1px solid shade($color-decorative-staff, 25%);
+    border-top: ($baseline-v/4) solid $color-decorative-staff;
+    padding: $baseline-v ($baseline-h/2);
+    background: $staff-bg;
+  }
+
+  .ui-staff {
+
+    // CASE: area is collapse/expand friendly
+    &.ui-toggle-visibility {
+
+      .staff-info__title__copy {
+        margin-left: ($baseline-h/4);
+      }
+
+      // STATE: is collapsed
+      &.is--collapsed {
+
+        .ui-staff__content {
+          margin-top: 0;
+        }
+      }
+    }
+  }
+
+  .ui-staff__title {
+    @extend %t-heading;
+    color: $copy-staff-color;
+  }
+
+  .ui-staff__content {
+    margin-top: $baseline-v;
+    color: $copy-staff-color;
+  }
+
+  .ui-staff__content__section {
+    padding-bottom: $baseline-v;
+    border-bottom: 1px solid rgba($color-decorative-staff, 0.25);
+    margin-bottom: $baseline-v;
+
+    @extend %wipe-last-child;
+  }
+
+  // --------------------
+  // staff debug info
+  // --------------------
+  // UI - summary (statement)
+  .staff-info__summary {
+
+    .label, .value {
+      @extend %hd-2;
+      display: inline-block;
+      vertical-align: center;
+      color: $heading-staff-color;
+    }
+
+    .label {
+      margin-right: ($baseline-h/4);
+    }
+
+    .value {
+      @extend %t-strong;
+    }
+  }
+
+  // UI - status (table)
+  .staff-info__status {
+
+  }
+
+  .staff-info__status__table {
+    @extend %copy-3;
+    border-radius: ($baseline-v/10);
+    color: $copy-staff-color;
+
+    .title {
+      @extend %hd-2;
+      text-align: left;
+      color: $heading-staff-color;
+      margin-bottom: ($baseline-v/2);
+    }
+
+    .label {
+      color: $heading-staff-color;
+    }
+
+    .value {
+      @extend %t-strong;
+      color: $heading-staff-color;
+    }
+
+    th, td {
+      border: 1px solid rgba($color-decorative-staff, 0.25);
+      padding: ($baseline-v/2) ($baseline-h/4);
+    }
+
+    th, td[scope] {
+      text-align: left;
+
+    }
+
+    th {
+      @extend %copy-4;
+      @extend %t-titlecase;
+    }
+
+    thead {
+
+    }
+
+    tbody {
+
+    }
+  }
+}

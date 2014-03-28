@@ -97,7 +97,7 @@ def create_workflow(submission_uuid):
         )
 
     try:
-        submission_dict = sub_api.get_submission(submission_uuid)
+        submission_dict = sub_api.get_submission_and_student(submission_uuid)
     except sub_api.SubmissionNotFoundError as err:
         err_msg = sub_err_msg("submission not found")
         logger.error(err_msg)
@@ -121,7 +121,9 @@ def create_workflow(submission_uuid):
         peer_api.create_peer_workflow(submission_uuid)
         workflow = AssessmentWorkflow.objects.create(
             submission_uuid=submission_uuid,
-            status=AssessmentWorkflow.STATUS.peer
+            status=AssessmentWorkflow.STATUS.peer,
+            course_id=submission_dict['student_item']['course_id'],
+            item_id=submission_dict['student_item']['item_id'],
         )
     except (DatabaseError, peer_api.PeerAssessmentError) as err:
         err_msg = u"Could not create assessment workflow: {}".format(err)
@@ -290,6 +292,39 @@ def update_from_assessments(submission_uuid, assessment_requirements):
     workflow = _get_workflow_model(submission_uuid)
     workflow.update_from_assessments(assessment_requirements)
     return _serialized_with_details(workflow, assessment_requirements)
+
+
+def get_status_counts(course_id, item_id):
+    """
+    Count how many workflows have each status, for a given item in a course.
+
+    Kwargs:
+        course_id (unicode): The ID of the course.
+        item_id (unicode): The ID of the item in the course.
+
+    Returns:
+        list of dictionaries with keys "status" (str) and "count" (int)
+
+    Example usage:
+        >>> get_status_counts("ora2/1/1", "peer-assessment-problem")
+        [
+            {"status": "peer", "count": 5},
+            {"status": "self", "count": 10},
+            {"status": "waiting", "count": 43},
+            {"status": "done", "count": 12},
+        ]
+
+    """
+    return [
+        {
+            "status": status,
+            "count": AssessmentWorkflow.objects.filter(
+                status=status,
+                course_id=course_id,
+                item_id=item_id,
+            ).count()
+        } for status in AssessmentWorkflow.STATUS_VALUES
+    ]
 
 
 def _get_workflow_model(submission_uuid):

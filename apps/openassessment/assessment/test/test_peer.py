@@ -2,13 +2,13 @@
 import datetime
 
 from django.db import DatabaseError
-from django.test import TestCase
 import pytz
 
 from ddt import ddt, file_data
 from mock import patch
 from nose.tools import raises
 
+from openassessment.test_utils import CacheResetTest
 from openassessment.assessment import peer_api
 from openassessment.assessment.models import Assessment, PeerWorkflow, PeerWorkflowItem, AssessmentFeedback
 from openassessment.workflow import api as workflow_api
@@ -121,7 +121,7 @@ THURSDAY = datetime.datetime(2007, 9, 16, 0, 0, 0, 0, pytz.UTC)
 
 
 @ddt
-class TestPeerApi(TestCase):
+class TestPeerApi(CacheResetTest):
     def test_create_assessment(self):
         self._create_student_and_submission("Tim", "Tim's answer")
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")

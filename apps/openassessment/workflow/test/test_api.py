@@ -1,8 +1,9 @@
 from django.db import DatabaseError
 
-from django.test import TestCase
 from mock import patch
 from nose.tools import raises
+
+from openassessment.test_utils import CacheResetTest
 from openassessment.assessment import peer_api
 
 from openassessment.workflow.models import AssessmentWorkflow
@@ -24,7 +25,7 @@ REQUIREMENTS = {
     }
 }
 
-class TestAssessmentWorkflowApi(TestCase):
+class TestAssessmentWorkflowApi(CacheResetTest):
 
     def test_create_workflow(self):
         submission = sub_api.create_submission(ITEM_1, "Shoot Hot Rod")
@@ -81,3 +82,76 @@ class TestAssessmentWorkflowApi(TestCase):
         submission = sub_api.create_submission(ITEM_1, "We talk TV!")
         workflow = workflow_api.create_workflow(submission["uuid"])
         workflow_api.get_workflow_for_submission(workflow["uuid"], REQUIREMENTS)
+
+    def test_get_status_counts(self):
+        # Initially, the counts should all be zero
+        counts = workflow_api.get_status_counts("test/1/1", "peer-problem")
+        self.assertEqual(counts, [
+            {"status": "peer", "count": 0},
+            {"status": "self", "count": 0},
+            {"status": "waiting", "count": 0},
+            {"status": "done", "count": 0},
+        ])
+
+        # Create assessments with each status
+        # We're going to cheat a little bit by using the model objects
+        # directly, since the API does not provide access to the status directly.
+        self._create_workflow_with_status("user 1", "test/1/1", "peer-problem", "peer")
+        self._create_workflow_with_status("user 2", "test/1/1", "peer-problem", "self")
+        self._create_workflow_with_status("user 3", "test/1/1", "peer-problem", "self")
+        self._create_workflow_with_status("user 4", "test/1/1", "peer-problem", "waiting")
+        self._create_workflow_with_status("user 5", "test/1/1", "peer-problem", "waiting")
+        self._create_workflow_with_status("user 6", "test/1/1", "peer-problem", "waiting")
+        self._create_workflow_with_status("user 7", "test/1/1", "peer-problem", "done")
+        self._create_workflow_with_status("user 8", "test/1/1", "peer-problem", "done")
+        self._create_workflow_with_status("user 9", "test/1/1", "peer-problem", "done")
+        self._create_workflow_with_status("user 10", "test/1/1", "peer-problem", "done")
+
+        # Now the counts should be updated
+        counts = workflow_api.get_status_counts("test/1/1", "peer-problem")
+        self.assertEqual(counts, [
+            {"status": "peer", "count": 1},
+            {"status": "self", "count": 2},
+            {"status": "waiting", "count": 3},
+            {"status": "done", "count": 4},
+        ])
+
+        # Create a workflow in a different course, same user and item
+        # Counts should be the same
+        self._create_workflow_with_status("user 1", "other_course", "peer-problem", "peer")
+        updated_counts = workflow_api.get_status_counts("test/1/1", "peer-problem")
+        self.assertEqual(counts, updated_counts)
+
+        # Create a workflow in the same course, different item
+        # Counts should be the same
+        self._create_workflow_with_status("user 1", "test/1/1", "other problem", "peer")
+        updated_counts = workflow_api.get_status_counts("test/1/1", "peer-problem")
+        self.assertEqual(counts, updated_counts)
+
+    def _create_workflow_with_status(self, student_id, course_id, item_id, status, answer="answer"):
+        """
+        Create a submission and workflow with a given status.
+
+        Args:
+            student_id (unicode): Student ID for the submission.
+            course_id (unicode): Course ID for the submission.
+            item_id (unicode): Item ID for the submission
+            status (unicode): One of acceptable status values (e.g. "peer", "self", "waiting", "done")
+
+        Kwargs:
+            answer (unicode): Submission answer.
+
+        Returns:
+            None
+        """
+        submission = sub_api.create_submission({
+            "student_id": student_id,
+            "course_id": course_id,
+            "item_id": item_id,
+            "item_type": "openassessment",
+        }, answer)
+
+        workflow = workflow_api.create_workflow(submission['uuid'])
+        workflow_model = AssessmentWorkflow.objects.get(uuid=workflow['uuid'])
+        workflow_model.status = status
+        workflow_model.save()

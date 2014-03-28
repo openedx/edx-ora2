@@ -183,7 +183,14 @@ def get_submission(submission_uuid):
         )
 
     cache_key = "submissions.submission.{}".format(submission_uuid)
-    cached_submission_data = cache.get(cache_key)
+    try:
+        cached_submission_data = cache.get(cache_key)
+    except Exception as ex:
+        # The cache backend could raise an exception
+        # (for example, memcache keys that contain spaces)
+        logger.exception("Error occurred while retrieving submission from the cache")
+        cached_submission_data = None
+
     if cached_submission_data:
         return cached_submission_data
 
@@ -213,23 +220,40 @@ def get_submission_and_student(uuid):
 
     Returns:
         Serialized Submission model (dict) containing a serialized StudentItem model
-        If the submission does not exist, return None
+
+    Raises:
+        SubmissionNotFoundError: Raised if the submission does not exist.
+        SubmissionRequestError: Raised if the search parameter is not a string.
+        SubmissionInternalError: Raised for unknown errors.
+
     """
-    try:
-        submission = Submission.objects.get(uuid=uuid)
-    except Submission.DoesNotExist:
-        return None
+    # This may raise API exceptions
+    submission = get_submission(uuid)
 
-    # There is probably a more idiomatic way to do this using the Django REST framework
+    # Retrieve the student item from the cache
+    cache_key = "submissions.student_item.{}".format(submission['student_item'])
     try:
-        submission_dict = SubmissionSerializer(submission).data
-        submission_dict['student_item'] = StudentItemSerializer(submission.student_item).data
-    except Exception as ex:
-        err_msg = "Could not get submission due to error: {}".format(ex)
-        logger.exception(err_msg)
-        raise SubmissionInternalError(err_msg)
+        cached_student_item = cache.get(cache_key)
+    except:
+        # The cache backend could raise an exception
+        # (for example, memcache keys that contain spaces)
+        logger.exception("Error occurred while retrieving student item from the cache")
+        cached_student_item = None
 
-    return submission_dict
+    if cached_student_item is not None:
+        submission['student_item'] = cached_student_item
+    else:
+        # There is probably a more idiomatic way to do this using the Django REST framework
+        try:
+            student_item = StudentItem.objects.get(id=submission['student_item'])
+            submission['student_item'] = StudentItemSerializer(student_item).data
+            cache.set(cache_key, submission['student_item'])
+        except Exception as ex:
+            err_msg = "Could not get submission due to error: {}".format(ex)
+            logger.exception(err_msg)
+            raise SubmissionInternalError(err_msg)
+
+    return submission
 
 
 def get_submissions(student_item_dict, limit=None):

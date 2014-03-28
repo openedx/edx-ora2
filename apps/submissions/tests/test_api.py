@@ -3,6 +3,7 @@ import copy
 
 from ddt import ddt, file_data
 from django.db import DatabaseError
+from django.core.cache import cache
 from django.test import TestCase
 from nose.tools import raises
 from mock import patch
@@ -37,6 +38,12 @@ class TestSubmissionsApi(TestCase):
     Testing Submissions
     """
 
+    def setUp(self):
+        """
+        Clear the cache.
+        """
+        cache.clear()
+
     def test_create_submission(self):
         submission = api.create_submission(STUDENT_ITEM, ANSWER_ONE)
         student_item = self._get_student_item(STUDENT_ITEM)
@@ -53,9 +60,9 @@ class TestSubmissionsApi(TestCase):
         retrieved = api.get_submission_and_student(submission['uuid'])
         self.assertItemsEqual(submission, retrieved)
 
-        # Should get None if we retrieve a submission that doesn't exist
-        retrieved = api.get_submission_and_student(u'no such uuid')
-        self.assertIs(retrieved, None)
+        # Should raise an exception if the student item does not exist
+        with self.assertRaises(api.SubmissionNotFoundError):
+            api.get_submission_and_student(u'no such uuid')
 
     def test_get_submissions(self):
         api.create_submission(STUDENT_ITEM, ANSWER_ONE)

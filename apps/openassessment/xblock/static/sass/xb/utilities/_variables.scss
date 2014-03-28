@@ -193,3 +193,11 @@ $color-complete: rgb(98, 194, 74);
 $color-incomplete: $color-warning;
 $color-confirm: $heading-primary-color;
 $color-unavailable: tint($copy-color, 85%);
+
+// --------------------
+// // application - colors: staff UI
+// --------------------
+$color-decorative-staff: $color-decorative-primary;
+$copy-staff-color: $gray-l3;
+$heading-staff-color: $white;
+$staff-bg: $gray-d1;

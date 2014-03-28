@@ -585,6 +585,7 @@ def create_peer_workflow_item(scorer, submission_uuid):
     Raises:
         PeerAssessmentWorkflowError: Could not find the workflow for the student.
         PeerAssessmentInternalError: Could not create the peer workflow item.
+        SubmissionError: An error occurred while retrieving the submission.
     """
     submission = get_submission_and_student(submission_uuid)
     student_item_dict = copy.copy(submission['student_item'])

@@ -6,14 +6,14 @@ Tests for self-assessment API.
 import copy
 import datetime
 import pytz
-from django.test import TestCase
+from openassessment.test_utils import CacheResetTest
 from submissions.api import create_submission
 from openassessment.assessment.self_api import (
     create_assessment, is_complete, SelfAssessmentRequestError, get_assessment
 )
 
 
-class TestSelfApi(TestCase):
+class TestSelfApi(CacheResetTest):
 
     STUDENT_ITEM = {
         'student_id': u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',

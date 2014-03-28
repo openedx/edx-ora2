@@ -1,9 +1,7 @@
 import json
 import os.path
 
-from ddt import ddt, file_data
-from django.test import TestCase
-
+from openassessment.test_utils import CacheResetTest
 from openassessment.assessment.models import Criterion, CriterionOption, Rubric, AssessmentFeedback
 from openassessment.assessment.serializers import (
     InvalidRubric, RubricSerializer, rubric_from_dict,
@@ -16,7 +14,7 @@ def json_data(filename):
         return json.load(json_file)
 
 
-class TestRubricDeserialization(TestCase):
+class TestRubricDeserialization(CacheResetTest):
 
     def test_rubric_only_created_once(self):
         # Make sure sending the same Rubric data twice only creates one Rubric,
@@ -37,8 +35,7 @@ class TestRubricDeserialization(TestCase):
             rubric_from_dict(json_data('rubric_data/no_points.json'))
 
 
-
-class TestCriterionDeserialization(TestCase):
+class TestCriterionDeserialization(CacheResetTest):
 
     def test_empty_criteria(self):
         with self.assertRaises(InvalidRubric) as cm:
@@ -56,7 +53,8 @@ class TestCriterionDeserialization(TestCase):
             {'criteria': [u'This field is required.']}
         )
 
-class TestCriterionOptionDeserialization(TestCase):
+
+class TestCriterionOptionDeserialization(CacheResetTest):
 
     def test_empty_options(self):
         with self.assertRaises(InvalidRubric) as cm:
@@ -85,7 +83,7 @@ class TestCriterionOptionDeserialization(TestCase):
         )
 
 
-class TestAssessmentFeedbackSerializer(TestCase):
+class TestAssessmentFeedbackSerializer(CacheResetTest):
 
     def test_serialize(self):
         feedback = AssessmentFeedback.objects.create(
