@@ -44,7 +44,8 @@ class TestPeerAssessment(XBlockHandlerTestCase):
             sub['uuid'],
             hal_student_item['student_id'],
             assessment,
-            {'criteria': xblock.rubric_criteria}
+            {'criteria': xblock.rubric_criteria},
+            1
         )
 
         # Now Sally will assess Hal.
@@ -55,7 +56,8 @@ class TestPeerAssessment(XBlockHandlerTestCase):
             sub['uuid'],
             sally_student_item['student_id'],
             assessment,
-            {'criteria': xblock.rubric_criteria}
+            {'criteria': xblock.rubric_criteria},
+            1
         )
 
         # If Over Grading is on, this should now return Sally's response to Bob.
@@ -182,7 +184,8 @@ class TestPeerAssessment(XBlockHandlerTestCase):
             sally_sub['uuid'],
             hal_student_item['student_id'],
             assessment,
-            {'criteria': xblock.rubric_criteria}
+            {'criteria': xblock.rubric_criteria},
+            1
         )
 
         # Now Sally will assess Hal.
@@ -193,7 +196,8 @@ class TestPeerAssessment(XBlockHandlerTestCase):
             hal_sub['uuid'],
             sally_student_item['student_id'],
             assessment,
-            {'criteria': xblock.rubric_criteria}
+            {'criteria': xblock.rubric_criteria},
+            1
         )
 
         # If Over Grading is on, this should now return Sally's response to Bob.
@@ -214,7 +218,8 @@ class TestPeerAssessment(XBlockHandlerTestCase):
             sally_sub['uuid'],
             student_item['student_id'],
             assessment,
-            {'criteria': xblock.rubric_criteria}
+            {'criteria': xblock.rubric_criteria},
+            1
         )
 
         # Validate Submission Rendering.
@@ -230,7 +235,8 @@ class TestPeerAssessment(XBlockHandlerTestCase):
             hal_sub['uuid'],
             student_item['student_id'],
             assessment,
-            {'criteria': xblock.rubric_criteria}
+            {'criteria': xblock.rubric_criteria},
+            1
         )
 
         # A Final over grading will not return anything.

@@ -69,6 +69,7 @@ class PeerAssessmentMixin(object):
                     self.get_student_item_dict()["student_id"],
                     assessment_dict,
                     rubric_dict,
+                    assessment_ui_model['must_be_graded_by']
                 )
                 # Emit analytics event...
                 self.runtime.publish(

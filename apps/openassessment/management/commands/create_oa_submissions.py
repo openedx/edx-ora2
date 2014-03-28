@@ -97,7 +97,13 @@ class Command(BaseCommand):
                     'options_selected': options_selected,
                     'feedback': "  ".join(loremipsum.get_paragraphs(2))
                 }
-                peer_api.create_assessment(submission_uuid, scorer_id, assessment, rubric)
+                peer_api.create_assessment(
+                    submission_uuid,
+                    scorer_id,
+                    assessment,
+                    rubric,
+                    self.NUM_PEER_ASSESSMENTS
+                )
 
             # Create a self-assessment
             print "-- Creating self assessment"
