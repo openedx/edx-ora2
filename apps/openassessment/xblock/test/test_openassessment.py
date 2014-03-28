@@ -46,6 +46,13 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         self.assertIsNotNone(grade_response)
         self.assertTrue(grade_response.body.find("openassessment__grade"))
 
+    @scenario('data/line_breaks.xml')
+    def test_prompt_line_breaks(self, xblock):
+        # Verify that prompts with multiple lines retain line breaks.
+        xblock_fragment = self.runtime.render(xblock, "student_view")
+        expected_prompt = u"<p><br />Line 1</p><p>Line 2</p><p>Line 3<br /></p>"
+        self.assertIn(expected_prompt, xblock_fragment.body_html())
+
     @scenario('data/basic_scenario.xml')
     def test_page_load_updates_workflow(self, xblock):
 
