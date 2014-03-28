@@ -28,16 +28,24 @@
       .staff-info__title__copy {
         margin-left: ($baseline-h/4);
       }
+
+      // STATE: is collapsed
+      &.is--collapsed {
+
+        .ui-staff__content {
+          margin-top: 0;
+        }
+      }
     }
   }
 
   .ui-staff__title {
     @extend %t-heading;
-    margin-bottom: $baseline-v;
     color: $copy-staff-color;
   }
 
   .ui-staff__content {
+    margin-top: $baseline-v;
     color: $copy-staff-color;
   }
 
