@@ -6,24 +6,24 @@ from openassessment.assessment.serializers import rubric_from_dict, InvalidRubri
 from openassessment.xblock.resolve_dates import resolve_dates, DateValidationError, InvalidDateFormat
 
 
-def _match_by_name(items, others):
+def _match_by_order(items, others):
     """
-    Given two lists of dictionaries, each containing "name" keys,
+    Given two lists of dictionaries, each containing "order_num" keys,
     return a set of tuples, where the items in the tuple are dictionaries
-    with the same "name" keys.
+    with the same "order_num" keys.
 
     Args:
-        items (list of dict): Items to match, each of which must contain a "name" key.
-        others (list of dict): Items to match, each of which must contain a "name" key.
+        items (list of dict): Items to match, each of which must contain a "order_num" key.
+        others (list of dict): Items to match, each of which must contain a "order_num" key.
 
     Returns:
         list of tuples, each containing two dictionaries
 
     Raises:
-        IndexError: A dictionary does no contain a 'name' key.
+        IndexError: A dictionary does no contain a 'order_num' key.
     """
     # Sort each dictionary by its "name" key, then zip them and return
-    key_func = lambda x: x['name']
+    key_func = lambda x: x['order_num']
     return zip(sorted(items, key=key_func), sorted(others, key=key_func))
 
 
@@ -104,12 +104,12 @@ def validate_rubric(rubric_dict, current_rubric, is_released):
             return (False, u'Number of criteria cannot be changed after a problem is released.')
 
         # Number of options for each criterion must be the same
-        for new_criterion, old_criterion in _match_by_name(rubric_dict['criteria'], current_rubric['criteria']):
+        for new_criterion, old_criterion in _match_by_order(rubric_dict['criteria'], current_rubric['criteria']):
             if len(new_criterion['options']) != len(old_criterion['options']):
                 return (False, u'Number of options cannot be changed after a problem is released.')
 
             else:
-                for new_option, old_option in _match_by_name(new_criterion['options'], old_criterion['options']):
+                for new_option, old_option in _match_by_order(new_criterion['options'], old_criterion['options']):
                     if new_option['points'] != old_option['points']:
                         return (False, u'Point values cannot be changed after a problem is released.')
 
