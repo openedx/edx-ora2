@@ -9,6 +9,7 @@ need to then generate a matching migration for it using:
     ./manage.py schemamigration openassessment.workflow --auto
 
 """
+from datetime import datetime
 import logging
 import importlib
 
@@ -162,11 +163,21 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                     score["points_earned"],
                     score["points_possible"]
                 )
+
+                # This should be replaced by using the event tracking API, but
+                # that's not quite ready yet. So we're making this temp hack.
                 emit_event({
+                    "context": {
+                        "course_id": self.course_id
+                    },
+                    "event": {
+                        "submission_uuid": self.submission_uuid,
+                        "points_earned": score["points_earned"],
+                        "points_possible": score["points_possible"],
+                    },
+                    "event_source": "server",
                     "event_type": "openassessment.workflow.score",
-                    "submission_uuid": self.submission_uuid,
-                    "points_earned": score["points_earned"],
-                    "points_possible": score["points_possible"]
+                    "time": datetime.utcnow(),
                 })
 
                 new_status = self.STATUS.done
