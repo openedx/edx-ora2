@@ -293,7 +293,7 @@ class OpenAssessmentBlock(
             "is_course_staff": False,
         }
 
-        if self.is_course_staff:
+        if self.is_course_staff and not self.in_studio_preview:
             status_counts, num_submissions = self.get_workflow_status_counts()
             context_dict['is_course_staff'] = True
             context_dict['status_counts'] = status_counts
@@ -320,6 +320,20 @@ class OpenAssessmentBlock(
             return getattr(self.xmodule_runtime, 'user_is_staff', False)
         else:
             return False
+
+    @property
+    def in_studio_preview(self):
+        """
+        Check whether we are in Studio preview mode.
+
+        Returns:
+            bool
+
+        """
+        # When we're running in Studio Preview mode, the XBlock won't provide us with a user ID.
+        # (Note that `self.xmodule_runtime` will still provide an anonymous
+        # student ID, so we can't rely on that)
+        return self.scope_ids.user_id is None
 
     def _create_ui_models(self):
         """Combine UI attributes and XBlock configuration into a UI model.
