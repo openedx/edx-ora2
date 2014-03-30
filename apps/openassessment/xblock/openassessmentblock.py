@@ -298,6 +298,7 @@ class OpenAssessmentBlock(
             context_dict['is_course_staff'] = True
             context_dict['status_counts'] = status_counts
             context_dict['num_submissions'] = num_submissions
+            context_dict['item_id'] = unicode(self.scope_ids.usage_id)
 
         template = get_template("openassessmentblock/oa_base.html")
         context = Context(context_dict)
