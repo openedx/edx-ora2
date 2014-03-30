@@ -1,6 +1,7 @@
 """
 Validate changes to an XBlock before it is updated.
 """
+from collections import Counter
 from django.utils.translation import ugettext as _
 from openassessment.assessment.serializers import rubric_from_dict, InvalidRubric
 from openassessment.xblock.resolve_dates import resolve_dates, DateValidationError, InvalidDateFormat
@@ -25,6 +26,21 @@ def _match_by_name(items, others):
     # Sort each dictionary by its "name" key, then zip them and return
     key_func = lambda x: x['name']
     return zip(sorted(items, key=key_func), sorted(others, key=key_func))
+
+
+def _duplicates(items):
+    """
+    Given an iterable of items, return a set of duplicate items in the list.
+
+    Args:
+        items (list): The list of items, which may contain duplicates.
+
+    Returns:
+        set: The set of duplicate items in the list.
+
+    """
+    counts = Counter(items)
+    return set(x for x in items if counts[x] > 1)
 
 
 def validate_assessments(assessments, enforce_peer_then_self=False):
@@ -94,6 +110,23 @@ def validate_rubric(rubric_dict, current_rubric, is_released):
         rubric_from_dict(rubric_dict)
     except InvalidRubric:
         return (False, u'Rubric definition is not valid')
+
+    # No duplicate criteria names
+    duplicates = _duplicates([criterion['name'] for criterion in rubric_dict['criteria']])
+    if len(duplicates) > 0:
+        msg = u"Criteria duplicate name(s): {duplicates}".format(
+            duplicates=", ".join(duplicates)
+        )
+        return (False, msg)
+
+    # No duplicate option names within a criterion
+    for criterion in rubric_dict['criteria']:
+        duplicates = _duplicates([option['name'] for option in criterion['options']])
+        if len(duplicates) > 0:
+            msg = u"Options in '{criterion}' have duplicate name(s): {duplicates}".format(
+                criterion=criterion['name'], duplicates=", ".join(duplicates)
+            )
+            return (False, msg)
 
     # After a problem is released, authors are allowed to change text,
     # but nothing that would change the point value of a rubric.
