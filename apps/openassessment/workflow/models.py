@@ -24,8 +24,8 @@ logger = logging.getLogger('openassessment.workflow.models')
 
 # This will (hopefully soon) be replaced with calls to the event-tracking API:
 #   https://github.com/edx/event-tracking
-if hasattr(settings, "EDX_TIM") and "EVENT_LOGGER" in settings.EDX_TIM:
-    func_path = settings.EDX_TIM["EVENT_LOGGER"]
+if hasattr(settings, "EDX_ORA2") and "EVENT_LOGGER" in settings.EDX_ORA2:
+    func_path = settings.EDX_ORA2["EVENT_LOGGER"]
     module_name, func_name = func_path.rsplit('.', 1)
     emit_event = getattr(importlib.import_module(module_name), func_name)
 else:

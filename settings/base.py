@@ -150,6 +150,6 @@ CACHES = {
     },
 }
 
-EDX_TIM = {
+EDX_ORA2 = {
 
 }
