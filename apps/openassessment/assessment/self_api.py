@@ -2,14 +2,12 @@
 Public interface for self-assessment.
 """
 import logging
-from django.core.cache import cache
 from django.utils.translation import ugettext as _
-from submissions.api import (
-    get_submission_and_student, get_submission,
-    SubmissionNotFoundError, SubmissionRequestError
-)
+from dogapi import dog_stats_api
+
+from submissions.api import get_submission_and_student, SubmissionNotFoundError
 from openassessment.assessment.serializers import (
-    AssessmentSerializer, InvalidRubric, RubricSerializer,
+    AssessmentSerializer, InvalidRubric,
     full_assessment_dict, rubric_from_dict, serialize_assessments
 )
 from openassessment.assessment.models import (
@@ -98,22 +96,9 @@ def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, s
     # validation, which would otherwise require two DB queries per
     # option to do validation. We already validated these options above.
     AssessmentPart.add_to_assessment(assessment, option_ids)
-
     assessment_dict = full_assessment_dict(assessment)
+    _log_assessment(assessment, submission)
 
-    logger.info(
-        u"Created self-assessment {assessment_id} for student {user} on "
-        u"submission {submission_uuid}, course {course_id}, item {item_id} "
-        u"with rubric {rubric_content_hash}"
-        .format(
-            assessment_id=assessment.id,
-            user=user_id,
-            submission_uuid=submission_uuid,
-            course_id=submission['student_item']['course_id'],
-            item_id=submission['student_item']['item_id'],
-            rubric_content_hash=rubric.content_hash
-        )
-    )
 
     # Return the serialized assessment
     return assessment_dict
@@ -168,3 +153,42 @@ def is_complete(submission_uuid):
     return Assessment.objects.filter(
         score_type=SELF_TYPE, submission_uuid=submission_uuid
     ).exists()
+
+
+def _log_assessment(assessment, submission):
+    """
+    Log the creation of a self-assessment.
+
+    Args:
+        assessment (Assessment): The assessment model.
+        submission (dict): The serialized submission model.
+
+    Returns:
+        None
+
+    """
+    logger.info(
+        u"Created self-assessment {assessment_id} for student {user} on "
+        u"submission {submission_uuid}, course {course_id}, item {item_id} "
+        u"with rubric {rubric_content_hash}"
+        .format(
+            assessment_id=assessment.id,
+            user=submission['student_item']['student_id'],
+            submission_uuid=submission['uuid'],
+            course_id=submission['student_item']['course_id'],
+            item_id=submission['student_item']['item_id'],
+            rubric_content_hash=assessment.rubric.content_hash
+        )
+    )
+
+    tags = [
+        u"course_id:{course_id}".format(course_id=submission['student_item']['course_id']),
+        u"item_id:{item_id}".format(item_id=submission['student_item']['item_id']),
+        u"type:self"
+    ]
+
+    score_percentage = assessment.to_float()
+    if score_percentage is not None:
+        dog_stats_api.histogram('openassessment.assessment.score_precentage', score_percentage, tags=tags)
+
+    dog_stats_api.increment('openassessment.assessment.count', tags=tags)

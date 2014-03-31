@@ -8,10 +8,9 @@ import copy
 import logging
 from datetime import timedelta
 from django.utils import timezone
-
 from django.utils.translation import ugettext as _
 from django.db import DatabaseError
-from django.db.models import Q
+from dogapi import dog_stats_api
 
 from openassessment.assessment.models import (
     Assessment, AssessmentFeedback, AssessmentPart,
@@ -23,8 +22,6 @@ from openassessment.assessment.serializers import (
 )
 from submissions import api as sub_api
 from submissions.api import get_submission_and_student
-from submissions.models import Submission, StudentItem
-from submissions.serializers import SubmissionSerializer, StudentItemSerializer
 
 logger = logging.getLogger("openassessment.assessment.peer_api")
 
@@ -134,12 +131,7 @@ def get_score(submission_uuid, requirements):
     }
 
 
-def create_assessment(
-        submission_uuid,
-        scorer_id,
-        assessment_dict,
-        rubric_dict,
-        scored_at=None):
+def create_assessment(submission_uuid, scorer_id, assessment_dict, rubric_dict, scored_at=None):
     """Creates an assessment on the given submission.
 
     Assessments are created based on feedback associated with a particular
@@ -177,7 +169,7 @@ def create_assessment(
         >>> create_assessment("1", "Tim", assessment_dict, rubric_dict)
     """
     try:
-        submission = Submission.objects.get(uuid=submission_uuid)
+        submission = sub_api.get_submission_and_student(submission_uuid)
         rubric = rubric_from_dict(rubric_dict)
 
         # Validate that the selected options matched the rubric
@@ -192,7 +184,7 @@ def create_assessment(
         peer_assessment = {
             "rubric": rubric.id,
             "scorer_id": scorer_id,
-            "submission_uuid": submission.uuid,
+            "submission_uuid": submission_uuid,
             "score_type": PEER_TYPE,
             "feedback": feedback,
         }
@@ -212,23 +204,12 @@ def create_assessment(
         # option to do validation. We already validated these options above.
         AssessmentPart.add_to_assessment(assessment, option_ids)
 
-        student_item = submission.student_item
-        student_item_dict = StudentItemSerializer(student_item).data
+        student_item = submission['student_item']
+        scorer_item = copy.deepcopy(student_item)
+        scorer_item['student_id'] = scorer_id
 
-        try:
-            scorer_item = StudentItem.objects.get(
-                student_id=scorer_id,
-                item_id=student_item.item_id,
-                course_id=student_item.course_id,
-                item_type=student_item.item_type
-            )
-        except StudentItem.DoesNotExist:
-            raise PeerAssessmentWorkflowError(_(
-                "You must make a submission before assessing another student."))
-
-        scorer_item_dict = StudentItemSerializer(scorer_item).data
-        scorer_workflow = _get_latest_workflow(scorer_item_dict)
-        workflow = _get_latest_workflow(student_item_dict)
+        scorer_workflow = _get_latest_workflow(scorer_item)
+        workflow = _get_latest_workflow(student_item)
 
         if not scorer_workflow:
             raise PeerAssessmentWorkflowError(_(
@@ -241,20 +222,7 @@ def create_assessment(
         # Close the active assessment
         _close_active_assessment(scorer_workflow, submission_uuid, assessment)
         assessment_dict = full_assessment_dict(assessment)
-        logger.info(
-            u"Created peer-assessment {assessment_id} for student {user} on "
-            u"submission {submission_uuid}, course {course_id}, item {item_id} "
-            u"with rubric {rubric_content_hash}; scored by {scorer}"
-            .format(
-                assessment_id=assessment.id,
-                user=student_item_dict['student_id'],
-                submission_uuid=submission_uuid,
-                course_id=student_item_dict['course_id'],
-                item_id=student_item_dict['item_id'],
-                rubric_content_hash=rubric.content_hash,
-                scorer=scorer_id,
-            )
-        )
+        _log_assessment(assessment, student_item, scorer_item)
 
         return assessment_dict
     except DatabaseError:
@@ -297,8 +265,6 @@ def get_rubric_max_scores(submission_uuid):
             criterion["name"]: criterion["points_possible"]
             for criterion in rubric_dict["criteria"]
         }
-    except Submission.DoesNotExist:
-        return None
     except DatabaseError:
         error_message = _(
             u"Error getting rubric options max scores for submission uuid "
@@ -531,17 +497,9 @@ def get_submission_to_assess(
         try:
             submission_data = sub_api.get_submission(submission_uuid)
             _create_peer_workflow_item(workflow, submission_uuid)
-            logger.info(
-                u"Retrieved submission {} ({}, {}) to be assessed by {}"
-                .format(
-                    submission_uuid,
-                    student_item_dict["course_id"],
-                    student_item_dict["item_id"],
-                    student_item_dict["student_id"],
-                )
-            )
+            _log_workflow(submission_uuid, student_item_dict, over_grading)
             return submission_data
-        except sub_api.SubmissionDoesNotExist:
+        except sub_api.SubmissionNotFoundError:
             error_message = _(
                 u"Could not find a submission with the uuid {} for student {} "
                 u"in the peer workflow."
@@ -575,6 +533,7 @@ def create_peer_workflow(submission_uuid):
             student item and submission.
 
     Raises:
+        SubmissionError: There was an error retrieving the submission.
         PeerAssessmentInternalError: Raised when there is an internal error
             creating the Workflow.
 
@@ -583,11 +542,11 @@ def create_peer_workflow(submission_uuid):
 
     """
     try:
-        submission = Submission.objects.get(uuid=submission_uuid)
+        submission = sub_api.get_submission_and_student(submission_uuid)
         workflow = PeerWorkflow.objects.get_or_create(
-            student_id=submission.student_item.student_id,
-            course_id=submission.student_item.course_id,
-            item_id=submission.student_item.item_id,
+            student_id=submission['student_item']['student_id'],
+            course_id=submission['student_item']['course_id'],
+            item_id=submission['student_item']['item_id'],
             submission_uuid=submission_uuid
         )
         return workflow
@@ -624,6 +583,91 @@ def create_peer_workflow_item(scorer, submission_uuid):
     student_item_dict['student_id'] = scorer
     workflow = _get_latest_workflow(student_item_dict)
     _create_peer_workflow_item(workflow, submission_uuid)
+
+
+def get_assessment_feedback(submission_uuid):
+    """
+    Retrieve a feedback on an assessment.
+
+    Args:
+        submission_uuid: The submission we want to retrieve assessment feedback for.
+
+    Returns:
+        dict or None
+
+    Raises:
+        PeerAssessmentInternalError: Error occurred while retrieving the feedback.
+    """
+    try:
+        feedback = AssessmentFeedback.objects.get(
+            submission_uuid=submission_uuid
+        )
+        return AssessmentFeedbackSerializer(feedback).data
+    except AssessmentFeedback.DoesNotExist:
+        return None
+    except DatabaseError:
+        error_message = (
+            u"An error occurred retrieving assessment feedback for {}."
+            .format(submission_uuid)
+        )
+        logger.exception(error_message)
+        raise PeerAssessmentInternalError(error_message)
+
+
+def set_assessment_feedback(feedback_dict):
+    """
+    Set a feedback object for an assessment to have some new values.
+
+    Sets or updates the assessment feedback with the given values in the dict.
+
+    Args:
+        feedback_dict (dict): A dictionary of all the values to update or create
+            a new assessment feedback.
+
+    Returns:
+        None
+
+    Raises:
+        PeerAssessmentRequestError
+        PeerAssessmentInternalError
+    """
+    submission_uuid = feedback_dict.get('submission_uuid')
+    feedback_text = feedback_dict.get('feedback_text')
+    selected_options = feedback_dict.get('options', list())
+
+    if feedback_text and len(feedback_text) > AssessmentFeedback.MAXSIZE:
+        error_message = u"Assessment feedback too large."
+        raise PeerAssessmentRequestError(error_message)
+
+    try:
+        # Get or create the assessment model for this submission
+        # If we receive an integrity error, assume that someone else is trying to create
+        # another feedback model for this submission, and raise an exception.
+        if submission_uuid:
+            feedback, created = AssessmentFeedback.objects.get_or_create(submission_uuid=submission_uuid)
+        else:
+            error_message = u"An error occurred creating assessment feedback: bad or missing submission_uuid."
+            logger.error(error_message)
+            raise PeerAssessmentRequestError(error_message)
+
+        # Update the feedback text
+        if feedback_text is not None:
+            feedback.feedback_text = feedback_text
+
+        # Save the feedback model.  We need to do this before setting m2m relations.
+        if created or feedback_text is not None:
+            feedback.save()
+
+        # Associate the feedback with selected options
+        feedback.add_options(selected_options)
+
+        # Associate the feedback with scored assessments
+        assessments = PeerWorkflowItem.get_scored_assessments(submission_uuid)
+        feedback.assessments.add(*assessments)
+    except DatabaseError:
+        msg = u"Error occurred while creating or updating feedback on assessment: {}".format(feedback_dict)
+        logger.exception(msg)
+        raise PeerAssessmentInternalError(msg)
 
 
 def _get_latest_workflow(student_item_dict):
@@ -972,86 +1016,99 @@ def _num_peers_graded(workflow):
     return workflow.graded.filter(assessment__isnull=False).count()
 
 
-def get_assessment_feedback(submission_uuid):
+def _log_assessment(assessment, student_item, scorer_item):
     """
-    Retrieve a feedback on an assessment.
+    Log the creation of a peer assessment.
 
     Args:
-        submission_uuid: The submission we want to retrieve assessment feedback for.
-
-    Returns:
-        dict or None
-
-    Raises:
-        PeerAssessmentInternalError: Error occurred while retrieving the feedback.
-    """
-    try:
-        feedback = AssessmentFeedback.objects.get(
-            submission_uuid=submission_uuid
-        )
-        return AssessmentFeedbackSerializer(feedback).data
-    except AssessmentFeedback.DoesNotExist:
-        return None
-    except DatabaseError:
-        error_message = (
-            u"An error occurred retrieving assessment feedback for {}."
-            .format(submission_uuid)
-        )
-        logger.exception(error_message)
-        raise PeerAssessmentInternalError(error_message)
-
-
-def set_assessment_feedback(feedback_dict):
-    """
-    Set a feedback object for an assessment to have some new values.
-
-    Sets or updates the assessment feedback with the given values in the dict.
-
-    Args:
-        feedback_dict (dict): A dictionary of all the values to update or create
-            a new assessment feedback.
+        assessment (Assessment): The assessment model that was created.
+        student_item (dict): The serialized student item model of the student being scored.
+        scorer_item (dict): The serialized student item model of the student creating the assessment.
 
     Returns:
         None
 
-    Raises:
-        PeerAssessmentRequestError
-        PeerAssessmentInternalError
     """
-    submission_uuid = feedback_dict.get('submission_uuid')
-    feedback_text = feedback_dict.get('feedback_text')
-    selected_options = feedback_dict.get('options', list())
+    logger.info(
+        u"Created peer-assessment {assessment_id} for student {user} on "
+        u"submission {submission_uuid}, course {course_id}, item {item_id} "
+        u"with rubric {rubric_content_hash}; scored by {scorer}"
+        .format(
+            assessment_id=assessment.id,
+            user=student_item['student_id'],
+            submission_uuid=assessment.submission_uuid,
+            course_id=student_item['course_id'],
+            item_id=student_item['item_id'],
+            rubric_content_hash=assessment.rubric.content_hash,
+            scorer=scorer_item['student_id'],
+        )
+    )
 
-    if feedback_text and len(feedback_text) > AssessmentFeedback.MAXSIZE:
-        error_message = u"Assessment feedback too large."
-        raise PeerAssessmentRequestError(error_message)
+    tags = [
+        u"course_id:{course_id}".format(course_id=student_item['course_id']),
+        u"item_id:{item_id}".format(item_id=student_item['item_id']),
+        u"type:peer",
+    ]
 
+    score_percentage = assessment.to_float()
+    if score_percentage is not None:
+        dog_stats_api.histogram('openassessment.assessment.score_percentage', score_percentage, tags=tags)
+
+    # Calculate the time spent assessing
+    # This is the time from when the scorer retrieved the submission
+    # (created the peer workflow item) to when they completed an assessment.
+    # By this point, the assessment *should* have an associated peer workflow item,
+    # but if not, we simply skip the event.
     try:
-        # Get or create the assessment model for this submission
-        # If we receive an integrity error, assume that someone else is trying to create
-        # another feedback model for this submission, and raise an exception.
-        if submission_uuid:
-            feedback, created = AssessmentFeedback.objects.get_or_create(submission_uuid=submission_uuid)
-        else:
-            error_message = u"An error occurred creating assessment feedback: bad or missing submission_uuid."
-            logger.error(error_message)
-            raise PeerAssessmentRequestError(error_message)
-
-        # Update the feedback text
-        if feedback_text is not None:
-            feedback.feedback_text = feedback_text
-
-        # Save the feedback model.  We need to do this before setting m2m relations.
-        if created or feedback_text is not None:
-            feedback.save()
-
-        # Associate the feedback with selected options
-        feedback.add_options(selected_options)
-
-        # Associate the feedback with scored assessments
-        assessments = PeerWorkflowItem.get_scored_assessments(submission_uuid)
-        feedback.assessments.add(*assessments)
-    except DatabaseError:
-        msg = u"Error occurred while creating or updating feedback on assessment: {}".format(feedback_dict)
+        workflow_item = assessment.peerworkflowitem_set.get()
+    except (
+        PeerWorkflowItem.DoesNotExist,
+        PeerWorkflowItem.MultipleObjectsReturned,
+        DatabaseError
+    ):
+        msg = u"Could not retrieve peer workflow item for assessment: {assessment}".format(
+            assessment=assessment.id
+        )
         logger.exception(msg)
-        raise PeerAssessmentInternalError(msg)
+        workflow_item = None
+
+    if workflow_item is not None:
+        time_delta = assessment.scored_at - workflow_item.started_at
+        dog_stats_api.histogram(
+            'openassessment.assessment.seconds_spent_assessing',
+            time_delta.total_seconds(),
+            tags=tags
+        )
+
+    dog_stats_api.increment('openassessment.assessment.count', tags=tags)
+
+
+def _log_workflow(submission_uuid, student_item, over_grading):
+    """
+    Log the creation of a peer-assessment workflow.
+
+    Args:
+        submission_uuid (str): The UUID of the submission being assessed.
+        student_item (dict): The serialized student item of the student making the assessment.
+        over_grading (bool): Whether over-grading is enabled.
+    """
+    logger.info(
+        u"Retrieved submission {} ({}, {}) to be assessed by {}"
+        .format(
+            submission_uuid,
+            student_item["course_id"],
+            student_item["item_id"],
+            student_item["student_id"],
+        )
+    )
+
+    tags = [
+        u"course_id:{course_id}".format(course_id=student_item['course_id']),
+        u"item_id:{item_id}".format(item_id=student_item['item_id']),
+        u"type:peer"
+    ]
+
+    if over_grading:
+        tags.append(u"overgrading")
+
+    dog_stats_api.increment('openassessment.assessment.peer_workflow.count', tags=tags)
