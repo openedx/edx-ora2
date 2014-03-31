@@ -86,4 +86,17 @@ describe("OpenAssessment.BaseView", function() {
         });
     });
 
+    it("Displays error messages from self assessment to the user", function() {
+        var testError = 'Test failure contacting server message';
+        loadSubviews(function() {
+            /* stub our selfAssess to fail */
+            spyOn(server, 'selfAssess').andCallFake(function(submissionId, optionsSelected) {
+                return $.Deferred(function(defer) { defer.rejectWith(server, [testError]); }).promise();
+            });
+            view.selfAssess();
+            expect(server.selfAssess).toHaveBeenCalled();
+            expect(view.getStepActionsErrorMessage()).toContain(testError);
+        });
+    });
+
 });

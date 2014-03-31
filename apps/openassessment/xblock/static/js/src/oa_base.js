@@ -302,12 +302,17 @@ OpenAssessment.BaseView.prototype = {
             If null, hide the error message (with one exception: loading errors are never hidden once displayed)
     **/
     toggleActionError: function(type, msg) {
+        var element = this.element;
         var container = null;
-        if (type == 'save') { container = '.response__submission__actions'; }
-        else if (type == 'submit') { container = '.step__actions'; }
-        else if (type == 'peer') { container = '.step__actions'; }
-        else if (type == 'self') { container = '.self-assessment__actions'; }
-        else if (type == 'feedback_assess') { container = '.submission__feedback__actions'; }
+        if (type == 'save') { 
+            container = '.response__submission__actions'; 
+        }
+        else if (type == 'submit' || type == 'peer' || type == 'self') { 
+            container = '.step__actions'; 
+        }
+        else if (type == 'feedback_assess') { 
+            container = '.submission__feedback__actions'; 
+        }
 
         // If we don't have anywhere to put the message, just log it to the console
         if (container === null) {
@@ -317,10 +322,10 @@ OpenAssessment.BaseView.prototype = {
         else {
             // Insert the error message
             var msgHtml = (msg === null) ? "" : msg;
-            $(container + " .message__content").html('<p>' + msgHtml + '</p>');
+            $(container + " .message__content", element).html('<p>' + msgHtml + '</p>');
 
             // Toggle the error class
-            $(container).toggleClass('has--error', msg !== null);
+            $(container, element).toggleClass('has--error', msg !== null);
         }
     },
 
@@ -335,6 +340,20 @@ OpenAssessment.BaseView.prototype = {
         $(container).toggleClass('has--error', true);
         $(container + ' .step__status__value i').removeClass().addClass('ico icon-warning-sign');
         $(container + ' .step__status__value .copy').html('Unable to Load');
+    },
+
+    /** 
+     * Get the contents of the Step Actions error message box, for unit test validation.
+     *
+     * Step Actions are the UX-level parts of the student interaction flow - 
+     * Submission, Peer Assessment, and Self Assessment. Since steps are mutually
+     * exclusive, only one error box should be rendered on screen at a time.
+     *
+     * Returns:
+     *     One HTML string
+     */
+    getStepActionsErrorMessage: function() {
+        return $('.step__actions .message__content').html();
     }
 };
 
