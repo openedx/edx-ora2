@@ -213,20 +213,35 @@ OpenAssessment.ResponseView.prototype = {
     Send a response submission to the server and update the view.
     **/
     submit: function() {
+        // Immediately disable the submit button to prevent multiple submission
+        this.submitEnabled(false);
+
         // Send the submission to the server
         var submission = $('#submission__answer__value', this.element).val();
         this.baseView.toggleActionError('response', null);
 
         var view = this;
         var baseView = this.baseView;
-        this.server.submit(submission).done(
-            // When we have successfully sent the submission, move on to the next step
-            function(studentId, attemptNum) {
-                view.load();
-                baseView.renderPeerAssessmentStep();
-            }
-        ).fail(function(errCode, errMsg) {
-            baseView.toggleActionError('submit', errMsg);
-        });
+        var moveToNextStep = function() {
+            view.load();
+            baseView.renderPeerAssessmentStep();
+        };
+        this.server.submit(submission)
+            .done(moveToNextStep)
+            .fail(function(errCode, errMsg) {
+                // If the error is "multiple submissions", then we should move to the next
+                // step.  Otherwise, the user will be stuck on the current step with no
+                // way to continue.
+                if (errCode == 'ENOMULTI') {
+                    moveToNextStep();
+                }
+                else {
+                    // Display the error
+                    baseView.toggleActionError('submit', errMsg);
+
+                    // Re-enable the submit button to allow the user to retry
+                    view.submitEnabled(true);
+                }
+            });
     }
 };
