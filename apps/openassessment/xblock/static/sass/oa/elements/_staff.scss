@@ -44,6 +44,10 @@
     color: $copy-staff-color;
   }
 
+  .staff-info__title__copy {
+    @extend %t-strong;
+  }
+
   .ui-staff__content {
     margin-top: $baseline-v;
     color: $copy-staff-color;
