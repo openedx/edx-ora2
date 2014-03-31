@@ -184,14 +184,14 @@ class PeerAssessmentMixin(object):
             context_dict["peer_start"] = self.format_datetime_string(date)
             path = 'openassessmentblock/peer/oa_peer_unavailable.html'
         elif workflow.get("status") == "peer":
-            peer_sub = self.get_peer_submission(student_item, assessment, submissions_closed)
+            peer_sub = self.get_peer_submission(student_item, assessment)
             if peer_sub:
                 path = 'openassessmentblock/peer/oa_peer_assessment.html'
                 context_dict["peer_submission"] = peer_sub
             else:
                 path = 'openassessmentblock/peer/oa_peer_waiting.html'
         elif continue_grading and student_item:
-            peer_sub = self.get_peer_submission(student_item, assessment, continue_grading)
+            peer_sub = self.get_peer_submission(student_item, assessment)
             if peer_sub:
                 path = 'openassessmentblock/peer/oa_peer_turbo_mode.html'
                 context_dict["peer_submission"] = peer_sub
@@ -205,16 +205,14 @@ class PeerAssessmentMixin(object):
     def get_peer_submission(
             self,
             student_item_dict,
-            assessment,
-            over_grading
+            assessment
     ):
-        submissions_closed, __, __ = self.is_closed(step="submission")
         peer_submission = False
         try:
             peer_submission = peer_api.get_submission_to_assess(
                 student_item_dict,
                 assessment["must_be_graded_by"],
-                over_grading
+                True
             )
             self.runtime.publish(
                 self,

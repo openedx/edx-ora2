@@ -60,7 +60,8 @@ class TestPeerAssessment(XBlockHandlerTestCase):
             1
         )
 
-        # If Over Grading is on, this should now return Sally's response to Bob.
+        # If Over Grading is on, this should now return Sally or Hal's response
+        # to Bob.
         submission = xblock.create_submission(student_item, u"Bob's answer")
         workflow_info = xblock.get_workflow_info()
         self.assertEqual(workflow_info["status"], u'peer')
@@ -73,7 +74,8 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         self.assertNotIn(submission["answer"]["text"].encode('utf-8'), peer_response.body)
 
         #Validate Peer Rendering.
-        self.assertIn("Sally".encode('utf-8'), peer_response.body)
+        self.assertTrue("Sally".encode('utf-8') in peer_response.body or
+            "Hal".encode('utf-8') in peer_response.body)
 
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_peer_assess_handler(self, xblock):
@@ -212,10 +214,19 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         self.assertIsNotNone(peer_response)
         self.assertNotIn(submission["answer"]["text"].encode('utf-8'), peer_response.body)
 
+        hal_response = "Hal".encode('utf-8') in peer_response.body
+        sally_response = "Sally".encode('utf-8') in peer_response.body
+
         # Validate Peer Rendering.
-        self.assertIn("Sally".encode('utf-8'), peer_response.body)
+        if hal_response:
+            peer_uuid = hal_sub['uuid']
+        elif sally_response:
+            peer_uuid = sally_sub['uuid']
+        else:
+            self.fail("Response was neither Hal or Sally's submission.")
+
         peer_api.create_assessment(
-            sally_sub['uuid'],
+            peer_uuid,
             student_item['student_id'],
             assessment,
             {'criteria': xblock.rubric_criteria},
@@ -229,10 +240,17 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         self.assertIsNotNone(peer_response)
         self.assertNotIn(submission["answer"]["text"].encode('utf-8'), peer_response.body)
 
-        # Validate Peer Rendering.
-        self.assertIn("Hal".encode('utf-8'), peer_response.body)
+        # Validate Peer Rendering. Check that if Sally or Hal were selected
+        # the first time around, the other is selected this time.
+        if not hal_response and "Hal".encode('utf-8') in peer_response.body:
+            peer_uuid = hal_sub['uuid']
+        elif not sally_response and "Sally".encode('utf-8') in peer_response.body:
+            peer_uuid = sally_sub['uuid']
+        else:
+            self.fail("Response was neither Hal or Sally's submission.")
+
         peer_api.create_assessment(
-            hal_sub['uuid'],
+            peer_uuid,
             student_item['student_id'],
             assessment,
             {'criteria': xblock.rubric_criteria},
@@ -245,4 +263,4 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         peer_response = xblock.render_peer_assessment(request)
         self.assertIsNotNone(peer_response)
         self.assertNotIn(submission["answer"]["text"].encode('utf-8'), peer_response.body)
-        self.assertIn("Congratulations".encode('utf-8'), peer_response.body)
+        self.assertIn("Complete".encode('utf-8'), peer_response.body)

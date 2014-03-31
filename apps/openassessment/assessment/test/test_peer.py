@@ -530,7 +530,9 @@ class TestPeerApi(CacheResetTest):
 
         #Get the next submission for review
         submission_uuid = peer_api._get_submission_for_over_grading(xander_workflow)
-        self.assertEqual(buffy_answer["uuid"], submission_uuid)
+
+        if not (buffy_answer["uuid"] == submission_uuid or willow_answer["uuid"] == submission_uuid):
+            self.fail("Submission was not Buffy or Willow's.")
 
     def test_create_assessment_feedback(self):
         tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
