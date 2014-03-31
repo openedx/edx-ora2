@@ -94,6 +94,7 @@ generated-members=
     aq_parent,
     objects,
     DoesNotExist,
+    MultipleObjectsReturned,
     can_read,
     can_write,
     get_url,

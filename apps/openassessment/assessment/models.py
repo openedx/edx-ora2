@@ -260,6 +260,19 @@ class Assessment(models.Model):
     def points_possible(self):
         return self.rubric.points_possible
 
+    def to_float(self):
+        """
+        Calculate the score percentage (points earned / points possible).
+
+        Returns:
+            float or None
+
+        """
+        if self.points_possible == 0:
+            return None
+        else:
+            return float(self.points_earned) / self.points_possible
+
     def __unicode__(self):
         return u"Assessment {}".format(self.id)
 

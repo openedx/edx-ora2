@@ -699,7 +699,7 @@ class TestPeerApi(CacheResetTest):
         tim, _ = self._create_student_and_submission("Tim", "Tim's answer")
         peer_api.get_assessments(tim["uuid"])
 
-    @patch.object(Submission.objects, 'get')
+    @patch.object(PeerWorkflow.objects, 'get_or_create')
     @raises(peer_api.PeerAssessmentInternalError)
     def test_error_on_assessment_creation(self, mock_filter):
         mock_filter.side_effect = DatabaseError("Bad things happened")

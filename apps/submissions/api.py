@@ -9,6 +9,7 @@ from django.core.cache import cache
 from django.conf import settings
 from django.db import IntegrityError, DatabaseError
 from django.utils.encoding import force_unicode
+from dogapi import dog_stats_api
 
 from submissions.serializers import (
     SubmissionSerializer, StudentItemSerializer, ScoreSerializer, JsonFieldError
@@ -141,17 +142,7 @@ def create_submission(student_item_dict, answer, submitted_at=None,
         submission_serializer.save()
 
         sub_data = submission_serializer.data
-        logger.info(
-            u"Created submission uuid={submission_uuid} for "
-            u"(course_id={course_id}, item_id={item_id}, "
-            u"anonymous_student_id={anonymous_student_id})"
-            .format(
-                submission_uuid=sub_data["uuid"],
-                course_id=student_item_dict["course_id"],
-                item_id=student_item_dict["item_id"],
-                anonymous_student_id=student_item_dict["student_id"]
-            )
-        )
+        _log_submission(sub_data, student_item_dict)
 
         return sub_data
 
@@ -500,13 +491,79 @@ def set_score(submission_uuid, points_earned, points_possible):
     # In this case, we assume that someone else has already created
     # a score summary and ignore the error.
     try:
-        score.save()
-        logger.info(
-            "Score of ({}/{}) set for submission {}"
-            .format(points_earned, points_possible, submission_uuid)
-        )
+        score_model = score.save()
+        _log_score(score_model)
     except IntegrityError:
         pass
+
+
+def _log_submission(submission, student_item):
+    """
+    Log the creation of a submission.
+
+    Args:
+        submission (dict): The serialized submission model.
+        student_item (dict): The serialized student item model.
+
+    Returns:
+        None
+    """
+    logger.info(
+        u"Created submission uuid={submission_uuid} for "
+        u"(course_id={course_id}, item_id={item_id}, "
+        u"anonymous_student_id={anonymous_student_id})"
+        .format(
+            submission_uuid=submission["uuid"],
+            course_id=student_item["course_id"],
+            item_id=student_item["item_id"],
+            anonymous_student_id=student_item["student_id"]
+        )
+    )
+    tags = [
+        u"course_id:{course_id}".format(course_id=student_item['course_id']),
+        u"item_id:{item_id}".format(item_id=student_item['item_id']),
+        u"item_type:{item_type}".format(item_type=student_item['item_type']),
+    ]
+    dog_stats_api.histogram('submissions.submission.size', len(submission['answer']), tags=tags)
+    dog_stats_api.increment('submissions.submission.count', tags=tags)
+
+
+def _log_score(score):
+    """
+    Log the creation of a score.
+
+    Args:
+        score (Score): The score model.
+
+    Returns:
+        None
+    """
+    logger.info(
+        "Score of ({}/{}) set for submission {}"
+        .format(score.points_earned, score.points_possible, score.submission.uuid)
+    )
+    tags = [
+        u"course_id:{course_id}".format(course_id=score.student_item.course_id),
+        u"item_id:{item_id}".format(item_id=score.student_item.item_id),
+        u"item_type:{item_type}".format(item_type=score.student_item.item_type),
+    ]
+
+    time_delta = score.created_at - score.submission.created_at
+    dog_stats_api.histogram(
+        'submissions.score.seconds_since_submission',
+        time_delta.total_seconds(),
+        tags=tags
+    )
+
+    score_percentage = score.to_float()
+    if score_percentage is not None:
+        dog_stats_api.histogram(
+            'submissions.score.score_percentage',
+            score_percentage,
+            tags=tags
+        )
+
+    dog_stats_api.increment('submissions.score.count', tags=tags)
 
 
 def _get_or_create_student_item(student_item_dict):

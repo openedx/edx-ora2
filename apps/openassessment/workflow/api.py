@@ -125,7 +125,11 @@ def create_workflow(submission_uuid):
             course_id=submission_dict['student_item']['course_id'],
             item_id=submission_dict['student_item']['item_id'],
         )
-    except (DatabaseError, peer_api.PeerAssessmentError) as err:
+    except (
+        DatabaseError,
+        peer_api.PeerAssessmentError,
+        sub_api.SubmissionError
+    ) as err:
         err_msg = u"Could not create assessment workflow: {}".format(err)
         logger.exception(err_msg)
         raise AssessmentWorkflowInternalError(err_msg)

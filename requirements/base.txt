@@ -4,6 +4,7 @@ git+https://github.com/edx/xblock-sdk.git@50ed1646d24f6f0a21d6d0bb074e3b7c8a78fd
 
 # Third Party Requirements
 defusedxml==0.4.1
+dogapi==1.2.1
 django==1.4.8
 django-extensions==1.2.5
 django-model-utils==1.4.0
