@@ -164,7 +164,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
 
         # Validate Peer Rendering.
         self.assertIn("available".encode('utf-8'), peer_response.body)
-        
+
     @scenario('data/over_grade_scenario.xml', user_id='Bob')
     def test_turbo_grading(self, xblock):
         student_item = xblock.get_student_item_dict()
@@ -263,4 +263,28 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         peer_response = xblock.render_peer_assessment(request)
         self.assertIsNotNone(peer_response)
         self.assertNotIn(submission["answer"]["text"].encode('utf-8'), peer_response.body)
-        self.assertIn("Complete".encode('utf-8'), peer_response.body)
+        self.assertIn("Congratulations".encode('utf-8'), peer_response.body)
+
+    @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
+    def test_peer_unavailable(self, xblock):
+        # Before creating a submission, the peer step should be unavailable
+        resp = self.request(xblock, 'render_peer_assessment', json.dumps(dict()))
+        self.assertIn('not available', resp.lower())
+        self.assertIn('peer-assessment', resp.lower())
+
+    @scenario('data/peer_closed_scenario.xml', user_id='Bob')
+    def test_peer_closed(self, xblock):
+        # The scenario defines a peer assessment with a due date in the past
+        resp = self.request(xblock, 'render_peer_assessment', json.dumps(dict()))
+        self.assertIn('closed', resp.lower())
+        self.assertIn('peer assessment', resp.lower())
+
+    @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
+    def test_peer_waiting(self, xblock):
+        # Make a submission, but no peer assessments available
+        xblock.create_submission(xblock.get_student_item_dict(), "Test answer")
+
+        # Check the rendered peer step
+        resp = self.request(xblock, 'render_peer_assessment', json.dumps(dict()))
+        self.assertIn('waiting', resp.lower())
+        self.assertIn('peer', resp.lower())

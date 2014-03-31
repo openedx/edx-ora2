@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Test submission to the OpenAssessment XBlock.
 """
@@ -49,7 +50,7 @@ class SubmissionTest(XBlockHandlerTestCase):
 
     # In Studio preview mode, the runtime sets the user ID to None
     @scenario('data/basic_scenario.xml', user_id=None)
-    def test_cannot_submit_in_preview_mode(self, xblock,):
+    def test_cannot_submit_in_preview_mode(self, xblock):
 
         # The Studio runtime apparently provides an anonymous student ID,
         # even though we're running in Preview mode.  We should check the scope id
@@ -66,6 +67,15 @@ class SubmissionTest(XBlockHandlerTestCase):
 
     # In Studio preview mode, the runtime sets the user ID to None
     @scenario('data/over_grade_scenario.xml', user_id='Alice')
-    def test_closed_submissions(self, xblock,):
+    def test_closed_submissions(self, xblock):
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
         self.assertIn("Incomplete", resp)
+
+    @scenario('data/basic_scenario.xml', user_id='Omar Little')
+    def test_response_submitted(self, xblock):
+        # Create a submission for the user
+        xblock.create_submission(xblock.get_student_item_dict(), u'Ⱥ mȺn mᵾsŧ ħȺvɇ Ⱥ ȼøđɇ.')
+
+        # Expect that the response step is "submitted"
+        resp = self.request(xblock, 'render_submission', json.dumps(dict()))
+        self.assertIn('your response has been submitted', resp.lower())
