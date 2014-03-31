@@ -124,4 +124,49 @@ describe("OpenAssessment.ResponseView", function() {
         view.submit();
         expect(server.submit).toHaveBeenCalledWith('Test response');
     });
+
+    it("disables the submit button on submission", function() {
+        // Prevent the server's response from resolving,
+        // so we can see what happens before view gets re-rendered.
+        spyOn(server, 'submit').andCallFake(function() {
+            return $.Deferred(function(defer) {}).promise();
+        });
+
+        view.response('Test response');
+        view.submit();
+        expect(view.submitEnabled()).toBe(false);
+    });
+
+    it("re-enables the submit button on submission error", function() {
+        // Simulate a server error
+        spyOn(server, 'submit').andCallFake(function() {
+            return $.Deferred(function(defer) {
+                defer.rejectWith(this, ['ENOUNKNOWN', 'Error occurred!']);
+            }).promise();
+        });
+
+        view.response('Test response');
+        view.submit();
+
+        // Expect the submit button to have been re-enabled
+        expect(view.submitEnabled()).toBe(true);
+    });
+
+    it("moves to the next step on duplicate submission error", function() {
+        // Simulate a "multiple submissions" server error
+        spyOn(server, 'submit').andCallFake(function() {
+            return $.Deferred(function(defer) {
+                defer.rejectWith(this, ['ENOMULTI', 'Multiple submissions error']);
+            }).promise();
+        });
+        spyOn(view, 'load');
+        spyOn(baseView, 'renderPeerAssessmentStep');
+
+        view.response('Test response');
+        view.submit();
+
+        // Expect the current and next step to have been reloaded
+        expect(view.load).toHaveBeenCalled();
+        expect(baseView.renderPeerAssessmentStep).toHaveBeenCalled();
+    });
 });
