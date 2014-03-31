@@ -1121,10 +1121,17 @@
     @extend %ui-subsection-title;
     @extend %t-heading;
     margin-bottom: ($baseline-v/2);
-    color: $heading-secondary-color;
+    color: $heading-color;
+
+    .ico {
+      @extend %icon-1;
+      display: inline-block;
+      vertical-align: middle;
+    }
   }
 
-  .submission__feeedback__title__copy {
+  .submission__feedback__title__copy {
+    @extend %t-heading;
     margin-left: ($baseline-h/4);
   }
 
