@@ -42,6 +42,58 @@ class TestGrade(XBlockHandlerTestCase):
         self.assertIn(u'єאςєɭɭєภՇ ฬ๏гк!', resp.decode('utf-8'))
         self.assertIn(u'Good job!', resp.decode('utf-8'))
 
+        # Verify that the submission and peer steps show that we're graded
+        # This isn't strictly speaking part of the grade step rendering,
+        # but we've already done all the setup to get to this point in the flow,
+        # so we might as well verify it here.
+        resp = self.request(xblock, 'render_submission', json.dumps(dict()))
+        self.assertIn('response', resp.lower())
+        self.assertIn('complete', resp.lower())
+
+        resp = self.request(xblock, 'render_peer_assessment', json.dumps(dict()))
+        self.assertIn('peer', resp.lower())
+        self.assertIn('complete', resp.lower())
+
+        resp = self.request(xblock, 'render_self_assessment', json.dumps(dict()))
+        self.assertIn('self', resp.lower())
+        self.assertIn('complete', resp.lower())
+
+    @scenario('data/grade_scenario.xml', user_id='Omar')
+    def test_grade_waiting(self, xblock):
+        # Waiting to be assessed by a peer
+        self._create_submission_and_assessments(
+            xblock, self.SUBMISSION, self.PEERS, self.ASSESSMENTS, self.ASSESSMENTS[0],
+            waiting_for_peer=True
+        )
+        resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+
+        # Verify that we're on the waiting template
+        self.assertIn(u'waiting for peer assessment', resp.decode('utf-8').lower())
+
+    @scenario('data/grade_incomplete_scenario.xml', user_id='Bunk')
+    def test_grade_incomplete_missing_self(self, xblock):
+        # Graded peers, but haven't completed self assessment
+        self._create_submission_and_assessments(
+            xblock, self.SUBMISSION, [self.PEERS[0]], [self.ASSESSMENTS[0]], None
+        )
+        resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+
+        # Verify that we're on the right template
+        self.assertIn(u'not completed', resp.decode('utf-8').lower())
+        self.assertIn(u'self assessment', resp.decode('utf-8').lower())
+
+    @scenario('data/grade_incomplete_scenario.xml', user_id='Daniels')
+    def test_grade_incomplete_missing_peer(self, xblock):
+        # Have not yet completed peer assessment
+        self._create_submission_and_assessments(
+            xblock, self.SUBMISSION, [], [], None
+        )
+        resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+
+        # Verify that we're on the right template
+        self.assertIn(u'not completed', resp.decode('utf-8').lower())
+        self.assertIn(u'peer assessment', resp.decode('utf-8').lower())
+
     @scenario('data/grade_scenario.xml', user_id='Greggs')
     def test_submit_feedback(self, xblock):
         # Create submissions and assessments
@@ -101,7 +153,10 @@ class TestGrade(XBlockHandlerTestCase):
         self.assertFalse(resp['success'])
         self.assertGreater(len(resp['msg']), 0)
 
-    def _create_submission_and_assessments(self, xblock, submission_text, peers, peer_assessments, self_assessment):
+    def _create_submission_and_assessments(
+        self, xblock, submission_text, peers, peer_assessments, self_assessment,
+        waiting_for_peer=False
+    ):
         """
         Create a submission and peer/self assessments, so that the user can receive a grade.
 
@@ -112,8 +167,12 @@ class TestGrade(XBlockHandlerTestCase):
             peer_assessments (list of dict): List of assessment dictionaries for peer assessments.
             self_assessment (dict): Dict of assessment for self-assessment.
 
+        Kwargs:
+            waiting_for_peer (bool): If true, skip creation of peer assessments for the user's submission.
+
         Returns:
             None
+
         """
         # Create a submission from the user
         student_item = xblock.get_student_item_dict()
@@ -137,11 +196,12 @@ class TestGrade(XBlockHandlerTestCase):
             scorer_submissions.append(scorer_sub)
 
             # Create an assessment of the user's submission
-            peer_api.create_assessment(
-                submission['uuid'], scorer_name,
-                assessment, {'criteria': xblock.rubric_criteria},
-                xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
-            )
+            if not waiting_for_peer:
+                peer_api.create_assessment(
+                    submission['uuid'], scorer_name,
+                    assessment, {'criteria': xblock.rubric_criteria},
+                    xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
+                )
 
         # Have our user make assessments (so she can get a score)
         for asmnt in peer_assessments:
@@ -152,7 +212,8 @@ class TestGrade(XBlockHandlerTestCase):
             )
 
         # Have the user submit a self-assessment (so she can get a score)
-        self_api.create_assessment(
-            submission['uuid'], student_id, self_assessment['options_selected'],
-            {'criteria': xblock.rubric_criteria}
-        )
+        if self_assessment is not None:
+            self_api.create_assessment(
+                submission['uuid'], student_id, self_assessment['options_selected'],
+                {'criteria': xblock.rubric_criteria}
+            )
