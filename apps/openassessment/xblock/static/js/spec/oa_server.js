@@ -250,6 +250,13 @@ describe("OpenAssessment.Server", function() {
         expect(receivedMsg).toEqual('Could not contact server.');
     });
 
+    it("informs the caller of an AJAX error when sending a self assessment", function() {
+        stubAjax(false, null);
+        var receivedMsg = null;
+        server.selfAssess("Test").fail(function(errorMsg) { receivedMsg = errorMsg; });
+        expect(receivedMsg).toEqual('Could not contact server.');
+    });
+
     it("informs the caller of a server error when sending a submission", function() {
         stubAjax(true, {'success': false, 'msg': 'test error'});
         var receivedMsg = null;
