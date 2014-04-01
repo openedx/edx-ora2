@@ -225,16 +225,11 @@ def create_assessment(
         scorer_item['student_id'] = scorer_id
 
         scorer_workflow = _get_latest_workflow(scorer_item)
-        workflow = _get_latest_workflow(student_item)
 
         if not scorer_workflow:
             raise PeerAssessmentWorkflowError(_(
                 "You must make a submission before assessing another student."))
-        if not workflow:
-            raise PeerAssessmentWorkflowError(_(
-                "The submission you reviewed is not in the peer workflow. This "
-                "assessment cannot be submitted unless the associated "
-                "submission came from the peer workflow."))
+
         # Close the active assessment
         _close_active_assessment(scorer_workflow, submission_uuid, assessment, num_required_grades)
         assessment_dict = full_assessment_dict(assessment)
