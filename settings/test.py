@@ -36,11 +36,8 @@ DATABASES = {
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
-# Configure lettuce
-LETTUCE_APPS = TEST_APPS
-LETTUCE_SERVER_PORT = 8005
 
 # Install test-specific Django apps
-INSTALLED_APPS += ('django_nose', 'lettuce.django',)
+INSTALLED_APPS += ('django_nose',)
 
 EDX_ORA2["EVENT_LOGGER"] = "openassessment.workflow.test.events.fake_event_logger"
