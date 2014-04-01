@@ -1,3 +1,4 @@
+{% load i18n %}
 {% spaceless %}
 <div class="wrapper wrapper--xblock wrapper--openassessment theme--basic">
     <div class="openassessment problem" id="openassessment">
@@ -5,7 +6,7 @@
             <h2 class="openassessment__title problem__header">{{ title }}</h2>
 
             <nav class="nav--contents">
-                <h2 class="title">Skip to a specific step</h2>
+                <h2 class="title">{% trans "Skip to a specific step" %}</h2>
 
                 <ol class="list list--nav">
                     {%  for assessment in rubric_assessments %}
@@ -14,7 +15,7 @@
                     </li>
                     {% endfor %}
                     <li class="list--nav__item">
-                        <a class="action" href="#openassessment__grade">Your grade for this problem</a>
+                        <a class="action" href="#openassessment__grade">{% trans "Your grade for this problem" %}</a>
                     </li>
                 </ol>
             </nav>
@@ -23,14 +24,14 @@
             <!-- if the problem is unstarted or response hasn't been submitted -->
             <div id="openassessment__message" class="openassessment__message message">
                 <div class="message__content">
-                    <p>This assignment has several steps. In the first step, you'll provide a response to the question. The other steps appear below the <strong>Your Response</strong> field.</p>
+                    <p>{% trans "This assignment has several steps. In the first step, you'll provide a response to the question. The other steps appear below the <strong>Your Response</strong> field." %}</p>
                 </div>
             </div>
             {% endblock %}
 
             <div class="wrapper--openassessment__prompt">
                 <article class="openassessment__prompt ui-toggle-visibility">
-                    <h2 class="openassessment__prompt__title">The prompt for this assignment</h2>
+                    <h2 class="openassessment__prompt__title">{% trans "The prompt for this assignment" %}</h2>
 
                     <div class="openassessment__prompt__copy ui-toggle-visibility__content">
                         {{ question|linebreaks }}
@@ -51,10 +52,10 @@
 
 
                             <span class="step__status">
-                                <span class="step__status__label">This step's status:</span>
+                                <span class="step__status__label">{% trans "This step's status:" %}</span>
                                 <span class="step__status__value">
                                   <i class="ico icon-refresh icon-spin"></i>
-                                  <span class="copy">Loading</span>
+                                  <span class="copy">{% trans "Loading" %}</span>
                                 </span>
                             </span>
                         </header>

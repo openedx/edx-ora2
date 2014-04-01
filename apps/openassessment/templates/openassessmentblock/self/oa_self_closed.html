@@ -1,4 +1,5 @@
-{%  extends "openassessmentblock/self/oa_self_assessment.html" %}
+{% extends "openassessmentblock/self/oa_self_assessment.html" %}
+{% load i18n %}
 
 {% block list_item %}
 <li id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment is--incomplete ui-toggle-visibility">
@@ -6,10 +7,10 @@
 
 {% block title %}
 <span class="step__status">
-  <span class="step__status__label">This step's status:</span>
+  <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
     <i class="ico icon-warning-sign"></i>
-    <span class="copy">Incomplete</span>
+    <span class="copy">{% trans "Incomplete" %}</span>
   </span>
 </span>
 {% endblock %}
@@ -19,9 +20,9 @@
     <div class="wrapper--step__content">
 
         <div class="step__message message message--incomplete">
-            <h3 class="message__title">The Due Date for This Step Has Passed</h3>
+            <h3 class="message__title">{% trans "The Due Date for This Step Has Passed" %}</h3>
             <div class="message__content">
-                 <p>This step is now closed. You can no longer complete a self assessment or continue with this assignment, and you'll receive a grade of Incomplete.</p>
+                 <p>{% trans "This step is now closed. You can no longer complete a self assessment or continue with this assignment, and you'll receive a grade of Incomplete." %}</p>
             </div>
         </div>
     </div>
