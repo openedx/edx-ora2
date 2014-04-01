@@ -139,14 +139,16 @@ class TestGrade(XBlockHandlerTestCase):
             # Create an assessment of the user's submission
             peer_api.create_assessment(
                 submission['uuid'], scorer_name,
-                assessment, {'criteria': xblock.rubric_criteria}
+                assessment, {'criteria': xblock.rubric_criteria},
+                xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
             )
 
         # Have our user make assessments (so she can get a score)
         for asmnt in peer_assessments:
             new_submission = peer_api.get_submission_to_assess(student_item, len(peers))
             peer_api.create_assessment(
-                new_submission['uuid'], student_id, asmnt, {'criteria': xblock.rubric_criteria}
+                new_submission['uuid'], student_id, asmnt, {'criteria': xblock.rubric_criteria},
+                xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
             )
 
         # Have the user submit a self-assessment (so she can get a score)

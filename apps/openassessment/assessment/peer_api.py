@@ -11,6 +11,8 @@ from django.utils import timezone
 from django.utils.translation import ugettext as _
 from django.db import DatabaseError
 from dogapi import dog_stats_api
+from django.db.models import Q
+import random
 
 from openassessment.assessment.models import (
     Assessment, AssessmentFeedback, AssessmentPart,
@@ -75,9 +77,15 @@ class PeerAssessmentInternalError(PeerAssessmentError):
 def is_complete(submission_uuid, requirements):
     try:
         workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
+        if workflow.completed_at is not None:
+            return True
+        elif _num_peers_graded(workflow) >= requirements["must_grade"]:
+            workflow.completed_at = timezone.now()
+            workflow.save()
+            return True
+        return False
     except PeerWorkflow.DoesNotExist:
         return False
-    return _num_peers_graded(workflow) >= requirements["must_grade"]
 
 
 def get_score(submission_uuid, requirements):
@@ -121,8 +129,6 @@ def get_score(submission_uuid, requirements):
         scored_item.scored = True
         scored_item.save()
 
-    workflow.completed_at = timezone.now()
-    workflow.save()
     return {
         "points_earned": sum(
             get_assessment_median_scores(submission_uuid).values()
@@ -131,7 +137,13 @@ def get_score(submission_uuid, requirements):
     }
 
 
-def create_assessment(submission_uuid, scorer_id, assessment_dict, rubric_dict, scored_at=None):
+def create_assessment(
+        submission_uuid,
+        scorer_id,
+        assessment_dict,
+        rubric_dict,
+        num_required_grades,
+        scored_at=None):
     """Creates an assessment on the given submission.
 
     Assessments are created based on feedback associated with a particular
@@ -145,6 +157,10 @@ def create_assessment(submission_uuid, scorer_id, assessment_dict, rubric_dict, 
             is required to create an assessment on a submission.
         assessment_dict (dict): All related information for the assessment. An
             assessment contains points_earned, points_possible, and feedback.
+        num_required_grades (int): The required number of assessments a
+            submission requires before it is completed. If this number of
+            assessments is reached, the grading_completed_at timestamp is set
+            for the Workflow.
 
     Kwargs:
         scored_at (datetime): Optional argument to override the time in which
@@ -220,7 +236,7 @@ def create_assessment(submission_uuid, scorer_id, assessment_dict, rubric_dict, 
                 "assessment cannot be submitted unless the associated "
                 "submission came from the peer workflow."))
         # Close the active assessment
-        _close_active_assessment(scorer_workflow, submission_uuid, assessment)
+        _close_active_assessment(scorer_workflow, submission_uuid, assessment, num_required_grades)
         assessment_dict = full_assessment_dict(assessment)
         _log_assessment(assessment, student_item, scorer_item)
 
@@ -852,7 +868,7 @@ def _get_submission_for_review(workflow, graded_by, over_grading=False):
             "where pw.item_id=%s "
             "and pw.course_id=%s "
             "and pw.student_id<>%s "
-            "and pw.graded_count < %s "
+            "and pw.grading_completed_at is NULL "
             "and pw.id not in ("
             "   select pwi.author_id "
             "   from assessment_peerworkflowitem pwi "
@@ -870,7 +886,6 @@ def _get_submission_for_review(workflow, graded_by, over_grading=False):
                 workflow.item_id,
                 workflow.course_id,
                 workflow.student_id,
-                graded_by,
                 workflow.id,
                 timeout,
                 graded_by
@@ -893,53 +908,34 @@ def _get_submission_for_over_grading(workflow):
     """Retrieve the next submission uuid for over grading
 
     Gets the next submission uuid for over grading in peer assessment.
-    Specifically, this will construct a query that:
-    1) selects all the peer workflows for the current course and item,
-        excluding the current student
-    2) checks all the assessments associated with those workflows, excluding
-        the current student's assessments, and any workflows connected to them.
-    3) checks to see if any unfinished assessments are expired
-    4) Groups all the workflows with their collective assessments
-    5) Orders them but their total assessments
-    6) Returns the workflow with the fewest assessments.
 
     """
     # The follow query behaves as the Peer Assessment Over Grading Queue. This
-    # will find the next submission (via PeerWorkflow) in this course / question
+    # will find a random submission (via PeerWorkflow) in this course / question
     # that:
     #  1) Does not belong to you
     #  2) Is not something you have already scored
-    #  3) Has the fewest current assessments.
     try:
-        peer_workflows = list(PeerWorkflow.objects.raw(
-            "select pw.id, pw.submission_uuid, ("
-            "   select count(pwi.id) as c "
-            "   from assessment_peerworkflowitem pwi "
-            "   where pwi.author_id=pw.id "
-            ") as c "
+        query = list(PeerWorkflow.objects.raw(
+            "select pw.id, pw.submission_uuid "
             "from assessment_peerworkflow pw "
-            "where pw.item_id=%s "
-            "and pw.course_id=%s "
-            "and pw.student_id<>%s "
-            "and pw.id not in ("
-            "   select pwi.author_id "
-            "   from assessment_peerworkflowitem pwi "
-            "   where pwi.scorer_id=%s "
-            ") "
-            "order by c, pw.created_at, pw.id "
-            "limit 1; ",
-
-            [
-                workflow.item_id,
-                workflow.course_id,
-                workflow.student_id,
-                workflow.id
-            ]
+            "where course_id=%s "
+            "and item_id=%s "
+            "and student_id<>%s "
+            "and pw.id not in ( "
+                "select pwi.author_id "
+                "from assessment_peerworkflowitem pwi "
+                "where pwi.scorer_id=%s); ",
+            [workflow.course_id, workflow.item_id, workflow.student_id, workflow.id]
         ))
-        if not peer_workflows:
+        workflow_count = len(query)
+        if workflow_count < 1:
             return None
 
-        return peer_workflows[0].submission_uuid
+        random_int = random.randint(0, workflow_count - 1)
+        random_workflow = query[random_int]
+
+        return random_workflow.submission_uuid
     except DatabaseError:
         error_message = _(
             u"An internal error occurred while retrieving a peer submission "
@@ -949,7 +945,12 @@ def _get_submission_for_over_grading(workflow):
         raise PeerAssessmentInternalError(error_message)
 
 
-def _close_active_assessment(workflow, submission_uuid, assessment):
+def _close_active_assessment(
+        workflow,
+        submission_uuid,
+        assessment,
+        num_required_grades
+):
     """Associate the work item with a complete assessment.
 
     Updates a workflow item on the student's workflow with the associated
@@ -960,6 +961,8 @@ def _close_active_assessment(workflow, submission_uuid, assessment):
         workflow (PeerWorkflow): The scorer's workflow
         submission_uuid (str): The submission the scorer is grading.
         assessment (PeerAssessment): The associate assessment for this action.
+        graded_by (int): The required number of grades the peer workflow
+            requires to be considered complete.
 
     Examples:
         >>> student_item_dict = dict(
@@ -970,14 +973,16 @@ def _close_active_assessment(workflow, submission_uuid, assessment):
         >>> )
         >>> workflow = _get_latest_workflow(student_item_dict)
         >>> assessment = Assessment.objects.all()[0]
-        >>> _close_active_assessment(workflow, "1", assessment)
+        >>> _close_active_assessment(workflow, "1", assessment, 3)
 
     """
     try:
         item = workflow.graded.get(submission_uuid=submission_uuid)
         item.assessment = assessment
-        item.author.graded_count += 1
-        item.author.save()
+        if (not item.author.grading_completed_at
+                and item.author.graded_by.all().count() >= num_required_grades):
+            item.author.grading_completed_at = timezone.now()
+            item.author.save()
         item.save()
     except (DatabaseError, PeerWorkflowItem.DoesNotExist):
         error_message = _(
