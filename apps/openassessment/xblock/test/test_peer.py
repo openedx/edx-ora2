@@ -263,7 +263,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         peer_response = xblock.render_peer_assessment(request)
         self.assertIsNotNone(peer_response)
         self.assertNotIn(submission["answer"]["text"].encode('utf-8'), peer_response.body)
-        self.assertIn("Congratulations".encode('utf-8'), peer_response.body)
+        self.assertIn("Peer Assessments Complete", peer_response.body)
 
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_peer_unavailable(self, xblock):

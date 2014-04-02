@@ -154,4 +154,4 @@ class GradeMixin(object):
                     'options': feedback_options,
                 }
             )
-            return {'success': True, 'msg': _(u"Feedback saved!")}
+            return {'success': True, 'msg': _(u"Feedback saved.")}
