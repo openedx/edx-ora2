@@ -17,7 +17,7 @@
         <div class="wrapper--step__content">
             <div class="step__content">
                 <article class="submission__answer__display step__content__section">
-                    <h3 class="submission__answer__display__title">Your Submitted Response</h3>
+                    <h3 class="submission__answer__display__title">Your Response</h3>
 
                     <div class="submission__answer__display__content">
                         {{ student_submission.answer.text|linebreaks }}
@@ -25,7 +25,7 @@
                 </article>
 
                 <article class="submission__peer-evaluations step__content__section">
-                    <h3 class="submission__peer-evaluations__title">Peer Evaluations Of Your Response</h3>
+                    <h3 class="submission__peer-evaluations__title">Peer Assessments of Your Response</h3>
 
                     <ol class="list submission__peer-evaluations__questions">
                         {% for criterion in rubric_criteria %}
@@ -36,7 +36,7 @@
                                 <span class="question__title__copy">{{ criterion.name }}</span>
 
                                 <span class="question__score">
-                                  <span class="label sr">Overall Question Score</span>
+                                  <span class="label sr">Overall Grade</span>
                                   <span class="question__score__value">{{ criterion.median_score }}</span>
                                   <span class="label label--divider sr">out of</span>
                                   <span class="question__score__potential">
@@ -64,13 +64,13 @@
                                                             {{ part.option.name }}
 
                                                             <span class="ui-hint hint--top" data-hint="{{ part.option.explanation }}">
-                                                              <i class="ico icon-info-sign" title="More Information on {{ part.option.name }}"></i>
+                                                              <i class="ico icon-info-sign" title="More information about {{ part.option.name }}"></i>
                                                             </span>
                                                         </span>
                                                     </span>
                                                 </h5>
                                                 <span class="answer__score">
-                                                    <span class="answer__score__label sr">Score Earned: </span>
+                                                    <span class="answer__score__label sr">Grade Earned: </span>
                                                     <span class="answer__score__value">{{ part.option.points }} points</span>
                                                 </span>
                                             </li>
@@ -93,7 +93,7 @@
                                                 {{ part.option.name }}
 
                                                 <span class="ui-hint hint--top" data-hint="{{ part.option.explanation }}">
-                                                  <i class="ico icon-info-sign" title="More Information on {{ part.option.name }}"></i>
+                                                  <i class="ico icon-info-sign" title="More information about {{ part.option.name }}"></i>
                                                 </span>
                                             </span>
                                         </span>
@@ -118,13 +118,13 @@
                                 <li class="answer peer-evaluation--{{ peer_num }}" id="question--feedback__answer-{{ peer_num }}">
                                     <h5 class="answer__title">
                                         <span class="answer__source">
-                                          <span class="label sr">Evaluator: </span>
+                                          <span class="label sr">Peer assessor: </span>
                                           <span class="value">Peer {{ peer_num }}</span>
                                         </span>
                                     </h5>
 
                                     <div class="answer__value">
-                                        <h6 class="label sr">Evaluator's Assessment: </h6>
+                                        <h6 class="label sr">Peer's assessment: </h6>
                                         <div class="value">
                                             <p>{{ assessment.feedback }}</p>
                                         </div>
@@ -141,7 +141,7 @@
                 <form id="submission__feedback" class="submission__feedback ui-toggle-visibility step__content__section is--collapsed" method="post">
                     <h3 class="submission__feedback__title ui-toggle-visibility__control">
                         <i class="ico icon-caret-right"></i>
-                        <span class="submission__feedback__title__copy">Give Feedback On Peer Evaluations</span>
+                        <span class="submission__feedback__title__copy">Provide Feedback on Peer Assessments</span>
                     </h3>
 
                     <div class="ui-toggle-visibility__content">
@@ -158,7 +158,7 @@
                                 {{ has_submitted_feedback|yesno:'aria-hidden=false,aria-hidden=true' }}>
                                 <h3 class="message__title">Your Feedback Has Been Submitted</h3>
                                 <div class="message__content">
-                                    <p>Your feedback will be sent to this course's staff for use when they review course records.</p>
+                                    <p>Your feedback has been submitted. Course staff will be able to see this feedback when they review course records.</p>
                                 </div>
                             </div>
 
@@ -170,7 +170,7 @@
                             <ol class="list list--fields submission__feedback__fields {{ has_submitted_feedback|yesno:"is--hidden," }}"
                                 {{ has_submitted_feedback|yesno:'aria-hidden=true,aria-hidden=false' }}>
                                 <li class="field field-group field--radio feedback__overall" id="feedback__overall">
-                                    <h4 class="field-group__label">Please select the statements below that reflect what you think of this peer grading experience:</h4>
+                                    <h4 class="field-group__label">Select the statements below that best reflect your experience with peer assessments:</h4>
                                     <ol class="list--options">
                                         <li class="option option--useful">
                                             <input type="checkbox"
@@ -193,21 +193,21 @@
                                                 name="feedback__overall__value"
                                                 id="feedback__overall__value--disagree"
                                                 class="option__input feedback__overall__value"
-                                                value="I disagree with the ways that my peers assessed me." />
-                                            <label class="option__label" for="feedback__overall__value--disagree">I disagree with the ways that my peers assessed me.</label>
+                                                value="I disagree with one or more of the peer assessments of my response." />
+                                            <label class="option__label" for="feedback__overall__value--disagree">I disagree with one or more of the peer assessments of my response.</label>
                                         </li>
                                         <li class="option option--inappropriate">
                                             <input type="checkbox"
                                                 name="feedback__overall__value"
                                                 id="feedback__overall__value--inappropriate"
                                                 class="option__input feedback__overall__value"
-                                                value="I received some inappropriate comments." />
-                                            <label class="option__label" for="feedback__overall__value--inappropriate">I received some inappropriate comments.</label>
+                                                value="Some comments I received were inappropriate." />
+                                            <label class="option__label" for="feedback__overall__value--inappropriate">Some comments I received were inappropriate.</label>
                                         </li>
                                     </ol>
                                 </li>
                                 <li class="field field--textarea feedback__remarks" id="feedback__remarks">
-                                    <label for="feedback__remarks__value">Please provide any thoughts or comments on the feedback you received from your peers here.</label>
+                                    <label for="feedback__remarks__value">Please provide any feedback on the grade or comments that you received from your peers.</label>
                                     <textarea id="feedback__remarks__value" placeholder="I feel the feedback I received was...">{{ feedback_text }}</textarea>
                                 </li>
                             </ol>
@@ -221,7 +221,7 @@
 
                                 <ul class="list list--actions submission__feedback__actions">
                                     <li class="list--actions__item">
-                                        <button type="submit" id="feedback__submit" class="action action--submit feedback__submit">Submit Feedback On Peer Evaluations</button>
+                                        <button type="submit" id="feedback__submit" class="action action--submit feedback__submit">Submit Feedback on Peer Assessments</button>
                                     </li>
                                 </ul>
                             </div>
