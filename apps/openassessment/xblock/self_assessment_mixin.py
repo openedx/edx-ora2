@@ -23,47 +23,61 @@ class SelfAssessmentMixin(object):
 
     @XBlock.handler
     def render_self_assessment(self, data, suffix=''):
-        context = {}
-
-        assessment_module = self.get_assessment_module('self-assessment')
-
-        path = 'openassessmentblock/self/oa_self_unavailable.html'
-        problem_closed, reason, date = self.is_closed(step="self-assessment")
-
-        if problem_closed:
-            if date == 'start':
-                context["self_start"] = self.format_datetime_string(date)
-            elif date == 'due':
-                context["self_due"] = self.format_datetime_string(date)
-
-        workflow = self.get_workflow_info()
-        if not workflow:
+        try:
+            path, context = self.self_path_and_context()
+        except:
+            msg = u"Could not retrieve self assessment for submission {}".format(self.submission_uuid)
+            logger.exception(msg)
+            return self.render_error(_(u"An unexpected error occurred."))
+        else:
             return self.render_assessment(path, context)
 
-        try:
-            submission = submission_api.get_submission(self.submission_uuid)
-            assessment = self_api.get_assessment(
-                workflow["submission_uuid"]
-            )
-        except (submission_api.SubmissionError, self_api.SelfAssessmentRequestError):
-            logger.exception(
-                u"Could not retrieve self assessment for submission {}"
-                .format(workflow["submission_uuid"])
-            )
-            return self.render_error(_(u"An unexpected error occurred."))
-        if workflow["status"] == "self":
-            path = 'openassessmentblock/self/oa_self_assessment.html'
-            context = {
-                "rubric_criteria": self.rubric_criteria,
-                "estimated_time": "20 minutes",  # TODO: Need to configure this.
-                "self_submission": submission,
-            }
-        elif assessment is not None:
-            path = 'openassessmentblock/self/oa_self_complete.html'
-        elif date == "due" and problem_closed:
-            path = 'openassessmentblock/self/oa_self_closed.html'
+    def self_path_and_context(self):
+        """
+        Determine the template path and context to use when rendering the self-assessment step.
 
-        return self.render_assessment(path, context)
+        Returns:
+            tuple of `(path, context)`, where `path` (str) is the path to the template,
+            and `context` (dict) is the template context.
+
+        Raises:
+            SubmissionError: Error occurred while retrieving the current submission.
+            SelfAssessmentRequestError: Error occurred while checking if we had a self-assessment.
+        """
+        context = {}
+        path = 'openassessmentblock/self/oa_self_unavailable.html'
+        problem_closed, reason, start_date, due_date = self.is_closed(step="self-assessment")
+
+        # If we haven't submitted yet, `workflow` will be an empty dict,
+        # and `workflow_status` will be None.
+        workflow = self.get_workflow_info()
+        workflow_status = workflow.get('status')
+
+        if workflow_status == 'waiting' or workflow_status == 'done':
+            path = 'openassessmentblock/self/oa_self_complete.html'
+        elif workflow_status == 'self' or problem_closed:
+            assessment = self_api.get_assessment(workflow.get("submission_uuid"))
+
+            if assessment is not None:
+                path = 'openassessmentblock/self/oa_self_complete.html'
+            elif problem_closed:
+                if reason == 'start':
+                    context["self_start"] = self.format_datetime_string(start_date)
+                    path = 'openassessmentblock/self/oa_self_unavailable.html'
+                elif reason == 'due':
+                    context["self_due"] = self.format_datetime_string(due_date)
+                    path = 'openassessmentblock/self/oa_self_closed.html'
+            else:
+                submission = submission_api.get_submission(self.submission_uuid)
+                context["rubric_criteria"] = self.rubric_criteria
+                context["estimated_time"] = "20 minutes"  # TODO: Need to configure this.
+                context["self_submission"] = submission
+                path = 'openassessmentblock/self/oa_self_assessment.html'
+        else:
+            # No submission yet or in peer assessment
+            path = 'openassessmentblock/self/oa_self_unavailable.html'
+
+        return path, context
 
     @XBlock.json_handler
     def self_assess(self, data, suffix=''):
