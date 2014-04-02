@@ -200,28 +200,28 @@ class TestDates(XBlockHandlerTestCase):
         self.assert_is_closed(
             xblock,
             dt.datetime(2014, 2, 28, 23, 59, 59),
-            None, True, "start", xblock.start,
+            None, True, "start", xblock.start, xblock.due,
             released=False
         )
 
         self.assert_is_closed(
             xblock,
             dt.datetime(2014, 3, 1, 1, 1, 1),
-            None, False, None, None,
+            None, False, None, xblock.start, xblock.due,
             released=True
         )
 
         self.assert_is_closed(
             xblock,
             dt.datetime(2014, 3, 4, 23, 59, 59),
-            None, False, None, None,
+            None, False, None, xblock.start, xblock.due,
             released=True
         )
 
         self.assert_is_closed(
             xblock,
             dt.datetime(2014, 3, 5, 1, 1, 1),
-            None, True, "due", xblock.due,
+            None, True, "due", xblock.start, xblock.due,
             released=True
         )
 
@@ -236,20 +236,25 @@ class TestDates(XBlockHandlerTestCase):
             dt.datetime(2014, 2, 28, 23, 59, 59).replace(tzinfo=pytz.utc),
             "submission", True, "start",
             dt.datetime(2014, 3, 1).replace(tzinfo=pytz.utc),
+            dt.datetime(2014, 4, 1).replace(tzinfo=pytz.utc),
             released=False
         )
 
         self.assert_is_closed(
             xblock,
             dt.datetime(2014, 3, 1, 1, 1, 1).replace(tzinfo=pytz.utc),
-            "submission", False, None, None,
+            "submission", False, None,
+            dt.datetime(2014, 3, 1).replace(tzinfo=pytz.utc),
+            dt.datetime(2014, 4, 1).replace(tzinfo=pytz.utc),
             released=True
         )
 
         self.assert_is_closed(
             xblock,
             dt.datetime(2014, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc),
-            "submission", False, None, None,
+            "submission", False, None,
+            dt.datetime(2014, 3, 1).replace(tzinfo=pytz.utc),
+            dt.datetime(2014, 4, 1).replace(tzinfo=pytz.utc),
             released=True
         )
 
@@ -257,6 +262,7 @@ class TestDates(XBlockHandlerTestCase):
             xblock,
             dt.datetime(2014, 4, 1, 1, 1, 1, 1).replace(tzinfo=pytz.utc),
             "submission", True, "due",
+            dt.datetime(2014, 3, 1).replace(tzinfo=pytz.utc),
             dt.datetime(2014, 4, 1).replace(tzinfo=pytz.utc),
             released=True
         )
@@ -272,20 +278,25 @@ class TestDates(XBlockHandlerTestCase):
             dt.datetime(2015, 1, 1, 23, 59, 59).replace(tzinfo=pytz.utc),
             "peer-assessment", True, "start",
             dt.datetime(2015, 1, 2).replace(tzinfo=pytz.utc),
+            dt.datetime(2015, 4, 1).replace(tzinfo=pytz.utc),
             released=False
         )
 
         self.assert_is_closed(
             xblock,
             dt.datetime(2015, 1, 2, 1, 1, 1).replace(tzinfo=pytz.utc),
-            "peer-assessment", False, None, None,
+            "peer-assessment", False, None,
+            dt.datetime(2015, 1, 2).replace(tzinfo=pytz.utc),
+            dt.datetime(2015, 4, 1).replace(tzinfo=pytz.utc),
             released=True
         )
 
         self.assert_is_closed(
             xblock,
             dt.datetime(2015, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc),
-            "peer-assessment", False, None, None,
+            "peer-assessment", False, None,
+            dt.datetime(2015, 1, 2).replace(tzinfo=pytz.utc),
+            dt.datetime(2015, 4, 1).replace(tzinfo=pytz.utc),
             released=True
         )
 
@@ -293,6 +304,7 @@ class TestDates(XBlockHandlerTestCase):
             xblock,
             dt.datetime(2015, 4, 1, 1, 1, 1, 1).replace(tzinfo=pytz.utc),
             "peer-assessment", True, "due",
+            dt.datetime(2015, 1, 2).replace(tzinfo=pytz.utc),
             dt.datetime(2015, 4, 1).replace(tzinfo=pytz.utc),
             released=True
         )
@@ -308,20 +320,25 @@ class TestDates(XBlockHandlerTestCase):
             dt.datetime(2016, 1, 1, 23, 59, 59).replace(tzinfo=pytz.utc),
             "self-assessment", True, "start",
             dt.datetime(2016, 1, 2).replace(tzinfo=pytz.utc),
+            dt.datetime(2016, 4, 1).replace(tzinfo=pytz.utc),
             released=False
         )
 
         self.assert_is_closed(
             xblock,
             dt.datetime(2016, 1, 2, 1, 1, 1).replace(tzinfo=pytz.utc),
-            "self-assessment", False, None, None,
+            "self-assessment", False, None,
+            dt.datetime(2016, 1, 2).replace(tzinfo=pytz.utc),
+            dt.datetime(2016, 4, 1).replace(tzinfo=pytz.utc),
             released=True
         )
 
         self.assert_is_closed(
             xblock,
             dt.datetime(2016, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc),
-            "self-assessment", False, None, None,
+            "self-assessment", False, None,
+            dt.datetime(2016, 1, 2).replace(tzinfo=pytz.utc),
+            dt.datetime(2016, 4, 1).replace(tzinfo=pytz.utc),
             released=True
         )
 
@@ -329,6 +346,7 @@ class TestDates(XBlockHandlerTestCase):
             xblock,
             dt.datetime(2016, 4, 1, 1, 1, 1, 1).replace(tzinfo=pytz.utc),
             "self-assessment", True, "due",
+            dt.datetime(2016, 1, 2).replace(tzinfo=pytz.utc),
             dt.datetime(2016, 4, 1).replace(tzinfo=pytz.utc),
             released=True
         )
@@ -346,20 +364,25 @@ class TestDates(XBlockHandlerTestCase):
             dt.datetime(2014, 2, 28, 23, 59, 59).replace(tzinfo=pytz.utc),
             "peer-assessment", True, "start",
             dt.datetime(2014, 3, 1).replace(tzinfo=pytz.utc),
+            dt.datetime(2016, 5, 2).replace(tzinfo=pytz.utc),
             released=False
         )
 
         self.assert_is_closed(
             xblock,
             dt.datetime(2014, 3, 1, 1, 1, 1).replace(tzinfo=pytz.utc),
-            "peer-assessment", False, None, None,
+            "peer-assessment", False, None,
+            dt.datetime(2014, 3, 1).replace(tzinfo=pytz.utc),
+            dt.datetime(2016, 5, 2).replace(tzinfo=pytz.utc),
             released=True
         )
 
         self.assert_is_closed(
             xblock,
             dt.datetime(2016, 5, 1, 23, 59, 59).replace(tzinfo=pytz.utc),
-            "peer-assessment", False, None, None,
+            "peer-assessment", False, None,
+            dt.datetime(2014, 3, 1).replace(tzinfo=pytz.utc),
+            dt.datetime(2016, 5, 2).replace(tzinfo=pytz.utc),
             released=True
         )
 
@@ -367,6 +390,7 @@ class TestDates(XBlockHandlerTestCase):
             xblock,
             dt.datetime(2016, 5, 2, 1, 1, 1).replace(tzinfo=pytz.utc),
             "peer-assessment", True, "due",
+            dt.datetime(2014, 3, 1).replace(tzinfo=pytz.utc),
             dt.datetime(2016, 5, 2).replace(tzinfo=pytz.utc),
             released=True
         )
@@ -394,7 +418,7 @@ class TestDates(XBlockHandlerTestCase):
 
     def assert_is_closed(
         self, xblock, now, step, expected_is_closed, expected_reason,
-        expected_date=None, released=None
+        expected_start, expected_due, released=None
     ):
         """
         Assert whether the XBlock step is open/closed.
@@ -405,7 +429,8 @@ class TestDates(XBlockHandlerTestCase):
             step (str): The step in the workflow (e.g. "submission", "self-assessment")
             expected_is_closed (bool): Do we expect the step to be open or closed?
             expected_reason (str): Either "start", "due", or None.
-            expected_date (datetime): Expected start/due date, or None
+            expected_start (datetime): Expected start date.
+            expected_due (datetime): Expected due date.
 
         Kwargs:
             released (bool): If set, check whether the XBlock has been released.
@@ -421,10 +446,11 @@ class TestDates(XBlockHandlerTestCase):
         self.addCleanup(datetime_patcher.stop)
         mocked_datetime.datetime.now.return_value = now
 
-        is_closed, reason, date = xblock.is_closed(step=step)
+        is_closed, reason, start, due = xblock.is_closed(step=step)
         self.assertEqual(is_closed, expected_is_closed)
         self.assertEqual(reason, expected_reason)
-        self.assertEqual(date, expected_date)
+        self.assertEqual(start, expected_start)
+        self.assertEqual(due, expected_due)
 
         if released is not None:
             self.assertEqual(xblock.is_released(step=step), released)

@@ -468,18 +468,19 @@ class OpenAssessmentBlock(
                 "self-assessment": check whether the self-assessment section is open.
 
         Returns:
-            tuple of the form (is_closed, reason, date), where
+            tuple of the form (is_closed, reason, start_date, due_date), where
                 is_closed (bool): indicates whether the step is closed.
                 reason (str or None): specifies the reason the step is closed ("start" or "due")
-                date (datetime or None): is the start/due date.
+                start_date (datetime): is the start date of the step/problem.
+                due_date (datetime): is the due date of the step/problem.
 
         Examples:
             >>> is_closed()
-            False, None, None
+            False, None, datetime.datetime(2014, 3, 27, 22, 7, 38, 788861), datetime.datetime(2015, 3, 27, 22, 7, 38, 788861)
             >>> is_closed(step="submission")
-            True, "due", datetime.datetime(2014, 3, 27, 22, 7, 38, 788861)
+            True, "due", datetime.datetime(2014, 3, 27, 22, 7, 38, 788861), datetime.datetime(2015, 3, 27, 22, 7, 38, 788861)
             >>> is_closed(step="self-assessment")
-            True, "start", datetime.datetime(2014, 3, 27, 22, 7, 38, 788861)
+            True, "start", datetime.datetime(2014, 3, 27, 22, 7, 38, 788861), datetime.datetime(2015, 3, 27, 22, 7, 38, 788861)
 
         """
         submission_range = (self.start, self.submission_due)
@@ -506,11 +507,11 @@ class OpenAssessmentBlock(
         now = dt.datetime.now().replace(tzinfo=pytz.utc)
 
         if now < open_range[0]:
-            return True, "start", open_range[0]
+            return True, "start", open_range[0], open_range[1]
         elif now >= open_range[1]:
-            return True, "due", open_range[1]
+            return True, "due", open_range[0], open_range[1]
         else:
-            return False, None, None
+            return False, None, open_range[0], open_range[1]
 
     def is_released(self, step=None):
         """
@@ -528,7 +529,7 @@ class OpenAssessmentBlock(
         """
         # By default, assume that we're published, in case the runtime doesn't support publish date.
         is_published = getattr(self, 'published_date', True) is not None
-        is_closed, reason, __ = self.is_closed(step=step)
+        is_closed, reason, __, __ = self.is_closed(step=step)
         return is_published and (not is_closed or reason == 'due')
 
     def get_assessment_module(self, mixin_name):
