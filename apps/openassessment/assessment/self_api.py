@@ -189,6 +189,6 @@ def _log_assessment(assessment, submission):
 
     score_percentage = assessment.to_float()
     if score_percentage is not None:
-        dog_stats_api.histogram('openassessment.assessment.score_precentage', score_percentage, tags=tags)
+        dog_stats_api.histogram('openassessment.assessment.score_percentage', score_percentage, tags=tags)
 
     dog_stats_api.increment('openassessment.assessment.count', tags=tags)
