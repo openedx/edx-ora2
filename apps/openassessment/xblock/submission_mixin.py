@@ -6,6 +6,7 @@ from xblock.core import XBlock
 
 from submissions import api
 from openassessment.workflow import api as workflow_api
+from .resolve_dates import DISTANT_FUTURE
 
 
 logger = logging.getLogger(__name__)
@@ -194,14 +195,19 @@ class SubmissionMixin(object):
 
         """
         workflow = self.get_workflow_info()
-        problem_closed, __, date = self.is_closed('submission')
-        sub_due = date.strftime("%A, %B %d, %Y %X") if date is not None else None
+        problem_closed, __, __, due_date = self.is_closed('submission')
+
         context = {
             "saved_response": self.saved_response,
             "save_status": self.save_status,
             "submit_enabled": self.saved_response != '',
-            "submission_due": sub_due,
         }
+
+        # Due dates can default to the distant future, in which case
+        # there's effectively no due date.
+        # If we don't add the date to the context, the template won't display it.
+        if due_date < DISTANT_FUTURE:
+            context["submission_due"] = due_date.strftime("%A, %B %d, %Y %X")
 
         if not workflow and problem_closed:
             path = 'openassessmentblock/response/oa_response_closed.html'
