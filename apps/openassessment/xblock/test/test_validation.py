@@ -68,6 +68,15 @@ class DateValidationTest(TestCase):
         }
         self.DATES[None] = None
 
+    # There are a few test cases here that might seem incorrect:
+    # * xblock_due_before_self_due
+    # * xblock_start_equals_xblock_due
+    # * xblock_start_past_submission_start
+    # * xblock_start_past_xblock_due
+    #
+    # We count these as valid because the start/due date are inherited
+    # from the LMS, thus bypassing our validation rules.
+    # See the docstring for `resolve_dates` for a more detailed justification.
     @ddt.file_data('data/valid_dates.json')
     def test_valid_dates(self, data):
 

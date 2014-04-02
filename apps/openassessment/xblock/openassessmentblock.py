@@ -177,6 +177,11 @@ class OpenAssessmentBlock(
     LmsCompatibilityMixin):
     """Displays a question and gives an area where students can compose a response."""
 
+    submission_start = String(
+        default=None, scope=Scope.settings,
+        help="ISO-8601 formatted string representing the submission start date."
+    )
+
     submission_due = String(
         default=None, scope=Scope.settings,
         help="ISO-8601 formatted string representing the submission due date."
@@ -483,7 +488,7 @@ class OpenAssessmentBlock(
             True, "start", datetime.datetime(2014, 3, 27, 22, 7, 38, 788861), datetime.datetime(2015, 3, 27, 22, 7, 38, 788861)
 
         """
-        submission_range = (self.start, self.submission_due)
+        submission_range = (self.submission_start, self.submission_due)
         assessment_ranges = [
             (asmnt.get('start'), asmnt.get('due'))
             for asmnt in self.rubric_assessments

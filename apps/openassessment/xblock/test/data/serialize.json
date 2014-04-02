@@ -4,6 +4,7 @@
         "prompt": "Test prompt",
         "start": null,
         "due": null,
+        "submission_start": null,
         "submission_due": null,
         "criteria": [
             {
@@ -65,6 +66,7 @@
         "prompt": "Ṫëṡẗ ṗṛöṁṗẗ",
         "start": null,
         "due": null,
+        "submission_start": null,
         "submission_due": null,
         "criteria": [
             {
@@ -120,6 +122,7 @@
         "prompt": "Test prompt",
         "start": null,
         "due": null,
+        "submission_start": null,
         "submission_due": null,
         "criteria": [
             {
@@ -175,6 +178,7 @@
         "prompt": "Test prompt",
         "start": null,
         "due": null,
+        "submission_start": null,
         "submission_due": null,
         "criteria": [
             {
@@ -248,6 +252,7 @@
         "prompt": "Test prompt",
         "start": null,
         "due": null,
+        "submission_start": null,
         "submission_due": null,
         "criteria": [
             {
@@ -311,6 +316,7 @@
         "prompt": "Test prompt",
         "start": "2010-04-01T00:00:00",
         "due": "2030-05-01T00:00:00",
+        "submission_start": null,
         "submission_due": "2020-04-15T00:00:00",
         "criteria": [
             {
