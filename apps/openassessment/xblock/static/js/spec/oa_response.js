@@ -65,6 +65,13 @@ describe("OpenAssessment.ResponseView", function() {
         expect(view.saveEnabled()).toBe(false);
         expect(view.saveStatus()).toContain('Unsaved draft');
 
+        // Response is whitespace --> save/submit buttons disabled
+        view.response('               \n      \n      ');
+        view.responseChanged();
+        expect(view.submitEnabled()).toBe(false);
+        expect(view.saveEnabled()).toBe(false);
+        expect(view.saveStatus()).toContain('Unsaved draft');
+
         // Response is not blank --> submit button enabled
         view.response('Test response');
         view.responseChanged();

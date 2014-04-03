@@ -170,12 +170,12 @@ OpenAssessment.ResponseView.prototype = {
     **/
     responseChanged: function() {
         // Enable the save/submit button only for non-blank responses
-        var currentResponse = this.response();
+        var currentResponse = $.trim(this.response());
         var isBlank = (currentResponse !== '');
         this.submitEnabled(isBlank);
 
         // Update the save button and status only if the response has changed
-        if (this.savedResponse !== currentResponse) {
+        if ($.trim(this.savedResponse) !== currentResponse) {
             this.saveEnabled(isBlank);
             this.saveStatus('Unsaved draft');
         }
