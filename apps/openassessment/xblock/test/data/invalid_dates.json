@@ -1,24 +1,4 @@
 {
-    "xblock_start_past_xblock_due": {
-        "xblock_start": 11,
-        "submission_start": 1,
-        "submission_due": 2,
-        "peer_start": 3,
-        "peer_due": 4,
-        "self_start": 5,
-        "self_due": 6,
-        "xblock_due": 10
-    },
-    "xblock_start_equals_xblock_due": {
-        "xblock_start": 10,
-        "submission_start": 1,
-        "submission_due": 2,
-        "peer_start": 3,
-        "peer_due": 4,
-        "self_start": 5,
-        "self_due": 6,
-        "xblock_due": 10
-    },
     "submission_start_past_submission_due": {
         "xblock_start": 0,
         "submission_start": 3,
@@ -79,16 +59,6 @@
         "self_due": 6,
         "xblock_due": 10
     },
-    "xblock_start_past_submission_start": {
-        "xblock_start": 2,
-        "submission_start": 1,
-        "submission_due": 3,
-        "peer_start": 4,
-        "peer_due": 5,
-        "self_start": 6,
-        "self_due": 7,
-        "xblock_due": 10
-    },
     "submission_start_past_peer_start": {
         "xblock_start": 0,
         "submission_start": 4,
@@ -108,16 +78,6 @@
         "self_start": 5,
         "self_due": 7,
         "xblock_due": 10
-    },
-    "xblock_due_before_self_due": {
-        "xblock_start": 0,
-        "submission_start": 1,
-        "submission_due": 2,
-        "peer_start": 3,
-        "peer_due": 4,
-        "self_start": 5,
-        "self_due": 7,
-        "xblock_due": 6
     },
     "self_due_before_peer_due": {
         "xblock_start": 0,

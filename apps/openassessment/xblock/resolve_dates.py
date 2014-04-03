@@ -62,6 +62,27 @@ def resolve_dates(start, end, date_ranges):
             (The first submission defaults to the problem start date.)
         4) Unset end dates default to the end date of the following assessment/submission.
             (The last assessment defaults to the problem end date.)
+        5) `start` resolves to the earliest start date.
+        6) `end` resolves to the latest end date.
+        7) If `start` is later than `end`, move `start` to just before `end`.
+
+    Overriding start/end dates:
+
+        * Rules 5, 6, and 7 may seem strange, but they're necessary.  Unlike `date_ranges`,
+          the `start` and `end` values are inherited by the XBlock from the LMS.
+          This means that you can set `start` and `end` in Studio, effectively bypassing
+          our validation rules.
+
+        * On the other hand, we *need* the start/due dates so we can resolve unspecified
+          date ranges to an actual date.  For example,
+          if the problem closes on April 15th, 2014, but the course author hasn't specified
+          a due date for a submission, we need ensure the submission closes on April 15th.
+
+        * For this reason, we use `start` and `end` only if they satisfy our validation
+          rules.  If not (because a course author has changed them to something invalid in Studio),
+          we use the dates that the course author specified in the problem definition,
+          which (a) MUST satisfy our ordering constraints, and (b) are probably
+          what the author intended.
 
     Example:
 
@@ -117,12 +138,31 @@ def resolve_dates(start, end, date_ranges):
     resolved_starts = []
     resolved_ends = []
 
-    # Validate the problem start/end dates
+    # Amazingly, Studio allows the release date to be after the due date!
+    # This can cause a problem if the course author has configured:
+    #
+    # 1) Problem start >= problem due, and
+    # 2) Start/due dates that resolve to the problem start/due date.
+    #
+    # In this case, all submission/assessment start dates
+    # could default to the problem start while
+    # due dates default to the problem due date, violating
+    # the constraint that start dates always precede due dates.
+    # If we detect that the author has done this,
+    # we set the start date to just before
+    # the due date, so we (just barely) satify the validation rules.
     if start >= end:
-        msg = _(u"Problem start date '{start}' cannot be later than the problem due date '{due}'.").format(
-            start=start, due=end
-        )
-        raise DateValidationError(msg)
+        start = end - dt.timedelta(milliseconds=1)
+
+    # Override start/end dates if they fail to satisfy our validation rules
+    # These are the only parameters a course author can change in Studio
+    # without triggering our validation rules, so we need to use sensible
+    # defaults.  See the docstring above for a more detailed justification.
+    for step_start, step_end in date_ranges:
+        if step_start is not None:
+            start = min(start, _parse_date(step_start))
+        if step_end is not None:
+            end = max(end, _parse_date(step_end))
 
     # Iterate through the list forwards and backwards simultaneously
     # As we iterate forwards, resolve start dates.

@@ -82,6 +82,7 @@ class TestSerializeContent(TestCase):
         self.oa_block.prompt = data['prompt']
         self.oa_block.start = _parse_date(data['start'])
         self.oa_block.due = _parse_date(data['due'])
+        self.oa_block.submission_start = data['submission_start']
         self.oa_block.submission_due = data['submission_due']
         self.oa_block.rubric_criteria = data['criteria']
         self.oa_block.rubric_assessments = data['assessments']
@@ -132,6 +133,7 @@ class TestSerializeContent(TestCase):
         self.oa_block.rubric_assessments = self.BASIC_ASSESSMENTS
         self.oa_block.start = None
         self.oa_block.due = None
+        self.oa_block.submission_start = None
         self.oa_block.submission_due = None
 
         # We have to be really permissive with the data we'll accept.
@@ -156,6 +158,7 @@ class TestSerializeContent(TestCase):
         self.oa_block.rubric_criteria = self.BASIC_CRITERIA
         self.oa_block.start = None
         self.oa_block.due = None
+        self.oa_block.submission_start = None
         self.oa_block.submission_due = None
 
         for assessment_dict in self.BASIC_ASSESSMENTS:
@@ -169,12 +172,13 @@ class TestSerializeContent(TestCase):
                     msg = "Could not parse mutated assessment dict {assessment}\n{ex}".format(assessment=mutated_dict, ex=ex)
                     self.fail(msg)
 
-    @data("title", "prompt", "start", "due", "submission_due")
+    @data("title", "prompt", "start", "due", "submission_due", "submission_start")
     def test_mutated_field(self, field):
         self.oa_block.rubric_criteria = self.BASIC_CRITERIA
         self.oa_block.rubric_assessments = self.BASIC_ASSESSMENTS
         self.oa_block.start = None
         self.oa_block.due = None
+        self.oa_block.submission_start = None
         self.oa_block.submission_due = None
 
         for mutated_value in [0, u"\u9282", None]:
@@ -300,6 +304,7 @@ class TestUpdateFromXml(TestCase):
 
         self.oa_block.start = dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc)
         self.oa_block.due = dt.datetime(3000, 1, 1).replace(tzinfo=pytz.utc)
+        self.oa_block.submission_start = "2000-01-01T00:00:00"
         self.oa_block.submission_due = "2000-01-01T00:00:00"
 
     @file_data('data/update_from_xml.json')
@@ -316,6 +321,7 @@ class TestUpdateFromXml(TestCase):
         self.assertEqual(self.oa_block.prompt, data['prompt'])
         self.assertEqual(self.oa_block.start, _parse_date(data['start']))
         self.assertEqual(self.oa_block.due, _parse_date(data['due']))
+        self.assertEqual(self.oa_block.submission_start, data['submission_start'])
         self.assertEqual(self.oa_block.submission_due, data['submission_due'])
         self.assertEqual(self.oa_block.rubric_criteria, data['criteria'])
         self.assertEqual(self.oa_block.rubric_assessments, data['assessments'])

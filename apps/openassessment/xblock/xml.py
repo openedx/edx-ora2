@@ -379,6 +379,10 @@ def serialize_content_to_xml(oa_block, root):
     """
     root.tag = 'openassessment'
 
+    # Set the submission start date
+    if oa_block.submission_start is not None:
+        root.set('submission_start', unicode(oa_block.submission_start))
+
     # Set submission due date
     if oa_block.submission_due is not None:
         root.set('submission_due', unicode(oa_block.submission_due))
@@ -464,8 +468,15 @@ def update_from_xml(oa_block, root, validator=DEFAULT_VALIDATOR):
     if root.tag != 'openassessment':
         raise UpdateFromXmlError(_("XML content must contain an 'openassessment' root element."))
 
+    # Retrieve the start date for the submission
+    # Set it to None by default; we will update it to the latest start date later on
+    submission_start = None
+    if 'submission_start' in root.attrib:
+        submission_start = _parse_date(unicode(root.attrib['submission_start']))
+        if submission_start is None:
+            raise UpdateFromXmlError(_("Invalid date format for submission start date"))
+
     # Retrieve the due date for the submission
-    # (assume that the start date of submission is the same as the start date of the problem)
     # Set it to None by default; we will update it to the earliest deadline later on
     submission_due = None
     if 'submission_due' in root.attrib:
@@ -505,6 +516,7 @@ def update_from_xml(oa_block, root, validator=DEFAULT_VALIDATOR):
     oa_block.prompt = rubric['prompt']
     oa_block.rubric_criteria = rubric['criteria']
     oa_block.rubric_assessments = assessments
+    oa_block.submission_start = submission_start
     oa_block.submission_due = submission_due
 
     return oa_block
