@@ -142,15 +142,12 @@ class PeerAssessmentMixin(object):
             "estimated_time": "20 minutes"  # TODO: Need to configure this.
         }
 
-        submissions_closed, __, __, __ = self.is_closed(step="submission")
-
         workflow = self.get_workflow_info()
         if workflow is None:
             return self.render_assessment(path, context_dict)
         continue_grading = (
             data.params.get('continue_grading', False)
             and workflow["status_details"]["peer"]["complete"]
-            and submissions_closed
         )
 
         student_item = self.get_student_item_dict()
