@@ -269,7 +269,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
         # We're checking it anyway to be overly defensive: if the user has made a self-assessment,
         # we ALWAYS show complete, even if the workflow tells us we're still have status 'self'.
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/self/oa_self_complete.html', {},
+            xblock, 'openassessmentblock/self/oa_self_complete.html',
+            {'self_due': datetime.datetime(2000, 1, 1).replace(tzinfo=pytz.utc)},
             workflow_status='self',
             submission_uuid=submission['uuid']
         )

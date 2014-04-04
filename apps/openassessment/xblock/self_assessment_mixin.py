@@ -5,6 +5,7 @@ from xblock.core import XBlock
 from openassessment.assessment import self_api
 from openassessment.workflow import api as workflow_api
 from submissions import api as submission_api
+from .resolve_dates import DISTANT_FUTURE
 
 logger = logging.getLogger(__name__)
 
@@ -48,6 +49,12 @@ class SelfAssessmentMixin(object):
         path = 'openassessmentblock/self/oa_self_unavailable.html'
         problem_closed, reason, start_date, due_date = self.is_closed(step="self-assessment")
 
+        # We display the due date whether the problem is open or closed.
+        # If no date is set, it defaults to the distant future, in which
+        # case we don't display the date.
+        if due_date < DISTANT_FUTURE:
+            context['self_due'] = due_date
+
         # If we haven't submitted yet, `workflow` will be an empty dict,
         # and `workflow_status` will be None.
         workflow = self.get_workflow_info()
@@ -65,7 +72,6 @@ class SelfAssessmentMixin(object):
                     context["self_start"] = start_date
                     path = 'openassessmentblock/self/oa_self_unavailable.html'
                 elif reason == 'due':
-                    context["self_due"] = due_date
                     path = 'openassessmentblock/self/oa_self_closed.html'
             else:
                 submission = submission_api.get_submission(self.submission_uuid)
