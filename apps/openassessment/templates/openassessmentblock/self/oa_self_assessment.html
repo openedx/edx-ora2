@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load tz %}
 {% spaceless %}
 {% block list_item %}
 <li id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment ui-toggle-visibility">
@@ -15,14 +16,14 @@
                 {% if self_start %}
                 <span class="step__deadline">available
                     <span class="date">
-                        {{ self_start }}
+                        {{ self_start|utc|date:"N j, Y H:i e" }}
                         (in {{ self_start|timeuntil }})
                     </span>
                 </span>
                 {% elif self_due %}
                 <span class="step__deadline">due
                     <span class="date">
-                        {{ self_due }}
+                        {{ self_due|utc|date:"N j, Y H:i e" }}
                         (in {{ self_due|timeuntil }})
                     </span>
                 </span>

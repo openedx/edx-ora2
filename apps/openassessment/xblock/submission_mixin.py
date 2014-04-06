@@ -194,24 +194,41 @@ class SubmissionMixin(object):
         Submitted and graded
 
         """
-        workflow = self.get_workflow_info()
-        problem_closed, __, __, due_date = self.is_closed('submission')
+        path, context = self.submission_path_and_context()
+        return self.render_assessment(path, context_dict=context)
 
-        context = {
-            "saved_response": self.saved_response,
-            "save_status": self.save_status,
-            "submit_enabled": self.saved_response != '',
-        }
+    def submission_path_and_context(self):
+        """
+        Determine the template path and context to use when
+        rendering the response (submission) step.
+
+        Returns:
+            tuple of `(path, context)`, where `path` (str) is the path to the template,
+            and `context` (dict) is the template context.
+
+        """
+        workflow = self.get_workflow_info()
+        problem_closed, reason, start_date, due_date = self.is_closed('submission')
+
+        path = 'openassessmentblock/response/oa_response.html'
+        context = {}
 
         # Due dates can default to the distant future, in which case
         # there's effectively no due date.
         # If we don't add the date to the context, the template won't display it.
         if due_date < DISTANT_FUTURE:
-            context["submission_due"] = due_date.strftime("%A, %B %d, %Y %X")
+            context["submission_due"] = due_date
 
         if not workflow and problem_closed:
-            path = 'openassessmentblock/response/oa_response_closed.html'
+            if reason == 'due':
+                path = 'openassessmentblock/response/oa_response_closed.html'
+            elif reason == 'start':
+                context['submission_start'] = start_date
+                path = 'openassessmentblock/response/oa_response_unavailable.html'
         elif not workflow:
+            context['saved_response'] = self.saved_response
+            context['save_status'] = self.save_status
+            context['submit_enabled'] = self.saved_response != ''
             path = "openassessmentblock/response/oa_response.html"
         elif workflow["status"] == "done":
             student_submission = self.get_user_submission(
@@ -225,4 +242,4 @@ class SubmissionMixin(object):
             )
             path = 'openassessmentblock/response/oa_response_submitted.html'
 
-        return self.render_assessment(path, context_dict=context)
+        return path, context

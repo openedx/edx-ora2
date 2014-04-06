@@ -4,6 +4,8 @@ Test submission to the OpenAssessment XBlock.
 """
 
 import json
+import datetime as dt
+import pytz
 from mock import patch, Mock
 from submissions import api as sub_api
 from submissions.api import SubmissionRequestError, SubmissionInternalError
@@ -65,17 +67,202 @@ class SubmissionTest(XBlockHandlerTestCase):
         self.assertEqual(resp[1], "ENOPREVIEW")
         self.assertEqual(resp[2], "To submit a response, view this component in Preview or Live mode.")
 
-    # In Studio preview mode, the runtime sets the user ID to None
     @scenario('data/over_grade_scenario.xml', user_id='Alice')
     def test_closed_submissions(self, xblock):
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
         self.assertIn("Incomplete", resp)
 
-    @scenario('data/basic_scenario.xml', user_id='Omar Little')
-    def test_response_submitted(self, xblock):
+
+class SubmissionRenderTest(XBlockHandlerTestCase):
+    """
+    Test rendering of the submission step.
+    To cover all states in a maintainable way, we mostly check the
+    template context/path without actually checking the rendered template
+    (although we do verify that it renders without an exception).
+    We then include one integration test that renders the template
+    to verify that everything is hooked up correctly.
+    """
+
+    @scenario('data/submission_unavailable.xml', user_id="Bob")
+    def test_unavailable(self, xblock):
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/response/oa_response_unavailable.html',
+            {'submission_start': dt.datetime(4999, 4, 1).replace(tzinfo=pytz.utc)}
+        )
+
+    @scenario('data/submission_unavailable.xml', user_id="Bob")
+    def test_unavailable_submitted(self, xblock):
+        # If the instructor changes the start date after the problem
+        # has opened, it's possible for a student to have made a submission
+        # even though the problem is unavailable.
+        # In this case, we should continue showing that the student completed
+        # the submission.
+        submission = xblock.create_submission(
+            xblock.get_student_item_dict(),
+            'A man must have a code'
+        )
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/response/oa_response_submitted.html',
+            {'student_submission': submission}
+        )
+
+    @scenario('data/submission_open.xml', user_id="Bob")
+    def test_open_unanswered(self, xblock):
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/response/oa_response.html',
+            {
+                'saved_response': '',
+                'save_status': 'Unsaved draft',
+                'submit_enabled': False,
+                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+            }
+        )
+
+    @scenario('data/submission_no_deadline.xml', user_id="Bob")
+    def test_open_no_deadline(self, xblock):
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/response/oa_response.html',
+            {
+                'saved_response': '',
+                'save_status': 'Unsaved draft',
+                'submit_enabled': False,
+            }
+        )
+
+    @scenario('data/submission_open.xml', user_id="Bob")
+    def test_open_saved_response(self, xblock):
+        # Save a response
+        payload = json.dumps({'submission': 'A man must have a code'})
+        resp = self.request(xblock, 'save_submission', payload, response_format='json')
+        self.assertTrue(resp['success'])
+
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/response/oa_response.html',
+            {
+                'saved_response': 'A man must have a code',
+                'save_status': 'Saved but not submitted',
+                'submit_enabled': True,
+                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+            }
+        )
+
+    @scenario('data/submission_open.xml', user_id="Bob")
+    def test_open_submitted(self, xblock):
+        submission = xblock.create_submission(
+            xblock.get_student_item_dict(),
+            'A man must have a code'
+        )
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/response/oa_response_submitted.html',
+            {
+                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+                'student_submission': submission,
+            }
+        )
+
+    @scenario('data/submission_closed.xml', user_id="Bob")
+    def test_closed_incomplete(self, xblock):
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/response/oa_response_closed.html',
+            {
+                'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
+            }
+        )
+
+    @scenario('data/submission_closed.xml', user_id="Bob")
+    def test_closed_submitted(self, xblock):
+        submission = xblock.create_submission(
+            xblock.get_student_item_dict(),
+            'A man must have a code'
+        )
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/response/oa_response_submitted.html',
+            {
+                'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
+                'student_submission': submission,
+            }
+        )
+
+    @scenario('data/submission_open.xml', user_id="Bob")
+    def test_open_graded(self, xblock):
+        # Create a submission
+        submission = xblock.create_submission(
+            xblock.get_student_item_dict(),
+            'A man must have a code'
+        )
+
+        # Simulate the user receiving a grade
+        xblock.get_workflow_info = Mock(return_value={
+            'status': 'done',
+            'submission_uuid': submission['uuid']
+        })
+
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/response/oa_response_graded.html',
+            {
+                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+                'student_submission': submission,
+            }
+        )
+
+    @scenario('data/submission_closed.xml', user_id="Bob")
+    def test_closed_graded(self, xblock):
+        # Create a submission
+        submission = xblock.create_submission(
+            xblock.get_student_item_dict(),
+            'A man must have a code'
+        )
+
+        # Simulate the user receiving a grade
+        xblock.get_workflow_info = Mock(return_value={
+            'status': 'done',
+            'submission_uuid': submission['uuid']
+        })
+
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/response/oa_response_graded.html',
+            {
+                'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
+                'student_submission': submission,
+            }
+        )
+
+    @scenario('data/submission_open.xml', user_id="Bob")
+    def test_integration(self, xblock):
+        # Expect that the response step is open and displays the deadline
+        resp = self.request(xblock, 'render_submission', json.dumps(dict()))
+        self.assertIn('Please provide your response below', resp)
+        self.assertIn('Monday, May 6, 2999 00:00 UTC', resp)
+
         # Create a submission for the user
         xblock.create_submission(xblock.get_student_item_dict(), u'Ⱥ mȺn mᵾsŧ ħȺvɇ Ⱥ ȼøđɇ.')
 
         # Expect that the response step is "submitted"
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
         self.assertIn('your response has been submitted', resp.lower())
+
+    def _assert_path_and_context(self, xblock, expected_path, expected_context):
+        """
+        Render the submission step and verify that the correct template
+        and context were used.  Also verify that the template rendered
+        without error.
+
+        Args:
+            xblock (OpenAssessmentBlock): The XBlock under test.
+            expected_path (str): The expected template path.
+            expected_context (dict): The expected template context.
+
+        Returns:
+            None
+
+        Raises:
+            AssertionError: An assertion failed.
+
+        """
+        path, context = xblock.submission_path_and_context()
+        self.assertEqual(path, expected_path)
+        self.assertEqual(context, expected_context)
+
+        # Verify that we render without error
+        resp = self.request(xblock, 'render_submission', json.dumps({}))
+        self.assertGreater(len(resp), 0)

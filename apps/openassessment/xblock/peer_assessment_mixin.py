@@ -7,6 +7,7 @@ from openassessment.assessment.peer_api import (
     PeerAssessmentWorkflowError
 )
 import openassessment.workflow.api as workflow_api
+from .resolve_dates import DISTANT_FUTURE
 
 logger = logging.getLogger(__name__)
 
@@ -137,10 +138,17 @@ class PeerAssessmentMixin(object):
         path = 'openassessmentblock/peer/oa_peer_unavailable.html'
         finished = False
         problem_closed, reason, start_date, due_date = self.is_closed(step="peer-assessment")
+
         context_dict = {
             "rubric_criteria": self.rubric_criteria,
             "estimated_time": "20 minutes"  # TODO: Need to configure this.
         }
+
+        # We display the due date whether the problem is open or closed.
+        # If no date is set, it defaults to the distant future, in which
+        # case we don't display the date.
+        if due_date < DISTANT_FUTURE:
+            context_dict['peer_due'] = due_date
 
         workflow = self.get_workflow_info()
         if workflow is None:
@@ -175,10 +183,9 @@ class PeerAssessmentMixin(object):
                 ).format(count + 2)
 
         if reason == 'due' and problem_closed:
-            context_dict["peer_due"] = self.format_datetime_string(due_date)
             path = 'openassessmentblock/peer/oa_peer_closed.html'
         elif reason == 'start' and problem_closed:
-            context_dict["peer_start"] = self.format_datetime_string(start_date)
+            context_dict["peer_start"] = start_date
             path = 'openassessmentblock/peer/oa_peer_unavailable.html'
         elif workflow.get("status") == "peer":
             peer_sub = self.get_peer_submission(student_item, assessment)
