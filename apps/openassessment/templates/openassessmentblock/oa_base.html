@@ -5,7 +5,7 @@
             <h2 class="openassessment__title problem__header">{{ title }}</h2>
 
             <nav class="nav--contents">
-                <h2 class="title">Skip to a specific step:</h2>
+                <h2 class="title">Skip to a specific step</h2>
 
                 <ol class="list list--nav">
                     {%  for assessment in rubric_assessments %}
@@ -23,14 +23,14 @@
             <!-- if the problem is unstarted or response hasn't been submitted -->
             <div id="openassessment__message" class="openassessment__message message">
                 <div class="message__content">
-                    <p>This problem requires that you work through multiple parts. <strong>You can begin by reading the question below and providing your response.</strong></p>
+                    <p>This assignment has several steps. In the first step, you'll provide a response to the question. The other steps appear below the <strong>Your Response</strong> field.</p>
                 </div>
             </div>
             {% endblock %}
 
             <div class="wrapper--openassessment__prompt">
                 <article class="openassessment__prompt ui-toggle-visibility">
-                    <h2 class="openassessment__prompt__title">This Problem's Prompt/Question</h2>
+                    <h2 class="openassessment__prompt__title">The prompt for this assignment</h2>
 
                     <div class="openassessment__prompt__copy ui-toggle-visibility__content">
                         {{ question|linebreaks }}

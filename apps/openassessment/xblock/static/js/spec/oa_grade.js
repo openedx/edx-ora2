@@ -69,7 +69,7 @@ describe("OpenAssessment.GradeView", function() {
         expect(server.feedbackText).toEqual('I disliked the feedback I received');
         expect(server.feedbackOptions).toEqual([
             'These assessments were not useful.',
-            'I disagree with the ways that my peers assessed me.'
+            'I disagree with one or more of the peer assessments of my response.'
         ]);
     });
 
