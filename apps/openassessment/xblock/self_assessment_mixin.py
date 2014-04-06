@@ -62,10 +62,10 @@ class SelfAssessmentMixin(object):
                 path = 'openassessmentblock/self/oa_self_complete.html'
             elif problem_closed:
                 if reason == 'start':
-                    context["self_start"] = self.format_datetime_string(start_date)
+                    context["self_start"] = start_date
                     path = 'openassessmentblock/self/oa_self_unavailable.html'
                 elif reason == 'due':
-                    context["self_due"] = self.format_datetime_string(due_date)
+                    context["self_due"] = due_date
                     path = 'openassessmentblock/self/oa_self_closed.html'
             else:
                 submission = submission_api.get_submission(self.submission_uuid)

@@ -50,6 +50,12 @@ To run the Python and Javascript unit test suites:
 
     ./scripts/test.sh
 
+To limit Python tests to a particular Django app:
+
+.. code:: bash
+
+    ./scripts/test.sh openassessment.xblock
+
 
 Quality Check
 =============

@@ -1,3 +1,4 @@
+{% load tz %}
 {% spaceless %}
 {% block list_item %}
 <li id="openassessment__response" class="openassessment__steps__step step--response ui-toggle-visibility">
@@ -8,8 +9,20 @@
             <span class="step__counter"></span>
             <span class="wrapper--copy">
                 <span class="step__label">Your Response</span>
-                {% if submission_due %}
-                <span class="step__deadline">due <span class="date">{{ submission_due }}</span></span>
+                {% if submission_start %}
+                <span class="step__deadline">available
+                    <span class="date">
+                        {{ submission_start|utc|date:"N j, Y H:i e" }}
+                        (in {{ submission_start|timeuntil }})
+                    </span>
+                </span>
+                {% elif submission_due %}
+                <span class="step__deadline">due
+                    <span class="date">
+                        {{ submission_due|utc|date:"N j, Y H:i e" }}
+                        (in {{ submission_due|timeuntil }})
+                    </span>
+                </span>
                 {% endif %}
             </span>
         </h2>
@@ -31,7 +44,7 @@
                 <p>
                     Please provide your response below.
                     {% if submission_due %}
-                    You can save your progress and return to complete your response at any time before the due date of <span class="step__deadline"><span class="date">{{ submission_due }}</span></span>.
+                    You can save your progress and return to complete your response at any time before the due date of <span class="step__deadline"><span class="date">{{ submission_due|utc|date:"l, N j, Y H:i e" }}</span></span>.
                     {% else %}
                     You can save your progress and return to complete your response at any time.
                     {% endif %}

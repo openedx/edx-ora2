@@ -1,3 +1,4 @@
+{% load tz %}
 {% block list_item %}
 <li id="openassessment__peer-assessment" class="openassessment__steps__step step--peer-assessment ui-toggle-visibility">
 {% endblock %}
@@ -14,14 +15,14 @@
                 {% if peer_start %}
                 <span class="step__deadline">available
                     <span class="date">
-                        {{ peer_start }}
+                        {{ peer_start|utc|date:"N j, Y H:i e" }}
                         (in {{ peer_start|timeuntil }})
                     </span>
                 </span>
                 {% elif peer_due %}
                 <span class="step__deadline">due
                     <span class="date">
-                        {{ peer_due }}
+                        {{ peer_due|utc|date:"N j, Y H:i e" }}
                         (in {{ peer_due|timeuntil }})
                     </span>
                 </span>
