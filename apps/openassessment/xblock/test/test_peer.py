@@ -6,9 +6,6 @@ from collections import namedtuple
 
 import copy
 import json
-import mock
-import submissions.api as sub_api
-from openassessment.workflow import api as workflow_api
 from openassessment.assessment import peer_api
 from .base import XBlockHandlerTestCase, scenario
 
@@ -37,7 +34,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
 
         # Now Hal will assess Sally.
         assessment = copy.deepcopy(self.ASSESSMENT)
-        sub = peer_api.get_submission_to_assess(hal_student_item, 1)
+        peer_api.get_submission_to_assess(hal_submission['uuid'], 1)
         peer_api.create_assessment(
             hal_submission['uuid'],
             hal_student_item['student_id'],
@@ -48,7 +45,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
 
         # Now Sally will assess Hal.
         assessment = copy.deepcopy(self.ASSESSMENT)
-        sub = peer_api.get_submission_to_assess(sally_student_item, 1)
+        peer_api.get_submission_to_assess(sally_submission['uuid'], 1)
         peer_api.create_assessment(
             sally_submission['uuid'],
             sally_student_item['student_id'],
@@ -86,8 +83,8 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         # Create a submission for the scorer (required before assessing another student)
         another_student = copy.deepcopy(student_item)
         another_student['student_id'] = "Bob"
-        xblock.create_submission(another_student, self.SUBMISSION)
-        peer_api.get_submission_to_assess(another_student, 3)
+        another_submission = xblock.create_submission(another_student, self.SUBMISSION)
+        peer_api.get_submission_to_assess(another_submission['uuid'], 3)
 
 
         # Submit an assessment and expect a successful response
@@ -126,8 +123,8 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         # Create a submission for the scorer (required before assessing another student)
         another_student = copy.deepcopy(student_item)
         another_student['student_id'] = "Bob"
-        xblock.create_submission(another_student, self.SUBMISSION)
-        peer_api.get_submission_to_assess(another_student, 3)
+        another_sub = xblock.create_submission(another_student, self.SUBMISSION)
+        peer_api.get_submission_to_assess(another_sub['uuid'], 3)
 
 
         # Submit an assessment and expect a successful response
@@ -160,7 +157,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         # Create a submission for the scorer (required before assessing another student)
         another_student = copy.deepcopy(student_item)
         another_student['student_id'] = "Bob"
-        another_submission = xblock.create_submission(another_student, self.SUBMISSION)
+        xblock.create_submission(another_student, self.SUBMISSION)
 
         # Submit an assessment, but mutate the options selected so they do NOT match the rubric
         assessment = copy.deepcopy(self.ASSESSMENT)
@@ -211,7 +208,8 @@ class TestPeerAssessment(XBlockHandlerTestCase):
 
         # Now Hal will assess Sally.
         assessment = copy.deepcopy(self.ASSESSMENT)
-        sally_sub = peer_api.get_submission_to_assess(hal_student_item, 1)
+        sally_sub = peer_api.get_submission_to_assess(hal_submission['uuid'], 1)
+        assessment['submission_uuid'] = sally_sub['uuid']
         peer_api.create_assessment(
             hal_submission['uuid'],
             hal_student_item['student_id'],
@@ -222,7 +220,8 @@ class TestPeerAssessment(XBlockHandlerTestCase):
 
         # Now Sally will assess Hal.
         assessment = copy.deepcopy(self.ASSESSMENT)
-        hal_sub = peer_api.get_submission_to_assess(sally_student_item, 1)
+        hal_sub = peer_api.get_submission_to_assess(sally_submission['uuid'], 1)
+        assessment['submission_uuid'] = hal_sub['uuid']
         peer_api.create_assessment(
             sally_submission['uuid'],
             sally_student_item['student_id'],
@@ -242,9 +241,6 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         peer_response = xblock.render_peer_assessment(request)
         self.assertIsNotNone(peer_response)
         self.assertNotIn(submission["answer"]["text"].encode('utf-8'), peer_response.body)
-
-        hal_response = "Hal".encode('utf-8') in peer_response.body
-        sally_response = "Sally".encode('utf-8') in peer_response.body
 
         peer_api.create_assessment(
             submission['uuid'],

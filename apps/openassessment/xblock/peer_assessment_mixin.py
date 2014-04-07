@@ -161,7 +161,7 @@ class PeerAssessmentMixin(object):
         if assessment:
             context_dict["must_grade"] = assessment["must_grade"]
             finished, count = peer_api.has_finished_required_evaluating(
-                student_item,
+                self.submission_uuid,
                 assessment["must_grade"]
             )
             context_dict["graded"] = count
@@ -212,7 +212,7 @@ class PeerAssessmentMixin(object):
         peer_submission = False
         try:
             peer_submission = peer_api.get_submission_to_assess(
-                student_item_dict,
+                self.submission_uuid,
                 assessment["must_be_graded_by"],
                 True
             )

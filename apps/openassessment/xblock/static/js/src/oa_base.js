@@ -245,7 +245,6 @@ OpenAssessment.BaseView.prototype = {
      */
     peerAssessRequest: function(successFunction) {
         // Retrieve assessment info from the DOM
-        var submissionId = $("#peer_submission_uuid", this.element)[0].innerHTML.trim();
         var optionsSelected = {};
         $("#peer-assessment--001__assessment input[type=radio]:checked", this.element).each(
             function(index, sel) {
@@ -257,7 +256,7 @@ OpenAssessment.BaseView.prototype = {
         // Send the assessment to the server
         var view = this;
         this.toggleActionError('peer', null);
-        this.server.peerAssess(submissionId, optionsSelected, feedback).done(
+        this.server.peerAssess(optionsSelected, feedback).done(
                 successFunction
             ).fail(function(errMsg) {
                 view.toggleActionError('peer', errMsg);
@@ -269,7 +268,6 @@ OpenAssessment.BaseView.prototype = {
     **/
     selfAssess: function() {
         // Retrieve self-assessment info from the DOM
-        var submissionId = $("#self_submission_uuid", this.element)[0].innerHTML.trim();
         var optionsSelected = {};
         $("#self-assessment--001__assessment input[type=radio]:checked", this.element).each(
             function(index, sel) {
@@ -280,7 +278,7 @@ OpenAssessment.BaseView.prototype = {
         // Send the assessment to the server
         var view = this;
         this.toggleActionError('self', null);
-        this.server.selfAssess(submissionId, optionsSelected).done(
+        this.server.selfAssess(optionsSelected).done(
             function() {
                 view.renderPeerAssessmentStep();
                 view.renderSelfAssessmentStep();

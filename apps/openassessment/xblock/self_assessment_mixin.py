@@ -99,8 +99,6 @@ class SelfAssessmentMixin(object):
             Dict with keys "success" (bool) indicating success/failure
             and "msg" (unicode) containing additional information if an error occurs.
         """
-        if 'submission_uuid' not in data:
-            return {'success': False, 'msg': _(u"Missing submission_uuid key in request")}
         if 'options_selected' not in data:
             return {'success': False, 'msg': _(u"Missing options_selected key in request")}
 

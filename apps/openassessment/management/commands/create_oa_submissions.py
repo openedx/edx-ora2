@@ -90,7 +90,7 @@ class Command(BaseCommand):
                 # Retrieve the submission we want to score
                 # Note that we are NOT using the priority queue here, since we know
                 # exactly which submission we want to score.
-                peer_api.create_peer_workflow_item(scorer_id, submission_uuid)
+                peer_api.create_peer_workflow_item(scorer_submission_uuid, submission_uuid)
 
                 # Create the peer assessment
                 assessment = {

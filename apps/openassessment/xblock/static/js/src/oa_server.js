@@ -221,7 +221,6 @@ OpenAssessment.Server.prototype = {
     /**
     Send a peer assessment to the XBlock.
     Args:
-        submissionId (string): The UUID of the submission.
         optionsSelected (object literal): Keys are criteria names,
             values are the option text the user selected for the criterion.
         feedback (string): Written feedback on the submission.
@@ -233,13 +232,13 @@ OpenAssessment.Server.prototype = {
     Example:
         var options = { clarity: "Very clear", precision: "Somewhat precise" };
         var feedback = "Good job!";
-        server.peerAssess("abc123", options, feedback).done(
+        server.peerAssess(options, feedback).done(
             function() { console.log("Success!"); }
         ).fail(
             function(errorMsg) { console.log(errorMsg); }
         );
     **/
-    peerAssess: function(submissionId, optionsSelected, feedback) {
+    peerAssess: function(optionsSelected, feedback) {
         var url = this.url('peer_assess');
         if (feedback.length > this.maxInputSize) {
             return $.Deferred(function(defer) {
@@ -247,7 +246,6 @@ OpenAssessment.Server.prototype = {
             }).promise();
         }
         var payload = JSON.stringify({
-            submission_uuid: submissionId,
             options_selected: optionsSelected,
             feedback: feedback
         });
@@ -271,7 +269,6 @@ OpenAssessment.Server.prototype = {
     Send a self-assessment to the XBlock.
 
     Args:
-        submissionId (string): The UUID of the submission.
         optionsSelected (object literal): Keys are criteria names,
             values are the option text the user selected for the criterion.
 
@@ -281,16 +278,15 @@ OpenAssessment.Server.prototype = {
 
     Example:
         var options = { clarity: "Very clear", precision: "Somewhat precise" };
-        server.selfAssess("abc123", options).done(
+        server.selfAssess(options).done(
             function() { console.log("Success!"); }
         ).fail(
             function(errorMsg) { console.log(errorMsg); }
         );
     **/
-    selfAssess: function(submissionId, optionsSelected) {
+    selfAssess: function(optionsSelected) {
         var url = this.url('self_assess');
         var payload = JSON.stringify({
-            submission_uuid: submissionId,
             options_selected: optionsSelected
         });
         return $.Deferred(function(defer) {

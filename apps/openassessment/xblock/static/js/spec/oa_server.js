@@ -97,7 +97,7 @@ describe("OpenAssessment.Server", function() {
 
         var success = false;
         var options = {clarity: "Very clear", precision: "Somewhat precise"};
-        server.peerAssess("abc1234", options, "Excellent job!").done(function() {
+        server.peerAssess(options, "Excellent job!").done(function() {
             success = true;
         });
 
@@ -106,7 +106,6 @@ describe("OpenAssessment.Server", function() {
             url: '/peer_assess',
             type: "POST",
             data: JSON.stringify({
-                submission_uuid: "abc1234",
                 options_selected: options,
                 feedback: "Excellent job!"
             })
@@ -306,7 +305,7 @@ describe("OpenAssessment.Server", function() {
         var options = {clarity: "Very clear", precision: "Somewhat precise"};
         var receivedErrorMsg = "";
         var testString = getHugeTestString();
-        server.peerAssess("abc1234", options, testString).fail(
+        server.peerAssess(options, testString).fail(
             function(errorMsg) {
                 receivedErrorMsg = errorMsg;
             }
@@ -319,7 +318,7 @@ describe("OpenAssessment.Server", function() {
 
         var receivedMsg = null;
         var options = {clarity: "Very clear", precision: "Somewhat precise"};
-        server.peerAssess("abc1234", options, "Excellent job!").fail(function(msg) {
+        server.peerAssess(options, "Excellent job!").fail(function(msg) {
             receivedMsg = msg;
         });
 
@@ -331,7 +330,7 @@ describe("OpenAssessment.Server", function() {
 
         var receivedMsg = null;
         var options = {clarity: "Very clear", precision: "Somewhat precise"};
-        server.peerAssess("abc1234", options, "Excellent job!").fail(function(msg) {
+        server.peerAssess(options, "Excellent job!").fail(function(msg) {
             receivedMsg = msg;
         });
 

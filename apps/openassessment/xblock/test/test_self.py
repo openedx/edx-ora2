@@ -95,13 +95,6 @@ class TestSelfAssessment(XBlockHandlerTestCase):
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_self_assess_handler_missing_keys(self, xblock):
-        # Missing submission_uuid
-        assessment = copy.deepcopy(self.ASSESSMENT)
-        del assessment['submission_uuid']
-        resp = self.request(xblock, 'self_assess', json.dumps(assessment), response_format='json')
-        self.assertFalse(resp['success'])
-        self.assertIn('submission_uuid', resp['msg'])
-
         # Missing options_selected
         assessment = copy.deepcopy(self.ASSESSMENT)
         del assessment['options_selected']
