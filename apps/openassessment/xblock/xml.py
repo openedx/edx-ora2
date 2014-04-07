@@ -196,23 +196,23 @@ def _parse_options_xml(options_root):
             try:
                 option_dict['points'] = int(option.get('points'))
             except ValueError:
-                raise UpdateFromXmlError(_("XML option points must be an integer."))
+                raise UpdateFromXmlError(_('The value for "points" must be an integer.'))
         else:
-            raise UpdateFromXmlError(_("XML option definition must contain a 'points' attribute."))
+            raise UpdateFromXmlError(_('Every "option" element must contain a "points" attribute.'))
 
         # Option name
         option_name = option.find('name')
         if option_name is not None:
             option_dict['name'] = _safe_get_text(option_name)
         else:
-            raise UpdateFromXmlError(_("XML option definition must contain a 'name' element."))
+            raise UpdateFromXmlError(_('Every "option" element must contain a "name" element.'))
 
         # Option explanation
         option_explanation = option.find('explanation')
         if option_explanation is not None:
             option_dict['explanation'] = _safe_get_text(option_explanation)
         else:
-            raise UpdateFromXmlError(_("XML option definition must contain an 'explanation' element."))
+            raise UpdateFromXmlError(_('Every "option" element must contain an "explanation" element.'))
 
         # Add the options dictionary to the list
         options_list.append(option_dict)
@@ -248,14 +248,14 @@ def _parse_criteria_xml(criteria_root):
         if criterion_name is not None:
             criterion_dict['name'] = _safe_get_text(criterion_name)
         else:
-            raise UpdateFromXmlError(_("XML criterion definition must contain a 'name' element."))
+            raise UpdateFromXmlError(_('Every "criterion" element must contain a "name" element.'))
 
         # Criterion prompt
         criterion_prompt = criterion.find('prompt')
         if criterion_prompt is not None:
             criterion_dict['prompt'] = _safe_get_text(criterion_prompt)
         else:
-            raise UpdateFromXmlError(_("XML criterion definition must contain a 'prompt' element."))
+            raise UpdateFromXmlError(_('Every "criterion" element must contain a "prompt" element.'))
 
         # Criterion options
         criterion_dict['options'] = _parse_options_xml(criterion)
@@ -290,7 +290,7 @@ def _parse_rubric_xml(rubric_root):
     if prompt_el is not None:
         rubric_dict['prompt'] = _safe_get_text(prompt_el)
     else:
-        raise UpdateFromXmlError(_("XML rubric definition must contain a 'prompt' element."))
+        raise UpdateFromXmlError(_('Every "criterion" element must contain a "prompt" element.'))
 
     # Criteria
     rubric_dict['criteria'] = _parse_criteria_xml(rubric_root)
@@ -323,7 +323,7 @@ def _parse_assessments_xml(assessments_root, start, due):
         if 'name' in assessment.attrib:
             assessment_dict['name'] = unicode(assessment.get('name'))
         else:
-            raise UpdateFromXmlError(_('XML assessment definition must have a "name" attribute'))
+            raise UpdateFromXmlError(_('All "criterion" and "option" elements must contain a "name" element.'))
 
         # Assessment start
         if 'start' in assessment.attrib:
@@ -331,7 +331,7 @@ def _parse_assessments_xml(assessments_root, start, due):
             if parsed_start is not None:
                 assessment_dict['start'] = parsed_start
             else:
-                raise UpdateFromXmlError(_("Could not parse 'start' attribute as a valid date time"))
+                raise UpdateFromXmlError(_('The date format in the "start" attribute is invalid. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'))
         else:
             assessment_dict['start'] = None
 
@@ -341,7 +341,7 @@ def _parse_assessments_xml(assessments_root, start, due):
             if parsed_start is not None:
                 assessment_dict['due'] = parsed_start
             else:
-                raise UpdateFromXmlError(_("Could not parse 'due' attribute as a valid date time"))
+                raise UpdateFromXmlError(_('The date format in the "due" attribute is invalid. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'))
         else:
             assessment_dict['due'] = None
 
@@ -350,14 +350,14 @@ def _parse_assessments_xml(assessments_root, start, due):
             try:
                 assessment_dict['must_grade'] = int(assessment.get('must_grade'))
             except ValueError:
-                raise UpdateFromXmlError(_('Assessment "must_grade" attribute must be an integer.'))
+                raise UpdateFromXmlError(_('The "must_grade" value must be a positive integer.'))
 
         # Assessment must_be_graded_by
         if 'must_be_graded_by' in assessment.attrib:
             try:
                 assessment_dict['must_be_graded_by'] = int(assessment.get('must_be_graded_by'))
             except ValueError:
-                raise UpdateFromXmlError(_('Assessment "must_be_graded_by" attribute must be an integer.'))
+                raise UpdateFromXmlError(_('The "must_be_graded_by" value must be a positive integer.'))
 
         # Update the list of assessments
         assessments_list.append(assessment_dict)
@@ -466,7 +466,7 @@ def update_from_xml(oa_block, root, validator=DEFAULT_VALIDATOR):
 
     # Check that the root has the correct tag
     if root.tag != 'openassessment':
-        raise UpdateFromXmlError(_("XML content must contain an 'openassessment' root element."))
+        raise UpdateFromXmlError(_('Every open assessment problem must contain an "openassessment" element.'))
 
     # Retrieve the start date for the submission
     # Set it to None by default; we will update it to the latest start date later on
@@ -474,7 +474,7 @@ def update_from_xml(oa_block, root, validator=DEFAULT_VALIDATOR):
     if 'submission_start' in root.attrib:
         submission_start = _parse_date(unicode(root.attrib['submission_start']))
         if submission_start is None:
-            raise UpdateFromXmlError(_("Invalid date format for submission start date"))
+            raise UpdateFromXmlError(_('The format for the submission start date is invalid. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'))
 
     # Retrieve the due date for the submission
     # Set it to None by default; we will update it to the earliest deadline later on
@@ -482,26 +482,26 @@ def update_from_xml(oa_block, root, validator=DEFAULT_VALIDATOR):
     if 'submission_due' in root.attrib:
         submission_due = _parse_date(unicode(root.attrib['submission_due']))
         if submission_due is None:
-            raise UpdateFromXmlError(_("Invalid date format for submission due date"))
+            raise UpdateFromXmlError(_('The format for the submission due date is invalid. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'))
 
     # Retrieve the title
     title_el = root.find('title')
     if title_el is None:
-        raise UpdateFromXmlError(_("XML content must contain a 'title' element."))
+        raise UpdateFromXmlError(_('Every assessment must contain a "title" element.'))
     else:
         title = _safe_get_text(title_el)
 
     # Retrieve the rubric
     rubric_el = root.find('rubric')
     if rubric_el is None:
-        raise UpdateFromXmlError(_("XML content must contain a 'rubric' element."))
+        raise UpdateFromXmlError(_('Every assessment must contain a "rubric" element.'))
     else:
         rubric = _parse_rubric_xml(rubric_el)
 
     # Retrieve the assessments
     assessments_el = root.find('assessments')
     if assessments_el is None:
-        raise UpdateFromXmlError(_("XML content must contain an 'assessments' element."))
+        raise UpdateFromXmlError(_('Every assessment must contain an "assessments" element.'))
     else:
         assessments = _parse_assessments_xml(assessments_el, oa_block.start, oa_block.due)
 

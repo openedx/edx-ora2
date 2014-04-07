@@ -74,7 +74,7 @@ class SubmissionMixin(object):
                 status_tag = 'EBADFORM'
                 status_text = unicode(err.field_errors)
             except (api.SubmissionError, workflow_api.AssessmentWorkflowError):
-                logger.exception("Error occurred while submitting.")
+                logger.exception("This response was not submitted.")
                 status_tag = 'EUNKNOWN'
             else:
                 status = True
@@ -111,11 +111,11 @@ class SubmissionMixin(object):
                     {"saved_response": self.saved_response}
                 )
             except:
-                return {'success': False, 'msg': _(u"Could not save response submission")}
+                return {'success': False, 'msg': _(u"This response could not be saved.")}
             else:
                 return {'success': True, 'msg': u''}
         else:
-            return {'success': False, 'msg': _(u"Missing required key 'submission'")}
+            return {'success': False, 'msg': _(u"This response was not submitted.")}
 
     def create_submission(self, student_item_dict, student_sub):
 
@@ -173,7 +173,7 @@ class SubmissionMixin(object):
         Returns:
             unicode
         """
-        return _(u'Saved but not submitted') if self.has_saved else _(u'Unsaved draft')
+        return _(u'This response has been saved but not submitted.') if self.has_saved else _(u'This response has not been saved.')
 
     @XBlock.handler
     def render_submission(self, data, suffix=''):
