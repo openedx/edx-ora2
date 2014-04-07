@@ -74,7 +74,7 @@ class SubmissionMixin(object):
                 status_tag = 'EBADFORM'
                 status_text = unicode(err.field_errors)
             except (api.SubmissionError, workflow_api.AssessmentWorkflowError):
-                logger.exception("An error occurred while submitting.")
+                logger.exception("This response was not submitted.")
                 status_tag = 'EUNKNOWN'
             else:
                 status = True

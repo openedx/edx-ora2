@@ -346,7 +346,7 @@ describe("OpenAssessment.Server", function() {
             receivedMsg = errMsg;
         });
 
-        expect(receivedMsg).toContain("The server could not be contacted");
+        expect(receivedMsg).toContain("This problem could not be saved");
 
     });
 

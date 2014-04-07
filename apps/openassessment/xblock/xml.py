@@ -466,7 +466,7 @@ def update_from_xml(oa_block, root, validator=DEFAULT_VALIDATOR):
 
     # Check that the root has the correct tag
     if root.tag != 'openassessment':
-        raise UpdateFromXmlError(_('XML content must contain an "openassessment" root element.'))
+        raise UpdateFromXmlError(_('Every open assessment problem must contain an "openassessment" element.'))
 
     # Retrieve the start date for the submission
     # Set it to None by default; we will update it to the latest start date later on
@@ -474,7 +474,7 @@ def update_from_xml(oa_block, root, validator=DEFAULT_VALIDATOR):
     if 'submission_start' in root.attrib:
         submission_start = _parse_date(unicode(root.attrib['submission_start']))
         if submission_start is None:
-            raise UpdateFromXmlError(_('Invalid date format for submission start date'))
+            raise UpdateFromXmlError(_('The format for the submission start date is invalid. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'))
 
     # Retrieve the due date for the submission
     # Set it to None by default; we will update it to the earliest deadline later on
