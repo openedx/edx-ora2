@@ -381,7 +381,7 @@ class OpenAssessmentBlock(
             open_range = date_ranges[2]
 
         # Check if we are in the open date range
-        now = dt.datetime.now().replace(tzinfo=pytz.utc)
+        now = dt.datetime.utcnow().replace(tzinfo=pytz.utc)
 
         if now < open_range[0]:
             return True, "start", open_range[0], open_range[1]
