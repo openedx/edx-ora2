@@ -396,6 +396,23 @@ class TestDates(XBlockHandlerTestCase):
         )
 
     @scenario('data/basic_scenario.xml')
+    def test_is_closed_uses_utc(self, xblock):
+        # No dates are set in the basic scenario
+        # so we can safely set the release date to one minute in the past (in UTC)
+        xblock.start = dt.datetime.utcnow().replace(tzinfo=pytz.utc) - dt.timedelta(minutes=1)
+
+        # Since the start date is in the past, the problem should be available
+        is_closed, __, __, __ = xblock.is_closed()
+        self.assertFalse(is_closed)
+
+        # Set the start date one hour in the future (in UTC)
+        xblock.start = dt.datetime.utcnow().replace(tzinfo=pytz.utc) + dt.timedelta(hours=1)
+
+        # Now the problem should be open
+        is_closed, __, __, __ = xblock.is_closed()
+        self.assertTrue(is_closed)
+
+    @scenario('data/basic_scenario.xml')
     def test_is_released_unpublished(self, xblock):
         # Simulate the runtime published_date mixin field
         # The scenario doesn't provide a start date, so `is_released()`
@@ -444,7 +461,7 @@ class TestDates(XBlockHandlerTestCase):
         datetime_patcher = patch.object(openassessmentblock, 'dt', Mock(wraps=dt))
         mocked_datetime = datetime_patcher.start()
         self.addCleanup(datetime_patcher.stop)
-        mocked_datetime.datetime.now.return_value = now
+        mocked_datetime.datetime.utcnow.return_value = now
 
         is_closed, reason, start, due = xblock.is_closed(step=step)
         self.assertEqual(is_closed, expected_is_closed)
