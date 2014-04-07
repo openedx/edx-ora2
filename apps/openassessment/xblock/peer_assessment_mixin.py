@@ -66,7 +66,7 @@ class PeerAssessmentMixin(object):
 
             try:
                 assessment = peer_api.create_assessment(
-                    data["submission_uuid"],
+                    self.submission_uuid,
                     self.get_student_item_dict()["student_id"],
                     assessment_dict,
                     rubric_dict,

@@ -198,7 +198,7 @@ class TestGrade(XBlockHandlerTestCase):
             # Create an assessment of the user's submission
             if not waiting_for_peer:
                 peer_api.create_assessment(
-                    submission['uuid'], scorer_name,
+                    scorer_sub['uuid'], scorer_name,
                     assessment, {'criteria': xblock.rubric_criteria},
                     xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
                 )
@@ -207,7 +207,7 @@ class TestGrade(XBlockHandlerTestCase):
         for asmnt in peer_assessments:
             new_submission = peer_api.get_submission_to_assess(student_item, len(peers))
             peer_api.create_assessment(
-                new_submission['uuid'], student_id, asmnt, {'criteria': xblock.rubric_criteria},
+                submission['uuid'], student_id, asmnt, {'criteria': xblock.rubric_criteria},
                 xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
             )
 

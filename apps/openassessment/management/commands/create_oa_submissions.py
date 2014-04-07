@@ -85,7 +85,7 @@ class Command(BaseCommand):
                 # The scorer needs to make a submission before assessing
                 scorer_student_item = copy.copy(student_item)
                 scorer_student_item['student_id'] = scorer_id
-                self._create_dummy_submission(scorer_student_item)
+                scorer_submission_uuid = self._create_dummy_submission(scorer_student_item)
 
                 # Retrieve the submission we want to score
                 # Note that we are NOT using the priority queue here, since we know
@@ -98,7 +98,7 @@ class Command(BaseCommand):
                     'feedback': "  ".join(loremipsum.get_paragraphs(2))
                 }
                 peer_api.create_assessment(
-                    submission_uuid,
+                    scorer_submission_uuid,
                     scorer_id,
                     assessment,
                     rubric,

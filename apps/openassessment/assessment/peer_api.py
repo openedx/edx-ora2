@@ -138,7 +138,7 @@ def get_score(submission_uuid, requirements):
 
 
 def create_assessment(
-        submission_uuid,
+        scorer_submission_uuid,
         scorer_id,
         assessment_dict,
         rubric_dict,
@@ -150,9 +150,9 @@ def create_assessment(
     rubric.
 
     Args:
-        submission_uuid (str): The submission uuid this assessment is associated
-            with. The submission uuid is required and must already exist in the
-            Submission model.
+        scorer_submission_uuid (str): The submission uuid for the Scorer's
+            workflow. The submission being assessed can be determined via the
+            peer workflow of the grading student.
         scorer_id (str): The user ID for the user giving this assessment. This
             is required to create an assessment on a submission.
         assessment_dict (dict): All related information for the assessment. An
@@ -185,7 +185,6 @@ def create_assessment(
         >>> create_assessment("1", "Tim", assessment_dict, rubric_dict)
     """
     try:
-        submission = sub_api.get_submission_and_student(submission_uuid)
         rubric = rubric_from_dict(rubric_dict)
 
         # Validate that the selected options matched the rubric
@@ -196,11 +195,26 @@ def create_assessment(
             msg = _("Selected options do not match the rubric: {error}").format(error=ex.message)
             raise PeerAssessmentRequestError(msg)
 
+        scorer_workflow = PeerWorkflow.objects.get(submission_uuid=scorer_submission_uuid)
+
+        open_items = list(scorer_workflow.graded.filter(
+            assessment__isnull=True).order_by("-started_at", "-id")[:1])
+
+        if not open_items:
+            message = _(
+                u"There are no open assessments associated with the scorer's "
+                u"submission UUID {}.".format(scorer_submission_uuid)
+            )
+            logger.error(message)
+            raise PeerAssessmentWorkflowError(message)
+
+        item = open_items[0]
+
         feedback = assessment_dict.get('feedback', u'')
         peer_assessment = {
             "rubric": rubric.id,
             "scorer_id": scorer_id,
-            "submission_uuid": submission_uuid,
+            "submission_uuid": item.submission_uuid,
             "score_type": PEER_TYPE,
             "feedback": feedback,
         }
@@ -220,31 +234,26 @@ def create_assessment(
         # option to do validation. We already validated these options above.
         AssessmentPart.add_to_assessment(assessment, option_ids)
 
-        student_item = submission['student_item']
-        scorer_item = copy.deepcopy(student_item)
-        scorer_item['student_id'] = scorer_id
-
-        scorer_workflow = _get_latest_workflow(scorer_item)
-
-        if not scorer_workflow:
-            raise PeerAssessmentWorkflowError(
-                _("You must submit a response before you can complete a peer assessment.")
-            )
-
         # Close the active assessment
-        _close_active_assessment(scorer_workflow, submission_uuid, assessment, num_required_grades)
+        _close_active_assessment(scorer_workflow, item.submission_uuid, assessment, num_required_grades)
         assessment_dict = full_assessment_dict(assessment)
-        _log_assessment(assessment, student_item, scorer_item)
+        _log_assessment(assessment, scorer_workflow)
 
         return assessment_dict
     except DatabaseError:
         error_message = _(
-            u"An error occurred while creating assessment {} for submission: "
-            u"{} by: {}"
-            .format(assessment_dict, submission_uuid, scorer_id)
+            u"An error occurred while creating assessment {} by: {}"
+            .format(assessment_dict, scorer_id)
         )
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
+    except PeerWorkflow.DoesNotExist:
+        message = _(
+            u"There is no Peer Workflow associated with the given "
+            u"submission UUID {}.".format(scorer_submission_uuid)
+        )
+        logger.error(message)
+        raise PeerAssessmentWorkflowError(message)
 
 
 def get_rubric_max_scores(submission_uuid):
@@ -1017,7 +1026,7 @@ def _num_peers_graded(workflow):
     return workflow.graded.filter(assessment__isnull=False).count()
 
 
-def _log_assessment(assessment, student_item, scorer_item):
+def _log_assessment(assessment, scorer_workflow):
     """
     Log the creation of a peer assessment.
 
@@ -1031,23 +1040,22 @@ def _log_assessment(assessment, student_item, scorer_item):
 
     """
     logger.info(
-        u"Created peer-assessment {assessment_id} for student {user} on "
-        u"submission {submission_uuid}, course {course_id}, item {item_id} "
+        u"Created peer-assessment {assessment_id} for submission "
+        u"{submission_uuid}, course {course_id}, item {item_id} "
         u"with rubric {rubric_content_hash}; scored by {scorer}"
         .format(
             assessment_id=assessment.id,
-            user=student_item['student_id'],
             submission_uuid=assessment.submission_uuid,
-            course_id=student_item['course_id'],
-            item_id=student_item['item_id'],
+            course_id=scorer_workflow.course_id,
+            item_id=scorer_workflow.item_id,
             rubric_content_hash=assessment.rubric.content_hash,
-            scorer=scorer_item['student_id'],
+            scorer=scorer_workflow.student_id,
         )
     )
 
     tags = [
-        u"course_id:{course_id}".format(course_id=student_item['course_id']),
-        u"item_id:{item_id}".format(item_id=student_item['item_id']),
+        u"course_id:{course_id}".format(course_id=scorer_workflow.course_id),
+        u"item_id:{item_id}".format(item_id=scorer_workflow.item_id),
         u"type:peer",
     ]
 
