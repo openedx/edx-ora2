@@ -370,7 +370,12 @@ def get_score(student_item):
     except (ScoreSummary.DoesNotExist, StudentItem.DoesNotExist):
         return None
 
-    return ScoreSerializer(score).data
+    # By convention, scores are hidden if "points possible" is set to 0.
+    # This can occur when an instructor has reset scores for a student.
+    if score.is_hidden():
+        return None
+    else:
+        return ScoreSerializer(score).data
 
 
 def get_scores(course_id, student_id):
@@ -378,6 +383,9 @@ def get_scores(course_id, student_id):
 
     This method would be used by an LMS to find all the scores for a given
     student in a given course.
+
+    Scores that are "hidden" (because they have points earned set to zero)
+    are excluded from the results.
 
     Args:
         course_id (str): Course ID, used to do a lookup on the `StudentItem`.
@@ -391,6 +399,9 @@ def get_scores(course_id, student_id):
         `student_id`, we simply return an empty dictionary. This is not
         considered an error because there might be many queries for the progress
         page of a person who has never submitted anything.
+
+    Raises:
+        SubmissionInternalError: An unexpected error occurred while resetting scores.
     """
     try:
         score_summaries = ScoreSummary.objects.filter(
@@ -407,19 +418,79 @@ def get_scores(course_id, student_id):
         summary.student_item.item_id:
             (summary.latest.points_earned, summary.latest.points_possible)
         for summary in score_summaries
+        if not summary.latest.is_hidden()
     }
     return scores
 
 
 def get_latest_score_for_submission(submission_uuid):
+    """
+    Retrieve the latest score for a particular submission.
+
+    Args:
+        submission_uuid (str): The UUID of the submission to retrieve.
+
+    Returns:
+        dict: The serialized score model, or None if no score is available.
+
+    """
     try:
         score = Score.objects.filter(
             submission__uuid=submission_uuid
         ).order_by("-id").select_related("submission")[0]
+        if score.is_hidden():
+            return None
     except IndexError:
         return None
 
     return ScoreSerializer(score).data
+
+
+def reset_score(student_id, course_id, item_id):
+    """
+    Reset scores for a specific student on a specific problem.
+
+    Note: this does *not* delete `Score` models from the database,
+    since these are immutable.  It simply creates a new score with
+    the "reset" flag set to True.
+
+    Args:
+        student_id (unicode): The ID of the student for whom to reset scores.
+        course_id (unicode): The ID of the course containing the item to reset.
+        item_id (unicode): The ID of the item for which to reset scores.
+
+    Returns:
+        None
+
+    Raises:
+        SubmissionInternalError: An unexpected error occurred while resetting scores.
+
+    """
+    # Retrieve the student item
+    try:
+        student_item = StudentItem.objects.get(
+            student_id=student_id, course_id=course_id, item_id=item_id
+        )
+    except StudentItem.DoesNotExist:
+        # If there is no student item, then there is no score to reset,
+        # so we can return immediately.
+        return
+
+    # Create a "reset" score
+    try:
+        Score.create_reset_score(student_item)
+    except DatabaseError:
+        msg = (
+            u"Error occurred while reseting scores for"
+            u" item {item_id} in course {course_id} for student {student_id}"
+        ).format(item_id=item_id, course_id=course_id, student_id=student_id)
+        logger.exception(msg)
+        raise SubmissionInternalError(msg)
+    else:
+        msg = u"Score reset for item {item_id} in course {course_id} for student {student_id}".format(
+            item_id=item_id, course_id=course_id, student_id=student_id
+        )
+        logger.info(msg)
 
 
 def set_score(submission_uuid, points_earned, points_possible):
@@ -429,9 +500,6 @@ def set_score(submission_uuid, points_earned, points_possible):
     externally to the API.
 
     Args:
-        student_item (dict): The student item associated with this score. This
-            dictionary must contain a course_id, student_id, and item_id.
-        submission_uuid (str): The submission associated with this score.
         submission_uuid (str): UUID for the submission (must exist).
         points_earned (int): The earned points for this submission.
         points_possible (int): The total points possible for this particular

@@ -76,8 +76,14 @@ class GradeMixin(object):
         self_assessment = self_api.get_assessment(student_submission['uuid'])
         has_submitted_feedback = peer_api.get_assessment_feedback(workflow['submission_uuid']) is not None
 
+        # We retrieve the score from the workflow, which in turn retrieves
+        # the score for our current submission UUID.
+        # We look up the score by submission UUID instead of student item
+        # to ensure that the score always matches the rubric.
+        score = workflow['score']
+
         context = {
-            'score': workflow['score'],
+            'score': score,
             'feedback_text': feedback_text,
             'student_submission': student_submission,
             'peer_assessments': peer_assessments,

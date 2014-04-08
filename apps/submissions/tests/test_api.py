@@ -233,6 +233,16 @@ class TestSubmissionsApi(TestCase):
         self._assert_score(score, 11, 12)
         self.assertEqual(score['submission_uuid'], submission['uuid'])
 
+    def test_get_score_for_submission_hidden_score(self):
+        # Create a "hidden" score for the submission
+        # (by convention, a score with points possible set to 0)
+        submission = api.create_submission(STUDENT_ITEM, ANSWER_ONE)
+        api.set_score(submission["uuid"], 0, 0)
+
+        # Expect that the retrieved score is None
+        score = api.get_latest_score_for_submission(submission['uuid'])
+        self.assertIs(score, None)
+
     def test_get_score_no_student_id(self):
         student_item = copy.deepcopy(STUDENT_ITEM)
         student_item['student_id'] = None
