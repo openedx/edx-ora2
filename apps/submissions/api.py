@@ -391,6 +391,9 @@ def get_scores(course_id, student_id):
         `student_id`, we simply return an empty dictionary. This is not
         considered an error because there might be many queries for the progress
         page of a person who has never submitted anything.
+
+    Raises:
+        SubmissionInternalError: An unexpected error occurred while resetting scores.
     """
     try:
         score_summaries = ScoreSummary.objects.filter(
@@ -412,6 +415,23 @@ def get_scores(course_id, student_id):
 
 
 def get_latest_score_for_submission(submission_uuid):
+    """
+    Retrieve the latest score for a particular submission.
+
+    Note:
+        Because scores and submissions are both immutable,
+        this function will NOT be affected by `reset_scores()`.
+
+        Once a score is associated with a submission, the score
+        will always be associated with the submission.
+
+    Args:
+        submission_uuid (str): The UUID of the submission to retrieve.
+
+    Returns:
+        dict: The serialized score model, or None if no score is available.
+
+    """
     try:
         score = Score.objects.filter(
             submission__uuid=submission_uuid
@@ -422,6 +442,50 @@ def get_latest_score_for_submission(submission_uuid):
     return ScoreSerializer(score).data
 
 
+def reset_scores(course_id, student_id, item_id):
+    """
+    Reset scores for a specific student on a specific problem.
+
+    Note: this does *not* delete `Score` models from the database,
+    since these are immutable.  It does, however, delete the `ScoreSummary`
+    model, so that it appears to users of the API that the student does not
+    have a score.
+
+    This will work as long as we update score summaries
+    using only newly-created scores.
+
+    Args:
+        course_id (unicode): The ID of the course containing the item to reset.
+        student_id (unicode): The ID of the student for whom to reset scores.
+        item_id (unicode): The ID of the item for which to reset scores.
+
+    Returns:
+        None
+
+    Raises:
+        SubmissionInternalError: An unexpected error occurred while resetting scores.
+
+    """
+    try:
+        ScoreSummary.objects.filter(
+            student_item__course_id=course_id,
+            student_item__student_id=student_id,
+            student_item__item_id=item_id,
+        ).delete()
+    except DatabaseError:
+        msg = (
+            u"Error occurred while reseting scores for"
+            u" item {item_id} in course {course_id} for student {student_id}"
+        ).format(item_id=item_id, course_id=course_id, student_id=student_id)
+        logger.exception(msg)
+        raise SubmissionInternalError(msg)
+    else:
+        msg = u"Score reset for item {item_id} in course {course_id} for student {student_id}".format(
+            item_id=item_id, course_id=course_id, student_id=student_id
+        )
+        logger.info(msg)
+
+
 def set_score(submission_uuid, points_earned, points_possible):
     """Set a score for a particular submission.
 
@@ -429,9 +493,6 @@ def set_score(submission_uuid, points_earned, points_possible):
     externally to the API.
 
     Args:
-        student_item (dict): The student item associated with this score. This
-            dictionary must contain a course_id, student_id, and item_id.
-        submission_uuid (str): The submission associated with this score.
         submission_uuid (str): UUID for the submission (must exist).
         points_earned (int): The earned points for this submission.
         points_possible (int): The total points possible for this particular
