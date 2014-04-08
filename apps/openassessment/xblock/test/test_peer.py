@@ -41,7 +41,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         sub = peer_api.get_submission_to_assess(hal_student_item, 1)
         assessment['submission_uuid'] = sub['uuid']
         peer_api.create_assessment(
-            sub['uuid'],
+            hal_submission['uuid'],
             hal_student_item['student_id'],
             assessment,
             {'criteria': xblock.rubric_criteria},
@@ -53,7 +53,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         sub = peer_api.get_submission_to_assess(sally_student_item, 1)
         assessment['submission_uuid'] = sub['uuid']
         peer_api.create_assessment(
-            sub['uuid'],
+            sally_submission['uuid'],
             sally_student_item['student_id'],
             assessment,
             {'criteria': xblock.rubric_criteria},
@@ -123,16 +123,16 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         # Create a submission for this problem from another user
         student_item = xblock.get_student_item_dict()
         student_item['student_id'] = 'Sally'
-        submission = xblock.create_submission(student_item, self.SUBMISSION)
+        xblock.create_submission(student_item, self.SUBMISSION)
 
         # Create a submission for the scorer (required before assessing another student)
         another_student = copy.deepcopy(student_item)
         another_student['student_id'] = "Bob"
-        xblock.create_submission(another_student, self.SUBMISSION)
+        another_submission = xblock.create_submission(another_student, self.SUBMISSION)
 
         # Submit an assessment, but mutate the options selected so they do NOT match the rubric
         assessment = copy.deepcopy(self.ASSESSMENT)
-        assessment['submission_uuid'] = submission['uuid']
+        assessment['submission_uuid'] = another_submission['uuid']
         assessment['options_selected']['invalid'] = 'not a part of the rubric!'
         resp = self.request(xblock, 'peer_assess', json.dumps(assessment), response_format='json')
 
@@ -183,7 +183,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         sally_sub = peer_api.get_submission_to_assess(hal_student_item, 1)
         assessment['submission_uuid'] = sally_sub['uuid']
         peer_api.create_assessment(
-            sally_sub['uuid'],
+            hal_submission['uuid'],
             hal_student_item['student_id'],
             assessment,
             {'criteria': xblock.rubric_criteria},
@@ -195,7 +195,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         hal_sub = peer_api.get_submission_to_assess(sally_student_item, 1)
         assessment['submission_uuid'] = hal_sub['uuid']
         peer_api.create_assessment(
-            hal_sub['uuid'],
+            sally_submission['uuid'],
             sally_student_item['student_id'],
             assessment,
             {'criteria': xblock.rubric_criteria},
@@ -217,16 +217,8 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         hal_response = "Hal".encode('utf-8') in peer_response.body
         sally_response = "Sally".encode('utf-8') in peer_response.body
 
-        # Validate Peer Rendering.
-        if hal_response:
-            peer_uuid = hal_sub['uuid']
-        elif sally_response:
-            peer_uuid = sally_sub['uuid']
-        else:
-            self.fail("Response was neither Hal or Sally's submission.")
-
         peer_api.create_assessment(
-            peer_uuid,
+            submission['uuid'],
             student_item['student_id'],
             assessment,
             {'criteria': xblock.rubric_criteria},
@@ -240,17 +232,8 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         self.assertIsNotNone(peer_response)
         self.assertNotIn(submission["answer"]["text"].encode('utf-8'), peer_response.body)
 
-        # Validate Peer Rendering. Check that if Sally or Hal were selected
-        # the first time around, the other is selected this time.
-        if not hal_response and "Hal".encode('utf-8') in peer_response.body:
-            peer_uuid = hal_sub['uuid']
-        elif not sally_response and "Sally".encode('utf-8') in peer_response.body:
-            peer_uuid = sally_sub['uuid']
-        else:
-            self.fail("Response was neither Hal or Sally's submission.")
-
         peer_api.create_assessment(
-            peer_uuid,
+            submission['uuid'],
             student_item['student_id'],
             assessment,
             {'criteria': xblock.rubric_criteria},

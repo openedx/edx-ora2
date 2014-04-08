@@ -127,7 +127,7 @@ class TestPeerApi(CacheResetTest):
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
         sub = peer_api.get_submission_to_assess(bob, 1)
         assessment = peer_api.create_assessment(
-            sub["uuid"],
+            bob_sub["uuid"],
             bob["student_id"],
             ASSESSMENT_DICT,
             RUBRIC_DICT,
@@ -143,7 +143,7 @@ class TestPeerApi(CacheResetTest):
         sub = peer_api.get_submission_to_assess(bob, 1)
         with self.assertRaises(peer_api.PeerAssessmentRequestError):
             peer_api.create_assessment(
-                sub["uuid"],
+                bob_sub["uuid"],
                 bob["student_id"],
                 ASSESSMENT_DICT_PASS_HUGE,
                 RUBRIC_DICT,
@@ -156,7 +156,7 @@ class TestPeerApi(CacheResetTest):
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
         sub = peer_api.get_submission_to_assess(bob, 3)
         peer_api.create_assessment(
-            sub["uuid"],
+            bob_sub["uuid"],
             bob["student_id"],
             assessment_dict,
             RUBRIC_DICT,
@@ -171,7 +171,7 @@ class TestPeerApi(CacheResetTest):
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
         sub = peer_api.get_submission_to_assess(bob, 3)
         peer_api.create_assessment(
-            sub["uuid"],
+            bob_sub["uuid"],
             bob["student_id"],
             assessment_dict,
             RUBRIC_DICT,
@@ -195,7 +195,7 @@ class TestPeerApi(CacheResetTest):
         self.assertFalse(finished)
         self.assertEqual(count, 0)
         peer_api.create_assessment(
-            sub["uuid"], bob["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            bob_sub["uuid"], bob["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
         finished, count = peer_api.has_finished_required_evaluating(bob, 1)
@@ -227,7 +227,7 @@ class TestPeerApi(CacheResetTest):
             self.assertEquals((False, i), peer_api.has_finished_required_evaluating(STUDENT_ITEM, REQUIRED_GRADED))
             sub = peer_api.get_submission_to_assess(tim, REQUIRED_GRADED)
             peer_api.create_assessment(
-                sub["uuid"], tim["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+                tim_sub["uuid"], tim["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
                 REQUIRED_GRADED_BY,
             )
 
@@ -240,21 +240,21 @@ class TestPeerApi(CacheResetTest):
         sub = peer_api.get_submission_to_assess(bob, REQUIRED_GRADED)
         self.assertEqual(sub["uuid"], tim_sub["uuid"])
         peer_api.create_assessment(
-            sub["uuid"], bob["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            bob_sub["uuid"], bob["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
 
         sub = peer_api.get_submission_to_assess(sally, REQUIRED_GRADED)
         self.assertEqual(sub["uuid"], tim_sub["uuid"])
         peer_api.create_assessment(
-            sub["uuid"], sally["student_id"], ASSESSMENT_DICT_FAIL, RUBRIC_DICT,
+            sally_sub["uuid"], sally["student_id"], ASSESSMENT_DICT_FAIL, RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
 
         sub = peer_api.get_submission_to_assess(jim, REQUIRED_GRADED)
         self.assertEqual(sub["uuid"], tim_sub["uuid"])
         peer_api.create_assessment(
-            sub["uuid"], jim["student_id"], ASSESSMENT_DICT_PASS, RUBRIC_DICT,
+            jim_sub["uuid"], jim["student_id"], ASSESSMENT_DICT_PASS, RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
 
@@ -339,19 +339,19 @@ class TestPeerApi(CacheResetTest):
 
         # 10) Buffy goes on to review Bob, Sally, and Jim, but needs two more.
         peer_api.create_assessment(
-            sub["uuid"], buffy["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            buffy_sub["uuid"], buffy["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
         sub = peer_api.get_submission_to_assess(buffy, REQUIRED_GRADED_BY)
         self.assertEquals(sally_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            sub["uuid"], buffy["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            buffy_sub["uuid"], buffy["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
         sub = peer_api.get_submission_to_assess(buffy, REQUIRED_GRADED_BY)
         self.assertEquals(jim_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            sub["uuid"], buffy["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            buffy_sub["uuid"], buffy["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
             REQUIRED_GRADED_BY,
 
         )
@@ -366,19 +366,19 @@ class TestPeerApi(CacheResetTest):
         sub = peer_api.get_submission_to_assess(xander, REQUIRED_GRADED_BY)
         self.assertEquals(bob_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            sub["uuid"], xander["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            xander_sub["uuid"], xander["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
         sub = peer_api.get_submission_to_assess(xander, REQUIRED_GRADED_BY)
         self.assertEquals(sally_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            sub["uuid"], xander["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            xander_sub["uuid"], xander["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
         sub = peer_api.get_submission_to_assess(xander, REQUIRED_GRADED_BY)
         self.assertEquals(jim_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            sub["uuid"], xander["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            xander_sub["uuid"], xander["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
 
@@ -396,7 +396,7 @@ class TestPeerApi(CacheResetTest):
         sub = peer_api.get_submission_to_assess(buffy, REQUIRED_GRADED_BY)
         self.assertEquals(xander_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            sub["uuid"], buffy["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            buffy_sub["uuid"], buffy["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
 
@@ -407,32 +407,32 @@ class TestPeerApi(CacheResetTest):
         sub = peer_api.get_submission_to_assess(spike, REQUIRED_GRADED_BY)
         self.assertEquals(bob_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            sub["uuid"], spike["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            spike_sub["uuid"], spike["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
             REQUIRED_GRADED_BY,
 
         )
         sub = peer_api.get_submission_to_assess(spike, REQUIRED_GRADED_BY)
         self.assertEquals(sally_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            sub["uuid"], spike["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            spike_sub["uuid"], spike["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
         sub = peer_api.get_submission_to_assess(spike, REQUIRED_GRADED_BY)
         self.assertEquals(jim_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            sub["uuid"], spike["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            spike_sub["uuid"], spike["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
         sub = peer_api.get_submission_to_assess(spike, REQUIRED_GRADED_BY)
         self.assertEquals(buffy_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            sub["uuid"], spike["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            spike_sub["uuid"], spike["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
         sub = peer_api.get_submission_to_assess(spike, REQUIRED_GRADED_BY)
         self.assertEquals(xander_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            sub["uuid"], spike["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            spike_sub["uuid"], spike["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
 
@@ -440,7 +440,7 @@ class TestPeerApi(CacheResetTest):
         sub = peer_api.get_submission_to_assess(buffy, REQUIRED_GRADED_BY)
         self.assertEquals(spike_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            sub["uuid"], buffy["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            buffy_sub["uuid"], buffy["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
 
@@ -451,7 +451,7 @@ class TestPeerApi(CacheResetTest):
         sub = peer_api.get_submission_to_assess(willow, REQUIRED_GRADED_BY)
         self.assertEquals(buffy_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            sub["uuid"], willow["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            willow_sub["uuid"], willow["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
 
@@ -459,7 +459,7 @@ class TestPeerApi(CacheResetTest):
         sub = peer_api.get_submission_to_assess(xander, REQUIRED_GRADED_BY)
         self.assertEquals(buffy_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            sub["uuid"], xander["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            xander_sub["uuid"], xander["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
 
@@ -539,7 +539,7 @@ class TestPeerApi(CacheResetTest):
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
         sub = peer_api.get_submission_to_assess(bob, 1)
         assessment = peer_api.create_assessment(
-            sub["uuid"],
+            bob_sub["uuid"],
             bob["student_id"],
             ASSESSMENT_DICT,
             RUBRIC_DICT,
@@ -547,7 +547,7 @@ class TestPeerApi(CacheResetTest):
         )
         sub = peer_api.get_submission_to_assess(tim, 1)
         peer_api.create_assessment(
-            sub["uuid"],
+            tim_sub["uuid"],
             tim["student_id"],
             ASSESSMENT_DICT,
             RUBRIC_DICT,
@@ -595,7 +595,7 @@ class TestPeerApi(CacheResetTest):
         self.assertEqual(xander_answer["uuid"], submission["uuid"])
 
         assessment_dict = peer_api.create_assessment(
-            xander_answer["uuid"], "Buffy", ASSESSMENT_DICT, RUBRIC_DICT,
+            buffy_answer["uuid"], "Buffy", ASSESSMENT_DICT, RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
         assessment = Assessment.objects.filter(
@@ -696,7 +696,7 @@ class TestPeerApi(CacheResetTest):
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
         sub = peer_api.get_submission_to_assess(bob, 1)
         assessment = peer_api.create_assessment(
-            sub["uuid"],
+            bob_sub["uuid"],
             bob["student_id"],
             ASSESSMENT_DICT,
             RUBRIC_DICT,
@@ -709,6 +709,18 @@ class TestPeerApi(CacheResetTest):
         max_scores = peer_api.get_rubric_max_scores(sub["uuid"])
         self.assertEqual(max_scores['secret'], 1)
         self.assertEqual(max_scores['giveup'], 10)
+
+    @raises(peer_api.PeerAssessmentWorkflowError)
+    def test_no_open_assessment(self):
+        self._create_student_and_submission("Tim", "Tim's answer")
+        bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
+        peer_api.create_assessment(
+            bob_sub['uuid'],
+            bob['student_id'],
+            ASSESSMENT_DICT,
+            RUBRIC_DICT,
+            1
+        )
 
     @patch.object(Assessment.objects, 'filter')
     @raises(peer_api.PeerAssessmentInternalError)
@@ -753,7 +765,7 @@ class TestPeerApi(CacheResetTest):
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
         sub = peer_api.get_submission_to_assess(bob, 3)
         peer_api.create_assessment(
-            sub["uuid"],
+            bob_sub["uuid"],
             bob["student_id"],
             ASSESSMENT_DICT,
             RUBRIC_DICT,

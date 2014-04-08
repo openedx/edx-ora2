@@ -106,7 +106,7 @@ class SelfAssessmentMixin(object):
 
         try:
             assessment = self_api.create_assessment(
-                data['submission_uuid'],
+                self.submission_uuid,
                 self.get_student_item_dict()['student_id'],
                 data['options_selected'],
                 {"criteria": self.rubric_criteria}
