@@ -1,4 +1,5 @@
-{%  extends "openassessmentblock/self/oa_self_assessment.html" %}
+{% extends "openassessmentblock/self/oa_self_assessment.html" %}
+{% load i18n %}
 
 {% block list_item %}
 <li id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment is--complete is--empty is--collapsed">
@@ -6,10 +7,10 @@
 
 {% block title %}
 <span class="step__status">
-  <span class="step__status__label">This step's status:</span>
+  <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
     <i class="ico icon-ok"></i>
-    <span class="copy">Complete</span>
+    <span class="copy">{% trans "Complete" %}</span>
   </span>
 </span>
 {% endblock %}

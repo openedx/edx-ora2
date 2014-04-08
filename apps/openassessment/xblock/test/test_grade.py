@@ -80,7 +80,6 @@ class TestGrade(XBlockHandlerTestCase):
 
         # Verify that we're on the right template
         self.assertIn(u'not completed', resp.decode('utf-8').lower())
-        self.assertIn(u'self assessment', resp.decode('utf-8').lower())
 
     @scenario('data/grade_incomplete_scenario.xml', user_id='Daniels')
     def test_grade_incomplete_missing_peer(self, xblock):
@@ -92,7 +91,6 @@ class TestGrade(XBlockHandlerTestCase):
 
         # Verify that we're on the right template
         self.assertIn(u'not completed', resp.decode('utf-8').lower())
-        self.assertIn(u'peer assessment', resp.decode('utf-8').lower())
 
     @scenario('data/grade_scenario.xml', user_id='Greggs')
     def test_submit_feedback(self, xblock):
