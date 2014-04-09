@@ -51,9 +51,6 @@ class PeerAssessmentMixin(object):
         if 'options_selected' not in data:
             return {'success': False, 'msg': _('Must provide options selected in the assessment')}
 
-        if 'submission_uuid' not in data:
-            return {'success': False, 'msg': _('Must provide submission uuid for the assessment')}
-
         assessment_ui_model = self.get_assessment_module('peer-assessment')
         if assessment_ui_model:
             rubric_dict = {
@@ -106,7 +103,8 @@ class PeerAssessmentMixin(object):
             # Update both the workflow that the submission we're assessing
             # belongs to, as well as our own (e.g. have we evaluated enough?)
             try:
-                self.update_workflow_status(submission_uuid=data["submission_uuid"])
+                if assessment:
+                    self.update_workflow_status(submission_uuid=assessment['submission_uuid'])
                 self.update_workflow_status()
             except workflow_api.AssessmentWorkflowError:
                 msg = _('Could not update workflow status.')
