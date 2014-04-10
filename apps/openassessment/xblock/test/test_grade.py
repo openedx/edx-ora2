@@ -188,7 +188,7 @@ class TestGrade(XBlockHandlerTestCase):
             scorer_sub = sub_api.create_submission(scorer, {'text': submission_text})
             workflow_api.create_workflow(scorer_sub['uuid'])
 
-            submission = peer_api.get_submission_to_assess(scorer, len(peers))
+            submission = peer_api.get_submission_to_assess(scorer_sub['uuid'], len(peers))
 
             # Store the scorer's submission so our user can assess it later
             scorer_submissions.append(scorer_sub)
@@ -203,7 +203,7 @@ class TestGrade(XBlockHandlerTestCase):
 
         # Have our user make assessments (so she can get a score)
         for asmnt in peer_assessments:
-            new_submission = peer_api.get_submission_to_assess(student_item, len(peers))
+            new_submission = peer_api.get_submission_to_assess(submission['uuid'], len(peers))
             peer_api.create_assessment(
                 submission['uuid'], student_id, asmnt, {'criteria': xblock.rubric_criteria},
                 xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
