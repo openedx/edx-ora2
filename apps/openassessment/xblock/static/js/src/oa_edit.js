@@ -6,6 +6,10 @@ if (typeof OpenAssessment == "undefined" || !OpenAssessment) {
     OpenAssessment = {};
 }
 
+// Stub gettext if the runtime doesn't provide it
+if (typeof window.gettext === 'undefined') {
+    window.gettext = function(text) { return text; };
+}
 
 /**
 Interface for editing view in Studio.
@@ -87,7 +91,7 @@ OpenAssessment.StudioView.prototype = {
             executed if the user confirms the update.
     **/
     confirmPostReleaseUpdate: function(onConfirm) {
-        var msg = "This problem has already been released. Any changes will apply only to future assessments.";
+        var msg = gettext("This problem has already been released. Any changes will apply only to future assessments.");
         // TODO: classier confirm dialog
         if (confirm(msg)) { onConfirm(); }
     },

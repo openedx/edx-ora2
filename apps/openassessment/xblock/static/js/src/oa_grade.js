@@ -6,6 +6,12 @@ if (typeof OpenAssessment == "undefined" || !OpenAssessment) {
 }
 
 
+// Stub gettext if the runtime doesn't provide it
+if (typeof window.gettext === 'undefined') {
+    window.gettext = function(text) { return text; };
+}
+
+
 /**
 Interface for grade view.
 
