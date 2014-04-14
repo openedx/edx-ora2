@@ -26,7 +26,7 @@ from openassessment.xblock.xml import update_from_xml, serialize_content_to_xml
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.workflow import api as workflow_api
 from openassessment.xblock.validation import validator
-from openassessment.xblock.resolve_dates import resolve_dates
+from openassessment.xblock.resolve_dates import resolve_dates, DISTANT_PAST, DISTANT_FUTURE
 
 
 logger = logging.getLogger(__name__)
@@ -198,12 +198,10 @@ class OpenAssessmentBlock(
             "is_course_staff": False,
         }
 
+        # If we're course staff, add the context necessary to render
+        # the course staff debug panel.
         if self.is_course_staff and not self.in_studio_preview:
-            status_counts, num_submissions = self.get_workflow_status_counts()
-            context_dict['is_course_staff'] = True
-            context_dict['status_counts'] = status_counts
-            context_dict['num_submissions'] = num_submissions
-            context_dict['item_id'] = unicode(self.scope_ids.usage_id)
+            context_dict.update(self.staff_debug_template_context())
 
         template = get_template("openassessmentblock/oa_base.html")
         context = Context(context_dict)
@@ -212,6 +210,40 @@ class OpenAssessmentBlock(
         frag.add_javascript(load("static/js/openassessment.min.js"))
         frag.initialize_js('OpenAssessmentBlock')
         return frag
+
+    def staff_debug_template_context(self):
+        """
+        Template context dictionary for course staff debug panel.
+
+        Returns:
+            dict: The template context specific to the course staff debug panel.
+
+        """
+        context = dict()
+
+        # Enable the course staff debug panel
+        context['is_course_staff'] = True
+
+        # Calculate how many students are in each step of the workflow
+        status_counts, num_submissions = self.get_workflow_status_counts()
+        context['status_counts'] = status_counts
+        context['num_submissions'] = num_submissions
+        context['item_id'] = unicode(self.scope_ids.usage_id)
+
+        # Include release/due dates for each step in the problem
+        context['step_dates'] = list()
+        for step in ['submission', 'peer-assessment', 'self-assessment']:
+
+            # Get the dates as a student would see them
+            __, __, start_date, due_date = self.is_closed(step=step, course_staff=False)
+
+            context['step_dates'].append({
+                'step': step,
+                'start': start_date if start_date > DISTANT_PAST else None,
+                'due': due_date if due_date < DISTANT_FUTURE else None,
+            })
+
+        return context
 
     @property
     def is_course_staff(self):
@@ -330,12 +362,16 @@ class OpenAssessmentBlock(
         template = get_template('openassessmentblock/oa_error.html')
         return Response(template.render(context), content_type='application/html', charset='UTF-8')
 
-    def is_closed(self, step=None):
+    def is_closed(self, step=None, course_staff=None):
         """
         Checks if the question is closed.
 
         Determines if the start date is in the future or the end date has
             passed.  Optionally limited to a particular step in the workflow.
+
+        Start/due dates do NOT apply to course staff, since course staff may need to get to
+        the peer grading step AFTER the submission deadline has passed.
+        This may not be necessary when we implement a grading interface specifically for course staff.
 
         Kwargs:
             step (str): The step in the workflow to check.  Options are:
@@ -343,6 +379,9 @@ class OpenAssessmentBlock(
                 "submission": check whether the submission section is open.
                 "peer-assessment": check whether the peer-assessment section is open.
                 "self-assessment": check whether the self-assessment section is open.
+
+            course_staff (bool): Whether to treat the user as course staff (disable start/due dates).
+                If not specified, default to the current user's status.
 
         Returns:
             tuple of the form (is_closed, reason, start_date, due_date), where
@@ -379,6 +418,12 @@ class OpenAssessmentBlock(
             open_range = date_ranges[1]
         if step == "self-assessment":
             open_range = date_ranges[2]
+
+        # Course staff always have access to the problem
+        if course_staff is None:
+            course_staff = self.is_course_staff
+        if course_staff:
+            return False, None, DISTANT_PAST, DISTANT_FUTURE
 
         # Check if we are in the open date range
         now = dt.datetime.utcnow().replace(tzinfo=pytz.utc)
