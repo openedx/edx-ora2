@@ -216,32 +216,67 @@ OpenAssessment.ResponseView.prototype = {
         // Immediately disable the submit button to prevent multiple submission
         this.submitEnabled(false);
 
-        // Send the submission to the server
-        var submission = $('#submission__answer__value', this.element).val();
-        this.baseView.toggleActionError('response', null);
-
         var view = this;
         var baseView = this.baseView;
-        var moveToNextStep = function() {
-            view.load();
-            baseView.renderPeerAssessmentStep();
-        };
-        this.server.submit(submission)
-            .done(moveToNextStep)
+
+        this.confirmSubmission()
+            // On confirmation, send the submission to the server
+            // The callback returns a promise so we can attach
+            // additional callbacks after the confirmation.
+            // NOTE: in JQuery >=1.8, `pipe()` is deprecated in favor of `then()`,
+            // but we're using JQuery 1.7 in the LMS, so for now we're stuck with `pipe()`.
+            .pipe(function() {
+                var submission = $('#submission__answer__value', view.element).val();
+                baseView.toggleActionError('response', null);
+
+                // Send the submission to the server, returning the promise.
+                return view.server.submit(submission);
+            })
+
+            // If the submission was submitted successfully, move to the next step
+            .done($.proxy(view.moveToNextStep, view))
+
+            // Handle submission failure (either a server error or cancellation),
             .fail(function(errCode, errMsg) {
                 // If the error is "multiple submissions", then we should move to the next
                 // step.  Otherwise, the user will be stuck on the current step with no
                 // way to continue.
-                if (errCode == 'ENOMULTI') {
-                    moveToNextStep();
-                }
+                if (errCode == 'ENOMULTI') { view.moveToNextStep(); }
                 else {
-                    // Display the error
-                    baseView.toggleActionError('submit', errMsg);
+                    // If there is an error message, display it
+                    if (errMsg) { baseView.toggleActionError('submit', errMsg); }
 
-                    // Re-enable the submit button to allow the user to retry
+                    // Re-enable the submit button so the user can retry
                     view.submitEnabled(true);
                 }
             });
+    },
+
+    /**
+    Transition the user to the next step in the workflow.
+    **/
+    moveToNextStep: function() {
+        this.load();
+        this.baseView.renderPeerAssessmentStep();
+    },
+
+    /**
+    Make the user confirm before submitting a response.
+
+    Returns:
+        JQuery deferred object, which is:
+        * resolved if the user confirms the submission
+        * rejected if the user cancels the submission
+    **/
+    confirmSubmission: function() {
+        var msg = (
+            "You're about to submit your response for this assignment. " +
+            "After you submit this response, you can't change it or submit a new response."
+        );
+        // TODO -- UI for confirmation dialog instead of JS confirm
+        return $.Deferred(function(defer) {
+            if (confirm(msg)) { defer.resolve(); }
+            else { defer.reject(); }
+        });
     }
 };

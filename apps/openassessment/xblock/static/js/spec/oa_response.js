@@ -40,6 +40,21 @@ describe("OpenAssessment.ResponseView", function() {
     // View under test
     var view = null;
 
+    // Control whether the confirmation stub
+    // simulates a user confirming the submission or cancelling it.
+    var stubConfirm = true;
+
+    /**
+    Set whether the user confirms or cancels the submission.
+
+    Args:
+        didConfirm(bool): If true, simulate that the user confirmed the submission;
+            otherwise, simulate that the user cancelled the submission.
+    **/
+    var setStubConfirm = function(didConfirm) {
+        stubConfirm = didConfirm;
+    };
+
     beforeEach(function() {
         // Load the DOM fixture
         jasmine.getFixtures().fixturesPath = 'base/fixtures';
@@ -55,6 +70,18 @@ describe("OpenAssessment.ResponseView", function() {
         var el = $('#openassessment-base').get(0);
         view = new OpenAssessment.ResponseView(el, server, baseView);
         view.installHandlers();
+
+        // Stub the confirmation step
+        // By default, we simulate the user confirming the submission.
+        // To instead simulate the user cancelling the submission,
+        // set `stubConfirm` to false.
+        setStubConfirm(true);
+        spyOn(view, 'confirmSubmission').andCallFake(function() {
+            return $.Deferred(function(defer) {
+                if (stubConfirm) { defer.resolve(); }
+                else { defer.reject(); }
+            });
+        });
     });
 
     it("updates submit/save buttons and save status when response text changes", function() {
@@ -132,6 +159,19 @@ describe("OpenAssessment.ResponseView", function() {
         expect(server.submit).toHaveBeenCalledWith('Test response');
     });
 
+    it("allows the user to cancel before submitting", function() {
+        // Simulate the user cancelling the submission
+        setStubConfirm(false);
+        spyOn(server, 'submit').andCallThrough();
+
+        // Start a submission
+        view.response('Test response');
+        view.submit();
+
+        // Expect that the submission was not sent to the server
+        expect(server.submit).not.toHaveBeenCalled();
+    });
+
     it("disables the submit button on submission", function() {
         // Prevent the server's response from resolving,
         // so we can see what happens before view gets re-rendered.
@@ -156,6 +196,19 @@ describe("OpenAssessment.ResponseView", function() {
         view.submit();
 
         // Expect the submit button to have been re-enabled
+        expect(view.submitEnabled()).toBe(true);
+    });
+
+    it("re-enables the submit button after cancelling", function() {
+        // Simulate the user cancelling the submission
+        setStubConfirm(false);
+        spyOn(server, 'submit').andCallThrough();
+
+        // Start a submission
+        view.response('Test response');
+        view.submit();
+
+        // Expect the submit button to be re-enabled
         expect(view.submitEnabled()).toBe(true);
     });
 
