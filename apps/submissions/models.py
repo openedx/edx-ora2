@@ -137,9 +137,36 @@ class ScoreSummary(models.Model):
     highest = models.ForeignKey(Score, related_name="+")
     latest = models.ForeignKey(Score, related_name="+")
 
+    # Score summaries may be deleted when an instructor resets a student's score.
+    # The next time a score is created for the student item, a new score summary
+    # will be created.  That score and any future score will be used to calculate
+    # the `highest` and `latest` for the new score summary.
+    # For this reason, we need to track when the first score used in the summary
+    # was created.  Later, this will allow us to retreive all scores for the
+    # student item with a timestamp >= first_score_timestamp, which will be
+    # all the scores used in the summary.
+    first_score_timestamp = models.DateTimeField(editable=False, default=now, db_index=True)
+
     @receiver(post_save, sender=Score)
     def update_score_summary(sender, **kwargs):
-        """Listen for new Scores and update the relevant ScoreSummary."""
+        """
+        Listen for new Scores and update the relevant ScoreSummary.
+
+        This will keep track of the highest and latest scores for each
+        student item, starting from when the score summary was created.
+
+        Note that we do NOT query all `Score` models to determine the summary.
+        Because we update the summary incrementally from the time it is created,
+        we can "reset" a student's score simply be deleting the current
+        score summary.
+
+        Args:
+            sender: not used
+
+        Kwargs:
+            instance (Score): The score model whose save triggered this receiver.
+
+        """
         score = kwargs['instance']
         try:
             score_summary = ScoreSummary.objects.get(
@@ -154,6 +181,7 @@ class ScoreSummary(models.Model):
                 student_item=score.student_item,
                 highest=score,
                 latest=score,
+                first_score_timestamp=score.created_at
             )
         except DatabaseError as err:
             logger.exception(
