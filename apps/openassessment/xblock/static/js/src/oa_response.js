@@ -141,7 +141,7 @@ OpenAssessment.ResponseView.prototype = {
         } else {
             // Setting the HTML will overwrite the screen reader tag,
             // so prepend it to the message.
-            sel.html('<span class="sr">Your Working Submission Status:</span>\n' + msg);
+            sel.html('<span class="sr">Status of Your Response:</span>\n' + msg);
         }
     },
 
@@ -177,7 +177,7 @@ OpenAssessment.ResponseView.prototype = {
         // Update the save button and status only if the response has changed
         if ($.trim(this.savedResponse) !== currentResponse) {
             this.saveEnabled(isBlank);
-            this.saveStatus('Unsaved draft');
+            this.saveStatus('This response has not been saved.');
         }
     },
 
@@ -201,7 +201,7 @@ OpenAssessment.ResponseView.prototype = {
             view.submitEnabled(currentResponse !== '');
             if (currentResponse == savedResponse) {
                 view.saveEnabled(false);
-                view.saveStatus("Saved but not submitted");
+                view.saveStatus("This response has been saved but not submitted.");
             }
         }).fail(function(errMsg) {
             view.saveStatus('Error');

@@ -1,4 +1,5 @@
-{%  extends "openassessmentblock/peer/oa_peer_assessment.html" %}
+{% extends "openassessmentblock/peer/oa_peer_assessment.html" %}
+{% load i18n %}
 
 {% block list_item %}
 <li id="openassessment__peer-assessment"class="openassessment__steps__step step--peer-assessment ui-toggle-visibility is--complete">
@@ -6,11 +7,11 @@
 
 {% block title %}
 <span class="step__status">
-  <span class="step__status__label">This step's status:</span>
+  <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
     <i class="ico icon-ok"></i>
     <span class="copy">
-      Complete
+      {% trans "Complete" %}
       (<span class="step__status__value--completed">{{ graded }}</span>)
     </span>
   </span>
@@ -22,12 +23,12 @@
     <div class="wrapper--step__content">
 
         <div class="step__message message message--complete">
-            <h3 class="message__title">Peer Assessments Complete</h3>
-            <div class="message__content">You have successfully completed all of the required peer assessments for this assignment. You may assess additional peer responses if you want to. Completing additional assessments will not affect your final grade.</div>
+            <h3 class="message__title">{% trans "Peer Assessments Complete" %}</h3>
+            <div class="message__content">{% trans "You have successfully completed all of the required peer assessments for this assignment. You may assess additional peer responses if you want to. Completing additional assessments will not affect your final grade." %}</div>
         </div>
 
         <div class="step__instruction">
-            <p>Read and assess the following response from one of your peers.</p>
+            <p>{% trans "Read and assess the following response from one of your peers." %}</p>
         </div>
 
         <div class="step__content">
@@ -36,7 +37,7 @@
                     <article class="peer-assessment" id="peer-assessment--001">
                         <div class="peer-assessment__display">
                             <header class="peer-assessment__display__header">
-                                <h3 class="peer-assessment__display__title">Assessment #
+                                <h3 class="peer-assessment__display__title">{% trans "Assessment #" %}
                                     <span class="peer-assessment__number--current">{{ review_num }}</span> of
                                     <span class="peer-assessment__number--required">{{ must_grade }}</span>
                                 </h3>
@@ -52,11 +53,11 @@
                                 <ol class="list list--fields assessment__rubric">
 
                                     {% for criterion in rubric_criteria %}
-                                    <li class="field field--radio is--required assessment__rubric__question ui-toggle-visibility" id="assessment__rubric__question--{{ criterion.name }}">
+                                    <li class="field field--radio is--required assessment__rubric__question ui-toggle-visibility" id="assessment__rubric__question--{{ criterion.order_num }}">
                                         <h4 class="question__title ui-toggle-visibility__control">
                                             <i class="ico icon-caret-right"></i>
                                             <span class="ui-toggle-visibility__control__copy question__title__copy">{{ criterion.prompt }}</span>
-                                            <span class="label--required sr">* (Required)</span>
+                                            <span class="label--required sr">* ({% trans "Required" %})</span>
                                         </h4>
 
                                         <div class="ui-toggle-visibility__content">
@@ -66,16 +67,16 @@
                                                     <div class="wrapper--input">
                                                         <input type="radio"
                                                                name="{{ criterion.name }}"
-                                                               id="assessment__rubric__question--{{ criterion.name }}__{{ option.name }}"
+                                                               id="assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
                                                                class="answer__value"
                                                                value="{{ option.name }}" />
-                                                        <label for="assessment__rubric__question--{{ criterion.name }}__{{ option.name }}"
+                                                        <label for="assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
                                                                class="answer__label"
                                                                >{{ option.name }}</label>
                                                     </div>
                                                     <div class="wrapper--metadata">
                                                         <span class="answer__tip">{{ option.explanation }}</span>
-                                                        <span class="answer__points">{{option.points}} <span class="answer__points__label">points</span></span>
+                                                        <span class="answer__points">{{option.points}} <span class="answer__points__label">{% trans "points" %}</span></span>
                                                     </div>
                                                 </li>
                                                 {% endfor %}
@@ -86,10 +87,10 @@
 
                                     <li class="wrapper--input field field--textarea assessment__rubric__question assessment__rubric__question--feedback" id="assessment__rubric__question--feedback">
                                         <label class="question__title" for="assessment__rubric__question--feedback__value">
-                                            <span class="question__title__copy">(Optional) What aspects of this response stood out to you? What did it do well? How could it improve?</span>
+                                            <span class="question__title__copy">{% trans "(Optional) What aspects of this response stood out to you? What did it do well? How could it improve?" %}</span>
                                         </label>
                                         <div class="wrapper--input">
-                                            <textarea id="assessment__rubric__question--feedback__value" placeholder="I felt this response was..."></textarea>
+                                            <textarea id="assessment__rubric__question--feedback__value" placeholder="{% trans "I felt this response was..." %}"></textarea>
                                         </div>
                                     </li>
                                 </ol>
@@ -102,7 +103,7 @@
 
         <div class="step__actions">
             <div class="message message--inline message--error message--error-server">
-                <h3 class="message__title">We could not submit your assessment</h3>
+                <h3 class="message__title">{% trans "We could not submit your assessment" %}</h3>
             </div>
 
             <ul class="list list--actions">

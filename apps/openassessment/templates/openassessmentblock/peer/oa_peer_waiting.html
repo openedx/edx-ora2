@@ -1,4 +1,5 @@
-{%  extends "openassessmentblock/peer/oa_peer_assessment.html" %}
+{% extends "openassessmentblock/peer/oa_peer_assessment.html" %}
+{% load i18n %}
 
 {% block list_item %}
 <li id="openassessment__peer-assessment" class="openassessment__steps__step step--peer-assessment">
@@ -6,10 +7,10 @@
 
 {% block title %}
 <span class="step__status">
-  <span class="step__status__label">This step's status:</span>
+  <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
     <span class="copy">
-        In Progress
+        {% trans "In Progress" %}
         (<span class="step__status__value--completed">{{ graded }}</span> of
         <span class="step__status__value--required">{{ must_grade }}</span>)
     </span>
@@ -22,10 +23,10 @@
     <div class="wrapper--step__content">
 
         <div class="step__message message message--incomplete">
-            <h3 class="message__title">Waiting for Peer Responses</h3>
+            <h3 class="message__title">{% trans "Waiting for Peer Responses" %}</h3>
 
             <div class="message__content">
-              <p>All submitted peer responses have been assessed. Check back later to see if more students have submitted responses. You'll receive your grade after you complete the <a data-behavior="ui-scroll" href="#openassessment__peer-assessment">peer assessment</a> and <a data-behavior="ui-scroll" href="#openassessment__self-assessment">self assessment</a> steps, and after your peers have assessed your response.</p>
+              <p>{% blocktrans %}All submitted peer responses have been assessed. Check back later to see if more students have submitted responses. You'll receive your grade after you complete the <a data-behavior="ui-scroll" href="#openassessment__peer-assessment">peer assessment</a> and <a data-behavior="ui-scroll" href="#openassessment__self-assessment">self assessment</a> steps, and after your peers have assessed your response.{% endblocktrans %}</p>
             </div>
         </div>
     </div>

@@ -35,13 +35,7 @@ describe("OpenAssessment.Server", function() {
         var testString = '';
         for (i = 0; i < (testStringSize); i++) { testString += 'x'; }
         return testString;
-    }
-    
-    var getHugeStringError = function() {
-        // return a string that can be used with .toContain()
-        // "Response text is too large. Please reduce the size of your response and try to submit again.";
-        return "text is too large"
-    }
+    };
 
     beforeEach(function() {
         // Create the server
@@ -103,7 +97,7 @@ describe("OpenAssessment.Server", function() {
 
         var success = false;
         var options = {clarity: "Very clear", precision: "Somewhat precise"};
-        server.peerAssess("abc1234", options, "Excellent job!").done(function() {
+        server.peerAssess(options, "Excellent job!").done(function() {
             success = true;
         });
 
@@ -112,7 +106,6 @@ describe("OpenAssessment.Server", function() {
             url: '/peer_assess',
             type: "POST",
             data: JSON.stringify({
-                submission_uuid: "abc1234",
                 options_selected: options,
                 feedback: "Excellent job!"
             })
@@ -185,7 +178,7 @@ describe("OpenAssessment.Server", function() {
             receivedMsg = msg;
         });
 
-        expect(receivedMsg).toEqual("Could not contact server.");
+        expect(receivedMsg).toContain("This section could not be loaded");
     });
 
     it("informs the caller of an Ajax error when sending a submission", function() {
@@ -201,7 +194,7 @@ describe("OpenAssessment.Server", function() {
         );
 
         expect(receivedErrorCode).toEqual("AJAX");
-        expect(receivedErrorMsg).toEqual("Could not contact server.");
+        expect(receivedErrorMsg).toContain("This response could not be submitted");
     });
 
     it("confirms that very long submissions fail with an error without ajax", function() {
@@ -215,7 +208,7 @@ describe("OpenAssessment.Server", function() {
             }
         );
         expect(receivedErrorCode).toEqual("submit");
-        expect(receivedErrorMsg).toContain(getHugeStringError());
+        expect(receivedErrorMsg).toContain("This response is too long");
     });
 
     it("informs the caller of an server error when sending a submission", function() {
@@ -240,21 +233,21 @@ describe("OpenAssessment.Server", function() {
         server.save(testString).fail(
             function(errorMsg) { receivedErrorMsg = errorMsg; }
         );
-        expect(receivedErrorMsg).toContain(getHugeStringError());
+        expect(receivedErrorMsg).toContain("This response is too long");
     });
 
-    it("informs the caller of an AJAX error when sending a submission", function() {
+    it("informs the caller of an AJAX error when saving a submission", function() {
         stubAjax(false, null);
         var receivedMsg = null;
         server.save("Test").fail(function(errorMsg) { receivedMsg = errorMsg; });
-        expect(receivedMsg).toEqual('Could not contact server.');
+        expect(receivedMsg).toContain('This response could not be saved');
     });
 
     it("informs the caller of an AJAX error when sending a self assessment", function() {
         stubAjax(false, null);
         var receivedMsg = null;
         server.selfAssess("Test").fail(function(errorMsg) { receivedMsg = errorMsg; });
-        expect(receivedMsg).toEqual('Could not contact server.');
+        expect(receivedMsg).toContain('This assessment could not be submitted');
     });
 
     it("informs the caller of a server error when sending a submission", function() {
@@ -272,7 +265,7 @@ describe("OpenAssessment.Server", function() {
             receivedMsg = msg;
         });
 
-        expect(receivedMsg).toEqual("Could not contact server.");
+        expect(receivedMsg).toContain("This problem could not be loaded");
     });
 
     it("informs the caller of an Ajax error when updating XML", function() {
@@ -283,7 +276,7 @@ describe("OpenAssessment.Server", function() {
             receivedMsg = msg;
         });
 
-        expect(receivedMsg).toEqual("Could not contact server.");
+        expect(receivedMsg).toContain("This problem could not be saved");
     });
 
     it("informs the caller of a server error when loading XML", function() {
@@ -312,12 +305,12 @@ describe("OpenAssessment.Server", function() {
         var options = {clarity: "Very clear", precision: "Somewhat precise"};
         var receivedErrorMsg = "";
         var testString = getHugeTestString();
-        server.peerAssess("abc1234", options, testString).fail(
+        server.peerAssess(options, testString).fail(
             function(errorMsg) {
                 receivedErrorMsg = errorMsg;
             }
         );
-        expect(receivedErrorMsg).toContain(getHugeStringError());
+        expect(receivedErrorMsg).toContain("The comments on this assessment are too long");
     });
 
     it("informs the caller of a server error when sending a peer assessment", function() {
@@ -325,7 +318,7 @@ describe("OpenAssessment.Server", function() {
 
         var receivedMsg = null;
         var options = {clarity: "Very clear", precision: "Somewhat precise"};
-        server.peerAssess("abc1234", options, "Excellent job!").fail(function(msg) {
+        server.peerAssess(options, "Excellent job!").fail(function(msg) {
             receivedMsg = msg;
         });
 
@@ -337,11 +330,11 @@ describe("OpenAssessment.Server", function() {
 
         var receivedMsg = null;
         var options = {clarity: "Very clear", precision: "Somewhat precise"};
-        server.peerAssess("abc1234", options, "Excellent job!").fail(function(msg) {
+        server.peerAssess(options, "Excellent job!").fail(function(msg) {
             receivedMsg = msg;
         });
 
-        expect(receivedMsg).toEqual("Could not contact server.");
+        expect(receivedMsg).toContain("This assessment could not be submitted");
     });
 
     it("informs the caller of an AJAX error when checking whether the XBlock has been released", function() {
@@ -352,7 +345,7 @@ describe("OpenAssessment.Server", function() {
             receivedMsg = errMsg;
         });
 
-        expect(receivedMsg).toEqual("Could not contact server.");
+        expect(receivedMsg).toContain("The server could not be contacted");
 
     });
 
@@ -376,7 +369,7 @@ describe("OpenAssessment.Server", function() {
                 receivedErrorMsg = errorMsg;
             }
         );
-        expect(receivedErrorMsg).toContain(getHugeStringError());
+        expect(receivedErrorMsg).toContain("This feedback is too long");
     });
 
     it("informs the caller of an AJAX error when sending feedback on submission", function() {
@@ -387,7 +380,7 @@ describe("OpenAssessment.Server", function() {
         server.submitFeedbackOnAssessment("test feedback", options).fail(
             function(errMsg) { receivedMsg = errMsg; }
         );
-        expect(receivedMsg).toEqual("Could not contact server.");
+        expect(receivedMsg).toContain("This feedback could not be submitted");
     });
 
     it("informs the caller of a server error when sending feedback on submission", function() {

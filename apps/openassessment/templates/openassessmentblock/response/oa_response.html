@@ -1,4 +1,5 @@
 {% load tz %}
+{% load i18n %}
 {% spaceless %}
 {% block list_item %}
 <li id="openassessment__response" class="openassessment__steps__step step--response ui-toggle-visibility">
@@ -8,7 +9,7 @@
         <h2 class="step__title">
             <span class="step__counter"></span>
             <span class="wrapper--copy">
-                <span class="step__label">Your Response</span>
+                <span class="step__label">{% trans "Your Response" %}</span>
                 {% if submission_start %}
                 <span class="step__deadline">available
                     <span class="date">
@@ -29,9 +30,9 @@
 
         {%  block title %}
         <span class="step__status">
-            <span class="step__status__label">This step's status:</span>
+            <span class="step__status__label">{% trans "This step's status" %}:</span>
             <span class="step__status__value">
-                <span class="copy">In Progress</span>
+                <span class="copy">{% trans "In Progress" %}</span>
             </span>
         </span>
         {% endblock %}
@@ -42,13 +43,13 @@
         <div class="wrapper--step__content">
             <div class="step__instruction">
                 <p>
-                    Please provide your response below.
+                    {% trans "Enter your response to the question." %}
                     {% if submission_due %}
-                    You can save your progress and return to complete your response at any time before the due date of <span class="step__deadline"><span class="date">{{ submission_due|utc|date:"l, N j, Y H:i e" }}</span></span>.
+                    {% trans "You can save your progress and return to complete your response at any time before the due date" %} (<span class="step__deadline"><span class="date">{{ submission_due|utc|date:"l, N j, Y H:i e" }}</span></span>).
                     {% else %}
-                    You can save your progress and return to complete your response at any time.
+                    {% trans "You can save your progress and return to complete your response at any time." %}
                     {% endif %}
-                    <strong class="emphasis">After you submit your response, you cannot edit it</strong>.
+                    <strong class="emphasis">{% trans "After you submit your response, you cannot edit it" %}</strong>.
                 </p>
             </div>
 
@@ -56,15 +57,15 @@
                 <form id="response__submission" class="response__submission">
                     <ol class="list list--fields response__submission__content">
                         <li class="field field--textarea submission__answer" id="submission__answer">
-                            <label class="sr" for="submission__answer__value">Provide your response to the question.</label>
+                            <label class="sr" for="submission__answer__value">{% trans "Enter your response to the question." %}</label>
                             <textarea id="submission__answer__value" placeholder="">{{ saved_response }}</textarea>
-                            <span class="tip">You may continue to work on your response until you submit it.</span>
+                            <span class="tip">{% trans "You may continue to work on your response until you submit it." %}</span>
                         </li>
                     </ol>
 
                     <div class="response__submission__actions">
                         <div class="message message--inline message--error message--error-server">
-                            <h3 class="message__title">We could not save your progress</h3>
+                            <h3 class="message__title">{% trans "We could not save your progress" %}</h3>
                             <div class="message__content"></div>
                         </div>
 
@@ -74,7 +75,7 @@
 
                                 <div id="response__save_status" class="response__submission__status">
                                     <h3 class="response__submission__status__title">
-                                        <span class="sr">Your Working Submission Status:</span>
+                                        <span class="sr">{% trans "Your Submission Status" %}:</span>
                                         {{ save_status }}
                                     </h3>
                                 </div>
@@ -86,7 +87,7 @@
 
             <div class="step__actions">
                 <div class="message message--inline message--error message--error-server">
-                    <h3 class="message__title">We could not submit your response</h3>
+                    <h3 class="message__title">{% trans "We could not submit your response" %}</h3>
                     <div class="message__content"></div>
                 </div>
 
@@ -94,7 +95,7 @@
                     <li class="list--actions__item">
                         <a aria-role="button" href="#" id="step--response__submit"
                             class="action action--submit step--response__submit {{ submit_enabled|yesno:",is--disabled" }}">
-                            <span class="copy">Submit your response and move to the next step</span>
+                            <span class="copy">{% trans "Submit your response and move to the next step" %}</span>
                             <i class="ico icon-caret-right"></i>
                         </a>
                     </li>

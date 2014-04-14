@@ -1,28 +1,29 @@
+{% load i18n %}
 <div class="wrapper--staff-info wrapper--ui-staff">
 <div class="staff-info ui-staff ui-toggle-visibility is--collapsed">
     <h2 class="staff-info__title ui-staff__title ui-toggle-visibility__control">
       <i class="ico icon-caret-right"></i>
-      <span class="staff-info__title__copy">Course Staff Information</span>
+      <span class="staff-info__title__copy">{% trans "Course Staff Information" %}</span>
     </h2>
 
     <div class="staff-info__content ui-staff__content ui-toggle-visibility__content">
 
         <div class="staff-info__summary ui-staff__content__section">
             <dl class="submissions--total">
-                <dt class="label">Total number of submissions:</dt>
+                <dt class="label">{% trans "Response total" %}:</dt>
                 <dd class="value">{{ num_submissions }}</dd>
             </dl>
         </div>
 
         <div class="staff-info__status ui-staff__content__section">
-            <table class="staff-info__status__table" summary="Where are your students currently in this problem">
+            <table class="staff-info__status__table" summary="{% trans "Where are your students currently in this problem" %}">
 
-                <caption class="title">Student Progress/Step Status</caption>
+                <caption class="title">{% trans "Student Progress" %}</caption>
 
                 <thead>
                     <tr>
-                        <th abbr="Step" scope="col">Problem Step</th>
-                        <th abbr="# of Students" scope="col">Number of Students Actively in Step</th>
+                        <th abbr="Step" scope="col">{% trans "Problem Step" %}</th>
+                        <th abbr="# of Students" scope="col">{% trans "Active Students in Step" %}</th>
                     </tr>
                 </thead>
 
@@ -38,7 +39,7 @@
         </div>
 
         <div class="staff-info__status ui-staff__content__section">
-          Location: {{ item_id }}
+          {% trans "Location" %}: {{ item_id }}
         </div>
     </div>
   </div>

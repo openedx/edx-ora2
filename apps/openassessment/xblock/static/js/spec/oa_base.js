@@ -15,11 +15,11 @@ describe("OpenAssessment.BaseView", function() {
             grade: readFixtures("oa_grade_complete.html")
         };
 
-        this.peerAssess = function(submissionId, optionsSelected, feedback) {
+        this.peerAssess = function(optionsSelected, feedback) {
             return $.Deferred(function(defer) { defer.resolve(); }).promise();
         };
 
-        this.selfAssess = function(submissionId, optionsSelected) {
+        this.selfAssess = function(optionsSelected) {
             return $.Deferred(function(defer) { defer.resolve(); }).promise();
         };
 
@@ -90,7 +90,7 @@ describe("OpenAssessment.BaseView", function() {
         var testError = 'Test failure contacting server message';
         loadSubviews(function() {
             /* stub our selfAssess to fail */
-            spyOn(server, 'selfAssess').andCallFake(function(submissionId, optionsSelected) {
+            spyOn(server, 'selfAssess').andCallFake(function(optionsSelected) {
                 return $.Deferred(function(defer) { defer.rejectWith(server, [testError]); }).promise();
             });
             view.selfAssess();

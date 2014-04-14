@@ -49,15 +49,15 @@ def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, s
     """
     # Check that there are not any assessments for this submission
     if Assessment.objects.filter(submission_uuid=submission_uuid, score_type=SELF_TYPE).exists():
-        raise SelfAssessmentRequestError(_("Self assessment already exists for this submission"))
+        raise SelfAssessmentRequestError(_("You've already completed your self assessment for this response."))
 
     # Check that the student is allowed to assess this submission
     try:
         submission = get_submission_and_student(submission_uuid)
         if submission['student_item']['student_id'] != user_id:
-            raise SelfAssessmentRequestError(_("Cannot self-assess this submission"))
+            raise SelfAssessmentRequestError(_("You can only complete a self assessment on your own response."))
     except SubmissionNotFoundError:
-        raise SelfAssessmentRequestError(_("Could not retrieve the submission."))
+        raise SelfAssessmentRequestError(_("Could not retrieve the response."))
 
     # Get or create the rubric
     try:

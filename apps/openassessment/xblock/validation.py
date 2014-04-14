@@ -61,19 +61,19 @@ def validate_assessments(assessments, enforce_peer_then_self=False):
     """
     if enforce_peer_then_self:
         if len(assessments) != 2:
-            return (False, _("Problem must have exactly two assessments"))
+            return (False, _("This problem must have exactly two assessments."))
         if assessments[0].get('name') != 'peer-assessment':
-            return (False, _("The first assessment must be a peer-assessment"))
+            return (False, _("The first assessment must be a peer assessment."))
         if assessments[1].get('name') != 'self-assessment':
-            return (False, _("The second assessment must be a self-assessment"))
+            return (False, _("The second assessment must be a self assessment."))
 
     if len(assessments) == 0:
-        return (False, _("Problem must include at least one assessment"))
+        return (False, _("This problem must include at least one assessment."))
 
     for assessment_dict in assessments:
         # Supported assessment
         if not assessment_dict.get('name') in ['peer-assessment', 'self-assessment']:
-            return (False, _("Assessment type is not supported"))
+            return (False, _('The "name" value must be "peer-assessment" or "self-assessment".'))
 
         # Number you need to grade is >= the number of people that need to grade you
         if assessment_dict.get('name') == 'peer-assessment':
@@ -81,13 +81,13 @@ def validate_assessments(assessments, enforce_peer_then_self=False):
             must_be_graded_by = assessment_dict.get('must_be_graded_by')
 
             if must_grade is None or must_grade < 1:
-                return (False, _('"must_grade" must be a positive integer'))
+                return (False, _('The "must_grade" value must be a positive integer.'))
 
             if must_be_graded_by is None or must_be_graded_by < 1:
-                return (False, _('"must_be_graded_by" must be a positive integer'))
+                return (False, _('The "must_be_graded_by" value must be a positive integer.'))
 
             if must_grade < must_be_graded_by:
-                return (False, _('"must_grade" should be greater than or equal to "must_be_graded_by"'))
+                return (False, _('The "must_grade" value must be greater than or equal to the "must_be_graded_by" value.'))
 
     return (True, u'')
 
@@ -109,7 +109,7 @@ def validate_rubric(rubric_dict, current_rubric, is_released):
     try:
         rubric_from_dict(rubric_dict)
     except InvalidRubric:
-        return (False, u'Rubric definition is not valid')
+        return (False, u'This rubric definition is not valid.')
 
     # No duplicate criteria names
     duplicates = _duplicates([criterion['name'] for criterion in rubric_dict['criteria']])
@@ -134,12 +134,12 @@ def validate_rubric(rubric_dict, current_rubric, is_released):
 
         # Number of criteria must be the same
         if len(rubric_dict['criteria']) != len(current_rubric['criteria']):
-            return (False, u'Number of criteria cannot be changed after a problem is released.')
+            return (False, u'The number of criteria cannot be changed after a problem is released.')
 
         # Number of options for each criterion must be the same
         for new_criterion, old_criterion in _match_by_order(rubric_dict['criteria'], current_rubric['criteria']):
             if len(new_criterion['options']) != len(old_criterion['options']):
-                return (False, u'Number of options cannot be changed after a problem is released.')
+                return (False, u'The number of options cannot be changed after a problem is released.')
 
             else:
                 for new_option, old_option in _match_by_order(new_criterion['options'], old_criterion['options']):

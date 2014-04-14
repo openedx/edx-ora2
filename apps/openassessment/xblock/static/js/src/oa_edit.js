@@ -87,7 +87,7 @@ OpenAssessment.StudioView.prototype = {
             executed if the user confirms the update.
     **/
     confirmPostReleaseUpdate: function(onConfirm) {
-        var msg = "This problem has already been released.  Any changes will apply only to future assessments.";
+        var msg = "This problem has already been released. Any changes will apply only to future assessments.";
         // TODO: classier confirm dialog
         if (confirm(msg)) { onConfirm(); }
     },

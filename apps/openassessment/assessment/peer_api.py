@@ -196,11 +196,10 @@ def create_assessment(
             raise PeerAssessmentRequestError(msg)
 
         scorer_workflow = PeerWorkflow.objects.get(submission_uuid=scorer_submission_uuid)
+        feedback = assessment_dict.get('feedback', u'')
 
-        open_items = list(scorer_workflow.graded.filter(
-            assessment__isnull=True).order_by("-started_at", "-id")[:1])
-
-        if not open_items:
+        peer_workflow_item = _get_latest_open_workflow_item(scorer_workflow)
+        if peer_workflow_item is None:
             message = _(
                 u"There are no open assessments associated with the scorer's "
                 u"submission UUID {}.".format(scorer_submission_uuid)
@@ -208,13 +207,11 @@ def create_assessment(
             logger.error(message)
             raise PeerAssessmentWorkflowError(message)
 
-        item = open_items[0]
-
-        feedback = assessment_dict.get('feedback', u'')
+        peer_submission_uuid = peer_workflow_item.author.submission_uuid
         peer_assessment = {
             "rubric": rubric.id,
             "scorer_id": scorer_id,
-            "submission_uuid": item.submission_uuid,
+            "submission_uuid": peer_submission_uuid,
             "score_type": PEER_TYPE,
             "feedback": feedback,
         }
@@ -235,7 +232,7 @@ def create_assessment(
         AssessmentPart.add_to_assessment(assessment, option_ids)
 
         # Close the active assessment
-        _close_active_assessment(scorer_workflow, item.submission_uuid, assessment, num_required_grades)
+        _close_active_assessment(scorer_workflow, peer_submission_uuid, assessment, num_required_grades)
         assessment_dict = full_assessment_dict(assessment)
         _log_assessment(assessment, scorer_workflow)
 
@@ -275,7 +272,7 @@ def get_rubric_max_scores(submission_uuid):
         assessments = list(
             Assessment.objects.filter(
                 submission_uuid=submission_uuid
-            ).order_by( "-scored_at", "-id").select_related("rubric")[:1]
+            ).order_by("-scored_at", "-id").select_related("rubric")[:1]
         )
         if not assessments:
             return None
@@ -331,17 +328,16 @@ def get_assessment_median_scores(submission_uuid):
         raise PeerAssessmentInternalError(error_message)
 
 
-def has_finished_required_evaluating(student_item_dict, required_assessments):
+def has_finished_required_evaluating(submission_uuid, required_assessments):
     """Check if a student still needs to evaluate more submissions
 
     Per the contract of the peer assessment workflow, a student must evaluate a
     number of peers before receiving feedback on their submission.
 
     Args:
-        student_item (dict): The student id is required to determine if the
-            student has completed enough assessments, relative to the item id
-            and course id available in the student item. This argument is
-            required.
+        submission_uuid (str): The submission UUID is required to determine if
+            the associated student has completed enough assessments. This
+            argument is required.
         required_assessments (int): The number of assessments a student has to
             submit before receiving the feedback on their submission. This is a
             required argument.
@@ -353,23 +349,17 @@ def has_finished_required_evaluating(student_item_dict, required_assessments):
             assessments completed.
 
     Raises:
-        PeerAssessmentRequestError: Raised when the student_id is invalid, or
-            the required_assessments is not a positive integer.
+        PeerAssessmentRequestError: Raised when the submission UUID is invalid,
+            or the required_assessments is not a positive integer.
         PeerAssessmentInternalError: Raised when there is an internal error
             while evaluating this workflow rule.
 
     Examples:
-        >>> student_item_dict = dict(
-        >>>    item_id="item_1",
-        >>>    course_id="course_1",
-        >>>    item_type="type_one",
-        >>>    student_id="Bob",
-        >>> )
-        >>> has_finished_required_evaluating(student_item_dict, 3)
+        >>> has_finished_required_evaluating("abc123", 3)
         True, 3
 
     """
-    workflow = _get_latest_workflow(student_item_dict)
+    workflow = _get_workflow_by_submission_uuid(submission_uuid)
     done = False
     peers_graded = 0
     if workflow:
@@ -444,12 +434,12 @@ def get_assessments(submission_uuid, scored_only=True, limit=None):
 
 
 def get_submission_to_assess(
-        student_item_dict,
+        submission_uuid,
         graded_by,
         over_grading=False):
     """Get a submission to peer evaluate.
 
-    Retrieves a submission for assessment for the given student_item. This will
+    Retrieves a submission for assessment for the given student. This will
     not return a submission submitted by the requesting scorer. Submissions are
     returned based on how many assessments are still required, and if there are
     peers actively assessing a particular submission. If there are no
@@ -458,11 +448,10 @@ def get_submission_to_assess(
     grade.
 
     Args:
-        student_item_dict (dict): The student item information from the student
-            requesting a submission for assessment. The dict contains an
-            item_id, course_id, and item_type, used to identify the unique
-            question for the review, while the student_id is used to explicitly
-            avoid giving the student their own submission.
+        submission_uuid (str): The submission UUID from the student
+            requesting a submission for assessment. This is used to explicitly
+            avoid giving the student their own submission, and determines the
+            associated Peer Workflow.
         graded_by (int): The number of assessments a submission
             requires before it has completed the peer assessment process.
         over_grading (bool): Allows over grading to be performed if no submission
@@ -485,13 +474,7 @@ def get_submission_to_assess(
             to retrieve a peer submission.
 
     Examples:
-        >>> student_item_dict = dict(
-        >>>    item_id="item_1",
-        >>>    course_id="course_1",
-        >>>    item_type="type_one",
-        >>>    student_id="Bob",
-        >>> )
-        >>> get_submission_to_assess(student_item_dict, 3)
+        >>> get_submission_to_assess("abc123", 3)
         {
             'student_item': 2,
             'attempt_number': 1,
@@ -501,30 +484,30 @@ def get_submission_to_assess(
         }
 
     """
-    workflow = _get_latest_workflow(student_item_dict)
+    workflow = _get_workflow_by_submission_uuid(submission_uuid)
     if not workflow:
         raise PeerAssessmentWorkflowError(_(
             u"A Peer Assessment Workflow does not exist for the specified "
             u"student."))
-    submission_uuid = _find_active_assessments(workflow)
+    peer_submission_uuid = _find_active_assessments(workflow)
     # If there is an active assessment for this user, get that submission,
     # otherwise, get the first assessment for review, otherwise, if over grading
     # is turned on, get the first submission available for over grading.
-    if submission_uuid is None:
-        submission_uuid = _get_submission_for_review(workflow, graded_by)
-    if submission_uuid is None and over_grading:
-        submission_uuid = _get_submission_for_over_grading(workflow)
-    if submission_uuid:
+    if peer_submission_uuid is None:
+        peer_submission_uuid = _get_submission_for_review(workflow, graded_by)
+    if peer_submission_uuid is None and over_grading:
+        peer_submission_uuid = _get_submission_for_over_grading(workflow)
+    if peer_submission_uuid:
         try:
-            submission_data = sub_api.get_submission(submission_uuid)
-            _create_peer_workflow_item(workflow, submission_uuid)
-            _log_workflow(submission_uuid, student_item_dict, over_grading)
+            submission_data = sub_api.get_submission(peer_submission_uuid)
+            _create_peer_workflow_item(workflow, peer_submission_uuid)
+            _log_workflow(peer_submission_uuid, workflow, over_grading)
             return submission_data
         except sub_api.SubmissionNotFoundError:
             error_message = _(
                 u"Could not find a submission with the uuid {} for student {} "
                 u"in the peer workflow."
-                .format(submission_uuid, student_item_dict)
+                .format(peer_submission_uuid, workflow.student_id)
             )
             logger.exception(error_message)
             raise PeerAssessmentWorkflowError(error_message)
@@ -532,9 +515,9 @@ def get_submission_to_assess(
         logger.info(
             u"No submission found for {} to assess ({}, {})"
             .format(
-                student_item_dict["student_id"],
-                student_item_dict["course_id"],
-                student_item_dict["item_id"],
+                workflow.student_id,
+                workflow.course_id,
+                workflow.item_id,
             )
         )
         return None
@@ -581,14 +564,14 @@ def create_peer_workflow(submission_uuid):
         raise PeerAssessmentInternalError(error_message)
 
 
-def create_peer_workflow_item(scorer, submission_uuid):
+def create_peer_workflow_item(scorer_submission_uuid, submission_uuid):
     """
     Begin peer-assessing a particular submission.
     Note that this does NOT pick the submission from the prioritized list of available submissions.
     Mainly useful for testing.
 
     Args:
-        scorer (str): The ID of the scoring student.
+        scorer_submission_uuid (str): The ID of the scoring student.
         submission_uuid (str): The unique identifier of the submission being scored
 
     Returns:
@@ -597,12 +580,8 @@ def create_peer_workflow_item(scorer, submission_uuid):
     Raises:
         PeerAssessmentWorkflowError: Could not find the workflow for the student.
         PeerAssessmentInternalError: Could not create the peer workflow item.
-        SubmissionError: An error occurred while retrieving the submission.
     """
-    submission = get_submission_and_student(submission_uuid)
-    student_item_dict = copy.copy(submission['student_item'])
-    student_item_dict['student_id'] = scorer
-    workflow = _get_latest_workflow(student_item_dict)
+    workflow = _get_workflow_by_submission_uuid(scorer_submission_uuid)
     _create_peer_workflow_item(workflow, submission_uuid)
 
 
@@ -691,36 +670,27 @@ def set_assessment_feedback(feedback_dict):
         raise PeerAssessmentInternalError(msg)
 
 
-def _get_latest_workflow(student_item_dict):
-    """Given a student item, return the current workflow for this student.
+def _get_workflow_by_submission_uuid(submission_uuid):
+    """Get the Peer Workflow associated with the given submission UUID.
 
-    Given a student item, get the most recent workflow for the student.
-
-    TODO: API doesn't take in current submission; do we pass that in, or get
-    the latest workflow item? Currently using "latest".
+    If available, returns the Peer Workflow associated with the given
+    submission UUID.
 
     Args:
-        student_item_dict (dict): Dictionary representation of a student item.
-            The most recent workflow associated with this student item is
-            returned.
+        submission_uuid (str): The string representation of the UUID belonging
+            to the associated Peer Workflow.
 
     Returns:
         workflow (PeerWorkflow): The most recent peer workflow associated with
-            this student item.
+            this submission UUID.
 
     Raises:
         PeerAssessmentWorkflowError: Thrown when no workflow can be found for
-            the associated student item. This should always exist before a
+            the associated submission UUID. This should always exist before a
             student is allow to request submissions for peer assessment.
 
     Examples:
-        >>> student_item_dict = dict(
-        >>>    item_id="item_1",
-        >>>    course_id="course_1",
-        >>>    item_type="type_one",
-        >>>    student_id="Bob",
-        >>> )
-        >>> workflow = _get_latest_workflow(student_item_dict)
+        >>> workflow = _get_workflow_by_submission_uuid("abc123")
         {
             'student_id': u'Bob',
             'item_id': u'type_one',
@@ -731,17 +701,14 @@ def _get_latest_workflow(student_item_dict):
 
     """
     try:
-        workflows = PeerWorkflow.objects.filter(
-            student_id=student_item_dict["student_id"],
-            item_id=student_item_dict["item_id"],
-            course_id=student_item_dict["course_id"]
-        ).order_by("-created_at", "-id")
-        return workflows[0] if workflows else None
+        return PeerWorkflow.objects.get(submission_uuid=submission_uuid)
+    except PeerWorkflow.DoesNotExist:
+        return None
     except DatabaseError:
         error_message = _(
-            u"Error finding workflow for student {}. Workflow must be created "
-            u"for student before beginning peer assessment."
-            .format(student_item_dict)
+            u"Error finding workflow for submission UUID {}. Workflow must be "
+            u"created for submission before beginning peer assessment."
+            .format(submission_uuid)
         )
         logger.exception(error_message)
         raise PeerAssessmentWorkflowError(error_message)
@@ -768,7 +735,7 @@ def _create_peer_workflow_item(workflow, submission_uuid):
         >>>    item_type="type_one",
         >>>    student_id="Bob",
         >>> )
-        >>> workflow = _get_latest_workflow(student_item_dict)
+        >>> workflow = _get_workflow_by_submission_uuid(student_item_dict)
         >>> _create_peer_workflow_item(workflow, "1")
 
     """
@@ -814,7 +781,7 @@ def _find_active_assessments(workflow):
         >>>    item_type="type_one",
         >>>    student_id="Bob",
         >>> )
-        >>> workflow = _get_latest_workflow(student_item_dict)
+        >>> workflow = _get_workflow_by_submission_uuid(student_item_dict)
         >>> _find_active_assessments(student_item_dict)
         "1"
 
@@ -950,6 +917,35 @@ def _get_submission_for_over_grading(workflow):
         raise PeerAssessmentInternalError(error_message)
 
 
+def _get_latest_open_workflow_item(workflow):
+    """Gets the latest open workflow item for a given workflow.
+
+    If there is an open workflow item for the given workflow, return this item.
+
+    Args:
+        workflow (PeerWorkflow): The scorer's workflow.
+
+    Returns:
+        A PeerWorkflowItem that is open for assessment. None if no item is
+        found.
+
+    Examples:
+        >>> workflow = _get_workflow_by_submission_uuid("abc123")
+        >>> _get_latest_open_workflow_item(workflow)
+        {
+            'student_id': u'Bob',
+            'item_id': u'type_one',
+            'course_id': u'course_1',
+            'submission_uuid': u'1',
+            'created_at': datetime.datetime(2014, 1, 29, 17, 14, 52, 668850, tzinfo=<UTC>)
+        }
+    """
+    workflow_query = workflow.graded.filter(
+        assessment__isnull=True).order_by("-started_at", "-id")
+    items = list(workflow_query[:1])
+    return items[0] if items else None
+
+
 def _close_active_assessment(
         workflow,
         submission_uuid,
@@ -970,13 +966,7 @@ def _close_active_assessment(
             requires to be considered complete.
 
     Examples:
-        >>> student_item_dict = dict(
-        >>>    item_id="item_1",
-        >>>    course_id="course_1",
-        >>>    item_type="type_one",
-        >>>    student_id="Bob",
-        >>> )
-        >>> workflow = _get_latest_workflow(student_item_dict)
+        >>> workflow = _get_workflow_by_submission_uuid("abc123")
         >>> assessment = Assessment.objects.all()[0]
         >>> _close_active_assessment(workflow, "1", assessment, 3)
 
@@ -1019,7 +1009,7 @@ def _num_peers_graded(workflow):
         >>>    item_type="type_one",
         >>>    student_id="Bob",
         >>> )
-        >>> workflow = _get_latest_workflow(student_item_dict)
+        >>> workflow = _get_workflow_by_submission_uuid(student_item_dict)
         >>> _num_peers_graded(workflow, 3)
         True
     """
@@ -1032,8 +1022,8 @@ def _log_assessment(assessment, scorer_workflow):
 
     Args:
         assessment (Assessment): The assessment model that was created.
-        student_item (dict): The serialized student item model of the student being scored.
-        scorer_item (dict): The serialized student item model of the student creating the assessment.
+        scorer_workflow (dict): A dictionary representation of the Workflow
+            belonging to the scorer of this assessment.
 
     Returns:
         None
@@ -1092,28 +1082,29 @@ def _log_assessment(assessment, scorer_workflow):
     dog_stats_api.increment('openassessment.assessment.count', tags=tags)
 
 
-def _log_workflow(submission_uuid, student_item, over_grading):
+def _log_workflow(submission_uuid, workflow, over_grading):
     """
     Log the creation of a peer-assessment workflow.
 
     Args:
         submission_uuid (str): The UUID of the submission being assessed.
-        student_item (dict): The serialized student item of the student making the assessment.
+        workflow (PeerWorkflow): The Peer Workflow of the student making the
+            assessment.
         over_grading (bool): Whether over-grading is enabled.
     """
     logger.info(
         u"Retrieved submission {} ({}, {}) to be assessed by {}"
         .format(
             submission_uuid,
-            student_item["course_id"],
-            student_item["item_id"],
-            student_item["student_id"],
+            workflow.course_id,
+            workflow.item_id,
+            workflow.student_id,
         )
     )
 
     tags = [
-        u"course_id:{course_id}".format(course_id=student_item['course_id']),
-        u"item_id:{item_id}".format(item_id=student_item['item_id']),
+        u"course_id:{course_id}".format(course_id=workflow.course_id),
+        u"item_id:{item_id}".format(item_id=workflow.item_id),
         u"type:peer"
     ]
 

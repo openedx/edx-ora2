@@ -38,7 +38,7 @@
         "template": "openassessmentblock/response/oa_response.html",
         "context": {
             "saved_response": "",
-            "save_status": "Unsaved draft",
+            "save_status": "This response has not been saved.",
             "submit_enabled": false,
             "submission_due": ""
         },

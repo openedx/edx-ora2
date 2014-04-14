@@ -45,7 +45,7 @@ def _parse_date(value):
         try:
             return parse_date(value).replace(tzinfo=pytz.utc)
         except ValueError:
-            raise InvalidDateFormat(_("Could not parse date '{date}'").format(date=value))
+            raise InvalidDateFormat(_("'{date}' is an invalid date format. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.").format(date=value))
 
     else:
         raise InvalidDateFormat(_("'{date}' must be a date string or datetime").format(date=value))
@@ -185,13 +185,13 @@ def resolve_dates(start, end, date_ranges):
         step_end = _parse_date(step_end) if step_end is not None else prev_end
 
         if step_start < prev_start:
-            msg = _(u"The start date '{start}' must be after the previous start date '{prev}'.").format(
+            msg = _(u"This step's start date '{start}' cannot be earlier than the previous step's start date '{prev}'.").format(
                 start=step_start, prev=prev_start
             )
             raise DateValidationError(msg)
 
         if step_end > prev_end:
-            msg = _(u"The due date '{due}' must be before the following due date '{prev}'.").format(
+            msg = _(u"This step's due date '{due}' cannot be later than the next step's due date '{prev}'.").format(
                 due=step_end, prev=prev_end
             )
             raise DateValidationError(msg)
@@ -207,7 +207,7 @@ def resolve_dates(start, end, date_ranges):
     # Now that we have resolved both start and end dates, we can safely compare them
     for resolved_start, resolved_end in resolved_ranges:
         if resolved_start >= resolved_end:
-            msg = _(u"Start date '{start}' cannot be later than the due date '{due}'").format(
+            msg = _(u"The start date '{start}' cannot be later than the due date '{due}'").format(
                 start=resolved_start, due=resolved_end
             )
             raise DateValidationError(msg)

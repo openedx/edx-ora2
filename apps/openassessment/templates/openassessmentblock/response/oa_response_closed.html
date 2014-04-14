@@ -1,14 +1,15 @@
 {%  extends "openassessmentblock/response/oa_response.html" %}
+{% load i18n %}
 {% block list_item %}
 <li id="openassessment__response" class="openassessment__steps__step step--response is--incomplete ui-toggle-visibility">
 {% endblock %}
 
 {% block title %}
 <span class="step__status">
-  <span class="step__status__label">This step's status:</span>
+  <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
     <i class="ico icon-warning-sign"></i>
-    <span class="copy">Incomplete</span>
+    <span class="copy">{% trans "Incomplete" %}</span>
   </span>
 </span>
 {% endblock %}
@@ -18,10 +19,10 @@
     <div class="wrapper--step__content">
 
         <div class="step__message message message--incomplete">
-            <h3 class="message__title">The Due Date for This Step Has Passed</h3>
+            <h3 class="message__title">{% trans "The Due Date for This Step Has Passed" %}</h3>
 
             <div class="message__content">
-              <p>This step is now closed. You can no longer submit a response or continue with this problem, and your grade will be Incomplete. If you saved but did not submit a response, the response appears in the course records.</p>
+              <p>{% trans "This step is now closed. You can no longer submit a response or continue with this problem, and you'll receive a grade of Incomplete. If you saved but did not submit a response, the response appears in the course records." %}</p>
             </div>
         </div>
     </div>

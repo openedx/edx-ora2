@@ -138,7 +138,7 @@ class Rubric(models.Model):
 
         # Validate: are options selected for each criterion in the rubric?
         if len(options_selected) != len(rubric_criteria_dict):
-            msg = _("Incorrect number of options for this rubric ({actual} instead of {expected}").format(
+            msg = _("Incorrect number of options for this rubric ({actual} instead of {expected})").format(
                 actual=len(options_selected), expected=len(rubric_criteria_dict))
             raise InvalidOptionSelection(msg)
 

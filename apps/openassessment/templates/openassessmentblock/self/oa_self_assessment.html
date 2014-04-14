@@ -4,17 +4,14 @@
 {% block list_item %}
 <li id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment ui-toggle-visibility">
 {% endblock %}
-    <span class="system__element" id="self_submission_uuid">
-       {{ self_submission.uuid }}
-    </span>
 
     <header class="step__header ui-toggle-visibility__control">
        <h2 class="step__title">
             <span class="step__counter"></span>
             <span class="wrapper--copy">
-                <span class="step__label">Assess Yourself</span>
+                <span class="step__label">{% trans "Assess Your Response" %}</span>
                 {% if self_start %}
-                <span class="step__deadline">available
+                <span class="step__deadline">{% trans "available" %}
                     <span class="date">
                         {{ self_start|utc|date:"N j, Y H:i e" }}
                         (in {{ self_start|timeuntil }})
@@ -33,9 +30,9 @@
 
         {% block title %}
         <span class="step__status">
-          <span class="step__status__label">This step's status:</span>
+          <span class="step__status__label">{% trans "This step's status" %}:</span>
           <span class="step__status__value">
-              <span class="copy">In Progress</span>
+              <span class="copy">{% trans "In Progress" %}</span>
           </span>
         </span>
         {% endblock %}
@@ -47,7 +44,7 @@
             <div class="step__content">
                 <article class="self-assessment__display" id="self-assessment">
                     <header class="self-assessment__display__header">
-                        <h3 class="self-assessment__display__title">Your Submitted Response</h3>
+                        <h3 class="self-assessment__display__title">{% trans "Your Response" %}</h3>
                     </header>
 
                     <div class="self-assessment__display__response">
@@ -59,11 +56,11 @@
                     <fieldset class="assessment__fields">
                         <ol class="list list--fields assessment__rubric">
                             {% for criterion in rubric_criteria %}
-                            <li class="field field--radio is--required assessment__rubric__question ui-toggle-visibility" id="assessment__rubric__question--{{ criterion.name }}">
+                            <li class="field field--radio is--required assessment__rubric__question ui-toggle-visibility" id="assessment__rubric__question--{{ criterion.order_num }}">
                                  <h4 class="question__title ui-toggle-visibility__control">
                                     <i class="ico icon-caret-right"></i>
                                     <span class="question__title__copy">{{ criterion.prompt }}</span>
-                                    <span class="label--required sr">* (Required)</span>
+                                    <span class="label--required sr">* ({% trans "Required" %})</span>
                                 </h4>
 
                                 <div class="ui-toggle-visibility__content">
@@ -73,15 +70,15 @@
                                             <div class="wrapper--input">
                                                 <input type="radio"
                                                        name="{{ criterion.name }}"
-                                                       id="assessment__rubric__question--{{ criterion.name }}__{{ option.name }}"
+                                                       id="assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
                                                        class="answer__value"
                                                        value="{{ option.name }}" />
-                                                <label for="assessment__rubric__question--{{ criterion.name }}__{{ option.name }}"
+                                                <label for="assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
                                                        class="answer__label">{{ option.name }}</label>
                                             </div>
                                             <div class="wrapper--metadata">
                                                 <span class="answer__tip">{{ option.explanation }}</span>
-                                                <span class="answer__points">{{option.points}} <span class="answer__points__label">points</span></span>
+                                                <span class="answer__points">{{option.points}} <span class="answer__points__label">{% trans "points" %}</span></span>
                                             </div>
                                         </li>
                                         {% endfor %}
@@ -96,7 +93,7 @@
 
             <div class="step__actions">
                 <div class="message message--inline message--error message--error-server">
-                    <h3 class="message__title">We could not submit your assessment</h3>
+                    <h3 class="message__title">{% trans "We could not submit your assessment" %}</h3>
                     <div class="message__content"></div>
                 </div>
 
