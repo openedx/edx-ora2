@@ -112,11 +112,36 @@ class Score(models.Model):
     points_possible = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(editable=False, default=now, db_index=True)
 
+    # Flag to indicate that this score should reset the current "highest" score
+    reset = models.BooleanField(default=False)
+
     @property
     def submission_uuid(self):
-        return self.submission.uuid
+        """
+        Retrieve the submission UUID associated with this score.
+        If the score isn't associated with a submission (for example, if this is
+        a "reset" score or a a non-courseware item like "class participation"),
+        then this will return None.
+
+        Returns:
+            str or None
+
+        """
+        if self.submission is not None:
+            return self.submission.uuid
+        else:
+            return None
 
     def to_float(self):
+        """
+        Calculate (points earned) / (points possible).
+        If points possible is None (e.g. this is a "hidden" score)
+        then return None.
+
+        Returns:
+            float or None
+
+        """
         if self.points_possible == 0:
             return None
         return float(self.points_earned) / self.points_possible
@@ -130,23 +155,81 @@ class Score(models.Model):
             points_possible=self.points_possible,
         ))
 
+    def is_hidden(self):
+        """
+        By convention, a score of 0/0 is not displayed to users.
+        Hidden scores are filtered by the submissions API.
+
+        Returns:
+            bool: Whether the score should be hidden.
+
+        """
+        return self.points_possible == 0
+
+    @classmethod
+    def create_reset_score(cls, student_item):
+        """
+        Create a "reset" score (a score with a null submission).
+
+        Only scores created after the most recent "reset" score
+        should be used to determine a student's effective score.
+
+        Args:
+            student_item (StudentItem): The student item model.
+
+        Returns:
+            Score: The newly created "reset" score.
+
+        Raises:
+            DatabaseError: An error occurred while creating the score
+
+        """
+        # By setting the "reset" flag, we ensure that the "highest"
+        # score in the score summary will point to this score.
+        # By setting points earned and points possible to 0,
+        # we ensure that this score will be hidden from the user.
+        return cls.objects.create(
+            student_item=student_item,
+            submission=None,
+            points_earned=0,
+            points_possible=0,
+            reset=True,
+        )
+
 
 class ScoreSummary(models.Model):
     """Running store of the highest and most recent Scores for a StudentItem."""
     student_item = models.ForeignKey(StudentItem, unique=True)
+
     highest = models.ForeignKey(Score, related_name="+")
     latest = models.ForeignKey(Score, related_name="+")
 
     @receiver(post_save, sender=Score)
     def update_score_summary(sender, **kwargs):
-        """Listen for new Scores and update the relevant ScoreSummary."""
+        """
+        Listen for new Scores and update the relevant ScoreSummary.
+
+        Args:
+            sender: not used
+
+        Kwargs:
+            instance (Score): The score model whose save triggered this receiver.
+
+        """
         score = kwargs['instance']
         try:
             score_summary = ScoreSummary.objects.get(
                 student_item=score.student_item
             )
             score_summary.latest = score
-            if score.to_float() > score_summary.highest.to_float():
+
+            # A score with the "reset" flag set will always replace the current highest score
+            if score.reset:
+                score_summary.highest = score
+            # The conversion to a float may return None if points possible is zero
+            # In Python, None is always less than an integer, so any score
+            # with non-null points possible will take precedence.
+            elif score.to_float() > score_summary.highest.to_float():
                 score_summary.highest = score
             score_summary.save()
         except ScoreSummary.DoesNotExist:
@@ -160,4 +243,3 @@ class ScoreSummary(models.Model):
                 u"Error while updating score summary for student item {}"
                 .format(score.student_item)
             )
-
