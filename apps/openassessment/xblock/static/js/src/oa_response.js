@@ -6,6 +6,12 @@ if (typeof OpenAssessment == "undefined" || !OpenAssessment) {
 }
 
 
+// Stub gettext if the runtime doesn't provide it
+if (typeof window.gettext === 'undefined') {
+    window.gettext = function(text) { return text; };
+}
+
+
 /**
 Interface for response (submission) view.
 
@@ -141,7 +147,8 @@ OpenAssessment.ResponseView.prototype = {
         } else {
             // Setting the HTML will overwrite the screen reader tag,
             // so prepend it to the message.
-            sel.html('<span class="sr">Status of Your Response:</span>\n' + msg);
+            var label = gettext("Status of Your Response");
+            sel.html('<span class="sr">' + label + ':' + '</span>\n' + msg);
         }
     },
 
@@ -177,7 +184,7 @@ OpenAssessment.ResponseView.prototype = {
         // Update the save button and status only if the response has changed
         if ($.trim(this.savedResponse) !== currentResponse) {
             this.saveEnabled(isBlank);
-            this.saveStatus('This response has not been saved.');
+            this.saveStatus(gettext('This response has not been saved.'));
         }
     },
 
@@ -186,7 +193,7 @@ OpenAssessment.ResponseView.prototype = {
     **/
     save: function() {
         // Update the save status and error notifications
-        this.saveStatus('Saving...');
+        this.saveStatus(gettext('Saving...'));
         this.baseView.toggleActionError('save', null);
 
         var view = this;
@@ -201,10 +208,10 @@ OpenAssessment.ResponseView.prototype = {
             view.submitEnabled(currentResponse !== '');
             if (currentResponse == savedResponse) {
                 view.saveEnabled(false);
-                view.saveStatus("This response has been saved but not submitted.");
+                view.saveStatus(gettext("This response has been saved but not submitted."));
             }
         }).fail(function(errMsg) {
-            view.saveStatus('Error');
+            view.saveStatus(gettext('Error'));
             view.baseView.toggleActionError('save', errMsg);
         });
     },

@@ -1,6 +1,6 @@
 # edX Internal Requirements
 git+https://github.com/edx/XBlock.git@3b6e4218bd326f84dbeb0baed7b2b7813ffea3dd#egg=XBlock
-git+https://github.com/edx/xblock-sdk.git@50ed1646d24f6f0a21d6d0bb074e3b7c8a78fd5a#egg=xblock-sdk
+git+https://github.com/edx/xblock-sdk.git@4b312de38c037fda31c003e02240e3bd2f6a4628#egg=xblock-sdk
 
 # Third Party Requirements
 defusedxml==0.4.1

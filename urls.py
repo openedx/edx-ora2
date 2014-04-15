@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.conf.urls import include, patterns, url
+from django.views.i18n import javascript_catalog
 from django.contrib import admin
 
 import openassessment.assessment.urls
@@ -7,6 +8,11 @@ import submissions.urls
 import workbench.urls
 
 admin.autodiscover()
+
+# Packages to include in the JavaScript i18n strings
+JS_INFO_DICT = {
+    'packages': ('openassessment.xblock',),
+}
 
 urlpatterns = patterns(
     '',
@@ -19,6 +25,9 @@ urlpatterns = patterns(
     # edx-ora2 apps
     url(r'^submissions/', include(submissions.urls)),
     url(r'^peer/evaluations/', include(openassessment.assessment.urls)),
+
+    # JavaScript i18n
+    (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', JS_INFO_DICT),
 )
 
 # We need to do explicit setup of the Django debug toolbar because autodiscovery

@@ -6,6 +6,12 @@ if (typeof OpenAssessment == "undefined" || !OpenAssessment) {
 }
 
 
+// Stub gettext if the runtime doesn't provide it
+if (typeof window.gettext === 'undefined') {
+    window.gettext = function(text) { return text; };
+}
+
+
 /**
 Interface for student-facing views.
 
@@ -337,7 +343,7 @@ OpenAssessment.BaseView.prototype = {
         var container = '#openassessment__' + step;
         $(container).toggleClass('has--error', true);
         $(container + ' .step__status__value i').removeClass().addClass('ico icon-warning-sign');
-        $(container + ' .step__status__value .copy').html('Unable to Load');
+        $(container + ' .step__status__value .copy').html(gettext('Unable to Load'));
     },
 
     /** 
