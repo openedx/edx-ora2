@@ -7,6 +7,7 @@ import pytz
 from mock import Mock, patch
 
 from openassessment.xblock import openassessmentblock
+from openassessment.xblock.resolve_dates import DISTANT_PAST, DISTANT_FUTURE
 from openassessment.workflow import api as workflow_api
 from .base import XBlockHandlerTestCase, scenario
 
@@ -145,6 +146,12 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         self.assertEqual(student_item['course_id'], 'test_course')
         self.assertEqual(student_item['student_id'], 'test_student')
 
+
+class TestCourseStaff(XBlockHandlerTestCase):
+    """
+    Tests for course staff debug panel.
+    """
+
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_is_course_staff(self, xblock):
         # By default, we shouldn't be course staff
@@ -188,6 +195,60 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         )
         xblock_fragment = self.runtime.render(xblock, "student_view")
         self.assertNotIn("course staff information", xblock_fragment.body_html().lower())
+
+    @scenario('data/staff_dates_scenario.xml')
+    def test_staff_debug_dates_table(self, xblock):
+        # Simulate that we are course staff
+        xblock.xmodule_runtime = Mock(
+            course_id='test_course',
+            anonymous_student_id='test_student',
+            user_is_staff=True
+        )
+
+        # Get the context for the course staff debug panel
+        # and check that the dates match the scenario.
+        context = xblock.staff_debug_template_context()
+        self.assertEqual(context['step_dates'], [
+            {
+                'step': 'submission',
+                'start': dt.datetime(2014, 3, 1).replace(tzinfo=pytz.utc),
+                'due': dt.datetime(2014, 4, 1).replace(tzinfo=pytz.utc),
+            },
+            {
+                'step': 'peer-assessment',
+                'start': dt.datetime(2015, 1, 2).replace(tzinfo=pytz.utc),
+                'due': dt.datetime(2015, 4, 1).replace(tzinfo=pytz.utc),
+            },
+            {
+                'step': 'self-assessment',
+                'start': dt.datetime(2016, 1, 2).replace(tzinfo=pytz.utc),
+                'due': dt.datetime(2016, 4, 1).replace(tzinfo=pytz.utc),
+            },
+        ])
+
+        # Verify that we can render without error
+        self.runtime.render(xblock, 'student_view')
+
+    @scenario('data/basic_scenario.xml')
+    def test_staff_debug_dates_distant_past_and_future(self, xblock):
+        # Simulate that we are course staff
+        xblock.xmodule_runtime = Mock(
+            course_id='test_course',
+            anonymous_student_id='test_student',
+            user_is_staff=True
+        )
+
+        # Get the context for the course staff debug panel
+        # and check that the dates match the scenario.
+        context = xblock.staff_debug_template_context()
+        self.assertEqual(context['step_dates'], [
+            {'step': 'submission', 'start': None, 'due': None},
+            {'step': 'peer-assessment', 'start': None, 'due': None},
+            {'step': 'self-assessment', 'start': None, 'due': None},
+        ])
+
+        # Verify that we can render without error
+        self.runtime.render(xblock, 'student_view')
 
 
 class TestDates(XBlockHandlerTestCase):
@@ -433,9 +494,127 @@ class TestDates(XBlockHandlerTestCase):
         # If the runtime doesn't provide a published_date field, assume we've been published
         self.assertTrue(xblock.is_released())
 
+    @scenario('data/basic_scenario.xml')
+    def test_is_released_course_staff(self, xblock):
+        # Simulate being course staff
+        xblock.xmodule_runtime = Mock(user_is_staff=True)
+
+        # Not published, should be not released
+        xblock.published_date = None
+        self.assertFalse(xblock.is_released())
+
+        # Published, should be released
+        xblock.published_date = dt.datetime(2013, 1, 1).replace(tzinfo=pytz.utc)
+        self.assertTrue(xblock.is_released())
+
+    @scenario('data/staff_dates_scenario.xml')
+    def test_course_staff_dates(self, xblock):
+
+        xblock.start = None
+        xblock.due = None
+
+        # The problem should always be open for course staff
+        # The following assertions check before/during/after dates
+        # for submission/peer/self
+        self.assert_is_closed(
+            xblock,
+            dt.datetime(2014, 2, 28, 23, 59, 59).replace(tzinfo=pytz.utc),
+            "submission", False, None,
+            DISTANT_PAST, DISTANT_FUTURE,
+            course_staff=True
+        )
+
+        self.assert_is_closed(
+            xblock,
+            dt.datetime(2014, 3, 1, 1, 1, 1).replace(tzinfo=pytz.utc),
+            "submission", False, None,
+            DISTANT_PAST, DISTANT_FUTURE,
+            course_staff=True
+        )
+
+        self.assert_is_closed(
+            xblock,
+            dt.datetime(2014, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc),
+            "submission", False, None,
+            DISTANT_PAST, DISTANT_FUTURE,
+            course_staff=True
+        )
+
+        self.assert_is_closed(
+            xblock,
+            dt.datetime(2014, 4, 1, 1, 1, 1, 1).replace(tzinfo=pytz.utc),
+            "submission", False, None,
+            DISTANT_PAST, DISTANT_FUTURE,
+            course_staff=True
+        )
+
+        self.assert_is_closed(
+            xblock,
+            dt.datetime(2015, 1, 1, 23, 59, 59).replace(tzinfo=pytz.utc),
+            "peer-assessment", False, None,
+            DISTANT_PAST, DISTANT_FUTURE,
+            course_staff=True
+        )
+
+        self.assert_is_closed(
+            xblock,
+            dt.datetime(2015, 1, 2, 1, 1, 1).replace(tzinfo=pytz.utc),
+            "peer-assessment", False, None,
+            DISTANT_PAST, DISTANT_FUTURE,
+            course_staff=True
+        )
+
+        self.assert_is_closed(
+            xblock,
+            dt.datetime(2015, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc),
+            "peer-assessment", False, None,
+            DISTANT_PAST, DISTANT_FUTURE,
+            course_staff=True
+        )
+
+        self.assert_is_closed(
+            xblock,
+            dt.datetime(2015, 4, 1, 1, 1, 1, 1).replace(tzinfo=pytz.utc),
+            "peer-assessment", False, None,
+            DISTANT_PAST, DISTANT_FUTURE,
+            course_staff=True
+        )
+
+        self.assert_is_closed(
+            xblock,
+            dt.datetime(2016, 1, 1, 23, 59, 59).replace(tzinfo=pytz.utc),
+            "self-assessment", False, None,
+            DISTANT_PAST, DISTANT_FUTURE,
+            course_staff=True
+        )
+
+        self.assert_is_closed(
+            xblock,
+            dt.datetime(2016, 1, 2, 1, 1, 1).replace(tzinfo=pytz.utc),
+            "self-assessment", False, None,
+            DISTANT_PAST, DISTANT_FUTURE,
+            course_staff=True
+        )
+
+        self.assert_is_closed(
+            xblock,
+            dt.datetime(2016, 3, 31, 23, 59, 59).replace(tzinfo=pytz.utc),
+            "self-assessment", False, None,
+            DISTANT_PAST, DISTANT_FUTURE,
+            course_staff=True
+        )
+
+        self.assert_is_closed(
+            xblock,
+            dt.datetime(2016, 4, 1, 1, 1, 1, 1).replace(tzinfo=pytz.utc),
+            "self-assessment", False, None,
+            DISTANT_PAST, DISTANT_FUTURE,
+            course_staff=True
+        )
+
     def assert_is_closed(
         self, xblock, now, step, expected_is_closed, expected_reason,
-        expected_start, expected_due, released=None
+        expected_start, expected_due, released=None, course_staff=False,
     ):
         """
         Assert whether the XBlock step is open/closed.
@@ -451,6 +630,7 @@ class TestDates(XBlockHandlerTestCase):
 
         Kwargs:
             released (bool): If set, check whether the XBlock has been released.
+            course_staff (bool): Whether to treat the user as course staff.
 
         Raises:
             AssertionError
@@ -463,7 +643,7 @@ class TestDates(XBlockHandlerTestCase):
         self.addCleanup(datetime_patcher.stop)
         mocked_datetime.datetime.utcnow.return_value = now
 
-        is_closed, reason, start, due = xblock.is_closed(step=step)
+        is_closed, reason, start, due = xblock.is_closed(step=step, course_staff=course_staff)
         self.assertEqual(is_closed, expected_is_closed)
         self.assertEqual(reason, expected_reason)
         self.assertEqual(start, expected_start)

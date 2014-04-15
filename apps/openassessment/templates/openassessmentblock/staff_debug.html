@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load tz %}
 <div class="wrapper--staff-info wrapper--ui-staff">
 <div class="staff-info ui-staff ui-toggle-visibility is--collapsed">
     <h2 class="staff-info__title ui-staff__title ui-toggle-visibility__control">
@@ -13,6 +14,10 @@
                 <dt class="label">{% trans "Response total" %}:</dt>
                 <dd class="value">{{ num_submissions }}</dd>
             </dl>
+        </div>
+
+        <div class="staff-info__status ui-staff__content__section">
+          {% trans "Location" %}: {{ item_id }}
         </div>
 
         <div class="staff-info__status ui-staff__content__section">
@@ -39,8 +44,40 @@
         </div>
 
         <div class="staff-info__status ui-staff__content__section">
-          {% trans "Location" %}: {{ item_id }}
+            <table class="staff-info__status__table" summary="{% trans "Dates" %}">
+
+                <caption class="title">{% trans "Dates" %}</caption>
+
+                <thead>
+                    <tr>
+                        <th abbr="Problem Step" scope="col">{% trans "Problem Step" %}</th>
+                        <th abbr="Release" scope="col">{% trans "Release Date" %}</th>
+                        <th abbr="Due" scope="col">{% trans "Due Date" %}</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                  {% for item in step_dates %}
+                  <tr>
+                      <td class="label">{{ item.step }}</td>
+
+                      {% if item.start %}
+                      <td class="value">{{ item.start|utc|date:"N j, Y H:i e" }}</td>
+                      {% else %}
+                      <td class="value">{% trans "N/A" %}</td>
+                      {% endif %}
+
+                      {% if item.due %}
+                      <td class="value">{{ item.due|utc|date:"N j, Y H:i e" }}</td>
+                      {% else %}
+                      <td class="value">{% trans "N/A" %}</td>
+                      {% endif %}
+                  </tr>
+                  {% endfor %}
+                </tbody>
+            </table>
         </div>
+
     </div>
   </div>
 </div>
