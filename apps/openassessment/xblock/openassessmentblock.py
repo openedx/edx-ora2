@@ -120,8 +120,9 @@ class OpenAssessmentBlock(
     course_id = String(
         default=u"TestCourse",
         scope=Scope.content,
-        help="The course_id associated with this prompt (until we can get it from runtime).",
+        help="The course_id associated with this prompt (until we can get it from runtime)."
     )
+
     submission_uuid = String(
         default=None,
         scope=Scope.user_state,
@@ -310,6 +311,10 @@ class OpenAssessmentBlock(
             (
                 "OpenAssessmentBlock Censorship Rubric",
                 load('static/xml/censorship_rubric_example.xml')
+            ),
+            (
+                "OpenAssessmentBlock Promptless Rubric",
+                load('static/xml/promptless_rubric_example.xml')
             ),
         ]
 

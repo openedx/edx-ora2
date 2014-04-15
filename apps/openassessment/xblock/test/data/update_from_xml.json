@@ -61,6 +61,113 @@
         ]
     },
 
+    "promptless": {
+        "xml": [
+            "<openassessment>",
+            "<title>Foo</title>",
+            "<assessments>",
+                "<assessment name=\"self-assessment\" start=\"2014-04-01T00:00:00\" due=\"2014-06-01T00:00:00\" />",
+            "</assessments>",
+            "<rubric>",
+                "<criterion>",
+                    "<name>Test criterion</name>",
+                    "<prompt>Test criterion prompt</prompt>",
+                    "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+                    "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+                "</criterion>",
+            "</rubric>",
+            "</openassessment>"
+        ],
+        "title": "Foo",
+        "prompt": null,
+        "start": "2000-01-01T00:00:00",
+        "due": "3000-01-01T00:00:00",
+        "submission_start": null,
+        "submission_due": null,
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ]
+            }
+        ],
+        "assessments": [
+            {
+                "name": "self-assessment",
+                "start": "2014-04-01T00:00:00",
+                "due": "2014-06-01T00:00:00"
+            }
+        ]
+    },
+
+    "empty_prompt": {
+        "xml": [
+            "<openassessment>",
+            "<title>Foo</title>",
+            "<assessments>",
+                "<assessment name=\"self-assessment\" start=\"2014-04-01T00:00:00\" due=\"2014-06-01T00:00:00\" />",
+            "</assessments>",
+            "<rubric>",
+                "<prompt></prompt>",
+                "<criterion>",
+                    "<name>Test criterion</name>",
+                    "<prompt>Test criterion prompt</prompt>",
+                    "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+                    "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+                "</criterion>",
+            "</rubric>",
+            "</openassessment>"
+        ],
+        "title": "Foo",
+        "prompt": "",
+        "start": "2000-01-01T00:00:00",
+        "due": "3000-01-01T00:00:00",
+        "submission_start": null,
+        "submission_due": null,
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ]
+            }
+        ],
+        "assessments": [
+            {
+                "name": "self-assessment",
+                "start": "2014-04-01T00:00:00",
+                "due": "2014-06-01T00:00:00"
+            }
+        ]
+    },
+
     "unicode": {
         "xml": [
             "<openassessment>",

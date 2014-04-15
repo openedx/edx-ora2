@@ -1,0 +1,21 @@
+<openassessment>
+    <title>Open Assessment Test</title>
+    <rubric>
+        <criterion>
+            <name>Concise</name>
+            <prompt>How concise is it?</prompt>
+            <option points="0">
+                <name>Neal Stephenson (late)</name>
+                <explanation>Neal Stephenson explanation</explanation>
+            </option>
+            <option points="1">
+                <name>HP Lovecraft</name>
+                <explanation>HP Lovecraft explanation</explanation>
+            </option>
+        </criterion>
+    </rubric>
+    <assessments>
+        <assessment name="peer-assessment" must_grade="2" must_be_graded_by="1" />
+        <assessment name="self-assessment" />
+    </assessments>
+</openassessment>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<openassessment>
+    <title>
+        Promptless rubric
+    </title>
+    <rubric>
+        <criterion>
+            <name>concise</name>
+            <prompt>How concise is it?</prompt>
+            <option points="0">
+                <name>The Bible</name>
+                <explanation></explanation>
+            </option>
+            <option points="1">
+                <name>Earnest Hemingway</name>
+                <explanation></explanation>
+            </option>
+            <option points="3">
+                <name>Matsuo Basho</name>
+                <explanation></explanation>
+            </option>
+        </criterion>
+    </rubric>
+    <assessments>
+        <assessment name="peer-assessment"
+                    start="2014-12-20T19:00-7:00"
+                    due="2014-12-21T22:22-7:00"
+                    must_grade="2"
+                    must_be_graded_by="1" />
+        <assessment name="self-assessment" />
+    </assessments>
+</openassessment>
