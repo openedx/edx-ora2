@@ -108,7 +108,10 @@ OpenAssessment.ResponseView.prototype = {
 
     /**
     Enable/disable the save button.
-    Check that whether the save button is enabled.
+    Check whether the save button is enabled.
+
+    Also enables/disables a beforeunload handler to warn
+    users about navigating away from the page with unsaved changes.
 
     Args:
         enabled (bool): If specified, set the state of the button.
@@ -153,6 +156,39 @@ OpenAssessment.ResponseView.prototype = {
     },
 
     /**
+    Enable/disable the "navigate away" warning to alert the user of unsaved changes.
+
+    Args:
+        enabled (bool): If specified, set whether the warning is enabled.
+
+    Returns:
+        bool: Whether the warning is enabled.
+
+    Examples:
+        >> view.unsavedWarningEnabled(true); // enable the "unsaved" warning
+        >> view.unsavedWarningEnabled();
+        >> true
+    **/
+    unsavedWarningEnabled: function(enabled) {
+        if (typeof enabled === 'undefined') {
+            return (window.onbeforeunload !== null);
+        }
+        else {
+            if (enabled) {
+                window.onbeforeunload = function() {
+                    return (
+                        "If you leave this page without saving or submitting your response, " +
+                        "you'll lose any work you've done on the response."
+                    );
+                };
+            }
+            else {
+                window.onbeforeunload = null;
+            }
+        }
+    },
+
+    /**
     Set the response text.
     Retrieve the response text.
 
@@ -181,10 +217,12 @@ OpenAssessment.ResponseView.prototype = {
         var isBlank = (currentResponse !== '');
         this.submitEnabled(isBlank);
 
-        // Update the save button and status only if the response has changed
+        // Update the save button, save status, and "unsaved changes" warning
+        // only if the response has changed
         if ($.trim(this.savedResponse) !== currentResponse) {
             this.saveEnabled(isBlank);
             this.saveStatus(gettext('This response has not been saved.'));
+            this.unsavedWarningEnabled(true);
         }
     },
 
@@ -195,6 +233,9 @@ OpenAssessment.ResponseView.prototype = {
         // Update the save status and error notifications
         this.saveStatus(gettext('Saving...'));
         this.baseView.toggleActionError('save', null);
+
+        // Disable the "unsaved changes" warning
+        this.unsavedWarningEnabled(false);
 
         var view = this;
         var savedResponse = this.response();
@@ -265,6 +306,10 @@ OpenAssessment.ResponseView.prototype = {
     moveToNextStep: function() {
         this.load();
         this.baseView.renderPeerAssessmentStep();
+
+        // Disable the "unsaved changes" warning if the user
+        // tries to navigate to another page.
+        this.unsavedWarningEnabled(false);
     },
 
     /**

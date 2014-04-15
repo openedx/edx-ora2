@@ -229,4 +229,38 @@ describe("OpenAssessment.ResponseView", function() {
         expect(view.load).toHaveBeenCalled();
         expect(baseView.renderPeerAssessmentStep).toHaveBeenCalled();
     });
+
+    it("enables the unsaved work warning when the user changes the response text", function() {
+        // Initially, the unsaved work warning should be disabled
+        expect(view.unsavedWarningEnabled()).toBe(false);
+
+        // Change the text, then expect the unsaved warning to be enabled.
+        view.response('Lorem ipsum');
+        view.responseChanged();
+
+        // Expect the unsaved work warning to be enabled
+        expect(view.unsavedWarningEnabled()).toBe(true);
+    });
+
+    it("disables the unsaved work warning when the user saves a response", function() {
+        // Change the text, then expect the unsaved warning to be enabled.
+        view.response('Lorem ipsum');
+        view.responseChanged();
+        expect(view.unsavedWarningEnabled()).toBe(true);
+
+        // Save the response and expect the unsaved warning to be disabled
+        view.save();
+        expect(view.unsavedWarningEnabled()).toBe(false);
+    });
+
+    it("disables the unsaved work warning when the user submits a response", function() {
+        // Change the text, then expect the unsaved warning to be enabled.
+        view.response('Lorem ipsum');
+        view.responseChanged();
+        expect(view.unsavedWarningEnabled()).toBe(true);
+
+        // Submit the response and expect the unsaved warning to be disabled
+        view.submit();
+        expect(view.unsavedWarningEnabled()).toBe(false);
+    });
 });
