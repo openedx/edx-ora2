@@ -80,6 +80,7 @@ class TestSerializeContent(TestCase):
     def test_serialize(self, data):
         self.oa_block.title = data['title']
         self.oa_block.prompt = data['prompt']
+        self.oa_block.rubric_feedback_prompt = data['rubric_feedback_prompt']
         self.oa_block.start = _parse_date(data['start'])
         self.oa_block.due = _parse_date(data['due'])
         self.oa_block.submission_start = data['submission_start']
