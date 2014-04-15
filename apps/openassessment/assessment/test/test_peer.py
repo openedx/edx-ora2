@@ -1,9 +1,9 @@
 # coding=utf-8
 import datetime
-
-from django.db import DatabaseError
 import pytz
 
+from django.db import DatabaseError
+from django.utils import timezone
 from ddt import ddt, file_data
 from mock import patch
 from nose.tools import raises
@@ -13,7 +13,6 @@ from openassessment.assessment import peer_api
 from openassessment.assessment.models import Assessment, PeerWorkflow, PeerWorkflowItem, AssessmentFeedback
 from openassessment.workflow import api as workflow_api
 from submissions import api as sub_api
-from submissions.models import Submission
 from submissions.tests.test_api import STUDENT_ITEM, ANSWER_ONE
 
 # Possible points: 14
@@ -201,6 +200,55 @@ class TestPeerApi(CacheResetTest):
         finished, count = peer_api.has_finished_required_evaluating(bob_sub['uuid'], 1)
         self.assertTrue(finished)
         self.assertEqual(count, 1)
+
+    def test_peer_leases_same_submission(self):
+        """
+        Tests the scenario where a student pulls a peer's submission for
+        assessment, lets the lease expire, then pulls the same peer's submission
+        a second time.
+
+        This creates two similar PeerWorkflowItems in the database, and when
+        completing the assessment, the latest PeerWorkflowItem should be
+        updated.
+        """
+        yesterday = timezone.now() - datetime.timedelta(days=1)
+        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        self._create_student_and_submission("Bob", "Bob's answer")
+        self._create_student_and_submission("Sally", "Sally's answer")
+        sub = peer_api.get_submission_to_assess(tim_sub['uuid'], REQUIRED_GRADED)
+        self.assertEqual(u"Bob's answer", sub['answer'])
+
+        # And now we cheat; we want to set the clock back such that the lease
+        # on this PeerWorkflowItem has expired.
+        pwis = PeerWorkflowItem.objects.filter(submission_uuid=sub['uuid'])
+        self.assertEqual(len(pwis), 1)
+        pwis[0].started_at = yesterday
+        pwis[0].save()
+
+        sub = peer_api.get_submission_to_assess(tim_sub['uuid'], REQUIRED_GRADED)
+        self.assertEqual(u"Bob's answer", sub['answer'])
+
+        peer_api.create_assessment(
+            tim_sub["uuid"], tim["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            REQUIRED_GRADED_BY,
+        )
+
+        pwis = PeerWorkflowItem.objects.filter(submission_uuid=sub['uuid'])
+        self.assertEqual(len(pwis), 1)
+        self.assertNotEqual(pwis[0].started_at, yesterday)
+
+    @raises(peer_api.PeerAssessmentWorkflowError)
+    def test_no_submission_found_closing_assessment(self):
+        """
+        Confirm the appropriate error is raised when no submission is found
+        open for assessment, when submitting an assessment.
+        """
+        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
+        peer_api.create_assessment(
+            tim_sub["uuid"], tim["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            REQUIRED_GRADED_BY,
+        )
+
 
     def test_peer_assessment_workflow(self):
         tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
@@ -603,7 +651,7 @@ class TestPeerApi(CacheResetTest):
             scored_at=assessment_dict["scored_at"])[0]
         peer_api._close_active_assessment(buffy_workflow, xander_answer["uuid"], assessment, REQUIRED_GRADED_BY)
 
-        item = peer_api._create_peer_workflow_item(buffy_workflow, xander_answer["uuid"])
+        item = PeerWorkflowItem.objects.get(submission_uuid=xander_answer['uuid'])
         self.assertEqual(xander_answer["uuid"], submission["uuid"])
         self.assertIsNotNone(item.assessment)
 
@@ -665,7 +713,7 @@ class TestPeerApi(CacheResetTest):
         mock_filter.side_effect = DatabaseError("Oh no.")
         self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
 
-    @patch.object(PeerWorkflowItem.objects, 'get_or_create')
+    @patch.object(PeerWorkflow.objects, 'get')
     @raises(peer_api.PeerAssessmentInternalError)
     def test_create_workflow_item_error(self, mock_filter):
         mock_filter.side_effect = DatabaseError("Oh no.")
