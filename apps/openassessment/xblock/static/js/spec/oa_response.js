@@ -27,6 +27,9 @@ describe("OpenAssessment.ResponseView", function() {
 
     // Stub base view
     var StubBaseView = function() {
+        this.gradeView = {
+            load: function(){}
+        };
         this.showLoadError = function(msg) {};
         this.toggleActionError = function(msg, step) {};
         this.setUpCollapseExpand = function(sel) {};
