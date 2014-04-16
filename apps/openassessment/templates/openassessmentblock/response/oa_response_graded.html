@@ -1,4 +1,5 @@
 {% extends "openassessmentblock/response/oa_response.html" %}
+{% load i18n %}
 
 {% block list_item %}
 <li id="openassessment__response" class="openassessment__steps__step step--response is--complete ui-toggle-visibility is--collapsed">
@@ -6,10 +7,10 @@
 
 {% block title %}
 <span class="step__status">
-  <span class="step__status__label">This step's status:</span>
+  <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
     <i class="ico icon-ok"></i>
-    <span class="copy">Complete</span>
+    <span class="copy">{% trans "Complete" %}</span>
   </span>
 </span>
 {% endblock %}
@@ -19,7 +20,7 @@
     <div class="wrapper--step__content">
         <div class="step__content">
             <article class="submission__answer__display">
-                <h3 class="submission__answer__display__title">Your Submitted Response</h3>
+                <h3 class="submission__answer__display__title">{% trans "Your Response" %}</h3>
 
                 <div class="submission__answer__display__content">
                     {{ student_submission.answer.text|linebreaks }}

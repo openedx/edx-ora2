@@ -112,7 +112,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             xblock, 'openassessmentblock/response/oa_response.html',
             {
                 'saved_response': '',
-                'save_status': 'Unsaved draft',
+                'save_status': 'This response has not been saved.',
                 'submit_enabled': False,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
             }
@@ -124,7 +124,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             xblock, 'openassessmentblock/response/oa_response.html',
             {
                 'saved_response': '',
-                'save_status': 'Unsaved draft',
+                'save_status': 'This response has not been saved.',
                 'submit_enabled': False,
             }
         )
@@ -140,7 +140,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             xblock, 'openassessmentblock/response/oa_response.html',
             {
                 'saved_response': 'A man must have a code',
-                'save_status': 'Saved but not submitted',
+                'save_status': 'This response has been saved but not submitted.',
                 'submit_enabled': True,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
             }
@@ -231,7 +231,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
     def test_integration(self, xblock):
         # Expect that the response step is open and displays the deadline
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
-        self.assertIn('Please provide your response below', resp)
+        self.assertIn('Enter your response to the question', resp)
         self.assertIn('Monday, May 6, 2999 00:00 UTC', resp)
 
         # Create a submission for the user

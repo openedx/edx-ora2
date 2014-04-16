@@ -1,11 +1,12 @@
+{% load i18n %}
 {% spaceless %}
 <li id="openassessment__grade" class="openassessment__steps__step step--grade">
     <header class="step__header ui-toggle-visibility__control">
         <h2 class="step__title">
             <span class="wrapper--copy">
-                <span class="step__label">Your Grade:</span>
+                <span class="step__label">{% trans "Your Grade" %}:</span>
                 <span class="grade__value">
-                    <span class="grade__value__title">Waiting for Peer Assessment</span>
+                    <span class="grade__value__title">{% trans "Waiting for Peer Assessment" %}</span>
                 </span>
             </span>
         </h2>
@@ -15,7 +16,7 @@
         <div class="wrapper--step__content">
             <div class="step__content">
                 <div class="grade__value__description">
-                    <p>Your response is still undergoing peer assessment. After your peers have assessed your response, you'll see their comments and receive your final grade.</p>
+                    <p>{% trans "Your response is still undergoing peer assessment. After your peers have assessed your response, you'll see their comments and receive your final grade." %}</p>
                 </div>
             </div>
         </div>

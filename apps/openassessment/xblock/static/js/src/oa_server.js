@@ -69,7 +69,7 @@ OpenAssessment.Server.prototype = {
             }).done(function(data) {
                 defer.resolveWith(this, [data]);
             }).fail(function(data) {
-                defer.rejectWith(this, ['Could not contact server.']);
+                defer.rejectWith(this, ['This section could not be loaded.']);
             });
         }).promise();
     },
@@ -100,7 +100,7 @@ OpenAssessment.Server.prototype = {
             }).done(function(data) {
                     defer.resolveWith(this, [data]);
                 }).fail(function(data) {
-                    defer.rejectWith(this, ['Could not contact server.']);
+                    defer.rejectWith(this, ['This section could not be loaded.']);
                 });
         }).promise();
     },
@@ -119,7 +119,7 @@ OpenAssessment.Server.prototype = {
         var url = this.url('submit');
         if (submission.length > this.maxInputSize) {
             return $.Deferred(function(defer) {
-                defer.rejectWith(this, ["submit", "Response text is too large. Please reduce the size of your response and try to submit again."]);
+                defer.rejectWith(this, ["submit", "This response is too long. Please shorten the response and try to submit it again."]);
             }).promise();
         }
         return $.Deferred(function(defer) {
@@ -140,7 +140,7 @@ OpenAssessment.Server.prototype = {
                     defer.rejectWith(this, [errorNum, errorMsg]);
                 }
             }).fail(function(data) {
-                defer.rejectWith(this, ["AJAX", "Could not contact server."]);
+                defer.rejectWith(this, ["AJAX", "This response could not be submitted."]);
             });
         }).promise();
     },
@@ -159,7 +159,7 @@ OpenAssessment.Server.prototype = {
         var url = this.url('save_submission');
         if (submission.length > this.maxInputSize) {
             return $.Deferred(function(defer) {
-                defer.rejectWith(this, ["Response text is too large. Please reduce the size of your response and try to submit again."]);
+                defer.rejectWith(this, ["This response is too long. Please shorten the response and try to save it again."]);
             }).promise();
         }
         return $.Deferred(function(defer) {
@@ -171,7 +171,7 @@ OpenAssessment.Server.prototype = {
                 if (data.success) { defer.resolve(); }
                 else { defer.rejectWith(this, [data.msg]); }
             }).fail(function(data) {
-                defer.rejectWith(this, ["Could not contact server."]);
+                defer.rejectWith(this, ["This response could not be saved."]);
             });
         }).promise();
     },
@@ -199,7 +199,7 @@ OpenAssessment.Server.prototype = {
         var url = this.url('submit_feedback');
         if (text.length > this.maxInputSize) {
             return $.Deferred(function(defer) {
-                defer.rejectWith(this, ["Response text is too large. Please reduce the size of your response and try to submit again."]);
+                defer.rejectWith(this, ["This feedback is too long. Please shorten your feedback and try to submit it again."]);
             }).promise();
         }
         var payload = JSON.stringify({
@@ -213,7 +213,7 @@ OpenAssessment.Server.prototype = {
                     else { defer.rejectWith(this, [data.msg]); }
                 }
             ).fail(function(data) {
-                defer.rejectWith(this, ['Could not contact server.']);
+                defer.rejectWith(this, ['This feedback could not be submitted.']);
             });
         }).promise();
     },
@@ -221,7 +221,6 @@ OpenAssessment.Server.prototype = {
     /**
     Send a peer assessment to the XBlock.
     Args:
-        submissionId (string): The UUID of the submission.
         optionsSelected (object literal): Keys are criteria names,
             values are the option text the user selected for the criterion.
         feedback (string): Written feedback on the submission.
@@ -233,21 +232,20 @@ OpenAssessment.Server.prototype = {
     Example:
         var options = { clarity: "Very clear", precision: "Somewhat precise" };
         var feedback = "Good job!";
-        server.peerAssess("abc123", options, feedback).done(
+        server.peerAssess(options, feedback).done(
             function() { console.log("Success!"); }
         ).fail(
             function(errorMsg) { console.log(errorMsg); }
         );
     **/
-    peerAssess: function(submissionId, optionsSelected, feedback) {
+    peerAssess: function(optionsSelected, feedback) {
         var url = this.url('peer_assess');
         if (feedback.length > this.maxInputSize) {
             return $.Deferred(function(defer) {
-                defer.rejectWith(this, ["Response text is too large. Please reduce the size of your response and try to submit again."]);
+                defer.rejectWith(this, ["The comments on this assessment are too long. Please shorten your comments and try to submit them again."]);
             }).promise();
         }
         var payload = JSON.stringify({
-            submission_uuid: submissionId,
             options_selected: optionsSelected,
             feedback: feedback
         });
@@ -262,7 +260,7 @@ OpenAssessment.Server.prototype = {
                     }
                 }
             ).fail(function(data) {
-                defer.rejectWith(this, ['Could not contact server.']);
+                defer.rejectWith(this, ['This assessment could not be submitted.']);
             });
         }).promise();
     },
@@ -271,7 +269,6 @@ OpenAssessment.Server.prototype = {
     Send a self-assessment to the XBlock.
 
     Args:
-        submissionId (string): The UUID of the submission.
         optionsSelected (object literal): Keys are criteria names,
             values are the option text the user selected for the criterion.
 
@@ -281,16 +278,15 @@ OpenAssessment.Server.prototype = {
 
     Example:
         var options = { clarity: "Very clear", precision: "Somewhat precise" };
-        server.selfAssess("abc123", options).done(
+        server.selfAssess(options).done(
             function() { console.log("Success!"); }
         ).fail(
             function(errorMsg) { console.log(errorMsg); }
         );
     **/
-    selfAssess: function(submissionId, optionsSelected) {
+    selfAssess: function(optionsSelected) {
         var url = this.url('self_assess');
         var payload = JSON.stringify({
-            submission_uuid: submissionId,
             options_selected: optionsSelected
         });
         return $.Deferred(function(defer) {
@@ -304,7 +300,7 @@ OpenAssessment.Server.prototype = {
                     }
                 }
             ).fail(function(data) {
-                defer.rejectWith(this, ['Could not contact server.']);
+                defer.rejectWith(this, ['This assessment could not be submitted.']);
             });
         });
     },
@@ -332,7 +328,7 @@ OpenAssessment.Server.prototype = {
                 if (data.success) { defer.resolveWith(this, [data.xml]); }
                 else { defer.rejectWith(this, [data.msg]); }
             }).fail(function(data) {
-                defer.rejectWith(this, ['Could not contact server.']);
+                defer.rejectWith(this, ['This problem could not be loaded.']);
             });
         }).promise();
     },
@@ -361,7 +357,7 @@ OpenAssessment.Server.prototype = {
                 if (data.success) { defer.resolve(); }
                 else { defer.rejectWith(this, [data.msg]); }
             }).fail(function(data) {
-                defer.rejectWith(this, ['Could not contact server.']);
+                defer.rejectWith(this, ['This problem could not be saved.']);
             });
         }).promise();
     },
@@ -391,7 +387,7 @@ OpenAssessment.Server.prototype = {
                 if (data.success) { defer.resolveWith(this, [data.is_released]); }
                 else { defer.rejectWith(this, [data.msg]); }
             }).fail(function(data) {
-                defer.rejectWith(this, ["Could not contact server."]);
+                defer.rejectWith(this, ["The server could not be contacted."]);
             });
         }).promise();
     }
