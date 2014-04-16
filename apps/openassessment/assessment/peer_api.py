@@ -741,11 +741,14 @@ def _create_peer_workflow_item(workflow, submission_uuid):
     """
     try:
         peer_workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
+
         workflow_item, __ = PeerWorkflowItem.objects.get_or_create(
             scorer=workflow,
             author=peer_workflow,
             submission_uuid=submission_uuid
         )
+        workflow_item.started_at = timezone.now()
+        workflow_item.save()
         return workflow_item
     except DatabaseError:
         error_message = _(
@@ -845,6 +848,7 @@ def _get_submission_for_review(workflow, graded_by, over_grading=False):
             "   select pwi.author_id "
             "   from assessment_peerworkflowitem pwi "
             "   where pwi.scorer_id=%s "
+            "   and pwi.assessment_id is not NULL "
             ") "
             "and ("
             "   select count(pwi.id) as c "
@@ -972,7 +976,14 @@ def _close_active_assessment(
 
     """
     try:
-        item = workflow.graded.get(submission_uuid=submission_uuid)
+        item_query = workflow.graded.filter(submission_uuid=submission_uuid).order_by("-started_at", "-id")
+        items = list(item_query[:1])
+        if not items:
+            raise PeerAssessmentWorkflowError(_(
+                u"No open assessment was found for student {} while assessing "
+                u"submission UUID {}.".format(workflow.student_id, submission_uuid)
+            ))
+        item = items[0]
         item.assessment = assessment
         if (not item.author.grading_completed_at
                 and item.author.graded_by.all().count() >= num_required_grades):
