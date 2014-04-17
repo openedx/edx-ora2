@@ -216,6 +216,54 @@ OpenAssessment.BaseView.prototype = {
     },
 
     /**
+     Enable/disable the peer assess button button.
+     Check that whether the peer assess button is enabled.
+
+     Args:
+     enabled (bool): If specified, set the state of the button.
+
+     Returns:
+     bool: Whether the button is enabled.
+
+     Examples:
+     >> view.peerSubmitEnabled(true);  // enable the button
+     >> view.peerSubmitEnabled();  // check whether the button is enabled
+     >> true
+     **/
+    peerSubmitEnabled: function(enabled) {
+        var button = $('#peer-assessment--001__assessment__submit', this.element);
+        if (typeof enabled === 'undefined') {
+            return !button.hasClass('is--disabled');
+        } else {
+            button.toggleClass('is--disabled', !enabled)
+        }
+    },
+
+    /**
+     Enable/disable the self assess button.
+     Check that whether the self assess button is enabled.
+
+     Args:
+     enabled (bool): If specified, set the state of the button.
+
+     Returns:
+     bool: Whether the button is enabled.
+
+     Examples:
+     >> view.selfSubmitEnabled(true);  // enable the button
+     >> view.selfSubmitEnabled();  // check whether the button is enabled
+     >> true
+     **/
+    selfSubmitEnabled: function(enabled) {
+        var button = $('#self-assessment--001__assessment__submit', this.element);
+        if (typeof enabled === 'undefined') {
+            return !button.hasClass('is--disabled');
+        } else {
+            button.toggleClass('is--disabled', !enabled)
+        }
+    },
+
+    /**
     Send an assessment to the server and update the view.
     **/
     peerAssess: function() {
@@ -261,11 +309,14 @@ OpenAssessment.BaseView.prototype = {
 
         // Send the assessment to the server
         var view = this;
-        this.toggleActionError('peer', null);
+        view.toggleActionError('peer', null);
+        view.peerSubmitEnabled(false);
+
         this.server.peerAssess(optionsSelected, feedback).done(
                 successFunction
             ).fail(function(errMsg) {
                 view.toggleActionError('peer', errMsg);
+                view.peerSubmitEnabled(true);
             });
     },
 
@@ -283,7 +334,9 @@ OpenAssessment.BaseView.prototype = {
 
         // Send the assessment to the server
         var view = this;
-        this.toggleActionError('self', null);
+        view.toggleActionError('self', null);
+        view.selfSubmitEnabled(false);
+
         this.server.selfAssess(optionsSelected).done(
             function() {
                 view.renderPeerAssessmentStep();
@@ -293,6 +346,7 @@ OpenAssessment.BaseView.prototype = {
             }
         ).fail(function(errMsg) {
             view.toggleActionError('self', errMsg);
+            view.selfSubmitEnabled(true);
         });
     },
 
