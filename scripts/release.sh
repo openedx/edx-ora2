@@ -1,37 +1,55 @@
 #!/usr/bin/env bash
 
-# Use YYYY-MM-DD format
-DATE=`date +%Y-%m-%d`
+###################################################################
+#
+#   Create a new tag for a release of edx-ora2 and
+#   push it to the remote.
+#
+#   Release tags have a uniform naming scheme that includes
+#   the current date.
+#
+#   Usage:
+#
+#       ./release.sh COMMIT
+#
+#   If no commit is specified, use origin/master.
+#
+#   Examples:
+#
+#       Create a release tag for origin/master:
+#       ./release.sh
+#
+#       Create a release tag for a specific commit:
+#       ./release.sh f921f3ee4bc07edf2f1b492f94350cb1dd844100
+#
+#       Create a release tag without user input:
+#       yes | ./release.sh
+#
+###################################################################
 
-read -p "Cut the release branch?  (You may lose changes that are not committed or stashed.)  [y/n]  " RESP
+# Use YYYY-MM-DD-HH:MM format (UTC)
+DATE=`date -u +%Y-%m-%dT%H.%M`
+
+read -p "Create the release candidate?  (You may lose changes that are not committed or stashed.)  [y/n]  " RESP
 if [ "$RESP" != "y" ]; then
     exit 0
 fi
 
 echo "Updating origin/master..."
-git fetch && git checkout -q origin/master
+git fetch
 
-echo "Creating the release branch..."
-BRANCH="rc/$DATE"
-git branch | grep -q "$BRANCH$"
-if [ $? -eq 0 ]; then
-    read -p "Branch $BRANCH already exists.  Delete it? [y/n]  " RESP
-    if [ "$RESP" = "y" ]; then
-        echo "Deleting $BRANCH"
-        git branch -D $BRANCH
-    else
-        exit 0
-    fi
+# If no commit is specified, use origin/master
+if [ -z "$1" ]; then
+    git checkout -q origin/master || exit 1
+else
+    git checkout -q $1 || exit 1
 fi
 
-git checkout -b $BRANCH
-echo " == Created branch $BRANCH"
-
-echo "Tagging the release branch..."
+echo "Tagging the release candidate..."
 TAG="release-$DATE"
 git tag | grep -q "$TAG"
 if [ $? -eq 0 ]; then
-    read -p "Tag $TAG already exists.  Delete it? [y/n]  " RESP
+    read -p "Tag $TAG already exists.  Delete it and create a new one? [y/n]  " RESP
     if [ "$RESP" = "y" ]; then
         echo "Deleting $TAG"
         git tag -d $TAG
@@ -43,13 +61,12 @@ fi
 git tag -m "release for $DATE" "$TAG"
 echo " == Created tag $TAG"
 
-read -p "Push branch $BRANCH and tag $TAG to origin? [y/n]  " RESP
+read -p "Push tag $TAG to origin? [y/n]  " RESP
 if [ "$RESP" = "y" ]; then
-    git push origin $BRANCH && git push origin $TAG
-    echo " == Pushed branch $BRANCH and tag $TAG to origin"
+    git push origin $TAG
+    echo " == Pushed tag $TAG to origin"
 fi
 
 echo " == Finished =="
-echo "Branch: $BRANCH"
 echo "Tag: $TAG"
 echo "Commit: `git rev-parse HEAD`"
