@@ -57,11 +57,11 @@
                 <explanation></explanation>
             </option>
         </criterion>
-        <feedbackprompt>
-            Please provide additional free-form feedback on this submission.
+        <commentprompt>
+            Please provide additional free-form comments on this submission.
 
-            This feedback is completely optional.
-        </feedbackprompt>
+            These comments are completely optional.
+        </commentprompt>
     </rubric>
     <assessments>
         <assessment name="peer-assessment"

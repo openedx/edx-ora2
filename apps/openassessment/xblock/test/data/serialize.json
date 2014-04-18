@@ -2,7 +2,7 @@
     "simple": {
         "title": "Foo",
         "prompt": "Test prompt",
-        "rubric_feedback_prompt": "Test Feedback Prompt",
+        "rubric_comment_prompt": "Test Comment Prompt",
         "start": null,
         "due": null,
         "submission_start": null,
@@ -57,7 +57,7 @@
                     "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
                     "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
                 "</criterion>",
-                "<feedbackprompt>Test Feedback Prompt</feedbackprompt>",
+                "<commentprompt>Test Comment Prompt</commentprompt>",
             "</rubric>",
             "</openassessment>"
         ]
@@ -66,7 +66,7 @@
     "unicode": {
         "title": "ƒσσ",
         "prompt": "Ṫëṡẗ ṗṛöṁṗẗ",
-        "rubric_feedback_prompt": "†es† Feedbåck Prømp†",
+        "rubric_comment_prompt": "†es† çømmëñ† Prømp†",
         "start": null,
         "due": null,
         "submission_start": null,
@@ -115,16 +115,16 @@
                     "<option points=\"0\"><name>ℕ𝕠</name><explanation>ℕ𝕠 𝕖𝕩𝕡𝕝𝕒𝕟𝕒𝕥𝕚𝕠𝕟</explanation></option>",
                     "<option points=\"2\"><name>Чэѕ</name><explanation>Чэѕ эхрlаиатіои</explanation></option>",
                 "</criterion>",
-                "<feedbackprompt>†es† Feedbåck Prømp†</feedbackprompt>",
+                "<commentprompt>†es† çømmëñ† Prømp†</commentprompt>",
             "</rubric>",
             "</openassessment>"
         ]
     },
 
-    "empty_feedback_prompt": {
+    "empty_comment_prompt": {
         "title": "Foo",
         "prompt": "Test prompt",
-        "rubric_feedback_prompt": "",
+        "rubric_comment_prompt": "",
         "start": null,
         "due": null,
         "submission_start": null,
@@ -179,16 +179,16 @@
             "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
             "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
             "</criterion>",
-            "<feedbackprompt></feedbackprompt>",
+            "<commentprompt></commentprompt>",
             "</rubric>",
             "</openassessment>"
         ]
     },
 
-    "no_feedback_prompt": {
+    "no_comment_prompt": {
         "title": "Foo",
         "prompt": "Test prompt",
-        "rubric_feedback_prompt": null,
+        "rubric_comment_prompt": null,
         "start": null,
         "due": null,
         "submission_start": null,
@@ -251,7 +251,7 @@
     "reverse_option_order": {
         "title": "Foo",
         "prompt": "Test prompt",
-        "rubric_feedback_prompt": "Test Feedback Prompt",
+        "rubric_comment_prompt": "Test Comment Prompt",
         "start": null,
         "due": null,
         "submission_start": null,
@@ -300,7 +300,7 @@
                     "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
                     "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
                 "</criterion>",
-                "<feedbackprompt>Test Feedback Prompt</feedbackprompt>",
+                "<commentprompt>Test Comment Prompt</commentprompt>",
             "</rubric>",
             "</openassessment>"
         ]
@@ -309,7 +309,7 @@
     "reverse_criteria_order": {
         "title": "Foo",
         "prompt": "Test prompt",
-        "rubric_feedback_prompt": "Test Feedback Prompt",
+        "rubric_comment_prompt": "Test Comment Prompt",
         "start": null,
         "due": null,
         "submission_start": null,
@@ -376,7 +376,7 @@
                     "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
                     "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
                 "</criterion>",
-                "<feedbackprompt>Test Feedback Prompt</feedbackprompt>",
+                "<commentprompt>Test Comment Prompt</commentprompt>",
             "</rubric>",
             "</openassessment>"
         ]
@@ -385,7 +385,7 @@
     "default_dates": {
         "title": "Foo",
         "prompt": "Test prompt",
-        "rubric_feedback_prompt": "Test Feedback Prompt",
+        "rubric_comment_prompt": "Test Comment Prompt",
         "start": null,
         "due": null,
         "submission_start": null,
@@ -442,7 +442,7 @@
                     "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
                     "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
                 "</criterion>",
-                "<feedbackprompt>Test Feedback Prompt</feedbackprompt>",
+                "<commentprompt>Test Comment Prompt</commentprompt>",
             "</rubric>",
             "</openassessment>"
         ]
@@ -451,7 +451,7 @@
     "set_dates": {
         "title": "Foo",
         "prompt": "Test prompt",
-        "rubric_feedback_prompt": "Test Feedback Prompt",
+        "rubric_comment_prompt": "Test Comment Prompt",
         "start": "2010-04-01T00:00:00",
         "due": "2030-05-01T00:00:00",
         "submission_start": null,
@@ -508,7 +508,7 @@
                     "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
                     "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
                 "</criterion>",
-                "<feedbackprompt>Test Feedback Prompt</feedbackprompt>",
+                "<commentprompt>Test Comment Prompt</commentprompt>",
             "</rubric>",
             "</openassessment>"
         ]
