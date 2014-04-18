@@ -105,6 +105,12 @@ class OpenAssessmentBlock(
         help="The different parts of grading for students giving feedback."
     )
 
+    rubric_feedback_prompt = String(
+        default=DEFAULT_RUBRIC_FEEDBACK_PROMPT,
+        scope=Scope.content,
+        help="The rubric feedback prompt displayed to the student"
+    )
+
     rubric_assessments = List(
         default=DEFAULT_ASSESSMENT_MODULES,
         scope=Scope.content,

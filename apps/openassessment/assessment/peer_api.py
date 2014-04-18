@@ -23,7 +23,6 @@ from openassessment.assessment.serializers import (
     full_assessment_dict, rubric_from_dict, serialize_assessments,
 )
 from submissions import api as sub_api
-from submissions.api import get_submission_and_student
 
 logger = logging.getLogger("openassessment.assessment.peer_api")
 

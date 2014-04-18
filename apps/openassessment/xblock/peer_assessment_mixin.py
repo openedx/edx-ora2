@@ -142,6 +142,9 @@ class PeerAssessmentMixin(object):
             "estimated_time": "20 minutes"  # TODO: Need to configure this.
         }
 
+        if self.rubric_feedback_prompt is not None:
+            context_dict["rubric_feedback_prompt"] = self.rubric_feedback_prompt
+
         # We display the due date whether the problem is open or closed.
         # If no date is set, it defaults to the distant future, in which
         # case we don't display the date.

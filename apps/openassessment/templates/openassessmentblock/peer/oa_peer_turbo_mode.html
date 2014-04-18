@@ -87,10 +87,10 @@
 
                                     <li class="wrapper--input field field--textarea assessment__rubric__question assessment__rubric__question--feedback" id="assessment__rubric__question--feedback">
                                         <label class="question__title" for="assessment__rubric__question--feedback__value">
-                                            <span class="question__title__copy">{% trans "(Optional) What aspects of this response stood out to you? What did it do well? How could it improve?" %}</span>
+                                            <span class="question__title__copy">{{ rubric_feedback_prompt }}</span>
                                         </label>
                                         <div class="wrapper--input">
-                                            <textarea id="assessment__rubric__question--feedback__value" placeholder="{% trans "I felt this response was..." %}"></textarea>
+                                            <textarea id="assessment__rubric__question--feedback__value" placeholder="{% trans "I noticed that this response..." %}"></textarea>
                                         </div>
                                     </li>
                                 </ol>
