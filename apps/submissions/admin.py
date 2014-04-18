@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.core.urlresolvers import reverse
 from django.utils import html
 
-from submissions.models import Score, StudentItem, Submission
+from submissions.models import Score, ScoreSummary, StudentItem, Submission
 
 
 class StudentItemAdminMixin(object):
@@ -94,6 +94,36 @@ class ScoreAdmin(admin.ModelAdmin, StudentItemAdminMixin):
         return u"{}/{}".format(score.points_earned, score.points_possible)
 
 
+class ScoreSummaryAdmin(admin.ModelAdmin, StudentItemAdminMixin):
+    list_display = (
+        'id',
+        'course_id', 'item_id', 'student_id', 'student_item_id',
+        'latest', 'highest',
+    )
+    search_fields = ('id', ) + StudentItemAdminMixin.search_fields
+    readonly_fields = (
+        'student_item_id', 'student_item', 'highest_link', 'latest_link'
+    )
+    exclude = ('highest', 'latest')
+
+    def highest_link(self, score_summary):
+        url = reverse(
+            'admin:submissions_score_change', args=[score_summary.highest.id]
+        )
+        return u'<a href="{}">{}</a>'.format(url, score_summary.highest)
+    highest_link.allow_tags = True
+    highest_link.short_description = 'Highest'
+
+    def latest_link(self, score_summary):
+        url = reverse(
+            'admin:submissions_score_change', args=[score_summary.latest.id]
+        )
+        return u'<a href="{}">{}</a>'.format(url, score_summary.latest)
+    latest_link.allow_tags = True
+    latest_link.short_description = 'Latest'
+
+
 admin.site.register(Score, ScoreAdmin)
 admin.site.register(StudentItem, StudentItemAdmin)
 admin.site.register(Submission, SubmissionAdmin)
+admin.site.register(ScoreSummary, ScoreSummaryAdmin)

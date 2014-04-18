@@ -205,6 +205,9 @@ class Score(models.Model):
             reset=True,
         )
 
+    def __unicode__(self):
+        return u"{0.points_earned}/{0.points_possible}".format(self)
+
 
 class ScoreSummary(models.Model):
     """Running store of the highest and most recent Scores for a StudentItem."""
@@ -212,6 +215,9 @@ class ScoreSummary(models.Model):
 
     highest = models.ForeignKey(Score, related_name="+")
     latest = models.ForeignKey(Score, related_name="+")
+
+    class Meta:
+        verbose_name_plural = "Score Summaries"
 
     @receiver(post_save, sender=Score)
     def update_score_summary(sender, **kwargs):
