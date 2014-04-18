@@ -237,7 +237,7 @@ class Assessment(models.Model):
     objects that map to each :class:`Criterion` in the :class:`Rubric` we're
     assessing against.
     """
-    MAXSIZE = 1024 * 100     # 100KB 
+    MAXSIZE = 1024 * 100     # 100KB
 
     submission_uuid = models.CharField(max_length=128, db_index=True)
     rubric = models.ForeignKey(Rubric)
@@ -432,6 +432,9 @@ class AssessmentFeedbackOption(models.Model):
     based on the option text.
     """
     text = models.CharField(max_length=255, unique=True)
+
+    def __unicode__(self):
+        return u'"{}"'.format(self.text)
 
 
 class AssessmentFeedback(models.Model):

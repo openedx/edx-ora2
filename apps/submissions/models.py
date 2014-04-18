@@ -100,12 +100,21 @@ class Submission(models.Model):
             raw_answer=self.raw_answer,
         ))
 
+    def __unicode__(self):
+        return u"Submission {}".format(self.uuid)
+
     class Meta:
         ordering = ["-submitted_at", "-id"]
 
 
 class Score(models.Model):
-    """What the user scored for a given StudentItem at a given time."""
+    """What the user scored for a given StudentItem at a given time.
+
+    Note that while a Score *can* be tied to a Submission, it doesn't *have* to.
+    Specifically, if we want to have scores for things that are not a part of
+    the courseware (like "class participation"), there would be no corresponding
+    Submission.
+    """
     student_item = models.ForeignKey(StudentItem)
     submission = models.ForeignKey(Submission, null=True)
     points_earned = models.PositiveIntegerField(default=0)
