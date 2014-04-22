@@ -146,9 +146,9 @@ def _serialize_rubric(rubric_root, oa_block):
     if isinstance(criteria_list, list):
         _serialize_criteria(rubric_root, criteria_list)
 
-    if oa_block.rubric_comment_prompt is not None:
-        comment_prompt = etree.SubElement(rubric_root, 'commentprompt')
-        comment_prompt.text = unicode(oa_block.rubric_comment_prompt)
+    if oa_block.rubric_feedback_prompt is not None:
+        feedback_prompt = etree.SubElement(rubric_root, 'feedbackprompt')
+        feedback_prompt.text = unicode(oa_block.rubric_feedback_prompt)
 
 def _parse_date(date_str):
     """
@@ -295,11 +295,11 @@ def _parse_rubric_xml(rubric_root):
     else:
         raise UpdateFromXmlError(_('Every "criterion" element must contain a "prompt" element.'))
 
-    comment_prompt_el = rubric_root.find('commentprompt')
-    if comment_prompt_el is not None:
-        rubric_dict['commentprompt'] = _safe_get_text(comment_prompt_el)
+    feedback_prompt_el = rubric_root.find('feedbackprompt')
+    if feedback_prompt_el is not None:
+        rubric_dict['feedbackprompt'] = _safe_get_text(feedback_prompt_el)
     else:
-        rubric_dict['commentprompt'] = None
+        rubric_dict['feedbackprompt'] = None
 
     # Criteria
     rubric_dict['criteria'] = _parse_criteria_xml(rubric_root)
@@ -525,7 +525,7 @@ def update_from_xml(oa_block, root, validator=DEFAULT_VALIDATOR):
     oa_block.prompt = rubric['prompt']
     oa_block.rubric_criteria = rubric['criteria']
     oa_block.rubric_assessments = assessments
-    oa_block.rubric_comment_prompt = rubric['commentprompt']
+    oa_block.rubric_feedback_prompt = rubric['feedbackprompt']
     oa_block.submission_start = submission_start
     oa_block.submission_due = submission_due
 
