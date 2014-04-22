@@ -105,10 +105,10 @@ class OpenAssessmentBlock(
         help="The different parts of grading for students giving feedback."
     )
 
-    rubric_comment_prompt = String(
-        default=DEFAULT_RUBRIC_COMMENT_PROMPT,
+    rubric_feedback_prompt = String(
+        default=DEFAULT_RUBRIC_FEEDBACK_PROMPT,
         scope=Scope.content,
-        help="The rubric comment prompt displayed to the student"
+        help="The rubric feedback prompt displayed to the student"
     )
 
     rubric_assessments = List(
