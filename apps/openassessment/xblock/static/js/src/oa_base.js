@@ -1,17 +1,3 @@
-/* JavaScript for student-facing views of Open Assessment XBlock */
-
-/* Namespace for open assessment */
-if (typeof OpenAssessment == "undefined" || !OpenAssessment) {
-    OpenAssessment = {};
-}
-
-
-// Stub gettext if the runtime doesn't provide it
-if (typeof window.gettext === 'undefined') {
-    window.gettext = function(text) { return text; };
-}
-
-
 /**
 Interface for student-facing views.
 
@@ -29,6 +15,7 @@ OpenAssessment.BaseView = function(runtime, element, server) {
     this.server = server;
 
     this.responseView = new OpenAssessment.ResponseView(this.element, this.server, this);
+    this.peerView = new OpenAssessment.PeerView(this.element, this.server, this);
     this.gradeView = new OpenAssessment.GradeView(this.element, this.server, this);
 };
 
@@ -75,7 +62,7 @@ OpenAssessment.BaseView.prototype = {
      */
     load: function() {
         this.responseView.load();
-        this.renderPeerAssessmentStep();
+        this.peerView.load();
         this.renderSelfAssessmentStep();
         this.gradeView.load();
 
@@ -84,93 +71,6 @@ OpenAssessment.BaseView.prototype = {
         if (courseStaffDebug.length > 0) {
             this.setUpCollapseExpand(courseStaffDebug, function() {});
         }
-    },
-
-    /**
-    Render the peer-assessment step.
-    **/
-    renderPeerAssessmentStep: function() {
-        var view = this;
-        this.server.render('peer_assessment').done(
-            function(html) {
-
-                // Load the HTML
-                $('#openassessment__peer-assessment', view.element).replaceWith(html);
-                var sel = $('#openassessment__peer-assessment', view.element);
-
-                // Install a click handler for collapse/expand
-                view.setUpCollapseExpand(sel, $.proxy(view.renderContinuedPeerAssessmentStep, view));
-
-                // Install a change handler for rubric options to enable/disable the submit button
-                sel.find("#peer-assessment--001__assessment").change(
-                    function() {
-                        var numChecked = $('input[type=radio]:checked', this).length;
-                        var numAvailable = $('.field--radio.assessment__rubric__question', this).length;
-                        $("#peer-assessment--001__assessment__submit", view.element).toggleClass(
-                            'is--disabled', numChecked != numAvailable
-                        );
-                    }
-                );
-
-                // Install a click handler for assessment
-                sel.find('#peer-assessment--001__assessment__submit').click(
-                    function(eventObject) {
-                        // Override default form submission
-                        eventObject.preventDefault();
-
-                        // Handle the click
-                        view.peerAssess();
-                    }
-                );
-
-            }
-        ).fail(function(errMsg) {
-            view.showLoadError('peer-assessment');
-        });
-    },
-
-    /**
-     * Render the peer-assessment step for continued grading. Always renders as
-     * expanded, since this should be called for an explicit continuation of the
-     * peer grading process.
-     */
-    renderContinuedPeerAssessmentStep: function() {
-        var view = this;
-        this.server.renderContinuedPeer().done(
-            function(html) {
-
-                // Load the HTML
-                $('#openassessment__peer-assessment', view.element).replaceWith(html);
-                var sel = $('#openassessment__peer-assessment', view.element);
-
-                // Install a click handler for collapse/expand
-                view.setUpCollapseExpand(sel);
-
-                // Install a click handler for assessment
-                sel.find('#peer-assessment--001__assessment__submit').click(
-                    function(eventObject) {
-                        // Override default form submission
-                        eventObject.preventDefault();
-
-                        // Handle the click
-                        view.continuedPeerAssess();
-                    }
-                );
-
-                // Install a change handler for rubric options to enable/disable the submit button
-                sel.find("#peer-assessment--001__assessment").change(
-                    function() {
-                        var numChecked = $('input[type=radio]:checked', this).length;
-                        var numAvailable = $('.field--radio.assessment__rubric__question', this).length;
-                        $("#peer-assessment--001__assessment__submit", view.element).toggleClass(
-                            'is--disabled', numChecked != numAvailable
-                        );
-                    }
-                );
-            }
-        ).fail(function(errMsg) {
-            view.showLoadError('peer-assessment');
-        });
     },
 
     /**
@@ -216,30 +116,6 @@ OpenAssessment.BaseView.prototype = {
     },
 
     /**
-     Enable/disable the peer assess button button.
-     Check that whether the peer assess button is enabled.
-
-     Args:
-     enabled (bool): If specified, set the state of the button.
-
-     Returns:
-     bool: Whether the button is enabled.
-
-     Examples:
-     >> view.peerSubmitEnabled(true);  // enable the button
-     >> view.peerSubmitEnabled();  // check whether the button is enabled
-     >> true
-     **/
-    peerSubmitEnabled: function(enabled) {
-        var button = $('#peer-assessment--001__assessment__submit', this.element);
-        if (typeof enabled === 'undefined') {
-            return !button.hasClass('is--disabled');
-        } else {
-            button.toggleClass('is--disabled', !enabled)
-        }
-    },
-
-    /**
      Enable/disable the self assess button.
      Check that whether the self assess button is enabled.
 
@@ -259,65 +135,8 @@ OpenAssessment.BaseView.prototype = {
         if (typeof enabled === 'undefined') {
             return !button.hasClass('is--disabled');
         } else {
-            button.toggleClass('is--disabled', !enabled)
+            button.toggleClass('is--disabled', !enabled);
         }
-    },
-
-    /**
-    Send an assessment to the server and update the view.
-    **/
-    peerAssess: function() {
-        var view = this;
-        this.peerAssessRequest(function() {
-            view.renderPeerAssessmentStep();
-            view.renderSelfAssessmentStep();
-            view.gradeView.load();
-            view.scrollToTop();
-        });
-    },
-
-    /**
-     * Send an assessment to the server and update the view, with the assumption
-     * that we are continuing peer assessments beyond the required amount.
-     */
-    continuedPeerAssess: function() {
-        var view = this;
-        view.peerAssessRequest(function() {
-            view.renderContinuedPeerAssessmentStep();
-            view.gradeView.load();
-        });
-    },
-
-    /**
-     * Common peer assessment request building, used for all types of peer
-     * assessments.
-     *
-     * Args:
-     *      successFunction (function): The function called if the request is
-     *          successful. This varies based on the type of request to submit
-     *          a peer assessment.
-     */
-    peerAssessRequest: function(successFunction) {
-        // Retrieve assessment info from the DOM
-        var optionsSelected = {};
-        $("#peer-assessment--001__assessment input[type=radio]:checked", this.element).each(
-            function(index, sel) {
-                optionsSelected[sel.name] = sel.value;
-            }
-        );
-        var feedback = $('#assessment__rubric__question--feedback__value', this.element).val();
-
-        // Send the assessment to the server
-        var view = this;
-        view.toggleActionError('peer', null);
-        view.peerSubmitEnabled(false);
-
-        this.server.peerAssess(optionsSelected, feedback).done(
-                successFunction
-            ).fail(function(errMsg) {
-                view.toggleActionError('peer', errMsg);
-                view.peerSubmitEnabled(true);
-            });
     },
 
     /**
@@ -339,7 +158,7 @@ OpenAssessment.BaseView.prototype = {
 
         this.server.selfAssess(optionsSelected).done(
             function() {
-                view.renderPeerAssessmentStep();
+                view.peerView.load();
                 view.renderSelfAssessmentStep();
                 view.gradeView.load();
                 view.scrollToTop();

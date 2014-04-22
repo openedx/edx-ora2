@@ -93,14 +93,10 @@ class Command(BaseCommand):
                 peer_api.create_peer_workflow_item(scorer_submission_uuid, submission_uuid)
 
                 # Create the peer assessment
-                assessment = {
-                    'options_selected': options_selected,
-                    'feedback': "  ".join(loremipsum.get_paragraphs(2))
-                }
                 peer_api.create_assessment(
                     scorer_submission_uuid,
                     scorer_id,
-                    assessment,
+                    options_selected, {}, "  ".join(loremipsum.get_paragraphs(2)),
                     rubric,
                     self.NUM_PEER_ASSESSMENTS
                 )

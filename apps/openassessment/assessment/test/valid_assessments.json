@@ -1,6 +1,7 @@
 {
     "unicode_evaluation": {
-        "feedback": "这是中国",
+        "overall_feedback": "这是中国",
+        "criterion_feedback": {},
         "options_selected": {
             "secret": "yes",
             "ⓢⓐⓕⓔ": "no",
@@ -9,7 +10,8 @@
         }
     },
     "basic_evaluation": {
-        "feedback": "Your submission was thrilling.",
+        "overall_feedback": "Your submission was thrilling.",
+        "criterion_feedback": {},
         "options_selected": {
             "secret": "yes",
             "ⓢⓐⓕⓔ": "no",

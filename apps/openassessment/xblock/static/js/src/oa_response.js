@@ -1,17 +1,3 @@
-/* JavaScript for response (submission) view */
-
-/* Namespace for open assessment */
-if (typeof OpenAssessment == "undefined" || !OpenAssessment) {
-    OpenAssessment = {};
-}
-
-
-// Stub gettext if the runtime doesn't provide it
-if (typeof window.gettext === 'undefined') {
-    window.gettext = function(text) { return text; };
-}
-
-
 /**
 Interface for response (submission) view.
 
@@ -305,7 +291,7 @@ OpenAssessment.ResponseView.prototype = {
     **/
     moveToNextStep: function() {
         this.load();
-        this.baseView.renderPeerAssessmentStep();
+        this.baseView.peerView.load();
         this.baseView.gradeView.load();
 
         // Disable the "unsaved changes" warning if the user

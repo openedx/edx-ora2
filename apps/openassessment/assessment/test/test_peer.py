@@ -10,7 +10,10 @@ from nose.tools import raises
 
 from openassessment.test_utils import CacheResetTest
 from openassessment.assessment import peer_api
-from openassessment.assessment.models import Assessment, PeerWorkflow, PeerWorkflowItem, AssessmentFeedback
+from openassessment.assessment.models import (
+    Assessment, AssessmentPart, AssessmentFeedback,
+    PeerWorkflow, PeerWorkflowItem
+)
 from openassessment.workflow import api as workflow_api
 from submissions import api as sub_api
 from submissions.tests.test_api import STUDENT_ITEM, ANSWER_ONE
@@ -67,48 +70,61 @@ RUBRIC_DICT = {
 }
 
 # Answers are against RUBRIC_DICT -- this is worth 6 points
-ASSESSMENT_DICT = dict(
-    feedback=u"这是中国",
-    options_selected={
+ASSESSMENT_DICT = {
+    'overall_feedback': u"这是中国",
+    'criterion_feedback': {
+        "giveup": u"𝓨𝓸𝓾 𝓼𝓱𝓸𝓾𝓵𝓭𝓷'𝓽 𝓰𝓲𝓿𝓮 𝓾𝓹!"
+    },
+    'options_selected': {
         "secret": "yes",
         u"ⓢⓐⓕⓔ": "no",
         "giveup": "reluctant",
         "singing": "no",
-    }
-)
+    },
+}
 
 # Answers are against RUBRIC_DICT -- this is worth 0 points
-ASSESSMENT_DICT_FAIL = dict(
-    feedback=u"fail",
-    options_selected={
+ASSESSMENT_DICT_FAIL = {
+    'overall_feedback': u"fail",
+    'criterion_feedback': {},
+    'options_selected': {
         "secret": "no",
         u"ⓢⓐⓕⓔ": "no",
         "giveup": "unwilling",
         "singing": "yes",
     }
-)
+}
 
 # Answers are against RUBRIC_DICT -- this is worth 12 points
-ASSESSMENT_DICT_PASS = dict(
-    feedback=u"这是中国",
-    options_selected={
+ASSESSMENT_DICT_PASS = {
+    'overall_feedback': u"这是中国",
+    'criterion_feedback': {},
+    'options_selected': {
         "secret": "yes",
         u"ⓢⓐⓕⓔ": "yes",
         "giveup": "eager",
         "singing": "no",
     }
-)
+}
 
 # Answers are against RUBRIC_DICT -- this is worth 12 points
-ASSESSMENT_DICT_PASS_HUGE = dict(
-    feedback=u"这是中国" * Assessment.MAXSIZE,
-    options_selected={
+# Feedback text is one character over the limit.
+LONG_FEEDBACK_TEXT = u"是" * Assessment.MAXSIZE + "."
+ASSESSMENT_DICT_HUGE = {
+    'overall_feedback': LONG_FEEDBACK_TEXT,
+    'criterion_feedback': {
+        "secret": LONG_FEEDBACK_TEXT,
+        u"ⓢⓐⓕⓔ": LONG_FEEDBACK_TEXT,
+        "giveup": LONG_FEEDBACK_TEXT,
+        "singing": LONG_FEEDBACK_TEXT,
+    },
+    'options_selected': {
         "secret": "yes",
         u"ⓢⓐⓕⓔ": "yes",
         "giveup": "eager",
         "singing": "no",
-    }
-)
+    },
+}
 
 REQUIRED_GRADED = 5
 REQUIRED_GRADED_BY = 3
@@ -121,33 +137,124 @@ THURSDAY = datetime.datetime(2007, 9, 16, 0, 0, 0, 0, pytz.UTC)
 
 @ddt
 class TestPeerApi(CacheResetTest):
-    def test_create_assessment(self):
-        self._create_student_and_submission("Tim", "Tim's answer")
-        bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
-        sub = peer_api.get_submission_to_assess(bob_sub['uuid'], 1)
-        assessment = peer_api.create_assessment(
-            bob_sub["uuid"],
-            bob["student_id"],
-            ASSESSMENT_DICT,
-            RUBRIC_DICT,
-            REQUIRED_GRADED_BY,
-        )
-        self.assertEqual(assessment["points_earned"], 6)
-        self.assertEqual(assessment["points_possible"], 14)
-        self.assertEqual(assessment["feedback"], ASSESSMENT_DICT["feedback"])
+    """
+    Tests for the peer assessment API functions.
+    """
 
-    def test_create_huge_assessment_fails(self):
+    CREATE_ASSESSMENT_NUM_QUERIES = 60
+
+    def test_create_assessment_points(self):
         self._create_student_and_submission("Tim", "Tim's answer")
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
-        sub = peer_api.get_submission_to_assess(bob_sub['uuid'], 1)
-        with self.assertRaises(peer_api.PeerAssessmentRequestError):
-            peer_api.create_assessment(
+        peer_api.get_submission_to_assess(bob_sub['uuid'], 1)
+
+        with self.assertNumQueries(self.CREATE_ASSESSMENT_NUM_QUERIES):
+            assessment = peer_api.create_assessment(
                 bob_sub["uuid"],
                 bob["student_id"],
-                ASSESSMENT_DICT_PASS_HUGE,
+                ASSESSMENT_DICT['options_selected'], dict(), "",
                 RUBRIC_DICT,
                 REQUIRED_GRADED_BY,
             )
+        self.assertEqual(assessment["points_earned"], 6)
+        self.assertEqual(assessment["points_possible"], 14)
+
+    def test_create_assessment_with_feedback(self):
+        self._create_student_and_submission("Tim", "Tim's answer")
+        bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
+        peer_api.get_submission_to_assess(bob_sub['uuid'], 1)
+
+        # Creating feedback per criterion should need one additional query to update
+        # for each criterion that has feedback.
+        with self.assertNumQueries(self.CREATE_ASSESSMENT_NUM_QUERIES + 1):
+            assessment = peer_api.create_assessment(
+                bob_sub["uuid"],
+                bob["student_id"],
+                ASSESSMENT_DICT['options_selected'],
+                ASSESSMENT_DICT['criterion_feedback'],
+                ASSESSMENT_DICT['overall_feedback'],
+                RUBRIC_DICT,
+                REQUIRED_GRADED_BY,
+            )
+        self.assertEqual(assessment["feedback"], ASSESSMENT_DICT["overall_feedback"])
+
+        # The parts are not guaranteed to be in any particular order,
+        # so we need to iterate through and check them by name.
+        # If we haven't explicitly set feedback for the criterion, expect
+        # that it defaults to an empty string.
+        for part in assessment['parts']:
+            criterion_name = part['option']['criterion']['name']
+            expected_feedback = ASSESSMENT_DICT['criterion_feedback'].get(criterion_name, "")
+            self.assertEqual(part['feedback'], expected_feedback)
+
+    def test_create_assessment_unknown_criterion_feedback(self):
+        self._create_student_and_submission("Tim", "Tim's answer")
+        bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
+        peer_api.get_submission_to_assess(bob_sub['uuid'], 1)
+
+        # Create an assessment where the criterion feedback uses
+        # a criterion name that isn't in the rubric.
+        assessment = peer_api.create_assessment(
+            bob_sub["uuid"],
+            bob["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            {'unknown': 'Unknown criterion has feedback!'},
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
+            REQUIRED_GRADED_BY,
+        )
+
+        # The criterion feedback should be ignored
+        for part_num in range(3):
+            self.assertEqual(assessment["parts"][part_num]["feedback"], "")
+
+    def test_create_huge_overall_feedback_error(self):
+        self._create_student_and_submission("Tim", "Tim's answer")
+        bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
+        peer_api.get_submission_to_assess(bob_sub['uuid'], 1)
+
+        # Huge overall feedback text
+        assessment_dict = peer_api.create_assessment(
+            bob_sub["uuid"],
+            bob["student_id"],
+            ASSESSMENT_DICT_HUGE['options_selected'],
+            dict(),
+            ASSESSMENT_DICT_HUGE['overall_feedback'],
+            RUBRIC_DICT,
+            REQUIRED_GRADED_BY,
+        )
+
+        # The assessment feedback text should be truncated
+        self.assertEqual(len(assessment_dict['feedback']), Assessment.MAXSIZE)
+
+        # The length of the feedback text in the database should
+        # equal what we got from the API.
+        assessment = Assessment.objects.get()
+        self.assertEqual(len(assessment.feedback), Assessment.MAXSIZE)
+
+    def test_create_huge_per_criterion_feedback_error(self):
+        self._create_student_and_submission("Tim", "Tim's answer")
+        bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
+        peer_api.get_submission_to_assess(bob_sub['uuid'], 1)
+
+        # Huge per-criterion feedback text
+        assessment = peer_api.create_assessment(
+            bob_sub["uuid"],
+            bob["student_id"],
+            ASSESSMENT_DICT_HUGE['options_selected'],
+            ASSESSMENT_DICT_HUGE['criterion_feedback'],
+            "",
+            RUBRIC_DICT,
+            REQUIRED_GRADED_BY,
+        )
+
+        # Verify that the feedback has been truncated
+        for part in assessment['parts']:
+            self.assertEqual(len(part['feedback']), Assessment.MAXSIZE)
+
+        # Verify that the feedback in the database matches what we got back from the API
+        for part in AssessmentPart.objects.all():
+            self.assertEqual(len(part.feedback), Assessment.MAXSIZE)
 
     @file_data('valid_assessments.json')
     def test_get_assessments(self, assessment_dict):
@@ -157,7 +264,9 @@ class TestPeerApi(CacheResetTest):
         peer_api.create_assessment(
             bob_sub["uuid"],
             bob["student_id"],
-            assessment_dict,
+            assessment_dict['options_selected'],
+            assessment_dict['criterion_feedback'],
+            assessment_dict['overall_feedback'],
             RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
@@ -172,7 +281,9 @@ class TestPeerApi(CacheResetTest):
         peer_api.create_assessment(
             bob_sub["uuid"],
             bob["student_id"],
-            assessment_dict,
+            assessment_dict['options_selected'],
+            assessment_dict['criterion_feedback'],
+            assessment_dict['overall_feedback'],
             RUBRIC_DICT,
             REQUIRED_GRADED_BY,
             MONDAY,
@@ -186,7 +297,7 @@ class TestPeerApi(CacheResetTest):
         Verify unfinished assessments do not get counted when determining a
         complete workflow.
         """
-        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        tim_sub, _ = self._create_student_and_submission("Tim", "Tim's answer")
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
         sub = peer_api.get_submission_to_assess(bob_sub['uuid'], 1)
         self.assertEqual(sub["uuid"], tim_sub["uuid"])
@@ -194,7 +305,11 @@ class TestPeerApi(CacheResetTest):
         self.assertFalse(finished)
         self.assertEqual(count, 0)
         peer_api.create_assessment(
-            bob_sub["uuid"], bob["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            bob_sub["uuid"], bob["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
             1,
         )
         finished, count = peer_api.has_finished_required_evaluating(bob_sub['uuid'], 1)
@@ -229,7 +344,11 @@ class TestPeerApi(CacheResetTest):
         self.assertEqual(u"Bob's answer", sub['answer'])
 
         peer_api.create_assessment(
-            tim_sub["uuid"], tim["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            tim_sub["uuid"], tim["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
 
@@ -245,7 +364,11 @@ class TestPeerApi(CacheResetTest):
         """
         tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
         peer_api.create_assessment(
-            tim_sub["uuid"], tim["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            tim_sub["uuid"], tim["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
 
@@ -274,7 +397,11 @@ class TestPeerApi(CacheResetTest):
             self.assertEquals((False, i), peer_api.has_finished_required_evaluating(tim_sub['uuid'], REQUIRED_GRADED))
             sub = peer_api.get_submission_to_assess(tim_sub['uuid'], REQUIRED_GRADED)
             peer_api.create_assessment(
-                tim_sub["uuid"], tim["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+                tim_sub["uuid"], tim["student_id"],
+                ASSESSMENT_DICT['options_selected'],
+                ASSESSMENT_DICT['criterion_feedback'],
+                ASSESSMENT_DICT['overall_feedback'],
+                RUBRIC_DICT,
                 REQUIRED_GRADED_BY,
             )
 
@@ -287,21 +414,33 @@ class TestPeerApi(CacheResetTest):
         sub = peer_api.get_submission_to_assess(bob_sub['uuid'], REQUIRED_GRADED)
         self.assertEqual(sub["uuid"], tim_sub["uuid"])
         peer_api.create_assessment(
-            bob_sub["uuid"], bob["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            bob_sub["uuid"], bob["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
 
         sub = peer_api.get_submission_to_assess(sally_sub['uuid'], REQUIRED_GRADED)
         self.assertEqual(sub["uuid"], tim_sub["uuid"])
         peer_api.create_assessment(
-            sally_sub["uuid"], sally["student_id"], ASSESSMENT_DICT_FAIL, RUBRIC_DICT,
+            sally_sub["uuid"], sally["student_id"],
+            ASSESSMENT_DICT_FAIL['options_selected'],
+            ASSESSMENT_DICT_FAIL['criterion_feedback'],
+            ASSESSMENT_DICT_FAIL['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
 
         sub = peer_api.get_submission_to_assess(jim_sub['uuid'], REQUIRED_GRADED)
         self.assertEqual(sub["uuid"], tim_sub["uuid"])
         peer_api.create_assessment(
-            jim_sub["uuid"], jim["student_id"], ASSESSMENT_DICT_PASS, RUBRIC_DICT,
+            jim_sub["uuid"], jim["student_id"],
+            ASSESSMENT_DICT_PASS['options_selected'],
+            ASSESSMENT_DICT_PASS['criterion_feedback'],
+            ASSESSMENT_DICT_PASS['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
 
@@ -351,7 +490,11 @@ class TestPeerApi(CacheResetTest):
         self.assertEqual(sub["uuid"], tim_sub["uuid"])
 
         peer_api.create_assessment(
-            jim_sub["uuid"], jim["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            jim_sub["uuid"], jim["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
 
@@ -365,12 +508,20 @@ class TestPeerApi(CacheResetTest):
         self.assertIsNone(PeerWorkflow.objects.get(student_id=tim["student_id"]).grading_completed_at)
 
         peer_api.create_assessment(
-            bob_sub["uuid"], bob["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            bob_sub["uuid"], bob["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
 
         peer_api.create_assessment(
-            sally_sub["uuid"], sally["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            sally_sub["uuid"], sally["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
 
@@ -420,29 +571,29 @@ class TestPeerApi(CacheResetTest):
             "peer": {
                 "must_grade": REQUIRED_GRADED,
                 "must_be_graded_by": REQUIRED_GRADED_BY,
-                }
+            }
         }
 
         # 1) Angel Submits
-        angel_sub, angel = self._create_student_and_submission("Angel", "Angel's answer")
+        angel_sub, _ = self._create_student_and_submission("Angel", "Angel's answer")
 
         # 2) Angel waits for peers
         sub = peer_api.get_submission_to_assess(angel_sub['uuid'], REQUIRED_GRADED_BY)
         self.assertIsNone(sub)
         # 3) Bob submits
-        bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
+        bob_sub, _ = self._create_student_and_submission("Bob", "Bob's answer")
         sub = peer_api.get_submission_to_assess(bob_sub['uuid'], REQUIRED_GRADED_BY)
         self.assertEquals(angel_sub["uuid"], sub["uuid"])
 
         # 4) Sally submits
-        sally_sub, sally = self._create_student_and_submission("Sally", "Sally's answer")
+        sally_sub, _ = self._create_student_and_submission("Sally", "Sally's answer")
 
         # 5) Sally pulls Angel's Submission but never reviews it.
         sub = peer_api.get_submission_to_assess(sally_sub['uuid'], REQUIRED_GRADED_BY)
         self.assertEquals(angel_sub["uuid"], sub["uuid"])
 
         # 6) Jim submits
-        jim_sub, jim = self._create_student_and_submission("Jim", "Jim's answer")
+        jim_sub, _ = self._create_student_and_submission("Jim", "Jim's answer")
 
         # 7) Jim also doesn't care about Angel and does not bother to review.
         sub = peer_api.get_submission_to_assess(jim_sub['uuid'], REQUIRED_GRADED_BY)
@@ -458,21 +609,32 @@ class TestPeerApi(CacheResetTest):
 
         # 10) Buffy goes on to review Bob, Sally, and Jim, but needs two more.
         peer_api.create_assessment(
-            buffy_sub["uuid"], buffy["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            buffy_sub["uuid"], buffy["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
         sub = peer_api.get_submission_to_assess(buffy_sub['uuid'], REQUIRED_GRADED_BY)
         self.assertEquals(sally_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            buffy_sub["uuid"], buffy["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            buffy_sub["uuid"], buffy["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
         sub = peer_api.get_submission_to_assess(buffy_sub['uuid'], REQUIRED_GRADED_BY)
         self.assertEquals(jim_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            buffy_sub["uuid"], buffy["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            buffy_sub["uuid"], buffy["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
-
         )
         sub = peer_api.get_submission_to_assess(buffy_sub['uuid'], REQUIRED_GRADED_BY)
         self.assertIsNone(sub)
@@ -485,37 +647,44 @@ class TestPeerApi(CacheResetTest):
         sub = peer_api.get_submission_to_assess(xander_sub['uuid'], REQUIRED_GRADED_BY)
         self.assertEquals(bob_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            xander_sub["uuid"], xander["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            xander_sub["uuid"], xander["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
         sub = peer_api.get_submission_to_assess(xander_sub['uuid'], REQUIRED_GRADED_BY)
         self.assertEquals(sally_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            xander_sub["uuid"], xander["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            xander_sub["uuid"], xander["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
         sub = peer_api.get_submission_to_assess(xander_sub['uuid'], REQUIRED_GRADED_BY)
         self.assertEquals(jim_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            xander_sub["uuid"], xander["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            xander_sub["uuid"], xander["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
-
-        # Tim has met the critera, and should now have a score.
-        # We patch the call to `self_api.is_complete()` simulate having completed a self-assessment.
-        # TODO: currently, we need to import `self_api` within the `_is_self_complete` method
-        # to avoid circular imports.  This means we can't patch self_api directly.
-        from openassessment.workflow.models import AssessmentWorkflow
-        with patch.object(AssessmentWorkflow, '_is_self_complete') as mock_complete:
-            mock_complete.return_value = True
-            score = workflow_api.get_workflow_for_submission(sub["uuid"], requirements)["score"]
 
         # 13) Buffy is waiting in the wings. She pulls Xander's submission and
         # grades it.
         sub = peer_api.get_submission_to_assess(buffy_sub['uuid'], REQUIRED_GRADED_BY)
         self.assertEquals(xander_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            buffy_sub["uuid"], buffy["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            buffy_sub["uuid"], buffy["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
 
@@ -526,32 +695,52 @@ class TestPeerApi(CacheResetTest):
         sub = peer_api.get_submission_to_assess(spike_sub['uuid'], REQUIRED_GRADED_BY)
         self.assertEquals(bob_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            spike_sub["uuid"], spike["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            spike_sub["uuid"], spike["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
 
         )
         sub = peer_api.get_submission_to_assess(spike_sub['uuid'], REQUIRED_GRADED_BY)
         self.assertEquals(sally_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            spike_sub["uuid"], spike["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            spike_sub["uuid"], spike["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
         sub = peer_api.get_submission_to_assess(spike_sub['uuid'], REQUIRED_GRADED_BY)
         self.assertEquals(jim_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            spike_sub["uuid"], spike["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            spike_sub["uuid"], spike["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
         sub = peer_api.get_submission_to_assess(spike_sub['uuid'], REQUIRED_GRADED_BY)
         self.assertEquals(buffy_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            spike_sub["uuid"], spike["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            spike_sub["uuid"], spike["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
         sub = peer_api.get_submission_to_assess(spike_sub['uuid'], REQUIRED_GRADED_BY)
         self.assertEquals(xander_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            spike_sub["uuid"], spike["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            spike_sub["uuid"], spike["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
 
@@ -559,7 +748,11 @@ class TestPeerApi(CacheResetTest):
         sub = peer_api.get_submission_to_assess(buffy_sub['uuid'], REQUIRED_GRADED_BY)
         self.assertEquals(spike_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            buffy_sub["uuid"], buffy["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            buffy_sub["uuid"], buffy["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
 
@@ -570,7 +763,11 @@ class TestPeerApi(CacheResetTest):
         sub = peer_api.get_submission_to_assess(willow_sub['uuid'], REQUIRED_GRADED_BY)
         self.assertEquals(buffy_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            willow_sub["uuid"], willow["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            willow_sub["uuid"], willow["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
 
@@ -578,7 +775,11 @@ class TestPeerApi(CacheResetTest):
         sub = peer_api.get_submission_to_assess(xander_sub['uuid'], REQUIRED_GRADED_BY)
         self.assertEquals(buffy_sub["uuid"], sub["uuid"])
         peer_api.create_assessment(
-            xander_sub["uuid"], xander["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            xander_sub["uuid"], xander["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
 
@@ -590,8 +791,8 @@ class TestPeerApi(CacheResetTest):
         self.assertTrue(peer_api.is_complete(buffy_sub["uuid"], requirements))
 
     def test_find_active_assessments(self):
-        buffy_answer, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
-        xander_answer, xander = self._create_student_and_submission("Xander", "Xander's answer")
+        buffy_answer, _ = self._create_student_and_submission("Buffy", "Buffy's answer")
+        xander_answer, _ = self._create_student_and_submission("Xander", "Xander's answer")
 
         # Check for a workflow for Buffy.
         buffy_workflow = peer_api._get_workflow_by_submission_uuid(buffy_answer['uuid'])
@@ -611,18 +812,18 @@ class TestPeerApi(CacheResetTest):
         self.assertEqual(xander_answer["uuid"], submission_uuid)
 
     def test_get_workflow_by_uuid(self):
-        buffy_answer, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
+        buffy_answer, _ = self._create_student_and_submission("Buffy", "Buffy's answer")
         self._create_student_and_submission("Xander", "Xander's answer")
         self._create_student_and_submission("Willow", "Willow's answer")
-        buffy_answer_two, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
+        buffy_answer_two, _ = self._create_student_and_submission("Buffy", "Buffy's answer")
 
         workflow = peer_api._get_workflow_by_submission_uuid(buffy_answer_two['uuid'])
         self.assertNotEqual(buffy_answer["uuid"], workflow.submission_uuid)
         self.assertEqual(buffy_answer_two["uuid"], workflow.submission_uuid)
 
     def test_get_submission_for_review(self):
-        buffy_answer, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
-        xander_answer, xander = self._create_student_and_submission("Xander", "Xander's answer")
+        buffy_answer, _ = self._create_student_and_submission("Buffy", "Buffy's answer")
+        xander_answer, _ = self._create_student_and_submission("Xander", "Xander's answer")
         self._create_student_and_submission("Willow", "Willow's answer")
 
         buffy_workflow = peer_api._get_workflow_by_submission_uuid(buffy_answer['uuid'])
@@ -632,9 +833,9 @@ class TestPeerApi(CacheResetTest):
         self.assertEqual(xander_answer["uuid"], submission_uuid)
 
     def test_get_submission_for_over_grading(self):
-        buffy_answer, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
-        xander_answer, xander = self._create_student_and_submission("Xander", "Xander's answer")
-        willow_answer, willow = self._create_student_and_submission("Willow", "Willow's answer")
+        buffy_answer, _ = self._create_student_and_submission("Buffy", "Buffy's answer")
+        xander_answer, _ = self._create_student_and_submission("Xander", "Xander's answer")
+        willow_answer, _ = self._create_student_and_submission("Willow", "Willow's answer")
 
         buffy_workflow = peer_api._get_workflow_by_submission_uuid(buffy_answer['uuid'])
         xander_workflow = peer_api._get_workflow_by_submission_uuid(xander_answer['uuid'])
@@ -647,28 +848,32 @@ class TestPeerApi(CacheResetTest):
         peer_api._create_peer_workflow_item(buffy_workflow, willow_answer["uuid"])
         peer_api._create_peer_workflow_item(xander_workflow, willow_answer["uuid"])
 
-        #Get the next submission for review
+        # Get the next submission for review
         submission_uuid = peer_api._get_submission_for_over_grading(xander_workflow)
 
         if not (buffy_answer["uuid"] == submission_uuid or willow_answer["uuid"] == submission_uuid):
             self.fail("Submission was not Buffy or Willow's.")
 
-    def test_create_assessment_feedback(self):
+    def test_create_feedback_on_an_assessment(self):
         tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
-        sub = peer_api.get_submission_to_assess(bob_sub['uuid'], 1)
+        peer_api.get_submission_to_assess(bob_sub['uuid'], 1)
         assessment = peer_api.create_assessment(
             bob_sub["uuid"],
             bob["student_id"],
-            ASSESSMENT_DICT,
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
             RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
-        sub = peer_api.get_submission_to_assess(tim_sub['uuid'], 1)
+        peer_api.get_submission_to_assess(tim_sub['uuid'], 1)
         peer_api.create_assessment(
             tim_sub["uuid"],
             tim["student_id"],
-            ASSESSMENT_DICT,
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
             RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
@@ -702,8 +907,8 @@ class TestPeerApi(CacheResetTest):
         self.assertEquals(saved_feedback["assessments"][0]["submission_uuid"], assessment["submission_uuid"])
 
     def test_close_active_assessment(self):
-        buffy_answer, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
-        xander_answer, xander = self._create_student_and_submission("Xander", "Xander's answer")
+        buffy_answer, _ = self._create_student_and_submission("Buffy", "Buffy's answer")
+        xander_answer, _ = self._create_student_and_submission("Xander", "Xander's answer")
 
         # Create a workflow for Buffy.
         buffy_workflow = peer_api._get_workflow_by_submission_uuid(buffy_answer['uuid'])
@@ -714,7 +919,11 @@ class TestPeerApi(CacheResetTest):
         self.assertEqual(xander_answer["uuid"], submission["uuid"])
 
         assessment_dict = peer_api.create_assessment(
-            buffy_answer["uuid"], "Buffy", ASSESSMENT_DICT, RUBRIC_DICT,
+            buffy_answer["uuid"], "Buffy",
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
         assessment = Assessment.objects.filter(
@@ -729,7 +938,7 @@ class TestPeerApi(CacheResetTest):
     @patch.object(PeerWorkflow.objects, 'raw')
     @raises(peer_api.PeerAssessmentInternalError)
     def test_failure_to_get_review_submission(self, mock_filter):
-        tim_answer, tim = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
+        tim_answer, _ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
         tim_workflow = peer_api._get_workflow_by_submission_uuid(tim_answer['uuid'])
         mock_filter.side_effect = DatabaseError("Oh no.")
         peer_api._get_submission_for_review(tim_workflow, 3)
@@ -745,14 +954,14 @@ class TestPeerApi(CacheResetTest):
     @raises(peer_api.PeerAssessmentInternalError)
     def test_set_assessment_feedback_error(self, mock_filter):
         mock_filter.side_effect = DatabaseError("Oh no.")
-        tim_answer, tim = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
+        tim_answer, _ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
         peer_api.set_assessment_feedback({'submission_uuid': tim_answer['uuid']})
 
     @patch.object(AssessmentFeedback, 'save')
     @raises(peer_api.PeerAssessmentInternalError)
     def test_set_assessment_feedback_error_on_save(self, mock_filter):
         mock_filter.side_effect = DatabaseError("Oh no.")
-        tim_answer, tim = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
+        tim_answer, _ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
         peer_api.set_assessment_feedback(
             {
                 'submission_uuid': tim_answer['uuid'],
@@ -763,7 +972,7 @@ class TestPeerApi(CacheResetTest):
     @patch.object(AssessmentFeedback, 'save')
     @raises(peer_api.PeerAssessmentRequestError)
     def test_set_assessment_feedback_error_on_huge_save(self, mock_filter):
-        tim_answer, tim = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
+        tim_answer, _ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
         peer_api.set_assessment_feedback(
             {
                 'submission_uuid': tim_answer['uuid'],
@@ -775,7 +984,7 @@ class TestPeerApi(CacheResetTest):
     @raises(peer_api.PeerAssessmentWorkflowError)
     def test_failure_to_get_latest_workflow(self, mock_filter):
         mock_filter.side_effect = DatabaseError("Oh no.")
-        tim_answer, tim = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
+        tim_answer, _ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
         peer_api._get_workflow_by_submission_uuid(tim_answer['uuid'])
 
     @patch.object(PeerWorkflow.objects, 'get_or_create')
@@ -815,15 +1024,13 @@ class TestPeerApi(CacheResetTest):
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
         sub = peer_api.get_submission_to_assess(bob_sub['uuid'], 1)
         assessment = peer_api.create_assessment(
-            bob_sub["uuid"],
-            bob["student_id"],
-            ASSESSMENT_DICT,
+            bob_sub["uuid"], bob["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
             RUBRIC_DICT,
             1
         )
-        self.assertEqual(assessment["points_earned"], 6)
-        self.assertEqual(assessment["points_possible"], 14)
-        self.assertEqual(assessment["feedback"], ASSESSMENT_DICT["feedback"])
 
         max_scores = peer_api.get_rubric_max_scores(sub["uuid"])
         self.assertEqual(max_scores['secret'], 1)
@@ -834,9 +1041,10 @@ class TestPeerApi(CacheResetTest):
         self._create_student_and_submission("Tim", "Tim's answer")
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
         peer_api.create_assessment(
-            bob_sub['uuid'],
-            bob['student_id'],
-            ASSESSMENT_DICT,
+            bob_sub['uuid'], bob['student_id'],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
             RUBRIC_DICT,
             1
         )
@@ -869,9 +1077,10 @@ class TestPeerApi(CacheResetTest):
         submission = sub_api.create_submission(STUDENT_ITEM, ANSWER_ONE)
         peer_api.create_peer_workflow(submission["uuid"])
         peer_api.create_assessment(
-            submission["uuid"],
-            STUDENT_ITEM["student_id"],
-            ASSESSMENT_DICT,
+            submission["uuid"], STUDENT_ITEM["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
             RUBRIC_DICT,
             REQUIRED_GRADED_BY,
             MONDAY,
@@ -884,9 +1093,10 @@ class TestPeerApi(CacheResetTest):
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
         sub = peer_api.get_submission_to_assess(bob_sub['uuid'], 3)
         peer_api.create_assessment(
-            bob_sub["uuid"],
-            bob["student_id"],
-            ASSESSMENT_DICT,
+            bob_sub["uuid"], bob["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
             RUBRIC_DICT,
             REQUIRED_GRADED_BY,
             MONDAY,
@@ -913,7 +1123,9 @@ class TestPeerApi(CacheResetTest):
         peer_api.create_assessment(
             submission["uuid"],
             "another_student",
-            ASSESSMENT_DICT,
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
             RUBRIC_DICT,
             REQUIRED_GRADED_BY,
             MONDAY,

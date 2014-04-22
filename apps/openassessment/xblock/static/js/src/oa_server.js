@@ -1,17 +1,3 @@
-/* JavaScript interface for interacting with server-side OpenAssessment XBlock */
-
-/* Namespace for open assessment */
-if (typeof OpenAssessment == "undefined" || !OpenAssessment) {
-    OpenAssessment = {};
-}
-
-
-// Stub gettext if the runtime doesn't provide it
-if (typeof window.gettext === 'undefined') {
-    window.gettext = function(text) { return text; };
-}
-
-
 /**
 Interface for server-side XBlock handlers.
 
@@ -42,11 +28,6 @@ OpenAssessment.Server.prototype = {
     url: function(handler) {
         return this.runtime.handlerUrl(this.element, handler);
     },
-
-    /* 
-     * Get maximum size of input
-     */
-    maxInputSize: 1024 * 64,    /* 64KB should be enough for anybody, right? ;^P */
 
     /**
     Render the XBlock.
@@ -123,12 +104,6 @@ OpenAssessment.Server.prototype = {
     **/
     submit: function(submission) {
         var url = this.url('submit');
-        if (submission.length > this.maxInputSize) {
-            return $.Deferred(function(defer) {
-                var errorMsg = gettext("This response is too long. Please shorten the response and try to submit it again.");
-                defer.rejectWith(this, ["submit", errorMsg]);
-            }).promise();
-        }
         return $.Deferred(function(defer) {
             $.ajax({
                 type: "POST",
@@ -164,12 +139,6 @@ OpenAssessment.Server.prototype = {
     **/
     save: function(submission) {
         var url = this.url('save_submission');
-        if (submission.length > this.maxInputSize) {
-            return $.Deferred(function(defer) {
-                var errorMsg = gettext("This response is too long. Please shorten the response and try to save it again.");
-                defer.rejectWith(this, [errorMsg]);
-            }).promise();
-        }
         return $.Deferred(function(defer) {
             $.ajax({
                 type: "POST",
@@ -205,12 +174,6 @@ OpenAssessment.Server.prototype = {
      */
      submitFeedbackOnAssessment: function(text, options) {
         var url = this.url('submit_feedback');
-        if (text.length > this.maxInputSize) {
-            return $.Deferred(function(defer) {
-                var errorMsg = gettext("This feedback is too long. Please shorten your feedback and try to submit it again.");
-                defer.rejectWith(this, [errorMsg]);
-            }).promise();
-        }
         var payload = JSON.stringify({
             'feedback_text': text,
             'feedback_options': options
@@ -232,7 +195,9 @@ OpenAssessment.Server.prototype = {
     Args:
         optionsSelected (object literal): Keys are criteria names,
             values are the option text the user selected for the criterion.
-        feedback (string): Written feedback on the submission.
+        criterionFeedback (object literal): Written feedback on a particular criterion,
+            where keys are criteria names and values are the feedback strings.
+        overallFeedback (string): Written feedback on the submission as a whole.
 
     Returns:
         A JQuery promise, which resolves with no args if successful
@@ -240,24 +205,20 @@ OpenAssessment.Server.prototype = {
 
     Example:
         var options = { clarity: "Very clear", precision: "Somewhat precise" };
-        var feedback = "Good job!";
-        server.peerAssess(options, feedback).done(
+        var criterionFeedback = { clarity: "The essay was very clear." };
+        var overallFeedback = "Good job!";
+        server.peerAssess(options, criterionFeedback, overallFeedback).done(
             function() { console.log("Success!"); }
         ).fail(
             function(errorMsg) { console.log(errorMsg); }
         );
     **/
-    peerAssess: function(optionsSelected, feedback) {
+    peerAssess: function(optionsSelected, criterionFeedback, overallFeedback) {
         var url = this.url('peer_assess');
-        if (feedback.length > this.maxInputSize) {
-            return $.Deferred(function(defer) {
-                var errorMsg = gettext("The comments on this assessment are too long. Please shorten your comments and try to submit them again.");
-                defer.rejectWith(this, [errorMsg]);
-            }).promise();
-        }
         var payload = JSON.stringify({
             options_selected: optionsSelected,
-            feedback: feedback
+            criterion_feedback: criterionFeedback,
+            overall_feedback: overallFeedback
         });
         return $.Deferred(function(defer) {
             $.ajax({ type: "POST", url: url, data: payload }).done(

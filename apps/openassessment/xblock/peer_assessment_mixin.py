@@ -45,54 +45,35 @@ class PeerAssessmentMixin(object):
 
         """
         # Validate the request
-        if 'feedback' not in data:
-            return {'success': False, 'msg': _('Must provide feedback in the assessment')}
-
         if 'options_selected' not in data:
             return {'success': False, 'msg': _('Must provide options selected in the assessment')}
+
+        if 'overall_feedback' not in data:
+            return {'success': False, 'msg': _('Must provide overall feedback in the assessment')}
+
+        if 'criterion_feedback' not in data:
+            return {'success': False, 'msg': _('Must provide feedback for criteria in the assessment')}
 
         assessment_ui_model = self.get_assessment_module('peer-assessment')
         if assessment_ui_model:
             rubric_dict = {
                 'criteria': self.rubric_criteria
             }
-            assessment_dict = {
-                "feedback": data['feedback'],
-                "options_selected": data["options_selected"],
-            }
 
             try:
+                # Create the assessment
                 assessment = peer_api.create_assessment(
                     self.submission_uuid,
                     self.get_student_item_dict()["student_id"],
-                    assessment_dict,
+                    data['options_selected'],
+                    self._clean_criterion_feedback(data['criterion_feedback']),
+                    data['overall_feedback'],
                     rubric_dict,
                     assessment_ui_model['must_be_graded_by']
                 )
+
                 # Emit analytics event...
-                self.runtime.publish(
-                    self,
-                    "openassessmentblock.peer_assess",
-                    {
-                        "feedback": assessment["feedback"],
-                        "rubric": {
-                            "content_hash": assessment["rubric"]["content_hash"],
-                        },
-                        "scorer_id": assessment["scorer_id"],
-                        "score_type": assessment["score_type"],
-                        "scored_at": assessment["scored_at"],
-                        "submission_uuid": assessment["submission_uuid"],
-                        "parts": [
-                            {
-                                "option": {
-                                    "name": part["option"]["name"],
-                                    "points": part["option"]["points"]
-                                }
-                            }
-                            for part in assessment["parts"]
-                        ]
-                    }
-                )
+                self._publish_peer_assessment_event(assessment)
             except PeerAssessmentRequestError as ex:
                 return {'success': False, 'msg': ex.message}
             except PeerAssessmentInternalError as ex:
@@ -258,3 +239,58 @@ class PeerAssessmentMixin(object):
             logger.exception(err)
 
         return peer_submission
+
+    def _publish_peer_assessment_event(self, assessment):
+        """
+        Emit an analytics event for the peer assessment.
+
+        Args:
+            assessment (dict): The serialized assessment model.
+
+        Returns:
+            None
+
+        """
+        self.runtime.publish(
+            self,
+            "openassessmentblock.peer_assess",
+            {
+                "feedback": assessment["feedback"],
+                "rubric": {
+                    "content_hash": assessment["rubric"]["content_hash"],
+                },
+                "scorer_id": assessment["scorer_id"],
+                "score_type": assessment["score_type"],
+                "scored_at": assessment["scored_at"],
+                "submission_uuid": assessment["submission_uuid"],
+                "parts": [
+                    {
+                        "option": {
+                            "name": part["option"]["name"],
+                            "points": part["option"]["points"],
+                        },
+                        "feedback": part["feedback"],
+                    }
+                    for part in assessment["parts"]
+                ]
+            }
+        )
+
+    def _clean_criterion_feedback(self, criterion_feedback):
+        """
+        Remove per-criterion feedback for criteria with feedback disabled
+        in the rubric.
+
+        Args:
+            criterion_feedback (dict): Mapping of criterion names to feedback text.
+
+        Returns:
+            dict
+
+        """
+        return {
+            criterion['name']: criterion_feedback[criterion['name']]
+            for criterion in self.rubric_criteria
+            if criterion['name'] in criterion_feedback
+            and criterion.get('feedback', 'disabled') == 'optional'
+        }

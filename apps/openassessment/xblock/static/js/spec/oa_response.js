@@ -27,13 +27,11 @@ describe("OpenAssessment.ResponseView", function() {
 
     // Stub base view
     var StubBaseView = function() {
-        this.gradeView = {
-            load: function(){}
-        };
+        this.peerView = { load: function() {} };
+        this.gradeView = { load: function() {} };
         this.showLoadError = function(msg) {};
         this.toggleActionError = function(msg, step) {};
         this.setUpCollapseExpand = function(sel) {};
-        this.renderPeerAssessmentStep = function() {};
     };
 
     // Stubs
@@ -223,14 +221,14 @@ describe("OpenAssessment.ResponseView", function() {
             }).promise();
         });
         spyOn(view, 'load');
-        spyOn(baseView, 'renderPeerAssessmentStep');
+        spyOn(baseView.peerView, 'load');
 
         view.response('Test response');
         view.submit();
 
         // Expect the current and next step to have been reloaded
         expect(view.load).toHaveBeenCalled();
-        expect(baseView.renderPeerAssessmentStep).toHaveBeenCalled();
+        expect(baseView.peerView.load).toHaveBeenCalled();
     });
 
     it("enables the unsaved work warning when the user changes the response text", function() {

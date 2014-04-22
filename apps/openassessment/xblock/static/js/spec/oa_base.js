@@ -15,10 +15,6 @@ describe("OpenAssessment.BaseView", function() {
             grade: readFixtures("oa_grade_complete.html")
         };
 
-        this.peerAssess = function(optionsSelected, feedback) {
-            return $.Deferred(function(defer) { defer.resolve(); }).promise();
-        };
-
         this.selfAssess = function(optionsSelected) {
             return $.Deferred(function(defer) { defer.resolve(); }).promise();
         };
@@ -68,14 +64,6 @@ describe("OpenAssessment.BaseView", function() {
         // Create the object under test
         var el = $("#openassessment").get(0);
         view = new OpenAssessment.BaseView(runtime, el, server);
-    });
-
-    it("Sends a peer assessment to the server", function() {
-        loadSubviews(function() {
-            spyOn(server, 'peerAssess').andCallThrough();
-            view.peerAssess();
-            expect(server.peerAssess).toHaveBeenCalled();
-        });
     });
 
     it("Sends a self assessment to the server", function() {

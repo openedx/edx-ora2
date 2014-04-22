@@ -9,7 +9,7 @@
 
             Read for conciseness, clarity of thought, and form.
         </prompt>
-        <criterion>
+        <criterion feedback='optional'>
             <name>concise</name>
             <prompt>How concise is it?</prompt>
             <option points="0">
@@ -75,7 +75,7 @@
                 </explanation>
             </option>
         </criterion>
-        <criterion>
+        <criterion feedback='optional'>
             <name>form</name>
             <prompt>Lastly, how is its form? Punctuation, grammar, and spelling all count.</prompt>
             <option points="0">

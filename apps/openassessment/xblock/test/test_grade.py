@@ -20,11 +20,18 @@ class TestGrade(XBlockHandlerTestCase):
     ASSESSMENTS = [
         {
             'options_selected': {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ﻉซƈﻉɭɭﻉกՇ', u'Form': u'Fair'},
-            'feedback': u'єאςєɭɭєภՇ ฬ๏гк!',
+            'criterion_feedback': {
+                u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'Peer 1: ฝﻉɭɭ ɗѻกﻉ!'
+            },
+            'overall_feedback': u'єאςєɭɭєภՇ ฬ๏гк!',
         },
         {
             'options_selected': {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ﻉซƈﻉɭɭﻉกՇ', u'Form': u'Fair'},
-            'feedback': u'Good job!',
+            'criterion_feedback': {
+                u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'Peer 2: ฝﻉɭɭ ɗѻกﻉ!',
+                u'Form': u'Peer 2: ƒαιя נσв'
+            },
+            'overall_feedback': u'Good job!',
         },
     ]
 
@@ -57,6 +64,37 @@ class TestGrade(XBlockHandlerTestCase):
         resp = self.request(xblock, 'render_self_assessment', json.dumps(dict()))
         self.assertIn('self', resp.lower())
         self.assertIn('complete', resp.lower())
+
+    @scenario('data/feedback_per_criterion.xml', user_id='Bernard')
+    def test_render_grade_feedback_per_criterion(self, xblock):
+        # Submit, assess, and render the grade view
+        self._create_submission_and_assessments(
+            xblock, self.SUBMISSION, self.PEERS, self.ASSESSMENTS, self.ASSESSMENTS[0]
+        )
+
+        # Verify that the context for the grade complete page contains the feedback
+        _, context = xblock.render_grade_complete(xblock.get_workflow_info())
+        criteria = context['rubric_criteria']
+        self.assertEqual(criteria[0]['feedback'], [
+            u'Peer 2: ฝﻉɭɭ ɗѻกﻉ!',
+            u'Peer 1: ฝﻉɭɭ ɗѻกﻉ!',
+        ])
+        self.assertEqual(criteria[1]['feedback'], [u'Peer 2: ƒαιя נσв'])
+
+        # The order of the peers in the per-criterion feedback needs
+        # to match the order of the peer assessments
+        # We verify this by checking that the first peer assessment
+        # has the criteria feedback matching the first feedback
+        # for each criterion.
+        assessments = context['peer_assessments']
+        first_peer_feedback = [part['feedback'] for part in assessments[0]['parts']]
+        self.assertItemsEqual(first_peer_feedback, [u'Peer 2: ฝﻉɭɭ ɗѻกﻉ!', u'Peer 2: ƒαιя נσв'])
+
+        # Integration test: verify that the context makes it to the rendered template
+        resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+        self.assertIn(u'Peer 1: ฝﻉɭɭ ɗѻกﻉ!', resp.decode('utf-8'))
+        self.assertIn(u'Peer 2: ฝﻉɭɭ ɗѻกﻉ!', resp.decode('utf-8'))
+        self.assertIn(u'Peer 2: ƒαιя נσв', resp.decode('utf-8'))
 
     @scenario('data/grade_scenario.xml', user_id='Omar')
     def test_grade_waiting(self, xblock):
@@ -197,15 +235,23 @@ class TestGrade(XBlockHandlerTestCase):
             if not waiting_for_peer:
                 peer_api.create_assessment(
                     scorer_sub['uuid'], scorer_name,
-                    assessment, {'criteria': xblock.rubric_criteria},
+                    assessment['options_selected'],
+                    assessment['criterion_feedback'],
+                    assessment['overall_feedback'],
+                    {'criteria': xblock.rubric_criteria},
                     xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
                 )
 
         # Have our user make assessments (so she can get a score)
         for asmnt in peer_assessments:
-            new_submission = peer_api.get_submission_to_assess(submission['uuid'], len(peers))
+            peer_api.get_submission_to_assess(submission['uuid'], len(peers))
             peer_api.create_assessment(
-                submission['uuid'], student_id, asmnt, {'criteria': xblock.rubric_criteria},
+                submission['uuid'],
+                student_id,
+                asmnt['options_selected'],
+                asmnt['criterion_feedback'],
+                asmnt['overall_feedback'],
+                {'criteria': xblock.rubric_criteria},
                 xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
             )
 

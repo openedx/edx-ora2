@@ -154,18 +154,11 @@ class AssessmentPartSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AssessmentPart
-        fields = ('option',)  # TODO: Direct link to Criterion?
+        fields = ('option', 'feedback')
 
 
 class AssessmentSerializer(serializers.ModelSerializer):
     """Simplified serializer for :class:`Assessment` that's lighter on the DB."""
-
-    def validate_feedback(self, attrs, source):
-        """Check that the feedback is within an acceptable size range."""
-        value = attrs[source]
-        if len(value) > Assessment.MAXSIZE:
-            raise serializers.ValidationError("Maximum feedback size exceeded.")
-        return attrs
 
     class Meta:
         model = Assessment
@@ -235,7 +228,8 @@ def full_assessment_dict(assessment, rubric_dict=None):
         options_dict = criterion_dict["options"][part.option.order_num]
         options_dict["criterion"] = criterion_dict
         parts.append({
-            "option": options_dict
+            "option": options_dict,
+            "feedback": part.feedback
         })
 
     # Now manually built up the dynamically calculated values on the

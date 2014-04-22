@@ -30,13 +30,6 @@ describe("OpenAssessment.Server", function() {
         );
     };
 
-    var getHugeTestString = function() {
-        var testStringSize = server.maxInputSize + 1;
-        var testString = '';
-        for (i = 0; i < (testStringSize); i++) { testString += 'x'; }
-        return testString;
-    };
-
     beforeEach(function() {
         // Create the server
         // Since the runtime is a stub implementation that ignores the element passed to it,
@@ -97,9 +90,10 @@ describe("OpenAssessment.Server", function() {
 
         var success = false;
         var options = {clarity: "Very clear", precision: "Somewhat precise"};
-        server.peerAssess(options, "Excellent job!").done(function() {
-            success = true;
-        });
+        var criterionFeedback = {clarity: "This essay was very clear."};
+        server.peerAssess(options, criterionFeedback, "Excellent job!").done(
+            function() { success = true; }
+        );
 
         expect(success).toBe(true);
         expect($.ajax).toHaveBeenCalledWith({
@@ -107,7 +101,8 @@ describe("OpenAssessment.Server", function() {
             type: "POST",
             data: JSON.stringify({
                 options_selected: options,
-                feedback: "Excellent job!"
+                criterion_feedback: criterionFeedback,
+                overall_feedback: "Excellent job!"
             })
         });
     });
@@ -197,20 +192,6 @@ describe("OpenAssessment.Server", function() {
         expect(receivedErrorMsg).toContain("This response could not be submitted");
     });
 
-    it("confirms that very long submissions fail with an error without ajax", function() {
-        var receivedErrorCode = "";
-        var receivedErrorMsg = "";
-        var testString = getHugeTestString();
-        server.submit(testString).fail(
-            function(errorCode, errorMsg) {
-                receivedErrorCode = errorCode;
-                receivedErrorMsg = errorMsg;
-            }
-        );
-        expect(receivedErrorCode).toEqual("submit");
-        expect(receivedErrorMsg).toContain("This response is too long");
-    });
-
     it("informs the caller of an server error when sending a submission", function() {
         stubAjax(true, [false, "ENODATA", "Error occurred!"]);
 
@@ -225,15 +206,6 @@ describe("OpenAssessment.Server", function() {
 
         expect(receivedErrorCode).toEqual("ENODATA");
         expect(receivedErrorMsg).toEqual("Error occurred!");
-    });
-
-    it("confirms that very long saves fail with an error without ajax", function() {
-        var receivedErrorMsg = "";
-        var testString = getHugeTestString();
-        server.save(testString).fail(
-            function(errorMsg) { receivedErrorMsg = errorMsg; }
-        );
-        expect(receivedErrorMsg).toContain("This response is too long");
     });
 
     it("informs the caller of an AJAX error when saving a submission", function() {
@@ -301,24 +273,12 @@ describe("OpenAssessment.Server", function() {
         expect(receivedMsg).toEqual("Test error");
     });
 
-    it("confirms that very long peer assessments fail with an error without ajax", function() {
-        var options = {clarity: "Very clear", precision: "Somewhat precise"};
-        var receivedErrorMsg = "";
-        var testString = getHugeTestString();
-        server.peerAssess(options, testString).fail(
-            function(errorMsg) {
-                receivedErrorMsg = errorMsg;
-            }
-        );
-        expect(receivedErrorMsg).toContain("The comments on this assessment are too long");
-    });
-
     it("informs the caller of a server error when sending a peer assessment", function() {
         stubAjax(true, {success:false, msg:'Test error!'});
 
         var receivedMsg = null;
         var options = {clarity: "Very clear", precision: "Somewhat precise"};
-        server.peerAssess(options, "Excellent job!").fail(function(msg) {
+        server.peerAssess(options, {}, "Excellent job!").fail(function(msg) {
             receivedMsg = msg;
         });
 
@@ -330,7 +290,7 @@ describe("OpenAssessment.Server", function() {
 
         var receivedMsg = null;
         var options = {clarity: "Very clear", precision: "Somewhat precise"};
-        server.peerAssess(options, "Excellent job!").fail(function(msg) {
+        server.peerAssess(options, {}, "Excellent job!").fail(function(msg) {
             receivedMsg = msg;
         });
 
@@ -358,18 +318,6 @@ describe("OpenAssessment.Server", function() {
         });
 
         expect(receivedMsg).toEqual("Test error");
-    });
-
-    it("confirms that very long assessment feedback fails with an error without ajax", function() {
-        var options = ["Option 1", "Option 2"];
-        var receivedErrorMsg = "";
-        var testString = getHugeTestString();
-        server.submitFeedbackOnAssessment(testString, options).fail(
-            function(errorMsg) {
-                receivedErrorMsg = errorMsg;
-            }
-        );
-        expect(receivedErrorMsg).toContain("This feedback is too long");
     });
 
     it("informs the caller of an AJAX error when sending feedback on submission", function() {

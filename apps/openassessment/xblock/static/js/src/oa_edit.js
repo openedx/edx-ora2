@@ -1,16 +1,3 @@
-/* JavaScript for Studio editing view of Open Assessment XBlock */
-
-
-/* Namespace for open assessment */
-if (typeof OpenAssessment == "undefined" || !OpenAssessment) {
-    OpenAssessment = {};
-}
-
-// Stub gettext if the runtime doesn't provide it
-if (typeof window.gettext === 'undefined') {
-    window.gettext = function(text) { return text; };
-}
-
 /**
 Interface for editing view in Studio.
 The constructor initializes the DOM for editing.
