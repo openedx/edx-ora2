@@ -16,17 +16,13 @@ Setup
   pip install -e .
   python manage.py runserver
 
-User Guide
-----------
-
-
-Author Guide
-------------
-
-
 Developer Guide
 ---------------
 
+.. toctree::
+   :maxdepth: 2
+
+   dev_guide
 
 API Documentation
 -----------------
