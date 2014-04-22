@@ -183,6 +183,7 @@
 %ui-rubric-answers {
   margin-top: $baseline-v;
   margin-bottom: $baseline-v;
+  margin-left: ($baseline-h/4);
 
   .answer, .answer--feedback {
     @include row();
