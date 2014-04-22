@@ -984,11 +984,12 @@ def _close_active_assessment(
             ))
         item = items[0]
         item.assessment = assessment
+        item.save()
+
         if (not item.author.grading_completed_at
-                and item.author.graded_by.all().count() >= num_required_grades):
+                and item.author.graded_by.filter(assessment__isnull=False).count() >= num_required_grades):
             item.author.grading_completed_at = timezone.now()
             item.author.save()
-        item.save()
     except (DatabaseError, PeerWorkflowItem.DoesNotExist):
         error_message = _(
             u"An internal error occurred while retrieving a workflow item for "
