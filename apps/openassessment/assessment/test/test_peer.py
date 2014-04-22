@@ -249,7 +249,6 @@ class TestPeerApi(CacheResetTest):
             REQUIRED_GRADED_BY,
         )
 
-
     def test_peer_assessment_workflow(self):
         tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
@@ -312,6 +311,78 @@ class TestPeerApi(CacheResetTest):
             'must_be_graded_by': REQUIRED_GRADED_BY
         }
         self.assertTrue(peer_api.is_complete(tim_sub["uuid"], requirements))
+
+    def test_completeness(self):
+        """
+        Verify that a submission in the peer workflow is only marked complete
+        when we intend it to be. Incomplete assessments should never be
+        included in a grade.
+        """
+        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
+        sally_sub, sally = self._create_student_and_submission("Sally", "Sally's answer")
+        jim_sub, jim = self._create_student_and_submission("Jim", "Jim's answer")
+        self._create_student_and_submission("Buffy", "Buffy's answer")
+        self._create_student_and_submission("Xander", "Xander's answer")
+
+        # Tim should not have a score, because he has not evaluated enough
+        # peer submissions.
+        requirements = {
+            "peer": {
+                "must_grade": REQUIRED_GRADED,
+                "must_be_graded_by": REQUIRED_GRADED_BY,
+                }
+        }
+        score = workflow_api.get_workflow_for_submission(
+            tim_sub["uuid"], requirements
+        )["score"]
+        self.assertIsNone(score)
+
+        # Bob and Sally pull Tim's submission for peer assessment, but do not
+        # grade him right away.
+        sub = peer_api.get_submission_to_assess(bob_sub['uuid'], REQUIRED_GRADED_BY)
+        self.assertEqual(sub["uuid"], tim_sub["uuid"])
+
+        sub = peer_api.get_submission_to_assess(sally_sub['uuid'], REQUIRED_GRADED_BY)
+        self.assertEqual(sub["uuid"], tim_sub["uuid"])
+
+        # Jim pulls Tim's submission, then grades it immediately.
+        sub = peer_api.get_submission_to_assess(jim_sub['uuid'], REQUIRED_GRADED_BY)
+        self.assertEqual(sub["uuid"], tim_sub["uuid"])
+
+        peer_api.create_assessment(
+            jim_sub["uuid"], jim["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            REQUIRED_GRADED_BY,
+        )
+
+        # Tim should have no score.
+        score = workflow_api.get_workflow_for_submission(
+            tim_sub["uuid"], requirements
+        )["score"]
+        self.assertIsNone(score)
+
+        # Tim's workflow should not be fully graded
+        self.assertIsNone(PeerWorkflow.objects.get(student_id=tim["student_id"]).grading_completed_at)
+
+        peer_api.create_assessment(
+            bob_sub["uuid"], bob["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            REQUIRED_GRADED_BY,
+        )
+
+        peer_api.create_assessment(
+            sally_sub["uuid"], sally["student_id"], ASSESSMENT_DICT, RUBRIC_DICT,
+            REQUIRED_GRADED_BY,
+        )
+
+        # Tim should not have a score since he did not grade peers..
+        score = workflow_api.get_workflow_for_submission(
+            tim_sub["uuid"], requirements
+        )["score"]
+        self.assertIsNone(score)
+
+        # Tim's workflow has enough grades.
+        self.assertIsNotNone(PeerWorkflow.objects.get(student_id=tim["student_id"]).grading_completed_at)
+
 
     def test_complex_peer_assessment_workflow(self):
         """
