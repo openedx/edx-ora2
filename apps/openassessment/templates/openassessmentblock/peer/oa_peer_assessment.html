@@ -98,10 +98,23 @@
                                                         </div>
                                                     </li>
                                                     {% endfor %}
+
+                                                    <li class="answer--feedback">
+                                                        <div class="wrapper--input">
+                                                            <label for="assessment__rubric__question--{{ criterion.order_num }}__feedback" class="answer__label">Comments</label>
+                                                            <textarea
+                                                                id="assessment__rubric__question--{{ criterion.order_num }}__feedback"
+                                                                class="answer__value"
+                                                                value="{{ option.name }}"
+                                                                >
+                                                            </textarea>
+                                                        </div>
+                                                    </li>
                                                 </ol>
                                             </div>
                                         </li>
                                         {% endfor %}
+
                                         <li class="wrapper--input field field--textarea assessment__rubric__question assessment__rubric__question--feedback" id="assessment__rubric__question--feedback">
                                             <label class="question__title" for="assessment__rubric__question--feedback__value">
                                                 <span class="question__title__copy">{{ rubric_feedback_prompt }}</span>

@@ -183,8 +183,9 @@
 %ui-rubric-answers {
   margin-top: $baseline-v;
   margin-bottom: $baseline-v;
+  margin-left: ($baseline-h/4);
 
-  .answer {
+  .answer, .answer--feedback {
     @include row();
     @extend %wipe-last-child;
     margin-bottom: ($baseline-v/2);
@@ -194,25 +195,6 @@
 
   .wrapper--input {
     margin-bottom: ($baseline-v/4);
-
-    @include media($bp-ds) {
-      @include span-columns(6 of 6);
-    }
-
-    @include media($bp-dm) {
-      @include span-columns(4 of 12);
-      margin-bottom: 0;
-    }
-
-    @include media($bp-dl) {
-      @include span-columns(4 of 12);
-      margin-bottom: 0;
-    }
-
-    @include media($bp-dx) {
-      @include span-columns(4 of 12);
-      margin-bottom: 0;
-    }
 
     .answer__value, .answer__label {
       display: inline-block;
@@ -316,5 +298,45 @@
     display: inline-block; // FIX: need to reset base label style
     margin-left: ($baseline-v/4);
     color: $copy-secondary-color;
+  }
+
+  // ELEM: criterion selects
+  .answer {
+
+    .wrapper--input {
+      @include media($bp-ds) {
+        @include span-columns(6 of 6);
+      }
+
+      @include media($bp-dm) {
+        @include span-columns(4 of 12);
+        margin-bottom: 0;
+      }
+
+      @include media($bp-dl) {
+        @include span-columns(4 of 12);
+        margin-bottom: 0;
+      }
+
+      @include media($bp-dx) {
+        @include span-columns(4 of 12);
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  // ELEM: open text feedback for answer
+  .answer--feedback {
+    margin-top: ($baseline-v);
+
+    .answer__label {
+      margin-bottom: ($baseline-v/4);
+    }
+
+    .answer__value {
+      @extend %ui-content-longanswer;
+      min-height: ($baseline-v*5);
+      margin-right: 0;
+    }
   }
 }

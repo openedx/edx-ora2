@@ -80,6 +80,18 @@
                                                     </div>
                                                 </li>
                                                 {% endfor %}
+
+                                                <li class="answer--feedback">
+                                                    <div class="wrapper--input">
+                                                        <label for="assessment__rubric__question--{{ criterion.order_num }}__feedback" class="answer__label">Comments</label>
+                                                        <textarea
+                                                            id="assessment__rubric__question--{{ criterion.order_num }}__feedback"
+                                                            class="answer__value"
+                                                            value="{{ option.name }}"
+                                                            >
+                                                        </textarea>
+                                                    </div>
+                                                </li>
                                             </ol>
                                         </div>
                                     </li>
