@@ -24,8 +24,19 @@ Submissions
 Peer Assessment
 ***************
 
-.. automodule:: openassessment.peer.api
+.. automodule:: openassessment.assessment.peer_api
    :members:
+
+Self Assessment
+***************
+.. automodule:: openassessment.assessment.self_api
+   :members:
+
+Workflow Assessment
+*******************
+.. automodule:: openassessment.assessment.self_api
+   :members:
+
 
 Django Apps
 -----------
@@ -49,5 +60,21 @@ Models
 .. automodule:: submissions.models
    :members:
 
-.. automodule:: openassessment.peer.models
+
+Assessment
+**********
+
+Models
+++++++
+.. automodule:: openassessment.assessment.models
    :members:
+
+
+Workflow
+********
+
+Models
+++++++
+.. automodule:: openassessment.workflow.models
+   :members:
+
