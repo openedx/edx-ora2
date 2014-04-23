@@ -10,6 +10,7 @@ import mock
 import datetime as dt
 import pytz
 import ddt
+from submissions.models import StudentItem
 from openassessment.assessment import peer_api
 from .base import XBlockHandlerTestCase, scenario
 
@@ -587,6 +588,52 @@ class TestPeerAssessHandler(XBlockHandlerTestCase):
             xblock, 'Sally', 'Bob', self.ASSESSMENT_WITH_INVALID_OPTION,
             expect_failure=True
         )
+
+    @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
+    def test_preview_workflow(self, xblock):
+        """
+        Tests the Preview Workflow is properly isolated from the rest of the
+        submissions in a question.
+        """
+        xblock.xmodule_runtime = self._create_mock_runtime(True)
+        student_item = xblock.get_student_item_dict()
+        # Create a submission within preview, this should not have any
+        # impact on the workflow
+        xblock.create_submission(student_item, u"Bob's Staff answer")
+
+        xblock.xmodule_runtime = self._create_mock_runtime(False)
+        # Set preview back to false, and run through other submissions and
+        # assessments.
+        student_item = xblock.get_student_item_dict()
+        sally_student_item = copy.deepcopy(student_item)
+        sally_student_item['student_id'] = "Sally"
+        sally_submission = xblock.create_submission(sally_student_item, u"Sally's answer")
+
+        # Hal comes and submits a response.
+        hal_student_item = copy.deepcopy(student_item)
+        hal_student_item['student_id'] = "Hal"
+        hal_submission = xblock.create_submission(hal_student_item, u"Hal's answer")
+
+        # Now Hal will get Sally's submission to assess (Not Bobs).
+        assessment_sub = peer_api.get_submission_to_assess(hal_submission['uuid'], 1)
+        self.assertEquals(sally_submission["answer"], assessment_sub["answer"])
+
+        # Now create a regular submission for Bob
+        xblock.create_submission(student_item, u"Bob's Regular answer")
+
+        student_items = StudentItem.objects.filter(student_id=student_item['student_id'])
+        self.assertEquals(2, len(student_items))
+        self.assertNotEqual(student_items[0].item_id, student_items[1].item_id)
+
+    def _create_mock_runtime(self, preview):
+        mock_runtime = mock.Mock(
+            course_id='test_course',
+            anonymous_student_id='test_student',
+            service=lambda self, service: mock.Mock(
+                is_preview_enabled=lambda: preview
+            )
+        )
+        return mock_runtime
 
     def _submit_peer_assessment(self, xblock, student_id, scorer_id, assessment, expect_failure=False):
         """
