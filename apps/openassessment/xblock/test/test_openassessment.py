@@ -54,6 +54,16 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         expected_prompt = u"<p><br />Line 1</p><p>Line 2</p><p>Line 3<br /></p>"
         self.assertIn(expected_prompt, xblock_fragment.body_html())
 
+    @scenario('data/empty_prompt.xml')
+    def test_prompt_intentionally_empty(self, xblock):
+        # Verify that prompts intentionally left empty don't create DOM elements
+        xblock_fragment = self.runtime.render(xblock, "student_view")
+        body_html = xblock_fragment.body_html()
+        present_prompt_text = "you'll provide a response to the question"
+        missing_article = u'<article class="openassessment__prompt'
+        self.assertIn(present_prompt_text, body_html)
+        self.assertNotIn(missing_article, body_html)
+
     @scenario('data/basic_scenario.xml')
     def test_page_load_updates_workflow(self, xblock):
 

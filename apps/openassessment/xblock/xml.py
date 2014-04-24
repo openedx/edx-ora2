@@ -136,9 +136,10 @@ def _serialize_rubric(rubric_root, oa_block):
     Returns:
         None
     """
-    # Rubric prompt (default to empty text)
-    prompt = etree.SubElement(rubric_root, 'prompt')
-    prompt.text = unicode(oa_block.prompt)
+    # Rubric prompt (default to empty text); None indicates no input element
+    if oa_block.prompt is not None:
+        prompt = etree.SubElement(rubric_root, 'prompt')
+        prompt.text = unicode(oa_block.prompt)
 
     # Criteria
     criteria_list = oa_block.rubric_criteria
@@ -293,7 +294,7 @@ def _parse_rubric_xml(rubric_root):
     if prompt_el is not None:
         rubric_dict['prompt'] = _safe_get_text(prompt_el)
     else:
-        raise UpdateFromXmlError(_('Every "criterion" element must contain a "prompt" element.'))
+        rubric_dict['prompt'] = None
 
     feedback_prompt_el = rubric_root.find('feedbackprompt')
     if feedback_prompt_el is not None:

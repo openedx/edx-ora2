@@ -30,6 +30,7 @@
             {% endblock %}
 
             <div class="wrapper--openassessment__prompt">
+                {% if question %}
                 <article class="openassessment__prompt ui-toggle-visibility">
                     <h2 class="openassessment__prompt__title">{% trans "The prompt for this assignment" %}</h2>
 
@@ -37,6 +38,7 @@
                         {{ question|linebreaks }}
                     </div>
                 </article>
+                {% endif %}
             </div>
 
             <ol class="openassessment__steps" id="openassessment__steps">
