@@ -133,6 +133,21 @@ class PeerAssessmentMixin(object):
                 number of assessments.
 
         """
+        continue_grading = data.params.get('continue_grading', False)
+        path, context_dict = self.peer_path_and_context(continue_grading)
+        return self.render_assessment(path, context_dict)
+
+    def peer_path_and_context(self, continue_grading):
+        """
+        Return the template path and context for rendering the peer assessment step.
+
+        Args:
+            continue_grading (bool): If true, the user has chosen to continue grading.
+
+        Returns:
+            tuple of (template_path, context_dict)
+
+        """
         path = 'openassessmentblock/peer/oa_peer_unavailable.html'
         finished = False
         problem_closed, reason, start_date, due_date = self.is_closed(step="peer-assessment")
@@ -154,10 +169,7 @@ class PeerAssessmentMixin(object):
         workflow = self.get_workflow_info()
         if workflow is None:
             return self.render_assessment(path, context_dict)
-        continue_grading = (
-            data.params.get('continue_grading', False)
-            and workflow["status_details"]["peer"]["complete"]
-        )
+        continue_grading = continue_grading and workflow["status_details"]["peer"]["complete"]
 
         student_item = self.get_student_item_dict()
         assessment = self.get_assessment_module('peer-assessment')
@@ -183,7 +195,20 @@ class PeerAssessmentMixin(object):
                     "Submit your assessment & move to response #{}"
                 ).format(count + 2)
 
-        if reason == 'due' and problem_closed:
+        # Once a student has completed a problem, it stays complete,
+        # so this condition needs to be first.
+        if (workflow.get('status') == 'done' or finished) and not continue_grading:
+            path = "openassessmentblock/peer/oa_peer_complete.html"
+
+        # Allow continued grading even if the problem due date has passed
+        elif continue_grading and student_item:
+            peer_sub = self.get_peer_submission(student_item, assessment)
+            if peer_sub:
+                path = 'openassessmentblock/peer/oa_peer_turbo_mode.html'
+                context_dict["peer_submission"] = peer_sub
+            else:
+                path = 'openassessmentblock/peer/oa_peer_turbo_mode_waiting.html'
+        elif reason == 'due' and problem_closed:
             path = 'openassessmentblock/peer/oa_peer_closed.html'
         elif reason == 'start' and problem_closed:
             context_dict["peer_start"] = start_date
@@ -195,23 +220,21 @@ class PeerAssessmentMixin(object):
                 context_dict["peer_submission"] = peer_sub
             else:
                 path = 'openassessmentblock/peer/oa_peer_waiting.html'
-        elif continue_grading and student_item:
-            peer_sub = self.get_peer_submission(student_item, assessment)
-            if peer_sub:
-                path = 'openassessmentblock/peer/oa_peer_turbo_mode.html'
-                context_dict["peer_submission"] = peer_sub
-            else:
-                path = 'openassessmentblock/peer/oa_peer_turbo_mode_waiting.html'
-        elif workflow.get("status") == "done" or finished:
-            path = "openassessmentblock/peer/oa_peer_complete.html"
 
-        return self.render_assessment(path, context_dict)
+        return path, context_dict
 
-    def get_peer_submission(
-            self,
-            student_item_dict,
-            assessment
-    ):
+    def get_peer_submission(self, student_item_dict, assessment):
+        """
+        Retrieve a submission to peer-assess.
+
+        Args:
+            student_item_dict (dict): The student item for the student creating the submission.
+            assessment (dict): A dict describing the requirements for grading.
+
+        Returns:
+            dict: The serialized submission model.
+
+        """
         peer_submission = False
         try:
             peer_submission = peer_api.get_submission_to_assess(

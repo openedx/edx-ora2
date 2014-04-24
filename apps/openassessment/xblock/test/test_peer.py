@@ -6,6 +6,9 @@ from collections import namedtuple
 
 import copy
 import json
+import mock
+import datetime as dt
+import pytz
 from openassessment.assessment import peer_api
 from .base import XBlockHandlerTestCase, scenario
 
@@ -54,8 +57,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
             1
         )
 
-        # If Over Grading is on, this should now return Sally or Hal's response
-        # to Bob.
+        # If Over Grading is on, this should now return Sally or Hal's response to Bob.
         submission = xblock.create_submission(student_item, u"Bob's answer")
         workflow_info = xblock.get_workflow_info()
         self.assertEqual(workflow_info["status"], u'peer')
@@ -67,7 +69,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         self.assertIsNotNone(peer_response)
         self.assertNotIn(submission["answer"]["text"].encode('utf-8'), peer_response.body)
 
-        #Validate Peer Rendering.
+        # Validate Peer Rendering.
         self.assertTrue("Sally".encode('utf-8') in peer_response.body or
             "Hal".encode('utf-8') in peer_response.body)
 
@@ -296,3 +298,129 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         resp = self.request(xblock, 'render_peer_assessment', json.dumps(dict()))
         self.assertIn('waiting', resp.lower())
         self.assertIn('peer', resp.lower())
+
+
+class TestPeerAssessmentRender(XBlockHandlerTestCase):
+    """
+    Test rendering of the peer assessment step.
+    The basic strategy is to verify that we're providing the right
+    template and context for each possible state,
+    plus an integration test to verify that the context
+    is being rendered correctly.
+    """
+
+    @scenario('data/peer_closed_scenario.xml', user_id='Tyler')
+    def test_completed_and_past_due(self, xblock):
+        # Simulate having complete peer-assessment
+        # Even though the problem is closed, we should still see
+        # that the step is complete.
+        xblock.create_submission(
+            xblock.get_student_item_dict(),
+            u"𝕿𝖍𝖊 𝖋𝖎𝖗𝖘𝖙 𝖗𝖚𝖑𝖊 𝖔𝖋 𝖋𝖎𝖌𝖍𝖙 𝖈𝖑𝖚𝖇 𝖎𝖘 𝖞𝖔𝖚 𝖉𝖔 𝖓𝖔𝖙 𝖙𝖆𝖑𝖐 𝖆𝖇𝖔𝖚𝖙 𝖋𝖎𝖌𝖍𝖙 𝖈𝖑𝖚𝖇."
+        )
+
+        # Simulate a workflow status of "done" and expect to see the "completed" step
+        expected_context = {
+            'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
+            'graded': 0,
+            'estimated_time': '20 minutes',
+            'submit_button_text': 'Submit your assessment & move to response #2',
+            'rubric_criteria': xblock.rubric_criteria,
+            'must_grade': 5,
+            'review_num': 1,
+        }
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/peer/oa_peer_complete.html',
+            expected_context,
+            workflow_status='done',
+        )
+
+    @scenario('data/peer_closed_scenario.xml', user_id='Marla')
+    def test_turbo_grade_past_due(self, xblock):
+        xblock.create_submission(
+            xblock.get_student_item_dict(),
+            u"ı ƃoʇ ʇɥıs pɹǝss ɐʇ ɐ ʇɥɹıɟʇ sʇoɹǝ ɟoɹ ouǝ poןןɐɹ."
+        )
+
+        # Try to continue grading after the due date has passed
+        # Continued grading should still be available,
+        # but since there are no other submissions, we're in the waiting state.
+        expected_context = {
+            'estimated_time': '20 minutes',
+             'graded': 0,
+             'must_grade': 5,
+             'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
+             'review_num': 1,
+             'rubric_criteria': xblock.rubric_criteria,
+             'submit_button_text': 'Submit your assessment & review another response',
+        }
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/peer/oa_peer_turbo_mode_waiting.html',
+            expected_context,
+            continue_grading=True,
+            workflow_status='done',
+            workflow_status_details={'peer': {'complete': True}}
+        )
+
+        # Create a submission from another student.
+        # We should now be able to continue grading that submission
+        other_student_item = copy.deepcopy(xblock.get_student_item_dict())
+        other_student_item['student_id'] = "Tyler"
+        submission = xblock.create_submission(other_student_item, u"Other submission")
+
+        expected_context = {
+            'estimated_time': '20 minutes',
+             'graded': 0,
+             'must_grade': 5,
+             'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
+             'peer_submission': submission,
+             'review_num': 1,
+             'rubric_criteria': xblock.rubric_criteria,
+             'submit_button_text': 'Submit your assessment & review another response',
+        }
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/peer/oa_peer_turbo_mode.html',
+            expected_context,
+            continue_grading=True,
+            workflow_status='done',
+            workflow_status_details={'peer': {'complete': True}}
+        )
+
+    def _assert_path_and_context(
+        self, xblock, expected_path, expected_context,
+        continue_grading=False, workflow_status=None,
+        workflow_status_details=None,
+    ):
+        """
+        Render the peer assessment step and verify:
+            1) that the correct template and context were used
+            2) that the rendering occurred without an error
+
+        Args:
+            xblock (OpenAssessmentBlock): The XBlock under test.
+            expected_path (str): The expected template path.
+            expected_context (dict): The expected template context.
+
+        Kwargs:
+            continue_grading (bool): If true, the user has chosen to continue grading.
+            workflow_status (str): If provided, simulate this status from the workflow API.
+            workflow_status_details (dict): If provided, simulate these workflow details from the workflow API.
+        """
+        if workflow_status is not None:
+            xblock.get_workflow_info = mock.Mock(return_value={
+                'status': workflow_status,
+                'status_details': (
+                    workflow_status_details
+                    if workflow_status_details is not None
+                    else dict()
+                ),
+            })
+
+        path, context = xblock.peer_path_and_context(continue_grading)
+
+        self.assertEqual(path, expected_path)
+        self.assertItemsEqual(context, expected_context)
+
+        # Verify that we render without error
+        resp = self.request(xblock, 'render_peer_assessment', json.dumps({}))
+        self.assertGreater(len(resp), 0)
