@@ -9,6 +9,7 @@ import json
 import mock
 import datetime as dt
 import pytz
+import ddt
 from openassessment.assessment import peer_api
 from .base import XBlockHandlerTestCase, scenario
 
@@ -275,31 +276,8 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         self.assertNotIn(submission["answer"]["text"].encode('utf-8'), peer_response.body)
         self.assertIn("Peer Assessments Complete", peer_response.body)
 
-    @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
-    def test_peer_unavailable(self, xblock):
-        # Before creating a submission, the peer step should be unavailable
-        resp = self.request(xblock, 'render_peer_assessment', json.dumps(dict()))
-        self.assertIn('not available', resp.lower())
-        self.assertIn('peer-assessment', resp.lower())
 
-    @scenario('data/peer_closed_scenario.xml', user_id='Bob')
-    def test_peer_closed(self, xblock):
-        # The scenario defines a peer assessment with a due date in the past
-        resp = self.request(xblock, 'render_peer_assessment', json.dumps(dict()))
-        self.assertIn('closed', resp.lower())
-        self.assertIn('peer assessment', resp.lower())
-
-    @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
-    def test_peer_waiting(self, xblock):
-        # Make a submission, but no peer assessments available
-        xblock.create_submission(xblock.get_student_item_dict(), "Test answer")
-
-        # Check the rendered peer step
-        resp = self.request(xblock, 'render_peer_assessment', json.dumps(dict()))
-        self.assertIn('waiting', resp.lower())
-        self.assertIn('peer', resp.lower())
-
-
+@ddt.ddt
 class TestPeerAssessmentRender(XBlockHandlerTestCase):
     """
     Test rendering of the peer assessment step.
@@ -309,8 +287,167 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
     is being rendered correctly.
     """
 
+    @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
+    def test_released_no_submission(self, xblock):
+        # No submission, so the peer step should be unavailable
+        expected_context = {
+            'graded': 0,
+            'estimated_time': '20 minutes',
+            'submit_button_text': 'Submit your assessment & move to response #2',
+            'rubric_criteria': xblock.rubric_criteria,
+            'must_grade': 5,
+            'review_num': 1,
+        }
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/peer/oa_peer_unavailable.html', expected_context
+        )
+
+    @scenario('data/peer_closed_scenario.xml', user_id='Bob')
+    def test_closed_no_submission(self, xblock):
+        expected_context = {
+            'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
+            'graded': 0,
+            'estimated_time': '20 minutes',
+            'submit_button_text': 'Submit your assessment & move to response #2',
+            'rubric_criteria': xblock.rubric_criteria,
+            'must_grade': 5,
+            'review_num': 1,
+        }
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/peer/oa_peer_closed.html', expected_context
+        )
+
+    @scenario('data/peer_future_scenario.xml', user_id='Bob')
+    def test_before_release(self, xblock):
+        expected_context = {
+            'peer_start': dt.datetime(2999, 1, 1).replace(tzinfo=pytz.utc),
+            'graded': 0,
+            'estimated_time': '20 minutes',
+            'submit_button_text': 'Submit your assessment & move to response #2',
+            'rubric_criteria': xblock.rubric_criteria,
+            'must_grade': 5,
+            'review_num': 1,
+        }
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/peer/oa_peer_unavailable.html', expected_context
+        )
+
+    @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
+    def test_waiting_for_peers(self, xblock):
+        # Make a submission, but no peer assessments available
+        xblock.create_submission(xblock.get_student_item_dict(), u'Ǥø ȺħɇȺđ, Ȼøɍnɇłɨᵾs, ɏøᵾ ȼȺn ȼɍɏ')
+
+        # Expect to be in the waiting for peers state
+        expected_context = {
+            'graded': 0,
+            'estimated_time': '20 minutes',
+            'rubric_criteria': xblock.rubric_criteria,
+            'must_grade': 5,
+            'review_num': 1,
+            'submit_button_text': 'submit your assessment & move to response #2',
+        }
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/peer/oa_peer_waiting.html',
+            expected_context,
+            workflow_status='peer',
+            graded_enough=False,
+            was_graded_enough=False,
+        )
+
+    @scenario('data/peer_assessment_scenario.xml', user_id='Richard')
+    def test_peer_assessment_available(self, xblock):
+        # Make a submission, so we get to peer assessment
+        xblock.create_submission(
+            xblock.get_student_item_dict(),
+            u"𝒀𝒆𝒔. 𝑴𝒂𝒌𝒆 𝒕𝒉𝒆𝒔𝒆 𝒚𝒐𝒖𝒓 𝒑𝒓𝒊𝒎𝒂𝒓𝒚 𝒂𝒄𝒕𝒊𝒐𝒏 𝒊𝒕𝒆𝒎𝒔."
+        )
+
+        # Create a submission from another user so we have something to assess
+        other_student = copy.deepcopy(xblock.get_student_item_dict())
+        other_student['student_id'] = 'Tyler'
+        submission = xblock.create_submission(
+            other_student,
+            (
+                u"ησω, αη¢ιєηт ρєσρℓє ƒσυη∂ тнєιя ¢ℓσтнєѕ ﻭσт ¢ℓєαηєя"
+                u" ιƒ тнєу ωαѕнє∂ тнєм αт α ¢єятαιη ѕρσт ιη тнє яινєя."
+            )
+        )
+
+        # We should pull the other student's submission
+        expected_context = {
+            'graded': 0,
+            'estimated_time': '20 minutes',
+            'rubric_criteria': xblock.rubric_criteria,
+            'must_grade': 5,
+            'review_num': 1,
+            'peer_submission': submission,
+            'submit_button_text': 'submit your assessment & move to response #2',
+        }
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/peer/oa_peer_assessment.html',
+            expected_context,
+            workflow_status='peer',
+        )
+
+    @scenario('data/peer_closed_scenario.xml', user_id='Bob')
+    def test_peer_closed_no_assessments_available(self, xblock):
+        # Make a submission, so we get to peer assessment
+        xblock.create_submission(xblock.get_student_item_dict(), u"ฬє'гє รՇเɭɭ ๓єภ")
+
+        # No assessments are available, and the step has closed
+        expected_context = {
+            'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
+            'graded': 0,
+            'estimated_time': '20 minutes',
+            'rubric_criteria': xblock.rubric_criteria,
+            'must_grade': 5,
+            'review_num': 1,
+            'submit_button_text': 'submit your assessment & move to response #2',
+        }
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/peer/oa_peer_closed.html',
+            expected_context,
+            workflow_status='peer',
+        )
+
+    @scenario('data/peer_closed_scenario.xml', user_id='Richard')
+    def test_peer_closed_assessments_available(self, xblock):
+        # Make a submission, so we get to peer assessment
+        xblock.create_submission(
+            xblock.get_student_item_dict(),
+            u"𝒀𝒆𝒔. 𝑴𝒂𝒌𝒆 𝒕𝒉𝒆𝒔𝒆 𝒚𝒐𝒖𝒓 𝒑𝒓𝒊𝒎𝒂𝒓𝒚 𝒂𝒄𝒕𝒊𝒐𝒏 𝒊𝒕𝒆𝒎𝒔."
+        )
+
+        # Create a submission from another user so we have something to assess
+        other_student = copy.deepcopy(xblock.get_student_item_dict())
+        other_student['student_id'] = 'Tyler'
+        xblock.create_submission(
+            other_student,
+            (
+                u"ησω, αη¢ιєηт ρєσρℓє ƒσυη∂ тнєιя ¢ℓσтнєѕ ﻭσт ¢ℓєαηєя"
+                u" ιƒ тнєу ωαѕнє∂ тнєм αт α ¢єятαιη ѕρσт ιη тнє яινєя."
+            )
+        )
+
+        # ... but the problem is closed, so we can't assess them
+        expected_context = {
+            'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
+            'graded': 0,
+            'estimated_time': '20 minutes',
+            'rubric_criteria': xblock.rubric_criteria,
+            'must_grade': 5,
+            'review_num': 1,
+            'submit_button_text': 'submit your assessment & move to response #2',
+        }
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/peer/oa_peer_closed.html',
+            expected_context,
+            workflow_status='peer',
+        )
+
+    @ddt.data('self', 'waiting', 'done')
     @scenario('data/peer_closed_scenario.xml', user_id='Tyler')
-    def test_completed_and_past_due(self, xblock):
+    def test_completed_and_past_due(self, xblock, workflow_status):
         # Simulate having complete peer-assessment
         # Even though the problem is closed, we should still see
         # that the step is complete.
@@ -324,19 +461,23 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
             'graded': 0,
             'estimated_time': '20 minutes',
-            'submit_button_text': 'Submit your assessment & move to response #2',
+            'submit_button_text': 'submit your assessment & move to response #2',
             'rubric_criteria': xblock.rubric_criteria,
             'must_grade': 5,
             'review_num': 1,
         }
+
         self._assert_path_and_context(
             xblock, 'openassessmentblock/peer/oa_peer_complete.html',
             expected_context,
-            workflow_status='done',
+            workflow_status=workflow_status,
+            graded_enough=True,
+            was_graded_enough=True,
         )
 
+    @ddt.data('self', 'done')
     @scenario('data/peer_closed_scenario.xml', user_id='Marla')
-    def test_turbo_grade_past_due(self, xblock):
+    def test_turbo_grade_past_due(self, xblock, workflow_status):
         xblock.create_submission(
             xblock.get_student_item_dict(),
             u"ı ƃoʇ ʇɥıs pɹǝss ɐʇ ɐ ʇɥɹıɟʇ sʇoɹǝ ɟoɹ ouǝ poןןɐɹ."
@@ -358,8 +499,9 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             xblock, 'openassessmentblock/peer/oa_peer_turbo_mode_waiting.html',
             expected_context,
             continue_grading=True,
-            workflow_status='done',
-            workflow_status_details={'peer': {'complete': True}}
+            workflow_status=workflow_status,
+            graded_enough=True,
+            was_graded_enough=True,
         )
 
         # Create a submission from another student.
@@ -383,13 +525,15 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             expected_context,
             continue_grading=True,
             workflow_status='done',
-            workflow_status_details={'peer': {'complete': True}}
+            graded_enough=True,
+            was_graded_enough=True,
         )
 
     def _assert_path_and_context(
         self, xblock, expected_path, expected_context,
         continue_grading=False, workflow_status=None,
-        workflow_status_details=None,
+        graded_enough=False,
+        was_graded_enough=False,
     ):
         """
         Render the peer assessment step and verify:
@@ -404,19 +548,22 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         Kwargs:
             continue_grading (bool): If true, the user has chosen to continue grading.
             workflow_status (str): If provided, simulate this status from the workflow API.
-            workflow_status_details (dict): If provided, simulate these workflow details from the workflow API.
+            graded_enough (bool): Did the student meet the requirement by assessing enough peers?
+            was_graded_enough (bool): Did the student receive enough assessments from peers?
         """
+        # Simulate the response from the workflow API
         if workflow_status is not None:
-            xblock.get_workflow_info = mock.Mock(return_value={
+            workflow_info = {
                 'status': workflow_status,
-                'status_details': (
-                    workflow_status_details
-                    if workflow_status_details is not None
-                    else dict()
-                ),
-            })
+                'status_details': {'peer': {'complete': graded_enough}}
+            }
+            xblock.get_workflow_info = mock.Mock(return_value=workflow_info)
 
-        path, context = xblock.peer_path_and_context(continue_grading)
+        # Simulate that we've either finished or not finished required grading
+        patched_module = 'openassessment.xblock.peer_assessment_mixin.peer_api'
+        with mock.patch(patched_module + '.has_finished_required_evaluating') as mock_finished:
+            mock_finished.return_value = (was_graded_enough, 1)
+            path, context = xblock.peer_path_and_context(continue_grading)
 
         self.assertEqual(path, expected_path)
         self.assertItemsEqual(context, expected_context)
