@@ -13,13 +13,15 @@ from .base import XBlockHandlerTestCase, scenario
 
 
 class TestSelfAssessment(XBlockHandlerTestCase):
+    """
+    Tests for the self-assessment XBlock handler.
+    """
 
     maxDiff = None
 
     SUBMISSION = u'ՇﻉรՇ รપ๒๓ٱรรٱѻก'
 
     ASSESSMENT = {
-        'submission_uuid': None,
         'options_selected': {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ﻉซƈﻉɭɭﻉกՇ', u'Form': u'Fair'},
     }
 
@@ -31,9 +33,7 @@ class TestSelfAssessment(XBlockHandlerTestCase):
         submission = xblock.create_submission(student_item, self.SUBMISSION)
 
         # Submit a self-assessment
-        assessment = copy.deepcopy(self.ASSESSMENT)
-        assessment['submission_uuid'] = submission['uuid']
-        resp = self.request(xblock, 'self_assess', json.dumps(assessment), response_format='json')
+        resp = self.request(xblock, 'self_assess', json.dumps(self.ASSESSMENT), response_format='json')
         self.assertTrue(resp['success'])
 
         # Expect that a self-assessment was created
@@ -62,9 +62,7 @@ class TestSelfAssessment(XBlockHandlerTestCase):
         with mock.patch('openassessment.xblock.workflow_mixin.workflow_api') as mock_api:
 
             # Submit a self-assessment
-            assessment = copy.deepcopy(self.ASSESSMENT)
-            assessment['submission_uuid'] = submission['uuid']
-            resp = self.request(xblock, 'self_assess', json.dumps(assessment), response_format='json')
+            resp = self.request(xblock, 'self_assess', json.dumps(self.ASSESSMENT), response_format='json')
 
             # Verify that the workflow is updated when we submit a self-assessment
             self.assertTrue(resp['success'])
@@ -77,7 +75,7 @@ class TestSelfAssessment(XBlockHandlerTestCase):
     def test_self_assess_workflow_error(self, xblock):
         # Create a submission for the student
         student_item = xblock.get_student_item_dict()
-        submission = xblock.create_submission(student_item, self.SUBMISSION)
+        xblock.create_submission(student_item, self.SUBMISSION)
 
         with mock.patch('openassessment.xblock.workflow_mixin.workflow_api') as mock_api:
 
@@ -85,9 +83,7 @@ class TestSelfAssessment(XBlockHandlerTestCase):
             mock_api.update_from_assessments.side_effect = workflow_api.AssessmentWorkflowError
 
             # Submit a self-assessment
-            assessment = copy.deepcopy(self.ASSESSMENT)
-            assessment['submission_uuid'] = submission['uuid']
-            resp = self.request(xblock, 'self_assess', json.dumps(assessment), response_format='json')
+            resp = self.request(xblock, 'self_assess', json.dumps(self.ASSESSMENT), response_format='json')
 
             # Verify that the we get an error response
             self.assertFalse(resp['success'])
@@ -106,17 +102,14 @@ class TestSelfAssessment(XBlockHandlerTestCase):
     def test_self_assess_api_error(self, xblock):
         # Create a submission for the student
         student_item = xblock.get_student_item_dict()
-        submission = xblock.create_submission(student_item, self.SUBMISSION)
+        xblock.create_submission(student_item, self.SUBMISSION)
 
         # Submit a self-assessment
-        assessment = copy.deepcopy(self.ASSESSMENT)
-        assessment['submission_uuid'] = submission['uuid']
-
         # Simulate an error and expect a failure response
         with mock.patch('openassessment.xblock.self_assessment_mixin.self_api') as mock_api:
             mock_api.SelfAssessmentRequestError = self_api.SelfAssessmentRequestError
             mock_api.create_assessment.side_effect = self_api.SelfAssessmentRequestError
-            resp = self.request(xblock, 'self_assess', json.dumps(assessment), response_format='json')
+            resp = self.request(xblock, 'self_assess', json.dumps(self.ASSESSMENT), response_format='json')
 
         self.assertFalse(resp['success'])
 

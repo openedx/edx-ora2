@@ -92,7 +92,6 @@ class SelfAssessmentMixin(object):
 
         Args:
             data (dict): Must have the following keys:
-                submission_uuid (string): The unique identifier of the submission being assessed.
                 options_selected (dict): Dictionary mapping criterion names to option values.
 
         Returns:
