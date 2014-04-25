@@ -631,6 +631,10 @@
           margin-top: $baseline-v;
         }
 
+        .question__title__copy {
+          margin-left: 0;
+        }
+
         textarea {
           @extend %ui-content-longanswer;
           min-height: ($baseline-v*5);
@@ -990,7 +994,7 @@
     }
 
     .answer--feedback__content {
-      margin-top: ($baseline-v);
+      margin-top: ($baseline-v/4);
     }
 
     .feedback {

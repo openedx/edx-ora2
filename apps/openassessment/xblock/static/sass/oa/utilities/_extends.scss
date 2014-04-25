@@ -159,7 +159,7 @@
 // rubric question
 %ui-rubric-question {
   @include clearfix();
-  margin-bottom: ($baseline-v/2);
+  margin-bottom: ($baseline-v*2);
   @extend %wipe-last-child;
 
   .question__title {
@@ -183,7 +183,7 @@
 %ui-rubric-answers {
   margin-top: $baseline-v;
   margin-bottom: $baseline-v;
-  margin-left: ($baseline-h/4);
+  margin-left: ($baseline-h/2);
 
   .answer, .answer--feedback {
     @include row();
@@ -327,7 +327,6 @@
 
   // ELEM: open text feedback for answer
   .answer--feedback {
-    margin-top: ($baseline-v);
 
     .answer__label {
       margin-bottom: ($baseline-v/4);
