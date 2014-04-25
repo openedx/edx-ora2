@@ -2,6 +2,7 @@
 Grade step in the OpenAssessment XBlock.
 """
 import copy
+from collections import defaultdict
 
 from django.utils.translation import ugettext as _
 from xblock.core import XBlock
@@ -88,7 +89,7 @@ class GradeMixin(object):
             'student_submission': student_submission,
             'peer_assessments': peer_assessments,
             'self_assessment': self_assessment,
-            'rubric_criteria': copy.deepcopy(self.rubric_criteria),
+            'rubric_criteria': self._rubric_criteria_with_feedback(peer_assessments),
             'has_submitted_feedback': has_submitted_feedback,
         }
 
@@ -161,3 +162,44 @@ class GradeMixin(object):
                 }
             )
             return {'success': True, 'msg': _(u"Feedback saved.")}
+
+    def _rubric_criteria_with_feedback(self, peer_assessments):
+        """
+        Add per-criterion feedback from peer assessments to the rubric criteria.
+        Filters out empty feedback.
+
+        Args:
+            peer_assessments (list of dict): Serialized assessment models from the peer API.
+
+        Returns:
+            list of criterion dictionaries
+
+        Example:
+            [
+                {
+                    'name': 'Test name',
+                    'prompt': 'Test prompt',
+                    'order_num': 2,
+                    'options': [...]
+                    'feedback': [
+                        'Good job!',
+                        'Excellent work!',
+                    ]
+                },
+                ...
+            ]
+        """
+        criteria = copy.deepcopy(self.rubric_criteria)
+        criteria_feedback = defaultdict(list)
+
+        for assessment in peer_assessments:
+            for part in assessment['parts']:
+                if part['feedback']:
+                    part_criterion_name = part['option']['criterion']['name']
+                    criteria_feedback[part_criterion_name].append(part['feedback'])
+
+        for criterion in criteria:
+            criterion_name = criterion['name']
+            criterion['feedback'] = criteria_feedback[criterion_name]
+
+        return criteria

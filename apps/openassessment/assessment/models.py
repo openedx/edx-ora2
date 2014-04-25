@@ -398,10 +398,15 @@ class AssessmentPart(models.Model):
     by this assessor for this `Criterion`. So basically, think of this class
     as :class:`CriterionOption` + student state.
     """
-    assessment = models.ForeignKey(Assessment, related_name='parts')
+    MAX_FEEDBACK_SIZE = 1024 * 100
 
-    # criterion = models.ForeignKey(Criterion) ?
-    option = models.ForeignKey(CriterionOption) # TODO: no reverse
+    assessment = models.ForeignKey(Assessment, related_name='parts')
+    option = models.ForeignKey(CriterionOption, related_name="+")
+
+    # Free-form text feedback for the specific criterion
+    # Note that the `Assessment` model also has a feedback field,
+    # which is feedback on the submission as a whole.
+    feedback = models.TextField(default="", blank=True)
 
     @property
     def points_earned(self):
@@ -412,12 +417,35 @@ class AssessmentPart(models.Model):
         return self.option.criterion.points_possible
 
     @classmethod
-    def add_to_assessment(cls, assessment, option_ids):
-        """Creates AssessmentParts and adds them to `assessment`."""
+    def add_to_assessment(cls, assessment, option_ids, criterion_feedback=None):
+        """
+        Creates AssessmentParts and adds them to `assessment`.
+
+        Args:
+            assessment (Assessment): The assessment model we're adding parts to.
+            option_ids (list of int): List of primary keys for options the user selected.
+
+        Kwargs:
+            criterion_feedback (dict): Dictionary mapping criterion names
+                to free-form text feedback on the criterion.
+                You don't need to include all the rubric criteria,
+                and keys that don't match any criterion will be ignored.
+
+        Returns:
+            None
+
+        """
         cls.objects.bulk_create([
             cls(assessment=assessment, option_id=option_id)
             for option_id in option_ids
         ])
+
+        if criterion_feedback is not None:
+            for criterion_name, feedback in criterion_feedback.iteritems():
+                feedback = feedback[0:cls.MAX_FEEDBACK_SIZE]
+                assessment.parts.filter(
+                    option__criterion__name=criterion_name
+                ).update(feedback=feedback)
 
 
 class AssessmentFeedbackOption(models.Model):
@@ -447,7 +475,7 @@ class AssessmentFeedback(models.Model):
     as well as zero or more feedback options
     ("Please select the statements below that reflect what you think of this peer grading experience")
     """
-    MAXSIZE = 1024*100       # 100KB
+    MAXSIZE = 1024 * 100     # 100KB
 
     submission_uuid = models.CharField(max_length=128, unique=True, db_index=True)
     assessments = models.ManyToManyField(Assessment, related_name='assessment_feedback', default=None)

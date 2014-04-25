@@ -17,6 +17,7 @@ DEFAULT_RUBRIC_CRITERIA = [
         'name': "Ideas",
         'prompt': "Determine if there is a unifying theme or main idea.",
         'order_num': 0,
+        'feedback': 'optional',
         'options': [
             {
                 'order_num': 0, 'points': 0, 'name': 'Poor',

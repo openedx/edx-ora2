@@ -94,10 +94,26 @@
                                                         </div>
                                                         <div class="wrapper--metadata">
                                                             <span class="answer__tip">{{ option.explanation }}</span>
-                                                            <span class="answer__points">{{option.points}} <span class="answer__points__label">{% trans "points" %}</span></span>
+                                                            <span class="answer__points">{{ option.points }} <span class="answer__points__label">{% trans "points" %}</span></span>
                                                         </div>
                                                     </li>
                                                     {% endfor %}
+
+                                                    {% if criterion.feedback == 'optional' %}
+                                                    <li class="answer--feedback">
+                                                        <div class="wrapper--input">
+                                                            <label for="assessment__rubric__question--{{ criterion.order_num }}__feedback" class="answer__label">{% trans "Comments" %}</label>
+                                                            <textarea
+                                                                id="assessment__rubric__question--{{ criterion.order_num }}__feedback"
+                                                                class="answer__value"
+                                                                value="{{ criterion.name }}"
+                                                                name="{{ criterion.name }}"
+                                                                maxlength="300"
+                                                                >
+                                                            </textarea>
+                                                        </div>
+                                                    </li>
+                                                    {% endif %}
                                                 </ol>
                                             </div>
                                         </li>
@@ -108,7 +124,12 @@
                                             </label>
 
                                             <div class="wrapper--input">
-                                                <textarea id="assessment__rubric__question--feedback__value" placeholder="{% trans "I noticed that this response..." %}"></textarea>
+                                                <textarea
+                                                    id="assessment__rubric__question--feedback__value"
+                                                    placeholder="{% trans "I noticed that this response..." %}"
+                                                    maxlength="500"
+                                                >
+                                                </textarea>
                                             </div>
                                         </li>
                                     </ol>

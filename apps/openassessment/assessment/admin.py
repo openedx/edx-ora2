@@ -86,11 +86,12 @@ class AssessmentAdmin(admin.ModelAdmin):
     def parts_summary(self, assessment_obj):
         return "<br/>".join(
             html.escape(
-                u"{}/{} - {}: {}".format(
+                u"{}/{} - {}: {} - {}".format(
                     part.points_earned,
                     part.points_possible,
                     part.option.criterion.name,
                     part.option.name,
+                    part.feedback,
                 )
             )
             for part in assessment_obj.parts.all()

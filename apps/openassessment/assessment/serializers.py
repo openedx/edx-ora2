@@ -7,7 +7,6 @@ from copy import deepcopy
 import logging
 
 from django.core.cache import cache
-from django.utils.translation import ugettext as _
 from rest_framework import serializers
 from openassessment.assessment.models import (
     Assessment, AssessmentPart, Criterion, CriterionOption, Rubric,
@@ -17,6 +16,26 @@ from openassessment.assessment.models import (
 
 
 logger = logging.getLogger(__name__)
+
+
+# Current version of the models in the cache
+# Increment this to ignore assessment models currently in the cache
+# when model fields change.
+CACHE_VERSION = 1
+
+
+def _versioned_cache_key(key):
+    """
+    Add a version number to a cache key, so we
+
+    Args:
+        key (unicode): The original, unversioned, cache key.
+
+    Returns:
+        unicode: Cache key with the version appended.
+
+    """
+    return u"{}.v{}".format(key, CACHE_VERSION)
 
 
 class InvalidRubric(Exception):
@@ -154,18 +173,11 @@ class AssessmentPartSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AssessmentPart
-        fields = ('option',)  # TODO: Direct link to Criterion?
+        fields = ('option', 'feedback')
 
 
 class AssessmentSerializer(serializers.ModelSerializer):
     """Simplified serializer for :class:`Assessment` that's lighter on the DB."""
-
-    def validate_feedback(self, attrs, source):
-        """Check that the feedback is within an acceptable size range."""
-        value = attrs[source]
-        if len(value) > Assessment.MAXSIZE:
-            raise serializers.ValidationError("Maximum feedback size exceeded.")
-        return attrs
 
     class Meta:
         model = Assessment
@@ -209,8 +221,10 @@ def full_assessment_dict(assessment, rubric_dict=None):
     Returns:
         dict with keys 'rubric' (serialized Rubric model) and 'parts' (serialized assessment parts)
     """
-    assessment_cache_key = "assessment.full_assessment_dict.{}.{}.{}".format(
-        assessment.id, assessment.submission_uuid, assessment.scored_at.isoformat()
+    assessment_cache_key = _versioned_cache_key(
+        "assessment.full_assessment_dict.{}.{}.{}".format(
+            assessment.id, assessment.submission_uuid, assessment.scored_at.isoformat()
+        )
     )
     assessment_dict = cache.get(assessment_cache_key)
     if assessment_dict:
@@ -235,7 +249,8 @@ def full_assessment_dict(assessment, rubric_dict=None):
         options_dict = criterion_dict["options"][part.option.order_num]
         options_dict["criterion"] = criterion_dict
         parts.append({
-            "option": options_dict
+            "option": options_dict,
+            "feedback": part.feedback
         })
 
     # Now manually built up the dynamically calculated values on the

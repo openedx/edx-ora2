@@ -41,6 +41,7 @@ class TestSerializeContent(TestCase):
             "order_num": 0,
             "name": "Test criterion",
             "prompt": "Test criterion prompt",
+            "feedback": "disabled",
             "options": [
                 {
                     "order_num": 0,

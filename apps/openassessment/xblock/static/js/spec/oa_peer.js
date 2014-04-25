@@ -20,10 +20,19 @@ describe("OpenAssessment.PeerView", function() {
             return successPromise;
         };
     };
-    // Stub runtime
-    var runtime = {};
+
+    // Stub base view
+    var StubBaseView = function() {
+        this.showLoadError = function(msg) {};
+        this.toggleActionError = function(msg, step) {};
+        this.setUpCollapseExpand = function(sel) {};
+        this.renderSelfAssessmentStep = function() {};
+        this.scrollToTop = function() {};
+        this.gradeView = { load: function() {} };
+    };
 
     // Stubs
+    var baseView = null;
     var server = null;
 
     // View under test
@@ -37,12 +46,46 @@ describe("OpenAssessment.PeerView", function() {
         // Create a new stub server
         server = new StubServer();
 
+        // Create the stub base view
+        baseView = new StubBaseView();
+
         // Create the object under test
-        var el = $("#openassessment").get(0);
-        view = new OpenAssessment.BaseView(runtime, el, server);
+        var el = $("#openassessment-base").get(0);
+        view = new OpenAssessment.PeerView(el, server, baseView);
+        view.installHandlers();
     });
 
-    it("re-enables the peer assess button on error", function() {
+    it("Sends a peer assessment to the server", function() {
+        spyOn(server, 'peerAssess').andCallThrough();
+
+        // Select options in the rubric
+        var optionsSelected = {};
+        optionsSelected['Criterion 1'] = 'Poor';
+        optionsSelected['Criterion 2'] = 'Fair';
+        optionsSelected['Criterion 3'] = 'Good';
+        view.optionsSelected(optionsSelected);
+
+        // Provide per-criterion feedback
+        var criterionFeedback = {};
+        criterionFeedback['Criterion 1'] = "You did a fair job";
+        criterionFeedback['Criterion 3'] = "You did a good job";
+        view.criterionFeedback(criterionFeedback);
+
+        // Provide overall feedback
+        var overallFeedback = "Good job!";
+        view.overallFeedback(overallFeedback);
+
+        // Submit the peer assessment
+        view.peerAssess();
+
+        // Expect that the peer assessment was sent to the server
+        // with the options and feedback we selected
+        expect(server.peerAssess).toHaveBeenCalledWith(
+            optionsSelected, criterionFeedback, overallFeedback
+        );
+    });
+
+    it("Re-enables the peer assess button on error", function() {
         // Simulate a server error
         spyOn(server, 'peerAssess').andCallFake(function() {
             expect(view.peerSubmitEnabled()).toBe(false);
@@ -51,6 +94,7 @@ describe("OpenAssessment.PeerView", function() {
             }).promise();
         });
         view.peerAssess();
+
         // Expect the submit button to have been re-enabled
         expect(view.peerSubmitEnabled()).toBe(true);
     });

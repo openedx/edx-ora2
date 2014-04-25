@@ -11,7 +11,6 @@ from django.utils import timezone
 from django.utils.translation import ugettext as _
 from django.db import DatabaseError
 from dogapi import dog_stats_api
-from django.db.models import Q
 import random
 
 from openassessment.assessment.models import (
@@ -139,7 +138,9 @@ def get_score(submission_uuid, requirements):
 def create_assessment(
         scorer_submission_uuid,
         scorer_id,
-        assessment_dict,
+        options_selected,
+        criterion_feedback,
+        overall_feedback,
         rubric_dict,
         num_required_grades,
         scored_at=None):
@@ -154,8 +155,13 @@ def create_assessment(
             peer workflow of the grading student.
         scorer_id (str): The user ID for the user giving this assessment. This
             is required to create an assessment on a submission.
-        assessment_dict (dict): All related information for the assessment. An
-            assessment contains points_earned, points_possible, and feedback.
+        options_selected (dict): Dictionary mapping criterion names to the
+            option names the user selected for that criterion.
+        criterion_feedback (dict): Dictionary mapping criterion names to the
+            free-form text feedback the user gave for the criterion.
+            Since criterion feedback is optional, some criteria may not appear
+            in the dictionary.
+        overall_feedback (unicode): Free-form text feedback on the submission overall.
         num_required_grades (int): The required number of assessments a
             submission requires before it is completed. If this number of
             assessments is reached, the grading_completed_at timestamp is set
@@ -177,11 +183,10 @@ def create_assessment(
             while creating a new assessment.
 
     Examples:
-        >>> assessment_dict = dict(
-        >>>    options_selected={"clarity": "Very clear", "precision": "Somewhat precise"},
-        >>>    feedback="Your submission was thrilling.",
-        >>> )
-        >>> create_assessment("1", "Tim", assessment_dict, rubric_dict)
+        >>> options_selected = {"clarity": "Very clear", "precision": "Somewhat precise"}
+        >>> criterion_feedback = {"clarity": "I thought this essay was very clear."}
+        >>> feedback = "Your submission was thrilling."
+        >>> create_assessment("1", "Tim", options_selected, criterion_feedback, feedback, rubric_dict)
     """
     try:
         rubric = rubric_from_dict(rubric_dict)
@@ -189,13 +194,12 @@ def create_assessment(
         # Validate that the selected options matched the rubric
         # and raise an error if this is not the case
         try:
-            option_ids = rubric.options_ids(assessment_dict["options_selected"])
+            option_ids = rubric.options_ids(options_selected)
         except InvalidOptionSelection as ex:
             msg = _("Selected options do not match the rubric: {error}").format(error=ex.message)
             raise PeerAssessmentRequestError(msg)
 
         scorer_workflow = PeerWorkflow.objects.get(submission_uuid=scorer_submission_uuid)
-        feedback = assessment_dict.get('feedback', u'')
 
         peer_workflow_item = _get_latest_open_workflow_item(scorer_workflow)
         if peer_workflow_item is None:
@@ -212,7 +216,7 @@ def create_assessment(
             "scorer_id": scorer_id,
             "submission_uuid": peer_submission_uuid,
             "score_type": PEER_TYPE,
-            "feedback": feedback,
+            "feedback": overall_feedback[0:Assessment.MAXSIZE],
         }
 
         if scored_at is not None:
@@ -228,7 +232,7 @@ def create_assessment(
         # We do this to do a run around django-rest-framework serializer
         # validation, which would otherwise require two DB queries per
         # option to do validation. We already validated these options above.
-        AssessmentPart.add_to_assessment(assessment, option_ids)
+        AssessmentPart.add_to_assessment(assessment, option_ids, criterion_feedback=criterion_feedback)
 
         # Close the active assessment
         _close_active_assessment(scorer_workflow, peer_submission_uuid, assessment, num_required_grades)

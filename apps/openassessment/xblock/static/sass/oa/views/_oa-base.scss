@@ -631,6 +631,10 @@
           margin-top: $baseline-v;
         }
 
+        .question__title__copy {
+          margin-left: 0;
+        }
+
         textarea {
           @extend %ui-content-longanswer;
           min-height: ($baseline-v*5);
@@ -839,7 +843,7 @@
 
     // individual question
     .question {
-      margin-bottom: $baseline-v;
+      margin-bottom: ($baseline-v*1.5);
       @extend %wipe-last-child;
     }
 
@@ -960,22 +964,61 @@
       display: block;
       color: $heading-primary-color;
     }
+  }
 
-    // open feedback question
-    .question--feedback {
+  // criterion-based feedback
+  .answer--feedback {
 
-      // individual answers
-      .answer {
-        @include fill-parent();
-      }
+    @include media($bp-ds) {
+      @include span-columns(6 of 6);
+    }
 
-      .answer__value {
-        @extend %copy-2;
-      }
+    @include media($bp-dm) {
+      @include span-columns(12 of 12);
+    }
+
+    @include media($bp-dl) {
+      @include span-columns(12 of 12);
+    }
+
+    @include media($bp-dx) {
+      @include span-columns(12 of 12);
+    }
+
+    .answer--feedback__title {
+      @extend %action-2;
+    }
+
+    .answer--feedback__title__copy {
+      margin-left: ($baseline-h/4);
+    }
+
+    .answer--feedback__content {
+      margin-top: ($baseline-v/4);
+    }
+
+    .feedback {
+      @extend %no-list;
+      @extend %wipe-last-child;
+      margin-bottom: $baseline-v;
+    }
+
+    .feedback__source {
+      @extend %hd-5;
+      @extend %t-strong;
+      @extend %t-titlecase;
+      display: block;
+      color: $heading-secondary-color;
+    }
+
+    .feedback__value {
+      @extend %copy-3;
+      display: block;
     }
   }
 
-  // feedback form
+
+  // overall feedback form
   .submission__feedback {
     @extend %ui-subsection;
   }

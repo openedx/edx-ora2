@@ -113,6 +113,11 @@ def _serialize_criteria(criteria_root, criteria_list):
         criterion_prompt = etree.SubElement(criterion_el, 'prompt')
         criterion_prompt.text = unicode(criterion.get('prompt', u''))
 
+        # Criterion feedback disabled or optional
+        # If disabled, do not set the attribute.
+        if criterion.get('feedback') == "optional":
+            criterion_el.set('feedback', 'optional')
+
         # Criterion options
         options_list = criterion.get('options', None)
         if isinstance(options_list, list):
@@ -261,6 +266,13 @@ def _parse_criteria_xml(criteria_root):
         else:
             raise UpdateFromXmlError(_('Every "criterion" element must contain a "prompt" element.'))
 
+        # Criterion feedback (disabled or optional)
+        criterion_feedback = criterion.get('feedback', 'disabled')
+        if criterion_feedback in ['optional', 'disabled']:
+            criterion_dict['feedback'] = criterion_feedback
+        else:
+            raise UpdateFromXmlError(_('Invalid value for "feedback" attribute: if specified, it must be set set to "optional"'))
+
         # Criterion options
         criterion_dict['options'] = _parse_options_xml(criterion)
 
@@ -308,14 +320,12 @@ def _parse_rubric_xml(rubric_root):
     return rubric_dict
 
 
-def _parse_assessments_xml(assessments_root, start, due):
+def _parse_assessments_xml(assessments_root):
     """
     Parse the <assessments> element in the OpenAssessment XBlock's content XML.
 
     Args:
         assessments_root (lxml.etree.Element): The root of the <assessments> node in the tree.
-        start (unicode): ISO-formatted date string representing the start time of the problem.
-        due (unicode): ISO-formatted date string representing the due date of the problem.
 
     Returns:
         list of assessment dicts
@@ -513,7 +523,7 @@ def update_from_xml(oa_block, root, validator=DEFAULT_VALIDATOR):
     if assessments_el is None:
         raise UpdateFromXmlError(_('Every assessment must contain an "assessments" element.'))
     else:
-        assessments = _parse_assessments_xml(assessments_el, oa_block.start, oa_block.due)
+        assessments = _parse_assessments_xml(assessments_el)
 
     # Validate
     success, msg = validator(rubric, {'due': submission_due}, assessments)

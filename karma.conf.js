@@ -16,6 +16,7 @@ module.exports = function(config) {
     files: [
       'lib/jquery.min.js',
       'lib/*.js',
+      'src/oa_shared.js',
       'src/*.js',
       'spec/*.js',
 

@@ -58,7 +58,7 @@
                                     {% with peer_num=forloop.counter %}
                                         {% for part in assessment.parts %}
                                             {% if part.option.criterion.name == criterion.name %}
-                                            <li class="answer peer-assessment--{{ peer_num}}"
+                                            <li class="answer peer-assessment--{{ peer_num }}"
                                                 id="question--{{ criterion_num }}__answer-{{ peer_num }}">
                                                 <h5 class="answer__title">
                                                     <span class="answer__source">
@@ -78,6 +78,7 @@
                                                               <i class="ico icon-info-sign"
                                                                  title="{% blocktrans with name=part.option.name %}More information about {{ name }}{% endblocktrans %}"></i>
                                                             </span>
+
                                                         </span>
                                                     </span>
                                                 </h5>
@@ -114,6 +115,30 @@
                                 </li>
                                     {% endif %}
                                 {% endfor %}
+
+                                {% if criterion.feedback %}
+                                <li class="answer--feedback ui-toggle-visibility is--collapsed">
+                                    <h5 class="answer--feedback__title ui-toggle-visibility__control">
+                                      <i class="ico icon-caret-right"></i>
+                                      <span class="answer--feedback__title__copy">{% trans "Additional Comments" %} ({{ criterion.feedback|length }})</span>
+                                    </h5>
+
+                                    <ul class="answer--feedback__content ui-toggle-visibility__content">
+                                        {% for feedback in criterion.feedback %}
+                                        <li class="feedback feedback--{{ forloop.counter }}">
+                                            <h6 class="feedback__source">
+                                              {% trans "Peer" %} {{ forloop.counter }}
+                                            </h6>
+
+                                            <div class="feedback__value">
+                                            {{ feedback }}
+                                            </div>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                {% endif %}
+
                             </ul>
                         </li>
                         {% endwith %}
@@ -221,7 +246,13 @@
                                 </li>
                                 <li class="field field--textarea feedback__remarks" id="feedback__remarks">
                                     <label for="feedback__remarks__value">{% trans "Please provide any feedback on the grade or comments that you received from your peers." %}</label>
-                                    <textarea id="feedback__remarks__value" placeholder="{% trans "I feel the feedback I received was..." %}">{{ feedback_text }}</textarea>
+                                    <textarea
+                                        id="feedback__remarks__value"
+                                        placeholder="{% trans "I feel the feedback I received was..." %}"
+                                        maxlength="100000"
+                                    >
+                                        {{ feedback_text }}
+                                    </textarea>
                                 </li>
                             </ol>
 
