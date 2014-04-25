@@ -26,4 +26,10 @@ else
     SSH_CMD="ssh $1 -i $2"
 fi
 
+# Disable strict key host checking
+# If the sandbox is recreated frequently, we might have a name in known_hosts
+# that points to a different IP address.
+# This *is* susceptible to man-in-the-middle attacks, so be careful.
+SSH_CMD="$SSH_CMD -o StrictHostKeyChecking=no"
+
 $SSH_CMD 'cd /edx/app/edxapp/venvs/edxapp/src/edx-ora2 && git rev-parse HEAD'
