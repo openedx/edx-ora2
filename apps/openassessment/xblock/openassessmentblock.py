@@ -313,6 +313,10 @@ class OpenAssessmentBlock(
                 load('static/xml/poverty_rubric_example.xml')
             ),
             (
+                "OpenAssessmentBlock (Self Only) Rubric",
+                load('static/xml/poverty_self_only_example.xml')
+            ),
+            (
                 "OpenAssessmentBlock Censorship Rubric",
                 load('static/xml/censorship_rubric_example.xml')
             ),
@@ -332,6 +336,10 @@ class OpenAssessmentBlock(
         block = runtime.construct_xblock_from_class(cls, keys)
 
         return update_from_xml(block, node, validator=validator(block, strict_post_release=False))
+
+    @property
+    def assessment_steps(self):
+        return [asmnt['name'] for asmnt in self.rubric_assessments]
 
     def render_assessment(self, path, context_dict=None):
         """Render an Assessment Module's HTML
@@ -421,18 +429,19 @@ class OpenAssessmentBlock(
         ]
 
         # Resolve unspecified dates and date strings to datetimes
-        start, due, date_ranges = resolve_dates(self.start, self.due, [submission_range] + assessment_ranges)
+        start, due, date_ranges = resolve_dates(
+            self.start, self.due, [submission_range] + assessment_ranges
+        )
+        step_ranges = {"submission": date_ranges[0]}
+        for step_num, asmnt in enumerate(self.rubric_assessments, start=1):
+            step_ranges[asmnt["name"]] = date_ranges[step_num]
 
         # Based on the step, choose the date range to consider
         # We hard-code this to the submission -> peer -> self workflow for now;
         # later, we can revisit to make this more flexible.
         open_range = (start, due)
-        if step == "submission":
-            open_range = date_ranges[0]
-        if step == "peer-assessment":
-            open_range = date_ranges[1]
-        if step == "self-assessment":
-            open_range = date_ranges[2]
+        if step in ["submission", "peer-assessment", "self-assessment"]:
+            open_range = step_ranges[step]
 
         # Course staff always have access to the problem
         if course_staff is None:

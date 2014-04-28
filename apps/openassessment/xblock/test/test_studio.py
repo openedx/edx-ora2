@@ -94,10 +94,17 @@ class StudioViewTest(XBlockHandlerTestCase):
     # If and when we remove this restriction, this test can be deleted.
     @scenario('data/basic_scenario.xml')
     def test_update_xml_invalid_assessment_combo(self, xblock):
-        request = json.dumps({'xml': self.load_fixture_str('data/invalid_assessment_combo.xml')})
-        resp = self.request(xblock, 'update_xml', request, response_format='json')
-        self.assertFalse(resp['success'])
-        self.assertIn("must have exactly two assessments", resp['msg'].lower())
+        invalid_workflows = [
+            'invalid_assessment_combo_order',
+            'invalid_assessment_combo_peer_only'
+        ]
+        for invalid_workflow in invalid_workflows:
+            request = json.dumps(
+                {'xml': self.load_fixture_str('data/{}.xml'.format(invalid_workflow))}
+            )
+            resp = self.request(xblock, 'update_xml', request, response_format='json')
+            self.assertFalse(resp['success'])
+            self.assertIn("supported assessment flows are", resp['msg'].lower())
 
     @data(('data/invalid_rubric.xml', 'rubric'), ('data/invalid_assessment.xml', 'assessment'))
     @scenario('data/basic_scenario.xml')

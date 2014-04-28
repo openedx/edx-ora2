@@ -70,12 +70,26 @@ class GradeMixin(object):
         Returns:
             tuple of context (dict), template_path (string)
         """
-        feedback = peer_api.get_assessment_feedback(self.submission_uuid)
+        # Peer specific stuff...
+        assessment_steps = [asmnt['name'] for asmnt in self.rubric_assessments]
+        submission_uuid = workflow['submission_uuid']
+
+        if "peer-assessment" in assessment_steps:
+            feedback = peer_api.get_assessment_feedback(submission_uuid)
+            peer_assessments = peer_api.get_assessments(submission_uuid)
+            has_submitted_feedback = peer_api.get_assessment_feedback(submission_uuid) is not None
+        else:
+            feedback = None
+            peer_assessments = []
+            has_submitted_feedback = False
+
+        if "self-assessment" in assessment_steps:
+            self_assessment = self_api.get_assessment(submission_uuid)
+        else:
+            self_assessment = None
+
         feedback_text = feedback.get('feedback', '') if feedback else ''
-        student_submission = sub_api.get_submission(workflow['submission_uuid'])
-        peer_assessments = peer_api.get_assessments(student_submission['uuid'])
-        self_assessment = self_api.get_assessment(student_submission['uuid'])
-        has_submitted_feedback = peer_api.get_assessment_feedback(workflow['submission_uuid']) is not None
+        student_submission = sub_api.get_submission(submission_uuid)
 
         # We retrieve the score from the workflow, which in turn retrieves
         # the score for our current submission UUID.
@@ -94,13 +108,22 @@ class GradeMixin(object):
         }
 
         # Update the scores we will display to the user
-        # Note that we are updating a *copy* of the rubric criteria stored in the XBlock field
-        max_scores = peer_api.get_rubric_max_scores(self.submission_uuid)
-        median_scores = peer_api.get_assessment_median_scores(student_submission["uuid"])
+        # Note that we are updating a *copy* of the rubric criteria stored in
+        # the XBlock field
+        max_scores = peer_api.get_rubric_max_scores(submission_uuid)
+        if "peer-assessment" in assessment_steps:
+            median_scores = peer_api.get_assessment_median_scores(submission_uuid)
+        elif "self-assessment" in assessment_steps:
+            median_scores = self_api.get_assessment_scores_by_criteria(submission_uuid)
+
         if median_scores is not None and max_scores is not None:
             for criterion in context["rubric_criteria"]:
                 criterion["median_score"] = median_scores[criterion["name"]]
                 criterion["total_value"] = max_scores[criterion["name"]]
+
+        from pprint import pprint
+
+        pprint(self_assessment)
 
         return ('openassessmentblock/grade/oa_grade_complete.html', context)
 
@@ -114,10 +137,16 @@ class GradeMixin(object):
         Returns:
             tuple of context (dict), template_path (string)
         """
+        def _is_incomplete(step):
+            return (
+                step in workflow["status_details"] and
+                not workflow["status_details"][step]["complete"]
+            )
+
         incomplete_steps = []
-        if not workflow["status_details"]["peer"]["complete"]:
+        if _is_incomplete("peer"):
             incomplete_steps.append("Peer Assessment")
-        if not workflow["status_details"]["self"]["complete"]:
+        if _is_incomplete("self"):
             incomplete_steps.append("Self Assessment")
 
         return (
@@ -131,7 +160,8 @@ class GradeMixin(object):
         Submit feedback on an assessment.
 
         Args:
-            data (dict): Can provide keys 'feedback_text' (unicode) and 'feedback_options' (list of unicode).
+            data (dict): Can provide keys 'feedback_text' (unicode) and
+                'feedback_options' (list of unicode).
 
         Kwargs:
             suffix (str): Unused

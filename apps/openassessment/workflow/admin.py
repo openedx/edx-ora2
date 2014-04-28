@@ -1,6 +1,11 @@
 from django.contrib import admin
 
-from .models import AssessmentWorkflow
+from .models import AssessmentWorkflow, AssessmentWorkflowStep
+
+
+class AssessmentWorkflowStepInline(admin.StackedInline):
+    model = AssessmentWorkflowStep
+    extra = 0
 
 class AssessmentWorkflowAdmin(admin.ModelAdmin):
     """Admin for the user's overall workflow through open assessment.
@@ -15,5 +20,6 @@ class AssessmentWorkflowAdmin(admin.ModelAdmin):
     )
     list_filter = ('status',)
     search_fields = ('uuid', 'submission_uuid', 'course_id', 'item_id')
+    inlines = (AssessmentWorkflowStepInline,)
 
 admin.site.register(AssessmentWorkflow, AssessmentWorkflowAdmin)

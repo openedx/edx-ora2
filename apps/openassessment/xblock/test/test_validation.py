@@ -14,7 +14,7 @@ class AssessmentValidationTest(TestCase):
 
     @ddt.file_data('data/valid_assessments.json')
     def test_valid_assessment(self, data):
-        success, msg = validate_assessments([data['assessment']])
+        success, msg = validate_assessments(data)
         self.assertTrue(success)
         self.assertEqual(msg, u'')
 
@@ -29,12 +29,11 @@ class AssessmentValidationTest(TestCase):
         self.assertFalse(success)
         self.assertGreater(len(msg), 0)
 
-    # Currently, we enforce the restriction that there must be
-    # exactly two assessments, in the order (a) peer, then (b) self.
-    # If and when we remove that restriction, this test can be deleted.
+    # Make sure only legal assessment combinations are allowed. For now, that's
+    # (peer -> self), and (self)
     @ddt.file_data('data/assessment_combo.json')
-    def test_enforce_peer_then_self(self, data):
-        success, msg = validate_assessments(data['assessments'], enforce_peer_then_self=True)
+    def test_enforce_assessment_combo_restrictions(self, data):
+        success, msg = validate_assessments(data['assessments'])
         self.assertEqual(success, data['valid'], msg=msg)
 
         if not success:

@@ -1,0 +1,22 @@
+<openassessment>
+    <title>Open Assessment Test</title>
+    <prompt>
+        Given the state of the world today, what do you think should be done to
+        combat poverty? Please answer in a short essay of 200-300 words.
+    </prompt>
+    <rubric>
+        <prompt>Read for conciseness, clarity of thought, and form.</prompt>
+        <criterion>
+            <name>Concise</name>
+            <prompt>How concise is it?</prompt>
+            <option points="0">
+                <name>Neal Stephenson (late)</name>
+                <explanation>Neal Stephenson explanation</explanation>
+            </option>
+        </criterion>
+    </rubric>
+    <assessments>
+        <assessment name="self-assessment" />
+        <assessment name="peer-assessment" />
+    </assessments>
+</openassessment>

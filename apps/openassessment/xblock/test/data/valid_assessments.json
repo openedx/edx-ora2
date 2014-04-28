@@ -1,23 +1,27 @@
 {
-    "peer": {
-        "assessment": {
+    "peer_then_self": [
+        {
             "name": "peer-assessment",
             "must_grade": 5,
             "must_be_graded_by": 3
+        },
+        {
+            "name": "self-assessment"
         }
-    },
-    "self": {
-        "assessment": {
-            "name": "self-assessment",
-            "must_grade": 2,
-            "must_be_graded_by": 1
+    ],
+    "self_only": [
+        {
+            "name": "self-assessment"
         }
-    },
-    "must_be_graded_by_equals_must_grade": {
-        "assessment": {
-            "name": "self-assessment",
+    ],
+    "must_be_graded_by_equals_must_grade": [
+        {
+            "name": "peer-assessment",
             "must_grade": 1,
             "must_be_graded_by": 1
+        },
+        {
+            "name": "self-assessment"
         }
-    }
+    ]
 }

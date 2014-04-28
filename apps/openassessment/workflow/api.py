@@ -9,7 +9,7 @@ from django.db import DatabaseError
 
 from openassessment.assessment import peer_api
 from submissions import api as sub_api
-from .models import AssessmentWorkflow
+from .models import AssessmentWorkflow, AssessmentWorkflowStep
 from .serializers import AssessmentWorkflowSerializer
 
 logger = logging.getLogger(__name__)
@@ -58,7 +58,7 @@ class AssessmentWorkflowNotFoundError(AssessmentWorkflowError):
     pass
 
 
-def create_workflow(submission_uuid):
+def create_workflow(submission_uuid, steps):
     """Begins a new assessment workflow.
 
     Create a new workflow that other assessments will record themselves against.
@@ -66,6 +66,8 @@ def create_workflow(submission_uuid):
     Args:
         submission_uuid (str): The UUID for the submission that all our
             assessments will be evaluating.
+        steps (list): List of steps that are part of the workflow, in the order
+            that the user must complete them. Example: `["peer", "self"]`
 
     Returns:
         dict: Assessment workflow information with the following
@@ -114,6 +116,15 @@ def create_workflow(submission_uuid):
             .format(submission_uuid, err)
         )
 
+    # Raise an error if they specify a step we don't recognize...
+    for step in steps:
+        if step not in AssessmentWorkflow.STEPS:
+            raise AssessmentWorkflowRequestError(
+                u"Step not recognized: {}; Must be one of: {}".format(
+                    step, AssessmentWorkflow.STEPS
+                )
+            )
+
     # We're not using a serializer to deserialize this because the only variable
     # we're getting from the outside is the submission_uuid, which is already
     # validated by this point.
@@ -125,6 +136,13 @@ def create_workflow(submission_uuid):
             course_id=submission_dict['student_item']['course_id'],
             item_id=submission_dict['student_item']['item_id'],
         )
+        workflow_steps = [
+            AssessmentWorkflowStep(
+                workflow=workflow, name=step, order_num=i
+            )
+            for i, step in enumerate(steps)
+        ]
+        workflow.steps.add(*workflow_steps)
     except (
         DatabaseError,
         peer_api.PeerAssessmentError,

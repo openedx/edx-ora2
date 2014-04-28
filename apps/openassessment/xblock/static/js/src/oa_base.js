@@ -181,14 +181,14 @@ OpenAssessment.BaseView.prototype = {
     toggleActionError: function(type, msg) {
         var element = this.element;
         var container = null;
-        if (type == 'save') { 
-            container = '.response__submission__actions'; 
+        if (type == 'save') {
+            container = '.response__submission__actions';
         }
-        else if (type == 'submit' || type == 'peer' || type == 'self') { 
-            container = '.step__actions'; 
+        else if (type == 'submit' || type == 'peer' || type == 'self') {
+            container = '.step__actions';
         }
-        else if (type == 'feedback_assess') { 
-            container = '.submission__feedback__actions'; 
+        else if (type == 'feedback_assess') {
+            container = '.submission__feedback__actions';
         }
 
         // If we don't have anywhere to put the message, just log it to the console
@@ -219,10 +219,10 @@ OpenAssessment.BaseView.prototype = {
         $(container + ' .step__status__value .copy').html(gettext('Unable to Load'));
     },
 
-    /** 
+    /**
      * Get the contents of the Step Actions error message box, for unit test validation.
      *
-     * Step Actions are the UX-level parts of the student interaction flow - 
+     * Step Actions are the UX-level parts of the student interaction flow -
      * Submission, Peer Assessment, and Self Assessment. Since steps are mutually
      * exclusive, only one error box should be rendered on screen at a time.
      *

@@ -1,6 +1,9 @@
 import logging
+
 from django.utils.translation import ugettext as _
+from webob import Response
 from xblock.core import XBlock
+
 from openassessment.assessment import peer_api
 from openassessment.assessment.peer_api import (
     PeerAssessmentInternalError, PeerAssessmentRequestError,
@@ -114,6 +117,8 @@ class PeerAssessmentMixin(object):
                 number of assessments.
 
         """
+        if "peer-assessment" not in self.assessment_steps:
+            return Response(u"")
         continue_grading = data.params.get('continue_grading', False)
         path, context_dict = self.peer_path_and_context(continue_grading)
         return self.render_assessment(path, context_dict)

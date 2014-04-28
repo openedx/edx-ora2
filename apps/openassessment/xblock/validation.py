@@ -43,29 +43,38 @@ def _duplicates(items):
     return set(x for x in items if counts[x] > 1)
 
 
-def validate_assessments(assessments, enforce_peer_then_self=False):
+def validate_assessments(assessments):
     """
     Check that the assessment dict is semantically valid.
 
+    Valid assessment steps are currently:
+    * peer, then self
+    * self only
+
     Args:
         assessments (list of dict): list of serialized assessment models.
-
-    Kwargs:
-        enforce_peer_then_self (bool): If True, enforce the requirement that there
-            must be exactly two assessments: first, a peer-assessment, then a self-assessment.
 
     Returns:
         tuple (is_valid, msg) where
             is_valid is a boolean indicating whether the assessment is semantically valid
             and msg describes any validation errors found.
     """
-    if enforce_peer_then_self:
-        if len(assessments) != 2:
-            return (False, _("This problem must have exactly two assessments."))
-        if assessments[0].get('name') != 'peer-assessment':
-            return (False, _("The first assessment must be a peer assessment."))
-        if assessments[1].get('name') != 'self-assessment':
-            return (False, _("The second assessment must be a self assessment."))
+    def _self_only(assessments):
+        return len(assessments) == 1 and assessments[0].get('name') == 'self-assessment'
+
+    def _peer_then_self(assessments):
+        return (
+            len(assessments) == 2 and
+            assessments[0].get('name') == 'peer-assessment' and
+            assessments[1].get('name') == 'self-assessment'
+        )
+
+    # Right now, there are two allowed scenarios: (peer -> self) and (self)
+    if not (_self_only(assessments) or _peer_then_self(assessments)):
+        return (
+            False,
+            _("The only supported assessment flows are (peer, self) or (self).")
+        )
 
     if len(assessments) == 0:
         return (False, _("This problem must include at least one assessment."))
@@ -188,7 +197,7 @@ def validator(oa_block, strict_post_release=True):
     """
 
     def _inner(rubric_dict, submission_dict, assessments):
-        success, msg = validate_assessments(assessments, enforce_peer_then_self=True)
+        success, msg = validate_assessments(assessments)
         if not success:
             return (False, msg)
 

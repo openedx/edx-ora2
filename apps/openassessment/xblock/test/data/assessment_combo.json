@@ -23,7 +23,7 @@
         ]
     },
     "self_only": {
-        "valid": false,
+        "valid": true,
         "assessments": [
             {
                 "name": "self-assessment"

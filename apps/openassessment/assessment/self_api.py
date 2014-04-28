@@ -139,8 +139,11 @@ def get_assessment(submission_uuid):
 
     return serialized_assessment
 
+def submitter_is_finished(submission_uuid, requirements):
+    """Temporary bridge method."""
+    return is_complete(submission_uuid, requirements)
 
-def is_complete(submission_uuid):
+def is_complete(submission_uuid, requirements):
     """
     Check whether a self-assessment has been completed for a submission.
 
@@ -153,6 +156,48 @@ def is_complete(submission_uuid):
     return Assessment.objects.filter(
         score_type=SELF_TYPE, submission_uuid=submission_uuid
     ).exists()
+
+def assessment_is_finished(submission_uuid, requirements):
+    return is_complete(submission_uuid, requirements)
+
+def get_score(submission_uuid, requirements):
+    assessment = get_assessment(submission_uuid)
+    if not assessment:
+        return None
+
+    return {
+        "points_earned": assessment["points_earned"],
+        "points_possible": assessment["points_possible"]
+    }
+
+def get_assessment_scores_by_criteria(submission_uuid):
+    """Get the median score for each rubric criterion
+
+    Args:
+        submission_uuid (str): The submission uuid is used to get the
+            assessments used to score this submission, and generate the
+            appropriate median score.
+
+    Returns:
+        (dict): A dictionary of rubric criterion names, with a median score of
+            the peer assessments.
+
+    Raises:
+        SelfAssessmentInternalError: If any error occurs while retrieving
+            information to form the median scores, an error is raised.
+    """
+    try:
+        assessments = list(
+            Assessment.objects.filter(
+                score_type=SELF_TYPE, submission_uuid=submission_uuid
+            ).order_by('-scored_at')[:1]
+        )
+        scores = Assessment.scores_by_criterion(assessments)
+        return Assessment.get_median_score_dict(scores)
+    except DatabaseError:
+        error_message = _(u"Error getting self assessment scores for {}").format(submission_uuid)
+        logger.exception(error_message)
+        raise SelfAssessmentInternalError(error_message)
 
 
 def _log_assessment(assessment, submission):
