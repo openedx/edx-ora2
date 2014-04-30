@@ -305,6 +305,10 @@ class OpenAssessmentBlock(
         """
         return [
             (
+                "OpenAssessmentBlock Unicode",
+                load('static/xml/unicode.xml')
+            ),
+            (
                 "OpenAssessmentBlock Poverty Rubric",
                 load('static/xml/poverty_rubric_example.xml')
             ),

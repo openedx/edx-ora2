@@ -1,9 +1,14 @@
 # Grab everything in base requirements
 -r base.txt
 
+# There's a unicode bug in the httpretty==0.8 (used by moto)
+# Once a new version gets released on PyPi we can use that instead.
+git+https://github.com/gabrielfalcao/HTTPretty.git@4c2b10925c86c9b6299c1a04ae334d89fe007ae2#egg=httpretty
+
 ddt==0.7.0
 django-nose==1.2
 mock==1.0.1
+moto==0.2.22
 nose==1.3.0
 coverage==3.7.1
 pep8==1.4.6
