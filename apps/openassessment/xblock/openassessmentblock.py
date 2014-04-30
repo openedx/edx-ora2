@@ -2,7 +2,6 @@
 
 import datetime as dt
 import logging
-import dateutil
 import pkg_resources
 
 import pytz
@@ -66,6 +65,7 @@ def load(path):
     return data.decode("utf8")
 
 
+@XBlock.wants("metadata")
 class OpenAssessmentBlock(
     XBlock,
     SubmissionMixin,
@@ -152,6 +152,9 @@ class OpenAssessmentBlock(
         """
         item_id = unicode(self.scope_ids.usage_id)
 
+        if self.is_preview_enabled():
+            item_id += "-preview"
+
         # This is not the real way course_ids should work, but this is a
         # temporary expediency for LMS integratino
         if hasattr(self, "xmodule_runtime"):
@@ -171,6 +174,13 @@ class OpenAssessmentBlock(
             item_type='openassessment'
         )
         return student_item_dict
+
+    def is_preview_enabled(self):
+        if hasattr(self, 'xmodule_runtime'):
+            metadata_service = self.xmodule_runtime.service(self, "metadata")
+            if metadata_service:
+                return metadata_service.is_preview_enabled()
+        return False
 
     def student_view(self, context=None):
         """The main view of OpenAssessmentBlock, displayed when viewing courses.
