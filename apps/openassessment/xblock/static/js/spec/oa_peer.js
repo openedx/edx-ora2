@@ -26,9 +26,8 @@ describe("OpenAssessment.PeerView", function() {
         this.showLoadError = function(msg) {};
         this.toggleActionError = function(msg, step) {};
         this.setUpCollapseExpand = function(sel) {};
-        this.renderSelfAssessmentStep = function() {};
         this.scrollToTop = function() {};
-        this.gradeView = { load: function() {} };
+        this.loadAssessmentModules = function() {};
     };
 
     // Stubs

@@ -43,7 +43,7 @@ def _duplicates(items):
     return set(x for x in items if counts[x] > 1)
 
 
-def validate_assessments(assessments):
+def validate_assessments(assessments, current_assessments, is_released):
     """
     Check that the assessment dict is semantically valid.
 
@@ -51,8 +51,15 @@ def validate_assessments(assessments):
     * peer, then self
     * self only
 
+    If a question has been released, the type and number of assessment steps
+    cannot be changed.
+
     Args:
         assessments (list of dict): list of serialized assessment models.
+        current_assessments (list of dict): list of the current serialized
+            assessment models. Used to determine if the assessment configuration
+            has changed since the question had been released.
+        is_released (boolean) : True if the question has been released.
 
     Returns:
         tuple (is_valid, msg) where
@@ -69,15 +76,15 @@ def validate_assessments(assessments):
             assessments[1].get('name') == 'self-assessment'
         )
 
+    if len(assessments) == 0:
+        return (False, _("This problem must include at least one assessment."))
+
     # Right now, there are two allowed scenarios: (peer -> self) and (self)
     if not (_self_only(assessments) or _peer_then_self(assessments)):
         return (
             False,
-            _("The only supported assessment flows are (peer, self) or (self).")
+            _("For this assignment, you can set either a peer assessment followed by a self assessment or a self assessment only.")
         )
-
-    if len(assessments) == 0:
-        return (False, _("This problem must include at least one assessment."))
 
     for assessment_dict in assessments:
         # Supported assessment
@@ -97,6 +104,15 @@ def validate_assessments(assessments):
 
             if must_grade < must_be_graded_by:
                 return (False, _('The "must_grade" value must be greater than or equal to the "must_be_graded_by" value.'))
+
+    if is_released:
+        if len(assessments) != len(current_assessments):
+            return (False, _("The number of assessments cannot be changed after the problem has been released."))
+
+        names = [assessment.get('name') for assessment in assessments]
+        current_names = [assessment.get('name') for assessment in current_assessments]
+        if names != current_names:
+            return (False, _("The assessment type cannot be changed after the problem has been released."))
 
     return (True, u'')
 
@@ -197,7 +213,12 @@ def validator(oa_block, strict_post_release=True):
     """
 
     def _inner(rubric_dict, submission_dict, assessments):
-        success, msg = validate_assessments(assessments)
+        current_assessments = oa_block.rubric_assessments
+        success, msg = validate_assessments(
+            assessments,
+            current_assessments,
+            strict_post_release and oa_block.is_released()
+        )
         if not success:
             return (False, msg)
 

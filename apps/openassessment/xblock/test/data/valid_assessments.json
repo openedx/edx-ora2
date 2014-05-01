@@ -1,27 +1,39 @@
 {
-    "peer_then_self": [
-        {
-            "name": "peer-assessment",
-            "must_grade": 5,
-            "must_be_graded_by": 3
-        },
-        {
-            "name": "self-assessment"
-        }
-    ],
-    "self_only": [
-        {
-            "name": "self-assessment"
-        }
-    ],
-    "must_be_graded_by_equals_must_grade": [
-        {
-            "name": "peer-assessment",
-            "must_grade": 1,
-            "must_be_graded_by": 1
-        },
-        {
-            "name": "self-assessment"
-        }
-    ]
+    "peer_then_self": {
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment"
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
+    },
+    "self_only": {
+        "assessments": [
+            {
+                "name": "self-assessment"
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
+    },
+    "must_be_graded_by_equals_must_grade": {
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 1,
+                "must_be_graded_by": 1
+            },
+            {
+                "name": "self-assessment"
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
+    }
 }

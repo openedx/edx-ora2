@@ -1,0 +1,27 @@
+{
+    "peer": {
+        "steps": ["peer"],
+        "requirements": {
+            "peer": {
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            }
+        }
+    },
+    "both": {
+        "steps": ["peer", "self"],
+        "requirements": {
+            "peer": {
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            "self": {}
+        }
+    },
+    "self": {
+        "steps": ["self"],
+        "requirements": {
+            "self": {}
+        }
+    }
+}

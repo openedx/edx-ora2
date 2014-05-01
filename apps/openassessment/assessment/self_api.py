@@ -3,6 +3,7 @@ Public interface for self-assessment.
 """
 import logging
 from django.utils.translation import ugettext as _
+from django.db import DatabaseError
 from dogapi import dog_stats_api
 
 from submissions.api import get_submission_and_student, SubmissionNotFoundError
@@ -21,9 +22,26 @@ SELF_TYPE = "SE"
 logger = logging.getLogger("openassessment.assessment.self_api")
 
 
-class SelfAssessmentRequestError(Exception):
+class SelfAssessmentError(Exception):
+    """Generic Self Assessment Error
+
+    Raised when an error occurs while processing a request related to the
+    Self Assessment Workflow.
+
+    """
+    pass
+
+
+class SelfAssessmentRequestError(SelfAssessmentError):
     """
     There was a problem with the request for a self-assessment.
+    """
+    pass
+
+
+class SelfAssessmentInternalError(SelfAssessmentError):
+    """
+    There was an internal problem while accessing the self-assessment api.
     """
     pass
 
@@ -99,7 +117,6 @@ def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, s
     assessment_dict = full_assessment_dict(assessment)
     _log_assessment(assessment, submission)
 
-
     # Return the serialized assessment
     return assessment_dict
 
@@ -139,28 +156,65 @@ def get_assessment(submission_uuid):
 
     return serialized_assessment
 
-def submitter_is_finished(submission_uuid, requirements):
-    """Temporary bridge method."""
-    return is_complete(submission_uuid, requirements)
 
-def is_complete(submission_uuid, requirements):
+def submitter_is_finished(submission_uuid, requirements):
     """
     Check whether a self-assessment has been completed for a submission.
 
     Args:
         submission_uuid (str): The unique identifier of the submission.
-
+        requirements (dict): Any attributes of the assessment module required
+            to determine if this assessment is complete. There are currently
+            no requirements for a self-assessment.
     Returns:
-        bool
+        True if the submitter has assessed their answer
+    Examples:
+        >>> submitter_is_finished('222bdf3d-a88e-11e3-859e-040ccee02800', {})
+        True
     """
     return Assessment.objects.filter(
         score_type=SELF_TYPE, submission_uuid=submission_uuid
     ).exists()
 
+
 def assessment_is_finished(submission_uuid, requirements):
-    return is_complete(submission_uuid, requirements)
+    """
+    Check whether a self-assessment has been completed. For self-assessment,
+    this function is synonymous with submitter_is_finished.
+
+    Args:
+        submission_uuid (str): The unique identifier of the submission.
+        requirements (dict): Any attributes of the assessment module required
+            to determine if this assessment is complete. There are currently
+            no requirements for a self-assessment.
+    Returns:
+        True if the assessment is complete.
+    Examples:
+        >>> assessment_is_finished('222bdf3d-a88e-11e3-859e-040ccee02800', {})
+        True
+    """
+    return submitter_is_finished(submission_uuid, requirements)
+
 
 def get_score(submission_uuid, requirements):
+    """
+    Get the score for this particular assessment.
+
+    Args:
+        submission_uuid (str): The unique identifier for the submission
+        requirements (dict): Any attributes of the assessment module required
+            to determine if this assessment is complete. There are currently
+            no requirements for a self-assessment.
+    Returns:
+        A dict of points earned and points possible for the given submission.
+        Returns None if no score can be determined yet.
+    Examples:
+        >>> get_score('222bdf3d-a88e-11e3-859e-040ccee02800', {})
+        {
+            'points_earned': 5,
+            'points_possible': 10
+        }
+    """
     assessment = get_assessment(submission_uuid)
     if not assessment:
         return None
@@ -169,6 +223,7 @@ def get_score(submission_uuid, requirements):
         "points_earned": assessment["points_earned"],
         "points_possible": assessment["points_possible"]
     }
+
 
 def get_assessment_scores_by_criteria(submission_uuid):
     """Get the median score for each rubric criterion

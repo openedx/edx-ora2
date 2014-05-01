@@ -73,7 +73,7 @@ class CsvWriterTest(CacheResetTest):
             }
             submission_text = "test submission {}".format(index)
             submission = sub_api.create_submission(student_item, submission_text)
-            workflow_api.create_workflow(submission['uuid'])
+            workflow_api.create_workflow(submission['uuid'], ['peer', 'self'])
 
         # Generate a CSV file for the submissions
         output_streams = self._output_streams(['submission'])

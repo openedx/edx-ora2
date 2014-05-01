@@ -58,19 +58,27 @@ OpenAssessment.BaseView.prototype = {
     },
 
     /**
-     * Asynchronously load each sub-view into the DOM.
-     */
+     Asynchronously load each sub-view into the DOM.
+     **/
     load: function() {
         this.responseView.load();
-        this.peerView.load();
-        this.renderSelfAssessmentStep();
-        this.gradeView.load();
+        this.loadAssessmentModules();
 
         // Set up expand/collapse for course staff debug, if available
         courseStaffDebug = $('.wrapper--staff-info');
         if (courseStaffDebug.length > 0) {
             this.setUpCollapseExpand(courseStaffDebug, function() {});
         }
+    },
+
+    /**
+     Refresh the Assessment Modules. This should be called any time an action is
+     performed by the user.
+     **/
+    loadAssessmentModules: function() {
+        this.peerView.load();
+        this.renderSelfAssessmentStep();
+        this.gradeView.load();
     },
 
     /**
@@ -158,9 +166,7 @@ OpenAssessment.BaseView.prototype = {
 
         this.server.selfAssess(optionsSelected).done(
             function() {
-                view.peerView.load();
-                view.renderSelfAssessmentStep();
-                view.gradeView.load();
+                view.loadAssessmentModules();
                 view.scrollToTop();
             }
         ).fail(function(errMsg) {

@@ -52,12 +52,14 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         "self",  # User needs to assess themselves
     ]
 
-    STATUS_VALUES = STEPS + [
+    STATUSES = [
         "waiting",  # User has done all necessary assessment but hasn't been
                     # graded yet -- we're waiting for assessments of their
                     # submission by others.
         "done",  # Complete
     ]
+
+    STATUS_VALUES = STEPS + STATUSES
 
     STATUS = Choices(*STATUS_VALUES)  # implicit "status" field
 
@@ -85,22 +87,15 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         return sub_api.get_latest_score_for_submission(self.submission_uuid)
 
     def status_details(self, assessment_requirements):
-        from openassessment.assessment import peer_api, self_api
-
         status_dict = {}
-
-        if "peer" in assessment_requirements:
-            status_dict["peer"] = {
-                "complete": peer_api.submitter_is_finished(
+        steps = self._get_steps()
+        for step in steps:
+            status_dict[step.name] = {
+                "complete": step.api().submitter_is_finished(
                     self.submission_uuid,
-                    assessment_requirements["peer"]
+                    assessment_requirements.get(step.name, {})
                 )
             }
-        if "self" in assessment_requirements:
-            status_dict["self"] = {
-                "complete": self_api.submitter_is_finished(self.submission_uuid, {})
-            }
-
         return status_dict
 
     def update_from_assessments(self, assessment_requirements):
@@ -142,7 +137,11 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             return
 
         # Update our AssessmentWorkflowStep models with the latest from our APIs
-        steps = self.update_steps(assessment_requirements)
+        steps = self._get_steps()
+
+        # Go through each step and update its status.
+        for step in steps:
+            step.update(self.submission_uuid, assessment_requirements)
 
         # Fetch name of the first step that the submitter hasn't yet completed.
         new_status = next(
@@ -178,10 +177,11 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             self.status = new_status
             self.save()
 
-
-    def update_steps(self, assessment_requirements):
-        from openassessment.assessment import peer_api, self_api
-
+    def _get_steps(self):
+        """
+        Simple helper function for retrieving all the steps in the given
+        Workflow.
+        """
         steps = list(self.steps.all())
         if not steps:
             # If no steps exist for this AssessmentWorkflow, assume
@@ -191,39 +191,20 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 AssessmentWorkflowStep(name=self.STATUS.self, order_num=1)
             )
             steps = list(self.steps.all())
-
-        # Mapping of step names to the APIs that power them
-        steps_to_apis = {
-            self.STATUS.self: self_api,
-            self.STATUS.peer: peer_api
-        }
-
-        # Go through each step and update its status. Note that because we take
-        # the philosophy that once you're done, you're done. That means
-        for step in steps:
-            step_changed = False
-            step_api = steps_to_apis[step.name]
-            step_reqs = assessment_requirements.get(step.name, {})
-
-            # Has the user completed their obligations for this step?
-            if (step.submitter_completed_at is None and
-                step_api.submitter_is_finished(self.submission_uuid, step_reqs)):
-                step.submitter_completed_at = now()
-                step_changed = True
-
-            # Has the step received a score?
-            if (step.assessment_completed_at is None and
-                step_api.assessment_is_finished(self.submission_uuid, step_reqs)):
-                step.assessment_completed_at = now()
-                step_changed = True
-
-            if step_changed:
-                step.save()
-
         return steps
 
-
     def set_score(self, score):
+        """
+        Set a score for the workflow.
+
+        Scores are persisted via the Submissions API, separate from the Workflow
+        Data. Score is associated with the same submission_uuid as this workflow
+
+        Args:
+            score (dict): A dict containing 'points_earned' and
+                'points_possible'.
+
+        """
         sub_api.set_score(
             self.submission_uuid,
             score["points_earned"],
@@ -264,9 +245,55 @@ class AssessmentWorkflowStep(models.Model):
     assessment_completed_at = models.DateTimeField(default=None, null=True)
     order_num = models.PositiveIntegerField()
 
-    # Store the score for this step as well?
     class Meta:
         ordering = ["workflow", "order_num"]
+
+    def is_submitter_complete(self):
+        return self.submitter_completed_at is not None
+
+    def is_assessment_complete(self):
+        return self.assessment_completed_at is not None
+
+    def api(self):
+        """
+        Returns an API associated with this workflow step. If no API is
+        associated with this workflow step, None is returned.
+        """
+        from openassessment.assessment import peer_api, self_api
+        api = None
+        if self.name == AssessmentWorkflow.STATUS.self:
+            api = self_api
+        elif self.name == AssessmentWorkflow.STATUS.peer:
+            api = peer_api
+        return api
+
+    def update(self, submission_uuid, assessment_requirements):
+        """
+        Updates the AssessmentWorkflowStep models with the requirements
+        specified from the Workflow API.
+
+        Intended for internal use by update_from_assessments(). See
+        update_from_assessments() documentation for more details.
+        """
+        # Once a step is completed, it will not be revisited based on updated
+        # requirements.
+        step_changed = False
+        step_reqs = assessment_requirements.get(self.name, {})
+
+        # Has the user completed their obligations for this step?
+        if (not self.is_submitter_complete() and
+                self.api().submitter_is_finished(submission_uuid, step_reqs)):
+            self.submitter_completed_at = now()
+            step_changed = True
+
+        # Has the step received a score?
+        if (not self.is_assessment_complete() and
+                self.api().assessment_is_finished(submission_uuid, step_reqs)):
+            self.assessment_completed_at = now()
+            step_changed = True
+
+        if step_changed:
+            self.save()
 
 
 # Just here to record thoughts for later:

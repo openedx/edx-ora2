@@ -43,7 +43,7 @@ class UploadDataTest(TestCase):
             }
             submission_text = "test submission {}".format(index)
             submission = sub_api.create_submission(student_item, submission_text)
-            workflow_api.create_workflow(submission['uuid'])
+            workflow_api.create_workflow(submission['uuid'], ['peer', 'self'])
 
         # Create and upload the archive of CSV files
         # This should generate the files even though

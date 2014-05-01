@@ -9,7 +9,7 @@ import pytz
 from openassessment.test_utils import CacheResetTest
 from submissions.api import create_submission
 from openassessment.assessment.self_api import (
-    create_assessment, is_complete, SelfAssessmentRequestError, get_assessment
+    create_assessment, submitter_is_finished, SelfAssessmentRequestError, get_assessment
 )
 
 
@@ -60,7 +60,7 @@ class TestSelfApi(CacheResetTest):
         # Now there should be a submission, but no self-assessment
         assessment = get_assessment(submission["uuid"])
         self.assertIs(assessment, None)
-        self.assertFalse(is_complete(submission['uuid']))
+        self.assertFalse(submitter_is_finished(submission['uuid'], {}))
 
         # Create a self-assessment for the submission
         assessment = create_assessment(
@@ -70,7 +70,7 @@ class TestSelfApi(CacheResetTest):
         )
 
         # Self-assessment should be complete
-        self.assertTrue(is_complete(submission['uuid']))
+        self.assertTrue(submitter_is_finished(submission['uuid'], {}))
 
         # Retrieve the self-assessment
         retrieved = get_assessment(submission["uuid"])
@@ -198,4 +198,4 @@ class TestSelfApi(CacheResetTest):
 
     def test_is_complete_no_submission(self):
         # This submission uuid does not exist
-        self.assertFalse(is_complete('abc1234'))
+        self.assertFalse(submitter_is_finished('abc1234', {}))

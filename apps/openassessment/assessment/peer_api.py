@@ -73,11 +73,6 @@ class PeerAssessmentInternalError(PeerAssessmentError):
 
 
 def submitter_is_finished(submission_uuid, requirements):
-    """Temporary bridge method."""
-    return is_complete(submission_uuid, requirements)
-
-
-def is_complete(submission_uuid, requirements):
     try:
         workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
         if workflow.completed_at is not None:
@@ -104,7 +99,7 @@ def get_score(submission_uuid, requirements):
         dict with keys "points_earned" and "points_possible".
     """
     # User hasn't completed their own submission yet
-    if not is_complete(submission_uuid, requirements):
+    if not submitter_is_finished(submission_uuid, requirements):
         return None
 
     workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
@@ -138,6 +133,7 @@ def get_score(submission_uuid, requirements):
         ),
         "points_possible": items[0].assessment.points_possible,
     }
+
 
 def assessment_is_finished(submission_uuid, requirements):
     return bool(get_score(submission_uuid, requirements))

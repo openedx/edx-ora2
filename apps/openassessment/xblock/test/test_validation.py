@@ -14,18 +14,18 @@ class AssessmentValidationTest(TestCase):
 
     @ddt.file_data('data/valid_assessments.json')
     def test_valid_assessment(self, data):
-        success, msg = validate_assessments(data)
+        success, msg = validate_assessments(data["assessments"], data["current_assessments"], data["is_released"])
         self.assertTrue(success)
         self.assertEqual(msg, u'')
 
     @ddt.file_data('data/invalid_assessments.json')
     def test_invalid_assessment(self, data):
-        success, msg = validate_assessments([data['assessment']])
+        success, msg = validate_assessments(data["assessments"], data["current_assessments"], data["is_released"])
         self.assertFalse(success)
         self.assertGreater(len(msg), 0)
 
     def test_no_assessments(self):
-        success, msg = validate_assessments([])
+        success, msg = validate_assessments([], [], False)
         self.assertFalse(success)
         self.assertGreater(len(msg), 0)
 
@@ -33,7 +33,7 @@ class AssessmentValidationTest(TestCase):
     # (peer -> self), and (self)
     @ddt.file_data('data/assessment_combo.json')
     def test_enforce_assessment_combo_restrictions(self, data):
-        success, msg = validate_assessments(data['assessments'])
+        success, msg = validate_assessments(data["assessments"], data["current_assessments"], data["is_released"])
         self.assertEqual(success, data['valid'], msg=msg)
 
         if not success:

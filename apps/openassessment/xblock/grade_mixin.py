@@ -71,13 +71,13 @@ class GradeMixin(object):
             tuple of context (dict), template_path (string)
         """
         # Peer specific stuff...
-        assessment_steps = [asmnt['name'] for asmnt in self.rubric_assessments]
+        assessment_steps = self.assessment_steps
         submission_uuid = workflow['submission_uuid']
 
         if "peer-assessment" in assessment_steps:
             feedback = peer_api.get_assessment_feedback(submission_uuid)
             peer_assessments = peer_api.get_assessments(submission_uuid)
-            has_submitted_feedback = peer_api.get_assessment_feedback(submission_uuid) is not None
+            has_submitted_feedback = feedback is not None
         else:
             feedback = None
             peer_assessments = []
@@ -121,10 +121,6 @@ class GradeMixin(object):
                 criterion["median_score"] = median_scores[criterion["name"]]
                 criterion["total_value"] = max_scores[criterion["name"]]
 
-        from pprint import pprint
-
-        pprint(self_assessment)
-
         return ('openassessmentblock/grade/oa_grade_complete.html', context)
 
     def render_grade_incomplete(self, workflow):
@@ -145,9 +141,9 @@ class GradeMixin(object):
 
         incomplete_steps = []
         if _is_incomplete("peer"):
-            incomplete_steps.append("Peer Assessment")
+            incomplete_steps.append(_("Peer Assessment"))
         if _is_incomplete("self"):
-            incomplete_steps.append("Self Assessment")
+            incomplete_steps.append(_("Self Assessment"))
 
         return (
             'openassessmentblock/grade/oa_grade_incomplete.html',

@@ -134,6 +134,7 @@ TUESDAY = datetime.datetime(2007, 9, 13, 0, 0, 0, 0, pytz.UTC)
 WEDNESDAY = datetime.datetime(2007, 9, 15, 0, 0, 0, 0, pytz.UTC)
 THURSDAY = datetime.datetime(2007, 9, 16, 0, 0, 0, 0, pytz.UTC)
 
+STEPS = ['peer', 'self']
 
 @ddt
 class TestPeerApi(CacheResetTest):
@@ -449,7 +450,7 @@ class TestPeerApi(CacheResetTest):
             'must_grade': REQUIRED_GRADED,
             'must_be_graded_by': REQUIRED_GRADED_BY
         }
-        self.assertTrue(peer_api.is_complete(tim_sub["uuid"], requirements))
+        self.assertTrue(peer_api.submitter_is_finished(tim_sub["uuid"], requirements))
 
     def test_completeness(self):
         """
@@ -788,7 +789,7 @@ class TestPeerApi(CacheResetTest):
             'must_grade': REQUIRED_GRADED,
             'must_be_graded_by': REQUIRED_GRADED_BY
         }
-        self.assertTrue(peer_api.is_complete(buffy_sub["uuid"], requirements))
+        self.assertTrue(peer_api.submitter_is_finished(buffy_sub["uuid"], requirements))
 
     def test_find_active_assessments(self):
         buffy_answer, _ = self._create_student_and_submission("Buffy", "Buffy's answer")
@@ -1137,5 +1138,5 @@ class TestPeerApi(CacheResetTest):
         new_student_item["student_id"] = student
         submission = sub_api.create_submission(new_student_item, answer, date)
         peer_api.create_peer_workflow(submission["uuid"])
-        workflow_api.create_workflow(submission["uuid"])
+        workflow_api.create_workflow(submission["uuid"], STEPS)
         return submission, new_student_item

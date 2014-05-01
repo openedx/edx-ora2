@@ -2,7 +2,6 @@
 
 import datetime as dt
 import logging
-import dateutil
 import pkg_resources
 
 import pytz
@@ -239,7 +238,9 @@ class OpenAssessmentBlock(
 
         # Include release/due dates for each step in the problem
         context['step_dates'] = list()
-        for step in ['submission', 'peer-assessment', 'self-assessment']:
+
+        steps = ['submission'] + self.assessment_steps
+        for step in steps:
 
             # Get the dates as a student would see them
             __, __, start_date, due_date = self.is_closed(step=step, course_staff=False)
@@ -432,16 +433,14 @@ class OpenAssessmentBlock(
         start, due, date_ranges = resolve_dates(
             self.start, self.due, [submission_range] + assessment_ranges
         )
-        step_ranges = {"submission": date_ranges[0]}
-        for step_num, asmnt in enumerate(self.rubric_assessments, start=1):
-            step_ranges[asmnt["name"]] = date_ranges[step_num]
 
-        # Based on the step, choose the date range to consider
-        # We hard-code this to the submission -> peer -> self workflow for now;
-        # later, we can revisit to make this more flexible.
-        open_range = (start, due)
-        if step in ["submission", "peer-assessment", "self-assessment"]:
-            open_range = step_ranges[step]
+        open_range  = (start, due)
+        assessment_steps = self.assessment_steps
+        if step == 'submission':
+            open_range = date_ranges[0]
+        elif step in assessment_steps:
+            step_index = assessment_steps.index(step)
+            open_range = date_ranges[1 + step_index]
 
         # Course staff always have access to the problem
         if course_staff is None:
