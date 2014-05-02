@@ -1,0 +1,792 @@
+[
+  {
+    "pk": 2,
+    "model": "workflow.assessmentworkflow",
+    "fields": {
+      "status": "done",
+      "uuid": "3884f3cc-d0ae-11e3-9820-14109fd8dc43",
+      "created": "2014-04-30T21:27:24.236Z",
+      "submission_uuid": "387d840a-d0ae-11e3-bb0e-14109fd8dc43",
+      "modified": "2014-04-30T21:28:41.814Z",
+      "item_id": "openassessmentblock-poverty-rubric.openassessment.d0.u0",
+      "course_id": "edX/Enchantment_101/April_1",
+      "status_changed": "2014-04-30T21:28:41.814Z"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "workflow.assessmentworkflow",
+    "fields": {
+      "status": "done",
+      "uuid": "178beedc-d0ae-11e3-afc3-14109fd8dc43",
+      "created": "2014-04-30T21:26:28.917Z",
+      "submission_uuid": "1783758f-d0ae-11e3-b495-14109fd8dc43",
+      "modified": "2014-04-30T21:28:49.284Z",
+      "item_id": "openassessmentblock-poverty-rubric.openassessment.d0.u0",
+      "course_id": "edX/Enchantment_101/April_1",
+      "status_changed": "2014-04-30T21:28:49.284Z"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "assessment.rubric",
+    "fields": {
+      "content_hash": "1641a7cd3ab1cca196ba04db334641478b636199"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "assessment.rubric",
+    "fields": {
+      "content_hash": "7405a513d9f99b62dd561816f20cdb90b09b8060"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "assessment.criterion",
+    "fields": {
+      "order_num": 0,
+      "prompt": "How concise is it?",
+      "rubric": 1,
+      "name": "concise"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "assessment.criterion",
+    "fields": {
+      "order_num": 1,
+      "prompt": "How clear is the thinking?",
+      "rubric": 1,
+      "name": "clear-headed"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "assessment.criterion",
+    "fields": {
+      "order_num": 2,
+      "prompt": "Lastly, how is its form? Punctuation, grammar, and spelling all count.",
+      "rubric": 1,
+      "name": "form"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "assessment.criterion",
+    "fields": {
+      "order_num": 0,
+      "prompt": "How concise is it?",
+      "rubric": 2,
+      "name": "concise"
+    }
+  },
+  {
+    "pk": 5,
+    "model": "assessment.criterion",
+    "fields": {
+      "order_num": 1,
+      "prompt": "How clear is the thinking?",
+      "rubric": 2,
+      "name": "clear-headed"
+    }
+  },
+  {
+    "pk": 6,
+    "model": "assessment.criterion",
+    "fields": {
+      "order_num": 2,
+      "prompt": "Lastly, how is its form? Punctuation, grammar, and spelling all count.",
+      "rubric": 2,
+      "name": "form"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 0,
+      "explanation": "\n                    In \"Cryptonomicon\", Stephenson spent multiple pages talking about breakfast cereal.\n                    While hilarious, in recent years his work has been anything but 'concise'.\n                ",
+      "points": 0,
+      "criterion": 1,
+      "name": "Neal Stephenson (late)"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 1,
+      "explanation": "\n                    If the author wrote something cyclopean that staggers the mind, score it thus.\n                ",
+      "points": 1,
+      "criterion": 1,
+      "name": "HP Lovecraft"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 2,
+      "explanation": "\n                    Tight prose that conveys a wealth of information about the world in relatively\n                    few words. Example, \"The door irised open and he stepped inside.\"\n                ",
+      "points": 3,
+      "criterion": 1,
+      "name": "Robert Heinlein"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 3,
+      "explanation": "\n                    When Stephenson still had an editor, his prose was dense, with anecdotes about\n                    nitrox abuse implying main characters' whole life stories.\n                ",
+      "points": 4,
+      "criterion": 1,
+      "name": "Neal Stephenson (early)"
+    }
+  },
+  {
+    "pk": 5,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 4,
+      "explanation": "\n                    Score the work this way if it makes you weep, and the removal of a single\n                    word would make you sneer.\n                ",
+      "points": 5,
+      "criterion": 1,
+      "name": "Earnest Hemingway"
+    }
+  },
+  {
+    "pk": 6,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 0,
+      "explanation": "",
+      "points": 0,
+      "criterion": 2,
+      "name": "Yogi Berra"
+    }
+  },
+  {
+    "pk": 7,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 1,
+      "explanation": "",
+      "points": 1,
+      "criterion": 2,
+      "name": "Hunter S. Thompson"
+    }
+  },
+  {
+    "pk": 8,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 2,
+      "explanation": "",
+      "points": 2,
+      "criterion": 2,
+      "name": "Robert Heinlein"
+    }
+  },
+  {
+    "pk": 9,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 3,
+      "explanation": "",
+      "points": 3,
+      "criterion": 2,
+      "name": "Isaac Asimov"
+    }
+  },
+  {
+    "pk": 10,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 4,
+      "explanation": "\n                    Coolly rational, with a firm grasp of the main topics, a crystal-clear train of thought,\n                    and unemotional examination of the facts.  This is the only item explained in this category,\n                    to show that explained and unexplained items can be mixed.\n                ",
+      "points": 10,
+      "criterion": 2,
+      "name": "Spock"
+    }
+  },
+  {
+    "pk": 11,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 0,
+      "explanation": "",
+      "points": 0,
+      "criterion": 3,
+      "name": "lolcats"
+    }
+  },
+  {
+    "pk": 12,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 1,
+      "explanation": "",
+      "points": 1,
+      "criterion": 3,
+      "name": "Facebook"
+    }
+  },
+  {
+    "pk": 13,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 2,
+      "explanation": "",
+      "points": 2,
+      "criterion": 3,
+      "name": "Reddit"
+    }
+  },
+  {
+    "pk": 14,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 3,
+      "explanation": "",
+      "points": 3,
+      "criterion": 3,
+      "name": "metafilter"
+    }
+  },
+  {
+    "pk": 15,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 4,
+      "explanation": "",
+      "points": 4,
+      "criterion": 3,
+      "name": "Usenet, 1996"
+    }
+  },
+  {
+    "pk": 16,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 5,
+      "explanation": "",
+      "points": 5,
+      "criterion": 3,
+      "name": "The Elements of Style"
+    }
+  },
+  {
+    "pk": 17,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 0,
+      "explanation": "\n                    In \"Cryptonomicon\", Stephenson spent multiple pages talking about breakfast cereal.\n                    While hilarious, in recent years his work has been anything but 'concise'.\n                ",
+      "points": 0,
+      "criterion": 4,
+      "name": "Neal Stephenson (late)"
+    }
+  },
+  {
+    "pk": 18,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 1,
+      "explanation": "\n                    If the author wrote something cyclopean that staggers the mind, score it thus.\n                ",
+      "points": 1,
+      "criterion": 4,
+      "name": "HP Lovecraft"
+    }
+  },
+  {
+    "pk": 19,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 2,
+      "explanation": "\n                    Tight prose that conveys a wealth of information about the world in relatively\n                    few words. Example, \"The door irised open and he stepped inside.\"\n                ",
+      "points": 3,
+      "criterion": 4,
+      "name": "Robert Heinlein"
+    }
+  },
+  {
+    "pk": 20,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 3,
+      "explanation": "\n                    When Stephenson still had an editor, his prose was dense, with anecdotes about\n                    nitrox abuse implying main characters' whole life stories.\n                ",
+      "points": 4,
+      "criterion": 4,
+      "name": "Neal Stephenson (early)"
+    }
+  },
+  {
+    "pk": 21,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 4,
+      "explanation": "\n                    Score the work this way if it makes you weep, and the removal of a single\n                    word would make you sneer.\n                ",
+      "points": 5,
+      "criterion": 4,
+      "name": "Earnest Hemingway"
+    }
+  },
+  {
+    "pk": 22,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 0,
+      "explanation": "",
+      "points": 0,
+      "criterion": 5,
+      "name": "Yogi Berra"
+    }
+  },
+  {
+    "pk": 23,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 1,
+      "explanation": "",
+      "points": 1,
+      "criterion": 5,
+      "name": "Hunter S. Thompson"
+    }
+  },
+  {
+    "pk": 24,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 2,
+      "explanation": "",
+      "points": 2,
+      "criterion": 5,
+      "name": "Robert Heinlein"
+    }
+  },
+  {
+    "pk": 25,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 3,
+      "explanation": "",
+      "points": 3,
+      "criterion": 5,
+      "name": "Isaac Asimov"
+    }
+  },
+  {
+    "pk": 26,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 4,
+      "explanation": "\n                    Coolly rational, with a firm grasp of the main topics, a crystal-clear train of thought,\n                    and unemotional examination of the facts.  This is the only item explained in this category,\n                    to show that explained and unexplained items can be mixed.\n                ",
+      "points": 10,
+      "criterion": 5,
+      "name": "Spock"
+    }
+  },
+  {
+    "pk": 27,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 0,
+      "explanation": "",
+      "points": 0,
+      "criterion": 6,
+      "name": "lolcats"
+    }
+  },
+  {
+    "pk": 28,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 1,
+      "explanation": "",
+      "points": 1,
+      "criterion": 6,
+      "name": "Facebook"
+    }
+  },
+  {
+    "pk": 29,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 2,
+      "explanation": "",
+      "points": 2,
+      "criterion": 6,
+      "name": "Reddit"
+    }
+  },
+  {
+    "pk": 30,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 3,
+      "explanation": "",
+      "points": 3,
+      "criterion": 6,
+      "name": "metafilter"
+    }
+  },
+  {
+    "pk": 31,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 4,
+      "explanation": "",
+      "points": 4,
+      "criterion": 6,
+      "name": "Usenet, 1996"
+    }
+  },
+  {
+    "pk": 32,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 5,
+      "explanation": "",
+      "points": 5,
+      "criterion": 6,
+      "name": "The Elements of Style"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "assessment.assessment",
+    "fields": {
+      "scorer_id": "student_1",
+      "feedback": "",
+      "submission_uuid": "1783758f-d0ae-11e3-b495-14109fd8dc43",
+      "scored_at": "2014-04-30T21:28:48.769Z",
+      "rubric": 2,
+      "score_type": "SE"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "assessment.assessment",
+    "fields": {
+      "scorer_id": "student_1",
+      "feedback": "",
+      "submission_uuid": "387d840a-d0ae-11e3-bb0e-14109fd8dc43",
+      "scored_at": "2014-04-30T21:28:41.270Z",
+      "rubric": 2,
+      "score_type": "PE"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "assessment.assessment",
+    "fields": {
+      "scorer_id": "Bob",
+      "feedback": "",
+      "submission_uuid": "387d840a-d0ae-11e3-bb0e-14109fd8dc43",
+      "scored_at": "2014-04-30T21:28:15.210Z",
+      "rubric": 2,
+      "score_type": "SE"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "assessment.assessment",
+    "fields": {
+      "scorer_id": "Bob",
+      "feedback": "In sed \u00e1ugue int\u00e9gr\u00ea n\u00e9glegentur, n\u00e9c id \u00e7\u00edb\u00f3 d\u00f4ctus. Doming v\u00f5lupt\u00e0t\u00fam compr\u00e9hens\u00e3m mel n\u00f3, an unum script\u00e3 voluptatibus vis. N\u00e9c sint gr\u00e2\u00e9\u00e7\u00f3 eu.",
+      "submission_uuid": "1783758f-d0ae-11e3-b495-14109fd8dc43",
+      "scored_at": "2014-04-30T21:27:59.453Z",
+      "rubric": 2,
+      "score_type": "PE"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "assessment.assessmentpart",
+    "fields": {
+      "assessment": 1,
+      "option": 25,
+      "feedback": ""
+    }
+  },
+  {
+    "pk": 2,
+    "model": "assessment.assessmentpart",
+    "fields": {
+      "assessment": 1,
+      "option": 19,
+      "feedback": "Elit nonumy m\u00eal ut, nam \u00e9sse fabul\u00e1s n\u00f3"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "assessment.assessmentpart",
+    "fields": {
+      "assessment": 1,
+      "option": 30,
+      "feedback": "Per in\u00e2n\u00ed dol\u00f3re an, \u00fat s\u00e9a t\u00f4ta qu\u00e0eque d\u00edssenti\u00fant"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "assessment.assessmentpart",
+    "fields": {
+      "assessment": 2,
+      "option": 25,
+      "feedback": ""
+    }
+  },
+  {
+    "pk": 5,
+    "model": "assessment.assessmentpart",
+    "fields": {
+      "assessment": 2,
+      "option": 20,
+      "feedback": ""
+    }
+  },
+  {
+    "pk": 6,
+    "model": "assessment.assessmentpart",
+    "fields": {
+      "assessment": 2,
+      "option": 30,
+      "feedback": ""
+    }
+  },
+  {
+    "pk": 7,
+    "model": "assessment.assessmentpart",
+    "fields": {
+      "assessment": 3,
+      "option": 24,
+      "feedback": ""
+    }
+  },
+  {
+    "pk": 8,
+    "model": "assessment.assessmentpart",
+    "fields": {
+      "assessment": 3,
+      "option": 19,
+      "feedback": ""
+    }
+  },
+  {
+    "pk": 9,
+    "model": "assessment.assessmentpart",
+    "fields": {
+      "assessment": 3,
+      "option": 31,
+      "feedback": ""
+    }
+  },
+  {
+    "pk": 10,
+    "model": "assessment.assessmentpart",
+    "fields": {
+      "assessment": 4,
+      "option": 18,
+      "feedback": ""
+    }
+  },
+  {
+    "pk": 11,
+    "model": "assessment.assessmentpart",
+    "fields": {
+      "assessment": 4,
+      "option": 30,
+      "feedback": ""
+    }
+  },
+  {
+    "pk": 12,
+    "model": "assessment.assessmentpart",
+    "fields": {
+      "assessment": 4,
+      "option": 23,
+      "feedback": ""
+    }
+  },
+  {
+    "pk": 2,
+    "model": "assessment.assessmentfeedbackoption",
+    "fields": {
+      "text": "I disagree with one or more of the peer assessments of my response."
+    }
+  },
+  {
+    "pk": 1,
+    "model": "assessment.assessmentfeedbackoption",
+    "fields": {
+      "text": "These assessments were useful."
+    }
+  },
+  {
+    "pk": 2,
+    "model": "assessment.assessmentfeedback",
+    "fields": {
+      "feedback_text": "Feedback on assessment",
+      "assessments": [
+         3
+      ],
+      "submission_uuid": "387d840a-d0ae-11e3-bb0e-14109fd8dc43",
+      "options": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "pk": 1,
+    "model": "assessment.assessmentfeedback",
+    "fields": {
+      "feedback_text": "Feedback on assessment",
+      "assessments": [
+        1
+      ],
+      "submission_uuid": "1783758f-d0ae-11e3-b495-14109fd8dc43",
+      "options": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "pk": 1,
+    "model": "assessment.peerworkflow",
+    "fields": {
+      "completed_at": "2014-04-30T21:28:41.861Z",
+      "student_id": "student_1",
+      "created_at": "2014-04-30T21:26:28.910Z",
+      "submission_uuid": "1783758f-d0ae-11e3-b495-14109fd8dc43",
+      "course_id": "edX/Enchantment_101/April_1",
+      "item_id": "openassessmentblock-poverty-rubric.openassessment.d0.u0",
+      "grading_completed_at": "2014-04-30T21:27:59.543Z"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "assessment.peerworkflow",
+    "fields": {
+      "completed_at": "2014-04-30T21:27:59.890Z",
+      "student_id": "Bob",
+      "created_at": "2014-04-30T21:27:24.230Z",
+      "submission_uuid": "387d840a-d0ae-11e3-bb0e-14109fd8dc43",
+      "course_id": "edX/Enchantment_101/April_1",
+      "item_id": "openassessmentblock-poverty-rubric.openassessment.d0.u0",
+      "grading_completed_at": "2014-04-30T21:28:41.343Z"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "assessment.peerworkflowitem",
+    "fields": {
+      "scored": true,
+      "author": 1,
+      "submission_uuid": "1783758f-d0ae-11e3-b495-14109fd8dc43",
+      "scorer": 2,
+      "started_at": "2014-04-30T21:27:24.818Z",
+      "assessment": 1
+    }
+  },
+  {
+    "pk": 2,
+    "model": "assessment.peerworkflowitem",
+    "fields": {
+      "scored": true,
+      "author": 2,
+      "submission_uuid": "387d840a-d0ae-11e3-bb0e-14109fd8dc43",
+      "scorer": 1,
+      "started_at": "2014-04-30T21:28:26.535Z",
+      "assessment": 3
+    }
+  },
+  {
+    "pk": 1,
+    "model": "submissions.studentitem",
+    "fields": {
+      "course_id": "edX/Enchantment_101/April_1",
+      "student_id": "student_1",
+      "item_id": "openassessmentblock-poverty-rubric.openassessment.d0.u0",
+      "item_type": "openassessment"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "submissions.studentitem",
+    "fields": {
+      "course_id": "edX/Enchantment_101/April_1",
+      "student_id": "Bob",
+      "item_id": "openassessmentblock-poverty-rubric.openassessment.d0.u0",
+      "item_type": "openassessment"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "submissions.submission",
+    "fields": {
+      "submitted_at": "2014-04-30T21:27:24.173Z",
+      "student_item": 2,
+      "created_at": "2014-04-30T21:27:24.181Z",
+      "raw_answer": "{\"text\": \"E\\u00e3 \\u00e9um quis d\\u00ed\\u00e7o \\u00e9l\\u00e2b\\u00f3r\\u00e3ret. N\\u00e1m in \\u00e7\\u00f4mmune p\\u00f3nder\\u00fam apeirian, te \\u00e2lii m\\u00e1zim \\u00ednt\\u00e9ll\\u00eagat nec, ex \\u00e9leif\\u00e9nd el\\u00f3quenti\\u00e2m usu. His no n\\u00f3vum lu\\u00e7ilius, \\u00e0utem \\u00e3\\u00e9que vix \\u00e0d.\"}",
+      "attempt_number": 1,
+      "uuid": "387d840a-d0ae-11e3-bb0e-14109fd8dc43"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "submissions.submission",
+    "fields": {
+      "submitted_at": "2014-04-30T21:26:28.847Z",
+      "student_item": 1,
+      "created_at": "2014-04-30T21:26:28.855Z",
+      "raw_answer": "{\"text\": \"L\\u00f5r\\u00eam \\u00edpsum d\\u00f4lor sit amet, in d\\u00fao p\\u00f5pul\\u00f3 m\\u00e0nd\\u00e1mus, alienum cons\\u00e9q\\u00faat pers\\u00e9cuti mel \\u00e0n. R\\u00eabum de\\u00e7or\\u00ea \\u00e9\\u00fam an, s\\u00e0ep\\u00e9 p\\u00f5pulo splendid\\u00e9 te p\\u00e9r.\"}",
+      "attempt_number": 1,
+      "uuid": "1783758f-d0ae-11e3-b495-14109fd8dc43"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "submissions.score",
+    "fields": {
+      "reset": false,
+      "submission": 2,
+      "created_at": "2014-04-30T21:28:41.770Z",
+      "points_earned": 9,
+      "student_item": 2,
+      "points_possible": 20
+    }
+  },
+  {
+    "pk": 2,
+    "model": "submissions.score",
+    "fields": {
+      "reset": false,
+      "submission": 1,
+      "created_at": "2014-04-30T21:28:49.238Z",
+      "points_earned": 9,
+      "student_item": 1,
+      "points_possible": 20
+    }
+  },
+  {
+    "pk": 1,
+    "model": "submissions.scoresummary",
+    "fields": {
+      "highest": 1,
+      "student_item": 2,
+      "latest": 1
+    }
+  },
+  {
+    "pk": 2,
+    "model": "submissions.scoresummary",
+    "fields": {
+      "highest": 2,
+      "student_item": 1,
+      "latest": 2
+    }
+  }
+]

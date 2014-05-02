@@ -1,0 +1,215 @@
+[
+  {
+    "pk": 1,
+    "model": "assessment.rubric",
+    "fields": {
+      "content_hash": "7405a513d9f99b62dd561816f20cdb90b09b8060"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "assessment.criterion",
+    "fields": {
+      "order_num": 0,
+      "prompt": "How concise is it?",
+      "rubric": 1,
+      "name": "concise"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "assessment.criterion",
+    "fields": {
+      "order_num": 1,
+      "prompt": "How clear is the thinking?",
+      "rubric": 1,
+      "name": "clear-headed"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "assessment.criterion",
+    "fields": {
+      "order_num": 2,
+      "prompt": "Lastly, how is its form? Punctuation, grammar, and spelling all count.",
+      "rubric": 1,
+      "name": "form"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 0,
+      "explanation": "\n                    In \"Cryptonomicon\", Stephenson spent multiple pages talking about breakfast cereal.\n                    While hilarious, in recent years his work has been anything but 'concise'.\n                ",
+      "points": 0,
+      "criterion": 1,
+      "name": "Neal Stephenson (late)"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 1,
+      "explanation": "\n                    If the author wrote something cyclopean that staggers the mind, score it thus.\n                ",
+      "points": 1,
+      "criterion": 1,
+      "name": "HP Lovecraft"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 2,
+      "explanation": "\n                    Tight prose that conveys a wealth of information about the world in relatively\n                    few words. Example, \"The door irised open and he stepped inside.\"\n                ",
+      "points": 3,
+      "criterion": 1,
+      "name": "Robert Heinlein"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 3,
+      "explanation": "\n                    When Stephenson still had an editor, his prose was dense, with anecdotes about\n                    nitrox abuse implying main characters' whole life stories.\n                ",
+      "points": 4,
+      "criterion": 1,
+      "name": "Neal Stephenson (early)"
+    }
+  },
+  {
+    "pk": 5,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 4,
+      "explanation": "\n                    Score the work this way if it makes you weep, and the removal of a single\n                    word would make you sneer.\n                ",
+      "points": 5,
+      "criterion": 1,
+      "name": "Earnest Hemingway"
+    }
+  },
+  {
+    "pk": 6,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 0,
+      "explanation": "",
+      "points": 0,
+      "criterion": 2,
+      "name": "Yogi Berra"
+    }
+  },
+  {
+    "pk": 7,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 1,
+      "explanation": "",
+      "points": 1,
+      "criterion": 2,
+      "name": "Hunter S. Thompson"
+    }
+  },
+  {
+    "pk": 8,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 2,
+      "explanation": "",
+      "points": 2,
+      "criterion": 2,
+      "name": "Robert Heinlein"
+    }
+  },
+  {
+    "pk": 9,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 3,
+      "explanation": "",
+      "points": 3,
+      "criterion": 2,
+      "name": "Isaac Asimov"
+    }
+  },
+  {
+    "pk": 10,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 4,
+      "explanation": "\n                    Coolly rational, with a firm grasp of the main topics, a crystal-clear train of thought,\n                    and unemotional examination of the facts.  This is the only item explained in this category,\n                    to show that explained and unexplained items can be mixed.\n                ",
+      "points": 10,
+      "criterion": 2,
+      "name": "Spock"
+    }
+  },
+  {
+    "pk": 11,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 0,
+      "explanation": "",
+      "points": 0,
+      "criterion": 3,
+      "name": "lolcats"
+    }
+  },
+  {
+    "pk": 12,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 1,
+      "explanation": "",
+      "points": 1,
+      "criterion": 3,
+      "name": "Facebook"
+    }
+  },
+  {
+    "pk": 13,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 2,
+      "explanation": "",
+      "points": 2,
+      "criterion": 3,
+      "name": "Reddit"
+    }
+  },
+  {
+    "pk": 14,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 3,
+      "explanation": "",
+      "points": 3,
+      "criterion": 3,
+      "name": "metafilter"
+    }
+  },
+  {
+    "pk": 15,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 4,
+      "explanation": "",
+      "points": 4,
+      "criterion": 3,
+      "name": "Usenet, 1996"
+    }
+  },
+  {
+    "pk": 16,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 5,
+      "explanation": "",
+      "points": 5,
+      "criterion": 3,
+      "name": "The Elements of Style"
+    }
+  }
+]

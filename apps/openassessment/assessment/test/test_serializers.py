@@ -19,7 +19,7 @@ class TestRubricDeserialization(CacheResetTest):
     def test_rubric_only_created_once(self):
         # Make sure sending the same Rubric data twice only creates one Rubric,
         # and returns a reference to it the next time.
-        rubric_data = json_data('rubric_data/project_plan_rubric.json')
+        rubric_data = json_data('data/rubric/project_plan_rubric.json')
 
         r1 = rubric_from_dict(rubric_data)
 
@@ -32,14 +32,14 @@ class TestRubricDeserialization(CacheResetTest):
 
     def test_rubric_requires_positive_score(self):
         with self.assertRaises(InvalidRubric):
-            rubric_from_dict(json_data('rubric_data/no_points.json'))
+            rubric_from_dict(json_data('data/rubric/no_points.json'))
 
 
 class TestCriterionDeserialization(CacheResetTest):
 
     def test_empty_criteria(self):
         with self.assertRaises(InvalidRubric) as cm:
-            rubric_from_dict(json_data('rubric_data/empty_criteria.json'))
+            rubric_from_dict(json_data('data/rubric/empty_criteria.json'))
         self.assertEqual(
             cm.exception.errors,
             {'criteria': [u'Must have at least one criterion']}
@@ -47,7 +47,7 @@ class TestCriterionDeserialization(CacheResetTest):
 
     def test_missing_criteria(self):
         with self.assertRaises(InvalidRubric) as cm:
-            rubric_from_dict(json_data('rubric_data/missing_criteria.json'))
+            rubric_from_dict(json_data('data/rubric/missing_criteria.json'))
         self.assertEqual(
             cm.exception.errors,
             {'criteria': [u'This field is required.']}
@@ -58,7 +58,7 @@ class TestCriterionOptionDeserialization(CacheResetTest):
 
     def test_empty_options(self):
         with self.assertRaises(InvalidRubric) as cm:
-            rubric_from_dict(json_data('rubric_data/empty_options.json'))
+            rubric_from_dict(json_data('data/rubric/empty_options.json'))
         self.assertEqual(
             cm.exception.errors,
             {
@@ -71,7 +71,7 @@ class TestCriterionOptionDeserialization(CacheResetTest):
 
     def test_missing_options(self):
         with self.assertRaises(InvalidRubric) as cm:
-            rubric_from_dict(json_data('rubric_data/missing_options.json'))
+            rubric_from_dict(json_data('data/rubric/missing_options.json'))
         self.assertEqual(
             cm.exception.errors,
             {

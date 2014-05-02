@@ -1,0 +1,501 @@
+[
+  {
+    "pk": 1,
+    "model": "assessment.rubric",
+    "fields": {
+      "content_hash": "57bdaefbe114871f0363bf3d7e843cdec94b2d1d"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "assessment.rubric",
+    "fields": {
+      "content_hash": "c0580cc523eb09e75a517616a777627ebf85fefc"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "assessment.criterion",
+    "fields": {
+      "order_num": 0,
+      "prompt": "\u041d\u043e\u0448 \u0441\u043e\u0438\u0441\u0456\u0455\u044d \u0456\u0455 \u0456\u0442?",
+      "rubric": 1,
+      "name": "\u023c\u00f8n\u023c\u0268s\u0247"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "assessment.criterion",
+    "fields": {
+      "order_num": 1,
+      "prompt": "\u03c9\u03b1\u0455 \u0442\u043d\u0454 \u03c9\u044f\u03b9\u0442\u0454\u044f \u03c3\u03b7 \u0442\u03c3\u03c1\u03b9\u00a2?",
+      "rubric": 1,
+      "name": "\u0151\u0144-t\u0151\u1e55\u00ed\u0107"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "assessment.criterion",
+    "fields": {
+      "order_num": 0,
+      "prompt": "\u041d\u043e\u0448 \u0441\u043e\u0438\u0441\u0456\u0455\u044d \u0456\u0455 \u0456\u0442?",
+      "rubric": 2,
+      "name": "\u023c\u00f8n\u023c\u0268s\u0247"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "assessment.criterion",
+    "fields": {
+      "order_num": 1,
+      "prompt": "\u03c9\u03b1\u0455 \u0442\u043d\u0454 \u03c9\u044f\u03b9\u0442\u0454\u044f \u03c3\u03b7 \u0442\u03c3\u03c1\u03b9\u00a2?",
+      "rubric": 2,
+      "name": "\u0151\u0144-t\u0151\u1e55\u00ed\u0107"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 0,
+      "explanation": "\u0287\u0265\u01dd \u028d\u0279\u0131\u0287\u01dd\u0279 p\u0131p \u0250 doo\u0279 \u027eoq.",
+      "points": 0,
+      "criterion": 1,
+      "name": "\uff71oo\u5c3a"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 1,
+      "explanation": "\u1e6a\u1e27\u00eb \u1e85\u1e5b\u00ef\u1e97\u00eb\u1e5b \u1e0b\u00ef\u1e0b \u00e4 \u1e1f\u00e4\u00ef\u1e5b j\u00f6\u1e05.",
+      "points": 1,
+      "criterion": 1,
+      "name": "\ua7fbAi\u1d19"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 2,
+      "explanation": "\u1d1b\u029c\u1d07 \u1d21\u0280\u026a\u1d1b\u1d07\u0280 \u1d05\u026a\u1d05 \u1d00 \u0262\u1d0f\u1d0f\u1d05 \u1d0a\u1d0f\u0299.",
+      "points": 3,
+      "criterion": 1,
+      "name": "\u01e4\u00f8\u00f8\u0111"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 0,
+      "explanation": "\u0287\u0265\u01dd \u028d\u0279\u0131\u0287\u01dd\u0279 p\u0131p \u0250 doo\u0279 \u027eoq.",
+      "points": 0,
+      "criterion": 2,
+      "name": "\uff71oo\u5c3a"
+    }
+  },
+  {
+    "pk": 5,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 1,
+      "explanation": "\u1e6a\u1e27\u00eb \u1e85\u1e5b\u00ef\u1e97\u00eb\u1e5b \u1e0b\u00ef\u1e0b \u00e4 \u1e1f\u00e4\u00ef\u1e5b j\u00f6\u1e05.",
+      "points": 1,
+      "criterion": 2,
+      "name": "\ua7fbAi\u1d19"
+    }
+  },
+  {
+    "pk": 6,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 2,
+      "explanation": "\u1d1b\u029c\u1d07 \u1d21\u0280\u026a\u1d1b\u1d07\u0280 \u1d05\u026a\u1d05 \u1d00 \u0262\u1d0f\u1d0f\u1d05 \u1d0a\u1d0f\u0299.",
+      "points": 3,
+      "criterion": 2,
+      "name": "\u01e4\u00f8\u00f8\u0111"
+    }
+  },
+  {
+    "pk": 7,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 0,
+      "explanation": "\u0287\u0265\u01dd \u028d\u0279\u0131\u0287\u01dd\u0279 p\u0131p \u0250 doo\u0279 \u027eoq.",
+      "points": 0,
+      "criterion": 3,
+      "name": "\uff71oo\u5c3a"
+    }
+  },
+  {
+    "pk": 8,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 1,
+      "explanation": "\u1e6a\u1e27\u00eb \u1e85\u1e5b\u00ef\u1e97\u00eb\u1e5b \u1e0b\u00ef\u1e0b \u00e4 \u1e1f\u00e4\u00ef\u1e5b j\u00f6\u1e05.",
+      "points": 1,
+      "criterion": 3,
+      "name": "\ua7fbAi\u1d19"
+    }
+  },
+  {
+    "pk": 9,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 2,
+      "explanation": "\u1d1b\u029c\u1d07 \u1d21\u0280\u026a\u1d1b\u1d07\u0280 \u1d05\u026a\u1d05 \u1d00 \u0262\u1d0f\u1d0f\u1d05 \u1d0a\u1d0f\u0299.",
+      "points": 3,
+      "criterion": 3,
+      "name": "\u01e4\u00f8\u00f8\u0111"
+    }
+  },
+  {
+    "pk": 10,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 0,
+      "explanation": "\u0287\u0265\u01dd \u028d\u0279\u0131\u0287\u01dd\u0279 p\u0131p \u0250 doo\u0279 \u027eoq.",
+      "points": 0,
+      "criterion": 4,
+      "name": "\uff71oo\u5c3a"
+    }
+  },
+  {
+    "pk": 11,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 1,
+      "explanation": "\u1e6a\u1e27\u00eb \u1e85\u1e5b\u00ef\u1e97\u00eb\u1e5b \u1e0b\u00ef\u1e0b \u00e4 \u1e1f\u00e4\u00ef\u1e5b j\u00f6\u1e05.",
+      "points": 1,
+      "criterion": 4,
+      "name": "\ua7fbAi\u1d19"
+    }
+  },
+  {
+    "pk": 12,
+    "model": "assessment.criterionoption",
+    "fields": {
+      "order_num": 2,
+      "explanation": "\u1d1b\u029c\u1d07 \u1d21\u0280\u026a\u1d1b\u1d07\u0280 \u1d05\u026a\u1d05 \u1d00 \u0262\u1d0f\u1d0f\u1d05 \u1d0a\u1d0f\u0299.",
+      "points": 3,
+      "criterion": 4,
+      "name": "\u01e4\u00f8\u00f8\u0111"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "assessment.assessment",
+    "fields": {
+      "scorer_id": "student_1",
+      "feedback": "",
+      "submission_uuid": "8c52cfdc-d1f9-11e3-953c-14109fd8dc43",
+      "scored_at": "2014-05-02T12:59:54.594Z",
+      "rubric": 2,
+      "score_type": "SE"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "assessment.assessment",
+    "fields": {
+      "scorer_id": "student_1",
+      "feedback": "\u0547\ufec9\u0e23\u0547 \u0e23\u0547\u027c\u0671\u0e01\ufeed",
+      "submission_uuid": "99765973-d1f9-11e3-841a-14109fd8dc43",
+      "scored_at": "2014-05-02T12:59:49.804Z",
+      "rubric": 2,
+      "score_type": "PE"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "assessment.assessment",
+    "fields": {
+      "scorer_id": "\u1e97\u00eb\u1e61\u1e97_\u00fc\u1e61\u00eb\u1e5b",
+      "feedback": "",
+      "submission_uuid": "99765973-d1f9-11e3-841a-14109fd8dc43",
+      "scored_at": "2014-05-02T12:59:40.276Z",
+      "rubric": 2,
+      "score_type": "SE"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "assessment.assessment",
+    "fields": {
+      "scorer_id": "\u1e97\u00eb\u1e61\u1e97_\u00fc\u1e61\u00eb\u1e5b",
+      "feedback": "\u0547\ufec9\u0e23\u0547 \u0e23\u0547\u027c\u0671\u0e01\ufeed",
+      "submission_uuid": "8c52cfdc-d1f9-11e3-953c-14109fd8dc43",
+      "scored_at": "2014-05-02T12:59:35.741Z",
+      "rubric": 2,
+      "score_type": "PE"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "assessment.assessmentpart",
+    "fields": {
+      "assessment": 1,
+      "option": 9,
+      "feedback": "\u0547\ufec9\u0e23\u0547 \u0e23\u0547\u027c\u0671\u0e01\ufeed"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "assessment.assessmentpart",
+    "fields": {
+      "assessment": 1,
+      "option": 11,
+      "feedback": ""
+    }
+  },
+  {
+    "pk": 3,
+    "model": "assessment.assessmentpart",
+    "fields": {
+      "assessment": 2,
+      "option": 12,
+      "feedback": ""
+    }
+  },
+  {
+    "pk": 4,
+    "model": "assessment.assessmentpart",
+    "fields": {
+      "assessment": 2,
+      "option": 7,
+      "feedback": ""
+    }
+  },
+  {
+    "pk": 5,
+    "model": "assessment.assessmentpart",
+    "fields": {
+      "assessment": 3,
+      "option": 9,
+      "feedback": "\u0547\ufec9\u0e23\u0547 \u0e23\u0547\u027c\u0671\u0e01\ufeed"
+    }
+  },
+  {
+    "pk": 6,
+    "model": "assessment.assessmentpart",
+    "fields": {
+      "assessment": 3,
+      "option": 12,
+      "feedback": ""
+    }
+  },
+  {
+    "pk": 7,
+    "model": "assessment.assessmentpart",
+    "fields": {
+      "assessment": 4,
+      "option": 12,
+      "feedback": ""
+    }
+  },
+  {
+    "pk": 8,
+    "model": "assessment.assessmentpart",
+    "fields": {
+      "assessment": 4,
+      "option": 7,
+      "feedback": ""
+    }
+  },
+  {
+    "pk": 2,
+    "model": "assessment.assessmentfeedbackoption",
+    "fields": {
+      "text": "Some comments I received were inappropriate."
+    }
+  },
+  {
+    "pk": 1,
+    "model": "assessment.assessmentfeedbackoption",
+    "fields": {
+      "text": "These assessments were not useful."
+    }
+  },
+  {
+    "pk": 1,
+    "model": "assessment.assessmentfeedback",
+    "fields": {
+      "feedback_text": "\u0547\ufec9\u0e23\u0547 \u0e23\u0547\u027c\u0671\u0e01\ufeed",
+      "assessments": [
+        1
+      ],
+      "submission_uuid": "8c52cfdc-d1f9-11e3-953c-14109fd8dc43",
+      "options": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "pk": 1,
+    "model": "assessment.peerworkflow",
+    "fields": {
+      "completed_at": "2014-05-02T12:59:50.263Z",
+      "student_id": "student_1",
+      "created_at": "2014-05-02T12:59:08.304Z",
+      "submission_uuid": "8c52cfdc-d1f9-11e3-953c-14109fd8dc43",
+      "course_id": "\ud835\udcfd\ud835\udcee\ud835\udcfc\ud835\udcfd_\ud835\udcec\ud835\udcf8\ud835\udcfe\ud835\udcfb\ud835\udcfc\ud835\udcee",
+      "item_id": "\u1e97\u00eb\u1e61\u1e97_\u00ef\u1e97\u00eb\u1e41",
+      "grading_completed_at": "2014-05-02T12:59:35.804Z"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "assessment.peerworkflow",
+    "fields": {
+      "completed_at": "2014-05-02T12:59:36.010Z",
+      "student_id": "\u1e97\u00eb\u1e61\u1e97_\u00fc\u1e61\u00eb\u1e5b",
+      "created_at": "2014-05-02T12:59:30.339Z",
+      "submission_uuid": "99765973-d1f9-11e3-841a-14109fd8dc43",
+      "course_id": "\ud835\udcfd\ud835\udcee\ud835\udcfc\ud835\udcfd_\ud835\udcec\ud835\udcf8\ud835\udcfe\ud835\udcfb\ud835\udcfc\ud835\udcee",
+      "item_id": "\u1e97\u00eb\u1e61\u1e97_\u00ef\u1e97\u00eb\u1e41",
+      "grading_completed_at": "2014-05-02T12:59:49.869Z"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "assessment.peerworkflowitem",
+    "fields": {
+      "scored": true,
+      "author": 1,
+      "submission_uuid": "8c52cfdc-d1f9-11e3-953c-14109fd8dc43",
+      "scorer": 2,
+      "started_at": "2014-05-02T12:59:30.927Z",
+      "assessment": 1
+    }
+  },
+  {
+    "pk": 2,
+    "model": "assessment.peerworkflowitem",
+    "fields": {
+      "scored": true,
+      "author": 2,
+      "submission_uuid": "99765973-d1f9-11e3-841a-14109fd8dc43",
+      "scorer": 1,
+      "started_at": "2014-05-02T12:59:45.515Z",
+      "assessment": 3
+    }
+  },
+  {
+    "pk": 2,
+    "model": "workflow.assessmentworkflow",
+    "fields": {
+      "status": "done",
+      "uuid": "997dd6ca-d1f9-11e3-9c70-14109fd8dc43",
+      "created": "2014-05-02T12:59:30.346Z",
+      "submission_uuid": "99765973-d1f9-11e3-841a-14109fd8dc43",
+      "modified": "2014-05-02T12:59:50.217Z",
+      "item_id": "\u1e97\u00eb\u1e61\u1e97_\u00ef\u1e97\u00eb\u1e41",
+      "course_id": "\ud835\udcfd\ud835\udcee\ud835\udcfc\ud835\udcfd_\ud835\udcec\ud835\udcf8\ud835\udcfe\ud835\udcfb\ud835\udcfc\ud835\udcee",
+      "status_changed": "2014-05-02T12:59:50.217Z"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "workflow.assessmentworkflow",
+    "fields": {
+      "status": "done",
+      "uuid": "8c5b94d1-d1f9-11e3-9ca3-14109fd8dc43",
+      "created": "2014-05-02T12:59:08.311Z",
+      "submission_uuid": "8c52cfdc-d1f9-11e3-953c-14109fd8dc43",
+      "modified": "2014-05-02T12:59:54.943Z",
+      "item_id": "\u1e97\u00eb\u1e61\u1e97_\u00ef\u1e97\u00eb\u1e41",
+      "course_id": "\ud835\udcfd\ud835\udcee\ud835\udcfc\ud835\udcfd_\ud835\udcec\ud835\udcf8\ud835\udcfe\ud835\udcfb\ud835\udcfc\ud835\udcee",
+      "status_changed": "2014-05-02T12:59:54.943Z"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "submissions.studentitem",
+    "fields": {
+      "course_id": "\ud835\udcfd\ud835\udcee\ud835\udcfc\ud835\udcfd_\ud835\udcec\ud835\udcf8\ud835\udcfe\ud835\udcfb\ud835\udcfc\ud835\udcee",
+      "student_id": "student_1",
+      "item_id": "\u1e97\u00eb\u1e61\u1e97_\u00ef\u1e97\u00eb\u1e41",
+      "item_type": "openassessment"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "submissions.studentitem",
+    "fields": {
+      "course_id": "\ud835\udcfd\ud835\udcee\ud835\udcfc\ud835\udcfd_\ud835\udcec\ud835\udcf8\ud835\udcfe\ud835\udcfb\ud835\udcfc\ud835\udcee",
+      "student_id": "\u1e97\u00eb\u1e61\u1e97_\u00fc\u1e61\u00eb\u1e5b",
+      "item_id": "\u1e97\u00eb\u1e61\u1e97_\u00ef\u1e97\u00eb\u1e41",
+      "item_type": "openassessment"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "submissions.submission",
+    "fields": {
+      "submitted_at": "2014-05-02T12:59:30.283Z",
+      "student_item": 2,
+      "created_at": "2014-05-02T12:59:30.290Z",
+      "raw_answer": "{\"text\": \"\\u0547\\ufec9\\u0e23\\u0547 \\u0e23\\u0547\\u027c\\u0671\\u0e01\\ufeed\"}",
+      "attempt_number": 1,
+      "uuid": "99765973-d1f9-11e3-841a-14109fd8dc43"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "submissions.submission",
+    "fields": {
+      "submitted_at": "2014-05-02T12:59:08.234Z",
+      "student_item": 1,
+      "created_at": "2014-05-02T12:59:08.243Z",
+      "raw_answer": "{\"text\": \"\\u0442\\u0454\\u0455\\u0442 \\u0455\\u0442\\u044f\\u03b9\\u03b7\\ufeed\"}",
+      "attempt_number": 1,
+      "uuid": "8c52cfdc-d1f9-11e3-953c-14109fd8dc43"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "submissions.score",
+    "fields": {
+      "reset": false,
+      "submission": 2,
+      "created_at": "2014-05-02T12:59:50.172Z",
+      "points_earned": 6,
+      "student_item": 2,
+      "points_possible": 6
+    }
+  },
+  {
+    "pk": 2,
+    "model": "submissions.score",
+    "fields": {
+      "reset": false,
+      "submission": 1,
+      "created_at": "2014-05-02T12:59:54.898Z",
+      "points_earned": 4,
+      "student_item": 1,
+      "points_possible": 6
+    }
+  },
+  {
+    "pk": 1,
+    "model": "submissions.scoresummary",
+    "fields": {
+      "highest": 1,
+      "student_item": 2,
+      "latest": 1
+    }
+  },
+  {
+    "pk": 2,
+    "model": "submissions.scoresummary",
+    "fields": {
+      "highest": 2,
+      "student_item": 1,
+      "latest": 2
+    }
+  }
+]

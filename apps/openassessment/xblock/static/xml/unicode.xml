@@ -1,0 +1,42 @@
+<openassessment>
+    <title>υηι¢σ∂є тєѕт</title>
+    <rubric>
+        <prompt>Uᴎiↄobɘ qᴙomqT</prompt>
+        <criterion feedback='optional'>
+            <name>ȼønȼɨsɇ</name>
+            <prompt>Нош соисіѕэ іѕ іт?</prompt>
+            <option points="0">
+                <name>ｱoo尺</name>
+                <explanation>ʇɥǝ ʍɹıʇǝɹ pıp ɐ dooɹ ɾoq.</explanation>
+            </option>
+            <option points="1">
+                <name>ꟻAiᴙ</name>
+                <explanation>Ṫḧë ẅṛïẗëṛ ḋïḋ ä ḟäïṛ jöḅ.</explanation>
+            </option>
+            <option points="3">
+                <name>Ǥøøđ</name>
+                <explanation>ᴛʜᴇ ᴡʀɪᴛᴇʀ ᴅɪᴅ ᴀ ɢᴏᴏᴅ ᴊᴏʙ.</explanation>
+            </option>
+        </criterion>
+        <criterion>
+            <name>őń-tőṕíć</name>
+            <prompt>ωαѕ тнє ωяιтєя ση тσρι¢?</prompt>
+            <option points="0">
+                <name>ｱoo尺</name>
+                <explanation>ʇɥǝ ʍɹıʇǝɹ pıp ɐ dooɹ ɾoq.</explanation>
+            </option>
+            <option points="1">
+                <name>ꟻAiᴙ</name>
+                <explanation>Ṫḧë ẅṛïẗëṛ ḋïḋ ä ḟäïṛ jöḅ.</explanation>
+            </option>
+            <option points="3">
+                <name>Ǥøøđ</name>
+                <explanation>ᴛʜᴇ ᴡʀɪᴛᴇʀ ᴅɪᴅ ᴀ ɢᴏᴏᴅ ᴊᴏʙ.</explanation>
+            </option>
+        </criterion>
+    </rubric>
+    <assessments>
+        <assessment name="peer-assessment" must_grade="1" must_be_graded_by="1" />
+        <assessment name="self-assessment" />
+    </assessments>
+</openassessment>
