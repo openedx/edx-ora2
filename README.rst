@@ -7,6 +7,11 @@
     :alt: Coverage badge
 
 
+`User documentation available on ReadTheDocs`__.
+
+__ http://peer-assessment.readthedocs.org/
+
+
 This is an initial prototype for redesigning Peer Grading and general Open Ended
 Submission Evaluation. This project is in the early stages of development and is
 not ready for general use.
