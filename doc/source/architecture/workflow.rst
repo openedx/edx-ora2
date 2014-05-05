@@ -1,7 +1,8 @@
-.. _dev_guide:
+.. _workflow:
 
+##########################
 Understanding the Workflow
---------------------------
+##########################
 
 .. warning:: The following section refers to features that are not yet fully
              implemented.
