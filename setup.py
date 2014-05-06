@@ -1,22 +1,14 @@
 #!/usr/bin/env python
-import os
 from setuptools import setup
 
 PACKAGES = [
     'submissions',
+    'openassessment',
     'openassessment.assessment',
+    'openassessment.workflow',
+    'openassessment.management',
     'openassessment.xblock'
 ]
-
-def package_data(pkg, root):
-    """Generic function to find package_data for `pkg` under `root`."""
-    data = []
-    for dirname, _, files in os.walk(os.path.join(pkg, root)):
-        for fname in files:
-            data.append(os.path.relpath(os.path.join(dirname, fname), pkg))
-
-    return {pkg: data}
-
 
 def is_requirement(line):
     """
@@ -35,7 +27,6 @@ REQUIREMENTS = [
     open("requirements/base.txt").readlines()
     if is_requirement(line)
 ]
-
 
 setup(
     name='ora2',
@@ -60,5 +51,4 @@ setup(
             'openassessment = openassessment.xblock.openassessmentblock:OpenAssessmentBlock',
         ]
     },
-    package_data=package_data("openassessment.xblock", "static"),
 )
