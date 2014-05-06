@@ -449,6 +449,24 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             was_graded_enough=True,
         )
 
+    @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
+    def test_continued_grading_no_submission(self, xblock):
+        # Bugfix: This used to cause a KeyError when students would click "Peer Assessment"
+        # (indicating "continued grading") before making a submission.
+        expected_context = {
+            'estimated_time': '20 minutes',
+            'graded': 0,
+            'must_grade': 5,
+            'review_num': 1,
+            'rubric_criteria': xblock.rubric_criteria,
+            'submit_button_text': 'Submit your assessment & review another response',
+        }
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/peer/oa_peer_unavailable.html',
+            expected_context,
+            continue_grading=True,
+        )
+
     def _assert_path_and_context(
         self, xblock, expected_path, expected_context,
         continue_grading=False, workflow_status=None,
