@@ -37,6 +37,8 @@ class TestGrade(XBlockHandlerTestCase):
 
     SUBMISSION = u'ՇﻉรՇ รપ๒๓ٱรรٱѻก'
 
+    STEPS = ['peer', 'self']
+
     @scenario('data/grade_scenario.xml', user_id='Greggs')
     def test_render_grade(self, xblock):
         # Submit, assess, and render the grade view
@@ -224,7 +226,7 @@ class TestGrade(XBlockHandlerTestCase):
             scorer['student_id'] = scorer_name
 
             scorer_sub = sub_api.create_submission(scorer, {'text': submission_text})
-            workflow_api.create_workflow(scorer_sub['uuid'])
+            workflow_api.create_workflow(scorer_sub['uuid'], self.STEPS)
 
             submission = peer_api.get_submission_to_assess(scorer_sub['uuid'], len(peers))
 

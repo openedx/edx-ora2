@@ -147,8 +147,7 @@ OpenAssessment.PeerView.prototype = {
         var baseView = view.baseView;
         this.peerAssessRequest(function() {
             view.load();
-            baseView.renderSelfAssessmentStep();
-            baseView.gradeView.load();
+            baseView.loadAssessmentModules();
             baseView.scrollToTop();
         });
     },

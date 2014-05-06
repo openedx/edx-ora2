@@ -8,6 +8,25 @@ class WorkflowMixin(object):
     def handle_workflow_info(self, data, suffix=''):
         return self.get_workflow_info()
 
+    def create_workflow(self, submission_uuid):
+        steps = self._create_step_list()
+        workflow_api.create_workflow(submission_uuid, steps)
+
+    def _create_step_list(self):
+        def _convert_rubric_assessment_name(ra_name):
+            """'self-assessment' -> 'self', 'peer-assessment' -> 'peer'"""
+            short_name, suffix = ra_name.split("-")
+            return short_name
+
+        # rubric_assessments stores names as "self-assessment",
+        # "peer-assessment", while the model is expecting "self", "peer".
+        # Therefore, this conversion step. We should refactor later to
+        # standardize.
+        return [
+            _convert_rubric_assessment_name(ra["name"])
+            for ra in self.rubric_assessments
+        ]
+
     def workflow_requirements(self):
         """
         Retrieve the requirements from each assessment module
@@ -93,6 +112,7 @@ class WorkflowMixin(object):
         status_counts = workflow_api.get_status_counts(
             course_id=student_item['course_id'],
             item_id=student_item['item_id'],
+            steps=self._create_step_list(),
         )
         num_submissions = sum(item['count'] for item in status_counts)
         return status_counts, num_submissions

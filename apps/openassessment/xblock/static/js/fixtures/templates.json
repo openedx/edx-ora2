@@ -134,7 +134,59 @@
             "score": "",
             "feedback_text": "",
             "student_submission": "",
-            "peer_assessments": [],
+            "peer_assessments": [
+                {
+                    "submission_uuid": "52d2158a-c568-11e3-b9b9-28cfe9182465",
+                    "points_earned": 5,
+                    "points_possible": 6,
+                    "rubric": {
+                        "criteria": [
+
+                            {
+                                "name": "Criterion 1",
+                                "prompt": "Prompt 1",
+                                "order_num": 0,
+                                "feedback": "optional",
+                                "options": [
+                                    {
+                                        "order_num": 2,
+                                        "points": 2,
+                                        "name": "Good"
+                                    }
+                                ],
+                                "points_possible": 2
+                            },
+                            {
+                                "name": "Criterion 2",
+                                "prompt": "Prompt 2",
+                                "order_num": 1,
+                                "options": [
+                                    {
+                                        "order_num": 1,
+                                        "points": 1,
+                                        "name": "Fair"
+                                    }
+                                ],
+                                "points_possible": 2
+                            },
+                            {
+                                "name": "Criterion 3",
+                                "prompt": "Prompt 3",
+                                "order_num": 2,
+                                "feedback": "optional",
+                                "options": [
+                                    {
+                                        "order_num": 2,
+                                        "points": 2,
+                                        "name": "Good"
+                                    }
+                                ],
+                                "points_possible": 2
+                            }
+                        ]
+                    }
+                }
+            ],
             "self_assessment": {},
             "rubric_criteria": [],
             "has_submitted_feedback": false

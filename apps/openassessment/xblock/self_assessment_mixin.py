@@ -2,6 +2,8 @@ import logging
 from django.utils.translation import ugettext as _
 
 from xblock.core import XBlock
+from webob import Response
+
 from openassessment.assessment import self_api
 from openassessment.workflow import api as workflow_api
 from submissions import api as submission_api
@@ -24,6 +26,9 @@ class SelfAssessmentMixin(object):
 
     @XBlock.handler
     def render_self_assessment(self, data, suffix=''):
+        if "self-assessment" not in self.assessment_steps:
+            return Response(u"")
+
         try:
             path, context = self.self_path_and_context()
         except:

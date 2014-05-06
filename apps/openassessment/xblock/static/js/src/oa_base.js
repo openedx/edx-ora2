@@ -58,19 +58,27 @@ OpenAssessment.BaseView.prototype = {
     },
 
     /**
-     * Asynchronously load each sub-view into the DOM.
-     */
+     Asynchronously load each sub-view into the DOM.
+     **/
     load: function() {
         this.responseView.load();
-        this.peerView.load();
-        this.renderSelfAssessmentStep();
-        this.gradeView.load();
+        this.loadAssessmentModules();
 
         // Set up expand/collapse for course staff debug, if available
         courseStaffDebug = $('.wrapper--staff-info');
         if (courseStaffDebug.length > 0) {
             this.setUpCollapseExpand(courseStaffDebug, function() {});
         }
+    },
+
+    /**
+     Refresh the Assessment Modules. This should be called any time an action is
+     performed by the user.
+     **/
+    loadAssessmentModules: function() {
+        this.peerView.load();
+        this.renderSelfAssessmentStep();
+        this.gradeView.load();
     },
 
     /**
@@ -158,9 +166,7 @@ OpenAssessment.BaseView.prototype = {
 
         this.server.selfAssess(optionsSelected).done(
             function() {
-                view.peerView.load();
-                view.renderSelfAssessmentStep();
-                view.gradeView.load();
+                view.loadAssessmentModules();
                 view.scrollToTop();
             }
         ).fail(function(errMsg) {
@@ -181,14 +187,14 @@ OpenAssessment.BaseView.prototype = {
     toggleActionError: function(type, msg) {
         var element = this.element;
         var container = null;
-        if (type == 'save') { 
-            container = '.response__submission__actions'; 
+        if (type == 'save') {
+            container = '.response__submission__actions';
         }
-        else if (type == 'submit' || type == 'peer' || type == 'self') { 
-            container = '.step__actions'; 
+        else if (type == 'submit' || type == 'peer' || type == 'self') {
+            container = '.step__actions';
         }
-        else if (type == 'feedback_assess') { 
-            container = '.submission__feedback__actions'; 
+        else if (type == 'feedback_assess') {
+            container = '.submission__feedback__actions';
         }
 
         // If we don't have anywhere to put the message, just log it to the console
@@ -219,10 +225,10 @@ OpenAssessment.BaseView.prototype = {
         $(container + ' .step__status__value .copy').html(gettext('Unable to Load'));
     },
 
-    /** 
+    /**
      * Get the contents of the Step Actions error message box, for unit test validation.
      *
-     * Step Actions are the UX-level parts of the student interaction flow - 
+     * Step Actions are the UX-level parts of the student interaction flow -
      * Submission, Peer Assessment, and Self Assessment. Since steps are mutually
      * exclusive, only one error box should be rendered on screen at a time.
      *

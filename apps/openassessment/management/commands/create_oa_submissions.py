@@ -9,6 +9,7 @@ from submissions import api as sub_api
 from openassessment.workflow import api as workflow_api
 from openassessment.assessment import peer_api, self_api
 
+STEPS = ['peer', 'self']
 
 
 class Command(BaseCommand):
@@ -131,7 +132,7 @@ class Command(BaseCommand):
         """
         answer = {'text': "  ".join(loremipsum.get_paragraphs(5))}
         submission = sub_api.create_submission(student_item, answer)
-        workflow_api.create_workflow(submission['uuid'])
+        workflow_api.create_workflow(submission['uuid'], STEPS)
         workflow_api.update_from_assessments(
             submission['uuid'], {'peer': {'must_grade': 1, 'must_be_graded_by': 1}}
         )

@@ -291,8 +291,7 @@ OpenAssessment.ResponseView.prototype = {
     **/
     moveToNextStep: function() {
         this.load();
-        this.baseView.peerView.load();
-        this.baseView.gradeView.load();
+        this.baseView.loadAssessmentModules();
 
         // Disable the "unsaved changes" warning if the user
         // tries to navigate to another page.

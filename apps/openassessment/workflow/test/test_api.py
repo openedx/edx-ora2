@@ -1,10 +1,10 @@
 from django.db import DatabaseError
-
+import ddt
 from mock import patch
 from nose.tools import raises
+from openassessment.assessment.models import PeerWorkflow
 
 from openassessment.test_utils import CacheResetTest
-from openassessment.assessment import peer_api
 
 from openassessment.workflow.models import AssessmentWorkflow
 from submissions.models import Submission
@@ -18,18 +18,14 @@ ITEM_1 = {
     "item_type": "openassessment",
 }
 
-REQUIREMENTS = {
-    "peer": {
-        "must_grade": 5,
-        "must_be_graded_by": 3,
-    }
-}
-
+@ddt.ddt
 class TestAssessmentWorkflowApi(CacheResetTest):
 
-    def test_create_workflow(self):
+    @ddt.file_data('data/assessments.json')
+    def test_create_workflow(self, data):
+        first_step = data["steps"][0] if data["steps"] else "peer"
         submission = sub_api.create_submission(ITEM_1, "Shoot Hot Rod")
-        workflow = workflow_api.create_workflow(submission["uuid"])
+        workflow = workflow_api.create_workflow(submission["uuid"], data["steps"])
 
         workflow_keys = set(workflow.keys())
         self.assertEqual(
@@ -39,53 +35,73 @@ class TestAssessmentWorkflowApi(CacheResetTest):
             }
         )
         self.assertEqual(workflow["submission_uuid"], submission["uuid"])
-        self.assertEqual(workflow["status"], "peer")
+        self.assertEqual(workflow["status"], first_step)
 
         workflow_from_get = workflow_api.get_workflow_for_submission(
-            submission["uuid"], REQUIREMENTS
+            submission["uuid"], data["requirements"]
         )
         del workflow_from_get['status_details']
         self.assertEqual(workflow, workflow_from_get)
 
-    def test_need_valid_submission_uuid(self):
+    @ddt.file_data('data/assessments.json')
+    def test_need_valid_submission_uuid(self, data):
         # submission doesn't exist
         with self.assertRaises(workflow_api.AssessmentWorkflowRequestError):
-            workflow = workflow_api.create_workflow("xxxxxxxxxxx")
+            workflow = workflow_api.create_workflow("xxxxxxxxxxx", data["steps"])
 
         # submission_uuid is the wrong type
         with self.assertRaises(workflow_api.AssessmentWorkflowRequestError):
-            workflow = workflow_api.create_workflow(123)
+            workflow = workflow_api.create_workflow(123, data["steps"])
 
     @patch.object(Submission.objects, 'get')
+    @ddt.file_data('data/assessments.json')
     @raises(workflow_api.AssessmentWorkflowInternalError)
-    def test_unexpected_submissions_errors_wrapped(self, mock_get):
+    def test_unexpected_submissions_errors_wrapped(self, data, mock_get):
         mock_get.side_effect = Exception("Kaboom!")
-        workflow_api.create_workflow("zzzzzzzzzzzzzzz")
+        workflow_api.create_workflow("zzzzzzzzzzzzzzz", data["steps"])
 
     @patch.object(AssessmentWorkflow.objects, 'create')
+    @ddt.file_data('data/assessments.json')
     @raises(workflow_api.AssessmentWorkflowInternalError)
-    def test_unexpected_workflow_errors_wrapped(self, mock_create):
+    def test_unexpected_workflow_errors_wrapped(self, data, mock_create):
         mock_create.side_effect = DatabaseError("Kaboom!")
         submission = sub_api.create_submission(ITEM_1, "Ultra Magnus fumble")
-        workflow_api.create_workflow(submission["uuid"])
+        workflow_api.create_workflow(submission["uuid"], data["steps"])
 
-    def test_get_assessment_workflow_expected_errors(self):
+    @patch.object(PeerWorkflow.objects, 'get_or_create')
+    @raises(workflow_api.AssessmentWorkflowInternalError)
+    def test_unexpected_peer_workflow_errors_wrapped(self, mock_create):
+        mock_create.side_effect = DatabaseError("Kaboom!")
+        submission = sub_api.create_submission(ITEM_1, "Ultra Magnus fumble")
+        workflow_api.create_workflow(submission["uuid"], ["peer", "self"])
+
+    @patch.object(AssessmentWorkflow.objects, 'get')
+    @ddt.file_data('data/assessments.json')
+    @raises(workflow_api.AssessmentWorkflowInternalError)
+    def test_unexpected_exception_wrapped(self, data, mock_create):
+        mock_create.side_effect = Exception("Kaboom!")
+        submission = sub_api.create_submission(ITEM_1, "Ultra Magnus fumble")
+        workflow_api.update_from_assessments(submission["uuid"], data["steps"])
+
+    @ddt.file_data('data/assessments.json')
+    def test_get_assessment_workflow_expected_errors(self, data):
         with self.assertRaises(workflow_api.AssessmentWorkflowNotFoundError):
-            workflow_api.get_workflow_for_submission("0000000000000", REQUIREMENTS)
+            workflow_api.get_workflow_for_submission("0000000000000", data["requirements"])
         with self.assertRaises(workflow_api.AssessmentWorkflowRequestError):
-            workflow_api.get_workflow_for_submission(123, REQUIREMENTS)
+            workflow_api.get_workflow_for_submission(123, data["requirements"])
 
     @patch.object(Submission.objects, 'get')
+    @ddt.file_data('data/assessments.json')
     @raises(workflow_api.AssessmentWorkflowInternalError)
-    def test_unexpected_workflow_get_errors_wrapped(self, mock_get):
+    def test_unexpected_workflow_get_errors_wrapped(self, data, mock_get):
         mock_get.side_effect = Exception("Kaboom!")
         submission = sub_api.create_submission(ITEM_1, "We talk TV!")
-        workflow = workflow_api.create_workflow(submission["uuid"])
-        workflow_api.get_workflow_for_submission(workflow["uuid"], REQUIREMENTS)
+        workflow = workflow_api.create_workflow(submission["uuid"], data["steps"])
+        workflow_api.get_workflow_for_submission(workflow["uuid"], {})
 
     def test_get_status_counts(self):
         # Initially, the counts should all be zero
-        counts = workflow_api.get_status_counts("test/1/1", "peer-problem")
+        counts = workflow_api.get_status_counts("test/1/1", "peer-problem", ["peer", "self"])
         self.assertEqual(counts, [
             {"status": "peer", "count": 0},
             {"status": "self", "count": 0},
@@ -108,7 +124,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         self._create_workflow_with_status("user 10", "test/1/1", "peer-problem", "done")
 
         # Now the counts should be updated
-        counts = workflow_api.get_status_counts("test/1/1", "peer-problem")
+        counts = workflow_api.get_status_counts("test/1/1", "peer-problem", ["peer", "self"])
         self.assertEqual(counts, [
             {"status": "peer", "count": 1},
             {"status": "self", "count": 2},
@@ -119,13 +135,13 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         # Create a workflow in a different course, same user and item
         # Counts should be the same
         self._create_workflow_with_status("user 1", "other_course", "peer-problem", "peer")
-        updated_counts = workflow_api.get_status_counts("test/1/1", "peer-problem")
+        updated_counts = workflow_api.get_status_counts("test/1/1", "peer-problem", ["peer", "self"])
         self.assertEqual(counts, updated_counts)
 
         # Create a workflow in the same course, different item
         # Counts should be the same
         self._create_workflow_with_status("user 1", "test/1/1", "other problem", "peer")
-        updated_counts = workflow_api.get_status_counts("test/1/1", "peer-problem")
+        updated_counts = workflow_api.get_status_counts("test/1/1", "peer-problem", ["peer", "self"])
         self.assertEqual(counts, updated_counts)
 
     def _create_workflow_with_status(self, student_id, course_id, item_id, status, answer="answer"):
@@ -151,7 +167,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
             "item_type": "openassessment",
         }, answer)
 
-        workflow = workflow_api.create_workflow(submission['uuid'])
+        workflow = workflow_api.create_workflow(submission['uuid'], ["peer", "self"])
         workflow_model = AssessmentWorkflow.objects.get(uuid=workflow['uuid'])
         workflow_model.status = status
         workflow_model.save()

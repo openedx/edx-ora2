@@ -10,7 +10,9 @@
             {
                 "name": "self-assessment"
             }
-        ]
+        ],
+        "current_assessments": null,
+        "is_released": false
     },
     "peer_only": {
         "valid": false,
@@ -20,15 +22,19 @@
                 "must_grade": 5,
                 "must_be_graded_by": 3
             }
-        ]
+        ],
+        "current_assessments": null,
+        "is_released": false
     },
     "self_only": {
-        "valid": false,
+        "valid": true,
         "assessments": [
             {
                 "name": "self-assessment"
             }
-        ]
+        ],
+        "current_assessments": null,
+        "is_released": false
     },
     "self_before_peer": {
         "valid": false,
@@ -41,7 +47,9 @@
                 "must_grade": 5,
                 "must_be_graded_by": 3
             }
-        ]
+        ],
+        "current_assessments": null,
+        "is_released": false
     },
     "peer_then_peer": {
         "valid": false,
@@ -56,6 +64,8 @@
                 "must_grade": 5,
                 "must_be_graded_by": 3
             }
-        ]
+        ],
+        "current_assessments": null,
+        "is_released": false
     }
 }

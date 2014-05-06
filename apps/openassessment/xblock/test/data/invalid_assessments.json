@@ -1,65 +1,162 @@
 {
     "empty_dict": {
-        "assessment": {}
-     },
-    "must_be_graded_by_zero": {
-        "assessment": {
-            "name": "self-assessment",
-            "must_grade": 1,
-            "must_be_graded_by": 0
-        }
+        "assessments": [{}],
+        "current_assessments": null,
+        "is_released": false
     },
     "unsupported_type": {
-        "assessment": {
-            "name": "unsupported-assessment",
-            "must_grade": 5,
-            "must_be_graded_by": 3
-        }
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment"
+            },
+            {
+                "name": "unsupported-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
     },
     "no_type": {
-        "assessment": {
-            "must_grade": 5,
-            "must_be_graded_by": 3
-        }
+        "assessments": [
+            {
+                "name": "self-assessment"
+            },
+            {
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
     },
     "unsupported_unicode_type": {
-        "assessment": {
-            "name": "𝓹𝓮𝓮𝓻-𝓪𝓼𝓼𝓮𝓼𝓼𝓶𝓮𝓷𝓽",
-            "must_grade": 5,
-            "must_be_graded_by": 3
-        }
+        "assessments": [
+            {
+                "name": "self-assessment"
+            },
+            {
+                "name": "𝓹𝓮𝓮𝓻-𝓪𝓼𝓼𝓮𝓼𝓼𝓶𝓮𝓷𝓽",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
     },
     "no_must_grade": {
-        "assessment": {
-            "name": "peer-assessment",
-            "must_be_graded_by": 3
-        }
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment"
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
     },
     "no_must_be_graded_by": {
-        "assessment": {
-            "name": "peer-assessment",
-            "must_grade": 5
-        }
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5
+            },
+            {
+                "name": "self-assessment"
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
     },
     "must_grade_less_than_must_be_graded_by": {
-        "assessment": {
-            "name": "peer-assessment",
-            "must_grade": 4,
-            "must_be_graded_by": 5
-        }
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 4,
+                "must_be_graded_by": 5
+            },
+            {
+                "name": "self-assessment"
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
     },
     "must_grade_zero": {
-        "assessment": {
-            "name": "peer-assessment",
-            "must_grade": 0,
-            "must_be_graded_by": 0
-        }
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 0,
+                "must_be_graded_by": 0
+            },
+            {
+                "name": "self-assessment"
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
     },
     "must_be_graded_by_zero": {
-        "assessment": {
-            "name": "peer-assessment",
-            "must_grade": 1,
-            "must_be_graded_by": 0
-        }
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 1,
+                "must_be_graded_by": 0
+            },
+            {
+                "name": "self-assessment"
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
+    },
+    "remove_peer_mid_flight": {
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment"
+            }
+        ],
+        "current_assessments": [
+            {
+                "name": "self-assessment"
+            }
+        ],
+        "is_released": true
+    },
+    "swap_peer_and_self_mid_flight": {
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment"
+            }
+        ],
+        "current_assessments": [
+            {
+                "name": "self-assessment"
+            },
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            }
+        ],
+        "is_released": true
     }
 }

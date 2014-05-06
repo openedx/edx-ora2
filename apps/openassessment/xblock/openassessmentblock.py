@@ -2,7 +2,6 @@
 
 import datetime as dt
 import logging
-import dateutil
 import pkg_resources
 
 import pytz
@@ -239,7 +238,9 @@ class OpenAssessmentBlock(
 
         # Include release/due dates for each step in the problem
         context['step_dates'] = list()
-        for step in ['submission', 'peer-assessment', 'self-assessment']:
+
+        steps = ['submission'] + self.assessment_steps
+        for step in steps:
 
             # Get the dates as a student would see them
             __, __, start_date, due_date = self.is_closed(step=step, course_staff=False)
@@ -313,6 +314,10 @@ class OpenAssessmentBlock(
                 load('static/xml/poverty_rubric_example.xml')
             ),
             (
+                "OpenAssessmentBlock (Self Only) Rubric",
+                load('static/xml/poverty_self_only_example.xml')
+            ),
+            (
                 "OpenAssessmentBlock Censorship Rubric",
                 load('static/xml/censorship_rubric_example.xml')
             ),
@@ -332,6 +337,10 @@ class OpenAssessmentBlock(
         block = runtime.construct_xblock_from_class(cls, keys)
 
         return update_from_xml(block, node, validator=validator(block, strict_post_release=False))
+
+    @property
+    def assessment_steps(self):
+        return [asmnt['name'] for asmnt in self.rubric_assessments]
 
     def render_assessment(self, path, context_dict=None):
         """Render an Assessment Module's HTML
@@ -421,18 +430,17 @@ class OpenAssessmentBlock(
         ]
 
         # Resolve unspecified dates and date strings to datetimes
-        start, due, date_ranges = resolve_dates(self.start, self.due, [submission_range] + assessment_ranges)
+        start, due, date_ranges = resolve_dates(
+            self.start, self.due, [submission_range] + assessment_ranges
+        )
 
-        # Based on the step, choose the date range to consider
-        # We hard-code this to the submission -> peer -> self workflow for now;
-        # later, we can revisit to make this more flexible.
-        open_range = (start, due)
-        if step == "submission":
+        open_range  = (start, due)
+        assessment_steps = self.assessment_steps
+        if step == 'submission':
             open_range = date_ranges[0]
-        if step == "peer-assessment":
-            open_range = date_ranges[1]
-        if step == "self-assessment":
-            open_range = date_ranges[2]
+        elif step in assessment_steps:
+            step_index = assessment_steps.index(step)
+            open_range = date_ranges[1 + step_index]
 
         # Course staff always have access to the problem
         if course_staff is None:
