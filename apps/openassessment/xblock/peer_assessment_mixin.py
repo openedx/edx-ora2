@@ -148,9 +148,8 @@ class PeerAssessmentMixin(object):
             context_dict['peer_due'] = due_date
 
         workflow = self.get_workflow_info()
-        if workflow is None:
-            return self.render_assessment(path, context_dict)
-        continue_grading = continue_grading and workflow["status_details"]["peer"]["complete"]
+        peer_complete = workflow.get('status_details', {}).get('peer', {}).get('complete', False)
+        continue_grading = continue_grading and peer_complete
 
         student_item = self.get_student_item_dict()
         assessment = self.get_assessment_module('peer-assessment')
