@@ -86,24 +86,29 @@ describe("OpenAssessment.ResponseView", function() {
         });
     });
 
+    afterEach(function() {
+        // Disable autosave polling (if it was enabled)
+        view.setAutoSaveEnabled(false);
+    });
+
     it("updates submit/save buttons and save status when response text changes", function() {
         // Response is blank --> save/submit buttons disabled
         view.response('');
-        view.responseChanged();
+        view.handleResponseChanged();
         expect(view.submitEnabled()).toBe(false);
         expect(view.saveEnabled()).toBe(false);
         expect(view.saveStatus()).toContain('This response has not been saved.');
 
         // Response is whitespace --> save/submit buttons disabled
         view.response('               \n      \n      ');
-        view.responseChanged();
+        view.handleResponseChanged();
         expect(view.submitEnabled()).toBe(false);
         expect(view.saveEnabled()).toBe(false);
         expect(view.saveStatus()).toContain('This response has not been saved.');
 
         // Response is not blank --> submit button enabled
         view.response('Test response');
-        view.responseChanged();
+        view.handleResponseChanged();
         expect(view.submitEnabled()).toBe(true);
         expect(view.saveEnabled()).toBe(true);
         expect(view.saveStatus()).toContain('This response has not been saved.');
@@ -135,14 +140,14 @@ describe("OpenAssessment.ResponseView", function() {
         // Keep the text the same, but trigger an update
         // Should still be saved
         view.response('Lorem ipsum');
-        view.responseChanged();
+        view.handleResponseChanged();
         expect(view.saveEnabled()).toBe(false);
         expect(view.saveStatus()).toContain('saved but not submitted');
 
         // Change the text
         // This should cause it to change to unsaved draft
         view.response('changed ');
-        view.responseChanged();
+        view.handleResponseChanged();
         expect(view.saveEnabled()).toBe(true);
         expect(view.saveStatus()).toContain('This response has not been saved.');
     });
@@ -238,7 +243,7 @@ describe("OpenAssessment.ResponseView", function() {
 
         // Change the text, then expect the unsaved warning to be enabled.
         view.response('Lorem ipsum');
-        view.responseChanged();
+        view.handleResponseChanged();
 
         // Expect the unsaved work warning to be enabled
         expect(view.unsavedWarningEnabled()).toBe(true);
@@ -247,7 +252,7 @@ describe("OpenAssessment.ResponseView", function() {
     it("disables the unsaved work warning when the user saves a response", function() {
         // Change the text, then expect the unsaved warning to be enabled.
         view.response('Lorem ipsum');
-        view.responseChanged();
+        view.handleResponseChanged();
         expect(view.unsavedWarningEnabled()).toBe(true);
 
         // Save the response and expect the unsaved warning to be disabled
@@ -258,11 +263,104 @@ describe("OpenAssessment.ResponseView", function() {
     it("disables the unsaved work warning when the user submits a response", function() {
         // Change the text, then expect the unsaved warning to be enabled.
         view.response('Lorem ipsum');
-        view.responseChanged();
+        view.handleResponseChanged();
         expect(view.unsavedWarningEnabled()).toBe(true);
 
         // Submit the response and expect the unsaved warning to be disabled
         view.submit();
         expect(view.unsavedWarningEnabled()).toBe(false);
+    });
+
+    it("autosaves after a user changes a response", function() {
+        // Disable the autosave delay after changing/saving a response
+        view.AUTO_SAVE_WAIT = -1;
+
+        // Check that the problem is initially unsaved
+        expect(view.saveStatus()).toContain('not been saved');
+
+        // Change the response
+        view.response('Lorem ipsum');
+        view.handleResponseChanged();
+
+        // Usually autosave would be called by a timer.
+        // For testing purposes, we disable the timer
+        // and trigger the autosave manually.
+        view.autoSave();
+
+        // Expect that the problem has been saved
+        expect(view.saveStatus()).toContain('saved but not submitted');
+
+        // Expect that the unsaved warning is disabled
+        expect(view.unsavedWarningEnabled()).toBe(false);
+    });
+
+    it("schedules autosave polling", function() {
+        runs(function() {
+            // Spy on the autosave call
+            spyOn(view, 'autoSave').andCallThrough();
+
+            // Enable autosave with a short poll interval
+            view.AUTO_SAVE_POLL_INTERVAL = 1;
+            view.setAutoSaveEnabled(true);
+        });
+
+        // Wait for autosave to be called
+        waitsFor(function() {
+            return view.autoSave.callCount > 0;
+        }, "AutoSave should have been called", 5000);
+    });
+
+    it("stops autosaving after a save error", function() {
+        // Disable the autosave delay after changing/saving a response
+        view.AUTO_SAVE_WAIT = -1;
+
+        // Simulate a server error
+        var errorPromise = $.Deferred(function(defer) {
+            defer.rejectWith(this, ["This response could not be saved"]);
+        }).promise();
+        spyOn(server, 'save').andCallFake(function() { return errorPromise; });
+
+        // Change the response and save it
+        view.response('Lorem ipsum');
+        view.handleResponseChanged();
+        view.save();
+
+        // Expect that the save status shows an error
+        expect(view.saveStatus()).toContain('Error');
+
+        // Autosave (usually would be called by a timer, but we disable
+        // that for testing purposes).
+        view.autoSave();
+
+        // The server save shoulde have been called just once
+        // (autosave didn't call it).
+        expect(server.save.callCount).toEqual(1);
+    });
+
+    it("waits after user changes a response to autosave", function() {
+        // Set a long autosave delay
+        view.AUTO_SAVE_WAIT = 900000;
+
+        // Change the response
+        view.response('Lorem ipsum');
+        view.handleResponseChanged();
+
+        // Autosave
+        view.autoSave();
+
+        // Expect that the problem is still unsaved
+        expect(view.saveStatus()).toContain('not been saved');
+    });
+
+    it("does not autosave if a user hasn't changed the response", function() {
+        // Disable the autosave delay after changing/saving a response
+        view.AUTO_SAVE_WAIT = -1;
+
+        // Autosave (usually would be called by a timer, but we disable
+        // that for testing purposes).
+        view.autoSave();
+
+        // Since we haven't made any changes, the response should still be unsaved.
+        expect(view.saveStatus()).toContain('not been saved');
     });
 });
