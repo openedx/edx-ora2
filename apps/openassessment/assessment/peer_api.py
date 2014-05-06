@@ -207,7 +207,7 @@ def create_assessment(
                 u"There are no open assessments associated with the scorer's "
                 u"submission UUID {}.".format(scorer_submission_uuid)
             )
-            logger.error(message)
+            logger.warning(message)
             raise PeerAssessmentWorkflowError(message)
 
         peer_submission_uuid = peer_workflow_item.author.submission_uuid
