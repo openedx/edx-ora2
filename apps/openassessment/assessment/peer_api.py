@@ -188,6 +188,10 @@ def create_assessment(
         >>> feedback = "Your submission was thrilling."
         >>> create_assessment("1", "Tim", options_selected, criterion_feedback, feedback, rubric_dict)
     """
+    # Ensure that this variables is declared so if an error occurs
+    # we don't get an error when trying to log it!
+    assessment_dict = None
+
     try:
         rubric = rubric_from_dict(rubric_dict)
 
