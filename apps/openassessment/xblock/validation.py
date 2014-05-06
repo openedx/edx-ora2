@@ -66,8 +66,10 @@ def validate_assessments(assessments, current_assessments, is_released):
             is_valid is a boolean indicating whether the assessment is semantically valid
             and msg describes any validation errors found.
     """
-    def _self_only(assessments):
-        return len(assessments) == 1 and assessments[0].get('name') == 'self-assessment'
+    def _only_peer_or_self(assessments):
+        return (len(assessments) == 1
+                and (assessments[0].get('name') == 'self-assessment'
+                or assessments[0].get('name') == 'peer-assessment'))
 
     def _peer_then_self(assessments):
         return (
@@ -80,17 +82,15 @@ def validate_assessments(assessments, current_assessments, is_released):
         return (False, _("This problem must include at least one assessment."))
 
     # Right now, there are two allowed scenarios: (peer -> self) and (self)
-    if not (_self_only(assessments) or _peer_then_self(assessments)):
+    if not (_only_peer_or_self(assessments) or _peer_then_self(assessments)):
         return (
             False,
-            _("For this assignment, you can set either a peer assessment followed by a self assessment or a self assessment only.")
+            _("For this assignment, you can set either a peer assessment "
+              "followed by a self assessment, peer assessment only, or a "
+              "self assessment only.")
         )
 
     for assessment_dict in assessments:
-        # Supported assessment
-        if not assessment_dict.get('name') in ['peer-assessment', 'self-assessment']:
-            return (False, _('The "name" value must be "peer-assessment" or "self-assessment".'))
-
         # Number you need to grade is >= the number of people that need to grade you
         if assessment_dict.get('name') == 'peer-assessment':
             must_grade = assessment_dict.get('must_grade')

@@ -314,6 +314,10 @@ class OpenAssessmentBlock(
                 load('static/xml/poverty_rubric_example.xml')
             ),
             (
+                "OpenAssessmentBlock (Peer Only) Rubric",
+                load('static/xml/poverty_peer_only_example.xml')
+            ),
+            (
                 "OpenAssessmentBlock (Self Only) Rubric",
                 load('static/xml/poverty_self_only_example.xml')
             ),

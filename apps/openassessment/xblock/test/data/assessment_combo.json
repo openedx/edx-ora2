@@ -15,7 +15,7 @@
         "is_released": false
     },
     "peer_only": {
-        "valid": false,
+        "valid": true,
         "assessments": [
             {
                 "name": "peer-assessment",
