@@ -14,36 +14,15 @@ from openassessment.assessment.serializers import (
 from openassessment.assessment.models import (
     Assessment, AssessmentPart, InvalidOptionSelection
 )
+from openassessment.assessment.errors import (
+    SelfAssessmentRequestError, SelfAssessmentInternalError
+)
 
 
 # Assessments are tagged as "self-evaluation"
 SELF_TYPE = "SE"
 
 logger = logging.getLogger("openassessment.assessment.self_api")
-
-
-class SelfAssessmentError(Exception):
-    """Generic Self Assessment Error
-
-    Raised when an error occurs while processing a request related to the
-    Self Assessment Workflow.
-
-    """
-    pass
-
-
-class SelfAssessmentRequestError(SelfAssessmentError):
-    """
-    There was a problem with the request for a self-assessment.
-    """
-    pass
-
-
-class SelfAssessmentInternalError(SelfAssessmentError):
-    """
-    There was an internal problem while accessing the self-assessment api.
-    """
-    pass
 
 
 def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, scored_at=None):

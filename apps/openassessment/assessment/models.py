@@ -14,12 +14,20 @@ from collections import defaultdict
 from copy import deepcopy
 from hashlib import sha1
 import json
+import random
+from datetime import timedelta
 
 from django.core.cache import cache
 from django.db import models
 from django.utils.timezone import now
 from django.utils.translation import ugettext as _
+from django.db import DatabaseError
 import math
+
+from openassessment.assessment.errors import PeerAssessmentWorkflowError, PeerAssessmentInternalError
+
+import logging
+logger = logging.getLogger("openassessment.assessment.models")
 
 
 class InvalidOptionSelection(Exception):
@@ -526,6 +534,9 @@ class PeerWorkflow(models.Model):
     created for each assessment made by this student.
 
     """
+    # Amount of time before a lease on a submission expires
+    TIME_LIMIT = timedelta(hours=8)
+
     student_id = models.CharField(max_length=40, db_index=True)
     item_id = models.CharField(max_length=128, db_index=True)
     course_id = models.CharField(max_length=40, db_index=True)
@@ -536,6 +547,280 @@ class PeerWorkflow(models.Model):
 
     class Meta:
         ordering = ["created_at", "id"]
+
+    @classmethod
+    def get_by_submission_uuid(cls, submission_uuid):
+        """
+        Retrieve the Peer Workflow associated with the given submission UUID.
+
+        Args:
+            submission_uuid (str): The string representation of the UUID belonging
+                to the associated Peer Workflow.
+
+        Returns:
+            workflow (PeerWorkflow): The most recent peer workflow associated with
+                this submission UUID.
+
+        Raises:
+            PeerAssessmentWorkflowError: Thrown when no workflow can be found for
+                the associated submission UUID. This should always exist before a
+                student is allow to request submissions for peer assessment.
+
+        Examples:
+            >>> PeerWorkflow.get_workflow_by_submission_uuid("abc123")
+            {
+                'student_id': u'Bob',
+                'item_id': u'type_one',
+                'course_id': u'course_1',
+                'submission_uuid': u'1',
+                'created_at': datetime.datetime(2014, 1, 29, 17, 14, 52, 668850, tzinfo=<UTC>)
+            }
+
+        """
+        try:
+            return cls.objects.get(submission_uuid=submission_uuid)
+        except cls.DoesNotExist:
+            return None
+        except DatabaseError:
+            error_message = _(
+                u"Error finding workflow for submission UUID {}. Workflow must be "
+                u"created for submission before beginning peer assessment."
+                .format(submission_uuid)
+            )
+            logger.exception(error_message)
+            raise PeerAssessmentWorkflowError(error_message)
+
+    @classmethod
+    def create_item(cls, scorer_workflow, submission_uuid):
+        """
+        Create a new peer workflow for a student item and submission.
+
+        Args:
+            scorer_workflow (PeerWorkflow): The peer workflow associated with the scorer.
+            submission_uuid (str): The submission associated with this workflow.
+
+        Raises:
+            PeerAssessmentInternalError: Raised when there is an internal error
+                creating the Workflow.
+        """
+        peer_workflow = cls.get_by_submission_uuid(submission_uuid)
+
+        try:
+            workflow_item, __ = PeerWorkflowItem.objects.get_or_create(
+                scorer=scorer_workflow,
+                author=peer_workflow,
+                submission_uuid=submission_uuid
+            )
+            workflow_item.started_at = now()
+            workflow_item.save()
+            return workflow_item
+        except DatabaseError:
+            error_message = _(
+                u"An internal error occurred while creating a new peer workflow "
+                u"item for workflow {}".format(scorer_workflow)
+            )
+            logger.exception(error_message)
+            raise PeerAssessmentInternalError(error_message)
+
+    def find_active_assessments(self):
+        """Given a student item, return an active assessment if one is found.
+
+        Before retrieving a new submission for a peer assessor, check to see if that
+        assessor already has a submission out for assessment. If an unfinished
+        assessment is found that has not expired, return the associated submission.
+
+        TODO: If a user begins an assessment, then resubmits, this will never find
+        the unfinished assessment. Is this OK?
+
+        Args:
+            workflow (PeerWorkflow): See if there is an associated active assessment
+                for this PeerWorkflow.
+
+        Returns:
+            submission_uuid (str): The submission_uuid for the submission that the
+                student has open for active assessment.
+
+        """
+        oldest_acceptable = now() - self.TIME_LIMIT
+        workflows = self.graded.filter(
+            assessment__isnull=True,
+            started_at__gt=oldest_acceptable
+        )
+        return workflows[0].submission_uuid if workflows else None
+
+    def get_submission_for_review(self, graded_by):
+        """
+        Find a submission for peer assessment. This function will find the next
+        submission that requires assessment, excluding any submission that has been
+        completely graded, or is actively being reviewed by other students.
+
+        Args:
+            graded_by (unicode): Student ID of the scorer.
+
+        Returns:
+            submission_uuid (str): The submission_uuid for the submission to review.
+
+        Raises:
+            PeerAssessmentInternalError: Raised when there is an error retrieving
+                the workflows or workflow items for this request.
+
+        """
+        timeout = (now() - self.TIME_LIMIT).strftime("%Y-%m-%d %H:%M:%S")
+        # The follow query behaves as the Peer Assessment Queue. This will
+        # find the next submission (via PeerWorkflow) in this course / question
+        # that:
+        #  1) Does not belong to you
+        #  2) Does not have enough completed assessments
+        #  3) Is not something you have already scored.
+        #  4) Does not have a combination of completed assessments or open
+        #     assessments equal to or more than the requirement.
+        try:
+            peer_workflows = list(PeerWorkflow.objects.raw(
+                "select pw.id, pw.submission_uuid "
+                "from assessment_peerworkflow pw "
+                "where pw.item_id=%s "
+                "and pw.course_id=%s "
+                "and pw.student_id<>%s "
+                "and pw.grading_completed_at is NULL "
+                "and pw.id not in ("
+                "   select pwi.author_id "
+                "   from assessment_peerworkflowitem pwi "
+                "   where pwi.scorer_id=%s "
+                "   and pwi.assessment_id is not NULL "
+                ") "
+                "and ("
+                "   select count(pwi.id) as c "
+                "   from assessment_peerworkflowitem pwi "
+                "   where pwi.author_id=pw.id "
+                "   and (pwi.assessment_id is not NULL or pwi.started_at > %s) "
+                ") < %s "
+                "order by pw.created_at, pw.id "
+                "limit 1; ",
+                [
+                    self.item_id,
+                    self.course_id,
+                    self.student_id,
+                    self.id,
+                    timeout,
+                    graded_by
+                ]
+            ))
+            if not peer_workflows:
+                return None
+
+            return peer_workflows[0].submission_uuid
+        except DatabaseError:
+            error_message = _(
+                u"An internal error occurred while retrieving a peer submission "
+                u"for student {}".format(self)
+            )
+            logger.exception(error_message)
+            raise PeerAssessmentInternalError(error_message)
+
+    def get_submission_for_over_grading(self):
+        """
+        Retrieve the next submission uuid for over grading in peer assessment.
+        """
+        # The follow query behaves as the Peer Assessment Over Grading Queue. This
+        # will find a random submission (via PeerWorkflow) in this course / question
+        # that:
+        #  1) Does not belong to you
+        #  2) Is not something you have already scored
+        try:
+            query = list(PeerWorkflow.objects.raw(
+                "select pw.id, pw.submission_uuid "
+                "from assessment_peerworkflow pw "
+                "where course_id=%s "
+                "and item_id=%s "
+                "and student_id<>%s "
+                "and pw.id not in ( "
+                    "select pwi.author_id "
+                    "from assessment_peerworkflowitem pwi "
+                    "where pwi.scorer_id=%s); ",
+                [self.course_id, self.item_id, self.student_id, self.id]
+            ))
+            workflow_count = len(query)
+            if workflow_count < 1:
+                return None
+
+            random_int = random.randint(0, workflow_count - 1)
+            random_workflow = query[random_int]
+
+            return random_workflow.submission_uuid
+        except DatabaseError:
+            error_message = _(
+                u"An internal error occurred while retrieving a peer submission "
+                u"for student {}".format(self)
+            )
+            logger.exception(error_message)
+            raise PeerAssessmentInternalError(error_message)
+
+    def get_latest_open_workflow_item(self):
+        """
+        Return the latest open workflow item for this workflow.
+
+        Returns:
+            A PeerWorkflowItem that is open for assessment.
+            None if no item is found.
+
+        """
+        workflow_query = self.graded.filter(
+            assessment__isnull=True
+        ).order_by("-started_at", "-id")
+        items = list(workflow_query[:1])
+        return items[0] if items else None
+
+    def close_active_assessment(self, submission_uuid, assessment, num_required_grades):
+        """
+        Updates a workflow item on the student's workflow with the associated
+        assessment. When a workflow item has an assessment, it is considered
+        finished.
+
+        Args:
+            submission_uuid (str): The submission the scorer is grading.
+            assessment (PeerAssessment): The associate assessment for this action.
+            graded_by (int): The required number of grades the peer workflow
+                requires to be considered complete.
+
+        Returns:
+            None
+
+        """
+        try:
+            item_query = self.graded.filter(submission_uuid=submission_uuid).order_by("-started_at", "-id")
+            items = list(item_query[:1])
+            if not items:
+                raise PeerAssessmentWorkflowError(_(
+                    u"No open assessment was found for student {} while assessing "
+                    u"submission UUID {}.".format(self.student_id, submission_uuid)
+                ))
+            item = items[0]
+            item.assessment = assessment
+            item.save()
+
+            if (not item.author.grading_completed_at
+                    and item.author.graded_by.filter(assessment__isnull=False).count() >= num_required_grades):
+                item.author.grading_completed_at = now()
+                item.author.save()
+        except (DatabaseError, PeerWorkflowItem.DoesNotExist):
+            error_message = _(
+                u"An internal error occurred while retrieving a workflow item for "
+                u"student {}. Workflow Items are created when submissions are "
+                u"pulled for assessment."
+                .format(self.student_id)
+            )
+            logger.exception(error_message)
+            raise PeerAssessmentWorkflowError(error_message)
+
+    def num_peers_graded(self):
+        """
+        Returns the number of peers the student owning the workflow has graded.
+
+        Returns:
+            integer
+
+        """
+        return self.graded.filter(assessment__isnull=False).count()
 
     def __repr__(self):
         return (
