@@ -138,7 +138,7 @@ class TestSelfApi(CacheResetTest):
                 scored_at=datetime.datetime(2014, 4, 1)
             )
 
-    def test_create_assessment_missing_critieron(self):
+    def test_create_assessment_missing_criterion(self):
         # Create a submission
         submission = create_submission(self.STUDENT_ITEM, "Test answer")
 
