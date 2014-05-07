@@ -82,8 +82,8 @@ Tasks
 
 Assumptions about the task queue implementation:
 
-* **Reliability**: Tasks placed on the queue will be picked up by workers,
-  although they may not complete successfully.  Tasks should not get "lost"
+* **Reliability**: Each task placed on the queue will be picked up by at least one worker,
+  although the task may not complete successfully.  Tasks should not get "lost"
   before reaching a worker.
 
 * **Retry**: A worker can reschedule a task to handle recoverable errors.
@@ -142,10 +142,10 @@ Procedure:
     a. Retrieve the submission and classifiers from persistent storage or a cache.
 
         i. If the **ClassifierSet** is null, then the classifier wasn't available when the student created the submission.
-        ii. This implies that the problem was misconfigured, so we immediately fail the task.
-        iii. When the classifier has been trained, we reschedule the task manually (see :ref:`recovery_from_failure`).
+        ii. Since we cannot grade the student without a classifier, we stop the task without marking the workflow as complete.
+        iii. When a **Training Task** completes, incomplete **Grading Tasks** for the rubric are automatically rescheduled.
 
-    b. **Optimization**: Check whether an **AI Grading Workflow** exists for this submission using the same **ClassifierSet**.
+    b. **Optimization**: Check whether a completed **AI Grading Workflow** exists for this submission using the same **ClassifierSet**.
 
         i. If so, set the current workflow's **Assessment** to the other workflow's **Assessment** and exit with success.
         ii. This reduces the cost (in time) for rescheduling tasks that are in-flight but not yet completed (see :ref:`recovery_from_failure`).
@@ -193,13 +193,6 @@ Procedure:
 5. Course staff can query the status of the training task using the **AI Grading API**, which in turn checks whether the latest **AI Training Workflow** is marked as started or complete.
 
 
-Notes:
-
-* In the initial implementation, steps (1) and (2) may be replaced by a management command.
-* If step (4) fails, it is considered a non-recoverable error and should be handled as described in :ref:`recovery_from_failure`.
-
-
-
 Queues
 ------
 
@@ -220,7 +213,7 @@ Recovery from Failure
 
     b. In general, we avoid retrying tasks, since an error that occurs once is likely to occur again.  However, for errors that may be recoverable (such as transient network connectivity issues), the worker should reschedule the task once.  If the task fails again, it should not be rescheduled.
 
-    c. For non-recoverable errors, the task should be fail without being rescheduled.  Failures should be logged and monitored.  Once the issue has been fixed, failed tasks should be rescheduled manually (e.g. by a management command that queries for incomplete workflows and reschedules tasks).
+    c. For non-recoverable errors, the task should be fail without being rescheduled.  Failures should be logged and monitored.  Once the issue has been fixed, failed tasks should be rescheduled manually (e.g. by a command that queries for incomplete workflows and reschedules tasks).
 
 2. A course author publishes a problem without training classifiers.
 
@@ -246,14 +239,15 @@ Data Model
 1. **GradingWorkflow**
 
     a. Submission UUID (varchar)
-    b. ClassifierSet (Foreign Key, Nullable)
-    c. Assessment (Foreign Key, Nullable)
-    d. Scheduled at (timestamp): The time the task was placed on the queue.
-    e. Started at (timestamp): The time the task was picked up by the worker.
-    f. Completed at (timestamp): The time the task was completed.  If set, the task is considered complete.
-    g. Course ID (varchar): The ID of the course associated with the submission.  Useful for rescheduling
+    b. Rubric (Foreign key)
+    c. ClassifierSet (Foreign Key, Nullable)
+    d. Assessment (Foreign Key, Nullable)
+    e. Scheduled at (timestamp): The time the task was placed on the queue.
+    f. Started at (timestamp): The time the task was picked up by the worker.
+    g. Completed at (timestamp): The time the task was completed.  If set, the task is considered complete.
+    h. Course ID (varchar): The ID of the course associated with the submission.  Useful for rescheduling
        failed grading tasks in a particular course.
-    h. Item ID (varchar): The ID of the item (problem) associated with the submission.  Useful for rescheduling
+    i. Item ID (varchar): The ID of the item (problem) associated with the submission.  Useful for rescheduling
        failed grading tasks in a particular item in a course.
 
 2. **TrainingWorkflow**
