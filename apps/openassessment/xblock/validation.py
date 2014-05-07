@@ -85,9 +85,9 @@ def validate_assessments(assessments, current_assessments, is_released):
     if not (_only_peer_or_self(assessments) or _peer_then_self(assessments)):
         return (
             False,
-            _("For this assignment, you can set either a peer assessment "
-              "followed by a self assessment, peer assessment only, or a "
-              "self assessment only.")
+            _("For this assignment, you can set a peer assessment only, a self "
+              "assessment only, or a peer assessment followed by a self "
+              "assessment.")
         )
 
     for assessment_dict in assessments:
