@@ -27,7 +27,7 @@ OpenAssessment.ResponseView.prototype = {
 
     // Required delay after the user changes a response or a save occurs
     // before we can autosave.
-    AUTO_SAVE_WAIT: 2000,
+    AUTO_SAVE_WAIT: 30000,
 
     /**
     Load the response (submission) view.
