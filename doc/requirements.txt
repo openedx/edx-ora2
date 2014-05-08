@@ -3,3 +3,4 @@
 
 sphinx
 sphinxcontrib-napoleon
+markupsafe
