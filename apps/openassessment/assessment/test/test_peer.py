@@ -796,20 +796,20 @@ class TestPeerApi(CacheResetTest):
         xander_answer, _ = self._create_student_and_submission("Xander", "Xander's answer")
 
         # Check for a workflow for Buffy.
-        buffy_workflow = peer_api._get_workflow_by_submission_uuid(buffy_answer['uuid'])
+        buffy_workflow = PeerWorkflow.get_by_submission_uuid(buffy_answer['uuid'])
         self.assertIsNotNone(buffy_workflow)
 
         # Check to see if Buffy is actively reviewing Xander's submission.
         # She isn't so we should get back no uuid.
-        submission_uuid = peer_api._find_active_assessments(buffy_workflow)
+        submission_uuid = buffy_workflow.find_active_assessments()
         self.assertIsNone(submission_uuid)
 
         # Buffy is going to review Xander's submission, so create a workflow
         # item for Buffy.
-        peer_api._create_peer_workflow_item(buffy_workflow, xander_answer["uuid"])
+        PeerWorkflow.create_item(buffy_workflow, xander_answer["uuid"])
 
         # Check to see if Buffy is still actively reviewing Xander's submission.
-        submission_uuid = peer_api._find_active_assessments(buffy_workflow)
+        submission_uuid = buffy_workflow.find_active_assessments()
         self.assertEqual(xander_answer["uuid"], submission_uuid)
 
     def test_get_workflow_by_uuid(self):
@@ -818,7 +818,7 @@ class TestPeerApi(CacheResetTest):
         self._create_student_and_submission("Willow", "Willow's answer")
         buffy_answer_two, _ = self._create_student_and_submission("Buffy", "Buffy's answer")
 
-        workflow = peer_api._get_workflow_by_submission_uuid(buffy_answer_two['uuid'])
+        workflow = PeerWorkflow.get_by_submission_uuid(buffy_answer_two['uuid'])
         self.assertNotEqual(buffy_answer["uuid"], workflow.submission_uuid)
         self.assertEqual(buffy_answer_two["uuid"], workflow.submission_uuid)
 
@@ -827,10 +827,10 @@ class TestPeerApi(CacheResetTest):
         xander_answer, _ = self._create_student_and_submission("Xander", "Xander's answer")
         self._create_student_and_submission("Willow", "Willow's answer")
 
-        buffy_workflow = peer_api._get_workflow_by_submission_uuid(buffy_answer['uuid'])
+        buffy_workflow = PeerWorkflow.get_by_submission_uuid(buffy_answer['uuid'])
 
         # Get the next submission for review
-        submission_uuid = peer_api._get_submission_for_review(buffy_workflow, 3)
+        submission_uuid = buffy_workflow.get_submission_for_review(3)
         self.assertEqual(xander_answer["uuid"], submission_uuid)
 
     def test_get_submission_for_over_grading(self):
@@ -838,19 +838,19 @@ class TestPeerApi(CacheResetTest):
         xander_answer, _ = self._create_student_and_submission("Xander", "Xander's answer")
         willow_answer, _ = self._create_student_and_submission("Willow", "Willow's answer")
 
-        buffy_workflow = peer_api._get_workflow_by_submission_uuid(buffy_answer['uuid'])
-        xander_workflow = peer_api._get_workflow_by_submission_uuid(xander_answer['uuid'])
-        willow_workflow = peer_api._get_workflow_by_submission_uuid(willow_answer['uuid'])
+        buffy_workflow = PeerWorkflow.get_by_submission_uuid(buffy_answer['uuid'])
+        xander_workflow = PeerWorkflow.get_by_submission_uuid(xander_answer['uuid'])
+        willow_workflow = PeerWorkflow.get_by_submission_uuid(willow_answer['uuid'])
 
         # Get a bunch of workflow items opened up.
-        peer_api._create_peer_workflow_item(buffy_workflow, xander_answer["uuid"])
-        peer_api._create_peer_workflow_item(willow_workflow, xander_answer["uuid"])
-        peer_api._create_peer_workflow_item(xander_workflow, xander_answer["uuid"])
-        peer_api._create_peer_workflow_item(buffy_workflow, willow_answer["uuid"])
-        peer_api._create_peer_workflow_item(xander_workflow, willow_answer["uuid"])
+        PeerWorkflow.create_item(buffy_workflow, xander_answer["uuid"])
+        PeerWorkflow.create_item(willow_workflow, xander_answer["uuid"])
+        PeerWorkflow.create_item(xander_workflow, xander_answer["uuid"])
+        PeerWorkflow.create_item(buffy_workflow, willow_answer["uuid"])
+        PeerWorkflow.create_item(xander_workflow, willow_answer["uuid"])
 
         # Get the next submission for review
-        submission_uuid = peer_api._get_submission_for_over_grading(xander_workflow)
+        submission_uuid = xander_workflow.get_submission_for_over_grading()
 
         if not (buffy_answer["uuid"] == submission_uuid or willow_answer["uuid"] == submission_uuid):
             self.fail("Submission was not Buffy or Willow's.")
@@ -912,7 +912,7 @@ class TestPeerApi(CacheResetTest):
         xander_answer, _ = self._create_student_and_submission("Xander", "Xander's answer")
 
         # Create a workflow for Buffy.
-        buffy_workflow = peer_api._get_workflow_by_submission_uuid(buffy_answer['uuid'])
+        buffy_workflow = PeerWorkflow.get_by_submission_uuid(buffy_answer['uuid'])
 
         # Get a workflow item opened up.
         submission = peer_api.get_submission_to_assess(buffy_answer['uuid'], 3)
@@ -930,7 +930,7 @@ class TestPeerApi(CacheResetTest):
         assessment = Assessment.objects.filter(
             scorer_id=assessment_dict["scorer_id"],
             scored_at=assessment_dict["scored_at"])[0]
-        peer_api._close_active_assessment(buffy_workflow, xander_answer["uuid"], assessment, REQUIRED_GRADED_BY)
+        buffy_workflow.close_active_assessment(xander_answer["uuid"], assessment, REQUIRED_GRADED_BY)
 
         item = PeerWorkflowItem.objects.get(submission_uuid=xander_answer['uuid'])
         self.assertEqual(xander_answer["uuid"], submission["uuid"])
@@ -940,9 +940,9 @@ class TestPeerApi(CacheResetTest):
     @raises(peer_api.PeerAssessmentInternalError)
     def test_failure_to_get_review_submission(self, mock_filter):
         tim_answer, _ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
-        tim_workflow = peer_api._get_workflow_by_submission_uuid(tim_answer['uuid'])
+        tim_workflow = PeerWorkflow.get_by_submission_uuid(tim_answer['uuid'])
         mock_filter.side_effect = DatabaseError("Oh no.")
-        peer_api._get_submission_for_review(tim_workflow, 3)
+        tim_workflow.get_submission_for_review(3)
 
     @patch.object(AssessmentFeedback.objects, 'get')
     @raises(peer_api.PeerAssessmentInternalError)
@@ -986,7 +986,7 @@ class TestPeerApi(CacheResetTest):
     def test_failure_to_get_latest_workflow(self, mock_filter):
         mock_filter.side_effect = DatabaseError("Oh no.")
         tim_answer, _ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
-        peer_api._get_workflow_by_submission_uuid(tim_answer['uuid'])
+        PeerWorkflow.get_by_submission_uuid(tim_answer['uuid'])
 
     @patch.object(PeerWorkflow.objects, 'get_or_create')
     @raises(peer_api.PeerAssessmentInternalError)
@@ -994,12 +994,12 @@ class TestPeerApi(CacheResetTest):
         mock_filter.side_effect = DatabaseError("Oh no.")
         self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
 
-    @patch.object(PeerWorkflow.objects, 'get')
+    @patch.object(PeerWorkflow.objects, 'get_or_create')
     @raises(peer_api.PeerAssessmentInternalError)
     def test_create_workflow_item_error(self, mock_filter):
         mock_filter.side_effect = DatabaseError("Oh no.")
         tim_answer, tim = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)
-        peer_api._create_peer_workflow_item(tim, tim_answer['uuid'])
+        PeerWorkflow.create_item(tim, tim_answer['uuid'])
 
     def test_get_submission_to_evaluate(self):
         submission, __ = self._create_student_and_submission("Tim", "Tim's answer", MONDAY)

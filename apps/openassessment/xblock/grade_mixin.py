@@ -9,6 +9,7 @@ from xblock.core import XBlock
 
 from openassessment.assessment import peer_api
 from openassessment.assessment import self_api
+from openassessment.assessment.errors import SelfAssessmentError, PeerAssessmentError
 from submissions import api as sub_api
 
 
@@ -55,7 +56,7 @@ class GradeMixin(object):
                 path = 'openassessmentblock/grade/oa_grade_not_started.html'
             else:  # status is 'self' or 'peer', which implies that the workflow is incomplete
                 path, context = self.render_grade_incomplete(workflow)
-        except (sub_api.SubmissionError, peer_api.PeerAssessmentError, self_api.SelfAssessmentRequestError):
+        except (sub_api.SubmissionError, PeerAssessmentError, SelfAssessmentError):
             return self.render_error(_(u"An unexpected error occurred."))
         else:
             return self.render_assessment(path, context)

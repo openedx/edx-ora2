@@ -9,8 +9,9 @@ import pytz
 from openassessment.test_utils import CacheResetTest
 from submissions.api import create_submission
 from openassessment.assessment.self_api import (
-    create_assessment, submitter_is_finished, SelfAssessmentRequestError, get_assessment
+    create_assessment, submitter_is_finished, get_assessment
 )
+from openassessment.assessment.errors import SelfAssessmentRequestError
 
 
 class TestSelfApi(CacheResetTest):
