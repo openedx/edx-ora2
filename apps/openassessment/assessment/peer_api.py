@@ -401,7 +401,7 @@ def get_assessments(submission_uuid, scored_only=True, limit=None):
         raise PeerAssessmentInternalError(error_message)
 
 
-def get_submission_to_assess(submission_uuid, graded_by, over_grading=False):
+def get_submission_to_assess(submission_uuid, graded_by):
     """Get a submission to peer evaluate.
 
     Retrieves a submission for assessment for the given student. This will
@@ -419,10 +419,6 @@ def get_submission_to_assess(submission_uuid, graded_by, over_grading=False):
             associated Peer Workflow.
         graded_by (int): The number of assessments a submission
             requires before it has completed the peer assessment process.
-        over_grading (bool): Allows over grading to be performed if no submission
-            requires assessments. Over grading should only occur if the deadline
-            for submissions has passed, but there is still a window for peer
-            assessment. Defaults to False.
 
     Returns:
         dict: A peer submission for assessment. This contains a 'student_item',
@@ -456,17 +452,17 @@ def get_submission_to_assess(submission_uuid, graded_by, over_grading=False):
             u"student."))
     peer_submission_uuid = workflow.find_active_assessments()
     # If there is an active assessment for this user, get that submission,
-    # otherwise, get the first assessment for review, otherwise, if over grading
-    # is turned on, get the first submission available for over grading.
+    # otherwise, get the first assessment for review, otherwise,
+    # get the first submission available for over grading ("over-grading").
     if peer_submission_uuid is None:
         peer_submission_uuid = workflow.get_submission_for_review(graded_by)
-    if peer_submission_uuid is None and over_grading:
+    if peer_submission_uuid is None:
         peer_submission_uuid = workflow.get_submission_for_over_grading()
     if peer_submission_uuid:
         try:
             submission_data = sub_api.get_submission(peer_submission_uuid)
             PeerWorkflow.create_item(workflow, peer_submission_uuid)
-            _log_workflow(peer_submission_uuid, workflow, over_grading)
+            _log_workflow(peer_submission_uuid, workflow)
             return submission_data
         except sub_api.SubmissionNotFoundError:
             error_message = _(
@@ -701,7 +697,7 @@ def _log_assessment(assessment, scorer_workflow):
     dog_stats_api.increment('openassessment.assessment.count', tags=tags)
 
 
-def _log_workflow(submission_uuid, workflow, over_grading):
+def _log_workflow(submission_uuid, workflow):
     """
     Log the creation of a peer-assessment workflow.
 
@@ -709,7 +705,6 @@ def _log_workflow(submission_uuid, workflow, over_grading):
         submission_uuid (str): The UUID of the submission being assessed.
         workflow (PeerWorkflow): The Peer Workflow of the student making the
             assessment.
-        over_grading (bool): Whether over-grading is enabled.
     """
     logger.info(
         u"Retrieved submission {} ({}, {}) to be assessed by {}"
@@ -727,7 +722,8 @@ def _log_workflow(submission_uuid, workflow, over_grading):
         u"type:peer"
     ]
 
-    if over_grading:
-        tags.append(u"overgrading")
+    # Over-grading is always turned on
+    # Keep this tag for backwards-compatibility
+    tags.append(u"overgrading")
 
     dog_stats_api.increment('openassessment.assessment.peer_workflow.count', tags=tags)

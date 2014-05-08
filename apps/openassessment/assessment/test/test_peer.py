@@ -637,8 +637,6 @@ class TestPeerApi(CacheResetTest):
             RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
-        sub = peer_api.get_submission_to_assess(buffy_sub['uuid'], REQUIRED_GRADED_BY)
-        self.assertIsNone(sub)
 
         # 11) Xander comes along and submits.
         xander_sub, xander = self._create_student_and_submission("Xander", "Xander's answer")
