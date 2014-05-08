@@ -7,8 +7,8 @@ from collections import defaultdict
 from django.utils.translation import ugettext as _
 from xblock.core import XBlock
 
-from openassessment.assessment import peer_api
-from openassessment.assessment import self_api
+from openassessment.assessment.api import peer as peer_api
+from openassessment.assessment.api import self as self_api
 from openassessment.assessment.errors import SelfAssessmentError, PeerAssessmentError
 from submissions import api as sub_api
 

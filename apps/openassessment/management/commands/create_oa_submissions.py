@@ -7,7 +7,8 @@ from django.core.management.base import BaseCommand, CommandError
 import loremipsum
 from submissions import api as sub_api
 from openassessment.workflow import api as workflow_api
-from openassessment.assessment import peer_api, self_api
+from openassessment.assessment.api import peer as peer_api
+from openassessment.assessment.api import self as self_api
 
 STEPS = ['peer', 'self']
 

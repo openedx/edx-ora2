@@ -129,7 +129,8 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 specific requirements in this dict.
 
         """
-        from openassessment.assessment import peer_api, self_api
+        from openassessment.assessment.api import peer as peer_api
+        from openassessment.assessment.api import self as self_api
 
         # If we're done, we're done -- it doesn't matter if requirements have
         # changed because we've already written a score.
@@ -259,7 +260,8 @@ class AssessmentWorkflowStep(models.Model):
         Returns an API associated with this workflow step. If no API is
         associated with this workflow step, None is returned.
         """
-        from openassessment.assessment import peer_api, self_api
+        from openassessment.assessment.api import peer as peer_api
+        from openassessment.assessment.api import self as self_api
         api = None
         if self.name == AssessmentWorkflow.STATUS.self:
             api = self_api

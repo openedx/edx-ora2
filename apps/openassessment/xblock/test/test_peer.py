@@ -10,7 +10,7 @@ import mock
 import datetime as dt
 import pytz
 import ddt
-from openassessment.assessment import peer_api
+from openassessment.assessment.api import peer as peer_api
 from .base import XBlockHandlerTestCase, scenario
 
 

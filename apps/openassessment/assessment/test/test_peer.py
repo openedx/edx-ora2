@@ -9,7 +9,7 @@ from mock import patch
 from nose.tools import raises
 
 from openassessment.test_utils import CacheResetTest
-from openassessment.assessment import peer_api
+from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.models import (
     Assessment, AssessmentPart, AssessmentFeedback,
     PeerWorkflow, PeerWorkflowItem

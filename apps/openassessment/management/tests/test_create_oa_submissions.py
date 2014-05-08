@@ -3,7 +3,8 @@ Tests for the management command that creates dummy submissions.
 """
 
 from submissions import api as sub_api
-from openassessment.assessment import peer_api, self_api
+from openassessment.assessment.api import peer as peer_api
+from openassessment.assessment.api import self as self_api
 from openassessment.management.commands import create_oa_submissions
 from django.test import TestCase
 
