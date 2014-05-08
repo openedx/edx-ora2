@@ -22,3 +22,40 @@
   background: $bg-view;
   margin: ($baseline-v*2) $baseline-h;
 }
+
+// --------------------
+// Developer styles for Staff Section
+// --------------------
+.staff-info__student {
+  .label {
+    color: $heading-staff-color;
+    margin-bottom: ($baseline-v/2);
+  }
+
+  .action--submit {
+    @extend %btn--secondary;
+    @extend %action-2;
+    margin-right: ($baseline-v/2);
+    margin-top: ($baseline-v/2);
+    margin-bottom: ($baseline-v/2);
+  }
+
+  .title {
+    @extend %hd-2;
+    text-align: left;
+    color: $heading-staff-color;
+    margin-bottom: ($baseline-v/2);
+  }
+
+  .title--sub {
+    color: $heading-staff-color;
+    margin-top: ($baseline-v/2);
+    margin-bottom: ($baseline-v/2);
+  }
+
+  .student__answer__display__content {
+    border: 1px solid rgba($color-decorative-staff, 0.25);
+    padding: ($baseline-v/2) ($baseline-h/2) ($baseline-v/2) ($baseline-h/2);
+    margin-bottom: ($baseline-v/2);
+  }
+}

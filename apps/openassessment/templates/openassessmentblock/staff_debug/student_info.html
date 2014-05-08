@@ -1,0 +1,131 @@
+{% load i18n %}
+{% load tz %}
+<div id="openassessment__student_info" class="staff-info__student__report">
+    {% if submission %}
+    <h2 class="title">
+        <span class="label">{% trans "Student Workflow Information" %}</span>
+    </h2>
+
+    <div class="staff-info__content ui-staff__content">
+        <div class="wrapper--step__content">
+            <div class="step__content">
+                <h3 class="title">{% trans "Student Response" %}</h3>
+                <div class="student__answer__display__content">
+                    {{ submission.answer.text|linebreaks }}
+                </div>
+            </div>
+        </div>
+
+        <div class="staff-info__status ui-staff__content__section">
+            <h3 class="title">{% trans "Assessments on Student" %}</h3>
+            {% for assessment in peer_assessments %}
+                {% with peer_num=forloop.counter %}
+                <h4 class="title--sub"> {% trans "Peer" %} {{ peer_num }}: </h4>
+                <table class="staff-info__status__table" summary="{% trans "Assessment from Peer" %}">
+                    <thead>
+                    <tr>
+                        <th abbr="Criterion" scope="col">{% trans "Criterion" %}</th>
+                        <th abbr="Selected Option" scope="col">{% trans "Selected Option" %}</th>
+                        <th abbr="Feedback" scope="col">{% trans "Feedback" %}</th>
+                        <th abbr="Points" scope="col">{% trans "Points" %}</th>
+                        <th abbr="Points Possible" scope="col">{% trans "Points Possible" %}</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for criterion in rubric_criteria %}
+                        {% for part in assessment.parts %}
+                            {% if part.option.criterion.name == criterion.name %}
+                        <tr>
+                            <td class="label">{{ criterion.name }}</td>
+                            <td class="value">{{ part.option.name }}</td>
+                            <td class="value">{{ part.feedback }}</td>
+                            <td class="value">{{ part.option.points }}</td>
+                            <td class="value">{{ criterion.total_value }}</td>
+                        </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            <h4 class="title--sub">{% trans "Overall Feedback" %}</h4>
+            <div class="student__answer__display__content">
+                {{ assessment.feedback|linebreaks }}
+            </div>
+                {% endwith %}
+            {%  endfor %}
+        </div>
+
+        <div class="staff-info__status ui-staff__content__section">
+            <h3 class="title">{% trans "Assessments submitted by Student" %}</h3>
+            {% for assessment in submitted_assessments %}
+                {% with peer_num=forloop.counter %}
+                    <h4 class="title--sub">{% trans "Peer" %} {{ peer_num }}:</h4>
+                    <table class="staff-info__status__table" summary="{% trans "Assessment from Student" %}">
+                        <thead>
+                        <tr>
+                            <th abbr="Criterion" scope="col">{% trans "Criterion" %}</th>
+                            <th abbr="Selected Option" scope="col">{% trans "Selected Option" %}</th>
+                            <th abbr="Feedback" scope="col">{% trans "Feedback" %}</th>
+                            <th abbr="Points" scope="col">{% trans "Points" %}</th>
+                            <th abbr="Points Possible" scope="col">{% trans "Points Possible" %}</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for criterion in rubric_criteria %}
+                            {% for part in assessment.parts %}
+                                {% if part.option.criterion.name == criterion.name %}
+                                    <tr>
+                                        <td class="label">{{ criterion.name }}</td>
+                                        <td class="value">{{ part.option.name }}</td>
+                                        <td class="value">{{ part.feedback }}</td>
+                                        <td class="value">{{ part.option.points }}</td>
+                                        <td class="value">{{ criterion.total_value }}</td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <h4 class="title--sub">{% trans "Overall Feedback" %}</h4>
+                    <div class="student__answer__display__content">
+                        {{ assessment.feedback|linebreaks }}
+                    </div>
+                {% endwith %}
+            {%  endfor %}
+        </div>
+
+        <div class="staff-info__status ui-staff__content__section">
+            <h3 class="title">{% trans "Student Self Assessment" %}</h3>
+            <table class="staff-info__status__table" summary="{% trans "Self Assessment" %}">
+                <thead>
+                <tr>
+                    <th abbr="Criterion" scope="col">{% trans "Criterion" %}</th>
+                    <th abbr="Selected Option" scope="col">{% trans "Selected Option" %}</th>
+                    <th abbr="Points" scope="col">{% trans "Points" %}</th>
+                    <th abbr="Points Possible" scope="col">{% trans "Points Possible" %}</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for criterion in rubric_criteria %}
+                    {% for part in self_assessment.parts %}
+                        {% if part.option.criterion.name == criterion.name %}
+                            <tr>
+                                <td class="label">{{ criterion.name }}</td>
+                                <td class="value">{{ part.option.name }}</td>
+                                <td class="value">{{ part.option.points }}</td>
+                                <td class="value">{{ criterion.total_value }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+        {% trans "No submission found for student." %}
+    {% endif %}
+</div>

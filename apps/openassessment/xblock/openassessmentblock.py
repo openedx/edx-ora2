@@ -22,6 +22,7 @@ from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.studio_mixin import StudioMixin
 from openassessment.xblock.xml import update_from_xml, serialize_content_to_xml
+from openassessment.xblock.staff_info_mixin import StaffInfoMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.workflow import api as workflow_api
 from openassessment.xblock.validation import validator
@@ -72,6 +73,7 @@ class OpenAssessmentBlock(
     SelfAssessmentMixin,
     StudioMixin,
     GradeMixin,
+    StaffInfoMixin,
     WorkflowMixin,
     LmsCompatibilityMixin):
     """Displays a question and gives an area where students can compose a response."""
@@ -202,13 +204,8 @@ class OpenAssessmentBlock(
             "question": self.prompt,
             "rubric_criteria": self.rubric_criteria,
             "rubric_assessments": ui_models,
-            "is_course_staff": False,
+            "is_course_staff": self.is_course_staff,
         }
-
-        # If we're course staff, add the context necessary to render
-        # the course staff debug panel.
-        if self.is_course_staff and not self.in_studio_preview:
-            context_dict.update(self.staff_debug_template_context())
 
         template = get_template("openassessmentblock/oa_base.html")
         context = Context(context_dict)
@@ -217,42 +214,6 @@ class OpenAssessmentBlock(
         frag.add_javascript(load("static/js/openassessment.min.js"))
         frag.initialize_js('OpenAssessmentBlock')
         return frag
-
-    def staff_debug_template_context(self):
-        """
-        Template context dictionary for course staff debug panel.
-
-        Returns:
-            dict: The template context specific to the course staff debug panel.
-
-        """
-        context = dict()
-
-        # Enable the course staff debug panel
-        context['is_course_staff'] = True
-
-        # Calculate how many students are in each step of the workflow
-        status_counts, num_submissions = self.get_workflow_status_counts()
-        context['status_counts'] = status_counts
-        context['num_submissions'] = num_submissions
-        context['item_id'] = unicode(self.scope_ids.usage_id)
-
-        # Include release/due dates for each step in the problem
-        context['step_dates'] = list()
-
-        steps = ['submission'] + self.assessment_steps
-        for step in steps:
-
-            # Get the dates as a student would see them
-            __, __, start_date, due_date = self.is_closed(step=step, course_staff=False)
-
-            context['step_dates'].append({
-                'step': step,
-                'start': start_date if start_date > DISTANT_PAST else None,
-                'due': due_date if due_date < DISTANT_FUTURE else None,
-            })
-
-        return context
 
     @property
     def is_course_staff(self):
