@@ -257,7 +257,7 @@ class TestPeerApi(CacheResetTest):
         for part in AssessmentPart.objects.all():
             self.assertEqual(len(part.feedback), Assessment.MAXSIZE)
 
-    @file_data('valid_assessments.json')
+    @file_data('data/valid_assessments.json')
     def test_get_assessments(self, assessment_dict):
         self._create_student_and_submission("Tim", "Tim's answer")
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
@@ -274,7 +274,7 @@ class TestPeerApi(CacheResetTest):
         assessments = peer_api.get_assessments(sub["uuid"], scored_only=False)
         self.assertEqual(1, len(assessments))
 
-    @file_data('valid_assessments.json')
+    @file_data('data/valid_assessments.json')
     def test_get_assessments_with_date(self, assessment_dict):
         self._create_student_and_submission("Tim", "Tim's answer")
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")

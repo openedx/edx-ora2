@@ -114,7 +114,7 @@ class TestSubmissionsApi(TestCase):
         self._assert_submission(submissions[0], ANSWER_TWO, student_item.pk, 1)
 
 
-    @file_data('test_valid_student_items.json')
+    @file_data('data/valid_student_items.json')
     def test_various_student_items(self, valid_student_item):
         api.create_submission(valid_student_item, ANSWER_ONE)
         student_item = self._get_student_item(valid_student_item)
@@ -141,7 +141,7 @@ class TestSubmissionsApi(TestCase):
         self._assert_submission(submissions[0], ANSWER_ONE, student_item.pk, 2)
 
     @raises(api.SubmissionRequestError)
-    @file_data('test_bad_student_items.json')
+    @file_data('data/bad_student_items.json')
     def test_error_checking(self, bad_student_item):
         api.create_submission(bad_student_item, -100)
 
