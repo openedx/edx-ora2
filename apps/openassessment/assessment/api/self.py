@@ -22,7 +22,7 @@ from openassessment.assessment.errors import (
 # Assessments are tagged as "self-evaluation"
 SELF_TYPE = "SE"
 
-logger = logging.getLogger("openassessment.assessment.self_api")
+logger = logging.getLogger("openassessment.assessment.api.self")
 
 
 def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, scored_at=None):

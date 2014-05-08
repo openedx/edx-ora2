@@ -7,7 +7,7 @@ import json
 import datetime
 import mock
 import pytz
-from openassessment.assessment import self_api
+from openassessment.assessment.api import self as self_api
 from openassessment.workflow import api as workflow_api
 from .base import XBlockHandlerTestCase, scenario
 

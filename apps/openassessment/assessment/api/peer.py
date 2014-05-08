@@ -24,7 +24,7 @@ from openassessment.assessment.errors import (
 )
 from submissions import api as sub_api
 
-logger = logging.getLogger("openassessment.assessment.peer_api")
+logger = logging.getLogger("openassessment.assessment.api.peer")
 
 PEER_TYPE = "PE"
 

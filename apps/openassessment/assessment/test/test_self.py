@@ -8,7 +8,7 @@ import datetime
 import pytz
 from openassessment.test_utils import CacheResetTest
 from submissions.api import create_submission
-from openassessment.assessment.self_api import (
+from openassessment.assessment.api.self import (
     create_assessment, submitter_is_finished, get_assessment
 )
 from openassessment.assessment.errors import SelfAssessmentRequestError

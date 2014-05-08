@@ -6,7 +6,8 @@ import copy
 import json
 from submissions import api as sub_api
 from openassessment.workflow import api as workflow_api
-from openassessment.assessment import peer_api, self_api
+from openassessment.assessment.api import peer as peer_api
+from openassessment.assessment.api import self as self_api
 from .base import XBlockHandlerTestCase, scenario
 
 

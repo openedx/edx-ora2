@@ -4,7 +4,7 @@ from django.utils.translation import ugettext as _
 from xblock.core import XBlock
 from webob import Response
 
-from openassessment.assessment import self_api
+from openassessment.assessment.api import self as self_api
 from openassessment.workflow import api as workflow_api
 from submissions import api as submission_api
 from .resolve_dates import DISTANT_FUTURE

@@ -4,8 +4,8 @@ from django.utils.translation import ugettext as _
 from webob import Response
 from xblock.core import XBlock
 
-from openassessment.assessment import peer_api
-from openassessment.assessment.peer_api import (
+from openassessment.assessment.api import peer as peer_api
+from openassessment.assessment.errors import (
     PeerAssessmentInternalError, PeerAssessmentRequestError,
     PeerAssessmentWorkflowError
 )
