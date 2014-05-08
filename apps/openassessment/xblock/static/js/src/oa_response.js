@@ -14,10 +14,21 @@ OpenAssessment.ResponseView = function(element, server, baseView) {
     this.server = server;
     this.baseView = baseView;
     this.savedResponse = "";
+    this.lastChangeTime = Date.now();
+    this.errorOnLastSave = false;
+    this.autoSaveTimerId = null;
 };
 
 
 OpenAssessment.ResponseView.prototype = {
+
+    // Milliseconds between checks for whether we should autosave.
+    AUTO_SAVE_POLL_INTERVAL: 2000,
+
+    // Required delay after the user changes a response or a save occurs
+    // before we can autosave.
+    AUTO_SAVE_WAIT: 2000,
+
     /**
     Load the response (submission) view.
     **/
@@ -28,6 +39,7 @@ OpenAssessment.ResponseView.prototype = {
                 // Load the HTML and install event handlers
                 $('#openassessment__response', view.element).replaceWith(html);
                 view.installHandlers();
+                view.setAutoSaveEnabled(true);
             }
         ).fail(function(errMsg) {
             view.baseView.showLoadError('response');
@@ -46,7 +58,7 @@ OpenAssessment.ResponseView.prototype = {
 
         // Install change handler for textarea (to enable submission button)
         this.savedResponse = this.response();
-        var handleChange = function(eventData) { view.responseChanged(); };
+        var handleChange = function(eventData) { view.handleResponseChanged(); };
         sel.find('#submission__answer__value').on('change keyup drop paste', handleChange);
 
         // Install a click handler for submission
@@ -69,6 +81,29 @@ OpenAssessment.ResponseView.prototype = {
     },
 
     /**
+    Enable or disable autosave polling.
+
+    Args:
+        enabled (boolean): If true, start polling for whether we need to autosave.
+            Otherwise, stop polling.
+    **/
+    setAutoSaveEnabled: function(enabled) {
+        if (enabled) {
+            if (this.autoSaveTimerId === null) {
+                this.autoSaveTimerId = setInterval(
+                    $.proxy(this.autoSave, this),
+                    this.AUTO_SAVE_POLL_INTERVAL
+                );
+            }
+        }
+        else {
+            if (this.autoSaveTimerId !== null) {
+                clearInterval(this.autoSaveTimerId);
+            }
+        }
+    },
+
+    /**
     Enable/disable the submit button.
     Check that whether the submit button is enabled.
 
@@ -88,7 +123,7 @@ OpenAssessment.ResponseView.prototype = {
         if (typeof enabled === 'undefined') {
             return !sel.hasClass('is--disabled');
         } else {
-            sel.toggleClass('is--disabled', !enabled)
+            sel.toggleClass('is--disabled', !enabled);
         }
     },
 
@@ -193,29 +228,69 @@ OpenAssessment.ResponseView.prototype = {
         }
     },
 
+
+    /**
+    Check whether the response text has changed since the last save.
+
+    Returns: boolean
+    **/
+    responseChanged: function() {
+        var currentResponse = $.trim(this.response());
+        var savedResponse = $.trim(this.savedResponse);
+        return savedResponse !== currentResponse;
+    },
+
+    /**
+    Automatically save the user's response if certain conditions are met.
+
+    Usually, this would be called by a timer (see `setAutoSaveEnabled()`).
+    For testing purposes, it's useful to disable the timer
+    and call this function synchronously.
+    **/
+    autoSave: function() {
+        var timeSinceLastChange = Date.now() - this.lastChangeTime;
+
+        // We only autosave if the following conditions are met:
+        // (1) The response has changed.  We don't need to keep saving the same response.
+        // (2) Sufficient time has passed since the user last made a change to the response.
+        //      We don't want to save a response while the user is in the middle of typing.
+        // (3) No errors occurred on the last save.  We don't want to keep refreshing
+        //      the error message in the UI.  (The user can still retry the save manually).
+        if (this.responseChanged() && timeSinceLastChange > this.AUTO_SAVE_WAIT && !this.errorOnLastSave) {
+            this.save();
+        }
+    },
+
     /**
     Enable/disable the submission and save buttons based on whether
     the user has entered a response.
     **/
-    responseChanged: function() {
+    handleResponseChanged: function() {
         // Enable the save/submit button only for non-blank responses
-        var currentResponse = $.trim(this.response());
-        var isBlank = (currentResponse !== '');
+        var isBlank = ($.trim(this.response()) !== '');
         this.submitEnabled(isBlank);
 
         // Update the save button, save status, and "unsaved changes" warning
         // only if the response has changed
-        if ($.trim(this.savedResponse) !== currentResponse) {
+        if (this.responseChanged()) {
             this.saveEnabled(isBlank);
             this.saveStatus(gettext('This response has not been saved.'));
             this.unsavedWarningEnabled(true);
         }
+
+        // Record the current time (used for autosave)
+        this.lastChangeTime = Date.now();
     },
 
     /**
     Save a response without submitting it.
     **/
     save: function() {
+        // If there were errors on previous calls to save, forget
+        // about them for now.  If an error occurs on *this* save,
+        // we'll set this back to true in the error handler.
+        this.errorOnLastSave = false;
+
         // Update the save status and error notifications
         this.saveStatus(gettext('Saving...'));
         this.baseView.toggleActionError('save', null);
@@ -240,6 +315,11 @@ OpenAssessment.ResponseView.prototype = {
         }).fail(function(errMsg) {
             view.saveStatus(gettext('Error'));
             view.baseView.toggleActionError('save', errMsg);
+
+            // Remember that an error occurred
+            // so we can disable autosave
+            //(avoids repeatedly refreshing the error message)
+            view.errorOnLastSave = true;
         });
     },
 
