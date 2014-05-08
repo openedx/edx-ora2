@@ -224,8 +224,7 @@ class PeerAssessmentMixin(object):
         try:
             peer_submission = peer_api.get_submission_to_assess(
                 self.submission_uuid,
-                assessment["must_be_graded_by"],
-                True
+                assessment["must_be_graded_by"]
             )
             self.runtime.publish(
                 self,
