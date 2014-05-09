@@ -156,6 +156,19 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         self.assertEqual(student_item['course_id'], 'test_course')
         self.assertEqual(student_item['student_id'], 'test_student')
 
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_ignore_unknown_assessment_types(self, xblock):
+        # If the XBlock contains an unknown assessment type
+        # (perhaps after a roll-back), it should ignore it.
+        xblock.rubric_assessments.append({'name': 'unknown'})
+
+        # Check that the name is excluded from valid assessments
+        self.assertNotIn({'name': 'unknown'}, xblock.valid_assessments)
+        self.assertNotIn('unknown', xblock.assessment_steps)
+
+        # Check that we can render the student view without error
+        self.runtime.render(xblock, 'student_view')
+
 
 class TestDates(XBlockHandlerTestCase):
 

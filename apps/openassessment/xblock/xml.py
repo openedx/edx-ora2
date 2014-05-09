@@ -320,6 +320,48 @@ def _parse_rubric_xml(rubric_root):
     return rubric_dict
 
 
+def _parse_examples_xml(examples):
+    """
+    Parse <example> (training examples) from the XML.
+
+    Args:
+        examples (list of lxml.etree.Element): The <example> elements to parse.
+
+    Returns:
+        list of example dicts
+
+    Raises:
+        UpdateFromXmlError
+
+    """
+    examples_list = []
+    for example_el in examples:
+        example_dict = dict()
+
+        # Retrieve the answer from the training example
+        answer_elements = example_el.findall('answer')
+        if len(answer_elements) != 1:
+            raise UpdateFromXmlError(_(u'Each "example" element must contain exactly one "answer" element'))
+        example_dict['answer'] = _safe_get_text(answer_elements[0])
+
+        # Retrieve the options selected from the training example
+        example_dict['options_selected'] = []
+        for select_el in example_el.findall('select'):
+            if 'criterion' not in select_el.attrib:
+                raise UpdateFromXmlError(_(u'Each "select" element must have a "criterion" attribute'))
+            if 'option' not in select_el.attrib:
+                raise UpdateFromXmlError(_(u'Each "select" element must have an "option" attribute'))
+
+            example_dict['options_selected'].append({
+                'criterion': unicode(select_el.get('criterion')),
+                'option': unicode(select_el.get('option'))
+            })
+
+        examples_list.append(example_dict)
+
+    return examples_list
+
+
 def _parse_assessments_xml(assessments_root):
     """
     Parse the <assessments> element in the OpenAssessment XBlock's content XML.
@@ -331,7 +373,8 @@ def _parse_assessments_xml(assessments_root):
         list of assessment dicts
 
     Raises:
-        InvalidAssessmentsError: Assessment definitions were not semantically valid.
+        UpdateFromXmlError
+
     """
     assessments_list = []
 
@@ -343,7 +386,7 @@ def _parse_assessments_xml(assessments_root):
         if 'name' in assessment.attrib:
             assessment_dict['name'] = unicode(assessment.get('name'))
         else:
-            raise UpdateFromXmlError(_('All "criterion" and "option" elements must contain a "name" element.'))
+            raise UpdateFromXmlError(_('All "assessment" elements must contain a "name" element.'))
 
         # Assessment start
         if 'start' in assessment.attrib:
@@ -379,10 +422,48 @@ def _parse_assessments_xml(assessments_root):
             except ValueError:
                 raise UpdateFromXmlError(_('The "must_be_graded_by" value must be a positive integer.'))
 
+        # Training examples
+        examples = assessment.findall('example')
+
+        # Student training should always have examples set, even if it's an empty list.
+        # (Validation rules, applied later, are responsible for
+        # ensuring that users specify at least one example).
+        # Other assessment types ignore examples.
+        # Later, we can add AI assessment here.
+        if assessment_dict['name'] == 'student-training':
+            assessment_dict['examples'] = _parse_examples_xml(examples)
+
         # Update the list of assessments
         assessments_list.append(assessment_dict)
 
     return assessments_list
+
+
+def _serialize_training_examples(examples, assessment_el):
+    """
+    Serialize a training example to XML.
+
+    Args:
+        examples (list of dict): List of example dictionaries.
+        assessment_el (lxml.etree.Element): The <assessment> XML element.
+
+    Returns:
+        None
+
+    """
+    for example_dict in examples:
+        example_el = etree.SubElement(assessment_el, 'example')
+
+        # Answer provided in the example (default to empty string)
+        answer_el = etree.SubElement(example_el, 'answer')
+        answer_el.text = unicode(example_dict.get('answer', ''))
+
+        # Options selected from the rubric
+        options_selected = example_dict.get('options_selected', [])
+        for selected_dict in options_selected:
+            select_el = etree.SubElement(example_el, 'select')
+            select_el.set('criterion', unicode(selected_dict.get('criterion', '')))
+            select_el.set('option', unicode(selected_dict.get('option', '')))
 
 
 def serialize_content_to_xml(oa_block, root):
@@ -431,6 +512,12 @@ def serialize_content_to_xml(oa_block, root):
 
         if assessment_dict.get('due') is not None:
             assessment.set('due', unicode(assessment_dict['due']))
+
+        # Training examples
+        examples = assessment_dict.get('examples', [])
+        if not isinstance(examples, list):
+            examples = []
+        _serialize_training_examples(examples, assessment)
 
     # Rubric
     rubric_root = etree.SubElement(root, 'rubric')

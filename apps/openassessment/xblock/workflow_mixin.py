@@ -24,7 +24,7 @@ class WorkflowMixin(object):
         # standardize.
         return [
             _convert_rubric_assessment_name(ra["name"])
-            for ra in self.rubric_assessments
+            for ra in self.valid_assessments
         ]
 
     def workflow_requirements(self):

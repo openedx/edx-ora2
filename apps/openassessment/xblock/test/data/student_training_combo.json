@@ -1,0 +1,403 @@
+{
+    "training_peer_self": {
+        "valid": true,
+        "assessments": [
+            {
+                "name": "student-training",
+                "examples": [
+                    {
+                        "answer": "тєѕт αηѕωєя",
+                        "options_selected": [
+                            {
+                                "criterion": "vocabulary",
+                                "option": "good"
+                            },
+                            {
+                                "criterion": "grammar",
+                                "option": "excellent"
+                            }
+                        ]
+                    },
+                    {
+                        "answer": "another тєѕт αηѕωєя",
+                        "options_selected": [
+                            {
+                                "criterion": "vocabulary",
+                                "option": "poor"
+                            },
+                            {
+                                "criterion": "grammar",
+                                "option": "good"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment"
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
+    },
+
+    "training_peer": {
+        "valid": true,
+        "assessments": [
+            {
+                "name": "student-training",
+                "examples": [
+                    {
+                        "answer": "тєѕт αηѕωєя",
+                        "options_selected": [
+                            {
+                                "criterion": "vocabulary",
+                                "option": "good"
+                            },
+                            {
+                                "criterion": "grammar",
+                                "option": "excellent"
+                            }
+                        ]
+                    },
+                    {
+                        "answer": "another тєѕт αηѕωєя",
+                        "options_selected": {
+                            "vocabulary": "poor",
+                            "grammar": "good"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
+    },
+
+    "training_only": {
+        "valid": false,
+        "assessments": [
+            {
+                "name": "student-training",
+                "examples": [
+                    {
+                        "answer": "тєѕт αηѕωєя",
+                        "options_selected": [
+                            {
+                                "criterion": "vocabulary",
+                                "option": "good"
+                            },
+                            {
+                                "criterion": "grammar",
+                                "option": "excellent"
+                            }
+                        ]
+                    },
+                    {
+                        "answer": "another тєѕт αηѕωєя",
+                        "options_selected": [
+                            {
+                                "criterion": "vocabulary",
+                                "option": "poor"
+                            },
+                            {
+                                "criterion": "grammar",
+                                "option": "good"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
+    },
+
+    "peer_training_self": {
+        "valid": false,
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "student-training",
+                "examples": [
+                    {
+                        "answer": "тєѕт αηѕωєя",
+                        "options_selected": [
+                            {
+                                "criterion": "vocabulary",
+                                "option": "poor"
+                            },
+                            {
+                                "criterion": "grammar",
+                                "option": "good"
+                            }
+                        ]
+                    },
+                    {
+                        "answer": "another тєѕт αηѕωєя",
+                        "options_selected": [
+                            {
+                                "criterion": "vocabulary",
+                                "option": "poor"
+                            },
+                            {
+                                "criterion": "grammar",
+                                "option": "good"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "self-assessment"
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
+    },
+
+    "peer_self_training": {
+        "valid": false,
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment"
+            },
+            {
+                "name": "student-training",
+                "examples": [
+                    {
+                        "answer": "тєѕт αηѕωєя",
+                        "options_selected": [
+                            {
+                                "criterion": "vocabulary",
+                                "option": "poor"
+                            },
+                            {
+                                "criterion": "grammar",
+                                "option": "good"
+                            }
+                        ]
+                    },
+                    {
+                        "answer": "another тєѕт αηѕωєя",
+                        "options_selected": [
+                            {
+                                "criterion": "vocabulary",
+                                "option": "good"
+                            },
+                            {
+                                "criterion": "grammar",
+                                "option": "excellent"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
+    },
+
+    "self_training": {
+        "valid": false,
+        "assessments": [
+            {
+                "name": "self-assessment"
+            },
+            {
+                "name": "student-training",
+                "examples": [
+                    {
+                        "answer": "тєѕт αηѕωєя",
+                        "options_selected": [
+                            {
+                                "criterion": "vocabulary",
+                                "option": "poor"
+                            },
+                            {
+                                "criterion": "grammar",
+                                "option": "good"
+                            }
+                        ]
+                    },
+                    {
+                        "answer": "another тєѕт αηѕωєя",
+                        "options_selected": [
+                            {
+                                "criterion": "vocabulary",
+                                "option": "poor"
+                            },
+                            {
+                                "criterion": "grammar",
+                                "option": "good"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
+    },
+
+    "training_self": {
+        "valid": false,
+        "assessments": [
+            {
+                "name": "student-training",
+                "examples": [
+                    {
+                        "answer": "тєѕт αηѕωєя",
+                        "options_selected": [
+                            {
+                                "criterion": "vocabulary",
+                                "option": "poor"
+                            },
+                            {
+                                "criterion": "grammar",
+                                "option": "good"
+                            }
+                        ]
+                    },
+                    {
+                        "answer": "another тєѕт αηѕωєя",
+                        "options_selected": [
+                            {
+                                "criterion": "vocabulary",
+                                "option": "poor"
+                            },
+                            {
+                                "criterion": "grammar",
+                                "option": "good"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "self-assessment"
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
+    },
+
+    "remove_training_post_release": {
+        "valid": false,
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            }
+        ],
+        "current_assessments": [
+            {
+                "name": "student-training",
+                "examples": [
+                    {
+                        "answer": "тєѕт αηѕωєя",
+                        "options_selected": [
+                            {
+                                "criterion": "vocabulary",
+                                "option": "poor"
+                            },
+                            {
+                                "criterion": "grammar",
+                                "option": "good"
+                            }
+                        ]
+                    },
+                    {
+                        "answer": "another тєѕт αηѕωєя",
+                        "options_selected": [
+                            {
+                                "criterion": "vocabulary",
+                                "option": "poor"
+                            },
+                            {
+                                "criterion": "grammar",
+                                "option": "good"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            }
+        ],
+        "is_released": true
+    },
+
+    "add_training_post_release": {
+        "valid": false,
+        "assessments": [
+            {
+                "name": "student-training",
+                "examples": [
+                    {
+                        "answer": "тєѕт αηѕωєя",
+                        "options_selected": [
+                            {
+                                "criterion": "vocabulary",
+                                "option": "poor"
+                            },
+                            {
+                                "criterion": "grammar",
+                                "option": "good"
+                            }
+                        ]
+                    },
+                    {
+                        "answer": "another тєѕт αηѕωєя",
+                        "options_selected": [
+                            {
+                                "criterion": "vocabulary",
+                                "option": "poor"
+                            },
+                            {
+                                "criterion": "grammar",
+                                "option": "good"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            }
+        ],
+        "current_assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            }
+        ],
+        "is_released": true
+    }
+}

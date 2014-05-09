@@ -4,6 +4,7 @@ Validate changes to an XBlock before it is updated.
 from collections import Counter
 from django.utils.translation import ugettext as _
 from openassessment.assessment.serializers import rubric_from_dict, InvalidRubric
+from openassessment.assessment.api.student_training import validate_training_examples
 from openassessment.xblock.resolve_dates import resolve_dates, DateValidationError, InvalidDateFormat
 
 
@@ -43,6 +44,31 @@ def _duplicates(items):
     return set(x for x in items if counts[x] > 1)
 
 
+def _is_valid_assessment_sequence(assessments):
+    """
+    Check whether the sequence of assessments is valid.
+    For example, we currently allow self-assessment after peer-assessment,
+    but do not allow peer-assessment before self-assessment.
+
+    Args:
+        assessments (list of dict): List of assessment dictionaries.
+
+    Returns:
+        bool
+
+    """
+    valid_sequences = [
+        ['self-assessment'],
+        ['peer-assessment'],
+        ['peer-assessment', 'self-assessment'],
+        ['student-training', 'peer-assessment'],
+        ['student-training', 'peer-assessment', 'self-assessment'],
+    ]
+
+    sequence = [asmnt.get('name') for asmnt in assessments]
+    return sequence in valid_sequences
+
+
 def validate_assessments(assessments, current_assessments, is_released):
     """
     Check that the assessment dict is semantically valid.
@@ -66,29 +92,18 @@ def validate_assessments(assessments, current_assessments, is_released):
             is_valid is a boolean indicating whether the assessment is semantically valid
             and msg describes any validation errors found.
     """
-    def _only_peer_or_self(assessments):
-        return (len(assessments) == 1
-                and (assessments[0].get('name') == 'self-assessment'
-                or assessments[0].get('name') == 'peer-assessment'))
-
-    def _peer_then_self(assessments):
-        return (
-            len(assessments) == 2 and
-            assessments[0].get('name') == 'peer-assessment' and
-            assessments[1].get('name') == 'self-assessment'
-        )
-
     if len(assessments) == 0:
         return (False, _("This problem must include at least one assessment."))
 
     # Right now, there are two allowed scenarios: (peer -> self) and (self)
-    if not (_only_peer_or_self(assessments) or _peer_then_self(assessments)):
-        return (
-            False,
-            _("For this assignment, you can set a peer assessment only, a self "
-              "assessment only, or a peer assessment followed by a self "
-              "assessment.")
+    if not _is_valid_assessment_sequence(assessments):
+        msg = _(
+            "For this assignment, you can set a peer assessment only, a self "
+            "assessment only, or a peer assessment followed by a self "
+            "assessment.  Student training is allowed only immediately before "
+            "peer assessment."
         )
+        return (False, msg)
 
     for assessment_dict in assessments:
         # Number you need to grade is >= the number of people that need to grade you
@@ -196,6 +211,46 @@ def validate_dates(start, end, date_ranges):
         return (True, u'')
 
 
+def _validate_assessment_examples(rubric_dict, assessments):
+    """
+    Validate assessment training examples.
+
+    Args:
+        rubric_dict (dict): The serialized rubric model.
+        assessments (list of dict): List of assessment dictionaries.
+
+    Returns:
+        tuple (is_valid, msg) where
+            is_valid is a boolean indicating whether the assessment is semantically valid
+            and msg describes any validation errors found.
+
+    """
+    for asmnt in assessments:
+        if asmnt['name'] == 'student-training':
+
+            # Convert of options selected we store in the problem def,
+            # which is ordered, to the unordered dictionary of options
+            # selected that the student training API expects.
+            examples = [
+                {
+                    'answer': ex['answer'],
+                    'options_selected': {
+                        select_dict['criterion']: select_dict['option']
+                        for select_dict in ex['options_selected']
+                    }
+                }
+                for ex in asmnt['examples']
+            ]
+
+            # Delegate to the student training API to validate the
+            # examples against the rubric.
+            errors = validate_training_examples(rubric_dict, examples)
+            if errors:
+                return (False, "\n".join(errors))
+
+    return (True, u'')
+
+
 def validator(oa_block, strict_post_release=True):
     """
     Return a validator function configured for the XBlock.
@@ -213,32 +268,37 @@ def validator(oa_block, strict_post_release=True):
     """
 
     def _inner(rubric_dict, submission_dict, assessments):
+
+        is_released = strict_post_release and oa_block.is_released()
+
+        # Assessments
         current_assessments = oa_block.rubric_assessments
-        success, msg = validate_assessments(
-            assessments,
-            current_assessments,
-            strict_post_release and oa_block.is_released()
-        )
+        success, msg = validate_assessments(assessments, current_assessments, is_released)
         if not success:
             return (False, msg)
 
+        # Rubric
         current_rubric = {
             'prompt': oa_block.prompt,
             'criteria': oa_block.rubric_criteria
         }
-        success, msg = validate_rubric(
-            rubric_dict, current_rubric,
-            strict_post_release and oa_block.is_released()
-        )
+        success, msg = validate_rubric(rubric_dict, current_rubric, is_released)
         if not success:
             return (False, msg)
 
+        # Training examples
+        success, msg = _validate_assessment_examples(rubric_dict, assessments)
+        if not success:
+            return (False, msg)
+
+        # Dates
         submission_dates = [(oa_block.start, submission_dict['due'])]
         assessment_dates = [(asmnt['start'], asmnt['due']) for asmnt in assessments]
         success, msg = validate_dates(oa_block.start, oa_block.due, submission_dates + assessment_dates)
         if not success:
             return (False, msg)
 
+        # Success!
         return (True, u'')
 
     return _inner
