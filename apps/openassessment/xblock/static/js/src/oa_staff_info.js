@@ -26,7 +26,7 @@ OpenAssessment.StaffInfoView.prototype = {
         this.server.render('staff_info').done(
             function(html) {
                 // Load the HTML and install event handlers
-                $('#openassessment__staff_info', view.element).replaceWith(html);
+                $('#openassessment__staff-info', view.element).replaceWith(html);
                 view.installHandlers();
             }
         ).fail(function(errMsg) {
@@ -41,12 +41,12 @@ OpenAssessment.StaffInfoView.prototype = {
      **/
     loadStudentInfo: function() {
         var view = this;
-        var sel = $('#openassessment__staff_info', this.element);
+        var sel = $('#openassessment__staff-info', this.element);
         var student_id = sel.find('#openassessment__student_id').val();
         this.server.studentInfo(student_id).done(
             function(html) {
                 // Load the HTML and install event handlers
-                $('#openassessment__student_info', view.element).replaceWith(html);
+                $('#openassessment__student-info', view.element).replaceWith(html);
             }
         ).fail(function(errMsg) {
                 view.showLoadError('student_info');
@@ -57,7 +57,7 @@ OpenAssessment.StaffInfoView.prototype = {
      Install event handlers for the view.
      **/
     installHandlers: function() {
-        var sel = $('#openassessment__staff_info', this.element);
+        var sel = $('#openassessment__staff-info', this.element);
         var view = this;
 
         if (sel.length <= 0) {

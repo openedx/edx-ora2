@@ -1,9 +1,9 @@
 {% load i18n %}
 {% load tz %}
-<div id="openassessment__student_info" class="staff-info__student__report">
+<div id="openassessment__student-info" class="staff-info__student__report">
     {% if submission %}
     <h2 class="title">
-        <span class="label">{% trans "Student Workflow Information" %}</span>
+        <span class="label">{% trans "Student Information" %}</span>
     </h2>
 
     <div class="staff-info__content ui-staff__content">
@@ -17,11 +17,11 @@
         </div>
 
         <div class="staff-info__status ui-staff__content__section">
-            <h3 class="title">{% trans "Assessments on Student" %}</h3>
+            <h3 class="title">{% trans "Peer Assessments for This Student" %}</h3>
             {% for assessment in peer_assessments %}
                 {% with peer_num=forloop.counter %}
                 <h4 class="title--sub"> {% trans "Peer" %} {{ peer_num }}: </h4>
-                <table class="staff-info__status__table" summary="{% trans "Assessment from Peer" %}">
+                <table class="staff-info__status__table" summary="{% trans "Assessment" %}">
                     <thead>
                     <tr>
                         <th abbr="Criterion" scope="col">{% trans "Criterion" %}</th>
@@ -57,11 +57,11 @@
         </div>
 
         <div class="staff-info__status ui-staff__content__section">
-            <h3 class="title">{% trans "Assessments submitted by Student" %}</h3>
+            <h3 class="title">{% trans "Peer Assessments Completed by This Student" %}</h3>
             {% for assessment in submitted_assessments %}
                 {% with peer_num=forloop.counter %}
                     <h4 class="title--sub">{% trans "Peer" %} {{ peer_num }}:</h4>
-                    <table class="staff-info__status__table" summary="{% trans "Assessment from Student" %}">
+                    <table class="staff-info__status__table" summary="{% trans "Assessment" %}">
                         <thead>
                         <tr>
                             <th abbr="Criterion" scope="col">{% trans "Criterion" %}</th>
@@ -97,7 +97,7 @@
         </div>
 
         <div class="staff-info__status ui-staff__content__section">
-            <h3 class="title">{% trans "Student Self Assessment" %}</h3>
+            <h3 class="title">{% trans "Student's Self Assessment" %}</h3>
             <table class="staff-info__status__table" summary="{% trans "Self Assessment" %}">
                 <thead>
                 <tr>
@@ -126,6 +126,6 @@
         </div>
     </div>
     {% else %}
-        {% trans "No submission found for student." %}
+        {% trans "Couldn't find a response for this student." %}
     {% endif %}
 </div>

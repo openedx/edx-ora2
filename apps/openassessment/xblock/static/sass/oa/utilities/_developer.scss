@@ -35,14 +35,11 @@
   .action--submit {
     @extend %btn--secondary;
     @extend %action-2;
-    margin-right: ($baseline-v/2);
-    margin-top: ($baseline-v/2);
-    margin-bottom: ($baseline-v/2);
+    margin: ($baseline-v/2) ($baseline-v/2) ($baseline-v/2) ($baseline-v/2);
   }
 
   .title {
     @extend %hd-2;
-    text-align: left;
     color: $heading-staff-color;
     margin-bottom: ($baseline-v/2);
   }
@@ -57,5 +54,19 @@
     border: 1px solid rgba($color-decorative-staff, 0.25);
     padding: ($baseline-v/2) ($baseline-h/2) ($baseline-v/2) ($baseline-h/2);
     margin-bottom: ($baseline-v/2);
+  }
+
+  .openassessment__student-info_list {
+    list-style-type: none;
+  }
+
+  /**
+   * The follow styles are bound for the "shame" file. This is done to override
+   * LMS specific styles on HTML elements.
+   */
+
+  // 'p' elements in LMS have a color set on them.
+  .student__answer__display__content p {
+    color: inherit;
   }
 }

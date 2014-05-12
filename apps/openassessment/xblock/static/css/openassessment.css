@@ -2069,25 +2069,31 @@ hr.divider,
   background: transparent;
   margin: 40px 40px; }
 
-.staff-info__student .label {
-  color: whitesmoke;
-  margin-bottom: 10px; }
-.staff-info__student .action--submit {
-  margin-right: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px; }
-.staff-info__student .title {
-  text-align: left;
-  color: whitesmoke;
-  margin-bottom: 10px; }
-.staff-info__student .title--sub {
-  color: whitesmoke;
-  margin-top: 10px;
-  margin-bottom: 10px; }
-.staff-info__student .student__answer__display__content {
-  border: 1px solid rgba(182, 37, 104, 0.25);
-  padding: 10px 20px 10px 20px;
-  margin-bottom: 10px; }
+.staff-info__student {
+  /**
+   * The follow styles are bound for the "shame" file. This is done to override
+   * LMS specific styles on HTML elements.
+   */ }
+  .staff-info__student .label {
+    color: whitesmoke;
+    margin-bottom: 10px; }
+  .staff-info__student .action--submit {
+    margin: 10px 10px 10px 10px; }
+  .staff-info__student .title {
+    color: whitesmoke;
+    margin-bottom: 10px; }
+  .staff-info__student .title--sub {
+    color: whitesmoke;
+    margin-top: 10px;
+    margin-bottom: 10px; }
+  .staff-info__student .student__answer__display__content {
+    border: 1px solid rgba(182, 37, 104, 0.25);
+    padding: 10px 20px 10px 20px;
+    margin-bottom: 10px; }
+  .staff-info__student .openassessment__student-info_list {
+    list-style-type: none; }
+  .staff-info__student .student__answer__display__content p {
+    color: inherit; }
 
 .openassessment .self-assessment__display__header, .openassessment .peer-assessment__display__header, .openassessment .step__header {
   margin-bottom: 0 !important;

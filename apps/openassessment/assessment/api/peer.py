@@ -60,6 +60,9 @@ def get_score(submission_uuid, requirements):
 
     workflow = PeerWorkflow.get_by_submission_uuid(submission_uuid)
 
+    if workflow is None:
+        return None
+
     # This query will use the ordering defined by the assessment model
     # (descending scored_at, then descending id)
     items = workflow.graded_by.filter(
@@ -420,7 +423,9 @@ def get_submitted_assessments(submission_uuid, scored_only=True, limit=None):
     Returns:
         list(dict): A list of dictionaries, where each dictionary represents a
             separate assessment. Each assessment contains points earned, points
-            possible, time scored, scorer id, score type, and feedback.
+            possible, time scored, scorer id, score type, and feedback. If no
+            workflow is found associated with the given submission_uuid, returns
+            an empty list.
 
     Raises:
         PeerAssessmentRequestError: Raised when the submission_id is invalid.
@@ -448,6 +453,8 @@ def get_submitted_assessments(submission_uuid, scored_only=True, limit=None):
 
     """
     try:
+        # If no workflow is found associated with the uuid, this returns None,
+        # and an empty set of assessments will be returned.
         workflow = PeerWorkflow.get_by_submission_uuid(submission_uuid)
         items = PeerWorkflowItem.objects.filter(
             scorer=workflow,
@@ -460,7 +467,8 @@ def get_submitted_assessments(submission_uuid, scored_only=True, limit=None):
         return serialize_assessments(assessments)
     except DatabaseError:
         error_message = _(
-            u"Error getting assessments graded by author of submission {}".format(submission_uuid)
+            u"Couldn't retrieve the assessments that the author of response {}"
+            u" completed".format(submission_uuid)
         )
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)

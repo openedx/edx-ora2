@@ -1,6 +1,6 @@
 {% load i18n %}
 {% load tz %}
-<div id="openassessment__staff_info" class="wrapper--staff-info wrapper--ui-staff">
+<div id="openassessment__staff-info" class="wrapper--staff-info wrapper--ui-staff">
 <div class="staff-info ui-staff ui-toggle-visibility is--collapsed">
     <h2 class="staff-info__title ui-staff__title ui-toggle-visibility__control">
       <i class="ico icon-caret-right"></i>
@@ -82,10 +82,10 @@
             <div class="wrapper--input" class="staff-info__student__form">
                 <form id="openassessment_student_info_form">
                     <ul>
-                        <li class="label">
+                        <li class="openassessment__student-info_list">
                             <label for="openassessment__student_id" class="label">{% trans "Get Student Info" %}</label>
                         </li>
-                        <li>
+                        <li class="openassessment__student-info_list">
                             <input id="openassessment__student_id" type="text" class="value" maxlength="100">
                         </li>
                     </ul>
@@ -96,7 +96,7 @@
                     </ul>
                 </form>
             </div>
-            <div id="openassessment__student_info" class="staff-info__student__report"></div>
+            <div id="openassessment__student-info" class="staff-info__student__report"></div>
         </div>
     </div>
   </div>

@@ -29,7 +29,7 @@ class StaffInfoMixin(object):
             return self.render_error(_(
                 u"You do not have permission to access staff information"
             ))
-
+        student_item = self.get_student_item_dict()
         context = dict()
         path = 'openassessmentblock/staff_debug/staff_debug.html'
 
@@ -37,7 +37,7 @@ class StaffInfoMixin(object):
         status_counts, num_submissions = self.get_workflow_status_counts()
         context['status_counts'] = status_counts
         context['num_submissions'] = num_submissions
-        context['item_id'] = unicode(self.scope_ids.usage_id)
+        context['item_id'] = student_item["item_id"]
 
         # Include release/due dates for each step in the problem
         context['step_dates'] = list()
@@ -65,15 +65,25 @@ class StaffInfoMixin(object):
         with submissions and assessments specific to the student.
 
         Must be course staff to render this view.
+
         """
         # If request does not come from course staff, return nothing.
         # This should not be able to happen unless someone attempts to
         # explicitly invoke this handler.
         if not self.is_course_staff or self.in_studio_preview:
             return self.render_error(_(
-                u"You do not have permission to access student information"
-            ))
+                u"You do not have permission to access student information."
+        ))
 
+        path, context = self.get_student_info_path_and_context(data)
+        return self.render_assessment(path, context)
+
+    def get_student_info_path_and_context(self, data):
+        """
+        Get the proper path and context for rendering the the student info
+        section of the staff debug panel.
+
+        """
         student_id = data.params.get('student_id', '')
         submission_uuid = None
         submission = None
@@ -117,4 +127,4 @@ class StaffInfoMixin(object):
                 criterion["total_value"] = max_scores[criterion["name"]]
 
         path = 'openassessmentblock/staff_debug/student_info.html'
-        return self.render_assessment(path, context)
+        return path, context

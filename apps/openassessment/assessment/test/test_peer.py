@@ -807,6 +807,10 @@ class TestPeerApi(CacheResetTest):
         submitted_assessments = peer_api.get_submitted_assessments(bob_sub["uuid"], scored_only=False)
         self.assertEqual(1, len(submitted_assessments))
 
+    def test_get_submitted_assessments_with_bad_submission(self):
+        submitted_assessments = peer_api.get_submitted_assessments("bad-uuid", scored_only=True)
+        self.assertEqual(0, len(submitted_assessments))
+
     def test_find_active_assessments(self):
         buffy_answer, _ = self._create_student_and_submission("Buffy", "Buffy's answer")
         xander_answer, _ = self._create_student_and_submission("Xander", "Xander's answer")
