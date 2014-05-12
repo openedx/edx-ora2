@@ -69,6 +69,8 @@ Entities
 
 * **Assessment**: Specifies the scores a submission received for each criterion in a rubric.
 
+* **TrainingExample**: An example essay and associated scores (options selected in a rubric).
+
 * **Classifier**: A function mapping submissions to scores.
 
 * **Task** and **Task queue**
@@ -142,8 +144,8 @@ Procedure:
     a. Retrieve the submission and classifiers from persistent storage or a cache.
 
         i. If the **ClassifierSet** is null, then the classifier wasn't available when the student created the submission.
-        ii. Since we cannot grade the student without a classifier, we stop the task without marking the workflow as complete.
-        iii. When a **Training Task** completes, incomplete **Grading Tasks** for the rubric are automatically rescheduled.
+        ii. Since we cannot grade the student without a classifier, we create the **AI Grading Workflow** record but do not schedule the **Grading Task**.  This means that the workflow will not be marked complete.
+        iii. When a **Training Task** completes, update incomplete **Grading Tasks** with null **ClassifierSets** with the newly created **ClassifierSet**, then schedule the **GradingTasks**.
 
     b. **Optimization**: Check whether a completed **AI Grading Workflow** exists for this submission using the same **ClassifierSet**.
 
@@ -172,21 +174,20 @@ Parameter: AI Training Workflow ID
 
 Procedure:
 
-1. Course staff create **Assessments** (marked as staff assessments) for student submissions.
+1. Course staff create **TrainingExamples** (using the same infrastructure, although not necessarily the same UI, as "Student Training" for peer assessment).
 
 2. Course staff request that a classifier be trained based on staff assessments.  Using the **AI Grading API**, the request handler:
 
-    a. Creates an **AI Training Workflow** record in the database, associated with **Assessment** records (which define the training set) and an **ML Algorithm ID**.
+    a. Creates an **AI Training Workflow** record in the database, associated with **TrainingExamples** and an **ML Algorithm ID**.
     b. Schedules a **Training Task** parametrized by the workflow ID.
 
 3. A worker picks up the **Training Task** and uses the **AI Grading API** to:
 
-    a. Retrieve the assessments from persistent storage or a cache.
-    b. Verify that all assessments are using the same rubric (compare the content hash of each rubric)
-    c. Retrieve the submissions associated with each assessment from persistent storage or a cache.
-    d. Train a classifier for each rubric criterion.  Choose the training algorithm based on the **ML Algorithm ID**.
-    e. Commit the trained classifiers to persistent storage.
-    f. Mark the **AI Training Workflow** as complete.
+    a. Retrieve the *TrainingExamples* from persistent storage or a cache.
+    b. Verify that all *TrainingExamples* use the same rubric.
+    c. Train a classifier for each rubric criterion.  Choose the training algorithm based on the **ML Algorithm ID**.
+    d. Commit the trained classifiers to persistent storage.
+    e. Mark the **AI Training Workflow** as complete.
 
 4. The worker uses the **AI Grading API** to schedule **AI Grading Tasks** for submissions made before the model was trained.  This is the same procedure used to manually reschedule grading tasks after a non-recoverable error (see :ref:`recovery_from_failure`).
 
@@ -239,7 +240,7 @@ Data Model
 1. **GradingWorkflow**
 
     a. Submission UUID (varchar)
-    b. Rubric (Foreign key)
+    b. Rubric UUID (varchar)
     c. ClassifierSet (Foreign Key, Nullable)
     d. Assessment (Foreign Key, Nullable)
     e. Scheduled at (timestamp): The time the task was placed on the queue.
@@ -249,47 +250,53 @@ Data Model
        failed grading tasks in a particular course.
     i. Item ID (varchar): The ID of the item (problem) associated with the submission.  Useful for rescheduling
        failed grading tasks in a particular item in a course.
+    j. Worker version (varchar): Identifier for the code running on the worker when the task was started.  Useful for error tracking.
 
 2. **TrainingWorkflow**
 
     a. Algorithm ID (varchar)
-    b. Many-to-many relation with **Assessment**.
-    c. ClassifierSet (Foreign Key)
-    d. Scheduled at (timestamp): The time the task was placed on the queue.
-    e. Started at (timestamp): The time the task was picked up by the worker.
-    f. Completed at (timestamp): The time the task was completed.  If set, the task is considered complete.
+    b. Rubric UUID (varchar)
+    c. Many-to-many relation with **TrainingExample**.  We can re-use examples for multiple workflows.
+    d. ClassifierSet (Foreign Key)
+    e. Scheduled at (timestamp): The time the task was placed on the queue.
+    f. Started at (timestamp): The time the task was picked up by the worker.
+    g. Completed at (timestamp): The time the task was completed.  If set, the task is considered complete.
+    h. Worker version (varchar): Identifier for the code running on the worker when the task was started.  Useful for error tracking.
+
+3. **TrainingExample**
+
+    a. Response text (text)
+    b. Options selected (many to many relation with CriterionOption)
 
 4. **ClassifierSet**
 
     a. Rubric (Foreign Key)
     b. Created at (timestamp)
 
-3. **Classifier**
+5. **Classifier**
 
     a. ClassifierSet (Foreign Key)
     b. URL for trained classifier (varchar)
     c. Algorithm ID (varchar)
 
-4. **Assessment** (same as current implementation)
+6. **Assessment** (same as current implementation)
 
     a. Submission UUID (varchar)
     b. Rubric (Foreign Key)
 
-5. **AssessmentPart** (same as current implementation)
+7. **AssessmentPart** (same as current implementation)
 
     a. Assessment (Foreign Key)
     b. Option (Foreign Key to a **CriterionOption**)
 
-6. **Rubric** (same as current implementation)
+8. **Rubric** (same as current implementation)
 
-    a. Content hash (varchar)
-
-7. **Criterion** (same as current implementation)
+9. **Criterion** (same as current implementation)
 
     a. Rubric (Foreign Key)
     b. Name (varchar)
 
-8. **CriterionOption** (same as current implementation)
+10. **CriterionOption** (same as current implementation)
 
     a. Criterion (Foreign Key)
     b. Points (positive integer)
@@ -297,9 +304,6 @@ Data Model
 
 
 Notes:
-
-    * We use many-to-many relations to avoid adding foreign keys to **Assessment**, which should
-      be independent of AI-grading.
 
     * We use a URL to reference the trained classifier so we can avoid storing it in the database.
       In practice, the URL will almost certainly point to Amazon S3, but in principle we could use
