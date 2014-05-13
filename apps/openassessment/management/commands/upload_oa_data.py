@@ -11,6 +11,7 @@ import tarfile
 import boto
 from boto.s3.key import Key
 from django.core.management.base import BaseCommand, CommandError
+from django.conf import settings
 from openassessment.data import CsvWriter
 
 
@@ -129,7 +130,16 @@ class Command(BaseCommand):
             str: URL to access the uploaded archive.
 
         """
-        conn = boto.connect_s3()
+        # Try to get the AWS credentials from settings if they are available
+        # If not, these will default to `None`, and boto will try to use
+        # environment vars or configuration files instead.
+        aws_access_key_id = getattr(settings, 'AWS_ACCESS_KEY_ID', None)
+        aws_secret_access_key = getattr(settings, 'AWS_SECRET_ACCESS_KEY', None)
+        conn = boto.connect_s3(
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key
+        )
+
         bucket = conn.get_bucket(s3_bucket)
         key_name = os.path.join(course_id, os.path.split(file_path)[1])
         key = Key(bucket=bucket, name=key_name)
