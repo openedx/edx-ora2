@@ -152,9 +152,9 @@ class OpenAssessmentBlock(
         item_id = unicode(self.scope_ids.usage_id)
 
         # This is not the real way course_ids should work, but this is a
-        # temporary expediency for LMS integratino
+        # temporary expediency for LMS integration
         if hasattr(self, "xmodule_runtime"):
-            course_id = self.xmodule_runtime.course_id
+            course_id = unicode(self.xmodule_runtime.course_id)
             student_id = self.xmodule_runtime.anonymous_student_id
         else:
             course_id = "edX/Enchantment_101/April_1"
