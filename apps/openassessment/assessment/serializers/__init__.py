@@ -6,3 +6,4 @@ Export serializers from each module in this package.
 
 from .base import *
 from .peer import *
+from .training import *

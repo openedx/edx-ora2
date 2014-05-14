@@ -1,0 +1,478 @@
+{
+    "valid": {
+        "rubric": {
+            "prompt": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "vøȼȺƀᵾłȺɍɏ",
+                    "prompt": "Ħøw vȺɍɨɇđ ɨs ŧħɇ vøȼȺƀᵾłȺɍɏ?",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "name": "𝒑𝒐𝒐𝒓",
+                            "explanation": "𝕻𝖔𝖔𝖗 𝖏𝖔𝖇!",
+                            "points": 0
+                        },
+                        {
+                            "order_num": 1,
+                            "name": "𝓰𝓸𝓸𝓭",
+                            "explanation": "ﻭѻѻɗ ﻝѻ๒!",
+                            "points": 1
+                        }
+                    ]
+                },
+                {
+                    "order_num": 1,
+                    "name": "gɼค๓๓คɼ",
+                    "prompt": "𝕳𝖔𝖜 𝖈𝖔𝖗𝖗𝖊𝖈𝖙 𝖎𝖘 𝖙𝖍𝖊 𝖌𝖗𝖆𝖒𝖒𝖆𝖗?",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "name": "𝒑𝒐𝒐𝒓",
+                            "explanation": "𝕻𝖔𝖔𝖗 𝖏𝖔𝖇!",
+                            "point": 0
+                        },
+                        {
+                            "order_num": 1,
+                            "name": "𝓰𝓸𝓸𝓭",
+                            "explanation": "ﻭѻѻɗ ﻝѻ๒!",
+                            "points": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        "examples": [
+            {
+                "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                "options_selected": {
+                    "vøȼȺƀᵾłȺɍɏ": "𝓰𝓸𝓸𝓭",
+                    "gɼค๓๓คɼ": "𝒑𝒐𝒐𝒓"
+                }
+            },
+            {
+                "answer": "Sed lobortis, dolor quis rhoncus malesuada, nisi lorem hendrerit lorem, id dapibus risus dolor eu augue.",
+                "options_selected": {
+                    "vøȼȺƀᵾłȺɍɏ": "𝒑𝒐𝒐𝒓",
+                    "gɼค๓๓คɼ": "𝓰𝓸𝓸𝓭"
+                }
+            },
+            {
+                "answer": "Mauris vehicula euismod porttitor. Nunc fringilla sem nec orci tincidunt consectetur",
+                "options_selected": {
+                    "vøȼȺƀᵾłȺɍɏ": "𝓰𝓸𝓸𝓭",
+                    "gɼค๓๓คɼ": "𝓰𝓸𝓸𝓭"
+                }
+            },
+            {
+                "answer": "Phasellus ornare, risus sed mollis venenatis, nibh neque placerat orci, nec pellentesque risus lorem pulvinar justo.",
+                "options_selected": {
+                    "vøȼȺƀᵾłȺɍɏ": "𝒑𝒐𝒐𝒓",
+                    "gɼค๓๓คɼ": "𝒑𝒐𝒐𝒓"
+                }
+            }
+        ],
+        "errors": []
+    },
+
+    "missing_options": {
+        "rubric": {
+            "prompt": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "vøȼȺƀᵾłȺɍɏ",
+                    "prompt": "Ħøw vȺɍɨɇđ ɨs ŧħɇ vøȼȺƀᵾłȺɍɏ?",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "name": "𝒑𝒐𝒐𝒓",
+                            "explanation": "𝕻𝖔𝖔𝖗 𝖏𝖔𝖇!",
+                            "points": 0
+                        },
+                        {
+                            "order_num": 1,
+                            "name": "𝓰𝓸𝓸𝓭",
+                            "explanation": "ﻭѻѻɗ ﻝѻ๒!",
+                            "points": 1
+                        }
+                    ]
+                },
+                {
+                    "order_num": 1,
+                    "name": "gɼค๓๓คɼ",
+                    "prompt": "𝕳𝖔𝖜 𝖈𝖔𝖗𝖗𝖊𝖈𝖙 𝖎𝖘 𝖙𝖍𝖊 𝖌𝖗𝖆𝖒𝖒𝖆𝖗?",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "name": "𝒑𝒐𝒐𝒓",
+                            "explanation": "𝕻𝖔𝖔𝖗 𝖏𝖔𝖇!",
+                            "points": 0
+                        },
+                        {
+                            "order_num": 1,
+                            "name": "𝓰𝓸𝓸𝓭",
+                            "explanation": "ﻭѻѻɗ ﻝѻ๒!",
+                            "points": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        "examples": [
+            {
+                "answer": "Nam elementum posuere nibh. Aliquam rhoncus diam tellus, quis luctus justo rhoncus at",
+                "options_selected": {
+                    "vøȼȺƀᵾłȺɍɏ": "𝓰𝓸𝓸𝓭",
+                    "gɼค๓๓คɼ": "𝒑𝒐𝒐𝒓"
+                }
+            },
+            {
+                "answer": "Curabitur diam elit, dictum in nunc sit amet, rhoncus suscipit felis.",
+                "options_selected": {
+                    "vøȼȺƀᵾłȺɍɏ": "𝒑𝒐𝒐𝒓"
+                }
+            },
+            {
+                "answer": "Ut nec dui ac erat molestie cursus vitae in risus",
+                "options_selected": {}
+            }
+        ],
+        "errors": [
+            "Example 2 is missing an option for \"gɼค๓๓คɼ\"",
+            "Example 3 is missing an option for \"vøȼȺƀᵾłȺɍɏ\"",
+            "Example 3 is missing an option for \"gɼค๓๓คɼ\""
+        ]
+    },
+
+    "extra_options": {
+        "rubric": {
+            "prompt": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "vøȼȺƀᵾłȺɍɏ",
+                    "prompt": "Ħøw vȺɍɨɇđ ɨs ŧħɇ vøȼȺƀᵾłȺɍɏ?",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "name": "𝒑𝒐𝒐𝒓",
+                            "explanation": "𝕻𝖔𝖔𝖗 𝖏𝖔𝖇!",
+                            "points": 0
+                        },
+                        {
+                            "order_num": 1,
+                            "name": "𝓰𝓸𝓸𝓭",
+                            "explanation": "ﻭѻѻɗ ﻝѻ๒!",
+                            "points": 1
+                        }
+                    ]
+                },
+                {
+                    "order_num": 1,
+                    "name": "gɼค๓๓คɼ",
+                    "prompt": "𝕳𝖔𝖜 𝖈𝖔𝖗𝖗𝖊𝖈𝖙 𝖎𝖘 𝖙𝖍𝖊 𝖌𝖗𝖆𝖒𝖒𝖆𝖗?",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "name": "𝒑𝒐𝒐𝒓",
+                            "explanation": "𝕻𝖔𝖔𝖗 𝖏𝖔𝖇!",
+                            "points": 0
+                        },
+                        {
+                            "order_num": 1,
+                            "name": "𝓰𝓸𝓸𝓭",
+                            "explanation": "ﻭѻѻɗ ﻝѻ๒!",
+                            "points": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        "examples": [
+            {
+                "answer": "In diam ante, ultricies in molestie quis, feugiat eget orci. Integer gravida, arcu lacinia convallis congue, ipsum eros interdum turpis, ut mollis libero purus vitae ante.",
+                "options_selected": {
+                    "vøȼȺƀᵾłȺɍɏ": "𝓰𝓸𝓸𝓭",
+                    "gɼค๓๓คɼ": "𝒑𝒐𝒐𝒓"
+                }
+            },
+            {
+                "answer": "Duis at varius lorem, nec accumsan justo.",
+                "options_selected": {
+                    "vøȼȺƀᵾłȺɍɏ": "𝒑𝒐𝒐𝒓",
+                    "gɼค๓๓คɼ": "𝒑𝒐𝒐𝒓",
+                    "ëẍẗṛä": "ëẍẗṛä"
+                }
+            },
+            {
+                "answer": "Aenean sodales sapien eget lorem egestas, sed pulvinar elit fermentum",
+                "options_selected": {
+                    "vøȼȺƀᵾłȺɍɏ": "𝒑𝒐𝒐𝒓",
+                    "gɼค๓๓คɼ": "𝒑𝒐𝒐𝒓",
+                    "ëẍẗṛä": "ëẍẗṛä",
+                    "ëẍẗṛä 𝕖𝕩𝕥𝕣𝕒": "ëẍẗṛä ëẍẗṛä"
+                }
+            }
+        ],
+        "errors": [
+            "Example 2 has an extra option for \"ëẍẗṛä\"",
+            "Example 3 has an extra option for \"ëẍẗṛä\"",
+            "Example 3 has an extra option for \"ëẍẗṛä 𝕖𝕩𝕥𝕣𝕒\""
+        ]
+    },
+
+    "missing_and_extra_options": {
+        "rubric": {
+            "prompt": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "vøȼȺƀᵾłȺɍɏ",
+                    "prompt": "Ħøw vȺɍɨɇđ ɨs ŧħɇ vøȼȺƀᵾłȺɍɏ?",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "name": "𝒑𝒐𝒐𝒓",
+                            "explanation": "𝕻𝖔𝖔𝖗 𝖏𝖔𝖇!",
+                            "points": 0
+                        },
+                        {
+                            "order_num": 1,
+                            "name": "𝓰𝓸𝓸𝓭",
+                            "explanation": "ﻭѻѻɗ ﻝѻ๒!",
+                            "points": 1
+                        }
+                    ]
+                },
+                {
+                    "order_num": 1,
+                    "name": "gɼค๓๓คɼ",
+                    "prompt": "𝕳𝖔𝖜 𝖈𝖔𝖗𝖗𝖊𝖈𝖙 𝖎𝖘 𝖙𝖍𝖊 𝖌𝖗𝖆𝖒𝖒𝖆𝖗?",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "name": "𝒑𝒐𝒐𝒓",
+                            "explanation": "𝕻𝖔𝖔𝖗 𝖏𝖔𝖇!",
+                            "points": 0
+                        },
+                        {
+                            "order_num": 1,
+                            "name": "𝓰𝓸𝓸𝓭",
+                            "explanation": "ﻭѻѻɗ ﻝѻ๒!",
+                            "points": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        "examples": [
+            {
+                "answer": " Proin eu lectus ut risus semper porttitor.",
+                "options_selected": {
+                    "vøȼȺƀᵾłȺɍɏ": "𝓰𝓸𝓸𝓭",
+                    "gɼค๓๓คɼ": "𝒑𝒐𝒐𝒓"
+                }
+            },
+            {
+                "answer": "Donec sem nunc, volutpat nec tristique semper, sodales eu enim.",
+                "options_selected": {
+                    "vøȼȺƀᵾłȺɍɏ": "𝒑𝒐𝒐𝒓",
+                    "ëẍẗṛä": "ëẍẗṛä"
+                }
+            }
+        ],
+        "errors": [
+            "Example 2 is missing an option for \"gɼค๓๓คɼ\"",
+            "Example 2 has an extra option for \"ëẍẗṛä\""
+        ]
+    },
+
+    "invalid_option_name": {
+        "rubric": {
+            "prompt": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "vøȼȺƀᵾłȺɍɏ",
+                    "prompt": "Ħøw vȺɍɨɇđ ɨs ŧħɇ vøȼȺƀᵾłȺɍɏ?",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "name": "𝒑𝒐𝒐𝒓",
+                            "explanation": "𝕻𝖔𝖔𝖗 𝖏𝖔𝖇!",
+                            "points": 0
+                        },
+                        {
+                            "order_num": 1,
+                            "name": "𝓰𝓸𝓸𝓭",
+                            "explanation": "ﻭѻѻɗ ﻝѻ๒!",
+                            "points": 1
+                        }
+                    ]
+                },
+                {
+                    "order_num": 1,
+                    "name": "gɼค๓๓คɼ",
+                    "prompt": "𝕳𝖔𝖜 𝖈𝖔𝖗𝖗𝖊𝖈𝖙 𝖎𝖘 𝖙𝖍𝖊 𝖌𝖗𝖆𝖒𝖒𝖆𝖗?",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "name": "𝒑𝒐𝒐𝒓",
+                            "explanation": "𝕻𝖔𝖔𝖗 𝖏𝖔𝖇!",
+                            "points": 0
+                        },
+                        {
+                            "order_num": 1,
+                            "name": "𝓰𝓸𝓸𝓭",
+                            "explanation": "ﻭѻѻɗ ﻝѻ๒!",
+                            "points": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        "examples": [
+            {
+                "answer": "Cras blandit justo eget nunc viverra, ut dignissim nibh lobortis",
+                "options_selected": {
+                    "vøȼȺƀᵾłȺɍɏ": "ïṅṿäḷïḋ",
+                    "gɼค๓๓คɼ": "𝒑𝒐𝒐𝒓"
+                }
+            },
+            {
+                "answer": " Morbi dignissim enim et interdum congue.",
+                "options_selected": {
+                    "vøȼȺƀᵾłȺɍɏ": "𝒑𝒐𝒐𝒓",
+                    "gɼค๓๓คɼ": "ïṅṿäḷïḋ"
+                }
+            },
+            {
+                "answer": "Nunc consectetur nulla id fermentum vestibulum",
+                "options_selected": {
+                    "vøȼȺƀᵾłȺɍɏ": "ïṅṿäḷïḋ",
+                    "gɼค๓๓คɼ": "שєгץ เภשคɭเ๔"
+                }
+            },
+            {
+                "answer": "Nulla vitae ante nec sapien consequat vehicula eu scelerisque est.",
+                "options_selected": {
+                    "vøȼȺƀᵾłȺɍɏ": "ïṅṿäḷïḋ"
+                }
+            }
+        ],
+        "errors": [
+            "Example 1 has an invalid option for \"vøȼȺƀᵾłȺɍɏ\": \"ïṅṿäḷïḋ\"",
+            "Example 2 has an invalid option for \"gɼค๓๓คɼ\": \"ïṅṿäḷïḋ\"",
+            "Example 3 has an invalid option for \"vøȼȺƀᵾłȺɍɏ\": \"ïṅṿäḷïḋ\"",
+            "Example 3 has an invalid option for \"gɼค๓๓คɼ\": \"שєгץ เภשคɭเ๔\"",
+            "Example 4 is missing an option for \"gɼค๓๓คɼ\"",
+            "Example 4 has an invalid option for \"vøȼȺƀᵾłȺɍɏ\": \"ïṅṿäḷïḋ\""
+        ]
+    },
+
+    "rubric_missing_options_list": {
+        "rubric": {
+            "prompt": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "vøȼȺƀᵾłȺɍɏ",
+                    "prompt": "Ħøw vȺɍɨɇđ ɨs ŧħɇ vøȼȺƀᵾłȺɍɏ?"
+                }
+            ]
+        },
+        "examples": [
+            {
+                "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                "options_selected": {
+                    "vøȼȺƀᵾłȺɍɏ": "𝓰𝓸𝓸𝓭",
+                    "gɼค๓๓คɼ": "𝒑𝒐𝒐𝒓"
+                }
+            }
+        ],
+        "errors": ["Could not parse serialized rubric"]
+    },
+
+    "rubric_missing_criteria_list": {
+        "rubric": {
+            "prompt": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽"
+        },
+        "examples": [
+            {
+                "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                "options_selected": {
+                    "vøȼȺƀᵾłȺɍɏ": "𝓰𝓸𝓸𝓭",
+                    "gɼค๓๓คɼ": "𝒑𝒐𝒐𝒓"
+                }
+            }
+        ],
+        "errors": ["Could not parse serialized rubric"]
+    },
+
+    "example_missing_keys": {
+        "rubric": {
+            "prompt": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "vøȼȺƀᵾłȺɍɏ",
+                    "prompt": "Ħøw vȺɍɨɇđ ɨs ŧħɇ vøȼȺƀᵾłȺɍɏ?",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "name": "𝒑𝒐𝒐𝒓",
+                            "explanation": "𝕻𝖔𝖔𝖗 𝖏𝖔𝖇!",
+                            "points": 0
+                        },
+                        {
+                            "order_num": 1,
+                            "name": "𝓰𝓸𝓸𝓭",
+                            "explanation": "ﻭѻѻɗ ﻝѻ๒!",
+                            "points": 1
+                        }
+                    ]
+                },
+                {
+                    "order_num": 1,
+                    "name": "gɼค๓๓คɼ",
+                    "prompt": "𝕳𝖔𝖜 𝖈𝖔𝖗𝖗𝖊𝖈𝖙 𝖎𝖘 𝖙𝖍𝖊 𝖌𝖗𝖆𝖒𝖒𝖆𝖗?",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "name": "𝒑𝒐𝒐𝒓",
+                            "explanation": "𝕻𝖔𝖔𝖗 𝖏𝖔𝖇!",
+                            "point": 0
+                        },
+                        {
+                            "order_num": 1,
+                            "name": "𝓰𝓸𝓸𝓭",
+                            "explanation": "ﻭѻѻɗ ﻝѻ๒!",
+                            "points": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        "examples": [
+            {
+                "options_selected": {
+                    "vøȼȺƀᵾłȺɍɏ": "𝓰𝓸𝓸𝓭",
+                    "gɼค๓๓คɼ": "𝒑𝒐𝒐𝒓"
+                }
+            },
+            {
+                "answer": "Sed lobortis, dolor quis rhoncus malesuada, nisi lorem hendrerit lorem, id dapibus risus dolor eu augue."
+            },
+            {
+            }
+        ],
+        "errors": [
+            "Example 1 has a validation error: Training example must contain an \"answer\" field.",
+            "Example 2 has a validation error: Training example must contain an \"options_selected\" field.",
+            "Example 3 has a validation error: Training example must contain an \"answer\" field.",
+            "Example 3 has a validation error: Training example must contain an \"options_selected\" field."
+        ]
+    }
+}
