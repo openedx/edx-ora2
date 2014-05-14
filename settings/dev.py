@@ -2,7 +2,7 @@
 Dev-specific Django settings.
 """
 # Inherit from base settings
-from .base import *
+from .base import *  # pylint:disable=W0614,W0401
 
 INSTALLED_APPS += (
     'django_pdb',            # Allows post-mortem debugging on exceptions

@@ -1,4 +1,6 @@
-# Django settings for Tim project.
+"""
+Base settings for ORA2.
+"""
 
 import os
 import sys
@@ -7,7 +9,7 @@ import sys
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 APPS_DIR = os.path.join(BASE_DIR, "apps")
 
-sys.path.append(APPS_DIR)  # So it can find the gradebook apps dir
+sys.path.append(APPS_DIR)  # So it can find the submissions apps dir
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -125,6 +127,7 @@ INSTALLED_APPS = (
 
     # Third party
     'django_extensions',
+    'djcelery',
     'south',
 
     # XBlock
@@ -153,3 +156,9 @@ CACHES = {
 EDX_ORA2 = {
 
 }
+
+# Celery configuration
+# Note: Version 3.1 of Celery includes Django support, but since we're using
+# version 3.0 (same as edx-platform), we need to use an external library.
+import djcelery
+djcelery.setup_loader()
