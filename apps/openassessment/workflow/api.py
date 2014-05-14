@@ -297,7 +297,7 @@ def update_from_assessments(submission_uuid, assessment_requirements):
             problem.
 
     Examples:
-        >>> get_workflow_for_submission(
+        >>> update_from_assessments(
         ...     '222bdf3d-a88e-11e3-859e-040ccee02800',
         ...     {"peer": {"must_grade":5, "must_be_graded_by":3}}
         ... )
@@ -407,6 +407,7 @@ def _get_workflow_model(submission_uuid):
         raise AssessmentWorkflowInternalError(err_msg)
 
     return workflow
+
 
 def _serialized_with_details(workflow, assessment_requirements):
     """Given a workflow and assessment requirements, return the serialized
