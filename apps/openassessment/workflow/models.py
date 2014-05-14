@@ -50,6 +50,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
     STEPS = [
         "peer",  # User needs to assess peer submissions
         "self",  # User needs to assess themselves
+        "training", # User needs to practice grading using example essays
     ]
 
     STATUSES = [
@@ -262,11 +263,14 @@ class AssessmentWorkflowStep(models.Model):
         """
         from openassessment.assessment.api import peer as peer_api
         from openassessment.assessment.api import self as self_api
+        from openassessment.assessment.api import student_training as student_training
         api = None
         if self.name == AssessmentWorkflow.STATUS.self:
             api = self_api
         elif self.name == AssessmentWorkflow.STATUS.peer:
             api = peer_api
+        elif self.name == AssessmentWorkflow.STATUS.training:
+            api = student_training
         return api
 
     def update(self, submission_uuid, assessment_requirements):

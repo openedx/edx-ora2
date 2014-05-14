@@ -1,0 +1,64 @@
+<openassessment>
+    <title>Student training test</title>
+    <prompt>Test prompt</prompt>
+    <rubric>
+        <prompt>Test rubric prompt</prompt>
+        <criterion>
+            <name>Vocabulary</name>
+            <prompt>How varied is the vocabulary?</prompt>
+            <option points="0">
+                <name>Poor</name>
+                <explanation>Poor job</explanation>
+            </option>
+            <option points="1">
+                <name>Good</name>
+                <explanation>Good job</explanation>
+            </option>
+            <option points="3">
+                <name>Excellent</name>
+                <explanation>Excellent job</explanation>
+            </option>
+        </criterion>
+        <criterion>
+            <name>Grammar</name>
+            <prompt>How correct is the grammar?</prompt>
+            <option points="0">
+                <name>Poor</name>
+                <explanation>Poor job</explanation>
+            </option>
+            <option points="1">
+                <name>Good</name>
+                <explanation>Good job</explanation>
+            </option>
+            <option points="3">
+                <name>Excellent</name>
+                <explanation>Excellent job</explanation>
+            </option>
+        </criterion>
+    </rubric>
+    <assessments>
+        <assessment name="student-training">
+            <example>
+                <answer>
+                𝑨 𝒔𝒖𝒃𝒔𝒕𝒂𝒏𝒄𝒆--𝒕𝒉𝒂𝒕 𝒘𝒉𝒊𝒄𝒉 𝒊𝒔 𝒄𝒂𝒍𝒍𝒆𝒅 𝒂 𝒔𝒖𝒃𝒔𝒕𝒂𝒏𝒄𝒆 𝒎𝒐𝒔𝒕 𝒔𝒕𝒓𝒊𝒄𝒕𝒍𝒚, 𝒑𝒓𝒊𝒎𝒂𝒓𝒊𝒍𝒚,
+                𝒂𝒏𝒅 𝒎𝒐𝒔𝒕 𝒐𝒇 𝒂𝒍𝒍--𝒊𝒔 𝒕𝒉𝒂𝒕 𝒘𝒉𝒊𝒄𝒉 𝒊𝒔 𝒏𝒆𝒊𝒕𝒉𝒆𝒓 𝒔𝒂𝒊𝒅 𝒐𝒇 𝒂 𝒔𝒖𝒃𝒋𝒆𝒄𝒕 𝒐𝒏 𝒐𝒓 𝒊𝒏 𝒂 𝒔𝒖𝒃𝒋𝒆𝒄𝒕,
+                𝒆.𝒈. 𝒕𝒉𝒆 𝒊𝒏𝒅𝒊𝒗𝒊𝒅𝒖𝒂𝒍 𝒎𝒂𝒏 𝒐𝒓 𝒕𝒉𝒆 𝒊𝒏𝒅𝒊𝒗𝒊𝒅𝒖𝒂𝒍 𝒉𝒐𝒓𝒔𝒆.
+                </answer>
+                <select criterion="Vocabulary" option="Good" />
+                <select criterion="Grammar" option="Excellent" />
+            </example>
+            <example>
+                <answer>
+                Їḟ ẗḧëṛë ïṡ ṡöṁë ëṅḋ öḟ ẗḧë ẗḧïṅġṡ ẅë ḋö, ẅḧïċḧ ẅë ḋëṡïṛë ḟöṛ ïẗṡ öẅṅ ṡäḳë,
+                ċḷëäṛḷÿ ẗḧïṡ ṁüṡẗ ḅë ẗḧë ġööḋ. Ẅïḷḷ ṅöẗ ḳṅöẅḷëḋġë öḟ ïẗ, ẗḧëṅ, ḧäṿë ä ġṛëäẗ
+                ïṅḟḷüëṅċë öṅ ḷïḟë? Ṡḧäḷḷ ẅë ṅöẗ, ḷïḳë äṛċḧëṛṡ ẅḧö ḧäṿë ä ṁäṛḳ ẗö äïṁ äẗ,
+                ḅë ṁöṛë ḷïḳëḷÿ ẗö ḧïẗ üṗöṅ ẅḧäẗ ẅë ṡḧöüḷḋ? Їḟ ṡö, ẅë ṁüṡẗ ẗṛÿ, ïṅ öüẗḷïṅë äẗ ḷëäṡẗ,
+                ẗö ḋëẗëṛṁïṅë ẅḧäẗ ïẗ ïṡ.
+                </answer>
+                <select criterion="Vocabulary" option="Excellent" />
+                <select criterion="Grammar" option="Poor" />
+            </example>
+        </assessment>
+        <assessment name="peer-assessment" must_grade="5" must_be_graded_by="3" />
+    </assessments>
+</openassessment>

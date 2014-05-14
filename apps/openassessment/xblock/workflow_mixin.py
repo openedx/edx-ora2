@@ -1,31 +1,55 @@
+"""
+Handle OpenAssessment XBlock requests to the Workflow API.
+"""
+
 from xblock.core import XBlock
 from openassessment.workflow import api as workflow_api
 
 
 class WorkflowMixin(object):
+    """
+    Handle OpenAssessment XBlock requests to the Workflow API.
+    """
+
+    # Dictionary mapping assessment names (e.g. peer-assessment)
+    # to the corresponding workflow step names.
+    ASSESSMENT_STEP_NAMES = {
+        "self-assessment": "self",
+        "peer-assessment": "peer",
+        "student-training": "training",
+    }
 
     @XBlock.json_handler
-    def handle_workflow_info(self, data, suffix=''):
+    def handle_workflow_info(self, data, suffix=''):    # pylint:disable=W0613
+        """
+        Retrieve the current state of the workflow.
+
+        Args:
+            data: Unused
+
+        Kwargs:
+            suffix: Unused
+
+        Returns:
+            dict
+
+        """
         return self.get_workflow_info()
 
     def create_workflow(self, submission_uuid):
+        """
+        Create a new workflow for a student submission.
+
+        Args:
+            submission_uuid (str): The UUID of the submission to associate
+                with the workflow.
+
+        Returns:
+            None
+
+        """
         steps = self._create_step_list()
         workflow_api.create_workflow(submission_uuid, steps)
-
-    def _create_step_list(self):
-        def _convert_rubric_assessment_name(ra_name):
-            """'self-assessment' -> 'self', 'peer-assessment' -> 'peer'"""
-            short_name, suffix = ra_name.split("-")
-            return short_name
-
-        # rubric_assessments stores names as "self-assessment",
-        # "peer-assessment", while the model is expecting "self", "peer".
-        # Therefore, this conversion step. We should refactor later to
-        # standardize.
-        return [
-            _convert_rubric_assessment_name(ra["name"])
-            for ra in self.valid_assessments
-        ]
 
     def workflow_requirements(self):
         """
@@ -34,6 +58,7 @@ class WorkflowMixin(object):
 
         Returns:
             dict
+
         """
         assessment_ui_model = self.get_assessment_module('peer-assessment')
 
@@ -116,3 +141,20 @@ class WorkflowMixin(object):
         )
         num_submissions = sum(item['count'] for item in status_counts)
         return status_counts, num_submissions
+
+    def _create_step_list(self):
+        """
+        Return a list of valid workflow step names.
+        This translates between the assessment types (loaded from the problem definition)
+        and the step types (used by the Workflow API).
+        At some point, we should probably refactor to make these two names consistent.
+
+        Returns:
+            list
+
+        """
+        return [
+            self.ASSESSMENT_STEP_NAMES.get(ra['name'])
+            for ra in self.valid_assessments
+            if ra['name'] in self.ASSESSMENT_STEP_NAMES
+        ]
