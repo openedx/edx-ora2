@@ -535,7 +535,6 @@ class TestPeerApi(CacheResetTest):
         # Tim's workflow has enough grades.
         self.assertIsNotNone(PeerWorkflow.objects.get(student_id=tim["student_id"]).grading_completed_at)
 
-
     def test_complex_peer_assessment_workflow(self):
         """
         Intended to mimic a more complicated scenario where people do not
@@ -789,6 +788,29 @@ class TestPeerApi(CacheResetTest):
         }
         self.assertTrue(peer_api.submitter_is_finished(buffy_sub["uuid"], requirements))
 
+    def test_get_submitted_assessments(self):
+        self._create_student_and_submission("Tim", "Tim's answer")
+        bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
+        peer_api.get_submission_to_assess(bob_sub['uuid'], REQUIRED_GRADED_BY)
+        assessment = peer_api.create_assessment(
+            bob_sub["uuid"],
+            bob["student_id"],
+            ASSESSMENT_DICT['options_selected'], dict(), "",
+            RUBRIC_DICT,
+            REQUIRED_GRADED_BY,
+        )
+        self.assertEqual(assessment["points_earned"], 6)
+        self.assertEqual(assessment["points_possible"], 14)
+        submitted_assessments = peer_api.get_submitted_assessments(bob_sub["uuid"], scored_only=True)
+        self.assertEqual(0, len(submitted_assessments))
+
+        submitted_assessments = peer_api.get_submitted_assessments(bob_sub["uuid"], scored_only=False)
+        self.assertEqual(1, len(submitted_assessments))
+
+    def test_get_submitted_assessments_with_bad_submission(self):
+        submitted_assessments = peer_api.get_submitted_assessments("bad-uuid", scored_only=True)
+        self.assertEqual(0, len(submitted_assessments))
+
     def test_find_active_assessments(self):
         buffy_answer, _ = self._create_student_and_submission("Buffy", "Buffy's answer")
         xander_answer, _ = self._create_student_and_submission("Xander", "Xander's answer")
@@ -933,6 +955,16 @@ class TestPeerApi(CacheResetTest):
         item = PeerWorkflowItem.objects.get(submission_uuid=xander_answer['uuid'])
         self.assertEqual(xander_answer["uuid"], submission["uuid"])
         self.assertIsNotNone(item.assessment)
+
+    @patch.object(PeerWorkflowItem.objects, "filter")
+    @raises(peer_api.PeerAssessmentInternalError)
+    def test_get_submitted_assessments_error(self, mock_filter):
+        self._create_student_and_submission("Tim", "Tim's answer")
+        bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
+        peer_api.get_submission_to_assess(bob_sub['uuid'], REQUIRED_GRADED_BY)
+        mock_filter.side_effect = DatabaseError("Oh no.")
+        submitted_assessments = peer_api.get_submitted_assessments(bob_sub["uuid"], scored_only=False)
+        self.assertEqual(1, len(submitted_assessments))
 
     @patch.object(PeerWorkflow.objects, 'raw')
     @raises(peer_api.PeerAssessmentInternalError)

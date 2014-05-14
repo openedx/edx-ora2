@@ -93,6 +93,25 @@ OpenAssessment.Server.prototype = {
     },
 
     /**
+     Load the Student Info section in Staff Info.
+     **/
+    studentInfo: function(student_id) {
+        var url = this.url('render_student_info');
+        return $.Deferred(function(defer) {
+            $.ajax({
+                url: url,
+                type: "POST",
+                dataType: "html",
+                data: {student_id: student_id}
+            }).done(function(data) {
+                    defer.resolveWith(this, [data]);
+                }).fail(function(data) {
+                    defer.rejectWith(this, [gettext('This section could not be loaded.')]);
+                });
+        }).promise();
+    },
+
+    /**
     Send a submission to the XBlock.
 
     Args:

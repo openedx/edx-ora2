@@ -17,6 +17,8 @@ OpenAssessment.BaseView = function(runtime, element, server) {
     this.responseView = new OpenAssessment.ResponseView(this.element, this.server, this);
     this.peerView = new OpenAssessment.PeerView(this.element, this.server, this);
     this.gradeView = new OpenAssessment.GradeView(this.element, this.server, this);
+    // Staff only information about student progress.
+    this.staffInfoView = new OpenAssessment.StaffInfoView(this.element, this.server, this);
 };
 
 
@@ -63,12 +65,7 @@ OpenAssessment.BaseView.prototype = {
     load: function() {
         this.responseView.load();
         this.loadAssessmentModules();
-
-        // Set up expand/collapse for course staff debug, if available
-        courseStaffDebug = $('.wrapper--staff-info');
-        if (courseStaffDebug.length > 0) {
-            this.setUpCollapseExpand(courseStaffDebug, function() {});
-        }
+        this.staffInfoView.load();
     },
 
     /**

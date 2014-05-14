@@ -9,7 +9,6 @@ from django.utils import timezone
 from django.utils.translation import ugettext as _
 from django.db import DatabaseError
 from dogapi import dog_stats_api
-import random
 
 from openassessment.assessment.models import (
     Assessment, AssessmentFeedback, AssessmentPart,
@@ -59,7 +58,10 @@ def get_score(submission_uuid, requirements):
     if not submitter_is_finished(submission_uuid, requirements):
         return None
 
-    workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
+    workflow = PeerWorkflow.get_by_submission_uuid(submission_uuid)
+
+    if workflow is None:
+        return None
 
     # This query will use the ordering defined by the assessment model
     # (descending scored_at, then descending id)
@@ -396,6 +398,77 @@ def get_assessments(submission_uuid, scored_only=True, limit=None):
     except DatabaseError:
         error_message = _(
             u"Error getting assessments for submission {}".format(submission_uuid)
+        )
+        logger.exception(error_message)
+        raise PeerAssessmentInternalError(error_message)
+
+
+def get_submitted_assessments(submission_uuid, scored_only=True, limit=None):
+    """Retrieve the assessments created by the given submission's author.
+
+    Retrieves all the assessments created by the given submission's author. This
+    API returns related feedback without making any assumptions about grading.
+    Any outstanding assessments associated with this submission will not be
+    returned.
+
+    Args:
+        submission_uuid (str): The submission of the student whose assessments
+        we are requesting. Required.
+
+    Kwargs:
+        scored (boolean): Only retrieve the assessments used to generate a score
+            for this submission.
+        limit (int): Limit the returned assessments. If None, returns all.
+
+    Returns:
+        list(dict): A list of dictionaries, where each dictionary represents a
+            separate assessment. Each assessment contains points earned, points
+            possible, time scored, scorer id, score type, and feedback. If no
+            workflow is found associated with the given submission_uuid, returns
+            an empty list.
+
+    Raises:
+        PeerAssessmentRequestError: Raised when the submission_id is invalid.
+        PeerAssessmentInternalError: Raised when there is an internal error
+            while retrieving the assessments associated with this submission.
+
+    Examples:
+        >>> get_submitted_assessments("1", scored_only=True, limit=2)
+        [
+            {
+                'points_earned': 6,
+                'points_possible': 12,
+                'scored_at': datetime.datetime(2014, 1, 29, 17, 14, 52, 649284 tzinfo=<UTC>),
+                'scorer': u"Tim",
+                'feedback': u'Your submission was thrilling.'
+            },
+            {
+                'points_earned': 11,
+                'points_possible': 12,
+                'scored_at': datetime.datetime(2014, 1, 31, 14, 10, 17, 544214 tzinfo=<UTC>),
+                'scorer': u"Tim",
+                'feedback': u'Great submission.'
+            }
+        ]
+
+    """
+    try:
+        # If no workflow is found associated with the uuid, this returns None,
+        # and an empty set of assessments will be returned.
+        workflow = PeerWorkflow.get_by_submission_uuid(submission_uuid)
+        items = PeerWorkflowItem.objects.filter(
+            scorer=workflow,
+            assessment__isnull=False
+        )
+        if scored_only:
+            items = items.exclude(scored=False)
+        assessments = Assessment.objects.filter(
+            pk__in=[item.assessment.pk for item in items])[:limit]
+        return serialize_assessments(assessments)
+    except DatabaseError:
+        error_message = _(
+            u"Couldn't retrieve the assessments that the author of response {}"
+            u" completed".format(submission_uuid)
         )
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
