@@ -4,9 +4,11 @@ git+https://github.com/edx/xblock-sdk.git@643900aadcb18aaeb7fe67271ca9dbf36e463e
 
 # Third Party Requirements
 boto==2.13.3
+celery==3.0.19
 defusedxml==0.4.1
 dogapi==1.2.1
 django>=1.4,<1.5
+django-celery==3.0.17
 django-extensions==1.2.5
 django-model-utils==1.4.0
 djangorestframework==2.3.5

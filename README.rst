@@ -46,6 +46,22 @@ to start the server on port 8001:
     ./scripts/workbench.sh 8001
 
 
+Celery Workers
+==============
+
+Some of the OpenAssessment APIs execute tasks asynchronously using `celery <http://docs.celeryproject.org>`_.
+The tasks are executed by worker processes.
+
+First, you will need to `install RabbitMQ <http://http://www.rabbitmq.com/download.html>`_.
+
+Once RabbitMQ is installed, you can start a worker process locally:
+
+.. code:: bash
+
+    ./scripts/celery-worker.sh
+
+
+
 Running Tests
 =============
 
