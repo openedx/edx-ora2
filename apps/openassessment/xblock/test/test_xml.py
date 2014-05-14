@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Tests for serializing to/from XML.
 """
@@ -8,8 +9,8 @@ import lxml.etree as etree
 import pytz
 import dateutil.parser
 from django.test import TestCase
-from ddt import ddt, data, file_data, unpack
-from openassessment.xblock.openassessmentblock import OpenAssessmentBlock, UI_MODELS
+import ddt
+from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from openassessment.xblock.xml import (
     serialize_content, update_from_xml_str, ValidationError, UpdateFromXmlError
 )
@@ -31,7 +32,7 @@ def _parse_date(value):
         return dateutil.parser.parse(value).replace(tzinfo=pytz.utc)
 
 
-@ddt
+@ddt.ddt
 class TestSerializeContent(TestCase):
     """
     Test serialization of OpenAssessment XBlock content to XML.
@@ -55,6 +56,22 @@ class TestSerializeContent(TestCase):
 
     BASIC_ASSESSMENTS = [
         {
+            "name": "student-training",
+            "start": "2014-02-27T09:46:28.873926",
+            "due": "2014-05-30T00:00:00.92926",
+            "examples": [
+                {
+                    "answer": u"ẗëṡẗ äṅṡẅëṛ",
+                    "options_selected": [
+                        {
+                            "criterion": "Test criterion",
+                            "option": "Maybe"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "name": "peer-assessment",
             "start": "2014-02-27T09:46:28.873926",
             "due": "2014-05-30T00:00:00.92926",
@@ -65,8 +82,6 @@ class TestSerializeContent(TestCase):
             "name": "self-assessment",
             "start": '2014-04-01T00:00:00.000000',
             "due": "2014-06-01T00:00:00.92926",
-            "must_grade": 5,
-            "must_be_graded_by": 3,
         }
     ]
 
@@ -76,8 +91,7 @@ class TestSerializeContent(TestCase):
         """
         self.oa_block = mock.MagicMock(OpenAssessmentBlock)
 
-
-    @file_data('data/serialize.json')
+    @ddt.file_data('data/serialize.json')
     def test_serialize(self, data):
         self.oa_block.title = data['title']
         self.oa_block.prompt = data['prompt']
@@ -112,7 +126,7 @@ class TestSerializeContent(TestCase):
 
         self.assertEqual(
             len(actual_elements), len(expected_elements),
-            msg="Incorrect XML output:\nActual: {}\nExpected: {}".format(actual_elements, expected_elements)
+            msg="Incorrect XML output:\nActual: {}\nExpected: {}".format(xml, pretty_expected)
         )
 
         for actual, expected in zip(actual_elements, expected_elements):
@@ -151,7 +165,7 @@ class TestSerializeContent(TestCase):
 
                 try:
                     etree.fromstring(xml)
-                except Exception as ex:
+                except Exception as ex:     # pylint:disable=W0703
                     msg = "Could not parse mutated criteria dict {criteria}\n{ex}".format(criteria=mutated_dict, ex=ex)
                     self.fail(msg)
 
@@ -170,11 +184,11 @@ class TestSerializeContent(TestCase):
 
                 try:
                     etree.fromstring(xml)
-                except Exception as ex:
+                except Exception as ex:     # pylint:disable=W0703
                     msg = "Could not parse mutated assessment dict {assessment}\n{ex}".format(assessment=mutated_dict, ex=ex)
                     self.fail(msg)
 
-    @data("title", "prompt", "start", "due", "submission_due", "submission_start")
+    @ddt.data("title", "prompt", "start", "due", "submission_due", "submission_start")
     def test_mutated_field(self, field):
         self.oa_block.rubric_criteria = self.BASIC_CRITERIA
         self.oa_block.rubric_assessments = self.BASIC_ASSESSMENTS
@@ -189,7 +203,7 @@ class TestSerializeContent(TestCase):
 
             try:
                 etree.fromstring(xml)
-            except Exception as ex:
+            except Exception as ex:     # pylint:disable=W0703
                 msg = "Could not parse mutated field {field} with value {value}\n{ex}".format(
                     field=field, value=mutated_value, ex=ex
                 )
@@ -214,7 +228,7 @@ class TestSerializeContent(TestCase):
 
             # Mutation #1: Remove the key
             print "== Removing key {}".format(key)
-            yield {k:v for k,v in input_dict.iteritems() if k != key}
+            yield {k:v for k, v in input_dict.iteritems() if k != key}
 
             if isinstance(val, dict):
 
@@ -287,7 +301,7 @@ class TestSerializeContent(TestCase):
         return mutated
 
 
-@ddt
+@ddt.ddt
 class TestUpdateFromXml(TestCase):
     """
     Test deserialization of OpenAssessment XBlock content from XML.
@@ -309,7 +323,7 @@ class TestUpdateFromXml(TestCase):
         self.oa_block.submission_start = "2000-01-01T00:00:00"
         self.oa_block.submission_due = "2000-01-01T00:00:00"
 
-    @file_data('data/update_from_xml.json')
+    @ddt.file_data('data/update_from_xml.json')
     def test_update_from_xml(self, data):
 
         # Update the block based on the fixture XML definition
@@ -328,12 +342,12 @@ class TestUpdateFromXml(TestCase):
         self.assertEqual(self.oa_block.rubric_criteria, data['criteria'])
         self.assertEqual(self.oa_block.rubric_assessments, data['assessments'])
 
-    @file_data('data/update_from_xml_error.json')
+    @ddt.file_data('data/update_from_xml_error.json')
     def test_update_from_xml_error(self, data):
         with self.assertRaises(UpdateFromXmlError):
             update_from_xml_str(self.oa_block, "".join(data['xml']))
 
-    @file_data('data/update_from_xml.json')
+    @ddt.file_data('data/update_from_xml.json')
     def test_invalid(self, data):
         # Plug in a rubric validator that always reports that the rubric dict is invalid.
         # We need to back this up with an integration test that checks whether the XBlock

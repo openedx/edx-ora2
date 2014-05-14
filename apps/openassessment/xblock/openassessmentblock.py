@@ -59,6 +59,11 @@ UI_MODELS = {
     }
 }
 
+VALID_ASSESSMENT_TYPES = [
+    "peer-assessment",
+    "self-assessment",
+]
+
 
 def load(path):
     """Handy helper for getting resources from our kit."""
@@ -252,7 +257,7 @@ class OpenAssessmentBlock(
 
         """
         ui_models = [UI_MODELS["submission"]]
-        for assessment in self.rubric_assessments:
+        for assessment in self.valid_assessments:
             ui_model = UI_MODELS[assessment["name"]]
             ui_models.append(dict(assessment, **ui_model))
         ui_models.append(UI_MODELS["grade"])
@@ -305,8 +310,25 @@ class OpenAssessmentBlock(
         return update_from_xml(block, node, validator=validator(block, strict_post_release=False))
 
     @property
+    def valid_assessments(self):
+        """
+        Return a list of assessment dictionaries that we recognize.
+        This allows us to gracefully handle situations in which unrecognized
+        assessment types are stored in the XBlock field (e.g. because
+        we roll back code after releasing a feature).
+
+        Returns:
+            list
+
+        """
+        return [
+            asmnt for asmnt in self.rubric_assessments
+            if asmnt.get('name') in VALID_ASSESSMENT_TYPES
+        ]
+
+    @property
     def assessment_steps(self):
-        return [asmnt['name'] for asmnt in self.rubric_assessments]
+        return [asmnt['name'] for asmnt in self.valid_assessments]
 
     def render_assessment(self, path, context_dict=None):
         """Render an Assessment Module's HTML
@@ -392,7 +414,7 @@ class OpenAssessmentBlock(
         submission_range = (self.submission_start, self.submission_due)
         assessment_ranges = [
             (asmnt.get('start'), asmnt.get('due'))
-            for asmnt in self.rubric_assessments
+            for asmnt in self.valid_assessments
         ]
 
         # Resolve unspecified dates and date strings to datetimes
@@ -463,7 +485,7 @@ class OpenAssessmentBlock(
                 "must_be_graded_by": 3,
             }
         """
-        for assessment in self.rubric_assessments:
+        for assessment in self.valid_assessments:
             if assessment["name"] == mixin_name:
                 return assessment
 

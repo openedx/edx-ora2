@@ -704,5 +704,284 @@
             "</rubric>",
             "</openassessment>"
         ]
+    },
+
+    "student_training_no_examples": {
+        "title": "Foo",
+        "prompt": "Test prompt",
+        "rubric_feedback_prompt": "Test Feedback Prompt",
+        "start": null,
+        "due": null,
+        "submission_start": null,
+        "submission_due": null,
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ]
+            }
+        ],
+        "assessments": [
+            {
+                "name": "student-training",
+                "start": "2014-02-27T09:46:28",
+                "due": "2014-03-01T00:00:00",
+                "examples": []
+            }
+        ],
+        "expected_xml": [
+            "<openassessment>",
+            "<title>Foo</title>",
+            "<assessments>",
+                "<assessment name=\"student-training\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" />",
+            "</assessments>",
+            "<rubric>",
+                "<prompt>Test prompt</prompt>",
+                "<criterion>",
+                    "<name>Test criterion</name>",
+                    "<prompt>Test criterion prompt</prompt>",
+                    "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+                    "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+                "</criterion>",
+                "<feedbackprompt>Test Feedback Prompt</feedbackprompt>",
+            "</rubric>",
+            "</openassessment>"
+        ]
+    },
+
+    "student_training_one_example": {
+        "title": "Foo",
+        "prompt": "Test prompt",
+        "rubric_feedback_prompt": "Test Feedback Prompt",
+        "start": null,
+        "due": null,
+        "submission_start": null,
+        "submission_due": null,
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ]
+            },
+            {
+                "order_num": 0,
+                "name": "Another test criterion",
+                "prompt": "Another test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ]
+            }
+        ],
+        "assessments": [
+            {
+                "name": "student-training",
+                "start": "2014-02-27T09:46:28",
+                "due": "2014-03-01T00:00:00",
+                "examples": [
+                    {
+                        "answer": "ẗëṡẗ äṅṡẅëṛ",
+                        "options_selected": [
+                            {
+                                "criterion": "Test criterion",
+                                "option": "No"
+                            },
+                            {
+                                "criterion": "Another test criterion",
+                                "option": "Yes"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "expected_xml": [
+            "<openassessment>",
+            "<title>Foo</title>",
+            "<assessments>",
+                "<assessment name=\"student-training\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\">",
+                    "<example>",
+                        "<answer>ẗëṡẗ äṅṡẅëṛ</answer>",
+                        "<select criterion=\"Test criterion\" option=\"No\" />",
+                        "<select criterion=\"Another test criterion\" option=\"Yes\" />",
+                    "</example>",
+                "</assessment>",
+            "</assessments>",
+            "<rubric>",
+                "<prompt>Test prompt</prompt>",
+                "<criterion>",
+                    "<name>Test criterion</name>",
+                    "<prompt>Test criterion prompt</prompt>",
+                    "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+                    "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+                "</criterion>",
+                "<criterion>",
+                    "<name>Another test criterion</name>",
+                    "<prompt>Another test criterion prompt</prompt>",
+                    "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+                    "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+                "</criterion>",
+                "<feedbackprompt>Test Feedback Prompt</feedbackprompt>",
+            "</rubric>",
+            "</openassessment>"
+        ]
+    },
+
+    "student_training_multiple_examples": {
+        "title": "Foo",
+        "prompt": "Test prompt",
+        "rubric_feedback_prompt": "Test Feedback Prompt",
+        "start": null,
+        "due": null,
+        "submission_start": null,
+        "submission_due": null,
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ]
+            },
+            {
+                "order_num": 0,
+                "name": "Another test criterion",
+                "prompt": "Another test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ]
+            }
+        ],
+        "assessments": [
+            {
+                "name": "student-training",
+                "start": "2014-02-27T09:46:28",
+                "due": "2014-03-01T00:00:00",
+                "examples": [
+                    {
+                        "answer": "ẗëṡẗ äṅṡẅëṛ",
+                        "options_selected": [
+                            {
+                                "criterion": "Test criterion",
+                                "option": "No"
+                            },
+                            {
+                                "criterion": "Another test criterion",
+                                "option": "Yes"
+                            }
+                        ]
+                    },
+                    {
+                        "answer": "śéćőńd téśt áńśẃéŕ",
+                        "options_selected": [
+                            {
+                                "criterion": "Test criterion",
+                                "option": "Yes"
+                            },
+                            {
+                                "criterion": "Another test criterion",
+                                "option": "No"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "expected_xml": [
+            "<openassessment>",
+            "<title>Foo</title>",
+            "<assessments>",
+                "<assessment name=\"student-training\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\">",
+                    "<example>",
+                        "<answer>ẗëṡẗ äṅṡẅëṛ</answer>",
+                        "<select criterion=\"Test criterion\" option=\"No\" />",
+                        "<select criterion=\"Another test criterion\" option=\"Yes\" />",
+                    "</example>",
+                    "<example>",
+                        "<answer>śéćőńd téśt áńśẃéŕ</answer>",
+                        "<select criterion=\"Test criterion\" option=\"Yes\" />",
+                        "<select criterion=\"Another test criterion\" option=\"No\" />",
+                    "</example>",
+                "</assessment>",
+            "</assessments>",
+            "<rubric>",
+                "<prompt>Test prompt</prompt>",
+                "<criterion>",
+                    "<name>Test criterion</name>",
+                    "<prompt>Test criterion prompt</prompt>",
+                    "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+                    "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+                "</criterion>",
+                "<criterion>",
+                    "<name>Another test criterion</name>",
+                    "<prompt>Another test criterion prompt</prompt>",
+                    "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+                    "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+                "</criterion>",
+                "<feedbackprompt>Test Feedback Prompt</feedbackprompt>",
+            "</rubric>",
+            "</openassessment>"
+        ]
     }
 }
