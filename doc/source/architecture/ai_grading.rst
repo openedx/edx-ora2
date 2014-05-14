@@ -212,9 +212,9 @@ Recovery from Failure
 
     a. We assume that the task queue is (for the most part) *reliable*:  If a task is scheduled, then a worker will pick it up and execute it (although it might not complete the task successfully).  Even if tasks occasionally are dropped, however, we can rely on the error recovery procedure below.
 
-    b. In general, we avoid retrying tasks, since an error that occurs once is likely to occur again.  However, for errors that may be recoverable (such as transient network connectivity issues), the worker should reschedule the task once.  If the task fails again, it should not be rescheduled.
+    b. If an error occurs, first retry the task.  This allows the worker to gracefully handle recoverable errors such as temporary network connectivity issues.
 
-    c. For non-recoverable errors, the task should be fail without being rescheduled.  Failures should be logged and monitored.  Once the issue has been fixed, failed tasks should be rescheduled manually (e.g. by a command that queries for incomplete workflows and reschedules tasks).
+    c. If a task fails repeatedly, the worker should log the failure as a non-recoverable error and stop retrying the task.  Once the issue has been fixed, failed tasks should be rescheduled manually (e.g. by a command that queries for incomplete workflows and reschedules tasks).
 
 2. A course author publishes a problem without training classifiers.
 
