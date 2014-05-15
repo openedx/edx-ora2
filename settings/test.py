@@ -3,7 +3,7 @@ Test-specific Django settings.
 """
 
 # Inherit from base settings
-from .base import *
+from .base import *     # pylint:disable=W0614,W0401
 
 TEST_APPS = (
     'openassessment',
@@ -44,3 +44,10 @@ EDX_ORA2["EVENT_LOGGER"] = "openassessment.workflow.test.events.fake_event_logge
 # We run Celery in "always eager" mode in the test suite,
 # which executes tasks synchronously instead of using the task queue.
 CELERY_ALWAYS_EAGER = True
+
+
+# Silence cache key warnings
+# https://docs.djangoproject.com/en/1.4/topics/cache/#cache-key-warnings
+import warnings
+from django.core.cache import CacheKeyWarning
+warnings.simplefilter("ignore", CacheKeyWarning)

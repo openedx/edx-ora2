@@ -31,18 +31,29 @@ def submitter_is_finished(submission_uuid, requirements):   # pylint:disable=W06
 
     Args:
         submission_uuid (str): The UUID of the student's submission.
-        requirements (dict): Not used.
+        requirements (dict): Must contain "num_required" indicating
+            the number of examples the student must assess.
 
     Returns:
         bool
 
+    Raises:
+        StudentTrainingRequestError
+
     """
+    try:
+        num_required = int(requirements['num_required'])
+    except KeyError:
+        raise StudentTrainingRequestError(u'Requirements dict must contain "num_required" key')
+    except ValueError:
+        raise StudentTrainingRequestError(u'Number of requirements must be an integer')
+
     try:
         workflow = StudentTrainingWorkflow.objects.get(submission_uuid=submission_uuid)
     except StudentTrainingWorkflow.DoesNotExist:
         return False
     else:
-        return workflow.is_complete
+        return workflow.num_completed >= num_required
 
 
 def assessment_is_finished(submission_uuid, requirements):  # pylint:disable=W0613
@@ -147,8 +158,9 @@ def validate_training_examples(rubric, examples):
             ]
             for criterion in rubric['criteria']
         }
-    except (ValueError, KeyError):
+    except (ValueError, KeyError) as ex:
         msg = _(u"Could not parse serialized rubric")
+        logger.warning("{}: {}".format(msg, ex))
         return [msg]
 
     # Check each example
@@ -189,161 +201,31 @@ def validate_training_examples(rubric, examples):
     return errors
 
 
-def create_training_workflow(submission_uuid, rubric, examples):
+def get_num_completed(submission_uuid):
     """
-    Start the training workflow.
-
-    Args:
-        submission_uuid (str): The UUID of the student's submission.
-        rubric (dict): Serialized rubric model.
-        examples (list): The serialized training examples the student will need to assess.
-
-    Returns:
-        None
-
-    Raises:
-        StudentTrainingRequestError
-        StudentTrainingInternalError
-
-    Example usage:
-
-        >>> options = [
-        >>>     {
-        >>>         "order_num": 0,
-        >>>         "name": "poor",
-        >>>         "explanation": "Poor job!",
-        >>>         "points": 0,
-        >>>     },
-        >>>     {
-        >>>         "order_num": 1,
-        >>>         "name": "good",
-        >>>         "explanation": "Good job!",
-        >>>         "points": 1,
-        >>>     },
-        >>>     {
-        >>>         "order_num": 2,
-        >>>         "name": "excellent",
-        >>>         "explanation": "Excellent job!",
-        >>>         "points": 2,
-        >>>     },
-        >>> ]
-        >>>
-        >>> rubric = {
-        >>>     "prompt": "Write an essay!",
-        >>>     "criteria": [
-        >>>         {
-        >>>             "order_num": 0,
-        >>>             "name": "vocabulary",
-        >>>             "prompt": "How varied is the vocabulary?",
-        >>>             "options": options
-        >>>         },
-        >>>         {
-        >>>             "order_num": 1,
-        >>>             "name": "grammar",
-        >>>             "prompt": "How correct is the grammar?",
-        >>>             "options": options
-        >>>         }
-        >>>     ]
-        >>> }
-        >>>
-        >>> examples = [
-        >>>     {
-        >>>         'answer': u'Lorem ipsum',
-        >>>         'options_selected': {
-        >>>             'vocabulary': 'good',
-        >>>             'grammar': 'excellent'
-        >>>         }
-        >>>     },
-        >>>     {
-        >>>         'answer': u'Doler',
-        >>>         'options_selected': {
-        >>>             'vocabulary': 'good',
-        >>>             'grammar': 'poor'
-        >>>         }
-        >>>     }
-        >>> ]
-        >>>
-        >>> create_training_workflow("5443ebbbe2297b30f503736e26be84f6c7303c57", rubric, examples)
-
-    """
-    try:
-        # Check that examples were provided
-        if len(examples) == 0:
-            msg = (
-                u"No examples provided for student training workflow "
-                u"(attempted to create workflow for student with submission UUID {})"
-            ).format(submission_uuid)
-            raise StudentTrainingRequestError(msg)
-
-        # Ensure that a workflow doesn't already exist for this submission
-        already_exists = StudentTrainingWorkflow.objects.filter(
-            submission_uuid=submission_uuid
-        ).exists()
-
-        if already_exists:
-            msg = (
-                u"Student training workflow already exists for the student "
-                u"associated with submission UUID {}"
-            ).format(submission_uuid)
-            raise StudentTrainingRequestError(msg)
-
-        # Create the training examples
-        try:
-            examples = deserialize_training_examples(examples, rubric)
-        except (InvalidRubric, InvalidTrainingExample) as ex:
-            logger.exception(
-                "Could not deserialize training examples for submission UUID {}".format(submission_uuid)
-            )
-            raise StudentTrainingRequestError(ex.message)
-
-        # Create the workflow
-        try:
-            StudentTrainingWorkflow.create_workflow(submission_uuid, examples)
-        except sub_api.SubmissionNotFoundError as ex:
-            raise StudentTrainingRequestError(ex.message)
-    except DatabaseError:
-        msg = (
-            u"Could not create student training workflow "
-            u"with submission UUID {}"
-        ).format(submission_uuid)
-        logger.exception(msg)
-        raise StudentTrainingInternalError(msg)
-
-
-def get_workflow_status(submission_uuid):
-    """
-    Get the student's position in the training workflow.
+    Get the number of training examples the student has assessed successfully.
 
     Args:
         submission_uuid (str): The UUID of the student's submission.
 
     Returns:
-        dict: Serialized TrainingStatus
+        int: The number of completed training examples
 
     Raises:
-        StudentTrainingRequestError
         StudentTrainingInternalError
 
     Example usage:
-        >>> get_workflow_status("5443ebbbe2297b30f503736e26be84f6c7303c57")
-        {
-            'num_items_completed': 1,
-            'num_items_available': 3
-        }
+        >>> get_num_completed("5443ebbbe2297b30f503736e26be84f6c7303c57")
+        2
 
     """
     try:
         try:
             workflow = StudentTrainingWorkflow.objects.get(submission_uuid=submission_uuid)
         except StudentTrainingWorkflow.DoesNotExist:
-            msg = u"Student training workflow does not exist for submission UUID {}".format(submission_uuid)
-            raise StudentTrainingRequestError(msg)
-
-        num_completed, num_total = workflow.status
-        return {
-            "num_completed": num_completed,
-            "num_total": num_total
-        }
+            return 0
+        else:
+            return workflow.num_completed
     except DatabaseError:
         msg = (
             u"An unexpected error occurred while "
@@ -353,12 +235,22 @@ def get_workflow_status(submission_uuid):
         raise StudentTrainingInternalError(msg)
 
 
-def get_training_example(submission_uuid):
+def get_training_example(submission_uuid, rubric, examples):
     """
     Retrieve a training example for the student to assess.
+    This will implicitly create a workflow for the student if one does not yet exist.
+
+    NOTE: We include the rubric in the returned dictionary to handle
+    the case in which the instructor changes the rubric definition
+    while the student is assessing the training example.  Once a student
+    starts on a training example, the student should see the same training
+    example consistently.  However, the next training example the student
+    retrieves will use the updated rubric.
 
     Args:
         submission_uuid (str): The UUID of the student's submission.
+        rubric (dict): Serialized rubric model.
+        examples (list): List of serialized training examples.
 
     Returns:
         dict: The training example with keys "answer", "rubric", and "options_selected".
@@ -380,7 +272,7 @@ def get_training_example(submission_uuid):
         >>>     }
         >>> ]
         >>>
-        >>> get_training_example("5443ebbbe2297b30f503736e26be84f6c7303c57")
+        >>> get_training_example("5443ebbbe2297b30f503736e26be84f6c7303c57", rubric, examples)
         {
             'answer': u'Lorem ipsum',
             'rubric': {
@@ -407,26 +299,38 @@ def get_training_example(submission_uuid):
         }
 
     """
-    # Find a workflow for the student
     try:
-        workflow = StudentTrainingWorkflow.objects.get(submission_uuid=submission_uuid)
+        # Validate the training examples
+        errors = validate_training_examples(rubric, examples)
+        if len(errors) > 0:
+            msg = _(u"Training examples do not match the rubric: {errors}").format(
+                errors="\n".join(errors)
+            )
+            raise StudentTrainingRequestError(msg)
 
-        # Find the next incomplete item in the workflow
-        item = workflow.next_incomplete_item
-        if item is None:
-            return None
-        else:
-            return serialize_training_example(item.training_example)
-    except StudentTrainingWorkflow.DoesNotExist:
-        msg = (
-            u"No student training workflow exists for the student "
-            u"associated with submission UUID {}"
-        ).format(submission_uuid)
+        # Get or create the workflow
+        workflow = StudentTrainingWorkflow.get_or_create_workflow(submission_uuid=submission_uuid)
+
+        # Get or create the training examples
+        examples = deserialize_training_examples(examples, rubric)
+
+        # Pick a training example that the student has not yet completed
+        # If the student already started a training example, then return that instead.
+        next_example = workflow.next_training_example(examples)
+        return None if next_example is None else serialize_training_example(next_example)
+    except (InvalidRubric, InvalidTrainingExample) as ex:
+        logger.exception(
+            "Could not deserialize training examples for submission UUID {}".format(submission_uuid)
+        )
+        raise StudentTrainingRequestError(ex.message)
+    except sub_api.SubmissionNotFoundError as ex:
+        msg = _(u"Could not retrieve the submission with UUID {}").format(submission_uuid)
+        logger.exception(msg)
         raise StudentTrainingRequestError(msg)
     except DatabaseError:
-        msg = (
-            u"Could not retrieve next item in"
-            u" student training workflow with submission UUID {}"
+        msg = _(
+            u"Could not retrieve a training example "
+            u"for the student with submission UUID {}"
         ).format(submission_uuid)
         logger.exception(msg)
         raise StudentTrainingInternalError(msg)
@@ -435,6 +339,8 @@ def get_training_example(submission_uuid):
 def assess_training_example(submission_uuid, options_selected, update_workflow=True):
     """
     Assess a training example and update the workflow.
+
+    This must be called *after* `get_training_example()`.
 
     Args:
         submission_uuid (str): The UUID of the student's submission.
@@ -466,8 +372,8 @@ def assess_training_example(submission_uuid, options_selected, update_workflow=T
     try:
         workflow = StudentTrainingWorkflow.objects.get(submission_uuid=submission_uuid)
 
-        # Find the next incomplete item in the workflow
-        item = workflow.next_incomplete_item
+        # Find the item the student is currently working on
+        item = workflow.current_item
         if item is None:
             msg = (
                 u"No items are available in the student training workflow associated with "

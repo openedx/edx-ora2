@@ -1,7 +1,7 @@
 """
 Django models specific to the student training assessment type.
 """
-from django.db import models, transaction
+from django.db import models
 from django.utils import timezone
 from submissions import api as sub_api
 from .training import TrainingExample
@@ -27,14 +27,12 @@ class StudentTrainingWorkflow(models.Model):
         app_label = "assessment"
 
     @classmethod
-    @transaction.commit_on_success
-    def create_workflow(cls, submission_uuid, examples):
+    def get_or_create_workflow(cls, submission_uuid):
         """
         Create a student training workflow.
 
         Args:
             submission_uuid (str): The UUID of the submission from the student being trained.
-            examples (list of TrainingExamples): The training examples to show the student.
 
         Returns:
             StudentTrainingWorkflow
@@ -43,70 +41,105 @@ class StudentTrainingWorkflow(models.Model):
             SubmissionError: There was an error retrieving the submission.
 
         """
+        # Try to retrieve an existing workflow
+        # If we find one, return it immediately
+        try:
+            return cls.objects.get(submission_uuid=submission_uuid)   # pylint:disable=E1101
+        except cls.DoesNotExist:
+            pass
+
         # Retrieve the student item info
         submission = sub_api.get_submission_and_student(submission_uuid)
         student_item = submission['student_item']
 
         # Create the workflow
-        workflow = cls.objects.create(
+        return cls.objects.create(
             submission_uuid=submission_uuid,
             student_id=student_item['student_id'],
             item_id=student_item['item_id'],
             course_id=student_item['course_id']
         )
 
-        # Create workflow items for each example
-        for order_num, example in enumerate(examples):
+    @property
+    def num_completed(self):
+        """
+        Return the number of training examples that the
+        student successfully assessed.
+
+        Returns:
+            int
+
+        """
+        return self.items.filter(completed_at__isnull=False).count()  # pylint:disable=E1101
+
+    def next_training_example(self, examples):
+        """
+        Return the next training example for the student to assess.
+        If the student is already working on an example, return that.
+        Otherwise, choose an example the student hasn't seen
+        from the list of available examples.
+
+        Args:
+            examples (list of TrainingExample): Training examples to choose from.
+
+        Returns:
+            TrainingExample or None
+
+        """
+        # Fetch all the items for this workflow from the database
+        # Since Django's `select_related` does not follow reverse keys
+        # we perform the filter ourselves.
+        items = StudentTrainingWorkflowItem.objects.select_related(
+            'training_example'
+        ).filter(workflow=self)
+
+        # If we're already working on an item, then return that item
+        incomplete_items = [item for item in items if not item.is_complete]
+        if len(incomplete_items) > 0:
+            return incomplete_items[0].training_example
+
+        # Otherwise, pick an item that we have not completed
+        # from the list of examples.
+        completed_examples = [
+            item.training_example for item in items
+        ]
+        available_examples = [
+            available for available in examples
+            if available not in completed_examples
+        ]
+
+        # If there are no more items available, return None
+        if len(available_examples) == 0:
+            return None
+        # Otherwise, create a new workflow item for the example
+        # and add it to the workflow
+        else:
+            order_num = len(items) + 1
+            next_example = available_examples[0]
             StudentTrainingWorkflowItem.objects.create(
-                workflow=workflow,
+                workflow=self,
                 order_num=order_num,
-                training_example=example,
+                training_example=next_example
             )
-
-        return workflow
-
-    @property
-    def status(self):
-        """
-        The student's status within the workflow (num steps completed / num steps available).
-
-        Returns:
-            tuple of `(num_completed, num_total)`, both integers
-
-        """
-        items = self.items.all()    # pylint:disable=E1101
-        num_complete = sum([1 if item.is_complete else 0 for item in items])
-        num_total = len(items)
-        return num_complete, num_total
+            return next_example
 
     @property
-    def is_complete(self):
+    def current_item(self):
         """
-        Check whether all items in the workflow are complete.
-
-        Returns:
-            bool
-        """
-        num_incomplete = self.items.filter(completed_at__isnull=True).count()  # pylint:disable=E1101
-        return num_incomplete == 0
-
-    @property
-    def next_incomplete_item(self):
-        """
-        Find the next incomplete item in the workflow.
+        Return the item the student is currently working on,
+        or None.
 
         Returns:
             StudentTrainingWorkflowItem or None
 
         """
-        next_incomplete = self.items.filter(  # pylint:disable=E1101
+        next_incomplete = self.items.select_related(
+            'training_example'
+        ).filter(  # pylint:disable=E1101
             completed_at__isnull=True
         ).order_by('order_num')[:1]
 
-        if len(next_incomplete) > 0:
-            return next_incomplete[0]
-        else:
-            return None
+        return None if len(next_incomplete) == 0 else next_incomplete[0]
 
 
 class StudentTrainingWorkflowItem(models.Model):

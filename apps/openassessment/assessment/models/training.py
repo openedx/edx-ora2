@@ -3,6 +3,7 @@ Django models for training (both student and AI).
 """
 import json
 from hashlib import sha1
+from django.core.cache import cache
 from django.db import models
 from .base import Rubric, CriterionOption
 
@@ -22,29 +23,34 @@ class TrainingExample(models.Model):
     # SHA1 hash
     content_hash = models.CharField(max_length=40, unique=True, db_index=True)
 
+    # Version for models serialized to the cache
+    # Increment this number whenever you update this model!
+    CACHE_KEY_VERSION = 1
+
     class Meta:
         app_label = "assessment"
 
     @classmethod
-    def create_example(cls, answer, options_ids, rubric):
+    def create_example(cls, answer, options_selected, rubric):
         """
         Create a new training example.
 
         Args:
             answer (JSON-serializable): The answer associated with the training example.
-            option_ids (iterable of int): Selected option IDs for the training example.
+            options_selected (dict): The options selected from the rubric (mapping of criterion names to option names)
             rubric (Rubric): The rubric associated with the training example.
 
         Returns:
             TrainingExample
 
         """
-        content_hash = cls.calculate_hash(answer, options_ids, rubric)
+        content_hash = cls.calculate_hash(answer, options_selected, rubric)
         example = TrainingExample.objects.create(
             content_hash=content_hash,
             raw_answer=json.dumps(answer),
             rubric=rubric
         )
+        options_ids = rubric.options_ids(options_selected)
 
         for option in CriterionOption.objects.filter(pk__in=list(options_ids)):
             example.options_selected.add(option)
@@ -71,19 +77,50 @@ class TrainingExample(models.Model):
             dict: maps criterion names to selected option names
 
         """
-        return {
-            option.criterion.name: option.name
-            for option in self.options_selected.all()  # pylint:disable=E1101
-        }
+        # Since training examples are immutable, we can safely cache this
+        cache_key = self.cache_key_serialized(attribute="options_selected_dict")
+        options_selected = cache.get(cache_key)
+        if options_selected is None:
+            options_selected = {
+                option.criterion.name: option.name
+                for option in self.options_selected.all()  # pylint:disable=E1101
+            }
+            cache.set(cache_key, options_selected)
+        return options_selected
+
+    def cache_key_serialized(self, attribute=None):
+        """
+        Create a cache key based on the content hash
+        for serialized versions of this model.
+
+        Kwargs:
+            attribute: The name of the attribute being serialized.
+                If not specified, assume that we are serializing the entire model.
+
+        Returns:
+            str: The cache key
+
+        """
+        if attribute is None:
+            key_template = u"TrainingExample.json.v{version}.{content_hash}"
+        else:
+            key_template = u"TrainingExample.{attribute}.json.v{version}.{content_hash}"
+
+        cache_key = key_template.format(
+            version=self.CACHE_KEY_VERSION,
+            content_hash=self.content_hash,
+            attribute=attribute
+        )
+        return cache_key
 
     @staticmethod
-    def calculate_hash(answer, option_ids, rubric):
+    def calculate_hash(answer, options_selected, rubric):
         """
         Calculate a hash for the contents of training example.
 
         Args:
             answer (JSON-serializable): The answer associated with the training example.
-            option_ids (iterable of int): Selected option IDs for the training example.
+            options_selected (dict): The options selected from the rubric (mapping of criterion names to option names)
             rubric (Rubric): The rubric associated with the training example.
 
         Returns:
@@ -92,10 +129,28 @@ class TrainingExample(models.Model):
         """
         contents = json.dumps({
             'answer': answer,
-            'option_ids': list(option_ids),
+            'options_selected': options_selected,
             'rubric': rubric.id
         })
         return sha1(contents).hexdigest()
 
-    class Meta:
-        app_label = "assessment"
+    @classmethod
+    def cache_key(cls, answer, options_selected, rubric):
+        """
+        Calculate a cache key based on the content hash.
+
+        Args:
+            answer (JSON-serializable): The answer associated with the training example.
+            options_selected (dict): The options selected from the rubric (mapping of criterion names to option names)
+            rubric (Rubric): The rubric associated with the training example.
+
+        Returns:
+            tuple of `(cache_key, content_hash)`, both bytestrings
+
+        """
+        content_hash = cls.calculate_hash(answer, options_selected, rubric)
+        cache_key = u"TrainingExample.model.v{version}.{content_hash}".format(
+            version=cls.CACHE_KEY_VERSION,
+            content_hash=content_hash
+        )
+        return cache_key, content_hash

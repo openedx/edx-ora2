@@ -1,7 +1,7 @@
 """
 Serializers for the training assessment type.
 """
-import json
+from django.core.cache import cache
 from django.db import transaction, IntegrityError
 from openassessment.assessment.models import TrainingExample
 from .base import rubric_from_dict, RubricSerializer
@@ -53,11 +53,17 @@ def serialize_training_example(example):
         dict
 
     """
-    return {
-        'answer': example.answer,
-        'options_selected': example.options_selected_dict,
-        'rubric': RubricSerializer.serialized_from_cache(example.rubric),
-    }
+    # Since training examples are immutable, we can safely cache them
+    cache_key = example.cache_key_serialized()
+    example_dict = cache.get(cache_key)
+    if example_dict is None:
+        example_dict = {
+            'answer': example.answer,
+            'options_selected': example.options_selected_dict,
+            'rubric': RubricSerializer.serialized_from_cache(example.rubric),
+        }
+        cache.set(cache_key, example_dict)
+    return example_dict
 
 
 @transaction.commit_on_success
@@ -144,24 +150,31 @@ def deserialize_training_examples(examples, rubric_dict):
     # Parse each example
     created_examples = []
     for example_dict in examples:
-        is_valid, errors = validate_training_example_format(example_dict)
-        if not is_valid:
-            raise InvalidTrainingExample("; ".join(errors))
 
-        options_ids = rubric.options_ids(example_dict['options_selected'])
+        # Try to retrieve the example from the cache
+        cache_key, content_hash = TrainingExample.cache_key(example_dict['answer'], example_dict['options_selected'], rubric)
+        example = cache.get(cache_key)
 
-        # Calculate the content hash to look up the example
-        content_hash = TrainingExample.calculate_hash(example_dict['answer'], options_ids, rubric)
+        # If we couldn't retrieve the example from the cache, create it
+        if example is None:
+            # Validate the training example
+            is_valid, errors = validate_training_example_format(example_dict)
+            if not is_valid:
+                raise InvalidTrainingExample("; ".join(errors))
 
-        try:
-            example = TrainingExample.objects.get(content_hash=content_hash)
-        except TrainingExample.DoesNotExist:
+            # Get or create the training example
             try:
-                example = TrainingExample.create_example(
-                    example_dict['answer'], options_ids, rubric
-                )
-            except IntegrityError:
                 example = TrainingExample.objects.get(content_hash=content_hash)
+            except TrainingExample.DoesNotExist:
+                try:
+                    example = TrainingExample.create_example(
+                        example_dict['answer'], example_dict['options_selected'], rubric
+                    )
+                except IntegrityError:
+                    example = TrainingExample.objects.get(content_hash=content_hash)
+
+            # Add the example to the cache
+            cache.set(cache_key, example)
 
         created_examples.append(example)
 
