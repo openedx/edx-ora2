@@ -159,6 +159,60 @@ class StudentTrainingAssessmentTest(CacheResetTest):
         next_retrieved = training_api.get_training_example(self.submission_uuid, self.RUBRIC, self.EXAMPLES)
         self.assertEqual(retrieved, next_retrieved)
 
+    def test_get_training_example_num_queries(self):
+
+        # Run through the training example once using a different submission
+        # Training examples and rubrics will be cached and shared for other
+        # students working on the same problem.
+        self._warm_cache(self.RUBRIC, self.EXAMPLES)
+
+        # First training example
+        # This will need to create the student training workflow and the first item
+        # NOTE: we *could* cache the rubric model to reduce the number of queries here,
+        # but we're selecting it by content hash, which is indexed and should be plenty fast.
+        with self.assertNumQueries(6):
+            training_api.get_training_example(self.submission_uuid, self.RUBRIC, self.EXAMPLES)
+
+        # Without assessing the first training example, try to retrieve a training example.
+        # This should return the same example as before, so we won't need to create
+        # any workflows or workflow items.
+        with self.assertNumQueries(3):
+            training_api.get_training_example(self.submission_uuid, self.RUBRIC, self.EXAMPLES)
+
+        # Assess the current training example
+        training_api.assess_training_example(self.submission_uuid, self.EXAMPLES[0]['options_selected'])
+
+        # Retrieve the next training example, which requires us to create
+        # a new workflow item (but not a new workflow).
+        with self.assertNumQueries(4):
+            training_api.get_training_example(self.submission_uuid, self.RUBRIC, self.EXAMPLES)
+
+    def test_submitter_is_finished_num_queries(self):
+        # Complete the first training example
+        training_api.get_training_example(self.submission_uuid, self.RUBRIC, self.EXAMPLES)
+        training_api.assess_training_example(self.submission_uuid, self.EXAMPLES[0]['options_selected'])
+
+        # Check whether we've completed the requirements
+        requirements = {'num_required': 2}
+        with self.assertNumQueries(2):
+            training_api.submitter_is_finished(self.submission_uuid, requirements)
+
+    def test_get_num_completed_num_queries(self):
+        # Complete the first training example
+        training_api.get_training_example(self.submission_uuid, self.RUBRIC, self.EXAMPLES)
+        training_api.assess_training_example(self.submission_uuid, self.EXAMPLES[0]['options_selected'])
+
+        # Check the number completed
+        with self.assertNumQueries(2):
+            training_api.get_num_completed(self.submission_uuid)
+
+    def test_assess_training_example_num_queries(self):
+        # Populate the cache with training examples and rubrics
+        self._warm_cache(self.RUBRIC, self.EXAMPLES)
+        training_api.get_training_example(self.submission_uuid, self.RUBRIC, self.EXAMPLES)
+        with self.assertNumQueries(4):
+            training_api.assess_training_example(self.submission_uuid, self.EXAMPLES[0]['options_selected'])
+
     @ddt.file_data('data/validate_training_examples.json')
     def test_validate_training_examples(self, data):
         errors = training_api.validate_training_examples(
@@ -319,3 +373,22 @@ class StudentTrainingAssessmentTest(CacheResetTest):
         example = training_api.get_training_example(submission_uuid, input_rubric, input_examples)
         expected_example = self._expected_example(input_examples[order_num], input_rubric)
         self.assertItemsEqual(example, expected_example)
+
+    def _warm_cache(self, rubric, examples):
+        """
+        Create a submission and complete student training.
+        This will populate the cache with training examples and rubrics,
+        which are immutable and shared for all students training on a particular problem.
+
+        Args:
+            rubric (dict): Serialized rubric model.
+            examples (list of dict): Serialized training examples
+
+        Returns:
+            None
+
+        """
+        pre_submission = sub_api.create_submission(self.STUDENT_ITEM, self.ANSWER)
+        for example in examples:
+            training_api.get_training_example(pre_submission['uuid'], rubric, examples)
+            training_api.assess_training_example(pre_submission['uuid'], example['options_selected'])

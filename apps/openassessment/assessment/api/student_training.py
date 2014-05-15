@@ -316,8 +316,8 @@ def get_training_example(submission_uuid, rubric, examples):
 
         # Pick a training example that the student has not yet completed
         # If the student already started a training example, then return that instead.
-        item = workflow.next_incomplete_item(examples)
-        return None if item is None else serialize_training_example(item.training_example)
+        next_example = workflow.next_training_example(examples)
+        return None if next_example is None else serialize_training_example(next_example)
     except (InvalidRubric, InvalidTrainingExample) as ex:
         logger.exception(
             "Could not deserialize training examples for submission UUID {}".format(submission_uuid)

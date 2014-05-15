@@ -1,7 +1,7 @@
 """
 Django models specific to the student training assessment type.
 """
-from django.db import models, transaction
+from django.db import models
 from django.utils import timezone
 from submissions import api as sub_api
 from .training import TrainingExample
@@ -60,44 +60,6 @@ class StudentTrainingWorkflow(models.Model):
             course_id=student_item['course_id']
         )
 
-    @transaction.commit_on_success
-    def create_workflow_item(self, training_example):
-        """
-        Create a workflow item for a training example
-        and add it to the workflow.
-
-        Args:
-            training_example (TrainingExample): The training example model
-                associated with the next workflow item.
-
-        Returns:
-            StudentTrainingWorkflowItem
-
-        """
-        order_num = self.items.count() + 1  # pylint:disable=E1101
-        item = StudentTrainingWorkflowItem.objects.create(
-            workflow=self,
-            order_num=order_num,
-            training_example=training_example
-        )
-        self.items.add(item)    # pylint:disable=E1101
-        self.save()
-        return item
-
-    @property
-    def status(self):
-        """
-        The student's status within the workflow (num steps completed / num steps available).
-
-        Returns:
-            tuple of `(num_completed, num_total)`, both integers
-
-        """
-        items = self.items.all()    # pylint:disable=E1101
-        num_complete = sum([1 if item.is_complete else 0 for item in items])
-        num_total = len(items)
-        return num_complete, num_total
-
     @property
     def num_completed(self):
         """
@@ -110,26 +72,36 @@ class StudentTrainingWorkflow(models.Model):
         """
         return self.items.filter(completed_at__isnull=False).count()  # pylint:disable=E1101
 
-    def next_incomplete_item(self, examples):
+    def next_training_example(self, examples):
         """
-        Find the next incomplete item in the workflow.
+        Return the next training example for the student to assess.
+        If the student is already working on an example, return that.
+        Otherwise, choose an example the student hasn't seen
+        from the list of available examples.
 
         Args:
             examples (list of TrainingExample): Training examples to choose from.
 
         Returns:
-            StudentTrainingWorkflowItem or None
+            TrainingExample or None
 
         """
+        # Fetch all the items for this workflow from the database
+        # Since Django's `select_related` does not follow reverse keys
+        # we perform the filter ourselves.
+        items = StudentTrainingWorkflowItem.objects.select_related(
+            'training_example'
+        ).filter(workflow=self)
+
         # If we're already working on an item, then return that item
-        current_item = self.current_item
-        if current_item is not None:
-            return current_item
+        incomplete_items = [item for item in items if not item.is_complete]
+        if len(incomplete_items) > 0:
+            return incomplete_items[0].training_example
 
         # Otherwise, pick an item that we have not completed
         # from the list of examples.
         completed_examples = [
-            item.training_example for item in self.items.all()  # pylint:disable=E1101
+            item.training_example for item in items
         ]
         available_examples = [
             available for available in examples
@@ -142,7 +114,14 @@ class StudentTrainingWorkflow(models.Model):
         # Otherwise, create a new workflow item for the example
         # and add it to the workflow
         else:
-            return self.create_workflow_item(available_examples[0])
+            order_num = len(items) + 1
+            next_example = available_examples[0]
+            StudentTrainingWorkflowItem.objects.create(
+                workflow=self,
+                order_num=order_num,
+                training_example=next_example
+            )
+            return next_example
 
     @property
     def current_item(self):
@@ -154,14 +133,13 @@ class StudentTrainingWorkflow(models.Model):
             StudentTrainingWorkflowItem or None
 
         """
-        next_incomplete = self.items.filter(  # pylint:disable=E1101
+        next_incomplete = self.items.select_related(
+            'training_example'
+        ).filter(  # pylint:disable=E1101
             completed_at__isnull=True
         ).order_by('order_num')[:1]
 
-        if len(next_incomplete) > 0:
-            return next_incomplete[0]
-        else:
-            return None
+        return None if len(next_incomplete) == 0 else next_incomplete[0]
 
 
 class StudentTrainingWorkflowItem(models.Model):
