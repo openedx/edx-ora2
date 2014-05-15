@@ -64,11 +64,13 @@ def resolve_dates(start, end, date_ranges):
             (The last assessment defaults to the problem end date.)
         5) `start` resolves to the earliest start date.
         6) `end` resolves to the latest end date.
-        7) If `start` is later than `end`, move `start` to just before `end`.
+        7) Ensure that `start` is before `end`.
+        8) Ensure that `start` is before the earliest due date.
+        9) Ensure that `end` is after the latest start date.
 
     Overriding start/end dates:
 
-        * Rules 5, 6, and 7 may seem strange, but they're necessary.  Unlike `date_ranges`,
+        * Rules 5-9 may seem strange, but they're necessary.  Unlike `date_ranges`,
           the `start` and `end` values are inherited by the XBlock from the LMS.
           This means that you can set `start` and `end` in Studio, effectively bypassing
           our validation rules.
@@ -160,9 +162,13 @@ def resolve_dates(start, end, date_ranges):
     # defaults.  See the docstring above for a more detailed justification.
     for step_start, step_end in date_ranges:
         if step_start is not None:
-            start = min(start, _parse_date(step_start))
+            parsed_start = _parse_date(step_start)
+            start = min(start, parsed_start)
+            end = max(end, parsed_start + dt.timedelta(milliseconds=1))
         if step_end is not None:
-            end = max(end, _parse_date(step_end))
+            parsed_end = _parse_date(step_end)
+            end = max(end, parsed_end)
+            start = min(start, parsed_end - dt.timedelta(milliseconds=1))
 
     # Iterate through the list forwards and backwards simultaneously
     # As we iterate forwards, resolve start dates.
