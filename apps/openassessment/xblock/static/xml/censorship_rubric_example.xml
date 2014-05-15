@@ -63,6 +63,20 @@
         </feedbackprompt>
     </rubric>
     <assessments>
+        <assessment name="student-training">
+            <example>
+                <answer>Censorship is terrible. I don't like it at all.</answer>
+                <select criterion="concise" option="Matsuo Basho" />
+                <select criterion="clear-headed" option="Eric" />
+                <select criterion="form" option="IRC"/>
+            </example>
+            <example>
+                <answer>I love censorship.</answer>
+                <select criterion="concise" option="Matsuo Basho" />
+                <select criterion="clear-headed" option="Ian" />
+                <select criterion="form" option="Old-timey letters"/>
+            </example>
+        </assessment>
         <assessment name="peer-assessment"
                     start="2014-12-20T19:00-7:00"
                     due="2014-12-21T22:22-7:00"

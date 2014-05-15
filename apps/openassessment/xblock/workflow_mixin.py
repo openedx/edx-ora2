@@ -60,17 +60,22 @@ class WorkflowMixin(object):
             dict
 
         """
-        assessment_ui_model = self.get_assessment_module('peer-assessment')
+        requirements = {}
 
-        if not assessment_ui_model:
-            return {}
-
-        return {
-            "peer": {
-                "must_grade": assessment_ui_model["must_grade"],
-                "must_be_graded_by": assessment_ui_model["must_be_graded_by"]
+        peer_assessment_module = self.get_assessment_module('peer-assessment')
+        if peer_assessment_module:
+            requirements["peer"] = {
+                "must_grade": peer_assessment_module["must_grade"],
+                "must_be_graded_by": peer_assessment_module["must_be_graded_by"]
             }
-        }
+
+        training_module = self.get_assessment_module('student-training')
+        if training_module:
+            requirements["training"] = {
+                "num_required": len(training_module["examples"])
+            }
+
+        return requirements
 
     def update_workflow_status(self, submission_uuid=None):
         """

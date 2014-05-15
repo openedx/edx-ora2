@@ -6,6 +6,7 @@ from django.utils.translation import ugettext as _
 from webob import Response
 from xblock.core import XBlock
 from openassessment.assessment.api import student_training
+from openassessment.xblock.data_conversion import convert_training_examples_list_to_dict
 
 
 logger = logging.getLogger(__name__)
@@ -41,7 +42,7 @@ class StudentTrainingMixin(object):
             unicode: HTML content of the grade step
 
         """
-        if "training" not in self.assessment_steps:
+        if "student-training" not in self.assessment_steps:
             return Response(u"")
 
         try:
@@ -70,12 +71,15 @@ class StudentTrainingMixin(object):
         context = {}
         template = 'openassessmentblock/student_training/student_training_unavailable.html'
 
+        if not workflow_status:
+            return template, context
+
         # If the student has completed the training step, then show that the step is complete.
         # We put this condition first so that if a student has completed the step, it *always*
         # shows as complete.
         # We're assuming here that the training step always precedes the other assessment steps
         # (peer/self) -- we may need to make this more flexible later.
-        if workflow_status in ['peer', 'self', 'waiting', 'done']:
+        if workflow_status and workflow_status != "training":
             template = 'openassessmentblock/student_training/student_training_complete.html'
 
         # If the problem is closed, then do not allow students to access the training step
@@ -89,14 +93,27 @@ class StudentTrainingMixin(object):
         # If we're on the training step, show the student an example
         # We do this last so we can avoid querying the student training API if possible.
         else:
+            training_module = self.get_assessment_module('student-training')
+            if not training_module:
+                return template, context
+
+            context['training_due'] = due_date
+
             # Report progress in the student training workflow (completed X out of Y)
-            status = student_training.get_workflow_status(self.submission_uuid)
-            context['training_num_completed'] = status['num_completed']
-            context['training_num_available'] = status['num_total']
+            context['training_num_available'] = len(training_module["examples"])
+            context['training_num_completed'] = student_training.get_num_completed(self.submission_uuid)
 
             # Retrieve the example essay for the student to submit
             # This will contain the essay text, the rubric, and the options the instructor selected.
-            example = student_training.get_training_example(self.submission_uuid)
+            examples = convert_training_examples_list_to_dict(training_module["examples"])
+            example = student_training.get_training_example(
+                self.submission_uuid,
+                {
+                    'prompt': self.prompt,
+                    'criteria': self.rubric_criteria
+                },
+                examples
+            )
             context['training_essay'] = example['answer']
             context['training_rubric'] = example['rubric']
             template = 'openassessmentblock/student_training/student_training.html'

@@ -40,6 +40,12 @@ UI_MODELS = {
         "navigation_text": "Your response to this problem",
         "title": "Your Response"
     },
+    "student-training": {
+        "name": "student-training",
+        "class_id": "openassessment__student-training",
+        "navigation_text": "Learn to assess responses",
+        "title": "Learn to Assess"
+    },
     "peer-assessment": {
         "name": "peer-assessment",
         "class_id": "openassessment__peer-assessment",
@@ -61,6 +67,7 @@ UI_MODELS = {
 }
 
 VALID_ASSESSMENT_TYPES = [
+    "student-training",
     "peer-assessment",
     "self-assessment",
 ]

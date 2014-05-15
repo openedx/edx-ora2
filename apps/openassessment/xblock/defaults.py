@@ -65,6 +65,40 @@ DEFAULT_RUBRIC_FEEDBACK_PROMPT = """
 """
 
 
+DEFAULT_STUDENT_TRAINING = {
+    "name": "student-training",
+    "start": None,
+    "due": None,
+    "examples": [
+        {
+            "answer": "Example Calibration Response",
+            "options_selected": [
+                {
+                    "criterion": "Ideas",
+                    "option": "Fair"
+                },
+                {
+                    "criterion": "Content",
+                    "option": "Good"
+                }
+            ]
+        },
+        {
+            "answer": "Another Example Calibration Response",
+            "options_selected": [
+                {
+                    "criterion": "Ideas",
+                    "option": "Poor"
+                },
+                {
+                    "criterion": "Content",
+                    "option": "Good"
+                }
+            ]
+        }
+    ]
+}
+
 # The Default Peer Assessment is created as an example of how this XBlock can be
 # configured. If no configuration is specified, this is the default assessment
 # module(s) associated with the XBlock.
@@ -82,6 +116,7 @@ DEFAULT_SELF_ASSESSMENT = {
 }
 
 DEFAULT_ASSESSMENT_MODULES = [
+    DEFAULT_STUDENT_TRAINING,
     DEFAULT_PEER_ASSESSMENT,
     DEFAULT_SELF_ASSESSMENT,
 ]

@@ -6,6 +6,7 @@ from django.utils.translation import ugettext as _
 from openassessment.assessment.serializers import rubric_from_dict, InvalidRubric
 from openassessment.assessment.api.student_training import validate_training_examples
 from openassessment.xblock.resolve_dates import resolve_dates, DateValidationError, InvalidDateFormat
+from openassessment.xblock.data_conversion import convert_training_examples_list_to_dict
 
 
 def _match_by_order(items, others):
@@ -228,27 +229,15 @@ def _validate_assessment_examples(rubric_dict, assessments):
     for asmnt in assessments:
         if asmnt['name'] == 'student-training':
 
-            # Convert of options selected we store in the problem def,
-            # which is ordered, to the unordered dictionary of options
-            # selected that the student training API expects.
-            examples = [
-                {
-                    'answer': ex['answer'],
-                    'options_selected': {
-                        select_dict['criterion']: select_dict['option']
-                        for select_dict in ex['options_selected']
-                    }
-                }
-                for ex in asmnt['examples']
-            ]
+            examples = convert_training_examples_list_to_dict(asmnt['examples'])
 
             # Delegate to the student training API to validate the
             # examples against the rubric.
             errors = validate_training_examples(rubric_dict, examples)
             if errors:
-                return (False, "\n".join(errors))
+                return False, "\n".join(errors)
 
-    return (True, u'')
+    return True, u''
 
 
 def validator(oa_block, strict_post_release=True):
