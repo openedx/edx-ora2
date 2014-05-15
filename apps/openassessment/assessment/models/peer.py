@@ -178,14 +178,23 @@ class PeerWorkflow(models.Model):
         peer_workflow = cls.get_by_submission_uuid(submission_uuid)
 
         try:
-            workflow_item, __ = PeerWorkflowItem.objects.get_or_create(
+            workflow_items = PeerWorkflowItem.objects.filter(
                 scorer=scorer_workflow,
                 author=peer_workflow,
                 submission_uuid=submission_uuid
             )
-            workflow_item.started_at = now()
-            workflow_item.save()
-            return workflow_item
+
+            if len(workflow_items) > 0:
+                item = workflow_items[0]
+            else:
+                item = PeerWorkflowItem.objects.create(
+                    scorer=scorer_workflow,
+                    author=peer_workflow,
+                    submission_uuid=submission_uuid
+                )
+            item.started_at = now()
+            item.save()
+            return item
         except DatabaseError:
             error_message = _(
                 u"An internal error occurred while creating a new peer workflow "
