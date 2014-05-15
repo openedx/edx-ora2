@@ -263,7 +263,7 @@ class AssessmentWorkflowStep(models.Model):
         """
         from openassessment.assessment.api import peer as peer_api
         from openassessment.assessment.api import self as self_api
-        from openassessment.assessment.api import student_training as student_training
+        from openassessment.assessment.api import student_training
         api = None
         if self.name == AssessmentWorkflow.STATUS.self:
             api = self_api

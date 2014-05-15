@@ -8,6 +8,7 @@ import logging
 from django.db import DatabaseError
 
 from openassessment.assessment.api import peer as peer_api
+from openassessment.assessment.api import student_training as student_training
 from openassessment.assessment.errors import PeerAssessmentError
 from submissions import api as sub_api
 from .models import AssessmentWorkflow, AssessmentWorkflowStep
@@ -138,6 +139,8 @@ def create_workflow(submission_uuid, steps):
             raise AssessmentWorkflowInternalError(err_msg)
     elif steps[0] == "self":
         status = AssessmentWorkflow.STATUS.self
+    elif steps[0] == "training":
+        status = AssessmentWorkflow.STATUS.training
 
     try:
         workflow = AssessmentWorkflow.objects.create(

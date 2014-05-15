@@ -1,0 +1,19 @@
+{% extends "openassessmentblock/student_training/student_training.html" %}
+{% load i18n %}
+
+{% block list_item %}
+    <li id="openassessment__student-training" class="openassessment__steps__step step--student-training is--complete is--empty is--collapsed">
+{% endblock %}
+
+{% block title %}
+    <span class="step__status">
+  <span class="step__status__label">{% trans "This step's status" %}:</span>
+  <span class="step__status__value">
+    <i class="ico icon-ok"></i>
+    <span class="copy">{% trans "Complete" %}</span>
+  </span>
+</span>
+{% endblock %}
+
+{% block body %}
+{% endblock %}

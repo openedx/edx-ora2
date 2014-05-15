@@ -1,0 +1,113 @@
+{% load i18n %}
+{% load tz %}
+{% spaceless %}
+    {% block list_item %}
+        <li id="openassessment__student-training" class="openassessment__steps__step step--student-training ui-toggle-visibility">
+    {% endblock %}
+
+<header class="step__header ui-toggle-visibility__control">
+    <h2 class="step__title">
+        <span class="step__counter"></span>
+            <span class="wrapper--copy">
+                <span class="step__label">{% trans "Learn to Assess" %}</span>
+                {% if self_start %}
+                    <span class="step__deadline">{% trans "available" %}
+                    <span class="date">
+                        {{ self_start|utc|date:"N j, Y H:i e" }}
+                        (in {{ self_start|timeuntil }})
+                    </span>
+                </span>
+                {% elif training_due %}
+                    <span class="step__deadline">due
+                    <span class="date">
+                        {{ training_due|utc|date:"N j, Y H:i e" }}
+                        (in {{ training_due|timeuntil }})
+                    </span>
+                </span>
+                {% endif %}
+            </span>
+    </h2>
+
+    {% block title %}
+        <span class="step__status">
+          <span class="step__status__label">{% trans "This step's status" %}:</span>
+          <span class="step__status__value">
+              <span class="copy">{% trans "In Progress" %}</span>
+          </span>
+        </span>
+    {% endblock %}
+</header>
+
+{% block body %}
+    <div class="ui-toggle-visibility__content">
+        <div class="wrapper--step__content">
+            <div class="step__content">
+                <article class="student-training__display" id="student-training">
+                    <header class="student-training__display__header">
+                        <h3 class="student-training__display__title">{% trans "Your Response" %}</h3>
+                    </header>
+
+                    <div class="student-training__display__response">
+                        {{ training_essay.text|linebreaks }}
+                    </div>
+                </article>
+
+                <form id="student-training--001__assessment" class="student-training__assessment" method="post">
+                    <fieldset class="assessment__fields">
+                        <ol class="list list--fields assessment__rubric">
+                            {% for criterion in training_rubric.criteria %}
+                                <li class="field field--radio is--required assessment__rubric__question ui-toggle-visibility" id="assessment__rubric__question--{{ criterion.order_num }}">
+                                    <h4 class="question__title ui-toggle-visibility__control">
+                                        <i class="ico icon-caret-right"></i>
+                                        <span class="question__title__copy">{{ criterion.prompt }}</span>
+                                        <span class="label--required sr">* ({% trans "Required" %})</span>
+                                    </h4>
+
+                                    <div class="ui-toggle-visibility__content">
+                                        <ol class="question__answers">
+                                            {% for option in criterion.options %}
+                                                <li class="answer">
+                                                    <div class="wrapper--input">
+                                                        <input type="radio"
+                                                               name="{{ criterion.name }}"
+                                                               id="assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
+                                                               class="answer__value"
+                                                               value="{{ option.name }}" />
+                                                        <label for="assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
+                                                               class="answer__label">{{ option.name }}</label>
+                                                    </div>
+                                                    <div class="wrapper--metadata">
+                                                        <span class="answer__tip">{{ option.explanation }}</span>
+                                                        <span class="answer__points">{{option.points}} <span class="answer__points__label">{% trans "points" %}</span></span>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        </ol>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ol>
+                    </fieldset>
+                </form>
+            </div>
+
+            <div class="step__actions">
+                <div class="message message--inline message--error message--error-server">
+                    <h3 class="message__title">{% trans "We could not submit your assessment" %}</h3>
+                    <div class="message__content"></div>
+                </div>
+
+                <ul class="list list--actions">
+                    <li class="list--actions__item">
+                        <button type="submit" id="student-training--001__assessment__submit" class="action action--submit is--disabled">
+                            <span class="copy">{% trans "Check Rubric" %}</span>
+                            <i class="ico icon-caret-right"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+</li>
+{% endspaceless %}
