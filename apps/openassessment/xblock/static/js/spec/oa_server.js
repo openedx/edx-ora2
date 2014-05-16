@@ -85,7 +85,7 @@ describe("OpenAssessment.Server", function() {
         });
     });
 
-    it("sends an assessment to the XBlock", function() {
+    it("sends a peer-assessment to the XBlock", function() {
         stubAjax(true, {success: true, msg: ''});
 
         var success = false;
@@ -103,6 +103,29 @@ describe("OpenAssessment.Server", function() {
                 options_selected: options,
                 criterion_feedback: criterionFeedback,
                 overall_feedback: "Excellent job!"
+            })
+        });
+    });
+
+    it("sends a training assessment to the XBlock", function() {
+        stubAjax(true, {success: true, msg: '', correct: true});
+        var success = false;
+        var corrections = null;
+        var options = {clarity: "Very clear", precision: "Somewhat precise"};
+        server.trainingAssess(options).done(
+            function(result) {
+                success = true;
+                corrections = result;
+            }
+        );
+
+        expect(success).toBe(true);
+        expect(corrections).toBeUndefined();
+        expect($.ajax).toHaveBeenCalledWith({
+            url: '/training_assess',
+            type: "POST",
+            data: JSON.stringify({
+                options_selected: options
             })
         });
     });
@@ -291,6 +314,28 @@ describe("OpenAssessment.Server", function() {
         var receivedMsg = null;
         var options = {clarity: "Very clear", precision: "Somewhat precise"};
         server.peerAssess(options, {}, "Excellent job!").fail(function(msg) {
+            receivedMsg = msg;
+        });
+
+        expect(receivedMsg).toContain("This assessment could not be submitted");
+    });
+
+    it("informs the caller of a server error when sending a training example assessment", function() {
+        stubAjax(true, {success: false, msg: "Test error!"});
+        var receivedMsg = null;
+        var options = {clarity: "Very clear", precision: "Somewhat precise"};
+        server.trainingAssess(options).fail(function(msg) {
+            receivedMsg = msg;
+        });
+        expect(receivedMsg).toEqual("Test error!");
+    });
+
+    it("informs the caller of an AJAX error when sending a training example assessment", function() {
+        stubAjax(false, null);
+
+        var receivedMsg = null;
+        var options = {clarity: "Very clear", precision: "Somewhat precise"};
+        server.trainingAssess(options).fail(function(msg) {
             receivedMsg = msg;
         });
 

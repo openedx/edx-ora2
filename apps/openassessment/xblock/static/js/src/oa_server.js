@@ -296,6 +296,46 @@ OpenAssessment.Server.prototype = {
     },
 
     /**
+    Assess an instructor-provided training example.
+
+    Args:
+        optionsSelected (object literal): Keys are criteria names,
+            values are the option text the user selected for the criterion.
+
+    Returns:
+        A JQuery promise, which resolves with a boolean if successful
+        and fails with an error message otherwise.
+
+    Example:
+        var options = { clarity: "Very clear", precision: "Somewhat precise" };
+        server.trainingAssess(options).done(
+            function(isCorrect) { console.log("Success!"); }
+        ).fail(
+            function(errorMsg) { console.log(errorMsg); }
+        );
+    **/
+    trainingAssess: function(optionsSelected) {
+        var url = this.url('training_assess');
+        var payload = JSON.stringify({
+            options_selected: optionsSelected
+        });
+        return $.Deferred(function(defer) {
+            $.ajax({ type: "POST", url: url, data: payload }).done(
+                function(data) {
+                    if (data.success) {
+                        defer.resolveWith(this, [data.corrections]);
+                    }
+                    else {
+                        defer.rejectWith(this, [data.msg]);
+                    }
+                }
+            ).fail(function(data) {
+                defer.rejectWith(this, [gettext('This assessment could not be submitted.')]);
+            });
+        });
+    },
+
+    /**
     Load the XBlock's XML definition from the server.
 
     Returns:

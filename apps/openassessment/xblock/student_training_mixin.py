@@ -169,5 +169,5 @@ class StudentTrainingMixin(object):
             return {
                 'success': True,
                 'msg': u'',
-                'correct': len(corrections) == 0,
+                'corrections': corrections,
             }

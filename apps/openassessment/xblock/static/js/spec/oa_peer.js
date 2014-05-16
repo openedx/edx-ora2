@@ -13,7 +13,7 @@ describe("OpenAssessment.PeerView", function() {
         ).promise();
 
         this.peerAssess = function(optionsSelected, feedback) {
-            return $.Deferred(function(defer) { defer.resolve(); }).promise();
+            return successPromise;
         };
 
         this.render = function(step) {

@@ -38,7 +38,7 @@ class StudentTrainingAssessTest(XBlockHandlerTestCase):
 
         # Expect that we were correct
         self.assertTrue(resp['success'], msg=resp.get('msg'))
-        self.assertTrue(resp['correct'])
+        self.assertFalse(resp['corrections'])
 
     @scenario('data/student_training.xml', user_id="Plato")
     @ddt.file_data('data/student_training_mixin.json')
@@ -58,7 +58,7 @@ class StudentTrainingAssessTest(XBlockHandlerTestCase):
 
         # Expect that we were marked incorrect
         self.assertTrue(resp['success'], msg=resp.get('msg'))
-        self.assertFalse(resp['correct'])
+        self.assertTrue(resp['corrections'])
 
     @scenario('data/student_training.xml', user_id="Plato")
     @ddt.file_data('data/student_training_mixin.json')
@@ -80,7 +80,7 @@ class StudentTrainingAssessTest(XBlockHandlerTestCase):
 
         # Expect that we were correct
         self.assertTrue(resp['success'], msg=resp.get('msg'))
-        self.assertTrue(resp['correct'])
+        self.assertFalse(resp['corrections'])
 
         # Agree with the course author's assessment
         # (as defined in the scenario XML)
@@ -98,7 +98,7 @@ class StudentTrainingAssessTest(XBlockHandlerTestCase):
 
         # Expect that we were correct
         self.assertTrue(resp['success'], msg=resp.get('msg'))
-        self.assertTrue(resp['correct'])
+        self.assertFalse(resp['corrections'])
         expected_context = {}
         expected_template = "openassessmentblock/student_training/student_training_complete.html"
         self._assert_path_and_context(xblock, expected_template, expected_context)
