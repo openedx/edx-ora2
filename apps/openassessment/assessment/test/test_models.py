@@ -3,14 +3,12 @@
 Tests for assessment models.
 """
 
-import mock
-from django.db import IntegrityError
 from openassessment.test_utils import CacheResetTest
 from submissions import api as sub_api
 from openassessment.assessment.models import (
     Rubric, Criterion, CriterionOption, InvalidOptionSelection,
     AssessmentFeedback, AssessmentFeedbackOption,
-    StudentTrainingWorkflow
+    PeerWorkflow, PeerWorkflowItem
 )
 
 
@@ -202,3 +200,49 @@ class AssessmentFeedbackTest(CacheResetTest):
 
         # There should be two options in the database
         self.assertEqual(AssessmentFeedbackOption.objects.count(), 2)
+
+
+class PeerWorkflowTest(CacheResetTest):
+    """
+    Tests for the peer workflow model.
+    """
+    STUDENT_ITEM = {
+        'student_id': 'test_student',
+        'course_id': 'test_course',
+        'item_type': 'openassessment',
+        'item_id': 'test_item'
+    }
+
+    OTHER_STUDENT = {
+        'student_id': 'test_student_2',
+        'course_id': 'test_course',
+        'item_type': 'openassessment',
+        'item_id': 'test_item'
+    }
+
+    def test_create_item_multiple_available(self):
+        # Bugfix TIM-572
+        submitter_sub = sub_api.create_submission(self.STUDENT_ITEM, 'test answer')
+        submitter_workflow = PeerWorkflow.objects.create(
+            student_id=self.STUDENT_ITEM['student_id'],
+            item_id=self.STUDENT_ITEM['item_id'],
+            course_id=self.STUDENT_ITEM['course_id'],
+            submission_uuid=submitter_sub['uuid']
+        )
+        scorer_sub = sub_api.create_submission(self.OTHER_STUDENT, 'test answer 2')
+        scorer_workflow = PeerWorkflow.objects.create(
+            student_id=self.OTHER_STUDENT['student_id'],
+            item_id=self.OTHER_STUDENT['item_id'],
+            course_id=self.OTHER_STUDENT['course_id'],
+            submission_uuid=scorer_sub['uuid']
+        )
+
+        for _ in range(2):
+            PeerWorkflowItem.objects.create(
+                scorer=scorer_workflow,
+                author=submitter_workflow,
+                submission_uuid=submitter_sub['uuid']
+            )
+
+        # This used to cause an error when `get_or_create` returned multiple workflow items
+        PeerWorkflow.create_item(scorer_workflow, submitter_sub['uuid'])
