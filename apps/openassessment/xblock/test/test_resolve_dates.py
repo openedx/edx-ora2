@@ -97,3 +97,25 @@ class ResolveDatesTest(TestCase):
                 (None, None)
             ]
         )
+
+    def test_start_after_step_due(self):
+        # Bugfix: this should not raise a validation error
+        resolve_dates(
+            "2040-01-01", None,
+            [
+                (None, "2014-08-01"),
+                (None, None),
+                (None, None)
+            ]
+        )
+
+    def test_due_before_step_start(self):
+        # Bugfix: this should not raise a validation error
+        resolve_dates(
+            None, "2001-01-01",
+            [
+                (None, None),
+                ("2014-02-03", None),
+                (None, None)
+            ]
+        )
