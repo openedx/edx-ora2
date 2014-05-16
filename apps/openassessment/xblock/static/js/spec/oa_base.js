@@ -15,12 +15,12 @@ describe("OpenAssessment.BaseView", function() {
             grade: readFixtures("oa_grade_complete.html")
         };
 
-        this.selfAssess = function(optionsSelected) {
-            return $.Deferred(function(defer) { defer.resolve(); }).promise();
-        };
+        // Remember which fragments were requested
+        this.fragmentsLoaded = [];
 
         this.render = function(component) {
             var server = this;
+            this.fragmentsLoaded.push(component);
             return $.Deferred(function(defer) {
                 defer.resolveWith(this, [server.fragments[component]]);
             }).promise();
@@ -66,24 +66,12 @@ describe("OpenAssessment.BaseView", function() {
         view = new OpenAssessment.BaseView(runtime, el, server);
     });
 
-    it("Sends a self assessment to the server", function() {
+    it("Loads each step", function() {
         loadSubviews(function() {
-            spyOn(server, 'selfAssess').andCallThrough();
-            view.selfAssess();
-            expect(server.selfAssess).toHaveBeenCalled();
-        });
-    });
-
-    it("Displays error messages from self assessment to the user", function() {
-        var testError = 'Test failure contacting server message';
-        loadSubviews(function() {
-            /* stub our selfAssess to fail */
-            spyOn(server, 'selfAssess').andCallFake(function(optionsSelected) {
-                return $.Deferred(function(defer) { defer.rejectWith(server, [testError]); }).promise();
-            });
-            view.selfAssess();
-            expect(server.selfAssess).toHaveBeenCalled();
-            expect(view.getStepActionsErrorMessage()).toContain(testError);
+            expect(server.fragmentsLoaded).toContain("submission");
+            expect(server.fragmentsLoaded).toContain("self_assessment");
+            expect(server.fragmentsLoaded).toContain("peer_assessment");
+            expect(server.fragmentsLoaded).toContain("grade");
         });
     });
 
