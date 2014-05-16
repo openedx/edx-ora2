@@ -1,20 +1,20 @@
 {% load i18n %}
 {% load tz %}
 {% spaceless %}
-    {% block list_item %}
-        <li id="openassessment__student-training" class="openassessment__steps__step step--student-training ui-toggle-visibility">
-    {% endblock %}
+{% block list_item %}
+<li id="openassessment__student-training" class="openassessment__steps__step step--student-training ui-toggle-visibility">
+{% endblock %}
 
 <header class="step__header ui-toggle-visibility__control">
     <h2 class="step__title">
         <span class="step__counter"></span>
             <span class="wrapper--copy">
                 <span class="step__label">{% trans "Learn to Assess" %}</span>
-                {% if self_start %}
+                {% if training_start %}
                     <span class="step__deadline">{% trans "available" %}
                     <span class="date">
-                        {{ self_start|utc|date:"N j, Y H:i e" }}
-                        (in {{ self_start|timeuntil }})
+                        {{ training_start|utc|date:"N j, Y H:i e" }}
+                        (in {{ training_start|timeuntil }})
                     </span>
                 </span>
                 {% elif training_due %}
@@ -44,11 +44,11 @@
             <div class="step__content">
                 <article class="student-training__display" id="student-training">
                     <header class="student-training__display__header">
-                        <h3 class="student-training__display__title">{% trans "Your Response" %}</h3>
+                        <h3 class="student-training__display__title">{% trans "Training Essay" %}</h3>
                     </header>
 
                     <div class="student-training__display__response">
-                        {{ training_essay.text|linebreaks }}
+                        {{ training_essay|linebreaks }}
                     </div>
                 </article>
 
@@ -62,7 +62,20 @@
                                         <span class="question__title__copy">{{ criterion.prompt }}</span>
                                         <span class="label--required sr">* ({% trans "Required" %})</span>
                                     </h4>
+                                    <div class="step__message message message--correct ui-toggle-visibility is--hidden">
+                                        <h3 class="message__title">{% trans "Correct Selection" %}</h3>
 
+                                        <div class="message__content">
+                                            <p>{% trans "Your selection matches staff." %}</p>
+                                        </div>
+                                    </div>
+                                    <div class="step__message message message--incorrect ui-toggle-visibility is--hidden">
+                                        <h3 class="message__title">{% trans "Incorrect Selection" %}</h3>
+
+                                        <div class="message__content">
+                                            <p>{% trans "Your selection does not match staff." %}</p>
+                                        </div>
+                                    </div>
                                     <div class="ui-toggle-visibility__content">
                                         <ol class="question__answers">
                                             {% for option in criterion.options %}

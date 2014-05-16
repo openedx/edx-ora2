@@ -31,7 +31,7 @@ OpenAssessment.PeerView.prototype = {
                 view.installHandlers(false);
             }
         ).fail(function(errMsg) {
-            view.showLoadError('peer-assessment');
+            view.baseView.showLoadError('peer-assessment');
         });
     },
 
@@ -50,7 +50,7 @@ OpenAssessment.PeerView.prototype = {
                 view.installHandlers(true);
             }
         ).fail(function(errMsg) {
-            view.showLoadError('peer-assessment');
+            view.baseView.showLoadError('peer-assessment');
         });
     },
 

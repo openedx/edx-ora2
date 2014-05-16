@@ -73,62 +73,84 @@
   .student__answer__display__content p {
     color: inherit;
   }
+}
 
 // --------------------
 // Developer Styles for Student Training
 // --------------------
-  .step--student-training {
+.step--student-training {
 
-    // submission
-    .student-training__display {
-      @extend %ui-subsection;
+  // submission
+  .student-training__display {
+    @extend %ui-subsection;
+  }
+
+  .student-training__display__header {
+    @include clearfix();
+  }
+
+  .student-training__display__title {
+    @extend %t-heading;
+    margin-bottom: ($baseline-v/2);
+    color: $heading-secondary-color;
+  }
+
+  .student-training__display__response {
+    @extend %ui-subsection-content;
+    @extend %copy-3;
+    @extend %ui-content-longanswer;
+    @extend %ui-well;
+    color: $copy-color;
+  }
+
+  // assessment form
+  .student-training__assessment {
+
+    // fields
+    .assessment__fields {
+      margin-bottom: $baseline-v;
     }
 
-    .student-training__display__header {
-      @include clearfix();
+    // rubric question
+    .assessment__rubric__question {
+      @extend %ui-rubric-question;
     }
 
-    .student-training__display__title {
-      @extend %t-heading;
-      margin-bottom: ($baseline-v/2);
-      color: $heading-secondary-color;
+    // rubric options
+    .question__answers {
+      @extend %ui-rubric-answers;
+      overflow: visible; // needed for ui-hints
     }
 
-    .student-training__display__response {
-      @extend %ui-subsection-content;
-      @extend %copy-3;
-      @extend %ui-content-longanswer;
-      @extend %ui-well;
-      color: $copy-color;
+    // genereal feedback question
+    .assessment__rubric__question--feedback {
+
+      textarea {
+        @extend %ui-content-longanswer;
+        min-height: ($baseline-v*5);
+      }
     }
+  }
 
-    // assessment form
-    .student-training__assessment {
+  // TYPE: correct
+  .message--correct {
+    @extend .message--complete;
+  }
 
-      // fields
-      .assessment__fields {
-        margin-bottom: $baseline-v;
-      }
+  // TYPE: incorrect
+  .message--incorrect {
+    @extend .message--incomplete;
+  }
 
-      // rubric question
-      .assessment__rubric__question {
-        @extend %ui-rubric-question;
-      }
-
-      // rubric options
-      .question__answers {
-        @extend %ui-rubric-answers;
-        overflow: visible; // needed for ui-hints
-      }
-
-      // genereal feedback question
-      .assessment__rubric__question--feedback {
-
-        textarea {
-          @extend %ui-content-longanswer;
-          min-height: ($baseline-v*5);
-        }
-      }
+  // Stolen from oa_base is--collapsed.
+  .is--hidden {
+    height: 0;
+    width: 0;
+    padding: 0 0 0 0;
+    .step__header {
+      padding-bottom: 0;
+      border-bottom: none;
+      margin-bottom: 0;
     }
   }
 }

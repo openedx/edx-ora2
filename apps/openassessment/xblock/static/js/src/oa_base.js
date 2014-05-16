@@ -15,6 +15,7 @@ OpenAssessment.BaseView = function(runtime, element, server) {
     this.server = server;
 
     this.responseView = new OpenAssessment.ResponseView(this.element, this.server, this);
+    this.trainingView = new OpenAssessment.StudentTrainingView(this.element, this.server, this);
     this.selfView = new OpenAssessment.SelfView(this.element, this.server, this);
     this.peerView = new OpenAssessment.PeerView(this.element, this.server, this);
     this.gradeView = new OpenAssessment.GradeView(this.element, this.server, this);
@@ -75,6 +76,7 @@ OpenAssessment.BaseView.prototype = {
      performed by the user.
      **/
     loadAssessmentModules: function() {
+        this.trainingView.load();
         this.peerView.load();
         this.selfView.load();
         this.gradeView.load();
