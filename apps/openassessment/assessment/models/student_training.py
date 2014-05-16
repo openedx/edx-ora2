@@ -12,7 +12,7 @@ class StudentTrainingWorkflow(models.Model):
     Tracks a student's progress through the student training assessment step.
     """
     # The submission UUID of the student being trained
-    submission_uuid = models.CharField(max_length=128, db_index=True)
+    submission_uuid = models.CharField(max_length=128, db_index=True, unique=True)
 
     # Information about the student and problem
     # This duplicates information associated with the submission itself,
