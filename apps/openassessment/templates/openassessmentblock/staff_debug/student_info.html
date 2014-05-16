@@ -60,7 +60,7 @@
             <h3 class="title">{% trans "Peer Assessments Completed by This Student" %}</h3>
             {% for assessment in submitted_assessments %}
                 {% with peer_num=forloop.counter %}
-                    <h4 class="title--sub">{% trans "Peer" %} {{ peer_num }}:</h4>
+                    <h4 class="title--sub">{% trans "Assessment" %} {{ peer_num }}:</h4>
                     <table class="staff-info__status__table" summary="{% trans "Assessment" %}">
                         <thead>
                         <tr>
