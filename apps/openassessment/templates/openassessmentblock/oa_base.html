@@ -20,14 +20,16 @@
                 </ol>
             </nav>
 
-            {% block message %}
-            <!-- if the problem is unstarted or response hasn't been submitted -->
-            <div id="openassessment__message" class="openassessment__message message">
-                <div class="message__content">
-                    <p>{% trans "This assignment has several steps. In the first step, you'll provide a response to the question. The other steps appear below the <strong>Your Response</strong> field." %}</p>
+            <div class="wrapper-openassessment__message">
+                {% block message %}
+                <div id="openassessment__message" class="openassessment__message message">
+                    <h3 class="message__title">Instructions</h3>
+                    <div class="message__content">
+                        <p>{% trans "This assignment has several steps. In the first step, you'll provide a response to the question. The other steps appear below the Your Response field." %}</p>
+                    </div>
                 </div>
+                {% endblock %}
             </div>
-            {% endblock %}
 
             <div class="wrapper--openassessment__prompt">
                 {% if question %}

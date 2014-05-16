@@ -203,8 +203,12 @@ class PeerAssessmentMixin(object):
             if peer_sub:
                 path = 'openassessmentblock/peer/oa_peer_assessment.html'
                 context_dict["peer_submission"] = peer_sub
+                # Sets the XBlock boolean to signal to Message that it WAS NOT able to grab a submission
+                self.no_peers = False
             else:
                 path = 'openassessmentblock/peer/oa_peer_waiting.html'
+                # Sets the XBlock boolean to signal to Message that it WAS able to grab a submission
+                self.no_peers = True
 
         return path, context_dict
 

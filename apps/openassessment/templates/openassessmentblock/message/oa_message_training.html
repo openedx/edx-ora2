@@ -1,0 +1,13 @@
+{% load i18n %}
+{% spaceless %}
+<div id="openassessment__message" class="openassessment__message message">
+    <div class="message__content">
+        <p>
+            {% if approaching %}
+                {% trans "Student training for peer assessment will close soon. " %}
+            {% endif %}
+            {% trans "Complete the student training section to move on to peer assessment." %}
+        </p>
+    </div>
+</div>
+{% endspaceless %}

@@ -16,6 +16,7 @@ from xblock.fragment import Fragment
 from openassessment.xblock.grade_mixin import GradeMixin
 
 from openassessment.xblock.defaults import * # pylint: disable=wildcard-import, unused-wildcard-import
+from openassessment.xblock.message_mixin import MessageMixin
 from openassessment.xblock.peer_assessment_mixin import PeerAssessmentMixin
 from openassessment.xblock.lms_mixin import LmsCompatibilityMixin
 from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
@@ -81,6 +82,7 @@ def load(path):
 
 class OpenAssessmentBlock(
     XBlock,
+    MessageMixin,
     SubmissionMixin,
     PeerAssessmentMixin,
     SelfAssessmentMixin,
@@ -148,13 +150,19 @@ class OpenAssessmentBlock(
     has_saved = Boolean(
         default=False,
         scope=Scope.user_state,
-        help="Indicates whether the user has saved a response"
+        help="Indicates whether the user has saved a response."
     )
 
     saved_response = String(
         default=u"",
         scope=Scope.user_state,
         help="Saved response submission for the current user."
+    )
+
+    no_peers = Boolean(
+        default=False,
+        scope=Scope.user_state,
+        help="Indicates whether or not there are peers to grade."
     )
 
     def get_student_item_dict(self):
@@ -432,7 +440,7 @@ class OpenAssessmentBlock(
             self.start, self.due, [submission_range] + assessment_ranges
         )
 
-        open_range  = (start, due)
+        open_range = (start, due)
         assessment_steps = self.assessment_steps
         if step == 'submission':
             open_range = date_ranges[0]
@@ -518,3 +526,4 @@ class OpenAssessmentBlock(
             return key.to_deprecated_string()
         else:
             return unicode(key)
+
