@@ -62,13 +62,13 @@ describe("OpenAssessment.PeerView", function() {
         optionsSelected['Criterion 1'] = 'Poor';
         optionsSelected['Criterion 2'] = 'Fair';
         optionsSelected['Criterion 3'] = 'Good';
-        view.optionsSelected(optionsSelected);
+        view.rubric.optionsSelected(optionsSelected);
 
         // Provide per-criterion feedback
         var criterionFeedback = {};
         criterionFeedback['Criterion 1'] = "You did a fair job";
         criterionFeedback['Criterion 3'] = "You did a good job";
-        view.criterionFeedback(criterionFeedback);
+        view.rubric.criterionFeedback(criterionFeedback);
 
         // Provide overall feedback
         var overallFeedback = "Good job!";

@@ -26,12 +26,12 @@ describe("OpenAssessment.SelfView", function() {
         this.showLoadError = function(msg) {};
         this.toggleActionError = function(msg, step) {};
         this.setUpCollapseExpand = function(sel) {};
+        this.loadAssessmentModules = function() {};
+        this.scrollToTop = function() {};
     };
 
-    // Stub runtime
-    var runtime = {};
-
     // Stubs
+    var baseView = null;
     var server = null;
 
     // View under test
@@ -45,12 +45,22 @@ describe("OpenAssessment.SelfView", function() {
         // Create a new stub server
         server = new StubServer();
 
+        // Create the stub base view
+        baseView = new StubBaseView();
+
         // Create the object under test
         var el = $("#openassessment").get(0);
-        view = new OpenAssessment.BaseView(runtime, el, server);
+        view = new OpenAssessment.SelfView(el, server, baseView);
+        view.installHandlers();
     });
 
-    it("re-enables the self assess button on error", function() {
+    it("Sends a self assessment to the server", function() {
+        spyOn(server, 'selfAssess').andCallThrough();
+        view.selfAssess();
+        expect(server.selfAssess).toHaveBeenCalled();
+    });
+
+    it("Re-enables the self assess button on error", function() {
         // Simulate a server error
         spyOn(server, 'selfAssess').andCallFake(function() {
             expect(view.selfSubmitEnabled()).toBe(false);
@@ -59,6 +69,7 @@ describe("OpenAssessment.SelfView", function() {
             }).promise();
         });
         view.selfAssess();
+
         // Expect the submit button to have been re-enabled
         expect(view.selfSubmitEnabled()).toBe(true);
     });
