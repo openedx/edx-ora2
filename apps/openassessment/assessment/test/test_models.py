@@ -3,10 +3,14 @@
 Tests for assessment models.
 """
 
+import mock
+from django.db import IntegrityError
 from openassessment.test_utils import CacheResetTest
+from submissions import api as sub_api
 from openassessment.assessment.models import (
     Rubric, Criterion, CriterionOption, InvalidOptionSelection,
     AssessmentFeedback, AssessmentFeedbackOption,
+    StudentTrainingWorkflow
 )
 
 
