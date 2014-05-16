@@ -7,6 +7,7 @@ from django.db import DatabaseError
 import ddt
 from mock import patch
 from openassessment.test_utils import CacheResetTest
+from .constants import STUDENT_ITEM, ANSWER, RUBRIC, EXAMPLES
 from submissions import api as sub_api
 from openassessment.assessment.api import student_training as training_api
 from openassessment.assessment.errors import StudentTrainingRequestError, StudentTrainingInternalError
@@ -20,80 +21,11 @@ class StudentTrainingAssessmentTest(CacheResetTest):
     """
     longMessage = True
 
-    STUDENT_ITEM = {
-        'student_id': u'𝓽𝓮𝓼𝓽 𝓼𝓽𝓾𝓭𝓮𝓷𝓽',
-        'item_id': u'𝖙𝖊𝖘𝖙 𝖎𝖙𝖊𝖒',
-        'course_id': u'ՇєรՇ ς๏ยгรє',
-        'item_type': u'openassessment'
-    }
-
-    ANSWER = u'ẗëṡẗ äṅṡẅëṛ'
-
-    RUBRIC_OPTIONS = [
-        {
-            "order_num": 0,
-            "name": u"𝒑𝒐𝒐𝒓",
-            "explanation": u"𝕻𝖔𝖔𝖗 𝖏𝖔𝖇!",
-            "points": 0,
-        },
-        {
-            "order_num": 1,
-            "name": u"𝓰𝓸𝓸𝓭",
-            "explanation": u"ﻭѻѻɗ ﻝѻ๒!",
-            "points": 1,
-        },
-        {
-            "order_num": 2,
-            "name": u"єχ¢єℓℓєηт",
-            "explanation": u"乇ﾒc乇ﾚﾚ乇刀ｲ ﾌo乃!",
-            "points": 2,
-        },
-    ]
-
-    RUBRIC = {
-        'prompt': u"МоъЎ-ↁіск; оѓ, ГЂэ ЩЂаlэ",
-        'criteria': [
-            {
-                "order_num": 0,
-                "name": u"vøȼȺƀᵾłȺɍɏ",
-                "prompt": u"Ħøw vȺɍɨɇđ ɨs ŧħɇ vøȼȺƀᵾłȺɍɏ?",
-                "options": RUBRIC_OPTIONS
-            },
-            {
-                "order_num": 1,
-                "name": u"ﻭɼค๓๓คɼ",
-                "prompt": u"𝕳𝖔𝖜 𝖈𝖔𝖗𝖗𝖊𝖈𝖙 𝖎𝖘 𝖙𝖍𝖊 𝖌𝖗𝖆𝖒𝖒𝖆𝖗?",
-                "options": RUBRIC_OPTIONS
-            }
-        ]
-    }
-
-    EXAMPLES = [
-        {
-            'answer': (
-                u"𝕿𝖍𝖊𝖗𝖊 𝖆𝖗𝖊 𝖈𝖊𝖗𝖙𝖆𝖎𝖓 𝖖𝖚𝖊𝖊𝖗 𝖙𝖎𝖒𝖊𝖘 𝖆𝖓𝖉 𝖔𝖈𝖈𝖆𝖘𝖎𝖔𝖓𝖘 𝖎𝖓 𝖙𝖍𝖎𝖘 𝖘𝖙𝖗𝖆𝖓𝖌𝖊 𝖒𝖎𝖝𝖊𝖉 𝖆𝖋𝖋𝖆𝖎𝖗 𝖜𝖊 𝖈𝖆𝖑𝖑 𝖑𝖎𝖋𝖊"
-                u" 𝖜𝖍𝖊𝖓 𝖆 𝖒𝖆𝖓 𝖙𝖆𝖐𝖊𝖘 𝖙𝖍𝖎𝖘 𝖜𝖍𝖔𝖑𝖊 𝖚𝖓𝖎𝖛𝖊𝖗𝖘𝖊 𝖋𝖔𝖗 𝖆 𝖛𝖆𝖘𝖙 𝖕𝖗𝖆𝖈𝖙𝖎𝖈𝖆𝖑 𝖏𝖔𝖐𝖊, 𝖙𝖍𝖔𝖚𝖌𝖍 𝖙𝖍𝖊 𝖜𝖎𝖙 𝖙𝖍𝖊𝖗𝖊𝖔𝖋"
-                u" 𝖍𝖊 𝖇𝖚𝖙 𝖉𝖎𝖒𝖑𝖞 𝖉𝖎𝖘𝖈𝖊𝖗𝖓𝖘, 𝖆𝖓𝖉 𝖒𝖔𝖗𝖊 𝖙𝖍𝖆𝖓 𝖘𝖚𝖘𝖕𝖊𝖈𝖙𝖘 𝖙𝖍𝖆𝖙 𝖙𝖍𝖊 𝖏𝖔𝖐𝖊 𝖎𝖘 𝖆𝖙 𝖓𝖔𝖇𝖔𝖉𝖞'𝖘 𝖊𝖝𝖕𝖊𝖓𝖘𝖊 𝖇𝖚𝖙 𝖍𝖎𝖘 𝖔𝖜𝖓."
-            ),
-            'options_selected': {
-                u"vøȼȺƀᵾłȺɍɏ": u"𝓰𝓸𝓸𝓭",
-                u"ﻭɼค๓๓คɼ": u"𝒑𝒐𝒐𝒓",
-            }
-        },
-        {
-            'answer': u"Tőṕ-héávӳ ẃáś thé śhíṕ áś á díńńéŕĺéśś śtúdéńt ẃíth áĺĺ Áŕíśtőtĺé íń híś héád.",
-            'options_selected': {
-                u"vøȼȺƀᵾłȺɍɏ": u"𝒑𝒐𝒐𝒓",
-                u"ﻭɼค๓๓คɼ": u"єχ¢єℓℓєηт",
-            }
-        },
-    ]
-
     def setUp(self):
         """
         Create a submission.
         """
-        submission = sub_api.create_submission(self.STUDENT_ITEM, self.ANSWER)
+        submission = sub_api.create_submission(STUDENT_ITEM, ANSWER)
         self.submission_uuid = submission['uuid']
 
     def test_training_workflow(self):
@@ -101,18 +33,18 @@ class StudentTrainingAssessmentTest(CacheResetTest):
         self._assert_workflow_status(self.submission_uuid, 0, 2)
 
         # Get a training example
-        self._assert_get_example(self.submission_uuid, 0, self.EXAMPLES, self.RUBRIC)
+        self._assert_get_example(self.submission_uuid, 0, EXAMPLES, RUBRIC)
 
         # Assess the training example the same way the instructor did
         corrections = training_api.assess_training_example(
             self.submission_uuid,
-            self.EXAMPLES[0]['options_selected']
+            EXAMPLES[0]['options_selected']
         )
         self.assertEqual(corrections, dict())
         self._assert_workflow_status(self.submission_uuid, 1, 2)
 
         # Get another training example to assess
-        self._assert_get_example(self.submission_uuid, 1, self.EXAMPLES, self.RUBRIC)
+        self._assert_get_example(self.submission_uuid, 1, EXAMPLES, RUBRIC)
 
         # Give the example different scores than the instructor gave
         incorrect_assessment = {
@@ -124,12 +56,12 @@ class StudentTrainingAssessmentTest(CacheResetTest):
         )
 
         # Expect that we get corrected and stay on the current example
-        self.assertItemsEqual(corrections, self.EXAMPLES[1]['options_selected'])
+        self.assertItemsEqual(corrections, EXAMPLES[1]['options_selected'])
         self._assert_workflow_status(self.submission_uuid, 1, 2)
 
         # Try again, and this time assess the same way as the instructor
         corrections = training_api.assess_training_example(
-            self.submission_uuid, self.EXAMPLES[1]['options_selected']
+            self.submission_uuid, EXAMPLES[1]['options_selected']
         )
         self.assertEqual(corrections, dict())
 
@@ -139,10 +71,10 @@ class StudentTrainingAssessmentTest(CacheResetTest):
     def test_assess_without_update(self):
         # Assess the first training example the same way the instructor did
         # but do NOT update the workflow
-        training_api.get_training_example(self.submission_uuid, self.RUBRIC, self.EXAMPLES)
+        training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
         corrections = training_api.assess_training_example(
             self.submission_uuid,
-            self.EXAMPLES[0]['options_selected'],
+            EXAMPLES[0]['options_selected'],
             update_workflow=False
         )
 
@@ -152,11 +84,11 @@ class StudentTrainingAssessmentTest(CacheResetTest):
 
     def test_get_same_example(self):
         # Retrieve a training example
-        retrieved = training_api.get_training_example(self.submission_uuid, self.RUBRIC, self.EXAMPLES)
+        retrieved = training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
 
         # If we retrieve an example without completing the current example,
         # we should get the same one.
-        next_retrieved = training_api.get_training_example(self.submission_uuid, self.RUBRIC, self.EXAMPLES)
+        next_retrieved = training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
         self.assertEqual(retrieved, next_retrieved)
 
     def test_get_training_example_num_queries(self):
@@ -164,33 +96,33 @@ class StudentTrainingAssessmentTest(CacheResetTest):
         # Run through the training example once using a different submission
         # Training examples and rubrics will be cached and shared for other
         # students working on the same problem.
-        self._warm_cache(self.RUBRIC, self.EXAMPLES)
+        self._warm_cache(RUBRIC, EXAMPLES)
 
         # First training example
         # This will need to create the student training workflow and the first item
         # NOTE: we *could* cache the rubric model to reduce the number of queries here,
         # but we're selecting it by content hash, which is indexed and should be plenty fast.
         with self.assertNumQueries(6):
-            training_api.get_training_example(self.submission_uuid, self.RUBRIC, self.EXAMPLES)
+            training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
 
         # Without assessing the first training example, try to retrieve a training example.
         # This should return the same example as before, so we won't need to create
         # any workflows or workflow items.
         with self.assertNumQueries(3):
-            training_api.get_training_example(self.submission_uuid, self.RUBRIC, self.EXAMPLES)
+            training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
 
         # Assess the current training example
-        training_api.assess_training_example(self.submission_uuid, self.EXAMPLES[0]['options_selected'])
+        training_api.assess_training_example(self.submission_uuid, EXAMPLES[0]['options_selected'])
 
         # Retrieve the next training example, which requires us to create
         # a new workflow item (but not a new workflow).
         with self.assertNumQueries(4):
-            training_api.get_training_example(self.submission_uuid, self.RUBRIC, self.EXAMPLES)
+            training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
 
     def test_submitter_is_finished_num_queries(self):
         # Complete the first training example
-        training_api.get_training_example(self.submission_uuid, self.RUBRIC, self.EXAMPLES)
-        training_api.assess_training_example(self.submission_uuid, self.EXAMPLES[0]['options_selected'])
+        training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
+        training_api.assess_training_example(self.submission_uuid, EXAMPLES[0]['options_selected'])
 
         # Check whether we've completed the requirements
         requirements = {'num_required': 2}
@@ -199,8 +131,8 @@ class StudentTrainingAssessmentTest(CacheResetTest):
 
     def test_get_num_completed_num_queries(self):
         # Complete the first training example
-        training_api.get_training_example(self.submission_uuid, self.RUBRIC, self.EXAMPLES)
-        training_api.assess_training_example(self.submission_uuid, self.EXAMPLES[0]['options_selected'])
+        training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
+        training_api.assess_training_example(self.submission_uuid, EXAMPLES[0]['options_selected'])
 
         # Check the number completed
         with self.assertNumQueries(2):
@@ -208,10 +140,10 @@ class StudentTrainingAssessmentTest(CacheResetTest):
 
     def test_assess_training_example_num_queries(self):
         # Populate the cache with training examples and rubrics
-        self._warm_cache(self.RUBRIC, self.EXAMPLES)
-        training_api.get_training_example(self.submission_uuid, self.RUBRIC, self.EXAMPLES)
+        self._warm_cache(RUBRIC, EXAMPLES)
+        training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
         with self.assertNumQueries(4):
-            training_api.assess_training_example(self.submission_uuid, self.EXAMPLES[0]['options_selected'])
+            training_api.assess_training_example(self.submission_uuid, EXAMPLES[0]['options_selected'])
 
     @ddt.file_data('data/validate_training_examples.json')
     def test_validate_training_examples(self, data):
@@ -230,8 +162,8 @@ class StudentTrainingAssessmentTest(CacheResetTest):
         self.assertTrue(training_api.assessment_is_finished(self.submission_uuid, requirements))
 
     def test_get_training_example_none_available(self):
-        for example in self.EXAMPLES:
-            training_api.get_training_example(self.submission_uuid, self.RUBRIC, self.EXAMPLES)
+        for example in EXAMPLES:
+            training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
             training_api.assess_training_example(self.submission_uuid, example['options_selected'])
 
         # Now we should be complete
@@ -239,19 +171,19 @@ class StudentTrainingAssessmentTest(CacheResetTest):
 
         # ... and if we try to get another example, we should get None
         self.assertIs(
-            training_api.get_training_example(self.submission_uuid, self.RUBRIC, self.EXAMPLES),
+            training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES),
             None
         )
 
     def test_assess_training_example_completed_workflow(self):
-        for example in self.EXAMPLES:
-            training_api.get_training_example(self.submission_uuid, self.RUBRIC, self.EXAMPLES)
+        for example in EXAMPLES:
+            training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
             training_api.assess_training_example(self.submission_uuid, example['options_selected'])
 
         # Try to assess again, and expect an error
         with self.assertRaises(StudentTrainingRequestError):
             training_api.assess_training_example(
-                self.submission_uuid, self.EXAMPLES[0]['options_selected']
+                self.submission_uuid, EXAMPLES[0]['options_selected']
             )
 
     def test_assess_training_example_no_workflow(self):
@@ -260,7 +192,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
         # then we should get a request error.
         with self.assertRaises(StudentTrainingRequestError):
             training_api.assess_training_example(
-                self.submission_uuid, self.EXAMPLES[0]['options_selected']
+                self.submission_uuid, EXAMPLES[0]['options_selected']
             )
 
     def test_get_num_completed_no_workflow(self):
@@ -269,15 +201,15 @@ class StudentTrainingAssessmentTest(CacheResetTest):
 
     def test_get_training_example_invalid_rubric(self):
         # Rubric is missing a very important key!
-        invalid_rubric = copy.deepcopy(self.RUBRIC)
+        invalid_rubric = copy.deepcopy(RUBRIC)
         del invalid_rubric['criteria']
 
         with self.assertRaises(StudentTrainingRequestError):
-            training_api.get_training_example(self.submission_uuid, invalid_rubric, self.EXAMPLES)
+            training_api.get_training_example(self.submission_uuid, invalid_rubric, EXAMPLES)
 
     def test_get_training_example_no_submission(self):
         with self.assertRaises(StudentTrainingRequestError):
-            training_api.get_training_example("no_such_submission", self.RUBRIC, self.EXAMPLES)
+            training_api.get_training_example("no_such_submission", RUBRIC, EXAMPLES)
 
     @patch.object(StudentTrainingWorkflow.objects, 'get')
     def test_get_num_completed_database_error(self, mock_db):
@@ -289,14 +221,14 @@ class StudentTrainingAssessmentTest(CacheResetTest):
     def test_get_training_example_database_error(self, mock_db):
         mock_db.side_effect = DatabaseError("Kaboom!")
         with self.assertRaises(StudentTrainingInternalError):
-            training_api.get_training_example(self.submission_uuid, self.RUBRIC, self.EXAMPLES)
+            training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
 
     @patch.object(StudentTrainingWorkflow.objects, 'get')
     def test_assess_training_example_database_error(self, mock_db):
-        training_api.get_training_example(self.submission_uuid, self.RUBRIC, self.EXAMPLES)
+        training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
         mock_db.side_effect = DatabaseError("Kaboom!")
         with self.assertRaises(StudentTrainingInternalError):
-            training_api.assess_training_example(self.submission_uuid, self.EXAMPLES[0]['options_selected'])
+            training_api.assess_training_example(self.submission_uuid, EXAMPLES[0]['options_selected'])
 
     @ddt.data({}, {'num_required': 'not an integer!'})
     def test_submitter_is_finished_invalid_requirements(self, requirements):
@@ -388,7 +320,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
             None
 
         """
-        pre_submission = sub_api.create_submission(self.STUDENT_ITEM, self.ANSWER)
+        pre_submission = sub_api.create_submission(STUDENT_ITEM, ANSWER)
         for example in examples:
             training_api.get_training_example(pre_submission['uuid'], rubric, examples)
             training_api.assess_training_example(pre_submission['uuid'], example['options_selected'])

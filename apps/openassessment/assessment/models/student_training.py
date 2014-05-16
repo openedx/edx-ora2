@@ -1,7 +1,7 @@
 """
 Django models specific to the student training assessment type.
 """
-from django.db import models
+from django.db import models, IntegrityError
 from django.utils import timezone
 from submissions import api as sub_api
 from .training import TrainingExample
@@ -53,12 +53,18 @@ class StudentTrainingWorkflow(models.Model):
         student_item = submission['student_item']
 
         # Create the workflow
-        return cls.objects.create(
-            submission_uuid=submission_uuid,
-            student_id=student_item['student_id'],
-            item_id=student_item['item_id'],
-            course_id=student_item['course_id']
-        )
+        try:
+            return cls.objects.create(
+                submission_uuid=submission_uuid,
+                student_id=student_item['student_id'],
+                item_id=student_item['item_id'],
+                course_id=student_item['course_id']
+            )
+        # If we get an integrity error, it means we've violated a uniqueness constraint
+        # (someone has created this object after we checked if it existed)
+        # We can therefore assume that the object exists and we can retrieve it.
+        except IntegrityError:
+            return cls.objects.get(submission_uuid=submission_uuid)
 
     @property
     def num_completed(self):
@@ -116,12 +122,25 @@ class StudentTrainingWorkflow(models.Model):
         else:
             order_num = len(items) + 1
             next_example = available_examples[0]
-            StudentTrainingWorkflowItem.objects.create(
-                workflow=self,
-                order_num=order_num,
-                training_example=next_example
-            )
-            return next_example
+
+            try:
+                StudentTrainingWorkflowItem.objects.create(
+                    workflow=self,
+                    order_num=order_num,
+                    training_example=next_example
+                )
+            # If we get an integrity error, it means we've violated a uniqueness constraint
+            # (someone has created this object after we checked if it existed)
+            # Since the object already exists, we don't need to do anything
+            # However, the example might not be the one we intended to use, so
+            # we need to retrieve the actual training example.
+            except IntegrityError:
+                workflow = StudentTrainingWorkflowItem.objects.get(
+                    workflow=self, order_num=order_num
+                )
+                return workflow.training_example
+            else:
+                return next_example
 
     @property
     def current_item(self):
@@ -161,6 +180,7 @@ class StudentTrainingWorkflowItem(models.Model):
     class Meta:
         app_label = "assessment"
         ordering = ["workflow", "order_num"]
+        unique_together = ('workflow', 'order_num')
 
     @property
     def is_complete(self):
