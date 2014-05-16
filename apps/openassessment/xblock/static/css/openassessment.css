@@ -2092,6 +2092,8 @@ hr.divider,
     margin-bottom: 10px; }
   .staff-info__student .openassessment__student-info_list {
     list-style-type: none; }
+  .staff-info__student .value {
+    width: 50%; }
   .staff-info__student .student__answer__display__content p {
     color: inherit; }
 
