@@ -2,7 +2,7 @@
 import datetime
 import pytz
 
-from django.db import DatabaseError
+from django.db import DatabaseError, IntegrityError
 from django.utils import timezone
 from ddt import ddt, file_data
 from mock import patch
@@ -356,6 +356,13 @@ class TestPeerApi(CacheResetTest):
         pwis = PeerWorkflowItem.objects.filter(submission_uuid=sub['uuid'])
         self.assertEqual(len(pwis), 1)
         self.assertNotEqual(pwis[0].started_at, yesterday)
+
+    def test_peer_workflow_integrity_error(self):
+        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        with patch.object(PeerWorkflow.objects, "get_or_create") as mock_peer:
+            mock_peer.side_effect = IntegrityError("Oh no!")
+            workflow = peer_api.create_peer_workflow(tim_sub["uuid"])
+            self.assertEquals(tim_sub["uuid"], workflow.submission_uuid)
 
     @raises(peer_api.PeerAssessmentWorkflowError)
     def test_no_submission_found_closing_assessment(self):

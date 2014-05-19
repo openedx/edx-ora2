@@ -96,7 +96,7 @@ OpenAssessment.BaseView.prototype = {
         if (type == 'save') {
             container = '.response__submission__actions';
         }
-        else if (type == 'submit' || type == 'peer' || type == 'self') {
+        else if (type == 'submit' || type == 'peer' || type == 'self' || type == 'student-training') {
             container = '.step__actions';
         }
         else if (type == 'feedback_assess') {

@@ -7,6 +7,7 @@ from webob import Response
 from xblock.core import XBlock
 from openassessment.assessment.api import student_training
 from openassessment.xblock.data_conversion import convert_training_examples_list_to_dict
+from .resolve_dates import DISTANT_FUTURE
 
 
 logger = logging.getLogger(__name__)
@@ -97,11 +98,13 @@ class StudentTrainingMixin(object):
             if not training_module:
                 return template, context
 
-            context['training_due'] = due_date
+            if due_date < DISTANT_FUTURE:
+                context['training_due'] = due_date
 
             # Report progress in the student training workflow (completed X out of Y)
             context['training_num_available'] = len(training_module["examples"])
             context['training_num_completed'] = student_training.get_num_completed(self.submission_uuid)
+            context['training_num_current'] = context['training_num_completed'] + 1
 
             # Retrieve the example essay for the student to submit
             # This will contain the essay text, the rubric, and the options the instructor selected.

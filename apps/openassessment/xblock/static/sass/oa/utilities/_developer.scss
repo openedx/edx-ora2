@@ -135,22 +135,36 @@
   // TYPE: correct
   .message--correct {
     @extend .message--complete;
+    margin-top: $baseline-v;
+
+    &.is--hidden {
+      height: 0;
+      width: 0;
+      padding: 0;
+      margin: 0;
+
+      .step__header {
+        border-bottom: none;
+      }
+    }
   }
 
   // TYPE: incorrect
   .message--incorrect {
     @extend .message--incomplete;
-  }
+    margin-top: $baseline-v;
 
-  // Stolen from oa_base is--collapsed.
-  .is--hidden {
-    height: 0;
-    width: 0;
-    padding: 0 0 0 0;
-    .step__header {
-      padding-bottom: 0;
-      border-bottom: none;
-      margin-bottom: 0;
+    &.is--hidden {
+      height: 0;
+      width: 0;
+      padding: 0;
+      margin: 0;
+
+      .step__header {
+        border-bottom: none;
+      }
     }
   }
+
+
 }

@@ -9,7 +9,7 @@
     <h2 class="step__title">
         <span class="step__counter"></span>
             <span class="wrapper--copy">
-                <span class="step__label">{% trans "Learn to Assess" %}</span>
+                <span class="step__label">{% trans "Learn to Assess Responses" %}</span>
                 {% if training_start %}
                     <span class="step__deadline">{% trans "available" %}
                     <span class="date">
@@ -32,7 +32,10 @@
         <span class="step__status">
           <span class="step__status__label">{% trans "This step's status" %}:</span>
           <span class="step__status__value">
-              <span class="copy">{% trans "In Progress" %}</span>
+              <span class="copy">{% trans "In Progress" %}
+              (<span class="step__status__value--completed">{{ training_num_completed }}</span> of
+                <span class="step__status__value--required">{{ training_num_available }}</span>)
+              </span>
           </span>
         </span>
     {% endblock %}
@@ -43,25 +46,28 @@
         <div class="wrapper--step__content">
 
             <div id="openassessment__student-training--instructions" class="step__message message message--correct">
-                <h3 class="message__title">{% trans "Learning to Assess" %}</h3>
+                <h3 class="message__title">{% trans "Learning to Assess Responses" %}</h3>
 
                 <div class="message__content">
-                    <p>{% blocktrans %}Prior to moving on to the next assessment step, review the following instructor provided responses as an introduction to the assessment format for this question. Your goal is to match the assessment score given to each of these responses by instructors.{% endblocktrans %}</p>
+                    <p>{% blocktrans %}Before you begin to assess your peers' responses, you'll learn how to complete peer assessments by reviewing responses that instructors have already assessed. If you select the same options for the response that the instructor selected, you'll move to the next step. If you don't select the same options, you'll review the response and try again.{% endblocktrans %}</p>
                 </div>
             </div>
 
             <div id="openassessment__student-training--incorrect" class="step__message message message--incorrect is--hidden">
-                <h3 class="message__title">{% trans "Learning to Assess" %}</h3>
+                <h3 class="message__title">{% trans "Learning to Assess Responses" %}</h3>
 
                 <div class="message__content">
-                    <p>{% blocktrans %}Your scoring differs from the instructor's score for this assessment section. Please review the response above to review why it might be different, re-score this assessment section and check your assessment again.{% endblocktrans %}</p>
+                    <p>{% blocktrans %}Your assessment differs from the instructor's assessment of this response. Review the response and consider why the instructor may have assessed it differently. Then, try the assessment again.{% endblocktrans %}</p>
                 </div>
             </div>
 
             <div class="step__content">
                 <article class="student-training__display" id="student-training">
                     <header class="student-training__display__header">
-                        <h3 class="student-training__display__title">{% trans "Training Essay" %}</h3>
+                        <h3 class="student-training__display__title">{% trans "Training Essay #" %}
+                            <span class="student-training__number--current">{{ training_num_current }}</span> of
+                            <span class="student-training__number--required">{{ training_num_available }}</span>
+                        </h3>
                     </header>
 
                     <div class="student-training__display__response">
@@ -79,21 +85,21 @@
                                         <span class="question__title__copy">{{ criterion.prompt }}</span>
                                         <span class="label--required sr">* ({% trans "Required" %})</span>
                                     </h4>
-                                    <div class="step__message message message--correct ui-toggle-visibility is--hidden">
-                                        <h3 class="message__title">{% trans "Correct Selection" %}</h3>
-
-                                        <div class="message__content">
-                                            <p>{% trans "Your selection matches staff." %}</p>
-                                        </div>
-                                    </div>
-                                    <div class="step__message message message--incorrect ui-toggle-visibility is--hidden">
-                                        <h3 class="message__title">{% trans "Incorrect Selection" %}</h3>
-
-                                        <div class="message__content">
-                                            <p>{% trans "Your selection does not match staff." %}</p>
-                                        </div>
-                                    </div>
                                     <div class="ui-toggle-visibility__content">
+                                        <div class="step__message message message--correct ui-toggle-visibility is--hidden">
+                                            <h3 class="message__title">{% trans "Selected Options Agree" %}</h3>
+
+                                            <div class="message__content">
+                                                <p>{% trans "The option you selected is the option that the instructor selected." %}</p>
+                                            </div>
+                                        </div>
+                                        <div class="step__message message message--incorrect ui-toggle-visibility is--hidden">
+                                            <h3 class="message__title">{% trans "Selected Options Differ" %}</h3>
+
+                                            <div class="message__content">
+                                                <p>{% trans "The option you selected is not the option that the instructor selected." %}</p>
+                                            </div>
+                                        </div>
                                         <ol class="question__answers">
                                             {% for option in criterion.options %}
                                                 <li class="answer">
@@ -123,14 +129,14 @@
 
             <div class="step__actions">
                 <div class="message message--inline message--error message--error-server">
-                    <h3 class="message__title">{% trans "We could not submit your assessment" %}</h3>
+                    <h3 class="message__title">{% trans "We could not check your assessment" %}</h3>
                     <div class="message__content"></div>
                 </div>
 
                 <ul class="list list--actions">
                     <li class="list--actions__item">
                         <button type="submit" id="student-training--001__assessment__submit" class="action action--submit is--disabled">
-                            <span class="copy">{% trans "Check Rubric" %}</span>
+                            <span class="copy">{% trans "Compare your selections with the instructor's selections" %}</span>
                             <i class="ico icon-caret-right"></i>
                         </button>
                     </li>

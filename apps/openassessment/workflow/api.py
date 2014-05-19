@@ -8,7 +8,6 @@ import logging
 from django.db import DatabaseError
 
 from openassessment.assessment.api import peer as peer_api
-from openassessment.assessment.api import student_training as student_training
 from openassessment.assessment.errors import PeerAssessmentError
 from submissions import api as sub_api
 from .models import AssessmentWorkflow, AssessmentWorkflowStep
@@ -324,8 +323,14 @@ def update_from_assessments(submission_uuid, assessment_requirements):
 
     """
     workflow = _get_workflow_model(submission_uuid)
-    workflow.update_from_assessments(assessment_requirements)
-    return _serialized_with_details(workflow, assessment_requirements)
+
+    try:
+        workflow.update_from_assessments(assessment_requirements)
+        return _serialized_with_details(workflow, assessment_requirements)
+    except PeerAssessmentError as err:
+        err_msg = u"Could not update assessment workflow: {}".format(err)
+        logger.exception(err_msg)
+        raise AssessmentWorkflowInternalError(err_msg)
 
 
 def get_status_counts(course_id, item_id, steps):

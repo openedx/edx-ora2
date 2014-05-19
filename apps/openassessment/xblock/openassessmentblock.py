@@ -37,7 +37,7 @@ UI_MODELS = {
     "submission": {
         "name": "submission",
         "class_id": "openassessment__response",
-        "navigation_text": "Your response to this problem",
+        "navigation_text": "Your response to this assignment",
         "title": "Your Response"
     },
     "student-training": {
@@ -61,7 +61,7 @@ UI_MODELS = {
     "grade": {
         "name": "grade",
         "class_id": "openassessment__grade",
-        "navigation_text": "Your grade for this problem",
+        "navigation_text": "Your grade for this assignment",
         "title": "Your Grade:"
     }
 }
@@ -91,7 +91,7 @@ class OpenAssessmentBlock(
     StudentTrainingMixin,
     LmsCompatibilityMixin
 ):
-    """Displays a question and gives an area where students can compose a response."""
+    """Displays a prompt and provides an area where students can compose a response."""
 
     submission_start = String(
         default=None, scope=Scope.settings,

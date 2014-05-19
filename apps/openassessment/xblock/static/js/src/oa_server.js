@@ -303,13 +303,14 @@ OpenAssessment.Server.prototype = {
             values are the option text the user selected for the criterion.
 
     Returns:
-        A JQuery promise, which resolves with a boolean if successful
-        and fails with an error message otherwise.
+        A JQuery promise, which resolves with a list of corrections if
+        successful and fails with an error message otherwise.
 
     Example:
         var options = { clarity: "Very clear", precision: "Somewhat precise" };
         server.trainingAssess(options).done(
-            function(isCorrect) { console.log("Success!"); }
+            function(corrections) { console.log("Success!"); }
+            alert(corrections);
         ).fail(
             function(errorMsg) { console.log(errorMsg); }
         );

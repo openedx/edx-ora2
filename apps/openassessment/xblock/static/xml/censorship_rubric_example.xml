@@ -78,7 +78,7 @@
             </example>
         </assessment>
         <assessment name="peer-assessment"
-                    start="2014-12-20T19:00-7:00"
+                    start="2013-12-20T19:00-7:00"
                     due="2014-12-21T22:22-7:00"
                     must_grade="1"
                     must_be_graded_by="1" />
