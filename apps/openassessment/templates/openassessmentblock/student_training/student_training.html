@@ -32,7 +32,10 @@
         <span class="step__status">
           <span class="step__status__label">{% trans "This step's status" %}:</span>
           <span class="step__status__value">
-              <span class="copy">{% trans "In Progress" %}</span>
+              <span class="copy">{% trans "In Progress" %}
+              (<span class="step__status__value--completed">{{ training_num_completed }}</span> of
+                <span class="step__status__value--required">{{ training_num_available }}</span>)
+              </span>
           </span>
         </span>
     {% endblock %}
@@ -61,7 +64,10 @@
             <div class="step__content">
                 <article class="student-training__display" id="student-training">
                     <header class="student-training__display__header">
-                        <h3 class="student-training__display__title">{% trans "Training Essay" %}</h3>
+                        <h3 class="student-training__display__title">{% trans "Training Essay #" %}
+                            <span class="student-training__number--current">{{ training_num_current }}</span> of
+                            <span class="student-training__number--required">{{ training_num_available }}</span>
+                        </h3>
                     </header>
 
                     <div class="student-training__display__response">
@@ -79,21 +85,21 @@
                                         <span class="question__title__copy">{{ criterion.prompt }}</span>
                                         <span class="label--required sr">* ({% trans "Required" %})</span>
                                     </h4>
-                                    <div class="step__message message message--correct ui-toggle-visibility is--hidden">
-                                        <h3 class="message__title">{% trans "Correct Selection" %}</h3>
-
-                                        <div class="message__content">
-                                            <p>{% trans "Your selection matches staff." %}</p>
-                                        </div>
-                                    </div>
-                                    <div class="step__message message message--incorrect ui-toggle-visibility is--hidden">
-                                        <h3 class="message__title">{% trans "Incorrect Selection" %}</h3>
-
-                                        <div class="message__content">
-                                            <p>{% trans "Your selection does not match staff." %}</p>
-                                        </div>
-                                    </div>
                                     <div class="ui-toggle-visibility__content">
+                                        <div class="step__message message message--correct ui-toggle-visibility is--hidden">
+                                            <h3 class="message__title">{% trans "Correct Selection" %}</h3>
+
+                                            <div class="message__content">
+                                                <p>{% trans "Your selection matches staff." %}</p>
+                                            </div>
+                                        </div>
+                                        <div class="step__message message message--incorrect ui-toggle-visibility is--hidden">
+                                            <h3 class="message__title">{% trans "Incorrect Selection" %}</h3>
+
+                                            <div class="message__content">
+                                                <p>{% trans "Your selection does not match staff." %}</p>
+                                            </div>
+                                        </div>
                                         <ol class="question__answers">
                                             {% for option in criterion.options %}
                                                 <li class="answer">
@@ -123,7 +129,7 @@
 
             <div class="step__actions">
                 <div class="message message--inline message--error message--error-server">
-                    <h3 class="message__title">{% trans "We could not submit your assessment" %}</h3>
+                    <h3 class="message__title">{% trans "We could not check your assessment" %}</h3>
                     <div class="message__content"></div>
                 </div>
 

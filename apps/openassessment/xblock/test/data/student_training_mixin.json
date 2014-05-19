@@ -3,8 +3,8 @@
         "expected_template": "openassessmentblock/student_training/student_training.html",
         "expected_context": {
             "training_num_completed": 0,
+            "training_num_current": 1,
             "training_num_available": 2,
-            "training_due": "9999-01-01T00:00:00+00:00",
             "training_essay": "This is my answer.",
             "training_rubric": {
                 "id": 2,

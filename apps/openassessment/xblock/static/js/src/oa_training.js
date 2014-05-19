@@ -87,7 +87,7 @@ OpenAssessment.StudentTrainingView.prototype = {
                 var incorrect = $("#openassessment__student-training--incorrect", this.element);
                 var instructions = $("#openassessment__student-training--instructions", this.element);
 
-                if (!view.rubric.updateRubric(corrections)) {
+                if (!view.rubric.showCorrections(corrections)) {
                     baseView.loadAssessmentModules();
                     incorrect.addClass("is--hidden");
                     instructions.removeClass("is--hidden");

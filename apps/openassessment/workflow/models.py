@@ -151,6 +151,11 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             self.STATUS.waiting  # if nothing's left to complete, we're waiting
         )
 
+        # If the submitter is beginning peer assessment, add them to the queue
+        # by creating a new peer workflow
+        if new_status == "peer":
+            peer_api.create_peer_workflow(self.submission_uuid)
+
         # If the submitter has done all they need to do, let's check to see if
         # all steps have been fully assessed (i.e. we can score it).
         if (new_status == self.STATUS.waiting and

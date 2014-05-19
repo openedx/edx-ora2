@@ -92,6 +92,7 @@ class StudentTrainingAssessTest(XBlockHandlerTestCase):
         }
 
         expected_context["training_num_completed"] = 1
+        expected_context["training_num_current"] = 2
         expected_context["training_essay"] = u"тєѕт αηѕωєя"
         self._assert_path_and_context(xblock, expected_template, expected_context)
         resp = self.request(xblock, 'training_assess', json.dumps(selected_data), response_format='json')

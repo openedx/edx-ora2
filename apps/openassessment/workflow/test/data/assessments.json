@@ -8,7 +8,7 @@
             }
         }
     },
-    "both": {
+    "peer_and_self": {
         "steps": ["peer", "self"],
         "requirements": {
             "peer": {
@@ -23,5 +23,40 @@
         "requirements": {
             "self": {}
         }
+    },
+    "training_peer": {
+        "steps": ["training", "peer"],
+        "requirements": {
+            "training": {
+                "num_required": 2
+            },
+            "peer": {
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            }
+        }
+    },
+    "training_self": {
+        "steps": ["training", "self"],
+        "requirements": {
+            "training": {
+                "num_required": 2
+            },
+            "self": {}
+        }
+    },
+    "training_peer_self": {
+        "steps": ["training", "peer", "self"],
+        "requirements": {
+            "training": {
+                "num_required": 2
+            },
+            "peer": {
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            "self": {}
+        }
     }
+
 }

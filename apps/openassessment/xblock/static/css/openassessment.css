@@ -1352,7 +1352,6 @@ hr.divider,
   -moz-transition: opacity 0.5s ease-in 0, max-height 0.25s ease-in 0;
   transition: opacity 0.5s ease-in 0, max-height 0.25s ease-in 0;
   max-height: 40000px;
-  overflow: auto;
   opacity: 1.0;
   padding-left: 2px;
   padding-right: 2px; }
@@ -2115,14 +2114,24 @@ hr.divider,
   overflow: visible; }
 .step--student-training .student-training__assessment .assessment__rubric__question--feedback textarea {
   min-height: 100px; }
-.step--student-training .is--hidden {
-  height: 0;
-  width: 0;
-  padding: 0 0 0 0; }
-  .step--student-training .is--hidden .step__header {
-    padding-bottom: 0;
-    border-bottom: none;
-    margin-bottom: 0; }
+.step--student-training .message--correct {
+  margin-top: 20px; }
+  .step--student-training .message--correct.is--hidden {
+    height: 0;
+    width: 0;
+    padding: 0;
+    margin: 0; }
+    .step--student-training .message--correct.is--hidden .step__header {
+      border-bottom: none; }
+.step--student-training .message--incorrect {
+  margin-top: 20px; }
+  .step--student-training .message--incorrect.is--hidden {
+    height: 0;
+    width: 0;
+    padding: 0;
+    margin: 0; }
+    .step--student-training .message--incorrect.is--hidden .step__header {
+      border-bottom: none; }
 
 .openassessment .self-assessment__display__header, .openassessment .peer-assessment__display__header, .openassessment .step__header {
   margin-bottom: 0 !important;

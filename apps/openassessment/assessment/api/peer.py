@@ -7,7 +7,7 @@ the workflow for a given submission.
 import logging
 from django.utils import timezone
 from django.utils.translation import ugettext as _
-from django.db import DatabaseError
+from django.db import DatabaseError, IntegrityError
 from dogapi import dog_stats_api
 
 from openassessment.assessment.models import (
@@ -588,6 +588,8 @@ def create_peer_workflow(submission_uuid):
             submission_uuid=submission_uuid
         )
         return workflow
+    except IntegrityError:
+        return PeerWorkflow.objects.get(submission_uuid)
     except DatabaseError:
         error_message = _(
             u"An internal error occurred while creating a new peer "

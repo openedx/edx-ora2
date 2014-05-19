@@ -113,10 +113,14 @@ OpenAssessment.Rubric.prototype = {
      criterion. For each correction provided, the associated criterion will have
      an appropriate message displayed.
 
-     Args: Corrections (list): A list of corrections to the rubric criteria that
+     Args:
+        Corrections (list): A list of corrections to the rubric criteria that
         did not match the expected selected options.
+
+     Returns:
+        True if there were errors found, False if there are no corrections.
      **/
-    updateRubric: function(corrections) {
+    showCorrections: function(corrections) {
         var selector = "input[type=radio]";
         var hasErrors = false;
         // Display appropriate messages for each selection
