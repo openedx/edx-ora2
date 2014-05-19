@@ -84,9 +84,18 @@ OpenAssessment.StudentTrainingView.prototype = {
         var baseView = this.baseView;
         this.server.trainingAssess(options).done(
             function(corrections) {
+                var incorrect = $("#openassessment__student-training--incorrect", this.element);
+                var instructions = $("#openassessment__student-training--instructions", this.element);
+
                 if (!view.rubric.updateRubric(corrections)) {
                     baseView.loadAssessmentModules();
+                    incorrect.addClass("is--hidden");
+                    instructions.removeClass("is--hidden");
+                } else {
+                    instructions.addClass("is--hidden");
+                    incorrect.removeClass("is--hidden");
                 }
+
                 baseView.scrollToTop();
             }
         ).fail(function(errMsg) {

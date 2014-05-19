@@ -41,6 +41,23 @@
 {% block body %}
     <div class="ui-toggle-visibility__content">
         <div class="wrapper--step__content">
+
+            <div id="openassessment__student-training--instructions" class="step__message message message--correct">
+                <h3 class="message__title">{% trans "Learning to Assess" %}</h3>
+
+                <div class="message__content">
+                    <p>{% blocktrans %}Prior to moving on to the next assessment step, review the following instructor provided responses as an introduction to the assessment format for this question. Your goal is to match the assessment score given to each of these responses by instructors.{% endblocktrans %}</p>
+                </div>
+            </div>
+
+            <div id="openassessment__student-training--incorrect" class="step__message message message--incorrect is--hidden">
+                <h3 class="message__title">{% trans "Learning to Assess" %}</h3>
+
+                <div class="message__content">
+                    <p>{% blocktrans %}Your scoring differs from the instructor's score for this assessment section. Please review the response above to review why it might be different, re-score this assessment section and check your assessment again.{% endblocktrans %}</p>
+                </div>
+            </div>
+
             <div class="step__content">
                 <article class="student-training__display" id="student-training">
                     <header class="student-training__display__header">
