@@ -272,12 +272,15 @@ Data Model
 
     a. Rubric (Foreign Key)
     b. Created at (timestamp)
+    c. Training example set (many-to-many)
+    d. Hash of rubric and training examples (varchar): Useful for quickly finding existing classifiers (e.g. for Studio authors trying out the demo problem).
 
 5. **Classifier**
 
     a. ClassifierSet (Foreign Key)
     b. URL for trained classifier (varchar)
     c. Algorithm ID (varchar)
+    d. Criterion (Foreign Key)
 
 6. **Assessment** (same as current implementation)
 
