@@ -15,8 +15,16 @@ describe("OpenAssessment.StudentTrainingView", function() {
         };
 
         this.trainingAssess = function() {
-            return successPromise;
+            var server = this;
+            return $.Deferred(function(defer) {
+                defer.resolveWith(server, [server.corrections]);
+            }).promise();
         };
+
+        // The corrections returned by the stub server.
+        // Tests can update this property to control
+        // the behavior of the stub.
+        this.corrections = {};
     };
 
     // Stub base view
@@ -53,15 +61,12 @@ describe("OpenAssessment.StudentTrainingView", function() {
     });
 
     it("submits an assessment for a training example", function() {
-        spyOn(server, 'trainingAssess').andCallFake(function() {
-            return $.Deferred(function(defer) {
-                return {
-                    "Criterion 1": "Good",
-                    "Criterion 2": "Poor",
-                    "Criterion 3": "Fair"
-                };
-            }).promise();
-        });
+        server.corrections = {
+            "Criterion 1": "Good",
+            "Criterion 2": "Poor",
+            "Criterion 3": "Fair"
+        };
+        spyOn(server, 'trainingAssess').andCallThrough();
 
         // Select rubric options
         var optionsSelected = {};
@@ -78,15 +83,11 @@ describe("OpenAssessment.StudentTrainingView", function() {
     });
 
     it("disable the assess button when the user submits", function() {
-        spyOn(server, 'trainingAssess').andCallFake(function() {
-            return $.Deferred(function(defer) {
-                return {
-                    "Criterion 1": "Good",
-                    "Criterion 2": "Poor",
-                    "Criterion 3": "Fair"
-                };
-            }).promise();
-        });
+        server.corrections = {
+            "Criterion 1": "Good",
+            "Criterion 2": "Poor",
+            "Criterion 3": "Fair"
+        };
 
         // Initially, the button should be disabled
         expect(view.assessButtonEnabled()).toBe(false);
@@ -109,10 +110,10 @@ describe("OpenAssessment.StudentTrainingView", function() {
     });
 
     it("reloads the assessment steps when the user submits an assessment", function() {
+        // Simulate that the user answered the problem correctly, so there are no corrections
+        server.corrections = {};
+        spyOn(server, 'trainingAssess').andCallThrough();
         spyOn(baseView, 'loadAssessmentModules').andCallThrough();
-        spyOn(server, 'trainingAssess').andCallFake(function() {
-            return $.Deferred(function(defer){return {};}).promise();
-        });
 
         // Select rubric options
         var optionsSelected = {};
