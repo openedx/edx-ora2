@@ -5,7 +5,9 @@ import json
 from mock import Mock, patch
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
+from openassessment.assessment.api import ai as ai_api
 from openassessment.workflow import api as workflow_api
+from openassessment.assessment.errors.ai import AIError
 from submissions import api as sub_api
 from openassessment.xblock.test.base import scenario, XBlockHandlerTestCase
 
@@ -25,6 +27,38 @@ ASSESSMENT_DICT = {
     },
 }
 
+EXAMPLE_BASED_ASSESSMENT = {
+    "name": "example-based-assessment",
+    "algorithm_id": "1",
+    "examples": [
+        {
+            "answer": "Foo",
+            "options_selected": [
+                {
+                    "criterion": "Ideas",
+                    "option": "Fair"
+                },
+                {
+                    "criterion": "Content",
+                    "option": "Good"
+                }
+            ]
+        },
+        {
+            "answer": "Bar",
+            "options_selected": [
+                {
+                    "criterion": "Ideas",
+                    "option": "Poor"
+                },
+                {
+                    "criterion": "Content",
+                    "option": "Good"
+                }
+            ]
+        }
+    ]
+}
 
 class TestCourseStaff(XBlockHandlerTestCase):
     """
@@ -50,7 +84,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
     def test_course_staff_debug_info(self, xblock):
         # If we're not course staff, we shouldn't see the debug info
         xblock.xmodule_runtime =  self._create_mock_runtime(
-            xblock.scope_ids.usage_id, False, "Bob"
+            xblock.scope_ids.usage_id, False, False, "Bob"
         )
         resp = self.request(xblock, 'render_staff_info', json.dumps({}))
         self.assertNotIn("course staff information", resp.decode('utf-8').lower())
@@ -64,7 +98,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
     def test_course_student_debug_info(self, xblock):
         # If we're not course staff, we shouldn't see the debug info
         xblock.xmodule_runtime =  self._create_mock_runtime(
-            xblock.scope_ids.usage_id, False, "Bob"
+            xblock.scope_ids.usage_id, False, False, "Bob"
         )
         resp = self.request(xblock, 'render_student_info', json.dumps({}))
         self.assertIn("you do not have permission", resp.decode('utf-8').lower())
@@ -81,7 +115,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # In this case, the runtime will tell us that we're staff,
         # but no user ID will be set.
         xblock.xmodule_runtime =  self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, "Bob"
+            xblock.scope_ids.usage_id, True, False, "Bob"
         )
         resp = self.request(xblock, 'render_staff_info', json.dumps({}))
         self.assertNotIn("course staff information", resp.decode('utf-8').lower())
@@ -90,7 +124,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
     def test_staff_debug_dates_table(self, xblock):
         # Simulate that we are course staff
         xblock.xmodule_runtime =  self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, "Bob"
+            xblock.scope_ids.usage_id, True, False, "Bob"
         )
 
         # Verify that we can render without error
@@ -111,7 +145,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
     def test_staff_debug_dates_distant_past_and_future(self, xblock):
         # Simulate that we are course staff
         xblock.xmodule_runtime =  self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, "Bob"
+            xblock.scope_ids.usage_id, True, False, "Bob"
         )
 
         # Verify that we can render without error
@@ -123,7 +157,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
     def test_staff_debug_student_info_no_submission(self, xblock):
         # Simulate that we are course staff
         xblock.xmodule_runtime =  self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, "Bob"
+            xblock.scope_ids.usage_id, True, False, "Bob"
         )
         request = namedtuple('Request', 'params')
         request.params = {"student_id": "test_student"}
@@ -135,7 +169,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
     def test_staff_debug_student_info_peer_only(self, xblock):
         # Simulate that we are course staff
         xblock.xmodule_runtime =  self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, "Bob"
+            xblock.scope_ids.usage_id, True, False, "Bob"
         )
 
         bob_item = STUDENT_ITEM.copy()
@@ -175,7 +209,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
     def test_staff_debug_student_info_self_only(self, xblock):
         # Simulate that we are course staff
         xblock.xmodule_runtime =  self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, "Bob"
+            xblock.scope_ids.usage_id, True, False, "Bob"
         )
 
         bob_item = STUDENT_ITEM.copy()
@@ -206,7 +240,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
     def test_staff_debug_student_info_full_workflow(self, xblock):
         # Simulate that we are course staff
         xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, "Bob"
+            xblock.scope_ids.usage_id, True, False, "Bob"
         )
 
         bob_item = STUDENT_ITEM.copy()
@@ -248,12 +282,73 @@ class TestCourseStaff(XBlockHandlerTestCase):
         resp = xblock.render_student_info(request)
         self.assertIn("bob answer", resp.body.lower())
 
-    def _create_mock_runtime(self, item_id, is_staff, anonymous_user_id):
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_display_schedule_training(self, xblock):
+        xblock.rubric_assessments.append(EXAMPLE_BASED_ASSESSMENT)
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, True, "Bob"
+        )
+        path, context = xblock.get_staff_path_and_context()
+        self.assertEquals('openassessmentblock/staff_debug/staff_debug.html', path)
+        self.assertTrue(context['display_schedule_training'])
+
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_schedule_training(self, xblock):
+        xblock.rubric_assessments.append(EXAMPLE_BASED_ASSESSMENT)
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, True, "Bob"
+        )
+        response = self.request(xblock, 'schedule_training', json.dumps({}), response_format='json')
+        self.assertTrue(response['success'])
+        self.assertTrue('workflow_uuid' in response)
+
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_not_displaying_schedule_training(self, xblock):
+        xblock.rubric_assessments.append(EXAMPLE_BASED_ASSESSMENT)
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+        path, context = xblock.get_staff_path_and_context()
+        self.assertEquals('openassessmentblock/staff_debug/staff_debug.html', path)
+        self.assertFalse(context['display_schedule_training'])
+
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_admin_schedule_training_no_permissions(self, xblock):
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+        response = self.request(xblock, 'schedule_training', json.dumps({}), response_format='json')
+        self.assertFalse(response['success'])
+        self.assertTrue('permission' in response['msg'])
+
+    @patch.object(ai_api, "train_classifiers")
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_admin_schedule_training_error(self, xblock, mock_api):
+        mock_api.side_effect = AIError("Oh no!")
+        xblock.rubric_assessments.append(EXAMPLE_BASED_ASSESSMENT)
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, True, "Bob"
+        )
+        response = self.request(xblock, 'schedule_training', json.dumps({}), response_format='json')
+        self.assertFalse(response['success'])
+        self.assertTrue('error' in response['msg'])
+
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_no_example_based_assessment(self, xblock):
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, True, "Bob"
+        )
+        response = self.request(xblock, 'schedule_training', json.dumps({}), response_format='json')
+        self.assertFalse(response['success'])
+        self.assertTrue('not configured' in response['msg'])
+
+    def _create_mock_runtime(self, item_id, is_staff, is_admin, anonymous_user_id):
         mock_runtime = Mock(
             course_id='test_course',
             item_id=item_id,
             anonymous_student_id='Bob',
             user_is_staff=is_staff,
+            user_is_admin=is_admin,
             service=lambda self, service: Mock(
                 get_anonymous_student_id=lambda user_id, course_id: anonymous_user_id
             )
