@@ -203,4 +203,9 @@
   .ui-staff__title {
     color: $copy-staff-color !important;
   }
+
+  // needed to override font weight on LMS button elements for the time being
+  button.action--submit, a.action--submit {
+    font-weight: 600 !important;
+  }
 }
