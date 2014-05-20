@@ -75,13 +75,13 @@ To limit Python tests to a particular Django app:
 
 .. code:: bash
 
-    ./scripts/test.sh openassessment.xblock
+    ./scripts/test-python.sh openassessment.xblock
 
 To run just the JavaScript tests:
 
 .. code:: bash
 
-    npm test
+    ./scripts/test-js.sh
 
 To run the JavaScript tests in Chrome so you can use the debugger:
 
