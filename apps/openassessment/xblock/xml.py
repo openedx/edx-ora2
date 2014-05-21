@@ -425,13 +425,16 @@ def _parse_assessments_xml(assessments_root):
         # Training examples
         examples = assessment.findall('example')
 
-        # Student training should always have examples set, even if it's an empty list.
+        # Student training and AI Grading should always have examples set, even if it's an empty list.
         # (Validation rules, applied later, are responsible for
         # ensuring that users specify at least one example).
-        # Other assessment types ignore examples.
-        # Later, we can add AI assessment here.
+        # All assessments except for Student Training and AI (sample-based-assessment) types ignore examples.
         if assessment_dict['name'] == 'student-training':
             assessment_dict['examples'] = _parse_examples_xml(examples)
+
+        if assessment_dict['name'] == 'sample-based-assessment':
+            assessment_dict['examples'] = _parse_examples_xml(examples)
+            assessment_dict['algorithm_id'] = unicode(assessment.get('algorithm_id'))
 
         # Update the list of assessments
         assessments_list.append(assessment_dict)
@@ -518,6 +521,9 @@ def serialize_content_to_xml(oa_block, root):
         if not isinstance(examples, list):
             examples = []
         _serialize_training_examples(examples, assessment)
+
+        if assessment_dict.get('algorithm_id') is not None:
+            assessment.set('algorithm_id', unicode(assessment_dict['algorithm_id']))
 
     # Rubric
     rubric_root = etree.SubElement(root, 'rubric')
