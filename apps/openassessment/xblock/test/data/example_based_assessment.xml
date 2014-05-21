@@ -1,0 +1,44 @@
+<openassessment>
+    <title>Open Assessment Test</title>
+    <prompt>Example-based assessment</prompt>
+    <rubric>
+        <prompt>Read for conciseness, clarity of thought, and form.</prompt>
+        <criterion>
+            <name>Ideas</name>
+            <prompt>How good are the ideas?</prompt>
+            <option points="0">
+                <name>Poor</name>
+                <explanation>Poor job!</explanation>
+            </option>
+            <option points="1">
+                <name>Fair</name>
+                <explanation>Fair job</explanation>
+            </option>
+            <option points="3">
+                <name>Good</name>
+                <explanation>Good job</explanation>
+            </option>
+        </criterion>
+        <criterion>
+            <name>Content</name>
+            <prompt>How good is the content?</prompt>
+            <option points="0">
+                <name>Poor</name>
+                <explanation>Poor job!</explanation>
+            </option>
+            <option points="1">
+                <name>Fair</name>
+                <explanation>Fair job</explanation>
+            </option>
+            <option points="3">
+                <name>Good</name>
+                <explanation>Good job</explanation>
+            </option>
+        </criterion>
+    </rubric>
+    <assessments>
+        <assessment name="peer-assessment" must_grade="5" must_be_graded_by="3" />
+        <assessment name="self-assessment" />
+        <!-- TODO: for now we're inserting the example-based assessment programmatically, until the XML format changes land -->
+    </assessments>
+</openassessment>
