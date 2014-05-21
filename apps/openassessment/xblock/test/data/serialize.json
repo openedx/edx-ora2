@@ -1016,7 +1016,7 @@
         ],
         "assessments": [
             {
-                "name": "sample-based-assessment",
+                "name": "example-based-assessment",
                 "algorithm_id": "sample-algorithm-id",
                 "examples": [
                     {
@@ -1056,7 +1056,7 @@
             "<openassessment>",
             "<title>Foo</title>",
             "<assessments>",
-                "<assessment name=\"sample-based-assessment\" algorithm_id=\"sample-algorithm-id\">",
+                "<assessment name=\"example-based-assessment\" algorithm_id=\"sample-algorithm-id\">",
                     "<example>",
                         "<answer>тєѕт αηѕωєя</answer>",
                         "<select criterion=\"Test criterion\" option=\"No\" />",

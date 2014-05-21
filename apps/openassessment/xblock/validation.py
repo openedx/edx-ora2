@@ -64,6 +64,11 @@ def _is_valid_assessment_sequence(assessments):
         ['peer-assessment', 'self-assessment'],
         ['student-training', 'peer-assessment'],
         ['student-training', 'peer-assessment', 'self-assessment'],
+        ['example-based-assessment', 'self-assessment'],
+        ['example-based-assessment', 'peer-assessment'],
+        ['example-based-assessment', 'peer-assessment', 'self-assessment'],
+        ['example-based-assessment', 'student-training', 'peer-assessment'],
+        ['example-based-assessment', 'student-training', 'peer-assessment', 'self-assessment'],
     ]
 
     sequence = [asmnt.get('name') for asmnt in assessments]

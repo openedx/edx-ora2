@@ -428,11 +428,11 @@ def _parse_assessments_xml(assessments_root):
         # Student training and AI Grading should always have examples set, even if it's an empty list.
         # (Validation rules, applied later, are responsible for
         # ensuring that users specify at least one example).
-        # All assessments except for Student Training and AI (sample-based-assessment) types ignore examples.
+        # All assessments except for Student Training and AI (example-based-assessment) types ignore examples.
         if assessment_dict['name'] == 'student-training':
             assessment_dict['examples'] = _parse_examples_xml(examples)
 
-        if assessment_dict['name'] == 'sample-based-assessment':
+        if assessment_dict['name'] == 'example-based-assessment':
             assessment_dict['examples'] = _parse_examples_xml(examples)
             assessment_dict['algorithm_id'] = unicode(assessment.get('algorithm_id'))
 
