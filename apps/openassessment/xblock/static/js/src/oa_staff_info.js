@@ -81,5 +81,29 @@ OpenAssessment.StaffInfoView.prototype = {
                 view.loadStudentInfo();
             }
         );
+
+        // Install a click handler for scheduling AI classifier training
+        sel.find('#schedule_training').click(
+            function(eventObject) {
+                eventObject.preventDefault();
+                view.scheduleTraining();
+            }
+        );
+    },
+
+    /**
+     Sends a request to the server to schedule the training of classifiers for
+     this problem's Example Based Assessments.
+
+     **/
+    scheduleTraining: function() {
+        var view = this;
+        this.server.scheduleTraining().done(
+                function(msg) {
+                    $('#schedule_training_message', this.element).text(msg)
+                }
+            ).fail(function(errMsg) {
+                $('#schedule_training_message', this.element).text(errMsg)
+            });
     }
 };

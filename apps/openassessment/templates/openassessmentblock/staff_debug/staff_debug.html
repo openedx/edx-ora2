@@ -78,6 +78,13 @@
             </table>
         </div>
 
+        {% if display_schedule_training %}
+        <div class="staff-info__status ui-staff__content__section">
+            <a aria-role="button" href="" id="schedule_training" class="action--submit"><span class="copy">{% trans "Schedule Example Based Assessment Training" %}</span></a>
+            <div id="schedule_training_message"></div>
+        </div>
+        {% endif %}
+
         <div class="staff-info__student ui-staff__content__section">
             <div class="wrapper--input" class="staff-info__student__form">
                 <form id="openassessment_student_info_form">

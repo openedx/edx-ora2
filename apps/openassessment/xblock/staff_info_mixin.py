@@ -6,10 +6,12 @@ import copy
 from django.utils.translation import ugettext as _
 
 from xblock.core import XBlock
+from openassessment.assessment.errors.ai import AIError
 from openassessment.xblock.resolve_dates import DISTANT_PAST, DISTANT_FUTURE
 from submissions import api as submission_api
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
+from openassessment.assessment.api import ai as ai_api
 
 
 class StaffInfoMixin(object):
@@ -29,14 +31,25 @@ class StaffInfoMixin(object):
             return self.render_error(_(
                 u"You do not have permission to access staff information"
             ))
-        student_item = self.get_student_item_dict()
-        context = dict()
+        path, context = self.get_staff_path_and_context()
+        return self.render_assessment(path, context)
+
+    def get_staff_path_and_context(self):
+        """
+        Gets the path and context for the staff section of the ORA XBlock.
+        """
+        context = {}
         path = 'openassessmentblock/staff_debug/staff_debug.html'
 
         # Calculate how many students are in each step of the workflow
         status_counts, num_submissions = self.get_workflow_status_counts()
         context['status_counts'] = status_counts
         context['num_submissions'] = num_submissions
+
+        # Show the schedule training button if example based assessment is
+        # configured, and the current user has admin privileges.
+        assessment = self.get_assessment_module('example-based-assessment')
+        context['display_schedule_training'] = self.is_admin and assessment
 
         # We need to display the new-style locations in the course staff
         # info, even if we're using old-style locations internally,
@@ -57,8 +70,41 @@ class StaffInfoMixin(object):
                 'start': start_date if start_date > DISTANT_PAST else None,
                 'due': due_date if due_date < DISTANT_FUTURE else None,
             })
+        return path, context
 
-        return self.render_assessment(path, context)
+    @XBlock.json_handler
+    def schedule_training(self, data, suffix=''):
+        if not self.is_admin or self.in_studio_preview:
+            return {
+                'success': False,
+                'msg': _(u"You do not have permission to schedule training")
+            }
+
+        assessment = self.get_assessment_module('example-based-assessment')
+        if assessment:
+            examples = assessment["examples"]
+            try:
+                workflow_uuid = ai_api.train_classifiers(
+                    self.rubric_criteria,
+                    examples,
+                    assessment["algorithm_id"]
+                )
+                return {
+                    'success': True,
+                    'workflow_uuid': workflow_uuid,
+                    'msg': _(u"Training scheduled with new Workflow UUID: {}".format(workflow_uuid))
+                }
+            except AIError as err:
+                return {
+                    'success': False,
+                    'msg': _(u"An error occurred scheduling classifier training {}".format(err))
+                }
+
+        else:
+            return {
+                'success': False,
+                'msg': _(u"Example Based Assessment is not configured for this location.")
+            }
 
     @XBlock.handler
     def render_student_info(self, data, suffix=''):
@@ -77,7 +123,7 @@ class StaffInfoMixin(object):
         if not self.is_course_staff or self.in_studio_preview:
             return self.render_error(_(
                 u"You do not have permission to access student information."
-        ))
+            ))
 
         path, context = self.get_student_info_path_and_context(data)
         return self.render_assessment(path, context)

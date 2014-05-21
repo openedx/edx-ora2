@@ -345,5 +345,20 @@
         "template": "openassessmentblock/oa_edit.html",
         "context": {},
         "output": "oa_edit.html"
+    },
+    {
+        "template": "openassessmentblock/staff_debug/staff_debug.html",
+        "output": "staff_debug.html",
+        "context": {
+            "status_counts": [
+                {
+                    "status": "peer",
+                    "count": 0
+                }
+            ],
+            "item_id": ".openassessment.d91.u0",
+            "display_schedule_training": true,
+            "num_submissions": 0
+        }
     }
 ]

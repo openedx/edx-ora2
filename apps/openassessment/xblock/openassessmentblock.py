@@ -68,6 +68,7 @@ UI_MODELS = {
 
 VALID_ASSESSMENT_TYPES = [
     "student-training",
+    "example-based-assessment",
     "peer-assessment",
     "self-assessment",
 ]
@@ -231,6 +232,19 @@ class OpenAssessmentBlock(
         return frag
 
     @property
+    def is_admin(self):
+        """
+        Check whether the user has global staff permissions.
+
+        Returns:
+            bool
+        """
+        if hasattr(self, 'xmodule_runtime'):
+            return getattr(self.xmodule_runtime, 'user_is_admin', False)
+        else:
+            return False
+
+    @property
     def is_course_staff(self):
         """
         Check whether the user has course staff permissions for this XBlock.
@@ -242,6 +256,8 @@ class OpenAssessmentBlock(
             return getattr(self.xmodule_runtime, 'user_is_staff', False)
         else:
             return False
+
+
 
     @property
     def in_studio_preview(self):
