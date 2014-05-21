@@ -7,11 +7,13 @@ import mock
 from django.db import DatabaseError
 from django.test.utils import override_settings
 from openassessment.test_utils import CacheResetTest
+from submissions import api as sub_api
 from openassessment.assessment.api import ai as ai_api
-from openassessment.assessment.models import AITrainingWorkflow
+from openassessment.assessment.models import AITrainingWorkflow, AIClassifierSet
 from openassessment.assessment.worker.algorithm import AIAlgorithm
+from openassessment.assessment.serializers import rubric_from_dict
 from openassessment.assessment.errors import AITrainingRequestError, AITrainingInternalError
-from openassessment.assessment.test.constants import RUBRIC, EXAMPLES
+from openassessment.assessment.test.constants import RUBRIC, EXAMPLES, STUDENT_ITEM, ANSWER
 
 
 class StubAIAlgorithm(AIAlgorithm):
@@ -34,25 +36,31 @@ class StubAIAlgorithm(AIAlgorithm):
         # so we can test that the correct inputs were used
         classifier = copy.copy(self.FAKE_CLASSIFIER)
         classifier['examples'] = examples
+        classifier['score_override'] = 0
         return classifier
 
     def score(self, text, classifier):
         """
-        Not implemented, but we need to make the abstact
-        method concrete.
+        Stub implementation that returns whatever scores were
+        provided in the serialized classifier data.
+
+        Expect `classifier` to be a dict with a single key,
+        "score_override" containing the score to return.
         """
-        raise NotImplementedError
+        return classifier['score_override']
+
+
+ALGORITHM_ID = "test-stub"
+
+AI_ALGORITHMS = {
+    ALGORITHM_ID: '{module}.StubAIAlgorithm'.format(module=__name__)
+}
 
 
 class AITrainingTest(CacheResetTest):
     """
     Tests for AI training tasks.
     """
-
-    ALGORITHM_ID = "test-stub"
-    AI_ALGORITHMS = {
-        ALGORITHM_ID: '{module}.StubAIAlgorithm'.format(module=__name__)
-    }
 
     EXPECTED_INPUT_SCORES = {
         u'vøȼȺƀᵾłȺɍɏ': [1, 0],
@@ -65,7 +73,7 @@ class AITrainingTest(CacheResetTest):
         # Schedule a training task
         # Because Celery is configured in "always eager" mode,
         # expect the task to be executed synchronously.
-        workflow_uuid = ai_api.train_classifiers(RUBRIC, EXAMPLES, self.ALGORITHM_ID)
+        workflow_uuid = ai_api.train_classifiers(RUBRIC, EXAMPLES, ALGORITHM_ID)
 
         # Retrieve the classifier set from the database
         workflow = AITrainingWorkflow.objects.get(uuid=workflow_uuid)
@@ -106,12 +114,12 @@ class AITrainingTest(CacheResetTest):
 
         # Expect a request error
         with self.assertRaises(AITrainingRequestError):
-            ai_api.train_classifiers(RUBRIC, mutated_examples, self.ALGORITHM_ID)
+            ai_api.train_classifiers(RUBRIC, mutated_examples, ALGORITHM_ID)
 
     def test_train_classifiers_no_examples(self):
         # Empty list of training examples
         with self.assertRaises(AITrainingRequestError):
-            ai_api.train_classifiers(RUBRIC, [], self.ALGORITHM_ID)
+            ai_api.train_classifiers(RUBRIC, [], ALGORITHM_ID)
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @mock.patch.object(AITrainingWorkflow.objects, 'create')
@@ -119,7 +127,7 @@ class AITrainingTest(CacheResetTest):
         # Simulate a database error when creating the training workflow
         mock_create.side_effect = DatabaseError("KABOOM!")
         with self.assertRaises(AITrainingInternalError):
-            ai_api.train_classifiers(RUBRIC, EXAMPLES, self.ALGORITHM_ID)
+            ai_api.train_classifiers(RUBRIC, EXAMPLES, ALGORITHM_ID)
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @mock.patch('openassessment.assessment.api.ai.training_tasks')
@@ -127,4 +135,47 @@ class AITrainingTest(CacheResetTest):
         # Simulate an exception raised when scheduling a training task
         mock_training_tasks.train_classifiers.apply_async.side_effect = Exception("KABOOM!")
         with self.assertRaises(AITrainingInternalError):
-            ai_api.train_classifiers(RUBRIC, EXAMPLES, self.ALGORITHM_ID)
+            ai_api.train_classifiers(RUBRIC, EXAMPLES, ALGORITHM_ID)
+
+
+class AIGradingTest(CacheResetTest):
+    """
+    Tests for AI grading tasks.
+    """
+
+    CLASSIFIER_SCORE_OVERRIDES = {
+        u"vøȼȺƀᵾłȺɍɏ": {'score_override': 1},
+        u"ﻭɼค๓๓คɼ": {'score_override': 2}
+    }
+
+    def setUp(self):
+        """
+        Create a submission and a fake classifier set.
+        """
+        # Create a submission
+        submission = sub_api.create_submission(STUDENT_ITEM, ANSWER)
+        self.submission_uuid = submission['uuid']
+
+        # Create the classifier set for our fake AI algorithm
+        # To isolate these tests from the tests for the training
+        # task, we use the database models directly.
+        # We also use a stub AI algorithm that simply returns
+        # whatever scores we specify in the classifier data.
+        rubric = rubric_from_dict(RUBRIC)
+        AIClassifierSet.create_classifier_set(
+            self.CLASSIFIER_SCORE_OVERRIDES, rubric, ALGORITHM_ID
+        )
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_grade_essay(self):
+        # Schedule a grading task
+        # Because Celery is configured in "always eager" mode, this will
+        # be executed synchronously.
+        ai_api.submit(self.submission_uuid, RUBRIC, ALGORITHM_ID)
+
+        # Verify that we got the scores we provided to the stub AI algorithm
+        assessment = ai_api.get_latest_assessment(self.submission_uuid)
+        for part in assessment['parts']:
+            criterion_name = part['option']['criterion']['name']
+            expected_score = self.CLASSIFIER_SCORE_OVERRIDES[criterion_name]['score_override']
+            self.assertEqual(part['option']['points'], expected_score)

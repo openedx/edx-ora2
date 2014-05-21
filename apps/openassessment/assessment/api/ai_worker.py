@@ -5,63 +5,85 @@ import logging
 from django.utils.timezone import now
 from django.db import DatabaseError
 from openassessment.assessment.models import (
-    AITrainingWorkflow, AIClassifierSet,
+    AITrainingWorkflow, AIGradingWorkflow, AIClassifierSet,
     ClassifierUploadError, ClassifierSerializeError,
     IncompleteClassifierSet, NoTrainingExamples
 )
 from openassessment.assessment.errors import (
-    AITrainingRequestError, AITrainingInternalError
+    AITrainingRequestError, AITrainingInternalError,
+    AIGradingRequestError, AIGradingInternalError
 )
 
 
 logger = logging.getLogger(__name__)
 
 
-
-def get_submission(grading_workflow_uuid):
+def get_grading_task_params(grading_workflow_uuid):
     """
-    Retrieve the submission associated with a particular grading workflow.
+    Retrieve the classifier set and algorithm ID
+    associated with a particular grading workflow.
 
     Args:
         grading_workflow_uuid (str): The UUID of the grading workflow.
 
     Returns:
-        submission (JSON-serializable): submission from the student.
+        dict with keys:
+            * essay_text (unicode): The text of the essay submission.
+            * classifier_set (dict): Maps criterion names to serialized classifiers.
+            * algorithm_id (unicode): ID of the algorithm used to perform training.
 
     Raises:
         AIGradingRequestError
         AIGradingInternalError
 
     """
-    pass
+    try:
+        workflow = AIGradingWorkflow.objects.get(uuid=grading_workflow_uuid)
+    except AIGradingWorkflow.DoesNotExist:
+        msg = (
+            u"Could not retrieve the AI grading workflow with uuid {}"
+        ).format(grading_workflow_uuid)
+        raise AIGradingRequestError(msg)
+    except DatabaseError as ex:
+        msg = (
+            u"An unexpected error occurred while retrieving the "
+            u"AI grading workflow with uuid {uuid}: {ex}"
+        ).format(uuid=grading_workflow_uuid, ex=ex)
+        logger.exception(msg)
+        raise AIGradingInternalError(msg)
+
+    classifier_set = workflow.classifier_set
+    # Tasks shouldn't be scheduled until a classifier set is
+    # available, so this is a serious internal error.
+    if classifier_set is None:
+        msg = (
+            u"AI grading workflow with UUID {} has no classifier set"
+        ).format(grading_workflow_uuid)
+        logger.exception(msg)
+        raise AIGradingInternalError(msg)
+
+    try:
+        return {
+            'essay_text': workflow.essay_text,
+            'classifier_set': classifier_set.classifiers_dict,
+            'algorithm_id': workflow.algorithm_id,
+        }
+    except (ValueError, IOError, DatabaseError) as ex:
+        msg = (
+            u"An unexpected error occurred while retrieving "
+            u"classifiers for the grading workflow with UUID {uuid}: {ex}"
+        ).format(uuid=grading_workflow_uuid, ex=ex)
+        logger.exception(msg)
+        raise AIGradingInternalError(msg)
 
 
-def get_classifier_set(grading_workflow_uuid):
-    """
-    Retrieve the classifier set associated with a particular grading workflow.
-
-    Args:
-        grading_workflow_uuid (str): The UUID of the grading workflow.
-
-    Returns:
-        dict: Maps criterion names to serialized classifiers.
-            (binary classifiers are base-64 encoded).
-
-    Raises:
-        AIGradingRequestError
-        AIGradingInternalError
-
-    """
-    pass
-
-
-def create_assessment(grading_workflow_uuid, assessment):
+def create_assessment(grading_workflow_uuid, criterion_scores):
     """
     Create an AI assessment (complete the AI grading task).
 
     Args:
         grading_workflow_uuid (str): The UUID of the grading workflow.
-        assessment (dict): The serialized assessment.
+        criterion_scores (dict): Dictionary mapping criteria names to integer scores.
 
     Returns:
         None
@@ -71,57 +93,59 @@ def create_assessment(grading_workflow_uuid, assessment):
         AIGradingInternalError
 
     """
-    pass
-
-
-def get_algorithm_id(training_workflow_uuid):
-    """
-    Retrieve the ID of the algorithm to use.
-
-    Args:
-        training_workflow_uuid (str): The UUID of the training workflow.
-
-    Returns:
-        unicode: The algorithm ID associated with the training task.
-
-    Raises:
-        AITrainingRequestError
-        AITrainingInternalError
-
-    """
     try:
-        workflow = AITrainingWorkflow.objects.get(uuid=training_workflow_uuid)
-        return workflow.algorithm_id
-    except AITrainingWorkflow.DoesNotExist:
+        workflow = AIGradingWorkflow.objects.get(uuid=grading_workflow_uuid)
+    except AIGradingWorkflow.DoesNotExist:
         msg = (
-            u"Could not retrieve AI training workflow with UUID {}"
-        ).format(training_workflow_uuid)
-        raise AITrainingRequestError(msg)
-    except DatabaseError:
+            u"Could not retrieve the AI grading workflow with uuid {}"
+        ).format(grading_workflow_uuid)
+        raise AIGradingRequestError(msg)
+    except DatabaseError as ex:
         msg = (
-            u"An unexpected error occurred while retrieving "
-            u"the algorithm ID for training workflow with UUID {}"
-        ).format(training_workflow_uuid)
+            u"An unexpected error occurred while retrieving the "
+            u"AI grading workflow with uuid {uuid}: {ex}"
+        ).format(uuid=grading_workflow_uuid, ex=ex)
         logger.exception(msg)
-        raise AITrainingInternalError(msg)
+        raise AIGradingInternalError(msg)
+
+    # Optimization: if the workflow has already been marked complete
+    # (perhaps the task was picked up by multiple workers),
+    # then we don't need to do anything.
+    # Otherwise, create the assessment mark the workflow complete.
+    try:
+        if not workflow.is_complete:
+            workflow.complete(criterion_scores)
+    except DatabaseError as ex:
+        msg = (
+            u"An unexpected error occurred while creating the assessment "
+            u"for AI grading workflow with uuid {uuid}: {ex}"
+        ).format(uuid=grading_workflow_uuid, ex=ex)
+        logger.exception(msg)
+        raise AIGradingInternalError(msg)
 
 
-def get_training_examples(training_workflow_uuid):
+def get_training_task_params(training_workflow_uuid):
     """
-    Retrieve the training examples associated with a training task.
+    Retrieve the training examples and algorithm ID
+    associated with a training task.
 
     Args:
         training_workflow_uuid (str): The UUID of the training workflow.
 
     Returns:
-        list of dict: Serialized training examples, of the form:
+        dict with keys:
+            * training_examples (list of dict): The examples used to train the classifiers.
+            * algorithm_id (unicode): The ID of the algorithm to use for training.
 
     Raises:
         AITrainingRequestError
         AITrainingInternalError
 
     Example usage:
-        >>> get_training_examples('abcd1234')
+        >>> params = get_training_task_params('abcd1234')
+        >>> params['algorithm_id']
+        u'ease'
+        >>> params['training_examples']
         [
             {
                 "text": u"Example answer number one",
@@ -161,7 +185,10 @@ def get_training_examples(training_workflow_uuid):
                 'scores': scores
             })
 
-        return returned_examples
+        return {
+            'training_examples': returned_examples,
+            'algorithm_id': workflow.algorithm_id
+        }
     except AITrainingWorkflow.DoesNotExist:
         msg = (
             u"Could not retrieve AI training workflow with UUID {}"

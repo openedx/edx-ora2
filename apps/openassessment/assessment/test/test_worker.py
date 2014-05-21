@@ -3,7 +3,6 @@
 Tests for AI worker tasks.
 """
 from contextlib import contextmanager
-import datetime
 import mock
 from django.test.utils import override_settings
 from openassessment.test_utils import CacheResetTest
@@ -64,13 +63,6 @@ class AITrainingTaskTest(CacheResetTest):
         workflow = AITrainingWorkflow.start_workflow(examples, self.ALGORITHM_ID)
         self.workflow_uuid = workflow.uuid
 
-    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
-    @mock.patch('openassessment.assessment.worker.training.ai_worker_api.get_algorithm_id')
-    def test_get_algorithm_id_api_error(self, mock_call):
-        mock_call.side_effect = AITrainingRequestError("Test error!")
-        with self._assert_retry(train_classifiers, AITrainingRequestError):
-            train_classifiers(self.workflow_uuid)
-
     def test_unknown_algorithm(self):
         # Since we haven't overridden settings to configure the algorithms,
         # the worker will not recognize the workflow's algorithm ID.
@@ -92,8 +84,8 @@ class AITrainingTaskTest(CacheResetTest):
             train_classifiers(self.workflow_uuid)
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
-    @mock.patch('openassessment.assessment.worker.training.ai_worker_api.get_training_examples')
-    def test_get_training_examples_api_error(self, mock_call):
+    @mock.patch('openassessment.assessment.worker.training.ai_worker_api.get_training_task_params')
+    def test_get_training_task_params_api_error(self, mock_call):
         mock_call.side_effect = AITrainingRequestError("Test error!")
         with self._assert_retry(train_classifiers, AITrainingRequestError):
             train_classifiers(self.workflow_uuid)
@@ -160,12 +152,12 @@ class AITrainingTaskTest(CacheResetTest):
             AssertionError
 
         """
-        examples = ai_worker_api.get_training_examples(self.workflow_uuid)
-        mutate_func(examples)
+        params = ai_worker_api.get_training_task_params(self.workflow_uuid)
+        mutate_func(params['training_examples'])
 
-        call_signature = 'openassessment.assessment.worker.training.ai_worker_api.get_training_examples'
+        call_signature = 'openassessment.assessment.worker.training.ai_worker_api.get_training_task_params'
         with mock.patch(call_signature) as mock_call:
-            mock_call.return_value = examples
+            mock_call.return_value = params
             with self._assert_retry(train_classifiers, InvalidExample):
                 train_classifiers(self.workflow_uuid)
 
