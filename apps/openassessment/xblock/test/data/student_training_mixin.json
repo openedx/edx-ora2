@@ -1,0 +1,70 @@
+{
+    "simple": {
+        "expected_template": "openassessmentblock/student_training/student_training.html",
+        "expected_context": {
+            "training_num_completed": 0,
+            "training_num_current": 1,
+            "training_num_available": 2,
+            "training_essay": "This is my answer.",
+            "training_rubric": {
+                "id": 2,
+                "content_hash": "de2bb2b7e2c6e3df014e53b8c65f37d511cc4344",
+                "criteria": [
+                    {
+                        "order_num": 0,
+                        "name": "Vocabulary",
+                        "prompt": "How varied is the vocabulary?",
+                        "options": [
+                            {
+                                "order_num": 0,
+                                "points": 0,
+                                "name": "Poor",
+                                "explanation": "Poor job"
+                            },
+                            {
+                                "order_num": 1,
+                                "points": 1,
+                                "name": "Good",
+                                "explanation": "Good job"
+                            },
+                            {
+                                "order_num": 2,
+                                "points": 3,
+                                "name": "Excellent",
+                                "explanation": "Excellent job"
+                            }
+                        ],
+                        "points_possible": 3
+                    },
+                    {
+                        "order_num": 1,
+                        "name": "Grammar",
+                        "prompt": "How correct is the grammar?",
+                        "options": [
+                            {
+                                "order_num": 0,
+                                "points": 0,
+                                "name": "Poor",
+                                "explanation": "Poor job"
+                            },
+                            {
+                                "order_num": 1,
+                                "points": 1,
+                                "name": "Good",
+                                "explanation": "Good job"
+                            },
+                            {
+                                "order_num": 2,
+                                "points": 3,
+                                "name": "Excellent",
+                                "explanation": "Excellent job"
+                            }
+                        ],
+                        "points_possible": 3
+                    }
+                ],
+                "points_possible": 6
+            }
+        }
+    }
+}

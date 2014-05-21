@@ -343,7 +343,7 @@
 .list--options:last-child,
 .nav--wizard:last-child,
 .list--tips:last-child,
-.field--group:last-child, .wrapper--xblock .field--radio .option:last-child, .wrapper--xblock .field--checkbox .option:last-child, .wrapper--xblock .message .message__content p:last-child, .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question:last-child, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question:last-child, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer:last-child, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer--feedback:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer--feedback:last-child, .wrapper--xblock .ui-staff__content__section:last-child, .openassessment .openassessment__steps__step .step__content__section:last-child, .openassessment .openassessment__prompt__copy > :last-child, .openassessment .submission__peer-evaluations__questions .question:last-child, .openassessment .submission__peer-evaluations__questions .question__answers:last-child, .openassessment .answer--feedback .feedback:last-child {
+.field--group:last-child, .wrapper--xblock .field--radio .option:last-child, .wrapper--xblock .field--checkbox .option:last-child, .wrapper--xblock .message .message__content p:last-child, .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question:last-child, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question:last-child, .step--student-training .student-training__assessment .assessment__rubric__question:last-child, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer:last-child, .step--student-training .student-training__assessment .question__answers .answer:last-child, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer--feedback:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer--feedback:last-child, .step--student-training .student-training__assessment .question__answers .answer--feedback:last-child, .wrapper--xblock .ui-staff__content__section:last-child, .openassessment .openassessment__steps__step .step__content__section:last-child, .openassessment .openassessment__prompt__copy > :last-child, .openassessment .submission__peer-evaluations__questions .question:last-child, .openassessment .submission__peer-evaluations__questions .question__answers:last-child, .openassessment .answer--feedback .feedback:last-child {
   margin-bottom: 0;
   border-bottom: none;
   padding-bottom: 0;
@@ -448,7 +448,7 @@ hr.divider,
 .wrapper--xblock strong, .wrapper--xblock .emphasis, .openassessment .openassessment__steps__step .step__actions .action--submit, .openassessment .openassessment__steps__step .step__actions .action--submit .copy, .openassessment .step--response .response__submission__actions .action--save, .openassessment .submission__feedback__actions .action--submit, .staff-info__student .action--submit, .openassessment .step--response .response__submission__actions .action--save .copy, .openassessment .submission__feedback__actions .action--submit .copy, .staff-info__student .action--submit .copy, .wrapper--xblock input[type="text"],
 .wrapper--xblock input[type="email"],
 .wrapper--xblock input[type="password"],
-.wrapper--xblock textarea, .wrapper--xblock .field--textarea .label, .wrapper--xblock .field--textarea label, .wrapper--xblock .field-group__label, .wrapper--xblock .field--radio .option__label, .wrapper--xblock .field--checkbox .option__label, .wrapper--xblock .is--transitioning .transition__status .copy, .openassessment .openassessment__steps__step .step__title .step__label, .openassessment .step--grade .step__title .grade__value__title, .wrapper--xblock .message .message__title, .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question .question__title__copy, .wrapper--xblock .ui-staff__title, .openassessment .step--peer-assessment .peer-assessment__display__header .peer-assessment__display__title, .openassessment .step--self-assessment .self-assessment__display__title, .openassessment .submission__answer__display__title, .openassessment .submission__peer-evaluations__title, .openassessment .submission__peer-evaluations__questions .question__title__copy, .openassessment .submission__feedback__title, .openassessment .submission__feedback__title__copy, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__points, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__points, .openassessment .openassessment__steps__step .step__status .copy, .openassessment .step--response .response__submission__content .tip, .openassessment .step--response .response__submission__status__title, .openassessment .submission__peer-evaluations__questions .question__score, .openassessment .submission__peer-evaluations__questions .answer__score, .openassessment .submission__peer-evaluations__questions .answer__score__value, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input .answer__label, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input .answer__label, .wrapper--xblock .staff-info__title__copy, .wrapper--xblock .staff-info__summary .value, .wrapper--xblock .staff-info__status__table .value, .openassessment .openassessment__steps__step .step__title .step__counter:before, .openassessment .step--peer-assessment .peer-assessment__display__header span, .openassessment .step--grade .step__title .grade__value__title .grade__value__earned, .openassessment .step--grade .step__title .grade__value__title .grade__value__potential, .openassessment .submission__peer-evaluations__questions .question__score__value, .openassessment .submission__peer-evaluations__questions .question__score__potential, .openassessment .submission__peer-evaluations__questions .question__score__potential .unit, .openassessment .submission__peer-evaluations__questions .answer__source, .openassessment .submission__peer-evaluations__questions .answer__value__value, .openassessment .answer--feedback .feedback__source, .openassessment .openassessment__steps .openassessment__steps__step .step__header h2.step__title .step__counter:before {
+.wrapper--xblock textarea, .wrapper--xblock .field--textarea .label, .wrapper--xblock .field--textarea label, .wrapper--xblock .field-group__label, .wrapper--xblock .field--radio .option__label, .wrapper--xblock .field--checkbox .option__label, .wrapper--xblock .is--transitioning .transition__status .copy, .openassessment .openassessment__steps__step .step__title .step__label, .openassessment .step--grade .step__title .grade__value__title, .wrapper--xblock .message .message__title, .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question .question__title__copy, .step--student-training .student-training__assessment .assessment__rubric__question .question__title__copy, .wrapper--xblock .ui-staff__title, .openassessment .step--peer-assessment .peer-assessment__display__header .peer-assessment__display__title, .openassessment .step--self-assessment .self-assessment__display__title, .openassessment .submission__answer__display__title, .openassessment .submission__peer-evaluations__title, .openassessment .submission__peer-evaluations__questions .question__title__copy, .openassessment .submission__feedback__title, .openassessment .submission__feedback__title__copy, .step--student-training .student-training__display__title, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__points, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__points, .step--student-training .student-training__assessment .question__answers .answer__points, .openassessment .openassessment__steps__step .step__status .copy, .openassessment .step--response .response__submission__content .tip, .openassessment .step--response .response__submission__status__title, .openassessment .submission__peer-evaluations__questions .question__score, .openassessment .submission__peer-evaluations__questions .answer__score, .openassessment .submission__peer-evaluations__questions .answer__score__value, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input .answer__label, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input .answer__label, .step--student-training .student-training__assessment .question__answers .wrapper--input .answer__label, .wrapper--xblock .staff-info__title__copy, .wrapper--xblock .staff-info__summary .value, .wrapper--xblock .staff-info__status__table .value, .openassessment .openassessment__steps__step .step__title .step__counter:before, .openassessment .step--peer-assessment .peer-assessment__display__header span, .openassessment .step--grade .step__title .grade__value__title .grade__value__earned, .openassessment .step--grade .step__title .grade__value__title .grade__value__potential, .openassessment .submission__peer-evaluations__questions .question__score__value, .openassessment .submission__peer-evaluations__questions .question__score__potential, .openassessment .submission__peer-evaluations__questions .question__score__potential .unit, .openassessment .submission__peer-evaluations__questions .answer__source, .openassessment .submission__peer-evaluations__questions .answer__value__value, .openassessment .answer--feedback .feedback__source, .openassessment .openassessment__steps .openassessment__steps__step .step__header h2.step__title .step__counter:before {
   font-weight: 600; }
 
 .wrapper--xblock input[type="text"]::-webkit-input-placeholder,
@@ -466,11 +466,11 @@ hr.divider,
 .wrapper--xblock textarea:-ms-input-placeholder, .openassessment .openassessment__title {
   font-weight: 400; }
 
-.openassessment .submission__peer-evaluations__questions .answer__source, .openassessment .answer--feedback .feedback__source, .wrapper--xblock .field .tip, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__points, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__points, .openassessment .openassessment__steps__step .step__status .copy, .openassessment .step--response .response__submission__content .tip, .openassessment .step--response .response__submission__status__title, .openassessment .submission__peer-evaluations__questions .question__score, .openassessment .submission__peer-evaluations__questions .answer__score, .openassessment .submission__peer-evaluations__questions .answer__score__value, .wrapper--xblock .staff-info__status__table th, .openassessment .ui-hint:after {
+.openassessment .submission__peer-evaluations__questions .answer__source, .openassessment .answer--feedback .feedback__source, .wrapper--xblock .field .tip, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__points, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__points, .step--student-training .student-training__assessment .question__answers .answer__points, .openassessment .openassessment__steps__step .step__status .copy, .openassessment .step--response .response__submission__content .tip, .openassessment .step--response .response__submission__status__title, .openassessment .submission__peer-evaluations__questions .question__score, .openassessment .submission__peer-evaluations__questions .answer__score, .openassessment .submission__peer-evaluations__questions .answer__score__value, .wrapper--xblock .staff-info__status__table th, .openassessment .ui-hint:after {
   font-size: 12px;
   line-height: 18px; }
 
-.wrapper--xblock .message .message__title, .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question .question__title__copy, .wrapper--xblock .ui-staff__title, .openassessment .step--peer-assessment .peer-assessment__display__header .peer-assessment__display__title, .openassessment .step--self-assessment .self-assessment__display__title, .openassessment .submission__answer__display__title, .openassessment .submission__peer-evaluations__title, .openassessment .submission__peer-evaluations__questions .question__title__copy, .openassessment .submission__feedback__title, .openassessment .submission__feedback__title__copy, .openassessment .openassessment__steps__step .step__title .step__deadline, .wrapper--xblock .field label, .wrapper--xblock .field .label, .wrapper--xblock .field .field-group__label, .wrapper--xblock .field--radio .option__label, .wrapper--xblock .field--checkbox .option__label, .wrapper--xblock .message .message__content, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input .answer__label, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input .answer__label, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip, .wrapper--xblock .staff-info__status__table, .openassessment .step--peer-assessment .peer-assessment__display__response, .openassessment .step--self-assessment .self-assessment__display__response, .openassessment .submission__answer__display__content, .openassessment .answer--feedback .feedback__value, .openassessment .openassessment__steps__step .step__actions .action--submit, .openassessment .step--response .response__submission__actions .action--save, .openassessment .answer--feedback .answer--feedback__title, .openassessment .submission__feedback__actions .action--submit, .staff-info__student .action--submit, .openassessment .openassessment__steps__step .step__status .ico {
+.wrapper--xblock .message .message__title, .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question .question__title__copy, .step--student-training .student-training__assessment .assessment__rubric__question .question__title__copy, .wrapper--xblock .ui-staff__title, .openassessment .step--peer-assessment .peer-assessment__display__header .peer-assessment__display__title, .openassessment .step--self-assessment .self-assessment__display__title, .openassessment .submission__answer__display__title, .openassessment .submission__peer-evaluations__title, .openassessment .submission__peer-evaluations__questions .question__title__copy, .openassessment .submission__feedback__title, .openassessment .submission__feedback__title__copy, .step--student-training .student-training__display__title, .openassessment .openassessment__steps__step .step__title .step__deadline, .wrapper--xblock .field label, .wrapper--xblock .field .label, .wrapper--xblock .field .field-group__label, .wrapper--xblock .field--radio .option__label, .wrapper--xblock .field--checkbox .option__label, .wrapper--xblock .message .message__content, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input .answer__label, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input .answer__label, .step--student-training .student-training__assessment .question__answers .wrapper--input .answer__label, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip, .step--student-training .student-training__assessment .question__answers .answer__tip, .wrapper--xblock .staff-info__status__table, .openassessment .step--peer-assessment .peer-assessment__display__response, .openassessment .step--self-assessment .self-assessment__display__response, .openassessment .submission__answer__display__content, .openassessment .answer--feedback .feedback__value, .step--student-training .student-training__display__response, .openassessment .openassessment__steps__step .step__actions .action--submit, .openassessment .step--response .response__submission__actions .action--save, .openassessment .answer--feedback .answer--feedback__title, .openassessment .submission__feedback__actions .action--submit, .staff-info__student .action--submit, .openassessment .openassessment__steps__step .step__status .ico {
   font-size: 14px;
   line-height: 21px; }
 
@@ -486,7 +486,7 @@ hr.divider,
   font-size: 22px;
   line-height: 33px; }
 
-.wrapper--xblock .problem__header, .wrapper--xblock .is--transitioning .transition__status .copy, .wrapper--xblock .message .message__title, .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question .question__title__copy, .wrapper--xblock .ui-staff__title, .openassessment .step--peer-assessment .peer-assessment__display__header .peer-assessment__display__title, .openassessment .step--self-assessment .self-assessment__display__title, .openassessment .submission__answer__display__title, .openassessment .submission__peer-evaluations__title, .openassessment .submission__peer-evaluations__questions .question__title__copy, .openassessment .submission__feedback__title, .openassessment .submission__feedback__title__copy, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__points, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__points, .openassessment .openassessment__steps__step .step__status .copy, .openassessment .step--response .response__submission__content .tip, .openassessment .step--response .response__submission__status__title, .openassessment .submission__peer-evaluations__questions .question__score, .openassessment .submission__peer-evaluations__questions .answer__score, .openassessment .submission__peer-evaluations__questions .answer__score__value, .wrapper--xblock .staff-info__status__table th, .openassessment .submission__peer-evaluations__questions .answer__source, .openassessment .answer--feedback .feedback__source {
+.wrapper--xblock .problem__header, .wrapper--xblock .is--transitioning .transition__status .copy, .wrapper--xblock .message .message__title, .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question .question__title__copy, .step--student-training .student-training__assessment .assessment__rubric__question .question__title__copy, .wrapper--xblock .ui-staff__title, .openassessment .step--peer-assessment .peer-assessment__display__header .peer-assessment__display__title, .openassessment .step--self-assessment .self-assessment__display__title, .openassessment .submission__answer__display__title, .openassessment .submission__peer-evaluations__title, .openassessment .submission__peer-evaluations__questions .question__title__copy, .openassessment .submission__feedback__title, .openassessment .submission__feedback__title__copy, .step--student-training .student-training__display__title, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__points, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__points, .step--student-training .student-training__assessment .question__answers .answer__points, .openassessment .openassessment__steps__step .step__status .copy, .openassessment .step--response .response__submission__content .tip, .openassessment .step--response .response__submission__status__title, .openassessment .submission__peer-evaluations__questions .question__score, .openassessment .submission__peer-evaluations__questions .answer__score, .openassessment .submission__peer-evaluations__questions .answer__score__value, .wrapper--xblock .staff-info__status__table th, .openassessment .submission__peer-evaluations__questions .answer__source, .openassessment .answer--feedback .feedback__source {
   text-transform: uppercase;
   letter-spacing: 0.05rem; }
 
@@ -496,7 +496,7 @@ hr.divider,
 .wrapper--xblock .problem__header {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
-.wrapper--xblock .message .message__title, .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question .question__title__copy, .wrapper--xblock .ui-staff__title, .openassessment .step--peer-assessment .peer-assessment__display__header .peer-assessment__display__title, .openassessment .step--self-assessment .self-assessment__display__title, .openassessment .submission__answer__display__title, .openassessment .submission__peer-evaluations__title, .openassessment .submission__peer-evaluations__questions .question__title__copy, .openassessment .submission__feedback__title, .openassessment .submission__feedback__title__copy, .openassessment .openassessment__steps__step .step__title .step__deadline {
+.wrapper--xblock .message .message__title, .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question .question__title__copy, .step--student-training .student-training__assessment .assessment__rubric__question .question__title__copy, .wrapper--xblock .ui-staff__title, .openassessment .step--peer-assessment .peer-assessment__display__header .peer-assessment__display__title, .openassessment .step--self-assessment .self-assessment__display__title, .openassessment .submission__answer__display__title, .openassessment .submission__peer-evaluations__title, .openassessment .submission__peer-evaluations__questions .question__title__copy, .openassessment .submission__feedback__title, .openassessment .submission__feedback__title__copy, .step--student-training .student-training__display__title, .openassessment .openassessment__steps__step .step__title .step__deadline {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
 .openassessment .submission__peer-evaluations__questions .answer__source, .openassessment .answer--feedback .feedback__source {
@@ -505,10 +505,10 @@ hr.divider,
 .openassessment .openassessment__steps__step .step__instruction, .openassessment .openassessment__prompt__copy, .openassessment .step--grade .grade__value__description, .openassessment .step--grade .grade__summary, .openassessment .submission__feedback__instructions {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
-.wrapper--xblock .field label, .wrapper--xblock .field .label, .wrapper--xblock .field .field-group__label, .wrapper--xblock .field--radio .option__label, .wrapper--xblock .field--checkbox .option__label, .wrapper--xblock .message .message__content, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input .answer__label, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input .answer__label, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip, .wrapper--xblock .staff-info__status__table, .openassessment .step--peer-assessment .peer-assessment__display__response, .openassessment .step--self-assessment .self-assessment__display__response, .openassessment .submission__answer__display__content, .openassessment .answer--feedback .feedback__value {
+.wrapper--xblock .field label, .wrapper--xblock .field .label, .wrapper--xblock .field .field-group__label, .wrapper--xblock .field--radio .option__label, .wrapper--xblock .field--checkbox .option__label, .wrapper--xblock .message .message__content, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input .answer__label, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input .answer__label, .step--student-training .student-training__assessment .question__answers .wrapper--input .answer__label, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip, .step--student-training .student-training__assessment .question__answers .answer__tip, .wrapper--xblock .staff-info__status__table, .openassessment .step--peer-assessment .peer-assessment__display__response, .openassessment .step--self-assessment .self-assessment__display__response, .openassessment .submission__answer__display__content, .openassessment .answer--feedback .feedback__value, .step--student-training .student-training__display__response {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
-.wrapper--xblock .field .tip, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__points, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__points, .openassessment .openassessment__steps__step .step__status .copy, .openassessment .step--response .response__submission__content .tip, .openassessment .step--response .response__submission__status__title, .openassessment .submission__peer-evaluations__questions .question__score, .openassessment .submission__peer-evaluations__questions .answer__score, .openassessment .submission__peer-evaluations__questions .answer__score__value, .wrapper--xblock .staff-info__status__table th, .openassessment .ui-hint:after {
+.wrapper--xblock .field .tip, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__points, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__points, .step--student-training .student-training__assessment .question__answers .answer__points, .openassessment .openassessment__steps__step .step__status .copy, .openassessment .step--response .response__submission__content .tip, .openassessment .step--response .response__submission__status__title, .openassessment .submission__peer-evaluations__questions .question__score, .openassessment .submission__peer-evaluations__questions .answer__score, .openassessment .submission__peer-evaluations__questions .answer__score__value, .wrapper--xblock .staff-info__status__table th, .openassessment .ui-hint:after {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
 .openassessment .openassessment__steps__step .step__actions .action--submit, .openassessment .step--response .response__submission__actions .action--save, .openassessment .answer--feedback .answer--feedback__title, .openassessment .submission__feedback__actions .action--submit, .staff-info__student .action--submit {
@@ -674,14 +674,14 @@ hr.divider,
   .wrapper--xblock .message--confirmation .message__title {
     color: #2d2e30;
     border-bottom-color: #2d2e30; }
-.wrapper--xblock .message--complete {
+.wrapper--xblock .message--complete, .wrapper--xblock .step--student-training .message--correct, .step--student-training .wrapper--xblock .message--correct {
   background: #f7fbf5; }
-  .wrapper--xblock .message--complete .message__title {
+  .wrapper--xblock .message--complete .message__title, .wrapper--xblock .step--student-training .message--correct .message__title, .step--student-training .wrapper--xblock .message--correct .message__title {
     color: #62c24a;
     border-bottom-color: #62c24a; }
-.wrapper--xblock .message--incomplete {
+.wrapper--xblock .message--incomplete, .wrapper--xblock .step--student-training .message--incorrect, .step--student-training .wrapper--xblock .message--incorrect {
   background: #fdfaf4; }
-  .wrapper--xblock .message--incomplete .message__title {
+  .wrapper--xblock .message--incomplete .message__title, .wrapper--xblock .step--student-training .message--incorrect .message__title, .step--student-training .wrapper--xblock .message--incorrect .message__title {
     color: #e5a635;
     border-bottom-color: #e5a635; }
 .wrapper--xblock .message--error {
@@ -1131,7 +1131,7 @@ hr.divider,
   .openassessment .is--closed.openassessment__steps__step, .openassessment .is--incomplete.openassessment__steps__step {
     border-top-color: #e5a635; }
 
-.openassessment .step--peer-assessment .peer-assessment__display, .openassessment .step--self-assessment .self-assessment__display, .openassessment .submission__peer-evaluations, .openassessment .submission__feedback {
+.openassessment .step--peer-assessment .peer-assessment__display, .openassessment .step--self-assessment .self-assessment__display, .openassessment .submission__peer-evaluations, .openassessment .submission__feedback, .step--student-training .student-training__display {
   margin-bottom: 20px; }
 
 .openassessment .submission__feedback__title {
@@ -1139,188 +1139,188 @@ hr.divider,
   border-bottom: 2px solid #d7dbdf;
   padding-bottom: 10px; }
 
-.openassessment .step--peer-assessment .peer-assessment__display__response p, .openassessment .step--self-assessment .self-assessment__display__response p, .openassessment .submission__answer__display__content p, .openassessment .submission__peer-evaluations__questions p, .openassessment .submission__feeedback__content p, .openassessment .submission__feedback__actions p {
+.openassessment .step--peer-assessment .peer-assessment__display__response p, .openassessment .step--self-assessment .self-assessment__display__response p, .openassessment .submission__answer__display__content p, .openassessment .submission__peer-evaluations__questions p, .openassessment .submission__feeedback__content p, .openassessment .submission__feedback__actions p, .step--student-training .student-training__display__response p {
   margin-bottom: 20px; }
-  .openassessment .step--peer-assessment .peer-assessment__display__response p:last-child, .openassessment .step--self-assessment .self-assessment__display__response p:last-child, .openassessment .submission__answer__display__content p:last-child, .openassessment .submission__peer-evaluations__questions p:last-child, .openassessment .submission__feeedback__content p:last-child, .openassessment .submission__feedback__actions p:last-child {
+  .openassessment .step--peer-assessment .peer-assessment__display__response p:last-child, .openassessment .step--self-assessment .self-assessment__display__response p:last-child, .openassessment .submission__answer__display__content p:last-child, .openassessment .submission__peer-evaluations__questions p:last-child, .openassessment .submission__feeedback__content p:last-child, .openassessment .submission__feedback__actions p:last-child, .step--student-training .student-training__display__response p:last-child {
     margin-bottom: 0; }
 
-.openassessment .openassessment__prompt, .openassessment .step--peer-assessment .peer-assessment__display__response, .openassessment .step--self-assessment .self-assessment__display__response, .openassessment .submission__answer__display__content {
+.openassessment .openassessment__prompt, .openassessment .step--peer-assessment .peer-assessment__display__response, .openassessment .step--self-assessment .self-assessment__display__response, .openassessment .submission__answer__display__content, .step--student-training .student-training__display__response {
   box-shadow: inset 0 1px 2px 1px rgba(2, 2, 3, 0.1);
   padding: 20px 20px;
   background: #fdfdfd; }
 
-.openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer--feedback .answer__value, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer--feedback .answer__value, .openassessment .step--response .response__submission__content textarea, .openassessment .step--peer-assessment .peer-assessment__display__response, .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question--feedback textarea, .openassessment .step--self-assessment .self-assessment__display__response, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question--feedback textarea, .openassessment .submission__answer__display__content, .openassessment .submission__feedback__fields textarea {
+.openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer--feedback .answer__value, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer--feedback .answer__value, .step--student-training .student-training__assessment .question__answers .answer--feedback .answer__value, .openassessment .step--response .response__submission__content textarea, .openassessment .step--peer-assessment .peer-assessment__display__response, .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question--feedback textarea, .openassessment .step--self-assessment .self-assessment__display__response, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question--feedback textarea, .openassessment .submission__answer__display__content, .openassessment .submission__feedback__fields textarea, .step--student-training .student-training__display__response, .step--student-training .student-training__assessment .assessment__rubric__question--feedback textarea {
   max-height: 300px;
   overflow-y: scroll; }
 
-.openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question {
+.openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question, .step--student-training .student-training__assessment .assessment__rubric__question {
   *zoom: 1;
   margin-bottom: 40px; }
-  .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question:before, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question:before, .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question:after, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question:after {
+  .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question:before, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question:before, .step--student-training .student-training__assessment .assessment__rubric__question:before, .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question:after, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question:after, .step--student-training .student-training__assessment .assessment__rubric__question:after {
     content: " ";
     display: table; }
-  .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question:after, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question:after {
+  .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question:after, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question:after, .step--student-training .student-training__assessment .assessment__rubric__question:after {
     clear: both; }
-  .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question .question__title, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question .question__title {
+  .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question .question__title, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question .question__title, .step--student-training .student-training__assessment .assessment__rubric__question .question__title {
     border-bottom: 2px solid #646464;
     padding-bottom: 5px; }
-    .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question .question__title .ico, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question .question__title .ico {
+    .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question .question__title .ico, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question .question__title .ico, .step--student-training .student-training__assessment .assessment__rubric__question .question__title .ico {
       display: inline-block;
       vertical-align: middle; }
-  .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question .question__title__copy {
+  .openassessment .step--peer-assessment .peer-assessment__assessment .assessment__rubric__question .question__title__copy, .openassessment .step--self-assessment .self-assessment__assessment .assessment__rubric__question .question__title__copy, .step--student-training .student-training__assessment .assessment__rubric__question .question__title__copy {
     margin-left: 10px;
     color: #646464; }
 
-.openassessment .step--peer-assessment .peer-assessment__assessment .question__answers, .openassessment .step--self-assessment .self-assessment__assessment .question__answers {
+.openassessment .step--peer-assessment .peer-assessment__assessment .question__answers, .openassessment .step--self-assessment .self-assessment__assessment .question__answers, .step--student-training .student-training__assessment .question__answers {
   margin-top: 20px;
   margin-bottom: 20px;
   margin-left: 20px; }
-  .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer--feedback, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer--feedback {
+  .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer, .step--student-training .student-training__assessment .question__answers .answer, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer--feedback, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer--feedback, .step--student-training .student-training__assessment .question__answers .answer--feedback {
     *zoom: 1;
     display: block;
     margin-bottom: 10px;
     border-bottom: 1px solid #f5f6f7;
     padding-bottom: 10px; }
-    .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer:before, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer:before, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer:after, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer:after, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer--feedback:before, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer--feedback:before, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer--feedback:after, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer--feedback:after {
+    .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer:before, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer:before, .step--student-training .student-training__assessment .question__answers .answer:before, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer:after, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer:after, .step--student-training .student-training__assessment .question__answers .answer:after, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer--feedback:before, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer--feedback:before, .step--student-training .student-training__assessment .question__answers .answer--feedback:before, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer--feedback:after, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer--feedback:after, .step--student-training .student-training__assessment .question__answers .answer--feedback:after {
       content: " ";
       display: table; }
-    .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer:after, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer:after, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer--feedback:after, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer--feedback:after {
+    .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer:after, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer:after, .step--student-training .student-training__assessment .question__answers .answer:after, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer--feedback:after, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer--feedback:after, .step--student-training .student-training__assessment .question__answers .answer--feedback:after {
       clear: both; }
-  .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input {
+  .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input, .step--student-training .student-training__assessment .question__answers .wrapper--input {
     margin-bottom: 5px; }
-    .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input .answer__value, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input .answer__value, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input .answer__label, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input .answer__label {
+    .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input .answer__value, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input .answer__value, .step--student-training .student-training__assessment .question__answers .wrapper--input .answer__value, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input .answer__label, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input .answer__label, .step--student-training .student-training__assessment .question__answers .wrapper--input .answer__label {
       display: inline-block;
       vertical-align: middle; }
-    .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input .answer__label, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input .answer__label {
+    .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input .answer__label, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input .answer__label, .step--student-training .student-training__assessment .question__answers .wrapper--input .answer__label {
       margin-bottom: 0;
       color: #a5a6aa; }
-    .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input .answer__value, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input .answer__value {
+    .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input .answer__value, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input .answer__value, .step--student-training .student-training__assessment .question__answers .wrapper--input .answer__value {
       margin-right: 10px; }
-      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input .answer__value:checked + .answer__label, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input .answer__value:checked + .answer__label {
+      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--input .answer__value:checked + .answer__label, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--input .answer__value:checked + .answer__label, .step--student-training .student-training__assessment .question__answers .wrapper--input .answer__value:checked + .answer__label {
         color: black; }
-  .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--metadata, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--metadata {
+  .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--metadata, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--metadata, .step--student-training .student-training__assessment .question__answers .wrapper--metadata {
     display: block; }
     @media screen and (min-width: 760px) and (max-width: 924px) {
-      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--metadata, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--metadata {
+      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--metadata, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--metadata, .step--student-training .student-training__assessment .question__answers .wrapper--metadata {
         float: left;
         display: block;
         margin-right: 2.35765%;
         width: 65.88078%;
         margin-bottom: 0; }
-        .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--metadata:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--metadata:last-child {
+        .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--metadata:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--metadata:last-child, .step--student-training .student-training__assessment .question__answers .wrapper--metadata:last-child {
           margin-right: 0; } }
     @media screen and (min-width: 925px) and (max-width: 1299px) {
-      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--metadata, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--metadata {
+      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--metadata, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--metadata, .step--student-training .student-training__assessment .question__answers .wrapper--metadata {
         float: left;
         display: block;
         margin-right: 2.35765%;
         width: 65.88078%;
         margin-bottom: 0; }
-        .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--metadata:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--metadata:last-child {
+        .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--metadata:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--metadata:last-child, .step--student-training .student-training__assessment .question__answers .wrapper--metadata:last-child {
           margin-right: 0; } }
     @media screen and (min-width: 1300px) {
-      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--metadata, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--metadata {
+      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--metadata, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--metadata, .step--student-training .student-training__assessment .question__answers .wrapper--metadata {
         float: left;
         display: block;
         margin-right: 2.35765%;
         width: 65.88078%;
         margin-bottom: 0; }
-        .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--metadata:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--metadata:last-child {
+        .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .wrapper--metadata:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .wrapper--metadata:last-child, .step--student-training .student-training__assessment .question__answers .wrapper--metadata:last-child {
           margin-right: 0; } }
-  .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__points, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__points {
+  .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip, .step--student-training .student-training__assessment .question__answers .answer__tip, .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__points, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__points, .step--student-training .student-training__assessment .question__answers .answer__points {
     display: block; }
-  .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip {
+  .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip, .step--student-training .student-training__assessment .question__answers .answer__tip {
     margin-bottom: 10px;
     margin-right: 20px;
     color: #a5a6aa; }
     @media screen and (min-width: 760px) and (max-width: 924px) {
-      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip {
+      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip, .step--student-training .student-training__assessment .question__answers .answer__tip {
         float: left;
         display: block;
         margin-right: 3.57866%;
         width: 74.10533%;
         float: left;
         margin-bottom: 0; }
-        .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip:last-child {
+        .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip:last-child, .step--student-training .student-training__assessment .question__answers .answer__tip:last-child {
           margin-right: 0; } }
     @media screen and (min-width: 925px) and (max-width: 1299px) {
-      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip {
+      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip, .step--student-training .student-training__assessment .question__answers .answer__tip {
         float: left;
         display: block;
         margin-right: 3.57866%;
         width: 74.10533%;
         float: left;
         margin-bottom: 0; }
-        .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip:last-child {
+        .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip:last-child, .step--student-training .student-training__assessment .question__answers .answer__tip:last-child {
           margin-right: 0; } }
     @media screen and (min-width: 1300px) {
-      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip {
+      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip, .step--student-training .student-training__assessment .question__answers .answer__tip {
         float: left;
         display: block;
         margin-right: 3.57866%;
         width: 74.10533%;
         float: left;
         margin-bottom: 0; }
-        .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip:last-child {
+        .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip:last-child, .step--student-training .student-training__assessment .question__answers .answer__tip:last-child {
           margin-right: 0; } }
-    .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip:after, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip:after {
+    .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__tip:after, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__tip:after, .step--student-training .student-training__assessment .question__answers .answer__tip:after {
       content: ""; }
-  .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__points, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__points {
+  .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__points, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__points, .step--student-training .student-training__assessment .question__answers .answer__points {
     color: #a5a6aa; }
     @media screen and (min-width: 760px) and (max-width: 924px) {
-      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__points, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__points {
+      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__points, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__points, .step--student-training .student-training__assessment .question__answers .answer__points {
         float: right;
         text-align: right; } }
     @media screen and (min-width: 925px) and (max-width: 1299px) {
-      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__points, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__points {
+      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__points, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__points, .step--student-training .student-training__assessment .question__answers .answer__points {
         float: right;
         text-align: right; } }
     @media screen and (min-width: 1300px) {
-      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__points, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__points {
+      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__points, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__points, .step--student-training .student-training__assessment .question__answers .answer__points {
         float: right;
         text-align: right; } }
-  .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__points__label, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__points__label {
+  .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer__points__label, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer__points__label, .step--student-training .student-training__assessment .question__answers .answer__points__label {
     display: inline-block;
     margin-left: 5px;
     color: #a5a6aa; }
   @media screen and (min-width: 530px) and (max-width: 759px) {
-    .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer .wrapper--input, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer .wrapper--input {
+    .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer .wrapper--input, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer .wrapper--input, .step--student-training .student-training__assessment .question__answers .answer .wrapper--input {
       float: left;
       display: block;
       margin-right: 4.82916%;
       width: 100%; }
-      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer .wrapper--input:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer .wrapper--input:last-child {
+      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer .wrapper--input:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer .wrapper--input:last-child, .step--student-training .student-training__assessment .question__answers .answer .wrapper--input:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 760px) and (max-width: 924px) {
-    .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer .wrapper--input, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer .wrapper--input {
+    .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer .wrapper--input, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer .wrapper--input, .step--student-training .student-training__assessment .question__answers .answer .wrapper--input {
       float: left;
       display: block;
       margin-right: 2.35765%;
       width: 31.76157%;
       margin-bottom: 0; }
-      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer .wrapper--input:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer .wrapper--input:last-child {
+      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer .wrapper--input:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer .wrapper--input:last-child, .step--student-training .student-training__assessment .question__answers .answer .wrapper--input:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 925px) and (max-width: 1299px) {
-    .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer .wrapper--input, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer .wrapper--input {
+    .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer .wrapper--input, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer .wrapper--input, .step--student-training .student-training__assessment .question__answers .answer .wrapper--input {
       float: left;
       display: block;
       margin-right: 2.35765%;
       width: 31.76157%;
       margin-bottom: 0; }
-      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer .wrapper--input:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer .wrapper--input:last-child {
+      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer .wrapper--input:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer .wrapper--input:last-child, .step--student-training .student-training__assessment .question__answers .answer .wrapper--input:last-child {
         margin-right: 0; } }
   @media screen and (min-width: 1300px) {
-    .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer .wrapper--input, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer .wrapper--input {
+    .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer .wrapper--input, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer .wrapper--input, .step--student-training .student-training__assessment .question__answers .answer .wrapper--input {
       float: left;
       display: block;
       margin-right: 2.35765%;
       width: 31.76157%;
       margin-bottom: 0; }
-      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer .wrapper--input:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer .wrapper--input:last-child {
+      .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer .wrapper--input:last-child, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer .wrapper--input:last-child, .step--student-training .student-training__assessment .question__answers .answer .wrapper--input:last-child {
         margin-right: 0; } }
-  .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer--feedback .answer__label, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer--feedback .answer__label {
+  .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer--feedback .answer__label, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer--feedback .answer__label, .step--student-training .student-training__assessment .question__answers .answer--feedback .answer__label {
     margin-bottom: 5px; }
-  .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer--feedback .answer__value, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer--feedback .answer__value {
+  .openassessment .step--peer-assessment .peer-assessment__assessment .question__answers .answer--feedback .answer__value, .openassessment .step--self-assessment .self-assessment__assessment .question__answers .answer--feedback .answer__value, .step--student-training .student-training__assessment .question__answers .answer--feedback .answer__value {
     min-height: 100px;
     margin-right: 0; }
 
@@ -1352,7 +1352,6 @@ hr.divider,
   -moz-transition: opacity 0.5s ease-in 0, max-height 0.25s ease-in 0;
   transition: opacity 0.5s ease-in 0, max-height 0.25s ease-in 0;
   max-height: 40000px;
-  overflow: auto;
   opacity: 1.0;
   padding-left: 2px;
   padding-right: 2px; }
@@ -2096,6 +2095,43 @@ hr.divider,
     width: 50%; }
   .staff-info__student .student__answer__display__content p {
     color: inherit; }
+
+.step--student-training .student-training__display__header {
+  *zoom: 1; }
+  .step--student-training .student-training__display__header:before, .step--student-training .student-training__display__header:after {
+    content: " ";
+    display: table; }
+  .step--student-training .student-training__display__header:after {
+    clear: both; }
+.step--student-training .student-training__display__title {
+  margin-bottom: 10px;
+  color: #aeafb3; }
+.step--student-training .student-training__display__response {
+  color: #3c3c3c; }
+.step--student-training .student-training__assessment .assessment__fields {
+  margin-bottom: 20px; }
+.step--student-training .student-training__assessment .question__answers {
+  overflow: visible; }
+.step--student-training .student-training__assessment .assessment__rubric__question--feedback textarea {
+  min-height: 100px; }
+.step--student-training .message--correct {
+  margin-top: 20px; }
+  .step--student-training .message--correct.is--hidden {
+    height: 0;
+    width: 0;
+    padding: 0;
+    margin: 0; }
+    .step--student-training .message--correct.is--hidden .step__header {
+      border-bottom: none; }
+.step--student-training .message--incorrect {
+  margin-top: 20px; }
+  .step--student-training .message--incorrect.is--hidden {
+    height: 0;
+    width: 0;
+    padding: 0;
+    margin: 0; }
+    .step--student-training .message--incorrect.is--hidden .step__header {
+      border-bottom: none; }
 
 .openassessment .self-assessment__display__header, .openassessment .peer-assessment__display__header, .openassessment .step__header {
   margin-bottom: 0 !important;

@@ -64,6 +64,40 @@ DEFAULT_RUBRIC_FEEDBACK_PROMPT = """
     (Optional) What aspects of this response stood out to you? What did it do well? How could it improve?
 """
 
+DEFAULT_EXAMPLE_ANSWER = "Replace this text with a sample response for this assignment. You'll assess this sample response in the courseware, and students will then learn to assess responses by assessing this response and comparing the options that they select in the rubric with the options that you selected."
+DEFAULT_STUDENT_TRAINING = {
+    "name": "student-training",
+    "start": None,
+    "due": None,
+    "examples": [
+        {
+            "answer": DEFAULT_EXAMPLE_ANSWER,
+            "options_selected": [
+                {
+                    "criterion": "Ideas",
+                    "option": "Fair"
+                },
+                {
+                    "criterion": "Content",
+                    "option": "Good"
+                }
+            ]
+        },
+        {
+            "answer": DEFAULT_EXAMPLE_ANSWER,
+            "options_selected": [
+                {
+                    "criterion": "Ideas",
+                    "option": "Poor"
+                },
+                {
+                    "criterion": "Content",
+                    "option": "Good"
+                }
+            ]
+        }
+    ]
+}
 
 # The Default Peer Assessment is created as an example of how this XBlock can be
 # configured. If no configuration is specified, this is the default assessment
@@ -82,6 +116,7 @@ DEFAULT_SELF_ASSESSMENT = {
 }
 
 DEFAULT_ASSESSMENT_MODULES = [
+    DEFAULT_STUDENT_TRAINING,
     DEFAULT_PEER_ASSESSMENT,
     DEFAULT_SELF_ASSESSMENT,
 ]
