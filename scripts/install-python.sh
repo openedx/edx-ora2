@@ -12,5 +12,7 @@ fi
 echo "Installing Python requirements..."
 pip install -q -r requirements/$REQS.txt
 
-echo "Installing XBlock..."
-pip install -q -e .
+echo "Installing the OpenAssessment XBlock..."
+if [ -z `pip freeze | grep ora2` ]; then
+    pip install -q -e .
+fi
