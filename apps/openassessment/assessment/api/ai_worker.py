@@ -7,7 +7,7 @@ from django.db import DatabaseError
 from openassessment.assessment.models import (
     AITrainingWorkflow, AIClassifierSet,
     ClassifierUploadError, ClassifierSerializeError,
-    IncompleteClassifierSet
+    IncompleteClassifierSet, NoTrainingExamples
 )
 from openassessment.assessment.errors import (
     AITrainingRequestError, AITrainingInternalError
@@ -185,8 +185,7 @@ def create_classifiers(training_workflow_uuid, classifier_set):
 
     Args:
         training_workflow_uuid (str): The UUID of the training workflow.
-        classifier_set (dict): Mapping of criterion names to serialized classifiers.
-            (binary classifiers should be base-64 encoded).
+        classifier_set (dict): Mapping of criteria names to serialized classifiers.
 
     Returns:
         None
@@ -201,47 +200,32 @@ def create_classifiers(training_workflow_uuid, classifier_set):
 
         # If the task is executed multiple times, the classifier set may already
         # have been created.  If so, log a warning then return immediately.
-        if workflow.classifier_set is not None:
+        if workflow.is_complete:
             msg = u"AI training workflow with UUID {} already has trained classifiers."
             logger.warning(msg)
-            return
-
-        # Retrieve the rubric model
-        rubric = workflow.rubric
-        if rubric is None:
-            msg = (
-                u"The AI training workflow with UUID {} does not have "
-                u"a rubric associated with it, which means it has no "
-                u"training examples."
-            ).format(training_workflow_uuid)
-            logger.exception(msg)
-            raise AITrainingInternalError(msg)
-
-        try:
-            workflow.classifier_set = AIClassifierSet.create_classifier_set(
-                classifier_set, rubric, workflow.algorithm_id
-            )
-        except IncompleteClassifierSet as ex:
-            msg = (
-                u"An error occurred while creating the classifier set "
-                u"for the training workflow with UUID {uuid}: {ex}"
-            ).format(uuid=training_workflow_uuid, ex=ex)
-            raise AITrainingRequestError(msg)
-        except (ClassifierSerializeError, ClassifierUploadError, DatabaseError) as ex:
-            msg = (
-                u"An unexpected error occurred while creating the classifier "
-                u"set for training workflow UUID {uuid}: {ex}"
-            ).format(uuid=training_workflow_uuid, ex=ex)
-            logger.exception(msg)
-            raise AITrainingInternalError(msg)
-
-        workflow.completed_at = now()
-        workflow.save()
+        else:
+            workflow.complete(classifier_set)
     except AITrainingWorkflow.DoesNotExist:
         msg = (
             u"Could not retrieve AI training workflow with UUID {}"
         ).format(training_workflow_uuid)
         raise AITrainingRequestError(msg)
+    except NoTrainingExamples as ex:
+        logger.exception(ex)
+        raise AITrainingInternalError(ex)
+    except IncompleteClassifierSet as ex:
+        msg = (
+            u"An error occurred while creating the classifier set "
+            u"for the training workflow with UUID {uuid}: {ex}"
+        ).format(uuid=training_workflow_uuid, ex=ex)
+        raise AITrainingRequestError(msg)
+    except (ClassifierSerializeError, ClassifierUploadError, DatabaseError) as ex:
+        msg = (
+            u"An unexpected error occurred while creating the classifier "
+            u"set for training workflow UUID {uuid}: {ex}"
+        ).format(uuid=training_workflow_uuid, ex=ex)
+        logger.exception(msg)
+        raise AITrainingInternalError(msg)
     except DatabaseError:
         msg = (
             u"An unexpected error occurred while creating the classifier set "

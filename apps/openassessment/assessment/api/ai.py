@@ -8,7 +8,9 @@ from openassessment.assessment.serializers import (
 from openassessment.assessment.errors import (
     AITrainingRequestError, AITrainingInternalError
 )
-from openassessment.assessment.models import AITrainingWorkflow, InvalidOptionSelection
+from openassessment.assessment.models import (
+    AITrainingWorkflow, InvalidOptionSelection, NoTrainingExamples
+)
 from openassessment.assessment.worker import training as training_tasks
 
 
@@ -89,6 +91,8 @@ def train_classifiers(rubric_dict, examples, algorithm_id):
     # Create the workflow model
     try:
         workflow = AITrainingWorkflow.start_workflow(examples, algorithm_id)
+    except NoTrainingExamples as ex:
+        raise AITrainingRequestError(ex)
     except:
         msg = (
             u"An unexpected error occurred while creating "

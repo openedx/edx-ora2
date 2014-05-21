@@ -40,6 +40,19 @@ class ClassifierSerializeError(Exception):
     pass
 
 
+class NoTrainingExamples(Exception):
+    """
+    No training examples were provided to the workflow.
+    """
+    def __init__(self, workflow_uuid=None):
+        msg = u"No training examples were provided"
+        if workflow_uuid is not None:
+            msg = u"{msg} to the training workflow with UUID {uuid}".format(
+                msg=msg, uuid=workflow_uuid
+            )
+        super(NoTrainingExamples, self).__init__(msg)
+
+
 class AIClassifierSet(models.Model):
     """
     A set of trained classifiers (immutable).
@@ -242,7 +255,13 @@ class AITrainingWorkflow(models.Model):
         Returns:
             AITrainingWorkflow
 
+        Raises:
+            NoTrainingExamples
+
         """
+        if len(examples) == 0:
+            raise NoTrainingExamples()
+
         workflow = AITrainingWorkflow.objects.create(algorithm_id=algorithm_id)
         workflow.training_examples.add(*examples)
         workflow.save()
@@ -256,6 +275,9 @@ class AITrainingWorkflow(models.Model):
         Returns:
             Rubric or None (if no training examples are available)
 
+        Raises:
+            NoTrainingExamples
+
         """
         # We assume that all the training examples we have been provided are using
         # the same rubric (this is enforced by the API call that deserializes
@@ -264,4 +286,38 @@ class AITrainingWorkflow(models.Model):
         if first_example:
             return first_example[0].rubric
         else:
-            return None
+            raise NoTrainingExamples(workflow_uuid=self.uuid)
+
+    @property
+    def is_complete(self):
+        """
+        Check whether the workflow is complete (classifiers have been trained).
+
+        Returns:
+            bool
+
+        """
+        return self.completed_at is not None
+
+    def complete(self, classifier_set):
+        """
+        Add a classifier set to the workflow and mark it complete.
+
+        Args:
+            classifier_set (dict): Mapping of criteria names to serialized classifiers.
+
+        Returns:
+            None
+
+        Raises:
+            NoTrainingExamples
+            IncompleteClassifierSet
+            ClassifierSerializeError
+            ClassifierUploadError
+            DatabaseError
+        """
+        self.classifier_set = AIClassifierSet.create_classifier_set(
+            classifier_set, self.rubric, self.algorithm_id
+        )
+        self.completed_at = now()
+        self.save()
