@@ -8,6 +8,7 @@ from django.utils.translation import ugettext as _
 from xblock.core import XBlock
 from openassessment.assessment.errors.ai import AIError
 from openassessment.xblock.resolve_dates import DISTANT_PAST, DISTANT_FUTURE
+from openassessment.xblock.data_conversion import create_rubric_dict, convert_training_examples_list_to_dict
 from submissions import api as submission_api
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
@@ -85,8 +86,8 @@ class StaffInfoMixin(object):
             examples = assessment["examples"]
             try:
                 workflow_uuid = ai_api.train_classifiers(
-                    self.rubric_criteria,
-                    examples,
+                    create_rubric_dict(self.prompt, self.rubric_criteria),
+                    convert_training_examples_list_to_dict(examples),
                     assessment["algorithm_id"]
                 )
                 return {

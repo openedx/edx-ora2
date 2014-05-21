@@ -282,7 +282,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         resp = xblock.render_student_info(request)
         self.assertIn("bob answer", resp.body.lower())
 
-    @scenario('data/basic_scenario.xml', user_id='Bob')
+    @scenario('data/example_based_assessment.xml', user_id='Bob')
     def test_display_schedule_training(self, xblock):
         xblock.rubric_assessments.append(EXAMPLE_BASED_ASSESSMENT)
         xblock.xmodule_runtime = self._create_mock_runtime(
@@ -292,17 +292,17 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertEquals('openassessmentblock/staff_debug/staff_debug.html', path)
         self.assertTrue(context['display_schedule_training'])
 
-    @scenario('data/basic_scenario.xml', user_id='Bob')
+    @scenario('data/example_based_assessment.xml', user_id='Bob')
     def test_schedule_training(self, xblock):
         xblock.rubric_assessments.append(EXAMPLE_BASED_ASSESSMENT)
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, True, "Bob"
         )
         response = self.request(xblock, 'schedule_training', json.dumps({}), response_format='json')
-        self.assertTrue(response['success'])
+        self.assertTrue(response['success'], msg=response.get('msg'))
         self.assertTrue('workflow_uuid' in response)
 
-    @scenario('data/basic_scenario.xml', user_id='Bob')
+    @scenario('data/example_based_assessment.xml', user_id='Bob')
     def test_not_displaying_schedule_training(self, xblock):
         xblock.rubric_assessments.append(EXAMPLE_BASED_ASSESSMENT)
         xblock.xmodule_runtime = self._create_mock_runtime(
@@ -322,7 +322,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertTrue('permission' in response['msg'])
 
     @patch.object(ai_api, "train_classifiers")
-    @scenario('data/basic_scenario.xml', user_id='Bob')
+    @scenario('data/example_based_assessment.xml', user_id='Bob')
     def test_admin_schedule_training_error(self, xblock, mock_api):
         mock_api.side_effect = AIError("Oh no!")
         xblock.rubric_assessments.append(EXAMPLE_BASED_ASSESSMENT)
@@ -333,7 +333,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertFalse(response['success'])
         self.assertTrue('error' in response['msg'])
 
-    @scenario('data/basic_scenario.xml', user_id='Bob')
+    @scenario('data/example_based_assessment.xml', user_id='Bob')
     def test_no_example_based_assessment(self, xblock):
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, True, "Bob"
