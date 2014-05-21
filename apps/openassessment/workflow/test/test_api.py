@@ -9,6 +9,7 @@ from openassessment.test_utils import CacheResetTest
 from openassessment.workflow.models import AssessmentWorkflow
 from submissions.models import Submission
 import openassessment.workflow.api as workflow_api
+from openassessment.assessment.models import StudentTrainingWorkflow
 import submissions.api as sub_api
 
 ITEM_1 = {
@@ -42,6 +43,56 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         )
         del workflow_from_get['status_details']
         self.assertEqual(workflow, workflow_from_get)
+
+        # Test that the Peer Workflow is, or is not created, based on when peer
+        # is a step in the workflow.
+        if "peer" == first_step:
+            peer_workflow = PeerWorkflow.objects.get(submission_uuid=submission["uuid"])
+            self.assertIsNotNone(peer_workflow)
+        else:
+            peer_workflows = list(PeerWorkflow.objects.filter(submission_uuid=submission["uuid"]))
+            self.assertFalse(peer_workflows)
+
+    def test_update_peer_workflow(self):
+        submission = sub_api.create_submission(ITEM_1, "Shoot Hot Rod")
+        workflow = workflow_api.create_workflow(submission["uuid"], ["training", "peer"])
+        StudentTrainingWorkflow.get_or_create_workflow(submission_uuid=submission["uuid"])
+        requirements = {
+            "training": {
+                "num_required": 2
+            },
+            "peer": {
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            }
+        }
+        workflow_keys = set(workflow.keys())
+        self.assertEqual(
+            workflow_keys,
+            {
+                'submission_uuid', 'uuid', 'status', 'created', 'modified', 'score'
+            }
+        )
+        self.assertEqual(workflow["submission_uuid"], submission["uuid"])
+        self.assertEqual(workflow["status"], "training")
+
+        peer_workflows = list(PeerWorkflow.objects.filter(submission_uuid=submission["uuid"]))
+        self.assertFalse(peer_workflows)
+
+        workflow_from_get = workflow_api.get_workflow_for_submission(
+            submission["uuid"], requirements
+        )
+
+        del workflow_from_get['status_details']
+        self.assertEqual(workflow, workflow_from_get)
+
+        requirements["training"]["num_required"] = 0
+        workflow = workflow_api.update_from_assessments(submission["uuid"], requirements)
+
+        # New step is Peer, and a Workflow has been created.
+        self.assertEqual(workflow["status"], "peer")
+        peer_workflow = PeerWorkflow.objects.get(submission_uuid=submission["uuid"])
+        self.assertIsNotNone(peer_workflow)
 
     @ddt.file_data('data/assessments.json')
     def test_need_valid_submission_uuid(self, data):

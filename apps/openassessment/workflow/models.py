@@ -50,6 +50,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
     STEPS = [
         "peer",  # User needs to assess peer submissions
         "self",  # User needs to assess themselves
+        "training", # User needs to practice grading using example essays
     ]
 
     STATUSES = [
@@ -149,6 +150,11 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             (step.name for step in steps if step.submitter_completed_at is None),
             self.STATUS.waiting  # if nothing's left to complete, we're waiting
         )
+
+        # If the submitter is beginning peer assessment, add them to the queue
+        # by creating a new peer workflow
+        if new_status == "peer":
+            peer_api.create_peer_workflow(self.submission_uuid)
 
         # If the submitter has done all they need to do, let's check to see if
         # all steps have been fully assessed (i.e. we can score it).
@@ -262,11 +268,14 @@ class AssessmentWorkflowStep(models.Model):
         """
         from openassessment.assessment.api import peer as peer_api
         from openassessment.assessment.api import self as self_api
+        from openassessment.assessment.api import student_training
         api = None
         if self.name == AssessmentWorkflow.STATUS.self:
             api = self_api
         elif self.name == AssessmentWorkflow.STATUS.peer:
             api = peer_api
+        elif self.name == AssessmentWorkflow.STATUS.training:
+            api = student_training
         return api
 
     def update(self, submission_uuid, assessment_requirements):

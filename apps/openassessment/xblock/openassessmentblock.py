@@ -25,6 +25,7 @@ from openassessment.xblock.xml import update_from_xml, serialize_content_to_xml
 from openassessment.xblock.staff_info_mixin import StaffInfoMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.workflow import api as workflow_api
+from openassessment.xblock.student_training_mixin import StudentTrainingMixin
 from openassessment.xblock.validation import validator
 from openassessment.xblock.resolve_dates import resolve_dates, DISTANT_PAST, DISTANT_FUTURE
 
@@ -36,8 +37,14 @@ UI_MODELS = {
     "submission": {
         "name": "submission",
         "class_id": "openassessment__response",
-        "navigation_text": "Your response to this problem",
+        "navigation_text": "Your response to this assignment",
         "title": "Your Response"
+    },
+    "student-training": {
+        "name": "student-training",
+        "class_id": "openassessment__student-training",
+        "navigation_text": "Learn to assess responses",
+        "title": "Learn to Assess"
     },
     "peer-assessment": {
         "name": "peer-assessment",
@@ -54,12 +61,13 @@ UI_MODELS = {
     "grade": {
         "name": "grade",
         "class_id": "openassessment__grade",
-        "navigation_text": "Your grade for this problem",
+        "navigation_text": "Your grade for this assignment",
         "title": "Your Grade:"
     }
 }
 
 VALID_ASSESSMENT_TYPES = [
+    "student-training",
     "peer-assessment",
     "self-assessment",
 ]
@@ -80,8 +88,10 @@ class OpenAssessmentBlock(
     GradeMixin,
     StaffInfoMixin,
     WorkflowMixin,
-    LmsCompatibilityMixin):
-    """Displays a question and gives an area where students can compose a response."""
+    StudentTrainingMixin,
+    LmsCompatibilityMixin
+):
+    """Displays a prompt and provides an area where students can compose a response."""
 
     submission_start = String(
         default=None, scope=Scope.settings,

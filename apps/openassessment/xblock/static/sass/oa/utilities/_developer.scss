@@ -74,3 +74,97 @@
     color: inherit;
   }
 }
+
+// --------------------
+// Developer Styles for Student Training
+// --------------------
+.step--student-training {
+
+  // submission
+  .student-training__display {
+    @extend %ui-subsection;
+  }
+
+  .student-training__display__header {
+    @include clearfix();
+  }
+
+  .student-training__display__title {
+    @extend %t-heading;
+    margin-bottom: ($baseline-v/2);
+    color: $heading-secondary-color;
+  }
+
+  .student-training__display__response {
+    @extend %ui-subsection-content;
+    @extend %copy-3;
+    @extend %ui-content-longanswer;
+    @extend %ui-well;
+    color: $copy-color;
+  }
+
+  // assessment form
+  .student-training__assessment {
+
+    // fields
+    .assessment__fields {
+      margin-bottom: $baseline-v;
+    }
+
+    // rubric question
+    .assessment__rubric__question {
+      @extend %ui-rubric-question;
+    }
+
+    // rubric options
+    .question__answers {
+      @extend %ui-rubric-answers;
+      overflow: visible; // needed for ui-hints
+    }
+
+    // genereal feedback question
+    .assessment__rubric__question--feedback {
+
+      textarea {
+        @extend %ui-content-longanswer;
+        min-height: ($baseline-v*5);
+      }
+    }
+  }
+
+  // TYPE: correct
+  .message--correct {
+    @extend .message--complete;
+    margin-top: $baseline-v;
+
+    &.is--hidden {
+      height: 0;
+      width: 0;
+      padding: 0;
+      margin: 0;
+
+      .step__header {
+        border-bottom: none;
+      }
+    }
+  }
+
+  // TYPE: incorrect
+  .message--incorrect {
+    @extend .message--incomplete;
+    margin-top: $baseline-v;
+
+    &.is--hidden {
+      height: 0;
+      width: 0;
+      padding: 0;
+      margin: 0;
+
+      .step__header {
+        border-bottom: none;
+      }
+    }
+  }
+
+
+}

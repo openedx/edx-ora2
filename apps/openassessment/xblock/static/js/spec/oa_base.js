@@ -10,6 +10,7 @@ describe("OpenAssessment.BaseView", function() {
         // Dummy fragments to return from the render func
         this.fragments = {
             submission: readFixtures("oa_response.html"),
+            student_training: readFixtures("oa_student_training.html"),
             self_assessment: readFixtures("oa_self_assessment.html"),
             peer_assessment: readFixtures("oa_peer_assessment.html"),
             grade: readFixtures("oa_grade_complete.html")
@@ -69,10 +70,10 @@ describe("OpenAssessment.BaseView", function() {
     it("Loads each step", function() {
         loadSubviews(function() {
             expect(server.fragmentsLoaded).toContain("submission");
+            expect(server.fragmentsLoaded).toContain("student_training");
             expect(server.fragmentsLoaded).toContain("self_assessment");
             expect(server.fragmentsLoaded).toContain("peer_assessment");
             expect(server.fragmentsLoaded).toContain("grade");
         });
     });
-
 });

@@ -44,7 +44,6 @@
     @include transition(opacity $tmg-f1 ease-in 0, max-height $tmg-f2 ease-in 0);
     @extend %trans-opacity;
     max-height: ($baseline-v*2000);
-    overflow: auto;
     opacity: 1.0;
     padding-left: ($baseline-h/20);
     padding-right: ($baseline-h/20);

@@ -106,5 +106,35 @@ OpenAssessment.Rubric.prototype = {
                 callback(canSubmit);
             }
         );
+    },
+
+    /**
+     Updates the rubric to display positive and negative messages on each
+     criterion. For each correction provided, the associated criterion will have
+     an appropriate message displayed.
+
+     Args:
+        Corrections (list): A list of corrections to the rubric criteria that
+        did not match the expected selected options.
+
+     Returns:
+        True if there were errors found, False if there are no corrections.
+     **/
+    showCorrections: function(corrections) {
+        var selector = "input[type=radio]";
+        var hasErrors = false;
+        // Display appropriate messages for each selection
+        $(selector, this.element).each(function(index, sel) {
+            var listItem = $(sel).parents(".assessment__rubric__question");
+            if (corrections.hasOwnProperty(sel.name)) {
+                hasErrors = true;
+                listItem.find('.message--incorrect').removeClass('is--hidden');
+                listItem.find('.message--correct').addClass('is--hidden');
+            } else {
+                listItem.find('.message--correct').removeClass('is--hidden');
+                listItem.find('.message--incorrect').addClass('is--hidden');
+            }
+        });
+        return hasErrors;
     }
 };
