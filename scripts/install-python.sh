@@ -12,5 +12,5 @@ fi
 echo "Installing Python requirements..."
 pip install -q -r requirements/$REQS.txt
 
-echo "Installing XBlock..."
+echo "Installing the OpenAssessment XBlock..."
 pip install -q -e .
