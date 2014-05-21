@@ -1,6 +1,18 @@
 """
 Public interface for AI training and grading, used by students/course authors.
 """
+import logging
+from openassessment.assessment.serializers import (
+    deserialize_training_examples, InvalidTrainingExample, InvalidRubric
+)
+from openassessment.assessment.errors import (
+    AITrainingRequestError, AITrainingInternalError
+)
+from openassessment.assessment.models import AITrainingWorkflow, InvalidOptionSelection
+from openassessment.assessment.worker import training as training_tasks
+
+
+logger = logging.getLogger(__name__)
 
 
 def submit(submission_uuid, rubric):
@@ -46,13 +58,13 @@ def get_latest_assessment(submission_uuid):
     pass
 
 
-def train_classifiers(rubric, examples, algorithm_id):
+def train_classifiers(rubric_dict, examples, algorithm_id):
     """
     Schedule a task to train classifiers.
     All training examples must match the rubric!
 
     Args:
-        rubric (dict): The rubric used to assess the classifiers.
+        rubric_dict (dict): The rubric used to assess the classifiers.
         examples (list of dict): Serialized training examples.
         algorithm_id (unicode): The ID of the algorithm used to train the classifiers.
 
@@ -67,7 +79,37 @@ def train_classifiers(rubric, examples, algorithm_id):
         AITrainingInternalError
 
     """
-    pass
+    # Get or create the rubric and training examples
+    try:
+        examples = deserialize_training_examples(examples, rubric_dict)
+    except (InvalidRubric, InvalidTrainingExample, InvalidOptionSelection) as ex:
+        msg = u"Could not parse rubric and/or training examples: {ex}".format(ex=ex)
+        raise AITrainingRequestError(msg)
+
+    # Create the workflow model
+    try:
+        workflow = AITrainingWorkflow.start_workflow(examples, algorithm_id)
+    except:
+        msg = (
+            u"An unexpected error occurred while creating "
+            u"the AI training workflow"
+        )
+        logger.exception(msg)
+        raise AITrainingInternalError(msg)
+
+    # Schedule the task, parametrized by the workflow UUID
+    try:
+        training_tasks.train_classifiers.apply_async(args=[workflow.uuid])
+    except:
+        msg = (
+            u"An unexpected error occurred while scheduling "
+            u"the task for training workflow with UUID {}"
+        ).format(workflow.uuid)
+        logger.exception(msg)
+        raise AITrainingInternalError(msg)
+
+    # Return the workflow UUID
+    return workflow.uuid
 
 
 def reschedule_unfinished_tasks(course_id=None, item_id=None, task_type=None):
@@ -82,8 +124,7 @@ def reschedule_unfinished_tasks(course_id=None, item_id=None, task_type=None):
         task_type (unicode): Either "grade" or "train".  Restrict to unfinished tasks of this type.
 
     Raises:
-        AIRequestError
-        AIInternalError
+        AIError
 
     """
     pass

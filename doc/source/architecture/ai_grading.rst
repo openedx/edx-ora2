@@ -255,13 +255,10 @@ Data Model
 2. **TrainingWorkflow**
 
     a. Algorithm ID (varchar)
-    b. Rubric UUID (varchar)
-    c. Many-to-many relation with **TrainingExample**.  We can re-use examples for multiple workflows.
-    d. ClassifierSet (Foreign Key)
-    e. Scheduled at (timestamp): The time the task was placed on the queue.
-    f. Started at (timestamp): The time the task was picked up by the worker.
-    g. Completed at (timestamp): The time the task was completed.  If set, the task is considered complete.
-    h. Worker version (varchar): Identifier for the code running on the worker when the task was started.  Useful for error tracking.
+    b. Many-to-many relation with **TrainingExample**.  We can re-use examples for multiple workflows.
+    c. ClassifierSet (Foreign Key)
+    d. Scheduled at (timestamp): The time the task was placed on the queue.
+    e. Completed at (timestamp): The time the task was completed.  If set, the task is considered complete.
 
 3. **TrainingExample**
 
@@ -272,8 +269,6 @@ Data Model
 
     a. Rubric (Foreign Key)
     b. Created at (timestamp)
-    c. Training example set (many-to-many)
-    d. Hash of rubric and training examples (varchar): Useful for quickly finding existing classifiers (e.g. for Studio authors trying out the demo problem).
 
 5. **Classifier**
 

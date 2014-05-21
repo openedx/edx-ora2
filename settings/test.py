@@ -34,9 +34,13 @@ DATABASES = {
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
-
 # Install test-specific Django apps
 INSTALLED_APPS += ('django_nose',)
+
+
+# Store uploaded files in a test-specific directory
+MEDIA_ROOT = os.path.join(BASE_DIR, 'storage/test')
+
 
 EDX_ORA2["EVENT_LOGGER"] = "openassessment.workflow.test.events.fake_event_logger"
 
