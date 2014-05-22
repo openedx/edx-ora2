@@ -1,7 +1,6 @@
 """
 Errors for the peer assessment.
 """
-import copy
 
 
 class PeerAssessmentError(Exception):
@@ -21,10 +20,7 @@ class PeerAssessmentRequestError(PeerAssessmentError):
     information which does not allow the request to be processed.
 
     """
-
-    def __init__(self, field_errors):
-        super(PeerAssessmentRequestError, self).__init__(repr(field_errors))
-        self.field_errors = copy.deepcopy(field_errors)
+    pass
 
 
 class PeerAssessmentWorkflowError(PeerAssessmentError):

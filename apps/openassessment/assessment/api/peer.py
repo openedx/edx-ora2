@@ -163,7 +163,7 @@ def create_assessment(
         try:
             option_ids = rubric.options_ids(options_selected)
         except InvalidOptionSelection as ex:
-            msg = _("Selected options do not match the rubric: {error}").format(error=ex.message)
+            msg = _("Selected options do not match the rubric: {error}").format(error=ex)
             raise PeerAssessmentRequestError(msg)
 
         scorer_workflow = PeerWorkflow.objects.get(submission_uuid=scorer_submission_uuid)
@@ -192,7 +192,12 @@ def create_assessment(
         peer_serializer = AssessmentSerializer(data=peer_assessment)
 
         if not peer_serializer.is_valid():
-            raise PeerAssessmentRequestError(peer_serializer.errors)
+            msg = (
+                u"An error occurred while serializing "
+                u"the peer assessment associated with "
+                u"the scorer's submission UUID {}."
+            ).format(scorer_submission_uuid)
+            raise PeerAssessmentRequestError(msg)
 
         assessment = peer_serializer.save()
 
@@ -567,8 +572,7 @@ def create_peer_workflow(submission_uuid):
         submission_uuid (str): The submission associated with this workflow.
 
     Returns:
-        Workflow (PeerWorkflow): A PeerWorkflow item created based on the given
-            student item and submission.
+        None
 
     Raises:
         SubmissionError: There was an error retrieving the submission.
@@ -587,8 +591,11 @@ def create_peer_workflow(submission_uuid):
             item_id=submission['student_item']['item_id'],
             submission_uuid=submission_uuid
         )
+        workflow.save()
     except IntegrityError:
-        workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
+        # If we get an integrity error, it means someone else has already
+        # created a workflow for this submission, so we don't need to do anything.
+        pass
     except DatabaseError:
         error_message = _(
             u"An internal error occurred while creating a new peer "
@@ -597,8 +604,6 @@ def create_peer_workflow(submission_uuid):
         )
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
-    workflow.save()
-    return workflow
 
 
 def create_peer_workflow_item(scorer_submission_uuid, submission_uuid):
