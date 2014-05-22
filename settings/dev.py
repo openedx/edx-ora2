@@ -100,3 +100,8 @@ LOGGING = {
 
 # Store uploaded files in a dev-specific directory
 MEDIA_ROOT = os.path.join(BASE_DIR, 'storage/dev')
+
+# AI algorithm configuration
+ORA2_AI_ALGORITHMS = {
+    'fake': 'openassessment.assessment.worker.algorithm.FakeAIAlgorithm'
+}

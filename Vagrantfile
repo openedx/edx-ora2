@@ -69,7 +69,7 @@ LOGIN_SCRIPT
     echo "Downloading NLTK corpus..."
     mkdir -p /home/vagrant/data
     curl -o /home/vagrant/data/nltk.tmp.tar.tz http://edx-static.s3.amazonaws.com/nltk/nltk-data-20131113.tar.gz
-    tar zxf /home/vagrant/data/nltk.tmp.tar.tz
+    cd /home/vagrant/data && tar zxf /home/vagrant/data/nltk.tmp.tar.tz
 
     echo "Install edx-ora2..."
     cd /home/vagrant/edx-ora2 && ./scripts/install.sh
