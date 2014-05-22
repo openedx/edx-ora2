@@ -163,7 +163,7 @@ def create_assessment(
         try:
             option_ids = rubric.options_ids(options_selected)
         except InvalidOptionSelection as ex:
-            msg = _("Selected options do not match the rubric: {error}").format(error=ex.message)
+            msg = _("Selected options do not match the rubric: {error}").format(error=ex)
             raise PeerAssessmentRequestError(msg)
 
         scorer_workflow = PeerWorkflow.objects.get(submission_uuid=scorer_submission_uuid)
@@ -192,7 +192,12 @@ def create_assessment(
         peer_serializer = AssessmentSerializer(data=peer_assessment)
 
         if not peer_serializer.is_valid():
-            raise PeerAssessmentRequestError(peer_serializer.errors)
+            msg = (
+                u"An error occurred while serializing "
+                u"the peer assessment associated with "
+                u"the scorer's submission UUID {}."
+            ).format(scorer_submission_uuid)
+            raise PeerAssessmentRequestError(msg)
 
         assessment = peer_serializer.save()
 

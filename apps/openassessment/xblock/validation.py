@@ -207,7 +207,7 @@ def validate_dates(start, end, date_ranges):
     try:
         resolve_dates(start, end, date_ranges)
     except (DateValidationError, InvalidDateFormat) as ex:
-        return (False, ex.message)
+        return (False, unicode(ex))
     else:
         return (True, u'')
 

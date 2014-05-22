@@ -161,7 +161,7 @@ class StudentTrainingMixin(object):
         except (student_training.StudentTrainingRequestError, student_training.StudentTrainingInternalError) as ex:
             return {
                 'success': False,
-                'msg': _(u"Your scores could not be checked: {error}.").format(error=ex.message)
+                'msg': _(u"Your scores could not be checked: {error}.").format(error=ex)
             }
         except:
             return {
