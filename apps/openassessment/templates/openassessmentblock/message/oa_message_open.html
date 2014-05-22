@@ -1,0 +1,18 @@
+{% load i18n %}
+{% spaceless %}
+<div id="openassessment__message" class="openassessment__message message">
+    <div class="message__content">
+        <p>
+            {% if approaching %}
+                {% blocktrans %}
+                    Assignment submissions will close soon. To receive a grade, first provide a response to the question, then complete the steps below the <strong>Your Response</strong> field.
+                {% endblocktrans %}
+            {% else %}
+                {% blocktrans %}
+                    This assignment has several steps. In the first step, you'll provide a response to the question. The other steps appear below the <strong>Your Response</strong> field.
+                {% endblocktrans %}
+            {% endif %}
+        </p>
+    </div>
+</div>
+{% endspaceless %}

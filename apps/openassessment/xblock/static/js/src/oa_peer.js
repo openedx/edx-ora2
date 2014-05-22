@@ -33,6 +33,9 @@ OpenAssessment.PeerView.prototype = {
         ).fail(function(errMsg) {
             view.baseView.showLoadError('peer-assessment');
         });
+        // Called to update Messagview with info on whether or not it was able to grab a submission
+        // See detailed explanation/Methodology in oa_base.loadAssessmentModules
+        view.baseView.loadMessageView();
     },
 
     /**
