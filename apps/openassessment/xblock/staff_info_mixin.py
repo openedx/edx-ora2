@@ -37,11 +37,7 @@ class StaffInfoMixin(object):
         status_counts, num_submissions = self.get_workflow_status_counts()
         context['status_counts'] = status_counts
         context['num_submissions'] = num_submissions
-
-        # We need to display the new-style locations in the course staff
-        # info, even if we're using old-style locations internally,
-        # so course staff can use the locations to delete student state.
-        context['item_id'] = unicode(self.scope_ids.usage_id)
+        context['item_id'] = student_item["item_id"]
 
         # Include release/due dates for each step in the problem
         context['step_dates'] = list()
