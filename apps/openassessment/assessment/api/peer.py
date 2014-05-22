@@ -567,8 +567,7 @@ def create_peer_workflow(submission_uuid):
         submission_uuid (str): The submission associated with this workflow.
 
     Returns:
-        Workflow (PeerWorkflow): A PeerWorkflow item created based on the given
-            student item and submission.
+        None
 
     Raises:
         SubmissionError: There was an error retrieving the submission.
@@ -587,8 +586,11 @@ def create_peer_workflow(submission_uuid):
             item_id=submission['student_item']['item_id'],
             submission_uuid=submission_uuid
         )
+        workflow.save()
     except IntegrityError:
-        workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
+        # If we get an integrity error, it means someone else has already
+        # created a workflow for this submission, so we don't need to do anything.
+        pass
     except DatabaseError:
         error_message = _(
             u"An internal error occurred while creating a new peer "
@@ -597,8 +599,6 @@ def create_peer_workflow(submission_uuid):
         )
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
-    workflow.save()
-    return workflow
 
 
 def create_peer_workflow_item(scorer_submission_uuid, submission_uuid):

@@ -358,11 +358,11 @@ class TestPeerApi(CacheResetTest):
         self.assertNotEqual(pwis[0].started_at, yesterday)
 
     def test_peer_workflow_integrity_error(self):
-        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        tim_sub, __ = self._create_student_and_submission("Tim", "Tim's answer")
         with patch.object(PeerWorkflow.objects, "get_or_create") as mock_peer:
             mock_peer.side_effect = IntegrityError("Oh no!")
-            workflow = peer_api.create_peer_workflow(tim_sub["uuid"])
-            self.assertEquals(tim_sub["uuid"], workflow.submission_uuid)
+            # This should not raise an exception
+            peer_api.create_peer_workflow(tim_sub["uuid"])
 
     @raises(peer_api.PeerAssessmentWorkflowError)
     def test_no_submission_found_closing_assessment(self):
