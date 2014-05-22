@@ -56,10 +56,10 @@ class StudioMixin(object):
                 update_from_xml_str(self, data['xml'], validator=validator(self))
 
             except ValidationError as ex:
-                return {'success': False, 'msg': _('Validation error: {error}').format(error=ex.message)}
+                return {'success': False, 'msg': _('Validation error: {error}').format(error=ex)}
 
             except UpdateFromXmlError as ex:
-                return {'success': False, 'msg': _('An error occurred while saving: {error}').format(error=ex.message)}
+                return {'success': False, 'msg': _('An error occurred while saving: {error}').format(error=ex)}
 
             else:
                 return {'success': True, 'msg': _('Successfully updated OpenAssessment XBlock')}
@@ -87,7 +87,7 @@ class StudioMixin(object):
         # We do not expect `serialize_content` to raise an exception,
         # but if it does, handle it gracefully.
         except Exception as ex:
-            msg = _('An unexpected error occurred while loading the problem: {error}').format(error=ex.message)
+            msg = _('An unexpected error occurred while loading the problem: {error}').format(error=ex)
             logger.error(msg)
             return {'success': False, 'msg': msg, 'xml': u''}
         else:

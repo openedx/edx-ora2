@@ -322,7 +322,7 @@ def get_training_example(submission_uuid, rubric, examples):
         logger.exception(
             "Could not deserialize training examples for submission UUID {}".format(submission_uuid)
         )
-        raise StudentTrainingRequestError(ex.message)
+        raise StudentTrainingRequestError(ex)
     except sub_api.SubmissionNotFoundError as ex:
         msg = _(u"Could not retrieve the submission with UUID {}").format(submission_uuid)
         logger.exception(msg)

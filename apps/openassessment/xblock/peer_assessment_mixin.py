@@ -77,9 +77,9 @@ class PeerAssessmentMixin(object):
 
                 # Emit analytics event...
                 self._publish_peer_assessment_event(assessment)
-            except PeerAssessmentRequestError as ex:
-                return {'success': False, 'msg': ex.message}
-            except PeerAssessmentInternalError as ex:
+            except PeerAssessmentRequestError:
+                return {'success': False, 'msg': _(u"Your peer assessment could not be submitted.")}
+            except PeerAssessmentInternalError:
                 msg = _("Internal error occurred while creating the assessment")
                 logger.exception(msg)
                 return {'success': False, 'msg': msg}
