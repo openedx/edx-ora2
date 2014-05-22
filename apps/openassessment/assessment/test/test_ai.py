@@ -108,6 +108,11 @@ class AITrainingTest(CacheResetTest):
         with self.assertRaises(AITrainingRequestError):
             ai_api.train_classifiers(RUBRIC, mutated_examples, self.ALGORITHM_ID)
 
+    def test_train_classifiers_no_examples(self):
+        # Empty list of training examples
+        with self.assertRaises(AITrainingRequestError):
+            ai_api.train_classifiers(RUBRIC, [], self.ALGORITHM_ID)
+
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @mock.patch.object(AITrainingWorkflow.objects, 'create')
     def test_start_workflow_database_error(self, mock_create):
