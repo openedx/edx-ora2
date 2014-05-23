@@ -182,17 +182,26 @@ class Rubric(models.Model):
             InvalidOptionSelection
 
         """
-        # This is a really inefficient initial implementation
-        # TODO -- refactor to add caching
-        rubric_options = CriterionOption.objects.filter(
-            criterion__rubric=self
-        ).select_related()
+        # Retrieve the mapping of criterion names/points to option IDs
+        # from the cache, if it's available
+        cache_key = "assessment.rubric_points_dict.{}".format(self.content_hash)
+        rubric_points_dict = cache.get(cache_key)
 
-        rubric_points_dict = defaultdict(dict)
-        for option in rubric_options:
-            if option.points not in rubric_points_dict[option.criterion.name]:
-                rubric_points_dict[option.criterion.name][option.points] = option.id
+        # Otherwise, create the dict by querying the database
+        if not rubric_points_dict:
+            rubric_options = CriterionOption.objects.filter(
+                criterion__rubric=self
+            ).select_related()
 
+            rubric_points_dict = defaultdict(dict)
+            for option in rubric_options:
+                if option.points not in rubric_points_dict[option.criterion.name]:
+                    rubric_points_dict[option.criterion.name][option.points] = option.id
+
+            # Store the dict in the cache
+            cache.set(cache_key, rubric_points_dict)
+
+        # Find the IDs for the options matching the specified point value
         option_id_set = set()
         for criterion_name, option_points in criterion_points.iteritems():
             if (criterion_name in rubric_points_dict and 
