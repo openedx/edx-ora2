@@ -9,10 +9,15 @@ from django.test.utils import override_settings
 from openassessment.test_utils import CacheResetTest
 from submissions import api as sub_api
 from openassessment.assessment.api import ai as ai_api
-from openassessment.assessment.models import AITrainingWorkflow, AIClassifierSet
+from openassessment.assessment.models import (
+    AITrainingWorkflow, AIGradingWorkflow, AIClassifierSet, Assessment
+)
 from openassessment.assessment.worker.algorithm import AIAlgorithm
 from openassessment.assessment.serializers import rubric_from_dict
-from openassessment.assessment.errors import AITrainingRequestError, AITrainingInternalError
+from openassessment.assessment.errors import (
+    AITrainingRequestError, AITrainingInternalError,
+    AIGradingRequestError, AIGradingInternalError
+)
 from openassessment.assessment.test.constants import RUBRIC, EXAMPLES, STUDENT_ITEM, ANSWER
 
 
@@ -53,7 +58,7 @@ class StubAIAlgorithm(AIAlgorithm):
 ALGORITHM_ID = "test-stub"
 
 AI_ALGORITHMS = {
-    ALGORITHM_ID: '{module}.StubAIAlgorithm'.format(module=__name__)
+    ALGORITHM_ID: '{module}.StubAIAlgorithm'.format(module=__name__),
 }
 
 
@@ -179,3 +184,56 @@ class AIGradingTest(CacheResetTest):
             criterion_name = part['option']['criterion']['name']
             expected_score = self.CLASSIFIER_SCORE_OVERRIDES[criterion_name]['score_override']
             self.assertEqual(part['option']['points'], expected_score)
+
+    @mock.patch('openassessment.assessment.api.ai.grading_tasks.grade_essay')
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_submit_no_classifiers_available(self, mock_task):
+        # Use a rubric that does not have classifiers available
+        new_rubric = copy.deepcopy(RUBRIC)
+        new_rubric['criteria'] = new_rubric['criteria'][1:]
+
+        # Submit the essay -- since there are no classifiers available,
+        # the workflow should be created, but no task should be scheduled.
+        workflow_uuid = ai_api.submit(self.submission_uuid, new_rubric, ALGORITHM_ID)
+
+        # Verify that the workflow was created with a null classifier set
+        workflow = AIGradingWorkflow.objects.get(uuid=workflow_uuid)
+        self.assertIs(workflow.classifier_set, None)
+
+        # Verify that there are no assessments
+        latest_assessment = ai_api.get_latest_assessment(self.submission_uuid)
+        self.assertIs(latest_assessment, None)
+
+        # Verify that the task was never scheduled
+        self.assertFalse(mock_task.apply_async.called)
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_submit_submission_not_found(self):
+        with self.assertRaises(AIGradingRequestError):
+            ai_api.submit("no_such_submission", RUBRIC, ALGORITHM_ID)
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_submit_invalid_rubric(self):
+        invalid_rubric = {'not_valid': True}
+        with self.assertRaises(AIGradingRequestError):
+            ai_api.submit(self.submission_uuid, invalid_rubric, ALGORITHM_ID)
+
+    @mock.patch.object(AIGradingWorkflow.objects, 'create')
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_submit_database_error(self, mock_call):
+        mock_call.side_effect = DatabaseError("KABOOM!")
+        with self.assertRaises(AIGradingInternalError):
+            ai_api.submit(self.submission_uuid, RUBRIC, ALGORITHM_ID)
+
+    @mock.patch('openassessment.assessment.api.ai.grading_tasks.grade_essay')
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_grade_task_schedule_error(self, mock_task):
+        mock_task.apply_async.side_effect = IOError("Test error!")
+        with self.assertRaises(AIGradingInternalError):
+            ai_api.submit(self.submission_uuid, RUBRIC, ALGORITHM_ID)
+
+    @mock.patch.object(Assessment.objects, 'filter')
+    def test_get_latest_assessment_database_error(self, mock_call):
+        mock_call.side_effect = DatabaseError("KABOOM!")
+        with self.assertRaises(AIGradingInternalError):
+            ai_api.get_latest_assessment(self.submission_uuid)

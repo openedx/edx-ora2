@@ -68,7 +68,7 @@ def get_grading_task_params(grading_workflow_uuid):
             'classifier_set': classifier_set.classifiers_dict,
             'algorithm_id': workflow.algorithm_id,
         }
-    except (ValueError, IOError, DatabaseError) as ex:
+    except Exception as ex:
         msg = (
             u"An unexpected error occurred while retrieving "
             u"classifiers for the grading workflow with UUID {uuid}: {ex}"
@@ -251,12 +251,5 @@ def create_classifiers(training_workflow_uuid, classifier_set):
             u"An unexpected error occurred while creating the classifier "
             u"set for training workflow UUID {uuid}: {ex}"
         ).format(uuid=training_workflow_uuid, ex=ex)
-        logger.exception(msg)
-        raise AITrainingInternalError(msg)
-    except DatabaseError:
-        msg = (
-            u"An unexpected error occurred while creating the classifier set "
-            u"for the AI training workflow with UUID {}"
-        ).format(training_workflow_uuid)
         logger.exception(msg)
         raise AITrainingInternalError(msg)

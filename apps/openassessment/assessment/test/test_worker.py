@@ -5,16 +5,22 @@ Tests for AI worker tasks.
 from contextlib import contextmanager
 import mock
 from django.test.utils import override_settings
+from submissions import api as sub_api
 from openassessment.test_utils import CacheResetTest
 from openassessment.assessment.worker.training import train_classifiers, InvalidExample
+from openassessment.assessment.worker.grading import grade_essay
 from openassessment.assessment.api import ai_worker as ai_worker_api
-from openassessment.assessment.models import AITrainingWorkflow
+from openassessment.assessment.models import AITrainingWorkflow, AIGradingWorkflow, AIClassifierSet
 from openassessment.assessment.worker.algorithm import (
-    AIAlgorithm, UnknownAlgorithm, AlgorithmLoadError, TrainingError
+    AIAlgorithm, UnknownAlgorithm, AlgorithmLoadError, TrainingError, ScoreError
 )
-from openassessment.assessment.serializers import deserialize_training_examples
-from openassessment.assessment.errors import AITrainingRequestError
-from openassessment.assessment.test.constants import EXAMPLES, RUBRIC
+from openassessment.assessment.serializers import (
+    deserialize_training_examples, rubric_from_dict
+)
+from openassessment.assessment.errors import AITrainingRequestError, AIGradingInternalError
+from openassessment.assessment.test.constants import (
+    EXAMPLES, RUBRIC, STUDENT_ITEM, ANSWER
+)
 
 
 class StubAIAlgorithm(AIAlgorithm):
@@ -25,7 +31,7 @@ class StubAIAlgorithm(AIAlgorithm):
         return {}
 
     def score(self, text, classifier):
-        raise NotImplementedError
+        return 0
 
 
 class ErrorStubAIAlgorithm(AIAlgorithm):
@@ -36,58 +42,87 @@ class ErrorStubAIAlgorithm(AIAlgorithm):
         raise TrainingError("Test error!")
 
     def score(self, text, classifier):
-        raise NotImplementedError
+        raise ScoreError("Test error!")
 
 
-class AITrainingTaskTest(CacheResetTest):
+ALGORITHM_ID = u"test-stub"
+ERROR_STUB_ALGORITHM_ID = u"error-stub"
+UNDEFINED_CLASS_ALGORITHM_ID = u"undefined_class"
+UNDEFINED_MODULE_ALGORITHM_ID = u"undefined_module"
+AI_ALGORITHMS = {
+    ALGORITHM_ID: '{module}.StubAIAlgorithm'.format(module=__name__),
+    ERROR_STUB_ALGORITHM_ID: '{module}.ErrorStubAIAlgorithm'.format(module=__name__),
+    UNDEFINED_CLASS_ALGORITHM_ID: '{module}.NotDefinedAIAlgorithm'.format(module=__name__),
+    UNDEFINED_MODULE_ALGORITHM_ID: 'openassessment.not.valid.NotDefinedAIAlgorithm'
+}
+
+
+class CeleryTaskTest(CacheResetTest):
+    """
+    Test case for Celery tasks.
+    """
+    @contextmanager
+    def assert_retry(self, task, final_exception):
+        """
+        Context manager that asserts that the training task was retried.
+
+        Args:
+            task (celery.app.task.Task): The Celery task object.
+            final_exception (Exception): The error thrown after retrying.
+
+        Raises:
+            AssertionError
+
+        """
+        original_retry = task.retry
+        task.retry = mock.MagicMock()
+        task.retry.side_effect = lambda: original_retry(task)
+        try:
+            with self.assertRaises(final_exception):
+                yield
+            task.retry.assert_called_once()
+        finally:
+            task.retry = original_retry
+
+
+class AITrainingTaskTest(CeleryTaskTest):
     """
     Tests for the training task executed asynchronously by Celery workers.
     """
-
-    ALGORITHM_ID = u"test-stub"
-    ERROR_STUB_ALGORITHM_ID = u"error-stub"
-    UNDEFINED_CLASS_ALGORITHM_ID = u"undefined_class"
-    UNDEFINED_MODULE_ALGORITHM_ID = u"undefined_module"
-    AI_ALGORITHMS = {
-        ALGORITHM_ID: '{module}.StubAIAlgorithm'.format(module=__name__),
-        ERROR_STUB_ALGORITHM_ID: '{module}.ErrorStubAIAlgorithm'.format(module=__name__),
-        UNDEFINED_CLASS_ALGORITHM_ID: '{module}.NotDefinedAIAlgorithm'.format(module=__name__),
-        UNDEFINED_MODULE_ALGORITHM_ID: 'openassessment.not.valid.NotDefinedAIAlgorithm'
-    }
 
     def setUp(self):
         """
         Create a training workflow in the database.
         """
         examples = deserialize_training_examples(EXAMPLES, RUBRIC)
-        workflow = AITrainingWorkflow.start_workflow(examples, self.ALGORITHM_ID)
+        workflow = AITrainingWorkflow.start_workflow(examples, ALGORITHM_ID)
         self.workflow_uuid = workflow.uuid
 
     def test_unknown_algorithm(self):
         # Since we haven't overridden settings to configure the algorithms,
         # the worker will not recognize the workflow's algorithm ID.
-        with self._assert_retry(train_classifiers, UnknownAlgorithm):
+        with self.assert_retry(train_classifiers, UnknownAlgorithm):
             train_classifiers(self.workflow_uuid)
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     def test_unable_to_load_algorithm_class(self):
         # The algorithm is defined in the settings, but the class does not exist.
-        self._set_algorithm_id(self.UNDEFINED_CLASS_ALGORITHM_ID)
-        with self._assert_retry(train_classifiers, AlgorithmLoadError):
+        self._set_algorithm_id(UNDEFINED_CLASS_ALGORITHM_ID)
+        with self.assert_retry(train_classifiers, AlgorithmLoadError):
             train_classifiers(self.workflow_uuid)
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     def test_unable_to_find_algorithm_module(self):
         # The algorithm is defined in the settings, but the module can't be loaded
-        self._set_algorithm_id(self.UNDEFINED_MODULE_ALGORITHM_ID)
-        with self._assert_retry(train_classifiers, AlgorithmLoadError):
+        self._set_algorithm_id(UNDEFINED_MODULE_ALGORITHM_ID)
+        with self.assert_retry(train_classifiers, AlgorithmLoadError):
             train_classifiers(self.workflow_uuid)
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @mock.patch('openassessment.assessment.worker.training.ai_worker_api.get_training_task_params')
     def test_get_training_task_params_api_error(self, mock_call):
         mock_call.side_effect = AITrainingRequestError("Test error!")
-        with self._assert_retry(train_classifiers, AITrainingRequestError):
+        with self.assert_retry(train_classifiers, AITrainingRequestError):
             train_classifiers(self.workflow_uuid)
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
@@ -111,15 +146,15 @@ class AITrainingTaskTest(CacheResetTest):
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     def test_training_algorithm_error(self):
         # Use a stub algorithm implementation that raises an exception during training
-        self._set_algorithm_id(self.ERROR_STUB_ALGORITHM_ID)
-        with self._assert_retry(train_classifiers, TrainingError):
+        self._set_algorithm_id(ERROR_STUB_ALGORITHM_ID)
+        with self.assert_retry(train_classifiers, TrainingError):
             train_classifiers(self.workflow_uuid)
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @mock.patch('openassessment.assessment.worker.training.ai_worker_api.create_classifiers')
     def test_create_classifiers_api_error(self, mock_call):
         mock_call.side_effect = AITrainingRequestError("Test error!")
-        with self._assert_retry(train_classifiers, AITrainingRequestError):
+        with self.assert_retry(train_classifiers, AITrainingRequestError):
             train_classifiers(self.workflow_uuid)
 
     def _set_algorithm_id(self, algorithm_id):
@@ -158,28 +193,85 @@ class AITrainingTaskTest(CacheResetTest):
         call_signature = 'openassessment.assessment.worker.training.ai_worker_api.get_training_task_params'
         with mock.patch(call_signature) as mock_call:
             mock_call.return_value = params
-            with self._assert_retry(train_classifiers, InvalidExample):
+            with self.assert_retry(train_classifiers, InvalidExample):
                 train_classifiers(self.workflow_uuid)
 
-    @contextmanager
-    def _assert_retry(self, task, final_exception):
+
+class AIGradingTaskTest(CeleryTaskTest):
+    """
+    Tests for the grading task executed asynchronously by Celery workers.
+    """
+
+    # Classifier data
+    # Since this is controlled by the AI algorithm implementation,
+    # we could put anything here as long as it's JSON-serializable.
+    CLASSIFIERS = {
+        u"vøȼȺƀᵾłȺɍɏ": {
+            'name': u'𝒕𝒆𝒔𝒕 𝒄𝒍𝒂𝒔𝒔𝒊𝒇𝒊𝒆𝒓',
+            'data': u'Öḧ ḷëẗ ẗḧë ṡüṅ ḅëäẗ ḋöẅṅ üṗöṅ ṁÿ ḟäċë, ṡẗäṛṡ ẗö ḟïḷḷ ṁÿ ḋṛëäṁ"'
+        },
+        u"ﻭɼค๓๓คɼ": {
+            'name': u'𝒕𝒆𝒔𝒕 𝒄𝒍𝒂𝒔𝒔𝒊𝒇𝒊𝒆𝒓',
+            'data': u"І ам а тѓаvэlэѓ оf ъотЂ тімэ аиↁ ѕрасэ, то ъэ шЂэѓэ І Ђаvэ ъээи"
+        }
+    }
+
+    def setUp(self):
         """
-        Context manager that asserts that the training task was retried.
+        Create a submission and grading workflow.
+        """
+        # Create a submission
+        submission = sub_api.create_submission(STUDENT_ITEM, ANSWER)
+        self.submission_uuid = submission['uuid']
+
+        # Create a workflow for the submission
+        workflow = AIGradingWorkflow.start_workflow(self.submission_uuid, RUBRIC, ALGORITHM_ID)
+        self.workflow_uuid = workflow.uuid
+
+        # Associate the workflow with classifiers
+        rubric = rubric_from_dict(RUBRIC)
+        classifier_set = AIClassifierSet.create_classifier_set(
+            self.CLASSIFIERS, rubric, ALGORITHM_ID
+        )
+        workflow.classifier_set = classifier_set
+        workflow.save()
+
+    @mock.patch('openassessment.assessment.worker.grading.ai_worker_api.get_grading_task_params')
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_retrieve_params_error(self, mock_call):
+        mock_call.side_effect = AIGradingInternalError("Test error")
+        with self.assert_retry(grade_essay, AIGradingInternalError):
+            grade_essay(self.workflow_uuid)
+
+    def test_unknown_algorithm_id_error(self):
+        # Since we're not overriding settings, the algorithm ID won't be recognized
+        with self.assert_retry(grade_essay, UnknownAlgorithm):
+            grade_essay(self.workflow_uuid)
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_algorithm_score_error(self):
+        self._set_algorithm_id(ERROR_STUB_ALGORITHM_ID)
+        with self.assert_retry(grade_essay, ScoreError):
+            grade_essay(self.workflow_uuid)
+
+    @mock.patch('openassessment.assessment.worker.grading.ai_worker_api.create_assessment')
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_create_assessment_error(self, mock_call):
+        mock_call.side_effect = AIGradingInternalError
+        with self.assert_retry(grade_essay, AIGradingInternalError):
+            grade_essay(self.workflow_uuid)
+
+    def _set_algorithm_id(self, algorithm_id):
+        """
+        Override the default algorithm ID for the grading workflow.
 
         Args:
-            task (celery.app.task.Task): The Celery task object.
-            final_exception (Exception): The error thrown after retrying.
+            algorithm_id (unicode): The new algorithm ID
 
-        Raises:
-            AssertionError
+        Returns:
+            None
 
         """
-        original_retry = task.retry
-        task.retry = mock.MagicMock()
-        task.retry.side_effect = lambda: original_retry(task)
-        try:
-            with self.assertRaises(final_exception):
-                yield
-            task.retry.assert_called_once()
-        finally:
-            task.retry = original_retry
+        workflow = AIGradingWorkflow.objects.get(uuid=self.workflow_uuid)
+        workflow.algorithm_id = algorithm_id
+        workflow.save()
