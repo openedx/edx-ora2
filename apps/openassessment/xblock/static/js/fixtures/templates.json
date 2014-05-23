@@ -2,6 +2,7 @@
     {
         "template": "openassessmentblock/oa_base.html",
         "context": {
+            "show_staff_debug_info": false,
             "title": "Test title",
             "question": "Test prompt",
             "rubric_criteria": [],
@@ -33,6 +34,42 @@
             ]
         },
         "output": "oa_base.html"
+    },
+    {
+        "template": "openassessmentblock/oa_base.html",
+        "context": {
+            "show_staff_debug_info": true,
+            "title": "Test title",
+            "question": "Test prompt",
+            "rubric_criteria": [],
+            "rubric_assessments": [
+                {
+                    "name": "submission",
+                    "class_id": "openassessment__response",
+                    "navigation_text": "Your response to this problem",
+                    "title": "Your Response"
+                },
+                {
+                    "name": "peer-assessment",
+                    "class_id": "openassessment__peer-assessment",
+                    "navigation_text": "Your assessment(s) of peer responses",
+                    "title": "Assess Peers' Responses"
+                },
+                {
+                    "name": "self-assessment",
+                    "class_id": "openassessment__self-assessment",
+                    "navigation_text": "Your assessment of your response",
+                    "title": "Assess Your Response"
+                },
+                {
+                    "name": "grade",
+                    "class_id": "openassessment__grade",
+                    "navigation_text": "Your grade for this problem",
+                    "title": "Your Grade:"
+                }
+            ]
+        },
+        "output": "oa_base_course_staff.html"
     },
     {
         "template": "openassessmentblock/response/oa_response.html",
@@ -345,5 +382,36 @@
         "template": "openassessmentblock/oa_edit.html",
         "context": {},
         "output": "oa_edit.html"
+    },
+    {
+        "template": "openassessmentblock/staff_debug/staff_debug.html",
+        "context": {
+            "status_counts": {
+                "self": 1,
+                "peer": 2,
+                "waiting": 3,
+                "done": 4
+            },
+            "num_submissions": 10,
+            "item_id": "test_item",
+            "step_dates": [
+                {
+                    "step": "submission",
+                    "start": "2014-01-01",
+                    "due": "N/A"
+                },
+                {
+                    "step": "peer",
+                    "start": "2014-02-02",
+                    "due": "N/A"
+                },
+                {
+                    "step": "self",
+                    "start": "2014-03-03",
+                    "due": "2015-04-05"
+                }
+            ]
+        },
+        "output": "oa_staff_info.html"
     }
 ]
