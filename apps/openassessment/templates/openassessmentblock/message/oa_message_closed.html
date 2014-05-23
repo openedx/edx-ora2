@@ -1,0 +1,21 @@
+{% load i18n %}
+{% spaceless %}
+<div id="openassessment__message" class="openassessment__message message">
+    <h3 class="message__title">
+        {% if not_yet_open %}
+            {% trans "This Task Is Not Yet Available" %}
+        {% else %}
+            {% trans "This Assignment Has Closed" %}
+        {% endif %}
+    </h3>
+    <div class="message__content">
+        <p>
+            {% if not_yet_open %}
+                {% trans "Check back to complete the assignment once this section has opened." %}
+            {% else %}
+                {% trans "One or more deadlines for this assignment have passed. You will receive an incomplete grade for this assignment." %}
+            {% endif %}
+        </p>
+    </div>
+</div>
+{% endspaceless %}

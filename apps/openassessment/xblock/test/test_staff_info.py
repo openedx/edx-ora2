@@ -108,7 +108,6 @@ class TestCourseStaff(XBlockHandlerTestCase):
         resp = self.request(xblock, 'render_student_info', json.dumps({}))
         self.assertIn("couldn\'t find a response for this student.", resp.decode('utf-8').lower())
 
-
     @scenario('data/basic_scenario.xml')
     def test_hide_course_staff_debug_info_in_studio_preview(self, xblock):
         # If we are in Studio preview mode, don't show the staff debug info
@@ -117,8 +116,15 @@ class TestCourseStaff(XBlockHandlerTestCase):
         xblock.xmodule_runtime =  self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
+
+        # If the client requests the staff info directly, they should get an error
         resp = self.request(xblock, 'render_staff_info', json.dumps({}))
         self.assertNotIn("course staff information", resp.decode('utf-8').lower())
+        self.assertIn("do not have permission", resp.decode('utf-8').lower())
+
+        # The container page should not contain a staff info section at all
+        xblock_fragment = self.runtime.render(xblock, 'student_view')
+        self.assertNotIn(u'staff-info', xblock_fragment.body_html())
 
     @scenario('data/staff_dates_scenario.xml', user_id='Bob')
     def test_staff_debug_dates_table(self, xblock):

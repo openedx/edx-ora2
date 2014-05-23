@@ -23,15 +23,21 @@ OpenAssessment.StaffInfoView.prototype = {
      **/
     load: function() {
         var view = this;
-        this.server.render('staff_info').done(
-            function(html) {
-                // Load the HTML and install event handlers
-                $('#openassessment__staff-info', view.element).replaceWith(html);
-                view.installHandlers();
-            }
-        ).fail(function(errMsg) {
-                view.baseView.showLoadError('staff_info');
-            });
+
+        // If we're course staff, the base template should contain a section
+        // for us to render the staff info to.  If that doesn't exist,
+        // then we're not staff, so we don't need to send the AJAX request.
+        if ($('#openassessment__staff-info', view.element).length > 0) {
+            this.server.render('staff_info').done(
+                function(html) {
+                    // Load the HTML and install event handlers
+                    $('#openassessment__staff-info', view.element).replaceWith(html);
+                    view.installHandlers();
+                }
+            ).fail(function(errMsg) {
+                    view.baseView.showLoadError('staff_info');
+                });
+        }
     },
 
     /**

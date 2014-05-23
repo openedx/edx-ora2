@@ -1,0 +1,55 @@
+<openassessment>
+    <title>Student training test</title>
+    <prompt>Test prompt</prompt>
+    <rubric>
+        <prompt>Test rubric prompt</prompt>
+        <criterion>
+            <name>Vocabulary</name>
+            <prompt>How varied is the vocabulary?</prompt>
+            <option points="0">
+                <name>Poor</name>
+                <explanation>Poor job</explanation>
+            </option>
+            <option points="1">
+                <name>Good</name>
+                <explanation>Good job</explanation>
+            </option>
+            <option points="3">
+                <name>Excellent</name>
+                <explanation>Excellent job</explanation>
+            </option>
+        </criterion>
+        <criterion>
+            <name>Grammar</name>
+            <prompt>How correct is the grammar?</prompt>
+            <option points="0">
+                <name>Poor</name>
+                <explanation>Poor job</explanation>
+            </option>
+            <option points="1">
+                <name>Good</name>
+                <explanation>Good job</explanation>
+            </option>
+            <option points="3">
+                <name>Excellent</name>
+                <explanation>Excellent job</explanation>
+            </option>
+        </criterion>
+    </rubric>
+    <assessments>
+        <assessment name="student-training">
+            <example>
+                <answer>This is my answer.</answer>
+                <select criterion="Vocabulary" option="Good" />
+                <select criterion="Grammar" option="Excellent" />
+            </example>
+            <example>
+                <answer>тєѕт αηѕωєя</answer>
+                <select criterion="Vocabulary" option="Excellent" />
+                <select criterion="Grammar" option="Poor" />
+            </example>
+        </assessment>
+        <assessment name="peer-assessment" must_grade="5" must_be_graded_by="3" />
+        <assessment name="self-assessment" />
+    </assessments>
+</openassessment>
