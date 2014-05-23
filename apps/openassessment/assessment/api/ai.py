@@ -83,7 +83,16 @@ def submit(submission_uuid, rubric, algorithm_id):
             workflow.classifier_set = classifier_set_candidates[0]
             workflow.save()
             grading_tasks.grade_essay.apply_async(args=[workflow.uuid])
-
+            logger.info((
+                u"Scheduled grading task for AI grading workflow with UUID {workflow_uuid} "
+                u"(submission UUID = {sub_uuid}, algorithm ID = {algorithm_id})"
+            ).format(workflow_uuid=workflow.uuid, sub_uuid=submission_uuid, algorithm_id=algorithm_id))
+        else:
+            logger.info((
+                u"Cannot schedule a grading task for AI grading workflow with UUID {workflow_uuid} "
+                u"because no classifiers are available for the rubric associated with submission {sub_uuid} "
+                u"for the algorithm {algorithm_id}"
+            ).format(workflow_uuid=workflow.uuid, sub_uuid=submission_uuid, algorithm_id=algorithm_id))
         return workflow.uuid
     except Exception as ex:
         msg = (
@@ -171,6 +180,10 @@ def train_classifiers(rubric_dict, examples, algorithm_id):
     # Schedule the task, parametrized by the workflow UUID
     try:
         training_tasks.train_classifiers.apply_async(args=[workflow.uuid])
+        logger.info((
+            u"Scheduled training task for the AI training workflow with UUID {workflow_uuid} "
+            u"(algorithm ID = {algorithm_id})"
+        ).format(workflow_uuid=workflow.uuid, algorithm_id=algorithm_id))
     except:
         msg = (
             u"An unexpected error occurred while scheduling "

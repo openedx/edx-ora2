@@ -115,6 +115,13 @@ def create_assessment(grading_workflow_uuid, criterion_scores):
     try:
         if not workflow.is_complete:
             workflow.complete(criterion_scores)
+            logger.info((
+                u"Created assessment for AI grading workflow with UUID {workflow_uuid} "
+                u"(algorithm ID {algorithm_id})"
+            ).format(workflow_uuid=workflow.uuid, algorithm_id=workflow.algorithm_id))
+        else:
+            msg = u"Grading workflow with UUID {} is already marked complete".format(workflow.uuid)
+            logger.info(msg)
     except DatabaseError as ex:
         msg = (
             u"An unexpected error occurred while creating the assessment "
@@ -226,12 +233,16 @@ def create_classifiers(training_workflow_uuid, classifier_set):
         workflow = AITrainingWorkflow.objects.get(uuid=training_workflow_uuid)
 
         # If the task is executed multiple times, the classifier set may already
-        # have been created.  If so, log a warning then return immediately.
+        # have been created.  If so, log it, then return immediately.
         if workflow.is_complete:
-            msg = u"AI training workflow with UUID {} already has trained classifiers."
-            logger.warning(msg)
+            msg = u"AI training workflow with UUID {} already has trained classifiers.".format(workflow.uuid)
+            logger.info(msg)
         else:
             workflow.complete(classifier_set)
+            logger.info((
+                u"Created trained classifiers for the AI training workflow with UUID {workflow_uuid} "
+                u"(using algorithm ID {algorithm_id})"
+            ).format(workflow_uuid=workflow.uuid, algorithm_id=workflow.algorithm_id))
     except AITrainingWorkflow.DoesNotExist:
         msg = (
             u"Could not retrieve AI training workflow with UUID {}"
