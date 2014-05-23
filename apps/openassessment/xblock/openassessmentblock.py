@@ -227,7 +227,7 @@ class OpenAssessmentBlock(
             "question": self.prompt,
             "rubric_criteria": self.rubric_criteria,
             "rubric_assessments": ui_models,
-            "is_course_staff": self.is_course_staff,
+            "show_staff_debug_info": self.is_course_staff and not self.in_studio_preview,
         }
 
         template = get_template("openassessmentblock/oa_base.html")
