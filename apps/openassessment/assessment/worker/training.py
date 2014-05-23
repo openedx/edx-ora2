@@ -53,10 +53,22 @@ def train_classifiers(workflow_uuid):
         InvalidExample: The training examples provided by the AI API were not valid.
 
     """
+    # Retrieve task parameters
+    try:
+        params = ai_worker_api.get_training_task_params(workflow_uuid)
+        examples = params['training_examples']
+        algorithm_id = params['algorithm_id']
+    except (AIError, KeyError):
+        msg = (
+            u"An error occurred while retrieving AI training "
+            u"task parameters for the workflow with UUID {}"
+        ).format(workflow_uuid)
+        logger.exception(msg)
+        raise train_classifiers.retry()
+
     # Retrieve the ML algorithm to use for training
     # (based on task params and worker configuration)
     try:
-        algorithm_id = ai_worker_api.get_algorithm_id(workflow_uuid)
         algorithm = AIAlgorithm.algorithm_for_id(algorithm_id)
     except AIAlgorithmError:
         msg = (
@@ -69,19 +81,6 @@ def train_classifiers(workflow_uuid):
         msg = (
             u"An error occurred while retrieving "
             u"the algorithm ID (training workflow UUID {})"
-        ).format(workflow_uuid)
-        logger.exception(msg)
-        raise train_classifiers.retry()
-
-    # Retrieve training examples, then transform them into the
-    # data structures we use internally.
-    try:
-        examples = ai_worker_api.get_training_examples(workflow_uuid)
-    except AIError:
-        msg = (
-            u"An error occurred while retrieving "
-            u"training examples for AI training "
-            u"(training workflow UUID {})"
         ).format(workflow_uuid)
         logger.exception(msg)
         raise train_classifiers.retry()

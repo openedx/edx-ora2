@@ -45,22 +45,8 @@ class AIWorkerTrainingTest(CacheResetTest):
         workflow = AITrainingWorkflow.start_workflow(examples, self.ALGORITHM_ID)
         self.workflow_uuid = workflow.uuid
 
-    def test_get_algorithm_id(self):
-        algorithm_id = ai_worker_api.get_algorithm_id(self.workflow_uuid)
-        self.assertEqual(algorithm_id, self.ALGORITHM_ID)
-
-    def test_get_algorithm_id_no_workflow(self):
-        with self.assertRaises(AITrainingRequestError):
-            ai_worker_api.get_algorithm_id("invalid_uuid")
-
-    @mock.patch.object(AITrainingWorkflow.objects, 'get')
-    def test_get_algorithm_id_database_error(self, mock_get):
-        mock_get.side_effect = DatabaseError("KABOOM!")
-        with self.assertRaises(AITrainingInternalError):
-            ai_worker_api.get_algorithm_id(self.workflow_uuid)
-
-    def test_get_training_examples(self):
-        examples = ai_worker_api.get_training_examples(self.workflow_uuid)
+    def test_get_training_task_params(self):
+        params = ai_worker_api.get_training_task_params(self.workflow_uuid)
         expected_examples = [
             {
                 'text': EXAMPLES[0]['answer'],
@@ -77,17 +63,18 @@ class AIWorkerTrainingTest(CacheResetTest):
                 }
             },
         ]
-        self.assertItemsEqual(examples, expected_examples)
+        self.assertItemsEqual(params['training_examples'], expected_examples)
+        self.assertItemsEqual(params['algorithm_id'], self.ALGORITHM_ID)
 
-    def test_get_training_examples_no_workflow(self):
+    def test_get_training_task_params_no_workflow(self):
         with self.assertRaises(AITrainingRequestError):
-            ai_worker_api.get_training_examples("invalid_uuid")
+            ai_worker_api.get_training_task_params("invalid_uuid")
 
     @mock.patch.object(AITrainingWorkflow.objects, 'get')
-    def test_get_training_examples_database_error(self, mock_get):
+    def test_get_training_task_params_database_error(self, mock_get):
         mock_get.side_effect = DatabaseError("KABOOM!")
         with self.assertRaises(AITrainingInternalError):
-            ai_worker_api.get_training_examples(self.workflow_uuid)
+            ai_worker_api.get_training_task_params(self.workflow_uuid)
 
     def test_create_classifiers(self):
         ai_worker_api.create_classifiers(self.workflow_uuid, self.CLASSIFIERS)

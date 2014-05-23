@@ -7,8 +7,13 @@ from django.core.files.base import ContentFile
 from django.db import models, transaction
 from django.utils.timezone import now
 from django_extensions.db.fields import UUIDField
-from .base import Rubric, Criterion
+from submissions import api as sub_api
+from openassessment.assessment.serializers import rubric_from_dict
+from .base import Rubric, Criterion, Assessment, AssessmentPart
 from .training import TrainingExample
+
+
+AI_ASSESSMENT_TYPE = "AI"
 
 
 class IncompleteClassifierSet(Exception):
@@ -17,6 +22,12 @@ class IncompleteClassifierSet(Exception):
     """
     def __init__(self, expected_criteria, actual_criteria):
         """
+        Construct an error message that explains which criteria were missing.
+
+        Args:
+            expected_criteria (iterable of unicode): The criteria in the rubric.
+            actual_criteria (iterable of unicode): The criteria specified by the classifier set.
+
         """
         missing_criteria = set(expected_criteria) - set(actual_criteria)
         msg = (
@@ -60,6 +71,7 @@ class AIClassifierSet(models.Model):
 
     class Meta:
         app_label = "assessment"
+        ordering = ['-created_at']
 
     # The rubric associated with this set of classifiers
     # We should have one classifier for each of the criteria in the rubric.
@@ -68,6 +80,9 @@ class AIClassifierSet(models.Model):
     # Timestamp for when the classifier set was created.
     # This allows us to find the most recently trained set of classifiers.
     created_at = models.DateTimeField(default=now, db_index=True)
+
+    # The ID of the algorithm that was used to train classifiers in this set.
+    algorithm_id = models.CharField(max_length=128, db_index=True)
 
     @classmethod
     @transaction.commit_on_success
@@ -91,7 +106,7 @@ class AIClassifierSet(models.Model):
 
         """
         # Create the classifier set
-        classifier_set = cls.objects.create(rubric=rubric)
+        classifier_set = cls.objects.create(rubric=rubric, algorithm_id=algorithm_id)
 
         # Retrieve the criteria for this rubric,
         # then organize them by criterion name
@@ -109,8 +124,7 @@ class AIClassifierSet(models.Model):
             criterion = criteria.get(criterion_name)
             classifier = AIClassifier.objects.create(
                 classifier_set=classifier_set,
-                criterion=criterion,
-                algorithm_id=algorithm_id
+                criterion=criterion
             )
 
             # Serialize the classifier data and upload
@@ -180,9 +194,6 @@ class AIClassifier(models.Model):
     # which allows us to plug in different storage backends (such as S3)
     classifier_data = models.FileField(upload_to=AI_CLASSIFIER_STORAGE)
 
-    # The ID of the algorithm that was used to train this classifier.
-    algorithm_id = models.CharField(max_length=128, db_index=True)
-
     def download_classifier_data(self):
         """
         Download and deserialize the classifier data.
@@ -198,41 +209,16 @@ class AIClassifier(models.Model):
         return json.loads(self.classifier_data.read())  # pylint:disable=E1101
 
 
-class AITrainingWorkflow(models.Model):
+class AIWorkflow(models.Model):
     """
-    Used to track all training tasks.
-
-    Training tasks take as input an algorithm ID and a set of training examples
-    (which are associated with a rubric).
-    On successful completion, training tasks output a set of trained classifiers.
-
+    Abstract base class for AI workflow database models.
     """
-
     class Meta:
         app_label = "assessment"
+        abstract = True
 
     # Unique identifier used to track this workflow
     uuid = UUIDField(version=1, db_index=True)
-
-    # The ID of the algorithm used to train the classifiers
-    # This is a parameter passed to and interpreted by the workers.
-    # Django settings allow the users to map algorithm ID strings
-    # to the Python code they should use to perform the training.
-    algorithm_id = models.CharField(max_length=128, db_index=True)
-
-    # The training examples (essays + scores) used to train the classifiers.
-    # This is a many-to-many field because
-    # (a) we need multiple training examples to train a classifier, and
-    # (b) we may want to re-use training examples
-    # (for example, if a training task is executed by Celery workers multiple times)
-    training_examples = models.ManyToManyField(TrainingExample, related_name="+")
-
-    # The set of trained classifiers.
-    # Until the task completes successfully, this will be set to null.
-    classifier_set = models.ForeignKey(
-        AIClassifierSet, related_name='training_workflow',
-        null=True, default=None
-    )
 
     # Timestamps
     # The task is *scheduled* as soon as a client asks the API to
@@ -241,6 +227,63 @@ class AITrainingWorkflow(models.Model):
     # classifier set based on the training examples.
     scheduled_at = models.DateTimeField(default=now, db_index=True)
     completed_at = models.DateTimeField(null=True, db_index=True)
+
+    # The ID of the algorithm used to train the classifiers
+    # This is a parameter passed to and interpreted by the workers.
+    # Django settings allow the users to map algorithm ID strings
+    # to the Python code they should use to perform the training.
+    algorithm_id = models.CharField(max_length=128, db_index=True)
+
+    # The set of trained classifiers.
+    # In the training task, this field will be set when the task completes successfully.
+    # In the grading task, this may be set to null if no classifiers are available
+    # when the student submits an essay for grading.
+    classifier_set = models.ForeignKey(
+        AIClassifierSet, related_name='+',
+        null=True, default=None
+    )
+
+    @property
+    def is_complete(self):
+        """
+        Check whether the workflow is complete.
+
+        Returns:
+            bool
+
+        """
+        return self.completed_at is not None
+
+    def mark_complete_and_save(self):
+        """
+        Mark the workflow as complete.
+
+        Returns:
+            None
+
+        """
+        self.completed_at = now()
+        self.save()
+
+
+class AITrainingWorkflow(AIWorkflow):
+    """
+    Used to track AI training tasks.
+
+    Training tasks take as input an algorithm ID and a set of training examples
+    (which are associated with a rubric).
+    On successful completion, training tasks output a set of trained classifiers.
+
+    """
+    class Meta:
+        app_label = "assessment"
+
+    # The training examples (essays + scores) used to train the classifiers.
+    # This is a many-to-many field because
+    # (a) we need multiple training examples to train a classifier, and
+    # (b) we may want to re-use training examples
+    # (for example, if a training task is executed by Celery workers multiple times)
+    training_examples = models.ManyToManyField(TrainingExample, related_name="+")
 
     @classmethod
     @transaction.commit_on_success
@@ -288,17 +331,6 @@ class AITrainingWorkflow(models.Model):
         else:
             raise NoTrainingExamples(workflow_uuid=self.uuid)
 
-    @property
-    def is_complete(self):
-        """
-        Check whether the workflow is complete (classifiers have been trained).
-
-        Returns:
-            bool
-
-        """
-        return self.completed_at is not None
-
     def complete(self, classifier_set):
         """
         Add a classifier set to the workflow and mark it complete.
@@ -319,5 +351,120 @@ class AITrainingWorkflow(models.Model):
         self.classifier_set = AIClassifierSet.create_classifier_set(
             classifier_set, self.rubric, self.algorithm_id
         )
-        self.completed_at = now()
-        self.save()
+        self.mark_complete_and_save()
+
+
+class AIGradingWorkflow(AIWorkflow):
+    """
+    Used to track AI grading tasks.
+
+    Grading tasks take as input an essay submission
+    and a set of classifiers; the tasks select options
+    for each criterion in the rubric.
+
+    """
+    class Meta:
+        app_label = "assessment"
+
+    # The UUID of the submission being graded
+    submission_uuid = models.CharField(max_length=128, db_index=True)
+
+    # The text of the essay submission to grade
+    # We duplicate this here to avoid having to repeatedly look up
+    # the submission.  Since submissions are immutable, this is safe.
+    essay_text = models.TextField(blank=True)
+
+    # The rubric used to evaluate the submission.
+    # We store this so we can look for classifiers for the same rubric
+    # if none are available when the workflow is created.
+    rubric = models.ForeignKey(Rubric, related_name="+")
+
+    # The assessment produced by the AI grading algorithm
+    # Until the task completes successfully, this will be set to null
+    assessment = models.ForeignKey(
+        Assessment, related_name="+", null=True, default=None
+    )
+
+    # Identifier information associated with the student's submission
+    # Useful for finding workflows for a particular course/item/student
+    # Since submissions are immutable, and since the workflow is
+    # associated with one submission, it's safe to duplicate
+    # this information here from the submissions models.
+    student_id = models.CharField(max_length=40, db_index=True)
+    item_id = models.CharField(max_length=128, db_index=True)
+    course_id = models.CharField(max_length=40, db_index=True)
+
+    @classmethod
+    @transaction.commit_on_success
+    def start_workflow(cls, submission_uuid, rubric_dict, algorithm_id):
+        """
+        Start a grading workflow.
+
+        Args:
+            submission_uuid (str): The UUID of the submission to grade.
+            rubric_dict (dict): The serialized rubric model.
+            algorithm_id (unicode): The ID of the algorithm to use for grading.
+
+        Returns:
+            AIGradingWorkflow
+
+        Raises:
+            SubmissionNotFoundError
+            SubmissionRequestError
+            SubmissionInternalError
+            InvalidRubric
+            DatabaseError
+
+        """
+        # Retrieve info about the submission
+        submission = sub_api.get_submission_and_student(submission_uuid)
+
+        # Get or create the rubric
+        rubric = rubric_from_dict(rubric_dict)
+
+        # Retrieve the submission text
+        # Submissions are arbitrary JSON-blobs, which *should*
+        # contain a single key, "answer", containing the essay
+        # submission text.  If not, though, assume we've been
+        # given the essay text directly (convenient for testing).
+        if isinstance(submission, dict):
+            essay_text = submission.get('answer')
+        else:
+            essay_text = unicode(submission)
+
+        # Create the workflow
+        return cls.objects.create(
+            submission_uuid=submission_uuid,
+            essay_text=essay_text,
+            algorithm_id=algorithm_id,
+            student_id=submission['student_item']['student_id'],
+            item_id=submission['student_item']['item_id'],
+            course_id=submission['student_item']['course_id'],
+            rubric=rubric
+        )
+
+    @transaction.commit_on_success
+    def complete(self, criterion_scores):
+        """
+        Create an assessment with scores from the AI classifiers
+        and mark the workflow complete.
+
+        Args:
+            criterion_scores (dict): Dictionary mapping criteria names to integer scores.
+
+        Raises:
+            DatabaseError
+
+        """
+        assessment = Assessment.objects.create(
+            submission_uuid=self.submission_uuid,
+            rubric=self.rubric,
+            scorer_id=self.algorithm_id,
+            score_type=AI_ASSESSMENT_TYPE
+        )
+
+        option_ids = self.rubric.options_ids_for_points(criterion_scores)
+        AssessmentPart.add_to_assessment(assessment, option_ids)
+
+        self.assessment = assessment
+        self.mark_complete_and_save()
