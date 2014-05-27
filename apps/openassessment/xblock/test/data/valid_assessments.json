@@ -13,6 +13,7 @@
         "current_assessments": null,
         "is_released": false
     },
+
     "self_only": {
         "assessments": [
             {
@@ -22,6 +23,7 @@
         "current_assessments": null,
         "is_released": false
     },
+
     "must_be_graded_by_equals_must_grade": {
         "assessments": [
             {
@@ -31,6 +33,39 @@
             },
             {
                 "name": "self-assessment"
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
+    },
+
+    "example_based_algorithm_id_is_ease": {
+        "assessments": [
+            {
+                "name": "example-based-assessment",
+                "start": null,
+                "due": null,
+                "algorithm_id": "ease",
+                "examples": [
+                    {
+                        "answer": "тєѕт αηѕωєя",
+                        "options_selected": [
+                            {
+                            "criterion": "Test criterion",
+                            "option": "No"
+                            }
+                        ]
+                    },
+                    {
+                        "answer": "тєѕт αηѕωєя TWO",
+                        "options_selected": [
+                            {
+                                "criterion": "Test criterion",
+                                "option": "Yes"
+                            }
+                        ]
+                    }
+                ]
             }
         ],
         "current_assessments": null,
