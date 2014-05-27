@@ -13,8 +13,8 @@ from openassessment.assessment.errors import (
     AIGradingRequestError, AIGradingInternalError
 )
 from openassessment.assessment.models import (
-    AITrainingWorkflow, InvalidOptionSelection, NoTrainingExamples,
     Assessment, AITrainingWorkflow, AIGradingWorkflow,
+    InvalidOptionSelection, NoTrainingExamples,
     AIClassifierSet, AI_ASSESSMENT_TYPE
 )
 from openassessment.assessment.worker import training as training_tasks
@@ -46,6 +46,10 @@ def submit(submission_uuid, rubric, algorithm_id):
         AIGradingRequestError
         AIGradingInternalError
 
+    Example usage:
+    >>> submit('74a9d63e8a5fea369fd391d07befbd86ae4dc6e2', rubric, 'ease')
+    '10df7db776686822e501b05f452dc1e4b9141fe5'
+
     """
     try:
         workflow = AIGradingWorkflow.start_workflow(submission_uuid, rubric, algorithm_id)
@@ -72,7 +76,7 @@ def submit(submission_uuid, rubric, algorithm_id):
     try:
         classifier_set_candidates = AIClassifierSet.objects.filter(
             rubric=workflow.rubric, algorithm_id=algorithm_id
-        ).order_by('-created_at')[:1]
+        )[:1]
 
         # If we find classifiers for this rubric/algorithm
         # then associate the classifiers with the workflow
@@ -116,6 +120,16 @@ def get_latest_assessment(submission_uuid):
     Raises:
         AIGradingInternalError
 
+    Examle usage:
+    >>> get_latest_assessment('10df7db776686822e501b05f452dc1e4b9141fe5')
+    {
+        'points_earned': 6,
+        'points_possible': 12,
+        'scored_at': datetime.datetime(2014, 1, 29, 17, 14, 52, 649284 tzinfo=<UTC>),
+        'scorer': u"ease",
+        'feedback': u''
+    }
+
     """
     try:
         assessments = Assessment.objects.filter(
@@ -155,6 +169,10 @@ def train_classifiers(rubric_dict, examples, algorithm_id):
     Raises:
         AITrainingRequestError
         AITrainingInternalError
+
+    Example usage:
+    >>> train_classifiers(rubric, examples, 'ease')
+    '10df7db776686822e501b05f452dc1e4b9141fe5'
 
     """
     # Get or create the rubric and training examples

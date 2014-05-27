@@ -99,12 +99,14 @@ def train_classifiers(workflow_uuid):
             u"Training example format was not valid "
             u"(training workflow UUID {})"
         ).format(workflow_uuid)
+        logger.exception(msg)
         raise train_classifiers.retry()
     except AIAlgorithmError:
         msg = (
             u"An error occurred while training AI classifiers "
             u"(training workflow UUID {})"
         ).format(workflow_uuid)
+        logger.exception(msg)
         raise train_classifiers.retry()
 
     # Upload the classifiers
@@ -116,6 +118,7 @@ def train_classifiers(workflow_uuid):
             u"An error occurred while uploading trained classifiers "
             u"(training workflow UUID {})"
         ).format(workflow_uuid)
+        logger.exception(msg)
         raise train_classifiers.retry()
 
 
