@@ -71,7 +71,7 @@ class AIClassifierSet(models.Model):
 
     class Meta:
         app_label = "assessment"
-        ordering = ['-created_at']
+        ordering = ['-created_at', '-id']
 
     # The rubric associated with this set of classifiers
     # We should have one classifier for each of the criteria in the rubric.
