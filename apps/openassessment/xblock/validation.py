@@ -64,6 +64,7 @@ def _is_valid_assessment_sequence(assessments):
         ['peer-assessment', 'self-assessment'],
         ['student-training', 'peer-assessment'],
         ['student-training', 'peer-assessment', 'self-assessment'],
+        ['example-based-assessment'],
         ['example-based-assessment', 'self-assessment'],
         ['example-based-assessment', 'peer-assessment'],
         ['example-based-assessment', 'peer-assessment', 'self-assessment'],
@@ -126,6 +127,12 @@ def validate_assessments(assessments, current_assessments, is_released):
             if must_grade < must_be_graded_by:
                 return (False, _('The "must_grade" value must be greater than or equal to the "must_be_graded_by" value.'))
 
+        # Example-based assessment MUST specify 'ease' as the algorithm ID,
+        # at least for now.  Later, we may make this more flexible.
+        if assessment_dict.get('name') == 'example-based-assessment':
+            if assessment_dict.get('algorithm_id') not in ['ease', 'fake']:
+                return (False, _('The "algorithm_id" value must be set to "ease" or "fake"'))
+
     if is_released:
         if len(assessments) != len(current_assessments):
             return (False, _("The number of assessments cannot be changed after the problem has been released."))
@@ -138,7 +145,7 @@ def validate_assessments(assessments, current_assessments, is_released):
     return (True, u'')
 
 
-def validate_rubric(rubric_dict, current_rubric, is_released):
+def validate_rubric(rubric_dict, current_rubric, is_released, is_example_based):
     """
     Check that the rubric is semantically valid.
 
@@ -146,6 +153,7 @@ def validate_rubric(rubric_dict, current_rubric, is_released):
         rubric_dict (dict): Serialized Rubric model representing the updated state of the rubric.
         current_rubric (dict): Serialized Rubric model representing the current state of the rubric.
         is_released (bool): True if and only if the problem has been released.
+        is_example_based (bool): True if and only if this is an example-based assessment.
 
     Returns:
         tuple (is_valid, msg) where
@@ -160,7 +168,7 @@ def validate_rubric(rubric_dict, current_rubric, is_released):
     # No duplicate criteria names
     duplicates = _duplicates([criterion['name'] for criterion in rubric_dict['criteria']])
     if len(duplicates) > 0:
-        msg = u"Criteria duplicate name(s): {duplicates}".format(
+        msg = _(u"Criteria duplicate name(s): {duplicates}").format(
             duplicates=", ".join(duplicates)
         )
         return (False, msg)
@@ -169,9 +177,18 @@ def validate_rubric(rubric_dict, current_rubric, is_released):
     for criterion in rubric_dict['criteria']:
         duplicates = _duplicates([option['name'] for option in criterion['options']])
         if len(duplicates) > 0:
-            msg = u"Options in '{criterion}' have duplicate name(s): {duplicates}".format(
+            msg = _(u"Options in '{criterion}' have duplicate name(s): {duplicates}").format(
                 criterion=criterion['name'], duplicates=", ".join(duplicates)
             )
+            return (False, msg)
+
+    # Example-based assessments impose the additional restriction
+    # that the point values for options must be unique within
+    # a particular rubric criterion.
+    if is_example_based:
+        duplicates = _duplicates([option['points'] for option in criterion['options']])
+        if len(duplicates) > 0:
+            msg = _(u"Example-based assessments cannot have duplicate point values.")
             return (False, msg)
 
     # After a problem is released, authors are allowed to change text,
@@ -180,17 +197,17 @@ def validate_rubric(rubric_dict, current_rubric, is_released):
 
         # Number of criteria must be the same
         if len(rubric_dict['criteria']) != len(current_rubric['criteria']):
-            return (False, u'The number of criteria cannot be changed after a problem is released.')
+            return (False, _(u'The number of criteria cannot be changed after a problem is released.'))
 
         # Number of options for each criterion must be the same
         for new_criterion, old_criterion in _match_by_order(rubric_dict['criteria'], current_rubric['criteria']):
             if len(new_criterion['options']) != len(old_criterion['options']):
-                return (False, u'The number of options cannot be changed after a problem is released.')
+                return (False, _(u'The number of options cannot be changed after a problem is released.'))
 
             else:
                 for new_option, old_option in _match_by_order(new_criterion['options'], old_criterion['options']):
                     if new_option['points'] != old_option['points']:
-                        return (False, u'Point values cannot be changed after a problem is released.')
+                        return (False, _(u'Point values cannot be changed after a problem is released.'))
 
     return (True, u'')
 
@@ -217,7 +234,7 @@ def validate_dates(start, end, date_ranges):
         return (True, u'')
 
 
-def _validate_assessment_examples(rubric_dict, assessments):
+def validate_assessment_examples(rubric_dict, assessments):
     """
     Validate assessment training examples.
 
@@ -232,9 +249,13 @@ def _validate_assessment_examples(rubric_dict, assessments):
 
     """
     for asmnt in assessments:
-        if asmnt['name'] == 'student-training':
+        if asmnt['name'] == 'student-training' or asmnt['name'] == 'example-based-assessment':
 
             examples = convert_training_examples_list_to_dict(asmnt['examples'])
+
+            # Must have at least one training example
+            if len(examples) == 0:
+                return False, _(u"Student training and example-based assessments must have at least one training example")
 
             # Delegate to the student training API to validate the
             # examples against the rubric.
@@ -272,16 +293,17 @@ def validator(oa_block, strict_post_release=True):
             return (False, msg)
 
         # Rubric
+        is_example_based = 'example-based-assessment' in [asmnt.get('name') for asmnt in assessments]
         current_rubric = {
             'prompt': oa_block.prompt,
             'criteria': oa_block.rubric_criteria
         }
-        success, msg = validate_rubric(rubric_dict, current_rubric, is_released)
+        success, msg = validate_rubric(rubric_dict, current_rubric, is_released, is_example_based)
         if not success:
             return (False, msg)
 
         # Training examples
-        success, msg = _validate_assessment_examples(rubric_dict, assessments)
+        success, msg = validate_assessment_examples(rubric_dict, assessments)
         if not success:
             return (False, msg)
 

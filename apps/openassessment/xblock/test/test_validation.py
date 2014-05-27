@@ -10,7 +10,10 @@ import pytz
 import ddt
 from django.test import TestCase
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
-from openassessment.xblock.validation import validator, validate_assessments, validate_rubric, validate_dates
+from openassessment.xblock.validation import (
+    validator, validate_assessments, validate_rubric,
+    validate_dates, validate_assessment_examples
+)
 
 
 @ddt.ddt
@@ -79,13 +82,39 @@ class RubricValidationTest(TestCase):
 
     @ddt.file_data('data/valid_rubrics.json')
     def test_valid_assessment(self, data):
-        success, msg = validate_rubric(data['rubric'], data['current_rubric'], data['is_released'])
+        current_rubric = data.get('current_rubric')
+        is_released = data.get('is_released', False)
+        is_example_based = data.get('is_example_based', False)
+        success, msg = validate_rubric(
+            data['rubric'], current_rubric,is_released, is_example_based
+        )
         self.assertTrue(success)
         self.assertEqual(msg, u'')
 
     @ddt.file_data('data/invalid_rubrics.json')
     def test_invalid_assessment(self, data):
-        success, msg = validate_rubric(data['rubric'], data['current_rubric'], data['is_released'])
+        current_rubric = data.get('current_rubric')
+        is_released = data.get('is_released', False)
+        is_example_based = data.get('is_example_based', False)
+        success, msg = validate_rubric(
+            data['rubric'], current_rubric, is_released, is_example_based
+        )
+        self.assertFalse(success)
+        self.assertGreater(len(msg), 0)
+
+
+@ddt.ddt
+class AssessmentExamplesValidationTest(TestCase):
+
+    @ddt.file_data('data/valid_assessment_examples.json')
+    def test_valid_assessment_examples(self, data):
+        success, msg = validate_assessment_examples(data['rubric'], data['assessments'])
+        self.assertTrue(success)
+        self.assertEqual(msg, u'')
+
+    @ddt.file_data('data/invalid_assessment_examples.json')
+    def test_invalid_assessment_examples(self, data):
+        success, msg = validate_assessment_examples(data['rubric'], data['assessments'])
         self.assertFalse(success)
         self.assertGreater(len(msg), 0)
 
@@ -211,26 +240,35 @@ class ValidationIntegrationTest(TestCase):
         "due": None
     }
 
+    EXAMPLES = [
+        {
+            "answer": "ẗëṡẗ äṅṡẅëṛ",
+            "options_selected": [
+                {
+                    "criterion": "vocabulary",
+                    "option": "Good"
+                },
+                {
+                    "criterion": "grammar",
+                    "option": "Poor"
+                }
+            ]
+        }
+    ]
+
     ASSESSMENTS = [
+        {
+            "name": "example-based-assessment",
+            "start": None,
+            "due": None,
+            "examples": EXAMPLES,
+            "algorithm_id": "ease"
+        },
         {
             "name": "student-training",
             "start": None,
             "due": None,
-            "examples": [
-                {
-                    "answer": "ẗëṡẗ äṅṡẅëṛ",
-                    "options_selected": [
-                        {
-                            "criterion": "vocabulary",
-                            "option": "Good"
-                        },
-                        {
-                            "criterion": "grammar",
-                            "option": "Poor"
-                        }
-                    ]
-                }
-            ]
+            "examples": EXAMPLES,
         },
         {
             "name": "peer-assessment",
@@ -254,7 +292,7 @@ class ValidationIntegrationTest(TestCase):
         self.oa_block.due = None
         self.validator = validator(self.oa_block)
 
-    def test_student_training_examples_match_rubric(self):
+    def test_validates_successfully(self):
         is_valid, msg = self.validator(self.RUBRIC, self.SUBMISSION, self.ASSESSMENTS)
         self.assertTrue(is_valid, msg=msg)
         self.assertEqual(msg, "")
@@ -278,3 +316,22 @@ class ValidationIntegrationTest(TestCase):
         is_valid, msg = self.validator(self.RUBRIC, self.SUBMISSION, mutated_assessments)
         self.assertFalse(is_valid)
         self.assertEqual(msg, u'Example 1 has an invalid option for "vocabulary": "Invalid option!"')
+
+    def test_example_based_assessment_duplicate_point_values(self):
+        # Mutate the rubric so that two options have the same point value
+        # for a particular criterion.
+        # This should cause a validation error with example-based assessment.
+        mutated_rubric = copy.deepcopy(self.RUBRIC)
+        for option in mutated_rubric['criteria'][0]['options']:
+            option['points'] = 1
+
+        # Expect a validation error
+        is_valid, msg = self.validator(mutated_rubric, self.SUBMISSION, self.ASSESSMENTS)
+        self.assertFalse(is_valid)
+        self.assertEqual(msg, u'Example-based assessments cannot have duplicate point values.')
+
+        # But it should be okay if we don't have example-based assessment
+        no_example_based = copy.deepcopy(self.ASSESSMENTS)[1:]
+        is_valid, msg = self.validator(mutated_rubric, self.SUBMISSION, no_example_based)
+        self.assertTrue(is_valid)
+        self.assertEqual(msg, u'')

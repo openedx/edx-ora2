@@ -1,0 +1,129 @@
+{
+    "student_training_examples_invalid_criterion": {
+        "rubric": {
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "vocabulary",
+                    "prompt": "How good is the vocabulary?",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "Poor",
+                            "explanation": "Poor job!"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 1,
+                            "name": "Good",
+                            "explanation": "Good job!"
+                        }
+                    ]
+                },
+                {
+                    "order_num": 1,
+                    "name": "grammar",
+                    "prompt": "How good is the grammar?",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "Poor",
+                            "explanation": "Poor job!"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 1,
+                            "name": "Good",
+                            "explanation": "Good job!"
+                        }
+                    ]
+                }
+            ]
+        },
+        "assessments": [
+            {
+                "name": "student-training",
+                "start": null,
+                "due": null,
+                "examples": [
+                    {
+                        "answer": "ẗëṡẗ äṅṡẅëṛ",
+                        "options_selected": [
+                            {
+                                "criterion": "Invalid criterion!",
+                                "option": "Good"
+                            },
+                            {
+                                "criterion": "grammar",
+                                "option": "Poor"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "peer-assessment",
+                "start": null,
+                "due": null,
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            }
+        ]
+    },
+
+    "example_based_no_training_examples": {
+        "rubric": {
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "vocabulary",
+                    "prompt": "how good is the vocabulary?",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "poor",
+                            "explanation": "poor job!"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 1,
+                            "name": "good",
+                            "explanation": "good job!"
+                        }
+                    ]
+                },
+                {
+                    "order_num": 1,
+                    "name": "grammar",
+                    "prompt": "how good is the grammar?",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "poor",
+                            "explanation": "poor job!"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 1,
+                            "name": "good",
+                            "explanation": "good job!"
+                        }
+                    ]
+                }
+            ]
+        },
+        "assessments": [
+            {
+                "name": "example-based-assessment",
+                "start": null,
+                "due": null,
+                "algorithm_id": "ease",
+                "examples": []
+            }
+        ]
+    }
+}

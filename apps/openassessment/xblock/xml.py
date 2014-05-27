@@ -390,6 +390,11 @@ def _parse_assessments_xml(assessments_root):
 
         # Assessment start
         if 'start' in assessment.attrib:
+            # Example-based assessment is NOT allowed to have a start date
+            if assessment_dict['name'] == 'example-based-assessment':
+                raise UpdateFromXmlError(_('Example-based assessment cannot have a start date'))
+
+            # Other assessment types CAN have a start date
             parsed_start = _parse_date(assessment.get('start'))
             if parsed_start is not None:
                 assessment_dict['start'] = parsed_start
@@ -400,6 +405,11 @@ def _parse_assessments_xml(assessments_root):
 
         # Assessment due
         if 'due' in assessment.attrib:
+            # Example-based assessment is NOT allowed to have a due date
+            if assessment_dict['name'] == 'example-based-assessment':
+                raise UpdateFromXmlError(_('Example-based assessment cannot have a due date'))
+
+            # Other assessment types CAN have a due date
             parsed_start = _parse_date(assessment.get('due'))
             if parsed_start is not None:
                 assessment_dict['due'] = parsed_start
@@ -434,7 +444,7 @@ def _parse_assessments_xml(assessments_root):
 
         if assessment_dict['name'] == 'example-based-assessment':
             assessment_dict['examples'] = _parse_examples_xml(examples)
-            assessment_dict['algorithm_id'] = unicode(assessment.get('algorithm_id'))
+            assessment_dict['algorithm_id'] = unicode(assessment.get('algorithm_id', 'ease'))
 
         # Update the list of assessments
         assessments_list.append(assessment_dict)

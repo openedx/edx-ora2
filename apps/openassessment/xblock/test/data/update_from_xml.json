@@ -796,5 +796,175 @@
                 ]
             }
         ]
+    },
+
+    "example_based_assessment": {
+        "xml": [
+            "<openassessment>",
+            "<title>foo</title>",
+            "<assessments>",
+                "<assessment name=\"example-based-assessment\" algorithm_id=\"ease\">",
+                    "<example>",
+                        "<answer>тєѕт αηѕωєя</answer>",
+                        "<select criterion=\"Test criterion\" option=\"No\" />",
+                    "</example>",
+                    "<example>",
+                        "<answer>тєѕт αηѕωєя TWO</answer>",
+                        "<select criterion=\"Test criterion\" option=\"Yes\" />",
+                    "</example>",
+                "</assessment>",
+            "</assessments>",
+            "<rubric>",
+                "<prompt>test prompt</prompt>",
+                "<criterion>",
+                    "<name>test criterion</name>",
+                    "<prompt>test criterion prompt</prompt>",
+                    "<option points=\"0\"><name>no</name><explanation>no explanation</explanation></option>",
+                    "<option points=\"2\"><name>yes</name><explanation>yes explanation</explanation></option>",
+                "</criterion>",
+            "</rubric>",
+            "</openassessment>"
+        ],
+        "title": "foo",
+        "prompt": "test prompt",
+        "start": "2000-01-01t00:00:00",
+        "due": "3000-01-01t00:00:00",
+        "submission_start": null,
+        "submission_due": null,
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "test criterion",
+                "prompt": "test criterion prompt",
+                "feedback": "disabled",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "no",
+                        "explanation": "no explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "yes",
+                        "explanation": "yes explanation"
+                    }
+                ]
+            }
+        ],
+        "assessments": [
+            {
+                "name": "example-based-assessment",
+                "start": null,
+                "due": null,
+                "algorithm_id": "ease",
+                "examples": [
+                    {
+                        "answer": "тєѕт αηѕωєя",
+                        "options_selected": [
+                            {
+                            "criterion": "Test criterion",
+                            "option": "No"
+                            }
+                        ]
+                    },
+                    {
+                        "answer": "тєѕт αηѕωєя TWO",
+                        "options_selected": [
+                            {
+                                "criterion": "Test criterion",
+                                "option": "Yes"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    "example_based_default_algorithm_id": {
+        "xml": [
+            "<openassessment>",
+            "<title>foo</title>",
+            "<assessments>",
+                "<assessment name=\"example-based-assessment\">",
+                    "<example>",
+                        "<answer>тєѕт αηѕωєя</answer>",
+                        "<select criterion=\"Test criterion\" option=\"No\" />",
+                    "</example>",
+                    "<example>",
+                        "<answer>тєѕт αηѕωєя TWO</answer>",
+                        "<select criterion=\"Test criterion\" option=\"Yes\" />",
+                    "</example>",
+                "</assessment>",
+            "</assessments>",
+            "<rubric>",
+                "<prompt>test prompt</prompt>",
+                "<criterion>",
+                    "<name>test criterion</name>",
+                    "<prompt>test criterion prompt</prompt>",
+                    "<option points=\"0\"><name>no</name><explanation>no explanation</explanation></option>",
+                    "<option points=\"2\"><name>yes</name><explanation>yes explanation</explanation></option>",
+                "</criterion>",
+            "</rubric>",
+            "</openassessment>"
+        ],
+        "title": "foo",
+        "prompt": "test prompt",
+        "start": "2000-01-01t00:00:00",
+        "due": "3000-01-01t00:00:00",
+        "submission_start": null,
+        "submission_due": null,
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "test criterion",
+                "prompt": "test criterion prompt",
+                "feedback": "disabled",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "no",
+                        "explanation": "no explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "yes",
+                        "explanation": "yes explanation"
+                    }
+                ]
+            }
+        ],
+        "assessments": [
+            {
+                "name": "example-based-assessment",
+                "start": null,
+                "due": null,
+                "algorithm_id": "ease",
+                "examples": [
+                    {
+                        "answer": "тєѕт αηѕωєя",
+                        "options_selected": [
+                            {
+                            "criterion": "Test criterion",
+                            "option": "No"
+                            }
+                        ]
+                    },
+                    {
+                        "answer": "тєѕт αηѕωєя TWO",
+                        "options_selected": [
+                            {
+                                "criterion": "Test criterion",
+                                "option": "Yes"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
     }
 }
