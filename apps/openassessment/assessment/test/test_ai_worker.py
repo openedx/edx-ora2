@@ -48,12 +48,33 @@ class AIWorkerTrainingTest(CacheResetTest):
     Tests for the AI API calls a worker would make when
     completing a training task.
     """
+
+    COURSE_ID = u"sämplë ċöürsë"
+    ITEM_ID = u"12231"
+    ALGORITHM_ID = "test-algorithm"
+
+    # Classifier data
+    # Since this is controlled by the AI algorithm implementation,
+    # we could put anything here as long as it's JSON-serializable.
+    CLASSIFIERS = {
+        u"vøȼȺƀᵾłȺɍɏ": {
+            'name': u'𝒕𝒆𝒔𝒕 𝒄𝒍𝒂𝒔𝒔𝒊𝒇𝒊𝒆𝒓',
+            'data': u'Öḧ ḷëẗ ẗḧë ṡüṅ ḅëäẗ ḋöẅṅ üṗöṅ ṁÿ ḟäċë, ṡẗäṛṡ ẗö ḟïḷḷ ṁÿ ḋṛëäṁ"'
+        },
+        u"ﻭɼค๓๓คɼ": {
+            'name': u'𝒕𝒆𝒔𝒕 𝒄𝒍𝒂𝒔𝒔𝒊𝒇𝒊𝒆𝒓',
+            'data': u"І ам а тѓаvэlэѓ оf ъотЂ тімэ аиↁ ѕрасэ, то ъэ шЂэѓэ І Ђаvэ ъээи"
+        }
+    }
+
     def setUp(self):
         """
         Create a training workflow in the database.
         """
         examples = deserialize_training_examples(EXAMPLES, RUBRIC)
-        workflow = AITrainingWorkflow.start_workflow(examples, ALGORITHM_ID)
+
+        workflow = AITrainingWorkflow.start_workflow(examples, self.COURSE_ID, self.ITEM_ID, self.ALGORITHM_ID)
+
         self.workflow_uuid = workflow.uuid
 
     def test_get_training_task_params(self):
@@ -204,7 +225,9 @@ class AIWorkerGradingTest(CacheResetTest):
         expected_params = {
             'essay_text': ANSWER,
             'classifier_set': CLASSIFIERS,
-            'algorithm_id': ALGORITHM_ID
+            'algorithm_id': ALGORITHM_ID,
+            'course_id': STUDENT_ITEM.get('course_id'),
+            'item_id': STUDENT_ITEM.get('item_id')
         }
         self.assertItemsEqual(params, expected_params)
 

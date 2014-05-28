@@ -5,12 +5,11 @@ import logging
 from django.db import DatabaseError
 from submissions import api as sub_api
 from openassessment.assessment.serializers import (
-    deserialize_training_examples, InvalidTrainingExample, InvalidRubric,
-    full_assessment_dict
+    deserialize_training_examples, InvalidTrainingExample, InvalidRubric, full_assessment_dict
 )
 from openassessment.assessment.errors import (
     AITrainingRequestError, AITrainingInternalError,
-    AIGradingRequestError, AIGradingInternalError
+    AIGradingRequestError, AIGradingInternalError, AIError
 )
 from openassessment.assessment.models import (
     Assessment, AITrainingWorkflow, AIGradingWorkflow,
@@ -206,10 +205,12 @@ def get_latest_assessment(submission_uuid):
         return None
 
 
-def train_classifiers(rubric_dict, examples, algorithm_id):
+def train_classifiers(rubric_dict, examples, course_id, item_id, algorithm_id):
     """
     Schedule a task to train classifiers.
     All training examples must match the rubric!
+    After training of classifiers completes successfully, all AIGradingWorkflows that are incomplete will be
+    automatically rescheduled to complete.
 
     Args:
         rubric_dict (dict): The rubric used to assess the classifiers.
@@ -225,6 +226,7 @@ def train_classifiers(rubric_dict, examples, algorithm_id):
     Raises:
         AITrainingRequestError
         AITrainingInternalError
+        AIGradingInternalError
 
     Example usage:
     >>> train_classifiers(rubric, examples, 'ease')
@@ -240,7 +242,7 @@ def train_classifiers(rubric_dict, examples, algorithm_id):
 
     # Create the workflow model
     try:
-        workflow = AITrainingWorkflow.start_workflow(examples, algorithm_id)
+        workflow = AITrainingWorkflow.start_workflow(examples, course_id, item_id, algorithm_id)
     except NoTrainingExamples as ex:
         raise AITrainingRequestError(ex)
     except:
@@ -258,31 +260,70 @@ def train_classifiers(rubric_dict, examples, algorithm_id):
             u"Scheduled training task for the AI training workflow with UUID {workflow_uuid} "
             u"(algorithm ID = {algorithm_id})"
         ).format(workflow_uuid=workflow.uuid, algorithm_id=algorithm_id))
-    except:
+    except (AITrainingInternalError, AITrainingRequestError):
         msg = (
             u"An unexpected error occurred while scheduling "
             u"the task for training workflow with UUID {}"
         ).format(workflow.uuid)
         logger.exception(msg)
         raise AITrainingInternalError(msg)
+    except AIGradingInternalError:
+        # If we have an error that is coming from the rescheduled grading after successful completion:
+        msg = (
+            u"An unexpected error occurred while scheduling incomplete grading workflows after "
+            u"the training task was completed successfully. The course_id and item_id for the failed "
+            u"grading workflows are course_id={cid}, item_id={iid}."
+        ).format(cid=course_id, iid=item_id)
+        logger.exception(msg)
+        raise AIGradingInternalError(msg)
 
     # Return the workflow UUID
     return workflow.uuid
 
 
-def reschedule_unfinished_tasks(course_id=None, item_id=None, task_type=None):
+def reschedule_unfinished_tasks(course_id=None, item_id=None, task_type=u"grade"):
     """
     Check for unfinished tasks (both grading and training) and reschedule them.
-    Optionally restrict by course/item ID and task type.
+    Optionally restrict by course/item ID and task type. Default use case is to
+    only reschedule the unfinished grade tasks. Applied use case (with button in
+    staff mixin) is to call without argument, and to reschedule grades only.
 
     Kwargs:
         course_id (unicode): Restrict to unfinished tasks in a particular course.
         item_id (unicode): Restrict to unfinished tasks for a particular item in a course.
             NOTE: if you specify the item ID, you must also specify the course ID.
         task_type (unicode): Either "grade" or "train".  Restrict to unfinished tasks of this type.
+            if task_type is specified as None, both training and grading will be rescheduled, in that order.
 
     Raises:
+        AIGradingInternalError
+        AITrainingInternalError
         AIError
-
     """
-    pass
+
+    if course_id is None or item_id is None:
+        msg = u"Rescheduling tasks was not possible because the course_id / item_id was not assigned."
+        logger.exception(msg)
+        raise AIError
+
+    # Reschedules all of the training tasks
+    if task_type == u"train" or task_type is None:
+        try:
+            training_tasks.reschedule_training_tasks.apply_async(args=[course_id, item_id])
+        except Exception as ex:
+            msg = (
+                u"Rescheduling training tasks for course {cid} and item {iid} failed with exception: {ex}"
+            ).format(cid=course_id, iid=item_id, ex=ex)
+            logger.exception(msg)
+            raise AITrainingInternalError(ex)
+
+    # Reschedules all of the grading tasks
+    if task_type == u"grade" or task_type is None:
+        try:
+            grading_tasks.reschedule_grading_tasks.apply_async(args=[course_id, item_id])
+        except Exception as ex:
+            msg = (
+                u"Rescheduling grading tasks for course {cid} and item {iid} failed with exception: {ex}"
+            ).format(cid=course_id, iid=item_id, ex=ex)
+            logger.exception(msg)
+            raise AIGradingInternalError(ex)

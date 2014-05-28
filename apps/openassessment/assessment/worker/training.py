@@ -7,6 +7,9 @@ from celery.utils.log import get_task_logger
 from openassessment.assessment.api import ai_worker as ai_worker_api
 from openassessment.assessment.errors import AIError
 from .algorithm import AIAlgorithm, AIAlgorithmError
+from .grading import reschedule_grading_tasks
+from openassessment.assessment.errors.ai import AIGradingInternalError
+from openassessment.assessment.models.ai import AITrainingWorkflow
 
 
 MAX_RETRIES = 2
@@ -58,6 +61,8 @@ def train_classifiers(workflow_uuid):
         params = ai_worker_api.get_training_task_params(workflow_uuid)
         examples = params['training_examples']
         algorithm_id = params['algorithm_id']
+        course_id = params['course_id']
+        item_id = params['item_id']
     except (AIError, KeyError):
         msg = (
             u"An error occurred while retrieving AI training "
@@ -121,6 +126,45 @@ def train_classifiers(workflow_uuid):
         logger.exception(msg)
         raise train_classifiers.retry()
 
+    # Upon successful completion of the creation of classifiers, we will try to automatically schedule any
+    # grading tasks for the same item.
+    try:
+        reschedule_grading_tasks.apply_async(args=[course_id, item_id])
+    except AIGradingInternalError as ex:
+        msg = (
+            u"An error occured while trying to regrade all ungraded assignments"
+            u"after classifiers were trained successfully: {}"
+        ).format(ex)
+        logger.exception(msg)
+        # Here we don't retry, because they will already retry once in the grading task.
+        raise
+
+
+@task(max_retries=MAX_RETRIES) #pylint: disable E=1102
+def reschedule_training_tasks(course_id, item_id):
+    """
+    Reschedules all incomplete training tasks
+
+    Args:
+        course_id (unicode): The course that we are going to search for unfinished training workflows
+        item_id (unicode): The specific item within that course that we will reschedule unfinished workflows for
+    """
+    # Run a query to find the incomplete training workflows
+    training_workflows = AITrainingWorkflow.get_incomplete_workflows(course_id, item_id)
+
+    # Tries to train every workflow that has not completed.
+    for target_workflow in training_workflows:
+        try:
+            train_classifiers.apply_async(args=[target_workflow.uuid])
+            logger.info(
+                u"Rescheduling of training was successful for workflow with uuid{}".format(target_workflow.uuid)
+            )
+        except Exception as ex:
+            msg = (
+                u"An unexpected error occurred while scheduling the task for training workflow with UUID {}"
+            ).format(target_workflow.uuid)
+            logger.exception(msg)
+            raise reschedule_training_tasks.retry()
 
 def _examples_by_criterion(examples):
     """

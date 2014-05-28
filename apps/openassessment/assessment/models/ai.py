@@ -3,18 +3,23 @@ Database models for AI assessment.
 """
 from uuid import uuid4
 import json
+import logging
 from django.conf import settings
 from django.core.files.base import ContentFile
-from django.db import models, transaction
+from django.db import models, transaction, DatabaseError
 from django.utils.timezone import now
+from django.core.exceptions import ObjectDoesNotExist
 from django_extensions.db.fields import UUIDField
 from submissions import api as sub_api
 from openassessment.assessment.serializers import rubric_from_dict
+from openassessment.assessment.errors.ai import AIError
 from .base import Rubric, Criterion, Assessment, AssessmentPart
 from .training import TrainingExample
 
 
 AI_ASSESSMENT_TYPE = "AI"
+
+logger = logging.getLogger(__name__)
 
 
 class IncompleteClassifierSet(Exception):
@@ -251,6 +256,13 @@ class AIWorkflow(models.Model):
     # Unique identifier used to track this workflow
     uuid = UUIDField(version=1, db_index=True)
 
+    # Course Entity and Item Discriminator
+    # Though these items are duplicated in the database tables for the submissions app,
+    # and every workflow has a reference to a submission entry, this is okay because
+    # submissions are immutable.
+    course_id = models.CharField(max_length=40, db_index=True)
+    item_id = models.CharField(max_length=128, db_index=True)
+
     # Timestamps
     # The task is *scheduled* as soon as a client asks the API to
     # train classifiers.
@@ -296,6 +308,42 @@ class AIWorkflow(models.Model):
         self.completed_at = now()
         self.save()
 
+    @classmethod
+    def get_incomplete_workflows(cls, course_id, item_id):
+        """
+        Gets all incomplete grading workflows for a given course and item.
+
+        Args:
+            course_id (unicode): Uniquely identifies the course
+            item_id (unicode): The discriminator for the item we are looking for
+
+        Yields:
+            All incomplete workflows for this item, as a delayed "stream"
+
+        Raises:
+            DatabaseError
+            cls.DoesNotExist
+        """
+
+        # Finds all of the uuid's for workflows contained within the query
+        grade_workflow_uuids = [
+            wflow['uuid'] for wflow in cls.objects.filter(
+                course_id=course_id, item_id=item_id, completed_at__isnull=True
+            ).values('uuid')
+        ]
+
+        # Continues to generate output until all workflows in the queryset have been output
+        for workflow_uuid in grade_workflow_uuids:
+
+            # Returns the grading workflow associated with the uuid stored in the initial query
+            try:
+                grading_workflow = cls.objects.get(uuid=workflow_uuid)
+                yield grading_workflow
+            except (cls.DoesNotExist, ObjectDoesNotExist, DatabaseError) as ex:
+                msg = u"No workflow with uuid '{}' could be found within the system.".format(workflow_uuid)
+                logger.exception(msg)
+                raise AIError(ex)
+
 
 class AITrainingWorkflow(AIWorkflow):
     """
@@ -318,12 +366,14 @@ class AITrainingWorkflow(AIWorkflow):
 
     @classmethod
     @transaction.commit_on_success
-    def start_workflow(cls, examples, algorithm_id):
+    def start_workflow(cls, examples, course_id, item_id, algorithm_id):
         """
         Start a workflow to track a training task.
 
         Args:
             examples (list of TrainingExample): The training examples used to create the classifiers.
+            course_id (unicode): The ID for the course that the training workflow is associated with.
+            item_id (unicode): The ID for the item that the training workflow is training to assess.
             algorithm_id (unicode): The ID of the algorithm to use for training.
 
         Returns:
@@ -336,7 +386,7 @@ class AITrainingWorkflow(AIWorkflow):
         if len(examples) == 0:
             raise NoTrainingExamples()
 
-        workflow = AITrainingWorkflow.objects.create(algorithm_id=algorithm_id)
+        workflow = AITrainingWorkflow.objects.create(algorithm_id=algorithm_id, item_id=item_id, course_id=course_id)
         workflow.training_examples.add(*examples)
         workflow.save()
         return workflow
@@ -422,8 +472,6 @@ class AIGradingWorkflow(AIWorkflow):
     # associated with one submission, it's safe to duplicate
     # this information here from the submissions models.
     student_id = models.CharField(max_length=40, db_index=True)
-    item_id = models.CharField(max_length=128, db_index=True)
-    course_id = models.CharField(max_length=40, db_index=True)
 
     @classmethod
     @transaction.commit_on_success
