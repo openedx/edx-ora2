@@ -8,7 +8,8 @@ import logging
 from django.db import DatabaseError
 
 from openassessment.assessment.api import peer as peer_api
-from openassessment.assessment.errors import PeerAssessmentError
+from openassessment.assessment.api import ai as ai_api
+from openassessment.assessment.errors import PeerAssessmentError, AIError
 from submissions import api as sub_api
 from .models import AssessmentWorkflow, AssessmentWorkflowStep
 from .serializers import AssessmentWorkflowSerializer
@@ -59,7 +60,7 @@ class AssessmentWorkflowNotFoundError(AssessmentWorkflowError):
     pass
 
 
-def create_workflow(submission_uuid, steps):
+def create_workflow(submission_uuid, steps, rubric=None, algorithm_id=None):
     """Begins a new assessment workflow.
 
     Create a new workflow that other assessments will record themselves against.
@@ -67,6 +68,11 @@ def create_workflow(submission_uuid, steps):
     Args:
         submission_uuid (str): The UUID for the submission that all our
             assessments will be evaluating.
+        rubric (dict): The rubric that will be used for grading in this workflow.
+            The rubric is only used when Example Based Assessment is configured.
+        algorithm_id (str): The version of the AI that will be used for evaluating
+            submissions, if Example Based Assessments are configured for this
+            location.
         steps (list): List of steps that are part of the workflow, in the order
             that the user must complete them. Example: `["peer", "self"]`
 
@@ -128,17 +134,34 @@ def create_workflow(submission_uuid, steps):
     # We're not using a serializer to deserialize this because the only variable
     # we're getting from the outside is the submission_uuid, which is already
     # validated by this point.
-    status = AssessmentWorkflow.STATUS.peer
-    if steps[0] == "peer":
+    status = AssessmentWorkflow.STATUS.waiting
+    step = steps[0]
+
+    # AI will not set the Workflow Status, since it will immediately replace the
+    # status with the next step, or "waiting".
+    if step == "ai":
+        step = steps[1] if len(steps) > 1 else None
+        if not rubric or not algorithm_id:
+            err_msg = u"Rubric and Algorithm ID must be configured for Example Based Assessment."
+            raise AssessmentWorkflowInternalError(err_msg)
+        try:
+            ai_api.submit(submission_uuid, rubric, algorithm_id)
+        except AIError as err:
+            err_msg = u"Could not submit submission for Example Based Grading: {}".format(err)
+            logger.exception(err_msg)
+            raise AssessmentWorkflowInternalError(err_msg)
+
+    if step == "peer":
+        status = AssessmentWorkflow.STATUS.peer
         try:
             peer_api.create_peer_workflow(submission_uuid)
         except PeerAssessmentError as err:
             err_msg = u"Could not create assessment workflow: {}".format(err)
             logger.exception(err_msg)
             raise AssessmentWorkflowInternalError(err_msg)
-    elif steps[0] == "self":
+    elif step == "self":
         status = AssessmentWorkflow.STATUS.self
-    elif steps[0] == "training":
+    elif step == "training":
         status = AssessmentWorkflow.STATUS.training
 
     try:

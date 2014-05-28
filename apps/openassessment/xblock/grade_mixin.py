@@ -51,7 +51,7 @@ class GradeMixin(object):
             if status == "done":
                 path, context = self.render_grade_complete(workflow)
             elif status == "waiting":
-                path = 'openassessmentblock/grade/oa_grade_waiting.html'
+                path, context = self.render_grade_waiting(workflow)
             elif status is None:
                 path = 'openassessmentblock/grade/oa_grade_not_started.html'
             else:  # status is 'self' or 'peer', which implies that the workflow is incomplete
@@ -60,6 +60,22 @@ class GradeMixin(object):
             return self.render_error(_(u"An unexpected error occurred."))
         else:
             return self.render_assessment(path, context)
+
+    def render_grade_waiting(self, workflow):
+        """
+        Render the grade waiting state.
+
+        Args:
+            workflow (dict): The serialized Workflow model.
+
+        Returns:
+            tuple of context (dict) and template_path (string)
+
+        """
+        context = {
+            "waiting": self.get_waiting_details(workflow["status_details"])
+        }
+        return 'openassessmentblock/grade/oa_grade_waiting.html', context
 
     def render_grade_complete(self, workflow):
         """

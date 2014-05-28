@@ -292,8 +292,9 @@ class OpenAssessmentBlock(
         """
         ui_models = [UI_MODELS["submission"]]
         for assessment in self.valid_assessments:
-            ui_model = UI_MODELS[assessment["name"]]
-            ui_models.append(dict(assessment, **ui_model))
+            ui_model = UI_MODELS.get(assessment["name"])
+            if ui_model:
+                ui_models.append(dict(assessment, **ui_model))
         ui_models.append(UI_MODELS["grade"])
         return ui_models
 
@@ -309,6 +310,10 @@ class OpenAssessmentBlock(
             (
                 "OpenAssessmentBlock Unicode",
                 load('static/xml/unicode.xml')
+            ),
+            (
+                "OpenAssessmentBlock Example Based Rubric",
+                load('static/xml/example_based_example.xml')
             ),
             (
                 "OpenAssessmentBlock Poverty Rubric",
@@ -479,6 +484,51 @@ class OpenAssessmentBlock(
             return True, "due", open_range[0], open_range[1]
         else:
             return False, None, open_range[0], open_range[1]
+
+    def get_waiting_details(self, status_details):
+        """
+        Returns the specific waiting status based on the given status_details.
+        This status can currently be peer, example-based, or both. This is
+        determined by checking that status details to see if all assessment
+        modules have been graded.
+
+        Args:
+            status_details (dict): A dictionary containing the details of each
+                assessment module status. This will contain keys such as
+                "peer" and "ai", referring to dictionaries, which in turn will
+                have the key "graded". If this key has a value set, these
+                assessment modules have been graded.
+
+        Returns:
+            A string of "peer", "exampled-based", or "all" to indicate which
+            assessment modules in the workflow are waiting on assessments.
+            Returns None if no module is waiting on an assessment.
+
+        Examples:
+            >>> now = dt.datetime.utcnow().replace(tzinfo=pytz.utc)
+            >>> status_details = {
+            >>>     'peer': {
+            >>>         'completed': None,
+            >>>         'graded': now
+            >>>     },
+            >>>     'ai': {
+            >>>         'completed': now,
+            >>>         'graded': None
+            >>>     }
+            >>> }
+            >>> self.get_waiting_details(status_details)
+            "peer"
+        """
+        waiting = None
+        peer_waiting = "peer" in status_details and not status_details["peer"]["graded"]
+        ai_waiting = "ai" in status_details and not status_details["ai"]["graded"]
+        if peer_waiting and ai_waiting:
+            waiting = "all"
+        elif peer_waiting:
+            waiting = "peer"
+        elif ai_waiting:
+            waiting = "example-based"
+        return waiting
 
     def is_released(self, step=None):
         """

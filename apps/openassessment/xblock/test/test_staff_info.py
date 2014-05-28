@@ -3,6 +3,7 @@ from collections import namedtuple
 import pytz
 import json
 from mock import Mock, patch
+from django.test.utils import override_settings
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 from openassessment.assessment.api import ai as ai_api
@@ -10,6 +11,10 @@ from openassessment.workflow import api as workflow_api
 from openassessment.assessment.errors.ai import AIError
 from submissions import api as sub_api
 from openassessment.xblock.test.base import scenario, XBlockHandlerTestCase
+# Test dependency on Stub AI Algorithm configuration
+from openassessment.assessment.test.test_ai import (
+    ALGORITHM_ID, AI_ALGORITHMS, train_classifiers
+)
 
 STUDENT_ITEM = dict(
     student_id="Bob",
@@ -59,6 +64,13 @@ EXAMPLE_BASED_ASSESSMENT = {
         }
     ]
 }
+
+# Rubric-specific classifier score override
+CLASSIFIER_SCORE_OVERRIDES = {
+    u"Ideas": {'score_override': 1},
+    u"Content": {'score_override': 2}
+}
+
 
 class TestCourseStaff(XBlockHandlerTestCase):
     """
@@ -298,8 +310,12 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertEquals('openassessmentblock/staff_debug/staff_debug.html', path)
         self.assertTrue(context['display_schedule_training'])
 
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @scenario('data/example_based_assessment.xml', user_id='Bob')
     def test_schedule_training(self, xblock):
+        example_based_assessment = xblock.get_assessment_module('example-based-assessment')
+        example_based_assessment['algorithm_id'] = ALGORITHM_ID
+        train_classifiers({'criteria': xblock.rubric_criteria}, CLASSIFIER_SCORE_OVERRIDES)
         xblock.rubric_assessments.append(EXAMPLE_BASED_ASSESSMENT)
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, True, "Bob"
@@ -339,7 +355,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertFalse(response['success'])
         self.assertTrue('error' in response['msg'])
 
-    @scenario('data/example_based_assessment.xml', user_id='Bob')
+    @scenario('data/peer_only_scenario.xml', user_id='Bob')
     def test_no_example_based_assessment(self, xblock):
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, True, "Bob"

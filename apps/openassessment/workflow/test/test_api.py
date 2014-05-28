@@ -9,8 +9,25 @@ from openassessment.test_utils import CacheResetTest
 from openassessment.workflow.models import AssessmentWorkflow
 from submissions.models import Submission
 import openassessment.workflow.api as workflow_api
+from openassessment.assessment.api import ai as ai_api
+from openassessment.assessment.errors import AIError
 from openassessment.assessment.models import StudentTrainingWorkflow
 import submissions.api as sub_api
+
+RUBRIC_DICT = {
+    "criteria": [
+        {
+            "name": "secret",
+            "prompt": "Did the writer keep it secret?",
+            "options": [
+                {"name": "no", "points": "0", "explanation": ""},
+                {"name": "yes", "points": "1", "explanation": ""},
+                ]
+        },
+    ]
+}
+
+ALGORITHM_ID = "Ease"
 
 ITEM_1 = {
     "student_id": "Optimus Prime 001",
@@ -25,8 +42,10 @@ class TestAssessmentWorkflowApi(CacheResetTest):
     @ddt.file_data('data/assessments.json')
     def test_create_workflow(self, data):
         first_step = data["steps"][0] if data["steps"] else "peer"
+        if "ai" in data["steps"]:
+            first_step = data["steps"][1] if len(data["steps"]) > 1 else "waiting"
         submission = sub_api.create_submission(ITEM_1, "Shoot Hot Rod")
-        workflow = workflow_api.create_workflow(submission["uuid"], data["steps"])
+        workflow = workflow_api.create_workflow(submission["uuid"], data["steps"], RUBRIC_DICT, ALGORITHM_ID)
 
         workflow_keys = set(workflow.keys())
         self.assertEqual(
@@ -55,7 +74,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
 
     def test_update_peer_workflow(self):
         submission = sub_api.create_submission(ITEM_1, "Shoot Hot Rod")
-        workflow = workflow_api.create_workflow(submission["uuid"], ["training", "peer"])
+        workflow = workflow_api.create_workflow(submission["uuid"], ["training", "peer"], RUBRIC_DICT, ALGORITHM_ID)
         StudentTrainingWorkflow.get_or_create_workflow(submission_uuid=submission["uuid"])
         requirements = {
             "training": {
@@ -103,6 +122,32 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         # submission_uuid is the wrong type
         with self.assertRaises(workflow_api.AssessmentWorkflowRequestError):
             workflow = workflow_api.create_workflow(123, data["steps"])
+
+    @patch.object(ai_api, 'assessment_is_finished')
+    @patch.object(ai_api, 'get_score')
+    def test_ai_score_set(self, mock_score, mock_is_finished):
+        submission = sub_api.create_submission(ITEM_1, "Ultra Magnus fumble")
+        workflow_api.create_workflow(submission["uuid"], ["ai"], RUBRIC_DICT, ALGORITHM_ID)
+        mock_is_finished.return_value = True
+        score = {"points_earned": 7, "points_possible": 10}
+        mock_score.return_value = score
+        workflow = workflow_api.get_workflow_for_submission(submission["uuid"], {})
+        self.assertEquals(workflow["score"]["points_earned"], score["points_earned"])
+        self.assertEquals(workflow["score"]["points_possible"], score["points_possible"])
+
+    @ddt.data((RUBRIC_DICT, None), (None, ALGORITHM_ID))
+    @ddt.unpack
+    @raises(workflow_api.AssessmentWorkflowInternalError)
+    def test_create_ai_workflow_no_rubric(self, rubric, algorithm_id):
+        submission = sub_api.create_submission(ITEM_1, "Shoot Hot Rod")
+        workflow_api.create_workflow(submission["uuid"], ["ai"], rubric, algorithm_id)
+
+    @patch.object(ai_api, 'submit')
+    @raises(workflow_api.AssessmentWorkflowInternalError)
+    def test_ai_submit_failures(self, mock_submit):
+        mock_submit.side_effect = AIError("Kaboom!")
+        submission = sub_api.create_submission(ITEM_1, "Ultra Magnus fumble")
+        workflow_api.create_workflow(submission["uuid"], ["ai"], RUBRIC_DICT, ALGORITHM_ID)
 
     @patch.object(Submission.objects, 'get')
     @ddt.file_data('data/assessments.json')

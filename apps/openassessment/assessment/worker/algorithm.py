@@ -131,7 +131,7 @@ class AIAlgorithm(object):
             try:
                 algorithm_cls = getattr(importlib.import_module(module_path), name)
                 return algorithm_cls()
-            except (ImportError, AttributeError):
+            except (ImportError, ValueError, AttributeError):
                 raise AlgorithmLoadError(algorithm_id, cls_path)
 
 
