@@ -3,6 +3,7 @@ Database models for AI assessment.
 """
 from uuid import uuid4
 import json
+from django.conf import settings
 from django.core.files.base import ContentFile
 from django.db import models, transaction
 from django.utils.timezone import now
@@ -140,9 +141,10 @@ class AIClassifierSet(models.Model):
             try:
                 classifier.classifier_data.save(filename, contents)
             except Exception as ex:
+                full_filename = upload_to_path(classifier, filename)
                 msg = (
                     u"Could not upload classifier data to {filename}: {ex}"
-                ).format(filename=filename, ex=ex)
+                ).format(filename=full_filename, ex=ex)
                 raise ClassifierUploadError(msg)
 
         return classifier_set
@@ -168,6 +170,42 @@ class AIClassifierSet(models.Model):
             }
 
 
+# Directory in which classifiers will be stored
+# For instance, if we're using the default file system storage backend
+# for local development, this will be a subdirectory.
+# If using an S3 storage backend, this will be a subdirectory in
+# an AWS S3 bucket.
+AI_CLASSIFIER_STORAGE = "ora2_ai_classifiers"
+
+def upload_to_path(instance, filename):    # pylint:disable=W0613
+    """
+    Calculate the file path where classifiers should be uploaded.
+    Optionally prepends the path with a prefix (determined by Django settings).
+    This allows us to put classifiers from different environments
+    (stage / prod) in different directories within the same S3 bucket.
+
+    Args:
+        instance (AIClassifier): Not used.
+        filename (unicode): The filename provided when saving the file.
+
+    Returns:
+        unicode
+
+    """
+    prefix = getattr(settings, 'ORA2_FILE_PREFIX', None)
+    if prefix is not None:
+        return u"{prefix}/{root}/{filename}".format(
+            prefix=prefix,
+            root=AI_CLASSIFIER_STORAGE,
+            filename=filename
+        )
+    else:
+        return u"{root}/{filename}".format(
+            root=AI_CLASSIFIER_STORAGE,
+            filename=filename
+        )
+
+
 class AIClassifier(models.Model):
     """
     A trained classifier (immutable).
@@ -175,13 +213,6 @@ class AIClassifier(models.Model):
 
     class Meta:
         app_label = "assessment"
-
-    # Directory in which classifiers will be stored
-    # For instance, if we're using the default file system storage backend
-    # for local development, this will be a subdirectory.
-    # If using an S3 storage backend, this will be a subdirectory in
-    # an AWS S3 bucket.
-    AI_CLASSIFIER_STORAGE = "ora2_ai_classifiers"
 
     # The set of classifiers this classifier belongs to
     classifier_set = models.ForeignKey(AIClassifierSet, related_name="classifiers")
@@ -192,7 +223,7 @@ class AIClassifier(models.Model):
     # The serialized classifier
     # Because this may be large, we store it using a Django `FileField`,
     # which allows us to plug in different storage backends (such as S3)
-    classifier_data = models.FileField(upload_to=AI_CLASSIFIER_STORAGE)
+    classifier_data = models.FileField(upload_to=upload_to_path)
 
     def download_classifier_data(self):
         """
