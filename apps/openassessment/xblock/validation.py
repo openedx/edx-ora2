@@ -199,6 +199,19 @@ def validate_rubric(rubric_dict, current_rubric, is_released, is_example_based):
         if len(rubric_dict['criteria']) != len(current_rubric['criteria']):
             return (False, _(u'The number of criteria cannot be changed after a problem is released.'))
 
+        # Criteria names must be the same
+        # We use criteria names as unique identifiers (unfortunately)
+        # throughout the system.  Changing them mid-flight can cause
+        # the grade page, for example, to raise 500 errors.
+        # When we implement non-XML authoring, we might be able to fix this
+        # the right way by assigning unique identifiers for criteria;
+        # but for now, this is the safest way to avoid breaking problems
+        # post-release.
+        current_criterion_names = set(criterion.get('name') for criterion in current_rubric['criteria'])
+        new_criterion_names = set(criterion.get('name') for criterion in rubric_dict['criteria'])
+        if current_criterion_names != new_criterion_names:
+            return (False, u'Criteria names cannot be changed after a problem is released')
+
         # Number of options for each criterion must be the same
         for new_criterion, old_criterion in _match_by_order(rubric_dict['criteria'], current_rubric['criteria']):
             if len(new_criterion['options']) != len(old_criterion['options']):
