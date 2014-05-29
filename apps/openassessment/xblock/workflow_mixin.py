@@ -4,6 +4,7 @@ Handle OpenAssessment XBlock requests to the Workflow API.
 
 from xblock.core import XBlock
 from openassessment.workflow import api as workflow_api
+from openassessment.xblock.data_conversion import create_rubric_dict
 
 
 class WorkflowMixin(object):
@@ -50,12 +51,12 @@ class WorkflowMixin(object):
 
         """
         steps = self._create_step_list()
-        rubric_dict = {
-            'criteria': self.rubric_criteria
-        }
+        rubric_dict = create_rubric_dict(self.prompt, self.rubric_criteria)
         ai_module = self.get_assessment_module('example-based-assessment')
         algorithm_id = ai_module["algorithm_id"] if ai_module else None
-        workflow_api.create_workflow(submission_uuid, steps, rubric_dict, algorithm_id)
+        workflow_api.create_workflow(
+            submission_uuid, steps, rubric=rubric_dict, algorithm_id=algorithm_id
+        )
 
     def workflow_requirements(self):
         """

@@ -10,6 +10,7 @@ from submissions import api as sub_api
 from openassessment.workflow import api as workflow_api
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
+from openassessment.xblock.data_conversion import create_rubric_dict
 from .base import XBlockHandlerTestCase, scenario
 # Test dependency on Stub AI Algorithm configuration
 from openassessment.assessment.test.test_ai import (
@@ -55,7 +56,8 @@ class TestGrade(XBlockHandlerTestCase):
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @scenario('data/grade_scenario.xml', user_id='Greggs')
     def test_render_grade(self, xblock):
-        train_classifiers({'criteria': xblock.rubric_criteria}, CLASSIFIER_SCORE_OVERRIDES)
+        rubric = create_rubric_dict(xblock.prompt, xblock.rubric_criteria)
+        train_classifiers(rubric, CLASSIFIER_SCORE_OVERRIDES)
         # Submit, assess, and render the grade view
         self._create_submission_and_assessments(
             xblock, self.SUBMISSION, self.PEERS, self.ASSESSMENTS, self.ASSESSMENTS[0]
