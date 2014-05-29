@@ -29,16 +29,19 @@ Peer Assessment
 
 Self Assessment
 ***************
+
 .. automodule:: openassessment.assessment.api.self
    :members:
 
 Student Training
-***************
+****************
+
 .. automodule:: openassessment.assessment.api.student_training
    :members:
 
 Workflow Assessment
 *******************
+
 .. automodule:: openassessment.workflow
    :members:
 

@@ -20,8 +20,7 @@ class TestMessageRender(XBlockHandlerTestCase):
     # Sets up all of the pre-set dates.  Uses base day of today in order to allow
     # comparison regardless of true date.  For this reason, the dates in the XML are
     # ignored and irrelevant (because we patch is_closed)
-    TODAY = dt.date.today()
-    TODAY = dt.datetime(TODAY.year, TODAY.month, TODAY.day, 0, 0, 0, tzinfo=pytz.utc)
+    TODAY = dt.datetime.utcnow().replace(tzinfo=pytz.utc)
     TOMORROW = TODAY + dt.timedelta(days=1)
     FUTURE = TODAY + dt.timedelta(days=10)
     FAR_FUTURE = TODAY + dt.timedelta(days=100)
@@ -76,10 +75,6 @@ class TestMessageRender(XBlockHandlerTestCase):
 
             # Sets the side effect of is_closed to be our custom method, completing the patch
             mock_is_closed.side_effect = closed_side_effect
-
-            # self.request(xblock, 'render_message', )
-
-            #from nose.tools import set_trace; set_trace()
 
             xblock.render_message(None, '')
 
