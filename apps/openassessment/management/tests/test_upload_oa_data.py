@@ -4,15 +4,15 @@ Tests for management command that uploads submission/assessment data.
 """
 from StringIO import StringIO
 import tarfile
-from django.test import TestCase
 import boto
 import moto
+from openassessment.test_utils import CacheResetTest
 from openassessment.management.commands import upload_oa_data
 from openassessment.workflow import api as workflow_api
 from submissions import api as sub_api
 
 
-class UploadDataTest(TestCase):
+class UploadDataTest(CacheResetTest):
     """
     Test the upload management command.  Archiving and upload are in-scope,
     but the contents of the generated CSV files are tested elsewhere.
