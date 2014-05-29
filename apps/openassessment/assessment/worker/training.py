@@ -4,6 +4,7 @@ Asynchronous tasks for training classifiers from examples.
 from collections import defaultdict
 from celery import task
 from celery.utils.log import get_task_logger
+from django.conf import settings
 from openassessment.assessment.api import ai_worker as ai_worker_api
 from openassessment.assessment.errors import AIError
 from .algorithm import AIAlgorithm, AIAlgorithmError
@@ -13,6 +14,9 @@ MAX_RETRIES = 2
 
 logger = get_task_logger(__name__)
 
+# If the Django settings define a low-priority queue, use that.
+# Otherwise, use the default queue.
+TRAINING_TASK_QUEUE = getattr(settings, 'LOW_PRIORITY_QUEUE', None)
 
 class InvalidExample(Exception):
     """
@@ -26,7 +30,7 @@ class InvalidExample(Exception):
         super(InvalidExample, self).__init__(err_msg)
 
 
-@task(max_retries=MAX_RETRIES)  # pylint: disable=E1102
+@task(queue=TRAINING_TASK_QUEUE, max_retries=MAX_RETRIES)  # pylint: disable=E1102
 def train_classifiers(workflow_uuid):
     """
     Asynchronous task to train classifiers for AI grading.
