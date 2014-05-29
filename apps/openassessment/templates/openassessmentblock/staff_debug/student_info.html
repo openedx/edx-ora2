@@ -16,6 +16,7 @@
             </div>
         </div>
 
+        {% if peer_assessments %}
         <div class="staff-info__status ui-staff__content__section">
             <h3 class="title">{% trans "Peer Assessments for This Student" %}</h3>
             {% for assessment in peer_assessments %}
@@ -55,7 +56,9 @@
                 {% endwith %}
             {%  endfor %}
         </div>
+            {% endif %}
 
+        {% if submitted_assessments %}
         <div class="staff-info__status ui-staff__content__section">
             <h3 class="title">{% trans "Peer Assessments Completed by This Student" %}</h3>
             {% for assessment in submitted_assessments %}
@@ -95,7 +98,9 @@
                 {% endwith %}
             {%  endfor %}
         </div>
+        {% endif %}
 
+        {% if self_assessment %}
         <div class="staff-info__status ui-staff__content__section">
             <h3 class="title">{% trans "Student's Self Assessment" %}</h3>
             <table class="staff-info__status__table" summary="{% trans "Self Assessment" %}">
@@ -124,6 +129,38 @@
                 </tbody>
             </table>
         </div>
+        {% endif %}
+
+        {% if example_based_assessment %}
+            <div class="staff-info__status ui-staff__content__section">
+                <h3 class="title">{% trans "Example Based Assessment" %}</h3>
+                <table class="staff-info__status__table" summary="{% trans "Example Based Assessment" %}">
+                    <thead>
+                    <tr>
+                        <th abbr="Criterion" scope="col">{% trans "Criterion" %}</th>
+                        <th abbr="Selected Option" scope="col">{% trans "Selected Option" %}</th>
+                        <th abbr="Points" scope="col">{% trans "Points" %}</th>
+                        <th abbr="Points Possible" scope="col">{% trans "Points Possible" %}</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for criterion in rubric_criteria %}
+                        {% for part in example_based_assessment.parts %}
+                            {% if part.option.criterion.name == criterion.name %}
+                                <tr>
+                                    <td class="label">{{ criterion.name }}</td>
+                                    <td class="value">{{ part.option.name }}</td>
+                                    <td class="value">{{ part.option.points }}</td>
+                                    <td class="value">{{ criterion.total_value }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
     </div>
     {% else %}
         {% trans "Couldn't find a response for this student." %}

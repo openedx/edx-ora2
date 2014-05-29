@@ -254,8 +254,20 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertEquals([], context['peer_assessments'])
         self.assertEquals("openassessmentblock/staff_debug/student_info.html", path)
 
-    @scenario('data/basic_scenario.xml', user_id='Bob')
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    @scenario('data/example_based_assessment.xml', user_id='Bob')
     def test_staff_debug_student_info_full_workflow(self, xblock):
+        # Train classifiers.
+        example_based_assessment = xblock.get_assessment_module('example-based-assessment')
+        example_based_assessment['algorithm_id'] = ALGORITHM_ID
+        train_classifiers({'criteria': xblock.rubric_criteria}, CLASSIFIER_SCORE_OVERRIDES)
+
+        # Commonly chosen options for assessments
+        options_selected = {
+            "Ideas": "Good",
+            "Content": "Poor",
+        }
+
         # Simulate that we are course staff
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
@@ -280,7 +292,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         peer_api.create_assessment(
             submission["uuid"],
             STUDENT_ITEM["student_id"],
-            ASSESSMENT_DICT['options_selected'], dict(), "",
+            options_selected, dict(), "",
             {'criteria': xblock.rubric_criteria},
             1,
         )
@@ -289,7 +301,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self_api.create_assessment(
             submission['uuid'],
             STUDENT_ITEM["student_id"],
-            ASSESSMENT_DICT['options_selected'],
+            options_selected,
             {'criteria': xblock.rubric_criteria},
         )
 
