@@ -9,6 +9,7 @@ from mock import patch
 import pytz
 from django.db import DatabaseError
 from openassessment.assessment.models import StudentTrainingWorkflow
+from openassessment.workflow import api as workflow_api
 from .base import XBlockHandlerTestCase, scenario
 
 @ddt.ddt
@@ -39,6 +40,29 @@ class StudentTrainingAssessTest(XBlockHandlerTestCase):
         # Expect that we were correct
         self.assertTrue(resp['success'], msg=resp.get('msg'))
         self.assertFalse(resp['corrections'])
+
+    @scenario('data/student_training.xml', user_id="Plato")
+    @ddt.file_data('data/student_training_mixin.json')
+    def test_correct_with_error(self, xblock, data):
+        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        self._assert_path_and_context(xblock, data["expected_template"], data["expected_context"])
+
+        # Agree with the course author's assessment
+        # (as defined in the scenario XML)
+        data = {
+            'options_selected': {
+                'Vocabulary': 'Good',
+                'Grammar': 'Excellent'
+            }
+        }
+        with patch.object(workflow_api, "update_from_assessments") as mock_workflow_update:
+            mock_workflow_update.side_effect = workflow_api.AssessmentWorkflowError("Oh no!")
+            resp = self.request(xblock, 'training_assess', json.dumps(data), response_format='json')
+
+            # Expect that we were not correct due to a workflow update error.
+            self.assertFalse(resp['success'], msg=resp.get('msg'))
+            self.assertEquals('Could not update workflow status.', resp.get('msg'))
+            self.assertFalse('corrections' in resp)
 
     @scenario('data/student_training.xml', user_id="Plato")
     @ddt.file_data('data/student_training_mixin.json')
