@@ -106,3 +106,16 @@ ORA2_AI_ALGORITHMS = {
     'fake': 'openassessment.assessment.worker.algorithm.FakeAIAlgorithm',
     'ease': 'openassessment.assessment.worker.algorithm.EaseAIAlgorithm'
 }
+
+# Celery Broker
+CELERY_BROKER_TRANSPORT = "amqp"
+CELERY_BROKER_HOSTNAME = "localhost:5672//"
+CELERY_BROKER_USER = "guest"
+CELERY_BROKER_PASSWORD = "guest"
+
+BROKER_URL = "{0}://{1}:{2}@{3}".format(
+    CELERY_BROKER_TRANSPORT,
+    CELERY_BROKER_USER,
+    CELERY_BROKER_PASSWORD,
+    CELERY_BROKER_HOSTNAME,
+)
