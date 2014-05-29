@@ -9,7 +9,7 @@
 
 `User documentation available on ReadTheDocs`__.
 
-__ http://peer-assessment.readthedocs.org/
+__ http://edx.readthedocs.org/projects/edx-open-response-assessments
 
 
 This is an initial prototype for redesigning Peer Grading and general Open Ended
