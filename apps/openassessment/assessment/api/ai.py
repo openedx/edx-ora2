@@ -24,6 +24,62 @@ from openassessment.assessment.worker import grading as grading_tasks
 logger = logging.getLogger(__name__)
 
 
+def submitter_is_finished(submission_uuid, requirements):
+    """
+    Determine if the submitter has finished their requirements for Example
+    Based Assessment. Always returns True.
+
+    Args:
+        submission_uuid (str): Not used.
+        requirements (dict): Not used.
+
+    Returns:
+        True
+
+    """
+    return True
+
+
+def assessment_is_finished(submission_uuid, requirements):
+    """
+    Determine if the assessment of the given submission is completed. This
+    checks to see if the AI has completed the assessment.
+
+    Args:
+        submission_uuid (str): The UUID of the submission being graded.
+        requirements (dict): Not used.
+
+    Returns:
+        True if the assessment has been completed for this submission.
+
+    """
+    return bool(get_latest_assessment(submission_uuid))
+
+
+def get_score(submission_uuid, requirements):
+    """
+    Generate a score based on a completed assessment for the given submission.
+    If no assessment has been completed for this submission, this will return
+    None.
+
+    Args:
+        submission_uuid (str): The UUID for the submission to get a score for.
+        requirements (dict): Not used.
+
+    Returns:
+        A dictionary with the points earned and points possible.
+
+    """
+    assessment = get_latest_assessment(submission_uuid)
+    if not assessment:
+        return None
+
+    return {
+        "points_earned": assessment["points_earned"],
+        "points_possible": assessment["points_possible"]
+    }
+
+
 def submit(submission_uuid, rubric, algorithm_id):
     """
     Submit a response for AI assessment.

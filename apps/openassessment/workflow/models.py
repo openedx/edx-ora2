@@ -50,7 +50,8 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
     STEPS = [
         "peer",  # User needs to assess peer submissions
         "self",  # User needs to assess themselves
-        "training", # User needs to practice grading using example essays
+        "training",  # User needs to practice grading using example essays
+        "ai",  # User submission will be graded by AI.
     ]
 
     STATUSES = [
@@ -95,7 +96,11 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 "complete": step.api().submitter_is_finished(
                     self.submission_uuid,
                     assessment_requirements.get(step.name, {})
-                )
+                ),
+                "graded": step.api().assessment_is_finished(
+                    self.submission_uuid,
+                    assessment_requirements.get(step.name, {})
+                ),
             }
         return status_dict
 
@@ -130,6 +135,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 specific requirements in this dict.
 
         """
+        from openassessment.assessment.api import ai as ai_api
         from openassessment.assessment.api import peer as peer_api
         from openassessment.assessment.api import self as self_api
 
@@ -174,6 +180,8 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 )
             elif self.STATUS.self in step_names:
                 score = self_api.get_score(self.submission_uuid, {})
+            elif self.STATUS.ai in step_names:
+                score = ai_api.get_score(self.submission_uuid, {})
 
             if score:
                 self.set_score(score)
@@ -266,6 +274,7 @@ class AssessmentWorkflowStep(models.Model):
         Returns an API associated with this workflow step. If no API is
         associated with this workflow step, None is returned.
         """
+        from openassessment.assessment.api import ai as ai_api
         from openassessment.assessment.api import peer as peer_api
         from openassessment.assessment.api import self as self_api
         from openassessment.assessment.api import student_training
@@ -276,6 +285,9 @@ class AssessmentWorkflowStep(models.Model):
             api = peer_api
         elif self.name == AssessmentWorkflow.STATUS.training:
             api = student_training
+        elif self.name == AssessmentWorkflow.STATUS.ai:
+            api = ai_api
+
         return api
 
     def update(self, submission_uuid, assessment_requirements):

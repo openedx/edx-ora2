@@ -62,6 +62,22 @@ AI_ALGORITHMS = {
 }
 
 
+def train_classifiers(rubric_dict, classifier_score_overrides):
+    """
+    Simple utility function to train classifiers.
+
+    Args:
+        rubric_dict (dict): The rubric to train the classifiers on.
+        classifier_score_overrides (dict): A dictionary of classifier overrides
+            to set the scores for the given submission.
+
+    """
+    rubric = rubric_from_dict(rubric_dict)
+    AIClassifierSet.create_classifier_set(
+        classifier_score_overrides, rubric, ALGORITHM_ID
+    )
+
+
 class AITrainingTest(CacheResetTest):
     """
     Tests for AI training tasks.
@@ -161,15 +177,7 @@ class AIGradingTest(CacheResetTest):
         submission = sub_api.create_submission(STUDENT_ITEM, ANSWER)
         self.submission_uuid = submission['uuid']
 
-        # Create the classifier set for our fake AI algorithm
-        # To isolate these tests from the tests for the training
-        # task, we use the database models directly.
-        # We also use a stub AI algorithm that simply returns
-        # whatever scores we specify in the classifier data.
-        rubric = rubric_from_dict(RUBRIC)
-        AIClassifierSet.create_classifier_set(
-            self.CLASSIFIER_SCORE_OVERRIDES, rubric, ALGORITHM_ID
-        )
+        train_classifiers(RUBRIC, self.CLASSIFIER_SCORE_OVERRIDES)
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     def test_grade_essay(self):
@@ -184,6 +192,11 @@ class AIGradingTest(CacheResetTest):
             criterion_name = part['option']['criterion']['name']
             expected_score = self.CLASSIFIER_SCORE_OVERRIDES[criterion_name]['score_override']
             self.assertEqual(part['option']['points'], expected_score)
+
+        score = ai_api.get_score(self.submission_uuid, {})
+        self.assertEquals(score["points_possible"], 4)
+        self.assertEquals(score["points_earned"], 3)
+
 
     @mock.patch('openassessment.assessment.api.ai.grading_tasks.grade_essay')
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
@@ -237,3 +250,17 @@ class AIGradingTest(CacheResetTest):
         mock_call.side_effect = DatabaseError("KABOOM!")
         with self.assertRaises(AIGradingInternalError):
             ai_api.get_latest_assessment(self.submission_uuid)
+
+
+class AIUntrainedGradingTest:
+    """
+    Tests that do not run the setup to train classifiers.
+
+    """
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_no_score(self):
+        # Test that no score has been created, and get_score returns None.
+        ai_api.submit(self.submission_uuid, RUBRIC, ALGORITHM_ID)
+        score = ai_api.get_score(self.submission_uuid, {})
+        self.assertIsNone(score)
