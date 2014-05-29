@@ -1,4 +1,4 @@
-.. _Accessing Assignment Information:
+.. _PA Accessing Assignment Information:
 
 ##########################################
 Accessing Assignment and Student Metrics
@@ -102,7 +102,7 @@ The following example shows:
 
 * The student's response. 
 * The two peer assessments for the response.
-* The two peer assessments the student competed.
+* The two peer assessments the student completed.
 * The student's self assessment.
 
 For a larger view, click the image so that it opens by itself in the browser window, and then click anywhere on the image that opens.
