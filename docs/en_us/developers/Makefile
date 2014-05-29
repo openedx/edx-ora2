@@ -11,6 +11,22 @@ BUILDDIR      = build
 PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
+# User-friendly check for sphinx-build
+ifeq ($(shell which $(SPHINXBUILD) >/dev/null 2>&1; echo $$?), 1)
+$(error The '$(SPHINXBUILD)' command was not found. Make sure you have Sphinx installed, then set the SPHINXBUILD environment variable to point to the full path of the '$(SPHINXBUILD)' executable. Alternatively you can add the directory with the executable to your PATH. If you don't have Sphinx installed, grab it from http://sphinx-doc.org/)
+endif
+
+Q_FLAG        = 
+
+ifeq ($(quiet), true)
+Q_FLAG = -Q
+endif
+
+# Internal variables.
+PAPEROPT_a4     = -D latex_paper_size=a4
+PAPEROPT_letter = -D latex_paper_size=letter
+ALLSPHINXOPTS   = $(Q_FLAG) -d $(BUILDDIR)/doctrees -c source $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
+>>>>>>> Update information about accessing specific student info
 # the i18n builder cannot share the environment and doctrees with the others
 I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
 
@@ -29,17 +45,20 @@ help:
 	@echo "  epub       to make an epub"
 	@echo "  latex      to make LaTeX files, you can set PAPER=a4 or PAPER=letter"
 	@echo "  latexpdf   to make LaTeX files and run them through pdflatex"
+	@echo "  latexpdfja to make LaTeX files and run them through platex/dvipdfmx"
 	@echo "  text       to make text files"
 	@echo "  man        to make manual pages"
 	@echo "  texinfo    to make Texinfo files"
 	@echo "  info       to make Texinfo files and run them through makeinfo"
 	@echo "  gettext    to make PO message catalogs"
 	@echo "  changes    to make an overview of all changed/added/deprecated items"
+	@echo "  xml        to make Docutils-native XML files"
+	@echo "  pseudoxml  to make pseudoxml-XML files for display purposes"
 	@echo "  linkcheck  to check all external links for integrity"
 	@echo "  doctest    to run all doctests embedded in the documentation (if enabled)"
 
 clean:
-	-rm -rf $(BUILDDIR)/*
+	rm -rf $(BUILDDIR)/*
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
@@ -77,17 +96,17 @@ qthelp:
 	@echo
 	@echo "Build finished; now you can run "qcollectiongenerator" with the" \
 	      ".qhcp project file in $(BUILDDIR)/qthelp, like this:"
-	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/edx-ora2.qhcp"
+	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/getting_started.qhcp"
 	@echo "To view the help file:"
-	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/edx-ora2.qhc"
+	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/getting_started.qhc"
 
 devhelp:
 	$(SPHINXBUILD) -b devhelp $(ALLSPHINXOPTS) $(BUILDDIR)/devhelp
 	@echo
 	@echo "Build finished."
 	@echo "To view the help file:"
-	@echo "# mkdir -p $$HOME/.local/share/devhelp/edx-ora2"
-	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/edx-ora2"
+	@echo "# mkdir -p $$HOME/.local/share/devhelp/getting_started"
+	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/getting_started"
 	@echo "# devhelp"
 
 epub:
@@ -102,10 +121,10 @@ latex:
 	@echo "Run \`make' in that directory to run these through (pdf)latex" \
 	      "(use \`make latexpdf' here to do that automatically)."
 
-latexpdf:
+latexpdfja:
 	$(SPHINXBUILD) -b latex $(ALLSPHINXOPTS) $(BUILDDIR)/latex
-	@echo "Running LaTeX files through pdflatex..."
-	$(MAKE) -C $(BUILDDIR)/latex all-pdf
+	@echo "Running LaTeX files through platex and dvipdfmx..."
+	$(MAKE) -C $(BUILDDIR)/latex all-pdf-ja
 	@echo "pdflatex finished; the PDF files are in $(BUILDDIR)/latex."
 
 text:
@@ -151,3 +170,13 @@ doctest:
 	$(SPHINXBUILD) -b doctest $(ALLSPHINXOPTS) $(BUILDDIR)/doctest
 	@echo "Testing of doctests in the sources finished, look at the " \
 	      "results in $(BUILDDIR)/doctest/output.txt."
+
+xml:
+	$(SPHINXBUILD) -b xml $(ALLSPHINXOPTS) $(BUILDDIR)/xml
+	@echo
+	@echo "Build finished. The XML files are in $(BUILDDIR)/xml."
+
+pseudoxml:
+	$(SPHINXBUILD) -b pseudoxml $(ALLSPHINXOPTS) $(BUILDDIR)/pseudoxml
+	@echo
+	@echo "Build finished. The pseudo-XML files are in $(BUILDDIR)/pseudoxml."
