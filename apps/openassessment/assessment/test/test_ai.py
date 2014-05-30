@@ -4,6 +4,7 @@ Tests for AI assessment.
 """
 import copy
 import mock
+from nose.tools import raises
 from django.db import DatabaseError
 from django.test.utils import override_settings
 from openassessment.test_utils import CacheResetTest
@@ -201,6 +202,24 @@ class AIGradingTest(CacheResetTest):
         self.assertEquals(score["points_possible"], 4)
         self.assertEquals(score["points_earned"], 3)
 
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_get_assessment_scores_by_criteria(self):
+        ai_api.submit(self.submission_uuid, RUBRIC, ALGORITHM_ID)
+
+        # Verify that we got the scores we provided to the stub AI algorithm
+        assessment = ai_api.get_latest_assessment(self.submission_uuid)
+        assessment_score_dict = ai_api.get_assessment_scores_by_criteria(self.submission_uuid)
+        for part in assessment['parts']:
+            criterion_name = part['option']['criterion']['name']
+            expected_score = self.CLASSIFIER_SCORE_OVERRIDES[criterion_name]['score_override']
+            self.assertEqual(assessment_score_dict[criterion_name], expected_score)
+
+    @raises(ai_api.AIGradingInternalError)
+    @mock.patch.object(Assessment.objects, 'filter')
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_error_getting_assessment_scores(self, mock_filter):
+        mock_filter.side_effect = DatabaseError("Oh no!")
+        ai_api.get_assessment_scores_by_criteria(self.submission_uuid)
 
     @mock.patch('openassessment.assessment.api.ai.grading_tasks.grade_essay')
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
