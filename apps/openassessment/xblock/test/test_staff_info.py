@@ -8,7 +8,7 @@ from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 from openassessment.assessment.api import ai as ai_api
 from openassessment.workflow import api as workflow_api
-from openassessment.assessment.errors.ai import AIError
+from openassessment.assessment.errors.ai import AIError, AIGradingInternalError, AITrainingInternalError
 from submissions import api as sub_api
 from openassessment.xblock.test.base import scenario, XBlockHandlerTestCase
 # Test dependency on Stub AI Algorithm configuration
@@ -364,6 +364,51 @@ class TestCourseStaff(XBlockHandlerTestCase):
             xblock.scope_ids.usage_id, True, True, "Bob"
         )
         response = self.request(xblock, 'schedule_training', json.dumps({}), response_format='json')
+        self.assertFalse(response['success'])
+        self.assertTrue('error' in response['msg'])
+
+    @scenario('data/example_based_assessment.xml', user_id='Bob')
+    def test_display_reschedule_unfinished_grading_tasks(self, xblock):
+        xblock.rubric_assessments.append(EXAMPLE_BASED_ASSESSMENT)
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, True, "Bob"
+        )
+        path, context = xblock.get_staff_path_and_context()
+        self.assertEquals('openassessmentblock/staff_debug/staff_debug.html', path)
+        self.assertTrue(context['display_reschedule_unfinished_tasks'])
+
+    @scenario('data/example_based_assessment.xml', user_id='Bob')
+    def test_reschedule_unfinished_grading_tasks_no_permissions(self, xblock):
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+        response = self.request(xblock, 'reschedule_unfinished_tasks', json.dumps({}), response_format='json')
+        self.assertFalse(response['success'])
+        self.assertTrue('permission' in response['msg'])
+
+    @patch.object(ai_api, "reschedule_unfinished_tasks")
+    @scenario('data/example_based_assessment.xml', user_id='Bob')
+    def test_reschedule_unfinished_grading_tasks_success(self, xblock, mock_api):
+        mock_api.side_effect = Mock()
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, True, "Bob"
+        )
+        response = self.request(xblock, 'reschedule_unfinished_tasks', json.dumps({}), response_format='json')
+        self.assertTrue(response['success'])
+        self.assertTrue(u'All' in response['msg'])
+        mock_api.assert_called_with(
+            course_id=unicode(STUDENT_ITEM.get('course_id')), item_id=unicode(xblock.scope_ids.usage_id),
+            task_type=u"grade"
+        )
+
+    @patch.object(ai_api, "reschedule_unfinished_tasks")
+    @scenario('data/example_based_assessment.xml', user_id='Bob')
+    def test_reschedule_unfinished_grading_tasks_error(self, xblock, mock_api):
+        mock_api.side_effect = AIGradingInternalError("Oh Noooo!")
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, True, "Bob"
+        )
+        response = self.request(xblock, 'reschedule_unfinished_tasks', json.dumps({}), response_format='json')
         self.assertFalse(response['success'])
         self.assertTrue('error' in response['msg'])
 

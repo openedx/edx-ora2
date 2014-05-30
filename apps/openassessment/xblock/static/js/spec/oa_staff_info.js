@@ -27,6 +27,15 @@ describe("OpenAssessment.StaffInfoView", function() {
             }).promise();
         };
 
+        this.rescheduleUnfinishedTasks = function() {
+            var server = this;
+            return $.Deferred(function(defer) {
+                defer.resolveWith(server, [server.data]);
+            }).promise();
+        };
+
+        this.data = {};
+
     };
 
     // Stub base view
@@ -93,6 +102,7 @@ describe("OpenAssessment.StaffInfoView", function() {
         expect(server.scheduleTraining).toHaveBeenCalled();
     });
 
+
     it("Loads staff info if the page contains a course staff section", function() {
         // Load the fixture for the container page that DOES include a course staff section
         loadFixtures('oa_base_course_staff.html');
@@ -105,4 +115,45 @@ describe("OpenAssessment.StaffInfoView", function() {
         loadFixtures('oa_base.html');
         assertStaffInfoAjaxCall(false);
     });
+
+    it("reschedules training of AI tasks", function() {
+        server.data = {
+            "success": true,
+            "workflow_uuid": "abc123",
+            "msg": "Great success."
+        };
+
+        var el = $("#openassessment-base").get(0);
+        var view = new OpenAssessment.StaffInfoView(el, server, baseView);
+        view.load();
+
+        spyOn(server, 'rescheduleUnfinishedTasks').andCallThrough();
+
+        // Test the Rescheduling
+        view.rescheduleUnfinishedTasks();
+
+        // Expect that the server was instructed to reschedule Unifinished Taks
+        expect(server.rescheduleUnfinishedTasks).toHaveBeenCalled();
+    });
+
+    it("reschedules training of AI tasks", function() {
+        server.data = {
+            "success": false,
+            "workflow_uuid": "abc123",
+            "errMsg": "Stupendous Failure."
+        };
+
+        var el = $("#openassessment-base").get(0);
+        var view = new OpenAssessment.StaffInfoView(el, server, baseView);
+        view.load();
+
+        spyOn(server, 'rescheduleUnfinishedTasks').andCallThrough();
+
+        // Test the Rescheduling
+        view.rescheduleUnfinishedTasks();
+
+        // Expect that the server was instructed to reschedule Unifinished Taks
+        expect(server.rescheduleUnfinishedTasks).toHaveBeenCalled();
+    });
+
 });

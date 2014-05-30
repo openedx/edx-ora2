@@ -128,9 +128,8 @@ class AIGradingWorkflowAdmin(admin.ModelAdmin):
 
 class AITrainingWorkflowAdmin(admin.ModelAdmin):
     list_display = ('uuid',)
-    # TODO -- update to include student/item/course id
-    search_fields = ('uuid',)
-    readonly_fields = ('uuid',)
+    search_fields = ('uuid', 'course_id', 'item_id',)
+    readonly_fields = ('uuid', 'course_id', 'item_id',)
 
 
 class AIClassifierInline(admin.TabularInline):

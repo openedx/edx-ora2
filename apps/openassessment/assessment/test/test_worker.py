@@ -90,12 +90,28 @@ class AITrainingTaskTest(CeleryTaskTest):
     Tests for the training task executed asynchronously by Celery workers.
     """
 
+    COURSE_ID = u"10923"
+    ITEM_ID = u"12231"
+    ALGORITHM_ID = u"test-stub"
+    ERROR_STUB_ALGORITHM_ID = u"error-stub"
+    UNDEFINED_CLASS_ALGORITHM_ID = u"undefined_class"
+    UNDEFINED_MODULE_ALGORITHM_ID = u"undefined_module"
+    AI_ALGORITHMS = {
+        ALGORITHM_ID: '{module}.StubAIAlgorithm'.format(module=__name__),
+        ERROR_STUB_ALGORITHM_ID: '{module}.ErrorStubAIAlgorithm'.format(module=__name__),
+        UNDEFINED_CLASS_ALGORITHM_ID: '{module}.NotDefinedAIAlgorithm'.format(module=__name__),
+        UNDEFINED_MODULE_ALGORITHM_ID: 'openassessment.not.valid.NotDefinedAIAlgorithm'
+    }
+
+
     def setUp(self):
         """
         Create a training workflow in the database.
         """
         examples = deserialize_training_examples(EXAMPLES, RUBRIC)
-        workflow = AITrainingWorkflow.start_workflow(examples, ALGORITHM_ID)
+
+        workflow = AITrainingWorkflow.start_workflow(examples, self.COURSE_ID, self.ITEM_ID, self.ALGORITHM_ID)
+
         self.workflow_uuid = workflow.uuid
 
     def test_unknown_algorithm(self):

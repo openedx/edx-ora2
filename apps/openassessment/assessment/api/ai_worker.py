@@ -30,6 +30,8 @@ def get_grading_task_params(grading_workflow_uuid):
         dict with keys:
             * essay_text (unicode): The text of the essay submission.
             * classifier_set (dict): Maps criterion names to serialized classifiers.
+            * course_id (unicode): The course ID that the training task is associated with.
+            * item_id (unicode): Identifies the item that the AI will be training to grade.
             * algorithm_id (unicode): ID of the algorithm used to perform training.
 
     Raises:
@@ -66,6 +68,8 @@ def get_grading_task_params(grading_workflow_uuid):
         return {
             'essay_text': workflow.essay_text,
             'classifier_set': classifier_set.classifiers_dict,
+            'course_id': workflow.course_id,
+            'item_id': workflow.item_id,
             'algorithm_id': workflow.algorithm_id,
         }
     except Exception as ex:
@@ -142,6 +146,8 @@ def get_training_task_params(training_workflow_uuid):
     Returns:
         dict with keys:
             * training_examples (list of dict): The examples used to train the classifiers.
+            * course_id (unicode): The course ID that the training task is associated with.
+            * item_id (unicode): Identifies the item that the AI will be training to grade.
             * algorithm_id (unicode): The ID of the algorithm to use for training.
 
     Raises:
@@ -194,7 +200,9 @@ def get_training_task_params(training_workflow_uuid):
 
         return {
             'training_examples': returned_examples,
-            'algorithm_id': workflow.algorithm_id
+            'algorithm_id': workflow.algorithm_id,
+            'course_id': workflow.course_id,
+            'item_id': workflow.item_id
         }
     except AITrainingWorkflow.DoesNotExist:
         msg = (

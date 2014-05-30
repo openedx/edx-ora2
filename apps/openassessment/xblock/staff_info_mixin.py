@@ -6,7 +6,7 @@ import copy
 from django.utils.translation import ugettext as _
 
 from xblock.core import XBlock
-from openassessment.assessment.errors.ai import AIError
+from openassessment.assessment.errors.ai import AIError, AIGradingInternalError, AITrainingInternalError
 from openassessment.xblock.resolve_dates import DISTANT_PAST, DISTANT_FUTURE
 from openassessment.xblock.data_conversion import create_rubric_dict, convert_training_examples_list_to_dict
 from submissions import api as submission_api
@@ -52,6 +52,11 @@ class StaffInfoMixin(object):
         assessment = self.get_assessment_module('example-based-assessment')
         context['display_schedule_training'] = self.is_admin and assessment
 
+        # Show the reschedule tasks button if the user is an administrator and
+        # is not in studio preview mode and there exists example based assessment
+        # as part of the problem definition.
+        context['display_reschedule_unfinished_tasks'] = self.is_admin and assessment and not self.in_studio_preview
+
         # We need to display the new-style locations in the course staff
         # info, even if we're using old-style locations internally,
         # so course staff can use the locations to delete student state.
@@ -82,12 +87,16 @@ class StaffInfoMixin(object):
             }
 
         assessment = self.get_assessment_module('example-based-assessment')
+        student_item_dict = self.get_student_item_dict()
+
         if assessment:
             examples = assessment["examples"]
             try:
                 workflow_uuid = ai_api.train_classifiers(
                     create_rubric_dict(self.prompt, self.rubric_criteria),
                     convert_training_examples_list_to_dict(examples),
+                    student_item_dict.get('course_id'),
+                    student_item_dict.get('item_id'),
                     assessment["algorithm_id"]
                 )
                 return {
@@ -183,3 +192,49 @@ class StaffInfoMixin(object):
 
         path = 'openassessmentblock/staff_debug/student_info.html'
         return path, context
+
+    @XBlock.json_handler
+    def reschedule_unfinished_tasks(self, data, suffix=''):
+        """
+        Wrapper which invokes the API call for rescheduling grading tasks.
+
+        Checks that the requester is an administrator that is not in studio-preview mode,
+        and that the api-call returns without error.  If it returns with an error, (any
+        exception), the appropriate JSON serializable dictionary with success conditions
+        is passed back.
+
+        Args:
+            data (not used)
+            suffix (not used)
+
+        Return:
+            Json serilaizable dict with the following elements:
+                'success': (bool) Indicates whether or not the tasks were rescheduled successfully
+                'msg': The response to the server (could be error message or success message)
+        """
+
+        # Verifies permissions after the push of the button is made
+        if not self.is_admin or self.in_studio_preview:
+            return {
+                'success': False,
+                'msg': _(u"You do not have permission to reschedule tasks.")
+            }
+
+        # Identifies the course and item that will need to be re-run
+        student_item_dict = self.get_student_item_dict()
+        course_id = student_item_dict.get('course_id')
+        item_id = student_item_dict.get('item_id')
+
+        try:
+            # Note that we only want to recschdule grading tasks, but maintain the potential functionallity
+            # within the API to also reschedule training tasks.
+            ai_api.reschedule_unfinished_tasks(course_id=course_id, item_id=item_id, task_type=u"grade")
+            return {
+                'success': True,
+                'msg': _(u"All AI tasks associated with this item have been rescheduled successfully.")
+            }
+        except (AIGradingInternalError, AITrainingInternalError, AIError) as ex:
+            return {
+                'success': False,
+                'msg': _(u"An error occurred while rescheduling tasks: {}".format(ex))
+            }
