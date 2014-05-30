@@ -152,27 +152,31 @@ class StaffInfoMixin(object):
                 submission = submissions[0]
                 submission_uuid = submissions[0]['uuid']
 
+        example_based_assessment = None
+        self_assessment = None
+        peer_assessments = []
+        submitted_assessments = []
+
         if "peer-assessment" in assessment_steps:
             peer_assessments = peer_api.get_assessments(submission_uuid)
             submitted_assessments = peer_api.get_submitted_assessments(submission_uuid, scored_only=False)
-        else:
-            peer_assessments = []
-            submitted_assessments = []
 
         if "self-assessment" in assessment_steps:
             self_assessment = self_api.get_assessment(submission_uuid)
-        else:
-            self_assessment = None
+
+        if "example-based-assessment" in assessment_steps:
+            example_based_assessment = ai_api.get_latest_assessment(submission_uuid)
 
         context = {
             'submission': submission,
             'peer_assessments': peer_assessments,
             'submitted_assessments': submitted_assessments,
             'self_assessment': self_assessment,
+            'example_based_assessment': example_based_assessment,
             'rubric_criteria': copy.deepcopy(self.rubric_criteria),
         }
 
-        if peer_assessments or self_assessment:
+        if peer_assessments or self_assessment or example_based_assessment:
             max_scores = peer_api.get_rubric_max_scores(submission_uuid)
             for criterion in context["rubric_criteria"]:
                 criterion["total_value"] = max_scores[criterion["name"]]
