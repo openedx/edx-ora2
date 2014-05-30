@@ -254,7 +254,7 @@ class AIWorkflow(models.Model):
         abstract = True
 
     # Unique identifier used to track this workflow
-    uuid = UUIDField(version=1, db_index=True)
+    uuid = UUIDField(version=1, db_index=True, unique=True)
 
     # Course Entity and Item Discriminator
     # Though these items are duplicated in the database tables for the submissions app,
