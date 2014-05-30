@@ -8,7 +8,10 @@ import logging
 from django.db import DatabaseError
 
 from openassessment.assessment.api import peer as peer_api
-from openassessment.assessment.errors import PeerAssessmentError
+from openassessment.assessment.api import student_training as training_api
+from openassessment.assessment.errors import (
+    PeerAssessmentError, StudentTrainingInternalError
+)
 from submissions import api as sub_api
 from .models import AssessmentWorkflow, AssessmentWorkflowStep
 from .serializers import AssessmentWorkflowSerializer
@@ -140,6 +143,12 @@ def create_workflow(submission_uuid, steps):
         status = AssessmentWorkflow.STATUS.self
     elif steps[0] == "training":
         status = AssessmentWorkflow.STATUS.training
+        try:
+            training_api.create_student_training_workflow(submission_uuid)
+        except StudentTrainingInternalError as err:
+            err_msg = u"Could not create assessment workflow: {}".format(err)
+            logger.exception(err_msg)
+            raise AssessmentWorkflowInternalError(err_msg)
 
     try:
         workflow = AssessmentWorkflow.objects.create(
