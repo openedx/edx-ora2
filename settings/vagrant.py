@@ -1,26 +1,36 @@
 """
-Dev-specific Django settings.
+Settings for running workbench in Vagrant.
+To mimic production, the Vagrant setup uses:
+
+    * gunicorn (run multiple server processes)
+    * memcached
+    * mysql
+    * rabbitmq
+
 """
+
 # Inherit from base settings
 from .base import *  # pylint:disable=W0614,W0401
 
-INSTALLED_APPS += (
-    'django_pdb',            # Allows post-mortem debugging on exceptions
-    'debug_toolbar',
-    'debug_panel',
-)
+VAGRANT_HOME = "/home/vagrant"
+REPO_ROOT = u"{home}/edx-ora2".format(home=VAGRANT_HOME)
 
-MIDDLEWARE_CLASSES += (
-    'django_pdb.middleware.PdbMiddleware',  # Needed to enable shell-on-crash behavior
-    'debug_panel.middleware.DebugPanelMiddleware',
-)
+DEBUG = False
 
-# We need to use explicit discovery or we'll have problems with syncdb and
-# displaying the admin site. See:
-# http://django-debug-toolbar.readthedocs.org/en/1.0/installation.html#explicit-setup
-DEBUG_TOOLBAR_PATCH_SETTINGS = False
+INSTALLED_APPS += ('gunicorn',)
 
-INTERNAL_IPS = ('127.0.0.1',)
+STATIC_ROOT = u"{home}/static".format(home=VAGRANT_HOME)
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'workbench',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': '',
+    }
+}
 
 CACHES = {
     'default': {
@@ -30,6 +40,7 @@ CACHES = {
     }
 }
 
+LOG_ROOT = u"{repo}/logs/vagrant".format(repo=REPO_ROOT)
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -42,19 +53,19 @@ LOGGING = {
         'apps_info': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': 'logs/dev/apps_info.log',
+            'filename': u'{}/apps_info.log'.format(LOG_ROOT),
             'formatter': 'simple',
         },
         'apps_debug': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'logs/dev/apps_debug.log',
+            'filename': u'{}/apps_debug.log'.format(LOG_ROOT),
             'formatter': 'simple',
         },
         'trace': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': 'logs/dev/trace.log',
+            'filename': u'{}/trace.log'.format(LOG_ROOT),
             'formatter': 'simple',
             'maxBytes': 1000000,
             'backupCount': 2,
@@ -62,13 +73,13 @@ LOGGING = {
         'events': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': 'logs/dev/events.log',
+            'filename': u'{}/events.log'.format(LOG_ROOT),
             'formatter': 'simple',
         },
         'errors': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': 'logs/dev/errors.log',
+            'filename': u'{}/errors.log'.format(LOG_ROOT),
             'formatter': 'simple',
         }
     },
@@ -96,6 +107,7 @@ LOGGING = {
         }
     },
 }
+
 
 
 # Store uploaded files in a dev-specific directory
