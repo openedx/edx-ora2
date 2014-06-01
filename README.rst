@@ -138,7 +138,7 @@ To use the Vagrant VM:
 
 1) `Install Vagrant <https://docs.vagrantup.com/v2/installation/>`_.
 2) ``vagrant up`` to start and provision the Vagrant VM.
-3) Visit `http://192.168.44.10/workbench/ <http://192.168.44.10/workbench/>`_
+3) Visit `http://192.168.44.10 <http://192.168.44.10>`_
 4) You should see the workbench index page load.
 
 After making a change to the code in the ``edx-ora2`` directory,
@@ -146,7 +146,7 @@ you must restart the services on the Vagrant VM:
 
 1) ``vagrant ssh`` to ssh into the Vagrant VM.
 2) ``./update.sh`` to restart the services, run database migrations, and collect static assets.
-3) Visit `http://192.168.44.10/workbench/ <http://192.168.44.10/workbench/>`_
+3) Visit `http://192.168.44.10 <http://192.168.44.10>`_
 
 By default, the Vagrant VM also includes a monitoring tool for Celery tasks called `Flower <https://github.com/mher/flower>`_.
 To use the tool, visit: `http://192.168.44.10:5555 <http://192.168.44.10:5555>`_
