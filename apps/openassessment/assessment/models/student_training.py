@@ -27,12 +27,13 @@ class StudentTrainingWorkflow(models.Model):
         app_label = "assessment"
 
     @classmethod
-    def get_or_create_workflow(cls, submission_uuid):
+    def create_workflow(cls, submission_uuid):
         """
         Create a student training workflow.
 
         Args:
-            submission_uuid (str): The UUID of the submission from the student being trained.
+            submission_uuid (str): The UUID of the submission from the student
+                being trained.
 
         Returns:
             StudentTrainingWorkflow
@@ -41,30 +42,42 @@ class StudentTrainingWorkflow(models.Model):
             SubmissionError: There was an error retrieving the submission.
 
         """
-        # Try to retrieve an existing workflow
-        # If we find one, return it immediately
-        try:
-            return cls.objects.get(submission_uuid=submission_uuid)   # pylint:disable=E1101
-        except cls.DoesNotExist:
-            pass
-
         # Retrieve the student item info
         submission = sub_api.get_submission_and_student(submission_uuid)
         student_item = submission['student_item']
 
         # Create the workflow
         try:
-            return cls.objects.create(
+            workflow, __ = cls.objects.get_or_create(
                 submission_uuid=submission_uuid,
                 student_id=student_item['student_id'],
                 item_id=student_item['item_id'],
                 course_id=student_item['course_id']
             )
+            return workflow
         # If we get an integrity error, it means we've violated a uniqueness constraint
         # (someone has created this object after we checked if it existed)
-        # We can therefore assume that the object exists and we can retrieve it.
+        # We can therefore assume that the object exists and do nothing.
         except IntegrityError:
-            return cls.objects.get(submission_uuid=submission_uuid)
+            pass
+
+    @classmethod
+    def get_workflow(cls, submission_uuid):
+        """
+        Get a student training workflow.
+
+        Args:
+            submission_uuid (str): The UUID of the submission from the student
+                being trained.
+
+        Returns:
+            StudentTrainingWorkflow. None if no workflow is found.
+
+        """
+        try:
+            return cls.objects.get(submission_uuid=submission_uuid)   # pylint:disable=E1101
+        except cls.DoesNotExist:
+            return None
 
     @property
     def num_completed(self):
@@ -132,15 +145,11 @@ class StudentTrainingWorkflow(models.Model):
             # If we get an integrity error, it means we've violated a uniqueness constraint
             # (someone has created this object after we checked if it existed)
             # Since the object already exists, we don't need to do anything
-            # However, the example might not be the one we intended to use, so
-            # we need to retrieve the actual training example.
+            # Use the example passed into the function, because attempting to
+            # retrieve the stored example would result in an race condition.
             except IntegrityError:
-                workflow = StudentTrainingWorkflowItem.objects.get(
-                    workflow=self, order_num=order_num
-                )
-                return workflow.training_example
-            else:
-                return next_example
+                pass
+            return next_example
 
     @property
     def current_item(self):

@@ -26,6 +26,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
         Create a submission.
         """
         submission = sub_api.create_submission(STUDENT_ITEM, ANSWER)
+        training_api.create_student_training_workflow(submission['uuid'])
         self.submission_uuid = submission['uuid']
 
     def test_training_workflow(self):
@@ -102,7 +103,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
         # This will need to create the student training workflow and the first item
         # NOTE: we *could* cache the rubric model to reduce the number of queries here,
         # but we're selecting it by content hash, which is indexed and should be plenty fast.
-        with self.assertNumQueries(6):
+        with self.assertNumQueries(4):
             training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
 
         # Without assessing the first training example, try to retrieve a training example.
@@ -121,6 +122,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
 
     def test_submitter_is_finished_num_queries(self):
         # Complete the first training example
+        training_api.create_student_training_workflow(self.submission_uuid)
         training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
         training_api.assess_training_example(self.submission_uuid, EXAMPLES[0]['options_selected'])
 
@@ -321,6 +323,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
 
         """
         pre_submission = sub_api.create_submission(STUDENT_ITEM, ANSWER)
+        training_api.create_student_training_workflow(pre_submission['uuid'])
         for example in examples:
             training_api.get_training_example(pre_submission['uuid'], rubric, examples)
             training_api.assess_training_example(pre_submission['uuid'], example['options_selected'])

@@ -56,7 +56,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
     def test_update_peer_workflow(self):
         submission = sub_api.create_submission(ITEM_1, "Shoot Hot Rod")
         workflow = workflow_api.create_workflow(submission["uuid"], ["training", "peer"])
-        StudentTrainingWorkflow.get_or_create_workflow(submission_uuid=submission["uuid"])
+        StudentTrainingWorkflow.create_workflow(submission_uuid=submission["uuid"])
         requirements = {
             "training": {
                 "num_required": 2

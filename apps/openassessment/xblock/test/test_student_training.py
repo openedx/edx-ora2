@@ -232,7 +232,7 @@ class StudentTrainingRenderTest(StudentTrainingAssessTest):
         self._assert_path_and_context(xblock, expected_template, expected_context)
 
     @scenario('data/student_training.xml', user_id="Plato")
-    @patch.object(StudentTrainingWorkflow, "get_or_create_workflow")
+    @patch.object(StudentTrainingWorkflow, "get_workflow")
     def test_internal_error(self, xblock, mock_workflow):
         mock_workflow.side_effect = DatabaseError("Oh no.")
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
