@@ -83,6 +83,13 @@ class TestPeerAssessment(XBlockHandlerTestCase):
             "Hal".encode('utf-8') in peer_response.body)
 
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
+    def test_peer_assess_before_submission(self, xblock):
+        # Submit a peer assessment without a submission
+        resp = self.request(xblock, 'peer_assess', json.dumps(self.ASSESSMENT), response_format='json')
+        self.assertEqual(resp['success'], False)
+        self.assertGreater(len(resp['msg']), 0)
+
+    @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_missing_keys_in_request(self, xblock):
         for missing in ['criterion_feedback', 'overall_feedback', 'options_selected']:
             assessment = copy.deepcopy(self.ASSESSMENT)
