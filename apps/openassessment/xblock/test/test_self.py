@@ -53,6 +53,13 @@ class TestSelfAssessment(XBlockHandlerTestCase):
         self.assertEqual(parts[1]['option']['name'], u'ﻉซƈﻉɭɭﻉกՇ')
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
+    def test_self_assess_no_submission(self, xblock):
+        # Submit a self-assessment without first creating a submission
+        resp = self.request(xblock, 'self_assess', json.dumps(self.ASSESSMENT), response_format='json')
+        self.assertFalse(resp['success'])
+        self.assertGreater(len(resp['msg']), 0)
+
+    @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_self_assess_updates_workflow(self, xblock):
 
         # Create a submission for the student

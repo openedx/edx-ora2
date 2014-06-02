@@ -106,6 +106,9 @@ class SelfAssessmentMixin(object):
         if 'options_selected' not in data:
             return {'success': False, 'msg': _(u"Missing options_selected key in request")}
 
+        if self.submission_uuid is None:
+            return {'success': False, 'msg': _(u"You must submit a response before you can perform a self-assessment.")}
+
         try:
             assessment = self_api.create_assessment(
                 self.submission_uuid,
