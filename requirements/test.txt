@@ -5,7 +5,7 @@
 # Once a new version gets released on PyPi we can use that instead.
 git+https://github.com/gabrielfalcao/HTTPretty.git@4c2b10925c86c9b6299c1a04ae334d89fe007ae2#egg=httpretty
 
-ddt==0.7.0
+ddt==0.8.0
 django-nose==1.2
 mock==1.0.1
 moto==0.2.22
