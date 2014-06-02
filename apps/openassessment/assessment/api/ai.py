@@ -205,6 +205,35 @@ def get_latest_assessment(submission_uuid):
         return None
 
 
+def get_assessment_scores_by_criteria(submission_uuid):
+    """Get the score for each rubric criterion
+
+    Args:
+        submission_uuid (str): The submission uuid is used to get the
+            assessment used to score this submission.
+
+    Returns:
+        (dict): A dictionary of rubric criterion names, with a score of
+            the example based assessments.
+
+    Raises:
+        AIGradingInternalError: If any error occurs while retrieving
+            information from the scores, an error is raised.
+    """
+    try:
+        assessments = list(
+            Assessment.objects.filter(
+                score_type=AI_ASSESSMENT_TYPE, submission_uuid=submission_uuid
+            ).order_by('-scored_at')[:1]
+        )
+        scores = Assessment.scores_by_criterion(assessments)
+        return Assessment.get_median_score_dict(scores)
+    except DatabaseError:
+        error_message = u"Error getting example-based assessment scores for {}".format(submission_uuid)
+        logger.exception(error_message)
+        raise AIGradingInternalError(error_message)
+
+
 def train_classifiers(rubric_dict, examples, course_id, item_id, algorithm_id):
     """
     Schedule a task to train classifiers.

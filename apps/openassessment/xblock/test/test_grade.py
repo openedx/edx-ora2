@@ -85,6 +85,69 @@ class TestGrade(XBlockHandlerTestCase):
         self.assertIn('complete', resp.lower())
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    @scenario('data/grade_scenario_self_only.xml', user_id='Greggs')
+    def test_render_grade_self_only(self, xblock):
+        rubric = create_rubric_dict(xblock.prompt, xblock.rubric_criteria)
+        train_classifiers(rubric, CLASSIFIER_SCORE_OVERRIDES)
+        # Submit, assess, and render the grade view
+        self._create_submission_and_assessments(
+            xblock, self.SUBMISSION, [], [], self.ASSESSMENTS[0],
+            waiting_for_peer=True, waiting_for_ai=True
+        )
+        resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+
+        # Verify that feedback from each scorer appears in the view
+        self.assertIn(u'ﻉซƈﻉɭɭﻉกՇ', resp.decode('utf-8'))
+        self.assertIn(u'Fair', resp.decode('utf-8'))
+
+        # Verify that the submission and peer steps show that we're graded
+        # This isn't strictly speaking part of the grade step rendering,
+        # but we've already done all the setup to get to this point in the flow,
+        # so we might as well verify it here.
+        resp = self.request(xblock, 'render_submission', json.dumps(dict()))
+        self.assertIn('response', resp.lower())
+        self.assertIn('complete', resp.lower())
+
+        resp = self.request(xblock, 'render_peer_assessment', json.dumps(dict()))
+        self.assertNotIn('peer', resp.lower())
+        self.assertNotIn('complete', resp.lower())
+
+        resp = self.request(xblock, 'render_self_assessment', json.dumps(dict()))
+        self.assertIn('self', resp.lower())
+        self.assertIn('complete', resp.lower())
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    @scenario('data/grade_scenario_ai_only.xml', user_id='Greggs')
+    def test_render_grade_ai_only(self, xblock):
+        rubric = create_rubric_dict(xblock.prompt, xblock.rubric_criteria)
+        train_classifiers(rubric, CLASSIFIER_SCORE_OVERRIDES)
+        # Submit, assess, and render the grade view
+        self._create_submission_and_assessments(
+            xblock, self.SUBMISSION, [], [], None, waiting_for_peer=True
+        )
+        resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+
+        # Verify that feedback from each scorer appears in the view
+        self.assertNotIn(u'єאςєɭɭєภՇ', resp.decode('utf-8'))
+        self.assertIn(u'Fair', resp.decode('utf-8'))
+
+        # Verify that the submission and peer steps show that we're graded
+        # This isn't strictly speaking part of the grade step rendering,
+        # but we've already done all the setup to get to this point in the flow,
+        # so we might as well verify it here.
+        resp = self.request(xblock, 'render_submission', json.dumps(dict()))
+        self.assertIn('response', resp.lower())
+        self.assertIn('complete', resp.lower())
+
+        resp = self.request(xblock, 'render_peer_assessment', json.dumps(dict()))
+        self.assertNotIn('peer', resp.lower())
+        self.assertNotIn('complete', resp.lower())
+
+        resp = self.request(xblock, 'render_self_assessment', json.dumps(dict()))
+        self.assertNotIn('self', resp.lower())
+        self.assertNotIn('complete', resp.lower())
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @scenario('data/feedback_per_criterion.xml', user_id='Bernard')
     def test_render_grade_feedback_per_criterion(self, xblock):
         # Submit, assess, and render the grade view
