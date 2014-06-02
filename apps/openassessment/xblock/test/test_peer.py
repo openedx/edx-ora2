@@ -90,6 +90,18 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         self.assertGreater(len(resp['msg']), 0)
 
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
+    def test_peer_assess_without_leasing_submission(self, xblock):
+        # Create a submission
+        student_item = xblock.get_student_item_dict()
+        submission = xblock.create_submission(student_item, u"Bob's answer")
+
+        # Attempt to assess a peer without first leasing their submission
+        # (usually occurs by rendering the peer assessment step)
+        resp = self.request(xblock, 'peer_assess', json.dumps(self.ASSESSMENT), response_format='json')
+        self.assertEqual(resp['success'], False)
+        self.assertGreater(len(resp['msg']), 0)
+
+    @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_missing_keys_in_request(self, xblock):
         for missing in ['criterion_feedback', 'overall_feedback', 'options_selected']:
             assessment = copy.deepcopy(self.ASSESSMENT)

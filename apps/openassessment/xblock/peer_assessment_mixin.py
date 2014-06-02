@@ -6,8 +6,7 @@ from xblock.core import XBlock
 
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.errors import (
-    PeerAssessmentInternalError, PeerAssessmentRequestError,
-    PeerAssessmentWorkflowError
+    PeerAssessmentError, PeerAssessmentWorkflowError
 )
 import openassessment.workflow.api as workflow_api
 from .resolve_dates import DISTANT_FUTURE
@@ -80,12 +79,8 @@ class PeerAssessmentMixin(object):
 
                 # Emit analytics event...
                 self._publish_peer_assessment_event(assessment)
-            except PeerAssessmentRequestError:
+            except PeerAssessmentError:
                 return {'success': False, 'msg': _(u"Your peer assessment could not be submitted.")}
-            except PeerAssessmentInternalError:
-                msg = _("Internal error occurred while creating the assessment")
-                logger.exception(msg)
-                return {'success': False, 'msg': msg}
 
             # Update both the workflow that the submission we're assessing
             # belongs to, as well as our own (e.g. have we evaluated enough?)
