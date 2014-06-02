@@ -1,9 +1,11 @@
 """
 Asynchronous tasks for training classifiers from examples.
 """
+import datetime
 from collections import defaultdict
 from celery import task
 from celery.utils.log import get_task_logger
+from dogapi import dog_stats_api
 from django.conf import settings
 from openassessment.assessment.api import ai_worker as ai_worker_api
 from openassessment.assessment.errors import AIError
@@ -153,6 +155,10 @@ def reschedule_training_tasks(course_id, item_id):
         course_id (unicode): The course that we are going to search for unfinished training workflows
         item_id (unicode): The specific item within that course that we will reschedule unfinished workflows for
     """
+    # Starts logging the details of the rescheduling
+    _log_start_reschedule_training(course_id=course_id, item_id=item_id)
+    start_time = datetime.datetime.now()
+
     # Run a query to find the incomplete training workflows
     training_workflows = AITrainingWorkflow.get_incomplete_workflows(course_id, item_id)
 
@@ -168,7 +174,18 @@ def reschedule_training_tasks(course_id, item_id):
                 u"An unexpected error occurred while scheduling the task for training workflow with UUID {}"
             ).format(target_workflow.uuid)
             logger.exception(msg)
+
+            time_delta = datetime.datetime.now() - start_time
+            _log_complete_reschedule_training(
+                course_id=course_id, item_id=item_id, seconds=time_delta.total_seconds(), success=False
+            )
             raise reschedule_training_tasks.retry()
+
+    # Logs the total time to reschedule all training of classifiers if not logged beforehand by exception.
+    time_delta = datetime.datetime.now() - start_time
+    _log_complete_reschedule_training(
+        course_id=course_id, item_id=item_id, seconds=time_delta.total_seconds(), success=True
+    )
 
 def _examples_by_criterion(examples):
     """
@@ -218,3 +235,50 @@ def _examples_by_criterion(examples):
                 internal_ex = AIAlgorithm.ExampleEssay(text, score)
                 internal_examples[criterion_name].append(internal_ex)
     return internal_examples
+
+
+def _log_start_reschedule_training(course_id=None, item_id=None):
+    """
+    Sends data about the rescheduling_training task to datadog
+
+    Args:
+        course_id (unicode): the course id to associate with the log start
+        item_id (unicode): the item id to tag with the log start
+    """
+    tags = [
+        u"course_id:{}".format(course_id),
+        u"item_id:{}".format(item_id),
+    ]
+    dog_stats_api.increment('openassessment.assessment.ai_task.reschedule_train.scheduled_count', tags)
+
+    msg = u"Rescheduling of incomplete training tasks began for course_id={cid} and item_id={iid}"
+    logger.info(msg.format(cid=course_id, iid=item_id))
+
+
+def _log_complete_reschedule_training(course_id=None, item_id=None, seconds=-1, success=False):
+    """
+    Sends the total time the rescheduling of training tasks took to datadog
+    Note that this function may be invoked multiple times per call to reschedule_training_tasks,
+    because the time for EACH ATTEMPT is taken (i.e. if we fail (by error) to schedule training once,
+    we log the time elapsed before trying again.)
+
+    Args:
+        course_id (unicode): the course_id to tag the task with
+        item_id (unicode): the item_id to tag the task with
+        seconds (int): the number of seconds that elapsed during the rescheduling task.
+        success (bool): indicates whether or not all attempts to reschedule were successful
+    """
+    tags = [
+        u"course_id:{}".format(course_id),
+        u"item_id:{}".format(item_id),
+        u"success:{}".format(success)
+    ]
+
+    dog_stats_api.histogram('openassessment.assessment.ai_task.reschedule_train.turnaround_time', seconds,tags)
+    dog_stats_api.increment('openassessment.assessment.ai_task.reschedule_train.completed_count', tags)
+
+    msg = u"Rescheduling of incomplete training tasks for course_id={cid} and item_id={iid} completed in {s} seconds."
+    if not success:
+        msg += u" At least one rescheduling task failed due to internal error."
+    msg.format(cid=course_id,iid=item_id,s=seconds)
+    logger.info(msg)
