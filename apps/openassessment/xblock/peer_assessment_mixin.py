@@ -57,6 +57,9 @@ class PeerAssessmentMixin(object):
         if 'criterion_feedback' not in data:
             return {'success': False, 'msg': _('Must provide feedback for criteria in the assessment')}
 
+        if self.submission_uuid is None:
+            return {'success': False, 'msg': _('You must submit a response before you can peer-assess.')}
+
         assessment_ui_model = self.get_assessment_module('peer-assessment')
         if assessment_ui_model:
             rubric_dict = {

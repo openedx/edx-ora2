@@ -6,6 +6,7 @@ from django.utils.translation import ugettext as _
 from webob import Response
 from xblock.core import XBlock
 from openassessment.assessment.api import student_training
+import openassessment.workflow.api as workflow_api
 from openassessment.xblock.data_conversion import convert_training_examples_list_to_dict
 from .resolve_dates import DISTANT_FUTURE
 
@@ -169,6 +170,12 @@ class StudentTrainingMixin(object):
                 'msg': _(u"An unexpected error occurred.")
             }
         else:
+            try:
+                self.update_workflow_status()
+            except workflow_api.AssessmentWorkflowError:
+                msg = _('Could not update workflow status.')
+                logger.exception(msg)
+                return {'success': False, 'msg': msg}
             return {
                 'success': True,
                 'msg': u'',

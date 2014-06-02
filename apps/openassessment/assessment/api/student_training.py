@@ -309,7 +309,11 @@ def get_training_example(submission_uuid, rubric, examples):
             raise StudentTrainingRequestError(msg)
 
         # Get or create the workflow
-        workflow = StudentTrainingWorkflow.get_or_create_workflow(submission_uuid=submission_uuid)
+        workflow = StudentTrainingWorkflow.get_workflow(submission_uuid=submission_uuid)
+        if not workflow:
+            raise StudentTrainingRequestError(
+                u"No student training workflow found for submission {}".format(submission_uuid)
+            )
 
         # Get or create the training examples
         examples = deserialize_training_examples(examples, rubric)
@@ -335,6 +339,34 @@ def get_training_example(submission_uuid, rubric, examples):
         logger.exception(msg)
         raise StudentTrainingInternalError(msg)
 
+
+def create_student_training_workflow(submission_uuid):
+    """
+    Creates a new student training workflow.
+
+    This function should be called to indicate that a submission has entered the
+    student training workflow part of the assessment process.
+
+    Args:
+        submission_uuid (str): The submission UUID for the student that is
+            initiating training.
+
+    Returns:
+        None
+
+    Raises:
+        StudentTrainingInternalError: Raised when an error occurs persisting the
+            Student Training Workflow
+    """
+    try:
+        StudentTrainingWorkflow.create_workflow(submission_uuid)
+    except Exception:
+        msg = (
+            u"An internal error has occurred while creating the student "
+            u"training workflow for submission UUID {}".format(submission_uuid)
+        )
+        logger.exception(msg)
+        raise StudentTrainingInternalError(msg)
 
 def assess_training_example(submission_uuid, options_selected, update_workflow=True):
     """
