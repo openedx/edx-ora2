@@ -4,12 +4,14 @@ Database models for AI assessment.
 from uuid import uuid4
 import json
 import logging
+import itertools
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.db import models, transaction, DatabaseError
 from django.utils.timezone import now
 from django.core.exceptions import ObjectDoesNotExist
 from django_extensions.db.fields import UUIDField
+from dogapi import dog_stats_api
 from submissions import api as sub_api
 from openassessment.assessment.serializers import rubric_from_dict
 from openassessment.assessment.errors.ai import AIError
@@ -307,6 +309,7 @@ class AIWorkflow(models.Model):
         """
         self.completed_at = now()
         self.save()
+        self._log_complete_workflow()
 
     @classmethod
     def get_incomplete_workflows(cls, course_id, item_id):
@@ -343,6 +346,70 @@ class AIWorkflow(models.Model):
                 msg = u"No workflow with uuid '{}' could be found within the system.".format(workflow_uuid)
                 logger.exception(msg)
                 raise AIError(ex)
+
+    def _log_start_workflow(self):
+        """
+        A logging operation called at the beginning of an AI Workflows life.
+        Increments the number of tasks of that kind.
+        """
+
+        # Identifies whether the task is a training or grading workflow
+        data_path = None
+        name = None
+        if isinstance(self, AITrainingWorkflow):
+            data_path = 'openassessment.assessment.ai_task.train'
+            name = u"Training"
+        elif isinstance(self, AIGradingWorkflow):
+            data_path = 'openassessment.assessment.ai_task.grade'
+            name = u"Grading"
+
+        # Sets identity tags which allow sorting by course and item
+        tags = [
+            u"course_id:{course_id}".format(course_id=self.course_id),
+            u"item_id:{item_id}".format(item_id=self.item_id),
+        ]
+
+        logger.info(u"AI{name} workflow with uuid {uuid} was started.".format(name=name, uuid=self.uuid))
+
+        dog_stats_api.increment(data_path + '.scheduled_count', tags=tags)
+
+    def _log_complete_workflow(self):
+        """
+        A logging operation called at the end of an AI Workflow's Life
+        Reports the total time the task took.
+        """
+
+        # Identifies whether the task is a training or grading workflow
+        data_path = None
+        name = None
+        if isinstance(self, AITrainingWorkflow):
+            data_path = 'openassessment.assessment.ai_task.train'
+            name = u"Training"
+        elif isinstance(self, AIGradingWorkflow):
+            data_path = 'openassessment.assessment.ai_task.grade'
+            name = u"Grading"
+
+        tags = [
+            u"course_id:{course_id}".format(course_id=self.course_id),
+            u"item_id:{item_id}".format(item_id=self.item_id),
+        ]
+
+        # Calculates the time taken to complete the task and reports it to datadog
+        time_delta = self.completed_at - self.scheduled_at
+        dog_stats_api.histogram(
+            data_path + '.turnaround_time',
+            time_delta.total_seconds(),
+            tags=tags
+        )
+
+        dog_stats_api.increment(data_path + '.completed_count', tags=tags)
+
+        logger.info(
+            (
+                u"AI{name} workflow with uuid {uuid} completed its workflow successfully "
+                u"in {seconds} seconds."
+            ).format(name=name, uuid=self.uuid, seconds=time_delta.total_seconds())
+        )
 
 
 class AITrainingWorkflow(AIWorkflow):
@@ -389,6 +456,7 @@ class AITrainingWorkflow(AIWorkflow):
         workflow = AITrainingWorkflow.objects.create(algorithm_id=algorithm_id, item_id=item_id, course_id=course_id)
         workflow.training_examples.add(*examples)
         workflow.save()
+        workflow._log_start_workflow()
         return workflow
 
     @property
@@ -512,7 +580,7 @@ class AIGradingWorkflow(AIWorkflow):
             essay_text = unicode(submission)
 
         # Create the workflow
-        return cls.objects.create(
+        workflow = cls.objects.create(
             submission_uuid=submission_uuid,
             essay_text=essay_text,
             algorithm_id=algorithm_id,
@@ -521,6 +589,10 @@ class AIGradingWorkflow(AIWorkflow):
             course_id=submission['student_item']['course_id'],
             rubric=rubric
         )
+
+        workflow._log_start_workflow()
+
+        return workflow
 
     @transaction.commit_on_success
     def complete(self, criterion_scores):

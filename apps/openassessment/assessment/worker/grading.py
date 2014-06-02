@@ -2,9 +2,11 @@
 Asynchronous tasks for grading essays using text classifiers.
 """
 
+import datetime
 from celery import task
 from django.db import DatabaseError
 from celery.utils.log import get_task_logger
+from dogapi import dog_stats_api
 from openassessment.assessment.api import ai_worker as ai_worker_api
 from openassessment.assessment.errors import AIError, AIGradingInternalError, AIGradingRequestError
 from .algorithm import AIAlgorithm, AIAlgorithmError
@@ -100,6 +102,11 @@ def reschedule_grading_tasks(course_id, item_id):
         course_id (unicode): The course item that we will be rerunning the rescheduling on.
         item_id (unicode): The item that the rescheduling will be running on
     """
+
+    # Logs the start of the rescheduling process and records the start time so that total time can be calculated later.
+    _log_start_reschedule_grading(course_id=course_id, item_id=item_id)
+    start_time = datetime.datetime.now()
+
     # Finds all incomplete grading workflows
     grading_workflows = AIGradingWorkflow.get_incomplete_workflows(course_id, item_id)
 
@@ -174,6 +181,11 @@ def reschedule_grading_tasks(course_id, item_id):
                 logger.exception(msg)
                 failures += 1
 
+    # Logs the data from our rescheduling attempt
+    time_delta = datetime.datetime.now() - start_time
+    _log_complete_reschedule_grading(
+        course_id=course_id, item_id=item_id, seconds=time_delta.total_seconds(), success=(failures == 0)
+    )
     # If one or more of these failed, we want to retry rescheduling.  Note that this retry is executed in such a way
     # that if it fails, an AIGradingInternalError will be raised with the number of failures on the last attempt (i.e.
     # the total number of workflows matching these critera that still have left to be graded).
@@ -184,3 +196,51 @@ def reschedule_grading_tasks(course_id, item_id):
             )
         except AIGradingInternalError as ex:
             raise reschedule_grading_tasks.retry()
+
+
+def _log_start_reschedule_grading(course_id=None, item_id=None):
+    """
+    Sends data about the rescheduling_grading task to datadog
+
+    Args:
+        course_id (unicode): the course id to associate with the log start
+        item_id (unicode): the item id to tag with the log start
+    """
+    tags = [
+        u"course_id:{}".format(course_id),
+        u"item_id:{}".format(item_id),
+    ]
+    dog_stats_api.increment('openassessment.assessment.ai_task.reschedule_grade.scheduled_count', tags)
+
+    msg = u"Rescheduling of incomplete grading tasks began for course_id={cid} and item_id={iid}"
+    logger.info(msg.format(cid=course_id, iid=item_id))
+
+
+def _log_complete_reschedule_grading(course_id=None, item_id=None, seconds=-1, success=False):
+    """
+    Sends the total time the rescheduling of grading tasks took to datadog
+    (Just the time taken to reschedule tasks, not the time nescessary to complete them)
+    Note that this function may be invoked multiple times per call to reschedule_grading_tasks,
+    because the time for EACH ATTEMPT is taken (i.e. if we fail (by error) to schedule grading once,
+    we log the time elapsed before trying again.)
+
+    Args:
+        course_id (unicode): the course_id to tag the task with
+        item_id (unicode): the item_id to tag the task with
+        seconds (int): the number of seconds that elapsed during the rescheduling task.
+        success (bool): indicates whether or not all attempts to reschedule were successful
+    """
+    tags = [
+        u"course_id:{}".format(course_id),
+        u"item_id:{}".format(item_id),
+        u"success:{}".format(success)
+    ]
+
+    dog_stats_api.histogram('openassessment.assessment.ai_task.reschedule_grade.turnaround_time', seconds,tags)
+    dog_stats_api.increment('openassessment.assessment.ai_task.reschedule_grade.completed_count', tags)
+
+    msg = u"Rescheduling of incomplete grading tasks for course_id={cid} and item_id={iid} completed in {s} seconds."
+    if not success:
+        msg += u" At least one grading task failed due to internal error."
+    msg.format(cid=course_id,iid=item_id,s=seconds)
+    logger.info(msg)
