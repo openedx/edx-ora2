@@ -590,8 +590,21 @@ class AIGradingWorkflow(AIWorkflow):
             rubric=rubric
         )
 
-        workflow._log_start_workflow()
+        # Retrieve classifier set candidates
+        classifier_set_candidates = AIClassifierSet.objects.filter(
+            rubric=rubric, algorithm_id=algorithm_id
+        )[:1]
 
+        # If we find classifiers for this rubric/algorithm
+        # then associate the classifiers with the workflow
+        # and schedule a grading task.
+        # Otherwise, the task will need to be scheduled later,
+        # once the classifiers have been trained.
+        if len(classifier_set_candidates) > 0:
+            workflow.classifier_set = classifier_set_candidates[0]
+            workflow.save()
+
+        workflow._log_start_workflow()
         return workflow
 
     @transaction.commit_on_success
