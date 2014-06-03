@@ -197,17 +197,25 @@ class TestAssessmentWorkflowApi(CacheResetTest):
 
     def test_get_status_counts(self):
         # Initially, the counts should all be zero
-        counts = workflow_api.get_status_counts("test/1/1", "peer-problem", ["peer", "self"])
+        counts = workflow_api.get_status_counts(
+            "test/1/1",
+            "peer-problem",
+            ["ai", "training", "peer", "self"]
+        )
         self.assertEqual(counts, [
+            {"status": "training", "count": 0},
             {"status": "peer", "count": 0},
             {"status": "self", "count": 0},
             {"status": "waiting", "count": 0},
             {"status": "done", "count": 0},
         ])
 
+        self.assertFalse("ai" in [count['status'] for count in counts])
+
         # Create assessments with each status
         # We're going to cheat a little bit by using the model objects
         # directly, since the API does not provide access to the status directly.
+        self._create_workflow_with_status("user 1", "test/1/1", "peer-problem", "training")
         self._create_workflow_with_status("user 1", "test/1/1", "peer-problem", "peer")
         self._create_workflow_with_status("user 2", "test/1/1", "peer-problem", "self")
         self._create_workflow_with_status("user 3", "test/1/1", "peer-problem", "self")
@@ -220,24 +228,39 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         self._create_workflow_with_status("user 10", "test/1/1", "peer-problem", "done")
 
         # Now the counts should be updated
-        counts = workflow_api.get_status_counts("test/1/1", "peer-problem", ["peer", "self"])
+        counts = workflow_api.get_status_counts(
+            "test/1/1",
+            "peer-problem",
+            ["ai", "training", "peer", "self"]
+        )
         self.assertEqual(counts, [
+            {"status": "training", "count": 1},
             {"status": "peer", "count": 1},
             {"status": "self", "count": 2},
             {"status": "waiting", "count": 3},
             {"status": "done", "count": 4},
         ])
 
+        self.assertFalse("ai" in [count['status'] for count in counts])
+
         # Create a workflow in a different course, same user and item
         # Counts should be the same
         self._create_workflow_with_status("user 1", "other_course", "peer-problem", "peer")
-        updated_counts = workflow_api.get_status_counts("test/1/1", "peer-problem", ["peer", "self"])
+        updated_counts = workflow_api.get_status_counts(
+            "test/1/1",
+            "peer-problem",
+            ["ai", "training", "peer", "self"]
+        )
         self.assertEqual(counts, updated_counts)
 
         # Create a workflow in the same course, different item
         # Counts should be the same
         self._create_workflow_with_status("user 1", "test/1/1", "other problem", "peer")
-        updated_counts = workflow_api.get_status_counts("test/1/1", "peer-problem", ["peer", "self"])
+        updated_counts = workflow_api.get_status_counts(
+            "test/1/1",
+            "peer-problem",
+            ["ai", "training", "peer", "self"]
+        )
         self.assertEqual(counts, updated_counts)
 
     def _create_workflow_with_status(self, student_id, course_id, item_id, status, answer="answer"):

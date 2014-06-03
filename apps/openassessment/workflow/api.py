@@ -387,6 +387,10 @@ def get_status_counts(course_id, item_id, steps):
         ]
 
     """
+    # The AI status exists for workflow logic, but no student will ever be in
+    # the AI status, so we should never return it.
+    statuses = steps + AssessmentWorkflow.STATUSES
+    if 'ai' in statuses: statuses.remove('ai')
     return [
         {
             "status": status,
@@ -396,7 +400,7 @@ def get_status_counts(course_id, item_id, steps):
                 item_id=item_id,
             ).count()
         }
-        for status in steps + AssessmentWorkflow.STATUSES
+        for status in statuses
     ]
 
 
