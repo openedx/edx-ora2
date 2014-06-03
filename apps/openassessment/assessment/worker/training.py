@@ -22,6 +22,8 @@ logger = get_task_logger(__name__)
 # If the Django settings define a low-priority queue, use that.
 # Otherwise, use the default queue.
 TRAINING_TASK_QUEUE = getattr(settings, 'LOW_PRIORITY_QUEUE', None)
+RESCHEDULE_TASK_QUEUE = getattr(settings, 'LOW_PRIORITY_QUEUE', None)
+
 
 class InvalidExample(Exception):
     """
@@ -146,7 +148,7 @@ def train_classifiers(workflow_uuid):
         raise
 
 
-@task(max_retries=MAX_RETRIES) #pylint: disable E=1102
+@task(queue=RESCHEDULE_TASK_QUEUE, max_retries=MAX_RETRIES) #pylint: disable=E1102
 def reschedule_training_tasks(course_id, item_id):
     """
     Reschedules all incomplete training tasks

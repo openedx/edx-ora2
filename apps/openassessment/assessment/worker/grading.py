@@ -5,6 +5,7 @@ Asynchronous tasks for grading essays using text classifiers.
 import datetime
 from celery import task
 from django.db import DatabaseError
+from django.conf import settings
 from celery.utils.log import get_task_logger
 from dogapi import dog_stats_api
 from openassessment.assessment.api import ai_worker as ai_worker_api
@@ -16,6 +17,10 @@ from openassessment.assessment.models.ai import AIClassifierSet, AIGradingWorkfl
 MAX_RETRIES = 2
 
 logger = get_task_logger(__name__)
+
+# If the Django settings define a low-priority queue, use that.
+# Otherwise, use the default queue.
+RESCHEDULE_TASK_QUEUE = getattr(settings, 'LOW_PRIORITY_QUEUE', None)
 
 
 @task(max_retries=MAX_RETRIES)  # pylint: disable=E1102
@@ -93,7 +98,7 @@ def grade_essay(workflow_uuid):
         raise grade_essay.retry()
 
 
-@task(max_retries=MAX_RETRIES)  # pylint: disable=E1102
+@task(queue=RESCHEDULE_TASK_QUEUE, max_retries=MAX_RETRIES)  # pylint: disable=E1102
 def reschedule_grading_tasks(course_id, item_id):
     """
     Reschedules all incomplete grading workflows with the specified parameters.
