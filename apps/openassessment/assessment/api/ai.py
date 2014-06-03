@@ -14,7 +14,7 @@ from openassessment.assessment.errors import (
 from openassessment.assessment.models import (
     Assessment, AITrainingWorkflow, AIGradingWorkflow,
     InvalidOptionSelection, NoTrainingExamples,
-    AIClassifierSet, AI_ASSESSMENT_TYPE
+    AI_ASSESSMENT_TYPE
 )
 from openassessment.assessment.worker import training as training_tasks
 from openassessment.assessment.worker import grading as grading_tasks
@@ -129,18 +129,8 @@ def submit(submission_uuid, rubric, algorithm_id):
         raise AIGradingInternalError(msg)
 
     try:
-        classifier_set_candidates = AIClassifierSet.objects.filter(
-            rubric=workflow.rubric, algorithm_id=algorithm_id
-        )[:1]
-
-        # If we find classifiers for this rubric/algorithm
-        # then associate the classifiers with the workflow
-        # and schedule a grading task.
-        # Otherwise, the task will need to be scheduled later,
-        # once the classifiers have been trained.
-        if len(classifier_set_candidates) > 0:
-            workflow.classifier_set = classifier_set_candidates[0]
-            workflow.save()
+        # Schedule the grading task only if the workflow has a classifier set
+        if workflow.classifier_set is not None:
             grading_tasks.grade_essay.apply_async(args=[workflow.uuid])
             logger.info((
                 u"Scheduled grading task for AI grading workflow with UUID {workflow_uuid} "
