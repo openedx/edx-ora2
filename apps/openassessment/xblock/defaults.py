@@ -64,7 +64,16 @@ DEFAULT_RUBRIC_FEEDBACK_PROMPT = """
     (Optional) What aspects of this response stood out to you? What did it do well? How could it improve?
 """
 
-DEFAULT_EXAMPLE_ANSWER = "Replace this text with a sample response for this assignment. You'll assess this sample response in the courseware, and students will then learn to assess responses by assessing this response and comparing the options that they select in the rubric with the options that you selected."
+DEFAULT_EXAMPLE_ANSWER = """
+(optional) Replace this text with your own sample response for this assignment. Below, list the names of the criteria for this assignment, and then specify the name of the option that you would select for this response. Students will learn to assess responses by assessing this response and comparing the rubric options that they select with the rubric options that you specified.
+
+If you don't want to provide sample responses and scores, delete the entire 'assessment name="student-training"' element.
+"""
+
+DEFAULT_EXAMPLE_ANSWER_2 = """
+(optional) Replace this text with another sample response, and then specify the options that you would select for this response below. To provide more sample responses, copy an "example" element and paste as many as you want before the closing "assessment" tag.
+"""
+
 DEFAULT_STUDENT_TRAINING = {
     "name": "student-training",
     "start": None,
@@ -84,7 +93,7 @@ DEFAULT_STUDENT_TRAINING = {
             ]
         },
         {
-            "answer": DEFAULT_EXAMPLE_ANSWER,
+            "answer": DEFAULT_EXAMPLE_ANSWER_2,
             "options_selected": [
                 {
                     "criterion": "Ideas",
