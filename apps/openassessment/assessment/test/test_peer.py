@@ -1169,6 +1169,12 @@ class TestPeerApi(CacheResetTest):
             MONDAY,
         )
 
+    def test_get_submission_to_assess_no_workflow(self):
+        # Try to retrieve a submission to assess when the student
+        # doing the assessment hasn't yet submitted.
+        with self.assertRaises(peer_api.PeerAssessmentWorkflowError):
+            peer_api.get_submission_to_assess("no_such_submission", "scorer ID")
+
     @staticmethod
     def _create_student_and_submission(student, answer, date=None):
         new_student_item = STUDENT_ITEM.copy()
