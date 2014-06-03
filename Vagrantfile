@@ -15,7 +15,7 @@ apt-get install -y curl git vim libxml2-dev libxslt1-dev memcached nginx
 
 echo "Installing mysql server..."
 DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server-5.5
-echo "CREATE DATABASE IF NOT EXISTS workbench" | mysql -u root
+echo "CREATE DATABASE IF NOT EXISTS workbench DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;" | mysql -u root
 
 echo "Installing Python system requirements..."
 apt-get install -y python2.7 python2.7-dev python-pip python-software-properties python-mysqldb libmysqlclient-dev
