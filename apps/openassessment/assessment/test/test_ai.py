@@ -5,6 +5,7 @@ Tests for AI assessment.
 import copy
 import mock
 from nose.tools import raises
+from celery.exceptions import NotConfigured, InvalidTaskError
 from django.db import DatabaseError
 from django.test.utils import override_settings
 from openassessment.test_utils import CacheResetTest
@@ -19,7 +20,8 @@ from openassessment.assessment.models import AITrainingWorkflow, AIGradingWorkfl
 from openassessment.assessment.worker.algorithm import AIAlgorithm, AIAlgorithmError
 from openassessment.assessment.serializers import rubric_from_dict
 from openassessment.assessment.errors import (
-    AITrainingRequestError, AITrainingInternalError, AIGradingRequestError, AIGradingInternalError, AIError
+    AITrainingRequestError, AITrainingInternalError, AIGradingRequestError,
+    AIReschedulingInternalError, AIGradingInternalError, AIError
 )
 from openassessment.assessment.test.constants import RUBRIC, EXAMPLES, STUDENT_ITEM, ANSWER
 
@@ -156,12 +158,11 @@ class AITrainingTest(CacheResetTest):
             ai_api.train_classifiers(RUBRIC, EXAMPLES, COURSE_ID, ITEM_ID, ALGORITHM_ID)
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
-    @mock.patch('openassessment.assessment.api.ai.training_tasks')
-    def test_schedule_training_error(self, mock_training_tasks):
-        # Simulate an exception raised when scheduling a training task
-        mock_training_tasks.train_classifiers.apply_async.side_effect = AITrainingRequestError("KABOOM!")
-        with self.assertRaises(AITrainingInternalError):
-            ai_api.train_classifiers(RUBRIC, EXAMPLES, COURSE_ID, ITEM_ID, ALGORITHM_ID)
+    def test_train_classifiers_celery_error(self):
+        with mock.patch('openassessment.assessment.api.ai.training_tasks.train_classifiers.apply_async') as mock_train:
+            mock_train.side_effect = NotConfigured
+            with self.assertRaises(AITrainingInternalError):
+                ai_api.train_classifiers(RUBRIC, EXAMPLES, COURSE_ID, ITEM_ID, ALGORITHM_ID)
 
 
 class AIGradingTest(CacheResetTest):
@@ -221,28 +222,6 @@ class AIGradingTest(CacheResetTest):
         mock_filter.side_effect = DatabaseError("Oh no!")
         ai_api.get_assessment_scores_by_criteria(self.submission_uuid)
 
-    @mock.patch('openassessment.assessment.api.ai.grading_tasks.grade_essay')
-    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
-    def test_submit_no_classifiers_available(self, mock_task):
-        # Use a rubric that does not have classifiers available
-        new_rubric = copy.deepcopy(RUBRIC)
-        new_rubric['criteria'] = new_rubric['criteria'][1:]
-
-        # Submit the essay -- since there are no classifiers available,
-        # the workflow should be created, but no task should be scheduled.
-        workflow_uuid = ai_api.submit(self.submission_uuid, new_rubric, ALGORITHM_ID)
-
-        # Verify that the workflow was created with a null classifier set
-        workflow = AIGradingWorkflow.objects.get(uuid=workflow_uuid)
-        self.assertIs(workflow.classifier_set, None)
-
-        # Verify that there are no assessments
-        latest_assessment = ai_api.get_latest_assessment(self.submission_uuid)
-        self.assertIs(latest_assessment, None)
-
-        # Verify that the task was never scheduled
-        self.assertFalse(mock_task.apply_async.called)
-
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     def test_submit_submission_not_found(self):
         with self.assertRaises(AIGradingRequestError):
@@ -261,18 +240,41 @@ class AIGradingTest(CacheResetTest):
         with self.assertRaises(AIGradingInternalError):
             ai_api.submit(self.submission_uuid, RUBRIC, ALGORITHM_ID)
 
-    @mock.patch('openassessment.assessment.api.ai.grading_tasks.grade_essay')
-    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
-    def test_grade_task_schedule_error(self, mock_task):
-        mock_task.apply_async.side_effect = IOError("Test error!")
-        with self.assertRaises(AIGradingInternalError):
-            ai_api.submit(self.submission_uuid, RUBRIC, ALGORITHM_ID)
-
     @mock.patch.object(Assessment.objects, 'filter')
     def test_get_latest_assessment_database_error(self, mock_call):
         mock_call.side_effect = DatabaseError("KABOOM!")
         with self.assertRaises(AIGradingInternalError):
             ai_api.get_latest_assessment(self.submission_uuid)
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_submit_celery_error(self):
+        with mock.patch('openassessment.assessment.api.ai.grading_tasks.grade_essay.apply_async') as mock_grade:
+            mock_grade.side_effect = NotConfigured
+            with self.assertRaises(AIGradingInternalError):
+                ai_api.submit(self.submission_uuid, RUBRIC, ALGORITHM_ID)
+
+    @mock.patch.object(AIClassifierSet.objects, 'filter')
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_submit_database_error(self, mock_filter):
+        mock_filter.side_effect = DatabaseError("rumble... ruMBLE, RUMBLE! BOOM!")
+        with self.assertRaises(AIGradingInternalError):
+            ai_api.submit(self.submission_uuid, RUBRIC, ALGORITHM_ID)
+
+    @mock.patch.object(AIClassifierSet.objects, 'filter')
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_submit_no_classifiers(self, mock_call):
+        mock_call.return_value = []
+        with mock.patch('openassessment.assessment.api.ai.logger.info') as mock_log:
+            ai_api.submit(self.submission_uuid, RUBRIC, ALGORITHM_ID)
+            argument = mock_log.call_args[0][0]
+            self.assertTrue(u"no classifiers are available" in argument)
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_submit_submission_db_error(self):
+        with mock.patch('openassessment.assessment.api.ai.AIGradingWorkflow.start_workflow') as mock_start:
+            mock_start.side_effect = sub_api.SubmissionInternalError
+            with self.assertRaises(AIGradingInternalError):
+                ai_api.submit(self.submission_uuid, RUBRIC, ALGORITHM_ID)
 
 
 class AIUntrainedGradingTest:
@@ -295,7 +297,6 @@ class AIReschedulingTest(CacheResetTest):
 
     Tests in both orders, and tests all error conditions that can arise as a result of calling rescheduling
     """
-
 
     def setUp(self):
         """
@@ -394,33 +395,6 @@ class AIReschedulingTest(CacheResetTest):
         self._assert_complete(grading_done=True, training_done=True)
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
-    def test_reschedule_database_failure(self):
-        # 3) Mock in a DB error.
-        patched_method = 'openassessment.assessment.worker.grading.AIGradingWorkflow.objects.filter'
-        with mock.patch(patched_method) as mock_filter:
-            mock_filter.side_effect = DatabaseError('DB ERROR: KABOOM')
-            with self.assertRaises(AIGradingInternalError):
-                ai_api.reschedule_unfinished_tasks(course_id=COURSE_ID, item_id=ITEM_ID, task_type=None)
-
-    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
-    def test_reschedule_grade_failure(self):
-        # Mock in consistent failure to grade an essay
-        with mock.patch('openassessment.assessment.worker.grading.grade_essay.apply_async') as mock_grade_essay:
-            mock_grade_essay.side_effect = AIGradingInternalError("Sorry, no grade for you.")
-            with self.assertRaises(AIGradingInternalError):
-                # Try to reschedule all unfinished tasks, expect an internal grading error
-                ai_api.reschedule_unfinished_tasks(course_id=COURSE_ID, item_id=ITEM_ID, task_type=None)
-
-    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
-    def test_reschedule_train_failure(self):
-        # Mock in consistent failure to grade an essay
-        with mock.patch('openassessment.assessment.worker.training.train_classifiers.apply_async') as mock_train:
-            mock_train.side_effect = AITrainingInternalError("OH MY! THE TRAINing DERAILED!")
-            with self.assertRaises(AITrainingInternalError):
-                # Try to reschedule all unfinished tasks, expect an internal tra error
-                ai_api.reschedule_unfinished_tasks(course_id=COURSE_ID, item_id=ITEM_ID, task_type=u"train")
-
-    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     def test_reschedule_non_valid_args(self):
         with self.assertRaises(AIError):
             ai_api.reschedule_unfinished_tasks(course_id=COURSE_ID, task_type=u"train")
@@ -445,6 +419,43 @@ class AIReschedulingTest(CacheResetTest):
 
         # Check that  both training and grading are now complete
         self._assert_complete(grading_done=True, training_done=True)
+
+    def test_reschedule_grade_celery_error(self):
+        patched_method = 'openassessment.assessment.api.ai.grading_tasks.reschedule_grading_tasks.apply_async'
+        with mock.patch(patched_method) as mock_grade:
+            mock_grade.side_effect = NotConfigured
+            with self.assertRaises(AIGradingInternalError):
+                ai_api.reschedule_unfinished_tasks(course_id=COURSE_ID,item_id=ITEM_ID)
+
+    def test_reschedule_train_celery_error(self):
+        patched_method = 'openassessment.assessment.api.ai.training_tasks.reschedule_training_tasks.apply_async'
+        with mock.patch(patched_method) as mock_train:
+            mock_train.side_effect = NotConfigured
+            with self.assertRaises(AITrainingInternalError):
+                ai_api.reschedule_unfinished_tasks(course_id=COURSE_ID,item_id=ITEM_ID, task_type=None)
+
+    @mock.patch.object(AIGradingWorkflow, 'get_incomplete_workflows')
+    def test_get_incomplete_workflows_error_grading(self, mock_incomplete):
+        mock_incomplete.side_effect = DatabaseError
+        with self.assertRaises(AIReschedulingInternalError):
+            ai_api.reschedule_unfinished_tasks(course_id=COURSE_ID,item_id=ITEM_ID)
+
+    def test_get_incomplete_workflows_error_training(self):
+        patched_method =  'openassessment.assessment.models.ai.AIWorkflow.get_incomplete_workflows'
+        with mock.patch(patched_method) as mock_incomplete:
+            mock_incomplete.side_effect = DatabaseError
+            with self.assertRaises(Exception):
+                ai_api.reschedule_unfinished_tasks(course_id=COURSE_ID,item_id=ITEM_ID, task_type=u"train")
+
+    def test_reschedule_train_internal_celery_error(self):
+        patched_method = 'openassessment.assessment.worker.training.train_classifiers.apply_async'
+        with mock.patch(patched_method) as mock_train:
+            mock_train.side_effect = NotConfigured("NotConfigured")
+            with mock.patch('openassessment.assessment.worker.training.logger.exception') as mock_logger:
+                with self.assertRaises(Exception):
+                    ai_api.reschedule_unfinished_tasks(course_id=COURSE_ID,item_id=ITEM_ID, task_type=u"train")
+                last_call = mock_logger.call_args[0][0]
+                self.assertTrue(u"NotConfigured" in last_call)
 
 
 class AIAutomaticGradingTest(CacheResetTest):

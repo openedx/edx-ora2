@@ -233,7 +233,7 @@ class StaffInfoMixin(object):
                 'success': True,
                 'msg': _(u"All AI tasks associated with this item have been rescheduled successfully.")
             }
-        except (AIGradingInternalError, AITrainingInternalError, AIError) as ex:
+        except AIError as ex:
             return {
                 'success': False,
                 'msg': _(u"An error occurred while rescheduling tasks: {}".format(ex))

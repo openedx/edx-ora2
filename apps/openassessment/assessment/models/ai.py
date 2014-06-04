@@ -14,7 +14,7 @@ from django_extensions.db.fields import UUIDField
 from dogapi import dog_stats_api
 from submissions import api as sub_api
 from openassessment.assessment.serializers import rubric_from_dict
-from openassessment.assessment.errors.ai import AIError
+from openassessment.assessment.errors.ai import AIReschedulingInternalError
 from .base import Rubric, Criterion, Assessment, AssessmentPart
 from .training import TrainingExample
 
@@ -118,10 +118,19 @@ class AIClassifierSet(models.Model):
 
         # Retrieve the criteria for this rubric,
         # then organize them by criterion name
-        criteria = {
-            criterion.name: criterion
-            for criterion in Criterion.objects.filter(rubric=rubric)
-        }
+
+        try:
+            criteria = {
+                criterion.name: criterion
+                for criterion in Criterion.objects.filter(rubric=rubric)
+            }
+        except DatabaseError as ex:
+            msg = (
+                u"An unexpected error occurred while retrieving rubric criteria with the"
+                u"rubric hash {rh} and algorithm_id {aid}: {ex}"
+            ).format(rh=rubric.content_hash, aid=algorithm_id, ex=ex)
+            logger.exception(msg)
+            raise
 
         # Check that we have classifiers for all criteria in the rubric
         if set(criteria.keys()) != set(classifiers_dict.keys()):
@@ -339,13 +348,8 @@ class AIWorkflow(models.Model):
         for workflow_uuid in grade_workflow_uuids:
 
             # Returns the grading workflow associated with the uuid stored in the initial query
-            try:
-                grading_workflow = cls.objects.get(uuid=workflow_uuid)
-                yield grading_workflow
-            except (cls.DoesNotExist, ObjectDoesNotExist, DatabaseError) as ex:
-                msg = u"No workflow with uuid '{}' could be found within the system.".format(workflow_uuid)
-                logger.exception(msg)
-                raise AIError(ex)
+            workflow = cls.objects.get(uuid=workflow_uuid)
+            yield workflow
 
     def _log_start_workflow(self):
         """
@@ -353,15 +357,9 @@ class AIWorkflow(models.Model):
         Increments the number of tasks of that kind.
         """
 
-        # Identifies whether the task is a training or grading workflow
-        data_path = None
-        name = None
-        if isinstance(self, AITrainingWorkflow):
-            data_path = 'openassessment.assessment.ai_task.train'
-            name = u"Training"
-        elif isinstance(self, AIGradingWorkflow):
-            data_path = 'openassessment.assessment.ai_task.grade'
-            name = u"Grading"
+        # Identifies whether the type of task for reporting
+        class_name = self.__class__.__name__
+        data_path = 'openassessment.assessment.ai_task.' + class_name
 
         # Sets identity tags which allow sorting by course and item
         tags = [
@@ -369,7 +367,7 @@ class AIWorkflow(models.Model):
             u"item_id:{item_id}".format(item_id=self.item_id),
         ]
 
-        logger.info(u"AI{name} workflow with uuid {uuid} was started.".format(name=name, uuid=self.uuid))
+        logger.info(u"{class_name} with uuid {uuid} was started.".format(class_name=class_name, uuid=self.uuid))
 
         dog_stats_api.increment(data_path + '.scheduled_count', tags=tags)
 
@@ -379,15 +377,9 @@ class AIWorkflow(models.Model):
         Reports the total time the task took.
         """
 
-        # Identifies whether the task is a training or grading workflow
-        data_path = None
-        name = None
-        if isinstance(self, AITrainingWorkflow):
-            data_path = 'openassessment.assessment.ai_task.train'
-            name = u"Training"
-        elif isinstance(self, AIGradingWorkflow):
-            data_path = 'openassessment.assessment.ai_task.grade'
-            name = u"Grading"
+        # Identifies whether the type of task for reporting
+        class_name = self.__class__.__name__
+        data_path = 'openassessment.assessment.ai_task.' + class_name
 
         tags = [
             u"course_id:{course_id}".format(course_id=self.course_id),
@@ -406,9 +398,9 @@ class AIWorkflow(models.Model):
 
         logger.info(
             (
-                u"AI{name} workflow with uuid {uuid} completed its workflow successfully "
+                u"{class_name} with uuid {uuid} completed its workflow successfully "
                 u"in {seconds} seconds."
-            ).format(name=name, uuid=self.uuid, seconds=time_delta.total_seconds())
+            ).format(class_name=class_name, uuid=self.uuid, seconds=time_delta.total_seconds())
         )
 
 
@@ -605,6 +597,7 @@ class AIGradingWorkflow(AIWorkflow):
             workflow.save()
 
         workflow._log_start_workflow()
+
         return workflow
 
     @transaction.commit_on_success

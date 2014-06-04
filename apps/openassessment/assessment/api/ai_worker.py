@@ -55,11 +55,12 @@ def get_grading_task_params(grading_workflow_uuid):
         raise AIGradingInternalError(msg)
 
     classifier_set = workflow.classifier_set
-    # Tasks shouldn't be scheduled until a classifier set is
-    # available, so this is a serious internal error.
+    # Though tasks shouldn't be scheduled until classifer set(s) exist, off of the happy path this is a likely
+    # occurrence.  Our response is to log this lack of compliance to dependency as an exception, and then thrown
+    # an error with the purpose of killing the celery task running this code.
     if classifier_set is None:
         msg = (
-            u"AI grading workflow with UUID {} has no classifier set"
+            u"AI grading workflow with UUID {} has no classifier set, but was scheduled for grading"
         ).format(grading_workflow_uuid)
         logger.exception(msg)
         raise AIGradingInternalError(msg)
@@ -72,7 +73,7 @@ def get_grading_task_params(grading_workflow_uuid):
             'item_id': workflow.item_id,
             'algorithm_id': workflow.algorithm_id,
         }
-    except Exception as ex:
+    except (DatabaseError, ClassifierSerializeError, IncompleteClassifierSet, ValueError) as ex:
         msg = (
             u"An unexpected error occurred while retrieving "
             u"classifiers for the grading workflow with UUID {uuid}: {ex}"

@@ -4,21 +4,23 @@ Public interface for AI training and grading, used by students/course authors.
 import logging
 from django.db import DatabaseError
 from submissions import api as sub_api
+from celery.exceptions import (
+    ChordError, InvalidTaskError, NotConfigured, NotRegistered, QueueNotFound, TaskRevokedError
+)
 from openassessment.assessment.serializers import (
     deserialize_training_examples, InvalidTrainingExample, InvalidRubric, full_assessment_dict
 )
 from openassessment.assessment.errors import (
-    AITrainingRequestError, AITrainingInternalError,
-    AIGradingRequestError, AIGradingInternalError, AIError
+    AITrainingRequestError, AITrainingInternalError, AIGradingRequestError,
+    AIGradingInternalError, AIReschedulingRequestError, ANTICIPATED_CELERY_ERRORS
 )
 from openassessment.assessment.models import (
     Assessment, AITrainingWorkflow, AIGradingWorkflow,
     InvalidOptionSelection, NoTrainingExamples,
-    AI_ASSESSMENT_TYPE
+    AI_ASSESSMENT_TYPE, AIClassifierSet
 )
 from openassessment.assessment.worker import training as training_tasks
 from openassessment.assessment.worker import grading as grading_tasks
-
 
 logger = logging.getLogger(__name__)
 
@@ -129,26 +131,45 @@ def submit(submission_uuid, rubric, algorithm_id):
         raise AIGradingInternalError(msg)
 
     try:
-        # Schedule the grading task only if the workflow has a classifier set
-        if workflow.classifier_set is not None:
-            grading_tasks.grade_essay.apply_async(args=[workflow.uuid])
-            logger.info((
-                u"Scheduled grading task for AI grading workflow with UUID {workflow_uuid} "
-                u"(submission UUID = {sub_uuid}, algorithm ID = {algorithm_id})"
-            ).format(workflow_uuid=workflow.uuid, sub_uuid=submission_uuid, algorithm_id=algorithm_id))
-        else:
-            logger.info((
-                u"Cannot schedule a grading task for AI grading workflow with UUID {workflow_uuid} "
-                u"because no classifiers are available for the rubric associated with submission {sub_uuid} "
-                u"for the algorithm {algorithm_id}"
-            ).format(workflow_uuid=workflow.uuid, sub_uuid=submission_uuid, algorithm_id=algorithm_id))
-        return workflow.uuid
-    except Exception as ex:
+        classifier_set_candidates = AIClassifierSet.objects.filter(
+            rubric=workflow.rubric, algorithm_id=algorithm_id
+        )[:1]
+    except DatabaseError as ex:
         msg = (
             u"An unexpected error occurred while scheduling the "
             u"AI grading task for the submission with UUID {uuid}: {ex}"
         ).format(uuid=submission_uuid, ex=ex)
         raise AIGradingInternalError(msg)
+
+    # If we find classifiers for this rubric/algorithm
+    # then associate the classifiers with the workflow
+    # and schedule a grading task.
+    # Otherwise, the task will need to be scheduled later,
+    # once the classifiers have been trained.
+
+    if len(classifier_set_candidates) > 0:
+        workflow.classifier_set = classifier_set_candidates[0]
+        try:
+            workflow.save()
+            grading_tasks.grade_essay.apply_async(args=[workflow.uuid])
+            logger.info((
+                u"Scheduled grading task for AI grading workflow with UUID {workflow_uuid} "
+                u"(submission UUID = {sub_uuid}, algorithm ID = {algorithm_id})"
+            ).format(workflow_uuid=workflow.uuid, sub_uuid=submission_uuid, algorithm_id=algorithm_id))
+            return workflow.uuid
+        except (DatabaseError,) + ANTICIPATED_CELERY_ERRORS as ex:
+            msg = (
+                u"An unexpected error occurred while scheduling the "
+                u"AI grading task for the submission with UUID {uuid}: {ex}"
+            ).format(uuid=submission_uuid, ex=ex)
+            logger.exception(msg)
+            raise AIGradingInternalError(msg)
+    else:
+        logger.info((
+            u"Cannot schedule a grading task for AI grading workflow with UUID {workflow_uuid} "
+            u"because no classifiers are available for the rubric associated with submission {sub_uuid} "
+            u"for the algorithm {algorithm_id}"
+        ).format(workflow_uuid=workflow.uuid, sub_uuid=submission_uuid, algorithm_id=algorithm_id))
 
 
 def get_latest_assessment(submission_uuid):
@@ -245,7 +266,6 @@ def train_classifiers(rubric_dict, examples, course_id, item_id, algorithm_id):
     Raises:
         AITrainingRequestError
         AITrainingInternalError
-        AIGradingInternalError
 
     Example usage:
     >>> train_classifiers(rubric, examples, 'ease')
@@ -275,26 +295,13 @@ def train_classifiers(rubric_dict, examples, course_id, item_id, algorithm_id):
     # Schedule the task, parametrized by the workflow UUID
     try:
         training_tasks.train_classifiers.apply_async(args=[workflow.uuid])
-        logger.info((
-            u"Scheduled training task for the AI training workflow with UUID {workflow_uuid} "
-            u"(algorithm ID = {algorithm_id})"
-        ).format(workflow_uuid=workflow.uuid, algorithm_id=algorithm_id))
-    except (AITrainingInternalError, AITrainingRequestError):
+    except ANTICIPATED_CELERY_ERRORS as ex:
         msg = (
-            u"An unexpected error occurred while scheduling "
-            u"the task for training workflow with UUID {}"
-        ).format(workflow.uuid)
+            u"An unexpected error occurred while scheduling incomplete training workflows with"
+            u" course_id={cid} and item_id={iid}: {ex}"
+        ).format(cid=course_id, iid=item_id, ex=ex)
         logger.exception(msg)
         raise AITrainingInternalError(msg)
-    except AIGradingInternalError:
-        # If we have an error that is coming from the rescheduled grading after successful completion:
-        msg = (
-            u"An unexpected error occurred while scheduling incomplete grading workflows after "
-            u"the training task was completed successfully. The course_id and item_id for the failed "
-            u"grading workflows are course_id={cid}, item_id={iid}."
-        ).format(cid=course_id, iid=item_id)
-        logger.exception(msg)
-        raise AIGradingInternalError(msg)
 
     # Return the workflow UUID
     return workflow.uuid
@@ -317,19 +324,19 @@ def reschedule_unfinished_tasks(course_id=None, item_id=None, task_type=u"grade"
     Raises:
         AIGradingInternalError
         AITrainingInternalError
-        AIError
+        AIReschedulingRequestError
     """
 
     if course_id is None or item_id is None:
         msg = u"Rescheduling tasks was not possible because the course_id / item_id was not assigned."
         logger.exception(msg)
-        raise AIError
+        raise AIReschedulingRequestError
 
     # Reschedules all of the training tasks
     if task_type == u"train" or task_type is None:
         try:
             training_tasks.reschedule_training_tasks.apply_async(args=[course_id, item_id])
-        except Exception as ex:
+        except ANTICIPATED_CELERY_ERRORS as ex:
             msg = (
                 u"Rescheduling training tasks for course {cid} and item {iid} failed with exception: {ex}"
             ).format(cid=course_id, iid=item_id, ex=ex)
@@ -340,7 +347,7 @@ def reschedule_unfinished_tasks(course_id=None, item_id=None, task_type=u"grade"
     if task_type == u"grade" or task_type is None:
         try:
             grading_tasks.reschedule_grading_tasks.apply_async(args=[course_id, item_id])
-        except Exception as ex:
+        except ANTICIPATED_CELERY_ERRORS as ex:
             msg = (
                 u"Rescheduling grading tasks for course {cid} and item {iid} failed with exception: {ex}"
             ).format(cid=course_id, iid=item_id, ex=ex)
