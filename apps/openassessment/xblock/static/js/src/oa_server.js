@@ -337,6 +337,64 @@ OpenAssessment.Server.prototype = {
     },
 
     /**
+    Schedules classifier training for Example Based Assessment for this
+    Location.
+
+    Returns:
+        A JQuery promise, which resolves with a message indicating the results
+        of the scheduling request.
+
+    Example:
+        server.scheduleTraining().done(
+            function(msg) { console.log("Success!"); }
+            alert(msg);
+        ).fail(
+            function(errorMsg) { console.log(errorMsg); }
+        );
+    **/
+    scheduleTraining: function() {
+        var url = this.url('schedule_training');
+        return $.Deferred(function(defer) {
+            $.ajax({ type: "POST", url: url, data: "\"\""}).done(
+                function(data) {
+                    if (data.success) {
+                        defer.resolveWith(this, [data.msg]);
+                    }
+                    else {
+                        defer.rejectWith(this, [data.msg]);
+                    }
+                }
+            ).fail(function(data) {
+                    defer.rejectWith(this, [gettext('This assessment could not be submitted.')]);
+                });
+        });
+    },
+
+    /**
+    Reschedules grading tasks for example based assessments
+
+    Returns:
+        JQuery Promise which will resolve with a message indicating success or failure of the scheduling
+    **/
+    rescheduleUnfinishedTasks: function() {
+        var url = this.url('reschedule_unfinished_tasks');
+        return $.Deferred(function(defer) {
+            $.ajax({ type: "POST", url: url, data: "\"\""}).done(
+                function(data) {
+                    if (data.success) {
+                        defer.resolveWith(this, [data.msg]);
+                    }
+                    else {
+                        defer.rejectWith(this, [data.msg]);
+                    }
+                }
+            ).fail(function(data) {
+                    defer.rejectWith(this, [gettext('One or more rescheduling tasks failed.')]);
+            });
+        });
+    },
+
+    /**
     Load the XBlock's XML definition from the server.
 
     Returns:

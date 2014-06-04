@@ -33,6 +33,12 @@ Self Assessment
 .. automodule:: openassessment.assessment.api.self
    :members:
 
+Example-Based Assessment (AI)
+*****************************
+
+.. automodule:: openassessment.assessment.api.ai
+   :members:
+
 Student Training
 ****************
 

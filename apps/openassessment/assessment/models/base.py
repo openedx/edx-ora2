@@ -166,6 +166,57 @@ class Rubric(models.Model):
 
         return option_id_set
 
+    def options_ids_for_points(self, criterion_points):
+        """
+        Given a mapping of selected point values, return the option IDs.
+        If there are multiple options with the same point value,
+        this will return the first one (lower order number).
+
+        Args:
+            criterion_points (dict): Mapping of criteria names to point values.
+
+        Returns:
+            list of option IDs
+
+        Raises:
+            InvalidOptionSelection
+
+        """
+        # Retrieve the mapping of criterion names/points to option IDs
+        # from the cache, if it's available
+        cache_key = "assessment.rubric_points_dict.{}".format(self.content_hash)
+        rubric_points_dict = cache.get(cache_key)
+
+        # Otherwise, create the dict by querying the database
+        if not rubric_points_dict:
+            rubric_options = CriterionOption.objects.filter(
+                criterion__rubric=self
+            ).select_related()
+
+            rubric_points_dict = defaultdict(dict)
+            for option in rubric_options:
+                if option.points not in rubric_points_dict[option.criterion.name]:
+                    rubric_points_dict[option.criterion.name][option.points] = option.id
+
+            # Store the dict in the cache
+            cache.set(cache_key, rubric_points_dict)
+
+        # Find the IDs for the options matching the specified point value
+        option_id_set = set()
+        for criterion_name, option_points in criterion_points.iteritems():
+            if (criterion_name in rubric_points_dict and 
+                option_points in rubric_points_dict[criterion_name]
+            ):
+                option_id = rubric_points_dict[criterion_name][option_points]
+                option_id_set.add(option_id)
+            else:
+                msg = _("{criterion} option with point value {points} not found in rubric").format(
+                    criterion=criterion_name, points=option_points
+                )
+                raise InvalidOptionSelection(msg)
+
+        return option_id_set
+
 
 class Criterion(models.Model):
     """A single aspect of a submission that needs assessment.

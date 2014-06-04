@@ -6,7 +6,7 @@
             <span class="wrapper--copy">
                 <span class="step__label">{% trans "Your Grade" %}:</span>
                 <span class="grade__value">
-                    <span class="grade__value__title">{% trans "Waiting for Peer Assessment" %}</span>
+                    <span class="grade__value__title">{% trans "Waiting for Assessments" %}</span>
                 </span>
             </span>
         </h2>
@@ -16,7 +16,13 @@
         <div class="wrapper--step__content">
             <div class="step__content">
                 <div class="grade__value__description">
-                    <p>{% trans "Your response is still undergoing peer assessment. After your peers have assessed your response, you'll see their comments and receive your final grade." %}</p>
+                    {% if waiting == 'peer' %}
+                        <p>{% trans "Your response is still undergoing peer assessment. After your peers have assessed your response, you'll see their comments and receive your final grade." %}</p>
+                    {% elif waiting == 'example-based' %}
+                        <p>{% trans "Your response is still undergoing example based assessment. After your response has been assessed, you'll see the comments and receive your final grade." %}</p>
+                    {% elif waiting == 'all' %}
+                        <p>{% trans "Your response is still undergoing peer assessment and example based assessment. After your example based assessment has been generated and peers have assessed your response, you'll see their comments and receive your final grade." %}</p>
+                    {% endif %}
                 </div>
             </div>
         </div>

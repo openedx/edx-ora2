@@ -30,6 +30,7 @@ pip-log.txt
 .tox
 nosetests.xml
 htmlcov
+coverage.xml
 
 # Translations
 *.mo
@@ -57,6 +58,10 @@ coverage
 # tim-specific
 ora2db
 apps/openassessment/xblock/static/js/fixtures/*.html
+storage/*
 
 # logging
-logs/*.log*
+logs/*/*.log*
+
+# Vagrant
+.vagrant

@@ -57,6 +57,66 @@
             },
             "self": {}
         }
+    },
+    "ai": {
+        "steps": ["ai"],
+        "requirements": {
+            "ai": {}
+        }
+    },
+    "ai_peer": {
+        "steps": ["ai", "peer"],
+        "requirements": {
+            "ai": {},
+            "peer": {
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            }
+        }
+    },
+    "ai_training_peer": {
+        "steps": ["ai", "training", "peer"],
+        "requirements": {
+            "ai": {},
+            "training": {
+                "num_required": 2
+            },
+            "peer": {
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            }
+        }
+    },
+    "ai_self": {
+        "steps": ["ai", "self"],
+        "requirements": {
+            "ai": {},
+            "self": {}
+        }
+    },
+    "ai_peer_self": {
+        "steps": ["ai", "peer", "self"],
+        "requirements": {
+            "ai": {},
+            "peer": {
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            "self": {}
+        }
+    },
+    "ai_training_peer_self": {
+        "steps": ["ai", "training", "peer", "self"],
+        "requirements": {
+            "ai": {},
+            "training": {
+                "num_required": 2
+            },
+            "peer": {
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            "self": {}
+        }
     }
-
 }

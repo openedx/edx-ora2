@@ -1,0 +1,69 @@
+<openassessment>
+    <title>Example Based Example</title>
+    <assessments>
+        <assessment name="example-based-assessment" algorithm_id="fake">
+            <example>
+                <answer>Born in northern New South Wales, Dowling entered the Royal Australian Naval College in 1915. After graduating in 1919 he went to sea aboard various Royal Navy and RAN vessels, and later specialised in gunnery. In 1937, he was given command of the sloop HMAS Swan. Following the outbreak of World War II, he saw action in the Mediterranean theatre as executive officer of the Royal Navy cruiser HMS Naiad, and survived her sinking by a German U-boat in March 1942. Returning to Australia, he served as Director of Plans and later Deputy Chief of Naval Staff before taking command of the light cruiser HMAS Hobart in November 1944. His achievements in the South West Pacific earned him the Distinguished Service Order.
+
+                    Dowling took command of the RAN's first aircraft carrier, HMAS Sydney, in 1948. He became Chief of Naval Personnel in 1950, and Flag Officer Commanding HM Australian Fleet in 1953. Soon after taking up the position of CNS in February 1955, he was promoted to vice admiral and appointed a Companion of the Order of the Bath. As CNS he had to deal with shortages of money, manpower and equipment, and with the increasing role of the United States in Australia's defence planning, at the expense of traditional ties with Britain. Knighted in 1957, Dowling was Chairman of COSC from March 1959 until May 1961, when he retired from the military. In 1963 he was appointed a Knight Commander of the Royal Victorian Order and became Australian Secretary to HM Queen Elizabeth II, serving until his death in 1969.
+                </answer>
+                <select criterion="Ideas" option="Bad" />
+                <select criterion="Content" option="Bad" />
+            </example>
+            <example>
+                <answer>Roy Russell Dowling was born on 28 May 1901 in Condong, a township on the Tweed River in northern New South Wales. His parents were sugar cane inspector Russell Dowling and his wife Lily. The youth entered the Royal Australian Naval College (RANC) at Jervis Bay, Federal Capital Territory, in 1915. An underachiever academically, he excelled at sports, and became chief cadet captain before graduating in 1918 with the King's Medal, awarded for "gentlemanly bearing, character, good influence among his fellows and officer-like qualities".[1][2] The following year he was posted to Britain as a midshipman, undergoing training with the Royal Navy and seeing service on HMS Ramillies and HMS Venturous.[3] By January 1923 he was back in Australia, serving aboard the cruiser HMAS Adelaide. He was promoted to lieutenant in March.[4] In April 1924, Adelaide joined the Royal Navy's Special Service Squadron on its worldwide cruise, taking in New Zealand, Canada, the United States, Panama, and the West Indies, before docking in September at Portsmouth, England. There Dowling left the ship for his next appointment, training as a gunnery officer and serving in that capacity at HMS Excellent.
+                </answer>
+                <select criterion="Ideas" option="Good" />
+                <select criterion="Content" option="Bad" />
+            </example>
+            <example>
+                <answer>After his return to Australia in December 1926, Dowling spent eighteen months on HMAS Platypus and HMAS Anzac, where he continued to specialise in gunnery. In July 1928, he took on an instructional role at the gunnery school in Flinders Naval Depot on Western Port Bay, Victoria. He married Jessie Blanch in Melbourne on 8 May 1930; the couple had two sons and three daughters.[1][6] Jessie accompanied him on his next posting to Britain commencing in January 1931.</answer>
+                <select criterion="Ideas" option="Bad" />
+                <select criterion="Content" option="Good" />
+            </example>
+            <example>
+                <answer>He was promoted to lieutenant commander on 15 March, and was appointed gunnery officer on the light cruiser HMS Colombo in May. Dowling returned to Australia in January 1933, and was appointed squadron gunnery officer aboard the heavy cruiser HMAS Canberra that April.[1][4] The ship operated mainly within Australian waters over the next two years.[7] In July 1935, Dowling took charge of the gunnery school at Flinders Naval Depot. He was promoted to commander on 31 December 1936.[1][4] The following month, he assumed command of the newly commissioned Grimsby-class sloop HMAS Swan, carrying out duties in the South West Pacific.[8] Completing his tenure on Swan in January 1939, he was briefly assigned to the Navy Office, Melbourne, before returning to Britain in March for duty at HMS Pembroke, where he awaited posting aboard the yet-to-be-commissioned anti-aircraft cruiser, HMS Naiad.</answer>
+                <select criterion="Ideas" option="Good" />
+                <select criterion="Content" option="Good" />
+            </example>
+        </assessment>
+    </assessments>
+    <rubric>
+        <prompt>
+            Censorship in the Libraries
+
+            'All of us can think of a book that we hope none of our children or any other children have taken off the shelf. But if I have the right to remove that book from the shelf -- that work I abhor -- then you also have exactly the same right and so does everyone else. And then we have no books left on the shelf for any of us.' --Katherine Paterson, Author
+
+            Write a persuasive essay to a newspaper reflecting your views on censorship in libraries. Do you believe that certain materials, such as books, music, movies, magazines, etc., should be removed from the shelves if they are found offensive? Support your position with convincing arguments from your own experience, observations, and/or reading.
+
+            Read for conciseness, clarity of thought, and form.
+        </prompt>
+        <criterion feedback="optional">
+            <name>Ideas</name>
+            <prompt>Determine if there is a unifying theme or main idea.</prompt>
+            <option points="0">
+                <name>Bad</name>
+                <explanation>Difficult for the reader to discern the main idea.  Too brief or too repetitive to establish or maintain a focus.</explanation>
+            </option>
+            <option points="3">
+                <name>Good</name>
+                <explanation>Presents a unifying theme or main idea, but may include minor tangents.  Stays somewhat focused on topic and task.</explanation>
+            </option>
+        </criterion>
+        <criterion>
+            <name>Content</name>
+            <prompt>Assess the content of the submission</prompt>
+            <option points="0">
+                <name>Bad</name>
+                <explanation>Includes little information with few or no details or unrelated details.  Unsuccessful in attempts to explore any facets of the topic.</explanation>
+            </option>
+            <option points="1">
+                <name>Good</name>
+                <explanation>Includes little information and few or no details.  Explores only one or two facets of the topic.</explanation>
+            </option>
+        </criterion>
+        <feedbackprompt>
+            (Optional) What aspects of this response stood out to you? What did it do well? How could it improve?
+        </feedbackprompt>
+    </rubric>
+</openassessment>

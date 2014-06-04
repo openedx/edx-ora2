@@ -9,6 +9,7 @@ from xblock.core import XBlock
 
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
+from openassessment.assessment.api import ai as ai_api
 from openassessment.assessment.errors import SelfAssessmentError, PeerAssessmentError
 from submissions import api as sub_api
 
@@ -51,7 +52,7 @@ class GradeMixin(object):
             if status == "done":
                 path, context = self.render_grade_complete(workflow)
             elif status == "waiting":
-                path = 'openassessmentblock/grade/oa_grade_waiting.html'
+                path, context = self.render_grade_waiting(workflow)
             elif status is None:
                 path = 'openassessmentblock/grade/oa_grade_not_started.html'
             else:  # status is 'self' or 'peer', which implies that the workflow is incomplete
@@ -60,6 +61,22 @@ class GradeMixin(object):
             return self.render_error(_(u"An unexpected error occurred."))
         else:
             return self.render_assessment(path, context)
+
+    def render_grade_waiting(self, workflow):
+        """
+        Render the grade waiting state.
+
+        Args:
+            workflow (dict): The serialized Workflow model.
+
+        Returns:
+            tuple of context (dict) and template_path (string)
+
+        """
+        context = {
+            "waiting": self.get_waiting_details(workflow["status_details"])
+        }
+        return 'openassessmentblock/grade/oa_grade_waiting.html', context
 
     def render_grade_complete(self, workflow):
         """
@@ -75,19 +92,22 @@ class GradeMixin(object):
         assessment_steps = self.assessment_steps
         submission_uuid = workflow['submission_uuid']
 
+        example_based_assessment = None
+        self_assessment = None
+        feedback = None
+        peer_assessments = []
+        has_submitted_feedback = False
+
         if "peer-assessment" in assessment_steps:
             feedback = peer_api.get_assessment_feedback(submission_uuid)
             peer_assessments = peer_api.get_assessments(submission_uuid)
             has_submitted_feedback = feedback is not None
-        else:
-            feedback = None
-            peer_assessments = []
-            has_submitted_feedback = False
 
         if "self-assessment" in assessment_steps:
             self_assessment = self_api.get_assessment(submission_uuid)
-        else:
-            self_assessment = None
+
+        if "example-based-assessment" in assessment_steps:
+            example_based_assessment = ai_api.get_latest_assessment(submission_uuid)
 
         feedback_text = feedback.get('feedback', '') if feedback else ''
         student_submission = sub_api.get_submission(submission_uuid)
@@ -104,6 +124,7 @@ class GradeMixin(object):
             'student_submission': student_submission,
             'peer_assessments': peer_assessments,
             'self_assessment': self_assessment,
+            'example_based_assessment': example_based_assessment,
             'rubric_criteria': self._rubric_criteria_with_feedback(peer_assessments),
             'has_submitted_feedback': has_submitted_feedback,
         }
@@ -112,10 +133,13 @@ class GradeMixin(object):
         # Note that we are updating a *copy* of the rubric criteria stored in
         # the XBlock field
         max_scores = peer_api.get_rubric_max_scores(submission_uuid)
+        median_scores = None
         if "peer-assessment" in assessment_steps:
             median_scores = peer_api.get_assessment_median_scores(submission_uuid)
         elif "self-assessment" in assessment_steps:
             median_scores = self_api.get_assessment_scores_by_criteria(submission_uuid)
+        elif "example-based-assessment" in assessment_steps:
+            median_scores = ai_api.get_assessment_scores_by_criteria(submission_uuid)
 
         if median_scores is not None and max_scores is not None:
             for criterion in context["rubric_criteria"]:

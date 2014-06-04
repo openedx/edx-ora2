@@ -7,3 +7,4 @@ from .base import *
 from .peer import *
 from .training import *
 from .student_training import *
+from .ai import *

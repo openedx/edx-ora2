@@ -54,3 +54,22 @@ def convert_training_examples_list_to_dict(examples_list):
         }
         for ex in examples_list
     ]
+
+
+def create_rubric_dict(prompt, criteria):
+    """
+    Construct a serialized rubric model in the format expected
+    by the assessments app.
+
+    Args:
+        prompt (unicode): The rubric prompt.
+        criteria (list of dict): The serialized rubric criteria.
+
+    Returns:
+        dict
+
+    """
+    return {
+        "prompt": prompt,
+        "criteria": criteria
+    }

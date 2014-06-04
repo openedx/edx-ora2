@@ -38,6 +38,8 @@ class MessageMixin(object):
 
         # Finds the cannonical status of the workflow and the is_closed status of the problem
         status = workflow.get('status')
+        status_details = workflow.get('status_details', {})
+
         is_closed = deadline_info.get('general').get('is_closed')
 
         # Finds the status_information which describes the closed status of the current step (defaults to submission)
@@ -53,7 +55,7 @@ class MessageMixin(object):
         # Render the instruction message based on the status of the workflow
         # and the closed status.
         if status == "done" or status == "waiting":
-            path, context = self.render_message_complete(status)
+            path, context = self.render_message_complete(status_details)
         elif is_closed or status_is_closed:
             path, context = self.render_message_closed(status_info)
         elif status == "self":
@@ -66,7 +68,7 @@ class MessageMixin(object):
             path, context = self.render_message_open(deadline_info)
         return self.render_assessment(path, context)
 
-    def render_message_complete(self, status):
+    def render_message_complete(self, status_details):
         """
         Renders the "Complete" message state (Either Waiting or Done)
 
@@ -76,10 +78,10 @@ class MessageMixin(object):
         Returns:
             The path (String) and context (dict) to render the "Complete" message template
         """
-
         context = {
-            "waiting": (status == "waiting")
+            "waiting": self.get_waiting_details(status_details),
         }
+
         return 'openassessmentblock/message/oa_message_complete.html', context
 
     def render_message_training(self, deadline_info):

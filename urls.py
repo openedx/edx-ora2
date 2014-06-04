@@ -20,7 +20,7 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
 
     # Provided by XBlock
-    url(r'^workbench/', include(workbench.urls)),
+    url(r'^/?', include(workbench.urls)),
 
     # edx-ora2 apps
     url(r'^submissions/', include(submissions.urls)),

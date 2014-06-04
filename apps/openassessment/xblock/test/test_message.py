@@ -3,6 +3,7 @@
 """
 Tests for message handlers in Open Assessment XBlock.
 """
+import copy
 
 import mock
 import pytz
@@ -28,9 +29,21 @@ class TestMessageRender(XBlockHandlerTestCase):
     PAST = TODAY - dt.timedelta(days=10)
     FAR_PAST = TODAY - dt.timedelta(days=100)
 
+    DEFAULT_STATUS_DETAILS = {
+        'peer': {
+            'completed': TODAY,
+            'graded': TODAY,
+        },
+        'ai': {
+            'completed': TODAY,
+            'graded': TODAY,
+        },
+    }
+
     def _assert_path_and_context(
         self, xblock, expected_path, expected_context,
-        workflow_status, deadline_information, has_peers_to_grade
+        workflow_status, deadline_information, has_peers_to_grade,
+        workflow_status_details=DEFAULT_STATUS_DETAILS
     ):
         """
         Complete all of the logic behind rendering the message and verify
@@ -48,12 +61,14 @@ class TestMessageRender(XBlockHandlerTestCase):
                 - deadline_information.get("self-assessment") has the same properties as is_closed("self-assessment")
                 - (WILL BE DEFAULT) deadline_information.get("over-all") has the same properties as is_closed()
             has_peers_to_grade (bool): A boolean which indicates whether the queue of peer responses is empty
+            workflow_status_details (dict): A dictionary of status details
 
         """
 
         # Simulate the response from the workflow API
         workflow_info = {
-            'status': workflow_status
+            'status': workflow_status,
+            'status_details': workflow_status_details,
         }
         xblock.get_workflow_info = mock.Mock(return_value=workflow_info)
 
@@ -687,6 +702,8 @@ class TestMessageRender(XBlockHandlerTestCase):
     def test_waiting_due(self, xblock):
 
         status = 'waiting'
+        status_details = copy.deepcopy(self.DEFAULT_STATUS_DETAILS)
+        status_details["peer"]["graded"] = None
 
         deadline_information = {
             'submission': (True, 'due', self.FAR_PAST, self.YESTERDAY),
@@ -700,18 +717,20 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_complete.html'
 
         expected_context = {
-            "waiting": True
+            "waiting": "peer"
         }
 
         self._assert_path_and_context(
             xblock, expected_path, expected_context,
-            status, deadline_information, has_peers_to_grade
+            status, deadline_information, has_peers_to_grade, status_details
         )
 
     @scenario('data/message_scenario.xml', user_id = "Linda")
     def test_waiting_not_due(self, xblock):
 
         status = 'waiting'
+        status_details = copy.deepcopy(self.DEFAULT_STATUS_DETAILS)
+        status_details["peer"]["graded"] = None
 
         deadline_information = {
             'submission': (True, 'due', self.FAR_PAST, self.YESTERDAY),
@@ -725,12 +744,67 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_complete.html'
 
         expected_context = {
-            "waiting": True
+            "waiting": "peer"
         }
 
         self._assert_path_and_context(
             xblock, expected_path, expected_context,
-            status, deadline_information, has_peers_to_grade
+            status, deadline_information, has_peers_to_grade, status_details
+        )
+
+    @scenario('data/message_scenario.xml', user_id="Linda")
+    def test_waiting_on_ai(self, xblock):
+
+        status = 'waiting'
+        status_details = copy.deepcopy(self.DEFAULT_STATUS_DETAILS)
+        status_details["ai"]["graded"] = None
+
+        deadline_information = {
+            'submission': (True, 'due', self.FAR_PAST, self.YESTERDAY),
+            'peer-assessment': (True, 'due', self.YESTERDAY, self.TODAY),
+            'self-assessment': (True, 'due', self.YESTERDAY, self.TODAY),
+            'over-all': (True, 'due', self.FAR_PAST, self.TODAY)
+        }
+
+        has_peers_to_grade = False
+
+        expected_path = 'openassessmentblock/message/oa_message_complete.html'
+
+        expected_context = {
+            "waiting": "example-based"
+        }
+
+        self._assert_path_and_context(
+            xblock, expected_path, expected_context,
+            status, deadline_information, has_peers_to_grade, status_details
+        )
+
+    @scenario('data/message_scenario.xml', user_id="Linda")
+    def test_waiting_on_all(self, xblock):
+
+        status = 'waiting'
+        status_details = copy.deepcopy(self.DEFAULT_STATUS_DETAILS)
+        status_details["ai"]["graded"] = None
+        status_details["peer"]["graded"] = None
+
+        deadline_information = {
+            'submission': (True, 'due', self.FAR_PAST, self.YESTERDAY),
+            'peer-assessment': (True, 'due', self.YESTERDAY, self.TODAY),
+            'self-assessment': (True, 'due', self.YESTERDAY, self.TODAY),
+            'over-all': (True, 'due', self.FAR_PAST, self.TODAY)
+        }
+
+        has_peers_to_grade = False
+
+        expected_path = 'openassessmentblock/message/oa_message_complete.html'
+
+        expected_context = {
+            "waiting": "all"
+        }
+
+        self._assert_path_and_context(
+            xblock, expected_path, expected_context,
+            status, deadline_information, has_peers_to_grade, status_details
         )
 
     @scenario('data/message_scenario.xml', user_id = "Linda")
@@ -750,7 +824,7 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_complete.html'
 
         expected_context = {
-            "waiting": False
+            "waiting": None
         }
 
         self._assert_path_and_context(
@@ -775,7 +849,7 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_complete.html'
 
         expected_context = {
-            "waiting": False
+            "waiting": None
         }
 
         self._assert_path_and_context(
