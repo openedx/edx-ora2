@@ -147,17 +147,21 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         # Verify that we can render without error
         resp = self.request(xblock, 'render_staff_info', json.dumps({}))
-        self.assertIn("course staff information", resp.decode('utf-8').lower())
+        decoded_response = resp.decode('utf-8').lower()
+        self.assertIn("course staff information", decoded_response)
 
+        # Confirm example-based-assessment does not show up; it is not date
+        # driven so its start / due dates are not relevant
+        self.assertNotIn("example-based-assessment", decoded_response)
         # Check all release dates.
-        self.assertIn("march 1, 2014", resp.decode('utf-8').lower())
-        self.assertIn("jan. 2, 2015", resp.decode('utf-8').lower())
-        self.assertIn("jan. 2, 2016", resp.decode('utf-8').lower())
+        self.assertIn("march 1, 2014", decoded_response)
+        self.assertIn("jan. 2, 2015", decoded_response)
+        self.assertIn("jan. 2, 2016", decoded_response)
 
         # Check all due dates.
-        self.assertIn("april 1, 2014", resp.decode('utf-8').lower())
-        self.assertIn("april 1, 2015", resp.decode('utf-8').lower())
-        self.assertIn("april 1, 2016", resp.decode('utf-8').lower())
+        self.assertIn("april 1, 2014", decoded_response)
+        self.assertIn("april 1, 2015", decoded_response)
+        self.assertIn("april 1, 2016", decoded_response)
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_staff_debug_dates_distant_past_and_future(self, xblock):

@@ -68,6 +68,9 @@ class StaffInfoMixin(object):
         steps = ['submission'] + self.assessment_steps
         for step in steps:
 
+            if step == 'example-based-assessment':
+                continue
+
             # Get the dates as a student would see them
             __, __, start_date, due_date = self.is_closed(step=step, course_staff=False)
 
