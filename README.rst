@@ -112,6 +112,26 @@ Disable quality violations on a line or file:
     # pylint: disable=W0123,E4567
 
 
+i18n
+====
+
+You will need to install `getttext <http://www.gnu.org/software/gettext/>`_.
+
+To extract strings and compile messages:
+
+.. code:: bash
+
+    python manage.py makemessages -l en
+    python manage.py makemessages -d djangojs -l en
+    python manage.py compilemessages
+
+Generate dummy strings for testing:
+
+.. code:: bash
+
+    i18n_tool dummy
+
+
 License
 =======
 
