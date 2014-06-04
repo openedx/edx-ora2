@@ -81,7 +81,7 @@ def train_classifiers(rubric_dict, classifier_score_overrides):
     """
     rubric = rubric_from_dict(rubric_dict)
     AIClassifierSet.create_classifier_set(
-        classifier_score_overrides, rubric, ALGORITHM_ID
+        classifier_score_overrides, rubric, ALGORITHM_ID, COURSE_ID, ITEM_ID
     )
 
 

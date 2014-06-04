@@ -19,6 +19,8 @@ class AIClassifierTest(CacheResetTest):
         u"vøȼȺƀᵾłȺɍɏ": "test data",
         u"ﻭɼค๓๓คɼ": "more test data"
     }
+    COURSE_ID = u"†3ß† çøU®ß3"
+    ITEM_ID = u"fake_item_id"
 
     def test_upload_to_path_default(self):
         # No path prefix provided in the settings
@@ -43,6 +45,6 @@ class AIClassifierTest(CacheResetTest):
         """
         rubric = rubric_from_dict(RUBRIC)
         classifier_set = AIClassifierSet.create_classifier_set(
-            self.CLASSIFIERS_DICT, rubric, "test_algorithm"
+            self.CLASSIFIERS_DICT, rubric, "test_algorithm", self.COURSE_ID, self.ITEM_ID
         )
         return AIClassifier.objects.filter(classifier_set=classifier_set)[0]
