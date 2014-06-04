@@ -11,6 +11,8 @@ from submissions.models import Submission
 import openassessment.workflow.api as workflow_api
 from openassessment.assessment.models import StudentTrainingWorkflow
 import submissions.api as sub_api
+from openassessment.assessment.api import peer as peer_api
+from openassessment.assessment.api import self as self_api
 
 ITEM_1 = {
     "student_id": "Optimus Prime 001",
@@ -52,6 +54,60 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         else:
             peer_workflows = list(PeerWorkflow.objects.filter(submission_uuid=submission["uuid"]))
             self.assertFalse(peer_workflows)
+
+    def test_assessment_module_rollback_update_workflow(self):
+        """
+        Test that updates work when assessment modules roll back
+
+        This test is designed to instantiate a workflow with an installed
+        assessment module, then verify the workflow can be updated even when
+        the status is set to an uninstalled assessment module.
+
+        """
+        requirements = {
+            "special": {},
+            "peer": {
+                "must_grade": 1,
+                "must_be_graded_by": 1
+            },
+            "self": {}
+        }
+
+        # We'll cheat to create the workflow with the new 'special' status,
+        # otherwise the creation logic will not allow unknown an unknown status
+        # to be set.
+        real_steps = AssessmentWorkflow.STEPS
+        AssessmentWorkflow.STEPS = ["special"] + real_steps
+        workflow, submission = self._create_workflow_with_status(
+            "user 1",
+            "test/1/1",
+            "peer-problem",
+            "special",
+            steps=["special", "peer", "self"])
+        AssessmentWorkflow.STEPS = real_steps
+
+        workflow_api.get_workflow_for_submission(
+            submission["uuid"], requirements
+        )
+
+        peer_workflows = list(PeerWorkflow.objects.filter(submission_uuid=submission["uuid"]))
+        self.assertTrue(peer_workflows)
+
+
+        with patch.object(peer_api, 'submitter_is_finished') as mock_peer_submit:
+            mock_peer_submit.return_value = True
+            workflow = workflow_api.get_workflow_for_submission(
+                submission["uuid"], requirements
+            )
+        self.assertEquals("self", workflow['status'])
+
+        with patch.object(self_api, 'submitter_is_finished') as mock_self_submit:
+            mock_self_submit.return_value = True
+            workflow = workflow_api.get_workflow_for_submission(
+                submission["uuid"], requirements
+            )
+
+        self.assertEquals("waiting", workflow['status'])
 
     def test_update_peer_workflow(self):
         submission = sub_api.create_submission(ITEM_1, "Shoot Hot Rod")
@@ -195,7 +251,8 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         updated_counts = workflow_api.get_status_counts("test/1/1", "peer-problem", ["peer", "self"])
         self.assertEqual(counts, updated_counts)
 
-    def _create_workflow_with_status(self, student_id, course_id, item_id, status, answer="answer"):
+    def _create_workflow_with_status(self, student_id, course_id, item_id,
+                                     status, answer="answer", steps=None):
         """
         Create a submission and workflow with a given status.
 
@@ -207,10 +264,14 @@ class TestAssessmentWorkflowApi(CacheResetTest):
 
         Kwargs:
             answer (unicode): Submission answer.
+            steps (list): A list of steps to create the workflow with. If not
+                specified the default steps are "peer", "self".
 
         Returns:
-            None
+            workflow, submission
         """
+        if not steps: steps = ["peer", "self"]
+
         submission = sub_api.create_submission({
             "student_id": student_id,
             "course_id": course_id,
@@ -218,7 +279,8 @@ class TestAssessmentWorkflowApi(CacheResetTest):
             "item_type": "openassessment",
         }, answer)
 
-        workflow = workflow_api.create_workflow(submission['uuid'], ["peer", "self"])
+        workflow = workflow_api.create_workflow(submission['uuid'], steps)
         workflow_model = AssessmentWorkflow.objects.get(uuid=workflow['uuid'])
         workflow_model.status = status
         workflow_model.save()
+        return workflow, submission
