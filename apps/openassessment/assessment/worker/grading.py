@@ -9,10 +9,11 @@ from django.conf import settings
 from celery.utils.log import get_task_logger
 from dogapi import dog_stats_api
 from openassessment.assessment.api import ai_worker as ai_worker_api
-from openassessment.assessment.errors import AIError, AIGradingInternalError, AIGradingRequestError
+from openassessment.assessment.errors import (
+    AIError, AIGradingInternalError, AIGradingRequestError, AIReschedulingInternalError, ANTICIPATED_CELERY_ERRORS
+)
 from .algorithm import AIAlgorithm, AIAlgorithmError
 from openassessment.assessment.models.ai import AIClassifierSet, AIGradingWorkflow
-
 
 MAX_RETRIES = 2
 
@@ -106,6 +107,10 @@ def reschedule_grading_tasks(course_id, item_id):
     Args:
         course_id (unicode): The course item that we will be rerunning the rescheduling on.
         item_id (unicode): The item that the rescheduling will be running on
+
+    Raises:
+        AIReschedulingInternalError
+        AIGradingInternalError
     """
 
     # Logs the start of the rescheduling process and records the start time so that total time can be calculated later.
@@ -113,7 +118,15 @@ def reschedule_grading_tasks(course_id, item_id):
     start_time = datetime.datetime.now()
 
     # Finds all incomplete grading workflows
-    grading_workflows = AIGradingWorkflow.get_incomplete_workflows(course_id, item_id)
+    try:
+        grading_workflows = AIGradingWorkflow.get_incomplete_workflows(course_id, item_id)
+    except (DatabaseError, AIGradingWorkflow.DoesNotExist) as ex:
+        msg = (
+            u"An unexpected error occurred while retrieving all incomplete "
+            u"grading tasks for course_id: {cid} and item_id: {iid}: {ex}"
+        ).format(cid=course_id, iid=item_id, ex=ex)
+        logger.exception(msg)
+        raise AIReschedulingInternalError(msg)
 
     # Notes whether or not one or more operations failed. If they did, the process of rescheduling will be retried.
     failures = 0
@@ -179,18 +192,23 @@ def reschedule_grading_tasks(course_id, item_id):
                 logger.info(
                     u"Rescheduling of grading was successful for grading workflow with uuid='{}'".format(workflow.uuid)
                 )
-            except (AIGradingInternalError, AIGradingRequestError, AIError) as ex:
+            except ANTICIPATED_CELERY_ERRORS as ex:
                 msg = (
                     u"An error occurred while try to grade essay with uuid='{id}': {ex}"
                 ).format(id=workflow.uuid, ex=ex)
                 logger.exception(msg)
                 failures += 1
 
+        # If we couldn't assign classifiers, we failed.
+        else:
+            failures += 1
+
     # Logs the data from our rescheduling attempt
     time_delta = datetime.datetime.now() - start_time
     _log_complete_reschedule_grading(
         course_id=course_id, item_id=item_id, seconds=time_delta.total_seconds(), success=(failures == 0)
     )
+
     # If one or more of these failed, we want to retry rescheduling.  Note that this retry is executed in such a way
     # that if it fails, an AIGradingInternalError will be raised with the number of failures on the last attempt (i.e.
     # the total number of workflows matching these critera that still have left to be graded).
@@ -215,7 +233,7 @@ def _log_start_reschedule_grading(course_id=None, item_id=None):
         u"course_id:{}".format(course_id),
         u"item_id:{}".format(item_id),
     ]
-    dog_stats_api.increment('openassessment.assessment.ai_task.reschedule_grade.scheduled_count', tags)
+    dog_stats_api.increment('openassessment.assessment.ai_task.AIRescheduleGrading.scheduled_count', tags)
 
     msg = u"Rescheduling of incomplete grading tasks began for course_id={cid} and item_id={iid}"
     logger.info(msg.format(cid=course_id, iid=item_id))
@@ -241,11 +259,11 @@ def _log_complete_reschedule_grading(course_id=None, item_id=None, seconds=-1, s
         u"success:{}".format(success)
     ]
 
-    dog_stats_api.histogram('openassessment.assessment.ai_task.reschedule_grade.turnaround_time', seconds,tags)
-    dog_stats_api.increment('openassessment.assessment.ai_task.reschedule_grade.completed_count', tags)
+    dog_stats_api.histogram('openassessment.assessment.ai_task.AIRescheduleGrading.turnaround_time', seconds,tags)
+    dog_stats_api.increment('openassessment.assessment.ai_task.AIRescheduleGrading.completed_count', tags)
 
     msg = u"Rescheduling of incomplete grading tasks for course_id={cid} and item_id={iid} completed in {s} seconds."
     if not success:
         msg += u" At least one grading task failed due to internal error."
-    msg.format(cid=course_id,iid=item_id,s=seconds)
+    msg.format(cid=course_id, iid=item_id, s=seconds)
     logger.info(msg)
