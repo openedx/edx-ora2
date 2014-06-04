@@ -87,14 +87,13 @@ class TestSelfAssessment(XBlockHandlerTestCase):
         with mock.patch('openassessment.xblock.workflow_mixin.workflow_api') as mock_api:
 
             # Simulate a workflow error
-            mock_api.update_from_assessments.side_effect = workflow_api.AssessmentWorkflowError
+            mock_api.update_from_assessments.side_effect = workflow_api.AssessmentWorkflowInternalError
 
             # Submit a self-assessment
             resp = self.request(xblock, 'self_assess', json.dumps(self.ASSESSMENT), response_format='json')
 
             # Verify that the we get an error response
             self.assertFalse(resp['success'])
-            self.assertIn('workflow', resp['msg'].lower())
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_self_assess_handler_missing_keys(self, xblock):

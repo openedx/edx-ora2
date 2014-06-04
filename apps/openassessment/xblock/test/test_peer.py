@@ -11,6 +11,7 @@ import datetime as dt
 import pytz
 import ddt
 from openassessment.assessment.api import peer as peer_api
+from openassessment.workflow import api as workflow_api
 from .base import XBlockHandlerTestCase, scenario
 
 
@@ -85,6 +86,18 @@ class TestPeerAssessment(XBlockHandlerTestCase):
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_peer_assess_before_submission(self, xblock):
         # Submit a peer assessment without a submission
+        resp = self.request(xblock, 'peer_assess', json.dumps(self.ASSESSMENT), response_format='json')
+        self.assertEqual(resp['success'], False)
+        self.assertGreater(len(resp['msg']), 0)
+
+    @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
+    def test_peer_assess_without_leasing_submission(self, xblock):
+        # Create a submission
+        student_item = xblock.get_student_item_dict()
+        submission = xblock.create_submission(student_item, u"Bob's answer")
+
+        # Attempt to assess a peer without first leasing their submission
+        # (usually occurs by rendering the peer assessment step)
         resp = self.request(xblock, 'peer_assess', json.dumps(self.ASSESSMENT), response_format='json')
         self.assertEqual(resp['success'], False)
         self.assertGreater(len(resp['msg']), 0)
@@ -612,6 +625,24 @@ class TestPeerAssessHandler(XBlockHandlerTestCase):
             xblock, 'Sally', 'Bob', self.ASSESSMENT_WITH_INVALID_OPTION,
             expect_failure=True
         )
+
+    @mock.patch('openassessment.xblock.peer_assessment_mixin.peer_api')
+    @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
+    def test_peer_api_request_error(self, xblock, mock_api):
+        mock_api.create_assessment.side_effect = peer_api.PeerAssessmentRequestError
+        self._submit_peer_assessment(xblock, "Sally", "Bob", self.ASSESSMENT, expect_failure=True)
+
+    @mock.patch('openassessment.xblock.peer_assessment_mixin.peer_api')
+    @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
+    def test_peer_api_internal_error(self, xblock, mock_api):
+        mock_api.create_assessment.side_effect = peer_api.PeerAssessmentInternalError
+        self._submit_peer_assessment(xblock, "Sally", "Bob", self.ASSESSMENT, expect_failure=True)
+
+    @mock.patch('openassessment.xblock.workflow_mixin.workflow_api.update_from_assessments')
+    @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
+    def test_peer_api_workflow_error(self, xblock, mock_call):
+        mock_call.side_effect = workflow_api.AssessmentWorkflowInternalError
+        self._submit_peer_assessment(xblock, "Sally", "Bob", self.ASSESSMENT, expect_failure=True)
 
     def _submit_peer_assessment(self, xblock, student_id, scorer_id, assessment, expect_failure=False):
         """
