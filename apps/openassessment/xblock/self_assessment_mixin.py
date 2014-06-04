@@ -141,11 +141,20 @@ class SelfAssessmentMixin(object):
             )
             # After we've created the self-assessment, we need to update the workflow.
             self.update_workflow_status()
-        except self_api.SelfAssessmentRequestError as ex:
-            msg = _(u"Could not create self assessment: {error}").format(error=ex)
+        except (self_api.SelfAssessmentRequestError, workflow_api.AssessmentWorkflowRequestError):
+            logger.warning(
+                u"An error occurred while submitting a self assessment "
+                u"for the submission {}".format(self.submission_uuid),
+                exc_info=True
+            )
+            msg = _(u"Your self assessment could not be submitted.")
             return {'success': False, 'msg': msg}
-        except workflow_api.AssessmentWorkflowError as ex:
-            msg = _(u"Could not update workflow: {error}").format(error=ex)
+        except (self_api.SelfAssessmentInternalError, workflow_api.AssessmentWorkflowInternalError):
+            logger.exception(
+                u"An error occurred while submitting a self assessment "
+                u"for the submission {}".format(self.submission_uuid),
+            )
+            msg = _(u"Your self assessment could not be submitted.")
             return {'success': False, 'msg': msg}
         else:
             return {'success': True, 'msg': u""}

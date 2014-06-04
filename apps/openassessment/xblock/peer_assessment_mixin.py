@@ -6,8 +6,7 @@ from xblock.core import XBlock
 
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.errors import (
-    PeerAssessmentInternalError, PeerAssessmentRequestError,
-    PeerAssessmentWorkflowError
+    PeerAssessmentRequestError, PeerAssessmentInternalError, PeerAssessmentWorkflowError
 )
 import openassessment.workflow.api as workflow_api
 from .resolve_dates import DISTANT_FUTURE
@@ -80,11 +79,17 @@ class PeerAssessmentMixin(object):
 
                 # Emit analytics event...
                 self._publish_peer_assessment_event(assessment)
-            except PeerAssessmentRequestError:
+            except (PeerAssessmentRequestError, PeerAssessmentWorkflowError):
+                logger.warning(
+                    u"Peer API error for submission UUID {}".format(self.submission_uuid),
+                    exc_info=True
+                )
                 return {'success': False, 'msg': _(u"Your peer assessment could not be submitted.")}
             except PeerAssessmentInternalError:
-                msg = _("Internal error occurred while creating the assessment")
-                logger.exception(msg)
+                logger.exception(
+                    u"Peer API internal error for submission UUID: {}".format(self.submission_uuid)
+                )
+                msg = _("Your peer assessment could not be submitted.")
                 return {'success': False, 'msg': msg}
 
             # Update both the workflow that the submission we're assessing
@@ -94,8 +99,11 @@ class PeerAssessmentMixin(object):
                     self.update_workflow_status(submission_uuid=assessment['submission_uuid'])
                 self.update_workflow_status()
             except workflow_api.AssessmentWorkflowError:
+                logger.exception(
+                    u"Workflow error occurred when submitting peer assessment "
+                    u"for submission {}".format(self.submission_uuid)
+                )
                 msg = _('Could not update workflow status.')
-                logger.exception(msg)
                 return {'success': False, 'msg': msg}
 
             # Temp kludge until we fix JSON serialization for datetime

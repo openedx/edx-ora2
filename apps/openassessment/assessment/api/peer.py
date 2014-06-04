@@ -525,9 +525,10 @@ def get_submission_to_assess(submission_uuid, graded_by):
     """
     workflow = PeerWorkflow.get_by_submission_uuid(submission_uuid)
     if not workflow:
-        raise PeerAssessmentWorkflowError(_(
-            u"A Peer Assessment Workflow does not exist for the specified "
-            u"student."))
+        raise PeerAssessmentWorkflowError(
+            u"A Peer Assessment Workflow does not exist for the student "
+            u"with submission UUID {}".format(submission_uuid)
+        )
     peer_submission_uuid = workflow.find_active_assessments()
     # If there is an active assessment for this user, get that submission,
     # otherwise, get the first assessment for review, otherwise,
