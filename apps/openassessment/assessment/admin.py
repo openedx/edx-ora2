@@ -18,7 +18,8 @@ class RubricAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'content_hash')
     search_fields = ('id', 'content_hash')
     readonly_fields = (
-        'id', 'content_hash', 'points_possible', 'criteria_summary', 'data'
+        'id', 'content_hash', 'structure_hash',
+        'points_possible', 'criteria_summary', 'data'
     )
 
     def criteria_summary(self, rubric_obj):
