@@ -23,10 +23,6 @@ class TrainingExample(models.Model):
     # SHA1 hash
     content_hash = models.CharField(max_length=40, unique=True, db_index=True)
 
-    # Version for models serialized to the cache
-    # Increment this number whenever you update this model!
-    CACHE_KEY_VERSION = 1
-
     class Meta:
         app_label = "assessment"
 
@@ -102,12 +98,11 @@ class TrainingExample(models.Model):
 
         """
         if attribute is None:
-            key_template = u"TrainingExample.json.v{version}.{content_hash}"
+            key_template = u"TrainingExample.json.{content_hash}"
         else:
-            key_template = u"TrainingExample.{attribute}.json.v{version}.{content_hash}"
+            key_template = u"TrainingExample.{attribute}.json.{content_hash}"
 
         cache_key = key_template.format(
-            version=self.CACHE_KEY_VERSION,
             content_hash=self.content_hash,
             attribute=attribute
         )
@@ -149,8 +144,7 @@ class TrainingExample(models.Model):
 
         """
         content_hash = cls.calculate_hash(answer, options_selected, rubric)
-        cache_key = u"TrainingExample.model.v{version}.{content_hash}".format(
-            version=cls.CACHE_KEY_VERSION,
+        cache_key = u"TrainingExample.model.{content_hash}".format(
             content_hash=content_hash
         )
         return cache_key, content_hash
