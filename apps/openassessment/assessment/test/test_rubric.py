@@ -3,10 +3,12 @@
 Tests for assessment models.
 """
 
+import copy
 from openassessment.test_utils import CacheResetTest
 from openassessment.assessment.models import (
     Rubric, Criterion, CriterionOption, InvalidOptionSelection
 )
+from openassessment.assessment.test.constants import RUBRIC
 
 
 class TestRubricOptionIds(CacheResetTest):
@@ -122,7 +124,7 @@ class TestRubricOptionIds(CacheResetTest):
     def test_options_ids_points_caching(self):
         # First call: the dict is not cached
         with self.assertNumQueries(1):
-            options_ids = self.rubric.options_ids_for_points({
+            self.rubric.options_ids_for_points({
                 'test criterion 0': 0,
                 'test criterion 1': 1,
                 'test criterion 2': 2,
@@ -131,7 +133,7 @@ class TestRubricOptionIds(CacheResetTest):
 
         # Second call: the dict is not cached
         with self.assertNumQueries(0):
-            options_ids = self.rubric.options_ids_for_points({
+            self.rubric.options_ids_for_points({
                 'test criterion 0': 1,
                 'test criterion 1': 2,
                 'test criterion 2': 1,
@@ -163,3 +165,66 @@ class TestRubricOptionIds(CacheResetTest):
                 'test criterion 2': 1,
                 'test criterion 3': 0
             })
+
+    def test_structure_hash_identical(self):
+        first_hash = Rubric.structure_hash_from_dict(RUBRIC)
+
+        # Same structure, but different text should have the same structure hash
+        altered_rubric = copy.deepcopy(RUBRIC)
+        altered_rubric['prompt'] = 'altered!'
+        for criterion in altered_rubric['criteria']:
+            criterion['prompt'] = 'altered!'
+            for option in criterion['options']:
+                option['explanation'] = 'altered!'
+        second_hash = Rubric.structure_hash_from_dict(altered_rubric)
+
+        # Expect that the two hashes are the same
+        self.assertEqual(first_hash, second_hash)
+
+    def test_structure_hash_extra_keys(self):
+        first_hash = Rubric.structure_hash_from_dict(RUBRIC)
+
+        # Same structure, add some extra keys
+        altered_rubric = copy.deepcopy(RUBRIC)
+        altered_rubric['extra'] = 'extra!'
+        altered_rubric['criteria'][0]['extra'] = 'extra!'
+        altered_rubric['criteria'][0]['options'][0]['extra'] = 'extra!'
+        second_hash = Rubric.structure_hash_from_dict(altered_rubric)
+
+        # Expect that the two hashes are the same
+        self.assertEqual(first_hash, second_hash)
+
+    def test_structure_hash_criterion_order_changed(self):
+        first_hash = Rubric.structure_hash_from_dict(RUBRIC)
+        altered_rubric = copy.deepcopy(RUBRIC)
+        altered_rubric['criteria'][0]['order_num'] = 5
+        second_hash = Rubric.structure_hash_from_dict(altered_rubric)
+        self.assertNotEqual(first_hash, second_hash)
+
+    def test_structure_hash_criterion_name_changed(self):
+        first_hash = Rubric.structure_hash_from_dict(RUBRIC)
+        altered_rubric = copy.deepcopy(RUBRIC)
+        altered_rubric['criteria'][0]['name'] = 'altered!'
+        second_hash = Rubric.structure_hash_from_dict(altered_rubric)
+        self.assertNotEqual(first_hash, second_hash)
+
+    def test_structure_hash_option_order_changed(self):
+        first_hash = Rubric.structure_hash_from_dict(RUBRIC)
+        altered_rubric = copy.deepcopy(RUBRIC)
+        altered_rubric['criteria'][0]['options'][0]['order_num'] = 5
+        second_hash = Rubric.structure_hash_from_dict(altered_rubric)
+        self.assertNotEqual(first_hash, second_hash)
+
+    def test_structure_hash_option_name_changed(self):
+        first_hash = Rubric.structure_hash_from_dict(RUBRIC)
+        altered_rubric = copy.deepcopy(RUBRIC)
+        altered_rubric['criteria'][0]['options'][0]['name'] = 'altered!'
+        second_hash = Rubric.structure_hash_from_dict(altered_rubric)
+        self.assertNotEqual(first_hash, second_hash)
+
+    def test_structure_hash_option_points_changed(self):
+        first_hash = Rubric.structure_hash_from_dict(RUBRIC)
+        altered_rubric = copy.deepcopy(RUBRIC)
+        altered_rubric['criteria'][0]['options'][0]['points'] = 'altered!'
+        second_hash = Rubric.structure_hash_from_dict(altered_rubric)
+        self.assertNotEqual(first_hash, second_hash)
