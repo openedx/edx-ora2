@@ -147,43 +147,42 @@ def reschedule_grading_tasks(course_id, item_id):
         # are called in rapid succession. This is part of the reason this button is in the admin view.
 
         # Tries to find a set of classifiers that are already defined in our maintained_classifiers based on a
-        # description of the workflow in the form of a tuple (rubric, algorithm_id)
-        workflow_description = (workflow.rubric, workflow.algorithm_id)
+        # description of the workflow in the form of a tuple (rubric, course_id, item_id, algorithm_id)
+        workflow_description = (workflow.rubric, course_id, item_id, workflow.algorithm_id)
         found_classifiers = maintained_classifiers.get(workflow_description)
 
         # If no set of classifiers is found, we perform the query to try to find them. We take the most recent
         # and add it to our dictionary of maintained classifiers for future reference.
         if found_classifiers is None:
             try:
-                classifier_set_candidates = AIClassifierSet.objects.filter(
-                    rubric=workflow.rubric, algorithm_id=workflow.algorithm_id
-                ).order_by('-created_at')[:1]
-                found_classifiers = classifier_set_candidates[0]
-                maintained_classifiers[workflow_description] = found_classifiers
-            except IndexError:
-                msg = u"No classifiers yet exist for essay with uuid='{}'".format(workflow.uuid)
-                logger.log(msg)
+                found = workflow.assign_most_recent_classifier_set()
+                if found:
+                    found_classifiers = workflow.classifier_set
+                    maintained_classifiers[workflow_description] = found_classifiers
+                else:
+                    msg = u"No applicable classifiers yet exist for essay with uuid='{}'".format(workflow.uuid)
+                    logger.log(msg)
             except DatabaseError as ex:
                 msg = (
                     u"A Database error occurred while trying to assign classifiers to an essay with uuid='{id}'"
                 ).format(id=workflow.uuid)
                 logger.exception(msg)
 
-        if found_classifiers is not None:
-
+        # If we found classifiers in our memoized lookup dictionary, we assign them and save.
+        else:
             workflow.classifier_set = found_classifiers
             try:
                 workflow.save()
                 logger.info(
-                    (
-                        u"Classifiers were successfully assigned to grading workflow with uuid={}"
-                    ).format(workflow.uuid)
+                    u"Classifiers were successfully assigned to grading workflow with uuid={}".format(workflow.uuid)
                 )
             except DatabaseError as ex:
                 msg = (
                     u"A Database error occurred while trying to save classifiers to an essay with uuid='{id}'"
                 ).format(id=workflow.uuid)
                 logger.exception(msg)
+
+        if found_classifiers is not None:
 
             # Now we should (unless we had an exception above) have a classifier set.
             # Try to schedule the grading

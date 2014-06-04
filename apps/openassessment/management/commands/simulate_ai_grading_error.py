@@ -130,7 +130,7 @@ class Command(BaseCommand):
 
         # Create the classifier set
         classifier_set = AIClassifierSet.create_classifier_set(
-            classifier_data, rubric, algorithm_id
+            classifier_data, rubric, algorithm_id, course_id, item_id
         )
         print u"Successfully created classifier set with id {}".format(classifier_set.pk)
 
