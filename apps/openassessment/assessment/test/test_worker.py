@@ -247,7 +247,7 @@ class AIGradingTaskTest(CeleryTaskTest):
         # Associate the workflow with classifiers
         rubric = rubric_from_dict(RUBRIC)
         classifier_set = AIClassifierSet.create_classifier_set(
-            self.CLASSIFIERS, rubric, ALGORITHM_ID
+            self.CLASSIFIERS, rubric, ALGORITHM_ID, STUDENT_ITEM.get('course_id'), STUDENT_ITEM.get('item_id')
         )
         workflow.classifier_set = classifier_set
         workflow.save()

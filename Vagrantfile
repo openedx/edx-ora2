@@ -11,24 +11,21 @@ echo "Updating apt packages..."
 apt-get update -y
 
 echo "Installing basic system requirements..."
-apt-get install -y curl git vim libxml2-dev libxslt1-dev
+apt-get install -y curl git vim libxml2-dev libxslt1-dev memcached nginx
+
+echo "Installing mysql server..."
+DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server-5.5
+echo "CREATE DATABASE IF NOT EXISTS workbench DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;" | mysql -u root
 
 echo "Installing Python system requirements..."
-apt-get install -y python2.7 python2.7-dev python-pip python-software-properties
+apt-get install -y python2.7 python2.7-dev python-pip python-software-properties python-mysqldb libmysqlclient-dev
 pip install virtualenv
 
 echo "Installing FireFox and xvfb (for JavaScript tests)..."
 add-apt-repository "ppa:ubuntu-mozilla-security/ppa"
 apt-get install -y firefox dbus-x11 xvfb
 
-cat > /etc/init/xvfb.conf <<XVFB_UPSTART
-    description     "Xvfb X Server"
-    start on (net-device-up and local-filesystems and runlevel [2345])
-    stop on runlevel [016]
-    exec /usr/bin/Xvfb :1 -screen 0 1024x768x24
-    respawn
-    respawn limit 15 5
-XVFB_UPSTART
+cat /home/vagrant/edx-ora2/vagrant/xvfb.conf > /etc/init/xvfb.conf
 start xvfb || true
 
 echo "Installing RabbitMQ..."
@@ -42,6 +39,11 @@ add-apt-repository ppa:chris-lea/node.js
 apt-get update -y
 apt-get install -y nodejs
 
+# Stop all Python upstart jobs
+sudo stop workbench || true
+sudo stop celery || true
+sudo stop flower || true
+
 su vagrant <<EOF
     set -e
 
@@ -51,30 +53,61 @@ su vagrant <<EOF
     source /home/vagrant/.virtualenvs/edx-ora2/bin/activate
 
     echo "Configuring login script..."
-    cat > /home/vagrant/.bash_profile <<LOGIN_SCRIPT
-        source /home/vagrant/.virtualenvs/edx-ora2/bin/activate
-        export NLTK_DATA=/home/vagrant/data/nltk_data
-        export DISPLAY=:1
-LOGIN_SCRIPT
+    cat /home/vagrant/edx-ora2/vagrant/bash_profile > /home/vagrant/.bash_profile
 
     echo "Installing EASE..."
     if [ ! -d /home/vagrant/ease ]; then
         git clone https://github.com/edx/ease.git /home/vagrant/ease
     fi
     cat /home/vagrant/ease/apt-packages.txt | xargs sudo apt-get -y install
-    pip install -r /home/vagrant/ease/pre-requirements.txt
-    pip install -r /home/vagrant/ease/requirements.txt
+    cd /home/vagrant/ease && pip install -r pre-requirements.txt
     cd /home/vagrant/ease && python setup.py install
 
     echo "Downloading NLTK corpus..."
-    mkdir -p /home/vagrant/data
-    curl -o /home/vagrant/data/nltk.tmp.tar.tz http://edx-static.s3.amazonaws.com/nltk/nltk-data-20131113.tar.gz
-    cd /home/vagrant/data && tar zxf /home/vagrant/data/nltk.tmp.tar.tz
+    cd /home/vagrant/ease && ./download-nltk-corpus.sh
+
+    echo "Installing gunicorn..."
+    pip install gunicorn
+
+    echo "Instally Python MySQL library..."
+    pip install MySQL-python
+
+    echo "Installing celery flower..."
+    pip install flower
 
     echo "Install edx-ora2..."
     cd /home/vagrant/edx-ora2 && ./scripts/install.sh
 
+    echo "Update the database..."
+    cd /home/vagrant/edx-ora2 && python manage.py syncdb --migrate --noinput --settings settings.vagrant
+
+    echo "Collect static assets..."
+    mkdir -p /home/vagrant/static
+    cd /home/vagrant/edx-ora2 && python manage.py collectstatic --noinput --settings settings.vagrant
+
+    echo "Creating the update script..."
+    cp /home/vagrant/edx-ora2/vagrant/update.sh /home/vagrant/update.sh
+
 EOF
+
+echo "Creating upstart script for workbench..."
+cat /home/vagrant/edx-ora2/vagrant/workbench_upstart.conf > /etc/init/workbench.conf
+start workbench || true
+
+echo "Create upstart script for Celery workers..."
+cat /home/vagrant/edx-ora2/vagrant/celery_upstart.conf > /etc/init/celery.conf
+start celery || true
+
+echo "Create upstart script for Celery flower..."
+cat /home/vagrant/edx-ora2/vagrant/flower_upstart.conf > /etc/init/flower.conf
+start flower || true
+
+echo "Configure nginx"
+cat /home/vagrant/edx-ora2/vagrant/nginx.conf > /etc/nginx/sites-enabled/workbench.conf
+
+echo "Restart nginx"
+sudo service nginx stop || true
+sudo service nginx start || true
 
 END
 
@@ -83,10 +116,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "precise64"
   config.vm.box_url = "http://files.vagrantup.com/precise64.box"
 
-  config.vm.network "forwarded_port", guest: 80, host: 8082
   config.vm.network "private_network", ip: "192.168.44.10"
   config.vm.synced_folder ".", "/home/vagrant/edx-ora2"
 
-  config.vm.provision "shell", inline: $script
 
+  config.vm.provider :virtualbox do |vb|
+    # Increase memory and CPU
+    vb.customize ["modifyvm", :id, "--memory", "2048"]
+    vb.customize ["modifyvm", :id, "--cpus", "2"]
+
+    # Allow DNS to work for Ubuntu 12.10 host
+    # http://askubuntu.com/questions/238040/how-do-i-fix-name-service-for-vagrant-client
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  end
+
+  config.vm.provision "shell", inline: $script
 end

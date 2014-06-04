@@ -14,6 +14,7 @@ from django.core.management.base import BaseCommand, CommandError
 from submissions import api as sub_api
 from openassessment.assessment.models import AIGradingWorkflow, AIClassifierSet
 from openassessment.assessment.serializers import rubric_from_dict
+from openassessment.assessment.worker.algorithm import AIAlgorithm
 
 
 class Command(BaseCommand):
@@ -26,7 +27,7 @@ class Command(BaseCommand):
         u"by creating incomplete AI grading workflows in the database."
     )
 
-    args = '<COURSE_ID> <PROBLEM_ID> <NUM_SUBMISSIONS>'
+    args = '<COURSE_ID> <PROBLEM_ID> <NUM_SUBMISSIONS> <ALGORITHM_ID>'
 
     RUBRIC_OPTIONS = [
         {
@@ -61,15 +62,34 @@ class Command(BaseCommand):
         ]
     }
 
-    # Since we're not actually running an AI scoring algorithm,
-    # we can use dummy data for the classifier, as long as it's
-    # JSON-serializable.
-    CLASSIFIERS = {
-        u'vocabulary': {},
-        u'grammar': {}
+    EXAMPLES = {
+        "vocabulary": [
+            AIAlgorithm.ExampleEssay(
+                text=u"World Food Day is celebrated every year around the world on 16 October in honor "
+                u"of the date of the founding of the Food and Agriculture "
+                u"Organization of the United Nations in 1945.",
+                score=0
+            ),
+            AIAlgorithm.ExampleEssay(
+                text=u"Since 1981, World Food Day has adopted a different theme each year "
+                u"in order to highlight areas needed for action and provide a common focus.",
+                score=1
+            ),
+        ],
+        "grammar": [
+            AIAlgorithm.ExampleEssay(
+                text=u"Most of the themes revolve around agriculture because only investment in agriculture ",
+                score=0
+            ),
+            AIAlgorithm.ExampleEssay(
+                text=u"In spite of the importance of agriculture as the driving force "
+                u"in the economies of many developing countries, this "
+                u"vital sector is frequently starved of investment.",
+                score=1
+            )
+        ]
     }
 
-    ALGORITHM_ID = u'fake'
     STUDENT_ID = u'test_student'
     ANSWER = {'answer': 'test answer'}
 
@@ -81,26 +101,38 @@ class Command(BaseCommand):
             course_id (unicode): The ID of the course to create submissions/workflows in.
             item_id (unicode): The ID of the problem in the course.
             num_submissions (int): The number of submissions/workflows to create.
+            algorithm_id (unicode): The ID of the ML algorithm to use ("fake" or "ease")
 
         Raises:
             CommandError
 
         """
-        if len(args) < 3:
+        if len(args) < 4:
             raise CommandError(u"Usage: simulate_ai_grading_error {}".format(self.args))
 
         # Parse arguments
         course_id = args[0].decode('utf-8')
         item_id = args[1].decode('utf-8')
         num_submissions = int(args[2])
+        algorithm_id = args[3].decode('utf-8')
 
         # Create the rubric model
         rubric = rubric_from_dict(self.RUBRIC)
 
+        # Train classifiers
+        print u"Training classifiers using {algorithm_id}...".format(algorithm_id=algorithm_id)
+        algorithm = AIAlgorithm.algorithm_for_id(algorithm_id)
+        classifier_data = {
+            criterion_name: algorithm.train_classifier(example)
+            for criterion_name, example in self.EXAMPLES.iteritems()
+        }
+        print u"Successfully trained classifiers."
+
         # Create the classifier set
         classifier_set = AIClassifierSet.create_classifier_set(
-            self.CLASSIFIERS, rubric, self.ALGORITHM_ID
+            classifier_data, rubric, algorithm_id, course_id, item_id
         )
+        print u"Successfully created classifier set with id {}".format(classifier_set.pk)
 
         # Create submissions and grading workflows
         for num in range(num_submissions):
@@ -112,7 +144,7 @@ class Command(BaseCommand):
             }
             submission = sub_api.create_submission(student_item, self.ANSWER)
             workflow = AIGradingWorkflow.start_workflow(
-                submission['uuid'], self.RUBRIC, self.ALGORITHM_ID
+                submission['uuid'], self.RUBRIC, algorithm_id
             )
             workflow.classifier_set = classifier_set
             workflow.save()

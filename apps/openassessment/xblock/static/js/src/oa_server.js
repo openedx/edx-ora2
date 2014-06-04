@@ -371,6 +371,30 @@ OpenAssessment.Server.prototype = {
     },
 
     /**
+    Reschedules grading tasks for example based assessments
+
+    Returns:
+        JQuery Promise which will resolve with a message indicating success or failure of the scheduling
+    **/
+    rescheduleUnfinishedTasks: function() {
+        var url = this.url('reschedule_unfinished_tasks');
+        return $.Deferred(function(defer) {
+            $.ajax({ type: "POST", url: url, data: "\"\""}).done(
+                function(data) {
+                    if (data.success) {
+                        defer.resolveWith(this, [data.msg]);
+                    }
+                    else {
+                        defer.rejectWith(this, [data.msg]);
+                    }
+                }
+            ).fail(function(data) {
+                    defer.rejectWith(this, [gettext('One or more rescheduling tasks failed.')]);
+            });
+        });
+    },
+
+    /**
     Load the XBlock's XML definition from the server.
 
     Returns:
