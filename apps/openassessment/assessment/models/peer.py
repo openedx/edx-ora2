@@ -12,7 +12,6 @@ from datetime import timedelta
 
 from django.db import models, DatabaseError
 from django.utils.timezone import now
-from django.utils.translation import ugettext as _
 
 from openassessment.assessment.models.base import Assessment
 from openassessment.assessment.errors import PeerAssessmentWorkflowError, PeerAssessmentInternalError
@@ -154,11 +153,10 @@ class PeerWorkflow(models.Model):
         except cls.DoesNotExist:
             return None
         except DatabaseError:
-            error_message = _(
+            error_message = (
                 u"Error finding workflow for submission UUID {}. Workflow must be "
                 u"created for submission before beginning peer assessment."
-                .format(submission_uuid)
-            )
+            ).format(submission_uuid)
             logger.exception(error_message)
             raise PeerAssessmentWorkflowError(error_message)
 
@@ -196,10 +194,10 @@ class PeerWorkflow(models.Model):
             item.save()
             return item
         except DatabaseError:
-            error_message = _(
+            error_message = (
                 u"An internal error occurred while creating a new peer workflow "
-                u"item for workflow {}".format(scorer_workflow)
-            )
+                u"item for workflow {}"
+            ).format(scorer_workflow)
             logger.exception(error_message)
             raise PeerAssessmentInternalError(error_message)
 
@@ -288,10 +286,10 @@ class PeerWorkflow(models.Model):
 
             return peer_workflows[0].submission_uuid
         except DatabaseError:
-            error_message = _(
+            error_message = (
                 u"An internal error occurred while retrieving a peer submission "
-                u"for student {}".format(self)
-            )
+                u"for student {}"
+            ).format(self)
             logger.exception(error_message)
             raise PeerAssessmentInternalError(error_message)
 
@@ -326,10 +324,10 @@ class PeerWorkflow(models.Model):
 
             return random_workflow.submission_uuid
         except DatabaseError:
-            error_message = _(
+            error_message = (
                 u"An internal error occurred while retrieving a peer submission "
-                u"for student {}".format(self)
-            )
+                u"for student {}"
+            ).format(self)
             logger.exception(error_message)
             raise PeerAssessmentInternalError(error_message)
 
@@ -366,10 +364,11 @@ class PeerWorkflow(models.Model):
             item_query = self.graded.filter(submission_uuid=submission_uuid).order_by("-started_at", "-id") # pylint:disable=E1101
             items = list(item_query[:1])
             if not items:
-                raise PeerAssessmentWorkflowError(_(
+                msg = (
                     u"No open assessment was found for student {} while assessing "
-                    u"submission UUID {}.".format(self.student_id, submission_uuid)
-                ))
+                    u"submission UUID {}."
+                ).format(self.student_id, submission_uuid)
+                raise PeerAssessmentWorkflowError(msg)
             item = items[0]
             item.assessment = assessment
             item.save()
@@ -379,12 +378,11 @@ class PeerWorkflow(models.Model):
                 item.author.grading_completed_at = now()
                 item.author.save()
         except (DatabaseError, PeerWorkflowItem.DoesNotExist):
-            error_message = _(
+            error_message = (
                 u"An internal error occurred while retrieving a workflow item for "
                 u"student {}. Workflow Items are created when submissions are "
                 u"pulled for assessment."
-                .format(self.student_id)
-            )
+            ).format(self.student_id)
             logger.exception(error_message)
             raise PeerAssessmentWorkflowError(error_message)
 

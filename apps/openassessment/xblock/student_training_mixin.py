@@ -159,10 +159,20 @@ class StudentTrainingMixin(object):
             corrections = student_training.assess_training_example(
                 self.submission_uuid, data['options_selected']
             )
-        except (student_training.StudentTrainingRequestError, student_training.StudentTrainingInternalError) as ex:
+        except student_training.StudentTrainingRequestError:
+            msg = (
+                u"Could not check student training scores for "
+                u"the student with submission UUID {uuid}"
+            ).format(uuid=self.submission_uuid)
+            logger.warning(msg, exc_info=True)
             return {
                 'success': False,
-                'msg': _(u"Your scores could not be checked: {error}.").format(error=ex)
+                'msg': _(u"Your scores could not be checked.")
+            }
+        except student_training.StudentTrainingInternalError:
+            return {
+                'success': False,
+                'msg': _(u"Your scores could not be checked.")
             }
         except:
             return {
@@ -173,9 +183,11 @@ class StudentTrainingMixin(object):
             try:
                 self.update_workflow_status()
             except workflow_api.AssessmentWorkflowError:
-                msg = _('Could not update workflow status.')
-                logger.exception(msg)
-                return {'success': False, 'msg': msg}
+                logger.exception(
+                    u"Workflow error occurred when submitting peer assessment "
+                    u"for submission {uuid}".format(uuid=self.submission_uuid)
+                )
+                return {'success': False, 'msg': _('Could not update workflow status.')}
             return {
                 'success': True,
                 'msg': u'',

@@ -6,7 +6,6 @@ the workflow for a given submission.
 """
 import logging
 from django.utils import timezone
-from django.utils.translation import ugettext as _
 from django.db import DatabaseError, IntegrityError
 from dogapi import dog_stats_api
 
@@ -162,18 +161,19 @@ def create_assessment(
         # and raise an error if this is not the case
         try:
             option_ids = rubric.options_ids(options_selected)
-        except InvalidOptionSelection as ex:
-            msg = _("Selected options do not match the rubric: {error}").format(error=ex)
+        except InvalidOptionSelection:
+            msg = "Selected options do not match the rubric"
+            logger.warning(msg, exc_info=True)
             raise PeerAssessmentRequestError(msg)
 
         scorer_workflow = PeerWorkflow.objects.get(submission_uuid=scorer_submission_uuid)
 
         peer_workflow_item = scorer_workflow.get_latest_open_workflow_item()
         if peer_workflow_item is None:
-            message = _(
+            message = (
                 u"There are no open assessments associated with the scorer's "
-                u"submission UUID {}.".format(scorer_submission_uuid)
-            )
+                u"submission UUID {}."
+            ).format(scorer_submission_uuid)
             logger.warning(message)
             raise PeerAssessmentWorkflowError(message)
 
@@ -213,17 +213,16 @@ def create_assessment(
 
         return assessment_dict
     except DatabaseError:
-        error_message = _(
+        error_message = (
             u"An error occurred while creating assessment {} by: {}"
-            .format(assessment_dict, scorer_id)
-        )
+        ).format(assessment_dict, scorer_id)
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
     except PeerWorkflow.DoesNotExist:
-        message = _(
+        message = (
             u"There is no Peer Workflow associated with the given "
-            u"submission UUID {}.".format(scorer_submission_uuid)
-        )
+            u"submission UUID {}."
+        ).format(scorer_submission_uuid)
         logger.error(message)
         raise PeerAssessmentWorkflowError(message)
 
@@ -259,10 +258,9 @@ def get_rubric_max_scores(submission_uuid):
             for criterion in rubric_dict["criteria"]
         }
     except DatabaseError:
-        error_message = _(
-            u"Error getting rubric options max scores for submission uuid "
-            u"[{}]".format(submission_uuid)
-        )
+        error_message = (
+            u"Error getting rubric options max scores for submission uuid {uuid}"
+        ).format(uuid=submission_uuid)
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
 
@@ -298,7 +296,9 @@ def get_assessment_median_scores(submission_uuid):
         scores = Assessment.scores_by_criterion(assessments)
         return Assessment.get_median_score_dict(scores)
     except DatabaseError:
-        error_message = _(u"Error getting assessment median scores {}".format(submission_uuid))
+        error_message = (
+            u"Error getting assessment median scores for submission {uuid}"
+        ).format(uuid=submission_uuid)
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
 
@@ -401,9 +401,9 @@ def get_assessments(submission_uuid, scored_only=True, limit=None):
             )[:limit]
         return serialize_assessments(assessments)
     except DatabaseError:
-        error_message = _(
-            u"Error getting assessments for submission {}".format(submission_uuid)
-        )
+        error_message = (
+            u"Error getting assessments for submission {uuid}"
+        ).format(uuid=submission_uuid)
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
 
@@ -471,10 +471,10 @@ def get_submitted_assessments(submission_uuid, scored_only=True, limit=None):
             pk__in=[item.assessment.pk for item in items])[:limit]
         return serialize_assessments(assessments)
     except DatabaseError:
-        error_message = _(
-            u"Couldn't retrieve the assessments that the author of response {}"
-            u" completed".format(submission_uuid)
-        )
+        error_message = (
+            u"Couldn't retrieve the assessments completed by the "
+            " student with submission {uuid}"
+        ).format(uuid=submission_uuid)
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
 
@@ -544,11 +544,10 @@ def get_submission_to_assess(submission_uuid, graded_by):
             _log_workflow(peer_submission_uuid, workflow)
             return submission_data
         except sub_api.SubmissionNotFoundError:
-            error_message = _(
+            error_message = (
                 u"Could not find a submission with the uuid {} for student {} "
                 u"in the peer workflow."
-                .format(peer_submission_uuid, workflow.student_id)
-            )
+            ).format(peer_submission_uuid, workflow.student_id)
             logger.exception(error_message)
             raise PeerAssessmentWorkflowError(error_message)
     else:
@@ -598,11 +597,10 @@ def create_peer_workflow(submission_uuid):
         # created a workflow for this submission, so we don't need to do anything.
         pass
     except DatabaseError:
-        error_message = _(
+        error_message = (
             u"An internal error occurred while creating a new peer "
             u"workflow for submission {}"
-            .format(submission_uuid)
-        )
+        ).format(submission_uuid)
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
 

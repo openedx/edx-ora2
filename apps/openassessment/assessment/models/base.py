@@ -20,7 +20,6 @@ import json
 from django.core.cache import cache
 from django.db import models
 from django.utils.timezone import now
-from django.utils.translation import ugettext as _
 import math
 
 import logging
@@ -146,8 +145,13 @@ class Rubric(models.Model):
 
         # Validate: are options selected for each criterion in the rubric?
         if len(options_selected) != len(rubric_criteria_dict):
-            msg = _("Incorrect number of options for this rubric ({actual} instead of {expected})").format(
-                actual=len(options_selected), expected=len(rubric_criteria_dict))
+            msg = (
+                u"Incorrect number of options for this rubric "
+                u"({actual} instead of {expected})"
+            ).format(
+                actual=len(options_selected),
+                expected=len(rubric_criteria_dict)
+            )
             raise InvalidOptionSelection(msg)
 
         # Look up each selected option
@@ -159,9 +163,9 @@ class Rubric(models.Model):
                 option_id = rubric_criteria_dict[criterion_name][option_name]
                 option_id_set.add(option_id)
             else:
-                msg = _("{criterion}: {option} not found in rubric").format(
-                    criterion=criterion_name, option=option_name
-                )
+                msg = (
+                    "{criterion}: {option} not found in rubric"
+                ).format(criterion=criterion_name, option=option_name)
                 raise InvalidOptionSelection(msg)
 
         return option_id_set

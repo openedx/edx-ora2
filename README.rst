@@ -121,8 +121,8 @@ To extract strings and compile messages:
 
 .. code:: bash
 
-    python manage.py makemessages -l en
-    python manage.py makemessages -d djangojs -l en
+    python manage.py makemessages --all
+    python manage.py makemessages --all -d djangojs
     python manage.py compilemessages
 
 Generate dummy strings for testing:

@@ -7,9 +7,7 @@
             {% if waiting %}
                 {% trans "Your grade will be available when your peers have completed their assessments of your response." %}
             {% else %}
-                {% blocktrans %}
-                    Review <a data-behavior="ui-scroll" href="#openassessment__grade"> your grade and your assessment details</a>.
-                {% endblocktrans %}
+                <a data-behavior="ui-scroll" href="#openassessment__grade">{% trans "Review your grade and your assessment details." %}</a>
             {% endif %}
         </p>
     </div>
