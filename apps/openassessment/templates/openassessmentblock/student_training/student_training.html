@@ -11,17 +11,12 @@
             <span class="wrapper--copy">
                 <span class="step__label">{% trans "Learn to Assess Responses" %}</span>
                 {% if training_start %}
-                    <span class="step__deadline">{% trans "available" %}
-                    <span class="date">
-                        {{ training_start|utc|date:"N j, Y H:i e" }}
-                        (in {{ training_start|timeuntil }})
+                    <span class="step__deadline">
+                        {% blocktrans with start_date=training_start|utc|date:"N j, Y H:i e" time_until=training_start|timeuntil %}available <span class="date"> {{ start_date }} (in {{ time_until }}) </span>{% endblocktrans %}
                     </span>
-                </span>
                 {% elif training_due %}
-                    <span class="step__deadline">due
-                    <span class="date">
-                        {{ training_due|utc|date:"N j, Y H:i e" }}
-                        (in {{ training_due|timeuntil }})
+                    <span class="step__deadline">
+                        {% blocktrans with due_date=training_due|utc|date:"N j, Y H:i e" time_until=training_due|timeuntil %}due <span class="date">{{ due_date }}</span> (in {{ time_until }}){% endblocktrans %}
                     </span>
                 </span>
                 {% endif %}
@@ -64,9 +59,8 @@
             <div class="step__content">
                 <article class="student-training__display" id="student-training">
                     <header class="student-training__display__header">
-                        <h3 class="student-training__display__title">{% trans "Training Assessment #" %}
-                            <span class="student-training__number--current">{{ training_num_current }}</span> of
-                            <span class="student-training__number--required">{{ training_num_available }}</span>
+                        <h3 class="student-training__display__title">
+                            {% blocktrans with training_num_current=training_num_current training_num_available=training_num_available %}Training Assessment #<span class="student-training__number--current">{{ training_num_current }}</span> of <span class="student-training__number--required">{{ training_num_available }}</span>{% endblocktrans %}
                         </h3>
                     </header>
 

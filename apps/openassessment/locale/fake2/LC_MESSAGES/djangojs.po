@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1a\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-05 06:31-0400\n"
+"POT-Creation-Date: 2014-06-05 12:44-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: \n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -37,22 +37,31 @@ msgid "Status of Your Response"
 msgstr "Sʇɐʇns øɟ Ɏønɹ Ɍǝsdønsǝ"
 
 #: apps/openassessment/xblock/static/js/openassessment.min.js:1
-#: apps/openassessment/xblock/static/js/src/oa_response.js:277
+#: apps/openassessment/xblock/static/js/src/oa_response.js:200
+msgid ""
+"If you leave this page without saving or submitting your response, you'll "
+"lose any work you've done on the response."
+msgstr ""
+"Ɨɟ ʎøn lǝɐʌǝ ʇɥᴉs dɐƃǝ ʍᴉʇɥønʇ sɐʌᴉnƃ øɹ snbɯᴉʇʇᴉnƃ ʎønɹ ɹǝsdønsǝ, ʎøn'll "
+"løsǝ ɐnʎ ʍøɹʞ ʎøn'ʌǝ dønǝ øn ʇɥǝ ɹǝsdønsǝ."
+
+#: apps/openassessment/xblock/static/js/openassessment.min.js:1
+#: apps/openassessment/xblock/static/js/src/oa_response.js:274
 msgid "This response has not been saved."
 msgstr "Ŧɥᴉs ɹǝsdønsǝ ɥɐs nøʇ bǝǝn sɐʌǝd."
 
 #: apps/openassessment/xblock/static/js/openassessment.min.js:1
-#: apps/openassessment/xblock/static/js/src/oa_response.js:295
+#: apps/openassessment/xblock/static/js/src/oa_response.js:292
 msgid "Saving..."
 msgstr "Sɐʌᴉnƃ..."
 
 #: apps/openassessment/xblock/static/js/openassessment.min.js:1
-#: apps/openassessment/xblock/static/js/src/oa_response.js:313
+#: apps/openassessment/xblock/static/js/src/oa_response.js:310
 msgid "This response has been saved but not submitted."
 msgstr "Ŧɥᴉs ɹǝsdønsǝ ɥɐs bǝǝn sɐʌǝd bnʇ nøʇ snbɯᴉʇʇǝd."
 
 #: apps/openassessment/xblock/static/js/openassessment.min.js:1
-#: apps/openassessment/xblock/static/js/src/oa_response.js:316
+#: apps/openassessment/xblock/static/js/src/oa_response.js:313
 msgid "Error"
 msgstr "Ɇɹɹøɹ"
 

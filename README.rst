@@ -121,15 +121,7 @@ To extract strings and compile messages:
 
 .. code:: bash
 
-    python manage.py makemessages --all
-    python manage.py makemessages --all -d djangojs
-    python manage.py compilemessages
-
-Generate dummy strings for testing:
-
-.. code:: bash
-
-    i18n_tool dummy
+    ./scripts/i18n.sh
 
 
 License

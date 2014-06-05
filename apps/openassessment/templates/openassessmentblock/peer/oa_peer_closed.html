@@ -11,9 +11,7 @@
   <span class="step__status__value">
     <span class="copy">
     <i class="ico icon-warning-sign"></i>
-      {% trans "Incomplete" %}
-      (<span class="step__status__value--completed">{{ graded }}</span> of
-      <span class="step__status__value--required">{{ must_grade }}</span>)
+      {% blocktrans with graded=graded must_grade=must_grade %}Incomplete (<span class="step__status__value--completed">{{ graded }}</span> of <span class="step__status__value--required">{{ must_grade }}</span>){% endblocktrans %}
     </span>
   </span>
 </span>

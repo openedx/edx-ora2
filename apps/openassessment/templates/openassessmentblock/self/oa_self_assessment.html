@@ -11,18 +11,12 @@
             <span class="wrapper--copy">
                 <span class="step__label">{% trans "Assess Your Response" %}</span>
                 {% if self_start %}
-                <span class="step__deadline">{% trans "available" %}
-                    <span class="date">
-                        {{ self_start|utc|date:"N j, Y H:i e" }}
-                        (in {{ self_start|timeuntil }})
-                    </span>
+                <span class="step__deadline">
+                    {% blocktrans with start_date=self_start|utc|date:"N j, Y H:i e" time_until=self_start|timeuntil %}available <span class="date">{{ start_date }} (in {{ time_until }})</span>{% endblocktrans %}
                 </span>
                 {% elif self_due %}
-                <span class="step__deadline">due
-                    <span class="date">
-                        {{ self_due|utc|date:"N j, Y H:i e" }}
-                        (in {{ self_due|timeuntil }})
-                    </span>
+                <span class="step__deadline">
+                    {% blocktrans with due_date=self_due|utc|date:"N j, Y H:i e" time_until=self_due|timeuntil %}due <span class="date">{{ due_date }}</span> (in {{ time_until }}){% endblocktrans %}
                 </span>
                 {% endif %}
             </span>

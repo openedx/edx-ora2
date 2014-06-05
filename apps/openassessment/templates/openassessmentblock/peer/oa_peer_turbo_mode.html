@@ -11,8 +11,7 @@
   <span class="step__status__value">
     <i class="ico icon-ok"></i>
     <span class="copy">
-      {% trans "Complete" %}
-      (<span class="step__status__value--completed">{{ graded }}</span>)
+      {% blocktrans with graded=graded %}Complete (<span class="step__status__value--completed">{{ graded }}</span>){% endblocktrans %}
     </span>
   </span>
 </span>
