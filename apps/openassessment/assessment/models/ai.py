@@ -544,16 +544,29 @@ class AIGradingWorkflow(AIWorkflow):
     # this information here from the submissions models.
     student_id = models.CharField(max_length=40, db_index=True)
 
-    @transaction.commit_on_success
     def assign_most_recent_classifier_set(self):
         """
         Finds the most relevant classifier set based on the following line of succession:
 
-            1 -- Classifier sets with the same COURSE, ITEM, RUBRIC and ALGORITHM
+            1 -- Classifier sets with the same COURSE, ITEM, RUBRIC *content* hash, and ALGORITHM
                 - Newest first.  If none exist...
-            2 -- The newest classifier set with the same RUBRIC and ALGORITHM
+            2 -- Classifier sets with the same COURSE, ITEM, and RUBRIC *structure* hash, and ALGORITHM.
                 - Newest first.  If none exist...
-            3 -- Do no assignment and return False
+            3 -- The newest classifier set with the same RUBRIC and ALGORITHM
+                - Newest first.  If none exist...
+            4 -- Do no assignment and return False
+
+        Case #1 is ideal: we get a classifier set trained for the rubric as currently defined.
+
+        Case #2 handles when a course author makes a cosmetic change to a rubric after training.
+            We don't want to stop grading students because an author fixed a typo!
+
+        Case #3 handles problems that are duplicated, such as the default problem prompt.
+            If we've already trained classifiers for the identical rubric somewhere else,
+            then the author can use them to test out the feature immediately.
+
+        Case #4: Someone will need to schedule training; however, we will still accept
+            student submissions and grade them once training completes.
 
         Returns:
             (bool) indicates whether or not classifiers were able to be assigned to the AIGradingWorkflow
@@ -561,33 +574,47 @@ class AIGradingWorkflow(AIWorkflow):
         Raises:
             DatabaseError
         """
-        # Retrieve classifier set ideal candidates (Match on all fields)
-        classifier_set_candidates = AIClassifierSet.objects.filter(
-            rubric=self.rubric, algorithm_id=self.algorithm_id,
-            course_id=self.course_id, item_id=self.item_id
-        )[:1]
+        # List of the parameters we will search for, in order of decreasing priority
+        search_parameters = [
+            # Case #1: same course / item / rubric (exact) / algorithm
+            {
+                'rubric__content_hash': self.rubric.content_hash,
+                'algorithm_id': self.algorithm_id,
+                'course_id': self.course_id,
+                'item_id': self.item_id
+            },
 
-        # If we find classifiers for this rubric/algorithm/course/item
-        # then associate the most recent classifiers with it and return true
-        if len(classifier_set_candidates) > 0:
-            self.classifier_set = classifier_set_candidates[0]
-            self.save()
-            return True
+            # Case #2: same course / item / rubric (structure only) / algorithm
+            {
+                'rubric__structure_hash': self.rubric.structure_hash,  # pylint: disable=E1101
+                'algorithm_id': self.algorithm_id,
+                'course_id': self.course_id,
+                'item_id': self.item_id
+            },
 
-        # Retrieve classifier set candidates (non-ideal, but good enough)
-        classifier_set_candidates = AIClassifierSet.objects.filter(
-            rubric=self.rubric, algorithm_id=self.algorithm_id
-        )[:1]
+            # Case #3: same rubric (exact) / algorithm
+            {
+                'rubric__content_hash': self.rubric.content_hash,
+                'algorithm_id': self.algorithm_id
+            }
+        ]
 
-        # If found, associate non-ideal classifier set with AIGradingWorkflow
-        if len(classifier_set_candidates) > 0:
-            self.classifier_set = classifier_set_candidates[0]
-            self.save()
-            return True
+        # Perform each query, starting with the highest priority
+        for params in search_parameters:
+
+            # Retrieve the most recent classifier set that matches our query
+            # (rely on implicit ordering in the model definition)
+            classifier_set_candidates = AIClassifierSet.objects.filter(**params)[:1]
+
+            # If we find a classifier set,
+            # then associate the most recent classifiers with it and return true
+            if len(classifier_set_candidates) > 0:
+                self.classifier_set = classifier_set_candidates[0]
+                self.save()
+                return True
 
         # If we get to this point, no classifiers exist with this rubric and algorithm.
         return False
-
 
     @classmethod
     @transaction.commit_on_success

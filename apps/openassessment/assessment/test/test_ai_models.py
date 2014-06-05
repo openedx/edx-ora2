@@ -2,10 +2,11 @@
 """
 Test AI Django models.
 """
+import copy
 from django.test.utils import override_settings
 from openassessment.test_utils import CacheResetTest
 from openassessment.assessment.models import (
-    AIClassifierSet, AIClassifier, AI_CLASSIFIER_STORAGE
+    AIClassifierSet, AIClassifier, AIGradingWorkflow, AI_CLASSIFIER_STORAGE
 )
 from openassessment.assessment.serializers import rubric_from_dict
 from .constants import RUBRIC
@@ -48,3 +49,96 @@ class AIClassifierTest(CacheResetTest):
             self.CLASSIFIERS_DICT, rubric, "test_algorithm", self.COURSE_ID, self.ITEM_ID
         )
         return AIClassifier.objects.filter(classifier_set=classifier_set)[0]
+
+
+class AIGradingWorkflowTest(CacheResetTest):
+    """
+    Tests for the AIGradingWorkflow model.
+    """
+    CLASSIFIERS_DICT = {
+        u"vøȼȺƀᵾłȺɍɏ": "test data",
+        u"ﻭɼค๓๓คɼ": "more test data"
+    }
+    COURSE_ID = u"test"
+    ITEM_ID = u"test"
+    ALGORITHM_ID = "test"
+
+    def setUp(self):
+        """
+        Create a new grading workflow.
+        """
+        self.rubric = rubric_from_dict(RUBRIC)
+        self.workflow = AIGradingWorkflow.objects.create(
+            submission_uuid='test', essay_text='test',
+            rubric=self.rubric, algorithm_id=self.ALGORITHM_ID,
+            item_id=self.ITEM_ID, course_id=self.COURSE_ID
+        )
+
+        # Create a rubric with a similar structure, but different prompt
+        similar_rubric_dict = copy.deepcopy(RUBRIC)
+        similar_rubric_dict['prompt'] = 'Different prompt!'
+        self.similar_rubric = rubric_from_dict(similar_rubric_dict)
+
+    def test_assign_most_recent_classifier_set(self):
+        # No classifier sets are available
+        found = self.workflow.assign_most_recent_classifier_set()
+        self.assertFalse(found)
+        self.assertIs(self.workflow.classifier_set, None)
+
+        # Same rubric (exact), but different course id
+        classifier_set = AIClassifierSet.create_classifier_set(
+            self.CLASSIFIERS_DICT, self.rubric, self.ALGORITHM_ID,
+            "different course!", self.ITEM_ID
+        )
+        found = self.workflow.assign_most_recent_classifier_set()
+        self.assertTrue(found)
+        self.assertEqual(classifier_set.pk, self.workflow.classifier_set.pk)
+
+        # Same rubric (exact) but different item id
+        classifier_set = AIClassifierSet.create_classifier_set(
+            self.CLASSIFIERS_DICT, self.rubric, self.ALGORITHM_ID,
+            self.COURSE_ID, "different item!"
+        )
+        found = self.workflow.assign_most_recent_classifier_set()
+        self.assertTrue(found)
+        self.assertEqual(classifier_set.pk, self.workflow.classifier_set.pk)
+
+        # Same rubric (exact), but different algorithm id
+        # Shouldn't change, since the algorithm ID doesn't match
+        AIClassifierSet.create_classifier_set(
+            self.CLASSIFIERS_DICT, self.rubric, "different algorithm!",
+            self.COURSE_ID, self.ITEM_ID
+        )
+        found = self.workflow.assign_most_recent_classifier_set()
+        self.assertTrue(found)
+        self.assertEqual(classifier_set.pk, self.workflow.classifier_set.pk)
+
+        # Same rubric *structure*, but in a different item
+        # Shouldn't change, since the rubric isn't an exact match.
+        AIClassifierSet.create_classifier_set(
+            self.CLASSIFIERS_DICT, self.similar_rubric, self.ALGORITHM_ID,
+            self.COURSE_ID, "different item!"
+        )
+        found = self.workflow.assign_most_recent_classifier_set()
+        self.assertTrue(found)
+        self.assertEqual(classifier_set.pk, self.workflow.classifier_set.pk)
+
+        # Same rubric *structure* AND in the same course/item
+        # This should replace our current classifier set
+        classifier_set = AIClassifierSet.create_classifier_set(
+            self.CLASSIFIERS_DICT, self.similar_rubric, self.ALGORITHM_ID,
+            self.COURSE_ID, self.ITEM_ID
+        )
+        found = self.workflow.assign_most_recent_classifier_set()
+        self.assertTrue(found)
+        self.assertEqual(classifier_set.pk, self.workflow.classifier_set.pk)
+
+        # Same rubric and same course/item
+        # This is the ideal, so we should always prefer it
+        classifier_set = AIClassifierSet.create_classifier_set(
+            self.CLASSIFIERS_DICT, self.rubric, self.ALGORITHM_ID,
+            self.COURSE_ID, self.ITEM_ID
+        )
+        found = self.workflow.assign_most_recent_classifier_set()
+        self.assertTrue(found)
+        self.assertEqual(classifier_set.pk, self.workflow.classifier_set.pk)
