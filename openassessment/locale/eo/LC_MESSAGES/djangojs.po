@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1a\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-05 13:11-0400\n"
+"POT-Creation-Date: 2014-06-09 09:30-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: \n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -17,13 +17,13 @@ msgstr ""
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: apps/openassessment/xblock/static/js/openassessment.min.js:1
-#: apps/openassessment/xblock/static/js/src/oa_base.js:151
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_base.js:151
 msgid "Unable to Load"
 msgstr "Ûnäßlé tö Löäd Ⱡ'#"
 
-#: apps/openassessment/xblock/static/js/openassessment.min.js:1
-#: apps/openassessment/xblock/static/js/src/oa_edit.js:81
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_edit.js:81
 msgid ""
 "This problem has already been released. Any changes will apply only to "
 "future assessments."
@@ -31,13 +31,13 @@ msgstr ""
 "Thïs prößlém häs älréädý ßéén réléäséd. Àný çhängés wïll äpplý önlý tö "
 "fütüré ässéssménts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
-#: apps/openassessment/xblock/static/js/openassessment.min.js:1
-#: apps/openassessment/xblock/static/js/src/oa_response.js:174
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_response.js:174
 msgid "Status of Your Response"
 msgstr "Stätüs öf Ýöür Réspönsé Ⱡ'σяє#"
 
-#: apps/openassessment/xblock/static/js/openassessment.min.js:1
-#: apps/openassessment/xblock/static/js/src/oa_response.js:200
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_response.js:200
 msgid ""
 "If you leave this page without saving or submitting your response, you'll "
 "lose any work you've done on the response."
@@ -46,66 +46,66 @@ msgstr ""
 "lösé äný wörk ýöü'vé döné ön thé réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
 "¢σηѕє¢т#"
 
-#: apps/openassessment/xblock/static/js/openassessment.min.js:1
-#: apps/openassessment/xblock/static/js/src/oa_response.js:274
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_response.js:274
 msgid "This response has not been saved."
 msgstr "Thïs réspönsé häs nöt ßéén sävéd. Ⱡ'σяєм ι#"
 
-#: apps/openassessment/xblock/static/js/openassessment.min.js:1
-#: apps/openassessment/xblock/static/js/src/oa_response.js:292
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_response.js:292
 msgid "Saving..."
 msgstr "Sävïng... #"
 
-#: apps/openassessment/xblock/static/js/openassessment.min.js:1
-#: apps/openassessment/xblock/static/js/src/oa_response.js:310
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_response.js:310
 msgid "This response has been saved but not submitted."
 msgstr "Thïs réspönsé häs ßéén sävéd ßüt nöt süßmïttéd. Ⱡ'σяєм ιρѕυм #"
 
-#: apps/openassessment/xblock/static/js/openassessment.min.js:1
-#: apps/openassessment/xblock/static/js/src/oa_response.js:313
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_response.js:313
 msgid "Error"
 msgstr "Érrör Ⱡ'σяєм ι#"
 
-#: apps/openassessment/xblock/static/js/openassessment.min.js:1
-#: apps/openassessment/xblock/static/js/src/oa_server.js:59
-#: apps/openassessment/xblock/static/js/src/oa_server.js:90
-#: apps/openassessment/xblock/static/js/src/oa_server.js:109
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:59
+#: openassessment/xblock/static/js/src/oa_server.js:90
+#: openassessment/xblock/static/js/src/oa_server.js:109
 msgid "This section could not be loaded."
 msgstr "Thïs séçtïön çöüld nöt ßé löädéd. Ⱡ'σяєм ι#"
 
-#: apps/openassessment/xblock/static/js/openassessment.min.js:1
-#: apps/openassessment/xblock/static/js/src/oa_server.js:144
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:144
 msgid "This response could not be submitted."
 msgstr "Thïs réspönsé çöüld nöt ßé süßmïttéd. Ⱡ'σяєм ιρѕ#"
 
-#: apps/openassessment/xblock/static/js/openassessment.min.js:1
-#: apps/openassessment/xblock/static/js/src/oa_server.js:170
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:170
 msgid "This response could not be saved."
 msgstr "Thïs réspönsé çöüld nöt ßé sävéd. Ⱡ'σяєм ι#"
 
-#: apps/openassessment/xblock/static/js/openassessment.min.js:1
-#: apps/openassessment/xblock/static/js/src/oa_server.js:207
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:207
 msgid "This feedback could not be submitted."
 msgstr "Thïs féédßäçk çöüld nöt ßé süßmïttéd. Ⱡ'σяєм ιρѕ#"
 
-#: apps/openassessment/xblock/static/js/openassessment.min.js:1
-#: apps/openassessment/xblock/static/js/src/oa_server.js:253
-#: apps/openassessment/xblock/static/js/src/oa_server.js:293
-#: apps/openassessment/xblock/static/js/src/oa_server.js:334
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:253
+#: openassessment/xblock/static/js/src/oa_server.js:293
+#: openassessment/xblock/static/js/src/oa_server.js:334
 msgid "This assessment could not be submitted."
 msgstr "Thïs ässéssmént çöüld nöt ßé süßmïttéd. Ⱡ'σяєм ιρѕ#"
 
-#: apps/openassessment/xblock/static/js/openassessment.min.js:1
-#: apps/openassessment/xblock/static/js/src/oa_server.js:362
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:362
 msgid "This problem could not be loaded."
 msgstr "Thïs prößlém çöüld nöt ßé löädéd. Ⱡ'σяєм ι#"
 
-#: apps/openassessment/xblock/static/js/openassessment.min.js:1
-#: apps/openassessment/xblock/static/js/src/oa_server.js:391
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:391
 msgid "This problem could not be saved."
 msgstr "Thïs prößlém çöüld nöt ßé sävéd. Ⱡ'σяєм ι#"
 
-#: apps/openassessment/xblock/static/js/openassessment.min.js:1
-#: apps/openassessment/xblock/static/js/src/oa_server.js:421
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:421
 msgid "The server could not be contacted."
 msgstr "Thé sérvér çöüld nöt ßé çöntäçtéd. Ⱡ'σяєм ιρ#"

@@ -4,7 +4,6 @@ from django.views.i18n import javascript_catalog
 from django.contrib import admin
 
 import openassessment.assessment.urls
-import submissions.urls
 import workbench.urls
 
 admin.autodiscover()
@@ -23,7 +22,6 @@ urlpatterns = patterns(
     url(r'^workbench/', include(workbench.urls)),
 
     # edx-ora2 apps
-    url(r'^submissions/', include(submissions.urls)),
     url(r'^peer/evaluations/', include(openassessment.assessment.urls)),
 
     # JavaScript i18n

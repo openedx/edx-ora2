@@ -16,7 +16,15 @@ from openassessment.assessment.models import (
 )
 from openassessment.workflow import api as workflow_api
 from submissions import api as sub_api
-from submissions.tests.test_api import STUDENT_ITEM, ANSWER_ONE
+
+STUDENT_ITEM = dict(
+    student_id="Tim",
+    course_id="Demo_Course",
+    item_id="item_one",
+    item_type="Peer_Submission",
+)
+
+ANSWER_ONE = u"this is my answer!"
 
 # Possible points: 14
 RUBRIC_DICT = {
