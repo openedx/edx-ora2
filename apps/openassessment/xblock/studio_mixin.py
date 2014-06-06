@@ -8,7 +8,11 @@ from django.template.loader import get_template
 from django.utils.translation import ugettext as _
 from xblock.core import XBlock
 from xblock.fragment import Fragment
-from openassessment.xblock.xml import serialize_content, update_from_xml_str, ValidationError, UpdateFromXmlError
+from openassessment.xblock.xml import(
+    serialize_content, parse_rubric_xml, parse_assessments_xml, UpdateFromXmlError, serialize_rubric_to_xml_str,
+    serialize_assessments_to_xml_str
+)
+
 from openassessment.xblock.validation import validator
 
 
@@ -51,21 +55,52 @@ class StudioMixin(object):
         Returns:
             dict with keys 'success' (bool) and 'msg' (str)
         """
-        if 'xml' in data:
-            try:
-                update_from_xml_str(self, data['xml'], validator=validator(self))
+        if 'rubric' not in data:
+            return {'success': False, 'msg': _('Must specify "rubric" in request JSON dict.')}
 
-            except ValidationError as ex:
-                return {'success': False, 'msg': _('Validation error: {error}').format(error=ex)}
+        if 'settings' not in data:
+            return {'success': False, 'msg': _('Must specify "settings" in request JSON dict.')}
 
-            except UpdateFromXmlError as ex:
-                return {'success': False, 'msg': _('An error occurred while saving: {error}').format(error=ex)}
+        if 'prompt' not in data:
+            return {'success': False, 'msg': _('Must specify "prompt" in request JSON dict.')}
 
-            else:
-                return {'success': True, 'msg': _('Successfully updated OpenAssessment XBlock')}
+        settings = data['settings']
+        try:
+            rubric = parse_rubric_xml(data['rubric'])
+            assessments = parse_assessments_xml(settings['assessments'])
+            submission_due = settings["submission_due"]
+        except UpdateFromXmlError as ex:
+            return {'success': False, 'msg': _('An error occurred while saving: {error}').format(error=ex)}
 
-        else:
-            return {'success': False, 'msg': _('Must specify "xml" in request JSON dict.')}
+        xblock_validator = validator(self)
+        success, msg = xblock_validator(rubric, {'due': submission_due}, assessments)
+        if not success:
+            return {'success': False, 'msg': _('Validation error: {error}').format(error=msg)}
+
+        self.update(
+            rubric,
+            assessments,
+            settings["submission_due"],
+            settings["submission_start"],
+            settings["title"],
+            data['prompt']
+        )
+        return {'success': True, 'msg': _('Successfully updated OpenAssessment XBlock')}
+
+    def update(self, rubric, assessments, submission_due, submission_start, title, prompt):
+        """
+        Given a dictionary of properties, update the XBlock
+
+        """
+        # If we've gotten this far, then we've successfully parsed the XML
+        # and validated the contents.  At long last, we can safely update the XBlock.
+        self.title = title
+        self.prompt = prompt
+        self.rubric_criteria = rubric['criteria']
+        self.rubric_assessments = assessments
+        self.rubric_feedback_prompt = rubric['feedback_prompt']
+        self.submission_start = submission_start
+        self.submission_due = submission_due
 
     @XBlock.json_handler
     def xml(self, data, suffix=''):
@@ -82,8 +117,14 @@ class StudioMixin(object):
             dict with keys 'success' (bool), 'message' (unicode), and 'xml' (unicode)
         """
         try:
-            xml = serialize_content(self)
-
+            rubric = serialize_rubric_to_xml_str(self)
+            prompt = self.prompt
+            settings = {
+                'title': self.title,
+                'submission_start': self.submission_start,
+                'submission_due': self.submission_due,
+                'assessments': serialize_assessments_to_xml_str(self)
+            }
         # We do not expect `serialize_content` to raise an exception,
         # but if it does, handle it gracefully.
         except Exception as ex:
@@ -91,7 +132,7 @@ class StudioMixin(object):
             logger.error(msg)
             return {'success': False, 'msg': msg, 'xml': u''}
         else:
-            return {'success': True, 'msg': '', 'xml': xml}
+            return {'success': True, 'msg': '', 'prompt': prompt, 'rubric': rubric, 'settings': settings}
 
     @XBlock.json_handler
     def check_released(self, data, suffix=''):

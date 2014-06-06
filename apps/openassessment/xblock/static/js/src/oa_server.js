@@ -356,7 +356,7 @@ OpenAssessment.Server.prototype = {
             $.ajax({
                 type: "POST", url: url, data: "\"\""
             }).done(function(data) {
-                if (data.success) { defer.resolveWith(this, [data.xml]); }
+                if (data.success) { defer.resolveWith(this, [data.prompt, data.rubric, data.settings]); }
                 else { defer.rejectWith(this, [data.msg]); }
             }).fail(function(data) {
                 defer.rejectWith(this, [gettext('This problem could not be loaded.')]);
@@ -378,9 +378,15 @@ OpenAssessment.Server.prototype = {
             function(err) { console.log(err); }
         );
     **/
-    updateXml: function(xml) {
+    updateXml: function(prompt, rubricXml, title, sub_start, sub_due, assessmentsXml) {
         var url = this.url('update_xml');
-        var payload = JSON.stringify({xml: xml});
+        var settings = {
+            'title': title,
+            'submission_start': sub_start,
+            'submission_due': sub_due,
+            'assessments': assessmentsXml
+        };
+        var payload = JSON.stringify({'prompt': prompt, 'rubric': rubricXml, 'settings': settings});
         return $.Deferred(function(defer) {
             $.ajax({
                 type: "POST", url: url, data: payload

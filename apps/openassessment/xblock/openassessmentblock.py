@@ -22,7 +22,7 @@ from openassessment.xblock.lms_mixin import LmsCompatibilityMixin
 from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.studio_mixin import StudioMixin
-from openassessment.xblock.xml import update_from_xml, serialize_content_to_xml
+from openassessment.xblock.xml import serialize_content_to_xml
 from openassessment.xblock.staff_info_mixin import StaffInfoMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.workflow import api as workflow_api
