@@ -16,7 +16,7 @@
         </criterion>
     </rubric>
     <assessments>
-        <assessment name="self-assessment" />
+        <assessment name="peer-assessment" />
         <assessment name="peer-assessment" />
     </assessments>
 </openassessment>
