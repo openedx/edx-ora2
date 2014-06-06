@@ -37,8 +37,6 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 # Install test-specific Django apps
 INSTALLED_APPS += ('django_nose',)
 
-EDX_ORA2["EVENT_LOGGER"] = "openassessment.workflow.test.events.fake_event_logger"
-
 
 # We run Celery in "always eager" mode in the test suite,
 # which executes tasks synchronously instead of using the task queue.

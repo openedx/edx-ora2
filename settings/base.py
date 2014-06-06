@@ -147,9 +147,6 @@ CACHES = {
     },
 }
 
-EDX_ORA2 = {
-
-}
 
 # Celery configuration
 # Note: Version 3.1 of Celery includes Django support, but since we're using

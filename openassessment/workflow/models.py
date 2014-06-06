@@ -9,29 +9,15 @@ need to then generate a matching migration for it using:
     ./manage.py schemamigration openassessment.workflow --auto
 
 """
-from datetime import datetime
 import logging
-import importlib
-
-from django.conf import settings
 from django.db import models
 from django_extensions.db.fields import UUIDField
 from django.utils.timezone import now
 from model_utils import Choices
 from model_utils.models import StatusModel, TimeStampedModel
-
 from submissions import api as sub_api
 
 logger = logging.getLogger('openassessment.workflow.models')
-
-# This will (hopefully soon) be replaced with calls to the event-tracking API:
-#   https://github.com/edx/event-tracking
-if hasattr(settings, "EDX_ORA2") and "EVENT_LOGGER" in settings.EDX_ORA2:
-    func_path = settings.EDX_ORA2["EVENT_LOGGER"]
-    module_name, func_name = func_path.rsplit('.', 1)
-    emit_event = getattr(importlib.import_module(module_name), func_name)
-else:
-    emit_event = lambda event: logger.info("Event: " + unicode(event))
 
 
 class AssessmentWorkflow(TimeStampedModel, StatusModel):
@@ -219,22 +205,6 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             score["points_possible"]
         )
 
-        # This should be replaced by using the event tracking API, but
-        # that's not quite ready yet. So we're making this temp hack.
-        emit_event({
-            "context": {
-                "course_id": self.course_id
-            },
-            "event": {
-                "submission_uuid": self.submission_uuid,
-                "points_earned": score["points_earned"],
-                "points_possible": score["points_possible"],
-            },
-            "event_source": "server",
-            "event_type": "openassessment.workflow.score",
-            "time": datetime.utcnow(),
-        })
-
 
 class AssessmentWorkflowStep(models.Model):
     """An individual step in the overall workflow process.
@@ -306,14 +276,3 @@ class AssessmentWorkflowStep(models.Model):
 
         if step_changed:
             self.save()
-
-
-# Just here to record thoughts for later:
-#
-# class AssessmentWorkflowEvent(models.Model):
-#     workflow = models.ForeignKey(AssessmentWorkflow, related_name="events")
-#     app = models.CharField(max_length=50)
-#     event_type = models.CharField(max_length=255)
-#     event_data = models.TextField()
-#     description = models.TextField()
-#     created_at = models.DateTimeField(default=now, db_index=True)
