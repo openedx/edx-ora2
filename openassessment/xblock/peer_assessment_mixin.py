@@ -9,6 +9,8 @@ from openassessment.assessment.errors import (
     PeerAssessmentRequestError, PeerAssessmentInternalError, PeerAssessmentWorkflowError
 )
 import openassessment.workflow.api as workflow_api
+from openassessment.workflow.errors import AssessmentWorkflowError
+
 from .resolve_dates import DISTANT_FUTURE
 
 logger = logging.getLogger(__name__)
@@ -98,7 +100,7 @@ class PeerAssessmentMixin(object):
                 if assessment:
                     self.update_workflow_status(submission_uuid=assessment['submission_uuid'])
                 self.update_workflow_status()
-            except workflow_api.AssessmentWorkflowError:
+            except AssessmentWorkflowError:
                 logger.exception(
                     u"Workflow error occurred when submitting peer assessment "
                     u"for submission {}".format(self.submission_uuid)

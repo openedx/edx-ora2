@@ -370,7 +370,7 @@ class TestPeerApi(CacheResetTest):
         with patch.object(PeerWorkflow.objects, "get_or_create") as mock_peer:
             mock_peer.side_effect = IntegrityError("Oh no!")
             # This should not raise an exception
-            peer_api.create_peer_workflow(tim_sub["uuid"])
+            peer_api.on_start(tim_sub["uuid"])
 
     @raises(peer_api.PeerAssessmentWorkflowError)
     def test_no_submission_found_closing_assessment(self):
@@ -1121,7 +1121,7 @@ class TestPeerApi(CacheResetTest):
     def test_error_on_assessment_creation(self, mock_filter):
         mock_filter.side_effect = DatabaseError("Bad things happened")
         submission = sub_api.create_submission(STUDENT_ITEM, ANSWER_ONE)
-        peer_api.create_peer_workflow(submission["uuid"])
+        peer_api.on_start(submission["uuid"])
         peer_api.create_assessment(
             submission["uuid"], STUDENT_ITEM["student_id"],
             ASSESSMENT_DICT['options_selected'],
@@ -1188,6 +1188,6 @@ class TestPeerApi(CacheResetTest):
         new_student_item = STUDENT_ITEM.copy()
         new_student_item["student_id"] = student
         submission = sub_api.create_submission(new_student_item, answer, date)
-        peer_api.create_peer_workflow(submission["uuid"])
+        peer_api.on_start(submission["uuid"])
         workflow_api.create_workflow(submission["uuid"], STEPS)
         return submission, new_student_item

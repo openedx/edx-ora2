@@ -6,6 +6,7 @@ from xblock.core import XBlock
 
 from submissions import api
 from openassessment.workflow import api as workflow_api
+from openassessment.workflow.errors import AssessmentWorkflowError
 from .resolve_dates import DISTANT_FUTURE
 
 
@@ -73,7 +74,7 @@ class SubmissionMixin(object):
             except api.SubmissionRequestError as err:
                 status_tag = 'EBADFORM'
                 status_text = unicode(err.field_errors)
-            except (api.SubmissionError, workflow_api.AssessmentWorkflowError):
+            except (api.SubmissionError, AssessmentWorkflowError):
                 logger.exception("This response was not submitted.")
                 status_tag = 'EUNKNOWN'
             else:

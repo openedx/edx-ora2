@@ -49,6 +49,8 @@ Isolation of Assessment types
       a non `None` value has been returned by this function for a given
       `submission_uuid`, repeated calls to this function should return the same
       thing.
+    `on_start(submission_uuid)`
+      Notification to the API that the student has started the assessment step.
 
    In the long run, it could be that `OpenAssessmentBlock` becomes a wrapper
    that talks to child XBlocks via this kind of API, and that each child would
@@ -96,3 +98,15 @@ Handling Problem Definition Change
    2. If the sequence of steps changes, we look at the new steps and advance to
       the first step that the user has not completed (`is_submitter_done()`
       returns `False`).
+
+Django settings
+   Assessments in the workflow are configurable using Django settings.
+   This encapsulates the workflow API from the assessment modules.
+
+   The two settings are:
+
+   * `ORA2_ASSESSMENTS`: a `dict` mapping assessment names to the Python module path
+     of the corresponding assessment API.
+   * `ORA2_ASSESSMENT_SCORE_PRIORITY`: a `list` of assessment names that determine
+     which assessment type is used to generate a student's score.
+
