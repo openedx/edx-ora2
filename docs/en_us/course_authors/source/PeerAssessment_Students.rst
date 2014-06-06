@@ -43,7 +43,7 @@ After you submit your response, if no other students have submitted responses ye
 
 	**Waiting for Peer Responses**
 
-	**All submitted peer responses have been assessed. Check back later to see if more students have submitted responses. You'll receive your grade after you complete the peer assessment and self assessment steps, and after your peers have assessed your response.**
+	**All submitted peer responses have been assessed. Check back later to see if more students have submitted responses. You'll receive your grade after you've completed all the steps for this problem and your peers have assessed your response.**
 
 If other students have already submitted responses, the peer assessment step starts immediately after you submit your response. However, you don't have to start grading right away. If you want to stop working and come back later, just refresh or reopen your browser when you come back. New peer responses will be available for you to grade.
 
