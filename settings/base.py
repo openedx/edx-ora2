@@ -151,6 +151,8 @@ EDX_ORA2 = {
 
 }
 
+BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+
 # Celery configuration
 # Note: Version 3.1 of Celery includes Django support, but since we're using
 # version 3.0 (same as edx-platform), we need to use an external library.
