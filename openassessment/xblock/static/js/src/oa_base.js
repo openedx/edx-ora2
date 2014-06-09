@@ -157,9 +157,7 @@ function OpenAssessmentBlock(runtime, element) {
     /**
     Render views within the base view on page load.
     **/
-    $(function($) {
-        var server = new OpenAssessment.Server(runtime, element);
-        var view = new OpenAssessment.BaseView(runtime, element, server);
-        view.load();
-    });
+    var server = new OpenAssessment.Server(runtime, element);
+    var view = new OpenAssessment.BaseView(runtime, element, server);
+    view.load();
 }
