@@ -1,0 +1,34 @@
+{%  extends "openassessmentblock/peer/oa_peer_assessment.html" %}
+{% load i18n %}
+
+{% block list_item %}
+<li id="openassessment__peer-assessment" class="openassessment__steps__step step--peer-assessment ui-toggle-visibility is--complete">
+{% endblock %}
+
+{% block title %}
+<span class="step__status">
+  <span class="step__status__label">{% trans "This step's status" %}:</span>
+  <span class="step__status__value">
+    <i class="ico icon-ok"></i>
+    <span class="copy">
+      {% blocktrans with graded=graded %} Complete (<span class="step__status__value--completed">{{ graded }}</span>){% endblocktrans %}
+    </span>
+  </span>
+</span>
+{% endblock %}
+
+{% block body %}
+<div class="ui-toggle-visibility__content">
+    <div class="wrapper--step__content">
+
+        <div class="step__message message message--complete">
+            <h3 class="message__title">{% trans "Peer Assessments Complete" %}</h3>
+            <div class="message__content">
+              <p>{% trans "You have successfully completed all of the required peer assessments for this assignment. You may assess additional peer responses if you want to. Completing additional assessments will not affect your final grade." %}</p>
+
+              <p><strong>{% trans "All submitted peer responses have been assessed. Check back later to see if more students have submitted responses." %}</strong></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -25,8 +25,6 @@ import sys, os
 # If your documentation needs a minimal Sphinx version, state it here.
 #needs_sphinx = '1.0'
 root = os.path.abspath('../../../..')
-
-sys.path.append(os.path.join(root, "apps"))
 sys.path.append(root)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.base")
 

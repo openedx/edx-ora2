@@ -1,0 +1,21 @@
+{%  extends "openassessmentblock/peer/oa_peer_assessment.html" %}
+{% load i18n %}
+
+{% block list_item %}
+<li id="openassessment__peer-assessment" class="openassessment__steps__step step--peer-assessment ui-toggle-visibility is--empty is--complete is--collapsed">
+{% endblock %}
+
+{% block title %}
+<span class="step__status">
+  <span class="step__status__label">{% trans "This step's status" %}:</span>
+  <span class="step__status__value">
+    <i class="ico icon-ok"></i>
+    <span class="copy">
+      {% blocktrans with graded=graded must_grade=must_grade %}Complete (<span class="step__status__value--completed">{{ graded }}</span> of <span class="step__status__value--required">{{ must_grade }}</span>){% endblocktrans %}
+    </span>
+  </span>
+</span>
+{% endblock %}
+
+{% block body %}
+{% endblock %}

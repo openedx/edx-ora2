@@ -10,7 +10,6 @@ TEST_APPS = (
     'openassessment.assessment',
     'openassessment.workflow',
     'openassessment.xblock',
-    'submissions',
 )
 
 # Configure nose
@@ -39,6 +38,7 @@ INSTALLED_APPS += ('django_nose',)
 
 
 # Store uploaded files in a test-specific directory
+BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 MEDIA_ROOT = os.path.join(BASE_DIR, 'storage/test')
 
 
@@ -48,7 +48,7 @@ EDX_ORA2["EVENT_LOGGER"] = "openassessment.workflow.test.events.fake_event_logge
 # We run Celery in "always eager" mode in the test suite,
 # which executes tasks synchronously instead of using the task queue.
 CELERY_ALWAYS_EAGER = True
-CELERY_EAGER_PROPAGATES_EXCEPTIONS=True
+CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 
 # Silence cache key warnings
 # https://docs.djangoproject.com/en/1.4/topics/cache/#cache-key-warnings

@@ -2,7 +2,7 @@
 branch = True
 
 [report]
-include = apps/*
+include = openassessment/*
 omit =
     **/__init__.py
     **/tests/*

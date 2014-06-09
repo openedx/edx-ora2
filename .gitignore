@@ -54,8 +54,8 @@ coverage
 
 # tim-specific
 ora2db
-apps/openassessment/xblock/static/js/fixtures/*.html
 storage/*
+openassessment/xblock/static/js/fixtures/*.html
 
 # logging
 logs/*/*.log*
