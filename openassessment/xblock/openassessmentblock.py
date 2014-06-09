@@ -26,6 +26,7 @@ from openassessment.xblock.xml import update_from_xml, serialize_content_to_xml
 from openassessment.xblock.staff_info_mixin import StaffInfoMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.workflow import api as workflow_api
+from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.student_training_mixin import StudentTrainingMixin
 from openassessment.xblock.validation import validator
 from openassessment.xblock.resolve_dates import resolve_dates, DISTANT_PAST, DISTANT_FUTURE
@@ -216,7 +217,7 @@ class OpenAssessmentBlock(
         # case we may have a score available.
         try:
             self.update_workflow_status()
-        except workflow_api.AssessmentWorkflowError:
+        except AssessmentWorkflowError:
             # Log the exception, but continue loading the page
             logger.exception('An error occurred while updating the workflow on page load.')
 

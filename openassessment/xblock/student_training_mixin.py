@@ -7,6 +7,7 @@ from webob import Response
 from xblock.core import XBlock
 from openassessment.assessment.api import student_training
 import openassessment.workflow.api as workflow_api
+from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.data_conversion import convert_training_examples_list_to_dict
 from .resolve_dates import DISTANT_FUTURE
 
@@ -182,12 +183,10 @@ class StudentTrainingMixin(object):
         else:
             try:
                 self.update_workflow_status()
-            except workflow_api.AssessmentWorkflowError:
-                logger.exception(
-                    u"Workflow error occurred when submitting peer assessment "
-                    u"for submission {uuid}".format(uuid=self.submission_uuid)
-                )
-                return {'success': False, 'msg': _('Could not update workflow status.')}
+            except AssessmentWorkflowError:
+                msg = _('Could not update workflow status.')
+                logger.exception(msg)
+                return {'success': False, 'msg': msg}
             return {
                 'success': True,
                 'msg': u'',

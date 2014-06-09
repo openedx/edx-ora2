@@ -10,6 +10,7 @@ import pytz
 from django.db import DatabaseError
 from openassessment.assessment.models import StudentTrainingWorkflow
 from openassessment.workflow import api as workflow_api
+from openassessment.workflow.errors import AssessmentWorkflowError
 from .base import XBlockHandlerTestCase, scenario
 
 @ddt.ddt
@@ -56,7 +57,7 @@ class StudentTrainingAssessTest(XBlockHandlerTestCase):
             }
         }
         with patch.object(workflow_api, "update_from_assessments") as mock_workflow_update:
-            mock_workflow_update.side_effect = workflow_api.AssessmentWorkflowError("Oh no!")
+            mock_workflow_update.side_effect = AssessmentWorkflowError("Oh no!")
             resp = self.request(xblock, 'training_assess', json.dumps(data), response_format='json')
 
             # Expect that we were not correct due to a workflow update error.

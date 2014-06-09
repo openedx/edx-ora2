@@ -1,4 +1,5 @@
 from django.db import DatabaseError
+from django.test.utils import override_settings
 import ddt
 from mock import patch
 from nose.tools import raises
@@ -6,13 +7,15 @@ from openassessment.assessment.models import PeerWorkflow
 
 from openassessment.test_utils import CacheResetTest
 
-from openassessment.workflow.models import AssessmentWorkflow
 from submissions.models import Submission
 import openassessment.workflow.api as workflow_api
 from openassessment.assessment.models import StudentTrainingWorkflow
 import submissions.api as sub_api
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
+from openassessment.workflow.models import AssessmentWorkflow
+from openassessment.workflow.errors import AssessmentApiLoadError
+
 
 ITEM_1 = {
     "student_id": "Optimus Prime 001",
@@ -20,6 +23,7 @@ ITEM_1 = {
     "course_id": "Advanced Auto Mechanics 200",
     "item_type": "openassessment",
 }
+
 
 @ddt.ddt
 class TestAssessmentWorkflowApi(CacheResetTest):
@@ -251,8 +255,24 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         updated_counts = workflow_api.get_status_counts("test/1/1", "peer-problem", ["peer", "self"])
         self.assertEqual(counts, updated_counts)
 
-    def _create_workflow_with_status(self, student_id, course_id, item_id,
-                                     status, answer="answer", steps=None):
+    @override_settings(ORA2_ASSESSMENTS={'self': 'not.a.module'})
+    def test_unable_to_load_api(self):
+        submission = sub_api.create_submission({
+            "student_id": "test student",
+            "course_id": "test course",
+            "item_id": "test item",
+            "item_type": "openassessment",
+        }, "test answer")
+
+        workflow_api.create_workflow(submission['uuid'], ['self'])
+
+        with self.assertRaises(AssessmentApiLoadError):
+            workflow_api.update_from_assessments(submission['uuid'], {})
+
+    def _create_workflow_with_status(
+        self, student_id, course_id, item_id,
+        status, answer="answer", steps=None
+    ):
         """
         Create a submission and workflow with a given status.
 
@@ -270,7 +290,8 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         Returns:
             workflow, submission
         """
-        if not steps: steps = ["peer", "self"]
+        if not steps:
+            steps = ["peer", "self"]
 
         submission = sub_api.create_submission({
             "student_id": student_id,
