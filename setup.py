@@ -2,7 +2,6 @@
 from setuptools import setup
 
 PACKAGES = [
-    'submissions',
     'openassessment',
     'openassessment.assessment',
     'openassessment.workflow',
@@ -43,9 +42,7 @@ setup(
         'Programming Language :: Python',
     ],
     packages=PACKAGES,
-    package_dir={'': 'apps'},
     install_requires=REQUIREMENTS,
-
     entry_points={
         'xblock.v1': [
             'openassessment = openassessment.xblock.openassessmentblock:OpenAssessmentBlock',

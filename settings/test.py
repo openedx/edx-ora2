@@ -10,7 +10,6 @@ TEST_APPS = (
     'openassessment.assessment',
     'openassessment.workflow',
     'openassessment.xblock',
-    'submissions',
 )
 
 # Configure nose

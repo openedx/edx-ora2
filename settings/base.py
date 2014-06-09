@@ -5,12 +5,6 @@ Base settings for ORA2.
 import os
 import sys
 
-# A little pythonpath munging to let it see things in apps
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-APPS_DIR = os.path.join(BASE_DIR, "apps")
-
-sys.path.append(APPS_DIR)  # So it can find the submissions apps dir
-
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
