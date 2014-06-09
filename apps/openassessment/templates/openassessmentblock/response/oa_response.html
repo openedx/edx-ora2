@@ -11,18 +11,12 @@
             <span class="wrapper--copy">
                 <span class="step__label">{% trans "Your Response" %}</span>
                 {% if submission_start %}
-                <span class="step__deadline">available
-                    <span class="date">
-                        {{ submission_start|utc|date:"N j, Y H:i e" }}
-                        (in {{ submission_start|timeuntil }})
-                    </span>
+                <span class="step__deadline">
+                    {% blocktrans with start_date=submission_start|utc|date:"N j, Y H:i e" time_until=submission_start|timeuntil %}available <span class="date">{{ start_date }} (in {{ time_until }})</span>{% endblocktrans %}
                 </span>
                 {% elif submission_due %}
-                <span class="step__deadline">due
-                    <span class="date">
-                        {{ submission_due|utc|date:"N j, Y H:i e" }}
-                        (in {{ submission_due|timeuntil }})
-                    </span>
+                <span class="step__deadline">
+                    {% blocktrans with due_date=submission_due|utc|date:"N j, Y H:i e" time_until=submission_due|timeuntil %}due <span class="date"> {{ due_date }} (in {{ time_until }})</span>{% endblocktrans %}
                 </span>
                 {% endif %}
             </span>
@@ -75,7 +69,7 @@
 
                         <ul class="list list--actions">
                             <li class="list--actions__item">
-                                <button type="submit" id="submission__save" class="action action--save submission__save is--disabled">Save Your Progress</button>
+                                <button type="submit" id="submission__save" class="action action--save submission__save is--disabled">{% trans "Save Your Progress" %}</button>
 
                                 <div id="response__save_status" class="response__submission__status">
                                     <h3 class="response__submission__status__title">

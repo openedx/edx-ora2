@@ -179,17 +179,17 @@ class PeerAssessmentMixin(object):
             context_dict["review_num"] = count + 1
 
             if continue_grading:
-                context_dict["submit_button_text"] = (
+                context_dict["submit_button_text"] = _(
                     "Submit your assessment & review another response"
                 )
             elif assessment["must_grade"] - count == 1:
-                context_dict["submit_button_text"] = (
+                context_dict["submit_button_text"] = _(
                     "Submit your assessment & move onto next step"
                 )
             else:
-                context_dict["submit_button_text"] = (
-                    "Submit your assessment & move to response #{}"
-                ).format(count + 2)
+                context_dict["submit_button_text"] = _(
+                    "Submit your assessment & move to response #{response_number}"
+                ).format(response_number=(count + 2))
 
         # Once a student has completed a problem, it stays complete,
         # so this condition needs to be first.

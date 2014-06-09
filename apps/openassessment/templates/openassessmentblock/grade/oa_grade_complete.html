@@ -7,11 +7,7 @@
                 <span class="step__label">{% trans "Your Grade" %}: </span>
                 <span class="grade__value">
                     <span class="grade__value__title">
-                         {% blocktrans with points_earned=score.points_earned points_possible=score.points_possible%}
-                         <span class="grade__value__earned">{{ points_earned }}</span>
-                         out of
-                         <span class="grade__value__potential">{{ points_possible }}</span>
-                         {% endblocktrans %}
+                         {% blocktrans with points_earned=score.points_earned points_possible=score.points_possible%}<span class="grade__value__earned">{{ points_earned }}</span> out of <span class="grade__value__potential">{{ points_possible }}</span>{% endblocktrans %}
                     </span>
                 </span>
             </span>
@@ -42,14 +38,12 @@
 
                                 <span class="question__score">
                                   <span class="label sr">{% trans "Overall Grade" %}</span>
-                                  {% blocktrans with score=criterion.median_score total=criterion.total_value%}
-                                  <span class="question__score__value">{{ score }}</span>
+                                  <span class="question__score__value">{{ score.points_earned }}</span>
                                   <span class="label label--divider sr">out of</span>
                                   <span class="question__score__potential">
-                                    {{ total }}
-                                    <span class="unit">Points</span>
+                                    {{ score.points_possible }}
+                                    <span class="unit">{% trans "Points" %}</span>
                                   </span>
-                                  {% endblocktrans %}
                                 </span>
                             </h4>
 
@@ -64,9 +58,7 @@
                                                     <span class="answer__source">
                                                       <span class="answer__source__label sr">{% trans "Assessor" %}: </span>
                                                       <span class="answer__source__value">
-                                                      {% blocktrans with peer_num=peer_num%}
-                                                      Peer {{ peer_num }}
-                                                      {% endblocktrans %}
+                                                      {% blocktrans with peer_num=peer_num%}Peer {{ peer_num }}{% endblocktrans %}
                                                       </span>
                                                     </span>
                                                     <span class="answer__value">

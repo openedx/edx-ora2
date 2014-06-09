@@ -2,7 +2,6 @@
 Public interface for self-assessment.
 """
 import logging
-from django.utils.translation import ugettext as _
 from django.db import DatabaseError
 from dogapi import dog_stats_api
 
@@ -46,25 +45,45 @@ def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, s
     """
     # Check that there are not any assessments for this submission
     if Assessment.objects.filter(submission_uuid=submission_uuid, score_type=SELF_TYPE).exists():
-        raise SelfAssessmentRequestError(_("You've already completed your self assessment for this response."))
+        msg = (
+            u"Cannot submit a self-assessment for the submission {uuid} "
+            "because another self-assessment already exists for that submission."
+        ).format(uuid=submission_uuid)
+        raise SelfAssessmentRequestError(msg)
 
     # Check that the student is allowed to assess this submission
     try:
         submission = get_submission_and_student(submission_uuid)
         if submission['student_item']['student_id'] != user_id:
-            raise SelfAssessmentRequestError(_("You can only complete a self assessment on your own response."))
+            msg = (
+                u"Cannot submit a self-assessment for the submission {uuid} "
+                u"because it was created by another student "
+                u"(submission student ID {student_id} does not match your "
+                u"student id {other_id})"
+            ).format(
+                uuid=submission_uuid,
+                student_id=submission['student_item']['student_id'],
+                other_id=user_id
+            )
+            raise SelfAssessmentRequestError(msg)
     except SubmissionNotFoundError:
-        raise SelfAssessmentRequestError(_("Could not retrieve the response."))
+        msg = (
+            "Could not submit a self-assessment because no submission "
+            "exists with UUID {uuid}"
+        ).format(uuid=submission_uuid)
+        raise SelfAssessmentRequestError()
 
     # Get or create the rubric
     try:
         rubric = rubric_from_dict(rubric_dict)
         option_ids = rubric.options_ids(options_selected)
-    except InvalidRubric as ex:
-        msg = _("Invalid rubric definition: {errors}").format(errors=ex.errors)
+    except InvalidRubric:
+        msg = "Invalid rubric definition"
+        logger.warning(msg, exc_info=True)
         raise SelfAssessmentRequestError(msg)
     except InvalidOptionSelection:
-        msg = _("Selected options do not match the rubric")
+        msg = "Selected options do not match the rubric"
+        logger.warning(msg, exc_info=True)
         raise SelfAssessmentRequestError(msg)
 
     # Create the assessment
@@ -84,7 +103,7 @@ def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, s
     # Serialize the assessment
     serializer = AssessmentSerializer(data=self_assessment)
     if not serializer.is_valid():
-        msg = _("Could not create self assessment: {errors}").format(errors=serializer.errors)
+        msg = "Could not create self assessment: {errors}".format(errors=serializer.errors)
         raise SelfAssessmentRequestError(msg)
 
     assessment = serializer.save()
@@ -229,7 +248,9 @@ def get_assessment_scores_by_criteria(submission_uuid):
         scores = Assessment.scores_by_criterion(assessments)
         return Assessment.get_median_score_dict(scores)
     except DatabaseError:
-        error_message = _(u"Error getting self assessment scores for {}").format(submission_uuid)
+        error_message = (
+            u"Error getting self assessment scores for submission {}"
+        ).format(submission_uuid)
         logger.exception(error_message)
         raise SelfAssessmentInternalError(error_message)
 

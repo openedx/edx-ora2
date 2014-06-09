@@ -197,10 +197,7 @@ OpenAssessment.ResponseView.prototype = {
         else {
             if (enabled) {
                 window.onbeforeunload = function() {
-                    return (
-                        "If you leave this page without saving or submitting your response, " +
-                        "you'll lose any work you've done on the response."
-                    );
+                    return gettext("If you leave this page without saving or submitting your response, you'll lose any work you've done on the response.");
                 };
             }
             else {

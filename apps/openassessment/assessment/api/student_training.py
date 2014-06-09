@@ -7,8 +7,8 @@ Public interface for student training:
 
 """
 import logging
-from django.db import DatabaseError
 from django.utils.translation import ugettext as _
+from django.db import DatabaseError
 from submissions import api as sub_api
 from openassessment.assessment.models import StudentTrainingWorkflow
 from openassessment.assessment.serializers import (
@@ -158,10 +158,9 @@ def validate_training_examples(rubric, examples):
             ]
             for criterion in rubric['criteria']
         }
-    except (ValueError, KeyError) as ex:
-        msg = _(u"Could not parse serialized rubric")
-        logger.warning("{}: {}".format(msg, ex))
-        return [msg]
+    except (ValueError, KeyError):
+        logger.warning("Could not parse serialized rubric", exc_info=True)
+        return [_(u"Could not parse serialized rubric")]
 
     # Check each example
     for order_num, example_dict in enumerate(examples, start=1):
@@ -170,7 +169,9 @@ def validate_training_examples(rubric, examples):
         is_format_valid, format_errors = validate_training_example_format(example_dict)
         if not is_format_valid:
             format_errors = [
-                _(u"Example {} has a validation error: {}").format(order_num, error)
+                _(u"Example {example_number} has a validation error: {error}").format(
+                    example_number=order_num, error=error
+                )
                 for error in format_errors
             ]
             errors.extend(format_errors)
@@ -181,20 +182,33 @@ def validate_training_examples(rubric, examples):
                 if criterion_name in criteria_options:
                     valid_options = criteria_options[criterion_name]
                     if option_name not in valid_options:
-                        msg = u"Example {} has an invalid option for \"{}\": \"{}\"".format(
-                            order_num, criterion_name, option_name
+                        msg = _(
+                            u"Example {example_number} has an invalid option "
+                            u"for \"{criterion_name}\": \"{option_name}\""
+                        ).format(
+                            example_number=order_num,
+                            criterion_name=criterion_name,
+                            option_name=option_name
                         )
                         errors.append(msg)
                 else:
-                    msg = _(u"Example {} has an extra option for \"{}\"").format(
-                        order_num, criterion_name
+                    msg = _(
+                        u"Example {example_number} has an extra option "
+                        u"for \"{criterion_name}\""
+                    ).format(
+                        example_number=order_num,
+                        criterion_name=criterion_name
                     )
                     errors.append(msg)
 
             # Check for missing criteria
             for missing_criterion in set(criteria_options.keys()) - set(options_selected.keys()):
-                msg = _(u"Example {} is missing an option for \"{}\"").format(
-                    order_num, missing_criterion
+                msg = _(
+                    u"Example {example_number} is missing an option "
+                    u"for \"{criterion_name}\""
+                ).format(
+                    example_number=order_num,
+                    criterion_name=missing_criterion
                 )
                 errors.append(msg)
 
@@ -303,9 +317,9 @@ def get_training_example(submission_uuid, rubric, examples):
         # Validate the training examples
         errors = validate_training_examples(rubric, examples)
         if len(errors) > 0:
-            msg = _(u"Training examples do not match the rubric: {errors}").format(
-                errors="\n".join(errors)
-            )
+            msg = (
+                u"Training examples do not match the rubric (submission UUID is {uuid}): {errors}"
+            ).format(uuid=submission_uuid, errors="\n".join(errors))
             raise StudentTrainingRequestError(msg)
 
         # Get or create the workflow
@@ -328,11 +342,11 @@ def get_training_example(submission_uuid, rubric, examples):
         )
         raise StudentTrainingRequestError(ex)
     except sub_api.SubmissionNotFoundError as ex:
-        msg = _(u"Could not retrieve the submission with UUID {}").format(submission_uuid)
+        msg = u"Could not retrieve the submission with UUID {}".format(submission_uuid)
         logger.exception(msg)
         raise StudentTrainingRequestError(msg)
     except DatabaseError:
-        msg = _(
+        msg = (
             u"Could not retrieve a training example "
             u"for the student with submission UUID {}"
         ).format(submission_uuid)
