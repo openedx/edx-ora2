@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1a\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-09 09:30-0400\n"
+"POT-Creation-Date: 2014-06-09 11:02-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: \n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -92,20 +92,26 @@ msgstr "Thïs féédßäçk çöüld nöt ßé süßmïttéd. Ⱡ'σяєм ιρ�
 #: openassessment/xblock/static/js/src/oa_server.js:253
 #: openassessment/xblock/static/js/src/oa_server.js:293
 #: openassessment/xblock/static/js/src/oa_server.js:334
+#: openassessment/xblock/static/js/src/oa_server.js:368
 msgid "This assessment could not be submitted."
 msgstr "Thïs ässéssmént çöüld nöt ßé süßmïttéd. Ⱡ'σяєм ιρѕ#"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:362
+#: openassessment/xblock/static/js/src/oa_server.js:392
+msgid "One or more rescheduling tasks failed."
+msgstr "Öné ör möré résçhédülïng täsks fäïléd. Ⱡ'σяєм ιρѕ#"
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:420
 msgid "This problem could not be loaded."
 msgstr "Thïs prößlém çöüld nöt ßé löädéd. Ⱡ'σяєм ι#"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:391
+#: openassessment/xblock/static/js/src/oa_server.js:449
 msgid "This problem could not be saved."
 msgstr "Thïs prößlém çöüld nöt ßé sävéd. Ⱡ'σяєм ι#"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:421
+#: openassessment/xblock/static/js/src/oa_server.js:479
 msgid "The server could not be contacted."
 msgstr "Thé sérvér çöüld nöt ßé çöntäçtéd. Ⱡ'σяєм ιρ#"

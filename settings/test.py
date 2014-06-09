@@ -38,7 +38,6 @@ INSTALLED_APPS += ('django_nose',)
 
 
 # Store uploaded files in a test-specific directory
-BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 MEDIA_ROOT = os.path.join(BASE_DIR, 'storage/test')
 
 
