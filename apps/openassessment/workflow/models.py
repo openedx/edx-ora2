@@ -197,7 +197,8 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         Simple helper function for retrieving all the steps in the given
         Workflow.
         """
-        steps = list(self.steps.all())
+        # Do not return steps that are not recognized in the AssessmentWorkflow.
+        steps = list(self.steps.filter(name__in=AssessmentWorkflow.STEPS))
         if not steps:
             # If no steps exist for this AssessmentWorkflow, assume
             # peer -> self for backwards compatibility

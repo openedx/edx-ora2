@@ -112,6 +112,7 @@ Disable quality violations on a line or file:
     # pylint: disable=W0123,E4567
 
 
+<<<<<<< HEAD
 Vagrant
 =======
 
@@ -152,6 +153,26 @@ By default, the Vagrant VM also includes a monitoring tool for Celery tasks call
 To use the tool, visit: `http://192.168.44.10:5555 <http://192.168.44.10:5555>`_
 
 The log files from the Vagrant VM are located in ``edx-ora2/logs/vagrant``, which is shared with the host machine.
+
+
+i18n
+====
+
+You will need to install `getttext <http://www.gnu.org/software/gettext/>`_.
+
+To extract strings and compile messages:
+
+.. code:: bash
+
+    python manage.py makemessages -l en
+    python manage.py makemessages -d djangojs -l en
+    python manage.py compilemessages
+
+Generate dummy strings for testing:
+
+.. code:: bash
+
+    i18n_tool dummy
 
 
 License

@@ -32,9 +32,6 @@ nosetests.xml
 htmlcov
 coverage.xml
 
-# Translations
-*.mo
-
 # Mr Developer
 .mr.developer.cfg
 .project
