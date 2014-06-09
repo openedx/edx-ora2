@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 cd `dirname $BASH_SOURCE` && cd ..
 STATIC_JS="openassessment/xblock/static/js"
 

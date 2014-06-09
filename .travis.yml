@@ -6,6 +6,7 @@ before_script:
   - sh -e /etc/init.d/xvfb start
   - "pip install coveralls"
 script:
+  - "travis_retry ./scripts/install.sh"
   - "./scripts/test.sh"
   - "./scripts/i18n.sh"
   - "python setup.py install"
