@@ -4,3 +4,6 @@
 sphinx
 sphinxcontrib-napoleon
 markupsafe
+
+# need to install requirements for application, in order to import Python code
+-r ../../../requirements/base.txt
