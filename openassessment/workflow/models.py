@@ -28,7 +28,16 @@ logger = logging.getLogger('openassessment.workflow.models')
 # we use dependency injection.  The Django settings define
 # a dictionary mapping assessment step names to the Python module path
 # that implements the corresponding assessment API.
-ASSESSMENT_API_DICT = getattr(settings, 'ORA2_ASSESSMENTS', {})
+# For backwards compatibility, we provide a default configuration as well
+DEFAULT_ASSESSMENT_API_DICT = {
+    'peer': 'openassessment.assessment.api.peer',
+    'self': 'openassessment.assessment.api.self',
+    'training': 'openassessment.assessment.api.student_training',
+}
+ASSESSMENT_API_DICT = getattr(
+    settings, 'ORA2_ASSESSMENTS',
+    DEFAULT_ASSESSMENT_API_DICT
+)
 
 # For now, we use a simple scoring mechanism:
 # Once a student has completed all assessments,
@@ -37,7 +46,11 @@ ASSESSMENT_API_DICT = getattr(settings, 'ORA2_ASSESSMENTS', {})
 # We then use that score as the student's overall score.
 # This Django setting is a list of assessment steps (defined in `settings.ORA2_ASSESSMENTS`)
 # in descending priority order.
-ASSESSMENT_SCORE_PRIORITY = getattr(settings, 'ORA2_ASSESSMENT_SCORE_PRIORITY', [])
+DEFAULT_ASSESSMENT_SCORE_PRIORITY = ['peer', 'self']
+ASSESSMENT_SCORE_PRIORITY = getattr(
+    settings, 'ORA2_ASSESSMENT_SCORE_PRIORITY',
+    DEFAULT_ASSESSMENT_SCORE_PRIORITY
+)
 
 
 class AssessmentWorkflow(TimeStampedModel, StatusModel):
@@ -259,7 +272,12 @@ class AssessmentWorkflowStep(models.Model):
         This relies on Django settings to map step names to
         the assessment API implementation.
         """
-        api_path = getattr(settings, 'ORA2_ASSESSMENTS', {}).get(self.name)
+        # We retrieve the settings in-line here (rather than using the
+        # top-level constant), so that @override_settings will work
+        # in the test suite.
+        api_path = getattr(
+            settings, 'ORA2_ASSESSMENTS', DEFAULT_ASSESSMENT_API_DICT
+        ).get(self.name)
         if api_path is not None:
             try:
                 return importlib.import_module(api_path)
