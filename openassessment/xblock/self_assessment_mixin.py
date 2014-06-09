@@ -64,8 +64,9 @@ class SelfAssessmentMixin(object):
         # and `workflow_status` will be None.
         workflow = self.get_workflow_info()
         workflow_status = workflow.get('status')
+        self_complete = workflow.get('status_details', {}).get('self', {}).get('complete', False)
 
-        if workflow_status == 'waiting' or workflow_status == 'done':
+        if self_complete:
             path = 'openassessmentblock/self/oa_self_complete.html'
         elif workflow_status == 'self' or problem_closed:
             assessment = self_api.get_assessment(workflow.get("submission_uuid"))

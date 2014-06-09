@@ -37,8 +37,26 @@
         "is_released": false
     },
     "self_before_peer": {
-        "valid": false,
+        "valid": true,
         "assessments": [
+            {
+                "name": "self-assessment"
+            },
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
+    },
+    "student_training_self_then_peer": {
+        "valid": true,
+        "assessments": [
+            {
+                "name": "student-training"
+            },
             {
                 "name": "self-assessment"
             },

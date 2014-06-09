@@ -33,8 +33,7 @@ class AssessmentValidationTest(TestCase):
         self.assertFalse(success)
         self.assertGreater(len(msg), 0)
 
-    # Make sure only legal assessment combinations are allowed. For now, that's
-    # (peer -> self), and (self)
+    # Make sure only legal assessment combinations are allowed.
     @ddt.file_data('data/assessment_combo.json')
     def test_enforce_assessment_combo_restrictions(self, data):
         self._assert_validation(

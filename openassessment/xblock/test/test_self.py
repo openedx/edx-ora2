@@ -168,15 +168,36 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
 
     @scenario('data/self_assessment_open.xml', user_id='James Brown')
     def test_open_in_waiting_for_peer_step(self, xblock):
-        # Simulate the workflow status being "waiting"
-        # Currently, this implies that we've completed the self assessment module,
-        # but this may change in the future.
+        # In the peer-->self configuration, if we're done with the
+        # self step, but not with the peer step (because we're waiting
+        # to be assessed), then the self step should display as completed.
         xblock.create_submission(
             xblock.get_student_item_dict(), u"𝓟𝓪𝓼𝓼 𝓽𝓱𝓮 𝓹𝓮𝓪𝓼"
         )
         self._assert_path_and_context(
             xblock, 'openassessmentblock/self/oa_self_complete.html', {},
-            workflow_status='waiting'
+            workflow_status='waiting',
+            status_details={
+                'self': {'complete': True},
+                'peer': {'complete': False}
+            }
+        )
+
+    @scenario('data/self_then_peer.xml', user_id="The Bee Gees")
+    def test_self_then_peer(self, xblock):
+        xblock.create_submission(
+            xblock.get_student_item_dict(), u"Stayin' alive!"
+        )
+
+        # In the self --> peer configuration, self can be complete
+        # if our status is "peer"
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/self/oa_self_complete.html', {},
+            workflow_status="peer",
+            status_details={
+                'self': {'complete': True},
+                'peer': {'complete': False}
+            }
         )
 
     @scenario('data/self_assessment_open.xml', user_id='James Brown')
@@ -296,7 +317,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
 
     def _assert_path_and_context(
         self, xblock, expected_path, expected_context,
-        workflow_status=None, submission_uuid=None
+        workflow_status=None, status_details=None,
+        submission_uuid=None
     ):
         """
         Render the self assessment step and verify:
@@ -310,11 +332,19 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
 
         Kwargs:
             workflow_status (str): If provided, simulate this status from the workflow API.
+            workflow_status (str): If provided, simulate these details from the workflow API.
             submission_uuid (str): If provided, simulate this submision UUI for the current workflow.
         """
         if workflow_status is not None:
+            # Assume a peer-->self flow by default
+            if status_details is None:
+                status_details = {
+                    'peer': {'complete': workflow_status == 'done'},
+                    'self': {'complete': workflow_status in ['waiting', 'done']}
+                }
             xblock.get_workflow_info = mock.Mock(return_value={
                 'status': workflow_status,
+                'status_details': status_details,
                 'submission_uuid': submission_uuid
             })
         path, context = xblock.self_path_and_context()
