@@ -198,14 +198,14 @@ class TestCourseStaff(XBlockHandlerTestCase):
         bob_item["item_id"] = xblock.scope_ids.usage_id
         # Create a submission for Bob, and corresponding workflow.
         submission = sub_api.create_submission(bob_item, {'text':"Bob Answer"})
-        peer_api.create_peer_workflow(submission["uuid"])
+        peer_api.on_start(submission["uuid"])
         workflow_api.create_workflow(submission["uuid"], ['peer'])
 
         # Create a submission for Tim, and corresponding workflow.
         tim_item = bob_item.copy()
         tim_item["student_id"] = "Tim"
         tim_sub = sub_api.create_submission(tim_item, "Tim Answer")
-        peer_api.create_peer_workflow(tim_sub["uuid"])
+        peer_api.on_start(tim_sub["uuid"])
         workflow_api.create_workflow(tim_sub["uuid"], ['peer', 'self'])
 
         # Bob assesses Tim.
@@ -238,7 +238,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         bob_item["item_id"] = xblock.scope_ids.usage_id
         # Create a submission for Bob, and corresponding workflow.
         submission = sub_api.create_submission(bob_item, {'text':"Bob Answer"})
-        peer_api.create_peer_workflow(submission["uuid"])
+        peer_api.on_start(submission["uuid"])
         workflow_api.create_workflow(submission["uuid"], ['self'])
 
         # Bob assesses himself.
@@ -281,14 +281,14 @@ class TestCourseStaff(XBlockHandlerTestCase):
         bob_item["item_id"] = xblock.scope_ids.usage_id
         # Create a submission for Bob, and corresponding workflow.
         submission = sub_api.create_submission(bob_item, {'text':"Bob Answer"})
-        peer_api.create_peer_workflow(submission["uuid"])
+        peer_api.on_start(submission["uuid"])
         workflow_api.create_workflow(submission["uuid"], ['peer', 'self'])
 
         # Create a submission for Tim, and corresponding workflow.
         tim_item = bob_item.copy()
         tim_item["student_id"] = "Tim"
         tim_sub = sub_api.create_submission(tim_item, "Tim Answer")
-        peer_api.create_peer_workflow(tim_sub["uuid"])
+        peer_api.on_start(tim_sub["uuid"])
         workflow_api.create_workflow(tim_sub["uuid"], ['peer', 'self'])
 
         # Bob assesses Tim.

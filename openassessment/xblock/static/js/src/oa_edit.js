@@ -132,9 +132,7 @@ function OpenAssessmentEditor(runtime, element) {
     /**
     Initialize the editing interface on page load.
     **/
-    $(function($) {
-        var server = new OpenAssessment.Server(runtime, element);
-        var view = new OpenAssessment.StudioView(runtime, element, server);
-        view.load();
-    });
+    var server = new OpenAssessment.Server(runtime, element);
+    var view = new OpenAssessment.StudioView(runtime, element, server);
+    view.load();
 }

@@ -2,7 +2,6 @@
 Public interface for the Assessment Workflow.
 
 """
-import copy
 import logging
 
 from django.db import DatabaseError
@@ -16,51 +15,12 @@ from openassessment.assessment.errors import (
 from submissions import api as sub_api
 from .models import AssessmentWorkflow, AssessmentWorkflowStep
 from .serializers import AssessmentWorkflowSerializer
+from .errors import (
+    AssessmentWorkflowInternalError, AssessmentWorkflowRequestError,
+    AssessmentWorkflowNotFoundError
+)
 
 logger = logging.getLogger(__name__)
-
-
-class AssessmentWorkflowError(Exception):
-    """An error that occurs during workflow actions.
-
-    This error is raised when the Workflow API cannot perform a requested
-    action.
-
-    """
-    pass
-
-
-class AssessmentWorkflowInternalError(AssessmentWorkflowError):
-    """An error internal to the Workflow API has occurred.
-
-    This error is raised when an error occurs that is not caused by incorrect
-    use of the API, but rather internal implementation of the underlying
-    services.
-
-    """
-    pass
-
-
-class AssessmentWorkflowRequestError(AssessmentWorkflowError):
-    """This error is raised when there was a request-specific error
-
-    This error is reserved for problems specific to the use of the API.
-
-    """
-
-    def __init__(self, field_errors):
-        Exception.__init__(self, repr(field_errors))
-        self.field_errors = copy.deepcopy(field_errors)
-
-
-class AssessmentWorkflowNotFoundError(AssessmentWorkflowError):
-    """This error is raised when no submission is found for the request.
-
-    If a state is specified in a call to the API that results in no matching
-    Submissions, this error may be raised.
-
-    """
-    pass
 
 
 def create_workflow(submission_uuid, steps, rubric=None, algorithm_id=None):
@@ -157,7 +117,7 @@ def create_workflow(submission_uuid, steps, rubric=None, algorithm_id=None):
     if step == "peer":
         status = AssessmentWorkflow.STATUS.peer
         try:
-            peer_api.create_peer_workflow(submission_uuid)
+            peer_api.on_start(submission_uuid)
         except PeerAssessmentError as err:
             err_msg = u"Could not create assessment workflow: {}".format(err)
             logger.exception(err_msg)
@@ -167,7 +127,7 @@ def create_workflow(submission_uuid, steps, rubric=None, algorithm_id=None):
     elif step == "training":
         status = AssessmentWorkflow.STATUS.training
         try:
-            training_api.create_student_training_workflow(submission_uuid)
+            training_api.on_start(submission_uuid)
         except StudentTrainingInternalError as err:
             err_msg = u"Could not create assessment workflow: {}".format(err)
             logger.exception(err_msg)

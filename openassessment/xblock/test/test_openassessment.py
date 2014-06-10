@@ -9,6 +9,7 @@ from mock import Mock, patch
 from openassessment.xblock import openassessmentblock
 from openassessment.xblock.resolve_dates import DISTANT_PAST, DISTANT_FUTURE
 from openassessment.workflow import api as workflow_api
+from openassessment.workflow.errors import AssessmentWorkflowError
 from .base import XBlockHandlerTestCase, scenario
 
 
@@ -89,7 +90,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # Simulate an error from updating the workflow
         xblock.submission_uuid = 'test_submission'
         with patch('openassessment.xblock.workflow_mixin.workflow_api') as mock_api:
-            mock_api.update_from_assessments.side_effect = workflow_api.AssessmentWorkflowError
+            mock_api.update_from_assessments.side_effect = AssessmentWorkflowError
             xblock_fragment = self.runtime.render(xblock, "student_view")
 
         # Expect that the page renders even if the update fails
