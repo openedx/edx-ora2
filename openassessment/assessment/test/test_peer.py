@@ -1095,12 +1095,12 @@ class TestPeerApi(CacheResetTest):
             1
         )
 
-    @patch.object(Assessment.objects, 'filter')
     @raises(peer_api.PeerAssessmentInternalError)
-    def test_max_score_db_error(self, mock_filter):
-        mock_filter.side_effect = DatabaseError("Bad things happened")
+    def test_max_score_db_error(self):
         tim, _ = self._create_student_and_submission("Tim", "Tim's answer")
-        peer_api.get_rubric_max_scores(tim["uuid"])
+        with patch.object(Assessment.objects, 'filter') as mock_filter:
+            mock_filter.side_effect = DatabaseError("Bad things happened")
+            peer_api.get_rubric_max_scores(tim["uuid"])
 
     @patch.object(PeerWorkflow.objects, 'get')
     @raises(peer_api.PeerAssessmentInternalError)

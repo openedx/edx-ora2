@@ -135,6 +135,14 @@ def create_assessment(grading_workflow_uuid, criterion_scores):
         logger.exception(msg)
         raise AIGradingInternalError(msg)
 
+    # Fire a signal to update the workflow API
+    # This will allow students to receive a score if they're
+    # waiting on an AI assessment.
+    # The signal receiver is responsible for catching and logging
+    # all exceptions that may occur when updating the workflow.
+    from openassessment.assessment.signals import assessment_complete_signal
+    assessment_complete_signal.send(sender=None, submission_uuid=workflow.submission_uuid)
+
 
 def get_training_task_params(training_workflow_uuid):
     """

@@ -190,7 +190,7 @@ class AIGradingTest(CacheResetTest):
         # Schedule a grading task
         # Because Celery is configured in "always eager" mode, this will
         # be executed synchronously.
-        ai_api.submit(self.submission_uuid, RUBRIC, ALGORITHM_ID)
+        ai_api.on_init(self.submission_uuid, rubric=RUBRIC, algorithm_id=ALGORITHM_ID)
 
         # Verify that we got the scores we provided to the stub AI algorithm
         assessment = ai_api.get_latest_assessment(self.submission_uuid)
@@ -205,7 +205,7 @@ class AIGradingTest(CacheResetTest):
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     def test_get_assessment_scores_by_criteria(self):
-        ai_api.submit(self.submission_uuid, RUBRIC, ALGORITHM_ID)
+        ai_api.on_init(self.submission_uuid, rubric=RUBRIC, algorithm_id=ALGORITHM_ID)
 
         # Verify that we got the scores we provided to the stub AI algorithm
         assessment = ai_api.get_latest_assessment(self.submission_uuid)
@@ -225,20 +225,20 @@ class AIGradingTest(CacheResetTest):
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     def test_submit_submission_not_found(self):
         with self.assertRaises(AIGradingRequestError):
-            ai_api.submit("no_such_submission", RUBRIC, ALGORITHM_ID)
+            ai_api.on_init("no_such_submission", rubric=RUBRIC, algorithm_id=ALGORITHM_ID)
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     def test_submit_invalid_rubric(self):
         invalid_rubric = {'not_valid': True}
         with self.assertRaises(AIGradingRequestError):
-            ai_api.submit(self.submission_uuid, invalid_rubric, ALGORITHM_ID)
+            ai_api.on_init(self.submission_uuid, rubric=invalid_rubric, algorithm_id=ALGORITHM_ID)
 
     @mock.patch.object(AIGradingWorkflow.objects, 'create')
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
-    def test_submit_database_error(self, mock_call):
+    def test_submit_database_error_create(self, mock_call):
         mock_call.side_effect = DatabaseError("KABOOM!")
         with self.assertRaises(AIGradingInternalError):
-            ai_api.submit(self.submission_uuid, RUBRIC, ALGORITHM_ID)
+            ai_api.on_init(self.submission_uuid, rubric=RUBRIC, algorithm_id=ALGORITHM_ID)
 
     @mock.patch.object(Assessment.objects, 'filter')
     def test_get_latest_assessment_database_error(self, mock_call):
@@ -251,21 +251,21 @@ class AIGradingTest(CacheResetTest):
         with mock.patch('openassessment.assessment.api.ai.grading_tasks.grade_essay.apply_async') as mock_grade:
             mock_grade.side_effect = NotConfigured
             with self.assertRaises(AIGradingInternalError):
-                ai_api.submit(self.submission_uuid, RUBRIC, ALGORITHM_ID)
+                ai_api.on_init(self.submission_uuid, rubric=RUBRIC, algorithm_id=ALGORITHM_ID)
 
     @mock.patch.object(AIClassifierSet.objects, 'filter')
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
-    def test_submit_database_error(self, mock_filter):
+    def test_submit_database_error_filter(self, mock_filter):
         mock_filter.side_effect = DatabaseError("rumble... ruMBLE, RUMBLE! BOOM!")
         with self.assertRaises(AIGradingInternalError):
-            ai_api.submit(self.submission_uuid, RUBRIC, ALGORITHM_ID)
+            ai_api.on_init(self.submission_uuid, rubric=RUBRIC, algorithm_id=ALGORITHM_ID)
 
     @mock.patch.object(AIClassifierSet.objects, 'filter')
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     def test_submit_no_classifiers(self, mock_call):
         mock_call.return_value = []
         with mock.patch('openassessment.assessment.api.ai.logger.info') as mock_log:
-            ai_api.submit(self.submission_uuid, RUBRIC, ALGORITHM_ID)
+            ai_api.on_init(self.submission_uuid, rubric=RUBRIC, algorithm_id=ALGORITHM_ID)
             argument = mock_log.call_args[0][0]
             self.assertTrue(u"no classifiers are available" in argument)
 
@@ -274,19 +274,26 @@ class AIGradingTest(CacheResetTest):
         with mock.patch('openassessment.assessment.api.ai.AIGradingWorkflow.start_workflow') as mock_start:
             mock_start.side_effect = sub_api.SubmissionInternalError
             with self.assertRaises(AIGradingInternalError):
-                ai_api.submit(self.submission_uuid, RUBRIC, ALGORITHM_ID)
+                ai_api.on_init(self.submission_uuid, rubric=RUBRIC, algorithm_id=ALGORITHM_ID)
 
 
-class AIUntrainedGradingTest:
+class AIUntrainedGradingTest(CacheResetTest):
     """
     Tests that do not run the setup to train classifiers.
 
     """
+    def setUp(self):
+        """
+        Create a submission.
+        """
+        # Create a submission
+        submission = sub_api.create_submission(STUDENT_ITEM, ANSWER)
+        self.submission_uuid = submission['uuid']
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     def test_no_score(self):
         # Test that no score has been created, and get_score returns None.
-        ai_api.submit(self.submission_uuid, RUBRIC, ALGORITHM_ID)
+        ai_api.on_init(self.submission_uuid, rubric=RUBRIC, algorithm_id=ALGORITHM_ID)
         score = ai_api.get_score(self.submission_uuid, {})
         self.assertIsNone(score)
 
@@ -303,10 +310,10 @@ class AIReschedulingTest(CacheResetTest):
         Sets up each test so that it will have unfinished tasks of both types
         """
         # 1) Schedule Grading, have the scheduling succeeed but the grading fail because no classifiers exist
-        for i in range(0, 10):
+        for _ in range(0, 10):
             submission = sub_api.create_submission(STUDENT_ITEM, ANSWER)
             self.submission_uuid = submission['uuid']
-            ai_api.submit(self.submission_uuid, RUBRIC, ALGORITHM_ID)
+            ai_api.on_init(self.submission_uuid, rubric=RUBRIC, algorithm_id=ALGORITHM_ID)
 
         # 2) Schedule Training, have it INTENTIONALLY fail. Now we are a point where both parts need to be rescheduled
         patched_method = 'openassessment.assessment.api.ai.training_tasks.train_classifiers.apply_async'
@@ -409,7 +416,7 @@ class AIReschedulingTest(CacheResetTest):
         for i in range(0, 125):
             submission = sub_api.create_submission(STUDENT_ITEM, ANSWER)
             self.submission_uuid = submission['uuid']
-            ai_api.submit(self.submission_uuid, RUBRIC, ALGORITHM_ID)
+            ai_api.on_init(self.submission_uuid, rubric=RUBRIC, algorithm_id=ALGORITHM_ID)
 
         # Both training and grading should not be complete.
         self._assert_complete(grading_done=False, training_done=False)
@@ -460,6 +467,38 @@ class AIReschedulingTest(CacheResetTest):
 
 class AIAutomaticGradingTest(CacheResetTest):
 
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_automatic_grade(self):
+        # Create some submissions which will not succeed. No classifiers yet exist.
+        for _ in range(0, 10):
+            submission = sub_api.create_submission(STUDENT_ITEM, ANSWER)
+            ai_api.on_init(submission['uuid'], rubric=RUBRIC, algorithm_id=ALGORITHM_ID)
+
+        # Check that there are unresolved grading workflows
+        self._assert_complete(training_done=True, grading_done=False)
+
+        # Create and train a classifier set.  This should set off automatic grading.
+        ai_api.train_classifiers(RUBRIC, EXAMPLES, COURSE_ID, ITEM_ID, ALGORITHM_ID)
+
+        # Check to make sure that all work is done.
+        self._assert_complete(training_done=True, grading_done=True)
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_automatic_grade_error(self):
+        # Create some submissions which will not succeed. No classifiers yet exist.
+        for _ in range(0, 10):
+            submission = sub_api.create_submission(STUDENT_ITEM, ANSWER)
+            ai_api.on_init(submission['uuid'], rubric=RUBRIC, algorithm_id=ALGORITHM_ID)
+
+        # Check that there are unresolved grading workflows
+        self._assert_complete(training_done=True, grading_done=False)
+
+        patched_method = 'openassessment.assessment.worker.training.reschedule_grading_tasks.apply_async'
+        with mock.patch(patched_method) as mocked_reschedule_grading:
+            mocked_reschedule_grading.side_effect = AIGradingInternalError("Kablewey.")
+            with self.assertRaises(AIGradingInternalError):
+                ai_api.train_classifiers(RUBRIC, EXAMPLES, COURSE_ID, ITEM_ID, ALGORITHM_ID)
+
     def _assert_complete(self, training_done=None, grading_done=None):
         """
         Asserts that the Training and Grading are of a given completion status
@@ -469,7 +508,7 @@ class AIAutomaticGradingTest(CacheResetTest):
             training_done (bool): whether the user expects there to be unfinished training workflows
             grading_done (bool): whether the user expects there to be unfinished grading workflows
         """
-        incomplete_training_workflows = AITrainingWorkflow.get_incomplete_workflows(course_id=COURSE_ID,item_id=ITEM_ID)
+        incomplete_training_workflows = AITrainingWorkflow.get_incomplete_workflows(course_id=COURSE_ID, item_id=ITEM_ID)
         incomplete_grading_workflows = AIGradingWorkflow.get_incomplete_workflows(course_id=COURSE_ID, item_id=ITEM_ID)
         if training_done is not None:
             self.assertEqual(self._is_empty_generator(incomplete_training_workflows), training_done)
@@ -492,38 +531,3 @@ class AIAutomaticGradingTest(CacheResetTest):
             return False
         except StopIteration:
             return True
-
-    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
-    def test_automatic_grade(self):
-        # Create some submissions which will not succeed. No classifiers yet exist.
-        for i in range(0, 10):
-            submission = sub_api.create_submission(STUDENT_ITEM, ANSWER)
-            self.submission_uuid = submission['uuid']
-            ai_api.submit(self.submission_uuid, RUBRIC, ALGORITHM_ID)
-
-        # Check that there are unresolved grading workflows
-        self._assert_complete(training_done=True, grading_done=False)
-
-        # Create and train a classifier set.  This should set off automatic grading.
-        ai_api.train_classifiers(RUBRIC, EXAMPLES, COURSE_ID, ITEM_ID, ALGORITHM_ID)
-
-        # Check to make sure that all work is done.
-        self._assert_complete(training_done=True, grading_done=True)
-
-    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
-    def test_automatic_grade_error(self):
-        # Create some submissions which will not succeed. No classifiers yet exist.
-        for i in range(0, 10):
-            submission = sub_api.create_submission(STUDENT_ITEM, ANSWER)
-            self.submission_uuid = submission['uuid']
-            ai_api.submit(self.submission_uuid, RUBRIC, ALGORITHM_ID)
-
-        # Check that there are unresolved grading workflows
-        self._assert_complete(training_done=True, grading_done=False)
-
-        patched_method = 'openassessment.assessment.worker.training.reschedule_grading_tasks.apply_async'
-        with mock.patch(patched_method) as mocked_reschedule_grading:
-            mocked_reschedule_grading.side_effect = AIGradingInternalError("Kablewey.")
-            with self.assertRaises(AIGradingInternalError):
-                ai_api.train_classifiers(RUBRIC, EXAMPLES, COURSE_ID, ITEM_ID, ALGORITHM_ID)
-

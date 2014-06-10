@@ -81,7 +81,7 @@ def get_score(submission_uuid, requirements):
     }
 
 
-def submit(submission_uuid, rubric, algorithm_id):
+def on_init(submission_uuid, rubric=None, algorithm_id=None):
     """
     Submit a response for AI assessment.
     This will:
@@ -90,6 +90,8 @@ def submit(submission_uuid, rubric, algorithm_id):
 
     Args:
         submission_uuid (str): The UUID of the submission to assess.
+
+    Kwargs:
         rubric (dict): Serialized rubric model.
         algorithm_id (unicode): Use only classifiers trained with the specified algorithm.
 
@@ -108,6 +110,12 @@ def submit(submission_uuid, rubric, algorithm_id):
     '10df7db776686822e501b05f452dc1e4b9141fe5'
 
     """
+    if rubric is None:
+        raise AIGradingRequestError(u'No rubric provided')
+
+    if algorithm_id is None:
+        raise AIGradingRequestError(u'No algorithm ID provided')
+
     try:
         workflow = AIGradingWorkflow.start_workflow(submission_uuid, rubric, algorithm_id)
     except (sub_api.SubmissionNotFoundError, sub_api.SubmissionRequestError) as ex:
