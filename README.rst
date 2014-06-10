@@ -71,11 +71,11 @@ To run the Python and Javascript unit test suites:
 
     ./scripts/test.sh
 
-To limit Python tests to a particular Django app:
+To limit Python tests to a particular module:
 
 .. code:: bash
 
-    ./scripts/test-python.sh openassessment.xblock
+    ./scripts/test-python.sh openassessment/xblock/test/test_openassessment.py
 
 To run just the JavaScript tests:
 
