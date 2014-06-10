@@ -14,7 +14,7 @@ import submissions.api as sub_api
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 from openassessment.workflow.models import AssessmentWorkflow
-from openassessment.workflow.errors import AssessmentApiLoadError
+from openassessment.workflow.errors import AssessmentWorkflowInternalError
 
 
 ITEM_1 = {
@@ -264,9 +264,10 @@ class TestAssessmentWorkflowApi(CacheResetTest):
             "item_type": "openassessment",
         }, "test answer")
 
-        workflow_api.create_workflow(submission['uuid'], ['self'])
+        with self.assertRaises(AssessmentWorkflowInternalError):
+            workflow_api.create_workflow(submission['uuid'], ['self'])
 
-        with self.assertRaises(AssessmentApiLoadError):
+        with self.assertRaises(AssessmentWorkflowInternalError):
             workflow_api.update_from_assessments(submission['uuid'], {})
 
     def _create_workflow_with_status(
