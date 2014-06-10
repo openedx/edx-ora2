@@ -7,7 +7,8 @@ import datetime as dt
 import lxml.etree as etree
 import mock
 import pytz
-from ddt import ddt, data
+from ddt import ddt, data, file_data
+from openassessment.xblock.xml import UpdateFromXmlError
 from .base import scenario, XBlockHandlerTestCase
 
 
@@ -23,92 +24,92 @@ class StudioViewTest(XBlockHandlerTestCase):
         self.assertTrue(frag.body_html().find('openassessment-edit'))
 
     @scenario('data/basic_scenario.xml')
-    def test_get_xml(self, xblock):
-        resp = self.request(xblock, 'xml', '""', response_format='json')
+    def test_get_editor_context(self, xblock):
+        resp = self.request(xblock, 'editor_context', '""', response_format='json')
         self.assertTrue(resp['success'])
         self.assertEqual(resp['msg'], u'')
 
-        # Verify that the XML is parseable and the root is <openassessment>
-        root = etree.fromstring(resp['xml'])
-        self.assertEqual(root.tag, 'openassessment')
+        # Verify that the Rubric XML is parse-able and the root is <rubric>
+        rubric = etree.fromstring(resp['rubric'])
+        self.assertEqual(rubric.tag, 'rubric')
 
-    @mock.patch('openassessment.xblock.studio_mixin.serialize_content')
+        assessments = etree.fromstring(resp['settings']['assessments'])
+        self.assertEqual(assessments.tag, 'assessments')
+
+    @mock.patch('openassessment.xblock.xml.serialize_rubric_to_xml_str')
     @scenario('data/basic_scenario.xml')
-    def test_get_xml_error(self, xblock, mock_serialize):
+    def test_get_editor_context_error(self, xblock, mock_rubric_serializer):
         # Simulate an unexpected error while serializing the XBlock
-        mock_serialize.side_effect = ValueError('Test error!')
+        mock_rubric_serializer.side_effect = UpdateFromXmlError('Test error!')
 
         # Check that we get a failure message
-        resp = self.request(xblock, 'xml', '""', response_format='json')
+        resp = self.request(xblock, 'editor_context', '""', response_format='json')
         self.assertFalse(resp['success'])
         self.assertIn(u'unexpected error', resp['msg'].lower())
 
+    @file_data('data/update_xblock.json')
     @scenario('data/basic_scenario.xml')
-    def test_update_xml(self, xblock):
-
-        # Set the XBlock's release date to the future,
-        # so we are not restricted in what we can edit
-        xblock.start = dt.datetime(3000, 1, 1).replace(tzinfo=pytz.utc)
-
-        request = json.dumps({'xml': self.load_fixture_str('data/updated_block.xml')})
+    def test_update_xblock(self, xblock, data):
+        # First, parse XML data into a single string.
+        data['rubric'] = "".join(data['rubric'])
+        data['settings']['assessments'] = "".join(data['settings']['assessments'])
+        xblock.published_date = None
+        # Test that we can update the xblock with the expected configuration.
+        request = json.dumps(data)
 
         # Verify the response is successfully
-        resp = self.request(xblock, 'update_xml', request, response_format='json')
+        resp = self.request(xblock, 'update_editor_context', request, response_format='json')
+        print "ERROR IS {}".format(resp['msg'])
         self.assertTrue(resp['success'])
         self.assertIn('success', resp['msg'].lower())
 
         # Check that the XBlock fields were updated
         # We don't need to be exhaustive here, because we have other unit tests
         # that verify this extensively.
-        self.assertEqual(xblock.title, u'Foo')
-        self.assertEqual(xblock.prompt, u'Test prompt')
-        self.assertEqual(xblock.rubric_assessments[0]['name'], 'peer-assessment')
-        self.assertEqual(xblock.rubric_criteria[0]['prompt'], 'Test criterion prompt')
+        self.assertEqual(xblock.title, data['settings']['title'])
+        self.assertEqual(xblock.prompt, data['prompt'])
+        self.assertEqual(xblock.rubric_assessments[0]['name'], data['expected-assessment'])
+        self.assertEqual(xblock.rubric_criteria[0]['prompt'], data['expected-criterion-prompt'])
 
+    @file_data('data/update_xblock.json')
     @scenario('data/basic_scenario.xml')
-    def test_update_xml_post_release(self, xblock):
+    def test_update_context_post_release(self, xblock, data):
+        # First, parse XML data into a single string.
+        data['rubric'] = "".join(data['rubric'])
+        data['settings']['assessments'] = "".join(data['settings']['assessments'])
 
         # XBlock start date defaults to already open,
         # so we should get an error when trying to update anything that change the number of points
-        request = json.dumps({'xml': self.load_fixture_str('data/updated_block.xml')})
+        request = json.dumps(data)
 
         # Verify the response is successfully
-        resp = self.request(xblock, 'update_xml', request, response_format='json')
+        resp = self.request(xblock, 'update_editor_context', request, response_format='json')
         self.assertFalse(resp['success'])
 
+    @file_data('data/invalid_update_xblock.json')
     @scenario('data/basic_scenario.xml')
-    def test_update_xml_invalid_request_data(self, xblock):
-        resp = self.request(xblock, 'update_xml', json.dumps({}), response_format='json')
+    def test_update_context_invalid_request_data(self, xblock, data):
+        # First, parse XML data into a single string.
+        if 'rubric' in data:
+            data['rubric'] = "".join(data['rubric'])
+
+        if 'settings' in data and 'assessments' in data['settings']:
+            data['settings']['assessments'] = "".join(data['settings']['assessments'])
+
+        xblock.published_date = None
+
+        resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
         self.assertFalse(resp['success'])
-        self.assertIn('xml', resp['msg'].lower())
+        self.assertIn(data['expected_error'], resp['msg'].lower())
 
+    @file_data('data/invalid_rubric.json')
     @scenario('data/basic_scenario.xml')
-    def test_update_xml_invalid_date_format(self, xblock):
-        request = json.dumps({'xml': self.load_fixture_str('data/invalid_dates.xml')})
-        resp = self.request(xblock, 'update_xml', request, response_format='json')
-        self.assertFalse(resp['success'])
-        self.assertIn("cannot be later than", resp['msg'].lower())
+    def test_update_rubric_invalid(self, xblock, data):
+        # First, parse XML data into a single string.
+        data['rubric'] = "".join(data['rubric'])
+        data['settings']['assessments'] = "".join(data['settings']['assessments'])
 
-    # Test that we enforce that there are exactly two assessments,
-    # peer ==> self
-    # If and when we remove this restriction, this test can be deleted.
-    @data('data/invalid_assessment_combo_order.xml')
-    @scenario('data/basic_scenario.xml')
-    def test_update_xml_invalid_assessment_combo(self, xblock, invalid_workflow):
-        request = json.dumps(
-            {'xml': self.load_fixture_str(invalid_workflow)}
-        )
-        resp = self.request(xblock, 'update_xml', request, response_format='json')
-        self.assertFalse(resp['success'])
-        self.assertIn("for this assignment", resp['msg'].lower())
-
-    @data(('data/invalid_rubric.xml', 'rubric'), ('data/invalid_assessment.xml', 'assessment'))
-    @scenario('data/basic_scenario.xml')
-    def test_update_xml_invalid(self, xblock, data):
-        xml_path = data[0]
-        expected_msg = data[1]
-
-        request = json.dumps({'xml': self.load_fixture_str(xml_path)})
+        request = json.dumps(data)
 
         # Store old XBlock fields for later verification
         old_title = xblock.title
@@ -117,9 +118,9 @@ class StudioViewTest(XBlockHandlerTestCase):
         old_criteria = xblock.rubric_criteria
 
         # Verify the response fails
-        resp = self.request(xblock, 'update_xml', request, response_format='json')
+        resp = self.request(xblock, 'update_editor_context', request, response_format='json')
         self.assertFalse(resp['success'])
-        self.assertIn(expected_msg, resp['msg'].lower())
+        self.assertIn("not valid", resp['msg'].lower())
 
         # Check that the XBlock fields were NOT updated
         # We don't need to be exhaustive here, because we have other unit tests

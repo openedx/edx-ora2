@@ -8,7 +8,7 @@ from django.template.loader import get_template
 from django.utils.translation import ugettext as _
 from xblock.core import XBlock
 from xblock.fragment import Fragment
-from openassessment.xblock.xml import serialize_content, update_from_xml_str, ValidationError, UpdateFromXmlError
+from openassessment.xblock import xml
 from openassessment.xblock.validation import validator
 
 
@@ -37,13 +37,17 @@ class StudioMixin(object):
         return frag
 
     @XBlock.json_handler
-    def update_xml(self, data, suffix=''):
+    def update_editor_context(self, data, suffix=''):
         """
-        Update the XBlock's XML.
+        Update the XBlock's configuration.
 
         Args:
-            data (dict): Data from the request; should have a value for the key 'xml'
-                containing the XML for this XBlock.
+            data (dict): Data from the request; should have a value for the keys
+                'rubric', 'settings' and 'prompt'. The 'rubric' should be an XML
+                representation of the new rubric. The 'prompt' should be a plain
+                text prompt. The 'settings' should be a dict of 'title',
+                'submission_due', 'submission_start' and the XML configuration for
+                all 'assessments'.
 
         Kwargs:
             suffix (str): Not used
@@ -51,26 +55,43 @@ class StudioMixin(object):
         Returns:
             dict with keys 'success' (bool) and 'msg' (str)
         """
-        if 'xml' in data:
-            try:
-                update_from_xml_str(self, data['xml'], validator=validator(self))
+        missing_keys = list({'rubric', 'settings', 'prompt'} - set(data.keys()))
+        if missing_keys:
+            logger.warn(
+                'Must specify the following keys in request JSON dict: {}'.format(missing_keys)
+            )
+            return {'success': False, 'msg': _('Error updating XBlock configuration')}
+        settings = data['settings']
+        try:
 
-            except ValidationError as ex:
-                return {'success': False, 'msg': _('Validation error: {error}').format(error=ex)}
+            rubric = xml.parse_rubric_xml_str(data['rubric'])
+            assessments = xml.parse_assessments_xml_str(settings['assessments'])
+            submission_due = settings["submission_due"]
+        except xml.UpdateFromXmlError as ex:
+            return {'success': False, 'msg': _('An error occurred while saving: {error}').format(error=ex)}
 
-            except UpdateFromXmlError as ex:
-                return {'success': False, 'msg': _('An error occurred while saving: {error}').format(error=ex)}
+        xblock_validator = validator(self)
+        success, msg = xblock_validator(rubric, {'due': submission_due}, assessments)
+        if not success:
+            return {'success': False, 'msg': _('Validation error: {error}').format(error=msg)}
 
-            else:
-                return {'success': True, 'msg': _('Successfully updated OpenAssessment XBlock')}
-
-        else:
-            return {'success': False, 'msg': _('Must specify "xml" in request JSON dict.')}
+        self.update(
+            rubric['criteria'],
+            rubric['feedbackprompt'],
+            assessments,
+            settings["submission_due"],
+            settings["submission_start"],
+            settings["title"],
+            data["prompt"]
+        )
+        return {'success': True, 'msg': 'Successfully updated OpenAssessment XBlock'}
 
     @XBlock.json_handler
-    def xml(self, data, suffix=''):
+    def editor_context(self, data, suffix=''):
         """
-        Retrieve the XBlock's content definition, serialized as XML.
+        Retrieve the XBlock's content definition, serialized as a JSON object
+        containing all the configuration as it will be displayed for studio
+        editing.
 
         Args:
             data (dict): Not used
@@ -79,19 +100,37 @@ class StudioMixin(object):
             suffix (str): Not used
 
         Returns:
-            dict with keys 'success' (bool), 'message' (unicode), and 'xml' (unicode)
+            dict with keys 'success' (bool), 'message' (unicode),
+                'rubric' (unicode), 'prompt' (unicode), and 'settings' (dict)
+
         """
         try:
-            xml = serialize_content(self)
-
-        # We do not expect `serialize_content` to raise an exception,
+            assessments = xml.serialize_assessments_to_xml_str(self)
+            rubric = xml.serialize_rubric_to_xml_str(self)
+        # We do not expect serialization to raise an exception,
         # but if it does, handle it gracefully.
         except Exception as ex:
             msg = _('An unexpected error occurred while loading the problem: {error}').format(error=ex)
             logger.error(msg)
             return {'success': False, 'msg': msg, 'xml': u''}
-        else:
-            return {'success': True, 'msg': '', 'xml': xml}
+
+        # Populates the context for the assessments section of the editing
+        # panel. This will adjust according to the fields laid out in this
+        # section.
+        settings = {
+            'submission_due': self.submission_due,
+            'submission_start': self.submission_start,
+            'title': self.title,
+            'assessments': assessments
+        }
+
+        return {
+            'success': True,
+            'msg': '',
+            'rubric': rubric,
+            'prompt': self.prompt,
+            'settings': settings
+        }
 
     @XBlock.json_handler
     def check_released(self, data, suffix=''):

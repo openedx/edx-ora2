@@ -12,7 +12,10 @@ from django.test import TestCase
 import ddt
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from openassessment.xblock.xml import (
-    serialize_content, update_from_xml_str, ValidationError, UpdateFromXmlError
+    serialize_content, parse_from_xml_str, parse_rubric_xml_str,
+    parse_examples_xml_str, parse_assessments_xml_str,
+    serialize_rubric_to_xml_str, serialize_examples_to_xml_str,
+    serialize_assessments_to_xml_str, UpdateFromXmlError
 )
 
 
@@ -91,8 +94,8 @@ class TestSerializeContent(TestCase):
         """
         self.oa_block = mock.MagicMock(OpenAssessmentBlock)
 
-    @ddt.file_data('data/serialize.json')
-    def test_serialize(self, data):
+
+    def _configure_xblock(self, data):
         self.oa_block.title = data['title']
         self.oa_block.prompt = data['prompt']
         self.oa_block.rubric_feedback_prompt = data['rubric_feedback_prompt']
@@ -102,6 +105,10 @@ class TestSerializeContent(TestCase):
         self.oa_block.submission_due = data['submission_due']
         self.oa_block.rubric_criteria = data['criteria']
         self.oa_block.rubric_assessments = data['assessments']
+
+    @ddt.file_data('data/serialize.json')
+    def test_serialize(self, data):
+        self._configure_xblock(data)
         xml = serialize_content(self.oa_block)
 
         # Compare the XML with our expected output
@@ -143,6 +150,23 @@ class TestSerializeContent(TestCase):
                     tag=actual.tag, expected=expected.items(), actual=actual.items()
                 )
             )
+
+    @ddt.file_data('data/serialize.json')
+    def test_serialize_rubric(self, data):
+        self._configure_xblock(data)
+        xml_str = serialize_rubric_to_xml_str(self.oa_block)
+
+    @ddt.file_data('data/serialize.json')
+    def test_serialize_examples(self, data):
+        self._configure_xblock(data)
+        for assessment in data['assessments']:
+            if 'student-training' == assessment['name']:
+                xml_str = serialize_examples_to_xml_str(assessment)
+
+    @ddt.file_data('data/serialize.json')
+    def test_serialize_assessments(self, data):
+        self._configure_xblock(data)
+        xml_str = serialize_assessments_to_xml_str(self.oa_block)
 
     def test_mutated_criteria_dict(self):
         self.oa_block.title = "Test title"
@@ -300,6 +324,36 @@ class TestSerializeContent(TestCase):
         mutated[key] = new_val
         return mutated
 
+@ddt.ddt
+class TestParseRubricFromXml(TestCase):
+
+    @ddt.file_data("data/parse_rubric_xml.json")
+    def test_parse_rubric_from_xml(self, data):
+        rubric = parse_rubric_xml_str("".join(data['xml']))
+
+        self.assertEqual(rubric['prompt'], data['prompt'])
+        self.assertEqual(rubric['feedbackprompt'], data['feedbackprompt'])
+        self.assertEqual(rubric['criteria'], data['criteria'])
+
+
+@ddt.ddt
+class TestParseExamplesFromXml(TestCase):
+
+    @ddt.file_data("data/parse_examples_xml.json")
+    def test_parse_examples_from_xml(self, data):
+        examples = parse_examples_xml_str("".join(data['xml']))
+
+        self.assertEqual(examples, data['examples'])
+
+@ddt.ddt
+class TestParseAssessmentsFromXml(TestCase):
+
+    @ddt.file_data("data/parse_assessments_xml.json")
+    def test_parse_assessments_from_xml(self, data):
+        assessments = parse_assessments_xml_str("".join(data['xml']))
+
+        self.assertEqual(assessments, data['assessments'])
+
 
 @ddt.ddt
 class TestUpdateFromXml(TestCase):
@@ -324,36 +378,20 @@ class TestUpdateFromXml(TestCase):
         self.oa_block.submission_due = "2000-01-01T00:00:00"
 
     @ddt.file_data('data/update_from_xml.json')
-    def test_update_from_xml(self, data):
+    def test_parse_from_xml(self, data):
 
         # Update the block based on the fixture XML definition
-        returned_block = update_from_xml_str(self.oa_block, "".join(data['xml']))
-
-        # The block we passed in should be updated and returned
-        self.assertEqual(self.oa_block, returned_block)
+        config = parse_from_xml_str("".join(data['xml']))
 
         # Check that the contents of the modified XBlock are correct
-        self.assertEqual(self.oa_block.title, data['title'])
-        self.assertEqual(self.oa_block.prompt, data['prompt'])
-        self.assertEqual(self.oa_block.start, _parse_date(data['start']))
-        self.assertEqual(self.oa_block.due, _parse_date(data['due']))
-        self.assertEqual(self.oa_block.submission_start, data['submission_start'])
-        self.assertEqual(self.oa_block.submission_due, data['submission_due'])
-        self.assertEqual(self.oa_block.rubric_criteria, data['criteria'])
-        self.assertEqual(self.oa_block.rubric_assessments, data['assessments'])
+        self.assertEqual(config['title'], data['title'])
+        self.assertEqual(config['prompt'], data['prompt'])
+        self.assertEqual(config['submission_start'], data['submission_start'])
+        self.assertEqual(config['submission_due'], data['submission_due'])
+        self.assertEqual(config['rubric_criteria'], data['criteria'])
+        self.assertEqual(config['rubric_assessments'], data['assessments'])
 
     @ddt.file_data('data/update_from_xml_error.json')
-    def test_update_from_xml_error(self, data):
+    def test_parse_from_xml_error(self, data):
         with self.assertRaises(UpdateFromXmlError):
-            update_from_xml_str(self.oa_block, "".join(data['xml']))
-
-    @ddt.file_data('data/update_from_xml.json')
-    def test_invalid(self, data):
-        # Plug in a rubric validator that always reports that the rubric dict is invalid.
-        # We need to back this up with an integration test that checks whether the XBlock
-        # provides an appropriate rubric validator.
-        with self.assertRaises(ValidationError):
-            update_from_xml_str(
-                self.oa_block, "".join(data['xml']),
-                validator=lambda *args: (False, '')
-            )
+            parse_from_xml_str("".join(data['xml']))
