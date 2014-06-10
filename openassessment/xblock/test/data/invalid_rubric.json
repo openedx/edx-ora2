@@ -1,0 +1,28 @@
+{
+    "simple": {
+        "rubric": [
+            "<rubric>",
+            "<prompt>Test prompt</prompt>",
+            "<criterion>",
+            "<name>Test criterion</name>",
+            "<prompt>Test criterion prompt</prompt>",
+            "<!-- no options -->",
+            "</criterion>",
+            "</rubric>"
+        ],
+        "prompt": "My new prompt.",
+        "settings": {
+            "title": "My new title.",
+            "assessments": [
+                "<assessments>",
+                "<assessment name=\"peer-assessment\" must_grade=\"5\" must_be_graded_by=\"3\" />",
+                "<assessment name=\"self-assessment\" />",
+                "</assessments>"
+            ],
+            "submission_due": "2014-02-27T09:46:28",
+            "submission_start": "2014-02-10T09:46:28"
+        },
+        "expected-assessment": "peer-assessment",
+        "expected-criterion-prompt": "Test criterion prompt"
+    }
+}

@@ -22,7 +22,7 @@ from openassessment.xblock.lms_mixin import LmsCompatibilityMixin
 from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.studio_mixin import StudioMixin
-from openassessment.xblock.xml import update_from_xml, serialize_content_to_xml
+from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
 from openassessment.xblock.staff_info_mixin import StaffInfoMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.workflow import api as workflow_api
@@ -324,8 +324,59 @@ class OpenAssessmentBlock(
 
         """
         block = runtime.construct_xblock_from_class(cls, keys)
+        config = parse_from_xml(node)
+        rubric = {
+            "prompt": config["prompt"],
+            "feedbackprompt": config["rubric_feedback_prompt"],
+            "criteria": config["rubric_criteria"],
+        }
 
-        return update_from_xml(block, node, validator=validator(block, strict_post_release=False))
+        xblock_validator = validator(block, strict_post_release=False)
+        xblock_validator(
+            rubric,
+            {'due': config['submission_due']},
+            config['rubric_assessments']
+        )
+
+        block.update(
+            config['rubric_criteria'],
+            config['rubric_feedback_prompt'],
+            config['rubric_assessments'],
+            config['submission_due'],
+            config['submission_start'],
+            config['title'],
+            config['prompt']
+        )
+        return block
+
+    def update(self, criteria, feedback_prompt, assessments, submission_due,
+               submission_start, title, prompt):
+        """
+        Given a dictionary of properties, update the XBlock
+
+        Args:
+            criteria (list): A list of rubric criteria for this XBlock.
+            feedback_prompt (str):
+            assessments (list): A list of assessment module configurations for
+                this XBlock.
+            submission_due (str): ISO formatted submission due date.
+            submission_start (str): ISO formatted submission start date.
+            title (str): The title of this XBlock
+            prompt (str): The prompt for this XBlock.
+
+        Returns:
+            None
+
+        """
+        # If we've gotten this far, then we've successfully parsed the XML
+        # and validated the contents.  At long last, we can safely update the XBlock.
+        self.title = title
+        self.prompt = prompt
+        self.rubric_criteria = criteria
+        self.rubric_assessments = assessments
+        self.rubric_feedback_prompt = feedback_prompt
+        self.submission_start = submission_start
+        self.submission_due = submission_due
 
     @property
     def valid_assessments(self):

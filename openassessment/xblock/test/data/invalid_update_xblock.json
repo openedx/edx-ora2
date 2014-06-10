@@ -1,0 +1,83 @@
+{
+    "no_rubric": {
+        "prompt": "My new prompt.",
+        "settings": {
+            "title": "My new title.",
+            "assessments": [
+                "<assessments>",
+                "<assessment name=\"peer-assessment\" must_grade=\"5\" must_be_graded_by=\"3\" />",
+                "<assessment name=\"self-assessment\" />",
+                "</assessments>"
+            ],
+            "submission_due": "2014-02-27T09:46:28",
+            "submission_start": "2014-02-10T09:46:28"
+        },
+        "expected_error": "error"
+    },
+    "no_prompt": {
+        "rubric": [
+            "<rubric>",
+            "<prompt>Test prompt</prompt>",
+            "<criterion>",
+            "<name>Test criterion</name>",
+            "<prompt>Test criterion prompt</prompt>",
+            "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+            "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+            "</criterion>",
+            "</rubric>"
+        ],
+        "settings": {
+            "title": "My new title.",
+            "assessments": [
+                "<assessments>",
+                "<assessment name=\"peer-assessment\" must_grade=\"5\" must_be_graded_by=\"3\" />",
+                "<assessment name=\"self-assessment\" />",
+                "</assessments>"
+            ],
+            "submission_due": "2014-02-27T09:46:28",
+            "submission_start": "2014-02-10T09:46:28"
+        },
+        "expected_error": "error"
+    },
+    "no_settings": {
+        "rubric": [
+            "<rubric>",
+            "<prompt>Test prompt</prompt>",
+            "<criterion>",
+            "<name>Test criterion</name>",
+            "<prompt>Test criterion prompt</prompt>",
+            "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+            "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+            "</criterion>",
+            "</rubric>"
+        ],
+        "prompt": "My new prompt.",
+        "expected_error": "error"
+    },
+    "invalid_dates": {
+        "rubric": [
+            "<rubric>",
+            "<prompt>Test prompt</prompt>",
+            "<criterion>",
+            "<name>Test criterion</name>",
+            "<prompt>Test criterion prompt</prompt>",
+            "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+            "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+            "</criterion>",
+            "</rubric>"
+        ],
+        "prompt": "My new prompt.",
+        "settings": {
+            "title": "My new title.",
+            "assessments": [
+                "<assessments>",
+                "<assessment name=\"peer-assessment\" must_grade=\"5\" must_be_graded_by=\"3\" />",
+                "<assessment name=\"self-assessment\" start=\"2010-01-01\" due=\"2003-01-01\"/>",
+                "</assessments>"
+            ],
+            "submission_due": "2012-02-27T09:46:28",
+            "submission_start": "2015-02-10T09:46:28"
+        },
+        "expected_error": "cannot be later"
+    }
+}
