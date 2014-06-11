@@ -51,12 +51,14 @@ class WorkflowMixin(object):
 
         """
         steps = self._create_step_list()
-        rubric_dict = create_rubric_dict(self.prompt, self.rubric_criteria)
         ai_module = self.get_assessment_module('example-based-assessment')
-        algorithm_id = ai_module["algorithm_id"] if ai_module else None
-        workflow_api.create_workflow(
-            submission_uuid, steps, rubric=rubric_dict, algorithm_id=algorithm_id
-        )
+        on_init_params = {
+            'ai': {
+                'rubric': create_rubric_dict(self.prompt, self.rubric_criteria),
+                'algorithm_id': ai_module["algorithm_id"] if ai_module else None
+            }
+        }
+        workflow_api.create_workflow(submission_uuid, steps, on_init_params=on_init_params)
 
     def workflow_requirements(self):
         """

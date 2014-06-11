@@ -69,9 +69,7 @@ def get_score(submission_uuid, requirements):
 
     Args:
         submission_uuid (str): The unique identifier for the submission
-        requirements (dict): Any attributes of the assessment module required
-            to determine if this assessment is complete. There are currently
-            no requirements for a self-assessment.
+        requirements (dict): Not used.
     Returns:
         A dict of points earned and points possible for the given submission.
         Returns None if no score can be determined yet.

@@ -12,12 +12,14 @@ need to then generate a matching migration for it using:
 import logging
 import importlib
 from django.conf import settings
-from django.db import models
+from django.db import models, transaction, DatabaseError
+from django.dispatch import receiver
 from django_extensions.db.fields import UUIDField
 from django.utils.timezone import now
 from model_utils import Choices
 from model_utils.models import StatusModel, TimeStampedModel
 from submissions import api as sub_api
+from openassessment.assessment.signals import assessment_complete_signal
 from .errors import AssessmentApiLoadError
 
 
@@ -33,6 +35,7 @@ DEFAULT_ASSESSMENT_API_DICT = {
     'peer': 'openassessment.assessment.api.peer',
     'self': 'openassessment.assessment.api.self',
     'training': 'openassessment.assessment.api.student_training',
+    'ai': 'openassessment.assessment.api.ai',
 }
 ASSESSMENT_API_DICT = getattr(
     settings, 'ORA2_ASSESSMENTS',
@@ -46,7 +49,7 @@ ASSESSMENT_API_DICT = getattr(
 # We then use that score as the student's overall score.
 # This Django setting is a list of assessment steps (defined in `settings.ORA2_ASSESSMENTS`)
 # in descending priority order.
-DEFAULT_ASSESSMENT_SCORE_PRIORITY = ['peer', 'self']
+DEFAULT_ASSESSMENT_SCORE_PRIORITY = ['peer', 'self', 'ai']
 ASSESSMENT_SCORE_PRIORITY = getattr(
     settings, 'ORA2_ASSESSMENT_SCORE_PRIORITY',
     DEFAULT_ASSESSMENT_SCORE_PRIORITY
@@ -92,6 +95,80 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
     class Meta:
         ordering = ["-created"]
         # TODO: In migration, need a non-unique index on (course_id, item_id, status)
+
+    @classmethod
+    @transaction.commit_on_success
+    def start_workflow(cls, submission_uuid, step_names, on_init_params):
+        """
+        Start a new workflow.
+
+        Args:
+            submission_uuid (str): The UUID of the submission associated with this workflow.
+            step_names (list): The names of the assessment steps in the workflow.
+            on_init_params (dict): The parameters to pass to each assessment module
+                on init.  Keys are the assessment step names.
+
+        Returns:
+            AssessmentWorkflow
+
+        Raises:
+            SubmissionNotFoundError
+            SubmissionRequestError
+            SubmissionInternalError
+            DatabaseError
+            Assessment-module specific errors
+        """
+        submission_dict = sub_api.get_submission_and_student(submission_uuid)
+
+        # Create the workflow and step models in the database
+        # For now, set the status to waiting; we'll modify it later
+        # based on the first step in the workflow.
+        workflow = cls.objects.create(
+            submission_uuid=submission_uuid,
+            status=AssessmentWorkflow.STATUS.waiting,
+            course_id=submission_dict['student_item']['course_id'],
+            item_id=submission_dict['student_item']['item_id']
+        )
+        workflow_steps = [
+            AssessmentWorkflowStep(
+                workflow=workflow, name=step, order_num=i
+            )
+            for i, step in enumerate(step_names)
+        ]
+        workflow.steps.add(*workflow_steps)
+
+        # Initialize the assessment APIs
+        has_started_first_step = False
+        for step in workflow_steps:
+            api = step.api()
+
+            if api is not None:
+                # Initialize the assessment module
+                # We do this for every assessment module
+                on_init_func = getattr(api, 'on_init', lambda submission_uuid, **params: None)
+                on_init_func(submission_uuid, **on_init_params.get(step.name, {}))
+
+                # For the first valid step, update the workflow status
+                # and notify the assessment module that it's being started
+                if not has_started_first_step:
+                    # Update the workflow
+                    workflow.status = step.name
+                    workflow.save()
+
+                    # Notify the assessment module that it's being started
+                    on_start_func = getattr(api, 'on_start', lambda submission_uuid: None)
+                    on_start_func(submission_uuid)
+
+                    # Remember that we've already started the first step
+                    has_started_first_step = True
+
+        # Update the workflow (in case some of the assessment modules are automatically complete)
+        # We do NOT pass in requirements, on the assumption that any assessment module
+        # that accepts requirements would NOT automatically complete.
+        workflow.update_from_assessments(None)
+
+        # Return the newly created workflow
+        return workflow
 
     @property
     def score(self):
@@ -145,6 +222,14 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         If we're in the `waiting` status, and an assessment API says it can score
         this submission, then we record the score in the submissions API and move our
         `status` to `done`.
+
+        By convention, if `assessment_requirements` is `None`, then assessment
+        modules that need requirements should automatically say that they're incomplete.
+        This allows us to update the workflow even when we don't know the
+        current state of the problem.  For example, if we're updating the workflow
+        at the completion of an asynchronous call, we won't necessarily know the
+        current state of the problem, but we would still want to update assessments
+        that don't have any requirements.
 
         Args:
             assessment_requirements (dict): Dictionary passed to the assessment API.
@@ -202,7 +287,10 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                     # Check if the assessment API defines a score function at all
                     get_score_func = getattr(assessment_step.api(), 'get_score', None)
                     if get_score_func is not None:
-                        requirements = assessment_requirements.get(assessment_step_name, {})
+                        if assessment_requirements is None:
+                            requirements = None
+                        else:
+                            requirements = assessment_requirements.get(assessment_step_name, {})
                         score = get_score_func(self.submission_uuid, requirements)
                         break
 
@@ -304,7 +392,7 @@ class AssessmentWorkflowStep(models.Model):
             msg = (
                 u"No assessment configured for '{name}'.  "
                 u"Check the ORA2_ASSESSMENTS Django setting."
-            ).format(self.name)
+            ).format(name=self.name)
             logger.warning(msg)
             return None
 
@@ -318,7 +406,10 @@ class AssessmentWorkflowStep(models.Model):
         """
         # Once a step is completed, it will not be revisited based on updated requirements.
         step_changed = False
-        step_reqs = assessment_requirements.get(self.name, {})
+        if assessment_requirements is None:
+            step_reqs = None
+        else:
+            step_reqs = assessment_requirements.get(self.name, {})
 
         default_finished = lambda submission_uuid, step_reqs: True
         submitter_finished = getattr(self.api(), 'submitter_is_finished', default_finished)
@@ -336,3 +427,45 @@ class AssessmentWorkflowStep(models.Model):
 
         if step_changed:
             self.save()
+
+
+@receiver(assessment_complete_signal)
+def update_workflow_async(sender, **kwargs):
+    """
+    Register a receiver for the update workflow signal
+    This allows asynchronous processes to update the workflow
+
+    Args:
+        sender (object): Not used
+
+    Kwargs:
+        submission_uuid (str): The UUID of the submission associated
+            with the workflow being updated.
+
+    Returns:
+        None
+
+    """
+    submission_uuid = kwargs.get('submission_uuid')
+    if submission_uuid is None:
+        logger.error("Update workflow signal called without a submission UUID")
+        return
+
+    try:
+        workflow = AssessmentWorkflow.objects.get(submission_uuid=submission_uuid)
+        workflow.update_from_assessments(None)
+    except AssessmentWorkflow.DoesNotExist:
+        msg = u"Could not retrieve workflow for submission with UUID {}".format(submission_uuid)
+        logger.exception(msg)
+    except DatabaseError:
+        msg = (
+            u"Database error occurred while updating "
+            u"the workflow for submission UUID {}"
+        ).format(submission_uuid)
+        logger.exception(msg)
+    except:
+        msg = (
+            u"Unexpected error occurred while updating the workflow "
+            u"for submission UUID {}"
+        ).format(submission_uuid)
+        logger.exception(msg)

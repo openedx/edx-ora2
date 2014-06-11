@@ -75,7 +75,7 @@ To limit Python tests to a particular Django app:
 
 .. code:: bash
 
-    ./scripts/test-python.sh openassessment.xblock
+    ./scripts/test-python.sh openassessment/xblock
 
 To run just the JavaScript tests:
 

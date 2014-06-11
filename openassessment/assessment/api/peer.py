@@ -31,6 +31,10 @@ def submitter_is_finished(submission_uuid, requirements):
     """
     Check whether the submitter has made the required number of assessments.
 
+    If the requirements dict is None (because we're being updated
+    asynchronously or when the workflow is first created),
+    then automatically return False.
+
     Args:
         submission_uuid (str): The UUID of the submission being tracked.
         requirements (dict): Dictionary with the key "must_grade" indicating
@@ -40,6 +44,9 @@ def submitter_is_finished(submission_uuid, requirements):
         bool
 
     """
+    if requirements is None:
+        return False
+
     try:
         workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
         if workflow.completed_at is not None:
@@ -58,6 +65,10 @@ def assessment_is_finished(submission_uuid, requirements):
     Check whether the submitter has received enough assessments
     to get a score.
 
+    If the requirements dict is None (because we're being updated
+    asynchronously or when the workflow is first created),
+    then automatically return False.
+
     Args:
         submission_uuid (str): The UUID of the submission being tracked.
         requirements (dict): Dictionary with the key "must_be_graded_by"
@@ -68,6 +79,8 @@ def assessment_is_finished(submission_uuid, requirements):
 
         bool
     """
+    if requirements is None:
+        return False
     return bool(get_score(submission_uuid, requirements))
 
 
@@ -126,6 +139,9 @@ def get_score(submission_uuid, requirements):
         dict with keys "points_earned" and "points_possible".
 
     """
+    if requirements is None:
+        return None
+
     # User hasn't completed their own submission yet
     if not submitter_is_finished(submission_uuid, requirements):
         return None
