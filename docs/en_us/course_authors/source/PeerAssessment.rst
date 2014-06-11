@@ -1,16 +1,18 @@
 .. _Peer Assessments:
 
-########################
-Peer Assessments
-########################
+#########################
+Open Response Assessments
+#########################
 
-********************************
-Introduction to Peer Assessments
-********************************
+*****************************************
+Introduction to Open Response Assessments
+*****************************************
 
-.. note:: **The peer assessment feature is in limited release.** If you're at an edX consortium university and you plan to include peer assessments in a MOOC, you'll work with your edX project manager (PM) to enable the peer assessment feature and create peer assessment assignments.
+.. note:: **The open response assessments feature is in limited release.** If you're at an edX consortium university and you plan to include open response assessments in a MOOC, you'll work with your edX project manager (PM) to enable the open response assessments feature and create assignments.
 
-Peer assessments allow instructors to assign questions that may not have definite answers. Students submit a response to a question, and then compare their peers' responses to a rubric that you create. Peer assessment problems also include self assessments, in which students compare their own responses to the rubric.
+Open response assessments allow instructors to assign questions that may not have definite answers. Students submit a response to the question, and then that student and the student's peers compare the response to a rubric that you create.
+
+Open response assessments include peer assessments and self assessments. In peer assessments, students compare their peers' responses to a rubric that you create. In self assessments, students compare their own responses to the rubric.
 
 For more information, see the following sections:
 
@@ -21,15 +23,15 @@ For more information, see the following sections:
 
 .. _PA Elements:
 
-********************************
-Elements of a Peer Assessment
-********************************
+*****************************************
+Elements of an Open Response Assessment
+*****************************************
 
-When you create a peer assessment problem, you'll specify several elements:
+When you create an open response assessment problem, you include several elements:
 
 * The number of responses and assessments.
-* The assessment type or types.
-* The due dates for each step (optional).
+* One or more assessment types. Assessment types include **student training**, **peer**, and **self**.
+* (Optional) The due dates for each step.
 * The question.
 * The rubric.
 
@@ -51,15 +53,15 @@ For more information, see :ref:`PA Specify Name and Assessment Types`.
 Assessment Type
 =====================
 
-In your problem, you'll also specify the **assessment type or types**. You can see the type and order of the assessments when you look at the problem. In the following example, after students submit a response, they complete peer assessments on other students' responses ("Assess Peers") and then complete self assessments ("Assess Yourself").
+In your problem, you'll also specify the **assessment type or types**. You can see the type and order of the assessments when you look at the problem. In the following example, after students submit a response, they complete peer assessments on other students' responses ("Assess Peers") and then complete self assessments ("Assess Your Response").
 
 .. image:: /Images/PA_AsmtWithResponse.png
   :alt: Image of peer assessment with assessment steps and status labeled
   :width: 600
 
-You can set the assignment to include a peer assessment only, a self assessment only, or a peer assessment followed by a self assessment.
+You can set the assignment to include a peer assessment only, a self assessment only, or both a peer assessment and a self assessment. You can also include a student training assessment that students will complete before they perform peer and self assessments. Student training assessments contain sample responses and scores that you create. They help students learn to grade their peers' responses.
 
-For more information, see :ref:`PA Specify Name and Assessment Types`.
+For more information, see :ref:`PA Specify Name and Assessment Types` and :ref:`PA Student Training Assessments`.
 
 ===================================
 Start and Due Dates (optional)
@@ -97,7 +99,7 @@ Rubrics are made of *criteria* and *options*.
 
 * Each criterion has a *name*, a *prompt*, and two or more *options*. 
 
-   * The name is a very short summary of the criterion, such as Ideas or Content. Criterion names generally have just one word. **The name for each criterion must be unique.** The system uses the criterion name for identification. Criterion names do not appear in the rubric that students see when they are completing peer assessments, but they do appear on the page that shows the student's final grade.
+   * The name is a very short summary of the criterion, such as Ideas or Content. Criterion names generally have just one word. Because the system uses criteria names for identification, **the name for each criterion must be unique.** Criterion names do not appear in the rubric that students see when they are completing peer assessments, but they do appear on the page that shows the student's final grade.
 
      .. image :: /Images/PA_CriterionName.png
         :alt: A final score page with call-outs for the criterion names
@@ -109,7 +111,7 @@ Rubrics are made of *criteria* and *options*.
   .. image:: /Images/PA_Rubric_LMS.png
      :alt: Image of a rubric in the LMS with call-outs for the criterion prompt and option names, explanations, and points
 
-You can see both criterion and option names when you access assignment information for an individual student. For more information, see :ref:`Accessing PA Information`.
+You can see both criterion and option names when you access assignment information for an individual student. For more information, see :ref:`PA Accessing Assignment Information`.
 
 
 .. image:: /Images/PA_Crit_Option_Names.png
@@ -152,6 +154,53 @@ For more information about writing effective rubrics, see Heidi Goodrich Andrade
 Note that different criteria in the same assignment can have different numbers of options. For example, in the image above, the first criterion has three options and the second criterion has four options.
 
 For more information, see :ref:`PA Add Rubric`.
+
+.. _PA Student Training Assessments:
+
+========================================
+Student Training Assessments (optional)
+========================================
+
+When you create a peer assessment assignment, you can create one or more student training assessments to help students learn to perform their own assessments. A student training assessment contains one or more sample responses that you write, together with the scores that you would give the sample responses. Students review these responses and try to score them the way that you scored them.
+
+In a student training assessment, the **Learn to Assess Responses** step opens immediately after a student submits a response. The student sees one of the sample responses that you created, along with the rubric. The scores that you gave the response do not appear. The student also sees the number of sample responses that he or she will assess.
+
+.. image:: Images/PA_TrainingAssessment.png
+   :alt: Sample training response, unscored
+   :width: 500
+
+The student selects an option for each of the assignment's criteria, and then clicks **Compare your selections with the instructor's selections**. If all of the student's selections match the instructor's selections, the next sample response opens automatically.
+
+If any of the student's selections differs from the instructor's selections, the student sees the response again, and the following message appears above the response:
+
+.. code-block:: xml
+
+  Learning to Assess Responses
+  Your assessment differs from the instructor's assessment of this response. Review the
+  response and consider why the instructor may have assessed it differently. Then, try 
+  the assessment again.
+
+For each of the criteria, the student sees one of the following two messages, depending on whether the student's selections matched those of the instructor:
+
+.. code-block:: xml
+
+  Selected Options Differ
+  The option you selected is not the option that the instructor selected.
+
+.. code-block:: xml
+
+  Selected Options Agree
+  The option you selected is the option that the instructor selected.
+
+For example, the following student chose one correct option and one incorrect option.
+
+.. image:: /Images/PA_TrainingAssessment_Scored.png
+   :alt: Sample training response, scored
+   :width: 500
+
+The student continues to try scoring the sample response until the student's scoring for all criteria matches the instructor's scoring.
+
+For more information, see :ref:`PA Add a Student Training Assessment`.
 
 .. _PA Scoring:
 
@@ -232,9 +281,16 @@ Step 1. Create the Component
 #. Under **Add New Component**, click **Advanced**, and then click **Peer Assessment**.
 #. In the Problem component that appears, click **Edit**.
 
-   The component editor opens, and you can see sample code that includes the assignment's title, the assessment type or types, the number of assessments that students must complete, a sample question ("prompt"), and a rubric. You'll replace this sample content with the content for your problem in the next steps.
+When the component editor opens, you can see sample code that includes the following. You'll replace this sample content with the content for your problem:
 
-   Note that you won't use the **Settings** tab in the component editor when you create peer assessments.
+* The assignment's title.
+* The training responses for the assignment.
+* The assessment type or types.
+* The number of assessments that students must complete.
+* A sample question ("prompt").
+* A sample rubric.
+
+Note that you won't use the **Settings** tab in the component editor when you create peer assessments.
 
 .. _PA Specify Name and Assessment Types:
 
@@ -242,23 +298,35 @@ Step 1. Create the Component
 Step 2. Specify the Problem Name and Assessment Types
 ========================================================
 
-To specify the name and assessment types for the problem, you'll work with the XML at the top of the problem.
+To specify the name and assessment types for the problem, you'll work with the XML near the top of the problem.
 
-Locate the following XML near the top of the component editor:
+In the component editor, locate the following XML:
 
 .. code-block:: xml
 
-  <openassessment>
   <title></title>
   <assessments>
+    <assessment name="student-training">
+      <example>
+        <answer>Replace this text with a sample response for this assignment. You'll assess this sample response in the courseware, and students will then learn to assess responses by assessing this response and comparing the options that they select in the rubric with the options that you selected.</answer>
+        <select criterion="Ideas" option="Fair"/>
+        <select criterion="Content" option="Good"/>
+      </example>
+      <example>
+        <answer>Replace this text with a sample response for this assignment. You'll assess this sample response in the courseware, and students will then learn to assess responses by assessing this response and comparing the options that they select in the rubric with the options that you selected.</answer>
+        <select criterion="Ideas" option="Poor"/>
+        <select criterion="Content" option="Good"/>
+      </example>
+    </assessment>
     <assessment name="peer-assessment" must_grade="5" must_be_graded_by="3"/>
     <assessment name="self-assessment"/>
   </assessments>
 
-This code specifies four elements:
+This code includes several elements:
 
 * **The title of the assignment**. In this example, because there is no text between the ``<title>`` tags, the assignment does not have a specified title.
-* **The type and order of the assessments**. This information is in the **name** attribute in the two ``<assessment>`` tags. Assessments run in the order in which they're listed. In this example, the peer assessment runs, and then the student performs a self assessment.
+* **The type and order of the assessments**. This information is in the **name** attribute in the ``<assessment>`` tags. Assessments run in the order in which they're listed. In this example, students complete the student training assessment, the peer assessment, and the self assessment, in that order.
+* **Two sample responses for student training**, together with the options that you select for each of the criteria for the assignment. This information is between the two sets of ``<example> </example>`` tags. Step-by-step instructions for creating student training responses appear in :ref:`PA Add a Student Training Assessment`. 
 * **The number of responses that each student must assess** (for peer assessments). This information is in the **must_grade** attribute in the ``<assessment>`` tag for the peer assessment. In this example, each student must grade five peer responses before he receives the scores that his peers have given him. 
 * **The number of peer assessments each response must receive** (for peer assessments). This information is in the **must_be_graded_by** attribute in the ``<assessment>`` tag for the peer assessment. In this example, each response must receive assessments from three students before it can return to the student who submitted it. 
 
@@ -266,7 +334,9 @@ To specify the name and assessment types, follow these steps.
 
 #. Between the ``<title>`` tags, add a name for the problem.
 
-#. Specify the type of assessments you want students to complete.
+#. Specify the type of assessments you want students to complete. Assessments run in the order in which they're listed.
+
+   .. note:: If you include both peer and self assessments, the peer assessment must precede the self assessment. If you include a student training assessment, the student training assessment must precede the peer and self assessments. You can also include a student training assessment paired with either a peer assessment only or a self assessment only.
 
    - If you want students to complete a peer assessment only, delete the ``<assessment name="self-assessment"/>`` tag.
 
@@ -274,10 +344,53 @@ To specify the name and assessment types, follow these steps.
 
    - If you want students to complete a peer assessment and then a self assessment, leave the default tags.
 
+   - If you include a student training assessment, make sure you add the ``<assessment name="student-training">`` tag *before* the ``<assessment name="peer-assessment">`` and ``<assessment name="self-assessment">`` tags. 
+
 #. If your students will complete a peer assessment, replace the values for **must_grade** and **must_be_graded_by** in the ``<assessment name="peer-assessment">`` tag with the numbers that you want.
 
    .. note:: The value for **must_grade** must be greater than or equal to the value for **must_be_graded_by**.
 
+.. _PA Add a Student Training Assessment:
+
+========================================================
+Step 3. Include a Student Training Assessment (optional)
+========================================================
+
+To include a student training assessment, which contains both sample responses and scores, you'll work with the following XML:
+
+.. code-block:: xml
+
+    <assessment name="student-training">
+      <example>
+        <answer>Replace this text with a sample response for this assignment. You'll assess this sample response in the courseware, and students will then learn to assess responses by assessing this response and comparing the options that they select in the rubric with the options that you selected.</answer>
+        <select criterion="Ideas" option="Fair"/>
+        <select criterion="Content" option="Good"/>
+      </example>
+      <example>
+        <answer>Replace this text with a sample response for this assignment. You'll assess this sample response in the courseware, and students will then learn to assess responses by assessing this response and comparing the options that they select in the rubric with the options that you selected.</answer>
+        <select criterion="Ideas" option="Poor"/>
+        <select criterion="Content" option="Good"/>
+      </example>
+    </assessment>
+
+.. note:: If you don't want to include a student training assessment, delete all of this XML.
+
+This code includes several elements:
+
+* The ``<assessment name="student-training">`` tag indicates that this assessment is a student training assessment. 
+* Each set of ``<example>`` tags contains one set of ``<answer>`` tags and two or more ``<select/>`` tags.
+
+  * The set of ``<answer>`` tags contains the text of a sample response that you've created.
+  * Each ``<select/>`` tag contains the name of one of the assignment's criteria, as well as the option that you select for the criterion. (For more information about criteria and options, see :ref:`PA Rubric`.)
+
+To add student training responses and scores:
+
+#. Replace the placeholder text between the ``<answer>`` tags with the text of your response. To include paragraph breaks, include a blank line between paragraphs. You don't have to add any other formatting tags to include paragraph breaks.
+#. Replace the criterion name in each ``<select/>`` tag with the name of one of the criteria in your assignment. To add more criteria, copy and paste as many ``<select/>`` tags as you need. You must include one ``<select/>`` tag for each of the assignment's criteria. 
+#. In the ``<select/>`` tag for each criterion, replace the placeholder option name with the name of the option that you would select for the sample response.
+#. Copy and paste as many sets of ``<example>`` tags as you need to cover all the criteria for your assignment.
+
+For more information, see :ref:`PA Student Training Assessments`.
 
 .. _PA Add Due Dates:
 

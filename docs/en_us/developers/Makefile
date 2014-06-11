@@ -26,7 +26,7 @@ endif
 PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = $(Q_FLAG) -d $(BUILDDIR)/doctrees -c source $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
->>>>>>> Update information about accessing specific student info
+
 # the i18n builder cannot share the environment and doctrees with the others
 I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
 

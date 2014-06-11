@@ -2,7 +2,7 @@
 
 cd `dirname $BASH_SOURCE` && cd ..
 
-STATIC_JS="apps/openassessment/xblock/static/js"
+STATIC_JS="openassessment/xblock/static/js"
 
 echo "Installing Node requirements..."
 if [ -z `which npm` ]; then

@@ -112,6 +112,18 @@ Disable quality violations on a line or file:
     # pylint: disable=W0123,E4567
 
 
+i18n
+====
+
+You will need to install `getttext <http://www.gnu.org/software/gettext/>`_.
+
+To extract strings and compile messages:
+
+.. code:: bash
+
+    ./scripts/i18n.sh
+
+
 License
 =======
 

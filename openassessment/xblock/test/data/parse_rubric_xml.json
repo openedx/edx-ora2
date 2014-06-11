@@ -1,0 +1,305 @@
+{
+    "simple": {
+        "xml": [
+            "<rubric>",
+            "<prompt>Test prompt</prompt>",
+            "<criterion>",
+            "<name>Test criterion</name>",
+            "<prompt>Test criterion prompt</prompt>",
+            "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+            "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+            "</criterion>",
+            "</rubric>"
+        ],
+        "prompt": "Test prompt",
+        "feedbackprompt": null,
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "feedback": "disabled",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ]
+            }
+        ]
+    },
+
+    "feedback_prompt": {
+        "xml": [
+            "<rubric>",
+            "<prompt>Test prompt</prompt>",
+            "<criterion>",
+            "<name>Test criterion</name>",
+            "<prompt>Test criterion prompt</prompt>",
+            "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+            "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+            "</criterion>",
+            "<feedbackprompt>This is the feedback prompt</feedbackprompt>",
+            "</rubric>"
+        ],
+        "prompt": "Test prompt",
+        "feedbackprompt": "This is the feedback prompt",
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "feedback": "disabled",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ]
+            }
+        ]
+    },
+
+    "promptless": {
+        "xml": [
+            "<rubric>",
+            "<criterion>",
+            "<name>Test criterion</name>",
+            "<prompt>Test criterion prompt</prompt>",
+            "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+            "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+            "</criterion>",
+            "</rubric>"
+        ],
+        "prompt": null,
+        "feedbackprompt": null,
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "feedback": "disabled",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ]
+            }
+        ]
+    },
+
+    "empty_prompt": {
+        "xml": [
+            "<rubric>",
+            "<prompt></prompt>",
+            "<criterion>",
+            "<name>Test criterion</name>",
+            "<prompt>Test criterion prompt</prompt>",
+            "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+            "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+            "</criterion>",
+            "</rubric>"
+        ],
+        "prompt": "",
+        "feedbackprompt": null,
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "feedback": "disabled",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ]
+            }
+        ]
+    },
+
+    "unicode": {
+        "xml": [
+            "<rubric>",
+            "<prompt>ՇєรՇ קг๏๓קՇ</prompt>",
+            "<criterion>",
+            "<name>𝓣𝓮𝓼𝓽 𝓬𝓻𝓲𝓽𝓮𝓻𝓲𝓸𝓷</name>",
+            "<prompt>Ŧɇsŧ ȼɍɨŧɇɍɨøn ꝑɍømꝑŧ</prompt>",
+            "<option points=\"0\"><name>𝕹𝖔</name><explanation>𝕹𝖔 𝖊𝖝𝖕𝖑𝖆𝖓𝖆𝖙𝖎𝖔𝖓</explanation></option>",
+            "<option points=\"2\"><name>ﻉร</name><explanation>ﻉร ﻉซρɭคกคՇٱѻก</explanation></option>",
+            "</criterion>",
+            "</rubric>"
+        ],
+        "prompt": "ՇєรՇ קг๏๓קՇ",
+        "feedbackprompt": null,
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "𝓣𝓮𝓼𝓽 𝓬𝓻𝓲𝓽𝓮𝓻𝓲𝓸𝓷",
+                "prompt": "Ŧɇsŧ ȼɍɨŧɇɍɨøn ꝑɍømꝑŧ",
+                "feedback": "disabled",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "𝕹𝖔",
+                        "explanation": "𝕹𝖔 𝖊𝖝𝖕𝖑𝖆𝖓𝖆𝖙𝖎𝖔𝖓"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "ﻉร",
+                        "explanation": "ﻉร ﻉซρɭคกคՇٱѻก"
+                    }
+                ]
+            }
+        ]
+    },
+
+    "multiple_criteria": {
+        "xml": [
+            "<rubric>",
+            "<prompt>Test prompt</prompt>",
+            "<criterion>",
+            "<name>Test criterion</name>",
+            "<prompt>Test criterion prompt</prompt>",
+            "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+            "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+            "</criterion>",
+            "<criterion>",
+            "<name>Second criterion</name>",
+            "<prompt>Second criterion prompt</prompt>",
+            "<option points=\"1\"><name>Maybe</name><explanation>Maybe explanation</explanation></option>",
+            "</criterion>",
+            "</rubric>"
+        ],
+        "prompt": "Test prompt",
+        "feedbackprompt": null,
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "feedback": "disabled",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ]
+            },
+            {
+                "order_num": 1,
+                "name": "Second criterion",
+                "prompt": "Second criterion prompt",
+                "feedback": "disabled",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 1,
+                        "name": "Maybe",
+                        "explanation": "Maybe explanation"
+                    }
+                ]
+            }
+        ]
+    },
+
+    "criterion_feedback_optional": {
+        "xml": [
+            "<rubric>",
+            "<prompt>Test prompt</prompt>",
+            "<criterion>",
+            "<name>Test criterion</name>",
+            "<prompt>Test criterion prompt</prompt>",
+            "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+            "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+            "</criterion>",
+            "<criterion feedback=\"optional\">",
+            "<name>Second criterion</name>",
+            "<prompt>Second criterion prompt</prompt>",
+            "<option points=\"1\"><name>Maybe</name><explanation>Maybe explanation</explanation></option>",
+            "</criterion>",
+            "</rubric>"
+        ],
+        "prompt": "Test prompt",
+        "feedbackprompt": null,
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "feedback": "disabled",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ]
+            },
+            {
+                "order_num": 1,
+                "name": "Second criterion",
+                "prompt": "Second criterion prompt",
+                "feedback": "optional",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 1,
+                        "name": "Maybe",
+                        "explanation": "Maybe explanation"
+                    }
+                ]
+            }
+        ]
+    }
+}

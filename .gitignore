@@ -31,9 +31,6 @@ pip-log.txt
 nosetests.xml
 htmlcov
 
-# Translations
-*.mo
-
 # Mr Developer
 .mr.developer.cfg
 .project
@@ -56,7 +53,7 @@ coverage
 
 # tim-specific
 ora2db
-apps/openassessment/xblock/static/js/fixtures/*.html
+openassessment/xblock/static/js/fixtures/*.html
 
 # logging
 logs/*.log*

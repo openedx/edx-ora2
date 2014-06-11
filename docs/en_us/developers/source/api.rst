@@ -15,12 +15,6 @@ are:
    may one day move out of process and become network calls. So calling
    something a hundred times in a loop should be avoided.
 
-Submissions
-***********
-
-.. automodule:: submissions.api
-   :members:
-
 Peer Assessment
 ***************
 
@@ -48,26 +42,6 @@ Workflow Assessment
 
 Django Apps
 -----------
-
-Submissions
-***********
-
-The Submissions app is responsible for:
-
-1. Storing and retrieving student submissions for answering a given problem.
-2. Storing and retriveing the raw scores assigned to those submissions.
-3. Retrieving the raw scores for all items associated with a particular student
-   in a particular course.
-
-This application is ignorant of the content of submissions, and assumes them to
-simply be opaque unicode strings.
-
-
-Models
-++++++
-.. automodule:: submissions.models
-   :members:
-
 
 Assessment
 **********
