@@ -5,7 +5,6 @@ import datetime
 from collections import defaultdict
 from celery import task
 from celery.utils.log import get_task_logger
-from celery.exceptions import InvalidTaskError, NotConfigured, NotRegistered, QueueNotFound
 from dogapi import dog_stats_api
 from django.conf import settings
 from django.db import DatabaseError
@@ -39,6 +38,7 @@ class InvalidExample(Exception):
 
 
 @task(queue=TRAINING_TASK_QUEUE, max_retries=MAX_RETRIES)  # pylint: disable=E1102
+@dog_stats_api.timed('openassessment.assessment.ai.train_classifiers.time')
 def train_classifiers(workflow_uuid):
     """
     Asynchronous task to train classifiers for AI grading.
@@ -150,6 +150,7 @@ def train_classifiers(workflow_uuid):
 
 
 @task(queue=RESCHEDULE_TASK_QUEUE, max_retries=MAX_RETRIES) #pylint: disable=E1102
+@dog_stats_api.timed('openassessment.assessment.ai.reschedule_training_tasks.time')
 def reschedule_training_tasks(course_id, item_id):
     """
     Reschedules all incomplete training tasks
