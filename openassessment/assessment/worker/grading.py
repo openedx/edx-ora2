@@ -25,6 +25,7 @@ RESCHEDULE_TASK_QUEUE = getattr(settings, 'LOW_PRIORITY_QUEUE', None)
 
 
 @task(max_retries=MAX_RETRIES)  # pylint: disable=E1102
+@dog_stats_api.timed('openassessment.assessment.ai.grade_essay.time')
 def grade_essay(workflow_uuid):
     """
     Asynchronous task to grade an essay using a text classifier
@@ -100,6 +101,7 @@ def grade_essay(workflow_uuid):
 
 
 @task(queue=RESCHEDULE_TASK_QUEUE, max_retries=MAX_RETRIES)  # pylint: disable=E1102
+@dog_stats_api.timed('openassessment.assessment.ai.reschedule_grading_tasks.time')
 def reschedule_grading_tasks(course_id, item_id):
     """
     Reschedules all incomplete grading workflows with the specified parameters.
