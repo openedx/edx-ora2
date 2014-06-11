@@ -6,3 +6,4 @@ set -e
 cd `dirname $BASH_SOURCE` && cd ..
 ./scripts/test-python.sh $1
 ./scripts/test-js.sh
+./scripts/build-docs.sh
