@@ -30,6 +30,39 @@ describe("OpenAssessment.Server", function() {
         );
     };
 
+    var PROMPT = "Hello this is the prompt yes.";
+
+    var RUBRIC = '<rubric>'+
+        '<criterion>'+
+            '<name>𝓒𝓸𝓷𝓬𝓲𝓼𝓮</name>'+
+            '<prompt>How concise is it?</prompt>'+
+            '<option points="3">'+
+                '<name>ﻉซƈﻉɭɭﻉกՇ</name>'+
+                '<explanation>Extremely concise</explanation>'+
+            '</option>'+
+            '<option points="2">'+
+                '<name>Ġööḋ</name>'+
+                '<explanation>Concise</explanation>'+
+            '</option>'+
+            '<option points="1">'+
+                '<name>ק๏๏г</name>'+
+                '<explanation>Wordy</explanation>'+
+            '</option>'+
+        '</criterion>'+
+    '</rubric>';
+
+    var assessments = '<assessments>' +
+        '<assessment name="peer-assessment" must_grade="1" must_be_graded_by="1" due="2000-01-02"/>' +
+        '<assessment name="self-assessment" due="2000-01-8"/>' +
+        '</assessments>';
+
+    var SETTINGS = {
+        title: 'This is the title.',
+        submission_start: '2012-10-09T00:00:00',
+        submission_due: '2015-10-10T00:00:00',
+        assessments: assessments
+    };
+
     beforeEach(function() {
         // Create the server
         // Since the runtime is a stub implementation that ignores the element passed to it,
@@ -150,31 +183,38 @@ describe("OpenAssessment.Server", function() {
         });
     });
 
-    /*
-    it("loads the XBlock's XML definition", function() {
-        stubAjax(true, { success: true, xml: "<openassessment />" });
+    it("loads the XBlock's Context definition", function() {
+        stubAjax(true, { success: true, prompt: PROMPT, rubric: RUBRIC, settings: SETTINGS});
 
-        var loadedXml = "";
-        server.loadXml().done(function(xml) {
-            loadedXml = xml;
+        var loadedPrompt = "";
+        var loadedRubric = "";
+        var loadedSettings = "";
+        server.loadEditorContext().done(function(prompt, rubric, settings) {
+            loadedPrompt = prompt;
+            loadedRubric = rubric;
+            loadedSettings = settings;
         });
 
-        expect(loadedXml).toEqual('<openassessment />');
+        expect(loadedPrompt).toEqual(PROMPT);
+        expect(loadedRubric).toEqual(RUBRIC);
+        expect(loadedSettings).toEqual(SETTINGS);
         expect($.ajax).toHaveBeenCalledWith({
-            url: '/xml', type: "POST", data: '""'
+            url: '/editor_context', type: "POST", data: '""'
         });
     });
 
-    it("updates the XBlock's XML definition", function() {
+    it("updates the XBlock's Context definition", function() {
         stubAjax(true, { success: true });
 
-        server.updateXml('<openassessment />');
+        server.updateEditorContext(
+            PROMPT, RUBRIC, SETTINGS.title, SETTINGS.submission_start, SETTINGS.submission_due, SETTINGS.assessments
+        );
         expect($.ajax).toHaveBeenCalledWith({
-            url: '/update_xml', type: "POST",
-            data: JSON.stringify({xml: '<openassessment />'})
+            type: "POST", url: '/update_editor_context',
+            data: JSON.stringify({prompt: PROMPT, rubric: RUBRIC, settings: SETTINGS})
         });
     });
-*/
+
     it("Checks whether the XBlock has been released", function() {
         stubAjax(true, { success: true, is_released: true });
 
@@ -253,51 +293,51 @@ describe("OpenAssessment.Server", function() {
         expect(receivedMsg).toEqual('test error');
     });
 
-    /*
-    it("informs the caller of an Ajax error when loading XML", function() {
+
+    it("informs the caller of an Ajax error when loading the editor context", function() {
         stubAjax(false, null);
 
         var receivedMsg = null;
-        server.loadXml().fail(function(msg) {
+        server.loadEditorContext().fail(function(msg) {
             receivedMsg = msg;
         });
 
         expect(receivedMsg).toContain("This problem could not be loaded");
     });
 
-    it("informs the caller of an Ajax error when updating XML", function() {
+    it("informs the caller of an Ajax error when updating the editor context", function() {
         stubAjax(false, null);
 
         var receivedMsg = null;
-        server.updateXml('test').fail(function(msg) {
+        server.updateEditorContext('prompt', 'rubric', 'title', 'start', 'due', 'assessments').fail(function(msg) {
             receivedMsg = msg;
         });
 
         expect(receivedMsg).toContain("This problem could not be saved");
     });
 
-    it("informs the caller of a server error when loading XML", function() {
+    it("informs the caller of a server error when loading the editor context", function() {
         stubAjax(true, { success: false, msg: "Test error" });
 
         var receivedMsg = null;
-        server.updateXml('test').fail(function(msg) {
+        server.updateEditorContext('prompt', 'rubric', 'title', 'start', 'due', 'assessments').fail(function(msg) {
             receivedMsg = msg;
         });
 
         expect(receivedMsg).toEqual("Test error");
     });
 
-    it("informs the caller of a server error when updating XML", function() {
+    it("informs the caller of a server error when updating the editor context", function() {
         stubAjax(true, { success: false, msg: "Test error" });
 
         var receivedMsg = null;
-        server.loadXml().fail(function(msg) {
+        server.loadEditorContext().fail(function(msg) {
             receivedMsg = msg;
         });
 
         expect(receivedMsg).toEqual("Test error");
     });
-*/
+
     it("informs the caller of a server error when sending a peer assessment", function() {
         stubAjax(true, {success:false, msg:'Test error!'});
 

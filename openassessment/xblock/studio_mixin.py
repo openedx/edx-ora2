@@ -118,13 +118,9 @@ class StudioMixin(object):
         # panel. This will adjust according to the fields laid out in this
         # section.
 
-        submission_due = self.submission_due
-        if not self.submission_due:
-            submission_due = ''
+        submission_due = self.submission_due if self.submission_due else ''
 
-        submission_start = self.submission_start
-        if not submission_start:
-            submission_start = ''
+        submission_start = self.submission_start if self.submission_start else ''
 
         settings = {
             'submission_due': submission_due,

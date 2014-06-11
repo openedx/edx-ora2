@@ -66,15 +66,15 @@ OpenAssessment.Server.prototype = {
      continue grading peers.
 
      Returns:
-     A JQuery promise, which resolves with the HTML of the rendered peer
-     assessment section or fails with an error message.
+        A JQuery promise, which resolves with the HTML of the rendered peer
+        assessment section or fails with an error message.
 
      Example:
-     server.render_continued_peer().done(
-     function(html) { console.log(html); }
-     ).fail(
-     function(err) { console.log(err); }
-     )
+        server.render_continued_peer().done(
+            function(html) { console.log(html); }
+        ).fail(
+            function(err) { console.log(err); }
+        )
      **/
     renderContinuedPeer: function() {
         var url = this.url('render_peer_assessment');

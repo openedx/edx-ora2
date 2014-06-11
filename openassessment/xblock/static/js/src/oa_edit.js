@@ -3,12 +3,12 @@
  The constructor initializes the DOM for editing.
 
  Args:
- runtime (Runtime): an XBlock runtime instance.
- element (DOM element): The DOM element representing this XBlock.
- server (OpenAssessment.Server): The interface to the XBlock server.
+    runtime (Runtime): an XBlock runtime instance.
+    element (DOM element): The DOM element representing this XBlock.
+    server (OpenAssessment.Server): The interface to the XBlock server.
 
  Returns:
- OpenAssessment.StudioView
+    OpenAssessment.StudioView
  **/
 
 OpenAssessment.StudioView = function(runtime, element, server) {
@@ -17,37 +17,44 @@ OpenAssessment.StudioView = function(runtime, element, server) {
 
     // Initialize the code box
 
-    this.promptBox = $('.openassessment-prompt-editor').first().get(0);
+    live_element = $(element)
+
+    this.promptBox = live_element.find('.openassessment-prompt-editor').first().get(0);
 
     this.rubricXmlBox = CodeMirror.fromTextArea(
-        $(element).find('.openassessment-rubric-editor').first().get(0),
+        live_element.find('.openassessment-rubric-editor').first().get(0),
         {mode: "xml", lineNumbers: true, lineWrapping: true}
     );
 
-    this.titleField = $(element).find('.openassessment-title-editor');
+    this.titleField = live_element.find('.openassessment-title-editor').first().get(0);
 
-    this.submissionStartField = $(element).find('.openassessment-submission-start-editor').first().get(0);
+    this.submissionStartField = live_element.find('.openassessment-submission-start-editor').first().get(0);
 
-    this.submissionDueField = $(element).find('.openassessment-submission-due-editor').first().get(0);
+    this.submissionDueField = live_element.find('.openassessment-submission-due-editor').first().get(0);
 
     this.assessmentsXmlBox = CodeMirror.fromTextArea(
-        $(element).find('.openassessment-assessments-editor').first().get(0),
+        live_element.find('.openassessment-assessments-editor').first().get(0),
         {mode: "xml", lineNumbers: true, lineWrapping: true}
     );
 
     // Install click handlers
     var view = this;
-    $(element).find('.openassessment-save-button').click(
+    live_element.find('.openassessment-save-button').click(
         function (eventData) {
             view.save();
         });
 
-    $(element).find('.openassessment-cancel-button').click(
+    live_element.find('.openassessment-cancel-button').click(
         function (eventData) {
             view.cancel();
         });
 
-    $('.openassessment-editor-content-and-tabs').tabs();
+    live_element.find('.openassessment-editor-content-and-tabs').tabs({
+        activate: function (event, ui){
+            view.rubricXmlBox.refresh();
+            view.assessmentsXmlBox.refresh();
+        }
+    });
 };
 
 OpenAssessment.StudioView.prototype = {
@@ -61,8 +68,6 @@ OpenAssessment.StudioView.prototype = {
             function (prompt, rubricXml, settings) {
                 view.rubricXmlBox.setValue(rubricXml);
                 view.assessmentsXmlBox.setValue(settings.assessments);
-                view.rubricXmlBox.refresh();
-                view.assessmentsXmlBox.refresh();
                 view.submissionStartField.value = settings.submission_start;
                 view.submissionDueField.value = settings.submission_due;
                 view.promptBox.value = prompt;
@@ -85,7 +90,7 @@ OpenAssessment.StudioView.prototype = {
         this.server.checkReleased().done(
             function (isReleased) {
                 if (isReleased) {
-                    view.confirmPostReleaseUpdate($.proxy(view.updateEditorContext(), view));
+                    view.confirmPostReleaseUpdate($.proxy(view.updateEditorContext, view));
                 }
                 else {
                     view.updateEditorContext();
@@ -101,8 +106,8 @@ OpenAssessment.StudioView.prototype = {
      that has already been released.
 
      Args:
-     onConfirm (function): A function that accepts no arguments,
-     executed if the user confirms the update.
+        onConfirm (function): A function that accepts no arguments,
+            executed if the user confirms the update.
      **/
     confirmPostReleaseUpdate: function (onConfirm) {
         var msg = gettext("This problem has already been released. Any changes will apply only to future assessments.");
@@ -153,7 +158,7 @@ OpenAssessment.StudioView.prototype = {
      Display an error message to the user.
 
      Args:
-     errorMsg (string): The error message to display.
+        errorMsg (string): The error message to display.
      **/
     showError: function (errorMsg) {
         this.runtime.notify('error', {msg: errorMsg});

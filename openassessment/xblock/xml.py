@@ -124,7 +124,7 @@ def _serialize_criteria(criteria_root, criteria_list):
             _serialize_options(criterion_el, options_list)
 
 
-def serialize_rubric(rubric_root, oa_block):
+def serialize_rubric(rubric_root, oa_block, include_prompt=True):
     """
     Serialize a rubric dictionary as XML, adding children to the XML
     with root node `rubric_root`.
@@ -138,11 +138,14 @@ def serialize_rubric(rubric_root, oa_block):
         rubric_dict (dict): A dictionary representation of the rubric, of the form
             described in the serialized Rubric model (peer grading serializers).
 
+    Kwargs:
+        include_prompt (bool): Whether or not to include the prompt in the
+            serialized format for a rubric. Defaults to True.
     Returns:
         None
     """
     # Rubric prompt (default to empty text); None indicates no input element
-    if oa_block.prompt is not None:
+    if include_prompt and oa_block.prompt is not None:
         prompt = etree.SubElement(rubric_root, 'prompt')
         prompt.text = unicode(oa_block.prompt)
 
@@ -172,7 +175,7 @@ def parse_date(date_str):
     Raises:
         UpdateFromXmlError
     """
-    if date_str == "" or date_str == u"":
+    if date_str == "":
         return None
     try:
         # Get the date into ISO format
@@ -180,7 +183,10 @@ def parse_date(date_str):
         formatted_date = parsed_date.strftime("%Y-%m-%dT%H:%M:%S")
         return unicode(formatted_date)
     except (ValueError, TypeError):
-        raise UpdateFromXmlError(_('The format for the submission due date is invalid. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'))
+        msg = (
+            'The format for the given date ({}) is invalid. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'
+        ).format(date_str)
+        raise UpdateFromXmlError(_(msg))
 
 
 def _parse_options_xml(options_root):
@@ -560,12 +566,15 @@ def serialize_content(oa_block):
     serialize_content_to_xml(oa_block, root)
 
     # Return a UTF-8 representation of the XML
-    return etree.tostring(root, pretty_print=True, encoding='utf-8')
+    return etree.tostring(root, pretty_print=True, encoding='unicode')
 
 
 def serialize_rubric_to_xml_str(oa_block):
     """
-    Serialize the OpenAssessment XBlock's rubric into an XML string.
+    Serialize the OpenAssessment XBlock's rubric into an XML string. This is
+    designed to serialize the XBlock's rubric specifically for authoring. Since
+    the authoring view splits the prompt from the rubric, the serialized format
+    for the rubric does not contain the prompt.
 
     Args:
         oa_block (OpenAssessmentBlock): The open assessment block to serialize
@@ -576,8 +585,8 @@ def serialize_rubric_to_xml_str(oa_block):
 
     """
     rubric_root = etree.Element('rubric')
-    serialize_rubric(rubric_root, oa_block)
-    return etree.tostring(rubric_root, pretty_print=True, encoding='utf-8')
+    serialize_rubric(rubric_root, oa_block, include_prompt=False)
+    return etree.tostring(rubric_root, pretty_print=True, encoding='unicode')
 
 
 def serialize_examples_to_xml_str(assessment):
@@ -599,7 +608,7 @@ def serialize_examples_to_xml_str(assessment):
         examples = []
     examples_root = etree.Element('examples')
     serialize_training_examples(examples, examples_root)
-    return etree.tostring(examples_root, pretty_print=True, encoding='utf-8')
+    return etree.tostring(examples_root, pretty_print=True, encoding='unicode')
 
 
 def serialize_assessments_to_xml_str(oa_block):
@@ -612,7 +621,7 @@ def serialize_assessments_to_xml_str(oa_block):
     """
     assessments_root = etree.Element('assessments')
     serialize_assessments(assessments_root, oa_block)
-    return etree.tostring(assessments_root, pretty_print=True, encoding='utf-8')
+    return etree.tostring(assessments_root, pretty_print=True, encoding='unicode')
 
 
 def parse_from_xml(root):

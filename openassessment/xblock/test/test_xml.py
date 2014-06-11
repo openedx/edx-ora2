@@ -124,16 +124,15 @@ class TestSerializeContent(TestCase):
         parsed_expected = etree.fromstring("".join(data['expected_xml']))
 
         # Pretty-print and reparse the expected XML
-        pretty_expected = etree.tostring(parsed_expected, pretty_print=True, encoding='utf-8')
+        pretty_expected = etree.tostring(parsed_expected, pretty_print=True, encoding='unicode')
         parsed_expected = etree.fromstring(pretty_expected)
 
         # Walk both trees, comparing elements and attributes
         actual_elements = [el for el in parsed_actual.getiterator()]
         expected_elements = [el for el in parsed_expected.getiterator()]
-
         self.assertEqual(
             len(actual_elements), len(expected_elements),
-            msg="Incorrect XML output:\nActual: {}\nExpected: {}".format(xml, pretty_expected)
+            msg=u"Incorrect XML output:\nActual: {}\nExpected: {}".format(xml, pretty_expected)
         )
 
         for actual, expected in zip(actual_elements, expected_elements):
@@ -155,18 +154,23 @@ class TestSerializeContent(TestCase):
     def test_serialize_rubric(self, data):
         self._configure_xblock(data)
         xml_str = serialize_rubric_to_xml_str(self.oa_block)
+        self.assertIn("<rubric>", xml_str)
+        if data['prompt']:
+            self.assertNotIn(data['prompt'], xml_str)
 
     @ddt.file_data('data/serialize.json')
     def test_serialize_examples(self, data):
         self._configure_xblock(data)
         for assessment in data['assessments']:
-            if 'student-training' == assessment['name']:
+            if 'student-training' == assessment['name'] and assessment['examples']:
                 xml_str = serialize_examples_to_xml_str(assessment)
+                self.assertIn(assessment['examples'][0]['answer'], xml_str)
 
     @ddt.file_data('data/serialize.json')
     def test_serialize_assessments(self, data):
         self._configure_xblock(data)
         xml_str = serialize_assessments_to_xml_str(self.oa_block)
+        self.assertIn(data['assessments'][0]['name'], xml_str)
 
     def test_mutated_criteria_dict(self):
         self.oa_block.title = "Test title"
