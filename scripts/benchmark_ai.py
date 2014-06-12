@@ -3,11 +3,14 @@
 Benchmark the execution time of the EASE algorithm for scoring essays.
 """
 
+import sys
 import os
 import json
 import time
 import contextlib
-from openassessment.assessment.worker.algorithm import AIAlgorithm, EaseAIAlgorithm
+#from openassessment.assessment.worker.algorithm import AIAlgorithm, EaseAIAlgorithm
+#from openassessment.assessment.worker.classy import ClassyAlgorithm
+from openassessment.assessment.worker.algorithm import AIAlgorithm, FakeAIAlgorithm
 
 
 NUM_TRIALS = 3
@@ -18,6 +21,7 @@ DATA_FILE_PATH = os.path.abspath(
         'data/ai-test-data.json'
     )
 )
+NUM_TEST_SET = 20
 
 @contextlib.contextmanager
 def benchmark(name):
@@ -54,7 +58,7 @@ def load_training_data(data_path):
         list of `AIAlgorithm.ExampleEssay`s
 
     """
-    print "Loading training data..."
+    print u"Loading training data from {path}...".format(path=data_path)
     with open(data_path) as data_file:
         input_examples = json.load(data_file)
     print "Done."
@@ -72,22 +76,38 @@ def main():
     """
     Time training/scoring using EASE.
     """
-    examples = load_training_data(DATA_FILE_PATH)
-    algorithm = EaseAIAlgorithm()
+    examples_by_criteria = {}
+    for criterion_data in sys.argv[1:]:
+        examples_by_criteria[criterion_data] = load_training_data(sys.argv[1])
+    algorithm = FakeAIAlgorithm()
 
     print "Training classifier..."
     with benchmark('Training'):
-        classifier = algorithm.train_classifier(examples[:-1])
+        classifiers = {}
+        for criterion, examples in examples_by_criteria.iteritems():
+            classifiers[criterion] = algorithm.train_classifier(examples[NUM_TEST_SET:])
     print "Done."
 
     print u"Scoring essays ({num} criteria)...".format(num=NUM_CRITERIA)
+    num_correct = 0
+    total = 0
     for num in range(NUM_TRIALS):
         cache = {}
         with benchmark('Scoring (rubric)'):
-            for _ in range(NUM_CRITERIA):
-                with benchmark('Scoring (criteria)'):
-                    algorithm.score(examples[-1].text, classifier, cache)
+            for criterion, examples in examples_by_criteria.iteritems():
+                for example in examples[:NUM_TEST_SET]:
+                    with benchmark(u'Scoring ({})'.format(criterion)):
+                        score = algorithm.score(example.text, classifiers[criterion], cache)
+                    if score == example.score:
+                        num_correct += 1
+                    total += 1
         print "Finished scoring essay #{num}".format(num=num)
+
+    print u"Accuracy: {correct} / {total} = {percentage}".format(
+        correct=num_correct,
+        total=total,
+        percentage=(float(num_correct) / float(total))
+    )
 
 
 if __name__ == "__main__":
