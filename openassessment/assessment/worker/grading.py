@@ -10,10 +10,10 @@ from celery.utils.log import get_task_logger
 from dogapi import dog_stats_api
 from openassessment.assessment.api import ai_worker as ai_worker_api
 from openassessment.assessment.errors import (
-    AIError, AIGradingInternalError, AIGradingRequestError, AIReschedulingInternalError, ANTICIPATED_CELERY_ERRORS
+    AIError, AIGradingInternalError, AIReschedulingInternalError, ANTICIPATED_CELERY_ERRORS
 )
 from .algorithm import AIAlgorithm, AIAlgorithmError
-from openassessment.assessment.models.ai import AIClassifierSet, AIGradingWorkflow
+from openassessment.assessment.models.ai import AIGradingWorkflow
 
 MAX_RETRIES = 2
 
@@ -74,9 +74,12 @@ def grade_essay(workflow_uuid):
         raise grade_essay.retry()
 
     # Use the algorithm to evaluate the essay for each criterion
+    # Provide an in-memory cache so the algorithm can re-use
+    # results for multiple rubric criteria.
     try:
+        cache = dict()
         scores_by_criterion = {
-            criterion_name: algorithm.score(essay_text, classifier)
+            criterion_name: algorithm.score(essay_text, classifier, cache)
             for criterion_name, classifier in classifier_set.iteritems()
         }
     except AIAlgorithmError:
