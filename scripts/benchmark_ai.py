@@ -8,9 +8,8 @@ import os
 import json
 import time
 import contextlib
-#from openassessment.assessment.worker.algorithm import AIAlgorithm, EaseAIAlgorithm
+from openassessment.assessment.worker.algorithm import AIAlgorithm, EaseAIAlgorithm, FakeAIAlgorithm
 #from openassessment.assessment.worker.classy import ClassyAlgorithm
-from openassessment.assessment.worker.algorithm import AIAlgorithm, FakeAIAlgorithm
 
 
 NUM_TRIALS = 3
@@ -22,6 +21,8 @@ DATA_FILE_PATH = os.path.abspath(
     )
 )
 NUM_TEST_SET = 20
+#ALGORITHM = EaseAIAlgorithm
+ALGORITHM = FakeAIAlgorithm
 
 @contextlib.contextmanager
 def benchmark(name):
@@ -79,7 +80,7 @@ def main():
     examples_by_criteria = {}
     for criterion_data in sys.argv[1:]:
         examples_by_criteria[criterion_data] = load_training_data(sys.argv[1])
-    algorithm = FakeAIAlgorithm()
+    algorithm = ALGORITHM()
 
     print "Training classifier..."
     with benchmark('Training'):
@@ -90,6 +91,7 @@ def main():
 
     print u"Scoring essays ({num} criteria)...".format(num=NUM_CRITERIA)
     num_correct = 0
+    num_points_off = 0
     total = 0
     for num in range(NUM_TRIALS):
         cache = {}
@@ -100,13 +102,20 @@ def main():
                         score = algorithm.score(example.text, classifiers[criterion], cache)
                     if score == example.score:
                         num_correct += 1
+                    else:
+                        num_points_off += abs(score - example.score)
                     total += 1
         print "Finished scoring essay #{num}".format(num=num)
 
-    print u"Accuracy: {correct} / {total} = {percentage}".format(
+    print u"Accuracy (correct): {correct} / {total} = {percentage}".format(
         correct=num_correct,
         total=total,
         percentage=(float(num_correct) / float(total))
+    )
+    print u"Accuracy (avg num points off): {num_off} / {total} = {percentage}".format(
+        num_off=num_points_off,
+        total=total,
+        percentage=(float(num_points_off) / float(total))
     )
 
 
