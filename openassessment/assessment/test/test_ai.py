@@ -49,7 +49,7 @@ class StubAIAlgorithm(AIAlgorithm):
         classifier['score_override'] = 0
         return classifier
 
-    def score(self, text, classifier):
+    def score(self, text, classifier, cache):
         """
         Stub implementation that returns whatever scores were
         provided in the serialized classifier data.
