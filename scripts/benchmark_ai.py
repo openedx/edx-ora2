@@ -9,7 +9,7 @@ import json
 import time
 import contextlib
 from openassessment.assessment.worker.algorithm import AIAlgorithm, EaseAIAlgorithm, FakeAIAlgorithm
-#from openassessment.assessment.worker.classy import ClassyAlgorithm
+from openassessment.assessment.worker.classy import ClassyAlgorithm
 
 
 NUM_TRIALS = 3
@@ -22,7 +22,8 @@ DATA_FILE_PATH = os.path.abspath(
 )
 NUM_TEST_SET = 20
 #ALGORITHM = EaseAIAlgorithm
-ALGORITHM = FakeAIAlgorithm
+#ALGORITHM = FakeAIAlgorithm
+ALGORITHM = ClassyAlgorithm
 
 @contextlib.contextmanager
 def benchmark(name):

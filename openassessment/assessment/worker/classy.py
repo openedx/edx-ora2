@@ -55,4 +55,4 @@ class ClassyAlgorithm(AIAlgorithm):
 
         """
         pipeline = pickle.loads(classifier)
-        return pipeline.predict(text)
+        return pipeline.predict(text)[0]
