@@ -4,17 +4,15 @@ Database models for AI assessment.
 from uuid import uuid4
 import json
 import logging
-import itertools
 from django.conf import settings
 from django.core.files.base import ContentFile
+from django.core.cache import get_cache
 from django.db import models, transaction, DatabaseError
 from django.utils.timezone import now
-from django.core.exceptions import ObjectDoesNotExist
 from django_extensions.db.fields import UUIDField
 from dogapi import dog_stats_api
 from submissions import api as sub_api
 from openassessment.assessment.serializers import rubric_from_dict
-from openassessment.assessment.errors.ai import AIReschedulingInternalError
 from .base import Rubric, Criterion, Assessment, AssessmentPart
 from .training import TrainingExample
 
@@ -176,6 +174,9 @@ class AIClassifierSet(models.Model):
 
         return classifier_set
 
+    # Number of seconds to store downloaded classifiers in the in-memory cache.
+    DEFAULT_CLASSIFIER_CACHE_TIMEOUT = 300
+
     @property
     def classifiers_dict(self):
         """
@@ -187,14 +188,30 @@ class AIClassifierSet(models.Model):
             If there are no classifiers in the set, returns None
 
         """
-        classifiers = list(self.classifiers.all())  # pylint: disable=E1101
-        if len(classifiers) == 0:
-            return None
-        else:
-            return {
+        # First check the in-memory cache
+        # We use an in-memory cache because the classifier data will most often
+        # be several megabytes, which exceeds the default memcached size limit.
+        # If we find it, we can avoid calls to the database, S3, and json.
+        cache_key = unicode(self.id)
+        cache = get_cache(
+            'django.core.cache.backends.locmem.LocMemCache',
+            LOCATION='openassessment.ai.classifiers_dict'
+        )
+        classifiers_dict = cache.get(cache_key)
+
+        # If we can't find the classifiers dict in the cache,
+        # we need to look up the classifiers in the database,
+        # then download the classifier data.
+        if classifiers_dict is None:
+            classifiers = list(self.classifiers.all())  # pylint: disable=E1101
+            classifiers_dict = {
                 classifier.criterion.name: classifier.download_classifier_data()
                 for classifier in classifiers
             }
+            timeout = getattr(settings, 'ORA2_CLASSIFIER_CACHE_TIMEOUT', self.DEFAULT_CLASSIFIER_CACHE_TIMEOUT)
+            cache.set(cache_key, classifiers_dict, timeout)
+
+        return classifiers_dict if classifiers_dict else None
 
 
 # Directory in which classifiers will be stored
