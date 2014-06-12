@@ -47,8 +47,9 @@ class AIAlgorithmTest(CacheResetTest):
             list of int: The scores
 
         """
+        cache = {}
         return [
-            self.algorithm.score(input_essay, classifier)
+            self.algorithm.score(input_essay, classifier, cache)
             for input_essay in input_essays
         ]
 
@@ -67,11 +68,11 @@ class FakeAIAlgorithmTest(AIAlgorithmTest):
 
     def test_score_classifier_missing_key(self):
         with self.assertRaises(InvalidClassifier):
-            self.algorithm.score(u"Test input", dict())
+            self.algorithm.score(u"Test input", {}, {})
 
     def test_score_classifier_no_scores(self):
         with self.assertRaises(InvalidClassifier):
-            self.algorithm.score(u"Test input", {'scores': []})
+            self.algorithm.score(u"Test input", {'scores': []}, {})
 
 
 # Try to import EASE -- if we can't, then skip the tests that require it
@@ -126,8 +127,8 @@ class EaseAIAlgorithmTest(AIAlgorithmTest):
         mock_pickle.loads.side_effect = Exception("Test error!")
         classifier = self.algorithm.train_classifier(EXAMPLES)
         with self.assertRaises(InvalidClassifier):
-            self.algorithm.score(u"Test ëṡṡäÿ", classifier)
+            self.algorithm.score(u"Test ëṡṡäÿ", classifier, {})
 
     def test_serialized_classifier_not_a_dict(self):
         with self.assertRaises(InvalidClassifier):
-            self.algorithm.score(u"Test ëṡṡäÿ", "not a dict")
+            self.algorithm.score(u"Test ëṡṡäÿ", "not a dict", {})
