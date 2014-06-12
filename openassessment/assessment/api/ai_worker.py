@@ -2,10 +2,10 @@
 Public interface for AI training and grading, used by workers.
 """
 import logging
-from django.utils.timezone import now
 from django.db import DatabaseError
+from dogapi import dog_stats_api
 from openassessment.assessment.models import (
-    AITrainingWorkflow, AIGradingWorkflow, AIClassifierSet,
+    AITrainingWorkflow, AIGradingWorkflow,
     ClassifierUploadError, ClassifierSerializeError,
     IncompleteClassifierSet, NoTrainingExamples
 )
@@ -18,6 +18,7 @@ from openassessment.assessment.errors import (
 logger = logging.getLogger(__name__)
 
 
+@dog_stats_api.timed('openassessment.assessment.ai.get_grading_task_params')
 def get_grading_task_params(grading_workflow_uuid):
     """
     Retrieve the classifier set and algorithm ID
@@ -82,6 +83,7 @@ def get_grading_task_params(grading_workflow_uuid):
         raise AIGradingInternalError(msg)
 
 
+@dog_stats_api.timed('openassessment.assessment.ai.create_assessment')
 def create_assessment(grading_workflow_uuid, criterion_scores):
     """
     Create an AI assessment (complete the AI grading task).
@@ -144,6 +146,7 @@ def create_assessment(grading_workflow_uuid, criterion_scores):
     assessment_complete_signal.send(sender=None, submission_uuid=workflow.submission_uuid)
 
 
+@dog_stats_api.timed('openassessment.assessment.ai.get_training_task_params')
 def get_training_task_params(training_workflow_uuid):
     """
     Retrieve the training examples and algorithm ID
@@ -227,6 +230,7 @@ def get_training_task_params(training_workflow_uuid):
         raise AITrainingInternalError(msg)
 
 
+@dog_stats_api.timed('openassessment.assessment.ai.create_classifiers')
 def create_classifiers(training_workflow_uuid, classifier_set):
     """
     Upload trained classifiers and mark the workflow complete.
