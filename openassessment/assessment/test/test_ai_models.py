@@ -12,16 +12,18 @@ from openassessment.assessment.serializers import rubric_from_dict
 from .constants import RUBRIC
 
 
+CLASSIFIERS_DICT = {
+    u"vøȼȺƀᵾłȺɍɏ": "test data",
+    u"ﻭɼค๓๓คɼ": "more test data"
+}
+COURSE_ID = u"†3ß† çøU®ß3"
+ITEM_ID = u"fake_item_id"
+
+
 class AIClassifierTest(CacheResetTest):
     """
     Tests for the AIClassifier model.
     """
-    CLASSIFIERS_DICT = {
-        u"vøȼȺƀᵾłȺɍɏ": "test data",
-        u"ﻭɼค๓๓คɼ": "more test data"
-    }
-    COURSE_ID = u"†3ß† çøU®ß3"
-    ITEM_ID = u"fake_item_id"
 
     def test_upload_to_path_default(self):
         # No path prefix provided in the settings
@@ -46,9 +48,33 @@ class AIClassifierTest(CacheResetTest):
         """
         rubric = rubric_from_dict(RUBRIC)
         classifier_set = AIClassifierSet.create_classifier_set(
-            self.CLASSIFIERS_DICT, rubric, "test_algorithm", self.COURSE_ID, self.ITEM_ID
+            CLASSIFIERS_DICT, rubric, "test_algorithm", COURSE_ID, ITEM_ID
         )
         return AIClassifier.objects.filter(classifier_set=classifier_set)[0]
+
+
+class AIClassifierSetTest(CacheResetTest):
+    """
+    Tests for the AIClassifierSet model.
+    """
+    def setUp(self):
+        rubric = rubric_from_dict(RUBRIC)
+        self.classifier_set = AIClassifierSet.create_classifier_set(
+            CLASSIFIERS_DICT, rubric, "test_algorithm", COURSE_ID, ITEM_ID
+        )
+
+    def test_cache_downloads(self):
+        # Retrieve the classifier dict twice, which should hit the caching code.
+        # We can check that we're using the cache by asserting that
+        # the number of database queries decreases.
+        with self.assertNumQueries(3):
+            first = self.classifier_set.classifiers_dict
+
+        with self.assertNumQueries(0):
+            second = self.classifier_set.classifiers_dict
+
+        # Verify that we got the same value both times
+        self.assertEqual(first, second)
 
 
 class AIGradingWorkflowTest(CacheResetTest):
