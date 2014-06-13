@@ -9,12 +9,13 @@ import json
 import time
 import math
 import contextlib
+import random
 from collections import defaultdict
 from openassessment.assessment.worker.algorithm import AIAlgorithm, EaseAIAlgorithm, FakeAIAlgorithm
 from openassessment.assessment.worker.classy import ClassyAlgorithm
 
 
-NUM_TRIALS = 3
+NUM_TRIALS = 10
 NUM_CRITERIA = 10
 DATA_FILE_PATH = os.path.abspath(
     os.path.join(
@@ -72,6 +73,9 @@ def load_training_data(data_path):
         input_examples = json.load(data_file)
     print "Done (loaded {num} examples)".format(num=len(input_examples))
 
+    # Shuffle the examples
+    random.shuffle(input_examples)
+
     return [
         AIAlgorithm.ExampleEssay(
             text=example['text'],
@@ -91,26 +95,28 @@ def main():
     """
     Time training/scoring using EASE.
     """
-    examples_by_criteria = {}
-    for criterion_data in sys.argv[1:]:
-        examples = load_training_data(criterion_data)
-        examples_by_criteria[criterion_data] = examples
-    algorithm = ALGORITHM()
-
-    print "Training classifier..."
-    with benchmark('Training'):
-        classifiers = {}
-        for criterion, examples in examples_by_criteria.iteritems():
-            classifiers[criterion] = algorithm.train_classifier(examples[NUM_TEST_SET:])
-    print "Done."
-
-    print u"Scoring essays ({num} criteria)...".format(num=NUM_CRITERIA)
     num_correct = 0
     point_deltas = []
     point_deltas_by_criterion = defaultdict(list)
     total = 0
     scoring_times = []
-    for num in range(NUM_TRIALS):
+
+    for trial_num in range(NUM_TRIALS):
+        print "Trial #{trial}".format(trial=trial_num)
+        examples_by_criteria = {}
+        for criterion_data in sys.argv[1:]:
+            examples = load_training_data(criterion_data)
+            examples_by_criteria[criterion_data] = examples
+        algorithm = ALGORITHM()
+
+        print "Training classifier..."
+        with benchmark('Training'):
+            classifiers = {}
+            for criterion, examples in examples_by_criteria.iteritems():
+                classifiers[criterion] = algorithm.train_classifier(examples[NUM_TEST_SET:])
+        print "Done."
+
+        print u"Scoring essays ({num} criteria)...".format(num=NUM_CRITERIA)
         cache = {}
         for essay_num in range(NUM_TEST_SET):
             with benchmark('Scoring essay #{num}'.format(num=essay_num), store=scoring_times):
@@ -123,7 +129,6 @@ def main():
                     point_deltas.append(delta)
                     point_deltas_by_criterion[criterion].append(delta)
                     total += 1
-        print "Finished scoring essay (trial #{num})".format(num=num)
 
     print u"Average time per essay (seconds): {time}".format(
         time=(sum(scoring_times) / len(scoring_times))

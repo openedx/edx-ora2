@@ -2,7 +2,7 @@
 """
 import pickle
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.svm import LinearSVC
+from sklearn.svm import SVC
 from .algorithm import AIAlgorithm
 
 
@@ -29,7 +29,7 @@ class ClassyAlgorithm(AIAlgorithm):
         transformed = vectorizer.fit_transform(
             [example.text for example in examples],
         )
-        classifier = LinearSVC()
+        classifier = SVC()
         classifier.fit(transformed, [example.score for example in examples])
         return {
             'vectorizer': pickle.dumps(vectorizer),
