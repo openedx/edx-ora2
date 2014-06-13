@@ -2,6 +2,7 @@
 """
 from .algorithm import AIAlgorithm
 import pickle
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.linear_model import SGDClassifier
@@ -29,16 +30,16 @@ class ClassyAlgorithm(AIAlgorithm):
             TrainingError: The classifier could not be trained successfully.
 
         """
-        pipeline = Pipeline([
-            ('vect', CountVectorizer()),
-            ('tfidf', TfidfTransformer()),
-            ('clf', SGDClassifier())
-        ])
-        pipeline.fit(
+        vectorizer = TfidfVectorizer(min_df=1, ngram_range=(1, 2), stop_words='english')
+        transformed = vectorizer.fit_transform(
             [example.text for example in examples],
-            [example.score for example in examples]
         )
-        return pickle.dumps(pipeline)
+        classifier = SGDClassifier()
+        classifier.fit(transformed, [example.score for example in examples])
+        return {
+            'vectorizer': pickle.dumps(vectorizer),
+            'classifier': pickle.dumps(classifier)
+        }
 
     def score(self, text, classifier, cache):
         """
@@ -54,5 +55,15 @@ class ClassyAlgorithm(AIAlgorithm):
             ScoreError: An error occurred while scoring.
 
         """
-        pipeline = pickle.loads(classifier)
-        return pipeline.predict(text)[0]
+        transformed = cache.get('transformed')
+        if transformed is None:
+            vectorizer = pickle.loads(classifier['vectorizer'])
+            transformed = vectorizer.transform([text])
+            cache['transformed'] = transformed
+
+        classifier_obj = cache.get('classifier')
+        if classifier_obj is None:
+            classifier_obj = pickle.loads(classifier['classifier'])
+            cache['classifier'] = classifier_obj
+
+        return classifier_obj.predict(transformed)[0]
