@@ -7,6 +7,7 @@ import sys
 import os
 import json
 import time
+import math
 import contextlib
 from openassessment.assessment.worker.algorithm import AIAlgorithm, EaseAIAlgorithm, FakeAIAlgorithm
 from openassessment.assessment.worker.classy import ClassyAlgorithm
@@ -63,7 +64,7 @@ def load_training_data(data_path):
     print u"Loading training data from {path}...".format(path=data_path)
     with open(data_path) as data_file:
         input_examples = json.load(data_file)
-    print "Done."
+    print "Done (loaded {num} examples)".format(num=len(input_examples))
 
     return [
         AIAlgorithm.ExampleEssay(
@@ -92,7 +93,7 @@ def main():
 
     print u"Scoring essays ({num} criteria)...".format(num=NUM_CRITERIA)
     num_correct = 0
-    num_points_off = 0
+    point_deltas = []
     total = 0
     for num in range(NUM_TRIALS):
         cache = {}
@@ -103,21 +104,23 @@ def main():
                         score = algorithm.score(example.text, classifiers[criterion], cache)
                     if score == example.score:
                         num_correct += 1
-                    else:
-                        num_points_off += abs(score - example.score)
+                    point_deltas.append(float(example.score) - float(score))
                     total += 1
         print "Finished scoring essay #{num}".format(num=num)
 
-    print u"Accuracy (correct): {correct} / {total} = {percentage}".format(
+    print u"Accuracy (correct): {correct} / {total} = {accuracy}".format(
         correct=num_correct,
         total=total,
-        percentage=(float(num_correct) / float(total))
+        accuracy=(float(num_correct) / float(total))
     )
-    print u"Accuracy (avg num points off): {num_off} / {total} = {percentage}".format(
-        num_off=num_points_off,
-        total=total,
-        percentage=(float(num_points_off) / float(total))
-    )
+
+    error = float(sum([abs(delta) for delta in point_deltas])) / float(total)
+    print u"Average error (points off per score): {error}".format(error=error)
+
+    average = sum(point_deltas) / len(point_deltas)
+    variance = sum([(average - delta) ** 2 for delta in point_deltas]) / len(point_deltas)
+    stdev = math.sqrt(variance)
+    print u"Stdev in error: {stdev}".format(stdev=stdev)
 
 
 if __name__ == "__main__":
