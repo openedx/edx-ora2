@@ -81,7 +81,8 @@ def main():
     """
     examples_by_criteria = {}
     for criterion_data in sys.argv[1:]:
-        examples_by_criteria[criterion_data] = load_training_data(criterion_data)
+        examples = load_training_data(criterion_data)
+        examples_by_criteria[criterion_data] = examples
     algorithm = ALGORITHM()
 
     print "Training classifier..."
@@ -97,11 +98,11 @@ def main():
     total = 0
     for num in range(NUM_TRIALS):
         cache = {}
-        with benchmark('Scoring (rubric)'):
-            for criterion, examples in examples_by_criteria.iteritems():
-                for example in examples[:NUM_TEST_SET]:
-                    with benchmark(u'Scoring ({})'.format(criterion)):
-                        score = algorithm.score(example.text, classifiers[criterion], cache)
+        for essay_num in range(NUM_TEST_SET):
+            with benchmark('Scoring essay #{num}'.format(num=essay_num)):
+                for criterion, examples in examples_by_criteria.iteritems():
+                    example = examples[essay_num]
+                    score = algorithm.score(example.text, classifiers[criterion], cache)
                     if score == example.score:
                         num_correct += 1
                     point_deltas.append(float(example.score) - float(score))
