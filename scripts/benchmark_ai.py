@@ -9,6 +9,7 @@ import json
 import time
 import math
 import contextlib
+from collections import defaultdict
 from openassessment.assessment.worker.algorithm import AIAlgorithm, EaseAIAlgorithm, FakeAIAlgorithm
 from openassessment.assessment.worker.classy import ClassyAlgorithm
 
@@ -106,6 +107,7 @@ def main():
     print u"Scoring essays ({num} criteria)...".format(num=NUM_CRITERIA)
     num_correct = 0
     point_deltas = []
+    point_deltas_by_criterion = defaultdict(list)
     total = 0
     scoring_times = []
     for num in range(NUM_TRIALS):
@@ -117,7 +119,9 @@ def main():
                     score = algorithm.score(example.text, classifiers[criterion], cache)
                     if score == example.score:
                         num_correct += 1
-                    point_deltas.append(float(example.score) - float(score))
+                    delta = float(example.score) - float(score)
+                    point_deltas.append(delta)
+                    point_deltas_by_criterion[criterion].append(delta)
                     total += 1
         print "Finished scoring essay (trial #{num})".format(num=num)
 
@@ -135,6 +139,12 @@ def main():
     error = float(sum([abs(delta) for delta in point_deltas])) / float(total)
     print u"Average error (points off per score): {error}".format(error=error)
     print u"Stdev in error: {stdev}".format(stdev=stdev(point_deltas))
+
+    for criterion in examples_by_criteria.keys():
+        crit_deltas = point_deltas_by_criterion[criterion]
+        error = float(sum([abs(delta) for delta in crit_deltas])) / len(crit_deltas)
+        print u"Criterion {criterion} average error (points off per score): {error}".format(criterion=criterion, error=error)
+        print u"Criterion {criterion} stdev in error: {stdev}".format(criterion=criterion, stdev=stdev(crit_deltas))
 
 
 if __name__ == "__main__":

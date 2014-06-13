@@ -1,10 +1,9 @@
 """
 """
-from .algorithm import AIAlgorithm
 import pickle
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.svm import LinearSVC
-
+from .algorithm import AIAlgorithm
 
 
 class ClassyAlgorithm(AIAlgorithm):
