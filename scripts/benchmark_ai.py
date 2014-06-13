@@ -15,7 +15,7 @@ from openassessment.assessment.worker.algorithm import AIAlgorithm, EaseAIAlgori
 from openassessment.assessment.worker.classy import ClassyAlgorithm
 
 
-NUM_TRIALS = 10
+NUM_TRIALS = 2
 NUM_CRITERIA = 10
 DATA_FILE_PATH = os.path.abspath(
     os.path.join(
@@ -23,7 +23,7 @@ DATA_FILE_PATH = os.path.abspath(
         'data/ai-test-data.json'
     )
 )
-NUM_TEST_SET = 20
+NUM_TEST_SET = 10
 #ALGORITHM = EaseAIAlgorithm
 #ALGORITHM = FakeAIAlgorithm
 ALGORITHM = ClassyAlgorithm
@@ -73,9 +73,6 @@ def load_training_data(data_path):
         input_examples = json.load(data_file)
     print "Done (loaded {num} examples)".format(num=len(input_examples))
 
-    # Shuffle the examples
-    random.shuffle(input_examples)
-
     return [
         AIAlgorithm.ExampleEssay(
             text=example['text'],
@@ -117,8 +114,8 @@ def main():
         print "Done."
 
         print u"Scoring essays ({num} criteria)...".format(num=NUM_CRITERIA)
-        cache = {}
         for essay_num in range(NUM_TEST_SET):
+            cache = {}
             with benchmark('Scoring essay #{num}'.format(num=essay_num), store=scoring_times):
                 for criterion, examples in examples_by_criteria.iteritems():
                     example = examples[essay_num]
