@@ -81,7 +81,7 @@ def main():
     """
     examples_by_criteria = {}
     for criterion_data in sys.argv[1:]:
-        examples_by_criteria[criterion_data] = load_training_data(sys.argv[1])
+        examples_by_criteria[criterion_data] = load_training_data(criterion_data)
     algorithm = ALGORITHM()
 
     print "Training classifier..."
@@ -106,7 +106,7 @@ def main():
                         num_correct += 1
                     point_deltas.append(float(example.score) - float(score))
                     total += 1
-        print "Finished scoring essay #{num}".format(num=num)
+        print "Finished scoring essay (trial #{num})".format(num=num)
 
     print u"Accuracy (correct): {correct} / {total} = {accuracy}".format(
         correct=num_correct,
