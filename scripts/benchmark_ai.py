@@ -27,12 +27,15 @@ NUM_TEST_SET = 20
 ALGORITHM = ClassyAlgorithm
 
 @contextlib.contextmanager
-def benchmark(name):
+def benchmark(name, store=None):
     """
     Print the duration in seconds for a block of code.
 
     Args:
         name (unicode): A descriptive name for the benchmark
+
+    Kwargs:
+        store (list): If provided, append the time in seconds to this list.
 
     Returns:
         None
@@ -46,6 +49,8 @@ def benchmark(name):
     end = time.clock()
     duration = end - start
     print u"{name} took {duration} seconds".format(name=name, duration=duration)
+    if store is not None:
+        store.append(duration)
 
 
 def load_training_data(data_path):
@@ -75,6 +80,12 @@ def load_training_data(data_path):
     ]
 
 
+def stdev(nums):
+    average = sum(nums) / len(nums)
+    variance = sum([(average - num) ** 2 for num in nums]) / len(nums)
+    return math.sqrt(variance)
+
+
 def main():
     """
     Time training/scoring using EASE.
@@ -96,10 +107,11 @@ def main():
     num_correct = 0
     point_deltas = []
     total = 0
+    scoring_times = []
     for num in range(NUM_TRIALS):
         cache = {}
         for essay_num in range(NUM_TEST_SET):
-            with benchmark('Scoring essay #{num}'.format(num=essay_num)):
+            with benchmark('Scoring essay #{num}'.format(num=essay_num), store=scoring_times):
                 for criterion, examples in examples_by_criteria.iteritems():
                     example = examples[essay_num]
                     score = algorithm.score(example.text, classifiers[criterion], cache)
@@ -109,6 +121,11 @@ def main():
                     total += 1
         print "Finished scoring essay (trial #{num})".format(num=num)
 
+    print u"Average time per essay (seconds): {time}".format(
+        time=(sum(scoring_times) / len(scoring_times))
+    )
+    print u"Stdev time per essay: {stdev}".format(stdev=stdev(scoring_times))
+
     print u"Accuracy (correct): {correct} / {total} = {accuracy}".format(
         correct=num_correct,
         total=total,
@@ -117,11 +134,7 @@ def main():
 
     error = float(sum([abs(delta) for delta in point_deltas])) / float(total)
     print u"Average error (points off per score): {error}".format(error=error)
-
-    average = sum(point_deltas) / len(point_deltas)
-    variance = sum([(average - delta) ** 2 for delta in point_deltas]) / len(point_deltas)
-    stdev = math.sqrt(variance)
-    print u"Stdev in error: {stdev}".format(stdev=stdev)
+    print u"Stdev in error: {stdev}".format(stdev=stdev(point_deltas))
 
 
 if __name__ == "__main__":
