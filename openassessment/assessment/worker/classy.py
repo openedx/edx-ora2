@@ -3,11 +3,7 @@
 from .algorithm import AIAlgorithm
 import pickle
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.feature_extraction.text import TfidfTransformer
-from sklearn.linear_model import SGDClassifier
-from sklearn.grid_search import GridSearchCV
-from sklearn.pipeline import Pipeline
+from sklearn.svm import LinearSVC
 
 
 
@@ -34,7 +30,7 @@ class ClassyAlgorithm(AIAlgorithm):
         transformed = vectorizer.fit_transform(
             [example.text for example in examples],
         )
-        classifier = SGDClassifier()
+        classifier = LinearSVC()
         classifier.fit(transformed, [example.score for example in examples])
         return {
             'vectorizer': pickle.dumps(vectorizer),
