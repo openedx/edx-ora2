@@ -1,9 +1,34 @@
 """
 """
 import pickle
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.svm import SVC
+from sklearn.pipeline import FeatureUnion
+import nltk
 from .algorithm import AIAlgorithm
+
+
+WORD_PATTERNS = [
+    (r'^-?[0-9]+(.[0-9]+)?$', 'CD'),
+    (r'.*ould$', 'MD'),
+    (r'.*ing$', 'VBG'),
+    (r'.*ed$', 'VBD'),
+    (r'.*ness$', 'NN'),
+    (r'.*ment$', 'NN'),
+    (r'.*ful$', 'JJ'),
+    (r'.*ious$', 'JJ'),
+    (r'.*ble$', 'JJ'),
+    (r'.*ic$', 'JJ'),
+    (r'.*ive$', 'JJ'),
+    (r'.*ic$', 'JJ'),
+    (r'.*est$', 'JJ'),
+    (r'^a$', 'PREP'),
+]
+
+
+def tokenizer(text):
+    tagger = nltk.tag.RegexpTagger(WORD_PATTERNS)
+    return [tagged[1] for tagged in tagger.tag(nltk.word_tokenize(text))]
 
 
 class ClassyAlgorithm(AIAlgorithm):
@@ -25,14 +50,16 @@ class ClassyAlgorithm(AIAlgorithm):
             TrainingError: The classifier could not be trained successfully.
 
         """
-        vectorizer = TfidfVectorizer(min_df=1, ngram_range=(1, 2), stop_words='english')
-        transformed = vectorizer.fit_transform(
-            [example.text for example in examples],
-        )
+        pipeline = FeatureUnion([
+            ('tfid', TfidfVectorizer(min_df=1, ngram_range=(1, 3), stop_words='english')),
+            ('pos', CountVectorizer(tokenizer=tokenizer))
+        ])
+        transformed = pipeline.fit_transform([example.text for example in examples])
+
         classifier = SVC()
         classifier.fit(transformed, [example.score for example in examples])
         return {
-            'vectorizer': pickle.dumps(vectorizer),
+            'pipeline': pickle.dumps(pipeline),
             'classifier': pickle.dumps(classifier)
         }
 
@@ -52,7 +79,7 @@ class ClassyAlgorithm(AIAlgorithm):
         """
         transformed = cache.get('transformed')
         if transformed is None:
-            vectorizer = pickle.loads(classifier['vectorizer'])
+            vectorizer = pickle.loads(classifier['pipeline'])
             transformed = vectorizer.transform([text])
             cache['transformed'] = transformed
 
