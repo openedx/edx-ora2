@@ -28,7 +28,10 @@ WORD_PATTERNS = [
 
 def tokenizer(text):
     tagger = nltk.tag.RegexpTagger(WORD_PATTERNS)
-    return [tagged[1] for tagged in tagger.tag(nltk.word_tokenize(text))]
+    return [
+        tagged[1] if tagged[1] is not None else '?'
+        for tagged in tagger.tag(nltk.word_tokenize(text))
+    ]
 
 
 class ClassyAlgorithm(AIAlgorithm):
@@ -51,8 +54,8 @@ class ClassyAlgorithm(AIAlgorithm):
 
         """
         pipeline = FeatureUnion([
-            ('tfid', TfidfVectorizer(min_df=1, ngram_range=(1, 3), stop_words='english')),
-            ('pos', CountVectorizer(tokenizer=tokenizer))
+            ('tfid', TfidfVectorizer(min_df=1, ngram_range=(1, 2), stop_words='english')),
+            ('pos', CountVectorizer(tokenizer=tokenizer, ngram_range=(1, 2)))
         ])
         transformed = pipeline.fit_transform([example.text for example in examples])
 
