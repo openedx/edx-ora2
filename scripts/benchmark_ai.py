@@ -4,25 +4,18 @@ Benchmark the execution time of the EASE algorithm for scoring essays.
 """
 
 import sys
-import os
 import json
 import time
 import math
 import contextlib
 import random
 from collections import defaultdict
+import csv
 from openassessment.assessment.worker.algorithm import AIAlgorithm, EaseAIAlgorithm, FakeAIAlgorithm
 from openassessment.assessment.worker.classy import ClassyAlgorithm
 
 
-NUM_TRIALS = 2
-NUM_CRITERIA = 10
-DATA_FILE_PATH = os.path.abspath(
-    os.path.join(
-        os.path.dirname(__file__),
-        'data/ai-test-data.json'
-    )
-)
+NUM_TRIALS = 3
 NUM_TEST_SET = 10
 #ALGORITHM = EaseAIAlgorithm
 #ALGORITHM = FakeAIAlgorithm
@@ -90,24 +83,46 @@ def load_training_data(data_path):
     return examples_by_criterion
 
 
+def avg(nums):
+    return sum([float(num) for num in nums]) / len(nums)
+
+
 def stdev(nums):
     average = sum(nums) / len(nums)
     variance = sum([(average - num) ** 2 for num in nums]) / len(nums)
     return math.sqrt(variance)
 
 
+def write_output(output_file, scoring_times, point_deltas_by_criterion):
+    """
+    Write the output data to a CSV file.
+    """
+    with open(output_file, 'w') as csv_file:
+        csv_writer = csv.writer(csv_file)
+        csv_writer.writerow(['Avg time per essay (seconds)', avg(scoring_times)])
+        csv_writer.writerow(['Stdev time per essay', stdev(scoring_times)])
+
+        point_deltas = []
+        for deltas in point_deltas_by_criterion.values():
+            point_deltas.extend(deltas)
+        csv_writer.writerow(['Avg error (points off per score)', avg(point_deltas)])
+        csv_writer.writerow(['Stdev error', stdev(point_deltas)])
+
+        for criterion, point_deltas in point_deltas_by_criterion.iteritems():
+            abs_point_deltas = [abs(delta) for delta in point_deltas]
+            csv_writer.writerow([u'{criterion} error'.format(criterion=criterion), avg(abs_point_deltas)])
+            csv_writer.writerow([u'{criterion} stdev error'.format(criterion=criterion), stdev(abs_point_deltas)])
+
+
 def main():
     """
     Time training/scoring using EASE.
     """
-    if len(sys.argv) < 2:
-        print "Usage: <INPUT EXAMPLES>"
+    if len(sys.argv) < 3:
+        print "Usage: <INPUT EXAMPLES> <OUTPUT CSV>"
         sys.exit(1)
 
-    num_correct = 0
-    point_deltas = []
     point_deltas_by_criterion = defaultdict(list)
-    total = 0
     scoring_times = []
 
     for trial_num in range(NUM_TRIALS):
@@ -115,47 +130,25 @@ def main():
         examples_by_criteria = load_training_data(sys.argv[1])
         algorithm = ALGORITHM()
 
-        print "Training classifier..."
+        print "Training classifiers..."
         with benchmark('Training'):
             classifiers = {}
             for criterion, examples in examples_by_criteria.iteritems():
                 classifiers[criterion] = algorithm.train_classifier(examples[NUM_TEST_SET:])
         print "Done."
 
-        print u"Scoring essays ({num} criteria)...".format(num=NUM_CRITERIA)
+        print "Scoring essays..."
         for essay_num in range(NUM_TEST_SET):
             cache = {}
             with benchmark('Scoring essay #{num}'.format(num=essay_num), store=scoring_times):
                 for criterion, examples in examples_by_criteria.iteritems():
                     example = examples[essay_num]
                     score = algorithm.score(example.text, classifiers[criterion], cache)
-                    if score == example.score:
-                        num_correct += 1
                     delta = float(example.score) - float(score)
-                    point_deltas.append(delta)
                     point_deltas_by_criterion[criterion].append(delta)
-                    total += 1
 
-    print u"Average time per essay (seconds): {time}".format(
-        time=(sum(scoring_times) / len(scoring_times))
-    )
-    print u"Stdev time per essay: {stdev}".format(stdev=stdev(scoring_times))
-
-    print u"Accuracy (correct): {correct} / {total} = {accuracy}".format(
-        correct=num_correct,
-        total=total,
-        accuracy=(float(num_correct) / float(total))
-    )
-
-    error = float(sum([abs(delta) for delta in point_deltas])) / float(total)
-    print u"Average error (points off per score): {error}".format(error=error)
-    print u"Stdev in error: {stdev}".format(stdev=stdev(point_deltas))
-
-    for criterion in examples_by_criteria.keys():
-        crit_deltas = point_deltas_by_criterion[criterion]
-        error = float(sum([abs(delta) for delta in crit_deltas])) / len(crit_deltas)
-        print u"Criterion {criterion} average error (points off per score): {error}".format(criterion=criterion, error=error)
-        print u"Criterion {criterion} stdev in error: {stdev}".format(criterion=criterion, stdev=stdev(crit_deltas))
+    print u"Writing output to {output}".format(output=sys.argv[2])
+    write_output(sys.argv[2], scoring_times, point_deltas_by_criterion)
 
 
 if __name__ == "__main__":
