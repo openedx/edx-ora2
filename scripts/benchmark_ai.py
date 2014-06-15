@@ -61,6 +61,8 @@ def load_training_data(data_path):
         dictionary of with keys for each criterion
         and values that are lists of `AIAlgorithm.ExampleEssay`s
 
+    Also returns the number of examples loaded.
+
     """
     print u"Loading training data from {path}...".format(path=data_path)
     with open(data_path) as data_file:
@@ -80,7 +82,7 @@ def load_training_data(data_path):
                     score=int(score)
                 )
             )
-    return examples_by_criterion
+    return examples_by_criterion, len(input_examples)
 
 
 def avg(nums):
@@ -93,12 +95,16 @@ def stdev(nums):
     return math.sqrt(variance)
 
 
-def write_output(output_file, scoring_times, point_deltas_by_criterion):
+def write_output(output_file, num_examples, scoring_times, point_deltas_by_criterion):
     """
     Write the output data to a CSV file.
     """
     with open(output_file, 'w') as csv_file:
         csv_writer = csv.writer(csv_file)
+        csv_writer.writerow(['Num trials', NUM_TRIALS])
+        csv_writer.writerow(['Training set size', num_examples - NUM_TEST_SET])
+        csv_writer.writerow(['Test set size', NUM_TEST_SET])
+
         csv_writer.writerow(['Avg time per essay (seconds)', avg(scoring_times)])
         csv_writer.writerow(['Stdev time per essay', stdev(scoring_times)])
 
@@ -127,7 +133,7 @@ def main():
 
     for trial_num in range(NUM_TRIALS):
         print "Trial #{trial}".format(trial=trial_num)
-        examples_by_criteria = load_training_data(sys.argv[1])
+        examples_by_criteria, num_examples = load_training_data(sys.argv[1])
         algorithm = ALGORITHM()
 
         print "Training classifiers..."
@@ -148,7 +154,7 @@ def main():
                     point_deltas_by_criterion[criterion].append(delta)
 
     print u"Writing output to {output}".format(output=sys.argv[2])
-    write_output(sys.argv[2], scoring_times, point_deltas_by_criterion)
+    write_output(sys.argv[2], num_examples, scoring_times, point_deltas_by_criterion)
 
 
 if __name__ == "__main__":
