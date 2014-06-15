@@ -65,7 +65,8 @@ def load_training_data(data_path):
         with keys 'text' (unicode) and 'score' (int).
 
     Returns:
-        list of `AIAlgorithm.ExampleEssay`s
+        dictionary of with keys for each criterion
+        and values that are lists of `AIAlgorithm.ExampleEssay`s
 
     """
     print u"Loading training data from {path}...".format(path=data_path)
@@ -73,13 +74,20 @@ def load_training_data(data_path):
         input_examples = json.load(data_file)
     print "Done (loaded {num} examples)".format(num=len(input_examples))
 
-    return [
-        AIAlgorithm.ExampleEssay(
-            text=example['text'],
-            score=int(example['score'])
-        )
-        for example in input_examples
-    ]
+    # Shuffle the input examples
+    random.shuffle(input_examples)
+
+    # Separate by criterion
+    examples_by_criterion = defaultdict(list)
+    for example in input_examples:
+        for criterion, score in example['criteria'].iteritems():
+            examples_by_criterion[criterion].append(
+                AIAlgorithm.ExampleEssay(
+                    text=example['text'],
+                    score=int(score)
+                )
+            )
+    return examples_by_criterion
 
 
 def stdev(nums):
@@ -92,6 +100,10 @@ def main():
     """
     Time training/scoring using EASE.
     """
+    if len(sys.argv) < 2:
+        print "Usage: <INPUT EXAMPLES>"
+        sys.exit(1)
+
     num_correct = 0
     point_deltas = []
     point_deltas_by_criterion = defaultdict(list)
@@ -100,10 +112,7 @@ def main():
 
     for trial_num in range(NUM_TRIALS):
         print "Trial #{trial}".format(trial=trial_num)
-        examples_by_criteria = {}
-        for criterion_data in sys.argv[1:]:
-            examples = load_training_data(criterion_data)
-            examples_by_criteria[criterion_data] = examples
+        examples_by_criteria = load_training_data(sys.argv[1])
         algorithm = ALGORITHM()
 
         print "Training classifier..."
