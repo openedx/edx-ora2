@@ -88,8 +88,8 @@ def avg(nums):
 
 
 def stdev(nums):
-    average = sum(nums) / len(nums)
-    variance = sum([(average - num) ** 2 for num in nums]) / len(nums)
+    average = avg(nums)
+    variance = sum([(average - float(num)) ** 2 for num in nums]) / len(nums)
     return math.sqrt(variance)
 
 
@@ -104,7 +104,7 @@ def write_output(output_file, scoring_times, point_deltas_by_criterion):
 
         point_deltas = []
         for deltas in point_deltas_by_criterion.values():
-            point_deltas.extend(deltas)
+            point_deltas.extend([abs(delta) for delta in deltas])
         csv_writer.writerow(['Avg error (points off per score)', avg(point_deltas)])
         csv_writer.writerow(['Stdev error', stdev(point_deltas)])
 
