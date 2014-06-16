@@ -15,7 +15,7 @@ from openassessment.assessment.worker.algorithm import AIAlgorithm, EaseAIAlgori
 from openassessment.assessment.worker.classy import ClassyAlgorithm
 
 
-NUM_TRIALS = 3
+NUM_TRIALS = 10
 NUM_TEST_SET = 10
 #ALGORITHM = EaseAIAlgorithm
 #ALGORITHM = FakeAIAlgorithm
@@ -129,6 +129,8 @@ def main():
         sys.exit(1)
 
     point_deltas_by_criterion = defaultdict(list)
+    score_matrix = defaultdict(lambda: defaultdict(lambda: 0))
+    scores = defaultdict(lambda: 0)
     scoring_times = []
 
     for trial_num in range(NUM_TRIALS):
@@ -152,9 +154,20 @@ def main():
                     score = algorithm.score(example.text, classifiers[criterion], cache)
                     delta = float(example.score) - float(score)
                     point_deltas_by_criterion[criterion].append(delta)
+                    score_matrix[score][example.score] += 1
+                    scores[score] += 1
 
     print u"Writing output to {output}".format(output=sys.argv[2])
     write_output(sys.argv[2], num_examples, scoring_times, point_deltas_by_criterion)
+
+    for actual_score, expected_score_counts in score_matrix.iteritems():
+        print "Score given: {}".format(actual_score)
+        for expected_score, count in expected_score_counts.iteritems():
+            print "== Expected {expected} ({correctness}): {percent}%".format(
+                expected=expected_score,
+                percent=(float(count) / float(scores[actual_score])) * 100,
+                correctness="correct" if actual_score == expected_score else "incorrect"
+            )
 
 
 if __name__ == "__main__":
