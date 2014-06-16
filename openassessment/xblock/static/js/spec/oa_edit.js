@@ -17,7 +17,21 @@ describe("OpenAssessment.StudioView", function() {
         this.titleField = "";
         this.submissionStartField = "";
         this.submissionDueField = "";
-        this.assessmentsXmlBox = "";
+        this.hasPeer = true;
+        this.hasSelf = true;
+        this.hasTraining = true;
+        this.hasAI = false;
+
+        this.peerMustGrade = 2;
+        this.peerGradedBy = 3;
+        this.peerStart = '';
+        this.peerDue = '';
+
+        this.selfStart = '';
+        this.selfDue = '';
+
+        this.aiTrainingExamplesCodeBox = "";
+        this.studentTrainingExamplesCodeBox = "";
 
         this.isReleased = false;
 
@@ -28,16 +42,27 @@ describe("OpenAssessment.StudioView", function() {
         this.loadEditorContext = function() {
             var prompt = this.promptBox;
             var rubric = this.rubricXmlBox;
-            var settings = {
-                title: this.titleField,
-                submission_start: this.submissionStartField,
-                submission_due: this.submissionDueField,
-                assessments: this.assessmentsXmlBox
-            };
+            var title = this.titleField;
+            var submission_start = this.submissionStartField;
+            var submission_due = this.submissionDueField;
+            var assessments = [
+                {
+                    name: "peer",
+                    must_grade: this.peerMustGrade,
+                    must_be_graded_by: this.peerGradedBy,
+                    start: this.peerStart,
+                    due: this.peerDue
+                },
+                {
+                    name: "self",
+                    start: this.selfStart,
+                    due: this.selfDue
+                }
+            ];
 
             if (!this.loadError) {
                 return $.Deferred(function(defer) {
-                    defer.resolveWith(this, [prompt, rubric, settings]);
+                    defer.resolveWith(this, [prompt, rubric, title, submission_start, submission_due, assessments]);
                 }).promise();
             }
             else {
@@ -45,14 +70,39 @@ describe("OpenAssessment.StudioView", function() {
             }
         };
 
-        this.updateEditorContext = function(prompt, rubricXml, title, sub_start, sub_due, assessmentsXml) {
+        this.updateEditorContext = function(prompt, rubricXml, title, sub_start, sub_due, assessments) {
             if (!this.updateError) {
                 this.promptBox = prompt;
                 this.rubricXmlBox = rubricXml;
                 this.titleField = title;
                 this.submissionStartField = sub_start;
                 this.submissionDueField = sub_due;
-                this.assessmentsXmlBox = assessmentsXml;
+
+                this.hasPeer = false;
+                this.hasSelf = false;
+                this.hasAI = false;
+                this.hasTraining = false;
+
+                for (var i = 0; i < assessments.length; i++) {
+                    var assessment = assessments[i];
+                    if (assessment.name == 'peer-assessment') {
+                        this.hasPeer = true;
+                        this.peerMustGrade = assessment.must_grade;
+                        this.peerGradedBy = assessment.must_be_graded_by;
+                        this.peerStart = assessment.start;
+                        this.peerDue = assessment.due;
+                    } else if (assessment.name == 'self-assessment') {
+                        this.hasSelf = true;
+                        this.selfStart = assessment.start;
+                        this.selfDue = assessment.due;
+                    } else if (assessment.name == 'example-based-assessment') {
+                        this.hasAI = true;
+                        this.aiTrainingExamplesCodeBox = assessment.examples;
+                    } else if (assessment.name == 'student-training') {
+                        this.hasTraining = true;
+                        this.studentTrainingExamplesCodeBox = assessment.examples;
+                    }
+                }
                 return $.Deferred(function(defer) {
                     defer.resolve();
                 }).promise();
@@ -97,11 +147,9 @@ describe("OpenAssessment.StudioView", function() {
         // Expect that the XML definition(s) were loaded
         var rubric = view.rubricXmlBox.getValue();
         var prompt = view.promptBox.value;
-        var assessments = view.assessmentsXmlBox.getValue()
 
         expect(prompt).toEqual('');
         expect(rubric).toEqual('');
-        expect(assessments).toEqual('');
     });
 
     it("saves the Editor Context definition", function() {

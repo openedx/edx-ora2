@@ -1,0 +1,98 @@
+{
+    "date-parsing-due": {
+        "assessments_list": [
+            {
+                "name": "student-training",
+                "start": "2014-10-10T01:00:01",
+                "due": "",
+                "examples": "<examples><example><answer>ẗëṡẗ äṅṡẅëṛ</answer><select criterion=\"Test criterion\" option=\"Yes\" /><select criterion=\"Another test criterion\" option=\"No\" /></example><example><answer>äṅöẗḧëṛ ẗëṡẗ äṅṡẅëṛ</answer><select criterion=\"Another test criterion\" option=\"Yes\" /><select criterion=\"Test criterion\" option=\"No\" /></example></examples>"
+            },
+            {
+                "name": "peer-assessment",
+                "start": "",
+                "due": "2015-01-01T00:00:HI",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment",
+                "due": "2015-014-01",
+                "start": ""
+            }
+        ]
+    },
+
+    "date-parsing-start": {
+        "assessments_list": [
+            {
+                "name": "peer-assessment",
+                "start": "2014-13-13T00:00:00",
+                "due": "",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment",
+                "due": "",
+                "start": ""
+            }
+        ]
+    },
+
+    "no-answers-in-examples": {
+        "assessments_list": [
+            {
+                "name": "student-training",
+                "start": "",
+                "due": "",
+                "examples": "<example><select criterion=\"Test criterion\" option=\"Yes\" /><select criterion=\"Another test criterion\" option=\"No\" /></example><example><answer>äṅöẗḧëṛ ẗëṡẗ äṅṡẅëṛ</answer><select criterion=\"Another test criterion\" option=\"Yes\" /><select criterion=\"Test criterion\" option=\"No\" /></example>"
+            },
+            {
+                "name": "peer-assessment",
+                "start": "",
+                "due": "",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment",
+                "due": "",
+                "start": ""
+            }
+        ]
+    },
+
+    "must_grade": {
+        "assessments_list": [
+            {
+                "name": "peer-assessment",
+                "start": "",
+                "due": "",
+                "must_grade": "Not a number fool!",
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment",
+                "due": "",
+                "start": ""
+            }
+        ]
+    },
+
+    "must_be_graded_by": {
+        "assessments_list": [
+            {
+                "name": "peer-assessment",
+                "start": "",
+                "due": "",
+                "must_grade": 3,
+                "must_be_graded_by": "Not a number fool!"
+            },
+            {
+                "name": "self-assessment",
+                "due": "",
+                "start": ""
+            }
+        ]
+    }
+}

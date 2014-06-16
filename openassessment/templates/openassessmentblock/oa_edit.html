@@ -4,7 +4,7 @@
     <div class="openassessment-editor-content-and-tabs">
 
         <div class="openassessment-editor-header">
-            <h6 id="oa-editor-window-title" class="title modal-window-title" >{% trans "Editing: Open Assessment" %}</h6>
+            <h6 id="oa-editor-window-title" class="title modal-window-title" >{% trans "Component: Open Response Problem" %}</h6>
             <ul class="editor-modes action-list action-modes editor-tabs">
                 <li class="view-button oa-editor-tab"><a href="#oa-settings-editor-wrapper">{% trans "Settings" %}</a></li>
                 <li class="view-button oa-editor-tab"><a href="#oa-rubric-editor-wrapper">{% trans "Rubric" %}</a></li>
@@ -13,31 +13,131 @@
         </div>
 
         <div id = "oa-prompt-editor-wrapper" class="oa-editor-content-wrapper">
-            <h2>{% trans "Prompt Editor" %}</h2>
             <textarea class="openassessment-prompt-editor"></textarea>
         </div>
 
         <div id="oa-rubric-editor-wrapper" class="oa-editor-content-wrapper">
-            <h2>{% trans "Rubric Editor" %}</h2>
             <div id="rubric-editor-wrapper">
                 <textarea class="openassessment-rubric-editor"></textarea>
             </div>
         </div>
 
         <div id="oa-settings-editor-wrapper" class="oa-editor-content-wrapper">
-            <div id="oa-settings-editor-text-fields">
-                <h2>{% trans "Settings Editor" %}</h2>
-                <h2>{% trans "Title:" %}</h2>
-                <input type="text" name="title" class="openassessment-title-editor">
-                <h2>{% trans "Submission Start Date:" %}</h2>
-                <input type="text" name="start_date" class="openassessment-submission-start-editor">
-                <h2>{% trans "Submission Due Date:" %}</h2>
-                <input type="text" name="due_date" class="openassessment-submission-due-editor">
+
+            <div id="oa-base-settings-editor" >
+                <div>
+                    <label for="openassessment-title-editor">{% trans "Display Name "%}</label>
+                    <input type="text" name="title" class="openassessment-title-editor" id="openassessment-title-editor">
+                </div>
+                <p class="openassessment-description">{% trans "This name appears in the horizontal navigation at the top of the page." %}</p>
+                <div class="openassessment-due-date-editor">
+                    <div class="openassessment-text-field-wrapper left-text-field-wrapper">
+                        <label for="openassessment-submission-start-editor">{% trans "Submission Start Date"%} </label>
+                        <input type="text" name="start_date" class="openassessment-submission-start-editor openassessment-date-field" id="openassessment-submission-start-editor">
+                    </div>
+                    <div class="openassessment-text-field-wrapper right-text-field-wrapper">
+                        <label for="openassessment-submission-due-editor">{% trans "Submission Due Date" %}</label>
+                        <input type="text" name="due_date" class="openassessment-submission-due-editor openassessment-date-field" id="openassessment-submission-due-editor">
+                    </div>
+                </div>
+                <hr>
             </div>
-            <div id="oa-settings-assessments">
-                <h2> {% trans "XML for Assessments" %} </h2>
-                <textarea class="openassessment-assessments-editor"></textarea>
+
+            <div class="openassessment-assessment-module-settings-editor" id="oa-student-training-editor">
+                <div class = "openassessment-inclusion-wrapper">
+                    <input type="checkbox" name="has_training" id="include-student-training">
+                    <label for="include-student-training">{% trans "Step: Learn to Assess Peers" %}</label>
+                </div>
+                <p id="student-training-description-closed" class="openassessment-description openassessment-description-closed">
+                    {% trans "When enabled, a step is added where students must read and store instructor provided responses with the goal of matching the instructor's score." %}
+                </p>
+                <div id="student-training-settings-editor" class="assessment-settings-wrapper">
+                    <p id="student-training-description-open" class="openassessment-description">
+                        {% trans "Please insert the XML definition of the examples that you would like students to see and train against in the editor below." %}
+                    </p>
+                    <label for="student-training-examples">{% trans "Student Training Examples" %}</label>
+                    <textarea name="student-training-examples" id="student-training-examples"></textarea>
+                </div>
+                <hr>
             </div>
+
+            <div class="openassessment-assessment-module-settings-editor" id="oa-peer-assessment-editor">
+                <div class="openassessment-inclusion-wrapper">
+                    <input type="checkbox" name="has-peer" id="include-peer-assessment">
+                    <label for="include-peer-assessment">{% trans "Step: Include Peer Assessment" %}</label>
+                </div>
+                <p id="peer-assessment-description-closed" class="openassessment-description openassessment-description-closed">
+                    {% trans "When enabled, students peer review and score some number of responses using the problem's rubric." %}
+                </p>
+                <div id="peer-assessment-settings-editor" class="assessment-settings-wrapper">
+                    <p id="peer-assessment-description-open" class="openassessment-description">
+                        {% trans "Some instructional text here that guides them on how to complete this section." %}
+                    </p>
+                    <div class="peer-number-constraints">
+                        <label for="peer-assessment-must-grade">{% trans "Each student must grade" %}</label>
+                        <input id="peer-assessment-must-grade" class="openassessment-number-field" type="text">
+                        <label for="peer-assessment-graded-by"> {% trans "peer(s), and must be graded by at least" %}</label>
+                        <input id="peer-assessment-graded-by" class="openassessment-number-field" type="text">
+                        <label>of their peers.</label>
+                    </div>
+                    <div class="openassessment-due-date-editor">
+                        <div class="openassessment-text-field-wrapper left-text-field-wrapper">
+                            <label for="peer-assessment-start-date">{% trans "Start Date" %}</label>
+                            <input id="peer-assessment-start-date" type="text" class="openassessment-date-field">
+                        </div>
+                        <div class="openassessment-text-field-wrapper right-text-field-wrapper">
+                            <label for="peer-assessment-due-date">{% trans "Due Date" %}</label>
+                            <input id="peer-assessment-due-date" type="text" class="openassessment-date-field">
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+
+            <div class="openassessment-assessment-module-settings-editor" id="oa-self-assessment-editor">
+                <div class = "openassessment-inclusion-wrapper">
+                    <input id="include-self-assessment" type="checkbox" checked="0">
+                    <label for="include-self-assessment">{% trans "Step: Include Self Assessment" %}</label>
+                </div>
+                <p id="self-assessment-description-closed" class="openassessment-description openassessment-description-closed">
+                    {% trans "When enabled, students are asked to self assess their own response using the problem's rubric." %}
+                </p>
+                <div id="self-assessment-settings-editor" class="assessment-settings-wrapper">
+                    <p id="self-assessment-description-open" class="openassessment-description">
+                        {% trans "Add start and/or due dates for the self assessment period, or leave blank to allow self assessment any time after submission." %}
+                    </p>
+                    <div class="openassessment-due-date-editor">
+                        <div class="openassessment-text-field-wrapper left-text-field-wrapper">
+                            <label for="self-assessment-start-date">{% trans "Start Date" %}</label>
+                            <input id="self-assessment-start-date" type="text" class="openassessment-date-field">
+                        </div>
+                        <div class="openassessment-text-field-wrapper left-text-field-wrapper">
+                            <label for="self-assessment-due-date">{% trans "Due Date" %}</label>
+                            <input id="self-assessment-due-date" type="text" class="openassessment-date-field">
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+
+            <div class="openassessment-assessment-module-settings-editor" id="oa-ai-assessment-editor">
+                <div class = "openassessment-inclusion-wrapper">
+                    <input id="include-ai-assessment" type="checkbox" checked="0">
+                    <label for="include-ai-assessment">{% trans "Step: Include Example Based Assessment" %}</label>
+                </div>
+                <p id="ai-assessment-description-closed" class="openassessment-description openassessment-description-closed">
+                    {% trans "When enabled, an algorithm will determine scores by comparing essays to instructor defined example essays."%}
+                </p>
+                <div id="ai-assessment-settings-editor" class="assessment-settings-wrapper">
+                    <p id="ai-assessment-description-open" class="openassessment-description">
+                        {% trans "Instructional text. Instructional text here.  Much instructional test. Wow."%}
+                    </p>
+                    <label for="ai-training-examples">{% trans "Training Examples" %}</label>
+                    <textarea id="ai-training-examples"></textarea>
+                </div>
+                <hr>
+            </div>
+
         </div>
     </div>
 
@@ -53,4 +153,5 @@
             </li>
         </ul>
     </div>
+
 </div>

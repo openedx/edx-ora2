@@ -33,8 +33,12 @@ class StudioViewTest(XBlockHandlerTestCase):
         rubric = etree.fromstring(resp['rubric'])
         self.assertEqual(rubric.tag, 'rubric')
 
-        assessments = etree.fromstring(resp['settings']['assessments'])
-        self.assertEqual(assessments.tag, 'assessments')
+        # Verify that every assessment in the list of assessments has a name.
+        for assessment_dict in resp['assessments']:
+            self.assertTrue(assessment_dict.get('name', False))
+            if assessment_dict.get('name') == 'studnet-training':
+                examples = etree.fromstring(assessment_dict['examples'])
+                self.assertEqual(examples.tag, 'examples')
 
     @mock.patch('openassessment.xblock.xml.serialize_rubric_to_xml_str')
     @scenario('data/basic_scenario.xml')
@@ -52,7 +56,6 @@ class StudioViewTest(XBlockHandlerTestCase):
     def test_update_xblock(self, xblock, data):
         # First, parse XML data into a single string.
         data['rubric'] = "".join(data['rubric'])
-        data['settings']['assessments'] = "".join(data['settings']['assessments'])
         xblock.published_date = None
         # Test that we can update the xblock with the expected configuration.
         request = json.dumps(data)
@@ -66,7 +69,7 @@ class StudioViewTest(XBlockHandlerTestCase):
         # Check that the XBlock fields were updated
         # We don't need to be exhaustive here, because we have other unit tests
         # that verify this extensively.
-        self.assertEqual(xblock.title, data['settings']['title'])
+        self.assertEqual(xblock.title, data['title'])
         self.assertEqual(xblock.prompt, data['prompt'])
         self.assertEqual(xblock.rubric_assessments[0]['name'], data['expected-assessment'])
         self.assertEqual(xblock.rubric_criteria[0]['prompt'], data['expected-criterion-prompt'])
@@ -76,7 +79,6 @@ class StudioViewTest(XBlockHandlerTestCase):
     def test_update_context_post_release(self, xblock, data):
         # First, parse XML data into a single string.
         data['rubric'] = "".join(data['rubric'])
-        data['settings']['assessments'] = "".join(data['settings']['assessments'])
 
         # XBlock start date defaults to already open,
         # so we should get an error when trying to update anything that change the number of points
@@ -93,9 +95,6 @@ class StudioViewTest(XBlockHandlerTestCase):
         if 'rubric' in data:
             data['rubric'] = "".join(data['rubric'])
 
-        if 'settings' in data and 'assessments' in data['settings']:
-            data['settings']['assessments'] = "".join(data['settings']['assessments'])
-
         xblock.published_date = None
 
         resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
@@ -107,7 +106,6 @@ class StudioViewTest(XBlockHandlerTestCase):
     def test_update_rubric_invalid(self, xblock, data):
         # First, parse XML data into a single string.
         data['rubric'] = "".join(data['rubric'])
-        data['settings']['assessments'] = "".join(data['settings']['assessments'])
 
         request = json.dumps(data)
 

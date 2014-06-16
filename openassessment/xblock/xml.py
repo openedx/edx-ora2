@@ -374,6 +374,68 @@ def parse_examples_xml(examples):
     return examples_list
 
 
+def parse_assessment_dictionaries(input_assessments):
+
+    assessments_list = []
+
+    for assessment in input_assessments:
+
+        assessment_dict = dict()
+
+        # Assessment name
+        if assessment.get('name'):
+            assessment_dict['name'] = unicode(assessment.get('name'))
+        else:
+            raise UpdateFromXmlError(_('All "assessment" elements must contain a "name" element.'))
+
+        # Assessment start
+        if assessment.get('start'):
+            try:
+                parsed_start = parse_date(assessment.get('start'))
+                assessment_dict['start'] = parsed_start
+            except UpdateFromXmlError:
+                raise UpdateFromXmlError(_('The date format in the "start" attribute is invalid. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'))
+        else:
+            assessment_dict['start'] = None
+
+        # Assessment due
+        if assessment.get('due'):
+            try:
+                parsed_due = parse_date(assessment.get('due'))
+                assessment_dict['due'] = parsed_due
+            except UpdateFromXmlError:
+                raise UpdateFromXmlError(_('The date format in the "due" attribute is invalid. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'))
+        else:
+            assessment_dict['due'] = None
+
+        # Assessment must_grade
+        if assessment.get('must_grade'):
+            try:
+                assessment_dict['must_grade'] = int(assessment.get('must_grade'))
+            except ValueError:
+                raise UpdateFromXmlError(_('The "must_grade" value must be a positive integer.'))
+
+        # Assessment must_be_graded_by
+        if assessment.get('must_be_graded_by'):
+            try:
+                assessment_dict['must_be_graded_by'] = int(assessment.get('must_be_graded_by'))
+            except ValueError:
+                raise UpdateFromXmlError(_('The "must_be_graded_by" value must be a positive integer.'))
+
+        # Training examples (can be for AI or for Student Training)
+        if assessment.get('examples'):
+            try:
+                assessment_dict['examples'] = parse_examples_xml_str(assessment.get('examples'))
+            except (UpdateFromXmlError, UnicodeError) as ex:
+                raise UpdateFromXmlError(_(
+                    "There was an error in parsing the {0} examples: {1}".format(assessment.get('name'), ex)
+                ))
+
+        # Update the list of assessments
+        assessments_list.append(assessment_dict)
+
+    return assessments_list
+
 def parse_assessments_xml(assessments_root):
     """
     Parse the <assessments> element in the OpenAssessment XBlock's content XML.
@@ -765,8 +827,12 @@ def parse_examples_xml_str(xml):
 
     """
 
-    xml = u"<data>" + xml + u"</data>"
-    return parse_examples_xml(list(_unicode_to_xml(xml)))
+    if "<examples>" not in xml:
+        xml = u"<data>" + xml + u"</data>"
+    else:
+        xml = unicode(xml)
+
+    return parse_examples_xml(list(_unicode_to_xml(xml).findall('example')))
 
 
 def _unicode_to_xml(xml):

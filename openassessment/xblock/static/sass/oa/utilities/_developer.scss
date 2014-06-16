@@ -171,6 +171,7 @@
 // --------------------
 
 #openassessment-editor {
+  margin-bottom: 0;
 
   .openassessment-editor-content-and-tabs {
     width: 100%;
@@ -191,6 +192,9 @@
     float: right;
     padding: ($baseline-v/8) ($baseline-h/8);
     margin: ($baseline-v/8) ($baseline-h/8);
+    border-radius: ($baseline-v/8);
+    box-shadow: none;
+    border: 0;
   }
 
   .oa-editor-content-wrapper {
@@ -215,14 +219,57 @@
   }
 
   #oa-settings-editor-text-fields {
-    float: left;
-    width: 30%;
   }
 
-  #oa-settings-assessments{
+  #oa-settings-editor-wrapper {
+    overflow-y: scroll;
+  }
+
+  #openassessment-title-editor {
+    width: 300px;
+    margin-left: 50px;
+  }
+
+  .openassessment-number-field{
+    width: 25px;
+  }
+
+  .openassessment-date-field{
+    width: 130px;
+  }
+
+  .openassessment-description{
+    font-size: 75%;
+  }
+
+  .openassessment-text-field-wrapper{
+    width: 50%;
+    text-align: center;
+  }
+
+  .right-text-field-wrapper {
     float: right;
-    width: 70%;
-    height: 100%;
+  }
+
+  .left-text-field-wrapper {
+    float: left;
+  }
+
+  .openassessment-due-date-editor{
+    height: 30px;
+  }
+
+  .openassessment-inclusion-wrapper{
+    background-color: $edx-gray-l3;
+    input[type="checkbox"] {
+    }
+    padding: ($baseline-v/8) ($baseline-h/8);
+    margin: ($baseline-v/8) ($baseline-h/8);
+    border-radius: ($baseline-v)/8;
+  }
+
+  label{
+    padding-right: 10px;
   }
 
   .xblock-actions {
@@ -231,8 +278,58 @@
      width: 100%;
      bottom: 0;
    }
+
+  .peer-number-constraints{
+    margin-bottom: 10px;
+  }
+
+  .ui-widget-header .ui-state-default{
+    background: #e5e5e5;
+    a{
+      color: $edx-gray-d4;
+      text-transform: uppercase;
+      outline-color: transparent;
+    }
+  }
+
+  .ui-widget-header .ui-state-active{
+    background: $edx-gray-d3;
+    color: $white;
+    a{
+      color: $white;
+      text-transform: uppercase;
+      outline-color: transparent;
+    }
+  }
+
+  input[type="checkbox"]{
+    display: none;
+  }
+
+  input[type="checkbox"] + label:before {
+    font-family: "FontAwesome";
+    display: inline-block;
+    margin-right: ($baseline-h/4);
+    width: auto;
+    height: auto;
+    content: "\f096";
+  }
+
+  input[type="checkbox"]:checked + label:before{
+    content: "\f046";
+  }
+
+  hr {
+    background-color: #d4d4d4;
+    color: $edx-gray-d3;
+    height: 1px;
+    border: 0px;
+    clear: both;
+  }
+
 }
 
 .modal-content {
-  height: 500px !important;
+  height: 470px !important;
 }
+

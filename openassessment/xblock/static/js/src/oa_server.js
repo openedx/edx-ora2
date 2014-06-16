@@ -356,7 +356,9 @@ OpenAssessment.Server.prototype = {
             $.ajax({
                 type: "POST", url: url, data: "\"\""
             }).done(function(data) {
-                if (data.success) { defer.resolveWith(this, [data.prompt, data.rubric, data.settings]); }
+                if (data.success) { defer.resolveWith(this, [
+                    data.prompt, data.rubric, data.title, data.submission_start, data.submission_due, data.assessments
+                ]); }
                 else { defer.rejectWith(this, [data.msg]); }
             }).fail(function(data) {
                 defer.rejectWith(this, [gettext('This problem could not be loaded.')]);
@@ -367,7 +369,7 @@ OpenAssessment.Server.prototype = {
     /**
     Update the XBlock's XML definition on the server.
 
-    Returns:
+    Return
         A JQuery promise, which resolves with no arguments
         and fails with an error message.
 
@@ -378,15 +380,16 @@ OpenAssessment.Server.prototype = {
             function(err) { console.log(err); }
         );
     **/
-    updateEditorContext: function(prompt, rubricXml, title, sub_start, sub_due, assessmentsXml) {
+    updateEditorContext: function(prompt, rubricXml, title, sub_start, sub_due, assessments) {
         var url = this.url('update_editor_context');
-        var settings = {
+        var payload = JSON.stringify({
+            'prompt': prompt,
+            'rubric': rubricXml,
             'title': title,
             'submission_start': sub_start,
             'submission_due': sub_due,
-            'assessments': assessmentsXml
-        };
-        var payload = JSON.stringify({'prompt': prompt, 'rubric': rubricXml, 'settings': settings});
+            'assessments': assessments
+        });
         return $.Deferred(function(defer) {
             $.ajax({
                 type: "POST", url: url, data: payload

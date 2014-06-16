@@ -2,6 +2,7 @@
 Studio editing view for OpenAssessment XBlock.
 """
 import pkg_resources
+import copy
 import logging
 from django.template.context import Context
 from django.template.loader import get_template
@@ -42,12 +43,14 @@ class StudioMixin(object):
         Update the XBlock's configuration.
 
         Args:
-            data (dict): Data from the request; should have a value for the keys
-                'rubric', 'settings' and 'prompt'. The 'rubric' should be an XML
-                representation of the new rubric. The 'prompt' should be a plain
-                text prompt. The 'settings' should be a dict of 'title',
-                'submission_due', 'submission_start' and the XML configuration for
-                all 'assessments'.
+            data (dict): Data from the request; should have a value for the keys: 'rubric', 'prompt',
+            'title', 'submission_start', 'submission_due', and 'assessments'.
+                -- The 'rubric' should be an XML representation of the new rubric.
+                -- The 'prompt' and 'title' should be plain text.
+                -- The dates 'submission_start' and 'submission_due' are both ISO strings
+                -- The 'assessments' is a list of asessment dictionaries (much like self.rubric_assessments)
+                   with the notable exception that all examples (for Student Training and eventually AI)
+                   are in XML string format and need to be parsed into dictionaries.
 
         Kwargs:
             suffix (str): Not used
@@ -55,18 +58,20 @@ class StudioMixin(object):
         Returns:
             dict with keys 'success' (bool) and 'msg' (str)
         """
-        missing_keys = list({'rubric', 'settings', 'prompt'} - set(data.keys()))
+        missing_keys = list(
+            {'rubric', 'prompt', 'title', 'assessments', 'submission_start', 'submission_due'} - set(data.keys())
+        )
         if missing_keys:
             logger.warn(
-                'Must specify the following keys in request JSON dict: {}'.format(missing_keys)
+                'Must specify the following missing keys in request JSON dict: {}'.format(missing_keys)
             )
             return {'success': False, 'msg': _('Error updating XBlock configuration')}
-        settings = data['settings']
+
         try:
-            rubric = xml.parse_rubric_xml_str(data['rubric'])
-            assessments = xml.parse_assessments_xml_str(settings['assessments'])
-            submission_due = xml.parse_date(settings["submission_due"])
-            submission_start = xml.parse_date(settings["submission_start"])
+            rubric = xml.parse_rubric_xml_str(data["rubric"])
+            submission_due = xml.parse_date(data["submission_due"])
+            submission_start = xml.parse_date(data["submission_start"])
+            assessments = xml.parse_assessment_dictionaries(data["assessments"])
         except xml.UpdateFromXmlError as ex:
             return {'success': False, 'msg': _('An error occurred while saving: {error}').format(error=ex)}
 
@@ -81,7 +86,7 @@ class StudioMixin(object):
             assessments,
             submission_due,
             submission_start,
-            settings["title"],
+            data["title"],
             data["prompt"]
         )
         return {'success': True, 'msg': 'Successfully updated OpenAssessment XBlock'}
@@ -100,15 +105,27 @@ class StudioMixin(object):
             suffix (str): Not used
 
         Returns:
-            dict with keys 'success' (bool), 'message' (unicode),
-                'rubric' (unicode), 'prompt' (unicode), and 'settings' (dict)
+            dict with keys
+                'success' (bool),  'message' (unicode),  'rubric' (unicode),  'prompt' (unicode),
+                'title' (unicode),  'submission_start' (unicode),  'submission_due' (unicode),  'assessments (dict)
 
         """
         try:
-            assessments = xml.serialize_assessments_to_xml_str(self)
             rubric = xml.serialize_rubric_to_xml_str(self)
-        # We do not expect serialization to raise an exception,
-        # but if it does, handle it gracefully.
+
+            # Copies the rubric assessments so that we can change student training examples from dict -> str without
+            # negatively modifying the openassessmentblock definition.
+            assessment_list = copy.deepcopy(self.rubric_assessments)
+
+            # Finds the student training dictionary, if it exists, and replaces the examples with their XML definition
+            student_training_dictionary = [d for d in assessment_list if d["name"] == "student-training"]
+            if student_training_dictionary:
+                # Our for loop will return a list.  Select the first element of that list if it exists.
+                student_training_dictionary = student_training_dictionary[0]
+                examples = xml.serialize_examples_to_xml_str(student_training_dictionary)
+                student_training_dictionary["examples"] = examples
+
+        # We do not expect serialization to raise an exception, but if it does, handle it gracefully.
         except Exception as ex:
             msg = _('An unexpected error occurred while loading the problem: {error}').format(error=ex)
             logger.error(msg)
@@ -122,19 +139,15 @@ class StudioMixin(object):
 
         submission_start = self.submission_start if self.submission_start else ''
 
-        settings = {
-            'submission_due': submission_due,
-            'submission_start': submission_start,
-            'title': self.title,
-            'assessments': assessments
-        }
-
         return {
             'success': True,
             'msg': '',
             'rubric': rubric,
             'prompt': self.prompt,
-            'settings': settings
+            'submission_due': submission_due,
+            'submission_start': submission_start,
+            'title': self.title,
+            'assessments': assessment_list
         }
 
     @XBlock.json_handler
@@ -157,3 +170,4 @@ class StudioMixin(object):
             'success': True, 'msg': u'',
             'is_released': self.is_released()
         }
+
