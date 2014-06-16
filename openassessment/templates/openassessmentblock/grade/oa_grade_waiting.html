@@ -19,9 +19,9 @@
                     {% if waiting == 'peer' %}
                         <p>{% trans "Your response is still undergoing peer assessment. After your peers have assessed your response, you'll see their comments and receive your final grade." %}</p>
                     {% elif waiting == 'example-based' %}
-                        <p>{% trans "Your response is still undergoing example based assessment. After your response has been assessed, you'll see the comments and receive your final grade." %}</p>
+                        <p>{% trans "Your response is still undergoing example-based assessment. After your response has been assessed, you'll see the comments and receive your final grade." %}</p>
                     {% elif waiting == 'all' %}
-                        <p>{% trans "Your response is still undergoing peer assessment and example based assessment. After your example based assessment has been generated and peers have assessed your response, you'll see their comments and receive your final grade." %}</p>
+                        <p>{% trans "Your response is still undergoing peer assessment and example-based assessment. After your peers have assessed your response and example-based assessment is complete, you'll see your peers' comments and receive your final grade." %}</p>
                     {% endif %}
                 </div>
             </div>
