@@ -31,8 +31,7 @@ def get_grading_task_params(grading_workflow_uuid):
         dict with keys:
             * essay_text (unicode): The text of the essay submission.
             * classifier_set (dict): Maps criterion names to serialized classifiers.
-            * course_id (unicode): The course ID that the training task is associated with.
-            * item_id (unicode): Identifies the item that the AI will be training to grade.
+            * valid_scores (dict): Maps criterion names to a list of valid scores for that criterion.
             * algorithm_id (unicode): ID of the algorithm used to perform training.
 
     Raises:
@@ -67,12 +66,19 @@ def get_grading_task_params(grading_workflow_uuid):
         raise AIGradingInternalError(msg)
 
     try:
+        classifiers = list(classifier_set.classifiers.select_related().all())
+
         return {
             'essay_text': workflow.essay_text,
-            'classifier_set': classifier_set.classifiers_dict,
-            'course_id': workflow.course_id,
-            'item_id': workflow.item_id,
+            'classifier_set': {
+                classifier.criterion.name: classifier.download_classifier_data()
+                for classifier in classifiers
+            },
             'algorithm_id': workflow.algorithm_id,
+            'valid_scores': {
+                classifier.criterion.name: classifier.valid_scores
+                for classifier in classifiers
+            }
         }
     except (DatabaseError, ClassifierSerializeError, IncompleteClassifierSet, ValueError) as ex:
         msg = (

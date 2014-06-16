@@ -226,10 +226,21 @@ class AIWorkerGradingTest(CacheResetTest):
             'essay_text': ANSWER,
             'classifier_set': CLASSIFIERS,
             'algorithm_id': ALGORITHM_ID,
-            'course_id': STUDENT_ITEM.get('course_id'),
-            'item_id': STUDENT_ITEM.get('item_id')
+            'valid_scores': {
+                u"vøȼȺƀᵾłȺɍɏ": [0, 1, 2],
+                u"ﻭɼค๓๓คɼ": [0, 1, 2]
+            }
         }
         self.assertItemsEqual(params, expected_params)
+
+    def test_get_grading_task_params_num_queries(self):
+        with self.assertNumQueries(5):
+            ai_worker_api.get_grading_task_params(self.workflow_uuid)
+
+        # The second time through we should be caching the queries
+        # to determine the valid scores for a classifier
+        with self.assertNumQueries(3):
+            ai_worker_api.get_grading_task_params(self.workflow_uuid)
 
     def test_get_grading_task_params_no_workflow(self):
         with self.assertRaises(AIGradingRequestError):
