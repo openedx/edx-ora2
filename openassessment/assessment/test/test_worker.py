@@ -3,6 +3,7 @@
 Tests for AI worker tasks.
 """
 from contextlib import contextmanager
+import itertools
 import mock
 from django.test.utils import override_settings
 from submissions import api as sub_api
@@ -45,15 +46,30 @@ class ErrorStubAIAlgorithm(AIAlgorithm):
         raise ScoreError("Test error!")
 
 
+class InvalidScoreAlgorithm(AIAlgorithm):
+    """
+    Stub implementation that returns a score that isn't in the rubric.
+    """
+    SCORE_CYCLE = itertools.cycle([-100, 0.7, 1.2, 100])
+
+    def train_classifier(self, examples):
+        return {}
+
+    def score(self, text, classifier):
+        return self.SCORE_CYCLE.next()
+
+
 ALGORITHM_ID = u"test-stub"
 ERROR_STUB_ALGORITHM_ID = u"error-stub"
 UNDEFINED_CLASS_ALGORITHM_ID = u"undefined_class"
 UNDEFINED_MODULE_ALGORITHM_ID = u"undefined_module"
+INVALID_SCORE_ALGORITHM_ID = u"invalid_score"
 AI_ALGORITHMS = {
     ALGORITHM_ID: '{module}.StubAIAlgorithm'.format(module=__name__),
     ERROR_STUB_ALGORITHM_ID: '{module}.ErrorStubAIAlgorithm'.format(module=__name__),
     UNDEFINED_CLASS_ALGORITHM_ID: '{module}.NotDefinedAIAlgorithm'.format(module=__name__),
-    UNDEFINED_MODULE_ALGORITHM_ID: 'openassessment.not.valid.NotDefinedAIAlgorithm'
+    UNDEFINED_MODULE_ALGORITHM_ID: 'openassessment.not.valid.NotDefinedAIAlgorithm',
+    INVALID_SCORE_ALGORITHM_ID: '{module}.InvalidScoreAlgorithm'.format(module=__name__),
 }
 
 
@@ -109,9 +125,7 @@ class AITrainingTaskTest(CeleryTaskTest):
         Create a training workflow in the database.
         """
         examples = deserialize_training_examples(EXAMPLES, RUBRIC)
-
         workflow = AITrainingWorkflow.start_workflow(examples, self.COURSE_ID, self.ITEM_ID, self.ALGORITHM_ID)
-
         self.workflow_uuid = workflow.uuid
 
     def test_unknown_algorithm(self):
@@ -252,6 +266,32 @@ class AIGradingTaskTest(CeleryTaskTest):
         workflow.classifier_set = classifier_set
         workflow.save()
 
+    @mock.patch('openassessment.assessment.api.ai_worker.create_assessment')
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_algorithm_gives_invalid_score(self, mock_create_assessment):
+        # If an algorithm provides a score that isn't in the rubric,
+        # we should choose the closest valid score.
+        self._set_algorithm_id(INVALID_SCORE_ALGORITHM_ID)
+
+        # The first score given by the algorithm should be below the minimum valid score
+        # The second score will be between two valid scores (0 and 1), rounding up
+        grade_essay(self.workflow_uuid)
+        expected_scores = {
+            u"vøȼȺƀᵾłȺɍɏ": 0,
+            u"ﻭɼค๓๓คɼ": 1
+        }
+        mock_create_assessment.assert_called_with(self.workflow_uuid, expected_scores)
+
+        # The third score will be between two valid scores (1 and 2), rounding down
+        # The final score will be greater than the maximum score
+        self._reset_workflow()
+        grade_essay(self.workflow_uuid)
+        expected_scores = {
+            u"vøȼȺƀᵾłȺɍɏ": 1,
+            u"ﻭɼค๓๓คɼ": 2
+        }
+        mock_create_assessment.assert_called_with(self.workflow_uuid, expected_scores)
+
     @mock.patch('openassessment.assessment.worker.grading.ai_worker_api.get_grading_task_params')
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     def test_retrieve_params_error(self, mock_call):
@@ -277,6 +317,39 @@ class AIGradingTaskTest(CeleryTaskTest):
         with self.assert_retry(grade_essay, AIGradingInternalError):
             grade_essay(self.workflow_uuid)
 
+    @mock.patch('openassessment.assessment.worker.grading.ai_worker_api.get_grading_task_params')
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_params_missing_criterion_for_valid_scores(self, mock_call):
+        mock_call.return_value = {
+            'essay_text': 'test',
+            'classifier_set': {
+                u"vøȼȺƀᵾłȺɍɏ": {},
+                u"ﻭɼค๓๓คɼ": {}
+            },
+            'algorithm_id': ALGORITHM_ID,
+            'valid_scores': {}
+        }
+        with self.assert_retry(grade_essay, AIGradingInternalError):
+            grade_essay(self.workflow_uuid)
+
+    @mock.patch('openassessment.assessment.worker.grading.ai_worker_api.get_grading_task_params')
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_params_valid_scores_empty_list(self, mock_call):
+        mock_call.return_value = {
+            'essay_text': 'test',
+            'classifier_set': {
+                u"vøȼȺƀᵾłȺɍɏ": {},
+                u"ﻭɼค๓๓คɼ": {}
+            },
+            'algorithm_id': ALGORITHM_ID,
+            'valid_scores': {
+                u"vøȼȺƀᵾłȺɍɏ": [],
+                u"ﻭɼค๓๓คɼ": [0, 1, 2]
+            }
+        }
+        with self.assert_retry(grade_essay, AIGradingInternalError):
+            grade_essay(self.workflow_uuid)
+
     def _set_algorithm_id(self, algorithm_id):
         """
         Override the default algorithm ID for the grading workflow.
@@ -290,4 +363,13 @@ class AIGradingTaskTest(CeleryTaskTest):
         """
         workflow = AIGradingWorkflow.objects.get(uuid=self.workflow_uuid)
         workflow.algorithm_id = algorithm_id
+        workflow.save()
+
+    def _reset_workflow(self):
+        """
+        Reset the workflow so we can re-use it.
+        """
+        workflow = AIGradingWorkflow.objects.get(uuid=self.workflow_uuid)
+        workflow.completed_at = None
+        workflow.assessment = None
         workflow.save()

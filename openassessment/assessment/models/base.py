@@ -243,9 +243,7 @@ class Rubric(models.Model):
         # Find the IDs for the options matching the specified point value
         option_id_set = set()
         for criterion_name, option_points in criterion_points.iteritems():
-            if (criterion_name in rubric_points_dict and 
-                option_points in rubric_points_dict[criterion_name]
-            ):
+            if (criterion_name in rubric_points_dict and option_points in rubric_points_dict[criterion_name]):
                 option_id = rubric_points_dict[criterion_name][option_points]
                 option_id_set.add(option_id)
             else:

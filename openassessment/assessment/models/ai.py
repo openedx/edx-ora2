@@ -7,6 +7,7 @@ import logging
 import itertools
 from django.conf import settings
 from django.core.files.base import ContentFile
+from django.core.cache import cache
 from django.db import models, transaction, DatabaseError
 from django.utils.timezone import now
 from django.core.exceptions import ObjectDoesNotExist
@@ -265,6 +266,23 @@ class AIClassifier(models.Model):
 
         """
         return json.loads(self.classifier_data.read())  # pylint:disable=E1101
+
+    @property
+    def valid_scores(self):
+        """
+        Return a list of valid scores for the rubric criterion associated
+        with this classifier.
+
+        Returns:
+            list of integer scores, in ascending order.
+
+        """
+        cache_key = u"openassessment.assessment.ai.classifier.{pk}.valid_scores".format(pk=self.pk)
+        valid_scores = cache.get(cache_key)
+        if valid_scores is None:
+            valid_scores = sorted([option.points for option in self.criterion.options.all()])
+            cache.set(cache_key, valid_scores)
+        return valid_scores
 
 
 class AIWorkflow(models.Model):

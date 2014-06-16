@@ -10,7 +10,7 @@ from celery.utils.log import get_task_logger
 from dogapi import dog_stats_api
 from openassessment.assessment.api import ai_worker as ai_worker_api
 from openassessment.assessment.errors import (
-    AIError, AIGradingInternalError, AIGradingRequestError, AIReschedulingInternalError, ANTICIPATED_CELERY_ERRORS
+    AIError, AIGradingInternalError, AIReschedulingInternalError, ANTICIPATED_CELERY_ERRORS
 )
 from .algorithm import AIAlgorithm, AIAlgorithmError
 from openassessment.assessment.models.ai import AIClassifierSet, AIGradingWorkflow
@@ -54,6 +54,7 @@ def grade_essay(workflow_uuid):
         essay_text = params['essay_text']
         classifier_set = params['classifier_set']
         algorithm_id = params['algorithm_id']
+        valid_scores = params['valid_scores']
     except (AIError, KeyError):
         msg = (
             u"An error occurred while retrieving the AI grading task "
@@ -61,6 +62,23 @@ def grade_essay(workflow_uuid):
         ).format(workflow_uuid)
         logger.exception(msg)
         raise grade_essay.retry()
+
+    # Validate that the we have valid scores for each criterion
+    for criterion_name in classifier_set.keys():
+        msg = None
+        if criterion_name not in valid_scores:
+            msg = (
+                u"Could not find {criterion} in the list of valid scores "
+                u"for grading workflow with UUID {uuid}"
+            ).format(criterion=criterion_name, uuid=workflow_uuid)
+        elif len(valid_scores[criterion_name]) == 0:
+            msg = (
+                u"Valid scores for {criterion} is empty for "
+                u"grading workflow with UUID {uuid}"
+            ).format(criterion=criterion_name, uuid=workflow_uuid)
+        if msg:
+            logger.exception(msg)
+            raise AIGradingInternalError(msg)
 
     # Retrieve the AI algorithm
     try:
@@ -76,7 +94,10 @@ def grade_essay(workflow_uuid):
     # Use the algorithm to evaluate the essay for each criterion
     try:
         scores_by_criterion = {
-            criterion_name: algorithm.score(essay_text, classifier)
+            criterion_name: _closest_valid_score(
+                algorithm.score(essay_text, classifier),
+                valid_scores[criterion_name]
+            )
             for criterion_name, classifier in classifier_set.iteritems()
         }
     except AIAlgorithmError:
@@ -220,6 +241,35 @@ def reschedule_grading_tasks(course_id, item_id):
             )
         except AIGradingInternalError as ex:
             raise reschedule_grading_tasks.retry()
+
+
+def _closest_valid_score(score, valid_scores):
+    """
+    Return the closest valid score for a given score.
+    This is necessary, since rubric scores may be non-contiguous.
+
+    Args:
+        score (int or float): The score assigned by the algorithm.
+        valid_scores (list of int): Valid scores for this criterion,
+            assumed to be sorted in ascending order.
+
+    Returns:
+        int
+
+    """
+    # If the score is already valid, return it
+    if score in valid_scores:
+        return score
+
+    # Otherwise, find the closest score in the list.
+    closest = valid_scores[0]
+    delta = abs(score - closest)
+    for valid in valid_scores[1:]:
+        new_delta = abs(score - valid)
+        if new_delta < delta:
+            closest = valid
+        delta = new_delta
+    return closest
 
 
 def _log_start_reschedule_grading(course_id=None, item_id=None):
