@@ -59,11 +59,13 @@ class ClassyAlgorithm(AIAlgorithm):
         ])
         transformed = pipeline.fit_transform([example.text for example in examples])
 
+        scores = [example.score for example in examples]
         classifier = SVC()
-        classifier.fit(transformed, [example.score for example in examples])
+        classifier.fit(transformed, scores)
         return {
             'pipeline': pickle.dumps(pipeline),
-            'classifier': pickle.dumps(classifier)
+            'classifier': pickle.dumps(classifier),
+            'min_score': min(scores)
         }
 
     def score(self, text, classifier, cache):
@@ -80,6 +82,10 @@ class ClassyAlgorithm(AIAlgorithm):
             ScoreError: An error occurred while scoring.
 
         """
+        # Pre-checks
+        if len(text.strip()) < 300:
+            return classifier['min_score']
+
         transformed = cache.get('transformed')
         if transformed is None:
             vectorizer = pickle.loads(classifier['pipeline'])

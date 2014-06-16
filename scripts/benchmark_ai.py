@@ -15,7 +15,7 @@ from openassessment.assessment.worker.algorithm import AIAlgorithm, EaseAIAlgori
 from openassessment.assessment.worker.classy import ClassyAlgorithm
 
 
-NUM_TRIALS = 1
+NUM_TRIALS = 10
 NUM_TEST_SET = 10
 #ALGORITHM = EaseAIAlgorithm
 #ALGORITHM = FakeAIAlgorithm
