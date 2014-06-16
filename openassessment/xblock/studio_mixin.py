@@ -63,15 +63,15 @@ class StudioMixin(object):
             return {'success': False, 'msg': _('Error updating XBlock configuration')}
         settings = data['settings']
         try:
-
             rubric = xml.parse_rubric_xml_str(data['rubric'])
             assessments = xml.parse_assessments_xml_str(settings['assessments'])
-            submission_due = settings["submission_due"]
+            submission_due = xml.parse_date(settings["submission_due"])
+            submission_start = xml.parse_date(settings["submission_start"])
         except xml.UpdateFromXmlError as ex:
             return {'success': False, 'msg': _('An error occurred while saving: {error}').format(error=ex)}
 
         xblock_validator = validator(self)
-        success, msg = xblock_validator(rubric, {'due': submission_due}, assessments)
+        success, msg = xblock_validator(rubric, {'due': submission_due, 'start': submission_start}, assessments)
         if not success:
             return {'success': False, 'msg': _('Validation error: {error}').format(error=msg)}
 
@@ -79,8 +79,8 @@ class StudioMixin(object):
             rubric['criteria'],
             rubric['feedbackprompt'],
             assessments,
-            settings["submission_due"],
-            settings["submission_start"],
+            submission_due,
+            submission_start,
             settings["title"],
             data["prompt"]
         )
@@ -117,9 +117,14 @@ class StudioMixin(object):
         # Populates the context for the assessments section of the editing
         # panel. This will adjust according to the fields laid out in this
         # section.
+
+        submission_due = self.submission_due if self.submission_due else ''
+
+        submission_start = self.submission_start if self.submission_start else ''
+
         settings = {
-            'submission_due': self.submission_due,
-            'submission_start': self.submission_start,
+            'submission_due': submission_due,
+            'submission_start': submission_start,
             'title': self.title,
             'assessments': assessments
         }

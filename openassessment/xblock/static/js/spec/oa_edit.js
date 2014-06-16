@@ -12,18 +12,32 @@ describe("OpenAssessment.StudioView", function() {
     var StubServer = function() {
         this.loadError = false;
         this.updateError = false;
-        this.xml = '<openassessment></openassessment>';
+        this.promptBox = "";
+        this.rubricXmlBox = "";
+        this.titleField = "";
+        this.submissionStartField = "";
+        this.submissionDueField = "";
+        this.assessmentsXmlBox = "";
+
         this.isReleased = false;
 
         this.errorPromise = $.Deferred(function(defer) {
             defer.rejectWith(this, ['Test error']);
         }).promise();
 
-        this.loadXml = function() {
-            var xml = this.xml;
+        this.loadEditorContext = function() {
+            var prompt = this.promptBox;
+            var rubric = this.rubricXmlBox;
+            var settings = {
+                title: this.titleField,
+                submission_start: this.submissionStartField,
+                submission_due: this.submissionDueField,
+                assessments: this.assessmentsXmlBox
+            };
+
             if (!this.loadError) {
                 return $.Deferred(function(defer) {
-                    defer.resolveWith(this, [xml]);
+                    defer.resolveWith(this, [prompt, rubric, settings]);
                 }).promise();
             }
             else {
@@ -31,9 +45,14 @@ describe("OpenAssessment.StudioView", function() {
             }
         };
 
-        this.updateXml = function(xml) {
+        this.updateEditorContext = function(prompt, rubricXml, title, sub_start, sub_due, assessmentsXml) {
             if (!this.updateError) {
-                this.xml = xml;
+                this.promptBox = prompt;
+                this.rubricXmlBox = rubricXml;
+                this.titleField = title;
+                this.submissionStartField = sub_start;
+                this.submissionDueField = sub_due;
+                this.assessmentsXmlBox = assessmentsXml;
                 return $.Deferred(function(defer) {
                     defer.resolve();
                 }).promise();
@@ -67,32 +86,37 @@ describe("OpenAssessment.StudioView", function() {
         spyOn(runtime, 'notify');
 
         // Create the object under test
-        var el = $('#openassessment-edit').get(0);
+        var el = $('#openassessment-editor').get(0);
         view = new OpenAssessment.StudioView(runtime, el, server);
     });
 
-    it("loads the XML definition", function() {
+    it("loads the editor context definition", function() {
         // Initialize the view
         view.load();
 
-        // Expect that the XML definition was loaded
-        var contents = view.codeBox.getValue();
-        expect(contents).toEqual('<openassessment></openassessment>');
+        // Expect that the XML definition(s) were loaded
+        var rubric = view.rubricXmlBox.getValue();
+        var prompt = view.promptBox.value;
+        var assessments = view.assessmentsXmlBox.getValue()
+
+        expect(prompt).toEqual('');
+        expect(rubric).toEqual('');
+        expect(assessments).toEqual('');
     });
 
-    it("saves the XML definition", function() {
-        // Update the XML
-        view.codeBox.setValue('<openassessment>test!</openassessment>');
+    it("saves the Editor Context definition", function() {
+        // Update the Context
+        view.titleField.value = 'THIS IS THE NEW TITLE';
 
-        // Save the updated XML
+        // Save the updated editor definition
         view.save();
 
         // Expect the saving notification to start/end
         expect(runtime.notify).toHaveBeenCalledWith('save', {state: 'start'});
         expect(runtime.notify).toHaveBeenCalledWith('save', {state: 'end'});
 
-        // Expect the server's XML to have been updated
-        expect(server.xml).toEqual('<openassessment>test!</openassessment>');
+        // Expect the server's context to have been updated
+        expect(server.titleField).toEqual('THIS IS THE NEW TITLE');
     });
 
     it("confirms changes for a released problem", function() {
@@ -104,7 +128,7 @@ describe("OpenAssessment.StudioView", function() {
             function(onConfirm) { onConfirm(); }
         );
 
-        // Save the updated XML
+        // Save the updated context
         view.save();
 
         // Verify that the user was asked to confirm the changes
@@ -124,8 +148,7 @@ describe("OpenAssessment.StudioView", function() {
 
     it("displays an error when server reports an update XML error", function() {
         server.updateError = true;
-        view.save('<openassessment>test!</openassessment>');
+        view.save();
         expect(runtime.notify).toHaveBeenCalledWith('error', {msg: 'Test error'});
     });
-
 });

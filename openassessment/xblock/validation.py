@@ -294,7 +294,7 @@ def validator(oa_block, strict_post_release=True):
             return (False, msg)
 
         # Dates
-        submission_dates = [(oa_block.start, submission_dict['due'])]
+        submission_dates = [(submission_dict['start'], submission_dict['due'])]
         assessment_dates = [(asmnt['start'], asmnt['due']) for asmnt in assessments]
         success, msg = validate_dates(oa_block.start, oa_block.due, submission_dates + assessment_dates)
         if not success:

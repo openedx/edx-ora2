@@ -208,6 +208,7 @@ class ValidationIntegrationTest(TestCase):
     }
 
     SUBMISSION = {
+        "start": None,
         "due": None
     }
 

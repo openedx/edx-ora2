@@ -66,15 +66,15 @@ OpenAssessment.Server.prototype = {
      continue grading peers.
 
      Returns:
-     A JQuery promise, which resolves with the HTML of the rendered peer
-     assessment section or fails with an error message.
+        A JQuery promise, which resolves with the HTML of the rendered peer
+        assessment section or fails with an error message.
 
      Example:
-     server.render_continued_peer().done(
-     function(html) { console.log(html); }
-     ).fail(
-     function(err) { console.log(err); }
-     )
+        server.render_continued_peer().done(
+            function(html) { console.log(html); }
+        ).fail(
+            function(err) { console.log(err); }
+        )
      **/
     renderContinuedPeer: function() {
         var url = this.url('render_peer_assessment');
@@ -350,13 +350,13 @@ OpenAssessment.Server.prototype = {
             function(err) { console.log(err); }
         );
     **/
-    loadXml: function() {
-        var url = this.url('xml');
+    loadEditorContext: function() {
+        var url = this.url('editor_context');
         return $.Deferred(function(defer) {
             $.ajax({
                 type: "POST", url: url, data: "\"\""
             }).done(function(data) {
-                if (data.success) { defer.resolveWith(this, [data.xml]); }
+                if (data.success) { defer.resolveWith(this, [data.prompt, data.rubric, data.settings]); }
                 else { defer.rejectWith(this, [data.msg]); }
             }).fail(function(data) {
                 defer.rejectWith(this, [gettext('This problem could not be loaded.')]);
@@ -378,9 +378,15 @@ OpenAssessment.Server.prototype = {
             function(err) { console.log(err); }
         );
     **/
-    updateXml: function(xml) {
-        var url = this.url('update_xml');
-        var payload = JSON.stringify({xml: xml});
+    updateEditorContext: function(prompt, rubricXml, title, sub_start, sub_due, assessmentsXml) {
+        var url = this.url('update_editor_context');
+        var settings = {
+            'title': title,
+            'submission_start': sub_start,
+            'submission_due': sub_due,
+            'assessments': assessmentsXml
+        };
+        var payload = JSON.stringify({'prompt': prompt, 'rubric': rubricXml, 'settings': settings});
         return $.Deferred(function(defer) {
             $.ajax({
                 type: "POST", url: url, data: payload

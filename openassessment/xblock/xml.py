@@ -171,14 +171,22 @@ def parse_date(date_str):
     Returns:
         unicode in ISO format (without milliseconds) if the date string is
         parse-able. None if parsing fails.
+
+    Raises:
+        UpdateFromXmlError
     """
+    if date_str == "":
+        return None
     try:
         # Get the date into ISO format
         parsed_date = dateutil.parser.parse(unicode(date_str)).replace(tzinfo=pytz.utc)
         formatted_date = parsed_date.strftime("%Y-%m-%dT%H:%M:%S")
         return unicode(formatted_date)
-    except (TypeError, ValueError):
-        return None
+    except (ValueError, TypeError):
+        msg = (
+            'The format for the given date ({}) is invalid. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'
+        ).format(date_str)
+        raise UpdateFromXmlError(_(msg))
 
 
 def _parse_options_xml(options_root):
@@ -642,16 +650,12 @@ def parse_from_xml(root):
     submission_start = None
     if 'submission_start' in root.attrib:
         submission_start = parse_date(unicode(root.attrib['submission_start']))
-        if submission_start is None:
-            raise UpdateFromXmlError(_('The format for the submission start date is invalid. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'))
 
     # Retrieve the due date for the submission
     # Set it to None by default; we will update it to the earliest deadline later on
     submission_due = None
     if 'submission_due' in root.attrib:
         submission_due = parse_date(unicode(root.attrib['submission_due']))
-        if submission_due is None:
-            raise UpdateFromXmlError(_('The format for the submission due date is invalid. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'))
 
     # Retrieve the title
     title_el = root.find('title')
@@ -760,6 +764,7 @@ def parse_examples_xml_str(xml):
         UpdateFromXmlError: The XML definition is invalid.
 
     """
+
     xml = u"<data>" + xml + u"</data>"
     return parse_examples_xml(list(_unicode_to_xml(xml)))
 

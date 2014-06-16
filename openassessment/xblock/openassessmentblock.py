@@ -334,7 +334,7 @@ class OpenAssessmentBlock(
         xblock_validator = validator(block, strict_post_release=False)
         xblock_validator(
             rubric,
-            {'due': config['submission_due']},
+            { 'due': config['submission_due'], 'start': config['submission_start']},
             config['rubric_assessments']
         )
 

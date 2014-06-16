@@ -1,7 +1,46 @@
 {% load i18n %}
 
-<div id="openassessment-edit" class="editor-with-buttons">
-    <textarea class="openassessment-editor"></textarea>
+<div id="openassessment-editor" class="editor-with-buttons editor-with-tabs">
+    <div class="openassessment-editor-content-and-tabs">
+
+        <div class="openassessment-editor-header">
+            <h6 id="oa-editor-window-title" class="title modal-window-title" >{% trans "Editing: Open Assessment" %}</h6>
+            <ul class="editor-modes action-list action-modes editor-tabs">
+                <li class="view-button oa-editor-tab"><a href="#oa-settings-editor-wrapper">{% trans "Settings" %}</a></li>
+                <li class="view-button oa-editor-tab"><a href="#oa-rubric-editor-wrapper">{% trans "Rubric" %}</a></li>
+                <li class="view-button oa-editor-tab"><a href="#oa-prompt-editor-wrapper">{% trans "Prompt" %}</a></li>
+            </ul>
+        </div>
+
+        <div id = "oa-prompt-editor-wrapper" class="oa-editor-content-wrapper">
+            <h2>{% trans "Prompt Editor" %}</h2>
+            <textarea class="openassessment-prompt-editor"></textarea>
+        </div>
+
+        <div id="oa-rubric-editor-wrapper" class="oa-editor-content-wrapper">
+            <h2>{% trans "Rubric Editor" %}</h2>
+            <div id="rubric-editor-wrapper">
+                <textarea class="openassessment-rubric-editor"></textarea>
+            </div>
+        </div>
+
+        <div id="oa-settings-editor-wrapper" class="oa-editor-content-wrapper">
+            <div id="oa-settings-editor-text-fields">
+                <h2>{% trans "Settings Editor" %}</h2>
+                <h2>{% trans "Title:" %}</h2>
+                <input type="text" name="title" class="openassessment-title-editor">
+                <h2>{% trans "Submission Start Date:" %}</h2>
+                <input type="text" name="start_date" class="openassessment-submission-start-editor">
+                <h2>{% trans "Submission Due Date:" %}</h2>
+                <input type="text" name="due_date" class="openassessment-submission-due-editor">
+            </div>
+            <div id="oa-settings-assessments">
+                <h2> {% trans "XML for Assessments" %} </h2>
+                <textarea class="openassessment-assessments-editor"></textarea>
+            </div>
+        </div>
+    </div>
+
     <div class="xblock-actions">
         <h3 class="sr">Actions</h3>
         <ul>
