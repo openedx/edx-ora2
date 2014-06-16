@@ -303,6 +303,9 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         if self.status != new_status:
             self.status = new_status
             self.save()
+            logger.info((
+                u"Workflow for submission UUID {uuid} has updated status to {status}"
+            ).format(uuid=self.submission_uuid, status=new_status))
 
     def _get_steps(self):
         """

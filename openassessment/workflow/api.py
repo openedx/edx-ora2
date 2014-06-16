@@ -72,6 +72,10 @@ def create_workflow(submission_uuid, steps, on_init_params=None):
 
     try:
         workflow = AssessmentWorkflow.start_workflow(submission_uuid, steps, on_init_params)
+        logger.info((
+            u"Started assessment workflow for "
+            u"submission UUID {uuid} with steps {steps}"
+        ).format(uuid=submission_uuid, steps=steps))
         return AssessmentWorkflowSerializer(workflow).data
     except sub_api.SubmissionNotFoundError:
         err_msg = sub_err_msg("submission not found")
@@ -260,6 +264,10 @@ def update_from_assessments(submission_uuid, assessment_requirements):
 
     try:
         workflow.update_from_assessments(assessment_requirements)
+        logger.info((
+            u"Updated workflow for submission UUID {uuid} "
+            u"with requirements {reqs}"
+        ).format(uuid=submission_uuid, reqs=assessment_requirements))
         return _serialized_with_details(workflow, assessment_requirements)
     except PeerAssessmentError as err:
         err_msg = u"Could not update assessment workflow: {}".format(err)

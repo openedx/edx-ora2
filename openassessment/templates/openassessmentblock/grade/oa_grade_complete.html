@@ -38,10 +38,10 @@
 
                                 <span class="question__score">
                                   <span class="label sr">{% trans "Overall Grade" %}</span>
-                                  <span class="question__score__value">{{ score.points_earned }}</span>
+                                  <span class="question__score__value">{{ criterion.median_score }}</span>
                                   <span class="label label--divider sr">out of</span>
                                   <span class="question__score__potential">
-                                    {{ score.points_possible }}
+                                    {{ criterion.total_value }}
                                     <span class="unit">{% trans "Points" %}</span>
                                   </span>
                                 </span>
