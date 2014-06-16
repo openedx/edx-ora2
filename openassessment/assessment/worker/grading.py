@@ -234,7 +234,7 @@ def _log_start_reschedule_grading(course_id=None, item_id=None):
         u"course_id:{}".format(course_id),
         u"item_id:{}".format(item_id),
     ]
-    dog_stats_api.increment('openassessment.assessment.ai_task.AIRescheduleGrading.scheduled_count', tags)
+    dog_stats_api.increment('openassessment.assessment.ai_task.AIRescheduleGrading.scheduled_count', tags=tags)
 
     msg = u"Rescheduling of incomplete grading tasks began for course_id={cid} and item_id={iid}"
     logger.info(msg.format(cid=course_id, iid=item_id))
@@ -260,8 +260,8 @@ def _log_complete_reschedule_grading(course_id=None, item_id=None, seconds=-1, s
         u"success:{}".format(success)
     ]
 
-    dog_stats_api.histogram('openassessment.assessment.ai_task.AIRescheduleGrading.turnaround_time', seconds,tags)
-    dog_stats_api.increment('openassessment.assessment.ai_task.AIRescheduleGrading.completed_count', tags)
+    dog_stats_api.histogram('openassessment.assessment.ai_task.AIRescheduleGrading.turnaround_time', seconds, tags=tags)
+    dog_stats_api.increment('openassessment.assessment.ai_task.AIRescheduleGrading.completed_count', tags=tags)
 
     msg = u"Rescheduling of incomplete grading tasks for course_id={cid} and item_id={iid} completed in {s} seconds."
     if not success:
