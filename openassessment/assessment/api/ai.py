@@ -138,27 +138,13 @@ def on_init(submission_uuid, rubric=None, algorithm_id=None):
         logger.exception(msg)
         raise AIGradingInternalError(msg)
 
-    try:
-        classifier_set_candidates = AIClassifierSet.objects.filter(
-            rubric=workflow.rubric, algorithm_id=algorithm_id
-        )[:1]
-    except DatabaseError as ex:
-        msg = (
-            u"An unexpected error occurred while scheduling the "
-            u"AI grading task for the submission with UUID {uuid}: {ex}"
-        ).format(uuid=submission_uuid, ex=ex)
-        raise AIGradingInternalError(msg)
-
     # If we find classifiers for this rubric/algorithm
     # then associate the classifiers with the workflow
     # and schedule a grading task.
     # Otherwise, the task will need to be scheduled later,
     # once the classifiers have been trained.
-
-    if len(classifier_set_candidates) > 0:
-        workflow.classifier_set = classifier_set_candidates[0]
+    if workflow.classifier_set is not None:
         try:
-            workflow.save()
             grading_tasks.grade_essay.apply_async(args=[workflow.uuid])
             logger.info((
                 u"Scheduled grading task for AI grading workflow with UUID {workflow_uuid} "
