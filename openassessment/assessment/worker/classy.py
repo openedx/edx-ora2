@@ -5,6 +5,7 @@ import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.svm import SVC
 from sklearn.pipeline import FeatureUnion
+from sklearn.grid_search import GridSearchCV
 import nltk
 from .algorithm import AIAlgorithm
 
@@ -67,11 +68,14 @@ class ClassyAlgorithm(AIAlgorithm):
         ])
         transformed = pipeline.fit_transform([example.text for example in examples])
         scores = [example.score for example in examples]
-        classifier = SVC()
-        classifier.fit(transformed, scores)
+        params = {
+            'C': 10.0 ** np.arange(-2, 5),
+        }
+        grid_search = GridSearchCV(SVC(), param_grid=params)
+        grid_search.fit(transformed, scores)
         return {
             'pipeline': pickle.dumps(pipeline),
-            'classifier': pickle.dumps(classifier),
+            'classifier': pickle.dumps(grid_search.best_estimator_),
             'min_score': min(scores)
         }
 
@@ -99,9 +103,5 @@ class ClassyAlgorithm(AIAlgorithm):
             transformed = vectorizer.transform([text])
             cache['transformed'] = transformed
 
-        classifier_obj = cache.get('classifier')
-        if classifier_obj is None:
-            classifier_obj = pickle.loads(classifier['classifier'])
-            cache['classifier'] = classifier_obj
-
+        classifier_obj = pickle.loads(classifier['classifier'])
         return classifier_obj.predict(transformed)[0]
