@@ -134,8 +134,8 @@ def validate_assessments(assessments, current_assessments, is_released):
         # Example-based assessment MUST specify 'ease' as the algorithm ID,
         # at least for now.  Later, we may make this more flexible.
         if assessment_dict.get('name') == 'example-based-assessment':
-            if assessment_dict.get('algorithm_id') not in ['ease', 'fake']:
-                return (False, _('The "algorithm_id" value must be set to "ease" or "fake"'))
+            if assessment_dict.get('algorithm_id') not in ['ease', 'classy', 'fake']:
+                return (False, _('The "algorithm_id" value must be set to "ease", "classy", or "fake"'))
 
     if is_released:
         if len(assessments) != len(current_assessments):

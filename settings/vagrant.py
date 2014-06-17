@@ -113,12 +113,6 @@ LOGGING = {
 # Store uploaded files in a dev-specific directory
 MEDIA_ROOT = os.path.join(BASE_DIR, 'storage/dev')
 
-# AI algorithm configuration
-ORA2_AI_ALGORITHMS = {
-    'fake': 'openassessment.assessment.worker.algorithm.FakeAIAlgorithm',
-    'ease': 'openassessment.assessment.worker.algorithm.EaseAIAlgorithm'
-}
-
 # Celery Broker
 CELERY_BROKER_TRANSPORT = "amqp"
 CELERY_BROKER_HOSTNAME = "localhost:5672//"

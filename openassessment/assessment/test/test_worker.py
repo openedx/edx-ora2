@@ -31,7 +31,7 @@ class StubAIAlgorithm(AIAlgorithm):
     def train_classifier(self, examples):
         return {}
 
-    def score(self, text, classifier, cache):
+    def score(self, text, classifier, cache, temp_cache):
         return 0
 
 
@@ -42,7 +42,7 @@ class ErrorStubAIAlgorithm(AIAlgorithm):
     def train_classifier(self, examples):
         raise TrainingError("Test error!")
 
-    def score(self, text, classifier, cache):
+    def score(self, text, classifier, cache, temp_cache):
         raise ScoreError("Test error!")
 
 
@@ -55,7 +55,7 @@ class InvalidScoreAlgorithm(AIAlgorithm):
     def train_classifier(self, examples):
         return {}
 
-    def score(self, text, classifier, cache):
+    def score(self, text, classifier, cache, temp_cache):
         return self.SCORE_CYCLE.next()
 
 

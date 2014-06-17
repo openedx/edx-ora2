@@ -6,13 +6,13 @@ import json
 import logging
 from django.conf import settings
 from django.core.files.base import ContentFile
-from django.core.cache import cache, get_cache
+from django.core.cache import cache
 from django.db import models, transaction, DatabaseError
 from django.utils.timezone import now
 from django_extensions.db.fields import UUIDField
 from dogapi import dog_stats_api
 from submissions import api as sub_api
-from openassessment.assessment.serializers import rubric_from_dict
+from openassessment.cache import FastCache
 from .base import Rubric, Criterion, Assessment, AssessmentPart
 from .training import TrainingExample
 
@@ -20,17 +20,6 @@ from .training import TrainingExample
 AI_ASSESSMENT_TYPE = "AI"
 
 logger = logging.getLogger(__name__)
-
-
-# Use an in-memory cache to hold classifier data, but allow settings to override this.
-# The classifier data will generally be larger than memcached's default max size
-CLASSIFIERS_CACHE = getattr(
-    settings, 'ORA2_CLASSIFIERS_CACHE',
-    get_cache(
-        'django.core.cache.backends.locmem.LocMemCache',
-        LOCATION='openassessment.ai.classifiers_dict'
-    )
-)
 
 
 class IncompleteClassifierSet(Exception):
@@ -263,17 +252,17 @@ class AIClassifierSet(models.Model):
         # If we get to this point, no classifiers exist with this rubric and algorithm.
         return None
 
-    # Number of seconds to store downloaded classifiers in the in-memory cache.
-    DEFAULT_CLASSIFIER_CACHE_TIMEOUT = 300
-
     @property
     def classifiers_dict(self):
         """
         Return all classifiers in this classifier set in a dictionary
-        that maps criteria names to classifier data.
+        that maps criteria names to classifier data and valid scores.
 
         Returns:
-            dict: keys are criteria names, values are JSON-serializable classifier data
+            dict: keys are criteria names, values are dictionaries with keys
+                'data' (the serialized classifier data)
+                'valid_scores' (list of integers)
+
             If there are no classifiers in the set, returns None
 
         """
@@ -281,20 +270,22 @@ class AIClassifierSet(models.Model):
         # We use an in-memory cache because the classifier data will most often
         # be several megabytes, which exceeds the default memcached size limit.
         # If we find it, we can avoid calls to the database, S3, and json.
-        cache_key = unicode(self.id)
-        classifiers_dict = CLASSIFIERS_CACHE.get(cache_key)
+        cache_key = u"ora2.ai.classifier_set.classifiers_dict.{pk}".format(pk=self.pk)
+        fast_cache = FastCache()
+        classifiers_dict = fast_cache.get(cache_key)
 
         # If we can't find the classifiers dict in the cache,
         # we need to look up the classifiers in the database,
         # then download the classifier data.
         if classifiers_dict is None:
-            classifiers = list(self.classifiers.all())  # pylint: disable=E1101
             classifiers_dict = {
-                classifier.criterion.name: classifier.download_classifier_data()
-                for classifier in classifiers
+                classifier.criterion.name: {
+                    'data': classifier.download_classifier_data(),
+                    'valid_scores': classifier.valid_scores,
+                }
+                for classifier in self.classifiers.select_related().all()   # pylint: disable=E1101
             }
-            timeout = getattr(settings, 'ORA2_CLASSIFIER_CACHE_TIMEOUT', self.DEFAULT_CLASSIFIER_CACHE_TIMEOUT)
-            CLASSIFIERS_CACHE.set(cache_key, classifiers_dict, timeout)
+            fast_cache.set(cache_key, classifiers_dict)
 
         return classifiers_dict if classifiers_dict else None
 
@@ -378,12 +369,7 @@ class AIClassifier(models.Model):
             list of integer scores, in ascending order.
 
         """
-        cache_key = u"openassessment.assessment.ai.classifier.{pk}.valid_scores".format(pk=self.pk)
-        valid_scores = cache.get(cache_key)
-        if valid_scores is None:
-            valid_scores = sorted([option.points for option in self.criterion.options.all()])
-            cache.set(cache_key, valid_scores)
-        return valid_scores
+        return sorted([option.points for option in self.criterion.options.all()])
 
 
 class AIWorkflow(models.Model):
@@ -707,6 +693,8 @@ class AIGradingWorkflow(AIWorkflow):
         submission = sub_api.get_submission_and_student(submission_uuid)
 
         # Get or create the rubric
+        # (import the function here to avoid a circular dependency)
+        from openassessment.assessment.serializers import rubric_from_dict
         rubric = rubric_from_dict(rubric_dict)
 
         # Retrieve the submission text

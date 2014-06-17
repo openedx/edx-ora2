@@ -8,12 +8,13 @@ from django.db import DatabaseError
 from django.conf import settings
 from celery.utils.log import get_task_logger
 from dogapi import dog_stats_api
+from openassessment.cache import FastCache, TempCache
 from openassessment.assessment.api import ai_worker as ai_worker_api
 from openassessment.assessment.errors import (
     AIError, AIGradingInternalError, AIReschedulingInternalError, ANTICIPATED_CELERY_ERRORS
 )
-from .algorithm import AIAlgorithm, AIAlgorithmError
 from openassessment.assessment.models.ai import AIGradingWorkflow
+from .algorithm import AIAlgorithm, AIAlgorithmError
 
 MAX_RETRIES = 2
 
@@ -92,13 +93,12 @@ def grade_essay(workflow_uuid):
         raise grade_essay.retry()
 
     # Use the algorithm to evaluate the essay for each criterion
-    # Provide an in-memory cache so the algorithm can re-use
-    # results for multiple rubric criteria.
     try:
-        cache = dict()
+        cache = FastCache()
+        temp_cache = TempCache()
         scores_by_criterion = {
             criterion_name: _closest_valid_score(
-                algorithm.score(essay_text, classifier, cache),
+                algorithm.score(essay_text, classifier, cache, temp_cache),
                 valid_scores[criterion_name]
             )
             for criterion_name, classifier in classifier_set.iteritems()

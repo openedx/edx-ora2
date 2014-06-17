@@ -1,8 +1,9 @@
 """
 Test utilities
 """
-from django.core.cache import cache, get_cache
+from django.core.cache import cache
 from django.test import TestCase
+from openassessment.cache import FastCache
 
 
 class CacheResetTest(TestCase):
@@ -22,7 +23,4 @@ class CacheResetTest(TestCase):
         Clear the default cache and any custom caches.
         """
         cache.clear()
-        get_cache(
-            'django.core.cache.backends.locmem.LocMemCache',
-            LOCATION='openassessment.ai.classifiers_dict'
-        ).clear()
+        FastCache().clear()

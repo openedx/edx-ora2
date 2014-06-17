@@ -239,7 +239,7 @@ class AIWorkerGradingTest(CacheResetTest):
 
         # The second time through we should be caching the queries
         # to determine the valid scores for a classifier
-        with self.assertNumQueries(3):
+        with self.assertNumQueries(2):
             ai_worker_api.get_grading_task_params(self.workflow_uuid)
 
     def test_get_grading_task_params_no_workflow(self):

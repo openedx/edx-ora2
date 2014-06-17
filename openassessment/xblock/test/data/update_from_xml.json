@@ -943,7 +943,7 @@
                 "name": "example-based-assessment",
                 "start": null,
                 "due": null,
-                "algorithm_id": "ease",
+                "algorithm_id": "classy",
                 "examples": [
                     {
                         "answer": "тєѕт αηѕωєя",
