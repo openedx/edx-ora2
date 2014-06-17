@@ -62,13 +62,8 @@ class ClassyAlgorithm(AIAlgorithm):
 
         """
         pipeline = FeatureUnion([
-            ('tfid', TfidfVectorizer(
-                tokenizer=stemmer,
-                min_df=1,
-                ngram_range=(1, 2),
-                stop_words='english'
-            )),
-            ('pos', CountVectorizer(tokenizer=tokenizer, ngram_range=(1, 2)))
+            ('tfid', TfidfVectorizer(tokenizer=stemmer, min_df=1, ngram_range=(1, 2), stop_words='english')),
+            ('pos', CountVectorizer(tokenizer=tokenizer, ngram_range=(2, 3)))
         ])
         transformed = pipeline.fit_transform([example.text for example in examples])
         scores = [example.score for example in examples]
