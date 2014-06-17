@@ -3,8 +3,9 @@ Errors related to AI assessment.
 """
 
 from celery.exceptions import InvalidTaskError, NotConfigured, NotRegistered, QueueNotFound
+from socket import error as socket_error
 
-ANTICIPATED_CELERY_ERRORS = (InvalidTaskError, NotConfigured, NotRegistered, QueueNotFound)
+ANTICIPATED_CELERY_ERRORS = (InvalidTaskError, NotConfigured, NotRegistered, QueueNotFound, socket_error)
 
 class AIError(Exception):
     """
