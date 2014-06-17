@@ -6,7 +6,7 @@ import json
 import logging
 from django.conf import settings
 from django.core.files.base import ContentFile
-from django.core.cache import cache
+from django.core.cache import cache, get_cache
 from django.db import models, transaction, DatabaseError
 from django.utils.timezone import now
 from django_extensions.db.fields import UUIDField
@@ -20,6 +20,17 @@ from .training import TrainingExample
 AI_ASSESSMENT_TYPE = "AI"
 
 logger = logging.getLogger(__name__)
+
+
+# Use an in-memory cache to hold classifier data, but allow settings to override this.
+# The classifier data will generally be larger than memcached's default max size
+CLASSIFIERS_CACHE = getattr(
+    settings, 'ORA2_CLASSIFIERS_CACHE',
+    get_cache(
+        'django.core.cache.backends.locmem.LocMemCache',
+        LOCATION='openassessment.ai.classifiers_dict'
+    )
+)
 
 
 class IncompleteClassifierSet(Exception):
@@ -252,6 +263,9 @@ class AIClassifierSet(models.Model):
         # If we get to this point, no classifiers exist with this rubric and algorithm.
         return None
 
+    # Number of seconds to store downloaded classifiers in the in-memory cache.
+    DEFAULT_CLASSIFIER_CACHE_TIMEOUT = 300
+
     @property
     def classifiers_dict(self):
         """
@@ -263,14 +277,26 @@ class AIClassifierSet(models.Model):
             If there are no classifiers in the set, returns None
 
         """
-        classifiers = list(self.classifiers.all())  # pylint: disable=E1101
-        if len(classifiers) == 0:
-            return None
-        else:
-            return {
+        # First check the in-memory cache
+        # We use an in-memory cache because the classifier data will most often
+        # be several megabytes, which exceeds the default memcached size limit.
+        # If we find it, we can avoid calls to the database, S3, and json.
+        cache_key = unicode(self.id)
+        classifiers_dict = CLASSIFIERS_CACHE.get(cache_key)
+
+        # If we can't find the classifiers dict in the cache,
+        # we need to look up the classifiers in the database,
+        # then download the classifier data.
+        if classifiers_dict is None:
+            classifiers = list(self.classifiers.all())  # pylint: disable=E1101
+            classifiers_dict = {
                 classifier.criterion.name: classifier.download_classifier_data()
                 for classifier in classifiers
             }
+            timeout = getattr(settings, 'ORA2_CLASSIFIER_CACHE_TIMEOUT', self.DEFAULT_CLASSIFIER_CACHE_TIMEOUT)
+            CLASSIFIERS_CACHE.set(cache_key, classifiers_dict, timeout)
+
+        return classifiers_dict if classifiers_dict else None
 
 
 # Directory in which classifiers will be stored
