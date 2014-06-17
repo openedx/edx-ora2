@@ -223,21 +223,6 @@
 
   .wrapper--metadata {
     display: block;
-
-    @include media($bp-dm) {
-      @include span-columns(8 of 12);
-      margin-bottom: 0;
-    }
-
-    @include media($bp-dl) {
-      @include span-columns(8 of 12);
-      margin-bottom: 0;
-    }
-
-    @include media($bp-dx) {
-      @include span-columns(8 of 12);
-      margin-bottom: 0;
-    }
   }
 
   .answer__tip, .answer__points {
@@ -251,24 +236,6 @@
     margin-right: $baseline-v;
     color: $copy-secondary-color;
 
-    @include media($bp-dm) {
-      @include span-columns(6 of 8);
-      float: left;
-      margin-bottom: 0;
-    }
-
-    @include media($bp-dl) {
-      @include span-columns(6 of 8);
-      float: left;
-      margin-bottom: 0;
-    }
-
-    @include media($bp-dx) {
-      @include span-columns(6 of 8);
-      float: left;
-      margin-bottom: 0;
-    }
-
     &:after {
       content: "";
     }
@@ -277,21 +244,6 @@
   .answer__points {
     @extend %t-score;
     color: $copy-secondary-color;
-
-    @include media($bp-dm) {
-      float: right;
-      text-align: right;
-    }
-
-    @include media($bp-dl) {
-      float: right;
-      text-align: right;
-    }
-
-    @include media($bp-dx) {
-      float: right;
-      text-align: right;
-    }
   }
 
   .answer__points__label {
