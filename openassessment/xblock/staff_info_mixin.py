@@ -3,22 +3,78 @@ The Staff Info View mixin renders all the staff-specific information used to
 determine the flow of the problem.
 """
 import copy
+from functools import wraps
 from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy
 
 from xblock.core import XBlock
-from openassessment.assessment.errors.ai import AIError, AIGradingInternalError, AITrainingInternalError
+from openassessment.assessment.errors.ai import AIError
 from openassessment.xblock.resolve_dates import DISTANT_PAST, DISTANT_FUTURE
-from openassessment.xblock.data_conversion import create_rubric_dict, convert_training_examples_list_to_dict
+from openassessment.xblock.data_conversion import (
+    create_rubric_dict, convert_training_examples_list_to_dict
+)
 from submissions import api as submission_api
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 from openassessment.assessment.api import ai as ai_api
 
 
+def require_global_admin(error_msg):
+    """
+    Method decorator to restrict access to an XBlock handler
+    to only global staff.
+
+    Args:
+        error_msg (unicode): The error message to display to the user
+        if they do not have sufficient permissions.
+
+    Returns:
+        Decorated function
+
+    """
+    def _decorator(func):   # pylint: disable=C0111
+        @wraps(func)
+        def _wrapped(xblock, *args, **kwargs):  # pylint: disable=C0111
+            if not xblock.is_admin or xblock.in_studio_preview:
+                return {'success': False, 'msg': unicode(error_msg)}
+            else:
+                return func(xblock, *args, **kwargs)
+        return _wrapped
+    return _decorator
+
+
+def require_course_staff(error_msg):
+    """
+    Method decorator to restrict access to an XBlock render
+    method to only course staff.
+
+    Args:
+        error_msg (unicode): The error message to display to the user
+        if they do not have sufficient permissions.
+
+    Returns:
+        decorated function
+
+    """
+    def _decorator(func):  # pylint: disable=C0111
+        @wraps(func)
+        def _wrapped(xblock, *args, **kwargs):  # pylint: disable=C0111
+            if not xblock.is_course_staff or xblock.in_studio_preview:
+                return xblock.render_error(unicode(error_msg))
+            else:
+                return func(xblock, *args, **kwargs)
+        return _wrapped
+    return _decorator
+
+
 class StaffInfoMixin(object):
+    """
+    Display debug information to course and global staff.
+    """
 
     @XBlock.handler
-    def render_staff_info(self, data, suffix=''):
+    @require_course_staff(ugettext_lazy(u"You do not have permission to access staff information"))
+    def render_staff_info(self, data, suffix=''):   # pylint: disable=W0613
         """
         Template context dictionary for course staff debug panel.
 
@@ -26,12 +82,6 @@ class StaffInfoMixin(object):
             dict: The template context specific to the course staff debug panel.
 
         """
-        # If we're not course staff, or in preview mode, return nothing for the
-        # staff info view.
-        if not self.is_course_staff or self.in_studio_preview:
-            return self.render_error(_(
-                u"You do not have permission to access staff information"
-            ))
         path, context = self.get_staff_path_and_context()
         return self.render_assessment(path, context)
 
@@ -42,6 +92,13 @@ class StaffInfoMixin(object):
         context = {}
         path = 'openassessmentblock/staff_debug/staff_debug.html'
 
+        student_item = self.get_student_item_dict()
+
+        # We need to display the new-style locations in the course staff
+        # info, even if we're using old-style locations internally,
+        # so course staff can use the locations to delete student state.
+        context['item_id'] = student_item["item_id"]
+
         # Calculate how many students are in each step of the workflow
         status_counts, num_submissions = self.get_workflow_status_counts()
         context['status_counts'] = status_counts
@@ -49,18 +106,21 @@ class StaffInfoMixin(object):
 
         # Show the schedule training button if example based assessment is
         # configured, and the current user has admin privileges.
-        assessment = self.get_assessment_module('example-based-assessment')
-        context['display_schedule_training'] = self.is_admin and assessment
-
-        # Show the reschedule tasks button if the user is an administrator and
-        # is not in studio preview mode and there exists example based assessment
-        # as part of the problem definition.
-        context['display_reschedule_unfinished_tasks'] = self.is_admin and assessment and not self.in_studio_preview
-
-        # We need to display the new-style locations in the course staff
-        # info, even if we're using old-style locations internally,
-        # so course staff can use the locations to delete student state.
-        context['item_id'] = self.get_student_item_dict()["item_id"]
+        example_based_assessment = self.get_assessment_module('example-based-assessment')
+        display_ai_staff_info = (
+            self.is_admin and
+            bool(example_based_assessment) and
+            not self.in_studio_preview
+        )
+        context['display_schedule_training'] = display_ai_staff_info
+        context['display_reschedule_unfinished_tasks'] = display_ai_staff_info
+        if display_ai_staff_info:
+            context['classifierset'] = ai_api.get_classifier_set_info(
+                create_rubric_dict(self.prompt, self.rubric_criteria),
+                example_based_assessment['algorithm_id'],
+                student_item['course_id'],
+                student_item['item_id']
+            )
 
         # Include release/due dates for each step in the problem
         context['step_dates'] = list()
@@ -82,13 +142,11 @@ class StaffInfoMixin(object):
         return path, context
 
     @XBlock.json_handler
-    def schedule_training(self, data, suffix=''):
-        if not self.is_admin or self.in_studio_preview:
-            return {
-                'success': False,
-                'msg': _(u"You do not have permission to schedule training")
-            }
-
+    @require_global_admin(ugettext_lazy(u"You do not have permission to schedule training"))
+    def schedule_training(self, data, suffix=''):   # pylint: disable=W0613
+        """
+        Schedule a new training task for example-based grading.
+        """
         assessment = self.get_assessment_module('example-based-assessment')
         student_item_dict = self.get_student_item_dict()
 
@@ -105,12 +163,12 @@ class StaffInfoMixin(object):
                 return {
                     'success': True,
                     'workflow_uuid': workflow_uuid,
-                    'msg': _(u"Training scheduled with new Workflow UUID: {}".format(workflow_uuid))
+                    'msg': _(u"Training scheduled with new Workflow UUID: {uuid}".format(uuid=workflow_uuid))
                 }
             except AIError as err:
                 return {
                     'success': False,
-                    'msg': _(u"An error occurred scheduling classifier training {}".format(err))
+                    'msg': _(u"An error occurred scheduling classifier training: {error}".format(error=err))
                 }
 
         else:
@@ -120,7 +178,8 @@ class StaffInfoMixin(object):
             }
 
     @XBlock.handler
-    def render_student_info(self, data, suffix=''):
+    @require_course_staff(ugettext_lazy(u"You do not have permission to access student information."))
+    def render_student_info(self, data, suffix=''): # pylint: disable=W0613
         """
         Renders all relative information for a specific student's workflow.
 
@@ -130,14 +189,6 @@ class StaffInfoMixin(object):
         Must be course staff to render this view.
 
         """
-        # If request does not come from course staff, return nothing.
-        # This should not be able to happen unless someone attempts to
-        # explicitly invoke this handler.
-        if not self.is_course_staff or self.in_studio_preview:
-            return self.render_error(_(
-                u"You do not have permission to access student information."
-            ))
-
         path, context = self.get_student_info_path_and_context(data)
         return self.render_assessment(path, context)
 
@@ -197,7 +248,8 @@ class StaffInfoMixin(object):
         return path, context
 
     @XBlock.json_handler
-    def reschedule_unfinished_tasks(self, data, suffix=''):
+    @require_global_admin(ugettext_lazy(u"You do not have permission to reschedule tasks."))
+    def reschedule_unfinished_tasks(self, data, suffix=''):  # pylint: disable=W0613
         """
         Wrapper which invokes the API call for rescheduling grading tasks.
 
@@ -215,14 +267,6 @@ class StaffInfoMixin(object):
                 'success': (bool) Indicates whether or not the tasks were rescheduled successfully
                 'msg': The response to the server (could be error message or success message)
         """
-
-        # Verifies permissions after the push of the button is made
-        if not self.is_admin or self.in_studio_preview:
-            return {
-                'success': False,
-                'msg': _(u"You do not have permission to reschedule tasks.")
-            }
-
         # Identifies the course and item that will need to be re-run
         student_item_dict = self.get_student_item_dict()
         course_id = student_item_dict.get('course_id')

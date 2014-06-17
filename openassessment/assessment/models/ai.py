@@ -4,18 +4,15 @@ Database models for AI assessment.
 from uuid import uuid4
 import json
 import logging
-import itertools
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.cache import cache
 from django.db import models, transaction, DatabaseError
 from django.utils.timezone import now
-from django.core.exceptions import ObjectDoesNotExist
 from django_extensions.db.fields import UUIDField
 from dogapi import dog_stats_api
 from submissions import api as sub_api
 from openassessment.assessment.serializers import rubric_from_dict
-from openassessment.assessment.errors.ai import AIReschedulingInternalError
 from .base import Rubric, Criterion, Assessment, AssessmentPart
 from .training import TrainingExample
 
@@ -176,6 +173,84 @@ class AIClassifierSet(models.Model):
                 raise ClassifierUploadError(msg)
 
         return classifier_set
+
+    @classmethod
+    def most_recent_classifier_set(cls, rubric, algorithm_id, course_id, item_id):
+        """
+        Finds the most relevant classifier set based on the following line of succession:
+
+            1 -- Classifier sets with the same COURSE, ITEM, RUBRIC *content* hash, and ALGORITHM
+                - Newest first.  If none exist...
+            2 -- Classifier sets with the same COURSE, ITEM, and RUBRIC *structure* hash, and ALGORITHM.
+                - Newest first.  If none exist...
+            3 -- The newest classifier set with the same RUBRIC and ALGORITHM
+                - Newest first.  If none exist...
+            4 -- Do no assignment and return False
+
+        Case #1 is ideal: we get a classifier set trained for the rubric as currently defined.
+
+        Case #2 handles when a course author makes a cosmetic change to a rubric after training.
+            We don't want to stop grading students because an author fixed a typo!
+
+        Case #3 handles problems that are duplicated, such as the default problem prompt.
+            If we've already trained classifiers for the identical rubric somewhere else,
+            then the author can use them to test out the feature immediately.
+
+        Case #4: Someone will need to schedule training; however, we will still accept
+            student submissions and grade them once training completes.
+
+        Args:
+            rubric (Rubric): The rubric associated with the classifier set.
+            algorithm_id (unicode): The algorithm used to create the classifier set.
+            course_id (unicode): The course identifier for the current problem.
+            item_id (unicode): The item identifier for the current problem.
+
+        Returns:
+            ClassifierSet or None
+
+        Raises:
+            DatabaseError
+
+        """
+        # List of the parameters we will search for, in order of decreasing priority
+        search_parameters = [
+            # Case #1: same course / item / rubric (exact) / algorithm
+            {
+                'rubric__content_hash': rubric.content_hash,
+                'algorithm_id': algorithm_id,
+                'course_id': course_id,
+                'item_id': item_id
+            },
+
+            # Case #2: same course / item / rubric (structure only) / algorithm
+            {
+                'rubric__structure_hash': rubric.structure_hash,  # pylint: disable=E1101
+                'algorithm_id': algorithm_id,
+                'course_id': course_id,
+                'item_id': item_id
+            },
+
+            # Case #3: same rubric (exact) / algorithm
+            {
+                'rubric__content_hash': rubric.content_hash,
+                'algorithm_id': algorithm_id
+            }
+        ]
+
+        # Perform each query, starting with the highest priority
+        for params in search_parameters:
+
+            # Retrieve the most recent classifier set that matches our query
+            # (rely on implicit ordering in the model definition)
+            classifier_set_candidates = cls.objects.filter(**params)[:1]
+
+            # If we find a classifier set,
+            # then associate the most recent classifiers with it and return true
+            if len(classifier_set_candidates) > 0:
+                return classifier_set_candidates[0]
+
+        # If we get to this point, no classifiers exist with this rubric and algorithm.
+        return None
 
     @property
     def classifiers_dict(self):
@@ -564,27 +639,7 @@ class AIGradingWorkflow(AIWorkflow):
 
     def assign_most_recent_classifier_set(self):
         """
-        Finds the most relevant classifier set based on the following line of succession:
-
-            1 -- Classifier sets with the same COURSE, ITEM, RUBRIC *content* hash, and ALGORITHM
-                - Newest first.  If none exist...
-            2 -- Classifier sets with the same COURSE, ITEM, and RUBRIC *structure* hash, and ALGORITHM.
-                - Newest first.  If none exist...
-            3 -- The newest classifier set with the same RUBRIC and ALGORITHM
-                - Newest first.  If none exist...
-            4 -- Do no assignment and return False
-
-        Case #1 is ideal: we get a classifier set trained for the rubric as currently defined.
-
-        Case #2 handles when a course author makes a cosmetic change to a rubric after training.
-            We don't want to stop grading students because an author fixed a typo!
-
-        Case #3 handles problems that are duplicated, such as the default problem prompt.
-            If we've already trained classifiers for the identical rubric somewhere else,
-            then the author can use them to test out the feature immediately.
-
-        Case #4: Someone will need to schedule training; however, we will still accept
-            student submissions and grade them once training completes.
+        Find the most recent classifier set and assign it to this workflow.
 
         Returns:
             (bool) indicates whether or not classifiers were able to be assigned to the AIGradingWorkflow
@@ -592,47 +647,13 @@ class AIGradingWorkflow(AIWorkflow):
         Raises:
             DatabaseError
         """
-        # List of the parameters we will search for, in order of decreasing priority
-        search_parameters = [
-            # Case #1: same course / item / rubric (exact) / algorithm
-            {
-                'rubric__content_hash': self.rubric.content_hash,
-                'algorithm_id': self.algorithm_id,
-                'course_id': self.course_id,
-                'item_id': self.item_id
-            },
-
-            # Case #2: same course / item / rubric (structure only) / algorithm
-            {
-                'rubric__structure_hash': self.rubric.structure_hash,  # pylint: disable=E1101
-                'algorithm_id': self.algorithm_id,
-                'course_id': self.course_id,
-                'item_id': self.item_id
-            },
-
-            # Case #3: same rubric (exact) / algorithm
-            {
-                'rubric__content_hash': self.rubric.content_hash,
-                'algorithm_id': self.algorithm_id
-            }
-        ]
-
-        # Perform each query, starting with the highest priority
-        for params in search_parameters:
-
-            # Retrieve the most recent classifier set that matches our query
-            # (rely on implicit ordering in the model definition)
-            classifier_set_candidates = AIClassifierSet.objects.filter(**params)[:1]
-
-            # If we find a classifier set,
-            # then associate the most recent classifiers with it and return true
-            if len(classifier_set_candidates) > 0:
-                self.classifier_set = classifier_set_candidates[0]
-                self.save()
-                return True
-
-        # If we get to this point, no classifiers exist with this rubric and algorithm.
-        return False
+        classifier_set = AIClassifierSet.most_recent_classifier_set(
+            self.rubric, self.algorithm_id, self.course_id, self.item_id
+        )
+        if classifier_set is not None:
+            self.classifier_set = classifier_set
+            self.save()
+        return classifier_set is not None
 
     @classmethod
     @transaction.commit_on_success

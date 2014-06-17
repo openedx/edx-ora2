@@ -4,11 +4,9 @@ Public interface for AI training and grading, used by students/course authors.
 import logging
 from django.db import DatabaseError
 from submissions import api as sub_api
-from celery.exceptions import (
-    ChordError, InvalidTaskError, NotConfigured, NotRegistered, QueueNotFound, TaskRevokedError
-)
 from openassessment.assessment.serializers import (
-    deserialize_training_examples, InvalidTrainingExample, InvalidRubric, full_assessment_dict
+    deserialize_training_examples, rubric_from_dict,
+    InvalidTrainingExample, InvalidRubric, full_assessment_dict
 )
 from openassessment.assessment.errors import (
     AITrainingRequestError, AITrainingInternalError, AIGradingRequestError,
@@ -21,6 +19,7 @@ from openassessment.assessment.models import (
 )
 from openassessment.assessment.worker import training as training_tasks
 from openassessment.assessment.worker import grading as grading_tasks
+
 
 logger = logging.getLogger(__name__)
 
@@ -347,3 +346,45 @@ def reschedule_unfinished_tasks(course_id=None, item_id=None, task_type=u"grade"
             ).format(cid=course_id, iid=item_id, ex=ex)
             logger.exception(msg)
             raise AIGradingInternalError(ex)
+
+
+def get_classifier_set_info(rubric_dict, algorithm_id, course_id, item_id):
+    """
+    Get information about the classifier available for a particular problem.
+    This is the classifier that would be selected to grade essays for the problem.
+
+    Args:
+        rubric_dict (dict): The serialized rubric model.
+        algorithm_id (unicode): The algorithm to use for classification.
+        course_id (unicode): The course identifier for the current problem.
+        item_id (unicode): The item identifier for the current problem.
+
+    Returns:
+        dict with keys 'created_at', 'algorithm_id', 'course_id', and 'item_id'
+        Note that course ID and item ID might be different than the current problem
+        if a classifier from a different problem with a similar rubric
+        is the best available match.
+
+    """
+    try:
+        rubric = rubric_from_dict(rubric_dict)
+        classifier_set = AIClassifierSet.most_recent_classifier_set(
+            rubric, algorithm_id, course_id, item_id
+        )
+        if classifier_set is not None:
+            return {
+                'created_at': classifier_set.created_at,
+                'algorithm_id': classifier_set.algorithm_id,
+                'course_id': classifier_set.course_id,
+                'item_id': classifier_set.item_id
+            }
+        else:
+            return None
+    except InvalidRubric:
+        msg = u"Could not retrieve classifier set info: the rubric definition was not valid."
+        logger.exception(msg)
+        raise AIGradingRequestError(msg)
+    except DatabaseError as ex:
+        msg = u"An unexpected error occurred while retrieving classifier set info: {ex}".format(ex=ex)
+        logger.exception(msg)
+        raise AIGradingInternalError(msg)

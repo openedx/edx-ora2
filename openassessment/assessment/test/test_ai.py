@@ -5,17 +5,15 @@ Tests for AI assessment.
 import copy
 import mock
 from nose.tools import raises
-from celery.exceptions import NotConfigured, InvalidTaskError
+from celery.exceptions import NotConfigured
 from django.db import DatabaseError
 from django.test.utils import override_settings
 from openassessment.test_utils import CacheResetTest
 from submissions import api as sub_api
 from openassessment.assessment.api import ai as ai_api
-
 from openassessment.assessment.models import (
     AITrainingWorkflow, AIGradingWorkflow, AIClassifierSet, Assessment
 )
-
 from openassessment.assessment.models import AITrainingWorkflow, AIGradingWorkflow, AIClassifierSet
 from openassessment.assessment.worker.algorithm import AIAlgorithm, AIAlgorithmError
 from openassessment.assessment.serializers import rubric_from_dict
@@ -531,3 +529,68 @@ class AIAutomaticGradingTest(CacheResetTest):
             return False
         except StopIteration:
             return True
+
+
+class AIClassifierInfoTest(CacheResetTest):
+    """
+    Tests for retrieving info about classifier sets.
+    """
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_no_classifier_set(self):
+        classifier_info = ai_api.get_classifier_set_info(
+            RUBRIC, ALGORITHM_ID, 'test_course', 'test_item'
+        )
+        self.assertIs(classifier_info, None)
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_classifier_set_info(self):
+        workflow_uuid = ai_api.train_classifiers(
+            RUBRIC, EXAMPLES, 'test_course', 'test_item', ALGORITHM_ID
+        )
+        classifier_info = ai_api.get_classifier_set_info(
+            RUBRIC, ALGORITHM_ID, 'test_course', 'test_item'
+        )
+
+        # Retrieve the classifier set so we can get its actual creation date
+        workflow = AITrainingWorkflow.objects.get(uuid=workflow_uuid)
+        classifier_set = workflow.classifier_set
+        expected_info = {
+            'created_at': classifier_set.created_at,
+            'algorithm_id': ALGORITHM_ID,
+            'course_id': 'test_course',
+            'item_id': 'test_item'
+        }
+        self.assertEqual(classifier_info, expected_info)
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_multiple_classifier_sets(self):
+        # Train multiple classifiers
+        ai_api.train_classifiers(
+            RUBRIC, EXAMPLES, 'test_course', 'test_item', ALGORITHM_ID
+        )
+        second_uuid = ai_api.train_classifiers(
+            RUBRIC, EXAMPLES, 'test_course', 'test_item', ALGORITHM_ID
+        )
+
+        # Expect that we get the info for the second classifier
+        classifier_info = ai_api.get_classifier_set_info(
+            RUBRIC, ALGORITHM_ID, 'test_course', 'test_item'
+        )
+        workflow = AITrainingWorkflow.objects.get(uuid=second_uuid)
+        classifier_set = workflow.classifier_set
+        self.assertEqual(classifier_info['created_at'], classifier_set.created_at)
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    @raises(AIGradingInternalError)
+    @mock.patch.object(AIClassifierSet, 'most_recent_classifier_set')
+    def test_database_error(self, mock_call):
+        mock_call.side_effect = DatabaseError('OH NO!')
+        ai_api.get_classifier_set_info(
+            RUBRIC, ALGORITHM_ID, 'test_course', 'test_item'
+        )
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    @raises(AIGradingRequestError)
+    def test_invalid_rubric_error(self):
+        invalid_rubric = {}
+        ai_api.get_classifier_set_info(invalid_rubric, ALGORITHM_ID, 'test_course', 'test_item')

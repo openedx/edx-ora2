@@ -1,20 +1,22 @@
 # coding=utf-8
 from collections import namedtuple
-import pytz
 import json
+import datetime
 from mock import Mock, patch
 from django.test.utils import override_settings
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 from openassessment.assessment.api import ai as ai_api
 from openassessment.workflow import api as workflow_api
-from openassessment.assessment.errors.ai import AIError, AIGradingInternalError, AITrainingInternalError
+from openassessment.assessment.errors.ai import AIError, AIGradingInternalError
 from submissions import api as sub_api
 from openassessment.xblock.test.base import scenario, XBlockHandlerTestCase
-# Test dependency on Stub AI Algorithm configuration
-from openassessment.assessment.test.test_ai import (
-    ALGORITHM_ID, AI_ALGORITHMS, train_classifiers
-)
+
+ALGORITHM_ID = 'fake'
+
+AI_ALGORITHMS = {
+    'fake': 'openassessment.assessment.worker.algorithm.FakeAIAlgorithm'
+}
 
 STUDENT_ITEM = dict(
     student_id="Bob",
@@ -30,45 +32,6 @@ ASSESSMENT_DICT = {
         "Clear-headed": "Yogi Berra",
         "Form": "Reddit",
     },
-}
-
-EXAMPLE_BASED_ASSESSMENT = {
-    "name": "example-based-assessment",
-    "algorithm_id": "1",
-    "examples": [
-        {
-            "answer": "Foo",
-            "options_selected": [
-                {
-                    "criterion": "Ideas",
-                    "option": "Fair"
-                },
-                {
-                    "criterion": "Content",
-                    "option": "Good"
-                }
-            ]
-        },
-        {
-            "answer": "Bar",
-            "options_selected": [
-                {
-                    "criterion": "Ideas",
-                    "option": "Poor"
-                },
-                {
-                    "criterion": "Content",
-                    "option": "Good"
-                }
-            ]
-        }
-    ]
-}
-
-# Rubric-specific classifier score override
-CLASSIFIER_SCORE_OVERRIDES = {
-    u"Ideas": {'score_override': 1},
-    u"Content": {'score_override': 2}
 }
 
 
@@ -261,10 +224,10 @@ class TestCourseStaff(XBlockHandlerTestCase):
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @scenario('data/example_based_assessment.xml', user_id='Bob')
     def test_staff_debug_student_info_full_workflow(self, xblock):
-        # Train classifiers.
-        example_based_assessment = xblock.get_assessment_module('example-based-assessment')
-        example_based_assessment['algorithm_id'] = ALGORITHM_ID
-        train_classifiers({'criteria': xblock.rubric_criteria}, CLASSIFIER_SCORE_OVERRIDES)
+        # Simulate that we are course staff
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
 
         # Commonly chosen options for assessments
         options_selected = {
@@ -272,13 +235,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
             "Content": "Poor",
         }
 
-        # Simulate that we are course staff
-        xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, True, False, "Bob"
-        )
-
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
+
         # Create a submission for Bob, and corresponding workflow.
         submission = sub_api.create_submission(bob_item, {'text':"Bob Answer"})
         peer_api.on_start(submission["uuid"])
@@ -318,7 +277,6 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
     @scenario('data/example_based_assessment.xml', user_id='Bob')
     def test_display_schedule_training(self, xblock):
-        xblock.rubric_assessments.append(EXAMPLE_BASED_ASSESSMENT)
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, True, "Bob"
         )
@@ -329,20 +287,17 @@ class TestCourseStaff(XBlockHandlerTestCase):
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @scenario('data/example_based_assessment.xml', user_id='Bob')
     def test_schedule_training(self, xblock):
-        example_based_assessment = xblock.get_assessment_module('example-based-assessment')
-        example_based_assessment['algorithm_id'] = ALGORITHM_ID
-        train_classifiers({'criteria': xblock.rubric_criteria}, CLASSIFIER_SCORE_OVERRIDES)
-        xblock.rubric_assessments.append(EXAMPLE_BASED_ASSESSMENT)
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, True, "Bob"
         )
+
+        # Schedule training
         response = self.request(xblock, 'schedule_training', json.dumps({}), response_format='json')
         self.assertTrue(response['success'], msg=response.get('msg'))
         self.assertTrue('workflow_uuid' in response)
 
     @scenario('data/example_based_assessment.xml', user_id='Bob')
     def test_not_displaying_schedule_training(self, xblock):
-        xblock.rubric_assessments.append(EXAMPLE_BASED_ASSESSMENT)
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
@@ -363,7 +318,6 @@ class TestCourseStaff(XBlockHandlerTestCase):
     @scenario('data/example_based_assessment.xml', user_id='Bob')
     def test_admin_schedule_training_error(self, xblock, mock_api):
         mock_api.side_effect = AIError("Oh no!")
-        xblock.rubric_assessments.append(EXAMPLE_BASED_ASSESSMENT)
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, True, "Bob"
         )
@@ -373,7 +327,6 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
     @scenario('data/example_based_assessment.xml', user_id='Bob')
     def test_display_reschedule_unfinished_grading_tasks(self, xblock):
-        xblock.rubric_assessments.append(EXAMPLE_BASED_ASSESSMENT)
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, True, "Bob"
         )
@@ -424,6 +377,45 @@ class TestCourseStaff(XBlockHandlerTestCase):
         response = self.request(xblock, 'schedule_training', json.dumps({}), response_format='json')
         self.assertFalse(response['success'])
         self.assertTrue('not configured' in response['msg'])
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    @scenario('data/example_based_assessment.xml', user_id='Bob')
+    def test_classifier_set_info(self, xblock):
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, True, "Bob"
+        )
+
+        # Initially, there should be no classifier set info
+        # because we haven't trained any classifiers for this problem
+        __, context = xblock.get_staff_path_and_context()
+        self.assertIn('classifierset', context)
+        self.assertIs(context['classifierset'], None)
+
+        # Schedule a training task, which should create classifiers
+        response = self.request(xblock, 'schedule_training', json.dumps({}), response_format='json')
+        self.assertTrue(response['success'], msg=response.get('msg'))
+
+        # Now classifier info should be available in the context
+        __, context = xblock.get_staff_path_and_context()
+        self.assertIn('classifierset', context)
+        self.assertTrue(isinstance(context['classifierset']['created_at'], datetime.datetime))
+        self.assertEqual(context['classifierset']['algorithm_id'], ALGORITHM_ID)
+        self.assertEqual(context['classifierset']['course_id'], xblock.get_student_item_dict()['course_id'])
+        self.assertEqual(context['classifierset']['item_id'], xblock.get_student_item_dict()['item_id'])
+
+        # Verify that the classifier set appears in the rendered template
+        resp = self.request(xblock, 'render_staff_info', json.dumps({}))
+        self.assertIn("classifier set", resp.decode('utf-8').lower())
+        self.assertIn(ALGORITHM_ID, resp.decode('utf-8'))
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    @scenario('data/example_based_assessment.xml', user_id='Bob')
+    def test_classifier_set_info_hidden_for_course_staff(self, xblock):
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+        __, context = xblock.get_staff_path_and_context()
+        self.assertNotIn('classifierset', context)
 
     def _create_mock_runtime(self, item_id, is_staff, is_admin, anonymous_user_id):
         mock_runtime = Mock(
