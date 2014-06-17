@@ -1,6 +1,7 @@
 """
 """
 import pickle
+import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.svm import SVC
 from sklearn.pipeline import FeatureUnion
@@ -23,6 +24,8 @@ WORD_PATTERNS = [
     (r'.*ic$', 'JJ'),
     (r'.*est$', 'JJ'),
     (r'^a$', 'PREP'),
+    (r'.*s$', 'NNS'),
+    (r'.*', 'NN')
 ]
 
 
@@ -32,6 +35,11 @@ def tokenizer(text):
         tagged[1] if tagged[1] is not None else '?'
         for tagged in tagger.tag(nltk.word_tokenize(text))
     ]
+
+
+def stemmer(text):
+    stemmer = nltk.PorterStemmer()
+    return [stemmer.stem(token) for token in nltk.word_tokenize(text)]
 
 
 class ClassyAlgorithm(AIAlgorithm):
@@ -54,11 +62,15 @@ class ClassyAlgorithm(AIAlgorithm):
 
         """
         pipeline = FeatureUnion([
-            ('tfid', TfidfVectorizer(min_df=1, ngram_range=(1, 2), stop_words='english')),
+            ('tfid', TfidfVectorizer(
+                tokenizer=stemmer,
+                min_df=1,
+                ngram_range=(1, 2),
+                stop_words='english'
+            )),
             ('pos', CountVectorizer(tokenizer=tokenizer, ngram_range=(1, 2)))
         ])
         transformed = pipeline.fit_transform([example.text for example in examples])
-
         scores = [example.score for example in examples]
         classifier = SVC()
         classifier.fit(transformed, scores)
