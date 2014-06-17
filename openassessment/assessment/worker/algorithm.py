@@ -89,7 +89,7 @@ class AIAlgorithm(object):
         pass
 
     @abstractmethod
-    def score(self, text, classifier):
+    def score(self, text, classifier, cache):
         """
         Score an essay using a classifier.
 
@@ -97,6 +97,8 @@ class AIAlgorithm(object):
             text (unicode): The text to classify.
             classifier (JSON-serializable): A classifier, using the same format
                 as `train_classifier()`.
+            cache (dict): An in-memory cache that persists until all criteria
+                in the rubric have been scored.
 
         Raises:
             InvalidClassifier: The provided classifier cannot be used by this algorithm.
@@ -149,7 +151,7 @@ class FakeAIAlgorithm(AIAlgorithm):
         unique_sorted_scores = sorted(list(set(example.score for example in examples)))
         return {'scores': unique_sorted_scores}
 
-    def score(self, text, classifier):
+    def score(self, text, classifier, cache):
         """
         Choose a score for the essay deterministically based on its length.
         """
@@ -194,13 +196,15 @@ class EaseAIAlgorithm(AIAlgorithm):
         feature_ext, classifier = self._train_classifiers(examples)
         return self._serialize_classifiers(feature_ext, classifier)
 
-    def score(self, text, classifier):
+    def score(self, text, classifier, cache):
         """
         Score essays using EASE.
 
         Args:
             text (unicode): The essay text to score.
             classifier (dict): The serialized classifiers created during training.
+            cache (dict): An in-memory cache that persists until all criteria
+                in the rubric have been scored.
 
         Returns:
             int
@@ -211,46 +215,42 @@ class EaseAIAlgorithm(AIAlgorithm):
 
         """
         try:
-            from ease.grade import grade    # pylint:disable=F0401
+            from ease.essay_set import EssaySet    # pylint:disable=F0401
         except ImportError:
             msg = u"Could not import EASE to grade essays."
             raise ScoreError(msg)
 
         feature_extractor, score_classifier = self._deserialize_classifiers(classifier)
 
-        grader_input = {
-            'model': score_classifier,
-            'extractor': feature_extractor,
-            'prompt': ''
-        }
-
-        # EASE apparently can't handle non-ASCII unicode in the submission text
-        # (although, oddly, training runs without error)
-        # So we need to sanitize the input.
-        sanitized_text = text.encode('ascii', 'ignore')
-
+        # The following is a modified version of `ease.grade.grade()`,
+        # skipping things we don't use (cross-validation, feedback)
+        # and caching essay sets across criteria.  This allows us to
+        # avoid some expensive NLTK operations, particularly tagging
+        # parts of speech.
         try:
-            results = grade(grader_input, sanitized_text)
+            # Get the essay set from the cache or create it.
+            # Since all essays to be graded are assigned a dummy
+            # score of "0", we can safely re-use the essay set
+            # for each criterion in the rubric.
+            # EASE can't handle non-ASCII unicode, so we need
+            # to strip out non-ASCII chars.
+            essay_set = cache.get('grading_essay_set')
+            if essay_set is None:
+                essay_set = EssaySet(essaytype="test")
+                essay_set.add_essay(text.encode('ascii', 'ignore'), 0)
+                cache['grading_essay_set'] = essay_set
+
+            # Extract features from the text
+            features = feature_extractor.gen_feats(essay_set)
+
+            # Predict a score
+            return int(score_classifier.predict(features)[0])
         except:
             msg = (
                 u"An unexpected error occurred while using "
                 u"EASE to score an essay: {traceback}"
             ).format(traceback=traceback.format_exc())
             raise ScoreError(msg)
-
-        if not results.get('success', False):
-            msg = (
-                u"Errors occurred while scoring an essay "
-                u"using EASE: {errors}"
-            ).format(errors=results.get('errors', []))
-            raise ScoreError(msg)
-
-        score = results.get('score')
-        if score is None:
-            msg = u"Error retrieving the score from EASE"
-            raise ScoreError(msg)
-        return score
-
 
     def _train_classifiers(self, examples):
         """
