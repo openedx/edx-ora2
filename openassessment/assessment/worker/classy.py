@@ -38,11 +38,6 @@ def tokenizer(text):
     ]
 
 
-def stemmer(text):
-    stemmer = nltk.PorterStemmer()
-    return [stemmer.stem(token) for token in nltk.word_tokenize(text)]
-
-
 class ClassyAlgorithm(AIAlgorithm):
     """
     A super-classy text classification algorithm :)
@@ -63,7 +58,7 @@ class ClassyAlgorithm(AIAlgorithm):
 
         """
         pipeline = FeatureUnion([
-            ('tfid', TfidfVectorizer(tokenizer=stemmer, min_df=1, ngram_range=(1, 2), stop_words='english')),
+            ('tfid', TfidfVectorizer(min_df=1, ngram_range=(1, 2), stop_words='english')),
             ('pos', CountVectorizer(tokenizer=tokenizer, ngram_range=(2, 3)))
         ])
         transformed = pipeline.fit_transform([example.text for example in examples])
