@@ -128,6 +128,9 @@ def main():
         print "Usage: <INPUT EXAMPLES> <OUTPUT CSV>"
         sys.exit(1)
 
+    # For repeatability
+    random.seed(1)
+
     point_deltas_by_criterion = defaultdict(list)
     score_matrix = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0)))
     scores = defaultdict(lambda: defaultdict(lambda: 0))
