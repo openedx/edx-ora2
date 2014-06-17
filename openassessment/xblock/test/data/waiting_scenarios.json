@@ -7,12 +7,12 @@
     "waiting_for_ai": {
         "waiting_for_peer": false,
         "waiting_for_ai": true,
-        "expected_response": "example based assessment"
+        "expected_response": "example-based assessment"
     },
     "waiting_for_both": {
         "waiting_for_peer": true,
         "waiting_for_ai": true,
-        "expected_response": "peer assessment and example based assessment"
+        "expected_response": "peer assessment and example-based assessment"
     },
     "not_waiting": {
         "waiting_for_peer": false,
