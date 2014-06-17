@@ -103,7 +103,7 @@ Check for quality violations:
 
 .. code:: bash
 
-    pylint apps
+    pylint openassessment
 
 Disable quality violations on a line or file:
 
@@ -112,7 +112,6 @@ Disable quality violations on a line or file:
     # pylint: disable=W0123,E4567
 
 
-<<<<<<< HEAD
 Vagrant
 =======
 
