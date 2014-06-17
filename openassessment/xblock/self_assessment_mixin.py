@@ -84,6 +84,11 @@ class SelfAssessmentMixin(object):
                 context["rubric_criteria"] = self.rubric_criteria
                 context["estimated_time"] = "20 minutes"  # TODO: Need to configure this.
                 context["self_submission"] = submission
+
+                # Determine if file upload is supported for this XBlock.
+                context["allow_file_upload"] = self.allow_file_upload
+                context['self_file_url'] = self._get_download_url()
+
                 path = 'openassessmentblock/self/oa_self_assessment.html'
         else:
             # No submission yet or in peer assessment

@@ -25,6 +25,14 @@
                 <div class="submission__answer__display__content">
                     {{ student_submission.answer.text|linebreaks }}
                 </div>
+
+                {% if allow_file_upload and file_url %}
+                <h3 class="submission__answer__display__title">{% trans "Your Image" %}</h3>
+
+                <div class="submission__answer__display__image">
+                    <img class="submission--image" src="{{ file_url }}"/>
+                </div>
+                {% endif %}
             </article>
         </div>
     </div>

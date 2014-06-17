@@ -8,8 +8,9 @@ from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.errors import (
     PeerAssessmentRequestError, PeerAssessmentInternalError, PeerAssessmentWorkflowError
 )
-import openassessment.workflow.api as workflow_api
 from openassessment.workflow.errors import AssessmentWorkflowError
+from openassessment.fileupload import api as file_upload_api
+from openassessment.fileupload.api import FileUploadError
 
 from .resolve_dates import DISTANT_FUTURE
 
@@ -204,6 +205,10 @@ class PeerAssessmentMixin(object):
             if peer_sub:
                 path = 'openassessmentblock/peer/oa_peer_turbo_mode.html'
                 context_dict["peer_submission"] = peer_sub
+
+                # Determine if file upload is supported for this XBlock.
+                context_dict["allow_file_upload"] = self.allow_file_upload
+                context_dict["peer_file_url"] = self._get_peer_file_url(peer_sub)
             else:
                 path = 'openassessmentblock/peer/oa_peer_turbo_mode_waiting.html'
         elif reason == 'due' and problem_closed:
@@ -216,6 +221,9 @@ class PeerAssessmentMixin(object):
             if peer_sub:
                 path = 'openassessmentblock/peer/oa_peer_assessment.html'
                 context_dict["peer_submission"] = peer_sub
+                # Determine if file upload is supported for this XBlock.
+                context_dict["allow_file_upload"] = self.allow_file_upload
+                context_dict["peer_file_url"] = self._get_peer_file_url(peer_sub)
                 # Sets the XBlock boolean to signal to Message that it WAS NOT able to grab a submission
                 self.no_peers = False
             else:
@@ -259,6 +267,16 @@ class PeerAssessmentMixin(object):
             logger.exception(err)
 
         return peer_submission
+
+    def _get_peer_file_url(self, peer_submission):
+        url = ""
+        key = peer_submission['answer'].get('file_key', '')
+        try:
+            if key:
+                url = file_upload_api.get_download_url(key)
+        except FileUploadError:
+            logger.exception("Unable to generate download url for file key {}".format(key))
+        return url
 
     def _publish_peer_assessment_event(self, assessment):
         """

@@ -156,6 +156,7 @@ def _serialize_rubric(rubric_root, oa_block):
         feedback_prompt = etree.SubElement(rubric_root, 'feedbackprompt')
         feedback_prompt.text = unicode(oa_block.rubric_feedback_prompt)
 
+
 def _parse_date(date_str):
     """
     Attempt to parse a date string into ISO format (without milliseconds)
@@ -175,6 +176,21 @@ def _parse_date(date_str):
         return unicode(formatted_date)
     except (TypeError, ValueError):
         return None
+
+
+def _parse_boolean(boolean_str):
+    """
+    Attempt to parse a boolean string into a boolean value. Leniently accepts
+    both 'True' and 'true', but is otherwise declared false.
+
+    Args:
+        boolean_str (unicode): The boolean string to parse.
+
+    Returns:
+        The boolean value of the string. True if the string equals 'True' or
+        'true'
+    """
+    return boolean_str in ['True', 'true']
 
 
 def _parse_options_xml(options_root):
@@ -501,6 +517,9 @@ def serialize_content_to_xml(oa_block, root):
     if oa_block.submission_due is not None:
         root.set('submission_due', unicode(oa_block.submission_due))
 
+    if oa_block.allow_file_upload is not None:
+        root.set('allow_file_upload', unicode(oa_block.allow_file_upload))
+
     # Open assessment displayed title
     title = etree.SubElement(root, 'title')
     title.text = unicode(oa_block.title)
@@ -607,6 +626,10 @@ def update_from_xml(oa_block, root, validator=DEFAULT_VALIDATOR):
         if submission_due is None:
             raise UpdateFromXmlError(_('The format for the submission due date is invalid. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'))
 
+    allow_file_upload = False
+    if 'allow_file_upload' in root.attrib:
+        allow_file_upload = _parse_boolean(unicode(root.attrib['allow_file_upload']))
+
     # Retrieve the title
     title_el = root.find('title')
     if title_el is None:
@@ -642,6 +665,7 @@ def update_from_xml(oa_block, root, validator=DEFAULT_VALIDATOR):
     oa_block.rubric_feedback_prompt = rubric['feedbackprompt']
     oa_block.submission_start = submission_start
     oa_block.submission_due = submission_due
+    oa_block.allow_file_upload = allow_file_upload
 
     return oa_block
 

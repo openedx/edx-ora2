@@ -1,11 +1,11 @@
-import dateutil
 import logging
 
 from django.utils.translation import ugettext as _
 from xblock.core import XBlock
 
 from submissions import api
-from openassessment.workflow import api as workflow_api
+from openassessment.fileupload import api as file_upload_api
+from openassessment.fileupload.api import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
 from .resolve_dates import DISTANT_FUTURE
 
@@ -33,6 +33,7 @@ class SubmissionMixin(object):
         'EUNKNOWN': _(u'API returned unclassified exception.'),
         'ENOMULTI': _(u'Multiple submissions are not allowed.'),
         'ENOPREVIEW': _(u'To submit a response, view this component in Preview or Live mode.'),
+        'EBADARGS': _(u'"submission" required to submit answer.')
     }
 
     @XBlock.json_handler
@@ -44,9 +45,10 @@ class SubmissionMixin(object):
         response at this time.
 
         Args:
-            data (dict): Data should contain one attribute: submission. This is
-                the response from the student which should be stored in the
-                Open Assessment system.
+            data (dict): Data may contain two attributes: submission and
+                file_url. submission is the response from the student which
+                should be stored in the Open Assessment system. file_url is the
+                path to a related file for the submission. file_url is optional.
             suffix (str): Not used in this handler.
 
         Returns:
@@ -54,6 +56,9 @@ class SubmissionMixin(object):
                 associated status tag (str), and status text (unicode).
 
         """
+        if 'submission' not in data:
+            return False, 'EBADARGS', self.submit_errors['EBADARGS']
+
         status = False
         status_text = None
         student_sub = data['submission']
@@ -70,7 +75,10 @@ class SubmissionMixin(object):
         if not workflow:
             status_tag = 'ENODATA'
             try:
-                submission = self.create_submission(student_item_dict, student_sub)
+                submission = self.create_submission(
+                    student_item_dict,
+                    student_sub
+                )
             except api.SubmissionRequestError as err:
                 status_tag = 'EBADFORM'
                 status_text = unicode(err.field_errors)
@@ -94,7 +102,9 @@ class SubmissionMixin(object):
 
         Args:
             data (dict): Data should have a single key 'submission' that contains
-                the text of the student's response.
+                the text of the student's response. Optionally, the data could
+                have a 'file_url' key that is the path to an associated file for
+                this submission.
             suffix (str): Not used.
 
         Returns:
@@ -124,6 +134,8 @@ class SubmissionMixin(object):
         # so that later we can add additional response fields.
         student_sub_dict = {'text': student_sub}
 
+        if self.allow_file_upload:
+            student_sub_dict['file_key'] = self._get_student_item_key()
         submission = api.create_submission(student_item_dict, student_sub_dict)
         self.create_workflow(submission["uuid"])
         self.submission_uuid = submission["uuid"]
@@ -142,6 +154,65 @@ class SubmissionMixin(object):
         )
 
         return submission
+
+    @XBlock.json_handler
+    def upload_url(self, data, suffix=''):
+        """
+        Request a URL to be used for uploading content related to this
+        submission.
+
+        Returns:
+            A URL to be used to upload content associated with this submission.
+
+        """
+        if "contentType" not in data:
+            return {'success': False, 'msg': _(u"Must specify contentType.")}
+        content_type = data['contentType']
+
+        if not content_type.startswith('image/'):
+            return {'success': False, 'msg': _(u"contentType must be an image.")}
+
+        try:
+            key = self._get_student_item_key()
+            url = file_upload_api.get_upload_url(key, content_type)
+            return {'success': True, 'url': url}
+        except FileUploadError:
+            logger.exception("Error retrieving upload URL.")
+            return {'success': False, 'msg': _(u"Error retrieving upload URL.")}
+
+    @XBlock.json_handler
+    def download_url(self, data, suffix=''):
+        """
+        Request a download URL.
+
+        Returns:
+            A URL to be used for downloading content related to the submission.
+
+        """
+        return {'success': True, 'url': self._get_download_url()}
+
+    def _get_download_url(self):
+        """
+        Internal function for retrieving the download url.
+
+        """
+        try:
+            return file_upload_api.get_download_url(self._get_student_item_key())
+        except FileUploadError:
+            logger.exception("Error retrieving download URL.")
+
+    def _get_student_item_key(self):
+        """
+        Simple utility method to generate a common file upload key based on
+        the student item.
+
+        Returns:
+            A string representation of the key.
+
+        """
+        return u"{student_id}/{course_id}/{item_id}".format(
+            **self.get_student_item_dict()
+        )
 
     @staticmethod
     def get_user_submission(submission_uuid):
@@ -228,6 +299,8 @@ class SubmissionMixin(object):
                 path = 'openassessmentblock/response/oa_response_unavailable.html'
         elif not workflow:
             context['saved_response'] = self.saved_response
+            context['allow_file_upload'] = self.allow_file_upload
+            context['file_url'] = self._get_download_url()
             context['save_status'] = self.save_status
             context['submit_enabled'] = self.saved_response != ''
             path = "openassessmentblock/response/oa_response.html"
@@ -236,11 +309,15 @@ class SubmissionMixin(object):
                 workflow["submission_uuid"]
             )
             context["student_submission"] = student_submission
+            context['allow_file_upload'] = self.allow_file_upload
+            context['file_url'] = self._get_download_url()
             path = 'openassessmentblock/response/oa_response_graded.html'
         else:
             context["student_submission"] = self.get_user_submission(
                 workflow["submission_uuid"]
             )
+            context['allow_file_upload'] = self.allow_file_upload
+            context['file_url'] = self._get_download_url()
             path = 'openassessmentblock/response/oa_response_submitted.html'
 
         return path, context
