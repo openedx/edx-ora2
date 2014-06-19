@@ -3,6 +3,7 @@
 Tests for AI algorithm implementations.
 """
 import unittest
+import json
 import mock
 from openassessment.test_utils import CacheResetTest
 from openassessment.assessment.worker.algorithm import (
@@ -16,14 +17,20 @@ EXAMPLES = [
     AIAlgorithm.ExampleEssay(u"How years ago in days of old, when 𝒎𝒂𝒈𝒊𝒄 filled th air.", 1),
     AIAlgorithm.ExampleEssay(u"Ṫ'ẅäṡ in the darkest depths of Ṁöṛḋöṛ, I met a girl so fair.", 1),
     AIAlgorithm.ExampleEssay(u"But goﾚﾚuﾶ, and the evil one crept up and slipped away with her", 0),
-    AIAlgorithm.ExampleEssay(u"", 4)
+    AIAlgorithm.ExampleEssay(u"", 4),
+    AIAlgorithm.ExampleEssay(u".!?", 4),
+    AIAlgorithm.ExampleEssay(u"no punctuation", 4),
+    AIAlgorithm.ExampleEssay(u"one", 4),
 ]
 
 INPUT_ESSAYS = [
     u"Good times, 𝑩𝒂𝒅 𝑻𝒊𝒎𝒆𝒔, you know I had my share",
     u"When my woman left home for a 𝒃𝒓𝒐𝒘𝒏 𝒆𝒚𝒆𝒅 𝒎𝒂𝒏",
     u"Well, I still don't seem to 𝒄𝒂𝒓𝒆",
-    u""
+    u"",
+    u".!?",
+    u"no punctuation",
+    u"one",
 ]
 
 
@@ -62,7 +69,7 @@ class FakeAIAlgorithmTest(AIAlgorithmTest):
 
     def test_train_and_score(self):
         classifier = self.algorithm.train_classifier(EXAMPLES)
-        expected_scores = [2, 0, 0, 0]
+        expected_scores = [2, 0, 0, 0, 4, 2, 4]
         scores = self._scores(classifier, INPUT_ESSAYS)
         self.assertEqual(scores, expected_scores)
 
@@ -112,9 +119,33 @@ class EaseAIAlgorithmTest(AIAlgorithmTest):
         classifier = self.algorithm.train_classifier(examples)
         self._scores(classifier, INPUT_ESSAYS)
 
+    def test_most_examples_have_same_score(self):
+        # All training examples have the same score except for one
+        examples = [
+            AIAlgorithm.ExampleEssay(u"Test ëṡṡäÿ", 1),
+            AIAlgorithm.ExampleEssay(u"Another test ëṡṡäÿ", 1),
+            AIAlgorithm.ExampleEssay(u"Different score", 0),
+        ]
+        classifier = self.algorithm.train_classifier(examples)
+        scores = self._scores(classifier, INPUT_ESSAYS)
+
+        # Check that we got scores back.
+        # This is not a very rigorous assertion -- we're mainly
+        # checking that we got this far without an exception.
+        self.assertEqual(len(scores), len(INPUT_ESSAYS))
+
     def test_no_examples(self):
         with self.assertRaises(TrainingError):
             self.algorithm.train_classifier([])
+
+    def test_json_serializable(self):
+        classifier = self.algorithm.train_classifier(EXAMPLES)
+        serialized = json.dumps(classifier)
+        deserialized = json.loads(serialized)
+
+        # This should not raise an exception
+        scores = self._scores(deserialized, INPUT_ESSAYS)
+        self.assertEqual(len(scores), len(INPUT_ESSAYS))
 
     @mock.patch('openassessment.assessment.worker.algorithm.pickle')
     def test_pickle_serialize_error(self, mock_pickle):
@@ -122,12 +153,12 @@ class EaseAIAlgorithmTest(AIAlgorithmTest):
         with self.assertRaises(TrainingError):
             self.algorithm.train_classifier(EXAMPLES)
 
-    @mock.patch('openassessment.assessment.worker.algorithm.pickle')
-    def test_pickle_deserialize_error(self, mock_pickle):
-        mock_pickle.loads.side_effect = Exception("Test error!")
+    def test_pickle_deserialize_error(self):
         classifier = self.algorithm.train_classifier(EXAMPLES)
-        with self.assertRaises(InvalidClassifier):
-            self.algorithm.score(u"Test ëṡṡäÿ", classifier, {})
+        with mock.patch('openassessment.assessment.worker.algorithm.pickle.loads') as mock_call:
+            mock_call.side_effect = Exception("Test error!")
+            with self.assertRaises(InvalidClassifier):
+                self.algorithm.score(u"Test ëṡṡäÿ", classifier, {})
 
     def test_serialized_classifier_not_a_dict(self):
         with self.assertRaises(InvalidClassifier):

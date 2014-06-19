@@ -1,11 +1,16 @@
 """
 Define the ML algorithms used to train text classifiers.
 """
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
+
 from abc import ABCMeta, abstractmethod
 from collections import namedtuple
 import importlib
 import traceback
-import pickle
+import base64
 from django.conf import settings
 
 
@@ -315,8 +320,8 @@ class EaseAIAlgorithm(AIAlgorithm):
         """
         try:
             return {
-                'feature_extractor': pickle.dumps(feature_ext),
-                'score_classifier': pickle.dumps(classifier),
+                'feature_extractor': base64.b64encode(pickle.dumps(feature_ext)),
+                'score_classifier': base64.b64encode(pickle.dumps(classifier)),
             }
         except Exception as ex:
             msg = (
@@ -343,7 +348,8 @@ class EaseAIAlgorithm(AIAlgorithm):
             raise InvalidClassifier("Classifier must be a dictionary.")
 
         try:
-            feature_extractor = pickle.loads(classifier_data.get('feature_extractor'))
+            classifier_str = classifier_data.get('feature_extractor').encode('utf-8')
+            feature_extractor = pickle.loads(base64.b64decode(classifier_str))
         except Exception as ex:
             msg = (
                 u"An error occurred while deserializing the "
@@ -352,7 +358,8 @@ class EaseAIAlgorithm(AIAlgorithm):
             raise InvalidClassifier(msg)
 
         try:
-            score_classifier = pickle.loads(classifier_data.get('score_classifier'))
+            score_classifier_str = classifier_data.get('score_classifier').encode('utf-8')
+            score_classifier = pickle.loads(base64.b64decode(score_classifier_str))
         except Exception as ex:
             msg = (
                 u"An error occurred while deserializing the "
