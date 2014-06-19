@@ -18,14 +18,26 @@ def is_requirement(line):
     line = line.strip()
 
     # Skip blank lines, comments, and editable installs
-    return not (line == ''  or line.startswith('#') or line.startswith('-e') or line.startswith('git+'))
+    return not (
+        line == '' or
+        line.startswith('-r') or
+        line.startswith('#') or
+        line.startswith('-e') or
+        line.startswith('git+')
+    )
 
-
-REQUIREMENTS = [
-    line.strip() for line in
-    open("requirements/base.txt").readlines()
-    if is_requirement(line)
-]
+def load_requirements(*requirements_paths):
+    """
+    Load all requirements from the specified requirements files.
+    Returns a list of requirement strings.
+    """
+    requirements = set()
+    for path in requirements_paths:
+        requirements.update(
+            line.strip() for line in open(path).readlines()
+            if is_requirement(line)
+        )
+    return list(requirements)
 
 setup(
     name='ora2',
@@ -42,7 +54,8 @@ setup(
         'Programming Language :: Python',
     ],
     packages=PACKAGES,
-    install_requires=REQUIREMENTS,
+    install_requires=load_requirements('requirements/base.txt', 'requirements/wheels.txt'),
+    tests_require=load_requirements('requirements/test.txt'),
     entry_points={
         'xblock.v1': [
             'openassessment = openassessment.xblock.openassessmentblock:OpenAssessmentBlock',
