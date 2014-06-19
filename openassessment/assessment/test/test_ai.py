@@ -14,9 +14,8 @@ from openassessment.assessment.api import ai as ai_api
 from openassessment.assessment.models import (
     AITrainingWorkflow, AIGradingWorkflow, AIClassifierSet, Assessment
 )
-from openassessment.assessment.models import AITrainingWorkflow, AIGradingWorkflow, AIClassifierSet
-from openassessment.assessment.worker.algorithm import AIAlgorithm, AIAlgorithmError
 from openassessment.assessment.serializers import rubric_from_dict
+from openassessment.assessment.worker.algorithm import AIAlgorithm
 from openassessment.assessment.errors import (
     AITrainingRequestError, AITrainingInternalError, AIGradingRequestError,
     AIReschedulingInternalError, AIGradingInternalError, AIError
@@ -47,7 +46,7 @@ class StubAIAlgorithm(AIAlgorithm):
         classifier['score_override'] = 0
         return classifier
 
-    def score(self, text, classifier, cache):
+    def score(self, text, classifier, cache, temp_cache):
         """
         Stub implementation that returns whatever scores were
         provided in the serialized classifier data.
@@ -117,7 +116,7 @@ class AITrainingTest(CacheResetTest):
         # Since the stub data includes the training examples, we also verify
         # that the classifier was trained using the correct examples.
         for criterion in RUBRIC['criteria']:
-            classifier = classifiers[criterion['name']]
+            classifier = classifiers[criterion['name']]['data']
             self.assertEqual(classifier['name'], StubAIAlgorithm.FAKE_CLASSIFIER['name'])
             self.assertEqual(classifier['binary_content'], StubAIAlgorithm.FAKE_CLASSIFIER['binary_content'])
 

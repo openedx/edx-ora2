@@ -1,7 +1,7 @@
 <openassessment>
     <title>Example Based Example</title>
     <assessments>
-        <assessment name="example-based-assessment" algorithm_id="fake">
+        <assessment name="example-based-assessment" algorithm_id="classy">
             <example>
                 <answer>Born in northern New South Wales, Dowling entered the Royal Australian Naval College in 1915. After graduating in 1919 he went to sea aboard various Royal Navy and RAN vessels, and later specialised in gunnery. In 1937, he was given command of the sloop HMAS Swan. Following the outbreak of World War II, he saw action in the Mediterranean theatre as executive officer of the Royal Navy cruiser HMS Naiad, and survived her sinking by a German U-boat in March 1942. Returning to Australia, he served as Director of Plans and later Deputy Chief of Naval Staff before taking command of the light cruiser HMAS Hobart in November 1944. His achievements in the South West Pacific earned him the Distinguished Service Order.
 

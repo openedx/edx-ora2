@@ -444,7 +444,7 @@ def _parse_assessments_xml(assessments_root):
 
         if assessment_dict['name'] == 'example-based-assessment':
             assessment_dict['examples'] = _parse_examples_xml(examples)
-            assessment_dict['algorithm_id'] = unicode(assessment.get('algorithm_id', 'ease'))
+            assessment_dict['algorithm_id'] = unicode(assessment.get('algorithm_id', 'classy'))
 
         # Update the list of assessments
         assessments_list.append(assessment_dict)

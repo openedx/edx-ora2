@@ -1,3 +1,7 @@
+# Include the requirements we're caching as "wheel" archives
+# to speed up the test builds.
+-r wheels.txt
+
 # edX Internal Requirements
 git+https://github.com/edx/XBlock.git@fc5fea25c973ec66d8db63cf69a817ce624f5ef5#egg=XBlock
 git+https://github.com/edx/xblock-sdk.git@643900aadcb18aaeb7fe67271ca9dbf36e463ee6#egg=xblock-sdk
@@ -18,3 +22,6 @@ loremipsum==1.0.2
 python-dateutil==2.1
 pytz==2012h
 South==0.7.6
+
+# AI grading
+git+https://github.com/edx/ease.git@f11737af630196ad1153a1cbad403627a748d363#egg=ease
