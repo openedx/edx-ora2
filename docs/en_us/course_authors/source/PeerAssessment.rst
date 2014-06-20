@@ -8,8 +8,6 @@ Open Response Assessments
 Introduction to Open Response Assessments
 *****************************************
 
-.. note:: **The open response assessments feature is in limited release.** If you're at an edX consortium university and you plan to include open response assessments in a MOOC, you'll work with your edX project manager (PM) to create assignments.
-
 Open response assessments allow instructors to assign questions that may not have definite answers. Students submit a response to the question, and then that student and the student's peers compare the response to a rubric that you create.
 
 Open response assessments include peer assessments and self assessments. In peer assessments, students compare their peers' responses to a rubric that you create. In self assessments, students compare their own responses to the rubric.
@@ -252,9 +250,7 @@ Note, again, that final scores are calculated by criteria, not by individual ass
 Create a Peer Assessment Problem
 ********************************
 
-.. warning:: Peer assessments are in limited release and are only available in a few courses. If you want to add a peer assessment to your course, make sure to work with your edX program manager (PM).
-
-To create a peer assessment problem, you'll enable the Open Response Assessments feature by adding a policy key value in the course advanced settings. You'll then edit the XML code in a Problem component, similar to the way you create other problems. The following image shows what a peer assessment component looks like when you edit it in Studio, as well as the way that students see that peer assessment in the courseware.
+To create a peer assessment problem, you'll edit XML code in a Problem component, similar to the way you create other problems. The following image shows what a peer assessment component looks like when you edit it in Studio, as well as the way that students see that peer assessment in the courseware.
 
 .. image:: /Images/PA_XML_LMS_All.png
    :alt: Image of a peer assessment in Studio and LMS views
@@ -262,7 +258,6 @@ To create a peer assessment problem, you'll enable the Open Response Assessments
 
 Creating a peer assessment is a multi-step process:
 
-* :ref:`PA Enable ORA`
 * :ref:`PA Create Component`
 * :ref:`PA Specify Name and Assessment Types`
 * :ref:`PA Add a Student Training Assessment`
@@ -274,34 +269,15 @@ Creating a peer assessment is a multi-step process:
 
 Each of these steps is covered in detail below.
 
-.. _PA Enable ORA:
-
-=========================================
-Step 1. Enable Open Response Assessments
-=========================================
-
-#. On the **Settings** menu for the course, click **Advanced Settings**.
-
-#. On the **Advanced Settings** page, locate the **Manual Policy Definition** section, and then locate the **advanced_modules** policy key (this key is at the top of the list).
-
-#. Under **Policy Value**, place your cursor between the brackets, and
-   then enter the following. Make sure to include the quotation marks.
-
-   ``"openassessment"``
-
-#. At the bottom of the page, click **Save Changes**.
-
-   The page refreshes automatically. At the top of the page, you see a
-   notification that your changes have been saved.
 
 .. _PA Create Component:
 
 ============================
-Step 2. Create the Component
+Step 1. Create the Component
 ============================
 
 #. In Studio, open the unit where you want to create the assessment.
-#. Under **Add New Component**, click **Advanced**, and then click **Peer Assessment**.
+#. Under **Add New Component**, click **Problem**, click the **Advanced** tab, and then click **Peer Assessment**.
 #. In the Problem component that appears, click **Edit**.
 
 When the component editor opens, you can see sample code that includes the following. You'll replace this sample content with the content for your problem:
@@ -318,7 +294,7 @@ Note that you won't use the **Settings** tab in the component editor when you cr
 .. _PA Specify Name and Assessment Types:
 
 ========================================================
-Step 3. Specify the Problem Name and Assessment Types
+Step 2. Specify the Problem Name and Assessment Types
 ========================================================
 
 To specify the name and assessment types for the problem, you'll work with the XML near the top of the problem.
@@ -376,7 +352,7 @@ To specify the name and assessment types, follow these steps.
 .. _PA Add a Student Training Assessment:
 
 ========================================================
-Step 4. Include a Student Training Assessment (optional)
+Step 3. Include a Student Training Assessment (optional)
 ========================================================
 
 To include a student training assessment, which contains both sample responses and scores, you'll work with the following XML:
@@ -418,7 +394,7 @@ For more information, see :ref:`PA Student Training Assessments`.
 .. _PA Add Due Dates:
 
 ==========================================
-Step 5. Add Start and Due Dates (optional)
+Step 4. Add Start and Due Dates (optional)
 ==========================================
 
 Setting start and due dates is optional. If you don't specify dates, the deadline for all student responses and assessments is the due date that you set for the subsection that contains the peer assessment. If you do specify dates, those dates take precedence over the subsection due date.
@@ -467,7 +443,7 @@ In this example, the problem is set at the subsection level to open on February 
 .. _PA Add Question:
 
 ============================
-Step 6. Add the Question
+Step 5. Add the Question
 ============================
 
 The following image shows a question in the component editor along with the way the question appears to students.
@@ -511,7 +487,7 @@ To remove the prompt from the Peer Assessment component, open the component edit
 .. _PA Add Rubric:
 
 ============================
-Step 7. Add the Rubric
+Step 6. Add the Rubric
 ============================
 
 To add the rubric, you'll create your criteria and options in XML. The following image shows a highlighted criterion and its options in the component editor, followed by the way the criterion and options appear to students.
@@ -584,7 +560,7 @@ You can use the following code as a template:
 .. _PA Provide Comment Options:
 
 =============================================
-Step 8. Provide Comment Options (optional)
+Step 7. Provide Comment Options (optional)
 =============================================
 
 After students fill out the rubric, they can provide additional comments for the responses they've assessed. By default, students see a field for comments below the rubric.
@@ -662,7 +638,7 @@ If you want to provide comment fields below additional criteria, add the ``feedb
 .. _PA Test Problem:
 
 ============================
-Step 9. Test the Problem
+Step 8. Test the Problem
 ============================
 
 To test your assignment, set up the assignment in a test course, and ask a group of beta users to submit responses and grade each other. The beta testers can then let you know if they found the question and the rubric easy to understand or if they found any problems with the assignment.
