@@ -160,13 +160,16 @@ def serialize_rubric(rubric_root, oa_block, include_prompt=True):
         feedback_prompt.text = unicode(oa_block.rubric_feedback_prompt)
 
 
-def parse_date(date_str):
+def parse_date(date_str, name=""):
     """
     Attempt to parse a date string into ISO format (without milliseconds)
     Returns `None` if this cannot be done.
 
     Args:
         date_str (str): The date string to parse.
+
+    Kwargs:
+        name (str): the name to return in an error to the origin of the call if an error occurs.
 
     Returns:
         unicode in ISO format (without milliseconds) if the date string is
@@ -184,8 +187,9 @@ def parse_date(date_str):
         return unicode(formatted_date)
     except (ValueError, TypeError):
         msg = (
-            'The format for the given date ({}) is invalid. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'
-        ).format(date_str)
+            'The format of the given date ({date}) for the {name} is invalid. '
+            'Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'
+        ).format(date=date_str, name=name)
         raise UpdateFromXmlError(_(msg))
 
 
@@ -374,68 +378,6 @@ def parse_examples_xml(examples):
     return examples_list
 
 
-def parse_assessment_dictionaries(input_assessments):
-
-    assessments_list = []
-
-    for assessment in input_assessments:
-
-        assessment_dict = dict()
-
-        # Assessment name
-        if assessment.get('name'):
-            assessment_dict['name'] = unicode(assessment.get('name'))
-        else:
-            raise UpdateFromXmlError(_('All "assessment" elements must contain a "name" element.'))
-
-        # Assessment start
-        if assessment.get('start'):
-            try:
-                parsed_start = parse_date(assessment.get('start'))
-                assessment_dict['start'] = parsed_start
-            except UpdateFromXmlError:
-                raise UpdateFromXmlError(_('The date format in the "start" attribute is invalid. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'))
-        else:
-            assessment_dict['start'] = None
-
-        # Assessment due
-        if assessment.get('due'):
-            try:
-                parsed_due = parse_date(assessment.get('due'))
-                assessment_dict['due'] = parsed_due
-            except UpdateFromXmlError:
-                raise UpdateFromXmlError(_('The date format in the "due" attribute is invalid. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'))
-        else:
-            assessment_dict['due'] = None
-
-        # Assessment must_grade
-        if assessment.get('must_grade'):
-            try:
-                assessment_dict['must_grade'] = int(assessment.get('must_grade'))
-            except ValueError:
-                raise UpdateFromXmlError(_('The "must_grade" value must be a positive integer.'))
-
-        # Assessment must_be_graded_by
-        if assessment.get('must_be_graded_by'):
-            try:
-                assessment_dict['must_be_graded_by'] = int(assessment.get('must_be_graded_by'))
-            except ValueError:
-                raise UpdateFromXmlError(_('The "must_be_graded_by" value must be a positive integer.'))
-
-        # Training examples (can be for AI or for Student Training)
-        if assessment.get('examples'):
-            try:
-                assessment_dict['examples'] = parse_examples_xml_str(assessment.get('examples'))
-            except (UpdateFromXmlError, UnicodeError) as ex:
-                raise UpdateFromXmlError(_(
-                    "There was an error in parsing the {0} examples: {1}".format(assessment.get('name'), ex)
-                ))
-
-        # Update the list of assessments
-        assessments_list.append(assessment_dict)
-
-    return assessments_list
-
 def parse_assessments_xml(assessments_root):
     """
     Parse the <assessments> element in the OpenAssessment XBlock's content XML.
@@ -464,21 +406,17 @@ def parse_assessments_xml(assessments_root):
 
         # Assessment start
         if 'start' in assessment.attrib:
-            parsed_start = parse_date(assessment.get('start'))
+            parsed_start = parse_date(assessment.get('start'), name="{} start date".format(assessment_dict['name']))
             if parsed_start is not None:
                 assessment_dict['start'] = parsed_start
-            else:
-                raise UpdateFromXmlError(_('The date format in the "start" attribute is invalid. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'))
         else:
             assessment_dict['start'] = None
 
         # Assessment due
         if 'due' in assessment.attrib:
-            parsed_start = parse_date(assessment.get('due'))
+            parsed_start = parse_date(assessment.get('due'), name="{} due date".format(assessment_dict['name']))
             if parsed_start is not None:
                 assessment_dict['due'] = parsed_start
-            else:
-                raise UpdateFromXmlError(_('The date format in the "due" attribute is invalid. Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'))
         else:
             assessment_dict['due'] = None
 
@@ -711,13 +649,13 @@ def parse_from_xml(root):
     # Set it to None by default; we will update it to the latest start date later on
     submission_start = None
     if 'submission_start' in root.attrib:
-        submission_start = parse_date(unicode(root.attrib['submission_start']))
+        submission_start = parse_date(unicode(root.attrib['submission_start']), name="submission start date")
 
     # Retrieve the due date for the submission
     # Set it to None by default; we will update it to the earliest deadline later on
     submission_due = None
     if 'submission_due' in root.attrib:
-        submission_due = parse_date(unicode(root.attrib['submission_due']))
+        submission_due = parse_date(unicode(root.attrib['submission_due']), name="submission due date")
 
     # Retrieve the title
     title_el = root.find('title')
@@ -827,10 +765,10 @@ def parse_examples_xml_str(xml):
 
     """
 
+    # This should work for both wrapped and unwrapped examples. Based on our final configuration (and tests)
+    # we should handle both cases gracefully.
     if "<examples>" not in xml:
-        xml = u"<data>" + xml + u"</data>"
-    else:
-        xml = unicode(xml)
+        xml = u"<examples>" + xml + u"</examples>"
 
     return parse_examples_xml(list(_unicode_to_xml(xml).findall('example')))
 

@@ -11,11 +11,12 @@ import dateutil.parser
 from django.test import TestCase
 import ddt
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
+from openassessment.xblock.studio_mixin import parse_assessment_dictionaries
 from openassessment.xblock.xml import (
     serialize_content, parse_from_xml_str, parse_rubric_xml_str,
     parse_examples_xml_str, parse_assessments_xml_str,
     serialize_rubric_to_xml_str, serialize_examples_to_xml_str,
-    serialize_assessments_to_xml_str, UpdateFromXmlError, parse_assessment_dictionaries
+    serialize_assessments_to_xml_str, UpdateFromXmlError
 )
 
 
@@ -366,8 +367,12 @@ class TestParseAssessmentsFromDictionaries(TestCase):
 
         config = parse_assessment_dictionaries(data['assessments_list'])
 
-        for i in range(0, len(config)):
-            self.assertEqual(config[i], data['results'][i])
+        if len(config) == 0:
+            # Prevents this test from passing benignly if parse_assessment_dictionaries returns []
+            self.assertTrue(False)
+
+        for config_assessment, correct_assessment in zip(config, data['results']):
+            self.assertEqual(config_assessment, correct_assessment)
 
     @ddt.file_data('data/parse_assessment_dicts_error.json')
     def test_parse_assessments_dictionary_error(self, data):

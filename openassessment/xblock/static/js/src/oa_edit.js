@@ -15,102 +15,103 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     this.runtime = runtime;
     this.server = server;
 
-    // Initialize the code box
+    //Instantiates JQuery variables which will allow manipulation and display controls.
 
-    live_element = $(element)
+    var liveElement = $(element);
 
-    this.promptBox = live_element.find('.openassessment-prompt-editor').first().get(0);
+    this.promptBox = $('#openassessment_prompt_editor', liveElement).get(0);
 
+    this.titleField = $('#openassessment_title_editor', liveElement).first().get(0);
+
+    this.submissionStartField = $('#openassessment_submission_start_editor', liveElement).first().get(0);
+
+    this.submissionDueField = $('#openassessment_submission_due_editor', liveElement).first().get(0);
+
+    // Finds our boolean checkboxes that indicate the assessment definition
+    this.hasPeer = $('#include_peer_assessment', liveElement);
+    this.hasSelf = $('#include_self_assessment', liveElement);
+    this.hasAI = $('#include_ai_assessment', liveElement);
+    this.hasTraining = $('#include_student_training', liveElement);
+
+    this.peerMustGrade = $('#peer_assessment_must_grade', liveElement);
+    this.peerGradedBy = $('#peer_assessment_graded_by', liveElement);
+    this.peerStart = $('#peer_assessment_start_date', liveElement);
+    this.peerDue = $('#peer_assessment_due_date', liveElement);
+
+    this.selfStart = $('#self_assessment_start_date', liveElement);
+    this.selfDue = $('#self_assessment_due_date', liveElement);
+
+    //Instantiates our codemirror codeboxes
     this.rubricXmlBox = CodeMirror.fromTextArea(
-        live_element.find('.openassessment-rubric-editor').first().get(0),
+        $('#openassessment_rubric_editor', liveElement).first().get(0),
         {mode: "xml", lineNumbers: true, lineWrapping: true}
     );
 
-    this.titleField = live_element.find('.openassessment-title-editor').first().get(0);
-
-    this.submissionStartField = live_element.find('.openassessment-submission-start-editor').first().get(0);
-
-    this.submissionDueField = live_element.find('.openassessment-submission-due-editor').first().get(0);
-
-    // Finds our boolean checkboxes that indicate the assessment definition
-    this.hasPeer = live_element.find('#include-peer-assessment');
-    this.hasSelf = live_element.find('#include-self-assessment');
-    this.hasAI = live_element.find('#include-ai-assessment');
-    this.hasTraining = live_element.find('#include-student-training');
-
-    this.peerMustGrade = live_element.find('#peer-assessment-must-grade');
-    this.peerGradedBy = live_element.find('#peer-assessment-graded-by');
-    this.peerStart = live_element.find('#peer-assessment-start-date');
-    this.peerDue = live_element.find('#peer-assessment-due-date');
-
-    this.selfStart = live_element.find('#self-assessment-start-date');
-    this.selfDue = live_element.find('#self-assessment-due-date');
-
     this.aiTrainingExamplesCodeBox = CodeMirror.fromTextArea(
-        live_element.find('#ai-training-examples').get(0),
+        $('#ai_training_examples', liveElement).first().get(0),
         {mode: "xml", lineNumbers: true, lineWrapping: true}
     );
 
     this.studentTrainingExamplesCodeBox = CodeMirror.fromTextArea(
-        live_element.find('#student-training-examples').get(0),
+        $('#student_training_examples', liveElement).first().get(0),
         {mode: "xml", lineNumbers: true, lineWrapping: true}
     );
 
     // Install click handlers
     var view = this;
-    live_element.find('.openassessment-save-button').click(
+    $('.openassessment_save_button', liveElement) .click(
         function (eventData) {
             view.save();
         });
 
-    live_element.find('.openassessment-cancel-button').click(
+    $('.openassessment_cancel_button', liveElement) .click(
         function (eventData) {
             view.cancel();
         });
 
-    live_element.find('.openassessment-editor-content-and-tabs').tabs({
+    $('.openassessment_editor_content_and_tabs', liveElement) .tabs({
         activate: function (event, ui){
             view.rubricXmlBox.refresh();
         }
     });
 
-    live_element.find('#include-peer-assessment').change(function () {
+    $('#include_peer_assessment', liveElement) .change(function () {
         if (this.checked){
-            $("#peer-assessment-description-closed", live_element).fadeOut('fast');
-            $("#peer-assessment-settings-editor", live_element).fadeIn();
+            $("#peer_assessment_description_closed", liveElement).fadeOut('fast');
+            $("#peer_assessment_settings_editor", liveElement).fadeIn();
         } else {
-            $("#peer-assessment-settings-editor", live_element).fadeOut('fast');
-            $("#peer-assessment-description-closed", live_element).fadeIn();
+            $("#peer_assessment_settings_editor", liveElement).fadeOut('fast');
+            $("#peer_assessment_description_closed", liveElement).fadeIn();
         }
     });
 
-    live_element.find('#include-self-assessment').change(function () {
+    $('#include_self_assessment', liveElement) .change(function () {
         if (this.checked){
-            $("#self-assessment-description-closed", live_element).fadeOut('fast');
-            $("#self-assessment-settings-editor", live_element).fadeIn();
+            $("#self_assessment_description_closed", liveElement).fadeOut('fast');
+            $("#self_assessment_settings_editor", liveElement).fadeIn();
         } else {
-            $("#self-assessment-settings-editor", live_element).fadeOut('fast');
-            $("#self-assessment-description-closed", live_element).fadeIn();
+            $("#self_assessment_settings_editor", liveElement).fadeOut('fast');
+            $("#self_assessment_description_closed", liveElement).fadeIn();
         }
     });
 
-    live_element.find('#include-ai-assessment').change(function () {
+    $('#include_ai_assessment', liveElement) .change(function () {
         if (this.checked){
-            $("#ai-assessment-description-closed", live_element).fadeOut('fast');
-            $("#ai-assessment-settings-editor", live_element).fadeIn();
+            $("#ai_assessment_description_closed", liveElement).fadeOut('fast');
+            $("#ai_assessment_settings_editor", liveElement).fadeIn();
         } else {
-            $("#ai-assessment-settings-editor", live_element).fadeOut('fast');
-            $("#ai-assessment-description-closed", live_element).fadeIn();
+            $("#ai_assessment_settings_editor", liveElement).fadeOut('fast');
+            $("#ai_assessment_description_closed", liveElement).fadeIn();
         }
     });
 
-    live_element.find('#include-student-training').change(function () {
+    $('#include_student_training', liveElement) .change(function () {
         if (this.checked){
-            $("#student-training-description-closed", live_element).fadeOut('fast');
-            $("#student-training-settings-editor", live_element).fadeIn();
+            $("#student_training_description_closed", liveElement).fadeOut('fast');
+            $("#student_training_settings_editor", liveElement).fadeIn();
         } else {
-            $("#student-training-settings-editor", live_element).fadeOut('fast');
-            $("#student-training-description-closed", live_element).fadeIn();
+            $("#student_training_settings_editor", liveElement).fadeOut('fast');
+            $("#student_training_description_closed", liveElement).fadeIn();
         }
     });
 
@@ -124,36 +125,34 @@ OpenAssessment.StudioView.prototype = {
     load: function () {
         var view = this;
         this.server.loadEditorContext().done(
-            function (prompt, rubricXml, title, sub_start, sub_due, assessments) {
+            function (prompt, rubricXml, title, subStart, subDue, assessments) {
                 view.rubricXmlBox.setValue(rubricXml);
-                view.submissionStartField.value = sub_start;
-                view.submissionDueField.value = sub_due;
+                view.submissionStartField.value = subStart;
+                view.submissionDueField.value = subDue;
                 view.promptBox.value = prompt;
                 view.titleField.value = title;
-                view.hasPeer.prop('checked',false).change();
-                view.hasSelf.prop('checked',false).change();
-                view.hasTraining.prop('checked',false).change();
-                view.hasAI.prop('checked',false).change();
+                view.hasTraining.prop('checked', false).change();
+                view.hasPeer.prop('checked', false).change();
+                view.hasSelf.prop('checked', false).change();
+                view.hasAI.prop('checked', false).change();
                 for (var i = 0; i < assessments.length; i++) {
                     var assessment = assessments[i];
                     if (assessment.name == 'peer-assessment') {
-                        view.hasPeer.prop('checked', true).change();
                         view.peerMustGrade.prop('value', assessment.must_grade);
                         view.peerGradedBy.prop('value', assessment.must_be_graded_by);
                         view.peerStart.prop('value', assessment.start);
                         view.peerDue.prop('value', assessment.due);
+                        view.hasPeer.prop('checked', true).change();
                     } else if (assessment.name == 'self-assessment') {
-                        view.hasSelf.prop('checked', true).change();
                         view.selfStart.prop('value', assessment.start);
                         view.selfDue.prop('value', assessment.due);
+                        view.hasSelf.prop('checked', true).change();
                     } else if (assessment.name == 'example-based-assessment') {
-                        view.hasAI.prop('checked', true).change();
                         view.aiTrainingExamplesCodeBox.setValue(assessment.examples);
+                        view.hasAI.prop('checked', true).change();
                     } else if (assessment.name == 'student-training') {
-                        view.hasTraining.prop('checked', true).change();
                         view.studentTrainingExamplesCodeBox.setValue(assessment.examples);
-                    } else {
-
+                        view.hasTraining.prop('checked', true).change();
                     }
                 }
             }).fail(function (msg) {
@@ -213,8 +212,8 @@ OpenAssessment.StudioView.prototype = {
         var prompt = this.promptBox.value;
         var rubricXml = this.rubricXmlBox.getValue();
         var title = this.titleField.value;
-        var sub_start = this.submissionStartField.value;
-        var sub_due = this.submissionDueField.value;
+        var subStart = this.submissionStartField.value;
+        var subDue = this.submissionDueField.value;
 
         var assessments = [];
 
@@ -231,13 +230,13 @@ OpenAssessment.StudioView.prototype = {
                 "must_grade": parseInt(this.peerMustGrade.prop('value')),
                 "must_be_graded_by": parseInt(this.peerGradedBy.prop('value'))
             };
-            var start_str = this.peerStart.prop('value');
-            var due_str = this.peerDue.prop('value');
-            if (start_str){
-                assessment = $.extend(assessment, {"start": start_str})
+            var startStr = this.peerStart.prop('value');
+            var dueStr = this.peerDue.prop('value');
+            if (startStr){
+                assessment = $.extend(assessment, {"start": startStr})
             }
-            if (due_str){
-                assessment = $.extend(assessment, {"due": due_str})
+            if (dueStr){
+                assessment = $.extend(assessment, {"due": dueStr})
             }
             assessments[assessments.length] = assessment;
         }
@@ -246,13 +245,13 @@ OpenAssessment.StudioView.prototype = {
             assessment = {
                 "name": "self-assessment"
             };
-            start_str = this.selfStart.prop('value');
-            due_str = this.selfDue.prop('value');
-            if (start_str){
-                assessment = $.extend(assessment, {"start": start_str})
+            startStr = this.selfStart.prop('value');
+            dueStr = this.selfDue.prop('value');
+            if (startStr){
+                assessment = $.extend(assessment, {"start": startStr})
             }
-            if (due_str){
-                assessment = $.extend(assessment, {"due": due_str})
+            if (dueStr){
+                assessment = $.extend(assessment, {"due": dueStr})
             }
             assessments[assessments.length] = assessment;
         }
@@ -260,13 +259,12 @@ OpenAssessment.StudioView.prototype = {
         if (this.hasAI.prop('checked')) {
             assessments[assessments.length] = {
                 "name": "example-based-assessment",
-                "algorithm_id": "ease",
                 "examples": this.aiTrainingExamplesCodeBox.getValue()
             };
         }
 
         var view = this;
-        this.server.updateEditorContext(prompt, rubricXml, title, sub_start, sub_due, assessments).done(function () {
+        this.server.updateEditorContext(prompt, rubricXml, title, subStart, subDue, assessments).done(function () {
             // Notify the client-side runtime that we finished saving
             // so it can hide the "Saving..." notification.
             view.runtime.notify('save', {state: 'end'});

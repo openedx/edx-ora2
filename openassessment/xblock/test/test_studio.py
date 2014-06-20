@@ -36,7 +36,7 @@ class StudioViewTest(XBlockHandlerTestCase):
         # Verify that every assessment in the list of assessments has a name.
         for assessment_dict in resp['assessments']:
             self.assertTrue(assessment_dict.get('name', False))
-            if assessment_dict.get('name') == 'studnet-training':
+            if assessment_dict.get('name') == 'student-training':
                 examples = etree.fromstring(assessment_dict['examples'])
                 self.assertEqual(examples.tag, 'examples')
 
