@@ -117,7 +117,7 @@ class AIWorkerTrainingTest(CacheResetTest):
 
         # Expect that the classifier set was created with the correct data
         self.assertIsNot(workflow.classifier_set, None)
-        saved_classifiers = workflow.classifier_set.classifiers_dict
+        saved_classifiers = workflow.classifier_set.classifier_data_by_criterion
         self.assertItemsEqual(CLASSIFIERS, saved_classifiers)
 
     def test_create_classifiers_no_workflow(self):
@@ -177,7 +177,7 @@ class AIWorkerTrainingTest(CacheResetTest):
 
         # Expect that the classifier set was created with the correct data
         self.assertIsNot(workflow.classifier_set, None)
-        saved_classifiers = workflow.classifier_set.classifiers_dict
+        saved_classifiers = workflow.classifier_set.classifier_data_by_criterion
         self.assertItemsEqual(CLASSIFIERS, saved_classifiers)
 
     def test_create_classifiers_no_training_examples(self):
@@ -234,12 +234,12 @@ class AIWorkerGradingTest(CacheResetTest):
         self.assertItemsEqual(params, expected_params)
 
     def test_get_grading_task_params_num_queries(self):
-        with self.assertNumQueries(5):
+        with self.assertNumQueries(6):
             ai_worker_api.get_grading_task_params(self.workflow_uuid)
 
         # The second time through we should be caching the queries
         # to determine the valid scores for a classifier
-        with self.assertNumQueries(3):
+        with self.assertNumQueries(2):
             ai_worker_api.get_grading_task_params(self.workflow_uuid)
 
     def test_get_grading_task_params_no_workflow(self):

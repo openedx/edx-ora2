@@ -24,11 +24,19 @@ logger = logging.getLogger(__name__)
 
 # Use an in-memory cache to hold classifier data, but allow settings to override this.
 # The classifier data will generally be larger than memcached's default max size
-CLASSIFIERS_CACHE = getattr(
-    settings, 'ORA2_CLASSIFIERS_CACHE',
+CLASSIFIERS_CACHE_IN_MEM = getattr(
+    settings, 'ORA2_CLASSIFIERS_CACHE_IN_MEM',
     get_cache(
         'django.core.cache.backends.locmem.LocMemCache',
         LOCATION='openassessment.ai.classifiers_dict'
+    )
+)
+
+CLASSIFIERS_CACHE_IN_FILE = getattr(
+    settings, 'ORA2_CLASSIFIERS_CACHE_IN_FILE',
+    get_cache(
+        'django.core.cache.backends.filebased.FileBasedCache',
+        LOCATION='/tmp/ora2_classifier_cache'
     )
 )
 
@@ -263,13 +271,10 @@ class AIClassifierSet(models.Model):
         # If we get to this point, no classifiers exist with this rubric and algorithm.
         return None
 
-    # Number of seconds to store downloaded classifiers in the in-memory cache.
-    DEFAULT_CLASSIFIER_CACHE_TIMEOUT = 300
-
     @property
-    def classifiers_dict(self):
+    def classifier_data_by_criterion(self):
         """
-        Return all classifiers in this classifier set in a dictionary
+        Return info for all classifiers in this classifier set in a dictionary
         that maps criteria names to classifier data.
 
         Returns:
@@ -281,22 +286,78 @@ class AIClassifierSet(models.Model):
         # We use an in-memory cache because the classifier data will most often
         # be several megabytes, which exceeds the default memcached size limit.
         # If we find it, we can avoid calls to the database, S3, and json.
-        cache_key = unicode(self.id)
-        classifiers_dict = CLASSIFIERS_CACHE.get(cache_key)
+        cache_key = self._cache_key("classifier_data_by_criterion")
+        classifiers_dict = CLASSIFIERS_CACHE_IN_MEM.get(cache_key)
+
+        # If we can't find the classifier in-memory, check the filesystem cache
+        # We can't always rely on the in-memory cache because worker processes
+        # terminate when max retries are exceeded.
+        if classifiers_dict is None:
+            msg = (
+                u"Could not find classifiers dict in the in-memory "
+                u"cache for key {key}.  Falling back to the file-based cache."
+            ).format(key=cache_key)
+            logger.info(msg)
+            classifiers_dict = CLASSIFIERS_CACHE_IN_FILE.get(cache_key)
+        else:
+            msg = (
+                u"Found classifiers dict in the in-memory cache "
+                u"(cache key was {key})"
+            ).format(key=cache_key)
+            logger.info(msg)
 
         # If we can't find the classifiers dict in the cache,
         # we need to look up the classifiers in the database,
         # then download the classifier data.
         if classifiers_dict is None:
-            classifiers = list(self.classifiers.all())  # pylint: disable=E1101
             classifiers_dict = {
                 classifier.criterion.name: classifier.download_classifier_data()
-                for classifier in classifiers
+                for classifier in self.classifiers.select_related().all()   # pylint: disable=E1101
             }
-            timeout = getattr(settings, 'ORA2_CLASSIFIER_CACHE_TIMEOUT', self.DEFAULT_CLASSIFIER_CACHE_TIMEOUT)
-            CLASSIFIERS_CACHE.set(cache_key, classifiers_dict, timeout)
+            CLASSIFIERS_CACHE_IN_MEM.set(cache_key, classifiers_dict)
+            CLASSIFIERS_CACHE_IN_FILE.set(cache_key, classifiers_dict)
+            msg = (
+                u"Could not find classifiers dict in either the in-memory "
+                u"or file-based cache.  Downloaded the data from S3 and cached "
+                u"it using key {key}"
+            ).format(key=cache_key)
+            logger.info(msg)
 
         return classifiers_dict if classifiers_dict else None
+
+    @property
+    def valid_scores_by_criterion(self):
+        """
+        Return the valid scores for each classifier in this classifier set.
+
+        Returns:
+            dict: maps rubric criterion names to lists of valid scores.
+
+        """
+        cache_key = self._cache_key("valid_scores_by_criterion")
+        valid_scores_by_criterion = cache.get(cache_key)
+        if valid_scores_by_criterion is None:
+            valid_scores_by_criterion = {
+                classifier.criterion.name: classifier.valid_scores
+                for classifier in self.classifiers.select_related().all()  # pylint: disable=E1101
+            }
+            cache.set(cache_key, valid_scores_by_criterion)
+        return valid_scores_by_criterion
+
+    def _cache_key(self, data_name):
+        """
+        Return a cache key for this classifier set.
+
+        Args:
+            data_name (unicode): Name for the data associated with this key.
+
+        Returns:
+            unicode
+
+        """
+        return u"openassessment.assessment.ai.classifier_set.{pk}.{data_name}".format(
+            pk=self.pk, data_name=data_name
+        )
 
 
 # Directory in which classifiers will be stored
@@ -378,12 +439,7 @@ class AIClassifier(models.Model):
             list of integer scores, in ascending order.
 
         """
-        cache_key = u"openassessment.assessment.ai.classifier.{pk}.valid_scores".format(pk=self.pk)
-        valid_scores = cache.get(cache_key)
-        if valid_scores is None:
-            valid_scores = sorted([option.points for option in self.criterion.options.all()])
-            cache.set(cache_key, valid_scores)
-        return valid_scores
+        return sorted([option.points for option in self.criterion.options.all()])
 
 
 class AIWorkflow(models.Model):
