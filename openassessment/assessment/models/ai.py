@@ -481,6 +481,25 @@ class AIWorkflow(models.Model):
             workflow = cls.objects.get(uuid=workflow_uuid)
             yield workflow
 
+    @classmethod
+    def is_workflow_complete(cls, workflow_uuid):
+        """
+        Check whether the workflow with a given UUID has been marked complete.
+
+        Args:
+            workflow_uuid (str): The UUID of the workflow to check.
+
+        Returns:
+            bool
+
+        Raises:
+            DatabaseError
+            cls.DoesNotExist
+
+        """
+        workflow = cls.objects.get(uuid=workflow_uuid)
+        return workflow.is_complete
+
     def _log_start_workflow(self):
         """
         A logging operation called at the beginning of an AI Workflows life.
