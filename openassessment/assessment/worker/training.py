@@ -65,6 +65,21 @@ def train_classifiers(workflow_uuid):
         InvalidExample: The training examples provided by the AI API were not valid.
 
     """
+    # Short-circuit if the workflow is already marked complete
+    # This is an optimization, but training tasks could still
+    # execute multiple times depending on when they get picked
+    # up by workers and marked complete.
+    try:
+        if ai_worker_api.is_training_workflow_complete(workflow_uuid):
+            return
+    except AIError:
+        msg = (
+            u"An unexpected error occurred while checking the "
+            u"completion of training workflow with UUID {uuid}"
+        ).format(uuid=workflow_uuid)
+        logger.exception(msg)
+        raise train_classifiers.retry()
+
     # Retrieve task parameters
     try:
         params = ai_worker_api.get_training_task_params(workflow_uuid)

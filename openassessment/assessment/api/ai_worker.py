@@ -291,3 +291,65 @@ def create_classifiers(training_workflow_uuid, classifier_set):
         ).format(uuid=training_workflow_uuid, ex=ex)
         logger.exception(msg)
         raise AITrainingInternalError(msg)
+
+
+def is_training_workflow_complete(workflow_uuid):
+    """
+    Check whether the training workflow is complete.
+
+    Args:
+        workflow_uuid (str): The UUID of the training workflow
+
+    Returns:
+        bool
+
+    Raises:
+        AITrainingRequestError
+        AITrainingInternalError
+
+    """
+    try:
+        return AITrainingWorkflow.is_workflow_complete(workflow_uuid)
+    except AITrainingWorkflow.DoesNotExist:
+        msg = (
+            u"Could not retrieve training workflow "
+            u"with uuid {uuid} to check whether it's complete."
+        ).format(uuid=workflow_uuid)
+        raise AITrainingRequestError(msg)
+    except DatabaseError:
+        msg = (
+            u"An unexpected error occurred while checking "
+            u"the training workflow with uuid {uuid} for completeness"
+        ).format(uuid=workflow_uuid)
+        raise AITrainingInternalError(msg)
+
+
+def is_grading_workflow_complete(workflow_uuid):
+    """
+    Check whether the grading workflow is complete.
+
+    Args:
+        workflow_uuid (str): The UUID of the grading workflow
+
+    Returns:
+        bool
+
+    Raises:
+        AIGradingRequestError
+        AIGradingInternalError
+
+    """
+    try:
+        return AIGradingWorkflow.is_workflow_complete(workflow_uuid)
+    except AIGradingWorkflow.DoesNotExist:
+        msg = (
+            u"Could not retrieve grading workflow "
+            u"with uuid {uuid} to check whether it's complete."
+        ).format(uuid=workflow_uuid)
+        raise AIGradingRequestError(msg)
+    except DatabaseError:
+        msg = (
+            u"An unexpected error occurred while checking "
+            u"the grading workflow with uuid {uuid} for completeness"
+        ).format(uuid=workflow_uuid)
+        raise AIGradingInternalError(msg)

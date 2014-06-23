@@ -48,6 +48,21 @@ def grade_essay(workflow_uuid):
         AIAlgorithmError: An error occurred while retrieving or using an AI algorithm.
 
     """
+    # Short-circuit if the workflow is already marked complete
+    # This is an optimization, but grading tasks could still
+    # execute multiple times depending on when they get picked
+    # up by workers and marked complete.
+    try:
+        if ai_worker_api.is_grading_workflow_complete(workflow_uuid):
+            return
+    except AIError:
+        msg = (
+            u"An unexpected error occurred while checking the "
+            u"completion of grading workflow with UUID {uuid}"
+        ).format(uuid=workflow_uuid)
+        logger.exception(msg)
+        raise grade_essay.retry()
+
     # Retrieve the task parameters
     try:
         params = ai_worker_api.get_grading_task_params(workflow_uuid)
