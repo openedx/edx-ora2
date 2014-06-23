@@ -186,14 +186,14 @@ def validate_rubric(rubric_dict, current_rubric, is_released, is_example_based):
             )
             return (False, msg)
 
-    # Example-based assessments impose the additional restriction
-    # that the point values for options must be unique within
-    # a particular rubric criterion.
-    if is_example_based:
-        duplicates = _duplicates([option['points'] for option in criterion['options']])
-        if len(duplicates) > 0:
-            msg = _(u"Example-based assessments cannot have duplicate point values.")
-            return (False, msg)
+        # Example-based assessments impose the additional restriction
+        # that the point values for options must be unique within
+        # a particular rubric criterion.
+        if is_example_based:
+            duplicates = _duplicates([option['points'] for option in criterion['options']])
+            if len(duplicates) > 0:
+                msg = _(u"Example-based assessments cannot have duplicate point values.")
+                return (False, msg)
 
     # After a problem is released, authors are allowed to change text,
     # but nothing that would change the point value of a rubric.

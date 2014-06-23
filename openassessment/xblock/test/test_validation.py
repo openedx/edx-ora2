@@ -321,6 +321,7 @@ class ValidationIntegrationTest(TestCase):
         # for a particular criterion.
         # This should cause a validation error with example-based assessment.
         mutated_rubric = copy.deepcopy(self.RUBRIC)
+        mutated_rubric['criteria'][0]['options'] = copy.deepcopy(self.CRITERION_OPTIONS)
         for option in mutated_rubric['criteria'][0]['options']:
             option['points'] = 1
 
