@@ -51,17 +51,24 @@ describe("OpenAssessment.Server", function() {
         '</criterion>'+
     '</rubric>';
 
-    var assessments = '<assessments>' +
-        '<assessment name="peer-assessment" must_grade="1" must_be_graded_by="1" due="2000-01-02"/>' +
-        '<assessment name="self-assessment" due="2000-01-8"/>' +
-        '</assessments>';
+    var ASSESSMENTS = [
+        {
+            "name": "peer-assessment",
+            "must_grade": 5,
+            "must_be_graded_by": 3,
+            "start": "",
+            "due": "4014-03-10T00:00:00"
+        },
+        {
+            "name": "self-assessment",
+            "start": "",
+            "due": ""
+        }
+    ];
 
-    var SETTINGS = {
-        title: 'This is the title.',
-        submission_start: '2012-10-09T00:00:00',
-        submission_due: '2015-10-10T00:00:00',
-        assessments: assessments
-    };
+    var TITLE = 'This is the title.';
+    var SUBMISSION_START = '2012-10-09T00:00:00';
+    var SUBMISSION_DUE = '2015-10-10T00:00:00';
 
     beforeEach(function() {
         // Create the server
@@ -184,20 +191,33 @@ describe("OpenAssessment.Server", function() {
     });
 
     it("loads the XBlock's Context definition", function() {
-        stubAjax(true, { success: true, prompt: PROMPT, rubric: RUBRIC, settings: SETTINGS});
+        stubAjax(true, {
+            success: true, prompt: PROMPT, rubric: RUBRIC, title: TITLE,
+            submission_start: SUBMISSION_START, submission_due: SUBMISSION_DUE, assessments: ASSESSMENTS
+        });
 
         var loadedPrompt = "";
         var loadedRubric = "";
-        var loadedSettings = "";
-        server.loadEditorContext().done(function(prompt, rubric, settings) {
+        var loadedAssessments = [];
+        var loadedTitle = "";
+        var loadedStart = "";
+        var loadedDue = "";
+        server.loadEditorContext().done(function(prompt, rubric, title, sub_start, sub_due, assessments) {
             loadedPrompt = prompt;
             loadedRubric = rubric;
-            loadedSettings = settings;
+            loadedTitle = title;
+            loadedStart = sub_start;
+            loadedDue = sub_due;
+            loadedAssessments = assessments;
         });
 
         expect(loadedPrompt).toEqual(PROMPT);
         expect(loadedRubric).toEqual(RUBRIC);
-        expect(loadedSettings).toEqual(SETTINGS);
+        expect(loadedTitle).toEqual(TITLE);
+        expect(loadedStart).toEqual(SUBMISSION_START);
+        expect(loadedDue).toEqual(SUBMISSION_DUE);
+        expect(loadedAssessments).toEqual(ASSESSMENTS);
+
         expect($.ajax).toHaveBeenCalledWith({
             url: '/editor_context', type: "POST", data: '""'
         });
@@ -207,11 +227,14 @@ describe("OpenAssessment.Server", function() {
         stubAjax(true, { success: true });
 
         server.updateEditorContext(
-            PROMPT, RUBRIC, SETTINGS.title, SETTINGS.submission_start, SETTINGS.submission_due, SETTINGS.assessments
+            PROMPT, RUBRIC, TITLE, SUBMISSION_START, SUBMISSION_DUE, ASSESSMENTS
         );
         expect($.ajax).toHaveBeenCalledWith({
             type: "POST", url: '/update_editor_context',
-            data: JSON.stringify({prompt: PROMPT, rubric: RUBRIC, settings: SETTINGS})
+            data: JSON.stringify({
+                prompt: PROMPT, rubric: RUBRIC, title: TITLE, submission_start: SUBMISSION_START,
+                submission_due: SUBMISSION_DUE, assessments: ASSESSMENTS
+            })
         });
     });
 

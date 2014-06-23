@@ -2,14 +2,16 @@
 Studio editing view for OpenAssessment XBlock.
 """
 import pkg_resources
+import copy
 import logging
 from django.template.context import Context
 from django.template.loader import get_template
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext
 from xblock.core import XBlock
 from xblock.fragment import Fragment
 from openassessment.xblock import xml
 from openassessment.xblock.validation import validator
+from openassessment.xblock.xml import UpdateFromXmlError, parse_date, parse_examples_xml_str
 
 
 logger = logging.getLogger(__name__)
@@ -42,12 +44,14 @@ class StudioMixin(object):
         Update the XBlock's configuration.
 
         Args:
-            data (dict): Data from the request; should have a value for the keys
-                'rubric', 'settings' and 'prompt'. The 'rubric' should be an XML
-                representation of the new rubric. The 'prompt' should be a plain
-                text prompt. The 'settings' should be a dict of 'title',
-                'submission_due', 'submission_start' and the XML configuration for
-                all 'assessments'.
+            data (dict): Data from the request; should have a value for the keys: 'rubric', 'prompt',
+            'title', 'submission_start', 'submission_due', and 'assessments'.
+                -- The 'rubric' should be an XML representation of the new rubric.
+                -- The 'prompt' and 'title' should be plain text.
+                -- The dates 'submission_start' and 'submission_due' are both ISO strings
+                -- The 'assessments' is a list of assessment dictionaries (much like self.rubric_assessments)
+                   with the notable exception that all examples (for Student Training and eventually AI)
+                   are in XML string format and need to be parsed into dictionaries.
 
         Kwargs:
             suffix (str): Not used
@@ -55,18 +59,20 @@ class StudioMixin(object):
         Returns:
             dict with keys 'success' (bool) and 'msg' (str)
         """
-        missing_keys = list({'rubric', 'settings', 'prompt'} - set(data.keys()))
+        missing_keys = list(
+            {'rubric', 'prompt', 'title', 'assessments', 'submission_start', 'submission_due'} - set(data.keys())
+        )
         if missing_keys:
             logger.warn(
-                'Must specify the following keys in request JSON dict: {}'.format(missing_keys)
+                'Must specify the following missing keys in request JSON dict: {}'.format(missing_keys)
             )
             return {'success': False, 'msg': _('Error updating XBlock configuration')}
-        settings = data['settings']
+
         try:
-            rubric = xml.parse_rubric_xml_str(data['rubric'])
-            assessments = xml.parse_assessments_xml_str(settings['assessments'])
-            submission_due = xml.parse_date(settings["submission_due"])
-            submission_start = xml.parse_date(settings["submission_start"])
+            rubric = xml.parse_rubric_xml_str(data["rubric"])
+            submission_due = xml.parse_date(data["submission_due"], name="submission due date")
+            submission_start = xml.parse_date(data["submission_start"], name="submission start date")
+            assessments = parse_assessment_dictionaries(data["assessments"])
         except xml.UpdateFromXmlError as ex:
             return {'success': False, 'msg': _('An error occurred while saving: {error}').format(error=ex)}
 
@@ -81,7 +87,7 @@ class StudioMixin(object):
             assessments,
             submission_due,
             submission_start,
-            settings["title"],
+            data["title"],
             data["prompt"]
         )
         return {'success': True, 'msg': 'Successfully updated OpenAssessment XBlock'}
@@ -100,15 +106,27 @@ class StudioMixin(object):
             suffix (str): Not used
 
         Returns:
-            dict with keys 'success' (bool), 'message' (unicode),
-                'rubric' (unicode), 'prompt' (unicode), and 'settings' (dict)
+            dict with keys
+                'success' (bool),  'message' (unicode),  'rubric' (unicode),  'prompt' (unicode),
+                'title' (unicode),  'submission_start' (unicode),  'submission_due' (unicode),  'assessments (dict)
 
         """
         try:
-            assessments = xml.serialize_assessments_to_xml_str(self)
             rubric = xml.serialize_rubric_to_xml_str(self)
-        # We do not expect serialization to raise an exception,
-        # but if it does, handle it gracefully.
+
+            # Copies the rubric assessments so that we can change student training examples from dict -> str without
+            # negatively modifying the openassessmentblock definition.
+            assessment_list = copy.deepcopy(self.rubric_assessments)
+
+            # Finds the student training dictionary, if it exists, and replaces the examples with their XML definition
+            student_training_dictionary = [d for d in assessment_list if d["name"] == "student-training"]
+            if student_training_dictionary:
+                # Our for loop will return a list.  Select the first element of that list if it exists.
+                student_training_dictionary = student_training_dictionary[0]
+                examples = xml.serialize_examples_to_xml_str(student_training_dictionary)
+                student_training_dictionary["examples"] = examples
+
+        # We do not expect serialization to raise an exception, but if it does, handle it gracefully.
         except Exception as ex:
             msg = _('An unexpected error occurred while loading the problem: {error}').format(error=ex)
             logger.error(msg)
@@ -122,19 +140,15 @@ class StudioMixin(object):
 
         submission_start = self.submission_start if self.submission_start else ''
 
-        settings = {
-            'submission_due': submission_due,
-            'submission_start': submission_start,
-            'title': self.title,
-            'assessments': assessments
-        }
-
         return {
             'success': True,
             'msg': '',
             'rubric': rubric,
             'prompt': self.prompt,
-            'settings': settings
+            'submission_due': submission_due,
+            'submission_start': submission_start,
+            'title': self.title,
+            'assessments': assessment_list
         }
 
     @XBlock.json_handler
@@ -157,3 +171,73 @@ class StudioMixin(object):
             'success': True, 'msg': u'',
             'is_released': self.is_released()
         }
+
+
+def parse_assessment_dictionaries(input_assessments):
+    """
+    Parses the elements of assessment dictionaries returned by the Studio UI into storable rubric_assessments
+
+    Args:
+        input_assessments (list of dict): A list of the dictionaries that are assembled in Javascript to
+                represent their modules.  Some changes need to be made between this and the result:
+                        -- Parse the XML examples from the Student Training and or AI
+                        -- Parse all dates (including the assessment dates) correctly
+
+    Returns:
+        (list of dict): Can be directly assigned/stored in an openassessmentblock.rubric_assessments
+    """
+
+    assessments_list = []
+
+    for assessment in input_assessments:
+
+        assessment_dict = dict()
+
+        # Assessment name
+        if 'name' in assessment:
+            assessment_dict['name'] = assessment.get('name')
+        else:
+            raise UpdateFromXmlError(_('All "assessment" elements must contain a "name" element.'))
+
+        # Assessment start
+        if 'start' in assessment:
+            parsed_start = parse_date(assessment.get('start'), name="{} start date".format(assessment.get('name')))
+            assessment_dict['start'] = parsed_start
+        else:
+            assessment_dict['start'] = None
+
+        # Assessment due
+        if 'due' in assessment:
+            parsed_due = parse_date(assessment.get('due'), name="{} due date".format(assessment.get('name')))
+            assessment_dict['due'] = parsed_due
+
+        else:
+            assessment_dict['due'] = None
+
+        # Assessment must_grade
+        if 'must_grade' in assessment:
+            try:
+                assessment_dict['must_grade'] = int(assessment.get('must_grade'))
+            except (ValueError, TypeError):
+                raise UpdateFromXmlError(_('The "must_grade" value must be a positive integer.'))
+
+        # Assessment must_be_graded_by
+        if 'must_be_graded_by' in assessment:
+            try:
+                assessment_dict['must_be_graded_by'] = int(assessment.get('must_be_graded_by'))
+            except (ValueError, TypeError):
+                raise UpdateFromXmlError(_('The "must_be_graded_by" value must be a positive integer.'))
+
+        # Training examples (can be for AI OR for Student Training)
+        if 'examples' in assessment:
+            try:
+                assessment_dict['examples'] = parse_examples_xml_str(assessment.get('examples'))
+            except UpdateFromXmlError as ex:
+                raise UpdateFromXmlError(_("There was an error in parsing the {name} examples: {ex}").format(
+                    name=assessment_dict['name'], ex=ex
+                ))
+
+        # Update the list of assessments
+        assessments_list.append(assessment_dict)
+
+    return assessments_list

@@ -171,68 +171,188 @@
 // --------------------
 
 #openassessment-editor {
+  margin-bottom: 0;
 
-  .openassessment-editor-content-and-tabs {
+  .openassessment_editor_content_and_tabs {
     width: 100%;
     height: 370px;
   }
 
-  .openassessment-editor-header{
+  #openassessment_editor_header{
     background-color: #e5e5e5;
     width: 100%;
     top: 0;
   }
 
-  #oa-editor-window-title{
+  #oa_editor_window_title{
     float: left;
   }
 
-  .oa-editor-tab{
+  .oa_editor_tab{
     float: right;
     padding: ($baseline-v/8) ($baseline-h/8);
     margin: ($baseline-v/8) ($baseline-h/8);
+    border-radius: ($baseline-v/4);
+    box-shadow: none;
+    border: 0;
   }
 
-  .oa-editor-content-wrapper {
+  .oa_editor_content_wrapper {
     height: 100%;
     width: 100%;
     padding: ($baseline-v/4) ($baseline-h/4);
   }
 
-  .openassessment-prompt-editor {
+  #openassessment_prompt_editor {
     width: 100%;
     height: 100%;
     resize: none;
+    border: none;
   }
 
-  .openassessment-rubric-editor {
+  #openassessment_rubric_editor {
     width: 100%;
     height: 100%;
   }
 
-  .openassessment-assessments-editor {
-    width: 100%;
+  #oa_basic_settings_editor {
+    padding: 20px 20px;
+    border-bottom: 1px solid $edx-gray-d3;
+    #openassessment_title_editor_wrapper{
+      label{
+        width: 25%;
+        text-align: left;
+      }
+      input{
+        width: 45%;
+        min-width: 100px;
+      }
+    }
   }
 
-  #oa-settings-editor-text-fields {
-    float: left;
-    width: 30%;
+  #openassessment_step_select_description{
+    margin: 10px 0;
   }
 
-  #oa-settings-assessments{
+  .openassessment_assessment_module_settings_editor{
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid $edx-gray-l3;
+  }
+
+  .openassessment_indent_line_input{
+    padding: 5px 20px;
+  }
+
+  #oa_settings_editor_wrapper {
+    overflow-y: scroll;
+  }
+
+  #openassessment_title_editor {
+    width: 300px;
+    margin-left: 50px;
+  }
+
+  .openassessment_description{
+    font-size: 75%;
+    margin: 0;
+  }
+
+  .openassessment_date_field{
+    width: 130px;
+  }
+  .openassessment_number_field{
+    width: 25px;
+  }
+
+  .openassessment_description_closed{
+     @extend .openassessment_description;
+  }
+
+  .openassessment_text_field_wrapper{
+    width: 50%;
+    text-align: center;
+  }
+
+  .openassessment_right_text_field_wrapper {
+    @extend .openassessment_text_field_wrapper;
     float: right;
-    width: 70%;
-    height: 100%;
   }
 
-  .xblock-actions {
-     background-color: #e5e5e5;
+  .openassessment_left_text_field_wrapper {
+    @extend .openassessment_text_field_wrapper;
+    float: left;
+  }
+
+  .openassessment_due_date_editor{
+    height: 30px;
+  }
+
+  .openassessment_inclusion_wrapper{
+    background-color: $edx-gray-l3;
+    padding: ($baseline-v/8) ($baseline-h/8);
+    margin: ($baseline-v/8) ($baseline-h/8);
+    border-radius: ($baseline-v)/8;
+
+    input[type="checkbox"]{
+      display: none;
+    }
+
+    input[type="checkbox"] + label:before {
+      font-family: "FontAwesome";
+      display: inline-block;
+      margin-right: ($baseline-h/4);
+      width: auto;
+      height: auto;
+      content: "\f096";
+    }
+
+    input[type="checkbox"]:checked + label:before{
+      content: "\f046";
+    }
+  }
+
+  label{
+    padding-right: 10px;
+  }
+
+  .xblock_actions {
+     background-color: $edx-gray-l2;
      position: absolute;
      width: 100%;
      bottom: 0;
    }
+
+  .ui-widget-header .ui-state-default{
+    background: #e5e5e5;
+    a{
+      color: $edx-gray-d3;
+      text-transform: uppercase;
+      outline-color: transparent;
+    }
+  }
+
+  .ui-widget-header .ui-state-active{
+    background: $edx-gray-d3;
+    color: $white;
+    a{
+      color: $white;
+      text-transform: uppercase;
+      outline-color: transparent;
+    }
+  }
+
+  hr {
+    background-color: transparent;
+    color: $edx-gray-d3;
+    height: 1px;
+    border: 0px;
+    clear: both;
+  }
+
 }
 
 .modal-content {
-  height: 500px !important;
+  height: 470px !important;
 }
+

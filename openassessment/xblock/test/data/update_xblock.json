@@ -12,17 +12,24 @@
             "</rubric>"
         ],
         "prompt": "My new prompt.",
-        "settings": {
-            "title": "My new title.",
-            "assessments": [
-                "<assessments>",
-                "<assessment name=\"peer-assessment\" must_grade=\"5\" must_be_graded_by=\"3\" />",
-                "<assessment name=\"self-assessment\" />",
-                "</assessments>"
-            ],
-            "submission_due": "4014-02-27T09:46:28",
-            "submission_start": "4014-02-10T09:46:28"
-        },
+        "submission_due": "4014-02-27T09:46:28",
+        "submission_start": "4014-02-10T09:46:28",
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": "",
+                "due": "4014-03-10T00:00:00"
+            },
+            {
+                "name": "self-assessment",
+                "start": "",
+                "due": ""
+            }
+        ],
+
         "expected-assessment": "peer-assessment",
         "expected-criterion-prompt": "Test criterion prompt"
     }

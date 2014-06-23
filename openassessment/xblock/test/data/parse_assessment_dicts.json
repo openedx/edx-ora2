@@ -1,0 +1,172 @@
+{
+    "no-dates": {
+        "assessments_list": [
+            {
+                "name": "peer-assessment",
+                "start": "",
+                "due": "",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment",
+                "due": "",
+                "start": ""
+            }
+        ],
+        "results": [
+            {
+                "name": "peer-assessment",
+                "start": null,
+                "due": null,
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment",
+                "due": null,
+                "start": null
+            }
+        ]
+    },
+
+    "student-training": {
+        "assessments_list": [
+            {
+                "name": "student-training",
+                "start": "",
+                "due": "",
+                "examples": "<example><answer>ẗëṡẗ äṅṡẅëṛ</answer><select criterion=\"Test criterion\" option=\"Yes\" /><select criterion=\"Another test criterion\" option=\"No\" /></example><example><answer>äṅöẗḧëṛ ẗëṡẗ äṅṡẅëṛ</answer><select criterion=\"Another test criterion\" option=\"Yes\" /><select criterion=\"Test criterion\" option=\"No\" /></example>"
+            },
+            {
+                "name": "peer-assessment",
+                "start": "",
+                "due": "",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment",
+                "due": "",
+                "start": ""
+            }
+        ],
+        "results": [
+            {
+                "name": "student-training",
+                "due": null,
+                "start": null,
+                "examples": [
+                    {
+                        "answer": "ẗëṡẗ äṅṡẅëṛ",
+                        "options_selected": [
+                            {
+                                "criterion": "Test criterion",
+                                "option": "Yes"
+                            },
+                            {
+                                "criterion": "Another test criterion",
+                                "option": "No"
+                            }
+                        ]
+                    },
+                    {
+                        "answer": "äṅöẗḧëṛ ẗëṡẗ äṅṡẅëṛ",
+                        "options_selected": [
+                            {
+                                "criterion": "Another test criterion",
+                                "option": "Yes"
+                            },
+                            {
+                                "criterion": "Test criterion",
+                                "option": "No"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "peer-assessment",
+                "start": null,
+                "due": null,
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment",
+                "due": null,
+                "start": null
+            }
+        ]
+    },
+
+    "date-parsing": {
+        "assessments_list": [
+            {
+                "name": "student-training",
+                "start": "2014-10-10T01:00:01",
+                "due": "",
+                "examples": "<example><answer>ẗëṡẗ äṅṡẅëṛ</answer><select criterion=\"Test criterion\" option=\"Yes\" /><select criterion=\"Another test criterion\" option=\"No\" /></example><example><answer>äṅöẗḧëṛ ẗëṡẗ äṅṡẅëṛ</answer><select criterion=\"Another test criterion\" option=\"Yes\" /><select criterion=\"Test criterion\" option=\"No\" /></example>"
+            },
+            {
+                "name": "peer-assessment",
+                "start": "",
+                "due": "2015-01-01T00:00:00",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment",
+                "due": "2015-01-01T00:00:00",
+                "start": ""
+            }
+        ],
+        "results": [
+            {
+                "name": "student-training",
+                "due": null,
+                "start": "2014-10-10T01:00:01",
+                "examples": [
+                    {
+                        "answer": "ẗëṡẗ äṅṡẅëṛ",
+                        "options_selected": [
+                            {
+                                "criterion": "Test criterion",
+                                "option": "Yes"
+                            },
+                            {
+                                "criterion": "Another test criterion",
+                                "option": "No"
+                            }
+                        ]
+                    },
+                    {
+                        "answer": "äṅöẗḧëṛ ẗëṡẗ äṅṡẅëṛ",
+                        "options_selected": [
+                            {
+                                "criterion": "Another test criterion",
+                                "option": "Yes"
+                            },
+                            {
+                                "criterion": "Test criterion",
+                                "option": "No"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "peer-assessment",
+                "start": null,
+                "due": "2015-01-01T00:00:00",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment",
+                "due": "2015-01-01T00:00:00",
+                "start": null
+            }
+        ]
+    }
+}
