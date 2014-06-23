@@ -14,6 +14,12 @@ import base64
 from django.conf import settings
 
 
+DEFAULT_AI_ALGORITHMS = {
+    'fake': 'openassessment.assessment.worker.algorithm.FakeAIAlgorithm',
+    'ease': 'openassessment.assessment.worker.algorithm.EaseAIAlgorithm'
+}
+
+
 class AIAlgorithmError(Exception):
     """
     An error occurred when using an AI algorithm.
@@ -128,7 +134,7 @@ class AIAlgorithm(object):
              UnknownAlgorithm
 
         """
-        algorithms = getattr(settings, "ORA2_AI_ALGORITHMS", dict())
+        algorithms = getattr(settings, "ORA2_AI_ALGORITHMS", DEFAULT_AI_ALGORITHMS)
         cls_path = algorithms.get(algorithm_id)
 
         if cls_path is None:
