@@ -87,5 +87,54 @@ OpenAssessment.StaffInfoView.prototype = {
                 view.loadStudentInfo();
             }
         );
+
+        // Install a click handler for scheduling AI classifier training
+        sel.find('#schedule_training').click(
+            function(eventObject) {
+                eventObject.preventDefault();
+                view.scheduleTraining();
+            }
+        );
+
+        // Install a click handler for rescheduling unfinished AI tasks for this problem
+        sel.find('#reschedule_unfinished_tasks').click(
+            function(eventObject) {
+                eventObject.preventDefault();
+                view.rescheduleUnfinishedTasks();
+            }
+        );
+    },
+
+    /**
+     Sends a request to the server to schedule the training of classifiers for
+     this problem's Example Based Assessments.
+
+     **/
+    scheduleTraining: function() {
+        var view = this;
+        this.server.scheduleTraining().done(
+                function(msg) {
+                    $('#schedule_training_message', this.element).text(msg)
+                }
+            ).fail(function(errMsg) {
+                $('#schedule_training_message', this.element).text(errMsg)
+            });
+    },
+
+    /**
+     Begins the process of rescheduling all unfinished grading tasks. This incdludes
+     checking if the classifiers have been created, and grading any unfinished
+     student submissions.
+
+     **/
+    rescheduleUnfinishedTasks: function() {
+        var view = this;
+        this.server.rescheduleUnfinishedTasks().done(
+                function(msg) {
+                    $('#reschedule_unfinished_tasks_message', this.element).text(msg)
+                }
+            ).fail(function(errMsg) {
+                $('#reschedule_unfinished_tasks_message', this.element).text(errMsg)
+            });
     }
 };

@@ -92,7 +92,7 @@ class RubricSerializer(NestedModelSerializer):
 
     class Meta:
         model = Rubric
-        fields = ('id', 'content_hash', 'criteria', 'points_possible')
+        fields = ('id', 'content_hash', 'structure_hash', 'criteria', 'points_possible')
 
     def validate_criteria(self, attrs, source):
         """Make sure we have at least one Criterion in the Rubric."""
@@ -283,6 +283,7 @@ def rubric_from_dict(rubric_dict):
         rubric = Rubric.objects.get(content_hash=content_hash)
     except Rubric.DoesNotExist:
         rubric_dict["content_hash"] = content_hash
+        rubric_dict["structure_hash"] = Rubric.structure_hash_from_dict(rubric_dict)
         for crit_idx, criterion in enumerate(rubric_dict.get("criteria", {})):
             if "order_num" not in criterion:
                 criterion["order_num"] = crit_idx

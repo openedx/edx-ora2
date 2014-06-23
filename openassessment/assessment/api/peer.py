@@ -139,6 +139,8 @@ def get_score(submission_uuid, requirements):
         dict with keys "points_earned" and "points_possible".
 
     """
+    if requirements is None:
+        return None
 
     # User hasn't completed their own submission yet
     if not submitter_is_finished(submission_uuid, requirements):

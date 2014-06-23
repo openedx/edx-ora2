@@ -30,6 +30,7 @@ pip-log.txt
 .tox
 nosetests.xml
 htmlcov
+coverage.xml
 
 # Mr Developer
 .mr.developer.cfg
@@ -53,7 +54,11 @@ coverage
 
 # tim-specific
 ora2db
+storage/*
 openassessment/xblock/static/js/fixtures/*.html
 
 # logging
-logs/*.log*
+logs/*/*.log*
+
+# Vagrant
+.vagrant

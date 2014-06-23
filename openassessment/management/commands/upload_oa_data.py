@@ -52,7 +52,7 @@ class Command(BaseCommand):
         Execute the command.
 
         Args:
-            course_id (unicode): The ID of the course to create submissions for.
+            course_id (unicode): The ID of the course to use.
             s3_bucket_name (unicode): The name of the S3 bucket to upload to.
 
         Raises:

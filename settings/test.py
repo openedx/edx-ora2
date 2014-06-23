@@ -33,15 +33,16 @@ DATABASES = {
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
-
 # Install test-specific Django apps
 INSTALLED_APPS += ('django_nose',)
 
+# Store uploaded files in a test-specific directory
+MEDIA_ROOT = os.path.join(BASE_DIR, 'storage/test')
 
 # We run Celery in "always eager" mode in the test suite,
 # which executes tasks synchronously instead of using the task queue.
 CELERY_ALWAYS_EAGER = True
-
+CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
 
 # Silence cache key warnings
 # https://docs.djangoproject.com/en/1.4/topics/cache/#cache-key-warnings

@@ -147,19 +147,7 @@ CACHES = {
     },
 }
 
-# Configuration for the workflow API
-# We use dependency injection to tell the workflow API
-# which assessments to use and where to find the corresponding
-# assessment API Python modules.
-ORA2_ASSESSMENTS = {
-    'peer': 'openassessment.assessment.api.peer',
-    'self': 'openassessment.assessment.api.self',
-    'training': 'openassessment.assessment.api.student_training',
-}
-
-# If peer-assessment provides a score, use that;
-# otherwise fall back to self-assessment.
-ORA2_ASSESSMENT_SCORE_PRIORITY = ['peer', 'self']
+BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 # Celery configuration
 # Note: Version 3.1 of Celery includes Django support, but since we're using

@@ -84,6 +84,14 @@
         </criterion>
     </rubric>
     <assessments>
+        <assessment name="example-based-assessment" algorithm_id="fake">
+            <example>
+                <answer>Example Answer One</answer>
+                <select criterion="Form" option="Reddit" />
+                <select criterion="Clear-headed" option="Yogi Berra" />
+                <select criterion="Concise" option="HP Lovecraft" />
+            </example>
+        </assessment>
         <assessment name="peer-assessment" must_grade="5" must_be_graded_by="3" start="2015-01-02" due="2015-04-01"/>
         <assessment name="self-assessment" start="2016-01-02" due="2016-04-01"/>
     </assessments>

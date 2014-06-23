@@ -1,5 +1,7 @@
 {
-  "repository" : { "type": "git", "url": "http://github.com/npm/npm.git" },
+  "name": "edx-ora2",
+  "version": "0.0.1",
+  "repository": "https://github.com/edx/edx-ora2.git",
   "devDependencies": {
     "karma": "~0.11",
     "karma-jasmine": "0.1.3",

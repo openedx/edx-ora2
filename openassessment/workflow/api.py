@@ -7,9 +7,10 @@ import logging
 from django.db import DatabaseError
 
 from openassessment.assessment.api import peer as peer_api
+from openassessment.assessment.api import ai as ai_api
 from openassessment.assessment.api import student_training as training_api
 from openassessment.assessment.errors import (
-    PeerAssessmentError, StudentTrainingInternalError
+    PeerAssessmentError, StudentTrainingInternalError, AIError
 )
 from submissions import api as sub_api
 from .models import AssessmentWorkflow, AssessmentWorkflowStep
@@ -22,7 +23,7 @@ from .errors import (
 logger = logging.getLogger(__name__)
 
 
-def create_workflow(submission_uuid, steps):
+def create_workflow(submission_uuid, steps, on_init_params=None):
     """Begins a new assessment workflow.
 
     Create a new workflow that other assessments will record themselves against.
@@ -32,6 +33,10 @@ def create_workflow(submission_uuid, steps):
             assessments will be evaluating.
         steps (list): List of steps that are part of the workflow, in the order
             that the user must complete them. Example: `["peer", "self"]`
+
+    Kwargs:
+        on_init_params (dict): The parameters to pass to each assessment module
+            on init.  Keys are the assessment step names.
 
     Returns:
         dict: Assessment workflow information with the following
@@ -62,8 +67,11 @@ def create_workflow(submission_uuid, steps):
             .format(submission_uuid, specific_err_msg)
         )
 
+    if on_init_params is None:
+        on_init_params = dict()
+
     try:
-        workflow = AssessmentWorkflow.start_workflow(submission_uuid, steps)
+        workflow = AssessmentWorkflow.start_workflow(submission_uuid, steps, on_init_params)
         logger.info((
             u"Started assessment workflow for "
             u"submission UUID {uuid} with steps {steps}"
@@ -289,6 +297,10 @@ def get_status_counts(course_id, item_id, steps):
         ]
 
     """
+    # The AI status exists for workflow logic, but no student will ever be in
+    # the AI status, so we should never return it.
+    statuses = steps + AssessmentWorkflow.STATUSES
+    if 'ai' in statuses: statuses.remove('ai')
     return [
         {
             "status": status,
@@ -298,7 +310,7 @@ def get_status_counts(course_id, item_id, steps):
                 item_id=item_id,
             ).count()
         }
-        for status in steps + AssessmentWorkflow.STATUSES
+        for status in statuses
     ]
 
 
