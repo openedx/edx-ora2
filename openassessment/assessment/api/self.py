@@ -24,6 +24,72 @@ SELF_TYPE = "SE"
 logger = logging.getLogger("openassessment.assessment.api.self")
 
 
+def submitter_is_finished(submission_uuid, requirements):
+    """
+    Check whether a self-assessment has been completed for a submission.
+
+    Args:
+        submission_uuid (str): The unique identifier of the submission.
+        requirements (dict): Any attributes of the assessment module required
+            to determine if this assessment is complete. There are currently
+            no requirements for a self-assessment.
+    Returns:
+        True if the submitter has assessed their answer
+    Examples:
+        >>> submitter_is_finished('222bdf3d-a88e-11e3-859e-040ccee02800', {})
+        True
+    """
+    return Assessment.objects.filter(
+        score_type=SELF_TYPE, submission_uuid=submission_uuid
+    ).exists()
+
+
+def assessment_is_finished(submission_uuid, requirements):
+    """
+    Check whether a self-assessment has been completed. For self-assessment,
+    this function is synonymous with submitter_is_finished.
+
+    Args:
+        submission_uuid (str): The unique identifier of the submission.
+        requirements (dict): Any attributes of the assessment module required
+            to determine if this assessment is complete. There are currently
+            no requirements for a self-assessment.
+    Returns:
+        True if the assessment is complete.
+    Examples:
+        >>> assessment_is_finished('222bdf3d-a88e-11e3-859e-040ccee02800', {})
+        True
+    """
+    return submitter_is_finished(submission_uuid, requirements)
+
+
+def get_score(submission_uuid, requirements):
+    """
+    Get the score for this particular assessment.
+
+    Args:
+        submission_uuid (str): The unique identifier for the submission
+        requirements (dict): Not used.
+    Returns:
+        A dict of points earned and points possible for the given submission.
+        Returns None if no score can be determined yet.
+    Examples:
+        >>> get_score('222bdf3d-a88e-11e3-859e-040ccee02800', {})
+        {
+            'points_earned': 5,
+            'points_possible': 10
+        }
+    """
+    assessment = get_assessment(submission_uuid)
+    if not assessment:
+        return None
+
+    return {
+        "points_earned": assessment["points_earned"],
+        "points_possible": assessment["points_possible"]
+    }
+
+
 def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, scored_at=None):
     """
     Create a self-assessment for a submission.
@@ -154,73 +220,6 @@ def get_assessment(submission_uuid):
 
     return serialized_assessment
 
-
-def submitter_is_finished(submission_uuid, requirements):
-    """
-    Check whether a self-assessment has been completed for a submission.
-
-    Args:
-        submission_uuid (str): The unique identifier of the submission.
-        requirements (dict): Any attributes of the assessment module required
-            to determine if this assessment is complete. There are currently
-            no requirements for a self-assessment.
-    Returns:
-        True if the submitter has assessed their answer
-    Examples:
-        >>> submitter_is_finished('222bdf3d-a88e-11e3-859e-040ccee02800', {})
-        True
-    """
-    return Assessment.objects.filter(
-        score_type=SELF_TYPE, submission_uuid=submission_uuid
-    ).exists()
-
-
-def assessment_is_finished(submission_uuid, requirements):
-    """
-    Check whether a self-assessment has been completed. For self-assessment,
-    this function is synonymous with submitter_is_finished.
-
-    Args:
-        submission_uuid (str): The unique identifier of the submission.
-        requirements (dict): Any attributes of the assessment module required
-            to determine if this assessment is complete. There are currently
-            no requirements for a self-assessment.
-    Returns:
-        True if the assessment is complete.
-    Examples:
-        >>> assessment_is_finished('222bdf3d-a88e-11e3-859e-040ccee02800', {})
-        True
-    """
-    return submitter_is_finished(submission_uuid, requirements)
-
-
-def get_score(submission_uuid, requirements):
-    """
-    Get the score for this particular assessment.
-
-    Args:
-        submission_uuid (str): The unique identifier for the submission
-        requirements (dict): Any attributes of the assessment module required
-            to determine if this assessment is complete. There are currently
-            no requirements for a self-assessment.
-    Returns:
-        A dict of points earned and points possible for the given submission.
-        Returns None if no score can be determined yet.
-    Examples:
-        >>> get_score('222bdf3d-a88e-11e3-859e-040ccee02800', {})
-        {
-            'points_earned': 5,
-            'points_possible': 10
-        }
-    """
-    assessment = get_assessment(submission_uuid)
-    if not assessment:
-        return None
-
-    return {
-        "points_earned": assessment["points_earned"],
-        "points_possible": assessment["points_possible"]
-    }
 
 
 def get_assessment_scores_by_criteria(submission_uuid):

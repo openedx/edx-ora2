@@ -1,0 +1,63 @@
+<openassessment>
+    <title>Open Assessment Test</title>
+    <prompt>Example-based assessment</prompt>
+    <rubric>
+        <prompt>Read for conciseness, clarity of thought, and form.</prompt>
+        <criterion>
+            <name>Ideas</name>
+            <prompt>How good are the ideas?</prompt>
+            <option points="0">
+                <name>Poor</name>
+                <explanation>Poor job!</explanation>
+            </option>
+            <option points="1">
+                <name>Fair</name>
+                <explanation>Fair job</explanation>
+            </option>
+            <option points="3">
+                <name>Good</name>
+                <explanation>Good job</explanation>
+            </option>
+        </criterion>
+        <criterion>
+            <name>Content</name>
+            <prompt>How good is the content?</prompt>
+            <option points="0">
+                <name>Poor</name>
+                <explanation>Poor job!</explanation>
+            </option>
+            <option points="1">
+                <name>Fair</name>
+                <explanation>Fair job</explanation>
+            </option>
+            <option points="3">
+                <name>Good</name>
+                <explanation>Good job</explanation>
+            </option>
+        </criterion>
+    </rubric>
+    <assessments>
+        <assessment name="example-based-assessment" algorithm_id="fake">
+            <example>
+                <answer>Example Answer One</answer>
+                <select criterion="Ideas" option="Poor" />
+                <select criterion="Content" option="Poor" />
+            </example>
+            <example>
+                <answer>Example Answer Two</answer>
+                <select criterion="Ideas" option="Fair" />
+                <select criterion="Content" option="Fair" />
+            </example>
+            <example>
+                <answer>Example Answer Three</answer>
+                <select criterion="Ideas" option="Fair" />
+                <select criterion="Content" option="Good" />
+            </example>
+            <example>
+                <answer>Example Answer Four</answer>
+                <select criterion="Ideas" option="Poor" />
+                <select criterion="Content" option="Good" />
+            </example>
+        </assessment>
+    </assessments>
+</openassessment>

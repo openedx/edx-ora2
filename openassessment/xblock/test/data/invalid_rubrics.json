@@ -3,9 +3,7 @@
         "rubric": {
             "prompt": "Test Prompt",
             "criteria": []
-        },
-        "current_rubric": null,
-        "is_released": false
+        }
     },
 
     "zero_options": {
@@ -19,9 +17,7 @@
                     "options": []
                 }
             ]
-        },
-        "current_rubric": null,
-        "is_released": false
+        }
     },
 
     "negative_points": {
@@ -42,9 +38,7 @@
                     ]
                 }
             ]
-        },
-        "current_rubric": null,
-        "is_released": false
+        }
     },
 
     "duplicate_criteria_names": {
@@ -78,9 +72,7 @@
                     ]
                 }
             ]
-        },
-        "current_rubric": null,
-        "is_released": false
+        }
     },
 
     "duplicate_option_names": {
@@ -107,9 +99,7 @@
                     ]
                 }
             ]
-        },
-        "current_rubric": null,
-        "is_released": false
+        }
     },
 
     "change_points_after_release": {
@@ -398,7 +388,7 @@
         "is_released": true
     },
 
-    "rename_criterion_name_after_release": {
+        "rename_criterion_name_after_release": {
         "rubric": {
             "prompt": "Test Prompt",
             "criteria": [
@@ -526,5 +516,33 @@
             ]
         },
         "is_released": true
+    },
+
+    "example_based_duplicate_option_points": {
+        "is_example_based": true,
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 2,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        }
     }
 }

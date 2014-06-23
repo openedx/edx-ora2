@@ -23,9 +23,7 @@
                     ]
                 }
             ]
-        },
-        "current_rubric": null,
-        "is_released": false
+        }
     },
 
     "unicode": {
@@ -52,9 +50,7 @@
                     ]
                 }
             ]
-        },
-        "current_rubric": null,
-        "is_released": false
+        }
     },
 
     "change_points_before_release": {
@@ -293,8 +289,7 @@
                     ]
                 }
             ]
-        },
-        "is_released": false
+        }
     },
 
     "remove_options_before_release": {

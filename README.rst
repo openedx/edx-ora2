@@ -71,11 +71,11 @@ To run the Python and Javascript unit test suites:
 
     ./scripts/test.sh
 
-To limit Python tests to a particular Django app:
+To limit Python tests to a particular module:
 
 .. code:: bash
 
-    ./scripts/test-python.sh openassessment.xblock
+    ./scripts/test-python.sh openassessment/xblock/test/test_openassessment.py
 
 To run just the JavaScript tests:
 
@@ -103,13 +103,55 @@ Check for quality violations:
 
 .. code:: bash
 
-    pylint apps
+    pylint openassessment
 
 Disable quality violations on a line or file:
 
 .. code:: python
 
     # pylint: disable=W0123,E4567
+
+
+Vagrant
+=======
+
+This repository includes a Vagrant configuration file, which is useful for testing
+ORA2 in an environment that is closer to production:
+
+* Uses `gunicorn <http://gunicorn.org/>`_ to serve the workbench application.
+  Unlike Django ``runserver``, gunicorn will process requests in parallel.
+
+* Uses `mysql <http://www.mysql.com/>`_ as the database, which (unlike
+  `sqlite <http://www.sqlite.org/>`_) allows for simultaneous writes.
+
+* Serves static files using `nginx <http://wiki.nginx.org/Main>`_ instead
+  of Django `staticfiles <https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/>`_.
+
+* Runs multiple `celery workers <http://celery.readthedocs.org/en/latest/>`_.
+
+* Uses `memcached <http://memcached.org/>`_.
+
+* Installs `EASE <https://github.com/edx/ease>`_ for AI grading, including
+  its many requirements.
+
+To use the Vagrant VM:
+
+1) `Install Vagrant <https://docs.vagrantup.com/v2/installation/>`_.
+2) ``vagrant up`` to start and provision the Vagrant VM.
+3) Visit `http://192.168.44.10 <http://192.168.44.10>`_
+4) You should see the workbench index page load.
+
+After making a change to the code in the ``edx-ora2`` directory,
+you must restart the services on the Vagrant VM:
+
+1) ``vagrant ssh`` to ssh into the Vagrant VM.
+2) ``./update.sh`` to restart the services, run database migrations, and collect static assets.
+3) Visit `http://192.168.44.10 <http://192.168.44.10>`_
+
+By default, the Vagrant VM also includes a monitoring tool for Celery tasks called `Flower <https://github.com/mher/flower>`_.
+To use the tool, visit: `http://192.168.44.10:5555 <http://192.168.44.10:5555>`_
+
+The log files from the Vagrant VM are located in ``edx-ora2/logs/vagrant``, which is shared with the host machine.
 
 
 i18n

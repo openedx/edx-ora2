@@ -240,28 +240,23 @@ Data Model
 1. **GradingWorkflow**
 
     a. Submission UUID (varchar)
-    b. Rubric UUID (varchar)
-    c. ClassifierSet (Foreign Key, Nullable)
-    d. Assessment (Foreign Key, Nullable)
-    e. Scheduled at (timestamp): The time the task was placed on the queue.
-    f. Started at (timestamp): The time the task was picked up by the worker.
+    b. ClassifierSet (Foreign Key, Nullable)
+    c. Assessment (Foreign Key, Nullable)
+    d. Rubric (Foreign Key): Used to search for classifier sets if none are available when the workflow is started.
+    e. Algorithm ID (varchar): Used to search for classifier sets if none are available when the workflow is started.
+    f. Scheduled at (timestamp): The time the task was placed on the queue.
     g. Completed at (timestamp): The time the task was completed.  If set, the task is considered complete.
-    h. Course ID (varchar): The ID of the course associated with the submission.  Useful for rescheduling
-       failed grading tasks in a particular course.
-    i. Item ID (varchar): The ID of the item (problem) associated with the submission.  Useful for rescheduling
-       failed grading tasks in a particular item in a course.
-    j. Worker version (varchar): Identifier for the code running on the worker when the task was started.  Useful for error tracking.
+    h. Course ID (varchar): The ID of the course associated with the submission.  Useful for rescheduling failed grading tasks in a particular course.
+    i. Item ID (varchar): The ID of the item (problem) associated with the submission.  Useful for rescheduling failed grading tasks in a particular item in a course.
+
 
 2. **TrainingWorkflow**
 
     a. Algorithm ID (varchar)
-    b. Rubric UUID (varchar)
-    c. Many-to-many relation with **TrainingExample**.  We can re-use examples for multiple workflows.
-    d. ClassifierSet (Foreign Key)
-    e. Scheduled at (timestamp): The time the task was placed on the queue.
-    f. Started at (timestamp): The time the task was picked up by the worker.
-    g. Completed at (timestamp): The time the task was completed.  If set, the task is considered complete.
-    h. Worker version (varchar): Identifier for the code running on the worker when the task was started.  Useful for error tracking.
+    b. Many-to-many relation with **TrainingExample**.  We can re-use examples for multiple workflows.
+    c. ClassifierSet (Foreign Key)
+    d. Scheduled at (timestamp): The time the task was placed on the queue.
+    e. Completed at (timestamp): The time the task was completed.  If set, the task is considered complete.
 
 3. **TrainingExample**
 
@@ -272,12 +267,13 @@ Data Model
 
     a. Rubric (Foreign Key)
     b. Created at (timestamp)
+    c. Algorithm ID (varchar)
 
 5. **Classifier**
 
     a. ClassifierSet (Foreign Key)
     b. URL for trained classifier (varchar)
-    c. Algorithm ID (varchar)
+    c. Criterion (Foreign Key)
 
 6. **Assessment** (same as current implementation)
 

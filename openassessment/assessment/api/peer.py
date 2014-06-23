@@ -28,6 +28,25 @@ PEER_TYPE = "PE"
 
 
 def submitter_is_finished(submission_uuid, requirements):
+    """
+    Check whether the submitter has made the required number of assessments.
+
+    If the requirements dict is None (because we're being updated
+    asynchronously or when the workflow is first created),
+    then automatically return False.
+
+    Args:
+        submission_uuid (str): The UUID of the submission being tracked.
+        requirements (dict): Dictionary with the key "must_grade" indicating
+            the required number of submissions the student must grade.
+
+    Returns:
+        bool
+
+    """
+    if requirements is None:
+        return False
+
     try:
         workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
         if workflow.completed_at is not None:
@@ -41,18 +60,88 @@ def submitter_is_finished(submission_uuid, requirements):
         return False
 
 
+def assessment_is_finished(submission_uuid, requirements):
+    """
+    Check whether the submitter has received enough assessments
+    to get a score.
+
+    If the requirements dict is None (because we're being updated
+    asynchronously or when the workflow is first created),
+    then automatically return False.
+
+    Args:
+        submission_uuid (str): The UUID of the submission being tracked.
+        requirements (dict): Dictionary with the key "must_be_graded_by"
+            indicating the required number of assessments the student
+            must receive to get a score.
+
+    Returns:
+
+        bool
+    """
+    if requirements is None:
+        return False
+    return bool(get_score(submission_uuid, requirements))
+
+
+def on_start(submission_uuid):
+    """Create a new peer workflow for a student item and submission.
+
+    Creates a unique peer workflow for a student item, associated with a
+    submission.
+
+    Args:
+        submission_uuid (str): The submission associated with this workflow.
+
+    Returns:
+        None
+
+    Raises:
+        SubmissionError: There was an error retrieving the submission.
+        PeerAssessmentInternalError: Raised when there is an internal error
+            creating the Workflow.
+
+    """
+    try:
+        submission = sub_api.get_submission_and_student(submission_uuid)
+        workflow, __ = PeerWorkflow.objects.get_or_create(
+            student_id=submission['student_item']['student_id'],
+            course_id=submission['student_item']['course_id'],
+            item_id=submission['student_item']['item_id'],
+            submission_uuid=submission_uuid
+        )
+        workflow.save()
+    except IntegrityError:
+        # If we get an integrity error, it means someone else has already
+        # created a workflow for this submission, so we don't need to do anything.
+        pass
+    except DatabaseError:
+        error_message = (
+            u"An internal error occurred while creating a new peer "
+            u"workflow for submission {}"
+            .format(submission_uuid)
+        )
+        logger.exception(error_message)
+        raise PeerAssessmentInternalError(error_message)
+
+
 def get_score(submission_uuid, requirements):
     """
     Retrieve a score for a submission if requirements have been satisfied.
 
     Args:
         submission_uuid (str): The UUID of the submission.
-        requirements (dict): Description of requirements for receiving a score,
-            specific to the particular kind of submission (e.g. self or peer).
+        requirements (dict): Dictionary with the key "must_be_graded_by"
+            indicating the required number of assessments the student
+            must receive to get a score.
 
     Returns:
         dict with keys "points_earned" and "points_possible".
+
     """
+    if requirements is None:
+        return None
+
     # User hasn't completed their own submission yet
     if not submitter_is_finished(submission_uuid, requirements):
         return None
@@ -91,10 +180,6 @@ def get_score(submission_uuid, requirements):
         ),
         "points_possible": items[0].assessment.points_possible,
     }
-
-
-def assessment_is_finished(submission_uuid, requirements):
-    return bool(get_score(submission_uuid, requirements))
 
 
 def create_assessment(

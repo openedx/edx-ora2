@@ -26,7 +26,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
         Create a submission.
         """
         submission = sub_api.create_submission(STUDENT_ITEM, ANSWER)
-        training_api.create_student_training_workflow(submission['uuid'])
+        training_api.on_start(submission['uuid'])
         self.submission_uuid = submission['uuid']
 
     def test_training_workflow(self):
@@ -122,7 +122,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
 
     def test_submitter_is_finished_num_queries(self):
         # Complete the first training example
-        training_api.create_student_training_workflow(self.submission_uuid)
+        training_api.on_start(self.submission_uuid)
         training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
         training_api.assess_training_example(self.submission_uuid, EXAMPLES[0]['options_selected'])
 
@@ -159,9 +159,6 @@ class StudentTrainingAssessmentTest(CacheResetTest):
         # Without creating a workflow, we should not be finished
         requirements = {'num_required': 1}
         self.assertFalse(training_api.submitter_is_finished(self.submission_uuid, requirements))
-
-        # But since we're not being assessed by others, the "assessment" should be finished.
-        self.assertTrue(training_api.assessment_is_finished(self.submission_uuid, requirements))
 
     def test_get_training_example_none_available(self):
         for example in EXAMPLES:
@@ -263,13 +260,6 @@ class StudentTrainingAssessmentTest(CacheResetTest):
         is_finished = training_api.submitter_is_finished(submission_uuid, requirements)
         self.assertEqual(is_finished, bool(num_completed >= num_required))
 
-        # Assessment is finished should always be true,
-        # since we're not being assessed by others.
-        self.assertTrue(training_api.assessment_is_finished(submission_uuid, requirements))
-
-        # At no point should we receive a score!
-        self.assertIs(training_api.get_score(submission_uuid, requirements), None)
-
     def _expected_example(self, input_example, rubric):
         """
         Return the training example we would expect to retrieve for an example.
@@ -323,7 +313,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
 
         """
         pre_submission = sub_api.create_submission(STUDENT_ITEM, ANSWER)
-        training_api.create_student_training_workflow(pre_submission['uuid'])
+        training_api.on_start(pre_submission['uuid'])
         for example in examples:
             training_api.get_training_example(pre_submission['uuid'], rubric, examples)
             training_api.assess_training_example(pre_submission['uuid'], example['options_selected'])

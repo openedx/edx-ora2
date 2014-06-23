@@ -26,6 +26,13 @@
 // --------------------
 // Developer styles for Staff Section
 // --------------------
+.staff-info__status {
+  .action--submit {
+    @extend %btn--secondary;
+    @extend %action-2;
+    margin: ($baseline-v/2) ($baseline-v/2) ($baseline-v/2) ($baseline-v/2);
+  }
+}
 .staff-info__student {
   .label {
     color: $heading-staff-color;

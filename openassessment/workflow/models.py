@@ -9,29 +9,51 @@ need to then generate a matching migration for it using:
     ./manage.py schemamigration openassessment.workflow --auto
 
 """
-from datetime import datetime
 import logging
 import importlib
-
 from django.conf import settings
-from django.db import models
+from django.db import models, transaction, DatabaseError
+from django.dispatch import receiver
 from django_extensions.db.fields import UUIDField
 from django.utils.timezone import now
 from model_utils import Choices
 from model_utils.models import StatusModel, TimeStampedModel
-
 from submissions import api as sub_api
+from openassessment.assessment.signals import assessment_complete_signal
+from .errors import AssessmentApiLoadError
+
 
 logger = logging.getLogger('openassessment.workflow.models')
 
-# This will (hopefully soon) be replaced with calls to the event-tracking API:
-#   https://github.com/edx/event-tracking
-if hasattr(settings, "EDX_ORA2") and "EVENT_LOGGER" in settings.EDX_ORA2:
-    func_path = settings.EDX_ORA2["EVENT_LOGGER"]
-    module_name, func_name = func_path.rsplit('.', 1)
-    emit_event = getattr(importlib.import_module(module_name), func_name)
-else:
-    emit_event = lambda event: logger.info("Event: " + unicode(event))
+
+# To encapsulate the workflow API from the assessment API,
+# we use dependency injection.  The Django settings define
+# a dictionary mapping assessment step names to the Python module path
+# that implements the corresponding assessment API.
+# For backwards compatibility, we provide a default configuration as well
+DEFAULT_ASSESSMENT_API_DICT = {
+    'peer': 'openassessment.assessment.api.peer',
+    'self': 'openassessment.assessment.api.self',
+    'training': 'openassessment.assessment.api.student_training',
+    'ai': 'openassessment.assessment.api.ai',
+}
+ASSESSMENT_API_DICT = getattr(
+    settings, 'ORA2_ASSESSMENTS',
+    DEFAULT_ASSESSMENT_API_DICT
+)
+
+# For now, we use a simple scoring mechanism:
+# Once a student has completed all assessments,
+# we search assessment APIs
+# in priority order until one of the APIs provides a score.
+# We then use that score as the student's overall score.
+# This Django setting is a list of assessment steps (defined in `settings.ORA2_ASSESSMENTS`)
+# in descending priority order.
+DEFAULT_ASSESSMENT_SCORE_PRIORITY = ['peer', 'self', 'ai']
+ASSESSMENT_SCORE_PRIORITY = getattr(
+    settings, 'ORA2_ASSESSMENT_SCORE_PRIORITY',
+    DEFAULT_ASSESSMENT_SCORE_PRIORITY
+)
 
 
 class AssessmentWorkflow(TimeStampedModel, StatusModel):
@@ -47,11 +69,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
     an after the fact recording of the last known state of that information so
     we can search easily.
     """
-    STEPS = [
-        "peer",  # User needs to assess peer submissions
-        "self",  # User needs to assess themselves
-        "training", # User needs to practice grading using example essays
-    ]
+    STEPS = ASSESSMENT_API_DICT.keys()
 
     STATUSES = [
         "waiting",  # User has done all necessary assessment but hasn't been
@@ -78,6 +96,80 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         ordering = ["-created"]
         # TODO: In migration, need a non-unique index on (course_id, item_id, status)
 
+    @classmethod
+    @transaction.commit_on_success
+    def start_workflow(cls, submission_uuid, step_names, on_init_params):
+        """
+        Start a new workflow.
+
+        Args:
+            submission_uuid (str): The UUID of the submission associated with this workflow.
+            step_names (list): The names of the assessment steps in the workflow.
+            on_init_params (dict): The parameters to pass to each assessment module
+                on init.  Keys are the assessment step names.
+
+        Returns:
+            AssessmentWorkflow
+
+        Raises:
+            SubmissionNotFoundError
+            SubmissionRequestError
+            SubmissionInternalError
+            DatabaseError
+            Assessment-module specific errors
+        """
+        submission_dict = sub_api.get_submission_and_student(submission_uuid)
+
+        # Create the workflow and step models in the database
+        # For now, set the status to waiting; we'll modify it later
+        # based on the first step in the workflow.
+        workflow = cls.objects.create(
+            submission_uuid=submission_uuid,
+            status=AssessmentWorkflow.STATUS.waiting,
+            course_id=submission_dict['student_item']['course_id'],
+            item_id=submission_dict['student_item']['item_id']
+        )
+        workflow_steps = [
+            AssessmentWorkflowStep(
+                workflow=workflow, name=step, order_num=i
+            )
+            for i, step in enumerate(step_names)
+        ]
+        workflow.steps.add(*workflow_steps)
+
+        # Initialize the assessment APIs
+        has_started_first_step = False
+        for step in workflow_steps:
+            api = step.api()
+
+            if api is not None:
+                # Initialize the assessment module
+                # We do this for every assessment module
+                on_init_func = getattr(api, 'on_init', lambda submission_uuid, **params: None)
+                on_init_func(submission_uuid, **on_init_params.get(step.name, {}))
+
+                # For the first valid step, update the workflow status
+                # and notify the assessment module that it's being started
+                if not has_started_first_step:
+                    # Update the workflow
+                    workflow.status = step.name
+                    workflow.save()
+
+                    # Notify the assessment module that it's being started
+                    on_start_func = getattr(api, 'on_start', lambda submission_uuid: None)
+                    on_start_func(submission_uuid)
+
+                    # Remember that we've already started the first step
+                    has_started_first_step = True
+
+        # Update the workflow (in case some of the assessment modules are automatically complete)
+        # We do NOT pass in requirements, on the assumption that any assessment module
+        # that accepts requirements would NOT automatically complete.
+        workflow.update_from_assessments(None)
+
+        # Return the newly created workflow
+        return workflow
+
     @property
     def score(self):
         """Latest score for the submission we're tracking.
@@ -91,48 +183,62 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         status_dict = {}
         steps = self._get_steps()
         for step in steps:
-            status_dict[step.name] = {
-                "complete": step.api().submitter_is_finished(
-                    self.submission_uuid,
-                    assessment_requirements.get(step.name, {})
-                )
-            }
+            api = step.api()
+            if api is not None:
+                # If an assessment module does not define these functions,
+                # default to True -- that is, automatically assume that the user has
+                # met the requirements.  This prevents students from getting "stuck"
+                # in the workflow in the event of a rollback that removes a step
+                # from the problem definition.
+                submitter_finished_func = getattr(api, 'submitter_is_finished', lambda submission_uuid, reqs: True)
+                assessment_finished_func = getattr(api, 'assessment_is_finished', lambda submission_uuid, reqs: True)
+
+                status_dict[step.name] = {
+                    "complete": submitter_finished_func(
+                        self.submission_uuid,
+                        assessment_requirements.get(step.name, {})
+                    ),
+                    "graded": assessment_finished_func(
+                        self.submission_uuid,
+                        assessment_requirements.get(step.name, {})
+                    ),
+                }
         return status_dict
 
     def update_from_assessments(self, assessment_requirements):
-        """Query self and peer APIs and change our status if appropriate.
+        """Query assessment APIs and change our status if appropriate.
 
         If the status is done, we do nothing. Once something is done, we never
         move back to any other status.
 
-        By default, an `AssessmentWorkflow` starts with status `peer`.
+        If an assessment API says that our submitter's requirements are met,
+        then move to the next assessment.  For example, in peer assessment,
+        if the submitter we're tracking has assessed the required number
+        of submissions, they're allowed to continue.
 
-        If the peer API says that our submitter's requirements are met -- that
-        the submitter of the submission we're tracking has assessed the required
-        number of other submissions -- then the status will move to `self`.
+        If the submitter has finished all the assessments, then we change
+        their status to `waiting`.
 
-        If the self API says that the person who created the submission we're
-        tracking has assessed themselves, then we move to `waiting`.
-
-        If we're in the `waiting` status, and the peer API says it can score
-        this submission (meaning other students have created enough assessments
-        of it), then we record the score in the submissions API and move our
+        If we're in the `waiting` status, and an assessment API says it can score
+        this submission, then we record the score in the submissions API and move our
         `status` to `done`.
 
+        By convention, if `assessment_requirements` is `None`, then assessment
+        modules that need requirements should automatically say that they're incomplete.
+        This allows us to update the workflow even when we don't know the
+        current state of the problem.  For example, if we're updating the workflow
+        at the completion of an asynchronous call, we won't necessarily know the
+        current state of the problem, but we would still want to update assessments
+        that don't have any requirements.
+
         Args:
-            assessment_requirements (dict): Dictionary that currently looks like:
-                `{"peer": {"must_grade": <int>, "must_be_graded_by": <int>}}`
-                `must_grade` is the number of assessments a student must complete.
-                `must_be_graded_by` is the number of assessments a submission must
-                receive to be scored. `must_grade` should be greater than
-                `must_be_graded_by` to ensure that everyone will get scored.
-                The intention is to eventually pass in more assessment sequence
-                specific requirements in this dict.
+            assessment_requirements (dict): Dictionary passed to the assessment API.
+                This defines the requirements for each assessment step; the APIs
+                can refer to this to decide whether the requirements have been
+                met.  Note that the requirements could change if the author
+                updates the problem definition.
 
         """
-        from openassessment.assessment.api import peer as peer_api
-        from openassessment.assessment.api import self as self_api
-
         # If we're done, we're done -- it doesn't matter if requirements have
         # changed because we've already written a score.
         if self.status == self.STATUS.done:
@@ -140,6 +246,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
 
         # Update our AssessmentWorkflowStep models with the latest from our APIs
         steps = self._get_steps()
+        step_for_name = {step.name:step for step in steps}
 
         # Go through each step and update its status.
         for step in steps:
@@ -151,10 +258,13 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             self.STATUS.waiting  # if nothing's left to complete, we're waiting
         )
 
-        # If the submitter is beginning peer assessment, add them to the queue
-        # by creating a new peer workflow
-        if new_status == "peer":
-            peer_api.create_peer_workflow(self.submission_uuid)
+        # If the submitter is beginning the next assessment, notify the
+        # appropriate assessment API.
+        new_step = step_for_name.get(new_status)
+        if new_step is not None:
+            on_start_func = getattr(new_step.api(), 'on_start', None)
+            if on_start_func is not None:
+                on_start_func(self.submission_uuid)
 
         # If the submitter has done all they need to do, let's check to see if
         # all steps have been fully assessed (i.e. we can score it).
@@ -162,20 +272,30 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             all(step.assessment_completed_at for step in steps)):
 
             # At this point, we're trying to give a score. We currently have a
-            # very simple rule for this -- if it has a peer step, use that for
-            # scoring. If not, use the self step. Later on, we may put more
-            # interesting rules here.
-            step_names = [step.name for step in steps]
+            # very simple rule for this -- we iterate through the
+            # assessment APIs in priority order and use the first reported score.
             score = None
-            if self.STATUS.peer in step_names:
-                score = peer_api.get_score(
-                    self.submission_uuid,
-                    assessment_requirements[self.STATUS.peer]
-                )
-            elif self.STATUS.self in step_names:
-                score = self_api.get_score(self.submission_uuid, {})
+            for assessment_step_name in ASSESSMENT_SCORE_PRIORITY:
 
-            if score:
+                # Check if the problem contains this assessment type
+                assessment_step = step_for_name.get(assessment_step_name)
+
+                # Query the corresponding assessment API for a score
+                # If we find one, then stop looking
+                if assessment_step is not None:
+
+                    # Check if the assessment API defines a score function at all
+                    get_score_func = getattr(assessment_step.api(), 'get_score', None)
+                    if get_score_func is not None:
+                        if assessment_requirements is None:
+                            requirements = None
+                        else:
+                            requirements = assessment_requirements.get(assessment_step_name, {})
+                        score = get_score_func(self.submission_uuid, requirements)
+                        break
+
+            # If we found a score, then we're done
+            if score is not None:
                 self.set_score(score)
                 new_status = self.STATUS.done
 
@@ -183,6 +303,9 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         if self.status != new_status:
             self.status = new_status
             self.save()
+            logger.info((
+                u"Workflow for submission UUID {uuid} has updated status to {status}"
+            ).format(uuid=self.submission_uuid, status=new_status))
 
     def _get_steps(self):
         """
@@ -219,22 +342,6 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             score["points_possible"]
         )
 
-        # This should be replaced by using the event tracking API, but
-        # that's not quite ready yet. So we're making this temp hack.
-        emit_event({
-            "context": {
-                "course_id": self.course_id
-            },
-            "event": {
-                "submission_uuid": self.submission_uuid,
-                "points_earned": score["points_earned"],
-                "points_possible": score["points_possible"],
-            },
-            "event_source": "server",
-            "event_type": "openassessment.workflow.score",
-            "time": datetime.utcnow(),
-        })
-
 
 class AssessmentWorkflowStep(models.Model):
     """An individual step in the overall workflow process.
@@ -266,18 +373,31 @@ class AssessmentWorkflowStep(models.Model):
         """
         Returns an API associated with this workflow step. If no API is
         associated with this workflow step, None is returned.
+
+        This relies on Django settings to map step names to
+        the assessment API implementation.
         """
-        from openassessment.assessment.api import peer as peer_api
-        from openassessment.assessment.api import self as self_api
-        from openassessment.assessment.api import student_training
-        api = None
-        if self.name == AssessmentWorkflow.STATUS.self:
-            api = self_api
-        elif self.name == AssessmentWorkflow.STATUS.peer:
-            api = peer_api
-        elif self.name == AssessmentWorkflow.STATUS.training:
-            api = student_training
-        return api
+        # We retrieve the settings in-line here (rather than using the
+        # top-level constant), so that @override_settings will work
+        # in the test suite.
+        api_path = getattr(
+            settings, 'ORA2_ASSESSMENTS', DEFAULT_ASSESSMENT_API_DICT
+        ).get(self.name)
+        if api_path is not None:
+            try:
+                return importlib.import_module(api_path)
+            except (ImportError, ValueError):
+                raise AssessmentApiLoadError(self.name, api_path)
+        else:
+            # It's possible for the database to contain steps for APIs
+            # that are not configured -- for example, if a new assessment
+            # type is added, then the code is rolled back.
+            msg = (
+                u"No assessment configured for '{name}'.  "
+                u"Check the ORA2_ASSESSMENTS Django setting."
+            ).format(name=self.name)
+            logger.warning(msg)
+            return None
 
     def update(self, submission_uuid, assessment_requirements):
         """
@@ -287,20 +407,24 @@ class AssessmentWorkflowStep(models.Model):
         Intended for internal use by update_from_assessments(). See
         update_from_assessments() documentation for more details.
         """
-        # Once a step is completed, it will not be revisited based on updated
-        # requirements.
+        # Once a step is completed, it will not be revisited based on updated requirements.
         step_changed = False
-        step_reqs = assessment_requirements.get(self.name, {})
+        if assessment_requirements is None:
+            step_reqs = None
+        else:
+            step_reqs = assessment_requirements.get(self.name, {})
+
+        default_finished = lambda submission_uuid, step_reqs: True
+        submitter_finished = getattr(self.api(), 'submitter_is_finished', default_finished)
+        assessment_finished = getattr(self.api(), 'assessment_is_finished', default_finished)
 
         # Has the user completed their obligations for this step?
-        if (not self.is_submitter_complete() and
-                self.api().submitter_is_finished(submission_uuid, step_reqs)):
+        if (not self.is_submitter_complete() and submitter_finished(submission_uuid, step_reqs)):
             self.submitter_completed_at = now()
             step_changed = True
 
         # Has the step received a score?
-        if (not self.is_assessment_complete() and
-                self.api().assessment_is_finished(submission_uuid, step_reqs)):
+        if (not self.is_assessment_complete() and assessment_finished(submission_uuid, step_reqs)):
             self.assessment_completed_at = now()
             step_changed = True
 
@@ -308,12 +432,43 @@ class AssessmentWorkflowStep(models.Model):
             self.save()
 
 
-# Just here to record thoughts for later:
-#
-# class AssessmentWorkflowEvent(models.Model):
-#     workflow = models.ForeignKey(AssessmentWorkflow, related_name="events")
-#     app = models.CharField(max_length=50)
-#     event_type = models.CharField(max_length=255)
-#     event_data = models.TextField()
-#     description = models.TextField()
-#     created_at = models.DateTimeField(default=now, db_index=True)
+@receiver(assessment_complete_signal)
+def update_workflow_async(sender, **kwargs):
+    """
+    Register a receiver for the update workflow signal
+    This allows asynchronous processes to update the workflow
+
+    Args:
+        sender (object): Not used
+
+    Kwargs:
+        submission_uuid (str): The UUID of the submission associated
+            with the workflow being updated.
+
+    Returns:
+        None
+
+    """
+    submission_uuid = kwargs.get('submission_uuid')
+    if submission_uuid is None:
+        logger.error("Update workflow signal called without a submission UUID")
+        return
+
+    try:
+        workflow = AssessmentWorkflow.objects.get(submission_uuid=submission_uuid)
+        workflow.update_from_assessments(None)
+    except AssessmentWorkflow.DoesNotExist:
+        msg = u"Could not retrieve workflow for submission with UUID {}".format(submission_uuid)
+        logger.exception(msg)
+    except DatabaseError:
+        msg = (
+            u"Database error occurred while updating "
+            u"the workflow for submission UUID {}"
+        ).format(submission_uuid)
+        logger.exception(msg)
+    except:
+        msg = (
+            u"Unexpected error occurred while updating the workflow "
+            u"for submission UUID {}"
+        ).format(submission_uuid)
+        logger.exception(msg)

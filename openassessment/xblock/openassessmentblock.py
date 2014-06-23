@@ -26,6 +26,7 @@ from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
 from openassessment.xblock.staff_info_mixin import StaffInfoMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.workflow import api as workflow_api
+from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.student_training_mixin import StudentTrainingMixin
 from openassessment.xblock.validation import validator
 from openassessment.xblock.resolve_dates import resolve_dates, DISTANT_PAST, DISTANT_FUTURE
@@ -69,6 +70,7 @@ UI_MODELS = {
 
 VALID_ASSESSMENT_TYPES = [
     "student-training",
+    "example-based-assessment",
     "peer-assessment",
     "self-assessment",
 ]
@@ -216,7 +218,7 @@ class OpenAssessmentBlock(
         # case we may have a score available.
         try:
             self.update_workflow_status()
-        except workflow_api.AssessmentWorkflowError:
+        except AssessmentWorkflowError:
             # Log the exception, but continue loading the page
             logger.exception('An error occurred while updating the workflow on page load.')
 
@@ -239,6 +241,19 @@ class OpenAssessmentBlock(
         return frag
 
     @property
+    def is_admin(self):
+        """
+        Check whether the user has global staff permissions.
+
+        Returns:
+            bool
+        """
+        if hasattr(self, 'xmodule_runtime'):
+            return getattr(self.xmodule_runtime, 'user_is_admin', False)
+        else:
+            return False
+
+    @property
     def is_course_staff(self):
         """
         Check whether the user has course staff permissions for this XBlock.
@@ -250,6 +265,8 @@ class OpenAssessmentBlock(
             return getattr(self.xmodule_runtime, 'user_is_staff', False)
         else:
             return False
+
+
 
     @property
     def in_studio_preview(self):
@@ -276,8 +293,9 @@ class OpenAssessmentBlock(
         """
         ui_models = [UI_MODELS["submission"]]
         for assessment in self.valid_assessments:
-            ui_model = UI_MODELS[assessment["name"]]
-            ui_models.append(dict(assessment, **ui_model))
+            ui_model = UI_MODELS.get(assessment["name"])
+            if ui_model:
+                ui_models.append(dict(assessment, **ui_model))
         ui_models.append(UI_MODELS["grade"])
         return ui_models
 
@@ -293,6 +311,10 @@ class OpenAssessmentBlock(
             (
                 "OpenAssessmentBlock Unicode",
                 load('static/xml/unicode.xml')
+            ),
+            (
+                "OpenAssessmentBlock Example Based Rubric",
+                load('static/xml/example_based_example.xml')
             ),
             (
                 "OpenAssessmentBlock Poverty Rubric",
@@ -514,6 +536,51 @@ class OpenAssessmentBlock(
             return True, "due", open_range[0], open_range[1]
         else:
             return False, None, open_range[0], open_range[1]
+
+    def get_waiting_details(self, status_details):
+        """
+        Returns the specific waiting status based on the given status_details.
+        This status can currently be peer, example-based, or both. This is
+        determined by checking that status details to see if all assessment
+        modules have been graded.
+
+        Args:
+            status_details (dict): A dictionary containing the details of each
+                assessment module status. This will contain keys such as
+                "peer" and "ai", referring to dictionaries, which in turn will
+                have the key "graded". If this key has a value set, these
+                assessment modules have been graded.
+
+        Returns:
+            A string of "peer", "exampled-based", or "all" to indicate which
+            assessment modules in the workflow are waiting on assessments.
+            Returns None if no module is waiting on an assessment.
+
+        Examples:
+            >>> now = dt.datetime.utcnow().replace(tzinfo=pytz.utc)
+            >>> status_details = {
+            >>>     'peer': {
+            >>>         'completed': None,
+            >>>         'graded': now
+            >>>     },
+            >>>     'ai': {
+            >>>         'completed': now,
+            >>>         'graded': None
+            >>>     }
+            >>> }
+            >>> self.get_waiting_details(status_details)
+            "peer"
+        """
+        waiting = None
+        peer_waiting = "peer" in status_details and not status_details["peer"]["graded"]
+        ai_waiting = "ai" in status_details and not status_details["ai"]["graded"]
+        if peer_waiting and ai_waiting:
+            waiting = "all"
+        elif peer_waiting:
+            waiting = "peer"
+        elif ai_waiting:
+            waiting = "example-based"
+        return waiting
 
     def is_released(self, step=None):
         """

@@ -9,6 +9,7 @@
             "training_rubric": {
                 "id": 2,
                 "content_hash": "de2bb2b7e2c6e3df014e53b8c65f37d511cc4344",
+                "structure_hash": "a513b20d93487d6d80e31e1d974bf22519332567",
                 "criteria": [
                     {
                         "order_num": 0,

@@ -5,7 +5,8 @@ from django.core.urlresolvers import reverse
 from django.utils import html
 
 from openassessment.assessment.models import (
-    Assessment, AssessmentFeedback, PeerWorkflow, PeerWorkflowItem, Rubric
+    Assessment, AssessmentFeedback, PeerWorkflow, PeerWorkflowItem, Rubric,
+    AIGradingWorkflow, AITrainingWorkflow, AIClassifierSet, AIClassifier
 )
 from openassessment.assessment.serializers import RubricSerializer
 
@@ -17,7 +18,8 @@ class RubricAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'content_hash')
     search_fields = ('id', 'content_hash')
     readonly_fields = (
-        'id', 'content_hash', 'points_possible', 'criteria_summary', 'data'
+        'id', 'content_hash', 'structure_hash',
+        'points_possible', 'criteria_summary', 'data'
     )
 
     def criteria_summary(self, rubric_obj):
@@ -119,7 +121,32 @@ class AssessmentFeedbackAdmin(admin.ModelAdmin):
     assessments_by.allow_tags = True
 
 
+class AIGradingWorkflowAdmin(admin.ModelAdmin):
+    list_display = ('uuid', 'submission_uuid')
+    search_fields = ('uuid', 'submission_uuid', 'student_id', 'item_id', 'course_id')
+    readonly_fields = ('uuid', 'submission_uuid', 'student_id', 'item_id', 'course_id')
+
+
+class AITrainingWorkflowAdmin(admin.ModelAdmin):
+    list_display = ('uuid',)
+    search_fields = ('uuid', 'course_id', 'item_id',)
+    readonly_fields = ('uuid', 'course_id', 'item_id',)
+
+
+class AIClassifierInline(admin.TabularInline):
+    model = AIClassifier
+
+
+class AIClassifierSetAdmin(admin.ModelAdmin):
+    list_display = ('id',)
+    search_fields = ('id',)
+    inlines = [AIClassifierInline]
+
+
 admin.site.register(Rubric, RubricAdmin)
 admin.site.register(PeerWorkflow, PeerWorkflowAdmin)
 admin.site.register(Assessment, AssessmentAdmin)
 admin.site.register(AssessmentFeedback, AssessmentFeedbackAdmin)
+admin.site.register(AIGradingWorkflow, AIGradingWorkflowAdmin)
+admin.site.register(AITrainingWorkflow, AITrainingWorkflowAdmin)
+admin.site.register(AIClassifierSet, AIClassifierSetAdmin)

@@ -56,8 +56,11 @@ class Rubric(models.Model):
     creating a new Rubric instead. This makes it easy to cache and do hash-based
     lookups.
     """
-    # SHA1 hash
+    # SHA1 hash, including prompts and explanations
     content_hash = models.CharField(max_length=40, unique=True, db_index=True)
+
+    # SHA1 hash of just the rubric structure (criteria / options / points)
+    structure_hash = models.CharField(max_length=40, db_index=True)
 
     class Meta:
         app_label = "assessment"
@@ -88,6 +91,38 @@ class Rubric(models.Model):
         rubric_dict.pop("content_hash", None)
 
         canonical_form = json.dumps(rubric_dict, sort_keys=True)
+        return sha1(canonical_form).hexdigest()
+
+    @staticmethod
+    def structure_hash_from_dict(rubric_dict):
+        """
+        Generate a hash of the rubric that includes only structural information:
+            * Criteria names and order
+            * Option names / points / order number
+
+        We do NOT include prompt text or option explanations.
+
+        NOTE: currently, we use the criterion and option names as unique identifiers,
+        so we include them in the structure.  In the future, we plan to assign
+        criteria/options unique IDs -- when we do that, we will need to update
+        this method and create a data migration for existing rubrics.
+        """
+        structure = [
+            {
+                "criterion_name": criterion.get('name'),
+                "criterion_order": criterion.get('order_num'),
+                "options": [
+                    {
+                        "option_name": option.get('name'),
+                        "option_points": option.get('points'),
+                        "option_order": option.get('order_num')
+                    }
+                    for option in criterion.get('options', [])
+                ]
+            }
+            for criterion in rubric_dict.get('criteria', [])
+        ]
+        canonical_form = json.dumps(structure, sort_keys=True)
         return sha1(canonical_form).hexdigest()
 
     def options_ids(self, options_selected):
@@ -166,6 +201,55 @@ class Rubric(models.Model):
                 msg = (
                     "{criterion}: {option} not found in rubric"
                 ).format(criterion=criterion_name, option=option_name)
+                raise InvalidOptionSelection(msg)
+
+        return option_id_set
+
+    def options_ids_for_points(self, criterion_points):
+        """
+        Given a mapping of selected point values, return the option IDs.
+        If there are multiple options with the same point value,
+        this will return the first one (lower order number).
+
+        Args:
+            criterion_points (dict): Mapping of criteria names to point values.
+
+        Returns:
+            list of option IDs
+
+        Raises:
+            InvalidOptionSelection
+
+        """
+        # Retrieve the mapping of criterion names/points to option IDs
+        # from the cache, if it's available
+        cache_key = "assessment.rubric_points_dict.{}".format(self.content_hash)
+        rubric_points_dict = cache.get(cache_key)
+
+        # Otherwise, create the dict by querying the database
+        if not rubric_points_dict:
+            rubric_options = CriterionOption.objects.filter(
+                criterion__rubric=self
+            ).select_related()
+
+            rubric_points_dict = defaultdict(dict)
+            for option in rubric_options:
+                if option.points not in rubric_points_dict[option.criterion.name]:
+                    rubric_points_dict[option.criterion.name][option.points] = option.id
+
+            # Store the dict in the cache
+            cache.set(cache_key, rubric_points_dict)
+
+        # Find the IDs for the options matching the specified point value
+        option_id_set = set()
+        for criterion_name, option_points in criterion_points.iteritems():
+            if (criterion_name in rubric_points_dict and option_points in rubric_points_dict[criterion_name]):
+                option_id = rubric_points_dict[criterion_name][option_points]
+                option_id_set.add(option_id)
+            else:
+                msg = u"{criterion} option with point value {points} not found in rubric".format(
+                    criterion=criterion_name, points=option_points
+                )
                 raise InvalidOptionSelection(msg)
 
         return option_id_set

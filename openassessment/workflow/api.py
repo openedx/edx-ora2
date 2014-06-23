@@ -2,67 +2,28 @@
 Public interface for the Assessment Workflow.
 
 """
-import copy
 import logging
 
 from django.db import DatabaseError
 
 from openassessment.assessment.api import peer as peer_api
+from openassessment.assessment.api import ai as ai_api
 from openassessment.assessment.api import student_training as training_api
 from openassessment.assessment.errors import (
-    PeerAssessmentError, StudentTrainingInternalError
+    PeerAssessmentError, StudentTrainingInternalError, AIError
 )
 from submissions import api as sub_api
 from .models import AssessmentWorkflow, AssessmentWorkflowStep
 from .serializers import AssessmentWorkflowSerializer
+from .errors import (
+    AssessmentWorkflowInternalError, AssessmentWorkflowRequestError,
+    AssessmentWorkflowNotFoundError
+)
 
 logger = logging.getLogger(__name__)
 
 
-class AssessmentWorkflowError(Exception):
-    """An error that occurs during workflow actions.
-
-    This error is raised when the Workflow API cannot perform a requested
-    action.
-
-    """
-    pass
-
-
-class AssessmentWorkflowInternalError(AssessmentWorkflowError):
-    """An error internal to the Workflow API has occurred.
-
-    This error is raised when an error occurs that is not caused by incorrect
-    use of the API, but rather internal implementation of the underlying
-    services.
-
-    """
-    pass
-
-
-class AssessmentWorkflowRequestError(AssessmentWorkflowError):
-    """This error is raised when there was a request-specific error
-
-    This error is reserved for problems specific to the use of the API.
-
-    """
-
-    def __init__(self, field_errors):
-        Exception.__init__(self, repr(field_errors))
-        self.field_errors = copy.deepcopy(field_errors)
-
-
-class AssessmentWorkflowNotFoundError(AssessmentWorkflowError):
-    """This error is raised when no submission is found for the request.
-
-    If a state is specified in a call to the API that results in no matching
-    Submissions, this error may be raised.
-
-    """
-    pass
-
-
-def create_workflow(submission_uuid, steps):
+def create_workflow(submission_uuid, steps, on_init_params=None):
     """Begins a new assessment workflow.
 
     Create a new workflow that other assessments will record themselves against.
@@ -72,6 +33,10 @@ def create_workflow(submission_uuid, steps):
             assessments will be evaluating.
         steps (list): List of steps that are part of the workflow, in the order
             that the user must complete them. Example: `["peer", "self"]`
+
+    Kwargs:
+        on_init_params (dict): The parameters to pass to each assessment module
+            on init.  Keys are the assessment step names.
 
     Returns:
         dict: Assessment workflow information with the following
@@ -102,8 +67,16 @@ def create_workflow(submission_uuid, steps):
             .format(submission_uuid, specific_err_msg)
         )
 
+    if on_init_params is None:
+        on_init_params = dict()
+
     try:
-        submission_dict = sub_api.get_submission_and_student(submission_uuid)
+        workflow = AssessmentWorkflow.start_workflow(submission_uuid, steps, on_init_params)
+        logger.info((
+            u"Started assessment workflow for "
+            u"submission UUID {uuid} with steps {steps}"
+        ).format(uuid=submission_uuid, steps=steps))
+        return AssessmentWorkflowSerializer(workflow).data
     except sub_api.SubmissionNotFoundError:
         err_msg = sub_err_msg("submission not found")
         logger.error(err_msg)
@@ -118,61 +91,17 @@ def create_workflow(submission_uuid, steps):
             u"retrieving submission {} failed with unknown error: {}"
             .format(submission_uuid, err)
         )
-
-    # Raise an error if they specify a step we don't recognize...
-    invalid_steps = set(steps) - set(AssessmentWorkflow.STEPS)
-    if invalid_steps:
-        raise AssessmentWorkflowRequestError(
-            u"The following steps were not recognized: {}; Must be one of {}".format(
-                invalid_steps, AssessmentWorkflow.STEPS
-            )
-        )
-
-    # We're not using a serializer to deserialize this because the only variable
-    # we're getting from the outside is the submission_uuid, which is already
-    # validated by this point.
-    status = AssessmentWorkflow.STATUS.peer
-    if steps[0] == "peer":
-        try:
-            peer_api.create_peer_workflow(submission_uuid)
-        except PeerAssessmentError as err:
-            err_msg = u"Could not create assessment workflow: {}".format(err)
-            logger.exception(err_msg)
-            raise AssessmentWorkflowInternalError(err_msg)
-    elif steps[0] == "self":
-        status = AssessmentWorkflow.STATUS.self
-    elif steps[0] == "training":
-        status = AssessmentWorkflow.STATUS.training
-        try:
-            training_api.create_student_training_workflow(submission_uuid)
-        except StudentTrainingInternalError as err:
-            err_msg = u"Could not create assessment workflow: {}".format(err)
-            logger.exception(err_msg)
-            raise AssessmentWorkflowInternalError(err_msg)
-
-    try:
-        workflow = AssessmentWorkflow.objects.create(
-            submission_uuid=submission_uuid,
-            status=status,
-            course_id=submission_dict['student_item']['course_id'],
-            item_id=submission_dict['student_item']['item_id'],
-        )
-        workflow_steps = [
-            AssessmentWorkflowStep(
-                workflow=workflow, name=step, order_num=i
-            )
-            for i, step in enumerate(steps)
-        ]
-        workflow.steps.add(*workflow_steps)
-    except (
-        DatabaseError,
-        sub_api.SubmissionError
-    ) as err:
-        err_msg = u"Could not create assessment workflow: {}".format(err)
+    except DatabaseError:
+        err_msg = u"Could not create assessment workflow for submission UUID: {}".format(submission_uuid)
         logger.exception(err_msg)
         raise AssessmentWorkflowInternalError(err_msg)
-
-    return AssessmentWorkflowSerializer(workflow).data
+    except:
+        err_msg = (
+            u"An unexpected error occurred while creating "
+            u"the workflow for submission UUID {}"
+        ).format(submission_uuid)
+        logger.exception(err_msg)
+        raise AssessmentWorkflowInternalError(err_msg)
 
 
 def get_workflow_for_submission(submission_uuid, assessment_requirements):
@@ -335,6 +264,10 @@ def update_from_assessments(submission_uuid, assessment_requirements):
 
     try:
         workflow.update_from_assessments(assessment_requirements)
+        logger.info((
+            u"Updated workflow for submission UUID {uuid} "
+            u"with requirements {reqs}"
+        ).format(uuid=submission_uuid, reqs=assessment_requirements))
         return _serialized_with_details(workflow, assessment_requirements)
     except PeerAssessmentError as err:
         err_msg = u"Could not update assessment workflow: {}".format(err)
@@ -364,6 +297,10 @@ def get_status_counts(course_id, item_id, steps):
         ]
 
     """
+    # The AI status exists for workflow logic, but no student will ever be in
+    # the AI status, so we should never return it.
+    statuses = steps + AssessmentWorkflow.STATUSES
+    if 'ai' in statuses: statuses.remove('ai')
     return [
         {
             "status": status,
@@ -373,7 +310,7 @@ def get_status_counts(course_id, item_id, steps):
                 item_id=item_id,
             ).count()
         }
-        for status in steps + AssessmentWorkflow.STATUSES
+        for status in statuses
     ]
 
 

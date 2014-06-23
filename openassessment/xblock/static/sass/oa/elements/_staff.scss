@@ -84,11 +84,11 @@
   }
 
   // UI - status (table)
-  .staff-info__status {
+  .staff-info__status, .staff-info__classifierset {
 
   }
 
-  .staff-info__status__table {
+  .staff-info__status__table, .staff-info__classifierset__table {
     @extend %copy-3;
     border-radius: ($baseline-v/10);
     color: $copy-staff-color;
@@ -132,4 +132,5 @@
 
     }
   }
+
 }
