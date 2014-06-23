@@ -276,6 +276,11 @@ class AIClassifierSet(models.Model):
             dict: keys are criteria names, values are JSON-serializable classifier data
             If there are no classifiers in the set, returns None
 
+        Raises:
+            ValueError
+            IOError
+            httplib.HTTPException
+
         """
         # First check the in-memory cache
         # We use an in-memory cache because the classifier data will most often
@@ -364,6 +369,7 @@ class AIClassifier(models.Model):
         Raises:
             ValueError
             IOError
+            httplib.HTTPException
 
         """
         return json.loads(self.classifier_data.read())  # pylint:disable=E1101
