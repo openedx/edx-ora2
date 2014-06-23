@@ -6,7 +6,8 @@ import copy
 from django.test.utils import override_settings
 from openassessment.test_utils import CacheResetTest
 from openassessment.assessment.models import (
-    AIClassifierSet, AIClassifier, AIGradingWorkflow, AI_CLASSIFIER_STORAGE
+    AIClassifierSet, AIClassifier, AIGradingWorkflow, AI_CLASSIFIER_STORAGE,
+    CLASSIFIERS_CACHE_IN_MEM
 )
 from openassessment.assessment.serializers import rubric_from_dict
 from .constants import RUBRIC
@@ -58,6 +59,7 @@ class AIClassifierSetTest(CacheResetTest):
     Tests for the AIClassifierSet model.
     """
     def setUp(self):
+        super(AIClassifierSetTest, self).setUp()
         rubric = rubric_from_dict(RUBRIC)
         self.classifier_set = AIClassifierSet.create_classifier_set(
             CLASSIFIERS_DICT, rubric, "test_algorithm", COURSE_ID, ITEM_ID
@@ -74,6 +76,24 @@ class AIClassifierSetTest(CacheResetTest):
             second = self.classifier_set.classifiers_dict
 
         # Verify that we got the same value both times
+        self.assertEqual(first, second)
+
+    def test_file_cache_downloads(self):
+        # Retrieve the classifiers dict, which should be cached
+        # both in memory and on the file system
+        first = self.classifier_set.classifiers_dict
+
+        # Clear the in-memory cache
+        # This simulates what happens when a worker process dies
+        # after exceeding the maximum number of retries.
+        CLASSIFIERS_CACHE_IN_MEM.clear()
+
+        # We should still be able to retrieve the classifiers dict
+        # from the on-disk cache, even if memory has been cleared
+        with self.assertNumQueries(0):
+            second = self.classifier_set.classifiers_dict
+
+        # Verify that we got the correct classifiers dict back
         self.assertEqual(first, second)
 
 
