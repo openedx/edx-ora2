@@ -12,7 +12,6 @@ from django.utils.timezone import now
 from django_extensions.db.fields import UUIDField
 from dogapi import dog_stats_api
 from submissions import api as sub_api
-from openassessment.assessment.serializers import rubric_from_dict
 from .base import Rubric, Criterion, Assessment, AssessmentPart
 from .training import TrainingExample
 
@@ -707,6 +706,7 @@ class AIGradingWorkflow(AIWorkflow):
         submission = sub_api.get_submission_and_student(submission_uuid)
 
         # Get or create the rubric
+        from openassessment.assessment.serializers import rubric_from_dict
         rubric = rubric_from_dict(rubric_dict)
 
         # Retrieve the submission text
@@ -747,18 +747,12 @@ class AIGradingWorkflow(AIWorkflow):
             criterion_scores (dict): Dictionary mapping criteria names to integer scores.
 
         Raises:
+            InvalidRubricSelection
             DatabaseError
 
         """
-        assessment = Assessment.objects.create(
-            submission_uuid=self.submission_uuid,
-            rubric=self.rubric,
-            scorer_id=self.algorithm_id,
-            score_type=AI_ASSESSMENT_TYPE
+        self.assessment = Assessment.create(
+            self.rubric, self.algorithm_id, self.submission_uuid, AI_ASSESSMENT_TYPE
         )
-
-        option_ids = self.rubric.options_ids_for_points(criterion_scores)
-        AssessmentPart.add_to_assessment(assessment, option_ids)
-
-        self.assessment = assessment
+        AssessmentPart.create_from_option_points(self.assessment, criterion_scores)
         self.mark_complete_and_save()

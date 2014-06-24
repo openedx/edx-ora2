@@ -12,6 +12,7 @@ need to then generate a matching migration for it using:
     ./manage.py schemamigration openassessment.assessment --auto
 
 """
+import math
 from collections import defaultdict
 from copy import deepcopy
 from hashlib import sha1
@@ -20,15 +21,15 @@ import json
 from django.core.cache import cache
 from django.db import models
 from django.utils.timezone import now
-import math
+from lazy import lazy
 
 import logging
 logger = logging.getLogger("openassessment.assessment.models")
 
 
-class InvalidOptionSelection(Exception):
+class InvalidRubricSelection(Exception):
     """
-    The user selected options that do not match the rubric.
+    The specified criterion/option do not exist in the rubric.
     """
     pass
 
@@ -70,6 +71,18 @@ class Rubric(models.Model):
         """The total number of points that could be earned in this Rubric."""
         criteria_points = [crit.points_possible for crit in self.criteria.all()]
         return sum(criteria_points) if criteria_points else 0
+
+    @lazy
+    def index(self):
+        """
+        Load the rubric's data and return an index that allows
+        the user to query for specific criteria/options.
+
+        Returns:
+            RubricIndex
+
+        """
+        return RubricIndex(self)
 
     @staticmethod
     def content_hash_from_dict(rubric_dict):
@@ -124,135 +137,6 @@ class Rubric(models.Model):
         ]
         canonical_form = json.dumps(structure, sort_keys=True)
         return sha1(canonical_form).hexdigest()
-
-    def options_ids(self, options_selected):
-        """Given a mapping of selected options, return the option IDs.
-
-        We use this to map user selection during assessment to the
-        :class:`CriterionOption` IDs that are in our database. These IDs are
-        never shown to the user.
-
-        Args:
-            options_selected (dict): Mapping of criteria names to the names of
-                the option that was selected for that criterion.
-
-        Returns:
-            set of option ids
-
-        Examples:
-            >>> options_selected = {"secret": "yes", "safe": "no"}
-            >>> rubric.options_ids(options_selected)
-            [10, 12]
-
-        Raises:
-            InvalidOptionSelection: the selected options do not match the rubric.
-
-        """
-        # Cache based on the content_hash, not the id. It's slightly safer, and
-        # we don't have to worry about invalidation of the cache while running
-        # tests.
-        rubric_criteria_dict_cache_key = (
-            "assessment.rubric_criteria_dict.{}".format(self.content_hash)
-        )
-
-        # Create a dict of dicts that maps:
-        # criterion names --> option names --> option ids
-        #
-        # If we've already generated one of these for this rubric, grab it from
-        # the cache instead of hitting the database again.
-        rubric_criteria_dict = cache.get(rubric_criteria_dict_cache_key)
-
-        if not rubric_criteria_dict:
-            rubric_criteria_dict = defaultdict(dict)
-
-            # Select all criteria and options for this rubric
-            # We use `select_related()` to minimize the number of database queries
-            rubric_options = CriterionOption.objects.filter(
-                criterion__rubric=self
-            ).select_related()
-
-            # Construct dictionaries for each option in the rubric
-            for option in rubric_options:
-                rubric_criteria_dict[option.criterion.name][option.name] = option.id
-
-            # Save it in our cache
-            cache.set(rubric_criteria_dict_cache_key, rubric_criteria_dict)
-
-        # Validate: are options selected for each criterion in the rubric?
-        if len(options_selected) != len(rubric_criteria_dict):
-            msg = (
-                u"Incorrect number of options for this rubric "
-                u"({actual} instead of {expected})"
-            ).format(
-                actual=len(options_selected),
-                expected=len(rubric_criteria_dict)
-            )
-            raise InvalidOptionSelection(msg)
-
-        # Look up each selected option
-        option_id_set = set()
-        for criterion_name, option_name in options_selected.iteritems():
-            if (criterion_name in rubric_criteria_dict and
-                option_name in rubric_criteria_dict[criterion_name]
-            ):
-                option_id = rubric_criteria_dict[criterion_name][option_name]
-                option_id_set.add(option_id)
-            else:
-                msg = (
-                    "{criterion}: {option} not found in rubric"
-                ).format(criterion=criterion_name, option=option_name)
-                raise InvalidOptionSelection(msg)
-
-        return option_id_set
-
-    def options_ids_for_points(self, criterion_points):
-        """
-        Given a mapping of selected point values, return the option IDs.
-        If there are multiple options with the same point value,
-        this will return the first one (lower order number).
-
-        Args:
-            criterion_points (dict): Mapping of criteria names to point values.
-
-        Returns:
-            list of option IDs
-
-        Raises:
-            InvalidOptionSelection
-
-        """
-        # Retrieve the mapping of criterion names/points to option IDs
-        # from the cache, if it's available
-        cache_key = "assessment.rubric_points_dict.{}".format(self.content_hash)
-        rubric_points_dict = cache.get(cache_key)
-
-        # Otherwise, create the dict by querying the database
-        if not rubric_points_dict:
-            rubric_options = CriterionOption.objects.filter(
-                criterion__rubric=self
-            ).select_related()
-
-            rubric_points_dict = defaultdict(dict)
-            for option in rubric_options:
-                if option.points not in rubric_points_dict[option.criterion.name]:
-                    rubric_points_dict[option.criterion.name][option.points] = option.id
-
-            # Store the dict in the cache
-            cache.set(cache_key, rubric_points_dict)
-
-        # Find the IDs for the options matching the specified point value
-        option_id_set = set()
-        for criterion_name, option_points in criterion_points.iteritems():
-            if (criterion_name in rubric_points_dict and option_points in rubric_points_dict[criterion_name]):
-                option_id = rubric_points_dict[criterion_name][option_points]
-                option_id_set.add(option_id)
-            else:
-                msg = u"{criterion} option with point value {points} not found in rubric".format(
-                    criterion=criterion_name, points=option_points
-                )
-                raise InvalidOptionSelection(msg)
-
-        return option_id_set
 
 
 class Criterion(models.Model):
@@ -327,6 +211,125 @@ class CriterionOption(models.Model):
         return repr(self)
 
 
+class RubricIndex(object):
+    """
+    Loads a rubric's criteria and options into memory so that they
+    can be repeatedly queried without hitting the database.
+    """
+
+    def __init__(self, rubric):
+        """
+        Load the rubric's data.
+
+        Args:
+            rubric (Rubric): The Rubric model to load.
+
+        Returns:
+            RubricIndex
+
+        """
+        self.rubric = rubric
+
+        # Load the rubric's criteria and options from the database
+        criteria = Criterion.objects.select_related().filter(rubric=rubric)
+        options = CriterionOption.objects.select_related().filter(criterion__rubric=rubric)
+
+        # Create dictionaries indexing the criteria/options
+        self._criteria_index = {
+            criterion.name: criterion
+            for criterion in criteria
+        }
+        self._option_index = {
+            (option.criterion.name, option.name): option
+            for option in options
+        }
+
+        # By convention, if multiple options in the same criterion have the
+        # same point value, we return the *first* option.  Since the default
+        # ordering for options is ascending by order number, and since
+        # the last dictionary update takes precendence, we reverse the list of options.
+        self._option_points_index = {
+            (option.criterion.name, option.points): option
+            for option in reversed(options)
+        }
+
+    def find_option(self, criterion_name, option_name):
+        """
+        Find a rubric option by criterion name and option name.
+
+        Args:
+            criterion_name (unicode): The name of the criterion containing the option.
+            option_name (unicode): The name of the option to retrieve.
+
+        Returns:
+            CriterionOption
+
+        Raises:
+            InvalidRubricSelection
+
+        """
+        key = (criterion_name, option_name)
+        if key not in self._option_index:
+            msg = (
+                u"Option \"{option}\" not found in rubric "
+                u"with hash {rubric_hash} for criterion \"{criterion}\""
+            ).format(
+                option=option_name,
+                criterion=criterion_name,
+                rubric_hash=self.rubric.content_hash
+            )
+            raise InvalidRubricSelection(msg)
+        else:
+            return self._option_index[key]
+
+    def find_option_for_points(self, criterion_name, option_points):
+        """
+        Find a rubric option by criterion name and option point value.
+        If multiple options in a criterion have the same point value,
+        return the first one (based on order number).
+
+        Args:
+            criterion_name (unicode): The name of the criterion containing the option.
+            option_points (int): The point value of the option.
+
+        Returns:
+            CriterionOption
+
+        Raises:
+            InvalidRubricSelection
+
+        """
+        key = (criterion_name, option_points)
+        if key not in self._option_points_index:
+            msg = (
+                u"Option with points {option_points} not found in rubric "
+                u"with hash {rubric_hash} for criterion {criterion}"
+            ).format(
+                option_points=option_points,
+                criterion=criterion_name,
+                rubric_hash=self.rubric.content_hash
+            )
+            raise InvalidRubricSelection(msg)
+        else:
+            # Assume that we gave priority to options with lower
+            # order numbers when we created the index.
+            return self._option_points_index[key]
+
+    def find_missing_criteria(self, criteria_names):
+        """
+        Return a set of criteria names in the rubric that
+        are not in the provided list.
+
+        Args:
+            criteria_names (list of unicode): The criteria names to check.
+
+        Returns:
+            set of unicode: The missing criteria
+
+        """
+        return set(self._criteria_index.keys()) - set(criteria_names)
+
+
 class Assessment(models.Model):
     """An evaluation made against a particular Submission and Rubric.
 
@@ -335,7 +338,7 @@ class Assessment(models.Model):
     objects that map to each :class:`Criterion` in the :class:`Rubric` we're
     assessing against.
     """
-    MAXSIZE = 1024 * 100     # 100KB
+    MAX_FEEDBACK_SIZE = 1024 * 100
 
     submission_uuid = models.CharField(max_length=128, db_index=True)
     rubric = models.ForeignKey(Rubric)
@@ -374,6 +377,41 @@ class Assessment(models.Model):
 
     def __unicode__(self):
         return u"Assessment {}".format(self.id)
+
+    @classmethod
+    def create(cls, rubric, scorer_id, submission_uuid, score_type, feedback=None, scored_at=None):
+        """
+        Create a new assessment.
+
+        Args:
+            rubric (Rubric): The rubric associated with this assessment.
+            scorer_id (unicode): The ID of the scorer.
+            submission_uuid (str): The UUID of the submission being assessed.
+            score_type (unicode): The type of assessment (e.g. peer, self, or AI)
+
+        Kwargs:
+            feedback (unicode): Overall feedback on the submission.
+            scored_at (datetime): The time the assessment was created.  Defaults to the current time.
+
+        Returns:
+            Assessment
+
+        """
+        assessment_params = {
+            'rubric': rubric,
+            'scorer_id': scorer_id,
+            'submission_uuid': submission_uuid,
+            'score_type': score_type,
+        }
+
+        if scored_at is not None:
+            assessment_params['scored_at'] = scored_at
+
+        # Truncate the feedback if it exceeds the maximum size
+        if feedback is not None:
+            assessment_params['feedback'] = feedback[0:cls.MAX_FEEDBACK_SIZE]
+
+        return cls.objects.create(**assessment_params)
 
     @classmethod
     def get_median_score_dict(cls, scores_dict):
@@ -519,32 +557,101 @@ class AssessmentPart(models.Model):
         return self.option.criterion.points_possible
 
     @classmethod
-    def add_to_assessment(cls, assessment, option_ids, criterion_feedback=None):
+    def create_from_option_names(cls, assessment, selected, feedback=None):
         """
-        Creates AssessmentParts and adds them to `assessment`.
+        Create new assessment parts and add them to an assessment.
 
         Args:
-            assessment (Assessment): The assessment model we're adding parts to.
-            option_ids (list of int): List of primary keys for options the user selected.
+            assessment (Assessment): The assessment we're adding parts to.
+            selected (dict): A dictionary mapping criterion names to option names.
 
         Kwargs:
-            criterion_feedback (dict): Dictionary mapping criterion names
-                to free-form text feedback on the criterion.
-                You don't need to include all the rubric criteria,
-                and keys that don't match any criterion will be ignored.
+            feedback (dict): A dictionary mapping criterion names to written
+                feedback for the criterion.
+
+        Returns:
+            list of `AssessmentPart`s
+
+        Raises:
+            InvalidRubricSelection
+            DatabaseError
+
+        """
+        if feedback is None:
+            feedback = {}
+
+        rubric_index = assessment.rubric.index
+
+        # Validate that we have selections for all criteria
+        # This will raise an exception if we're missing any criteria
+        cls._check_has_all_criteria(rubric_index, selected)
+
+        # Create assessment parts for each criterion and associate them with the assessment
+        # Since we're using the rubric's index, we'll get an `InvalidRubricSelection` error
+        # if we select an invalid criterion/option.
+        return cls.objects.bulk_create([
+            cls(
+                assessment=assessment,
+                option=rubric_index.find_option(criterion_name, option_name),
+                feedback=feedback.get(criterion_name, u"")[0:cls.MAX_FEEDBACK_SIZE]
+            )
+            for criterion_name, option_name in selected.iteritems()
+        ])
+
+    @classmethod
+    def create_from_option_points(cls, assessment, selected):
+        """
+        Create new assessment parts and add them to an assessment.
+
+        Args:
+            assessment (Assessment): The assessment we're adding parts to.
+            selected (dict): A dictionary mapping criterion names to option point values.
+
+        Kwargs:
+            feedback (dict): A dictionary mapping criterion names to written
+                feedback for the criterion.
+
+        Returns:
+            list of `AssessmentPart`s
+
+        Raises:
+            InvalidRubricSelection
+            DatabaseError
+
+        """
+        rubric_index = assessment.rubric.index
+
+        # Validate that we have selections for all criteria
+        # This will raise an exception if we're missing any criteria
+        cls._check_has_all_criteria(rubric_index, selected)
+
+        # Create assessment parts for each criterion and associate them with the assessment
+        # Since we're using the rubric's index, we'll get an `InvalidRubricSelection` error
+        # if we select an invalid criterion/option.
+        return cls.objects.bulk_create([
+            cls(
+                assessment=assessment,
+                option=rubric_index.find_option_for_points(criterion_name, option_points)
+            )
+            for criterion_name, option_points in selected.iteritems()
+        ])
+
+    @classmethod
+    def _check_has_all_criteria(cls, rubric_index, selected):
+        """
+        Verify that we've selected options for all criteria in the rubric.
+
+        Args:
+            rubric_index (RubricIndex): The index of the rubric's data.
+            selected (dict): Dictionary mapping criterion names to option names or points.
 
         Returns:
             None
 
+        Raises:
+            InvalidRubricSelection
         """
-        cls.objects.bulk_create([
-            cls(assessment=assessment, option_id=option_id)
-            for option_id in option_ids
-        ])
-
-        if criterion_feedback is not None:
-            for criterion_name, feedback in criterion_feedback.iteritems():
-                feedback = feedback[0:cls.MAX_FEEDBACK_SIZE]
-                assessment.parts.filter(
-                    option__criterion__name=criterion_name
-                ).update(feedback=feedback)
+        missing_criteria = rubric_index.find_missing_criteria(selected.keys())
+        if len(missing_criteria) > 0:
+            msg = u"Missing selections for criteria: {missing}".format(missing=missing_criteria)
+            raise InvalidRubricSelection(msg)

@@ -10,7 +10,7 @@ import logging
 from django.utils.translation import ugettext as _
 from django.db import DatabaseError
 from submissions import api as sub_api
-from openassessment.assessment.models import StudentTrainingWorkflow
+from openassessment.assessment.models import StudentTrainingWorkflow, InvalidRubricSelection
 from openassessment.assessment.serializers import (
     deserialize_training_examples, serialize_training_example,
     validate_training_example_format,
@@ -353,7 +353,7 @@ def get_training_example(submission_uuid, rubric, examples):
         # If the student already started a training example, then return that instead.
         next_example = workflow.next_training_example(examples)
         return None if next_example is None else serialize_training_example(next_example)
-    except (InvalidRubric, InvalidTrainingExample) as ex:
+    except (InvalidRubric, InvalidRubricSelection, InvalidTrainingExample) as ex:
         logger.exception(
             "Could not deserialize training examples for submission UUID {}".format(submission_uuid)
         )
