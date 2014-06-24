@@ -57,6 +57,34 @@ OpenAssessment.StudioView = function(runtime, element, server) {
         {mode: "xml", lineNumbers: true, lineWrapping: true}
     );
 
+    // Caputres the HTML definition of the original criterion element. This will be the template
+    // used for all other criterion creations
+    var criterionBodyHtml = $("#openassessment_criterion_1", liveElement).html();
+    // Adds the wrapping LI tag which is not captured by the find element.
+    var criterionHtml = '<li class="openassessment_criterion" id="openassessment_criterion_1">'
+        + criterionBodyHtml + '</li>';
+    // Replaces all instances of the original ID (1) with the new fake ID in the string
+    // representation of the Criterion LI. This is our new template, with a C-C-C marker to replace.
+    this.criterionHtmlTemplate = criterionHtml.replace(new RegExp("1", "g"), "C-C-C");
+
+    // Captures the HTML definition of the original option element.  Note that there are TWO template
+    // tags that need to be replaced "C-C-C" for the Criterion ID, and "O-O-O" for the option ID.
+    var optionBodyHtml = $("#openassessment_criterion_1_option_1", liveElement).html();
+    var optionHtml = '<li id=openassessment_criterion_1_option_1 class="openassessment_criterion_option">' +
+        optionBodyHtml + '</li>';
+    var criterionsReplaced = optionHtml.replace(new RegExp("criterion_1", "g"), "criterion_C-C-C");
+    this.optionHtmlTemplate = criterionsReplaced.replace(new RegExp("option_1", "g"), "option_O-O-O");
+
+    // Start us off with an empty setup, and uses the adding method to add a critera (which in turn will
+    // add an option.  This design choice was made to ensure consistent practices in adding and removing,
+    // the logic of which is all maintained in the function call.
+    this.numberOfCriteria = 0;
+    this.numberOfOptions = [];
+    this.rubricCriteriaSelectors = [];
+
+    $('#openassessment_criterion_list', liveElement).empty();
+    this.addNewCriterionToRubric(liveElement);
+
     // Install click handlers
     var view = this;
     $('.openassessment_save_button', liveElement) .click(
@@ -114,6 +142,12 @@ OpenAssessment.StudioView = function(runtime, element, server) {
             $("#student_training_description_closed", liveElement).fadeIn();
         }
     });
+
+    $('#openassessment_rubric_add_criterion', liveElement).click(
+        function (eventData) {
+            view.addNewCriterionToRubric(liveElement);
+        }
+    );
 
 };
 
@@ -180,7 +214,7 @@ OpenAssessment.StudioView.prototype = {
                 }
             }
         ).fail(function (errMsg) {
-                view.showError(msg);
+                view.showError(errMsg);
         });
     },
 
@@ -198,6 +232,165 @@ OpenAssessment.StudioView.prototype = {
         if (confirm(msg)) {
             onConfirm();
         }
+    },
+
+    /**
+     Initializes a new criterion for the rubric. Has multiple elements. This block of code dictates
+     the methodology that we add and remove rubric criteria
+     */
+    addNewCriterionToRubric: function (liveElement){
+        var view = this;
+
+        // Always appends the new criterion to the end of the list, and we force linear ordering.
+        var newCriterionID = this.numberOfCriteria + 1;
+        this.numberOfCriteria += 1;
+        this.numberOfOptions[newCriterionID] = 0;
+
+        // Fills in the template with the new criterion ID
+        var criterionHtml = this.criterionHtmlTemplate.replace(new RegExp('C-C-C', 'g'), '' + newCriterionID);
+
+        // Adds the new criterion to the DOM
+        $("#openassessment_criterion_list", liveElement).append(criterionHtml);
+
+        // Now that we have altered our LiveElement, we need to "reset" it so that it recognizes the new criterion.
+        liveElement = $("#openassessment_criterion_" + newCriterionID);
+        $(".openassessment_criterion_option_list", liveElement).empty();
+
+        // Adds our selector elements for easy future access.
+        view.rubricCriteriaSelectors[newCriterionID] = {
+            criterion: liveElement,
+            name: $('.openassessment_criterion_name', liveElement).first(),
+            prompt: $('.openassessment_criterion_prompt', liveElement).first(),
+            options: [],
+            feedback: $('.openassessment_criterion_feedbac', liveElement).first()
+        };
+
+        view.addNewOptionToCriterion(liveElement, newCriterionID);
+
+        // Adds a listener that will collapse/expand the criterion on click.
+        $('#openassessment_display_criterion_' + newCriterionID, liveElement) .change( function () {
+            if (this.checked){
+                $('#openassessment_criterion_body_' + newCriterionID, liveElement).fadeIn();
+            } else {
+                $('#openassessment_criterion_body_' + newCriterionID, liveElement).fadeOut();
+            }
+        });
+
+        // Adds a listener which will delete the criterion on a click of the remove button
+        // The methodology for deletion is to shift all information from previous elements down into
+        $("#openassessment_criterion_" + newCriterionID + "_remove", liveElement) .click( function(eventData) {
+            var numCriteria = view.numberOfCriteria;
+            var selectors = view.rubricCriteriaSelectors;
+
+            // shifts all data from "higher up" criterions down one in order to allow us to delete the last
+            // element without deleting information input by the user
+            for (var i = newCriterionID; i < numCriteria; i++){
+                selectors[i].name.prop('value', selectors[i+1].name.prop('value'));
+                selectors[i].prompt.prop('value', selectors[i+1].prompt.prop('value'));
+                selectors[i].feedback.prop('value', selectors[i+1].feedback.prop('value'));
+                var options1 = selectors[i].options;
+                var options2 = selectors[i].options;
+                var numOptions = view.numberOfOptions[i+1];
+                for (var j = 1; j < numOptions; j++){
+                    options1[j].points.prop('value', options2[j].points.prop('value'));
+                    options1[j].name.prop('value', options2[j].name.prop('value'));
+                    options1[j].explanation.prop('value', options2[j].explanation.prop('value'));
+                }
+            }
+
+            // Physically removes the rubric criteria from the DOM
+            view.rubricCriteriaSelectors[view.rubricCriteriaSelectors.length].criterion.remove();
+
+            // Deletes the criteria from our three tracking statistics/structures
+            view.rubricCriteriaSelectors = view.rubricCriteriaSelectors.slice(0,numCriteria);
+            view.numberOfOptions = view.numberOfOptions.slice(0, numCriteria);
+            view.numberOfCriteria -= 1;
+
+
+
+        });
+
+        // Adds a listener which will add another option to the Criterion's definition.
+        $("#openassessment_criterion_" + newCriterionID + "_add_option", liveElement).click( function(eventData){
+            view.addNewOptionToCriterion(liveElement, newCriterionID);
+        });
+
+        // Adds a listener which removes criterion feedback
+        $(".openassessment_feedback_remove_button", liveElement). click( function(eventData){
+            $(".openassessment_criterion_feedback_direction", liveElement).fadeOut();
+            $(".openassessment_criterion_feedback_header_open", liveElement).fadeOut();
+            $(".openassessment_criterion_feedback_header_closed", liveElement).fadeIn();
+            $(".openassessment_feedback_remove_button", liveElement).fadeOut();
+        });
+
+        // Adds a listener which adds criterion feedback if not already displayed.
+        $(".openassessment_criterion_feedback_header_closed", liveElement).click( function (eventData){
+            $(".openassessment_criterion_feedback_direction", liveElement).fadeIn();
+            $(".openassessment_criterion_feedback_header_open", liveElement).fadeIn();
+            $(".openassessment_criterion_feedback_header_closed", liveElement).fadeOut();
+            $(".openassessment_feedback_remove_button", liveElement).fadeIn();
+        });
+
+        // Hides the criterion header used for adding
+        $(".openassessment_criterion_feedback_header_closed", liveElement).hide();
+
+    },
+
+    /**
+     * Initializes a new option for a given criterion.  This code block dictates the methodology for
+     * adding and removing options to a rubric.
+     * @param liveElement A selector representing the current state of the Criterion DOM
+     * @param criterionID The specific number of the criterion the option is being added to
+     */
+    addNewOptionToCriterion: function (liveElement, criterionID){
+        var view = this;
+
+        // Finds the ID that will be associated with the option (it will be added to the end)
+        var newOptionID = this.numberOfOptions[criterionID] + 1;
+
+        this.numberOfOptions[criterionID] += 1;
+
+        // Replaces the template values with the true criterion and option ID's, and appends it on to the DOM
+        var optionHtml = this.optionHtmlTemplate;
+        optionHtml = optionHtml.replace(new RegExp("C-C-C", 'g'), "" + criterionID);
+        optionHtml = optionHtml.replace(new RegExp("O-O-O", 'g'), "" + newOptionID);
+        $("#openassessment_criterion_" + criterionID + "_options", liveElement).append(optionHtml);
+
+        // Resets the Live Element to be the updated (and newly created) option.
+        liveElement = $("#openassessment_criterion_" + criterionID + "_option_" + newOptionID);
+
+        // Constructs and assigns a dictionary of all of the selectors we store for each option.
+        view.rubricCriteriaSelectors[criterionID].options[newOptionID] = {
+            option: liveElement,
+            points: $("#openassessment_criterion_" + criterionID + "_option_" + newOptionID + "_points", liveElement),
+            name: $("#openassessment_criterion_" + criterionID + "_option_" + newOptionID + "_name", liveElement),
+            explanation: $("#openassessment_criterion_" + criterionID + "_option_" + newOptionID + "_explanation", liveElement)
+        };
+
+        // Sets the remove behavior. When deleted, an option will shift all of the data "behind" it on the list
+        // of options toward itself, and then deletes the last element in the list. This ensures that our options
+        // are always increasing by one, and that the data doesn't remain tethered to where it was entered.
+        $("#openassessment_criterion_" + criterionID + "_option_" + newOptionID + "_remove", liveElement).click(
+            function(eventData){
+                var numberOfOptions = view.numberOfOptions[criterionID];
+                var optionSelectors = view.rubricCriteriaSelectors[criterionID].options;
+
+                // Shifts all data down, then deletes the last element, to create the appearance we deleted the given
+                // elements.
+                for (var i = newOptionID; i < numberOfOptions; i++){
+                    // Utilizes stored selectors to perform the swaps.
+                    optionSelectors[i].points.prop('value', optionSelectors[i+1].points.prop('value'));
+                    optionSelectors[i].name.prop('value', optionSelectors[i+1].name.prop('value'));
+                    optionSelectors[i].explanation.prop('value', optionSelectors[i+1].explanation.prop('value'));
+                }
+
+                optionSelectors[optionSelectors.length - 1].option.remove();
+                view.rubricCriteriaSelectors[criterionID].options =
+                    view.rubricCriteriaSelectors[criterionID].options.slice(0, (optionSelectors.length - 1));
+
+                view.numberOfOptions[criterionID] -= 1;
+            }
+        )
     },
 
     /**
