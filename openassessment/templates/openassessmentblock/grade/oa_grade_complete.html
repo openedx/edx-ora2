@@ -4,12 +4,16 @@
     <header class="step__header ui-toggle-visibility__control">
         <h2 class="step__title">
             <span class="wrapper--copy">
+                {% if score %}
                 <span class="step__label">{% trans "Your Grade" %}: </span>
                 <span class="grade__value">
                     <span class="grade__value__title">
                          {% blocktrans with points_earned=score.points_earned points_possible=score.points_possible%}<span class="grade__value__earned">{{ points_earned }}</span> out of <span class="grade__value__potential">{{ points_possible }}</span>{% endblocktrans %}
                     </span>
                 </span>
+                {% else %}
+                <span class="step__label">{% trans "Your Grade" %}</span>
+                {% endif %}
             </span>
         </h2>
     </header>
@@ -133,13 +137,15 @@
                                 {% endfor %}
 
                                 {% if criterion.feedback %}
-                                <li class="answer--feedback ui-toggle-visibility is--collapsed">
+                                <li class="answer--feedback ui-toggle-visibility {% if criterion.options %}is--collapsed{% endif %}">
+                                    {% if criterion.options %}
                                     <h5 class="answer--feedback__title ui-toggle-visibility__control">
                                       <i class="ico icon-caret-right"></i>
                                       <span class="answer--feedback__title__copy">{% trans "Additional Comments" %} ({{ criterion.feedback|length }})</span>
                                     </h5>
+                                    {% endif %}
 
-                                    <ul class="answer--feedback__content ui-toggle-visibility__content">
+                                    <ul class="answer--feedback__content {% if criterion.options %}ui-toggle-visibility__content{% endif %}">
                                         {% for feedback in criterion.feedback %}
                                         <li class="feedback feedback--{{ forloop.counter }}">
                                             <h6 class="feedback__source">

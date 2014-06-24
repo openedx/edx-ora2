@@ -106,7 +106,7 @@ def validate_assessments(assessments, current_assessments, is_released):
     if len(assessments) == 0:
         return (False, _("This problem must include at least one assessment."))
 
-    # Right now, there are two allowed scenarios: (peer -> self) and (self)
+    # Ensure that we support this sequence of assessments.
     if not _is_valid_assessment_sequence(assessments):
         msg = _(
             "For this assignment, you can set a peer assessment only, a self "
@@ -131,7 +131,7 @@ def validate_assessments(assessments, current_assessments, is_released):
             if must_grade < must_be_graded_by:
                 return (False, _('The "must_grade" value must be greater than or equal to the "must_be_graded_by" value.'))
 
-        # Example-based assessment MUST specify 'ease' as the algorithm ID,
+        # Example-based assessment MUST specify 'ease' or 'fake' as the algorithm ID,
         # at least for now.  Later, we may make this more flexible.
         if assessment_dict.get('name') == 'example-based-assessment':
             if assessment_dict.get('algorithm_id') not in ['ease', 'fake']:
@@ -177,13 +177,19 @@ def validate_rubric(rubric_dict, current_rubric, is_released, is_example_based):
         )
         return (False, msg)
 
-    # No duplicate option names within a criterion
     for criterion in rubric_dict['criteria']:
+        # No duplicate option names within a criterion
         duplicates = _duplicates([option['name'] for option in criterion['options']])
         if len(duplicates) > 0:
             msg = _(u"Options in '{criterion}' have duplicate name(s): {duplicates}").format(
                 criterion=criterion['name'], duplicates=", ".join(duplicates)
             )
+            return (False, msg)
+
+        # Some criteria may have no options, just written feedback.
+        # In this case, written feedback must be required (not optional or disabled).
+        if len(criterion['options']) == 0 and criterion.get('feedback', 'disabled') != 'required':
+            msg = _(u'Criteria with no options must require written feedback.')
             return (False, msg)
 
         # Example-based assessments impose the additional restriction

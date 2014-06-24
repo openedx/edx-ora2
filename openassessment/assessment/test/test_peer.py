@@ -1,6 +1,7 @@
 # coding=utf-8
 import datetime
 import pytz
+import copy
 
 from django.db import DatabaseError, IntegrityError
 from django.utils import timezone
@@ -117,7 +118,7 @@ ASSESSMENT_DICT_PASS = {
 
 # Answers are against RUBRIC_DICT -- this is worth 12 points
 # Feedback text is one character over the limit.
-LONG_FEEDBACK_TEXT = u"是" * Assessment.MAXSIZE + "."
+LONG_FEEDBACK_TEXT = u"是" * Assessment.MAX_FEEDBACK_SIZE + "."
 ASSESSMENT_DICT_HUGE = {
     'overall_feedback': LONG_FEEDBACK_TEXT,
     'criterion_feedback': {
@@ -150,7 +151,7 @@ class TestPeerApi(CacheResetTest):
     Tests for the peer assessment API functions.
     """
 
-    CREATE_ASSESSMENT_NUM_QUERIES = 61
+    CREATE_ASSESSMENT_NUM_QUERIES = 59
 
     def test_create_assessment_points(self):
         self._create_student_and_submission("Tim", "Tim's answer")
@@ -173,9 +174,7 @@ class TestPeerApi(CacheResetTest):
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
         peer_api.get_submission_to_assess(bob_sub['uuid'], 1)
 
-        # Creating feedback per criterion should need one additional query to update
-        # for each criterion that has feedback.
-        with self.assertNumQueries(self.CREATE_ASSESSMENT_NUM_QUERIES + 1):
+        with self.assertNumQueries(self.CREATE_ASSESSMENT_NUM_QUERIES):
             assessment = peer_api.create_assessment(
                 bob_sub["uuid"],
                 bob["student_id"],
@@ -196,6 +195,43 @@ class TestPeerApi(CacheResetTest):
             expected_feedback = ASSESSMENT_DICT['criterion_feedback'].get(criterion_name, "")
             self.assertEqual(part['feedback'], expected_feedback)
 
+    def test_create_assessment_criterion_with_zero_options(self):
+        self._create_student_and_submission("Tim", "Tim's answer")
+        bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
+        peer_api.get_submission_to_assess(bob_sub['uuid'], 1)
+
+        # Modify the rubric to include a criterion with no options,
+        # only written feedback.
+        rubric = copy.deepcopy(RUBRIC_DICT)
+        rubric["criteria"].append({
+            "name": "feedback only",
+            "prompt": "feedback only",
+            "options": []
+        })
+
+        # Provide written feedback for the feedback-only criterion
+        feedback = {
+            "feedback only": u"This is some feedback"
+        }
+        assessment = peer_api.create_assessment(
+            bob_sub["uuid"],
+            bob["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            feedback, "",
+            rubric,
+            REQUIRED_GRADED_BY,
+        )
+
+        # Verify that the point values are the same
+        # (the feedback-only criterion isn't worth any points)
+        self.assertEqual(assessment["points_earned"], 6)
+        self.assertEqual(assessment["points_possible"], 14)
+
+        # Verify the feedback-only criterion assessment part
+        self.assertEqual(assessment["parts"][4]["criterion"]["name"], "feedback only")
+        self.assertIs(assessment["parts"][4]["option"], None)
+        self.assertEqual(assessment["parts"][4]["feedback"], u"This is some feedback")
+
     def test_create_assessment_unknown_criterion_feedback(self):
         self._create_student_and_submission("Tim", "Tim's answer")
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
@@ -203,19 +239,18 @@ class TestPeerApi(CacheResetTest):
 
         # Create an assessment where the criterion feedback uses
         # a criterion name that isn't in the rubric.
-        assessment = peer_api.create_assessment(
-            bob_sub["uuid"],
-            bob["student_id"],
-            ASSESSMENT_DICT['options_selected'],
-            {'unknown': 'Unknown criterion has feedback!'},
-            ASSESSMENT_DICT['overall_feedback'],
-            RUBRIC_DICT,
-            REQUIRED_GRADED_BY,
-        )
-
-        # The criterion feedback should be ignored
-        for part_num in range(3):
-            self.assertEqual(assessment["parts"][part_num]["feedback"], "")
+        # An exception should be raised, since this will be interpreted
+        # as adding an extra criterion with no options, just feedback.
+        with self.assertRaises(peer_api.PeerAssessmentRequestError):
+            peer_api.create_assessment(
+                bob_sub["uuid"],
+                bob["student_id"],
+                ASSESSMENT_DICT['options_selected'],
+                {'unknown': 'Unknown criterion has feedback!'},
+                ASSESSMENT_DICT['overall_feedback'],
+                RUBRIC_DICT,
+                REQUIRED_GRADED_BY,
+            )
 
     def test_create_huge_overall_feedback_error(self):
         self._create_student_and_submission("Tim", "Tim's answer")
@@ -234,12 +269,12 @@ class TestPeerApi(CacheResetTest):
         )
 
         # The assessment feedback text should be truncated
-        self.assertEqual(len(assessment_dict['feedback']), Assessment.MAXSIZE)
+        self.assertEqual(len(assessment_dict['feedback']), Assessment.MAX_FEEDBACK_SIZE)
 
         # The length of the feedback text in the database should
         # equal what we got from the API.
         assessment = Assessment.objects.get()
-        self.assertEqual(len(assessment.feedback), Assessment.MAXSIZE)
+        self.assertEqual(len(assessment.feedback), Assessment.MAX_FEEDBACK_SIZE)
 
     def test_create_huge_per_criterion_feedback_error(self):
         self._create_student_and_submission("Tim", "Tim's answer")
@@ -259,11 +294,11 @@ class TestPeerApi(CacheResetTest):
 
         # Verify that the feedback has been truncated
         for part in assessment['parts']:
-            self.assertEqual(len(part['feedback']), Assessment.MAXSIZE)
+            self.assertEqual(len(part['feedback']), Assessment.MAX_FEEDBACK_SIZE)
 
         # Verify that the feedback in the database matches what we got back from the API
         for part in AssessmentPart.objects.all():
-            self.assertEqual(len(part.feedback), Assessment.MAXSIZE)
+            self.assertEqual(len(part.feedback), Assessment.MAX_FEEDBACK_SIZE)
 
     @file_data('data/valid_assessments.json')
     def test_get_assessments(self, assessment_dict):
@@ -1022,7 +1057,7 @@ class TestPeerApi(CacheResetTest):
         peer_api.set_assessment_feedback(
             {
                 'submission_uuid': tim_answer['uuid'],
-                'feedback_text': 'Boo'*AssessmentFeedback.MAXSIZE,
+                'feedback_text': 'Boo' * AssessmentFeedback.MAXSIZE,
             }
         )
 
@@ -1264,6 +1299,39 @@ class TestPeerApi(CacheResetTest):
         scored_assessments = peer_api.get_assessments(bob_sub['uuid'], scored_only=True)
         self.assertEqual(len(scored_assessments), 1)
         self.assertEqual(scored_assessments[0]['scorer_id'], tim['student_id'])
+
+    @raises(peer_api.PeerAssessmentInternalError)
+    def test_create_assessment_database_error(self):
+        self._create_student_and_submission("Bob", "Bob's answer")
+        submission, student = self._create_student_and_submission("Jim", "Jim's answer")
+        peer_api.get_submission_to_assess(submission['uuid'], 1)
+
+        with patch.object(PeerWorkflow.objects, 'get') as mock_call:
+            mock_call.side_effect = DatabaseError("Kaboom!")
+            peer_api.create_assessment(
+                submission['uuid'],
+                student['student_id'],
+                ASSESSMENT_DICT['options_selected'],
+                ASSESSMENT_DICT['criterion_feedback'],
+                ASSESSMENT_DICT['overall_feedback'],
+                RUBRIC_DICT,
+                REQUIRED_GRADED_BY
+            )
+
+    @raises(peer_api.PeerAssessmentRequestError)
+    def test_create_assessment_invalid_rubric_error(self):
+        self._create_student_and_submission("Bob", "Bob's answer")
+        submission, student = self._create_student_and_submission("Jim", "Jim's answer")
+        peer_api.get_submission_to_assess(submission['uuid'], 1)
+        peer_api.create_assessment(
+            submission['uuid'],
+            student['student_id'],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            {"invalid_rubric!": "is invalid"},
+            REQUIRED_GRADED_BY
+        )
 
     @staticmethod
     def _create_student_and_submission(student, answer, date=None):

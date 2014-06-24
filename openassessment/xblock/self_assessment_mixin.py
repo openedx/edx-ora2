@@ -117,29 +117,8 @@ class SelfAssessmentMixin(object):
                 data['options_selected'],
                 {"criteria": self.rubric_criteria}
             )
-            self.runtime.publish(
-                self,
-                "openassessmentblock.self_assess",
-                {
-                    "feedback": assessment["feedback"],
-                    "rubric": {
-                        "content_hash": assessment["rubric"]["content_hash"],
-                    },
-                    "scorer_id": assessment["scorer_id"],
-                    "score_type": assessment["score_type"],
-                    "scored_at": assessment["scored_at"],
-                    "submission_uuid": assessment["submission_uuid"],
-                    "parts": [
-                        {
-                            "option": {
-                                "name": part["option"]["name"],
-                                "points": part["option"]["points"]
-                            }
-                        }
-                        for part in assessment["parts"]
-                    ]
-                }
-            )
+            self.publish_assessment_event("openassessmentblock.self_assess", assessment)
+
             # After we've created the self-assessment, we need to update the workflow.
             self.update_workflow_status()
         except (self_api.SelfAssessmentRequestError, workflow_api.AssessmentWorkflowRequestError):
