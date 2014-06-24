@@ -17,7 +17,126 @@
         </div>
 
         <div id="oa_rubric_editor_wrapper" class="oa_editor_content_wrapper">
-            <textarea id="openassessment_rubric_editor"></textarea>
+
+            <div id="openassessment_rubric_instructions">
+                <p class = openassessment_description>
+                    {% trans "For open response problems, assessment is rubric-based.  Rubric criterion have point breakdowns and explanations to help students with peer and self assessment steps. For more information on how to build your rubric, see our online help documentation."%}
+                </p>
+            </div>
+
+            <ul id="openassessment_criterion_list" >
+                <li class="openassessment_criterion" id="openassessment_criterion_1">
+                    <div class="openassessment_criterion_header" id="openassessment_criterion_header_1">
+                        <input class="openassessment_display_criterion>" id="openassessment_display_criterion_1" type="checkbox" checked="1">
+                        <label class="openassessment_criterion_header_title" for="openassessment_display_criterion_1">
+                            {% trans "Criterion C-C-C"%}
+                        </label>
+                        <div class="openassessment_rubric_remove_button" id="openassessment_criterion_1_remove">
+                            <h2>{% trans "Remove" %}</h2>
+                        </div>
+                    </div>
+                    <div class="openassessment_criterion_body" id="openassessment_criterion_body_1">
+                        <div class="openassessment_line_input">
+                            <label for="openassessment_criterion_1_name" class="openassessment_criterion_name_label">
+                                {% trans "Criterion Name"%}
+                            </label>
+                            <input id="openassessment_criterion_1_name" class="openassessment_criterion_name" type="text">
+                        </div>
+
+                        <div class="openassessment_line_input">
+                            <label for="openassessment_criterion_1_prompt" class="openassessment_criterion_prompt_label">
+                                {% trans "Criterion Prompt"%}
+                            </label>
+                            <textarea id="openassessment_criterion_1_prompt" class="openassessment_criterion_prompt"></textarea>
+                        </div>
+
+                        <ul id="openassessment_criterion_1_options" class="openassessment_criterion_option_list">
+
+                            <li id=openassessment_criterion_1_option_1 class="openassessment_criterion_option">
+
+                                <div class="openassessment_option_header">
+                                    <span class="openassessment_option_header_title">
+                                        {% trans "Option O-O-O" %}
+                                    </span>
+                                    <div class="openassessment_rubric_remove_button" id="openassessment_criterion_1_option_1_remove">
+                                        <h2>{% trans "Remove" %}</h2>
+                                    </div>
+
+                                </div>
+                                <div class="openasssessment_line_input openassessment_criterion_option_point_wrapper">
+                                    <label for="openassessment_criterion_1_option_1_points" class="openassessment_criterion_option_points_label">
+                                        {% trans "Option Points"%}
+                                    </label>
+                                    <input id="openassessment_criterion_1_option_1_points" class="openassessment_criterion_option_points" type="number">
+                                </div>
+                                <div class="openasssessment_line_input openassessment_criterion_option_name_wrapper">
+                                    <label for="openassessment_criterion_1_option_1_name" class="openassessment_criterion_option_name_label">
+                                        {% trans "Option Name"%}
+                                    </label>
+                                    <input id="openassessment_criterion_1_option_1_name" class="openassessment_criterion_option_name" type="text">
+                                </div>
+                                <div class="openasssessment_line_input openassessment_criterion_option_explanation_wrapper">
+                                    <label for="openassessment_criterion_1_option_1_explanation" class="openassessment_criterion_option_explanation_label">
+                                        {% trans "Option Explanation"%}
+                                    </label>
+                                    <textarea id="openassessment_criterion_1_option_1_explanation" class="openassessment_criterion_option_explanation"></textarea>
+                                </div>
+                            </li>
+
+                        </ul>
+
+                        <div id="openassessment_criterion_1_add_option" class="openassessment_criterion_add_option openassessment_option_header">
+                            <h2>{% trans "Add Another Option"%}</h2>
+                        </div>
+
+                        <hr>
+
+                        <div id="openassessment_criterion_1_feedback_wrapper" class="openassessment_criterion_feedback_wrapper">
+
+                            <div class="openassessment_criterion_feedback_header">
+                                <span class="openassessment_criterion_feedback_header_open">{% trans "Criterion Feedback" %}</span>
+                                <span class="openassessment_criterion_feedback_header_closed">{% trans "Add Criterion Feedback" %}</span>
+                                <div class="openassessment_rubric_remove_button openassessment_feedback_remove_button" id="openassessment_criterion_1_feedback_remove">
+                                    <h2>{% trans "Remove" %}</h2>
+                                </div>
+                            </div>
+
+                            <div class="openassessment_line_input openassessment_criterion_feedback_direction">
+                                <label for="openassessment_criterion_feedback">
+                                    {% trans "Feedback Direction" %}
+                                </label>
+                                <textarea id="openassessment_criterion_feedback" class="openassessment_criterion_feedback"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <div id="openassessment_rubric_add_criterion">
+                <h2>
+                    {% trans "Add Another Criterion"%}
+                </h2>
+            </div>
+
+            <div id="openassessment_rubric_feedback_wrapper">
+                <div id="openassessment_rubric_feedback_header">
+                    <span>
+                        {% trans "Rubric Feedback" %}
+                    </span>
+                    <div class="openassessment_rubric_remove_button" id="openassessment_rubric_direction_remove">
+                        <h2>{% trans "Remove" %}</h2>
+                    </div>
+                </div>
+                <div class="openassessment_line_input">
+                    <label for="openassessment_rubric_feedback">
+                        {% trans "Feedback Direction" %}
+                    </label>
+                    <textarea id="openassessment_rubric_feedback"></textarea>
+                </div>
+            </div>
+            <div id="openassessment_make_invisible">
+                <textarea id="openassessment_rubric_editor"></textarea>
+            </div>
         </div>
 
         <div id="oa_settings_editor_wrapper" class="oa_editor_content_wrapper">
@@ -57,7 +176,6 @@
                     <p class="openassessment_description">
                         {% trans "Enter one or more sample responses that you've created, together with the scores you would give those responses. Be sure to format the responses and scores according to the placeholder text below." %}
                     </p>
-                    <label for="student_training_examples">{% trans "Student Training Responses" %}</label>
                     <textarea id="student_training_examples"></textarea>
                 </div>
             </div>
@@ -75,11 +193,11 @@
                         {% trans "Specify the following values for the peer assessment step. The numeric grading requirements must be given a value." %}
                     </p>
                     <div class="openassessment_indent_line_input">
-                        <label for="peer_assessment_must_grade">{% trans "Each student must assess X peer responses" %}</label>
+                        <label for="peer_assessment_must_grade" class="openassessment_peer_fixed_width">{% trans "Each student must assess X peer responses" %}</label>
                         <input id="peer_assessment_must_grade" class="openassessment_number_field" type="text">
                     </div>
                     <div class="openassessment_indent_line_input">
-                        <label for="peer_assessment_graded_by"> {% trans "Each response must be assessed by at least X students" %}</label>
+                        <label for="peer_assessment_graded_by" class="openassessment_peer_fixed_width"> {% trans "Each response must be assessed by at least X students" %}</label>
                         <input id="peer_assessment_graded_by" class="openassessment_number_field" type="text">
                     </div>
                     <div class="openassessment_due_date_editor">
