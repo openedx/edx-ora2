@@ -12,7 +12,6 @@ from django.utils.timezone import now
 from django_extensions.db.fields import UUIDField
 from dogapi import dog_stats_api
 from submissions import api as sub_api
-from openassessment.assessment.serializers import rubric_from_dict
 from .base import Rubric, Criterion, Assessment, AssessmentPart
 from .training import TrainingExample
 
@@ -45,16 +44,14 @@ class IncompleteClassifierSet(Exception):
     """
     The classifier set is missing a classifier for a criterion in the rubric.
     """
-    def __init__(self, expected_criteria, actual_criteria):
+    def __init__(self, missing_criteria):
         """
         Construct an error message that explains which criteria were missing.
 
         Args:
-            expected_criteria (iterable of unicode): The criteria in the rubric.
-            actual_criteria (iterable of unicode): The criteria specified by the classifier set.
+            missing_criteria (list): The list of criteria names that were missing.
 
         """
-        missing_criteria = set(expected_criteria) - set(actual_criteria)
         msg = (
             u"Missing classifiers for the following "
             u"criteria: {missing}"
@@ -136,6 +133,7 @@ class AIClassifierSet(models.Model):
         Raises:
             ClassifierSerializeError
             ClassifierUploadError
+            InvalidRubricSelection
             DatabaseError
 
         """
@@ -146,12 +144,8 @@ class AIClassifierSet(models.Model):
 
         # Retrieve the criteria for this rubric,
         # then organize them by criterion name
-
         try:
-            criteria = {
-                criterion.name: criterion
-                for criterion in Criterion.objects.filter(rubric=rubric)
-            }
+            rubric_index = rubric.index
         except DatabaseError as ex:
             msg = (
                 u"An unexpected error occurred while retrieving rubric criteria with the"
@@ -161,15 +155,22 @@ class AIClassifierSet(models.Model):
             raise
 
         # Check that we have classifiers for all criteria in the rubric
-        if set(criteria.keys()) != set(classifiers_dict.keys()):
-            raise IncompleteClassifierSet(criteria.keys(), classifiers_dict.keys())
+        # Ignore criteria that have no options: since these have only written feedback,
+        # we can't assign them a score.
+        all_criteria = set(classifiers_dict.keys())
+        all_criteria |= set(
+            criterion.name for criterion in 
+            rubric_index.find_criteria_without_options()
+        )
+        missing_criteria = rubric_index.find_missing_criteria(all_criteria)
+        if missing_criteria:
+            raise IncompleteClassifierSet(missing_criteria)
 
         # Create classifiers for each criterion
         for criterion_name, classifier_data in classifiers_dict.iteritems():
-            criterion = criteria.get(criterion_name)
             classifier = AIClassifier.objects.create(
                 classifier_set=classifier_set,
-                criterion=criterion
+                criterion=rubric_index.find_criterion(criterion_name)
             )
 
             # Serialize the classifier data and upload
@@ -279,7 +280,6 @@ class AIClassifierSet(models.Model):
 
         Returns:
             dict: keys are criteria names, values are JSON-serializable classifier data
-            If there are no classifiers in the set, returns None
 
         Raises:
             ValueError
@@ -328,7 +328,7 @@ class AIClassifierSet(models.Model):
             ).format(key=cache_key)
             logger.info(msg)
 
-        return classifiers_dict if classifiers_dict else None
+        return classifiers_dict
 
     @property
     def valid_scores_by_criterion(self):
@@ -698,6 +698,7 @@ class AITrainingWorkflow(AIWorkflow):
             IncompleteClassifierSet
             ClassifierSerializeError
             ClassifierUploadError
+            InvalidRubricSelection
             DatabaseError
         """
         self.classifier_set = AIClassifierSet.create_classifier_set(
@@ -788,6 +789,7 @@ class AIGradingWorkflow(AIWorkflow):
         submission = sub_api.get_submission_and_student(submission_uuid)
 
         # Get or create the rubric
+        from openassessment.assessment.serializers import rubric_from_dict
         rubric = rubric_from_dict(rubric_dict)
 
         # Retrieve the submission text
@@ -828,18 +830,12 @@ class AIGradingWorkflow(AIWorkflow):
             criterion_scores (dict): Dictionary mapping criteria names to integer scores.
 
         Raises:
+            InvalidRubricSelection
             DatabaseError
 
         """
-        assessment = Assessment.objects.create(
-            submission_uuid=self.submission_uuid,
-            rubric=self.rubric,
-            scorer_id=self.algorithm_id,
-            score_type=AI_ASSESSMENT_TYPE
+        self.assessment = Assessment.create(
+            self.rubric, self.algorithm_id, self.submission_uuid, AI_ASSESSMENT_TYPE
         )
-
-        option_ids = self.rubric.options_ids_for_points(criterion_scores)
-        AssessmentPart.add_to_assessment(assessment, option_ids)
-
-        self.assessment = assessment
+        AssessmentPart.create_from_option_points(self.assessment, criterion_scores)
         self.mark_complete_and_save()

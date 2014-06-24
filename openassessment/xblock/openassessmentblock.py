@@ -574,6 +574,57 @@ class OpenAssessmentBlock(
             if assessment["name"] == mixin_name:
                 return assessment
 
+    def publish_assessment_event(self, event_name, assessment):
+        """
+        Emit an analytics event for the peer assessment.
+
+        Args:
+            event_name (str): An identifier for this event type.
+            assessment (dict): The serialized assessment model.
+
+        Returns:
+            None
+
+        """
+        parts_list = []
+        for part in assessment["parts"]:
+            # Some assessment parts do not include point values,
+            # only written feedback.  In this case, the assessment
+            # part won't have an associated option.
+            option_dict = None
+            if part["option"] is not None:
+                option_dict = {
+                    "name": part["option"]["name"],
+                    "points": part["option"]["points"],
+                }
+
+            # All assessment parts are associated with criteria
+            criterion_dict = {
+                "name": part["criterion"]["name"],
+                "points_possible": part["criterion"]["points_possible"]
+            }
+
+            parts_list.append({
+                "option": option_dict,
+                "criterion": criterion_dict,
+                "feedback": part["feedback"]
+            })
+
+        self.runtime.publish(
+            self, event_name,
+            {
+                "feedback": assessment["feedback"],
+                "rubric": {
+                    "content_hash": assessment["rubric"]["content_hash"],
+                },
+                "scorer_id": assessment["scorer_id"],
+                "score_type": assessment["score_type"],
+                "scored_at": assessment["scored_at"],
+                "submission_uuid": assessment["submission_uuid"],
+                "parts": parts_list
+            }
+        )
+
     def _serialize_opaque_key(self, key):
         """
         Gracefully handle opaque keys, both before and after the transition.

@@ -13,168 +13,16 @@ from openassessment.workflow import api as workflow_api
 from openassessment.workflow.errors import AssessmentWorkflowError
 from .base import XBlockHandlerTestCase, scenario
 
-@ddt.ddt
-class StudentTrainingAssessTest(XBlockHandlerTestCase):
+
+class StudentTrainingTest(XBlockHandlerTestCase):
     """
-    Tests for student training assessment.
+    Base class for student training tests.
     """
     SUBMISSION = {
         'submission': u'Thé őbjéćt őf édúćátíőń íś tő téáćh úś tő ĺővé ẃhát íś béáútífúĺ.'
     }
 
-    @scenario('data/student_training.xml', user_id="Plato")
-    @ddt.file_data('data/student_training_mixin.json')
-    def test_correct(self, xblock, data):
-        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
-        self._assert_path_and_context(xblock, data["expected_template"], data["expected_context"])
-
-        # Agree with the course author's assessment
-        # (as defined in the scenario XML)
-        data = {
-            'options_selected': {
-                'Vocabulary': 'Good',
-                'Grammar': 'Excellent'
-            }
-        }
-        resp = self.request(xblock, 'training_assess', json.dumps(data), response_format='json')
-
-        # Expect that we were correct
-        self.assertTrue(resp['success'], msg=resp.get('msg'))
-        self.assertFalse(resp['corrections'])
-
-    @scenario('data/student_training.xml', user_id="Plato")
-    @ddt.file_data('data/student_training_mixin.json')
-    def test_correct_with_error(self, xblock, data):
-        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
-        self._assert_path_and_context(xblock, data["expected_template"], data["expected_context"])
-
-        # Agree with the course author's assessment
-        # (as defined in the scenario XML)
-        data = {
-            'options_selected': {
-                'Vocabulary': 'Good',
-                'Grammar': 'Excellent'
-            }
-        }
-        with patch.object(workflow_api, "update_from_assessments") as mock_workflow_update:
-            mock_workflow_update.side_effect = AssessmentWorkflowError("Oh no!")
-            resp = self.request(xblock, 'training_assess', json.dumps(data), response_format='json')
-
-            # Expect that we were not correct due to a workflow update error.
-            self.assertFalse(resp['success'], msg=resp.get('msg'))
-            self.assertEquals('Could not update workflow status.', resp.get('msg'))
-            self.assertFalse('corrections' in resp)
-
-    @scenario('data/student_training.xml', user_id="Plato")
-    @ddt.file_data('data/student_training_mixin.json')
-    def test_incorrect(self, xblock, data):
-        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
-        self._assert_path_and_context(xblock, data["expected_template"], data["expected_context"])
-
-        # Disagree with the course author's assessment
-        # (as defined in the scenario XML)
-        select_data = {
-            'options_selected': {
-                'Vocabulary': 'Poor',
-                'Grammar': 'Poor'
-            }
-        }
-        resp = self.request(xblock, 'training_assess', json.dumps(select_data), response_format='json')
-
-        # Expect that we were marked incorrect
-        self.assertTrue(resp['success'], msg=resp.get('msg'))
-        self.assertTrue(resp['corrections'])
-
-    @scenario('data/student_training.xml', user_id="Plato")
-    @ddt.file_data('data/student_training_mixin.json')
-    def test_updates_workflow(self, xblock, data):
-        expected_context = data["expected_context"].copy()
-        expected_template = data["expected_template"]
-        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
-        self._assert_path_and_context(xblock, expected_template, expected_context)
-
-        # Agree with the course author's assessment
-        # (as defined in the scenario XML)
-        selected_data = {
-            'options_selected': {
-                'Vocabulary': 'Good',
-                'Grammar': 'Excellent'
-            }
-        }
-        resp = self.request(xblock, 'training_assess', json.dumps(selected_data), response_format='json')
-
-        # Expect that we were correct
-        self.assertTrue(resp['success'], msg=resp.get('msg'))
-        self.assertFalse(resp['corrections'])
-
-        # Agree with the course author's assessment
-        # (as defined in the scenario XML)
-        selected_data = {
-            'options_selected': {
-                'Vocabulary': 'Excellent',
-                'Grammar': 'Poor'
-            }
-        }
-
-        expected_context["training_num_completed"] = 1
-        expected_context["training_num_current"] = 2
-        expected_context["training_essay"] = u"тєѕт αηѕωєя"
-        self._assert_path_and_context(xblock, expected_template, expected_context)
-        resp = self.request(xblock, 'training_assess', json.dumps(selected_data), response_format='json')
-
-        # Expect that we were correct
-        self.assertTrue(resp['success'], msg=resp.get('msg'))
-        self.assertFalse(resp['corrections'])
-        expected_context = {}
-        expected_template = "openassessmentblock/student_training/student_training_complete.html"
-        self._assert_path_and_context(xblock, expected_template, expected_context)
-
-    @scenario('data/student_training.xml', user_id="Plato")
-    @ddt.file_data('data/student_training_mixin.json')
-    def test_request_error(self, xblock, data):
-        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
-        expected_context = data["expected_context"].copy()
-        expected_template = data["expected_template"]
-        self._assert_path_and_context(xblock, expected_template, expected_context)
-        resp = self.request(xblock, 'training_assess', json.dumps({}), response_format='json')
-        self.assertFalse(resp['success'], msg=resp.get('msg'))
-
-        selected_data = {
-            'options_selected': "foo"
-        }
-        resp = self.request(xblock, 'training_assess', json.dumps(selected_data), response_format='json')
-        self.assertFalse(resp['success'], msg=resp.get('msg'))
-
-    @scenario('data/student_training.xml', user_id="Plato")
-    @ddt.file_data('data/student_training_mixin.json')
-    def test_invalid_options_dict(self, xblock, data):
-        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
-        expected_context = data["expected_context"].copy()
-        expected_template = data["expected_template"]
-        self._assert_path_and_context(xblock, expected_template, expected_context)
-
-        selected_data = {
-            'options_selected': {
-                'Bananas': 'Excellent',
-                'Grammar': 'Poor'
-            }
-        }
-
-        resp = self.request(xblock, 'training_assess', json.dumps(selected_data), response_format='json')
-        self.assertFalse(resp['success'], msg=resp.get('msg'))
-
-    @scenario('data/student_training.xml', user_id="Plato")
-    def test_no_submission(self, xblock):
-        selected_data = {
-            'options_selected': {
-                'Vocabulary': 'Excellent',
-                'Grammar': 'Poor'
-            }
-        }
-        resp = self.request(xblock, 'training_assess', json.dumps(selected_data))
-        self.assertIn("Your scores could not be checked", resp.decode('utf-8'))
-
-    def _assert_path_and_context(self, xblock, expected_path, expected_context):
+    def assert_path_and_context(self, xblock, expected_path, expected_context):
         """
         Render the student training step and verify that the expected template
         and context were used.  Also check that the template renders without error.
@@ -203,7 +51,186 @@ class StudentTrainingAssessTest(XBlockHandlerTestCase):
         self.assertGreater(len(resp), 0)
 
 
-class StudentTrainingRenderTest(StudentTrainingAssessTest):
+@ddt.ddt
+class StudentTrainingAssessTest(StudentTrainingTest):
+    """
+    Tests for student training assessment.
+    """
+
+    @scenario('data/student_training.xml', user_id="Plato")
+    @ddt.file_data('data/student_training_mixin.json')
+    def test_correct(self, xblock, data):
+        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        self.assert_path_and_context(xblock, data["expected_template"], data["expected_context"])
+
+        # Agree with the course author's assessment
+        # (as defined in the scenario XML)
+        data = {
+            'options_selected': {
+                'Vocabulary': 'Good',
+                'Grammar': 'Excellent'
+            }
+        }
+        resp = self.request(xblock, 'training_assess', json.dumps(data), response_format='json')
+
+        # Expect that we were correct
+        self.assertTrue(resp['success'], msg=resp.get('msg'))
+        self.assertFalse(resp['corrections'])
+
+    @scenario('data/student_training.xml', user_id="Plato")
+    @ddt.file_data('data/student_training_mixin.json')
+    def test_correct_with_error(self, xblock, data):
+        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        self.assert_path_and_context(xblock, data["expected_template"], data["expected_context"])
+
+        # Agree with the course author's assessment
+        # (as defined in the scenario XML)
+        data = {
+            'options_selected': {
+                'Vocabulary': 'Good',
+                'Grammar': 'Excellent'
+            }
+        }
+        with patch.object(workflow_api, "update_from_assessments") as mock_workflow_update:
+            mock_workflow_update.side_effect = AssessmentWorkflowError("Oh no!")
+            resp = self.request(xblock, 'training_assess', json.dumps(data), response_format='json')
+
+            # Expect that we were not correct due to a workflow update error.
+            self.assertFalse(resp['success'], msg=resp.get('msg'))
+            self.assertEquals('Could not update workflow status.', resp.get('msg'))
+            self.assertFalse('corrections' in resp)
+
+    @scenario('data/student_training.xml', user_id="Plato")
+    @ddt.file_data('data/student_training_mixin.json')
+    def test_incorrect(self, xblock, data):
+        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        self.assert_path_and_context(xblock, data["expected_template"], data["expected_context"])
+
+        # Disagree with the course author's assessment
+        # (as defined in the scenario XML)
+        select_data = {
+            'options_selected': {
+                'Vocabulary': 'Poor',
+                'Grammar': 'Poor'
+            }
+        }
+        resp = self.request(xblock, 'training_assess', json.dumps(select_data), response_format='json')
+
+        # Expect that we were marked incorrect
+        self.assertTrue(resp['success'], msg=resp.get('msg'))
+        self.assertTrue(resp['corrections'])
+
+    @scenario('data/student_training.xml', user_id="Plato")
+    @ddt.file_data('data/student_training_mixin.json')
+    def test_updates_workflow(self, xblock, data):
+        expected_context = data["expected_context"].copy()
+        expected_template = data["expected_template"]
+        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        self.assert_path_and_context(xblock, expected_template, expected_context)
+
+        # Agree with the course author's assessment
+        # (as defined in the scenario XML)
+        selected_data = {
+            'options_selected': {
+                'Vocabulary': 'Good',
+                'Grammar': 'Excellent'
+            }
+        }
+        resp = self.request(xblock, 'training_assess', json.dumps(selected_data), response_format='json')
+
+        # Expect that we were correct
+        self.assertTrue(resp['success'], msg=resp.get('msg'))
+        self.assertFalse(resp['corrections'])
+
+        # Agree with the course author's assessment
+        # (as defined in the scenario XML)
+        selected_data = {
+            'options_selected': {
+                'Vocabulary': 'Excellent',
+                'Grammar': 'Poor'
+            }
+        }
+
+        expected_context["training_num_completed"] = 1
+        expected_context["training_num_current"] = 2
+        expected_context["training_essay"] = u"тєѕт αηѕωєя"
+        self.assert_path_and_context(xblock, expected_template, expected_context)
+        resp = self.request(xblock, 'training_assess', json.dumps(selected_data), response_format='json')
+
+        # Expect that we were correct
+        self.assertTrue(resp['success'], msg=resp.get('msg'))
+        self.assertFalse(resp['corrections'])
+        expected_context = {}
+        expected_template = "openassessmentblock/student_training/student_training_complete.html"
+        self.assert_path_and_context(xblock, expected_template, expected_context)
+
+    @scenario('data/feedback_only_criterion_student_training.xml', user_id='Bob')
+    def test_feedback_only_criterion(self, xblock):
+        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        self.request(xblock, 'render_student_training', json.dumps({}))
+
+        # Agree with the course author's assessment
+        # (as defined in the scenario XML)
+        # We do NOT pass in an option for the feedback-only criterion,
+        # because it doesn't have any options.
+        data = {
+            'options_selected': {
+                'vocabulary': 'good',
+            }
+        }
+        resp = self.request(xblock, 'training_assess', json.dumps(data), response_format='json')
+
+        # Expect that we were correct
+        self.assertTrue(resp['success'], msg=resp.get('msg'))
+        self.assertFalse(resp['corrections'])
+
+    @scenario('data/student_training.xml', user_id="Plato")
+    @ddt.file_data('data/student_training_mixin.json')
+    def test_request_error(self, xblock, data):
+        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        expected_context = data["expected_context"].copy()
+        expected_template = data["expected_template"]
+        self.assert_path_and_context(xblock, expected_template, expected_context)
+        resp = self.request(xblock, 'training_assess', json.dumps({}), response_format='json')
+        self.assertFalse(resp['success'], msg=resp.get('msg'))
+
+        selected_data = {
+            'options_selected': "foo"
+        }
+        resp = self.request(xblock, 'training_assess', json.dumps(selected_data), response_format='json')
+        self.assertFalse(resp['success'], msg=resp.get('msg'))
+
+    @scenario('data/student_training.xml', user_id="Plato")
+    @ddt.file_data('data/student_training_mixin.json')
+    def test_invalid_options_dict(self, xblock, data):
+        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        expected_context = data["expected_context"].copy()
+        expected_template = data["expected_template"]
+        self.assert_path_and_context(xblock, expected_template, expected_context)
+
+        selected_data = {
+            'options_selected': {
+                'Bananas': 'Excellent',
+                'Grammar': 'Poor'
+            }
+        }
+
+        resp = self.request(xblock, 'training_assess', json.dumps(selected_data), response_format='json')
+        self.assertFalse(resp['success'], msg=resp.get('msg'))
+
+    @scenario('data/student_training.xml', user_id="Plato")
+    def test_no_submission(self, xblock):
+        selected_data = {
+            'options_selected': {
+                'Vocabulary': 'Excellent',
+                'Grammar': 'Poor'
+            }
+        }
+        resp = self.request(xblock, 'training_assess', json.dumps(selected_data))
+        self.assertIn("Your scores could not be checked", resp.decode('utf-8'))
+
+
+class StudentTrainingRenderTest(StudentTrainingTest):
     """
     Tests for student training step rendering.
     """
@@ -230,7 +257,7 @@ class StudentTrainingRenderTest(StudentTrainingAssessTest):
         expected_context = {
             'training_due': "2000-01-01T00:00:00+00:00"
         }
-        self._assert_path_and_context(xblock, expected_template, expected_context)
+        self.assert_path_and_context(xblock, expected_template, expected_context)
 
     @scenario('data/student_training.xml', user_id="Plato")
     @patch.object(StudentTrainingWorkflow, "get_workflow")
@@ -247,4 +274,4 @@ class StudentTrainingRenderTest(StudentTrainingAssessTest):
         expected_context = {
             'training_start': datetime.datetime(3000, 1, 1).replace(tzinfo=pytz.utc)
         }
-        self._assert_path_and_context(xblock, expected_template, expected_context)
+        self.assert_path_and_context(xblock, expected_template, expected_context)

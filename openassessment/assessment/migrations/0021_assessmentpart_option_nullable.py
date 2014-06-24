@@ -8,15 +8,16 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'AssessmentPart.criterion'
-        db.add_column('assessment_assessmentpart', 'criterion',
-                      self.gf('django.db.models.fields.related.ForeignKey')(related_name='+', null=True, to=orm['assessment.Criterion']),
-                      keep_default=False)
-
+        # Make the AssessmentPart.option field nullable
+        db.alter_column('assessment_assessmentpart', 'option_id',
+            self.gf('django.db.models.fields.related.ForeignKey')(
+                related_name='+', null=True, to=orm['assessment.CriterionOption']
+            )
+        )
 
     def backwards(self, orm):
-        # Deleting field 'AssessmentPart.criterion'
-        db.delete_column('assessment_assessmentpart', 'criterion_id')
+        # Some records may contain null values now, so we can't re-introduce the constraint.
+        pass
 
 
     models = {
@@ -90,7 +91,7 @@ class Migration(SchemaMigration):
         'assessment.assessmentpart': {
             'Meta': {'object_name': 'AssessmentPart'},
             'assessment': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'parts'", 'to': "orm['assessment.Assessment']"}),
-            'criterion': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'+'", 'null': 'True', 'to': "orm['assessment.Criterion']"}),
+            'criterion': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'+'", 'to': "orm['assessment.Criterion']"}),
             'feedback': ('django.db.models.fields.TextField', [], {'default': "''", 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'option': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'+'", 'to': "orm['assessment.CriterionOption']"})

@@ -1,23 +1,27 @@
 # -*- coding: utf-8 -*-
 import datetime
 from south.db import db
-from south.v2 import SchemaMigration
+from south.v2 import DataMigration
 from django.db import models
 
-
-class Migration(SchemaMigration):
+class Migration(DataMigration):
 
     def forwards(self, orm):
-        # Adding field 'AssessmentPart.criterion'
-        db.add_column('assessment_assessmentpart', 'criterion',
-                      self.gf('django.db.models.fields.related.ForeignKey')(related_name='+', null=True, to=orm['assessment.Criterion']),
-                      keep_default=False)
-
+        """
+        Fill in the criteria field in the `AssessmentPart` model.
+        """
+        for assessment_part in orm.AssessmentPart.objects.all():
+            # When this migration is run, no assessment part options should be None
+            # (since we haven't made it nullable yet)
+            assessment_part.criterion = assessment_part.option.criterion
+            assessment_part.save()
 
     def backwards(self, orm):
-        # Deleting field 'AssessmentPart.criterion'
-        db.delete_column('assessment_assessmentpart', 'criterion_id')
-
+        """
+        No backwards migration -- if we re-run the migration later,
+        any criteria values will be rewritten.
+        """
+        pass
 
     models = {
         'assessment.aiclassifier': {
@@ -90,10 +94,10 @@ class Migration(SchemaMigration):
         'assessment.assessmentpart': {
             'Meta': {'object_name': 'AssessmentPart'},
             'assessment': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'parts'", 'to': "orm['assessment.Assessment']"}),
-            'criterion': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'+'", 'null': 'True', 'to': "orm['assessment.Criterion']"}),
+            'criterion': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'+'", 'to': "orm['assessment.Criterion']"}),
             'feedback': ('django.db.models.fields.TextField', [], {'default': "''", 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'option': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'+'", 'to': "orm['assessment.CriterionOption']"})
+            'option': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'+'", 'null': 'True', 'to': "orm['assessment.CriterionOption']"})
         },
         'assessment.criterion': {
             'Meta': {'ordering': "['rubric', 'order_num']", 'object_name': 'Criterion'},
@@ -167,3 +171,4 @@ class Migration(SchemaMigration):
     }
 
     complete_apps = ['assessment']
+    symmetrical = True

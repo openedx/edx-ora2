@@ -113,10 +113,10 @@ def _serialize_criteria(criteria_root, criteria_list):
         criterion_prompt = etree.SubElement(criterion_el, 'prompt')
         criterion_prompt.text = unicode(criterion.get('prompt', u''))
 
-        # Criterion feedback disabled or optional
+        # Criterion feedback disabled, optional, or required
         # If disabled, do not set the attribute.
-        if criterion.get('feedback') == "optional":
-            criterion_el.set('feedback', 'optional')
+        if criterion.get('feedback') in ["optional", "required"]:
+            criterion_el.set('feedback', criterion['feedback'])
 
         # Criterion options
         options_list = criterion.get('options', None)
@@ -266,12 +266,12 @@ def _parse_criteria_xml(criteria_root):
         else:
             raise UpdateFromXmlError(_('Every "criterion" element must contain a "prompt" element.'))
 
-        # Criterion feedback (disabled or optional)
+        # Criterion feedback (disabled, optional, or required)
         criterion_feedback = criterion.get('feedback', 'disabled')
-        if criterion_feedback in ['optional', 'disabled']:
+        if criterion_feedback in ['optional', 'disabled', 'required']:
             criterion_dict['feedback'] = criterion_feedback
         else:
-            raise UpdateFromXmlError(_('Invalid value for "feedback" attribute: if specified, it must be set set to "optional"'))
+            raise UpdateFromXmlError(_('Invalid value for "feedback" attribute: if specified, it must be set set to "optional" or "required".'))
 
         # Criterion options
         criterion_dict['options'] = _parse_options_xml(criterion)

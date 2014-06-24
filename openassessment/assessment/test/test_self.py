@@ -91,7 +91,7 @@ class TestSelfApi(CacheResetTest):
             create_assessment(
                 'invalid_submission_uuid', u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
                 self.OPTIONS_SELECTED, self.RUBRIC,
-                scored_at=datetime.datetime(2014, 4, 1)
+                scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )
 
     def test_create_assessment_wrong_user(self):
@@ -103,7 +103,7 @@ class TestSelfApi(CacheResetTest):
             create_assessment(
                 'invalid_submission_uuid', u'another user',
                 self.OPTIONS_SELECTED, self.RUBRIC,
-                scored_at=datetime.datetime(2014, 4, 1)
+                scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )
 
     def test_create_assessment_invalid_criterion(self):
@@ -119,7 +119,7 @@ class TestSelfApi(CacheResetTest):
             create_assessment(
                 submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
                 options, self.RUBRIC,
-                scored_at=datetime.datetime(2014, 4, 1)
+                scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )
 
     def test_create_assessment_invalid_option(self):
@@ -135,7 +135,7 @@ class TestSelfApi(CacheResetTest):
             create_assessment(
                 submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
                 options, self.RUBRIC,
-                scored_at=datetime.datetime(2014, 4, 1)
+                scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )
 
     def test_create_assessment_missing_criterion(self):
@@ -151,7 +151,7 @@ class TestSelfApi(CacheResetTest):
             create_assessment(
                 submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
                 options, self.RUBRIC,
-                scored_at=datetime.datetime(2014, 4, 1)
+                scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )
 
     def test_create_assessment_timestamp(self):
@@ -200,3 +200,51 @@ class TestSelfApi(CacheResetTest):
     def test_is_complete_no_submission(self):
         # This submission uuid does not exist
         self.assertFalse(submitter_is_finished('abc1234', {}))
+
+    def test_create_assessment_criterion_with_zero_options(self):
+        # Create a submission to self-assess
+        submission = create_submission(self.STUDENT_ITEM, "Test answer")
+
+        # Modify the rubric to include a criterion with no options (only written feedback)
+        rubric = copy.deepcopy(self.RUBRIC)
+        rubric['criteria'].append({
+            "name": "feedback only",
+            "prompt": "feedback only",
+            "options": []
+        })
+
+        # Create a self-assessment for the submission
+        assessment = create_assessment(
+            submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
+            self.OPTIONS_SELECTED, rubric,
+            scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
+        )
+
+        # The self-assessment should have set the feedback for
+        # the criterion with no options to an empty string
+        self.assertEqual(assessment["parts"][2]["option"], None)
+        self.assertEqual(assessment["parts"][2]["feedback"], u"")
+
+    def test_create_assessment_all_criteria_have_zero_options(self):
+        # Create a submission to self-assess
+        submission = create_submission(self.STUDENT_ITEM, "Test answer")
+
+        # Use a rubric with only criteria with no options (only written feedback)
+        rubric = copy.deepcopy(self.RUBRIC)
+        for criterion in rubric["criteria"]:
+            criterion["options"] = []
+
+        # Create a self-assessment for the submission
+        # We don't select any options, since none of the criteria have options
+        options_selected = {}
+        assessment = create_assessment(
+            submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
+            options_selected, rubric,
+            scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
+        )
+
+        # The self-assessment should have set the feedback for
+        # all criteria to an empty string.
+        for part in assessment["parts"]:
+            self.assertEqual(part["option"], None)
+            self.assertEqual(part["feedback"], u"")

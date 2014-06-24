@@ -156,6 +156,16 @@
     }
   },
   {
+    "pk": 11,
+    "model": "assessment.criterion",
+    "fields": {
+      "order_num": 3,
+      "prompt": "Feedback only, no options",
+      "rubric": 4,
+      "name": "feedback only"
+    }
+  },
+  {
     "pk": 1,
     "model": "assessment.criterionoption",
     "fields": {
@@ -640,42 +650,6 @@
     }
   },
   {
-    "pk": 4,
-    "model": "assessment.assessment",
-    "fields": {
-      "scorer_id": "student_1",
-      "feedback": "",
-      "submission_uuid": "cf5190b8-d0aa-11e3-a734-14109fd8dc43",
-      "scored_at": "2014-04-30T21:07:53.168Z",
-      "rubric": 4,
-      "score_type": "SE"
-    }
-  },
-  {
-    "pk": 3,
-    "model": "assessment.assessment",
-    "fields": {
-      "scorer_id": "student_1",
-      "feedback": "Donec eu turpis id turpis ornare auctor id ac justo",
-      "submission_uuid": "28cebeca-d0ab-11e3-a6ab-14109fd8dc43",
-      "scored_at": "2014-04-30T21:07:46.133Z",
-      "rubric": 4,
-      "score_type": "PE"
-    }
-  },
-  {
-    "pk": 2,
-    "model": "assessment.assessment",
-    "fields": {
-      "scorer_id": "other",
-      "feedback": "",
-      "submission_uuid": "28cebeca-d0ab-11e3-a6ab-14109fd8dc43",
-      "scored_at": "2014-04-30T21:06:59.953Z",
-      "rubric": 4,
-      "score_type": "SE"
-    }
-  },
-  {
     "pk": 1,
     "model": "assessment.assessment",
     "fields": {
@@ -692,7 +666,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 1,
-      "criterion": 4,
+      "criterion": 8,
       "option": 32,
       "feedback": "Praesent ac lorem ac nunc tincidunt ultricies sit amet ut magna."
     }
@@ -721,97 +695,17 @@
     "pk": 4,
     "model": "assessment.assessmentpart",
     "fields": {
-      "assessment": 2,
-      "criterion": 8,
-      "option": 33,
-      "feedback": ""
-    }
-  },
-  {
-    "pk": 5,
-    "model": "assessment.assessmentpart",
-    "fields": {
-      "assessment": 2,
-      "criterion": 10,
-      "option": 44,
-      "feedback": ""
-    }
-  },
-  {
-    "pk": 6,
-    "model": "assessment.assessmentpart",
-    "fields": {
-      "assessment": 2,
-      "criterion": 9,
-      "option": 38,
-      "feedback": ""
-    }
-  },
-  {
-    "pk": 7,
-    "model": "assessment.assessmentpart",
-    "fields": {
-      "assessment": 3,
-      "criterion": 8,
-      "option": 32,
-      "feedback": "Aenean vehicula nunc quis semper porttitor. "
-    }
-  },
-  {
-    "pk": 8,
-    "model": "assessment.assessmentpart",
-    "fields": {
-      "assessment": 3,
-      "criterion": 10,
-      "option": 42,
-      "feedback": "Etiam vitae facilisis ante, in tristique lacus."
-    }
-  },
-  {
-    "pk": 9,
-    "model": "assessment.assessmentpart",
-    "fields": {
-      "assessment": 3,
-      "criterion": 9,
-      "option": 38,
-      "feedback": ""
-    }
-  },
-  {
-    "pk": 10,
-    "model": "assessment.assessmentpart",
-    "fields": {
-      "assessment": 4,
-      "criterion": 10,
-      "option": 43,
-      "feedback": ""
-    }
-  },
-  {
-    "pk": 11,
-    "model": "assessment.assessmentpart",
-    "fields": {
-      "assessment": 4,
-      "criterion": 9,
-      "option": 38,
-      "feedback": ""
-    }
-  },
-  {
-    "pk": 12,
-    "model": "assessment.assessmentpart",
-    "fields": {
-      "assessment": 4,
-      "criterion": 8,
-      "option": 31,
-      "feedback": ""
+      "assessment": 1,
+      "criterion": 11,
+      "option": null,
+      "feedback": "Feedback!"
     }
   },
   {
     "pk": 1,
     "model": "assessment.peerworkflow",
     "fields": {
-      "completed_at": "2014-04-30T21:07:46.612Z",
+      "completed_at": null,
       "student_id": "student_1",
       "created_at": "2014-04-30T21:02:59.297Z",
       "submission_uuid": "cf5190b8-d0aa-11e3-a734-14109fd8dc43",
@@ -830,31 +724,19 @@
       "submission_uuid": "28cebeca-d0ab-11e3-a6ab-14109fd8dc43",
       "course_id": "edX/Enchantment_101/April_1",
       "item_id": "openassessmentblock-poverty-rubric.openassessment.d0.u0",
-      "grading_completed_at": "2014-04-30T21:07:46.204Z"
+      "grading_completed_at": null
     }
   },
   {
     "pk": 1,
     "model": "assessment.peerworkflowitem",
     "fields": {
-      "scored": true,
+      "scored": false,
       "author": 1,
       "submission_uuid": "cf5190b8-d0aa-11e3-a734-14109fd8dc43",
       "scorer": 2,
       "started_at": "2014-04-30T21:05:29.994Z",
       "assessment": 1
-    }
-  },
-  {
-    "pk": 2,
-    "model": "assessment.peerworkflowitem",
-    "fields": {
-      "scored": true,
-      "author": 2,
-      "submission_uuid": "28cebeca-d0ab-11e3-a6ab-14109fd8dc43",
-      "scorer": 1,
-      "started_at": "2014-04-30T21:07:14.216Z",
-      "assessment": 3
     }
   },
   {
@@ -899,48 +781,6 @@
       "raw_answer": "{\"text\": \"Lorem ipsum dolor sit amet\"}",
       "attempt_number": 1,
       "uuid": "cf5190b8-d0aa-11e3-a734-14109fd8dc43"
-    }
-  },
-  {
-    "pk": 1,
-    "model": "submissions.score",
-    "fields": {
-      "reset": false,
-      "submission": 2,
-      "created_at": "2014-04-30T21:07:46.524Z",
-      "points_earned": 17,
-      "student_item": 2,
-      "points_possible": 20
-    }
-  },
-  {
-    "pk": 2,
-    "model": "submissions.score",
-    "fields": {
-      "reset": false,
-      "submission": 1,
-      "created_at": "2014-04-30T21:07:53.534Z",
-      "points_earned": 12,
-      "student_item": 1,
-      "points_possible": 20
-    }
-  },
-  {
-    "pk": 1,
-    "model": "submissions.scoresummary",
-    "fields": {
-      "highest": 1,
-      "student_item": 2,
-      "latest": 1
-    }
-  },
-  {
-    "pk": 2,
-    "model": "submissions.scoresummary",
-    "fields": {
-      "highest": 2,
-      "student_item": 1,
-      "latest": 2
     }
   }
 ]

@@ -8,7 +8,8 @@ from dogapi import dog_stats_api
 from openassessment.assessment.models import (
     AITrainingWorkflow, AIGradingWorkflow,
     ClassifierUploadError, ClassifierSerializeError,
-    IncompleteClassifierSet, NoTrainingExamples
+    IncompleteClassifierSet, NoTrainingExamples,
+    InvalidRubricSelection
 )
 from openassessment.assessment.errors import (
     AITrainingRequestError, AITrainingInternalError,
@@ -274,7 +275,7 @@ def create_classifiers(training_workflow_uuid, classifier_set):
     except NoTrainingExamples as ex:
         logger.exception(ex)
         raise AITrainingInternalError(ex)
-    except IncompleteClassifierSet as ex:
+    except (IncompleteClassifierSet, InvalidRubricSelection) as ex:
         msg = (
             u"An error occurred while creating the classifier set "
             u"for the training workflow with UUID {uuid}: {ex}"

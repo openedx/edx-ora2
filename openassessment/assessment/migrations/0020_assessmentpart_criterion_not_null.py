@@ -8,16 +8,20 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'AssessmentPart.criterion'
-        db.add_column('assessment_assessmentpart', 'criterion',
-                      self.gf('django.db.models.fields.related.ForeignKey')(related_name='+', null=True, to=orm['assessment.Criterion']),
-                      keep_default=False)
-
+        # Make the AssessmentPart.criterion field NOT nullable
+        db.alter_column('assessment_assessmentpart', 'criterion_id',
+            self.gf('django.db.models.fields.related.ForeignKey')(
+                related_name='+', null=False, to=orm['assessment.CriterionOption']
+            )
+        )
 
     def backwards(self, orm):
-        # Deleting field 'AssessmentPart.criterion'
-        db.delete_column('assessment_assessmentpart', 'criterion_id')
-
+        # Make the AssessmentPart.criterion field nullable
+        db.alter_column('assessment_assessmentpart', 'criterion_id',
+            self.gf('django.db.models.fields.related.ForeignKey')(
+                related_name='+', null=True, to=orm['assessment.CriterionOption']
+            )
+        )
 
     models = {
         'assessment.aiclassifier': {
@@ -93,7 +97,7 @@ class Migration(SchemaMigration):
             'criterion': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'+'", 'null': 'True', 'to': "orm['assessment.Criterion']"}),
             'feedback': ('django.db.models.fields.TextField', [], {'default': "''", 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'option': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'+'", 'to': "orm['assessment.CriterionOption']"})
+            'option': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'+'", 'null': 'True', 'to': "orm['assessment.CriterionOption']"})
         },
         'assessment.criterion': {
             'Meta': {'ordering': "['rubric', 'order_num']", 'object_name': 'Criterion'},

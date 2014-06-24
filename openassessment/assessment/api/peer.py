@@ -11,11 +11,12 @@ from dogapi import dog_stats_api
 
 from openassessment.assessment.models import (
     Assessment, AssessmentFeedback, AssessmentPart,
-    InvalidOptionSelection, PeerWorkflow, PeerWorkflowItem,
+    InvalidRubricSelection, PeerWorkflow, PeerWorkflowItem,
 )
 from openassessment.assessment.serializers import (
-    AssessmentSerializer, AssessmentFeedbackSerializer, RubricSerializer,
+    AssessmentFeedbackSerializer, RubricSerializer,
     full_assessment_dict, rubric_from_dict, serialize_assessments,
+    InvalidRubric
 )
 from openassessment.assessment.errors import (
     PeerAssessmentRequestError, PeerAssessmentWorkflowError, PeerAssessmentInternalError
@@ -183,14 +184,15 @@ def get_score(submission_uuid, requirements):
 
 
 def create_assessment(
-        scorer_submission_uuid,
-        scorer_id,
-        options_selected,
-        criterion_feedback,
-        overall_feedback,
-        rubric_dict,
-        num_required_grades,
-        scored_at=None):
+    scorer_submission_uuid,
+    scorer_id,
+    options_selected,
+    criterion_feedback,
+    overall_feedback,
+    rubric_dict,
+    num_required_grades,
+    scored_at=None
+):
     """Creates an assessment on the given submission.
 
     Assessments are created based on feedback associated with a particular
@@ -235,24 +237,9 @@ def create_assessment(
         >>> feedback = "Your submission was thrilling."
         >>> create_assessment("1", "Tim", options_selected, criterion_feedback, feedback, rubric_dict)
     """
-    # Ensure that this variables is declared so if an error occurs
-    # we don't get an error when trying to log it!
-    assessment_dict = None
-
     try:
-        rubric = rubric_from_dict(rubric_dict)
-
-        # Validate that the selected options matched the rubric
-        # and raise an error if this is not the case
-        try:
-            option_ids = rubric.options_ids(options_selected)
-        except InvalidOptionSelection:
-            msg = "Selected options do not match the rubric"
-            logger.warning(msg, exc_info=True)
-            raise PeerAssessmentRequestError(msg)
-
+        # Retrieve workflow information
         scorer_workflow = PeerWorkflow.objects.get(submission_uuid=scorer_submission_uuid)
-
         peer_workflow_item = scorer_workflow.get_latest_open_workflow_item()
         if peer_workflow_item is None:
             message = (
@@ -261,55 +248,50 @@ def create_assessment(
             ).format(scorer_submission_uuid)
             logger.warning(message)
             raise PeerAssessmentWorkflowError(message)
-
         peer_submission_uuid = peer_workflow_item.author.submission_uuid
-        peer_assessment = {
-            "rubric": rubric.id,
-            "scorer_id": scorer_id,
-            "submission_uuid": peer_submission_uuid,
-            "score_type": PEER_TYPE,
-            "feedback": overall_feedback[0:Assessment.MAXSIZE],
-        }
 
-        if scored_at is not None:
-            peer_assessment["scored_at"] = scored_at
+        # Get or create the rubric
+        rubric = rubric_from_dict(rubric_dict)
 
-        peer_serializer = AssessmentSerializer(data=peer_assessment)
+        # Create the peer assessment
+        assessment = Assessment.create(
+            rubric,
+            scorer_id,
+            peer_submission_uuid,
+            PEER_TYPE,
+            scored_at=scored_at,
+            feedback=overall_feedback
+        )
 
-        if not peer_serializer.is_valid():
-            msg = (
-                u"An error occurred while serializing "
-                u"the peer assessment associated with "
-                u"the scorer's submission UUID {}."
-            ).format(scorer_submission_uuid)
-            raise PeerAssessmentRequestError(msg)
-
-        assessment = peer_serializer.save()
-
-        # We do this to do a run around django-rest-framework serializer
-        # validation, which would otherwise require two DB queries per
-        # option to do validation. We already validated these options above.
-        AssessmentPart.add_to_assessment(assessment, option_ids, criterion_feedback=criterion_feedback)
+        # Create assessment parts for each criterion in the rubric
+        # This will raise an `InvalidRubricSelection` if the selected options do not match the rubric.
+        AssessmentPart.create_from_option_names(assessment, options_selected, feedback=criterion_feedback)
 
         # Close the active assessment
         scorer_workflow.close_active_assessment(peer_submission_uuid, assessment, num_required_grades)
-        assessment_dict = full_assessment_dict(assessment)
         _log_assessment(assessment, scorer_workflow)
-
-        return assessment_dict
-    except DatabaseError:
-        error_message = (
-            u"An error occurred while creating assessment {} by: {}"
-        ).format(assessment_dict, scorer_id)
-        logger.exception(error_message)
-        raise PeerAssessmentInternalError(error_message)
+        return full_assessment_dict(assessment)
     except PeerWorkflow.DoesNotExist:
         message = (
             u"There is no Peer Workflow associated with the given "
             u"submission UUID {}."
         ).format(scorer_submission_uuid)
-        logger.error(message)
+        logger.exception(message)
         raise PeerAssessmentWorkflowError(message)
+    except InvalidRubric:
+        msg = u"Rubric definition was not valid"
+        logger.exception(msg)
+        raise PeerAssessmentRequestError(msg)
+    except InvalidRubricSelection:
+        msg = u"Invalid options selected in the rubric"
+        logger.warning(msg, exc_info=True)
+        raise PeerAssessmentRequestError(msg)
+    except DatabaseError:
+        error_message = (
+            u"An error occurred while retrieving the peer workflow item by scorer with ID: {}"
+        ).format(scorer_id)
+        logger.exception(error_message)
+        raise PeerAssessmentInternalError(error_message)
 
 
 def get_rubric_max_scores(submission_uuid):

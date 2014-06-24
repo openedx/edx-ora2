@@ -6,12 +6,12 @@ Tests for assessment models.
 import copy
 from openassessment.test_utils import CacheResetTest
 from openassessment.assessment.models import (
-    Rubric, Criterion, CriterionOption, InvalidOptionSelection
+    Rubric, Criterion, CriterionOption, InvalidRubricSelection
 )
 from openassessment.assessment.test.constants import RUBRIC
 
 
-class TestRubricOptionIds(CacheResetTest):
+class RubricIndexTest(CacheResetTest):
     """
     Test selection of options from a rubric.
     """
@@ -23,6 +23,8 @@ class TestRubricOptionIds(CacheResetTest):
         """
         Create a rubric in the database.
         """
+        super(RubricIndexTest, self).setUp()
+
         self.rubric = Rubric.objects.create()
         self.criteria = [
             Criterion.objects.create(
@@ -43,104 +45,73 @@ class TestRubricOptionIds(CacheResetTest):
                 ) for num in range(self.NUM_OPTIONS)
             ]
 
-    def test_option_ids(self):
-        options_ids = self.rubric.options_ids({
-            "test criterion 0": "test option 0",
-            "test criterion 1": "test option 1",
-            "test criterion 2": "test option 2",
-            "test criterion 3": "test option 0",
-        })
-        self.assertEqual(options_ids, set([
-            self.options['test criterion 0'][0].id,
-            self.options['test criterion 1'][1].id,
-            self.options['test criterion 2'][2].id,
-            self.options['test criterion 3'][0].id
-        ]))
+    def test_find_option(self):
+        self.assertEqual(
+            self.rubric.index.find_option("test criterion 0", "test option 0"),
+            self.options["test criterion 0"][0]
+        )
+        self.assertEqual(
+            self.rubric.index.find_option("test criterion 1", "test option 1"),
+            self.options["test criterion 1"][1]
+        )
+        self.assertEqual(
+            self.rubric.index.find_option("test criterion 2", "test option 2"),
+            self.options["test criterion 2"][2]
+        )
+        self.assertEqual(
+            self.rubric.index.find_option("test criterion 3", "test option 0"),
+            self.options["test criterion 3"][0]
+        )
 
-    def test_option_ids_different_order(self):
-        options_ids = self.rubric.options_ids({
-            "test criterion 0": "test option 0",
-            "test criterion 1": "test option 1",
-            "test criterion 2": "test option 2",
-            "test criterion 3": "test option 0",
-        })
-        self.assertEqual(options_ids, set([
-            self.options['test criterion 0'][0].id,
-            self.options['test criterion 1'][1].id,
-            self.options['test criterion 2'][2].id,
-            self.options['test criterion 3'][0].id
-        ]))
+    def test_find_missing_criteria(self):
+        missing = self.rubric.index.find_missing_criteria([
+            'test criterion 0', 'test criterion 1', 'test criterion 3'
+        ])
+        expected_missing = set(['test criterion 2'])
+        self.assertEqual(missing, expected_missing)
 
-    def test_option_ids_missing_criteria(self):
-        with self.assertRaises(InvalidOptionSelection):
-            self.rubric.options_ids({
-                "test criterion 0": "test option 0",
-                "test criterion 1": "test option 1",
-                "test criterion 3": "test option 2",
-            })
+    def test_invalid_option(self):
+        with self.assertRaises(InvalidRubricSelection):
+            self.rubric.index.find_option("test criterion 0", "invalid")
 
-    def test_option_ids_extra_criteria(self):
-        with self.assertRaises(InvalidOptionSelection):
-            self.rubric.options_ids({
-                "test criterion 0": "test option 0",
-                "test criterion 1": "test option 1",
-                "test criterion 2": "test option 2",
-                "test criterion 3": "test option 1",
-                "extra criterion": "test",
-            })
+    def test_valid_option_wrong_criterion(self):
+        # Add another option to the first criterion
+        new_option = CriterionOption.objects.create(
+            criterion=self.criteria[0],
+            name="extra option",
+            order_num=(self.NUM_OPTIONS + 1),
+            points=4
+        )
 
-    def test_option_ids_mutated_criterion_name(self):
-        with self.assertRaises(InvalidOptionSelection):
-            self.rubric.options_ids({
-                "test mutated criterion": "test option 1",
-                "test criterion 1": "test option 1",
-                "test criterion 2": "test option 2",
-                "test criterion 3": "test option 1",
-            })
+        # We should be able to find it in the first criterion
+        self.assertEqual(
+            new_option,
+            self.rubric.index.find_option("test criterion 0", "extra option")
+        )
 
-    def test_option_ids_mutated_option_name(self):
-        with self.assertRaises(InvalidOptionSelection):
-            self.rubric.options_ids({
-                "test criterion 0": "test option 1",
-                "test criterion 1": "test mutated option",
-                "test criterion 2": "test option 2",
-                "test criterion 3": "test option 1",
-            })
+        # ... but not from another criterion
+        with self.assertRaises(InvalidRubricSelection):
+            self.rubric.index.find_option("test criterion 1", "extra option")
 
-    def test_options_ids_points(self):
-        options_ids = self.rubric.options_ids_for_points({
-            'test criterion 0': 0,
-            'test criterion 1': 1,
-            'test criterion 2': 2,
-            'test criterion 3': 1
-        })
-        self.assertEqual(options_ids, set([
-            self.options['test criterion 0'][0].id,
-            self.options['test criterion 1'][1].id,
-            self.options['test criterion 2'][2].id,
-            self.options['test criterion 3'][1].id
-        ]))
+    def test_find_option_for_points(self):
+        self.assertEqual(
+            self.rubric.index.find_option_for_points("test criterion 0", 0),
+            self.options["test criterion 0"][0]
+        )
+        self.assertEqual(
+            self.rubric.index.find_option_for_points("test criterion 1", 1),
+            self.options["test criterion 1"][1]
+        )
+        self.assertEqual(
+            self.rubric.index.find_option_for_points("test criterion 2", 2),
+            self.options["test criterion 2"][2]
+        )
+        self.assertEqual(
+            self.rubric.index.find_option_for_points("test criterion 3", 1),
+            self.options["test criterion 3"][1]
+        )
 
-    def test_options_ids_points_caching(self):
-        # First call: the dict is not cached
-        with self.assertNumQueries(1):
-            self.rubric.options_ids_for_points({
-                'test criterion 0': 0,
-                'test criterion 1': 1,
-                'test criterion 2': 2,
-                'test criterion 3': 1
-            })
-
-        # Second call: the dict is not cached
-        with self.assertNumQueries(0):
-            self.rubric.options_ids_for_points({
-                'test criterion 0': 1,
-                'test criterion 1': 2,
-                'test criterion 2': 1,
-                'test criterion 3': 0
-            })
-
-    def test_options_ids_first_of_duplicate_points(self):
+    def test_find_option_for_points_first_of_duplicate_points(self):
         # Change the first criterion options so that the second and third
         # option have the same point value
         self.options['test criterion 0'][1].points = 5
@@ -149,23 +120,42 @@ class TestRubricOptionIds(CacheResetTest):
         self.options['test criterion 0'][2].save()
 
         # Should get the first option back
-        options_ids = self.rubric.options_ids_for_points({
-            'test criterion 0': 5,
-            'test criterion 1': 1,
-            'test criterion 2': 2,
-            'test criterion 3': 1
-        })
-        self.assertIn(self.options['test criterion 0'][1].id, options_ids)
+        option = self.rubric.index.find_option_for_points("test criterion 0", 5)
+        self.assertEqual(option, self.options['test criterion 0'][1])
 
-    def test_options_ids_points_invalid_selection(self):
-        with self.assertRaises(InvalidOptionSelection):
-            self.rubric.options_ids_for_points({
-                'test criterion 0': self.NUM_OPTIONS + 1,
-                'test criterion 1': 2,
-                'test criterion 2': 1,
-                'test criterion 3': 0
-            })
+    def test_find_option_for_points_invalid_selection(self):
+        # No such point value
+        with self.assertRaises(InvalidRubricSelection):
+            self.rubric.index.find_option_for_points("test criterion 0", 10)
 
+        # No such criterion
+        with self.assertRaises(InvalidRubricSelection):
+            self.rubric.index.find_option_for_points("no such criterion", 0)
+
+    def test_valid_points_wrong_criterion(self):
+        # Add another option to the first criterion
+        new_option = CriterionOption.objects.create(
+            criterion=self.criteria[0],
+            name="extra option",
+            order_num=(self.NUM_OPTIONS + 1),
+            points=10
+        )
+
+        # We should be able to find it in the first criterion
+        self.assertEqual(
+            new_option,
+            self.rubric.index.find_option_for_points("test criterion 0", 10)
+        )
+
+        # ... but not from another criterion
+        with self.assertRaises(InvalidRubricSelection):
+            self.rubric.index.find_option_for_points("test criterion 1", 10)
+
+
+class RubricHashTest(CacheResetTest):
+    """
+    Tests of the rubric content and structure hash.
+    """
     def test_structure_hash_identical(self):
         first_hash = Rubric.structure_hash_from_dict(RUBRIC)
 
