@@ -19,6 +19,7 @@ OpenAssessment.BaseView = function(runtime, element, server) {
     this.selfView = new OpenAssessment.SelfView(this.element, this.server, this);
     this.peerView = new OpenAssessment.PeerView(this.element, this.server, this);
     this.gradeView = new OpenAssessment.GradeView(this.element, this.server, this);
+    this.leaderboardView = new OpenAssessment.LeaderboardView(this.element, this.server, this);
     this.messageView = new OpenAssessment.MessageView(this.element, this.server, this);
     // Staff only information about student progress.
     this.staffInfoView = new OpenAssessment.StaffInfoView(this.element, this.server, this);
@@ -80,6 +81,7 @@ OpenAssessment.BaseView.prototype = {
         this.peerView.load();
         this.selfView.load();
         this.gradeView.load();
+        this.leaderboardView.load();
         /**
         this.messageView.load() is intentionally omitted. 
         Because of the asynchronous loading, there is no way to tell (from the perspective of the 

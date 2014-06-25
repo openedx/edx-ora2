@@ -1,0 +1,100 @@
+<openassessment submission_due="2030-03-11T18:20">
+    <title>
+        Eating tasty animals
+    </title>
+    <leaderboard></leaderboard>
+    <rubric>
+        <prompt>
+            Which animal would you like to have for lunch?
+        </prompt>
+        <criterion feedback='optional'>
+            <name>concise</name>
+            <prompt>How rare is the food?</prompt>
+            <option points="0">
+                <name>Water</name>
+                <explanation>
+                    Its not really rare
+                </explanation>
+            </option>
+            <option points="1">
+                <name>McDonalds</name>
+                <explanation>
+                    Drive 5 minutes to get it
+                </explanation>
+            </option>
+            <option points="3">
+                <name>Steakhouse</name>
+                <explanation>
+                    Hard to find a good one, but every pub along the way offers it
+                </explanation>
+            </option>
+            <option points="4">
+                <name>Good Mexican</name>
+                <explanation>
+                    Why is Chipotle not available here!
+                </explanation>
+            </option>
+            <option points="5">
+                <name>Darbar Indian</name>
+                <explanation>
+                    There can be only one
+                </explanation>
+            </option>
+        </criterion>
+        <criterion>
+            <name>clear-headed</name>
+            <prompt>How long would it take to eat?</prompt>
+            <option points="0">
+                <name>Seconds</name>
+                <explanation></explanation>
+            </option>
+            <option points="1">
+                <name>A minute</name>
+                <explanation></explanation>
+            </option>
+            <option points="2">
+                <name>An hour</name>
+                <explanation></explanation>
+            </option>
+            <option points="3">
+                <name>Feed a family</name>
+                <explanation></explanation>
+            </option>
+            <option points="10">
+                <name>Solve world hunger</name>
+                <explanation></explanation>
+            </option>
+        </criterion>
+        <criterion feedback='optional'>
+            <name>form</name>
+            <prompt>How tasty does it sound?</prompt>
+            <option points="0">
+                <name>No way</name>
+                <explanation></explanation>
+            </option>
+            <option points="1">
+                <name>If I was starving</name>
+                <explanation></explanation>
+            </option>
+            <option points="2">
+                <name>Sounds interesting</name>
+                <explanation></explanation>
+            </option>
+            <option points="3">
+                <name>I want it</name>
+                <explanation></explanation>
+            </option>
+            <option points="4">
+                <name>I'd travel around the world for this</name>
+                <explanation></explanation>
+            </option>
+            <option points="5">
+                <name>It is my mission in life to eat this</name>
+                <explanation></explanation>
+            </option>
+        </criterion>
+    </rubric>
+    <assessments>
+        <assessment name="self-assessment" leaderboard="true" />
+    </assessments>
+</openassessment>
