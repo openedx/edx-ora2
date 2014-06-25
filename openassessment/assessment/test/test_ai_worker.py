@@ -188,6 +188,22 @@ class AIWorkerTrainingTest(CacheResetTest):
         with self.assertRaises(AITrainingInternalError):
             ai_worker_api.create_classifiers(workflow.uuid, CLASSIFIERS)
 
+    def test_is_workflow_complete(self):
+        self.assertFalse(ai_worker_api.is_training_workflow_complete(self.workflow_uuid))
+        workflow = AITrainingWorkflow.objects.get(uuid=self.workflow_uuid)
+        workflow.mark_complete_and_save()
+        self.assertTrue(ai_worker_api.is_training_workflow_complete(self.workflow_uuid))
+
+    def test_is_workflow_complete_no_such_workflow(self):
+        with self.assertRaises(AITrainingRequestError):
+            ai_worker_api.is_training_workflow_complete('no such workflow')
+
+    @mock.patch.object(AITrainingWorkflow.objects, 'get')
+    def test_is_workflow_complete_database_error(self, mock_call):
+        mock_call.side_effect = DatabaseError("Oh no!")
+        with self.assertRaises(AITrainingInternalError):
+            ai_worker_api.is_training_workflow_complete(self.workflow_uuid)
+
 
 class AIWorkerGradingTest(CacheResetTest):
     """
@@ -301,3 +317,19 @@ class AIWorkerGradingTest(CacheResetTest):
         mock_call.side_effect = DatabaseError("KABOOM!")
         with self.assertRaises(AIGradingInternalError):
             ai_worker_api.create_assessment(self.workflow_uuid, self.SCORES)
+
+    def test_is_workflow_complete(self):
+        self.assertFalse(ai_worker_api.is_grading_workflow_complete(self.workflow_uuid))
+        workflow = AIGradingWorkflow.objects.get(uuid=self.workflow_uuid)
+        workflow.mark_complete_and_save()
+        self.assertTrue(ai_worker_api.is_grading_workflow_complete(self.workflow_uuid))
+
+    def test_is_workflow_complete_no_such_workflow(self):
+        with self.assertRaises(AIGradingRequestError):
+            ai_worker_api.is_grading_workflow_complete('no such workflow')
+
+    @mock.patch.object(AIGradingWorkflow.objects, 'get')
+    def test_is_workflow_complete_database_error(self, mock_call):
+        mock_call.side_effect = DatabaseError("Oh no!")
+        with self.assertRaises(AIGradingInternalError):
+            ai_worker_api.is_grading_workflow_complete(self.workflow_uuid)
