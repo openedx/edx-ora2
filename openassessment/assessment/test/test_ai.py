@@ -107,7 +107,7 @@ class AITrainingTest(CacheResetTest):
         self.assertIsNot(classifier_set, None)
 
         # Retrieve a dictionary mapping criteria names to deserialized classifiers
-        classifiers = classifier_set.classifiers_dict
+        classifiers = classifier_set.classifier_data_by_criterion
 
         # Check that we have classifiers for all criteria in the rubric
         criteria = set(criterion['name'] for criterion in RUBRIC['criteria'])

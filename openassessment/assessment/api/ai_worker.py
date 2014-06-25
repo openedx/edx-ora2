@@ -67,19 +67,11 @@ def get_grading_task_params(grading_workflow_uuid):
         raise AIGradingInternalError(msg)
 
     try:
-        classifiers = list(classifier_set.classifiers.select_related().all())
-
         return {
             'essay_text': workflow.essay_text,
-            'classifier_set': {
-                classifier.criterion.name: classifier.download_classifier_data()
-                for classifier in classifiers
-            },
+            'classifier_set': workflow.classifier_set.classifier_data_by_criterion,
             'algorithm_id': workflow.algorithm_id,
-            'valid_scores': {
-                classifier.criterion.name: classifier.valid_scores
-                for classifier in classifiers
-            }
+            'valid_scores': workflow.classifier_set.valid_scores_by_criterion,
         }
     except (
         DatabaseError, ClassifierSerializeError, IncompleteClassifierSet,
