@@ -432,6 +432,12 @@ def _parse_assessments_xml(assessments_root):
             except ValueError:
                 raise UpdateFromXmlError(_('The "must_be_graded_by" value must be a positive integer.'))
 
+        # Whether to show the leaderboard
+        if 'leaderboard' in assessment.attrib:
+            assessment_dict['leaderboard'] = True
+        else:
+            assessment_dict['leaderboard'] = False
+
         # Training examples
         examples = assessment.findall('example')
 

@@ -14,6 +14,7 @@ from xblock.core import XBlock
 from xblock.fields import List, Scope, String, Boolean
 from xblock.fragment import Fragment
 from openassessment.xblock.grade_mixin import GradeMixin
+from openassessment.xblock.leaderboard_mixin import LeaderboardMixin
 
 from openassessment.xblock.defaults import * # pylint: disable=wildcard-import, unused-wildcard-import
 from openassessment.xblock.message_mixin import MessageMixin
@@ -65,6 +66,12 @@ UI_MODELS = {
         "class_id": "openassessment__grade",
         "navigation_text": "Your grade for this assignment",
         "title": "Your Grade:"
+    },
+     "leaderboard": {
+        "name": "leaderboard",
+        "class_id": "openassessment__leaderboard",
+        "navigation_text": "A leaderboard of the top students",
+        "title": "Leaderboard:"
     }
 }
 
@@ -90,6 +97,7 @@ class OpenAssessmentBlock(
     SelfAssessmentMixin,
     StudioMixin,
     GradeMixin,
+    LeaderboardMixin,
     StaffInfoMixin,
     WorkflowMixin,
     StudentTrainingMixin,
@@ -216,6 +224,7 @@ class OpenAssessmentBlock(
         # On page load, update the workflow status.
         # We need to do this here because peers may have graded us, in which
         # case we may have a score available.
+
         try:
             self.update_workflow_status()
         except AssessmentWorkflowError:
@@ -231,7 +240,6 @@ class OpenAssessmentBlock(
             "rubric_assessments": ui_models,
             "show_staff_debug_info": self.is_course_staff and not self.in_studio_preview,
         }
-
         template = get_template("openassessmentblock/oa_base.html")
         context = Context(context_dict)
         frag = Fragment(template.render(context))
@@ -292,11 +300,16 @@ class OpenAssessmentBlock(
 
         """
         ui_models = [UI_MODELS["submission"]]
+        use_leaderboard = False
         for assessment in self.valid_assessments:
             ui_model = UI_MODELS.get(assessment["name"])
             if ui_model:
                 ui_models.append(dict(assessment, **ui_model))
+            if assessment["leaderboard"]:
+                use_leaderboard = True
         ui_models.append(UI_MODELS["grade"])
+        if use_leaderboard:
+            ui_models.append(UI_MODELS["leaderboard"])
         return ui_models
 
     @staticmethod
@@ -319,6 +332,10 @@ class OpenAssessmentBlock(
             (
                 "OpenAssessmentBlock Poverty Rubric",
                 load('static/xml/poverty_rubric_example.xml')
+            ),
+            (
+                "OpenAssessmentBlock Leaderboard",
+                load('static/xml/leaderboard.xml')
             ),
             (
                 "OpenAssessmentBlock (Peer Only) Rubric",
