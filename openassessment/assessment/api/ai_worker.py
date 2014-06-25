@@ -2,6 +2,7 @@
 Public interface for AI training and grading, used by workers.
 """
 import logging
+from httplib import HTTPException
 from django.db import DatabaseError
 from dogapi import dog_stats_api
 from openassessment.assessment.models import (
@@ -80,7 +81,10 @@ def get_grading_task_params(grading_workflow_uuid):
                 for classifier in classifiers
             }
         }
-    except (DatabaseError, ClassifierSerializeError, IncompleteClassifierSet, ValueError) as ex:
+    except (
+        DatabaseError, ClassifierSerializeError, IncompleteClassifierSet,
+        ValueError, IOError, HTTPException
+    ) as ex:
         msg = (
             u"An unexpected error occurred while retrieving "
             u"classifiers for the grading workflow with UUID {uuid}: {ex}"
