@@ -69,7 +69,7 @@ class StudioMixin(object):
             return {'success': False, 'msg': _('Error updating XBlock configuration')}
 
         try:
-            rubric = xml.parse_rubric_xml_str(data["rubric"])
+            rubric = verify_rubric_format(data['rubric'])
             submission_due = xml.parse_date(data["submission_due"], name="submission due date")
             submission_start = xml.parse_date(data["submission_start"], name="submission start date")
             assessments = parse_assessment_dictionaries(data["assessments"])
@@ -82,8 +82,8 @@ class StudioMixin(object):
             return {'success': False, 'msg': _('Validation error: {error}').format(error=msg)}
 
         self.update(
-            rubric['criteria'],
-            rubric['feedbackprompt'],
+            rubric,
+            rubric.get('feedbackprompt', None),
             assessments,
             submission_due,
             submission_start,
@@ -112,12 +112,9 @@ class StudioMixin(object):
 
         """
         try:
-            rubric = xml.serialize_rubric_to_xml_str(self)
-
             # Copies the rubric assessments so that we can change student training examples from dict -> str without
             # negatively modifying the openassessmentblock definition.
             assessment_list = copy.deepcopy(self.rubric_assessments)
-
             # Finds the student training dictionary, if it exists, and replaces the examples with their XML definition
             student_training_dictionary = [d for d in assessment_list if d["name"] == "student-training"]
             if student_training_dictionary:
@@ -140,10 +137,14 @@ class StudioMixin(object):
 
         submission_start = self.submission_start if self.submission_start else ''
 
+        rubric_dict = { 'criteria' : self.rubric_criteria }
+
+        rubric_dict['feedbackprompt'] = unicode(self.rubric_feedback_prompt)
+
         return {
             'success': True,
             'msg': '',
-            'rubric': rubric,
+            'rubric': rubric_dict,
             'prompt': self.prompt,
             'submission_due': submission_due,
             'submission_start': submission_start,
@@ -241,3 +242,127 @@ def parse_assessment_dictionaries(input_assessments):
         assessments_list.append(assessment_dict)
 
     return assessments_list
+
+
+def verify_rubric_format(rubric):
+    """
+    Verifies that the rubric that was passed in follows the conventions that we expect, including
+    types and structure. The code documents itself well here.
+
+    Args:
+        rubric (dict): Unsanitized version of our rubric.  Usually taken from the GUI.
+
+    Returns:
+        rubric (dict): Sanitized version of the same form.
+
+    Raises:
+        UpdateFromXMLError
+    """
+
+    # import pudb, sys as __sys;__sys.stdout=__sys.__stdout__;pudb.set_trace() # -={XX}=-={XX}=-={XX}=
+
+    if not isinstance(rubric, dict):
+        # import pudb,sys as __sys;__sys.stdout=__sys.__stdout__;pudb.set_trace() # -={XX}=-={XX}=-={XX}=
+        raise UpdateFromXmlError(_("The given rubric was not a dictionary of the form {criteria: [criteria1, criteria2...]}"))
+
+    if "criteria" not in rubric.keys():
+        raise UpdateFromXmlError(_("The given rubric did not contain a key for a list of criteria, and is invalid"))
+
+    if len((set(rubric.keys()) - {'prompt', 'criteria'})) > 0:
+        unexpected_keys = list(set(rubric.keys()) - {"prompt", "criteria"})
+        raise UpdateFromXmlError(_("The following keys were included in the rubric when they were not allowed to be: {}".format(unexpected_keys)))
+
+    if rubric.get('prompt', False):
+        if not isinstance(rubric['prompt'], basestring):
+            # import pudb,sys as __sys;__sys.stdout=__sys.__stdout__;pudb.set_trace() # -={XX}=-={XX}=-={XX}=
+            raise UpdateFromXmlError(_("The given rubric's feedback prompt was invalid, it must be a string."))
+
+    criteria = rubric["criteria"]
+
+    if not isinstance(criteria, list):
+        raise UpdateFromXmlError(_("The criteria term in the rubric dictionary corresponds to a non-list object."))
+
+    sanitized_criteria = []
+
+    for criterion in criteria:
+        if not isinstance(criterion, dict):
+            raise UpdateFromXmlError(_("A criterion given was not a dictionary."))
+
+        criterion = dict(criterion)
+
+        expected_keys = {'order_num', 'name', 'prompt', 'options', 'feedback'}
+        unexpected_keys = list(set(criterion.keys()) - expected_keys)
+        missing_keys = list(expected_keys - set(criterion.keys()))
+
+        if missing_keys:
+            raise UpdateFromXmlError(_("The following keys were missing from the Definition of one or more criteria: {}".format(missing_keys)))
+
+        if unexpected_keys:
+            raise UpdateFromXmlError(_("The following extraneous keys were found in the definition for one or more criteria: {}".format(unexpected_keys)))
+
+        name = str(criterion['name'])
+        prompt = str(criterion['prompt'])
+        feedback = str(criterion['feedback'])
+
+        try:
+            order_num = int(criterion['order_num'])
+        except (TypeError, ValueError):
+            raise UpdateFromXmlError(_("The order_num value must be an integer."))
+
+        if not isinstance(criterion['options'], list):
+            raise UpdateFromXmlError(_("The dictionary entry for 'options' in a criteria's dictionary definition must be a list."))
+
+        options = criterion['options']
+
+        sanitized_options = []
+
+        for option in options:
+
+            if not isinstance(option, dict):
+                raise UpdateFromXmlError(_("An option given was not a dictionary."))
+
+            expected_keys = {'order_num','name', 'points', 'explanation'}
+            unexpected_keys = list(set(option.keys()) - expected_keys)
+            missing_keys = list(expected_keys - set(option.keys()))
+
+            if missing_keys:
+                raise UpdateFromXmlError(_("The following keys were missing from the Definition of one or more options: {}".format(missing_keys)))
+
+            if unexpected_keys:
+                raise UpdateFromXmlError(_("The following extraneous keys were found in the definition for one or more options: {}".format(unexpected_keys)))
+
+            option_name = str(option['name'])
+            option_explanation = str(option['explanation'])
+
+            try:
+                option_points = int(option['points'])
+            except (TypeError, ValueError):
+                raise UpdateFromXmlError(_("All option point values must be integers."))
+
+            option_dict = {
+                "order_num": option['order_num'],
+                "name": option_name,
+                "explanation": option_explanation,
+                "points": option_points
+            }
+
+            sanitized_options.append(option_dict)
+
+        criterion_dict = {
+            "order_num": order_num,
+            "name": name,
+            "prompt": prompt,
+            "options": sanitized_options,
+            "feedback": feedback
+        }
+
+        sanitized_criteria.append(criterion_dict)
+
+    sanitized_rubric = {
+        'criteria': sanitized_criteria
+    }
+
+    if rubric.get('prompt'):
+        sanitized_rubric['prompt'] = str(rubric.get('prompt'))
+
+    return sanitized_rubric

@@ -1,16 +1,30 @@
 {
     "simple": {
-        "rubric": [
-            "<rubric>",
-            "<prompt>Test prompt</prompt>",
-            "<criterion>",
-            "<name>Test criterion</name>",
-            "<prompt>Test criterion prompt</prompt>",
-            "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
-            "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
-            "</criterion>",
-            "</rubric>"
-        ],
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ],
+                    "feedback": "required"
+                }
+            ]
+        },
         "prompt": "My new prompt.",
         "submission_due": "4014-02-27T09:46:28",
         "submission_start": "4014-02-10T09:46:28",
