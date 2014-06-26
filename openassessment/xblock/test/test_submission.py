@@ -103,7 +103,11 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         )
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_submitted.html',
-            {'student_submission': submission}
+            {
+                'student_submission': submission,
+                'allow_file_upload': False,
+                'file_url': '',
+            }
         )
 
     @scenario('data/submission_open.xml', user_id="Bob")
@@ -111,6 +115,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response.html',
             {
+                'allow_file_upload': False,
+                'file_url': '',
                 'saved_response': '',
                 'save_status': 'This response has not been saved.',
                 'submit_enabled': False,
@@ -123,6 +129,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response.html',
             {
+                'allow_file_upload': False,
+                'file_url': '',
                 'saved_response': '',
                 'save_status': 'This response has not been saved.',
                 'submit_enabled': False,
@@ -139,6 +147,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response.html',
             {
+                'allow_file_upload': False,
+                'file_url': '',
                 'saved_response': 'A man must have a code',
                 'save_status': 'This response has been saved but not submitted.',
                 'submit_enabled': True,
@@ -157,6 +167,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             {
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'student_submission': submission,
+                'allow_file_upload': False,
+                'file_url': '',
             }
         )
 
@@ -180,6 +192,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             {
                 'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
                 'student_submission': submission,
+                'allow_file_upload': False,
+                'file_url': '',
             }
         )
 
@@ -202,6 +216,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             {
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'student_submission': submission,
+                'allow_file_upload': False,
+                'file_url': '',
             }
         )
 
@@ -224,6 +240,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             {
                 'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
                 'student_submission': submission,
+                'allow_file_upload': False,
+                'file_url': '',
             }
         )
 

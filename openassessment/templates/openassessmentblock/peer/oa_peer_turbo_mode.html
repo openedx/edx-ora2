@@ -45,6 +45,18 @@
                             <div class="peer-assessment__display__response">
                                 {{ peer_submission.answer.text|linebreaks }}
                             </div>
+
+                            {% if allow_file_upload and peer_file_url %}
+                                <header class="peer-assessment__display__header">
+                                    <h3 class="peer-assessment__display__title">
+                                        {% trans "Associated Image" %}
+                                    </h3>
+                                </header>
+
+                            <div class="peer-assessment__display__image">
+                                <img class="submission--image" src="{{ peer_file_url }}"/>
+                            </div>
+                            {% endif %}
                         </div>
 
                         <form id="peer-assessment--001__assessment" class="peer-assessment__assessment" method="post">

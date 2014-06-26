@@ -23,6 +23,15 @@ describe("OpenAssessment.ResponseView", function() {
         this.render = function(step) {
             return successPromise;
         };
+
+        this.getUploadUrl = function(contentType) {
+            return successPromise;
+        };
+
+        this.getDownloadUrl = function() {
+            return successPromise;
+        }
+
     };
 
     // Stub base view
@@ -362,5 +371,29 @@ describe("OpenAssessment.ResponseView", function() {
 
         // Since we haven't made any changes, the response should still be unsaved.
         expect(view.saveStatus()).toContain('not been saved');
+    });
+
+    it("selects too large of a file", function() {
+        spyOn(baseView, 'toggleActionError').andCallThrough();
+        var files = [{type: 'image/jpg', size: 6000000, name: 'huge-picture.jpg', data: ''}];
+        view.prepareUpload(files);
+        expect(baseView.toggleActionError).toHaveBeenCalled();
+    });
+
+    it("selects the wrong file type", function() {
+        spyOn(baseView, 'toggleActionError').andCallThrough();
+        var files = [{type: 'bogus/jpg', size: 1024, name: 'picture.exe', data: ''}];
+        view.prepareUpload(files);
+        expect(baseView.toggleActionError).toHaveBeenCalled();
+    });
+
+    it("requests a file upload", function() {
+        spyOn(baseView, 'toggleActionError').andCallThrough();
+        spyOn(server, 'getUploadUrl').andCallThrough();
+        var files = [{type: 'image/jpg', size: 1024, name: 'picture.jpg', data: ''}];
+        view.prepareUpload(files);
+        view.fileUpload();
+        expect(server.getUploadUrl).toHaveBeenCalled();
+        expect(baseView.toggleActionError).toHaveBeenCalled();
     });
 });

@@ -321,6 +321,8 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             'must_grade': 5,
             'review_num': 1,
             'peer_submission': submission,
+            'allow_file_upload': False,
+            'peer_file_url': '',
             'submit_button_text': 'submit your assessment & move to response #2',
         }
         self._assert_path_and_context(
@@ -456,6 +458,8 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
              'must_grade': 5,
              'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
              'peer_submission': submission,
+             'allow_file_upload': False,
+             'peer_file_url': '',
              'review_num': 1,
              'rubric_criteria': xblock.rubric_criteria,
              'submit_button_text': 'Submit your assessment & review another response',

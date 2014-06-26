@@ -276,6 +276,11 @@ class AIClassifierSet(models.Model):
             dict: keys are criteria names, values are JSON-serializable classifier data
             If there are no classifiers in the set, returns None
 
+        Raises:
+            ValueError
+            IOError
+            httplib.HTTPException
+
         """
         # First check the in-memory cache
         # We use an in-memory cache because the classifier data will most often
@@ -364,6 +369,7 @@ class AIClassifier(models.Model):
         Raises:
             ValueError
             IOError
+            httplib.HTTPException
 
         """
         return json.loads(self.classifier_data.read())  # pylint:disable=E1101
@@ -480,6 +486,25 @@ class AIWorkflow(models.Model):
             # Returns the grading workflow associated with the uuid stored in the initial query
             workflow = cls.objects.get(uuid=workflow_uuid)
             yield workflow
+
+    @classmethod
+    def is_workflow_complete(cls, workflow_uuid):
+        """
+        Check whether the workflow with a given UUID has been marked complete.
+
+        Args:
+            workflow_uuid (str): The UUID of the workflow to check.
+
+        Returns:
+            bool
+
+        Raises:
+            DatabaseError
+            cls.DoesNotExist
+
+        """
+        workflow = cls.objects.get(uuid=workflow_uuid)
+        return workflow.is_complete
 
     def _log_start_workflow(self):
         """

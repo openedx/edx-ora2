@@ -12,6 +12,7 @@
 # serve to show the default.
 
 import sys, os
+from path import path
 
 #import sphinx_rtd_theme
 
@@ -22,11 +23,26 @@ import sys, os
 
 # -- General configuration -----------------------------------------------------
 
+
+# on_rtd is whether we are on readthedocs.org, this line of code grabbed from docs.readthedocs.org
+on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
+
+if not on_rtd: # only import and set the theme if we're building docs locally
+  import sphinx_rtd_theme
+  html_theme = 'sphinx_rtd_theme'
+  html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 # If your documentation needs a minimal Sphinx version, state it here.
 #needs_sphinx = '1.0'
-root = os.path.abspath('../../../..')
-sys.path.append(root)
+root = path('../../../..').abspath()
+sys.path.insert(0, root)
+sys.path.append(root / "openassessment/assessment")
+sys.path.append(root / "openassessment/management")
+sys.path.append(root / "openassessment/templates")
+sys.path.append(root / "openassessment/workflow")
+sys.path.append(root / "openassessment/xblock")
+sys.path.append(root / "openassessment/templates")
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.base")
+
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
@@ -45,14 +61,6 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 
-
-# on_rtd is whether we are on readthedocs.org, this line of code grabbed from docs.readthedocs.org
-on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
-
-if not on_rtd: # only import and set the theme if we're building docs locally
-  import sphinx_rtd_theme
-  html_theme = 'sphinx_rtd_theme'
-  html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 # General information about the project.
 project = u'edx-ora2'

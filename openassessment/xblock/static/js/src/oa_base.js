@@ -122,6 +122,9 @@ OpenAssessment.BaseView.prototype = {
         else if (type == 'feedback_assess') {
             container = '.submission__feedback__actions';
         }
+        else if (type == 'upload') {
+            container = '#upload__error';
+        }
 
         // If we don't have anywhere to put the message, just log it to the console
         if (container === null) {
@@ -132,7 +135,6 @@ OpenAssessment.BaseView.prototype = {
             // Insert the error message
             var msgHtml = (msg === null) ? "" : msg;
             $(container + " .message__content", element).html('<p>' + msgHtml + '</p>');
-
             // Toggle the error class
             $(container, element).toggleClass('has--error', msg !== null);
         }

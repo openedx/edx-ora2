@@ -25,7 +25,6 @@ from openassessment.xblock.studio_mixin import StudioMixin
 from openassessment.xblock.xml import update_from_xml, serialize_content_to_xml
 from openassessment.xblock.staff_info_mixin import StaffInfoMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
-from openassessment.workflow import api as workflow_api
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.student_training_mixin import StudentTrainingMixin
 from openassessment.xblock.validation import validator
@@ -105,6 +104,12 @@ class OpenAssessmentBlock(
     submission_due = String(
         default=None, scope=Scope.settings,
         help="ISO-8601 formatted string representing the submission due date."
+    )
+
+    allow_file_upload = Boolean(
+        default=False,
+        scope=Scope.content,
+        help="File upload allowed with submission."
     )
 
     title = String(
