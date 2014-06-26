@@ -24,4 +24,4 @@ pytz==2012h
 South==0.7.6
 
 # AI grading
-git+https://github.com/edx/ease.git@97de68448e5495385ba043d3091f570a699d5b5f#egg=ease
+git+https://github.com/edx/ease.git@f9f47fb6b5c7c8b6c3360efa72eb56561e1a03b0#egg=ease
