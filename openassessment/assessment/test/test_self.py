@@ -91,7 +91,7 @@ class TestSelfApi(CacheResetTest):
             create_assessment(
                 'invalid_submission_uuid', u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
                 self.OPTIONS_SELECTED, self.RUBRIC,
-                scored_at=datetime.datetime(2014, 4, 1)
+                scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )
 
     def test_create_assessment_wrong_user(self):
@@ -103,7 +103,7 @@ class TestSelfApi(CacheResetTest):
             create_assessment(
                 'invalid_submission_uuid', u'another user',
                 self.OPTIONS_SELECTED, self.RUBRIC,
-                scored_at=datetime.datetime(2014, 4, 1)
+                scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )
 
     def test_create_assessment_invalid_criterion(self):
@@ -119,7 +119,7 @@ class TestSelfApi(CacheResetTest):
             create_assessment(
                 submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
                 options, self.RUBRIC,
-                scored_at=datetime.datetime(2014, 4, 1)
+                scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )
 
     def test_create_assessment_invalid_option(self):
@@ -135,7 +135,7 @@ class TestSelfApi(CacheResetTest):
             create_assessment(
                 submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
                 options, self.RUBRIC,
-                scored_at=datetime.datetime(2014, 4, 1)
+                scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )
 
     def test_create_assessment_missing_criterion(self):
@@ -151,7 +151,7 @@ class TestSelfApi(CacheResetTest):
             create_assessment(
                 submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
                 options, self.RUBRIC,
-                scored_at=datetime.datetime(2014, 4, 1)
+                scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )
 
     def test_create_assessment_timestamp(self):
