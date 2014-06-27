@@ -15,25 +15,25 @@
                     You can pick it up on the street
                 </explanation>
             </option>
-            <option points="1">
+            <option points="2">
                 <name>Common</name>
                 <explanation>
                     Can get it at the local pet store
                 </explanation>
             </option>
-            <option points="3">
+            <option points="4">
                 <name>Somewhat common</name>
                 <explanation>
                     Easy to see but hard to purchase as a pet
                 </explanation>
             </option>
-            <option points="4">
+            <option points="8">
                 <name>Rare</name>
                 <explanation>
                     Need to travel the world to find it
                 </explanation>
             </option>
-            <option points="5">
+            <option points="10">
                 <name>Extinct</name>
                 <explanation>
                     Maybe in the ice-age
@@ -47,23 +47,23 @@
                 <name>It feeds itself</name>
                 <explanation></explanation>
             </option>
-            <option points="1">
+            <option points="2">
                 <name>Any pet food will do</name>
                 <explanation></explanation>
             </option>
-            <option points="2">
+            <option points="4">
                 <name>Some work required to care for the animal</name>
                 <explanation></explanation>
             </option>
-            <option points="3">
+            <option points="6">
                 <name>A full time job to care for the animal</name>
                 <explanation></explanation>
             </option>
-            <option points="4">
+            <option points="8">
                 <name>A team required to care for the animal</name>
                 <explanation></explanation>
             </option>
-            <option points="5">
+            <option points="10">
                 <name>The pet has special needs</name>
                 <explanation></explanation>
             </option>
