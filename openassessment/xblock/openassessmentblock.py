@@ -11,7 +11,7 @@ from django.template.loader import get_template
 from webob import Response
 
 from xblock.core import XBlock
-from xblock.fields import List, Scope, String, Boolean
+from xblock.fields import List, Scope, String, Boolean, Integer
 from xblock.fragment import Fragment
 from openassessment.xblock.grade_mixin import GradeMixin
 from openassessment.xblock.leaderboard_mixin import LeaderboardMixin
@@ -119,6 +119,12 @@ class OpenAssessmentBlock(
         default="",
         scope=Scope.content,
         help="A title to display to a student (plain text)."
+    )
+
+    leaderboard = Integer(
+        default=0,
+        scope=Scope.content,
+        help="The number of leaderboard results to display (0 if none)"
     )
 
     prompt = String(
@@ -300,15 +306,12 @@ class OpenAssessmentBlock(
 
         """
         ui_models = [UI_MODELS["submission"]]
-        use_leaderboard = False
         for assessment in self.valid_assessments:
             ui_model = UI_MODELS.get(assessment["name"])
             if ui_model:
                 ui_models.append(dict(assessment, **ui_model))
-            if assessment["leaderboard"]:
-                use_leaderboard = True
         ui_models.append(UI_MODELS["grade"])
-        if use_leaderboard:
+        if self.leaderboard > 0:
             ui_models.append(UI_MODELS["leaderboard"])
         return ui_models
 

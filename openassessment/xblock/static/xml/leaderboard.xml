@@ -2,7 +2,6 @@
     <title>
         Eating tasty animals
     </title>
-    <leaderboard></leaderboard>
     <rubric>
         <prompt>
             Which animal would you like to have for lunch?
@@ -95,6 +94,7 @@
         </criterion>
     </rubric>
     <assessments>
-        <assessment name="self-assessment" leaderboard="true" />
+        <assessment name="self-assessment" />
     </assessments>
+    <leaderboard top="10" />
 </openassessment>
