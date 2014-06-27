@@ -38,14 +38,10 @@ def get_leaderboard():
         text = sub['answer']['text']
         for i in range(10):
             if i < len(topscores):
-                print str(topscores[i]['score'])+" versus "+str(score)
                 if int(topscores[i]['score']) < int(score):
-                    print "FOUND A HIGHER ONE"
                     topscores.insert(i, {'score': str(score), 'student_id': 'Anonymous', 'content': text})
                     break
             else:
                 topscores.append({'score': str(score), 'student_id': 'Anonymous', 'content': text})
                 break
-
-    print topscores
     return topscores
