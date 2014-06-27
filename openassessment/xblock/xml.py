@@ -612,7 +612,7 @@ def update_from_xml(oa_block, root, validator=DEFAULT_VALIDATOR):
     else:
         assessments = _parse_assessments_xml(assessments_el)
 
-    # Retrieve the leaderboard if it exists
+    # Retrieve the leaderboard if it exists, otherwise set it to 0
     leaderboard_el = root.find('leaderboard')
     if leaderboard_el is None:
         leaderboard = 0
