@@ -1,13 +1,9 @@
 """
 Leaderboard step in the OpenAssessment XBlock.
 """
-import copy
-from collections import defaultdict
-
 from django.utils.translation import ugettext as _
 from xblock.core import XBlock
 
-from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import leaderboard as leaderboard_api
 from openassessment.assessment.errors import SelfAssessmentError, PeerAssessmentError
 from submissions import api as sub_api
@@ -82,4 +78,4 @@ class LeaderboardMixin(object):
             template_path (string), tuple of context (dict)
         """
 
-        return ('openassessmentblock/leaderboard/oa_leaderboard_waiting.html',{})
+        return ('openassessmentblock/leaderboard/oa_leaderboard_waiting.html', {})
