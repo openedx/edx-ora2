@@ -15,7 +15,6 @@ from xblock.fields import List, Scope, String, Boolean, Integer
 from xblock.fragment import Fragment
 from openassessment.xblock.grade_mixin import GradeMixin
 from openassessment.xblock.leaderboard_mixin import LeaderboardMixin
-
 from openassessment.xblock.defaults import * # pylint: disable=wildcard-import, unused-wildcard-import
 from openassessment.xblock.message_mixin import MessageMixin
 from openassessment.xblock.peer_assessment_mixin import PeerAssessmentMixin
