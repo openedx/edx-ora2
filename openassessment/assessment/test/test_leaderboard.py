@@ -72,7 +72,7 @@ class TestLeaderboardApi(CacheResetTest):
 
     def test_get_leaderboard(self):
         # Initially, the leaderboard should be an empty array
-        self.assertEqual(get_leaderboard(), [])
+        self.assertEqual(get_leaderboard(''), [])
 
         # Create a submission to self-assess for student 1
         submission = create_submission(self.STUDENT_ITEM_1, self.STUDENT_ANSWER_1)
@@ -84,7 +84,7 @@ class TestLeaderboardApi(CacheResetTest):
             scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
         )
 
-        leaderboard = get_leaderboard()
+        leaderboard = get_leaderboard(submission['uuid'])
 
         self.assertEqual(len(leaderboard), 1)
         self.assertEqual(leaderboard[0]['content'], self.STUDENT_ANSWER_1)
@@ -100,7 +100,7 @@ class TestLeaderboardApi(CacheResetTest):
             scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
         )
 
-        leaderboard = get_leaderboard()
+        leaderboard = get_leaderboard(submission['uuid'])
 
         self.assertEqual(len(leaderboard), 2)
         self.assertEqual(leaderboard[1]['content'], self.STUDENT_ANSWER_2)
