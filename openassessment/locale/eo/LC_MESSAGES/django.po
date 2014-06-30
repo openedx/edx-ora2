@@ -302,6 +302,22 @@ msgstr ""
 "ässésséd ýöür réspönsé, ýöü'll séé théïr çömménts änd réçéïvé ýöür fïnäl "
 "grädé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι#"
 
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html
+msgid "Leaderboard"
+msgstr "Leaderboard"
+
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html
+msgid "Best Responses For This Assignment"
+msgstr "Best Responses por ĉi tiu farita"
+
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html
+msgid "Score"
+msgstr "interpunkcio"
+
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html
+msgid "The leaderboard is not available until your final grade is complete."
+msgstr "La leaderboard ne haveblas gxis via lasta lernojaro estas kompleta."
+
 #: openassessment/templates/openassessmentblock/message/oa_message_closed.html:6
 msgid "This Task Is Not Yet Available"
 msgstr "Thïs Täsk Ìs Nöt Ýét Àväïläßlé Ⱡ'σяєм #"
