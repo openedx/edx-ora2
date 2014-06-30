@@ -628,6 +628,16 @@ def update_from_xml(oa_block, root, validator=DEFAULT_VALIDATOR):
     else:
         assessments = _parse_assessments_xml(assessments_el)
 
+    # Retrieve the leaderboard if it exists, otherwise set it to 0
+    leaderboard_el = root.find('leaderboard')
+    if leaderboard_el is None:
+        leaderboard = 0
+    else:
+        if 'top' in leaderboard_el.attrib:
+            leaderboard = leaderboard_el.get('top')
+        else:
+            leaderboard = 0
+
     # Validate
     success, msg = validator(rubric, {'due': submission_due}, assessments)
     if not success:
@@ -636,6 +646,7 @@ def update_from_xml(oa_block, root, validator=DEFAULT_VALIDATOR):
     # If we've gotten this far, then we've successfully parsed the XML
     # and validated the contents.  At long last, we can safely update the XBlock.
     oa_block.title = title
+    oa_block.leaderboard = leaderboard
     oa_block.prompt = rubric['prompt']
     oa_block.rubric_criteria = rubric['criteria']
     oa_block.rubric_assessments = assessments
