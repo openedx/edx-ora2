@@ -307,12 +307,18 @@ In the component editor, locate the following XML:
   <assessments>
     <assessment name="student-training">
       <example>
-        <answer>Replace this text with a sample response for this assignment. You'll assess this sample response in the courseware, and students will then learn to assess responses by assessing this response and comparing the options that they select in the rubric with the options that you selected.</answer>
+        <answer>
+        (optional) Replace this text with your own sample response for this assignment. Below, list the names of the criteria for this assignment, and then specify the name of the option that you would select for this response. Students will learn to assess responses by assessing this response and comparing the rubric options that they select with the rubric options that you specified.
+
+        If you don't want to provide sample responses and scores, delete the entire 'assessment name="student-training"' element.
+        </answer>
         <select criterion="Ideas" option="Fair"/>
         <select criterion="Content" option="Good"/>
       </example>
       <example>
-        <answer>Replace this text with a sample response for this assignment. You'll assess this sample response in the courseware, and students will then learn to assess responses by assessing this response and comparing the options that they select in the rubric with the options that you selected.</answer>
+        <answer>
+        (optional) Replace this text with another sample response, and then specify the options that you would select for this response below. To provide more sample responses, copy an "example" element and paste as many as you want before the closing "assessment" tag.
+        </answer>
         <select criterion="Ideas" option="Poor"/>
         <select criterion="Content" option="Good"/>
       </example>
