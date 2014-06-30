@@ -69,7 +69,7 @@ class TestLeaderboardRender(XBlockHandlerTestCase):
         self.assertItemsEqual(context, expected_context)
 
         response = xblock.render_leaderboard(None, None)
-
+        
         # Verify that we render without error
         resp = self.request(xblock, 'render_leaderboard', json.dumps({}))
         self.assertGreater(len(resp), 0)
