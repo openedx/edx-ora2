@@ -47,8 +47,6 @@ OpenAssessment.Server.prototype = {
         )
     **/
     render: function(component) {
-        console.log(component);
-        console.log("HELLO 2");
         var url = this.url('render_' + component);
         return $.Deferred(function(defer) {
             $.ajax({
