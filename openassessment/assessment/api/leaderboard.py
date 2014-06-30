@@ -30,7 +30,9 @@ def get_leaderboard(number_of_top_scores=10):
     for assessment in assessments:
         sub = sub_api.get_submission_and_student(assessment.submission_uuid)
         score = assessment.points_earned
-        text = sub['answer']['text']
+        text = sub['answer']
+        if 'text' in sub['answer']:
+            text = sub['answer']['text']
         for i in range(int(number_of_top_scores)):
             if i < len(topscores):
                 if int(topscores[i]['score']) < int(score):
