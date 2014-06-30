@@ -13,10 +13,13 @@ logger = logging.getLogger("openassessment.assessment.api.peer")
 PEER_TYPE = "PE"
 
 
-def get_leaderboard(number_of_top_scores=10):
+def get_leaderboard(submission_uuid, number_of_top_scores=10):
     """
     Gets the top scores for a piece of assessment given the number of assessment required,
     and creates a anonymised array of dictionaries for the top results
+
+    Args:
+        workflow_uuid (string): The workflow ID for the assessment item
 
     Kwargs:
         number_of_top_scores (int): The number of scores to return (default 10).
@@ -26,9 +29,16 @@ def get_leaderboard(number_of_top_scores=10):
             an empty array if no submissions are completed.
     """
     topscores = []
-    assessments = Assessment.objects.all()
+
+    student_assessment = Assessment.objects.filter(submission_uuid=submission_uuid)
+    if len(student_assessment) == 0:
+        return topscores
+
+    assessments = Assessment.objects.filter(rubric=student_assessment[0].rubric)
     for assessment in assessments:
+
         sub = sub_api.get_submission_and_student(assessment.submission_uuid)
+
         score = assessment.points_earned
         text = sub['answer']
         if 'text' in sub['answer']:

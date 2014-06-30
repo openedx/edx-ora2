@@ -45,8 +45,7 @@ class LeaderboardMixin(object):
         # Render the grading section based on the status of the workflow
         try:
             if status == "done":
-                path, context = self.render_leaderboard_complete()
-                print path
+                path, context = self.render_leaderboard_complete(workflow['submission_uuid'])
             else:  # status is 'self' or 'peer', which implies that the workflow is incomplete
                 path, context = self.render_leaderboard_incomplete()
         except (sub_api.SubmissionError, PeerAssessmentError, SelfAssessmentError):
@@ -54,9 +53,12 @@ class LeaderboardMixin(object):
         else:
             return self.render_assessment(path, context)
 
-    def render_leaderboard_complete(self):
+    def render_leaderboard_complete(self, submission_uuid):
         """
         Render the leaderboard complete state.
+
+        Args:
+            item_dict (dict): The submission UUID
 
         Returns:
             template_path (string), tuple of context (dict)
@@ -65,7 +67,7 @@ class LeaderboardMixin(object):
         leaderboard_top_number = int(self.leaderboard)
 
         context = {
-            'topscores': leaderboard_api.get_leaderboard(leaderboard_top_number)
+            'topscores': leaderboard_api.get_leaderboard(submission_uuid, leaderboard_top_number)
         }
 
         return ('openassessmentblock/leaderboard/oa_leaderboard_show.html', context)

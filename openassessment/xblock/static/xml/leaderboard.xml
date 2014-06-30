@@ -72,5 +72,5 @@
     <assessments>
         <assessment name="self-assessment" />
     </assessments>
-    <leaderboard top="3" />
+    <leaderboard top="10" />
 </openassessment>

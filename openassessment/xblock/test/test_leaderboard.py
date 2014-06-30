@@ -61,7 +61,7 @@ class TestLeaderboardRender(XBlockHandlerTestCase):
             })
 
         if workflow_status == 'done':
-            path, context = xblock.render_leaderboard_complete()
+            path, context = xblock.render_leaderboard_complete(submission_uuid)
         else:
             path, context = xblock.render_leaderboard_incomplete()
 

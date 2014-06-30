@@ -1,16 +1,47 @@
-<li id="openassessment__grade" class="openassessment__steps__step step--grade is--complete">
-	<header class="step__header ui-toggle-visibility__control">
-		<h2 class="step__title">
-			<span class="wrapper--copy">
-				<span class="step__label">Leaderboard:</span>
-				<span class="grade__value">
-					<span class="grade__value__title">Complete</span>
-				</span>
-				<div class="wrapper--step__content">
-					<h3 class="submission__peer-evaluations__title">Best Responses For This Assignment</h3>
-					<ol class="list submission__peer-evaluations__questions" />
-				</div>
-			</span>
-		</h2>
-	</header>
-</li>
+<openassessment>
+    <title>Open Assessment Test</title>
+    <prompt>
+        Given the state of the world today, what do you think should be done to
+        combat poverty? Please answer in a short essay of 200-300 words.
+    </prompt>
+    <rubric>
+        <prompt>Read for conciseness, clarity of thought, and form.</prompt>
+        <criterion>
+            <name>𝓒𝓸𝓷𝓬𝓲𝓼𝓮</name>
+            <prompt>How concise is it?</prompt>
+            <option points="3">
+                <name>ﻉซƈﻉɭɭﻉกՇ</name>
+                <explanation>Extremely concise</explanation>
+            </option>
+            <option points="2">
+                <name>Ġööḋ</name>
+                <explanation>Concise</explanation>
+            </option>
+            <option points="1">
+                <name>ק๏๏г</name>
+                <explanation>Wordy</explanation>
+            </option>
+        </criterion>
+        <criterion>
+            <name>Form</name>
+            <prompt>How well-formed is it?</prompt>
+            <option points="3">
+                <name>Good</name>
+                <explanation>Good</explanation>
+            </option>
+            <option points="2">
+                <name>Fair</name>
+                <explanation>Fair</explanation>
+            </option>
+            <option points="1">
+                <name>Poor</name>
+                <explanation>Poor</explanation>
+            </option>
+        </criterion>
+    </rubric>
+    <assessments>
+        <assessment name="peer-assessment" must_grade="1" must_be_graded_by="1" />
+        <assessment name="self-assessment" />
+    </assessments>
+    <leaderboard top="10" />
+</openassessment>
