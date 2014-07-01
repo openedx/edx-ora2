@@ -1,15 +1,23 @@
 {
-    "simple": {
-        "rubric": [
-            "<rubric>",
-            "<prompt>Test prompt</prompt>",
-            "<criterion>",
-            "<name>Test criterion</name>",
-            "<prompt>Test criterion prompt</prompt>",
-            "<!-- no options -->",
-            "</criterion>",
-            "</rubric>"
-        ],
+    "missing_feedback": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        }
+                    ]
+                }
+            ]
+        },
         "prompt": "My new prompt.",
         "submission_due": "4014-02-27T09:46:28",
         "submission_start": "4014-02-10T09:46:28",

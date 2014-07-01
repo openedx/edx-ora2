@@ -21,17 +21,31 @@
         "expected_error": "error"
     },
     "no_prompt": {
-        "rubric": [
-            "<rubric>",
-            "<prompt>Test prompt</prompt>",
-            "<criterion>",
-            "<name>Test criterion</name>",
-            "<prompt>Test criterion prompt</prompt>",
-            "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
-            "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
-            "</criterion>",
-            "</rubric>"
-        ],
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ],
+                    "feedback": "optional"
+                }
+            ]
+        },
         "title": "My new title.",
         "assessments": [
             {
@@ -52,17 +66,31 @@
         "expected_error": "error"
     },
     "no_submission_due": {
-        "rubric": [
-            "<rubric>",
-            "<prompt>Test prompt</prompt>",
-            "<criterion>",
-            "<name>Test criterion</name>",
-            "<prompt>Test criterion prompt</prompt>",
-            "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
-            "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
-            "</criterion>",
-            "</rubric>"
-        ],
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ],
+                    "feedback": "optional"
+                }
+            ]
+        },
         "prompt": "My new prompt.",
         "title": "My new title.",
         "assessments": [
@@ -83,17 +111,31 @@
         "expected_error": "error"
     },
     "invalid_dates_one": {
-        "rubric": [
-            "<rubric>",
-            "<prompt>Test prompt</prompt>",
-            "<criterion>",
-            "<name>Test criterion</name>",
-            "<prompt>Test criterion prompt</prompt>",
-            "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
-            "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
-            "</criterion>",
-            "</rubric>"
-        ],
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ],
+                    "feedback": "optional"
+                }
+            ]
+        },
         "prompt": "My new prompt.",
 
         "title": "My new title.",
@@ -111,23 +153,37 @@
                     "due": ""
                 }
             ],
-            "submission_due": "2012-02-27T09:46:28",
-            "submission_start": "2015-02-10T09:46:28",
-            "expected_error": "cannot be later"
+        "submission_due": "2012-02-27T09:46:28",
+        "submission_start": "2015-02-10T09:46:28",
+        "expected_error": "cannot be later"
 
     },
     "invalid_dates_two": {
-        "rubric": [
-            "<rubric>",
-            "<prompt>Test prompt</prompt>",
-            "<criterion>",
-            "<name>Test criterion</name>",
-            "<prompt>Test criterion prompt</prompt>",
-            "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
-            "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
-            "</criterion>",
-            "</rubric>"
-        ],
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ],
+                    "feedback": "optional"
+                }
+            ]
+        },
         "prompt": "My new prompt.",
 
         "title": "My new title.",
@@ -145,9 +201,363 @@
                     "due": "2003-01-02T00:00:00"
                 }
             ],
-            "submission_due": "2012-02-27T09:46:28",
-            "submission_start": "",
-            "expected_error": "cannot be later"
+        "submission_due": "2012-02-27T09:46:28",
+        "submission_start": "",
+        "expected_error": "cannot be later"
 
+    },
+
+    "order num is string": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": "Hello",
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ],
+                    "feedback": "optional"
+                }
+            ]
+        },
+        "prompt": "My new prompt.",
+        "title": "My new title.",
+        "assessments": [
+                {
+                    "name": "self-assessment",
+                    "start": "",
+                    "due": ""
+                }
+            ],
+        "submission_due": "",
+        "submission_start": "",
+        "expected_error": "must be an integer"
+    },
+
+    "rubric not a dictionary": {
+        "rubric": [],
+        "prompt": "My new prompt.",
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "self-assessment",
+                "start": "",
+                "due": ""
+            }
+        ],
+        "submission_due": "",
+        "submission_start": "",
+        "expected_error": "dictionary of the form"
+    },
+
+    "feedback missing": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "prompt": "My new prompt.",
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "self-assessment",
+                "start": "",
+                "due": ""
+            }
+        ],
+        "submission_due": "",
+        "submission_start": "",
+        "expected_error": "feedback"
+    },
+
+    "expected rubric keys missing": {
+        "rubric": {
+            "prompt": "Test Prompt"
+        },
+        "prompt": "My new prompt.",
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "self-assessment",
+                "start": "",
+                "due": ""
+            }
+        ],
+        "submission_due": "",
+        "submission_start": "",
+        "expected_error": "did not contain a key"
+    },
+
+    "prompt not a string": {
+        "rubric": {
+            "prompt": 5,
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ],
+                    "feedback": "optional"
+                }
+            ]
+        },
+        "prompt": "My new prompt.",
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "self-assessment",
+                "start": "",
+                "due": ""
+            }
+        ],
+        "submission_due": "",
+        "submission_start": "",
+        "expected_error": "string"
+    },
+
+    "criterion not a dict": {
+        "rubric": {
+            "prompt": "prompty",
+            "criteria": [
+                []
+            ]
+        },
+        "prompt": "My new prompt.",
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "self-assessment",
+                "start": "",
+                "due": ""
+            }
+        ],
+        "submission_due": "",
+        "submission_start": "",
+        "expected_error": "not a dictionary"
+    },
+
+    "criteria missing keys": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ],
+                    "feedback": "optional"
+                }
+            ]
+        },
+        "prompt": "My new prompt.",
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "self-assessment",
+                "start": "",
+                "due": ""
+            }
+        ],
+        "submission_due": "",
+        "submission_start": "",
+        "expected_error": "keys were missing"
+    },
+
+    "options not a list": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": "not a list",
+                    "feedback": "optional"
+                }
+            ]
+        },
+        "prompt": "My new prompt.",
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "self-assessment",
+                "start": "",
+                "due": ""
+            }
+        ],
+        "submission_due": "",
+        "submission_start": "",
+        "expected_error": "must be a list"
+    },
+
+    "option not a dictionary": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        []
+                    ],
+                    "feedback": "optional"
+                }
+            ]
+        },
+        "prompt": "My new prompt.",
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "self-assessment",
+                "start": "",
+                "due": ""
+            }
+        ],
+        "submission_due": "",
+        "submission_start": "",
+        "expected_error": "not a dictionary"
+    },
+
+    "option missing keys": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ],
+                    "feedback": "optional"
+                }
+            ]
+        },
+        "prompt": "My new prompt.",
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "self-assessment",
+                "start": "",
+                "due": ""
+            }
+        ],
+        "submission_due": "",
+        "submission_start": "",
+        "expected_error": "keys were missing"
+    },
+
+    "option points must be int": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": "a million stanley nickels",
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": "One Shrutebuck",
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ],
+                    "feedback": "optional"
+                }
+            ]
+        },
+        "prompt": "My new prompt.",
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "self-assessment",
+                "start": "",
+                "due": ""
+            }
+        ],
+        "submission_due": "",
+        "submission_start": "",
+        "expected_error": "must be integers"
     }
 }
