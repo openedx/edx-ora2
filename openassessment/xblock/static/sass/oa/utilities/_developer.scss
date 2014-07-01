@@ -175,3 +175,17 @@
 
 
 }
+
+// Rubric Required Feedback
+%ui-rubric-answers {
+  .answer__required {
+    @extend %copy-3;
+    @extend %t-ultrastrong;
+    margin-bottom: 0;
+  }
+
+  .answer__value__required {
+    border-width: 1;
+    border-color: black;
+  }
+}

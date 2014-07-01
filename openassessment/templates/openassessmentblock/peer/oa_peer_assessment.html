@@ -94,14 +94,25 @@
                                                     {% if criterion.feedback == 'optional' or criterion.feedback == 'required' %}
                                                     <li class="answer--feedback">
                                                         <div class="wrapper--input">
-                                                            <label for="assessment__rubric__question--{{ criterion.order_num }}__feedback" class="answer__label">{% trans "Comments" %}</label>
+                                                            <label for="assessment__rubric__question--{{ criterion.order_num }}__feedback" class="answer__label">
+                                                                    {% if criterion.feedback == 'required' %}
+                                                                        <span class="answer__required">{% trans "Comments *" %}</span>
+                                                                        <span class="label--required sr">* ({% trans "Required" %})</span>
+                                                                    {% else %}
+                                                                        <span>{% trans "Comments" %}</span>
+                                                                    {% endif %}
+                                                            </label>
                                                             <textarea
                                                                 id="assessment__rubric__question--{{ criterion.order_num }}__feedback"
-                                                                class="answer__value"
+                                                                {% if criterion.feedback == 'required' %}
+                                                                    required
+                                                                    class="answer__value answer__value__required"
+                                                                {% else %}
+                                                                    class="answer__value"
+                                                                {% endif %}
                                                                 value="{{ criterion.name }}"
                                                                 name="{{ criterion.name }}"
                                                                 maxlength="300"
-                                                                {% if criterion.feedback == 'required' %}required{% endif %}
                                                                 >
                                                             </textarea>
                                                         </div>
