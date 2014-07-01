@@ -411,7 +411,6 @@ hr.divider,
 
   100% {
     opacity: 0.50; } }
-
 @-moz-keyframes pulse {
   0% {
     opacity: 0.50; }
@@ -421,7 +420,6 @@ hr.divider,
 
   100% {
     opacity: 0.50; } }
-
 @-o-keyframes pulse {
   0% {
     opacity: 0.50; }
@@ -431,7 +429,6 @@ hr.divider,
 
   100% {
     opacity: 0.50; } }
-
 @keyframes pulse {
   0% {
     opacity: 0.50; }
@@ -441,7 +438,6 @@ hr.divider,
 
   100% {
     opacity: 0.50; } }
-
 .wrapper--xblock .problem__header {
   margin-bottom: 20px;
   color: #aeafb3; }
@@ -2144,7 +2140,7 @@ hr.divider,
   margin-bottom: 0; }
   #openassessment-editor .openassessment_editor_content_and_tabs {
     width: 100%;
-    height: 370px; }
+    height: 373px; }
   #openassessment-editor #openassessment_editor_header {
     background-color: #e5e5e5;
     width: 100%;
@@ -2161,18 +2157,30 @@ hr.divider,
   #openassessment-editor .oa_editor_content_wrapper {
     height: 100%;
     width: 100%;
-    padding: 5px 10px; }
+    border-radius: 3px;
+    border: 1px solid #838486;
+    background-color: #f5f5f5;
+    overflow-y: scroll; }
   #openassessment-editor #openassessment_prompt_editor {
     width: 100%;
     height: 100%;
     resize: none;
-    border: none; }
+    border: none;
+    border-radius: 4px;
+    padding: 10px; }
+    #openassessment-editor #openassessment_prompt_editor textarea {
+      font-size: 14px;
+      border: none;
+      overflow: auto;
+      outline: none;
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none; }
   #openassessment-editor #openassessment_rubric_editor {
     width: 100%;
     height: 100%; }
   #openassessment-editor #oa_basic_settings_editor {
-    padding: 20px 20px;
-    border-bottom: 1px solid #414243; }
+    border-bottom: 1px solid #838486; }
     #openassessment-editor #oa_basic_settings_editor #openassessment_title_editor_wrapper label {
       width: 25%;
       text-align: left; }
@@ -2180,39 +2188,20 @@ hr.divider,
       width: 45%;
       min-width: 100px; }
   #openassessment-editor #openassessment_step_select_description {
-    margin: 10px 0; }
+    padding: 10px 10px 0 10px;
+    text-align: center;
+    font-size: 80%; }
   #openassessment-editor .openassessment_assessment_module_settings_editor {
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #dadbdc; }
-  #openassessment-editor .openassessment_indent_line_input {
-    padding: 5px 20px; }
-  #openassessment-editor #oa_settings_editor_wrapper {
-    overflow-y: scroll; }
-  #openassessment-editor #openassessment_title_editor {
-    width: 300px;
-    margin-left: 50px; }
+    overflow-y: scroll;
+    padding: 5px;
+    margin: 10px;
+    border: 1px solid lightgray;
+    border-radius: 3px; }
   #openassessment-editor .openassessment_description, #openassessment-editor .openassessment_description_closed {
     font-size: 75%;
     margin: 0; }
-  #openassessment-editor .openassessment_date_field {
-    width: 130px; }
-  #openassessment-editor .openassessment_number_field {
-    width: 25px; }
-  #openassessment-editor .openassessment_text_field_wrapper, #openassessment-editor .openassessment_right_text_field_wrapper, #openassessment-editor .openassessment_left_text_field_wrapper {
-    width: 50%;
-    text-align: center; }
-  #openassessment-editor .openassessment_right_text_field_wrapper {
-    float: right; }
-  #openassessment-editor .openassessment_left_text_field_wrapper {
-    float: left; }
-  #openassessment-editor .openassessment_due_date_editor {
-    height: 30px; }
   #openassessment-editor .openassessment_inclusion_wrapper {
-    background-color: #dadbdc;
-    padding: 2.5px 5px;
-    margin: 2.5px 5px;
-    border-radius: 2.5px; }
+    margin: 2.5px 5px; }
     #openassessment-editor .openassessment_inclusion_wrapper input[type="checkbox"] {
       display: none; }
     #openassessment-editor .openassessment_inclusion_wrapper input[type="checkbox"] + label:before {
@@ -2223,7 +2212,8 @@ hr.divider,
       height: auto;
       content: "\f096"; }
     #openassessment-editor .openassessment_inclusion_wrapper input[type="checkbox"]:checked + label:before {
-      content: "\f046"; }
+      content: "\f046";
+      color: #009fe6; }
   #openassessment-editor label {
     padding-right: 10px; }
   #openassessment-editor .xblock_actions {
@@ -2244,6 +2234,203 @@ hr.divider,
       color: whitesmoke;
       text-transform: uppercase;
       outline-color: transparent; }
+  #openassessment-editor .openassessment_assessment_module_editor {
+    padding: 2.5px 0px; }
+    #openassessment-editor .openassessment_assessment_module_editor .openassessment_description, #openassessment-editor .openassessment_assessment_module_editor .openassessment_description_closed {
+      padding-left: 15px; }
+  #openassessment-editor #oa_rubric_editor_wrapper .wrapper-comp-settings {
+    display: initial; }
+  #openassessment-editor #oa_rubric_editor_wrapper #openassessment_rubric_instructions {
+    background-color: #c8c9ca;
+    border-bottom: 1px solid #414243;
+    padding: 10px; }
+  #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion {
+    padding-bottom: 10px; }
+    #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_header {
+      margin: 10px;
+      padding: 5px;
+      border-bottom: 1px solid #414243;
+      overflow: auto; }
+      #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_header input[type="checkbox"] {
+        display: none; }
+      #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_header input[type="checkbox"] + h6:before {
+        font-family: "FontAwesome";
+        display: inline-block;
+        margin-right: 10px;
+        width: auto;
+        height: auto;
+        content: "\f054"; }
+      #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_header input[type="checkbox"]:checked + label:before {
+        content: "\f078"; }
+      #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_header .openassessment_criterion_header_title {
+        text-transform: uppercase;
+        width: 50%;
+        display: inline-block;
+        float: left; }
+    #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_add_option {
+      background-color: #838486;
+      padding: 5px;
+      margin: 0px 10px 10px 10px;
+      border-radius: 3px; }
+      #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_add_option h2:before {
+        font-family: FontAwesome;
+        content: "\f067";
+        display: inline-block;
+        margin: 0 5px; }
+    #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_basic_editor .comp-setting-entry {
+      padding-right: 0;
+      margin-right: 10px;
+      overflow: auto; }
+      #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_basic_editor .comp-setting-entry .wrapper-comp-settings input {
+        font-size: 11px;
+        float: right;
+        width: 70%; }
+      #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_basic_editor .comp-setting-entry .wrapper-comp-settings .openassessment_criterion_prompt {
+        padding: 10px;
+        width: 70%;
+        float: right; }
+      #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_basic_editor .comp-setting-entry .wrapper-comp-settings label {
+        padding: 0;
+        margin: 0; }
+    #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_feedback_wrapper .openassessment_criterion_feedback_header {
+      background-color: #c8c9ca;
+      padding: 5px;
+      margin: 10px;
+      border-radius: 3px; }
+      #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_feedback_wrapper .openassessment_criterion_feedback_header .openassessment_criterion_feedback_header_closed:before {
+        font-family: "FontAwesome";
+        display: inline-block;
+        margin-right: 10px;
+        margin-left: 5px;
+        width: auto;
+        height: auto;
+        content: "\f067"; }
+    #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_feedback_wrapper .openassessment_criterion_feedback_direction label {
+      margin-left: 15px; }
+  #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option {
+    padding: 5px; }
+    #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_option_header {
+      background-color: #c8c9ca;
+      padding: 5px 5px 5px 10px;
+      margin: 5px 5px 8px 5px;
+      border-radius: 3px; }
+    #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_criterion_option_point_wrapper {
+      width: 40%;
+      border-top: none;
+      padding: 5px 5px 5px 0px;
+      float: left;
+      margin: 0; }
+      #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_criterion_option_point_wrapper label {
+        width: 40%;
+        vertical-align: middle;
+        padding: 0;
+        margin: 0; }
+      #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_criterion_option_point_wrapper input {
+        padding: 10px;
+        float: right;
+        width: 55%;
+        font-size: 11px; }
+    #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_criterion_option_name_wrapper {
+      float: left;
+      width: 60%;
+      padding: 5px 10px 5px 20px;
+      border-top: 0;
+      margin: 0; }
+      #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_criterion_option_name_wrapper label {
+        width: 25%;
+        vertical-align: middle;
+        padding: 0;
+        margin: 0; }
+      #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_criterion_option_name_wrapper input {
+        padding: 10px;
+        font-size: 11px;
+        width: 60%;
+        float: right; }
+    #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_criterion_option_explanation_wrapper {
+      padding: 10px 5px 0px 20px;
+      width: 100%;
+      display: inline-block;
+      margin: 0; }
+      #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_criterion_option_explanation_wrapper label {
+        width: 25%;
+        text-align: left; }
+      #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_criterion_option_explanation_wrapper textarea {
+        padding: 10px;
+        width: 70%;
+        float: right; }
+  #openassessment-editor #oa_rubric_editor_wrapper .openassessment_line_input {
+    padding: 10px;
+    overflow: auto; }
+    #openassessment-editor #oa_rubric_editor_wrapper .openassessment_line_input label {
+      width: 30%;
+      text-align: left; }
+    #openassessment-editor #oa_rubric_editor_wrapper .openassessment_line_input input {
+      width: 70%;
+      min-width: auto;
+      float: right; }
+    #openassessment-editor #oa_rubric_editor_wrapper .openassessment_line_input textarea {
+      width: 70%;
+      float: right; }
+  #openassessment-editor #oa_rubric_editor_wrapper .openassessment_large_text_input, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_basic_editor .comp-setting-entry .wrapper-comp-settings .openassessment_criterion_prompt, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_criterion_option_explanation_wrapper textarea, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_line_input textarea {
+    height: 70px;
+    width: 70%; }
+  #openassessment-editor #oa_rubric_editor_wrapper .openassessment_input_styling, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_large_text_input, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_basic_editor .comp-setting-entry .wrapper-comp-settings .openassessment_criterion_prompt, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_criterion_option_explanation_wrapper textarea, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_line_input textarea {
+    resize: none;
+    box-sizing: border-box;
+    border: 1px solid #b2b2b2;
+    border-radius: 2px;
+    padding: 6px 8px 8px;
+    background-color: #f2f2f2;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    color: #4c4c4c;
+    outline: 0; }
+  #openassessment-editor #oa_rubric_editor_wrapper .openassessment_rubric_remove_button, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_header .openassessment_criterion_header_remove, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_option_header .openassessment_option_header_remove {
+    margin: 0 5px;
+    float: right; }
+    #openassessment-editor #oa_rubric_editor_wrapper .openassessment_rubric_remove_button h2:after, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_header .openassessment_criterion_header_remove h2:after, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_option_header .openassessment_option_header_remove h2:after {
+      font-family: FontAwesome;
+      content: "\f00d";
+      display: inline-block;
+      color: inherit;
+      margin: 0 5px; }
+    #openassessment-editor #oa_rubric_editor_wrapper .openassessment_rubric_remove_button h2, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_header .openassessment_criterion_header_remove h2, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_option_header .openassessment_option_header_remove h2 {
+      text-transform: uppercase;
+      font-size: 80%;
+      float: right;
+      display: inline-block; }
+  #openassessment-editor #oa_rubric_editor_wrapper .openassessment_rubric_feedback_wrapper {
+    padding: 0 10px; }
+    #openassessment-editor #oa_rubric_editor_wrapper .openassessment_rubric_feedback_wrapper .openassessment_rubric_feedback_header {
+      margin-top: 10px;
+      border-bottom: 1px solid #414243;
+      font-size: 125%;
+      padding: 10px;
+      padding-right: 20px; }
+    #openassessment-editor #oa_rubric_editor_wrapper .openassessment_rubric_feedback_wrapper .openassessment_feedback_radio_toggle input[type="radio"] {
+      display: none; }
+    #openassessment-editor #oa_rubric_editor_wrapper .openassessment_rubric_feedback_wrapper .openassessment_feedback_radio_toggle input[type="radio"] + label:before {
+      font-family: "FontAwesome";
+      display: inline-block;
+      margin-right: 10px;
+      width: auto;
+      height: auto;
+      content: "\f10c"; }
+    #openassessment-editor #oa_rubric_editor_wrapper .openassessment_rubric_feedback_wrapper .openassessment_feedback_radio_toggle input[type="radio"]:checked + label:before {
+      content: "\f05d"; }
+  #openassessment-editor #oa_rubric_editor_wrapper #openassessment_rubric_add_criterion {
+    background-color: #838486;
+    padding: 10px;
+    margin: 10px, 0; }
+    #openassessment-editor #oa_rubric_editor_wrapper #openassessment_rubric_add_criterion h6:before {
+      font-family: "FontAwesome";
+      display: inline-block;
+      margin-left: 5px;
+      margin-right: 10px;
+      width: auto;
+      height: auto;
+      content: "\f067"; }
   #openassessment-editor hr {
     background-color: transparent;
     color: #414243;
@@ -2252,7 +2439,8 @@ hr.divider,
     clear: both; }
 
 .modal-content {
-  height: 470px !important; }
+  height: 470px !important;
+  background-color: #e5e5e5; }
 
 .openassessment .self-assessment__display__header, .openassessment .peer-assessment__display__header, .openassessment .step__header {
   margin-bottom: 0 !important;

@@ -438,11 +438,11 @@ OpenAssessment.Server.prototype = {
             function(err) { console.log(err); }
         );
     **/
-    updateEditorContext: function(prompt, rubricXml, title, sub_start, sub_due, assessments) {
+    updateEditorContext: function(prompt, rubric, title, sub_start, sub_due, assessments) {
         var url = this.url('update_editor_context');
         var payload = JSON.stringify({
             'prompt': prompt,
-            'rubric': rubricXml,
+            'rubric': rubric,
             'title': title,
             'submission_start': sub_start,
             'submission_due': sub_due,
