@@ -1,16 +1,30 @@
 {
     "simple": {
-        "rubric": [
-            "<rubric>",
-            "<prompt>Test prompt</prompt>",
-            "<criterion>",
-            "<name>Test criterion</name>",
-            "<prompt>Test criterion prompt</prompt>",
-            "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
-            "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
-            "</criterion>",
-            "</rubric>"
-        ],
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ],
+                    "feedback": "required"
+                }
+            ]
+        },
         "prompt": "My new prompt.",
         "submission_due": "4014-02-27T09:46:28",
         "submission_start": "4014-02-10T09:46:28",
@@ -32,5 +46,54 @@
 
         "expected-assessment": "peer-assessment",
         "expected-criterion-prompt": "Test criterion prompt"
+    },
+
+    "unicode": {
+        "rubric": {
+            "prompt": "Ṫëṡẗ ṗṛöṁṗẗ",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Ṫëṡẗ ċṛïẗëïṛöṅ",
+                    "prompt": "Téśt ćŕítéíŕőń ṕŕőḿṕt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "Ṅö",
+                            "explanation": "Ńő éxṕĺáńátíőń"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "sǝʎ",
+                            "explanation": "Чэѕ эхрlаиатіои"
+                        }
+                    ],
+                    "feedback": "required"
+                }
+            ]
+        },
+        "prompt": "Ṁÿ ṅëẅ ṗṛöṁṗẗ.",
+        "submission_due": "4014-02-27T09:46:28",
+        "submission_start": "4014-02-10T09:46:28",
+        "title": "ɯʎ uǝʍ ʇıʇןǝ",
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": "",
+                "due": "4014-03-10T00:00:00"
+            },
+            {
+                "name": "self-assessment",
+                "start": "",
+                "due": ""
+            }
+        ],
+
+        "expected-assessment": "peer-assessment",
+        "expected-criterion-prompt": "Ṫëṡẗ ċṛïẗëṛïöṅ ṗṛöṁṗẗ"
     }
 }
