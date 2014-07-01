@@ -3,6 +3,7 @@ Leaderboard step in the OpenAssessment XBlock.
 """
 from django.utils.translation import ugettext as _
 from xblock.core import XBlock
+
 from openassessment.assessment.api import leaderboard as leaderboard_api
 from openassessment.assessment.errors import SelfAssessmentError, PeerAssessmentError
 from submissions import api as sub_api
