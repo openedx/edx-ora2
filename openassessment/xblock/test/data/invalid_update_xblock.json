@@ -302,47 +302,6 @@
         "expected_error": "feedback"
     },
 
-    "extra rubric keys": {
-        "rubric": {
-            "prompt": "Test Prompt",
-            "hellooooo": "waddup",
-            "criteria": [
-                {
-                    "order_num": 0,
-                    "name": "Test criterion",
-                    "prompt": "Test criterion prompt",
-                    "options": [
-                        {
-                            "order_num": 0,
-                            "points": 0,
-                            "name": "No",
-                            "explanation": "No explanation"
-                        },
-                        {
-                            "order_num": 1,
-                            "points": 2,
-                            "name": "Yes",
-                            "explanation": "Yes explanation"
-                        }
-                    ],
-                    "feedback": "optional"
-                }
-            ]
-        },
-        "prompt": "My new prompt.",
-        "title": "My new title.",
-        "assessments": [
-            {
-                "name": "self-assessment",
-                "start": "",
-                "due": ""
-            }
-        ],
-        "submission_due": "",
-        "submission_start": "",
-        "expected_error": "following keys"
-    },
-
     "expected rubric keys missing": {
         "rubric": {
             "prompt": "Test Prompt"
@@ -461,47 +420,6 @@
         "expected_error": "keys were missing"
     },
 
-    "criteria too many keys": {
-        "rubric": {
-            "prompt": "Test Prompt",
-            "criteria": [
-                {
-                    "order_num": 0,
-                    "name": "Test criterion",
-                    "prompt": "Test prompt",
-                    "options": [
-                        {
-                            "order_num": 0,
-                            "points": 0,
-                            "name": "No",
-                            "explanation": "No explanation"
-                        },
-                        {
-                            "order_num": 1,
-                            "points": 2,
-                            "name": "Yes",
-                            "explanation": "Yes explanation"
-                        }
-                    ],
-                    "feedback": "optional",
-                    "magic": "indeed"
-                }
-            ]
-        },
-        "prompt": "My new prompt.",
-        "title": "My new title.",
-        "assessments": [
-            {
-                "name": "self-assessment",
-                "start": "",
-                "due": ""
-            }
-        ],
-        "submission_due": "",
-        "submission_start": "",
-        "expected_error": "extraneous keys"
-    },
-
     "options not a list": {
         "rubric": {
             "prompt": "Test Prompt",
@@ -601,47 +519,6 @@
         "submission_due": "",
         "submission_start": "",
         "expected_error": "keys were missing"
-    },
-
-    "option extraneous keys": {
-        "rubric": {
-            "prompt": "Test Prompt",
-            "criteria": [
-                {
-                    "order_num": 0,
-                    "name": "Test criterion",
-                    "prompt": "Test criterion prompt",
-                    "options": [
-                        {
-                            "order_num": 0,
-                            "kittens": "ADORABLE",
-                            "points": 0,
-                            "name": "No",
-                            "explanation": "No explanation"
-                        },
-                        {
-                            "order_num": 1,
-                            "points": 2,
-                            "name": "Yes",
-                            "explanation": "Yes explanation"
-                        }
-                    ],
-                    "feedback": "optional"
-                }
-            ]
-        },
-        "prompt": "My new prompt.",
-        "title": "My new title.",
-        "assessments": [
-            {
-                "name": "self-assessment",
-                "start": "",
-                "due": ""
-            }
-        ],
-        "submission_due": "",
-        "submission_start": "",
-        "expected_error": "extraneous keys"
     },
 
     "option points must be int": {

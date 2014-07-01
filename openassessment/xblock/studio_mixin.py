@@ -82,7 +82,7 @@ class StudioMixin(object):
             return {'success': False, 'msg': _('Validation error: {error}').format(error=msg)}
 
         self.update(
-            rubric,
+            rubric.get('criteria', []),
             rubric.get('feedbackprompt', None),
             assessments,
             submission_due,
@@ -124,9 +124,9 @@ class StudioMixin(object):
                 student_training_dictionary["examples"] = examples
 
         # We do not expect serialization to raise an exception, but if it does, handle it gracefully.
-        except Exception as ex:
-            msg = _('An unexpected error occurred while loading the problem: {error}').format(error=ex)
-            logger.error(msg)
+        except:
+            logger.exception("An error occurred while serializing the XBlock")
+            msg = _('An unexpected error occurred while loading the problem')
             return {'success': False, 'msg': msg, 'xml': u''}
 
         # Populates the context for the assessments section of the editing
@@ -134,12 +134,12 @@ class StudioMixin(object):
         # section.
 
         submission_due = self.submission_due if self.submission_due else ''
-
         submission_start = self.submission_start if self.submission_start else ''
 
-        rubric_dict = { 'criteria' : self.rubric_criteria }
-
-        rubric_dict['feedbackprompt'] = unicode(self.rubric_feedback_prompt)
+        rubric_dict = {
+            'criteria' : self.rubric_criteria,
+            'feedbackprompt': unicode(self.rubric_feedback_prompt)
+        }
 
         return {
             'success': True,
@@ -247,7 +247,7 @@ def parse_assessment_dictionaries(input_assessments):
 def verify_rubric_format(rubric):
     """
     Verifies that the rubric that was passed in follows the conventions that we expect, including
-    types and structure. The code documents itself well here.
+    types and structure.
 
     Args:
         rubric (dict): Unsanitized version of our rubric.  Usually taken from the GUI.
@@ -259,22 +259,14 @@ def verify_rubric_format(rubric):
         UpdateFromXMLError
     """
 
-    # import pudb, sys as __sys;__sys.stdout=__sys.__stdout__;pudb.set_trace() # -={XX}=-={XX}=-={XX}=
-
     if not isinstance(rubric, dict):
-        # import pudb,sys as __sys;__sys.stdout=__sys.__stdout__;pudb.set_trace() # -={XX}=-={XX}=-={XX}=
         raise UpdateFromXmlError(_("The given rubric was not a dictionary of the form {criteria: [criteria1, criteria2...]}"))
 
     if "criteria" not in rubric.keys():
         raise UpdateFromXmlError(_("The given rubric did not contain a key for a list of criteria, and is invalid"))
 
-    if len((set(rubric.keys()) - {'prompt', 'criteria'})) > 0:
-        unexpected_keys = list(set(rubric.keys()) - {"prompt", "criteria"})
-        raise UpdateFromXmlError(_("The following keys were included in the rubric when they were not allowed to be: {}".format(unexpected_keys)))
-
     if rubric.get('prompt', False):
         if not isinstance(rubric['prompt'], basestring):
-            # import pudb,sys as __sys;__sys.stdout=__sys.__stdout__;pudb.set_trace() # -={XX}=-={XX}=-={XX}=
             raise UpdateFromXmlError(_("The given rubric's feedback prompt was invalid, it must be a string."))
 
     criteria = rubric["criteria"]
@@ -291,18 +283,25 @@ def verify_rubric_format(rubric):
         criterion = dict(criterion)
 
         expected_keys = {'order_num', 'name', 'prompt', 'options', 'feedback'}
-        unexpected_keys = list(set(criterion.keys()) - expected_keys)
-        missing_keys = list(expected_keys - set(criterion.keys()))
+        missing_keys = expected_keys - set(criterion.keys())
 
         if missing_keys:
-            raise UpdateFromXmlError(_("The following keys were missing from the Definition of one or more criteria: {}".format(missing_keys)))
+            raise UpdateFromXmlError(_("The following keys were missing from the definition of one or more criteria: {}".format(", ".join(missing_keys))))
 
-        if unexpected_keys:
-            raise UpdateFromXmlError(_("The following extraneous keys were found in the definition for one or more criteria: {}".format(unexpected_keys)))
+        try:
+            name = unicode(criterion['name'])
+        except (TypeError, ValueError):
+            raise UpdateFromXmlError(_("The name value must be a string."))
 
-        name = str(criterion['name'])
-        prompt = str(criterion['prompt'])
-        feedback = str(criterion['feedback'])
+        try:
+            prompt = unicode(criterion['prompt'])
+        except (TypeError, ValueError):
+            raise UpdateFromXmlError(_("The prompt value must be a string."))
+
+        try:
+            feedback = unicode(criterion['feedback'])
+        except (TypeError, ValueError):
+            raise UpdateFromXmlError(_("The prompt value must be a string."))
 
         try:
             order_num = int(criterion['order_num'])
@@ -321,18 +320,22 @@ def verify_rubric_format(rubric):
             if not isinstance(option, dict):
                 raise UpdateFromXmlError(_("An option given was not a dictionary."))
 
-            expected_keys = {'order_num','name', 'points', 'explanation'}
+            expected_keys = {'order_num', 'name', 'points', 'explanation'}
             unexpected_keys = list(set(option.keys()) - expected_keys)
             missing_keys = list(expected_keys - set(option.keys()))
 
             if missing_keys:
-                raise UpdateFromXmlError(_("The following keys were missing from the Definition of one or more options: {}".format(missing_keys)))
+                raise UpdateFromXmlError(_("The following keys were missing from the definition of one or more options: {}".format(", ".join(missing_keys))))
 
-            if unexpected_keys:
-                raise UpdateFromXmlError(_("The following extraneous keys were found in the definition for one or more options: {}".format(unexpected_keys)))
+            try:
+                option_name = unicode(option['name'])
+            except (TypeError, ValueError):
+                raise UpdateFromXmlError(_("All option names values must be strings."))
 
-            option_name = str(option['name'])
-            option_explanation = str(option['explanation'])
+            try:
+                option_explanation = unicode(option['explanation'])
+            except (TypeError, ValueError):
+                raise UpdateFromXmlError(_("All option explanation values must be strings."))
 
             try:
                 option_points = int(option['points'])
@@ -363,6 +366,9 @@ def verify_rubric_format(rubric):
     }
 
     if rubric.get('prompt'):
-        sanitized_rubric['prompt'] = str(rubric.get('prompt'))
+        try:
+            sanitized_rubric['prompt'] = unicode(rubric.get('prompt'))
+        except (TypeError, ValueError):
+            raise UpdateFromXmlError(_("All prompt values must be strings."))
 
     return sanitized_rubric

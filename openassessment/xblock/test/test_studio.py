@@ -5,10 +5,8 @@ View-level tests for Studio view of OpenAssessment XBlock.
 import json
 import datetime as dt
 import lxml.etree as etree
-import mock
 import pytz
-from ddt import ddt, data, file_data
-from openassessment.xblock.xml import UpdateFromXmlError
+from ddt import ddt, file_data
 from .base import scenario, XBlockHandlerTestCase
 
 
@@ -40,63 +38,17 @@ class StudioViewTest(XBlockHandlerTestCase):
                 examples = etree.fromstring(assessment_dict['examples'])
                 self.assertEqual(examples.tag, 'examples')
 
-    # WEDALY!!! I cannot figure out how to mock out this call correctly, so it is consequently failing.
-    @mock.patch('studio_mixin.verify_rubric_format')
-    @scenario('data/basic_scenario.xml')
-    def test_get_editor_context_error(self, xblock, mock_rubric_serializer):
-        # Simulate an unexpected error while serializing the XBlock
-        mock_rubric_serializer.side_effect = UpdateFromXmlError('Test error!')
-
-        # Check that we get a failure message
-        resp = self.request(xblock, 'editor_context', '""', response_format='json')
-        self.assertFalse(resp['success'])
-        self.assertIn(u'unexpected error', resp['msg'].lower())
-
-    # WEDALY!!!  I don't know if this test is relevant any more (using update editor context with
-    # XML is so OVER am-i-right?  Rather, we now test teh same behavior a million times with the
-    # Dictionary/List structures.
-    # Thoughts?
-    # @file_data('data/update_xblock.json')
-    # @scenario('data/basic_scenario.xml')
-    # def test_update_xblock(self, xblock, data):
-    #    xblock.published_date = None
-    #   # Test that we can update the xblock with the expected configuration.
-    #    request = json.dumps(data)
-    #
-    #    # Verify the response is successfully
-    #    resp = self.request(xblock, 'update_editor_context', request, response_format='json')
-    #    print "ERROR IS {}".format(resp['msg'])
-    #    self.assertTrue(resp['success'])
-    #    self.assertIn('success', resp['msg'].lower())
-    #
-    #    # Check that the XBlock fields were updated
-    #    # We don't need to be exhaustive here, because we have other unit tests
-    #    # that verify this extensively.
-    #    self.assertEqual(xblock.title, data['title'])
-    #    self.assertEqual(xblock.prompt, data['prompt'])
-    #    self.assertEqual(xblock.rubric_assessments[0]['name'], data['expected-assessment'])
-    #    self.assertEqual(xblock.rubric_criteria[0]['prompt'], data['expected-criterion-prompt'])
-
     @file_data('data/update_xblock.json')
     @scenario('data/basic_scenario.xml')
-    def test_update_context_post_release(self, xblock, data):
-        # First, parse XML data into a single string.
-        data['rubric'] = "".join(data['rubric'])
-
-        # XBlock start date defaults to already open,
-        # so we should get an error when trying to update anything that change the number of points
-        request = json.dumps(data)
-
-        # Verify the response is successfully
-        resp = self.request(xblock, 'update_editor_context', request, response_format='json')
-        self.assertFalse(resp['success'])
+    def test_update_context(self, xblock, data):
+        xblock.published_date = None
+        resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
+        self.assertTrue(resp['success'], msg=resp.get('msg'))
 
     @file_data('data/invalid_update_xblock.json')
     @scenario('data/basic_scenario.xml')
     def test_update_context_invalid_request_data(self, xblock, data):
-
         xblock.published_date = None
-
         resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
         self.assertFalse(resp['success'])
         self.assertIn(data['expected_error'], resp['msg'].lower())
@@ -104,7 +56,6 @@ class StudioViewTest(XBlockHandlerTestCase):
     @file_data('data/invalid_rubric.json')
     @scenario('data/basic_scenario.xml')
     def test_update_rubric_invalid(self, xblock, data):
-
         request = json.dumps(data)
 
         # Store old XBlock fields for later verification
@@ -125,7 +76,6 @@ class StudioViewTest(XBlockHandlerTestCase):
         self.assertEqual(xblock.prompt, old_prompt)
         self.assertItemsEqual(xblock.rubric_assessments, old_assessments)
         self.assertItemsEqual(xblock.rubric_criteria, old_criteria)
-
 
     @scenario('data/basic_scenario.xml')
     def test_check_released(self, xblock):

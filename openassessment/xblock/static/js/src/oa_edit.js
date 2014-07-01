@@ -16,7 +16,7 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     this.server = server;
 
     this.liveElement = $(element);
-    
+
     var liveElement = this.liveElement;
 
     // Instantiates JQuery selector variables which will allow manipulation and display controls.
@@ -49,19 +49,15 @@ OpenAssessment.StudioView = function(runtime, element, server) {
 
     // Captures the HTML definition of the original criterion element. This will be the template
     // used for all other criterion creations
-    var criterionBodyHtml = $("#openassessment_criterion_1", liveElement).html();
-    // Adds the wrapping LI tag which is not captured by the find element.
-    var criterionHtml = '<li class="openassessment_criterion" id="openassessment_criterion_1">'
-        + criterionBodyHtml + '</li>';
+    var criterionHtml = $("#openassessment_criterion_1", liveElement).parent().html();
+
     // Replaces all instances of the original ID (1) with the new fake ID in the string
     // representation of the Criterion LI. This is our new template, with a C-C-C marker to replace.
     this.criterionHtmlTemplate = criterionHtml.replace(new RegExp("1", "g"), "C-C-C");
 
     // Captures the HTML definition of the original option element.  Note that there are TWO template
     // tags that need to be replaced "C-C-C" for the Criterion ID, and "O-O-O" for the option ID.
-    var optionBodyHtml = $("#openassessment_criterion_1_option_1", liveElement).html();
-    var optionHtml = '<li id=openassessment_criterion_1_option_1 class="openassessment_criterion_option">' +
-        optionBodyHtml + '</li>';
+    var optionHtml = $("#openassessment_criterion_1_option_1", liveElement).parent().html();
     var criteriaReplaced = optionHtml.replace(new RegExp("criterion_1", "g"), "criterion_C-C-C");
     this.optionHtmlTemplate = criteriaReplaced.replace(new RegExp("option_1", "g"), "option_O-O-O");
 
@@ -164,7 +160,7 @@ OpenAssessment.StudioView.prototype = {
                     view.addNewCriterionToRubric();
                 }
                 while(view.numberOfCriteria > rubric.criteria.length){
-                    view.removeCriterionFromRubric(1)
+                    view.removeCriterionFromRubric(1);
                 }
 
                 // Corrects the number of options in each criterion
@@ -233,10 +229,12 @@ OpenAssessment.StudioView.prototype = {
     },
 
     /**
-     * A simple helper method which constructs checkbox listeners for all of our assessment modules
-     * @param name name of assessment module to install listener on
-     * @param liveElement the live DOM selector
-     */
+    Construct checkbox listeners for all of our assessment modules
+
+    Args:
+        name (string): name of assessment module to install listener on
+        liveElement (DOM element): the live DOM selector
+    */
     addSettingsAssessmentCheckboxListener: function (name, liveElement) {
         $("#include_" + name , liveElement) .change(function () {
             if (this.checked){
@@ -266,13 +264,12 @@ OpenAssessment.StudioView.prototype = {
     },
 
     /**
-     Initializes a new criterion for the rubric. Has multiple elements. This block of code dictates
-     the methodology that we add and remove rubric criteria
-     */
+    Adds a new criterion to the rubric.
+    */
     addNewCriterionToRubric: function (){
         var view = this;
         var liveElement = this.liveElement;
-        
+
         // Always appends the new criterion to the end of the list, and we force linear ordering.
         var newCriterionID = this.numberOfCriteria + 1;
         this.numberOfCriteria += 1;
@@ -346,10 +343,9 @@ OpenAssessment.StudioView.prototype = {
     },
 
     /**
-     * Removes a specified criterion from the problem's rubric definition. Changes are made in the DOM,
-     * in support/control structures.
-     * @param criterionToRemove
-     */
+    Removes a specified criterion from the problem's rubric definition.
+    Changes are made in the DOM, in support/control structures.
+    */
     removeCriterionFromRubric: function(criterionToRemove){
         var view = this;
         var numCriteria = view.numberOfCriteria;
@@ -396,10 +392,12 @@ OpenAssessment.StudioView.prototype = {
     },
 
     /**
-     * Initializes a new option for a given criterion.  This code block dictates the methodology for
-     * adding and removing options to a rubric.
-     * @param liveElement A selector representing the current state of the Criterion DOM
-     * @param criterionID The specific number of the criterion the option is being added to
+    Initializes a new option for a given criterion.  This code block dictates the methodology for
+    adding and removing options to a rubric.
+
+    Args:
+        liveElement (DOM element): An element containing the criterion interface in the DOM.
+        criterionID (string): The specific number of the criterion the option is being added to
      */
     addNewOptionToCriterion: function (liveElement, criterionID){
         var view = this;
@@ -433,17 +431,19 @@ OpenAssessment.StudioView.prototype = {
             function(eventData){
                 view.removeOptionFromCriterion(liveElement, criterionID, newOptionID);
             }
-        )
+        );
     },
 
     /**
-     * Removes a specified element from the DOM and from all tracking data. Note that no action is
-     * taken against the specified element, rather, data is shifted down the chain (to construct the
-     * illusion that the specified element was deleted), and then the last element is actually deleted.
-     * @param liveElement A selector for the criterion that we are deleting from
-     * @param criterionID The criterion ID that we are deleting from
-     * @param optionToRemove The option ID (discriminator really) that we are "deleting"
-     */
+    Removes a specified element from the DOM and from all tracking data. Note that no action is
+    taken against the specified element, rather, data is shifted down the chain (to construct the
+    illusion that the specified element was deleted), and then the last element is actually deleted.
+
+    Args:
+        liveElement (DOM element): An element containing the criterion interface in the DOM.
+        criterionID (string): The criterion ID that we are deleting from
+        optionToRemove (string): The option ID that we are "deleting"
+    */
     removeOptionFromCriterion: function(liveElement, criterionID, optionToRemove){
         var view = this;
         var numberOfOptions = view.numberOfOptions[criterionID];
@@ -488,7 +488,7 @@ OpenAssessment.StudioView.prototype = {
                 order_num: i - 1,
                 name: selectorDict.name.prop('value'),
                 prompt: selectorDict.prompt.prop('value'),
-                feedback: $('input[name="criterion_'+ i +'_feedback"]:checked', selectorDict.criterion).val()
+                feedback: $("#openassessment_criterion_" + i + "_feedback").val()
             };
 
             var optionSelectorList = selectorDict.options;
@@ -530,25 +530,25 @@ OpenAssessment.StudioView.prototype = {
             var startStr = this.settingsFieldSelectors.peerStart.prop('value');
             var dueStr = this.settingsFieldSelectors.peerDue.prop('value');
             if (startStr){
-                assessment = $.extend(assessment, {"start": startStr})
+                assessment = $.extend(assessment, {"start": startStr});
             }
             if (dueStr){
-                assessment = $.extend(assessment, {"due": dueStr})
+                assessment = $.extend(assessment, {"due": dueStr});
             }
             assessments[assessments.length] = assessment;
         }
 
         if (this.settingsFieldSelectors.hasSelf.prop('checked')) {
-            assessment = {
+            var assessment = {
                 "name": "self-assessment"
             };
-            startStr = this.settingsFieldSelectors.selfStart.prop('value');
-            dueStr = this.settingsFieldSelectors.selfDue.prop('value');
+            var startStr = this.settingsFieldSelectors.selfStart.prop('value');
+            var dueStr = this.settingsFieldSelectors.selfDue.prop('value');
             if (startStr){
-                assessment = $.extend(assessment, {"start": startStr})
+                assessment = $.extend(assessment, {"start": startStr});
             }
             if (dueStr){
-                assessment = $.extend(assessment, {"due": dueStr})
+                assessment = $.extend(assessment, {"due": dueStr});
             }
             assessments[assessments.length] = assessment;
         }
