@@ -81,7 +81,16 @@ def assessment_is_finished(submission_uuid, requirements):
     """
     if requirements is None:
         return False
-    return bool(get_score(submission_uuid, requirements))
+
+    workflow = PeerWorkflow.get_by_submission_uuid(submission_uuid)
+    if workflow is None:
+        return False
+
+    scored_items = workflow.graded_by.filter(
+        assessment__submission_uuid=submission_uuid,
+        assessment__score_type=PEER_TYPE
+    )
+    return scored_items.count() >= requirements["must_be_graded_by"]
 
 
 def on_start(submission_uuid):
@@ -151,12 +160,12 @@ def get_score(submission_uuid, requirements):
     if workflow is None:
         return None
 
-    # This query will use the ordering defined by the assessment model
-    # (descending scored_at, then descending id)
+    # Retrieve the assessments in ascending order by score date,
+    # because we want to use the *first* one(s) for the score.
     items = workflow.graded_by.filter(
         assessment__submission_uuid=submission_uuid,
         assessment__score_type=PEER_TYPE
-    ).order_by('assessment')
+    ).order_by('-assessment')
 
     submission_finished = items.count() >= requirements["must_be_graded_by"]
     if not submission_finished:

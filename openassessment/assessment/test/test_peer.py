@@ -1183,6 +1183,88 @@ class TestPeerApi(CacheResetTest):
         with self.assertRaises(peer_api.PeerAssessmentWorkflowError):
             peer_api.get_submission_to_assess("no_such_submission", "scorer ID")
 
+    def test_too_many_assessments_counted_in_score_bug(self):
+        # This bug allowed a score to be calculated using more
+        # assessments, than the required number in the problem definition.
+        # For the test case, set required number of assessments to one.
+        required_graded_by = 1
+        requirements = {
+            'must_grade': 1,
+            'must_be_graded_by': required_graded_by
+        }
+
+        # Create some submissions and students
+        bob_sub, bob = self._create_student_and_submission('Bob', 'Bob submission')
+        tim_sub, tim = self._create_student_and_submission('Tim', 'Tim submission')
+
+        # Bob assesses someone else, satisfying his requirements
+        peer_api.get_submission_to_assess(bob_sub['uuid'], bob['student_id'])
+        peer_api.create_assessment(
+            bob_sub['uuid'],
+            bob['student_id'],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
+            required_graded_by
+        )
+
+        # Tim grades Bob, so now Bob has one assessment
+        peer_api.get_submission_to_assess(tim_sub['uuid'], tim['student_id'])
+        peer_api.create_assessment(
+            tim_sub['uuid'],
+            tim['student_id'],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
+            required_graded_by
+        )
+
+        # Here, the XBlock would update the workflow,
+        # which would check the peer API to see if the student has
+        # enough assessments.
+        # Part of the bug was that this would call `get_score()` which
+        # implicitly marked peer workflow items as scored.
+        peer_api.assessment_is_finished(bob_sub['uuid'], requirements)
+
+        # Sue creates a submission
+        sue_sub, sue = self._create_student_and_submission('Sue', 'Sue submission')
+
+        # Sue grades the only person in the queue, who is Tim because Tim still needs an assessment
+        peer_api.get_submission_to_assess(sue_sub['uuid'], sue['student_id'])
+        peer_api.create_assessment(
+            sue_sub['uuid'],
+            sue['student_id'],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
+            required_graded_by
+        )
+
+        # Sue grades the only person she hasn't graded yet (Bob)
+        peer_api.get_submission_to_assess(sue_sub['uuid'], sue['student_id'])
+        peer_api.create_assessment(
+            sue_sub['uuid'],
+            sue['student_id'],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
+            required_graded_by
+        )
+
+        # This used to create a second assessment,
+        # which was the bug.
+        peer_api.get_score(bob_sub['uuid'], requirements)
+
+        # Get the assessments used to generate the score
+        # Only the first assessment should be used
+        scored_assessments = peer_api.get_assessments(bob_sub['uuid'], scored_only=True)
+        self.assertEqual(len(scored_assessments), 1)
+        self.assertEqual(scored_assessments[0]['scorer_id'], tim['student_id'])
+
     @staticmethod
     def _create_student_and_submission(student, answer, date=None):
         new_student_item = STUDENT_ITEM.copy()
