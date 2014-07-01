@@ -18,7 +18,9 @@ from openassessment.assessment.worker.algorithm import (
 from openassessment.assessment.serializers import (
     deserialize_training_examples, rubric_from_dict
 )
-from openassessment.assessment.errors import AITrainingRequestError, AIGradingInternalError
+from openassessment.assessment.errors import (
+    AITrainingRequestError, AIGradingInternalError, AIGradingRequestError
+)
 from openassessment.assessment.test.constants import (
     EXAMPLES, RUBRIC, STUDENT_ITEM, ANSWER
 )
@@ -133,6 +135,26 @@ class AITrainingTaskTest(CeleryTaskTest):
         # the worker will not recognize the workflow's algorithm ID.
         with self.assert_retry(train_classifiers, UnknownAlgorithm):
             train_classifiers(self.workflow_uuid)
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_skip_completed_workflow(self):
+        # Mark the grading workflow as complete
+        workflow = AITrainingWorkflow.objects.get(uuid=self.workflow_uuid)
+        workflow.mark_complete_and_save()
+
+        # The training task should short-circuit immediately, skipping calls
+        # to get parameters for the task.
+        actual_call = ai_worker_api.get_training_task_params
+        patched = 'openassessment.assessment.worker.grading.ai_worker_api.get_training_task_params'
+        with mock.patch(patched) as mock_call:
+            mock_call.side_effect = actual_call
+            train_classifiers(self.workflow_uuid)
+            self.assertFalse(mock_call.called)
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_check_complete_error(self):
+        with self.assert_retry(train_classifiers, AITrainingRequestError):
+            train_classifiers("no such workflow uuid")
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     def test_unable_to_load_algorithm_class(self):
@@ -265,6 +287,26 @@ class AIGradingTaskTest(CeleryTaskTest):
         )
         workflow.classifier_set = classifier_set
         workflow.save()
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_skip_completed_workflow(self):
+        # Mark the grading workflow as complete
+        workflow = AIGradingWorkflow.objects.get(uuid=self.workflow_uuid)
+        workflow.mark_complete_and_save()
+
+        # The grading task should short-circuit immediately, skipping calls
+        # to get parameters for the task.
+        actual_call = ai_worker_api.get_grading_task_params
+        patched = 'openassessment.assessment.worker.grading.ai_worker_api.get_grading_task_params'
+        with mock.patch(patched) as mock_call:
+            mock_call.side_effect = actual_call
+            grade_essay(self.workflow_uuid)
+            self.assertFalse(mock_call.called)
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_check_complete_error(self):
+        with self.assert_retry(grade_essay, AIGradingRequestError):
+            grade_essay("no such workflow uuid")
 
     @mock.patch('openassessment.assessment.api.ai_worker.create_assessment')
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)

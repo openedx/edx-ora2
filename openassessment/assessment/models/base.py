@@ -500,6 +500,7 @@ class AssessmentPart(models.Model):
     MAX_FEEDBACK_SIZE = 1024 * 100
 
     assessment = models.ForeignKey(Assessment, related_name='parts')
+    criterion = models.ForeignKey(Criterion, null=True, related_name="+")
     option = models.ForeignKey(CriterionOption, related_name="+")
 
     # Free-form text feedback for the specific criterion
@@ -537,9 +538,11 @@ class AssessmentPart(models.Model):
             None
 
         """
+        options = CriterionOption.objects.select_related().filter(pk__in=option_ids)
+
         cls.objects.bulk_create([
-            cls(assessment=assessment, option_id=option_id)
-            for option_id in option_ids
+            cls(assessment=assessment, option_id=option.pk, criterion_id=option.criterion.pk)
+            for option in options
         ])
 
         if criterion_feedback is not None:

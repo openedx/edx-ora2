@@ -305,7 +305,7 @@ class ValidationIntegrationTest(TestCase):
         # Expect a validation error
         is_valid, msg = self.validator(self.RUBRIC, self.SUBMISSION, mutated_assessments)
         self.assertFalse(is_valid)
-        self.assertEqual(msg, u'Example 1 has an extra option for "Invalid criterion!"\nExample 1 is missing an option for "vocabulary"')
+        self.assertEqual(msg, u'Example 1 has an extra option for "Invalid criterion!"; Example 1 is missing an option for "vocabulary"')
 
     def test_student_training_examples_invalid_option(self):
         # Mutate the assessment training examples so the option names don't match the rubric
@@ -322,6 +322,7 @@ class ValidationIntegrationTest(TestCase):
         # for a particular criterion.
         # This should cause a validation error with example-based assessment.
         mutated_rubric = copy.deepcopy(self.RUBRIC)
+        mutated_rubric['criteria'][0]['options'] = copy.deepcopy(self.CRITERION_OPTIONS)
         for option in mutated_rubric['criteria'][0]['options']:
             option['points'] = 1
 

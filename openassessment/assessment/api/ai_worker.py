@@ -2,6 +2,7 @@
 Public interface for AI training and grading, used by workers.
 """
 import logging
+from httplib import HTTPException
 from django.db import DatabaseError
 from dogapi import dog_stats_api
 from openassessment.assessment.models import (
@@ -66,21 +67,16 @@ def get_grading_task_params(grading_workflow_uuid):
         raise AIGradingInternalError(msg)
 
     try:
-        classifiers = list(classifier_set.classifiers.select_related().all())
-
         return {
             'essay_text': workflow.essay_text,
-            'classifier_set': {
-                classifier.criterion.name: classifier.download_classifier_data()
-                for classifier in classifiers
-            },
+            'classifier_set': workflow.classifier_set.classifier_data_by_criterion,
             'algorithm_id': workflow.algorithm_id,
-            'valid_scores': {
-                classifier.criterion.name: classifier.valid_scores
-                for classifier in classifiers
-            }
+            'valid_scores': workflow.classifier_set.valid_scores_by_criterion,
         }
-    except (DatabaseError, ClassifierSerializeError, IncompleteClassifierSet, ValueError) as ex:
+    except (
+        DatabaseError, ClassifierSerializeError, IncompleteClassifierSet,
+        ValueError, IOError, HTTPException
+    ) as ex:
         msg = (
             u"An unexpected error occurred while retrieving "
             u"classifiers for the grading workflow with UUID {uuid}: {ex}"
@@ -291,3 +287,65 @@ def create_classifiers(training_workflow_uuid, classifier_set):
         ).format(uuid=training_workflow_uuid, ex=ex)
         logger.exception(msg)
         raise AITrainingInternalError(msg)
+
+
+def is_training_workflow_complete(workflow_uuid):
+    """
+    Check whether the training workflow is complete.
+
+    Args:
+        workflow_uuid (str): The UUID of the training workflow
+
+    Returns:
+        bool
+
+    Raises:
+        AITrainingRequestError
+        AITrainingInternalError
+
+    """
+    try:
+        return AITrainingWorkflow.is_workflow_complete(workflow_uuid)
+    except AITrainingWorkflow.DoesNotExist:
+        msg = (
+            u"Could not retrieve training workflow "
+            u"with uuid {uuid} to check whether it's complete."
+        ).format(uuid=workflow_uuid)
+        raise AITrainingRequestError(msg)
+    except DatabaseError:
+        msg = (
+            u"An unexpected error occurred while checking "
+            u"the training workflow with uuid {uuid} for completeness"
+        ).format(uuid=workflow_uuid)
+        raise AITrainingInternalError(msg)
+
+
+def is_grading_workflow_complete(workflow_uuid):
+    """
+    Check whether the grading workflow is complete.
+
+    Args:
+        workflow_uuid (str): The UUID of the grading workflow
+
+    Returns:
+        bool
+
+    Raises:
+        AIGradingRequestError
+        AIGradingInternalError
+
+    """
+    try:
+        return AIGradingWorkflow.is_workflow_complete(workflow_uuid)
+    except AIGradingWorkflow.DoesNotExist:
+        msg = (
+            u"Could not retrieve grading workflow "
+            u"with uuid {uuid} to check whether it's complete."
+        ).format(uuid=workflow_uuid)
+        raise AIGradingRequestError(msg)
+    except DatabaseError:
+        msg = (
+            u"An unexpected error occurred while checking "
+            u"the grading workflow with uuid {uuid} for completeness"
+        ).format(uuid=workflow_uuid)
+        raise AIGradingInternalError(msg)

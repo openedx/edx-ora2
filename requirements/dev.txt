@@ -1,6 +1,6 @@
 -r test.txt
 
-git+https://github.com/edx/i18n-tools.git@0033a29537740592ea47b1e372a9aa3873120c35#egg=i18n_tools
+git+https://github.com/edx/i18n-tools.git@f5303e82dff368c7595884d9325aeea1d802da25#egg=i18n_tools
 
 # Debug tools
 bpython==0.13
