@@ -90,10 +90,10 @@ class TestLeaderboardApi(CacheResetTest):
         self.assertEqual(leaderboard[0]['content'], self.STUDENT_ANSWER_1)
         self.assertEqual(leaderboard[0]['score'], self.STUDENT_GRADE_1)
 
-        # Create a submission to self-assess for student 1
+        # Create a submission to self-assess for student 2
         submission = create_submission(self.STUDENT_ITEM_2, self.STUDENT_ANSWER_2)
 
-        # Create a self-assessment for the submission for student 1
+        # Create a self-assessment for the submission for student 2
         create_assessment(
             submission['uuid'], self.STUDENT_ITEM_2['student_id'],
             self.OPTIONS_SELECTED_2, self.RUBRIC,

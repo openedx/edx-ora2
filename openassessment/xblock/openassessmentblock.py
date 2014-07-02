@@ -69,7 +69,7 @@ UI_MODELS = {
      "leaderboard": {
         "name": "leaderboard",
         "class_id": "openassessment__leaderboard",
-        "navigation_text": "A leaderboard of the top students",
+        "navigation_text": "A leaderboard of the top submissions",
         "title": "Leaderboard:"
     }
 }

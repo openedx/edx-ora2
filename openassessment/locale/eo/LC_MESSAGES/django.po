@@ -343,7 +343,7 @@ msgstr "Best Responses por ĉi tiu farita"
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html
 msgid "Score"
-msgstr "interpunkcio"
+msgstr "Interpunkcio"
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html
 msgid "The leaderboard is not available until your final grade is complete."
