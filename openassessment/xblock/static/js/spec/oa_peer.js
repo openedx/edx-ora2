@@ -19,6 +19,10 @@ describe("OpenAssessment.PeerView", function() {
         this.render = function(step) {
             return successPromise;
         };
+
+        this.renderContinuedPeer = function() {
+            return successPromise;
+        };
     };
 
     // Stub base view
@@ -97,5 +101,21 @@ describe("OpenAssessment.PeerView", function() {
 
         // Expect the submit button to have been re-enabled
         expect(view.peerSubmitEnabled()).toBe(true);
+    });
+
+    it("Re-enables the continued grading button on error", function() {
+        jasmine.getFixtures().fixturesPath = 'base/fixtures';
+        loadFixtures('oa_peer_complete.html');
+        // Simulate a server error
+        spyOn(server, 'renderContinuedPeer').andCallFake(function() {
+            expect(view.continueAssessmentEnabled()).toBe(false);
+            return $.Deferred(function(defer) {
+                defer.rejectWith(this, ['Error occurred!']);
+            }).promise();
+        });
+        view.loadContinuedAssessment();
+
+        // Expect the submit button to have been re-enabled
+        expect(view.continueAssessmentEnabled()).toBe(true);
     });
 });
