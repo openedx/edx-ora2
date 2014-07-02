@@ -25,7 +25,6 @@ class TestLeaderboardRender(XBlockHandlerTestCase):
             'openassessmentblock/leaderboard/oa_leaderboard_show.html',
             {'topscores': []}, 'done'
         )
-        #self.assertEqual(1, 2)
 
     def _assert_path_and_context(
         self, xblock, expected_path, expected_context,

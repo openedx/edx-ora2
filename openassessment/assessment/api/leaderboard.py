@@ -3,14 +3,8 @@
 The Leaderboard API exposes a single API which exposes the top answers for the submitted piece of assessment.
 
 """
-import logging
-
 from openassessment.assessment.models import Assessment
 from submissions import api as sub_api
-
-logger = logging.getLogger("openassessment.assessment.api.peer")
-
-PEER_TYPE = "PE"
 
 def get_leaderboard(submission_uuid, number_of_top_scores=10):
     """
