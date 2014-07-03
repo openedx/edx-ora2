@@ -621,6 +621,16 @@ def update_from_xml(oa_block, root, validator=DEFAULT_VALIDATOR):
     else:
         rubric = _parse_rubric_xml(rubric_el)
 
+    # Retrieve the leaderboard if it exists, otherwise set it to 0
+    leaderboard_show = 0
+    if 'leaderboard_show' in root.attrib:
+        try:
+            leaderboard_show = int(root.attrib['leaderboard_show'])
+            if leaderboard_show < 1:
+                raise UpdateFromXmlError(_('The leaderboard must have a positive integer value.'))
+        except ValueError:
+            raise UpdateFromXmlError(_('The leaderboard must have an integer value.'))
+
     # Retrieve the assessments
     assessments_el = root.find('assessments')
     if assessments_el is None:
@@ -636,6 +646,7 @@ def update_from_xml(oa_block, root, validator=DEFAULT_VALIDATOR):
     # If we've gotten this far, then we've successfully parsed the XML
     # and validated the contents.  At long last, we can safely update the XBlock.
     oa_block.title = title
+    oa_block.leaderboard_show = leaderboard_show
     oa_block.prompt = rubric['prompt']
     oa_block.rubric_criteria = rubric['criteria']
     oa_block.rubric_assessments = assessments

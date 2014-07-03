@@ -30,6 +30,12 @@
                     "class_id": "openassessment__grade",
                     "navigation_text": "Your grade for this problem",
                     "title": "Your Grade:"
+                },
+                {
+                    "name": "leaderboard",
+                    "class_id": "openassessment__leaderboard",
+                    "navigation_text": "A leaderboard for the top submissions",
+                    "title": "Leaderboard:"
                 }
             ]
         },
@@ -66,6 +72,12 @@
                     "class_id": "openassessment__grade",
                     "navigation_text": "Your grade for this problem",
                     "title": "Your Grade:"
+                },
+                {
+                    "name": "leaderboard",
+                    "class_id": "openassessment__leaderboard",
+                    "navigation_text": "A leaderboard for the top submissions",
+                    "title": "Leaderboard:"
                 }
             ]
         },
