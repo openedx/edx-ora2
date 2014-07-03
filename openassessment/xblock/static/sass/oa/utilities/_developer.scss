@@ -175,3 +175,10 @@
 
 
 }
+
+// Developer SASS for Continued Grading.
+.openassessment__steps__step {
+    .action--continue--grading {
+      @extend .action--submit;
+    }
+}

@@ -314,6 +314,11 @@
         "output": "oa_peer_assessment.html"
     },
     {
+        "template": "openassessmentblock/peer/oa_peer_complete.html",
+        "context": {},
+        "output": "oa_peer_complete.html"
+    },
+    {
         "template": "openassessmentblock/grade/oa_grade_complete.html",
         "context": {
             "score": "",
