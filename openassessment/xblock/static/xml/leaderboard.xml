@@ -1,4 +1,4 @@
-<openassessment submission_due="2030-03-11T18:20">
+<openassessment submission_due="2030-03-11T18:20" leaderboard_show="10">
     <title>
         My favourite pet
     </title>
@@ -72,5 +72,4 @@
     <assessments>
         <assessment name="self-assessment" />
     </assessments>
-    <leaderboard top="10" />
 </openassessment>

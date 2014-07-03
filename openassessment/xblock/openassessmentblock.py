@@ -120,7 +120,7 @@ class OpenAssessmentBlock(
         help="A title to display to a student (plain text)."
     )
 
-    leaderboard = Integer(
+    leaderboard_show = Integer(
         default=0,
         scope=Scope.content,
         help="The number of leaderboard results to display (0 if none)"
@@ -310,7 +310,7 @@ class OpenAssessmentBlock(
             if ui_model:
                 ui_models.append(dict(assessment, **ui_model))
         ui_models.append(UI_MODELS["grade"])
-        if self.leaderboard > 0:
+        if self.leaderboard_show > 0:
             ui_models.append(UI_MODELS["leaderboard"])
         return ui_models
 
