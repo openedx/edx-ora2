@@ -107,3 +107,16 @@ class TestLeaderboardApi(CacheResetTest):
         self.assertEqual(leaderboard[1]['score'], self.STUDENT_GRADE_2)
         self.assertEqual(leaderboard[0]['content'], self.STUDENT_ANSWER_1)
         self.assertEqual(leaderboard[0]['score'], self.STUDENT_GRADE_1)
+
+        # Test that the number of results being returned is correct
+        self.assertEqual(len(leaderboard), 2)
+        leaderboard = get_leaderboard(submission['uuid'], 1)
+        self.assertEqual(len(leaderboard), 1)
+
+        # Test for anonymous and non-anonymous student ID returns
+        leaderboard = get_leaderboard(submission['uuid'], 2, False)
+        self.assertEqual(leaderboard[0]['student_id'], 'Anonymous')
+        self.assertEqual(leaderboard[1]['student_id'], 'Anonymous')
+        leaderboard = get_leaderboard(submission['uuid'], 2, True)
+        self.assertEqual(leaderboard[0]['student_id'], self.STUDENT_ITEM_1['student_id'])
+        self.assertEqual(leaderboard[1]['student_id'], self.STUDENT_ITEM_2['student_id'])
