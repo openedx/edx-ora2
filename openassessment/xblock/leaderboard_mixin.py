@@ -64,10 +64,8 @@ class LeaderboardMixin(object):
             template_path (string), tuple of context (dict)
         """
 
-        leaderboard_top_number = self.leaderboard_show
-
         context = {
-            'topscores': leaderboard_api.get_leaderboard(submission_uuid, leaderboard_top_number)
+            'topscores': leaderboard_api.get_leaderboard(submission_uuid, self.leaderboard_show, self.leaderboard_display_student_ids)
         }
 
         return ('openassessmentblock/leaderboard/oa_leaderboard_show.html', context)
