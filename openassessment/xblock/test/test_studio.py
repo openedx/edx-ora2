@@ -102,7 +102,7 @@ class StudioViewTest(XBlockHandlerTestCase):
         self.assertFalse(resp['success'])
         self.assertIn("for this assignment", resp['msg'].lower())
 
-    @data(('data/invalid_rubric.xml', 'rubric'), ('data/invalid_assessment.xml', 'assessment'))
+    @data(('data/invalid_rubric.xml', 'duplicate'), ('data/invalid_assessment.xml', 'assessment'))
     @scenario('data/basic_scenario.xml')
     def test_update_xml_invalid(self, xblock, data):
         xml_path = data[0]

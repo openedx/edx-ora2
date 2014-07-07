@@ -1,0 +1,35 @@
+<openassessment>
+    <title>Feedback only criterion</title>
+    <prompt>Test prompt</prompt>
+    <rubric>
+        <prompt>Test rubric prompt</prompt>
+        <criterion>
+            <name>vocabulary</name>
+            <prompt>How good is the vocabulary?</prompt>
+            <option points="0">
+                <name>bad</name>
+                <explanation>bad</explanation>
+            </option>
+            <option points="1">
+                <name>good</name>
+                <explanation>good</explanation>
+            </option>
+        </criterion>
+        <criterion feedback="required">
+            <name>𝖋𝖊𝖊𝖉𝖇𝖆𝖈𝖐 𝖔𝖓𝖑𝖞</name>
+            <prompt>This criterion accepts only written feedback, so it has no options</prompt>
+        </criterion>
+    </rubric>
+    <assessments>
+        <assessment name="example-based-assessment" algorithm_id="fake">
+            <example>
+                <answer>This is my answer.</answer>
+                <select criterion="vocabulary" option="good" />
+            </example>
+            <example>
+                <answer>тєѕт αηѕωєя</answer>
+                <select criterion="vocabulary" option="bad" />
+            </example>
+        </assessment>
+    </assessments>
+</openassessment>

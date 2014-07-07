@@ -7,11 +7,10 @@ from dogapi import dog_stats_api
 
 from submissions.api import get_submission_and_student, SubmissionNotFoundError
 from openassessment.assessment.serializers import (
-    AssessmentSerializer, InvalidRubric,
-    full_assessment_dict, rubric_from_dict, serialize_assessments
+    InvalidRubric, full_assessment_dict, rubric_from_dict, serialize_assessments
 )
 from openassessment.assessment.models import (
-    Assessment, AssessmentPart, InvalidOptionSelection
+    Assessment, AssessmentPart, InvalidRubricSelection
 )
 from openassessment.assessment.errors import (
     SelfAssessmentRequestError, SelfAssessmentInternalError
@@ -139,50 +138,25 @@ def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, s
         ).format(uuid=submission_uuid)
         raise SelfAssessmentRequestError()
 
-    # Get or create the rubric
     try:
+        # Get or create the rubric
         rubric = rubric_from_dict(rubric_dict)
-        option_ids = rubric.options_ids(options_selected)
+
+        # Create the self assessment
+        assessment = Assessment.create(rubric, user_id, submission_uuid, SELF_TYPE, scored_at=scored_at)
+        AssessmentPart.create_from_option_names(assessment, options_selected)
+        _log_assessment(assessment, submission)
     except InvalidRubric:
         msg = "Invalid rubric definition"
         logger.warning(msg, exc_info=True)
         raise SelfAssessmentRequestError(msg)
-    except InvalidOptionSelection:
+    except InvalidRubricSelection:
         msg = "Selected options do not match the rubric"
         logger.warning(msg, exc_info=True)
         raise SelfAssessmentRequestError(msg)
 
-    # Create the assessment
-    # Since we have already retrieved the submission, we can assume that
-    # the user who created the submission exists.
-    self_assessment = {
-        "rubric": rubric.id,
-        "scorer_id": user_id,
-        "submission_uuid": submission_uuid,
-        "score_type": SELF_TYPE,
-        "feedback": u"",
-    }
-
-    if scored_at is not None:
-        self_assessment['scored_at'] = scored_at
-
-    # Serialize the assessment
-    serializer = AssessmentSerializer(data=self_assessment)
-    if not serializer.is_valid():
-        msg = "Could not create self assessment: {errors}".format(errors=serializer.errors)
-        raise SelfAssessmentRequestError(msg)
-
-    assessment = serializer.save()
-
-    # We do this to do a run around django-rest-framework serializer
-    # validation, which would otherwise require two DB queries per
-    # option to do validation. We already validated these options above.
-    AssessmentPart.add_to_assessment(assessment, option_ids)
-    assessment_dict = full_assessment_dict(assessment)
-    _log_assessment(assessment, submission)
-
     # Return the serialized assessment
-    return assessment_dict
+    return full_assessment_dict(assessment)
 
 
 def get_assessment(submission_uuid):

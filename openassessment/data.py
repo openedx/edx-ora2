@@ -221,9 +221,9 @@ class CsvWriter(object):
         for part in assessment_parts:
             self._write_unicode('assessment_part', [
                 part.assessment.id,
-                part.option.points,
-                part.option.criterion.name,
-                part.option.name,
+                part.points_earned,
+                part.criterion.name,
+                part.option.name if part.option is not None else u"",
                 part.feedback
             ])
 

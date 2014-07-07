@@ -10,7 +10,7 @@ import logging
 from django.utils.translation import ugettext as _
 from django.db import DatabaseError
 from submissions import api as sub_api
-from openassessment.assessment.models import StudentTrainingWorkflow
+from openassessment.assessment.models import StudentTrainingWorkflow, InvalidRubricSelection
 from openassessment.assessment.serializers import (
     deserialize_training_examples, serialize_training_example,
     validate_training_example_format,
@@ -179,6 +179,21 @@ def validate_training_examples(rubric, examples):
         logger.warning("Could not parse serialized rubric", exc_info=True)
         return [_(u"Could not parse serialized rubric")]
 
+    # Check that at least one criterion in the rubric has options
+    # If this is not the case (that is, if all rubric criteria are written feedback only),
+    # then it doesn't make sense to do student training.
+    criteria_without_options = [
+        criterion_name
+        for criterion_name, criterion_option_list in criteria_options.iteritems()
+        if len(criterion_option_list) == 0
+    ]
+    if len(set(criteria_options) - set(criteria_without_options)) == 0:
+        return [_(
+            u"When you include a student training assessment, "
+            u"the rubric for the assessment must contain at least one criterion, "
+            u"and each criterion must contain at least two options."
+        )]
+
     # Check each example
     for order_num, example_dict in enumerate(examples, start=1):
 
@@ -219,7 +234,9 @@ def validate_training_examples(rubric, examples):
                     errors.append(msg)
 
             # Check for missing criteria
-            for missing_criterion in set(criteria_options.keys()) - set(options_selected.keys()):
+            # Ignore options 
+            all_example_criteria = set(options_selected.keys() + criteria_without_options)
+            for missing_criterion in set(criteria_options.keys()) - all_example_criteria:
                 msg = _(
                     u"Example {example_number} is missing an option "
                     u"for \"{criterion_name}\""
@@ -353,7 +370,7 @@ def get_training_example(submission_uuid, rubric, examples):
         # If the student already started a training example, then return that instead.
         next_example = workflow.next_training_example(examples)
         return None if next_example is None else serialize_training_example(next_example)
-    except (InvalidRubric, InvalidTrainingExample) as ex:
+    except (InvalidRubric, InvalidRubricSelection, InvalidTrainingExample) as ex:
         logger.exception(
             "Could not deserialize training examples for submission UUID {}".format(submission_uuid)
         )

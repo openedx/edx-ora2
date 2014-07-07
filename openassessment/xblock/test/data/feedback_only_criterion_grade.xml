@@ -1,11 +1,8 @@
 <openassessment>
-    <title>Open Assessment Test</title>
-    <prompt>
-        Given the state of the world today, what do you think should be done to
-        combat poverty? Please answer in a short essay of 200-300 words.
-    </prompt>
+    <title>Feedback only criterion</title>
+    <prompt>Test prompt</prompt>
     <rubric>
-        <prompt>Read for conciseness, clarity of thought, and form.</prompt>
+        <prompt>Test rubric prompt</prompt>
         <criterion>
             <name>𝓒𝓸𝓷𝓬𝓲𝓼𝓮</name>
             <prompt>How concise is it?</prompt>
@@ -38,9 +35,12 @@
                 <explanation>Poor</explanation>
             </option>
         </criterion>
+        <criterion feedback="required">
+            <name>𝖋𝖊𝖊𝖉𝖇𝖆𝖈𝖐 𝖔𝖓𝖑𝖞</name>
+            <prompt>This criterion accepts only written feedback, so it has no options</prompt>
+        </criterion>
     </rubric>
     <assessments>
-        <assessment name="peer-assessment" must_grade="2" must_be_graded_by="2" />
-        <assessment name="self-assessment" />
+        <assessment name="peer-assessment" must_grade="2" must_be_graded_by="2"/>
     </assessments>
 </openassessment>

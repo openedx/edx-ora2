@@ -474,5 +474,110 @@
             "Example 3 has a validation error: Training example must contain an \"answer\" field.",
             "Example 3 has a validation error: Training example must contain an \"options_selected\" field."
         ]
+    },
+
+    "feedback_only_criterion": {
+        "rubric": {
+            "prompt": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "vøȼȺƀᵾłȺɍɏ",
+                    "prompt": "Ħøw vȺɍɨɇđ ɨs ŧħɇ vøȼȺƀᵾłȺɍɏ?",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "name": "𝒑𝒐𝒐𝒓",
+                            "explanation": "𝕻𝖔𝖔𝖗 𝖏𝖔𝖇!",
+                            "points": 0
+                        },
+                        {
+                            "order_num": 1,
+                            "name": "𝓰𝓸𝓸𝓭",
+                            "explanation": "ﻭѻѻɗ ﻝѻ๒!",
+                            "points": 1
+                        }
+                    ]
+                },
+                {
+                    "order_num": 1,
+                    "name": "feedback only",
+                    "prompt": "feedback only",
+                    "options": []
+                }
+            ]
+        },
+        "examples": [
+            {
+                "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                "options_selected": { "vøȼȺƀᵾłȺɍɏ": "𝓰𝓸𝓸𝓭" }
+            }
+        ],
+        "errors": []
+    },
+
+    "feedback_only_criterion_extra_score": {
+        "rubric": {
+            "prompt": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "vøȼȺƀᵾłȺɍɏ",
+                    "prompt": "Ħøw vȺɍɨɇđ ɨs ŧħɇ vøȼȺƀᵾłȺɍɏ?",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "name": "𝒑𝒐𝒐𝒓",
+                            "explanation": "𝕻𝖔𝖔𝖗 𝖏𝖔𝖇!",
+                            "points": 0
+                        },
+                        {
+                            "order_num": 1,
+                            "name": "𝓰𝓸𝓸𝓭",
+                            "explanation": "ﻭѻѻɗ ﻝѻ๒!",
+                            "points": 1
+                        }
+                    ]
+                },
+                {
+                    "order_num": 1,
+                    "name": "feedback only",
+                    "prompt": "feedback only",
+                    "options": []
+                }
+            ]
+        },
+        "examples": [
+            {
+                "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                "options_selected": {
+                    "vøȼȺƀᵾłȺɍɏ": "𝓰𝓸𝓸𝓭",
+                    "feedback only": "𝓰𝓸𝓸𝓭"
+                }
+            }
+        ],
+        "errors": ["Example 1 has an invalid option for \"feedback only\": \"𝓰𝓸𝓸𝓭\""]
+    },
+
+    "feedback_only_all_criteria": {
+        "rubric": {
+            "prompt": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽",
+            "criteria": [
+                {
+                    "order_num": 1,
+                    "name": "feedback only",
+                    "prompt": "feedback only",
+                    "options": []
+                }
+            ]
+        },
+        "examples": [
+            {
+                "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                "options_selected": {}
+            }
+        ],
+        "errors": ["When you include a student training assessment, the rubric for the assessment must contain at least one criterion, and each criterion must contain at least two options."]
     }
+
 }
