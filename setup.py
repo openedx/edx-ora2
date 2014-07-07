@@ -6,7 +6,8 @@ PACKAGES = [
     'openassessment.assessment',
     'openassessment.workflow',
     'openassessment.management',
-    'openassessment.xblock'
+    'openassessment.xblock',
+    'openassessment.data_schema'
 ]
 
 def is_requirement(line):
