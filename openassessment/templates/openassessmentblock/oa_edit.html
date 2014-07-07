@@ -131,18 +131,10 @@
 
 
             <div id="openassessment_rubric_feedback_wrapper" class="wrapper-comp-settings">
-                <div id="openassessment_rubric_feedback_header_open">
+                <div id="openassessment_rubric_feedback_header">
                     <span>
                         {% trans "Rubric Feedback" %}
                     </span>
-                    <div class="openassessment_rubric_remove_button" id="openassessment_rubric_feedback_remove">
-                        <h2>{% trans "Remove" %}</h2>
-                    </div>
-                    <div id="openassessment_rubric_feedback_header_closed">
-                    <h2>
-                        {% trans "Add Rubric Feedback" %}
-                    </h2>
-                </div>
                 </div>
                 <ul class="list-input settings-list">
                     <li class="field comp-setting-entry">
@@ -152,7 +144,7 @@
                         </div>
                     </li>
                     <p class="setting-help">
-                        {% trans "If you would like your students to be able to provide feedback on the rubric, add a prompt to ask them for it." %}
+                        {% trans "Directions shown to students when they give feedback." %}
                     </p>
                 </ul>
             </div>
@@ -171,14 +163,14 @@
                 <li class="openassessment_date_editor field comp-setting-entry">
                     <div class="wrapper-comp-setting">
                         <label for="openassessment_submission_start_editor" class="setting-label">{% trans "Response Submission Start Date"%} </label>
-                        <input type="datetime-local" class="input setting-input" id="openassessment_submission_start_editor">
+                        <input type="text" class="input setting-input" id="openassessment_submission_start_editor">
                     </div>
                     <p class="setting-help">{% trans "The date at which submissions will first be accepted." %}</p>
                 </li>
                 <li class="openassessment_date_editor field comp-setting-entry">
                     <div class="wrapper-comp-setting">
                         <label for="openassessment_submission_due_editor" class="setting-label">{% trans "Response Submission Due Date" %}</label>
-                        <input type="datetime-local" class="input setting-input" id="openassessment_submission_due_editor">
+                        <input type="text" class="input setting-input" id="openassessment_submission_due_editor">
                     </div>
                     <p class="setting-help">{% trans "The date at which submissions will stop being accepted." %}</p>
                 </li>
@@ -247,14 +239,14 @@
                             <li class="field comp-setting-entry">
                                 <div class="wrapper-comp-setting">
                                     <label for="peer_assessment_start_date" class="setting-label">{% trans "Start Date" %}</label>
-                                    <input id="peer_assessment_start_date" type="datetime-local" class="input setting-input">
+                                    <input id="peer_assessment_start_date" type="text" class="input setting-input">
                                 </div>
                                 <p class="setting-help">{% trans "If desired, specify a start date for the peer assessment period.  If no date is specified, peer assessment can begin when submissions begin."%}</p>
                             </li>
                             <li class="field comp-setting-entry">
                                 <div class="wrapper-comp-setting">
                                     <label for="peer_assessment_due_date" class="setting-label">{% trans "Due Date" %}</label>
-                                    <input id="peer_assessment_due_date" type="datetime-local" class="input setting-input">
+                                    <input id="peer_assessment_due_date" type="text" class="input setting-input">
                                 </div>
                                 <p class="setting-help">{% trans "If desired, specify a due date for the peer assessment period.  If no date is specified, peer assessment can run as long as the problem is open."%}</p>
                             </li>
@@ -280,14 +272,14 @@
                             <li class="field comp-setting-entry">
                                 <div class="wrapper-comp-setting">
                                     <label for="self_assessment_start_date" class="setting-label">{% trans "Start Date" %}</label>
-                                    <input id="self_assessment_start_date" type="datetime-local" class="input setting-input">
+                                    <input id="self_assessment_start_date" type="text" class="input setting-input">
                                 </div>
                                 <p class="setting-help">{% trans "If desired, specify a start date for the self assessment period.  If no date is specified, self assessment can begin when submissions begin."%}</p>
                             </li>
                             <li class="field comp-setting-entry">
                                 <div class="wrapper-comp-setting">
                                     <label for="self_assessment_due_date" class="setting-label">{% trans "Due Date" %}</label>
-                                    <input id="self_assessment_due_date" type="datetime-local" class="input setting-input">
+                                    <input id="self_assessment_due_date" type="text" class="input setting-input">
                                 </div>
                                 <p class="setting-help">{% trans "If desired, specify a due date for the self assessment period.  If no date is specified, self assessment can run as long as the problem is open."%}</p>
                             </li>

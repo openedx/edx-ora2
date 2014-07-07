@@ -22,6 +22,7 @@ loremipsum==1.0.2
 python-dateutil==2.1
 pytz==2012h
 South==0.7.6
+voluptuous==0.8.5
 
 # AI grading
 git+https://github.com/edx/ease.git@f9f47fb6b5c7c8b6c3360efa72eb56561e1a03b0#egg=ease

@@ -120,7 +120,10 @@ class StudentTrainingMixin(object):
                 examples
             )
             context['training_essay'] = example['answer']
-            context['training_rubric'] = example['rubric']
+            context['training_rubric'] = {
+                'criteria': example['rubric']['criteria'],
+                'points_possible': example['rubric']['points_possible']
+            }
             template = 'openassessmentblock/student_training/student_training.html'
 
         return template, context

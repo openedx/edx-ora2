@@ -68,7 +68,6 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     this.numberOfOptions = [];
     this.rubricCriteriaSelectors = [];
     this.rubricFeedbackPrompt =  $('#openassessment_rubric_feedback', liveElement);
-    this.hasRubricFeedbackPrompt = true;
     $('#openassessment_criterion_list', liveElement).empty();
     this.addNewCriterionToRubric();
 
@@ -95,25 +94,6 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     $('#openassessment_rubric_add_criterion', liveElement) .click( function (eventData) {
             view.addNewCriterionToRubric(liveElement);
     });
-
-    // Adds a listener which removes rubric feedback
-    $("#openassessment_rubric_feedback_remove", liveElement). click( function(eventData){
-        $("#openassessment_rubric_feedback_header_open", liveElement).fadeOut();
-        $("#openassessment_rubric_feedback_input_wrapper", liveElement).fadeOut();
-        $("#openassessment_rubric_feedback_header_closed", liveElement).fadeIn();
-        view.hasRubricFeedbackPrompt = false;
-    });
-
-    // Adds a listener which adds rubric feedback if not already displayed.
-    $("#openassessment_rubric_feedback_header_closed", liveElement). click( function(eventData){
-        $("#openassessment_rubric_feedback_header_closed", liveElement).fadeOut();
-        $("#openassessment_rubric_feedback_header_open", liveElement).fadeIn();
-        $("#openassessment_rubric_feedback_input_wrapper", liveElement).fadeIn();
-        view.hasRubricFeedbackPrompt = true;
-    });
-
-    // Initially Hides the rubric "add rubric feedback" div
-    $("#openassessment_rubric_feedback_header_closed", liveElement).hide();
 
 };
 
@@ -339,7 +319,6 @@ OpenAssessment.StudioView.prototype = {
 
         // Hides the criterion header used for adding
         $(".openassessment_criterion_feedback_header_closed", liveElement).hide();
-
     },
 
     /**
@@ -444,7 +423,7 @@ OpenAssessment.StudioView.prototype = {
         criterionID (string): The criterion ID that we are deleting from
         optionToRemove (string): The option ID that we are "deleting"
     */
-    removeOptionFromCriterion: function(liveElement, criterionID, optionToRemove){
+    removeOptionFromCriterion: function(liveElement, criterionID, optionToRemove) {
         var view = this;
         var numberOfOptions = view.numberOfOptions[criterionID];
         var optionSelectors = view.rubricCriteriaSelectors[criterionID].options;
@@ -473,12 +452,6 @@ OpenAssessment.StudioView.prototype = {
         // to save so it can show the "Saving..." notification
         this.runtime.notify('save', {state: 'start'});
 
-        // Send the updated XML to the server
-        var prompt = this.settingsFieldSelectors.promptBox.prop('value');
-        var title = this.settingsFieldSelectors.titleField.prop('value');
-        var subStart = this.settingsFieldSelectors.submissionStartField.prop('value');
-        var subDue = this.settingsFieldSelectors.submissionDueField.prop('value');
-
         // Grabs values from all of our fields, and stores them in a format which can be easily validated.
         var rubricCriteria = [];
 
@@ -497,77 +470,64 @@ OpenAssessment.StudioView.prototype = {
                 var optionSelectors = optionSelectorList[j];
                 optionValueList = optionValueList.concat([{
                     order_num: j-1,
-                    points: optionSelectors.points.prop('value'),
-                    name: optionSelectors.name.prop('value'),
-                    explanation: optionSelectors.explanation.prop('value')
+                    points: this._getInt(optionSelectors.points),
+                    name: optionSelectors.name.val(),
+                    explanation: optionSelectors.explanation.val()
                 }]);
             }
             criterionValueDict.options = optionValueList;
             rubricCriteria = rubricCriteria.concat([criterionValueDict]);
         }
 
-        var rubric = { 'criteria': rubricCriteria };
-
-        if (this.hasRubricFeedbackPrompt){
-            rubric.feedbackprompt = this.rubricFeedbackPrompt.prop('value');
-        }
-
         var assessments = [];
 
         if (this.settingsFieldSelectors.hasTraining.prop('checked')){
-            assessments[assessments.length] = {
-                "name": "student-training",
-                "examples": this.studentTrainingExamplesCodeBox.getValue()
-            };
+            assessments.push({
+                name: "student-training",
+                examples: this.studentTrainingExamplesCodeBox.getValue()
+            });
         }
 
         if (this.settingsFieldSelectors.hasPeer.prop('checked')) {
-            var assessment = {
-                "name": "peer-assessment",
-                "must_grade": parseInt(this.settingsFieldSelectors.peerMustGrade.prop('value')),
-                "must_be_graded_by": parseInt(this.settingsFieldSelectors.peerGradedBy.prop('value'))
-            };
-            var startStr = this.settingsFieldSelectors.peerStart.prop('value');
-            var dueStr = this.settingsFieldSelectors.peerDue.prop('value');
-            if (startStr){
-                assessment = $.extend(assessment, {"start": startStr});
-            }
-            if (dueStr){
-                assessment = $.extend(assessment, {"due": dueStr});
-            }
-            assessments[assessments.length] = assessment;
+            assessments.push({
+                name: "peer-assessment",
+                must_grade: this._getInt(this.settingsFieldSelectors.peerMustGrade),
+                must_be_graded_by: this._getInt(this.settingsFieldSelectors.peerGradedBy),
+                start: this._getDateTime(this.settingsFieldSelectors.peerStart),
+                due: this._getDateTime(this.settingsFieldSelectors.peerDue)
+            });
         }
 
         if (this.settingsFieldSelectors.hasSelf.prop('checked')) {
-            var assessment = {
-                "name": "self-assessment"
-            };
-            var startStr = this.settingsFieldSelectors.selfStart.prop('value');
-            var dueStr = this.settingsFieldSelectors.selfDue.prop('value');
-            if (startStr){
-                assessment = $.extend(assessment, {"start": startStr});
-            }
-            if (dueStr){
-                assessment = $.extend(assessment, {"due": dueStr});
-            }
-            assessments[assessments.length] = assessment;
+            assessments.push({
+                name: "self-assessment",
+                start: this._getDateTime(this.settingsFieldSelectors.selfStart),
+                due: this._getDateTime(this.settingsFieldSelectors.selfDue)
+            });
         }
 
         if (this.settingsFieldSelectors.hasAI.prop('checked')) {
-            assessments[assessments.length] = {
-                "name": "example-based-assessment",
-                "examples": this.aiTrainingExamplesCodeBox.getValue()
-            };
+            assessments.push({
+                name: "example-based-assessment",
+                examples: this.aiTrainingExamplesCodeBox.getValue()
+            });
         }
 
         var view = this;
-        this.server.updateEditorContext(prompt, rubric, title, subStart, subDue, assessments).done(function () {
-            // Notify the client-side runtime that we finished saving
-            // so it can hide the "Saving..." notification.
-            view.runtime.notify('save', {state: 'end'});
-
-            // Reload the XML definition in the editor
-            view.load();
+        this.server.updateEditorContext({
+            title: this.settingsFieldSelectors.titleField.val(),
+            prompt: this.settingsFieldSelectors.promptBox.val(),
+            feedbackPrompt: this.rubricFeedbackPrompt.val(),
+            submissionStart: this._getDateTime(this.settingsFieldSelectors.submissionStartField),
+            submissionDue: this._getDateTime(this.settingsFieldSelectors.submissionDueField),
+            criteria: rubricCriteria,
+            assessments: assessments
+        }).done(
+            function () {
+                // Notify the client-side runtime that we finished saving
+                // so it can hide the "Saving..." notification.
+                // Then reload the view.
+                view.runtime.notify('save', {state: 'end'});
         }).fail(function (msg) {
             view.showError(msg);
         });
@@ -589,7 +549,55 @@ OpenAssessment.StudioView.prototype = {
      **/
     showError: function (errorMsg) {
         this.runtime.notify('error', {msg: errorMsg});
+    },
+
+    /**
+    Retrieve a value from a datetime input.
+
+    Args:
+        selector: The JQuery selector for the datetime input.
+
+    Returns:
+        ISO-formatted datetime string or null
+    **/
+    _getDateTime: function(selector) {
+        var dateStr = selector.val();
+
+        // By convention, empty date strings are null,
+        // meaning choose the default date based on
+        // other dates set in the problem configuration.
+        if (dateStr === "") {
+            return null;
+        }
+
+        // Attempt to parse the date string
+        // TO DO: currently invalid dates also are set as null,
+        // which is probably NOT what the user wants!
+        // We should add proper validation here.
+        var timestamp = Date.parse(dateStr);
+        if (isNaN(timestamp)) {
+            return null;
+        }
+
+        // Send the datetime in ISO format
+        // This will also convert the timezone to UTC
+        return new Date(timestamp).toISOString();
+    },
+
+    /**
+    Retrieve an integer value from an input.
+
+    Args:
+        selector: The JQuery selector for the input.
+
+    Returns:
+        int
+
+    **/
+    _getInt: function(selector) {
+        return parseInt(selector.val(), 10);
     }
+
 };
 
 

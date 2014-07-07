@@ -427,26 +427,30 @@ OpenAssessment.Server.prototype = {
     /**
     Update the XBlock's XML definition on the server.
 
-    Return
+    Kwargs:
+        title (string): The title of the problem.
+        prompt (string): The question prompt.
+        feedbackPrompt (string): The directions to the student for giving overall feedback on a submission.
+        submissionStart (ISO-formatted datetime string or null): The start date of the submission.
+        submissionDue (ISO-formatted datetime string or null): The date the submission is due.
+        criteria (list of object literals): The rubric criteria.
+        assessments (list of object literals): The assessments the student will be evaluated on.
+
+    Returns:
         A JQuery promise, which resolves with no arguments
         and fails with an error message.
 
-    Example usage:
-        server.updateXml(xml).done(
-            function() {}
-        ).fail(
-            function(err) { console.log(err); }
-        );
     **/
-    updateEditorContext: function(prompt, rubric, title, sub_start, sub_due, assessments) {
+    updateEditorContext: function(kwargs) {
         var url = this.url('update_editor_context');
         var payload = JSON.stringify({
-            'prompt': prompt,
-            'rubric': rubric,
-            'title': title,
-            'submission_start': sub_start,
-            'submission_due': sub_due,
-            'assessments': assessments
+            prompt: kwargs.prompt,
+            feedback_prompt: kwargs.feedbackPrompt,
+            title: kwargs.title,
+            submission_start: kwargs.submissionStart,
+            submission_due: kwargs.submissionDue,
+            criteria: kwargs.criteria,
+            assessments: kwargs.assessments
         });
         return $.Deferred(function(defer) {
             $.ajax({
