@@ -1,22 +1,45 @@
 # -*- coding: utf-8 -*-
-import datetime
+from contextlib import contextmanager
 from south.db import db
 from south.v2 import SchemaMigration
-from django.db import models
 
 
 class Migration(SchemaMigration):
 
+    @contextmanager
+    def lock_table(self, table_name):
+        """ Context manager for locking a table (MySQL only) """
+        # Lock tables only under MySQL (it isn't supported for SQLLite)
+        is_mysql = (db.backend_name == 'mysql')
+
+        # Before the block executes, lock the specified table
+        if is_mysql:
+            db.execute("LOCK TABLE {table} WRITE".format(table=table_name))
+
+        # Execute the block
+        yield
+
+        # Add a deferred statement to unlock tables
+        # This will ensure that tables stay locked until
+        # all deferred SQL executes
+        # (for example, creating foreign key constraints and adding indices)
+        if is_mysql:
+            db.add_deferred_sql("UNLOCK TABLES")
+
     def forwards(self, orm):
         # Adding field 'AssessmentPart.criterion'
-        db.add_column('assessment_assessmentpart', 'criterion',
-                      self.gf('django.db.models.fields.related.ForeignKey')(related_name='+', null=True, to=orm['assessment.Criterion']),
-                      keep_default=False)
-
+        # We need to lock the table to avoid a potential deadlock with the application queries.
+        # We need to provide a default value of NULL so that the INSERT queries don't
+        # raise an exception when they don't specify the new field.
+        with self.lock_table('assessment_assessmentpart'):
+            db.add_column('assessment_assessmentpart', 'criterion',
+                          self.gf('django.db.models.fields.related.ForeignKey')(related_name='+', null=True, default=None, to=orm['assessment.Criterion']),
+                          keep_default=False)
 
     def backwards(self, orm):
         # Deleting field 'AssessmentPart.criterion'
-        db.delete_column('assessment_assessmentpart', 'criterion_id')
+        with self.lock_table('assessment_assessmentpart'):
+            db.delete_column('assessment_assessmentpart', 'criterion_id')
 
 
     models = {
