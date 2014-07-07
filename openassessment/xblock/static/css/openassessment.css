@@ -2251,17 +2251,10 @@ hr.divider,
       padding: 5px;
       border-bottom: 1px solid #414243;
       overflow: auto; }
-      #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_header input[type="checkbox"] {
-        display: none; }
-      #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_header input[type="checkbox"] + h6:before {
-        font-family: "FontAwesome";
-        display: inline-block;
-        margin-right: 10px;
-        width: auto;
-        height: auto;
-        content: "\f054"; }
-      #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_header input[type="checkbox"]:checked + label:before {
-        content: "\f078"; }
+      #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_header .action.expand-collapse {
+        float: left; }
+        #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_header .action.expand-collapse .ui-toggle-expansion .icon-caret-down:before {
+          color: #414243; }
       #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_header .openassessment_criterion_header_title {
         text-transform: uppercase;
         width: 50%;
@@ -2307,6 +2300,23 @@ hr.divider,
         content: "\f067"; }
     #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_feedback_wrapper .openassessment_criterion_feedback_direction label {
       margin-left: 15px; }
+  #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion.collapsed .openassessment_criterion_body {
+    display: none; }
+  #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion.collapsed .openassessment_criterion_header .action.expand-collapse {
+    float: left; }
+    #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion.collapsed .openassessment_criterion_header .action.expand-collapse .ui-toggle-expansion {
+      -webkit-transform: rotate(-90deg);
+      -moz-transform: rotate(-90deg);
+      -ms-transform: rotate(-90deg);
+      -o-transform: rotate(-90deg);
+      transform: rotate(-90deg);
+      -webkit-transform-origin: 50% 50%;
+      -moz-transform-origin: 50% 50%;
+      -ms-transform-origin: 50% 50%;
+      -o-transform-origin: 50% 50%;
+      transform-origin: 50% 50%; }
+      #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion.collapsed .openassessment_criterion_header .action.expand-collapse .ui-toggle-expansion .icon-caret-down:before {
+        color: #414243; }
   #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option {
     padding: 5px; }
     #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_option_header {
