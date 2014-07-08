@@ -133,18 +133,8 @@
 
 
             <div id="openassessment_rubric_feedback_wrapper" class="wrapper-comp-settings">
-                <div id="openassessment_rubric_feedback_header_open">
-                    <span>
-                        {% trans "Rubric Feedback" %}
-                    </span>
-                    <div class="openassessment_rubric_remove_button" id="openassessment_rubric_feedback_remove">
-                        <h2>{% trans "Remove" %}</h2>
-                    </div>
-                    <div id="openassessment_rubric_feedback_header_closed">
-                    <h2>
-                        {% trans "Add Rubric Feedback" %}
-                    </h2>
-                </div>
+                <div id="openassessment_rubric_feedback_header">
+                    <h2>{% trans "Rubric Feedback" %}</h2>
                 </div>
                 <ul class="list-input settings-list">
                     <li class="field comp-setting-entry">
@@ -152,10 +142,10 @@
                             <label for="openassessment_rubric_feedback" class="setting-label">{% trans "Feedback Direction" %}</label>
                             <textarea id="openassessment_rubric_feedback" class="input setting-input"></textarea>
                         </div>
+                        <p class="setting-help">
+                            {% trans "Provide a prompt so that students can give one another general feedback as a part of the rubric." %}
+                        </p>
                     </li>
-                    <p class="setting-help">
-                        {% trans "If you would like your students to be able to provide feedback on the rubric, add a prompt to ask them for it." %}
-                    </p>
                 </ul>
             </div>
         </div>

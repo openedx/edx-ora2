@@ -39,15 +39,6 @@ OpenAssessment.StudioView = function(runtime, element, server) {
         selfDue: $('#self_assessment_due_date', liveElement)
     };
 
-    // The initial assessment order can be determined by what was initially displayed to the user.
-    this.assessmentOrder = [];
-
-    $('.assessment_settings_wrapper').each(
-        function (e) {
-            view.assessmentOrder.push($(this).attr('id'));
-        }
-    );
-
     this.aiTrainingExamplesCodeBox = CodeMirror.fromTextArea(
         $('#ai_training_examples', liveElement).first().get(0),
         {mode: "xml", lineNumbers: true, lineWrapping: true}
@@ -96,44 +87,28 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     $('.openassessment_editor_content_and_tabs', liveElement) .tabs();
 
     // Adds a listener to allow sorting of the assessment modules
-    $('#openassessment_assessment_module_settings_editors').sortable({
+    $('#openassessment_assessment_module_settings_editors', liveElement).sortable({
         // On start, the mousedown will have already been called, so we don't need to hide again.
         start: function(event, ui) {
-            $('#openassessment_assessment_module_settings_editors').sortable( "refreshPositions" );
+            $('.openassessment_assessment_module_editor', liveElement).hide();
+            ui.placeholder.toggleClass('openassessment_shrink_for_drag');
+            ui.item.toggleClass('openassessment_shrink_for_drag');
+            $(this).sortable("refreshPositions");
+            $(this).sortable("refresh");
         },
         // On stop, we redisplay the divs to their original state. Because these divs are not used to display
         // which items are currently selected, we don't need to do further hiding/showing/recalculation
         stop: function(event, ui){
-            $('.openassessment_assessment_module_editor').show();
-            ui.item.css('height', 'auto');
+            $('.openassessment_assessment_module_editor', liveElement).show();
+            ui.placeholder.toggleClass('openassessment_shrink_for_drag');
+            ui.item.toggleClass('openassessment_shrink_for_drag');
         },
         snap: true,
         axis: "y",
         handle: ".drag-handle",
-        cursorAt: {top: 20},
-        update: function(event, ui) {
-            view.assessmentOrder = [];
-            $('.assessment_settings_wrapper').each(
-                function (e) {
-                    view.assessmentOrder.push($(this).attr('id'));
-                }
-            );
-        }
+        cursorAt: {top: 20}
     });
-    // This is hacky, but it is the only way I could think of achieving this where we have the heights recalculated
-    // BEFORE the start command is issued. Without this, the space from each div is still present when we commence
-    // dragging, which doesn't allow one to fit all of them on the screen.
-    $('.drag-handle').each(function() {
-        $(this).mousedown(function() {
-            $('.openassessment_assessment_module_editor').hide();
-            $(this).parent().css('height', '40px');
-        });
-        $(this).mouseup(function() {
-            $(this).parent().css('height', 'auto');
-        });
-    });
-
-    $('#openassessment_assessment_module_settings_editors').disableSelection();
+    $('#openassessment_assessment_module_settings_editors', liveElement).disableSelection();
 
     // Installs all of the checkbox listeners in the settings tab
     view.addSettingsAssessmentCheckboxListener("ai_assessment", liveElement);
@@ -144,25 +119,6 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     $('#openassessment_rubric_add_criterion', liveElement) .click( function (eventData) {
             view.addNewCriterionToRubric(liveElement);
     });
-
-    // Adds a listener which removes rubric feedback
-    $("#openassessment_rubric_feedback_remove", liveElement). click( function(eventData){
-        $("#openassessment_rubric_feedback_header_open", liveElement).fadeOut();
-        $("#openassessment_rubric_feedback_input_wrapper", liveElement).fadeOut();
-        $("#openassessment_rubric_feedback_header_closed", liveElement).fadeIn();
-        view.hasRubricFeedbackPrompt = false;
-    });
-
-    // Adds a listener which adds rubric feedback if not already displayed.
-    $("#openassessment_rubric_feedback_header_closed", liveElement). click( function(eventData){
-        $("#openassessment_rubric_feedback_header_closed", liveElement).fadeOut();
-        $("#openassessment_rubric_feedback_header_open", liveElement).fadeIn();
-        $("#openassessment_rubric_feedback_input_wrapper", liveElement).fadeIn();
-        view.hasRubricFeedbackPrompt = true;
-    });
-
-    // Initially Hides the rubric "add rubric feedback" div
-    $("#openassessment_rubric_feedback_header_closed", liveElement).hide();
 
 };
 
@@ -561,61 +517,63 @@ OpenAssessment.StudioView.prototype = {
             rubric.feedbackprompt = this.rubricFeedbackPrompt.prop('value');
         }
 
+        var view = this;
         var assessments = [];
 
         // Adds the assessments in the order in which they are currently displayed. Note that the dual condition on
         // each if statement means that it will only be added on that iteration if we 1) Have that assessment, and
         // 2) it is the assessment referenced in the loop.
-        for(i = 0; i < this.assessmentOrder.length; i++) {
-            var id = this.assessmentOrder[i];
-            if (this.settingsFieldSelectors.hasTraining.prop('checked') && id == "student_training_settings_editor") {
-                assessments[assessments.length] = {
+        $(".assessment_settings_wrapper", this.liveElement).each(function(){
+            var id = $(this).attr('id');
+            if (view.settingsFieldSelectors.hasTraining.prop('checked') && id == "student_training_settings_editor") {
+                assessment = {
                     "name": "student-training",
-                    "examples": this.studentTrainingExamplesCodeBox.getValue()
+                    "examples": view.studentTrainingExamplesCodeBox.getValue()
                 };
+                assessments.push(assessment);
             }
 
-            if (this.settingsFieldSelectors.hasPeer.prop('checked') && id == "peer_assessment_settings_editor") {
+            if (view.settingsFieldSelectors.hasPeer.prop('checked') && id == "peer_assessment_settings_editor") {
                 var assessment = {
                     "name": "peer-assessment",
-                    "must_grade": parseInt(this.settingsFieldSelectors.peerMustGrade.prop('value')),
-                    "must_be_graded_by": parseInt(this.settingsFieldSelectors.peerGradedBy.prop('value'))
+                    "must_grade": parseInt(view.settingsFieldSelectors.peerMustGrade.prop('value')),
+                    "must_be_graded_by": parseInt(view.settingsFieldSelectors.peerGradedBy.prop('value'))
                 };
-                var startStr = this.settingsFieldSelectors.peerStart.prop('value');
-                var dueStr = this.settingsFieldSelectors.peerDue.prop('value');
+                var startStr = view.settingsFieldSelectors.peerStart.prop('value');
+                var dueStr = view.settingsFieldSelectors.peerDue.prop('value');
                 if (startStr) {
                     assessment = $.extend(assessment, {"start": startStr});
                 }
                 if (dueStr) {
                     assessment = $.extend(assessment, {"due": dueStr});
                 }
-                assessments[assessments.length] = assessment;
+                assessments.push(assessment);
             }
 
-            if (this.settingsFieldSelectors.hasSelf.prop('checked') && id == "self_assessment_settings_editor") {
+            if (view.settingsFieldSelectors.hasSelf.prop('checked') && id == "self_assessment_settings_editor") {
                 assessment = {
                     "name": "self-assessment"
                 };
-                startStr = this.settingsFieldSelectors.selfStart.prop('value');
-                dueStr = this.settingsFieldSelectors.selfDue.prop('value');
+                startStr = view.settingsFieldSelectors.selfStart.prop('value');
+                dueStr = view.settingsFieldSelectors.selfDue.prop('value');
                 if (startStr) {
                     assessment = $.extend(assessment, {"start": startStr});
                 }
                 if (dueStr) {
                     assessment = $.extend(assessment, {"due": dueStr});
                 }
-                assessments[assessments.length] = assessment;
+                assessments.push(assessment);
             }
 
-            if (this.settingsFieldSelectors.hasAI.prop('checked') && id == "ai_assessment_settings_editor") {
-                assessments[assessments.length] = {
+            if (view.settingsFieldSelectors.hasAI.prop('checked') && id == "ai_assessment_settings_editor") {
+                assessment = {
                     "name": "example-based-assessment",
-                    "examples": this.aiTrainingExamplesCodeBox.getValue()
+                    "examples": view.aiTrainingExamplesCodeBox.getValue()
                 };
+                assessments.push(assessment);
             }
-        }
+        });
 
-        var view = this;
         this.server.updateEditorContext(prompt, rubric, title, subStart, subDue, assessments).done(function () {
             // Notify the client-side runtime that we finished saving
             // so it can hide the "Saving..." notification.
