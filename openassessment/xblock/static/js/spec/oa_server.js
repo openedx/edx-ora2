@@ -199,39 +199,6 @@ describe("OpenAssessment.Server", function() {
         });
     });
 
-    it("loads the XBlock's Context definition", function() {
-        stubAjax(true, {
-            success: true, prompt: PROMPT, rubric: RUBRIC, title: TITLE,
-            submission_start: SUBMISSION_START, submission_due: SUBMISSION_DUE, assessments: ASSESSMENTS
-        });
-
-        var loadedPrompt = "";
-        var loadedRubric = "";
-        var loadedAssessments = [];
-        var loadedTitle = "";
-        var loadedStart = "";
-        var loadedDue = "";
-        server.loadEditorContext().done(function(prompt, rubric, title, sub_start, sub_due, assessments) {
-            loadedPrompt = prompt;
-            loadedRubric = rubric;
-            loadedTitle = title;
-            loadedStart = sub_start;
-            loadedDue = sub_due;
-            loadedAssessments = assessments;
-        });
-
-        expect(loadedPrompt).toEqual(PROMPT);
-        expect(loadedRubric).toEqual(RUBRIC);
-        expect(loadedTitle).toEqual(TITLE);
-        expect(loadedStart).toEqual(SUBMISSION_START);
-        expect(loadedDue).toEqual(SUBMISSION_DUE);
-        expect(loadedAssessments).toEqual(ASSESSMENTS);
-
-        expect($.ajax).toHaveBeenCalledWith({
-            url: '/editor_context', type: "POST", data: '""'
-        });
-    });
-
     it("updates the XBlock's Context definition", function() {
         stubAjax(true, { success: true });
 
@@ -336,18 +303,6 @@ describe("OpenAssessment.Server", function() {
         expect(receivedMsg).toEqual('test error');
     });
 
-
-    it("informs the caller of an Ajax error when loading the editor context", function() {
-        stubAjax(false, null);
-
-        var receivedMsg = null;
-        server.loadEditorContext().fail(function(msg) {
-            receivedMsg = msg;
-        });
-
-        expect(receivedMsg).toContain("This problem could not be loaded");
-    });
-
     it("informs the caller of an Ajax error when updating the editor context", function() {
         stubAjax(false, null);
 
@@ -364,17 +319,6 @@ describe("OpenAssessment.Server", function() {
 
         var receivedMsg = null;
         server.updateEditorContext('prompt', 'rubric', 'title', 'start', 'due', 'assessments').fail(function(msg) {
-            receivedMsg = msg;
-        });
-
-        expect(receivedMsg).toEqual("Test error");
-    });
-
-    it("informs the caller of a server error when updating the editor context", function() {
-        stubAjax(true, { success: false, msg: "Test error" });
-
-        var receivedMsg = null;
-        server.loadEditorContext().fail(function(msg) {
             receivedMsg = msg;
         });
 
