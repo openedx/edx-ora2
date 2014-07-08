@@ -286,10 +286,7 @@
   .openassessment_assessment_module_settings_editor:hover{
     border-color: $blue;
     .drag-handle{
-      background-image: url(../img/white-drag-handles.png);
-      background-position: center;
-      background-repeat: no-repeat;
-      background-color: #009fe6;
+      background: url(../img/white-drag-handles.png) center no-repeat #009fe6;
       border-color: #009fe6;
       @include transition(none);
     }
@@ -360,6 +357,10 @@
     background: $edx-gray-l3;
   }
 
+  .ui-widget-header .ui-state-active:hover{
+    background: $edx-gray-d3;
+  }
+
   .openassessment_assessment_module_editor{
     padding: 2.5px 0px;
     .openassessment_description{
@@ -368,6 +369,10 @@
   }
 
   #oa_rubric_editor_wrapper{
+
+    .icon-caret-down {
+      color: $edx-gray-d3;
+    }
 
     .wrapper-comp-settings{
       display: initial;
@@ -510,31 +515,34 @@
       }
 
       .openassessment_criterion_option_point_wrapper{
-        width: 40%;
+        width: 30%;
         border-top: none;
         padding: 5px 5px 5px 0px;
         float: left;
         margin: 0;
 
+        .wrapper-comp-setting{
+          min-width: 200px
+        }
 
         label{
-          width: 40%;
-          vertical-align: middle;
-          padding: 0;
+          width: auto;
+          padding-left: 15%;
           margin: 0;
         }
 
         input{
+          min-width: 50px;
           padding: 10px;
           float: right;
-          width: 55%;
+          width: 30%;
           font-size: 11px;
         }
       }
 
       .openassessment_criterion_option_name_wrapper{
         float: left;
-        width: 60%;
+        width: 70%;
         padding: 5px 10px 5px 20px;
         border-top: 0;
         margin: 0;
@@ -545,10 +553,11 @@
           padding: 0;
           margin: 0;
         }
+
         input{
           padding: 10px;
           font-size: 11px;
-          width: 60%;
+          width: 56%;
           float: right;
         }
       }
@@ -571,28 +580,6 @@
           float: right;
         }
       }
-    }
-
-    .openassessment_line_input{
-      padding: 10px;
-      overflow: auto;
-      label{
-        width: 30%;
-        text-align: left;
-      }
-
-      input{
-        width:70%;
-        min-width: auto;
-        float: right;
-      }
-
-      textarea{
-        width:70%;
-        float:right;
-        @extend .openassessment_large_text_input
-      }
-
     }
 
     .openassessment_large_text_input{
@@ -633,34 +620,24 @@
       float: right;
     }
 
-    .openassessment_rubric_feedback_wrapper{
-      padding: 0 10px;
+    #openassessment_rubric_feedback_wrapper{
 
-      .openassessment_rubric_feedback_header{
-         margin-top: 10px;
-         border-bottom: 1px solid $edx-gray-d3;
-         font-size: 125%;
-         padding: 10px;
-         padding-right: 20px;
+      #openassessment_rubric_feedback_header{
+        background-color: $edx-gray-l2;
+        padding: 5px 5px 5px 10px;
+        margin: 0 10px;
+        border-radius: 3px;
        }
 
-      .openassessment_feedback_radio_toggle{
-        input[type="radio"]{
-            display: none;
-        }
+      label{
+        padding-top: 10px;
+      }
 
-        input[type="radio"] + label:before{
-          font-family: "FontAwesome";
-          display: inline-block;
-          margin-right: ($baseline-h/4);
-          width: auto;
-          height: auto;
-          content: "\f10c";
-        }
-
-        input[type="radio"]:checked + label:before{
-          content: "\f05d";
-        }
+      textarea{
+        padding: 10px;
+        @extend .openassessment_large_text_input;
+        width: 70%;
+        float: right;
       }
     }
 

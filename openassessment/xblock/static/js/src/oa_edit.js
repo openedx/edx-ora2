@@ -145,25 +145,6 @@ OpenAssessment.StudioView = function(runtime, element, server) {
             view.addNewCriterionToRubric(liveElement);
     });
 
-    // Adds a listener which removes rubric feedback
-    $("#openassessment_rubric_feedback_remove", liveElement). click( function(eventData){
-        $("#openassessment_rubric_feedback_header_open", liveElement).fadeOut();
-        $("#openassessment_rubric_feedback_input_wrapper", liveElement).fadeOut();
-        $("#openassessment_rubric_feedback_header_closed", liveElement).fadeIn();
-        view.hasRubricFeedbackPrompt = false;
-    });
-
-    // Adds a listener which adds rubric feedback if not already displayed.
-    $("#openassessment_rubric_feedback_header_closed", liveElement). click( function(eventData){
-        $("#openassessment_rubric_feedback_header_closed", liveElement).fadeOut();
-        $("#openassessment_rubric_feedback_header_open", liveElement).fadeIn();
-        $("#openassessment_rubric_feedback_input_wrapper", liveElement).fadeIn();
-        view.hasRubricFeedbackPrompt = true;
-    });
-
-    // Initially Hides the rubric "add rubric feedback" div
-    $("#openassessment_rubric_feedback_header_closed", liveElement).hide();
-
 };
 
 OpenAssessment.StudioView.prototype = {
