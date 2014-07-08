@@ -388,21 +388,13 @@
         border-bottom: 1px solid $edx-gray-d3;
         overflow: auto;
 
-        input[type="checkbox"] {
-          display: none;
-        }
-
-        input[type="checkbox"] + h6:before {
-          font-family: "FontAwesome";
-          display: inline-block;
-          margin-right: ($baseline-h/4);
-          width: auto;
-          height: auto;
-          content: "\f054";
-        }
-
-        input[type="checkbox"]:checked + label:before {
-          content: "\f078";
+        .action.expand-collapse {
+          float: left;
+          .ui-toggle-expansion {
+            .icon-caret-down:before{
+              color: $edx-gray-d3;
+            }
+          }
         }
 
         .openassessment_criterion_header_title {
@@ -480,6 +472,24 @@
         .openassessment_criterion_feedback_direction{
           label{
             margin-left: 15px;
+          }
+        }
+      }
+    }
+
+    .openassessment_criterion.collapsed {
+      .openassessment_criterion_body{
+        display: none;
+      }
+      .openassessment_criterion_header{
+        .action.expand-collapse {
+          float: left;
+          .ui-toggle-expansion {
+            @include transform(rotate(-90deg));
+            @include transform-origin(50% 50%);
+            .icon-caret-down:before{
+              color: $edx-gray-d3;
+            }
           }
         }
       }
