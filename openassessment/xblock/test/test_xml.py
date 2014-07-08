@@ -101,7 +101,6 @@ class TestSerializeContent(TestCase):
         self.oa_block.submission_start = data['submission_start']
         self.oa_block.submission_due = data['submission_due']
         self.oa_block.leaderboard_show = data['leaderboard_show']
-        self.oa_block.leaderboard_display_student_ids = data['leaderboard_display_student_ids']
         self.oa_block.rubric_criteria = data['criteria']
         self.oa_block.rubric_assessments = data['assessments']
         xml = serialize_content(self.oa_block)
@@ -154,7 +153,6 @@ class TestSerializeContent(TestCase):
         self.oa_block.submission_start = None
         self.oa_block.submission_due = None
         self.oa_block.leaderboard_show = 10
-        self.leaderboard_display_student_ids = False
 
         # We have to be really permissive with the data we'll accept.
         # If the data we're retrieving is somehow corrupted,
@@ -181,7 +179,6 @@ class TestSerializeContent(TestCase):
         self.oa_block.submission_start = None
         self.oa_block.submission_due = None
         self.oa_block.leaderboard_show = 10
-        self.oa_block.leaderboard_display_student_ids = False
 
         for assessment_dict in self.BASIC_ASSESSMENTS:
             for mutated_dict in self._dict_mutations(assessment_dict):
@@ -194,7 +191,7 @@ class TestSerializeContent(TestCase):
                     msg = "Could not parse mutated assessment dict {assessment}\n{ex}".format(assessment=mutated_dict, ex=ex)
                     self.fail(msg)
 
-    @ddt.data("title", "prompt", "start", "due", "submission_due", "submission_start", "leaderboard_show", "leaderboard_display_student_ids")
+    @ddt.data("title", "prompt", "start", "due", "submission_due", "submission_start", "leaderboard_show")
     def test_mutated_field(self, field):
         self.oa_block.rubric_criteria = self.BASIC_CRITERIA
         self.oa_block.rubric_assessments = self.BASIC_ASSESSMENTS
@@ -203,7 +200,6 @@ class TestSerializeContent(TestCase):
         self.oa_block.submission_start = None
         self.oa_block.submission_due = None
         self.oa_block.leaderboard_show = 10
-        self.oa_block.leaderboard_display_student_ids = False
 
         for mutated_value in [0, u"\u9282", None]:
             setattr(self.oa_block, field, mutated_value)
@@ -330,7 +326,6 @@ class TestUpdateFromXml(TestCase):
         self.oa_block.submission_start = "2000-01-01T00:00:00"
         self.oa_block.submission_due = "2000-01-01T00:00:00"
         self.oa_block.leaderboard_show = 0
-        self.oa_block.leaderboard_display_student_ids = False
 
     @ddt.file_data('data/update_from_xml.json')
     def test_update_from_xml(self, data):
@@ -349,7 +344,6 @@ class TestUpdateFromXml(TestCase):
         self.assertEqual(self.oa_block.submission_start, data['submission_start'])
         self.assertEqual(self.oa_block.submission_due, data['submission_due'])
         self.assertEqual(self.oa_block.leaderboard_show, data['leaderboard_show'])
-        self.assertEqual(self.oa_block.leaderboard_display_student_ids, bool(data['leaderboard_display_student_ids']))
         self.assertEqual(self.oa_block.rubric_criteria, data['criteria'])
         self.assertEqual(self.oa_block.rubric_assessments, data['assessments'])
 

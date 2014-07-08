@@ -6,7 +6,7 @@ The Leaderboard API exposes a single API which exposes the top answers for the s
 from openassessment.assessment.models import Assessment
 from submissions import api as sub_api
 
-def get_leaderboard(submission_uuid, number_of_top_scores=10, display_student_ids=False):
+def get_leaderboard(submission_uuid, number_of_top_scores=10):
     """
     Gets the top scores for a piece of assessment given the number of assessment required,
     and creates a anonymised array of dictionaries for the top results
@@ -16,7 +16,6 @@ def get_leaderboard(submission_uuid, number_of_top_scores=10, display_student_id
 
     Kwargs:
         number_of_top_scores (int): The number of scores to return (default 10).
-        display_student_ids (Bool): Whether to display real student IDs
 
     Returns:
         An array of the highest submitted overall scores for the assessment. Returns
@@ -38,15 +37,12 @@ def get_leaderboard(submission_uuid, number_of_top_scores=10, display_student_id
         if 'text' in sub['answer']:
             text = sub['answer']['text']
         for i in range(int(number_of_top_scores)):
-            student_id = 'Anonymous'
-            if display_student_ids:
-                student_id = sub['student_item']['student_id']
             if i < len(topscores):
                 if int(topscores[i]['score']) < int(score):
-                    topscores.insert(i, {'score': str(score), 'student_id': student_id, 'content': text})
+                    topscores.insert(i, {'score': str(score), 'content': text})
                     break
             else:
-                topscores.append({'score': str(score), 'student_id': student_id, 'content': text})
+                topscores.append({'score': str(score), 'content': text})
                 break
     if len(topscores) > number_of_top_scores:
         topscores = topscores[0:number_of_top_scores]

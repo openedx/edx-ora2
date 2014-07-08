@@ -8,7 +8,6 @@
         "submission_start": null,
         "submission_due": null,
         "leaderboard_show": null,
-        "leaderboard_display_student_ids": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -74,7 +73,6 @@
         "submission_start": null,
         "submission_due": null,
         "leaderboard_show": null,
-        "leaderboard_display_student_ids": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -139,7 +137,6 @@
         "submission_start": null,
         "submission_due": null,
         "leaderboard_show": null,
-        "leaderboard_display_student_ids": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -205,7 +202,6 @@
         "submission_start": null,
         "submission_due": null,
         "leaderboard_show": null,
-        "leaderboard_display_student_ids": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -265,7 +261,6 @@
         "submission_start": null,
         "submission_due": null,
         "leaderboard_show": null,
-        "leaderboard_display_student_ids": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -331,7 +326,6 @@
         "submission_start": null,
         "submission_due": null,
         "leaderboard_show": null,
-        "leaderboard_display_student_ids": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -396,7 +390,6 @@
         "submission_start": null,
         "submission_due": null,
         "leaderboard_show": null,
-        "leaderboard_display_student_ids": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -456,7 +449,6 @@
         "submission_start": null,
         "submission_due": null,
         "leaderboard_show": null,
-        "leaderboard_display_student_ids": null,
         "criteria": [
             {
                 "order_num": 2,
@@ -534,7 +526,6 @@
         "submission_start": null,
         "submission_due": null,
         "leaderboard_show": null,
-        "leaderboard_display_student_ids": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -602,7 +593,6 @@
         "submission_start": null,
         "submission_due": "2020-04-15T00:00:00",
         "leaderboard_show": null,
-        "leaderboard_display_student_ids": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -670,7 +660,6 @@
         "submission_start": null,
         "submission_due": null,
         "leaderboard_show": null,
-        "leaderboard_display_student_ids": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -737,7 +726,6 @@
         "submission_start": null,
         "submission_due": null,
         "leaderboard_show": null,
-        "leaderboard_display_student_ids": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -796,7 +784,6 @@
         "submission_start": null,
         "submission_due": null,
         "leaderboard_show": null,
-        "leaderboard_display_student_ids": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -900,7 +887,6 @@
         "submission_start": null,
         "submission_due": null,
         "leaderboard_show": null,
-        "leaderboard_display_student_ids": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -1022,7 +1008,6 @@
         "submission_start": null,
         "submission_due": null,
         "leaderboard_show": null,
-        "leaderboard_display_student_ids": null,
         "criteria": [
             {
                 "order_num": 0,

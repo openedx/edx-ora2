@@ -126,12 +126,6 @@ class OpenAssessmentBlock(
         help="The number of leaderboard results to display (0 if none)"
     )
 
-    leaderboard_display_student_ids = Boolean(
-        default=False,
-        scope=Scope.content,
-        help="Indicates whether to show student IDs on the leaderboard."
-    )
-
     prompt = String(
         default=DEFAULT_PROMPT,
         scope=Scope.content,

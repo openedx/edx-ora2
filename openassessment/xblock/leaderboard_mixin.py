@@ -65,7 +65,7 @@ class LeaderboardMixin(object):
         """
 
         context = {
-            'topscores': leaderboard_api.get_leaderboard(submission_uuid, self.leaderboard_show, self.leaderboard_display_student_ids)
+            'topscores': leaderboard_api.get_leaderboard(submission_uuid, self.leaderboard_show)
         }
 
         return ('openassessmentblock/leaderboard/oa_leaderboard_show.html', context)
