@@ -501,6 +501,10 @@ def serialize_content_to_xml(oa_block, root):
     if oa_block.submission_due is not None:
         root.set('submission_due', unicode(oa_block.submission_due))
 
+    # Set leaderboard show
+    if oa_block.leaderboard_show is not 0:
+        root.set('leaderboard_show', unicode(str(oa_block.leaderboard_show)))
+
     # Open assessment displayed title
     title = etree.SubElement(root, 'title')
     title.text = unicode(oa_block.title)
