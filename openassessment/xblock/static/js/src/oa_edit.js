@@ -82,7 +82,7 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     this.hasRubricFeedbackPrompt = true;
     $('#openassessment_criterion_list', liveElement).empty();
     this.addNewCriterionToRubric();
-    
+
     // Installs the save and cancel buttons
     $('.openassessment_save_button', liveElement) .click( function (eventData) {
             view.save();
@@ -105,10 +105,12 @@ OpenAssessment.StudioView = function(runtime, element, server) {
         // which items are currently selected, we don't need to do further hiding/showing/recalculation
         stop: function(event, ui){
             $('.openassessment_assessment_module_editor').show();
+            ui.item.css('height', 'auto');
         },
         snap: true,
         axis: "y",
         handle: ".drag-handle",
+        cursorAt: {top: 20},
         update: function(event, ui) {
             view.assessmentOrder = [];
             $('.assessment_settings_wrapper').each(
@@ -124,6 +126,10 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     $('.drag-handle').each(function() {
         $(this).mousedown(function() {
             $('.openassessment_assessment_module_editor').hide();
+            $(this).parent().css('height', '40px');
+        });
+        $(this).mouseup(function() {
+            $(this).parent().css('height', 'auto');
         });
     });
 

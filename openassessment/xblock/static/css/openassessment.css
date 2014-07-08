@@ -2167,7 +2167,8 @@ hr.divider,
     resize: none;
     border: none;
     border-radius: 4px;
-    padding: 10px; }
+    padding: 10px;
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; }
     #openassessment-editor #openassessment_prompt_editor textarea {
       font-size: 14px;
       border: none;
@@ -2192,32 +2193,38 @@ hr.divider,
     text-align: center;
     font-size: 80%; }
   #openassessment-editor .openassessment_assessment_module_settings_editor {
-    overflow-y: scroll;
     padding: 5px;
     margin: 10px;
-    border: 1px solid lightgray;
+    border: 1px solid #dadbdc;
     border-radius: 3px;
     position: relative; }
     #openassessment-editor .openassessment_assessment_module_settings_editor .drag-handle {
       position: absolute;
-      background-color: lightgrey;
+      background: url(../img/white-drag-handles.png) center no-repeat #dadbdc;
       display: block;
       top: 0px;
       right: 0px;
       z-index: 10;
       width: 15px;
       height: 100%;
-      border-left: 1px solid lightgrey;
+      border-left: 1px solid #dadbdc;
       cursor: move;
-      background-position: center;
       -webkit-transition: none;
       -moz-transition: none;
       transition: none; }
+    #openassessment-editor .openassessment_assessment_module_settings_editor .openassessment_description, #openassessment-editor .openassessment_assessment_module_settings_editor .openassessment_description_closed {
+      padding: 0 20px 0 10px; }
   #openassessment-editor .openassessment_assessment_module_settings_editor:hover {
-    border-color: #6696d7; }
+    border-color: #80a9cc; }
     #openassessment-editor .openassessment_assessment_module_settings_editor:hover .drag-handle {
+      background-image: url(../img/white-drag-handles.png);
+      background-position: center;
+      background-repeat: no-repeat;
       background-color: #009fe6;
-      border-color: #009fe6; }
+      border-color: #009fe6;
+      -webkit-transition: none;
+      -moz-transition: none;
+      transition: none; }
   #openassessment-editor .openassessment_description, #openassessment-editor .openassessment_description_closed {
     font-size: 75%;
     margin: 0; }
@@ -2255,6 +2262,8 @@ hr.divider,
       color: whitesmoke;
       text-transform: uppercase;
       outline-color: transparent; }
+  #openassessment-editor .ui-widget-header .ui-state-default:hover {
+    background: #dadbdc; }
   #openassessment-editor .openassessment_assessment_module_editor {
     padding: 2.5px 0px; }
     #openassessment-editor .openassessment_assessment_module_editor .openassessment_description, #openassessment-editor .openassessment_assessment_module_editor .openassessment_description_closed {

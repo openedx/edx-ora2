@@ -220,6 +220,7 @@
     border: none;
     border-radius: 4px;
     padding: 10px;
+    font-family: $f-sans-serif;
 
     textarea{
       font-size: 14px;
@@ -258,34 +259,39 @@
   }
 
   .openassessment_assessment_module_settings_editor{
-    overflow-y: scroll;
     padding: 5px;
     margin: 10px;
-    border: 1px solid lightgray;
+    border: 1px solid $edx-gray-l3;
     border-radius: 3px;
     position: relative;
-    //border-right: 12px solid lightgray;
+
     .drag-handle{
       position: absolute;
-      background-color: lightgrey;
+      background: url(../img/white-drag-handles.png) center no-repeat $edx-gray-l3;
       display: block;
       top: 0px;
       right: 0px;
       z-index: 10;
       width: 15px;
       height: 100%;
-      border-left: 1px solid lightgrey;
+      border-left: 1px solid $edx-gray-l3;
       cursor: move;
-      background-position: center;
       @include transition(none);
+    }
+    .openassessment_description{
+      padding: 0 20px 0 10px;
     }
   }
 
   .openassessment_assessment_module_settings_editor:hover{
-    border-color: #6696d7;
+    border-color: $blue;
     .drag-handle{
+      background-image: url(../img/white-drag-handles.png);
+      background-position: center;
+      background-repeat: no-repeat;
       background-color: #009fe6;
       border-color: #009fe6;
+      @include transition(none);
     }
   }
 
@@ -348,6 +354,10 @@
       text-transform: uppercase;
       outline-color: transparent;
     }
+  }
+
+  .ui-widget-header .ui-state-default:hover{
+    background: $edx-gray-l3;
   }
 
   .openassessment_assessment_module_editor{
