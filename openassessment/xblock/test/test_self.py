@@ -248,7 +248,9 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             {
                 'rubric_criteria': xblock.rubric_criteria,
                 'estimated_time': '20 minutes',
-                'self_submission': submission
+                'self_submission': submission,
+                'allow_file_upload': False,
+                'self_file_url': '',
             },
             workflow_status='self',
             submission_uuid=submission['uuid']

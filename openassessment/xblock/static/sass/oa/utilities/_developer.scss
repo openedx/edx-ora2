@@ -172,8 +172,32 @@
       }
     }
   }
+}
 
+//---------------------------
+// Developer Styles for Image Submission
+//---------------------------
 
+.step--response {
+
+  .action--upload {
+    @extend %btn--secondary;
+    @extend %action-2;
+    display: block;
+    text-align: center;
+    margin-bottom: ($baseline-v/2);
+  }
+
+  .file--upload {
+    margin-top: $baseline-v/2;
+    margin-bottom: $baseline-v/2;
+  }
+}
+
+.submission--image {
+  max-height: 600px;
+  max-width: $max-width/2;
+  margin-bottom: $baseline-v;
 }
 
 // Developer SASS for Continued Grading.

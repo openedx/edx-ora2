@@ -479,5 +479,53 @@ OpenAssessment.Server.prototype = {
                 defer.rejectWith(this, [gettext("The server could not be contacted.")]);
             });
         }).promise();
+    },
+
+    /**
+     Get an upload url used to asynchronously post related files for the
+     submission.
+
+     Args:
+        contentType (str): The Content Type for the file being uploaded.
+
+     Returns:
+        A presigned upload URL from the specified service used for uploading
+        files.
+
+     **/
+    getUploadUrl: function(contentType) {
+        var url = this.url('upload_url');
+        return $.Deferred(function(defer) {
+            $.ajax({
+                type: "POST", url: url, data: JSON.stringify({contentType: contentType})
+            }).done(function(data) {
+                    if (data.success) { defer.resolve(data.url); }
+                    else { defer.rejectWith(this, [data.msg]); }
+                }).fail(function(data) {
+                    defer.rejectWith(this, [gettext('Could not retrieve upload url.')]);
+                });
+        }).promise();
+    },
+
+    /**
+     Get a download url used to download related files for the submission.
+
+     Returns:
+        A temporary download URL for retrieving documents from s3.
+
+     **/
+    getDownloadUrl: function() {
+        var url = this.url('download_url');
+        return $.Deferred(function(defer) {
+            $.ajax({
+                type: "POST", url: url, data: JSON.stringify({})
+            }).done(function(data) {
+                    if (data.success) { defer.resolve(data.url); }
+                    else { defer.rejectWith(this, [data.msg]); }
+                }).fail(function(data) {
+                    defer.rejectWith(this, [gettext('Could not retrieve download url.')]);
+                });
+        }).promise();
     }
+
 };
