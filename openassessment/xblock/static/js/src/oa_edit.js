@@ -17,6 +17,8 @@ OpenAssessment.StudioView = function(runtime, element, server) {
 
     this.liveElement = $(element);
 
+    var view = this;
+
     var liveElement = this.liveElement;
 
     // Instantiates JQuery selector variables which will allow manipulation and display controls.
@@ -36,6 +38,15 @@ OpenAssessment.StudioView = function(runtime, element, server) {
         selfStart: $('#self_assessment_start_date', liveElement),
         selfDue: $('#self_assessment_due_date', liveElement)
     };
+
+    // The initial assessment order can be determined by what was initially displayed to the user.
+    this.assessmentOrder = [];
+
+    $('.assessment_settings_wrapper').each(
+        function (e) {
+            view.assessmentOrder.push($(this).attr('id'));
+        }
+    );
 
     this.aiTrainingExamplesCodeBox = CodeMirror.fromTextArea(
         $('#ai_training_examples', liveElement).first().get(0),
@@ -72,8 +83,6 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     $('#openassessment_criterion_list', liveElement).empty();
     this.addNewCriterionToRubric();
 
-    var view = this;
-
     // Installs the save and cancel buttons
     $('.openassessment_save_button', liveElement) .click( function (eventData) {
             view.save();
@@ -86,6 +95,46 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     // Adds the tabbing functionality
     $('.openassessment_editor_content_and_tabs', liveElement) .tabs();
 
+    // Adds a listener to allow sorting of the assessment modules
+    $('#openassessment_assessment_module_settings_editors').sortable({
+        // On start, the mousedown will have already been called, so we don't need to hide again.
+        start: function(event, ui) {
+            $('#openassessment_assessment_module_settings_editors').sortable( "refreshPositions" );
+        },
+        // On stop, we redisplay the divs to their original state. Because these divs are not used to display
+        // which items are currently selected, we don't need to do further hiding/showing/recalculation
+        stop: function(event, ui){
+            $('.openassessment_assessment_module_editor').show();
+            ui.item.css('height', 'auto');
+        },
+        snap: true,
+        axis: "y",
+        handle: ".drag-handle",
+        cursorAt: {top: 20},
+        update: function(event, ui) {
+            view.assessmentOrder = [];
+            $('.assessment_settings_wrapper').each(
+                function (e) {
+                    view.assessmentOrder.push($(this).attr('id'));
+                }
+            );
+        }
+    });
+    // This is hacky, but it is the only way I could think of achieving this where we have the heights recalculated
+    // BEFORE the start command is issued. Without this, the space from each div is still present when we commence
+    // dragging, which doesn't allow one to fit all of them on the screen.
+    $('.drag-handle').each(function() {
+        $(this).mousedown(function() {
+            $('.openassessment_assessment_module_editor').hide();
+            $(this).parent().css('height', '40px');
+        });
+        $(this).mouseup(function() {
+            $(this).parent().css('height', 'auto');
+        });
+    });
+
+    $('#openassessment_assessment_module_settings_editors').disableSelection();
+
     // Installs all of the checkbox listeners in the settings tab
     view.addSettingsAssessmentCheckboxListener("ai_assessment", liveElement);
     view.addSettingsAssessmentCheckboxListener("self_assessment", liveElement);
@@ -95,25 +144,6 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     $('#openassessment_rubric_add_criterion', liveElement) .click( function (eventData) {
             view.addNewCriterionToRubric(liveElement);
     });
-
-    // Adds a listener which removes rubric feedback
-    $("#openassessment_rubric_feedback_remove", liveElement). click( function(eventData){
-        $("#openassessment_rubric_feedback_header_open", liveElement).fadeOut();
-        $("#openassessment_rubric_feedback_input_wrapper", liveElement).fadeOut();
-        $("#openassessment_rubric_feedback_header_closed", liveElement).fadeIn();
-        view.hasRubricFeedbackPrompt = false;
-    });
-
-    // Adds a listener which adds rubric feedback if not already displayed.
-    $("#openassessment_rubric_feedback_header_closed", liveElement). click( function(eventData){
-        $("#openassessment_rubric_feedback_header_closed", liveElement).fadeOut();
-        $("#openassessment_rubric_feedback_header_open", liveElement).fadeIn();
-        $("#openassessment_rubric_feedback_input_wrapper", liveElement).fadeIn();
-        view.hasRubricFeedbackPrompt = true;
-    });
-
-    // Initially Hides the rubric "add rubric feedback" div
-    $("#openassessment_rubric_feedback_header_closed", liveElement).hide();
 
 };
 
@@ -514,50 +544,56 @@ OpenAssessment.StudioView.prototype = {
 
         var assessments = [];
 
-        if (this.settingsFieldSelectors.hasTraining.prop('checked')){
-            assessments[assessments.length] = {
-                "name": "student-training",
-                "examples": this.studentTrainingExamplesCodeBox.getValue()
-            };
-        }
+        // Adds the assessments in the order in which they are currently displayed. Note that the dual condition on
+        // each if statement means that it will only be added on that iteration if we 1) Have that assessment, and
+        // 2) it is the assessment referenced in the loop.
+        for(i = 0; i < this.assessmentOrder.length; i++) {
+            var id = this.assessmentOrder[i];
+            if (this.settingsFieldSelectors.hasTraining.prop('checked') && id == "student_training_settings_editor") {
+                assessments[assessments.length] = {
+                    "name": "student-training",
+                    "examples": this.studentTrainingExamplesCodeBox.getValue()
+                };
+            }
 
-        if (this.settingsFieldSelectors.hasPeer.prop('checked')) {
-            var assessment = {
-                "name": "peer-assessment",
-                "must_grade": parseInt(this.settingsFieldSelectors.peerMustGrade.prop('value')),
-                "must_be_graded_by": parseInt(this.settingsFieldSelectors.peerGradedBy.prop('value'))
-            };
-            var startStr = this.settingsFieldSelectors.peerStart.prop('value');
-            var dueStr = this.settingsFieldSelectors.peerDue.prop('value');
-            if (startStr){
-                assessment = $.extend(assessment, {"start": startStr});
+            if (this.settingsFieldSelectors.hasPeer.prop('checked') && id == "peer_assessment_settings_editor") {
+                var assessment = {
+                    "name": "peer-assessment",
+                    "must_grade": parseInt(this.settingsFieldSelectors.peerMustGrade.prop('value')),
+                    "must_be_graded_by": parseInt(this.settingsFieldSelectors.peerGradedBy.prop('value'))
+                };
+                var startStr = this.settingsFieldSelectors.peerStart.prop('value');
+                var dueStr = this.settingsFieldSelectors.peerDue.prop('value');
+                if (startStr) {
+                    assessment = $.extend(assessment, {"start": startStr});
+                }
+                if (dueStr) {
+                    assessment = $.extend(assessment, {"due": dueStr});
+                }
+                assessments[assessments.length] = assessment;
             }
-            if (dueStr){
-                assessment = $.extend(assessment, {"due": dueStr});
-            }
-            assessments[assessments.length] = assessment;
-        }
 
-        if (this.settingsFieldSelectors.hasSelf.prop('checked')) {
-            var assessment = {
-                "name": "self-assessment"
-            };
-            var startStr = this.settingsFieldSelectors.selfStart.prop('value');
-            var dueStr = this.settingsFieldSelectors.selfDue.prop('value');
-            if (startStr){
-                assessment = $.extend(assessment, {"start": startStr});
+            if (this.settingsFieldSelectors.hasSelf.prop('checked') && id == "self_assessment_settings_editor") {
+                assessment = {
+                    "name": "self-assessment"
+                };
+                startStr = this.settingsFieldSelectors.selfStart.prop('value');
+                dueStr = this.settingsFieldSelectors.selfDue.prop('value');
+                if (startStr) {
+                    assessment = $.extend(assessment, {"start": startStr});
+                }
+                if (dueStr) {
+                    assessment = $.extend(assessment, {"due": dueStr});
+                }
+                assessments[assessments.length] = assessment;
             }
-            if (dueStr){
-                assessment = $.extend(assessment, {"due": dueStr});
-            }
-            assessments[assessments.length] = assessment;
-        }
 
-        if (this.settingsFieldSelectors.hasAI.prop('checked')) {
-            assessments[assessments.length] = {
-                "name": "example-based-assessment",
-                "examples": this.aiTrainingExamplesCodeBox.getValue()
-            };
+            if (this.settingsFieldSelectors.hasAI.prop('checked') && id == "ai_assessment_settings_editor") {
+                assessments[assessments.length] = {
+                    "name": "example-based-assessment",
+                    "examples": this.aiTrainingExamplesCodeBox.getValue()
+                };
+            }
         }
 
         var view = this;

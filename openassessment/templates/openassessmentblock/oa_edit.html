@@ -133,18 +133,8 @@
 
 
             <div id="openassessment_rubric_feedback_wrapper" class="wrapper-comp-settings">
-                <div id="openassessment_rubric_feedback_header_open">
-                    <span>
-                        {% trans "Rubric Feedback" %}
-                    </span>
-                    <div class="openassessment_rubric_remove_button" id="openassessment_rubric_feedback_remove">
-                        <h2>{% trans "Remove" %}</h2>
-                    </div>
-                    <div id="openassessment_rubric_feedback_header_closed">
-                    <h2>
-                        {% trans "Add Rubric Feedback" %}
-                    </h2>
-                </div>
+                <div id="openassessment_rubric_feedback_header">
+                    <h2>{% trans "Rubric Feedback" %}</h2>
                 </div>
                 <ul class="list-input settings-list">
                     <li class="field comp-setting-entry">
@@ -152,10 +142,10 @@
                             <label for="openassessment_rubric_feedback" class="setting-label">{% trans "Feedback Direction" %}</label>
                             <textarea id="openassessment_rubric_feedback" class="input setting-input"></textarea>
                         </div>
+                        <p class="setting-help">
+                            {% trans "Provide a prompt so that students can give one another general feedback as a part of the rubric." %}
+                        </p>
                     </li>
-                    <p class="setting-help">
-                        {% trans "If you would like your students to be able to provide feedback on the rubric, add a prompt to ask them for it." %}
-                    </p>
                 </ul>
             </div>
         </div>
@@ -197,125 +187,130 @@
             </ul>
 
             <p class="openassessment_description" id="openassessment_step_select_description">
-                {% trans "Select the steps that students must complete. All steps are optional, but every assignment must include at least one step." %}
+                {% trans "Select the steps that students must complete. All steps are optional, but every assignment must include at least one step. To change the order in which students will complete the steps, drag them into the desired order." %}
             </p>
 
-            <div class="openassessment_assessment_module_settings_editor" id="oa_student_training_editor">
-                <div class = "openassessment_inclusion_wrapper">
-                    <input type="checkbox" id="include_student_training">
-                    <label for="include_student_training">{% trans "Step: Student Training" %}</label>
-                </div>
-                <div class = "openassessment_assessment_module_editor">
-                    <p id="student_training_description_closed" class="openassessment_description_closed">
-                        {% trans "Students learn to assess responses by scoring pre-assessed sample responses that the instructor provides. Students move to the next step when the scores they give match the instructor's scores. Note that Student Training Requires that the Peer Assessment module is also selected." %}
-                    </p>
-                    <div id="student_training_settings_editor" class="assessment_settings_wrapper">
-                        <p class="openassessment_description">
-                            {% trans "Enter one or more sample responses that you've created, together with the scores you would give those responses. Be sure to format the responses and scores according to the placeholder text below." %}
-                        </p>
-                        <textarea id="student_training_examples"></textarea>
+            <ol id="openassessment_assessment_module_settings_editors">
+                <li class="openassessment_assessment_module_settings_editor" id="oa_student_training_editor">
+                    <div class = "drag-handle action"></div>
+                    <div class = "openassessment_inclusion_wrapper">
+                        <input type="checkbox" id="include_student_training">
+                        <label for="include_student_training">{% trans "Step: Student Training" %}</label>
                     </div>
-                </div>
-            </div>
-
-            <div class="openassessment_assessment_module_settings_editor" id="oa_peer_assessment_editor">
-                <div class="openassessment_inclusion_wrapper">
-                    <input type="checkbox" id="include_peer_assessment">
-                    <label for="include_peer_assessment">{% trans "Step: Peer Assessment" %}</label>
-                </div>
-                <div class = "openassessment_assessment_module_editor">
-                    <p id="peer_assessment_description_closed" class="openassessment_description_closed">
-                        {% trans "Students assess a specified number of other students' responses using the rubric for the assignment." %}
-                    </p>
-                    <div id="peer_assessment_settings_editor" class="assessment_settings_wrapper">
-                        <p class="openassessment_description">
-                            {% trans "Specify the following values for the peer assessment step. The numeric grading requirements must be given a value." %}
+                    <div class = "openassessment_assessment_module_editor">
+                        <p id="student_training_description_closed" class="openassessment_description_closed">
+                            {% trans "Students learn to assess responses by scoring pre-assessed sample responses that the instructor provides. Students move to the next step when the scores they give match the instructor's scores. Note that Student Training Requires that the Peer Assessment module is also selected." %}
                         </p>
-                        <ul class="list-input settings-list">
-                            <li class="field comp-setting-entry">
-                                <div class="wrapper-comp-setting">
-                                    <label for="peer_assessment_must_grade" class="setting-label">{% trans "Must Grade" %}</label>
-                                    <input id="peer_assessment_must_grade" class="input setting-input" type="number">
-                                </div>
-                                <p class="setting-help">{% trans "Each student must assess this number of peer responses in order to recieve a grade."%}</p>
-                            </li>
-                            <li class="field comp-setting-entry">
-                                <div class="wrapper-comp-setting">
-                                    <label for="peer_assessment_graded_by" class="setting-label"> {% trans "Graded By" %}</label>
-                                    <input id="peer_assessment_graded_by" class="input setting-input" type="number">
-                                </div>
-                                <p class="setting-help">{% trans "Each response must be assessed by at least this many students in order to tabulate a score."%}</p>
-                            </li>
-                            <li class="field comp-setting-entry">
-                                <div class="wrapper-comp-setting">
-                                    <label for="peer_assessment_start_date" class="setting-label">{% trans "Start Date" %}</label>
-                                    <input id="peer_assessment_start_date" type="datetime-local" class="input setting-input">
-                                </div>
-                                <p class="setting-help">{% trans "If desired, specify a start date for the peer assessment period.  If no date is specified, peer assessment can begin when submissions begin."%}</p>
-                            </li>
-                            <li class="field comp-setting-entry">
-                                <div class="wrapper-comp-setting">
-                                    <label for="peer_assessment_due_date" class="setting-label">{% trans "Due Date" %}</label>
-                                    <input id="peer_assessment_due_date" type="datetime-local" class="input setting-input">
-                                </div>
-                                <p class="setting-help">{% trans "If desired, specify a due date for the peer assessment period.  If no date is specified, peer assessment can run as long as the problem is open."%}</p>
-                            </li>
-                        </ul>
+                        <div id="student_training_settings_editor" class="assessment_settings_wrapper">
+                            <p class="openassessment_description">
+                                {% trans "Enter one or more sample responses that you've created, together with the scores you would give those responses. Be sure to format the responses and scores according to the placeholder text below." %}
+                            </p>
+                            <textarea id="student_training_examples"></textarea>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </li>
 
-            <div class="openassessment_assessment_module_settings_editor" id="oa_self_assessment_editor">
-                <div class = "openassessment_inclusion_wrapper">
-                    <input id="include_self_assessment" type="checkbox">
-                    <label for="include_self_assessment">{% trans "Step: Self Assessment" %}</label>
-                </div>
-                <div class="openassessment_assessment_module_editor">
-                    <p id="self_assessment_description_closed" class="openassessment_description_closed">
-                        {% trans "Students assess their own responses using the rubric for the assignment." %}
-                    </p>
-                    <div id="self_assessment_settings_editor" class="assessment_settings_wrapper">
-                        <p class="openassessment_description">
-                            {% trans "Specify start and due dates for the self assessment step. To allow self assessment to run as long as the assignment is open, leave both fields blank." %}
+                <li class="openassessment_assessment_module_settings_editor" id="oa_peer_assessment_editor">
+                    <div class = "drag-handle action"></div>
+                    <div class="openassessment_inclusion_wrapper">
+                        <input type="checkbox" id="include_peer_assessment">
+                        <label for="include_peer_assessment">{% trans "Step: Peer Assessment" %}</label>
+                    </div>
+                    <div class = "openassessment_assessment_module_editor">
+                        <p id="peer_assessment_description_closed" class="openassessment_description_closed">
+                            {% trans "Students assess a specified number of other students' responses using the rubric for the assignment." %}
                         </p>
-                        <ul class="list-input settings-list">
-                            <li class="field comp-setting-entry">
-                                <div class="wrapper-comp-setting">
-                                    <label for="self_assessment_start_date" class="setting-label">{% trans "Start Date" %}</label>
-                                    <input id="self_assessment_start_date" type="datetime-local" class="input setting-input">
-                                </div>
-                                <p class="setting-help">{% trans "If desired, specify a start date for the self assessment period.  If no date is specified, self assessment can begin when submissions begin."%}</p>
-                            </li>
-                            <li class="field comp-setting-entry">
-                                <div class="wrapper-comp-setting">
-                                    <label for="self_assessment_due_date" class="setting-label">{% trans "Due Date" %}</label>
-                                    <input id="self_assessment_due_date" type="datetime-local" class="input setting-input">
-                                </div>
-                                <p class="setting-help">{% trans "If desired, specify a due date for the self assessment period.  If no date is specified, self assessment can run as long as the problem is open."%}</p>
-                            </li>
-                        </ul>
+                        <div id="peer_assessment_settings_editor" class="assessment_settings_wrapper">
+                            <p class="openassessment_description">
+                                {% trans "Specify the following values for the peer assessment step. The numeric grading requirements must be given a value." %}
+                            </p>
+                            <ul class="list-input settings-list">
+                                <li class="field comp-setting-entry">
+                                    <div class="wrapper-comp-setting">
+                                        <label for="peer_assessment_must_grade" class="setting-label">{% trans "Must Grade" %}</label>
+                                        <input id="peer_assessment_must_grade" class="input setting-input" type="number">
+                                    </div>
+                                    <p class="setting-help">{% trans "Each student must assess this number of peer responses in order to recieve a grade."%}</p>
+                                </li>
+                                <li class="field comp-setting-entry">
+                                    <div class="wrapper-comp-setting">
+                                        <label for="peer_assessment_graded_by" class="setting-label"> {% trans "Graded By" %}</label>
+                                        <input id="peer_assessment_graded_by" class="input setting-input" type="number">
+                                    </div>
+                                    <p class="setting-help">{% trans "Each response must be assessed by at least this many students in order to tabulate a score."%}</p>
+                                </li>
+                                <li class="field comp-setting-entry">
+                                    <div class="wrapper-comp-setting">
+                                        <label for="peer_assessment_start_date" class="setting-label">{% trans "Start Date" %}</label>
+                                        <input id="peer_assessment_start_date" type="datetime-local" class="input setting-input">
+                                    </div>
+                                    <p class="setting-help">{% trans "If desired, specify a start date for the peer assessment period.  If no date is specified, peer assessment can begin when submissions begin."%}</p>
+                                </li>
+                                <li class="field comp-setting-entry">
+                                    <div class="wrapper-comp-setting">
+                                        <label for="peer_assessment_due_date" class="setting-label">{% trans "Due Date" %}</label>
+                                        <input id="peer_assessment_due_date" type="datetime-local" class="input setting-input">
+                                    </div>
+                                    <p class="setting-help">{% trans "If desired, specify a due date for the peer assessment period.  If no date is specified, peer assessment can run as long as the problem is open."%}</p>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </li>
 
-            <div class="openassessment_assessment_module_settings_editor" id="oa_ai_assessment_editor">
-                <div class = "openassessment_inclusion_wrapper">
-                    <input id="include_ai_assessment" type="checkbox">
-                    <label for="include_ai_assessment">{% trans "Step: Example-Based Assessment" %}</label>
-                </div>
-                <div class="openassessment_assessment_module_editor">
-                    <p id="ai_assessment_description_closed" class="openassessment_description_closed">
-                        {% trans "An algorithm assesses students' responses by comparing the responses to pre-assessed sample responses that the instructor provides."%}
-                    </p>
-                    <div id="ai_assessment_settings_editor" class="assessment_settings_wrapper">
-                        <p class="openassessment_description">
-                            {% trans "Enter one or more sample responses that you've created, together with the scores you would give those responses. Be sure to format the responses and scores according to the placeholder text below. The algorithm assesses students' responses by comparing them to the sample responses and scores that you provide."%}
+                <li class="openassessment_assessment_module_settings_editor" id="oa_self_assessment_editor">
+                    <div class = "drag-handle action"></div>
+                    <div class = "openassessment_inclusion_wrapper">
+                        <input id="include_self_assessment" type="checkbox">
+                        <label for="include_self_assessment">{% trans "Step: Self Assessment" %}</label>
+                    </div>
+                    <div class="openassessment_assessment_module_editor">
+                        <p id="self_assessment_description_closed" class="openassessment_description_closed">
+                            {% trans "Students assess their own responses using the rubric for the assignment." %}
                         </p>
-                        <textarea id="ai_training_examples"></textarea>
+                        <div id="self_assessment_settings_editor" class="assessment_settings_wrapper">
+                            <p class="openassessment_description">
+                                {% trans "Specify start and due dates for the self assessment step. To allow self assessment to run as long as the assignment is open, leave both fields blank." %}
+                            </p>
+                            <ul class="list-input settings-list">
+                                <li class="field comp-setting-entry">
+                                    <div class="wrapper-comp-setting">
+                                        <label for="self_assessment_start_date" class="setting-label">{% trans "Start Date" %}</label>
+                                        <input id="self_assessment_start_date" type="datetime-local" class="input setting-input">
+                                    </div>
+                                    <p class="setting-help">{% trans "If desired, specify a start date for the self assessment period.  If no date is specified, self assessment can begin when submissions begin."%}</p>
+                                </li>
+                                <li class="field comp-setting-entry">
+                                    <div class="wrapper-comp-setting">
+                                        <label for="self_assessment_due_date" class="setting-label">{% trans "Due Date" %}</label>
+                                        <input id="self_assessment_due_date" type="datetime-local" class="input setting-input">
+                                    </div>
+                                    <p class="setting-help">{% trans "If desired, specify a due date for the self assessment period.  If no date is specified, self assessment can run as long as the problem is open."%}</p>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </li>
 
+                <li class="openassessment_assessment_module_settings_editor" id="oa_ai_assessment_editor">
+                    <div class = "drag-handle action"></div>
+                    <div class = "openassessment_inclusion_wrapper">
+                        <input id="include_ai_assessment" type="checkbox">
+                        <label for="include_ai_assessment">{% trans "Step: Example-Based Assessment" %}</label>
+                    </div>
+                    <div class="openassessment_assessment_module_editor">
+                        <p id="ai_assessment_description_closed" class="openassessment_description_closed">
+                            {% trans "An algorithm assesses students' responses by comparing the responses to pre-assessed sample responses that the instructor provides."%}
+                        </p>
+                        <div id="ai_assessment_settings_editor" class="assessment_settings_wrapper">
+                            <p class="openassessment_description">
+                                {% trans "Enter one or more sample responses that you've created, together with the scores you would give those responses. Be sure to format the responses and scores according to the placeholder text below. The algorithm assesses students' responses by comparing them to the sample responses and scores that you provide."%}
+                            </p>
+                            <textarea id="ai_training_examples"></textarea>
+                        </div>
+                    </div>
+                </li>
+            </ol>
         </div>
 
     </div>
