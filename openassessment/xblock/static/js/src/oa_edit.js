@@ -15,27 +15,32 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     this.runtime = runtime;
     this.server = server;
 
+    // Initialize the prompt tab view
+    this.promptView = new OpenAssessment.EditPromptView(
+        $("#oa_prompt_editor_wrapper", this.element).get(0)
+    );
+
+    // Initialize the settings tab view
+    this.settingsView = new OpenAssessment.EditSettingsView(
+        $("#oa_basic_settings_editor", this.element).get(0), [
+            new OpenAssessment.EditPeerAssessmentView(
+                $("#oa_peer_assessment_editor", this.element).get(0)
+            ),
+            new OpenAssessment.EditSelfAssessmentView(
+                $("#oa_self_assessment_editor", this.element).get(0)
+            ),
+            new OpenAssessment.EditStudentTrainingView(
+                $("#oa_student_training_editor", this.element).get(0)
+            ),
+            new OpenAssessment.EditExampleBasedAssessmentView(
+                $("#oa_ai_assessment_editor", this.element).get(0)
+            )
+        ]
+    );
+
     this.liveElement = $(element);
 
     var liveElement = this.liveElement;
-
-    // Instantiates JQuery selector variables which will allow manipulation and display controls.
-    this.settingsFieldSelectors = {
-        promptBox: $('#openassessment_prompt_editor', liveElement),
-        titleField: $('#openassessment_title_editor', liveElement),
-        submissionStartField: $('#openassessment_submission_start_editor', liveElement),
-        submissionDueField: $('#openassessment_submission_due_editor', liveElement),
-        hasPeer: $('#include_peer_assessment', liveElement),
-        hasSelf: $('#include_self_assessment', liveElement),
-        hasAI: $('#include_ai_assessment', liveElement),
-        hasTraining: $('#include_student_training', liveElement),
-        peerMustGrade: $('#peer_assessment_must_grade', liveElement),
-        peerGradedBy: $('#peer_assessment_graded_by', liveElement),
-        peerStart: $('#peer_assessment_start_date', liveElement),
-        peerDue: $('#peer_assessment_due_date', liveElement),
-        selfStart: $('#self_assessment_start_date', liveElement),
-        selfDue: $('#self_assessment_due_date', liveElement)
-    };
 
     // Captures the HTML definition of the original criterion element. This will be the template
     // used for all other criterion creations
@@ -64,37 +69,25 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     var view = this;
 
     // Installs the save and cancel buttons
-    $('.openassessment_save_button', liveElement) .click( function (eventData) {
-            view.save();
-    });
+    $(".openassessment_save_button", this.element).click(
+        function (eventData) { view.save(); }
+    );
 
-    $('.openassessment_cancel_button', liveElement) .click( function (eventData) {
-            view.cancel();
-    });
+    $(".openassessment_cancel_button", this.element).click(
+        function (eventData) { view.cancel(); }
+    );
 
     // Adds the tabbing functionality
-    $('.openassessment_editor_content_and_tabs', liveElement) .tabs();
+    $(".openassessment_editor_content_and_tabs", this.element).tabs();
 
-    // Installs all of the checkbox listeners in the settings tab
-    view.addSettingsAssessmentCheckboxListener("ai_assessment", liveElement);
-    view.addSettingsAssessmentCheckboxListener("self_assessment", liveElement);
-    view.addSettingsAssessmentCheckboxListener("peer_assessment", liveElement);
-    view.addSettingsAssessmentCheckboxListener("student_training", liveElement);
-
-    $('#openassessment_rubric_add_criterion', liveElement) .click( function (eventData) {
+    $('#openassessment_rubric_add_criterion', this.element).click(
+        function (eventData) {
             view.addNewCriterionToRubric(liveElement);
-    });
-
+        }
+    );
 };
 
 OpenAssessment.StudioView.prototype = {
-
-    /**
-     Load the XBlock XML definition from the server and display it in the view.
-     **/
-    load: function () {
-        var view = this;
-    },
 
     /**
      Save the problem's XML definition to the server.
@@ -116,20 +109,6 @@ OpenAssessment.StudioView.prototype = {
             }
         ).fail(function (errMsg) {
                 view.showError(errMsg);
-        });
-    },
-
-    /**
-    Construct checkbox listeners for all of our assessment modules
-
-    Args:
-        name (string): name of assessment module to install listener on
-        liveElement (DOM element): the live DOM selector
-    */
-    addSettingsAssessmentCheckboxListener: function (name, liveElement) {
-        $("#include_" + name , liveElement) .change(function () {
-            $("#" + name + "_description_closed", liveElement).toggleClass('is--hidden', this.checked);
-            $("#" + name + "_settings_editor", liveElement).toggleClass('is--hidden', !this.checked);
         });
     },
 
@@ -376,7 +355,7 @@ OpenAssessment.StudioView.prototype = {
                 var optionSelectors = optionSelectorList[j];
                 optionValueList = optionValueList.concat([{
                     order_num: j-1,
-                    points: this._getInt(optionSelectors.points),
+                    points: parseInt(optionSelectors.points.val(), 10),
                     name: optionSelectors.name.val(),
                     explanation: optionSelectors.explanation.val()
                 }]);
@@ -385,49 +364,15 @@ OpenAssessment.StudioView.prototype = {
             rubricCriteria = rubricCriteria.concat([criterionValueDict]);
         }
 
-        var assessments = [];
-
-        if (this.settingsFieldSelectors.hasTraining.prop('checked')){
-            assessments.push({
-                name: "student-training",
-                examples: this.studentTrainingExamplesCodeBox.getValue()
-            });
-        }
-
-        if (this.settingsFieldSelectors.hasPeer.prop('checked')) {
-            assessments.push({
-                name: "peer-assessment",
-                must_grade: this._getInt(this.settingsFieldSelectors.peerMustGrade),
-                must_be_graded_by: this._getInt(this.settingsFieldSelectors.peerGradedBy),
-                start: this._getDateTime(this.settingsFieldSelectors.peerStart),
-                due: this._getDateTime(this.settingsFieldSelectors.peerDue)
-            });
-        }
-
-        if (this.settingsFieldSelectors.hasSelf.prop('checked')) {
-            assessments.push({
-                name: "self-assessment",
-                start: this._getDateTime(this.settingsFieldSelectors.selfStart),
-                due: this._getDateTime(this.settingsFieldSelectors.selfDue)
-            });
-        }
-
-        if (this.settingsFieldSelectors.hasAI.prop('checked')) {
-            assessments.push({
-                name: "example-based-assessment",
-                examples: this.aiTrainingExamplesCodeBox.getValue()
-            });
-        }
-
         var view = this;
         this.server.updateEditorContext({
-            title: this.settingsFieldSelectors.titleField.val(),
-            prompt: this.settingsFieldSelectors.promptBox.val(),
+            title: view.settingsView.displayName(),
+            prompt: view.promptView.promptText(),
             feedbackPrompt: this.rubricFeedbackPrompt.val(),
-            submissionStart: this._getDateTime(this.settingsFieldSelectors.submissionStartField),
-            submissionDue: this._getDateTime(this.settingsFieldSelectors.submissionDueField),
+            submissionStart: view.settingsView.submissionStart(),
+            submissionDue: view.settingsView.submissionDue(),
             criteria: rubricCriteria,
-            assessments: assessments
+            assessments: view.settingsView.assessmentsDescription()
         }).done(
             function () {
                 // Notify the client-side runtime that we finished saving
@@ -456,54 +401,6 @@ OpenAssessment.StudioView.prototype = {
     showError: function (errorMsg) {
         this.runtime.notify('error', {msg: errorMsg});
     },
-
-    /**
-    Retrieve a value from a datetime input.
-
-    Args:
-        selector: The JQuery selector for the datetime input.
-
-    Returns:
-        ISO-formatted datetime string or null
-    **/
-    _getDateTime: function(selector) {
-        var dateStr = selector.val();
-
-        // By convention, empty date strings are null,
-        // meaning choose the default date based on
-        // other dates set in the problem configuration.
-        if (dateStr === "") {
-            return null;
-        }
-
-        // Attempt to parse the date string
-        // TO DO: currently invalid dates also are set as null,
-        // which is probably NOT what the user wants!
-        // We should add proper validation here.
-        var timestamp = Date.parse(dateStr);
-        if (isNaN(timestamp)) {
-            return null;
-        }
-
-        // Send the datetime in ISO format
-        // This will also convert the timezone to UTC
-        return new Date(timestamp).toISOString();
-    },
-
-    /**
-    Retrieve an integer value from an input.
-
-    Args:
-        selector: The JQuery selector for the input.
-
-    Returns:
-        int
-
-    **/
-    _getInt: function(selector) {
-        return parseInt(selector.val(), 10);
-    }
-
 };
 
 
@@ -515,5 +412,4 @@ function OpenAssessmentEditor(runtime, element) {
     **/
     var server = new OpenAssessment.Server(runtime, element);
     var view = new OpenAssessment.StudioView(runtime, element, server);
-    view.load();
 }
