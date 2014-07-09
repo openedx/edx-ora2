@@ -1,10 +1,10 @@
 """
 Studio editing view for OpenAssessment XBlock.
 """
+from django.template import Context
 import pkg_resources
 import copy
 import logging
-from django.template.context import Context
 from django.template.loader import get_template
 from django.utils.translation import ugettext as _
 from voluptuous import MultipleInvalid
@@ -20,6 +20,16 @@ logger = logging.getLogger(__name__)
 
 
 class StudioMixin(object):
+
+    DEFAULT_CRITERIA = [
+        {
+            'options': [
+                {
+                },
+            ]
+        }
+    ]
+
     """
     Studio editing view for OpenAssessment XBlock.
     """
@@ -34,11 +44,72 @@ class StudioMixin(object):
         Returns:
             (Fragment): An HTML fragment for editing the configuration of this XBlock.
         """
-        rendered_template = get_template('openassessmentblock/oa_edit.html').render(Context({}))
+        rendered_template = get_template(
+            'openassessmentblock/edit/oa_edit.html'
+        ).render(Context(self.editor_context()))
         frag = Fragment(rendered_template)
         frag.add_javascript(pkg_resources.resource_string(__name__, "static/js/openassessment.min.js"))
         frag.initialize_js('OpenAssessmentEditor')
         return frag
+
+    def editor_context(self):
+        """
+        Retrieve the XBlock's content definition.
+
+        Returns:
+            dict with keys
+                'rubric' (unicode), 'prompt' (unicode), 'title' (unicode),
+                'submission_start' (unicode),  'submission_due' (unicode),
+                'assessments (dict)
+
+        """
+        # Copies the rubric assessments so that we can change student
+        # training examples from dict -> str without negatively modifying
+        # the openassessmentblock definition.
+        # Django Templates cannot handle dict keys with dashes, so we'll convert
+        # the dashes to underscores.
+        assessments = {}
+        for assessment in self.rubric_assessments:
+            name = assessment['name']
+            assessments[name.replace('-', '_')] = copy.deepcopy(
+                assessment
+            )
+
+        student_training_module = self.get_assessment_module(
+            'student-training'
+        )
+        if student_training_module:
+            student_training_module = copy.deepcopy(student_training_module)
+            try:
+                examples = xml.serialize_examples_to_xml_str(
+                    student_training_module
+                )
+                student_training_module["examples"] = examples
+                assessments['training'] = student_training_module
+            # We do not expect serialization to raise an exception, but if it does,
+            # handle it gracefully.
+            except:
+                logger.exception("An error occurred while serializing the XBlock")
+
+        submission_due = self.submission_due if self.submission_due else ''
+        submission_start = self.submission_start if self.submission_start else ''
+
+        # Every rubric requires one criterion. If there is no criteria
+        # configured for the XBlock, return one empty default criterion, with
+        # an empty default option.
+        criteria = copy.deepcopy(self.rubric_criteria)
+        if not criteria:
+            criteria = self.DEFAULT_CRITERIA
+
+        return {
+            'prompt': self.prompt,
+            'title': self.title,
+            'submission_due': submission_due,
+            'submission_start': submission_start,
+            'assessments': assessments,
+            'criteria': criteria,
+            'feedbackprompt': unicode(self.rubric_feedback_prompt),
+        }
 
     @XBlock.json_handler
     def update_editor_context(self, data, suffix=''):
@@ -92,66 +163,6 @@ class StudioMixin(object):
         self.submission_due = data['submission_due']
 
         return {'success': True, 'msg': _(u'Successfully updated OpenAssessment XBlock')}
-
-    @XBlock.json_handler
-    def editor_context(self, data, suffix=''):
-        """
-        Retrieve the XBlock's content definition, serialized as a JSON object
-        containing all the configuration as it will be displayed for studio
-        editing.
-
-        Args:
-            data (dict): Not used
-
-        Kwargs:
-            suffix (str): Not used
-
-        Returns:
-            dict with keys
-                'success' (bool),  'message' (unicode),  'rubric' (unicode),  'prompt' (unicode),
-                'title' (unicode),  'submission_start' (unicode),  'submission_due' (unicode),  'assessments (dict)
-
-        """
-        try:
-            # Copies the rubric assessments so that we can change student training examples from dict -> str without
-            # negatively modifying the openassessmentblock definition.
-            assessment_list = copy.deepcopy(self.rubric_assessments)
-            # Finds the student training dictionary, if it exists, and replaces the examples with their XML definition
-            student_training_dictionary = [d for d in assessment_list if d["name"] == "student-training"]
-            if student_training_dictionary:
-                # Our for loop will return a list.  Select the first element of that list if it exists.
-                student_training_dictionary = student_training_dictionary[0]
-                examples = xml.serialize_examples_to_xml_str(student_training_dictionary)
-                student_training_dictionary["examples"] = examples
-
-        # We do not expect serialization to raise an exception, but if it does, handle it gracefully.
-        except:
-            logger.exception("An error occurred while serializing the XBlock")
-            msg = _('An unexpected error occurred while loading the problem')
-            return {'success': False, 'msg': msg, 'xml': u''}
-
-        # Populates the context for the assessments section of the editing
-        # panel. This will adjust according to the fields laid out in this
-        # section.
-
-        submission_due = self.submission_due if self.submission_due else ''
-        submission_start = self.submission_start if self.submission_start else ''
-
-        rubric_dict = {
-            'criteria' : self.rubric_criteria,
-            'feedbackprompt': unicode(self.rubric_feedback_prompt)
-        }
-
-        return {
-            'success': True,
-            'msg': '',
-            'rubric': rubric_dict,
-            'prompt': self.prompt,
-            'submission_due': submission_due,
-            'submission_start': submission_start,
-            'title': self.title,
-            'assessments': assessment_list
-        }
 
     @XBlock.json_handler
     def check_released(self, data, suffix=''):

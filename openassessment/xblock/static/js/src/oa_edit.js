@@ -37,16 +37,6 @@ OpenAssessment.StudioView = function(runtime, element, server) {
         selfDue: $('#self_assessment_due_date', liveElement)
     };
 
-    this.aiTrainingExamplesCodeBox = CodeMirror.fromTextArea(
-        $('#ai_training_examples', liveElement).first().get(0),
-        {mode: "xml", lineNumbers: true, lineWrapping: true}
-    );
-
-    this.studentTrainingExamplesCodeBox = CodeMirror.fromTextArea(
-        $('#student_training_examples', liveElement).first().get(0),
-        {mode: "xml", lineNumbers: true, lineWrapping: true}
-    );
-
     // Captures the HTML definition of the original criterion element. This will be the template
     // used for all other criterion creations
     var criterionHtml = $("#openassessment_criterion_1", liveElement).parent().html();
@@ -104,85 +94,6 @@ OpenAssessment.StudioView.prototype = {
      **/
     load: function () {
         var view = this;
-        this.server.loadEditorContext().done(
-            function (prompt, rubric, title, subStart, subDue, assessments) {
-                view.settingsFieldSelectors.submissionStartField.prop('value', subStart);
-                view.settingsFieldSelectors.submissionDueField.prop('value', subDue);
-                view.settingsFieldSelectors.promptBox.prop('value', prompt);
-                view.settingsFieldSelectors.titleField.prop('value', title);
-                view.settingsFieldSelectors.hasTraining.prop('checked', false).change();
-                view.settingsFieldSelectors.hasPeer.prop('checked', false).change();
-                view.settingsFieldSelectors.hasSelf.prop('checked', false).change();
-                view.settingsFieldSelectors.hasAI.prop('checked', false).change();
-                for (var i = 0; i < assessments.length; i++) {
-                    var assessment = assessments[i];
-                    if (assessment.name == 'peer-assessment') {
-                        view.settingsFieldSelectors.peerMustGrade.prop('value', assessment.must_grade);
-                        view.settingsFieldSelectors.peerGradedBy.prop('value', assessment.must_be_graded_by);
-                        view.settingsFieldSelectors.peerStart.prop('value', assessment.start);
-                        view.settingsFieldSelectors.peerDue.prop('value', assessment.due);
-                        view.settingsFieldSelectors.hasPeer.prop('checked', true).change();
-                    } else if (assessment.name == 'self-assessment') {
-                        view.settingsFieldSelectors.selfStart.prop('value', assessment.start);
-                        view.settingsFieldSelectors.selfDue.prop('value', assessment.due);
-                        view.settingsFieldSelectors.hasSelf.prop('checked', true).change();
-                    } else if (assessment.name == 'example-based-assessment') {
-                        view.settingsFieldSelectors.aiTrainingExamplesCodeBox.setValue(assessment.examples);
-                        view.settingsFieldSelectors.hasAI.prop('checked', true).change();
-                    } else if (assessment.name == 'student-training') {
-                        view.studentTrainingExamplesCodeBox.setValue(assessment.examples);
-                        view.settingsFieldSelectors.hasTraining.prop('checked', true).change();
-                    }
-                }
-
-                // Corrects the length of the number of criteria
-                while(view.numberOfCriteria < rubric.criteria.length){
-                    view.addNewCriterionToRubric();
-                }
-                while(view.numberOfCriteria > rubric.criteria.length){
-                    view.removeCriterionFromRubric(1);
-                }
-
-                // Corrects the number of options in each criterion
-                for (i = 0; i < rubric.criteria.length; i++){
-                    while(view.numberOfOptions[i+1] < rubric.criteria[i].options.length){
-                        view.addNewOptionToCriterion(view.liveElement, i+1);
-                    }
-                    while(view.numberOfOptions[i+1] > rubric.criteria[i].options.length){
-                        view.removeOptionFromCriterion(view.liveElement, i+1, 1);
-                    }
-                }
-
-                // Inserts the data from the rubric into the GUI's fields
-                for (i = 0; i < rubric.criteria.length; i++){
-                    var criterion = rubric.criteria[i];
-                    var selectors = view.rubricCriteriaSelectors[i+1];
-                    // Transfers the Criteria Fields
-                    selectors.name.prop('value', criterion.name);
-                    selectors.prompt.prop('value', criterion.prompt);
-                    selectors.feedback = criterion.feedback;
-                    for (var j = 0; j < criterion.options.length; j++){
-                        var option = criterion.options[j];
-                        var optionSelectors = selectors.options[j+1];
-                        // Transfers all of the option data.
-                        optionSelectors.name.prop('value', option.name);
-                        optionSelectors.points.prop('value', option.points);
-                        optionSelectors.explanation.prop('value', option.explanation);
-                    }
-                }
-
-                if (rubric.feedbackprompt){
-                    view.rubricFeedbackPrompt.prop('value', rubric.feedbackprompt);
-                    view.hasRubricFeedbackPrompt = true;
-                } else {
-                    view.rubricFeedbackPrompt.prop('value', "");
-                    view.hasRubricFeedbackPrompt = false;
-                }
-
-            }).fail(function (msg) {
-                view.showError(msg);
-            }
-        );
     },
 
     /**
@@ -217,13 +128,8 @@ OpenAssessment.StudioView.prototype = {
     */
     addSettingsAssessmentCheckboxListener: function (name, liveElement) {
         $("#include_" + name , liveElement) .change(function () {
-            if (this.checked){
-                $("#" + name + "_description_closed", liveElement).fadeOut('fast');
-                $("#" + name + "_settings_editor", liveElement).fadeIn();
-            } else {
-                $("#" + name + "_settings_editor", liveElement).fadeOut('fast');
-                $("#" + name + "_description_closed", liveElement).fadeIn();
-            }
+            $("#" + name + "_description_closed", liveElement).toggleClass('is--hidden', this.checked);
+            $("#" + name + "_settings_editor", liveElement).toggleClass('is--hidden', !this.checked);
         });
     },
 

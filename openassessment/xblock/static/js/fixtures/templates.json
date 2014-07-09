@@ -379,8 +379,66 @@
         "output": "oa_grade_complete.html"
     },
     {
-        "template": "openassessmentblock/oa_edit.html",
-        "context": {},
+        "template": "openassessmentblock/edit/oa_edit.html",
+        "context": {
+            "prompt": "How much do you like waffles?",
+            "title": "The most important of all questions.",
+            "submission_due": "2014-10-1T10:00:00",
+            "criteria": [
+
+                {
+                    "name": "Criterion 1",
+                    "prompt": "Prompt 1",
+                    "order_num": 0,
+                    "feedback": "optional",
+                    "options": [
+                        {
+                            "order_num": 2,
+                            "points": 2,
+                            "name": "Good"
+                        }
+                    ],
+                    "points_possible": 2
+                },
+                {
+                    "name": "Criterion 2",
+                    "prompt": "Prompt 2",
+                    "order_num": 1,
+                    "options": [
+                        {
+                            "order_num": 1,
+                            "points": 1,
+                            "name": "Fair"
+                        }
+                    ],
+                    "points_possible": 2
+                },
+                {
+                    "name": "Criterion 3",
+                    "prompt": "Prompt 3",
+                    "order_num": 2,
+                    "feedback": "optional",
+                    "options": [
+                        {
+                            "order_num": 2,
+                            "points": 2,
+                            "name": "Good"
+                        }
+                    ],
+                    "points_possible": 2
+                }
+            ],
+            "assessments": {
+                "peer_assessment": {
+                    "start": "2014-10-04T00:00:00",
+                    "must_grade": 5,
+                    "must_be_graded_by": 3
+                },
+                "self_assessment": {
+                    "due": ""
+                }
+            }
+        },
         "output": "oa_edit.html"
     },
     {

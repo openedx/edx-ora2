@@ -21,23 +21,6 @@ class StudioViewTest(XBlockHandlerTestCase):
         frag = self.runtime.render(xblock, 'studio_view')
         self.assertTrue(frag.body_html().find('openassessment-edit'))
 
-    @scenario('data/basic_scenario.xml')
-    def test_get_editor_context(self, xblock):
-        resp = self.request(xblock, 'editor_context', '""', response_format='json')
-        self.assertTrue(resp['success'])
-        self.assertEqual(resp['msg'], u'')
-
-        # Verify that the Rubric has criteria, and that they are a list of dictionaries
-        self.assertTrue(isinstance(resp['rubric']['criteria'], list))
-        self.assertTrue(isinstance(resp['rubric']['criteria'][0], dict))
-
-        # Verify that every assessment in the list of assessments has a name.
-        for assessment_dict in resp['assessments']:
-            self.assertTrue(assessment_dict.get('name', False))
-            if assessment_dict.get('name') == 'student-training':
-                examples = etree.fromstring(assessment_dict['examples'])
-                self.assertEqual(examples.tag, 'examples')
-
     @file_data('data/update_xblock.json')
     @scenario('data/basic_scenario.xml')
     def test_update_context(self, xblock, data):

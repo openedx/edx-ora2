@@ -395,36 +395,6 @@ OpenAssessment.Server.prototype = {
     },
 
     /**
-    Load the XBlock's XML definition from the server.
-
-    Returns:
-        A JQuery promise, which resolves with the XML definition
-        and fails with an error message.
-
-    Example:
-        server.loadXml().done(
-            function(xml) { console.log(xml); }
-        ).fail(
-            function(err) { console.log(err); }
-        );
-    **/
-    loadEditorContext: function() {
-        var url = this.url('editor_context');
-        return $.Deferred(function(defer) {
-            $.ajax({
-                type: "POST", url: url, data: "\"\""
-            }).done(function(data) {
-                if (data.success) { defer.resolveWith(this, [
-                    data.prompt, data.rubric, data.title, data.submission_start, data.submission_due, data.assessments
-                ]); }
-                else { defer.rejectWith(this, [data.msg]); }
-            }).fail(function(data) {
-                defer.rejectWith(this, [gettext('This problem could not be loaded.')]);
-            });
-        }).promise();
-    },
-
-    /**
     Update the XBlock's XML definition on the server.
 
     Kwargs:
