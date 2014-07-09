@@ -725,6 +725,7 @@
         "due": null,
         "submission_start": null,
         "submission_due": null,
+        "allow_file_upload": null,
         "criteria": [
             {
                 "order_num": 0,
