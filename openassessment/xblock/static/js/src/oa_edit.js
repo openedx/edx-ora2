@@ -44,7 +44,7 @@ OpenAssessment.StudioView = function(runtime, element, server) {
 
     // Captures the HTML definition of the original criterion element. This will be the template
     // used for all other criterion creations
-    var criterionHtml = $("#openassessment_criterion_1", liveElement).parent().html();
+    var criterionHtml = $(".openassessment_criterion", liveElement).parent().html();
 
     // Replaces all instances of the original ID (1) with the new fake ID in the string
     // representation of the Criterion LI. This is our new template, with a C-C-C marker to replace.
@@ -52,7 +52,7 @@ OpenAssessment.StudioView = function(runtime, element, server) {
 
     // Captures the HTML definition of the original option element.  Note that there are TWO template
     // tags that need to be replaced "C-C-C" for the Criterion ID, and "O-O-O" for the option ID.
-    var optionHtml = $("#openassessment_criterion_1_option_1", liveElement).parent().html();
+    var optionHtml = $(".openassessment_criterion_option", liveElement).parent().html();
     var criteriaReplaced = optionHtml.replace(new RegExp("criterion_1", "g"), "criterion_C-C-C");
     this.optionHtmlTemplate = criteriaReplaced.replace(new RegExp("option_1", "g"), "option_O-O-O");
 
