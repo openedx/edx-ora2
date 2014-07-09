@@ -3,36 +3,39 @@ The RubricOption Class used to construct and maintain references to rubric optio
 container object. Constructs a new RubricOption element.
 
 Args:
-    parent (OpenAssessment.Container): The container that the option is a member of.
+    element (OpenAssessment.Container): The container that the option is a member of.
 
 Returns:
     OpenAssessment.RubricOption
 **/
-OpenAssessment.RubricOption = function(element){
+OpenAssessment.RubricOption = function(element) {
     this.element = element;
 };
 
 OpenAssessment.RubricOption.prototype = {
 
     /**
-    Finds the values currently entered in the Option's fields, and returns them in a dictionary to the user.
+    Finds the values currently entered in the Option's fields, and returns them.
 
     Returns:
-        (dict) of the form:
-            {
-                'name': 'Real Bad',
-                'points': 1,
-                'explanation': 'Essay was primarily composed of emojis.'
-            }
+        object literal of the form:
+        {
+            'name': 'Real Bad',
+            'points': 1,
+            'explanation': 'Essay was primarily composed of emojis.'
+        }
     **/
-    getFieldValues: function (){
-        var name = $('.openassessment_criterion_option_name', this.element).prop('value');
-        var points = $('.openassessment_criterion_option_points', this.element).prop('value');
-        var explanation = $('.openassessment_criterion_option_explanation', this.element).prop('value');
+    getFieldValues: function () {
         return {
-            'name': name,
-            'points': points,
-            'explanation': explanation
+            name: OpenAssessment.Fields.stringField(
+                $('.openassessment_criterion_option_name', this.element)
+            ),
+            points: OpenAssessment.Fields.intField(
+                $('.openassessment_criterion_option_points', this.element)
+            ),
+            explanation: OpenAssessment.Fields.stringField(
+                $('.openassessment_criterion_option_explanation', this.element)
+            )
         };
     }
 };
@@ -47,12 +50,15 @@ Args:
 Returns:
     OpenAssessment.RubricCriterion
  **/
-OpenAssessment.RubricCriterion = function(element){
+OpenAssessment.RubricCriterion = function(element) {
     this.element = element;
     this.optionContainer = new OpenAssessment.Container(
-        $('.openassessment_criterion_option_list'),
-        {
-            'openassessment_criterion_option': OpenAssessment.RubricOption
+        OpenAssessment.RubricOption, {
+            containerElement: $(".openassessment_criterion_option_list", this.element).get(0),
+            templateElement: $("#openassessment_option_template").get(0),
+            addButtonElement: $(".openassessment_criterion_add_option", this.element).get(0),
+            removeButtonClass: "openassessment_rubric_remove_button",
+            containerItemClass: "openassessment_criterion_option",
         }
     );
 };
@@ -60,34 +66,36 @@ OpenAssessment.RubricCriterion = function(element){
 
 OpenAssessment.RubricCriterion.prototype = {
     /**
-    Finds the values currently entered in the Criterion's fields, and returns them in a dictionary to the user.
+    Finds the values currently entered in the Criterion's fields, and returns them.
 
     Returns:
-        (dict) of the form:
-            {
-                'name': 'Emoji Content',
-                'prompt': 'How expressive was the author with their words, and how much did they rely on emojis?',
-                'feedback': 'optional',
-                'options': [
-                    {
-                        'name': 'Real Bad',
-                        'points': 1,
-                        'explanation': 'Essay was primarily composed of emojis.'
-                    }
-                    ...
-                ]
-            }
+        object literal of the form:
+        {
+            'name': 'Emoji Content',
+            'prompt': 'How expressive was the author with their words, and how much did they rely on emojis?',
+            'feedback': 'optional',
+            'options': [
+                {
+                    'name': 'Real Bad',
+                    'points': 1,
+                    'explanation': 'Essay was primarily composed of emojis.'
+                }
+                ...
+            ]
+        }
     **/
-    getFieldValues: function (){
-        var name = $('.openassessment_criterion_name', this.element).prop('value');
-        var prompt = $('.openassessment_criterion_prompt', this.element).prop('value');
-        var feedback = $('.openassessment_criterion_feedback', this.element).prop('value');
-        var options = this.optionContainer.getItemValues();
+    getFieldValues: function () {
         return {
-            'name': name,
-            'prompt': prompt,
-            'options': options,
-            'feedback': feedback
+            name: OpenAssessment.Fields.stringField(
+                $('.openassessment_criterion_name', this.element)
+            ),
+            prompt: OpenAssessment.Fields.stringField(
+                $('.openassessment_criterion_prompt', this.element)
+            ),
+            feedback: OpenAssessment.Fields.stringField(
+                $('.openassessment_criterion_feedback', this.element)
+            ),
+            options: this.optionContainer.getItemValues()
         };
     }
 };

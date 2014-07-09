@@ -20,6 +20,9 @@ logger = logging.getLogger(__name__)
 
 
 class StudioMixin(object):
+    """
+    Studio editing view for OpenAssessment XBlock.
+    """
 
     DEFAULT_CRITERIA = [
         {
@@ -29,10 +32,6 @@ class StudioMixin(object):
             ]
         }
     ]
-
-    """
-    Studio editing view for OpenAssessment XBlock.
-    """
 
     def studio_view(self, context=None):
         """

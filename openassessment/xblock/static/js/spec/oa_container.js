@@ -4,80 +4,158 @@
 
 describe("OpenAssessment.Container", function () {
 
+    var counter = 0;
+    var StubContainerItem = function(element) {
+        // Assign an ID to the item if it doesn't already have one.
+        if ($(element).attr("test_id") === "") {
+            $(element).attr("test_id", counter);
+            counter += 1;
+        }
+
+        this.getFieldValues = function() {
+            var testIdNum = parseInt($(element).attr("test_id"), 10);
+            return { id: testIdNum };
+        };
+    };
+
     var container = null;
-    beforeEach(function () {
-        jasmine.getFixtures().fixturesPath = 'base/fixtures';
-        loadFixtures('oa_edit.html');
-
-        container = new OpenAssessment.Container(
-            $('#openassessment_criterion_list'),
-            {
-                'openassessment_criterion': OpenAssessment.RubricCriterion
+    var createContainer = function() {
+        return new OpenAssessment.Container(
+            StubContainerItem, {
+                containerElement: $("#container").get(0),
+                templateElement: $("#template").get(0),
+                addButtonElement: $("#add_button").get(0),
+                removeButtonClass: "remove_button",
+                containerItemClass: "test_item",
             }
-        )
+        );
+    };
+
+    beforeEach(function () {
+        // Reset the counter before each test
+        counter = 0;
+
+        // Install a minimal fixture
+        // We don't need to use a full ORA2 template for this,
+        // so we just define the fixture inline.
+        setFixtures(
+            '<div id="container" />' +
+            '<div id="template" test_id="">' +
+                '<div class="remove_button" />' +
+            '</div>' +
+            '<div id="add_button" />'
+        );
+
+        // Create the container and configure it
+        // to use the stub container item.
+        container = createContainer();
     });
 
-    it("adds a criterion", function () {
-        var previousSize = $('.openassessment_criterion').length;
-        container.add('openassessment_criterion');
-        var newSize = $('.openassessment_criterion').length;
-        expect(newSize).toEqual(previousSize + 1);
+    it("adds and removes items", function() {
+        // Initially, there should be no items
+        expect(container.getItemValues()).toEqual([]);
+
+        // Add an item
+        container.add();
+        expect(container.getItemValues()).toEqual([
+            { id: 0 }
+        ]);
+
+        // Add a second item
+        container.add();
+        expect(container.getItemValues()).toEqual([
+            { id: 0 },
+            { id: 1 }
+        ]);
+
+        // Add a third item
+        container.add();
+        expect(container.getItemValues()).toEqual([
+            { id: 0 },
+            { id: 1 },
+            { id: 2 }
+        ]);
+
+        // Remove the second item
+        container.remove(container.getItemElement(1));
+        expect(container.getItemValues()).toEqual([
+            { id: 0 },
+            { id: 2 },
+        ]);
+
+        // Remove the first item
+        container.remove(container.getItemElement(0));
+        expect(container.getItemValues()).toEqual([
+            { id: 2 },
+        ]);
+
+        // Remove the last item
+        container.remove(container.getItemElement(0));
+        expect(container.getItemValues()).toEqual([]);
     });
 
-    it("removes a criterion", function () {
-        container.add('openassessment_criterion');
-        var previousSize = $('.openassessment_criterion').length;
-        container.remove(1);
-        var newSize = $('.openassessment_criterion').length;
-        expect(newSize).toEqual(previousSize - 1);
+    it("ignores unrecognized DOM elements", function() {
+        // Add some items to the container
+        container.add();
+        container.add();
+        expect(container.getItemValues().length).toEqual(2);
+
+        // Add an extra element to the container in the DOM
+        $("<p>Not a container item!</p>").appendTo("#parent_element");
+
+        // Expect the count to remain the same
+        expect(container.getItemValues().length).toEqual(2);
+
+        // Add another element
+        container.add();
+        expect(container.getItemValues().length).toEqual(3);
+
+        // Remove the first element
+        container.remove(container.getItemElement(0));
+        expect(container.getItemValues().length).toEqual(2);
     });
 
-    it("requests an invalid template", function () {
-        var error = false;
-        try{
-            container.getHtmlTemplate('not_a_template');
-        } catch (e) {
-            error = true;
-        }
-        expect(error).toBe(true);
+    it("adds an element when the add button is pressed", function() {
+        // Press the add button
+        expect(container.getItemValues().length).toEqual(0);
+        $("#add_button").click();
+        expect(container.getItemValues().length).toEqual(1);
     });
 
-    it("installs delete buttons", function () {
-        container.installDeleteButtons($('#openassessment_criterion_list'));
+    it("removes an element when the remove button is pressed", function() {
+        // Add some items
+        container.add();
+        container.add();
+        container.add();
+        expect(container.getItemValues().length).toEqual(3);
+
+        // Press the button to delete the second item
+        $(".remove_button", container.getItemElement(1)).click();
+        expect(container.getItemValues().length).toEqual(2);
+        expect(container.getItemValues()).toEqual([
+            { id: 0 },
+            { id: 2 }
+        ]);
     });
 
-    it("parses out unacceptable container items", function () {
-        container.element.append("<p> Hello, not an element here. </p>");
-        var error = false;
-        try{
-            container.getItemValues();
-        } catch (e) {
-            error = true;
-        }
-        expect(error).toBe(true);
-    });
+    it("configures remove buttons for pre-existing items", function() {
+        // Add an item directly to the container element in the DOM,
+        // before initializing the container object.
+        $("#container").append(
+            '<div class="test_item" test_id="0">' +
+                '<div class="remove_button" />' +
+            '<div>'
+        );
 
-    it("returns correct item dictionary", function () {
-        var items = container.getItemValues();
-        var item = items[0];
+        // Initialize the container object
+        container = createContainer();
 
-        expect(item.name).toEqual(jasmine.any(String));
-        expect(item.prompt).toEqual(jasmine.any(String));
-        expect(item.feedback).toEqual(jasmine.any(String));
-        expect(item.options).toEqual(jasmine.any(Array));
-        expect(item.options[0].name).toEqual(jasmine.any(String));
-        expect(parseInt(item.options[0].points)).toEqual(jasmine.any(Number));
-        expect(item.options[0].explanation).toEqual(jasmine.any(String));
+        // Verify that the container recognizes the pre-existing item
+        expect(container.getItemValues()).toEqual([{ id: 0 }]);
 
-    });
-
-    it("checks for undefined selection type", function () {
-        var error = false;
-        try{
-            container.add("lolz this isn't a valid selection type");
-        } catch (e) {
-            error = true;
-        }
-        expect(error).toBe(true);
+        // Expect that we can click the "remove" button
+        // to remove the item.
+        $(".remove_button", container.getItemElement(0)).click();
+        expect(container.getItemValues().length).toEqual(0);
     });
 });
