@@ -13,39 +13,23 @@ Args:
 Returns:
     OpenAssessment.RubricOption
 **/
-OpenAssessment.RubricOption = function(parent){
-    this.parent = parent;
-
-    var htmlDefinition = parent.getHtmlDefinition();
-    var id = parent.generateItemID();
-    var replacementMechanism = new RegExp(htmlDefinition.replace, 'g');
-    this.html = htmlDefinition.template.replace(replacementMechanism, id);
-
-    this.selector =
-
+OpenAssessment.RubricOption = function(selector){
+    this.selector = selector;
 };
 
 OpenAssessment.RubricOption.prototype = {
     /**
-    Returns: (str) the HTML definition for the rubric option, now with the appropriate substitutions.
-    **/
-    getHtml: function (){
-        return this.html;
-    },
-
-    /**
-    Returns: (str) the string selector which can be used to uniquely identify the object.
-    **/
-    getSelector: function (){
-        return this.selector;
-    },
-
-    /**
 
     **/
     getFieldValues: function (){
-
-
+        var name = $('.openassessment_criterion_option_name', this.selector).prop('value');
+        var points = $('.openassessment_criterion_option_points', this.selector).prop('value');
+        var explanation = $('.openassessment_criterion_option_explanation', this.selector).prop('value');
+        return {
+            'name': name,
+            'points': points,
+            'explanation': explanation
+        };
     }
 };
 
