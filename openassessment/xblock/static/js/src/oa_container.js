@@ -7,7 +7,7 @@ Container to store arbitrary DOM elements for insertion, deletion and installati
 
 Args:
     element (DOM element): The DOM element representing the container (usually an OL or a UL)
-    selectorDictionary (dict): Has keys which map selector (str) to Container Item classes to which they are related
+    selectorDictionary (dict): Has keys which map element (str) to Container Item classes to which they are related
 
 Returns:
     OpenAssessment.Container
