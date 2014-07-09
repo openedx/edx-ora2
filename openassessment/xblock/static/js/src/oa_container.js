@@ -84,7 +84,7 @@ OpenAssessment.Container.prototype = {
         $(this.element).children().each(function(){
 
             //Attempts to find the type of a given element
-            var classes = $(this).getClasses();
+            var classes = $(this).attr('class').split(/\s+/);
             var type = undefined;
             for(var i = 0; i < classes.length; i++){
                 var c = classes[i];
@@ -92,6 +92,7 @@ OpenAssessment.Container.prototype = {
                     type = container.selectorDictionary[c];
                 }
             }
+
             // If we couldn't resolve the type, we throw an exception.
             if (type == undefined){
                 throw 'An item with classes (' + classes.join(' ') +
@@ -112,8 +113,14 @@ OpenAssessment.Container.prototype = {
         (str): The HTML template associated with the container item's type.
     **/
     getHtmlTemplate: function(selectorString){
-        var element = $('.' + selectorString + '.openassessment_template', this.element);
-        return element.html();
+        var selector = '.' + selectorString + '.openassessment_template';
+        var element = $(selector, this.element);
+        if (element.length == 0){
+            throw "There is not an element which matches the selector (" + selector + ")";
+        }
+        // Because we are assuming each template will be found within a div which it is the sole occupant of,
+        // we can make this call safely to get the body and enclosing tab.
+        return element.parent().html();
     }
 };
 

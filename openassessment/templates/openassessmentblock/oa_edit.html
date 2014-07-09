@@ -25,73 +25,72 @@
             </div>
 
             <ul id="openassessment_criterion_list" >
-                <li class="openassessment_criterion is-collapsible" id="openassessment_criterion_1">
-                    <div class="openassessment_criterion_header view-outline" id="openassessment_criterion_header_1">
+                <li class="openassessment_criterion is-collapsible openassessment_template openassessment_deletable">
+                    <div class="openassessment_criterion_header view-outline">
                         <a class="action expand-collapse collapse">
                             <i class="icon-caret-down ui-toggle-expansion"></i>
                         </a>
                         <h6 class="openassessment_criterion_header_title">
-                            {% trans "Criterion C-C-C"%}
+                            {% trans "Criterion"%}
                         </h6>
                         <div class="openassessment_rubric_remove_button" id="openassessment_criterion_1_remove">
                             <h2>{% trans "Remove" %}</h2>
                         </div>
                     </div>
-                    <div class="openassessment_criterion_body wrapper-comp-settings" id="openassessment_criterion_body_1">
+                    <div class="openassessment_criterion_body wrapper-comp-settings">
                         <ul class="list-input settings-list openassessment_criterion_basic_editor">
                             <li class="field comp-setting-entry">
                                 <div class="wrapper-comp-settings">
-                                    <label for="openassessment_criterion_1_name" class="openassessment_criterion_name_label setting-label">
+                                    <label class="openassessment_criterion_name_label setting-label">
                                         {% trans "Criterion Name"%}
                                     </label>
-                                    <input id="openassessment_criterion_1_name" class="openassessment_criterion_name input setting-input" type="text">
+                                    <input class="openassessment_criterion_name input setting-input" type="text">
                                 </div>
                             </li>
                             <li class="field comp-setting-entry">
                                 <div class="wrapper-comp-settings">
-                                    <label for="openassessment_criterion_1_prompt" class="openassessment_criterion_prompt_label setting-label">
+                                    <label class="openassessment_criterion_prompt_label setting-label">
                                         {% trans "Criterion Prompt"%}
                                     </label>
-                                    <textarea id="openassessment_criterion_1_prompt" class="openassessment_criterion_prompt setting-input"></textarea>
+                                    <textarea class="openassessment_criterion_prompt setting-input"></textarea>
                                 </div>
                             </li>
                         </ul>
-                        <ul id="openassessment_criterion_1_options" class="openassessment_criterion_option_list">
+                        <ul class="openassessment_criterion_option_list">
 
-                            <li id=openassessment_criterion_1_option_1 class="openassessment_criterion_option openassessment_deleteable">
+                            <li class="openassessment_criterion_option openassessment_template openassessment_deletable">
                                 <div class="openassessment_option_header">
                                     <span class="openassessment_option_header_title">
-                                        {% trans "Option O-O-O" %}
+                                        {% trans "Option" %}
                                     </span>
-                                    <div class="openassessment_rubric_remove_button" id="openassessment_criterion_1_option_1_remove">
+                                    <div class="openassessment_rubric_remove_button">
                                         <h2>{% trans "Remove" %}</h2>
                                     </div>
-
                                 </div>
                                 <div class="wrapper-comp-settings">
                                     <ul class="list-input settings-list">
                                         <li class="field comp-setting-entry openassessment_criterion_option_name_wrapper">
                                             <div class="wrapper-comp-setting">
-                                                <label for="openassessment_criterion_1_option_1_name" class="openassessment_criterion_option_name_label setting-label">
+                                                <label class="openassessment_criterion_option_name_label setting-label">
                                                     {% trans "Option Name"%}
                                                 </label>
-                                                <input id="openassessment_criterion_1_option_1_name" class="openassessment_criterion_option_name input input-label" type="text">
+                                                <input class="openassessment_criterion_option_name input input-label" type="text">
                                             </div>
                                         </li>
                                         <li class="field comp-setting-entry openassessment_criterion_option_point_wrapper">
                                             <div class="wrapper-comp-setting">
-                                                <label for="openassessment_criterion_1_option_1_points" class="openassessment_criterion_option_points_label setting-label">
+                                                <label class="openassessment_criterion_option_points_label setting-label">
                                                     {% trans "Option Points"%}
                                                 </label>
-                                                <input id="openassessment_criterion_1_option_1_points" class="openassessment_criterion_option_points input setting-input" type="number">
+                                                <input class="openassessment_criterion_option_points input setting-input" type="number">
                                             </div>
                                         </li>
                                         <li class="field comp-setting-entry openassessment_criterion_option_explanation_wrapper">
                                             <div class="wrapper-comp-setting">
-                                                <label for="openassessment_criterion_1_option_1_explanation" class="openassessment_criterion_option_explanation_label setting-label">
+                                                <label class="openassessment_criterion_option_explanation_label setting-label">
                                                     {% trans "Option Explanation"%}
                                                 </label>
-                                                <textarea id="openassessment_criterion_1_option_1_explanation" class="openassessment_criterion_option_explanation setting-input"></textarea>
+                                                <textarea class="openassessment_criterion_option_explanation setting-input"></textarea>
                                             </div>
                                         </li>
                                     </ul>
@@ -100,16 +99,16 @@
 
                         </ul>
 
-                        <div id="openassessment_criterion_1_add_option" class="openassessment_criterion_add_option openassessment_option_header">
+                        <div class="openassessment_criterion_add_option openassessment_option_header">
                             <h2>{% trans "Add Another Option"%}</h2>
                         </div>
 
-                        <div id="openassessment_criterion_1_feedback_wrapper" class="openassessment_criterion_feedback_wrapper wrapper-comp-settings">
+                        <div class="openassessment_criterion_feedback_wrapper wrapper-comp-settings">
                             <ul class="list-input settings-list">
                                 <li class="field comp-setting-entry">
                                     <div class="wrapper-comp-setting">
-                                        <label for="openassessment_criterion_1_feedback" class="setting-label">{% trans "Criterion Feeedback" %}</label>
-                                        <select id="openassessment_criterion_1_feedback" class="input setting-input">
+                                        <label class="setting-label">{% trans "Criterion Feeedback" %}</label>
+                                        <select class="input setting-input openassessment_criterion_feedback">
                                             <option value="disabled">{% trans "Disabled" %}</option>
                                             <option value="optional">{% trans "Optional" %}</option>
                                             <option value="required">{% trans "Required" %}</option>
