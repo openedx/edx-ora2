@@ -304,9 +304,6 @@ def parse_rubric_xml(rubric_root):
 
     Args:
         rubric_root (lxml.etree.Element): The root of the <rubric> node in the tree.
-        validator (callable): Function that accepts a rubric dict and returns
-            a boolean indicating whether the rubric is semantically valid
-            and an error message string.
 
     Returns:
         dict, a serialized representation of a rubric, as defined by the peer grading serializers.

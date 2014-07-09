@@ -235,11 +235,6 @@ class ValidationIntegrationTest(TestCase):
         ]
     }
 
-    SUBMISSION = {
-        "start": None,
-        "due": None
-    }
-
     EXAMPLES = [
         {
             "answer": "ẗëṡẗ äṅṡẅëṛ",
@@ -293,7 +288,7 @@ class ValidationIntegrationTest(TestCase):
         self.validator = validator(self.oa_block)
 
     def test_validates_successfully(self):
-        is_valid, msg = self.validator(self.RUBRIC, self.SUBMISSION, self.ASSESSMENTS)
+        is_valid, msg = self.validator(self.RUBRIC, self.ASSESSMENTS)
         self.assertTrue(is_valid, msg=msg)
         self.assertEqual(msg, "")
 
@@ -303,7 +298,7 @@ class ValidationIntegrationTest(TestCase):
         mutated_assessments[0]['examples'][0]['options_selected'][0]['criterion'] = 'Invalid criterion!'
 
         # Expect a validation error
-        is_valid, msg = self.validator(self.RUBRIC, self.SUBMISSION, mutated_assessments)
+        is_valid, msg = self.validator(self.RUBRIC, mutated_assessments)
         self.assertFalse(is_valid)
         self.assertEqual(msg, u'Example 1 has an extra option for "Invalid criterion!"; Example 1 is missing an option for "vocabulary"')
 
@@ -313,7 +308,7 @@ class ValidationIntegrationTest(TestCase):
         mutated_assessments[0]['examples'][0]['options_selected'][0]['option'] = 'Invalid option!'
 
         # Expect a validation error
-        is_valid, msg = self.validator(self.RUBRIC, self.SUBMISSION, mutated_assessments)
+        is_valid, msg = self.validator(self.RUBRIC, mutated_assessments)
         self.assertFalse(is_valid)
         self.assertEqual(msg, u'Example 1 has an invalid option for "vocabulary": "Invalid option!"')
 
@@ -327,12 +322,12 @@ class ValidationIntegrationTest(TestCase):
             option['points'] = 1
 
         # Expect a validation error
-        is_valid, msg = self.validator(mutated_rubric, self.SUBMISSION, self.ASSESSMENTS)
+        is_valid, msg = self.validator(mutated_rubric, self.ASSESSMENTS)
         self.assertFalse(is_valid)
         self.assertEqual(msg, u'Example-based assessments cannot have duplicate point values.')
 
         # But it should be okay if we don't have example-based assessment
         no_example_based = copy.deepcopy(self.ASSESSMENTS)[1:]
-        is_valid, msg = self.validator(mutated_rubric, self.SUBMISSION, no_example_based)
+        is_valid, msg = self.validator(mutated_rubric, no_example_based)
         self.assertTrue(is_valid)
         self.assertEqual(msg, u'')

@@ -31,6 +31,7 @@ describe("OpenAssessment.Server", function() {
     };
 
     var PROMPT = "Hello this is the prompt yes.";
+    var FEEDBACK_PROMPT = "Prompt for feedback";
 
     var RUBRIC = '<rubric>'+
         '<criterion>'+
@@ -50,6 +51,14 @@ describe("OpenAssessment.Server", function() {
             '</option>'+
         '</criterion>'+
     '</rubric>';
+
+    var CRITERIA = [
+        'criteria',
+        'objects',
+        'would',
+        'be',
+        'here'
+    ];
 
     var ASSESSMENTS = [
         {
@@ -226,14 +235,25 @@ describe("OpenAssessment.Server", function() {
     it("updates the XBlock's Context definition", function() {
         stubAjax(true, { success: true });
 
-        server.updateEditorContext(
-            PROMPT, RUBRIC, TITLE, SUBMISSION_START, SUBMISSION_DUE, ASSESSMENTS
-        );
+        server.updateEditorContext({
+            prompt: PROMPT,
+            feedbackPrompt: FEEDBACK_PROMPT,
+            title: TITLE,
+            submissionStart: SUBMISSION_START,
+            submissionDue: SUBMISSION_DUE,
+            criteria: CRITERIA,
+            assessments: ASSESSMENTS
+        });
         expect($.ajax).toHaveBeenCalledWith({
             type: "POST", url: '/update_editor_context',
             data: JSON.stringify({
-                prompt: PROMPT, rubric: RUBRIC, title: TITLE, submission_start: SUBMISSION_START,
-                submission_due: SUBMISSION_DUE, assessments: ASSESSMENTS
+                prompt: PROMPT,
+                feedback_prompt: FEEDBACK_PROMPT,
+                title: TITLE,
+                submission_start: SUBMISSION_START,
+                submission_due: SUBMISSION_DUE,
+                criteria: CRITERIA,
+                assessments: ASSESSMENTS
             })
         });
     });

@@ -5,6 +5,7 @@ Tests for the student training step in the Open Assessment XBlock.
 import datetime
 import ddt
 import json
+import pprint
 from mock import patch
 import pytz
 from django.db import DatabaseError
@@ -196,7 +197,11 @@ class StudentTrainingAssessTest(XBlockHandlerTestCase):
                 iso_date = context['training_due'].isoformat()
                 self.assertEqual(iso_date, expected_context[key])
             else:
-                self.assertEqual(context[key], expected_context[key])
+                msg = u"Expected \n {expected} \n but found \n {actual}".format(
+                    actual=pprint.pformat(context[key]),
+                    expected=pprint.pformat(expected_context[key])
+                )
+                self.assertEqual(context[key], expected_context[key], msg=msg)
 
             # Verify that we render without error
         resp = self.request(xblock, 'render_student_training', json.dumps({}))

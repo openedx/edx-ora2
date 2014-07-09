@@ -48,10 +48,11 @@ class StudioViewTest(XBlockHandlerTestCase):
     @file_data('data/invalid_update_xblock.json')
     @scenario('data/basic_scenario.xml')
     def test_update_context_invalid_request_data(self, xblock, data):
+        expected_error = data.pop('expected_error')
         xblock.published_date = None
         resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
         self.assertFalse(resp['success'])
-        self.assertIn(data['expected_error'], resp['msg'].lower())
+        self.assertIn(expected_error, resp['msg'].lower())
 
     @file_data('data/invalid_rubric.json')
     @scenario('data/basic_scenario.xml')
@@ -67,7 +68,7 @@ class StudioViewTest(XBlockHandlerTestCase):
         # Verify the response fails
         resp = self.request(xblock, 'update_editor_context', request, response_format='json')
         self.assertFalse(resp['success'])
-        self.assertIn("the following keys were missing", resp['msg'].lower())
+        self.assertIn("error updating xblock configuration", resp['msg'].lower())
 
         # Check that the XBlock fields were NOT updated
         # We don't need to be exhaustive here, because we have other unit tests

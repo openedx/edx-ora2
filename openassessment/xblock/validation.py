@@ -299,7 +299,7 @@ def validator(oa_block, strict_post_release=True):
         callable, of a form that can be passed to `update_from_xml`.
     """
 
-    def _inner(rubric_dict, submission_dict, assessments):
+    def _inner(rubric_dict, assessments, submission_start=None, submission_due=None):
 
         is_released = strict_post_release and oa_block.is_released()
 
@@ -325,7 +325,7 @@ def validator(oa_block, strict_post_release=True):
             return (False, msg)
 
         # Dates
-        submission_dates = [(submission_dict['start'], submission_dict['due'])]
+        submission_dates = [(submission_start, submission_due)]
         assessment_dates = [(asmnt.get('start'), asmnt.get('due')) for asmnt in assessments]
         success, msg = validate_dates(oa_block.start, oa_block.due, submission_dates + assessment_dates)
         if not success:
