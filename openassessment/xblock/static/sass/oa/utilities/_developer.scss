@@ -221,6 +221,7 @@
     border: none;
     border-radius: 4px;
     padding: 10px;
+    font-family: $f-sans-serif;
 
     textarea{
       font-size: 14px;
@@ -358,9 +359,7 @@
         .action.expand-collapse {
           float: left;
           .ui-toggle-expansion {
-            .icon-caret-down:before{
-              color: $edx-gray-d3;
-            }
+            color: $edx-gray-d3;
           }
         }
 
@@ -396,10 +395,16 @@
           overflow: auto;
 
           .wrapper-comp-settings{
-            input{
-              font-size: 11px;
-              float: right;
-              width: 70%
+            label{
+              padding: 0;
+              margin: 0;
+              width: 100%;
+
+              input{
+                font-size: 11px;
+                float: right;
+                width: 70%;
+              }
             }
             .openassessment_criterion_prompt{
               padding: 10px;
@@ -407,11 +412,6 @@
               width: 70%;
               float: right;
             }
-            label{
-              padding: 0;
-              margin: 0;
-            }
-
           }
         }
       }
@@ -424,16 +424,14 @@
           margin: 10px;
           border-radius: 3px;
 
-          .openassessment_criterion_feedback_header_closed:before{
-            font-family: "FontAwesome";
-            display: inline-block;
-            margin-right: 10px;
-            margin-left: 5px;
-            width: auto;
-            height: auto;
-            content: "\f067";
-          }
+        }
 
+        label{
+          width: 100%;
+          select{
+            float: right;
+            margin-right: 24%;
+          }
         }
 
         .openassessment_criterion_feedback_direction{
@@ -454,9 +452,7 @@
           .ui-toggle-expansion {
             @include transform(rotate(-90deg));
             @include transform-origin(50% 50%);
-            .icon-caret-down:before{
-              color: $edx-gray-d3;
-            }
+            color: $edx-gray-d3;
           }
         }
       }
@@ -477,46 +473,52 @@
       }
 
       .openassessment_criterion_option_point_wrapper{
-        width: 40%;
+        width: 30%;
         border-top: none;
         padding: 5px 5px 5px 0px;
         float: left;
         margin: 0;
 
+        .wrapper-comp-setting{
+          min-width: 200px;
+        }
 
         label{
-          width: 40%;
-          vertical-align: middle;
-          padding: 0;
+          width: auto;
+          padding-left: 15%;
           margin: 0;
+
+          input{
+            min-width: 50px;
+            padding: 10px;
+            float: right;
+            width: 30%;
+            font-size: 11px;
+          }
         }
 
-        input{
-          padding: 10px;
-          float: right;
-          width: 55%;
-          font-size: 11px;
-        }
+
       }
 
       .openassessment_criterion_option_name_wrapper{
         float: left;
-        width: 60%;
+        width: 70%;
         padding: 5px 10px 5px 20px;
         border-top: 0;
         margin: 0;
 
         label{
-          width: 25%;
+          width: 100%;
           vertical-align: middle;
           padding: 0;
           margin: 0;
-        }
-        input{
-          padding: 10px;
-          font-size: 11px;
-          width: 60%;
-          float: right;
+
+          input{
+            padding: 10px;
+            font-size: 11px;
+            width: 56%;
+            float: right;
+          }
         }
       }
 
@@ -526,40 +528,20 @@
         display: inline-block;
         margin: 0;
 
-        label{
-          width: 25%;
+        label {
+          width: 100%;
           text-align: left;
+          margin: 0;
+
+          textarea {
+            padding: 10px;
+            @extend .openassessment_input_styling;
+            height: 70px;
+            width: 69.5%;
+            float: right;
+          }
         }
-
-        textarea{
-          padding: 10px;
-          @extend .openassessment_large_text_input;
-          width: 70%;
-          float: right;
-        }
       }
-    }
-
-    .openassessment_line_input{
-      padding: 10px;
-      overflow: auto;
-      label{
-        width: 30%;
-        text-align: left;
-      }
-
-      input{
-        width:70%;
-        min-width: auto;
-        float: right;
-      }
-
-      textarea{
-        width:70%;
-        float:right;
-        @extend .openassessment_large_text_input
-      }
-
     }
 
     .openassessment_large_text_input{
@@ -600,37 +582,27 @@
       float: right;
     }
 
-    .openassessment_rubric_feedback_wrapper{
-      padding: 0 10px;
+    #openassessment_rubric_feedback_wrapper{
+      padding: 0;
 
-      .openassessment_rubric_feedback_header{
-         margin-top: 10px;
-         border-bottom: 1px solid $edx-gray-d3;
-         font-size: 125%;
-         padding: 10px;
-         padding-right: 20px;
-       }
+      #openassessment_rubric_feedback_header{
+              background-color: $edx-gray-l2;
+              padding: 5px 5px 5px 10px;
+              margin: 10px 10px 0 10px;
+              border-radius: 3px;
+      }
 
-      .openassessment_feedback_radio_toggle{
-        input[type="radio"]{
-            display: none;
-        }
+      label{
+        padding-top: 10px;
+      }
 
-        input[type="radio"] + label:before{
-          font-family: "FontAwesome";
-          display: inline-block;
-          margin-right: ($baseline-h/4);
-          width: auto;
-          height: auto;
-          content: "\f10c";
-        }
-
-        input[type="radio"]:checked + label:before{
-          content: "\f05d";
-        }
+      textarea{
+        padding: 10px;
+        @extend .openassessment_large_text_input;
+        width: 70%;
+        float: right;
       }
     }
-
 
     #openassessment_rubric_add_criterion{
 
