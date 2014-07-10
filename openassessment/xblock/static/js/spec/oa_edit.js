@@ -57,23 +57,6 @@ describe("OpenAssessment.StudioView", function() {
         view = new OpenAssessment.StudioView(runtime, el, server);
     });
 
-    it("saves the editor context definition", function() {
-        // Update the context
-        view.settingsFieldSelectors.titleField.val('THIS IS THE NEW TITLE');
-        view.settingsFieldSelectors.submissionStartField.val('2014-01-01');
-
-        // Save the updated editor definition
-        view.save();
-
-        // Expect the saving notification to start/end
-        expect(runtime.notify).toHaveBeenCalledWith('save', {state: 'start'});
-        expect(runtime.notify).toHaveBeenCalledWith('save', {state: 'end'});
-
-        // Expect the server's context to have been updated
-        expect(server.receivedData.title).toEqual('THIS IS THE NEW TITLE');
-        expect(server.receivedData.submissionStart).toEqual('2014-01-01T00:00:00.000Z');
-    });
-
     it("confirms changes for a released problem", function() {
         // Simulate an XBlock that has been released
         server.isReleased = true;
