@@ -451,7 +451,6 @@ OpenAssessment.ResponseView.prototype = {
         var view = this;
         var fileUpload = $("#file__upload");
         fileUpload.addClass("is--disabled");
-        var errorMsg = null;
 
         // Call getUploadUrl to get the one-time upload URL for this file. Once
         // completed, execute a sequential AJAX call to upload to the returned
@@ -468,18 +467,17 @@ OpenAssessment.ResponseView.prototype = {
                 contentType: view.imageType,
                 success: function(data, textStatus, jqXHR) {
                     view.imageUrl();
+                    this.baseView.toggleActionError('upload', null);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    errorMsg = textStatus;
+                    view.baseView.toggleActionError('upload', textStatus);
+                    fileUpload.removeClass("is--disabled");
                 }
             });
         }).fail(function(errMsg) {
-            errorMsg = errMsg;
-        });
-        if (errorMsg != null) {
-            view.baseView.toggleActionError('upload', errorMsg);
+            view.baseView.toggleActionError('upload', errMsg);
             fileUpload.removeClass("is--disabled");
-        }
+        });
     },
 
     /**
