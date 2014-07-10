@@ -385,44 +385,46 @@
             "title": "The most important of all questions.",
             "submission_due": "2014-10-1T10:00:00",
             "criteria": [
-
                 {
-                    "name": "Criterion 1",
-                    "prompt": "Prompt 1",
+                    "name": "Criterion with two options",
+                    "prompt": "Prompt for criterion with two options",
                     "order_num": 0,
-                    "feedback": "optional",
+                    "feedback": "disabled",
                     "options": [
                         {
-                            "order_num": 2,
-                            "points": 2,
-                            "name": "Good"
-                        }
-                    ],
-                    "points_possible": 2
-                },
-                {
-                    "name": "Criterion 2",
-                    "prompt": "Prompt 2",
-                    "order_num": 1,
-                    "options": [
+                            "order_num": 0,
+                            "points": 1,
+                            "name": "Fair",
+                            "explanation": "Fair explanation"
+                        },
                         {
                             "order_num": 1,
-                            "points": 1,
-                            "name": "Fair"
+                            "points": 2,
+                            "name": "Good",
+                            "explanation": "Good explanation"
                         }
                     ],
                     "points_possible": 2
                 },
                 {
-                    "name": "Criterion 3",
-                    "prompt": "Prompt 3",
+                    "name": "Criterion with no options",
+                    "prompt": "Prompt for criterion with no options",
+                    "order_num": 0,
+                    "options": [],
+                    "feedback": "required",
+                    "points_possible": 0
+                },
+                {
+                    "name": "Criterion with optional feedback",
+                    "prompt": "Prompt for criterion with optional feedback",
                     "order_num": 2,
                     "feedback": "optional",
                     "options": [
                         {
-                            "order_num": 2,
+                            "order_num": 0,
                             "points": 2,
-                            "name": "Good"
+                            "name": "Good",
+                            "explanation": "Good explanation"
                         }
                     ],
                     "points_possible": 2
