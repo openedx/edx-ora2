@@ -47,7 +47,7 @@ class StudioMixin(object):
             'openassessmentblock/edit/oa_edit.html'
         ).render(Context(self.editor_context()))
         frag = Fragment(rendered_template)
-        frag.add_javascript(pkg_resources.resource_string(__name__, "static/js/openassessment.min.js"))
+        frag.add_javascript(pkg_resources.resource_string(__name__, "static/js/openassessment-studio.min.js"))
         frag.initialize_js('OpenAssessmentEditor')
         return frag
 
