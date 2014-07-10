@@ -131,6 +131,18 @@ def validate_assessments(assessments, current_assessments, is_released):
             if must_grade < must_be_graded_by:
                 return (False, _('The "must_grade" value must be greater than or equal to the "must_be_graded_by" value.'))
 
+        # Student Training must have at least one example, and all
+        # examples must have unique answers.
+        if assessment_dict.get('name') == 'student-training':
+            answers = []
+            examples = assessment_dict.get('examples')
+            if not examples:
+                return False, _('You must provide at least one example response for student training.')
+            for example in examples:
+                if example.get('answer') in answers:
+                    return False, _('Each example response for student training must be unique.')
+                answers.append(example.get('answer'))
+
         # Example-based assessment MUST specify 'ease' or 'fake' as the algorithm ID,
         # at least for now.  Later, we may make this more flexible.
         if assessment_dict.get('name') == 'example-based-assessment':

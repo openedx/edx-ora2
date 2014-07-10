@@ -6,7 +6,6 @@ from django.utils.translation import ugettext as _
 from webob import Response
 from xblock.core import XBlock
 from openassessment.assessment.api import student_training
-import openassessment.workflow.api as workflow_api
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.data_conversion import convert_training_examples_list_to_dict
 from .resolve_dates import DISTANT_FUTURE
@@ -119,9 +118,17 @@ class StudentTrainingMixin(object):
                 },
                 examples
             )
-            context['training_essay'] = example['answer']
-            context['training_rubric'] = example['rubric']
-            template = 'openassessmentblock/student_training/student_training.html'
+
+            if example:
+                context['training_essay'] = example['answer']
+                context['training_rubric'] = example['rubric']
+                template = 'openassessmentblock/student_training/student_training.html'
+            else:
+                logger.error(
+                    "No training example was returned from the API for student "
+                    "with Submission UUID {}".format(self.submission_uuid)
+                )
+                template = "openassessmentblock/student_training/student_training_error.html"
 
         return template, context
 
