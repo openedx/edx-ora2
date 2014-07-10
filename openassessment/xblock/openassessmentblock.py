@@ -236,7 +236,7 @@ class OpenAssessmentBlock(
         context = Context(context_dict)
         frag = Fragment(template.render(context))
         frag.add_css(load("static/css/openassessment.css"))
-        frag.add_javascript(load("static/js/openassessment.min.js"))
+        frag.add_javascript(load("static/js/openassessment-lms.min.js"))
         frag.initialize_js('OpenAssessmentBlock')
         return frag
 

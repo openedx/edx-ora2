@@ -17,8 +17,10 @@ module.exports = function(config) {
       'lib/jquery.min.js',
       'lib/*.js',
       'src/oa_shared.js',
-      'src/*.js',
-      'spec/*.js',
+      'src/lms/*.js',
+      'src/studio/*.js',
+      'spec/lms/*.js',
+      'spec/studio/*.js',
 
       // fixtures
       {
@@ -37,7 +39,8 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'src/*.js': 'coverage'
+      'src/lms/*.js': 'coverage',
+      'src/studio/*.js': 'coverage'
     },
 
 
