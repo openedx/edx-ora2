@@ -668,3 +668,96 @@
   background-color: #e5e5e5;
 }
 
+
+#student_training_settings_editor{
+
+  .openassessment_training_example{
+    .openassessment_training_example_header{
+      margin: 10px;
+      padding: 5px;
+      border-bottom: 1px solid $edx-gray-d3;
+      overflow: auto;
+      .action.expand-collapse {
+        float: left;
+        .ui-toggle-expansion {
+          .icon-caret-down:before{
+            color: $edx-gray-d3;
+          }
+        }
+      }
+      .openassessment_training_example_header_title {
+        text-transform: uppercase;
+        width: 50%;
+        display: inline-block;
+        float: left;
+      }
+
+      .openassessment_training_example_remove {
+        @extend .openassessment_rubric_remove_button;
+      }
+
+    }
+
+    .openassessment_training_example_body {
+      padding: 0 15px;
+      .openassessment_training_example_essay_wrapper {
+        width: 60%;
+        textarea {
+          @extend .openassessment_input_styling;
+          margin: 5px 15px 0 10px;
+          width: Calc(100% - 25px);
+        }
+      }
+
+      .openassessment_training_example_scored_rubric {
+        width: 40%;
+        display: inline-block;
+        float: right;
+        .openassessment_training_example_criteria_selections {
+          .comp-setting-entry {
+            margin: 0;
+            padding: 7.5px 5px;
+            select {
+              width: 60%;
+              float: right;
+
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .openassessment_add_training_example{
+    :before{
+      font-family: "FontAwesome";
+      display: inline-block;
+      margin-left: 5px;
+      margin-right: 10px;
+      width: auto;
+      height: auto;
+      content: "\f067";
+    }
+    color: #009fe6;
+    margin-left: 10px;
+  }
+  .openassessment_training_example.collapsed{
+    .openassessment_training_example_body{
+      display: none;
+    }
+    .openassessment_training_example_header{
+      .action.expand-collapse {
+        float: left;
+        .ui-toggle-expansion {
+          @include transform(rotate(-90deg));
+          @include transform-origin(50% 50%);
+          .icon-caret-down:before{
+            color: #009fe6;
+          }
+        }
+      }
+    }
+  }
+
+}
+

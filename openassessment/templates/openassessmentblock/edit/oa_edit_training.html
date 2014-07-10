@@ -3,7 +3,7 @@
 <div class="openassessment_assessment_module_settings_editor" id="oa_student_training_editor">
     <div class = "openassessment_inclusion_wrapper">
         <input type="checkbox" id="include_student_training"
-                {% if assessments.student_training %} checked="true" {% endif %}>
+                {% if assessments.student_training %} checked="true" {% endif %} >
         <label for="include_student_training">{% trans "Step: Student Training" %}</label>
     </div>
     <div class = "openassessment_assessment_module_editor">
@@ -16,7 +16,56 @@
             <p class="openassessment_description">
                 {% trans "Enter one or more sample responses that you've created, together with the scores you would give those responses. Be sure to format the responses and scores according to the placeholder text below." %}
             </p>
-            <textarea id="student_training_examples">{{ assessments.student_training.examples }}</textarea>
+            <ol>
+                <li class="openassessment_training_example is-collapsible">
+
+                    <div class="openassessment_training_example_header view-outline">
+                        <a class="action expand-collapse collapse">
+                            <i class="icon-caret-down ui-toggle-expansion"></i>
+                        </a>
+                        <h6 class="openassessment_training_example_header_title">
+                            {% blocktrans %} Scored Response {% endblocktrans %}
+                        </h6>
+                        <div class="openassessment_training_example_remove">
+                            <h2>{% trans "Remove" %}</h2>
+                        </div>
+                    </div>
+
+                    <div class="openassessment_training_example_body">
+                        <div class="openassessment_training_example_scored_rubric wrapper-comp-settings">
+                            <h2>{% trans "Scored Rubric" %}</h2>
+                            <ol class="openassessment_training_example_criteria_selections list-input settings-list">
+
+                                {% for criterion in criteria %}
+                                <li class="field comp-setting-entry">
+                                    <div class="wrapper-comp-setting">
+                                        <label class="openassessment_training_example_criterion_name setting-label">
+                                            <h2>{{criterion.name}}</h2>
+                                        </label>
+                                        <select class="openassessment_training_example_criterion_option setting-input">
+                                            <option value="Not Scored">{% trans "Not Scored" %}</option>
+                                            {% for option in criterion.options %}
+                                                <option value={{option.name}}>{{option.name}} - {{option.points}} {% trans "points" %}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </li>
+                                {% endfor %}
+                            </ol>
+                        </div>
+                        <div class="openassessment_training_example_essay_wrapper">
+                            <h2>
+                                {% trans "Response" %}
+                            </h2>
+                            <textarea class="openassessment_training_example_essay"></textarea>
+                        </div>
+                    </div>
+                </li>
+            </ol>
+            <div>
+                <h2 class='openassessment_add_training_example'>{% trans "Add Scored Response" %}</h2>
+            </div>
+
         </div>
     </div>
 </div>
