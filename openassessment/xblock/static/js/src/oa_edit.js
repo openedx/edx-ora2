@@ -19,6 +19,8 @@ OpenAssessment.StudioView = function(runtime, element, server) {
 
     var liveElement = this.liveElement;
 
+    this.fixModalHeight();
+
     // Instantiates JQuery selector variables which will allow manipulation and display controls.
     this.settingsFieldSelectors = {
         promptBox: $('#openassessment_prompt_editor', liveElement),
@@ -88,6 +90,16 @@ OpenAssessment.StudioView = function(runtime, element, server) {
 };
 
 OpenAssessment.StudioView.prototype = {
+
+    /**
+     Adjusts the modal's height, position and padding to be larger for OA editing only (Does not impact other modals)
+     */
+    fixModalHeight: function () {
+        var element = this.liveElement;
+        element.toggleClass('openassessment_full_height');
+        element.parentsUntil('.modal-window').toggleClass('openassessment_full_height');
+        $('.modal-window').toggleClass('openassessment_modal_window');
+    },
 
     /**
      Load the XBlock XML definition from the server and display it in the view.
