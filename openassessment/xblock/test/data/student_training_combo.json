@@ -46,6 +46,72 @@
         "is_released": false
     },
 
+    "training_no_examples": {
+        "valid": false,
+        "assessments": [
+            {
+                "name": "student-training"
+            },
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment"
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
+    },
+
+    "training_duplicate_examples": {
+        "valid": false,
+        "assessments": [
+            {
+                "name": "student-training",
+                "examples": [
+                    {
+                        "answer": "тєѕт αηѕωєя",
+                        "options_selected": [
+                            {
+                                "criterion": "vocabulary",
+                                "option": "poor"
+                            },
+                            {
+                                "criterion": "grammar",
+                                "option": "good"
+                            }
+                        ]
+                    },
+                    {
+                        "answer": "тєѕт αηѕωєя",
+                        "options_selected": [
+                            {
+                                "criterion": "vocabulary",
+                                "option": "poor"
+                            },
+                            {
+                                "criterion": "grammar",
+                                "option": "good"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment"
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
+    },
+
     "training_peer": {
         "valid": true,
         "assessments": [

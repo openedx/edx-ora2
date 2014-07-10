@@ -55,7 +55,15 @@
         "valid": true,
         "assessments": [
             {
-                "name": "student-training"
+                "name": "student-training",
+                "examples": [
+                    {
+                        "answer": "foo"
+                    },
+                    {
+                        "answer": "bar"
+                    }
+                ]
             },
             {
                 "name": "self-assessment"
