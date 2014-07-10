@@ -2137,10 +2137,11 @@ hr.divider,
       border-bottom: none; }
 
 #openassessment-editor {
-  margin-bottom: 0; }
+  margin-bottom: 0;
+  height: 100%; }
   #openassessment-editor .openassessment_editor_content_and_tabs {
     width: 100%;
-    height: 373px; }
+    height: Calc(100% - 97px); }
   #openassessment-editor #openassessment_editor_header {
     background-color: #e5e5e5;
     width: 100%;
@@ -2448,9 +2449,15 @@ hr.divider,
     border: 0px;
     clear: both; }
 
-.modal-content {
-  height: 470px !important;
-  background-color: #e5e5e5; }
+.modal-lg.modal-window.confirm.openassessment_modal_window {
+  height: 80%;
+  top: 10%; }
+
+.openassessment_full_height.edit-xblock-modal,
+.openassessment_full_height.xblock-editor,
+.openassessment_full_height.xblock.xblock-studio_view.xblock-initialized,
+[class*="view-"] .modal-lg.modal-editor .openassessment_full_height.modal-content {
+  height: 100%; }
 
 .openassessment .self-assessment__display__header, .openassessment .peer-assessment__display__header, .openassessment .step__header {
   margin-bottom: 0 !important;

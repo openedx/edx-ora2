@@ -179,10 +179,11 @@
 
 #openassessment-editor {
   margin-bottom: 0;
+  height: 100%;
 
   .openassessment_editor_content_and_tabs {
     width: 100%;
-    height: 373px;
+    height: Calc(100% - 97px);
   }
 
   #openassessment_editor_header{
@@ -659,12 +660,17 @@
 
 }
 
-#openassessment_make_invisible{
-
+//For Both of these, we use high specificity to overload the previous styles
+//without the important tag.
+.modal-lg.modal-window.confirm.openassessment_modal_window{
+  height: 80%;
+  top: 10%;
 }
 
-.modal-content {
-  height: 470px !important;
-  background-color: #e5e5e5;
+.openassessment_full_height.edit-xblock-modal,
+.openassessment_full_height.xblock-editor,
+.openassessment_full_height.xblock.xblock-studio_view.xblock-initialized,
+[class*="view-"] .modal-lg.modal-editor .openassessment_full_height.modal-content
+{
+  height: 100%;
 }
-
