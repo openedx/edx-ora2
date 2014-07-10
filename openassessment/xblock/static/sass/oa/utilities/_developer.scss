@@ -179,10 +179,11 @@
 
 #openassessment-editor {
   margin-bottom: 0;
+  height: 100%;
 
   .openassessment_editor_content_and_tabs {
     width: 100%;
-    height: 373px;
+    height: Calc(100% - 97px);
   }
 
   #openassessment_editor_header{
@@ -659,15 +660,20 @@
 
 }
 
-#openassessment_make_invisible{
-
+//For Both of these, we use high specificity to overload the previous styles
+//without the important tag.
+.modal-lg.modal-window.confirm.openassessment_modal_window{
+  height: 80%;
+  top: 10%;
 }
 
-.modal-content {
-  height: 470px !important;
-  background-color: #e5e5e5;
+.openassessment_full_height.edit-xblock-modal,
+.openassessment_full_height.xblock-editor,
+.openassessment_full_height.xblock.xblock-studio_view.xblock-initialized,
+[class*="view-"] .modal-lg.modal-editor .openassessment_full_height.modal-content
+{
+  height: 100%;
 }
-
 
 #student_training_settings_editor{
 
@@ -693,17 +699,42 @@
       }
 
       .openassessment_training_example_remove {
-        @extend .openassessment_rubric_remove_button;
+        h2:after{
+          font-family: FontAwesome;
+          content: "\f00d";
+          display: inline-block;
+          color: inherit;
+          margin: 0 5px;
+        }
+        h2{
+          text-transform: uppercase;
+          font-size: 80%;
+          float: right;
+          display: inline-block;
+        }
+        margin: 0 5px;
+        float: right;
       }
 
     }
 
     .openassessment_training_example_body {
       padding: 0 15px;
+      overflow-y: auto;
       .openassessment_training_example_essay_wrapper {
         width: 60%;
         textarea {
-          @extend .openassessment_input_styling;
+          resize: none;
+          box-sizing: border-box;
+          border: 1px solid #b2b2b2;
+          border-radius: 2px;
+          padding: 6px 8px 8px;
+          background-color: #f2f2f2;
+          box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+          font-family: 'Open Sans', sans-serif;
+          font-size: 11px;
+          color: #4c4c4c;
+          outline: 0;
           margin: 5px 15px 0 10px;
           width: Calc(100% - 25px);
         }
@@ -720,7 +751,6 @@
             select {
               width: 60%;
               float: right;
-
             }
           }
         }

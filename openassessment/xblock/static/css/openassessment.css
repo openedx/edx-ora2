@@ -2137,10 +2137,11 @@ hr.divider,
       border-bottom: none; }
 
 #openassessment-editor {
-  margin-bottom: 0; }
+  margin-bottom: 0;
+  height: 100%; }
   #openassessment-editor .openassessment_editor_content_and_tabs {
     width: 100%;
-    height: 373px; }
+    height: Calc(100% - 97px); }
   #openassessment-editor #openassessment_editor_header {
     background-color: #e5e5e5;
     width: 100%;
@@ -2384,7 +2385,7 @@ hr.divider,
   #openassessment-editor #oa_rubric_editor_wrapper .openassessment_large_text_input, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_basic_editor .comp-setting-entry .wrapper-comp-settings .openassessment_criterion_prompt, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_criterion_option_explanation_wrapper textarea, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_line_input textarea {
     height: 70px;
     width: 70%; }
-  #openassessment-editor #oa_rubric_editor_wrapper .openassessment_input_styling, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_large_text_input, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_basic_editor .comp-setting-entry .wrapper-comp-settings .openassessment_criterion_prompt, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_criterion_option_explanation_wrapper textarea, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_line_input textarea, #openassessment-editor #oa_rubric_editor_wrapper #student_training_settings_editor .openassessment_training_example .openassessment_training_example_body .openassessment_training_example_essay_wrapper textarea, #student_training_settings_editor .openassessment_training_example .openassessment_training_example_body .openassessment_training_example_essay_wrapper #openassessment-editor #oa_rubric_editor_wrapper textarea {
+  #openassessment-editor #oa_rubric_editor_wrapper .openassessment_input_styling, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_large_text_input, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_basic_editor .comp-setting-entry .wrapper-comp-settings .openassessment_criterion_prompt, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_criterion_option_explanation_wrapper textarea, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_line_input textarea {
     resize: none;
     box-sizing: border-box;
     border: 1px solid #b2b2b2;
@@ -2396,16 +2397,16 @@ hr.divider,
     font-size: 11px;
     color: #4c4c4c;
     outline: 0; }
-  #openassessment-editor #oa_rubric_editor_wrapper .openassessment_rubric_remove_button, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_header .openassessment_criterion_header_remove, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_option_header .openassessment_option_header_remove, #openassessment-editor #oa_rubric_editor_wrapper #student_training_settings_editor .openassessment_training_example .openassessment_training_example_header .openassessment_training_example_remove, #student_training_settings_editor .openassessment_training_example .openassessment_training_example_header #openassessment-editor #oa_rubric_editor_wrapper .openassessment_training_example_remove {
+  #openassessment-editor #oa_rubric_editor_wrapper .openassessment_rubric_remove_button, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_header .openassessment_criterion_header_remove, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_option_header .openassessment_option_header_remove {
     margin: 0 5px;
     float: right; }
-    #openassessment-editor #oa_rubric_editor_wrapper .openassessment_rubric_remove_button h2:after, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_header .openassessment_criterion_header_remove h2:after, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_option_header .openassessment_option_header_remove h2:after, #openassessment-editor #oa_rubric_editor_wrapper #student_training_settings_editor .openassessment_training_example .openassessment_training_example_header .openassessment_training_example_remove h2:after, #student_training_settings_editor .openassessment_training_example .openassessment_training_example_header #openassessment-editor #oa_rubric_editor_wrapper .openassessment_training_example_remove h2:after {
+    #openassessment-editor #oa_rubric_editor_wrapper .openassessment_rubric_remove_button h2:after, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_header .openassessment_criterion_header_remove h2:after, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_option_header .openassessment_option_header_remove h2:after {
       font-family: FontAwesome;
       content: "\f00d";
       display: inline-block;
       color: inherit;
       margin: 0 5px; }
-    #openassessment-editor #oa_rubric_editor_wrapper .openassessment_rubric_remove_button h2, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_header .openassessment_criterion_header_remove h2, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_option_header .openassessment_option_header_remove h2, #openassessment-editor #oa_rubric_editor_wrapper #student_training_settings_editor .openassessment_training_example .openassessment_training_example_header .openassessment_training_example_remove h2, #student_training_settings_editor .openassessment_training_example .openassessment_training_example_header #openassessment-editor #oa_rubric_editor_wrapper .openassessment_training_example_remove h2 {
+    #openassessment-editor #oa_rubric_editor_wrapper .openassessment_rubric_remove_button h2, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion .openassessment_criterion_header .openassessment_criterion_header_remove h2, #openassessment-editor #oa_rubric_editor_wrapper .openassessment_criterion_option .openassessment_option_header .openassessment_option_header_remove h2 {
       text-transform: uppercase;
       font-size: 80%;
       float: right;
@@ -2448,9 +2449,15 @@ hr.divider,
     border: 0px;
     clear: both; }
 
-.modal-content {
-  height: 470px !important;
-  background-color: #e5e5e5; }
+.modal-lg.modal-window.confirm.openassessment_modal_window {
+  height: 80%;
+  top: 10%; }
+
+.openassessment_full_height.edit-xblock-modal,
+.openassessment_full_height.xblock-editor,
+.openassessment_full_height.xblock.xblock-studio_view.xblock-initialized,
+[class*="view-"] .modal-lg.modal-editor .openassessment_full_height.modal-content {
+  height: 100%; }
 
 #student_training_settings_editor .openassessment_training_example .openassessment_training_example_header {
   margin: 10px;
@@ -2466,11 +2473,37 @@ hr.divider,
     width: 50%;
     display: inline-block;
     float: left; }
+  #student_training_settings_editor .openassessment_training_example .openassessment_training_example_header .openassessment_training_example_remove {
+    margin: 0 5px;
+    float: right; }
+    #student_training_settings_editor .openassessment_training_example .openassessment_training_example_header .openassessment_training_example_remove h2:after {
+      font-family: FontAwesome;
+      content: "\f00d";
+      display: inline-block;
+      color: inherit;
+      margin: 0 5px; }
+    #student_training_settings_editor .openassessment_training_example .openassessment_training_example_header .openassessment_training_example_remove h2 {
+      text-transform: uppercase;
+      font-size: 80%;
+      float: right;
+      display: inline-block; }
 #student_training_settings_editor .openassessment_training_example .openassessment_training_example_body {
-  padding: 0 15px; }
+  padding: 0 15px;
+  overflow-y: auto; }
   #student_training_settings_editor .openassessment_training_example .openassessment_training_example_body .openassessment_training_example_essay_wrapper {
     width: 60%; }
     #student_training_settings_editor .openassessment_training_example .openassessment_training_example_body .openassessment_training_example_essay_wrapper textarea {
+      resize: none;
+      box-sizing: border-box;
+      border: 1px solid #b2b2b2;
+      border-radius: 2px;
+      padding: 6px 8px 8px;
+      background-color: #f2f2f2;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+      font-family: 'Open Sans', sans-serif;
+      font-size: 11px;
+      color: #4c4c4c;
+      outline: 0;
       margin: 5px 15px 0 10px;
       width: Calc(100% - 25px); }
   #student_training_settings_editor .openassessment_training_example .openassessment_training_example_body .openassessment_training_example_scored_rubric {
@@ -2483,10 +2516,10 @@ hr.divider,
       #student_training_settings_editor .openassessment_training_example .openassessment_training_example_body .openassessment_training_example_scored_rubric .openassessment_training_example_criteria_selections .comp-setting-entry select {
         width: 60%;
         float: right; }
-#student_training_settings_editor .openassessment_training_example .openassessment_add_training_example {
+#student_training_settings_editor .openassessment_add_training_example {
   color: #009fe6;
   margin-left: 10px; }
-  #student_training_settings_editor .openassessment_training_example .openassessment_add_training_example :before {
+  #student_training_settings_editor .openassessment_add_training_example :before {
     font-family: "FontAwesome";
     display: inline-block;
     margin-left: 5px;
