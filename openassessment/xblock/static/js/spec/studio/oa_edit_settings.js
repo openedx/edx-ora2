@@ -26,10 +26,12 @@ describe("OpenAssessment.EditSettingsView", function() {
         loadFixtures('oa_edit.html');
 
         // Create the stub assessment views
-        assessmentViews = [
-            new StubView("self-assessment", "Self assessment description"),
-            new StubView("peer-assessment", "Peer assessment description")
-        ];
+        assessmentViews = {
+            "oa_self_assessment_editor": new StubView("self-assessment", "Self assessment description"),
+            "oa_peer_assessment_editor": new StubView("peer-assessment", "Peer assessment description"),
+            "oa_ai_assessment_editor": new StubView("ai-assessment", "Example Based assessment description"),
+            "oa_student_training_editor": new StubView("student-training", "Student Training description")
+        };
 
         // Create the view
         var element = $("#oa_basic_settings_editor").get(0);
@@ -66,14 +68,24 @@ describe("OpenAssessment.EditSettingsView", function() {
     });
 
     it("builds a description of enabled assessments", function() {
+        // The Peer and Self Editor ID's
+        var peerID = "oa_peer_assessment_editor";
+        var selfID = "oa_self_assessment_editor";
+        var aiID = "oa_ai_assessment_editor";
+        var studentID = "oa_student_training_editor";
+
         // Disable all assessments, and expect an empty description
-        assessmentViews[0].isEnabled(false);
-        assessmentViews[1].isEnabled(false);
+        assessmentViews[peerID].isEnabled(false);
+        assessmentViews[selfID].isEnabled(false);
+        assessmentViews[aiID].isEnabled(false);
+        assessmentViews[studentID].isEnabled(false);
         expect(view.assessmentsDescription()).toEqual([]);
 
         // Enable the first assessment only
-        assessmentViews[0].isEnabled(true);
-        assessmentViews[1].isEnabled(false);
+        assessmentViews[peerID].isEnabled(false);
+        assessmentViews[selfID].isEnabled(true);
+        assessmentViews[aiID].isEnabled(false);
+        assessmentViews[studentID].isEnabled(false);
         expect(view.assessmentsDescription()).toEqual([
             {
                 name: "self-assessment",
@@ -82,8 +94,10 @@ describe("OpenAssessment.EditSettingsView", function() {
         ]);
 
         // Enable the second assessment only
-        assessmentViews[0].isEnabled(false);
-        assessmentViews[1].isEnabled(true);
+        assessmentViews[peerID].isEnabled(true);
+        assessmentViews[selfID].isEnabled(false);
+        assessmentViews[aiID].isEnabled(false);
+        assessmentViews[studentID].isEnabled(false);
         expect(view.assessmentsDescription()).toEqual([
             {
                 name: "peer-assessment",
@@ -92,12 +106,30 @@ describe("OpenAssessment.EditSettingsView", function() {
         ]);
 
         // Enable both assessments
-        assessmentViews[0].isEnabled(true);
-        assessmentViews[1].isEnabled(true);
+        assessmentViews[peerID].isEnabled(true);
+        assessmentViews[selfID].isEnabled(true);
+        assessmentViews[aiID].isEnabled(false);
+        assessmentViews[studentID].isEnabled(false);
         expect(view.assessmentsDescription()).toEqual([
+            {
+                name: "peer-assessment",
+                dummy: "Peer assessment description"
+            },
             {
                 name: "self-assessment",
                 dummy: "Self assessment description"
+            }
+        ]);
+
+        // Enable Training and Peer assessments
+        assessmentViews[peerID].isEnabled(true);
+        assessmentViews[selfID].isEnabled(false);
+        assessmentViews[aiID].isEnabled(false);
+        assessmentViews[studentID].isEnabled(true);
+        expect(view.assessmentsDescription()).toEqual([
+            {
+                name: "student-training",
+                dummy: "Student Training description"
             },
             {
                 name: "peer-assessment",

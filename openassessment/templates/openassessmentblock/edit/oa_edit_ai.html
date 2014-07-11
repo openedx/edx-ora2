@@ -1,6 +1,7 @@
 {% load i18n %}
 {% spaceless %}
-<div class="openassessment_assessment_module_settings_editor" id="oa_ai_assessment_editor">
+<li class="openassessment_assessment_module_settings_editor" id="oa_ai_assessment_editor">
+    <div class = "drag-handle action"></div>
     <div class = "openassessment_inclusion_wrapper">
         <input id="include_ai_assessment" type="checkbox"
                 {% if assessments.example_based_assessment %} checked="true" {% endif %}>
@@ -19,5 +20,5 @@
             <textarea id="ai_training_examples">{{ assessments.example_based_assessment.examples }}</textarea>
         </div>
     </div>
-</div>
+</li>
 {% endspaceless %}

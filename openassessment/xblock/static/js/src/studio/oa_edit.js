@@ -28,21 +28,26 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     );
 
     // Initialize the settings tab view
+    var studentTrainingView = new OpenAssessment.EditStudentTrainingView(
+        $("#oa_student_training_editor", this.element).get(0)
+    );
+    var peerAssessmentView = new OpenAssessment.EditPeerAssessmentView(
+        $("#oa_peer_assessment_editor", this.element).get(0)
+    );
+    var selfAssessmentView = new OpenAssessment.EditSelfAssessmentView(
+        $("#oa_self_assessment_editor", this.element).get(0)
+    );
+    var exampleBasedAssessmentView = new OpenAssessment.EditExampleBasedAssessmentView(
+        $("#oa_ai_assessment_editor", this.element).get(0)
+    );
+    var assessmentLookupDictionary = {};
+    assessmentLookupDictionary[studentTrainingView.getID()] = studentTrainingView;
+    assessmentLookupDictionary[peerAssessmentView.getID()] = peerAssessmentView;
+    assessmentLookupDictionary[selfAssessmentView.getID()] = selfAssessmentView;
+    assessmentLookupDictionary[exampleBasedAssessmentView.getID()] = exampleBasedAssessmentView;
+
     this.settingsView = new OpenAssessment.EditSettingsView(
-        $("#oa_basic_settings_editor", this.element).get(0), [
-            new OpenAssessment.EditPeerAssessmentView(
-                $("#oa_peer_assessment_editor", this.element).get(0)
-            ),
-            new OpenAssessment.EditSelfAssessmentView(
-                $("#oa_self_assessment_editor", this.element).get(0)
-            ),
-            new OpenAssessment.EditStudentTrainingView(
-                $("#oa_student_training_editor", this.element).get(0)
-            ),
-            new OpenAssessment.EditExampleBasedAssessmentView(
-                $("#oa_ai_assessment_editor", this.element).get(0)
-            )
-        ]
+        $("#oa_basic_settings_editor", this.element).get(0), assessmentLookupDictionary
     );
 
     // Initialize the rubric tab view
@@ -53,6 +58,8 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     // Install the save and cancel buttons
     $(".openassessment_save_button", this.element).click($.proxy(this.save, this));
     $(".openassessment_cancel_button", this.element).click($.proxy(this.cancel, this));
+
+    this.initializeSortableAssessments()
 };
 
 OpenAssessment.StudioView.prototype = {
@@ -64,14 +71,47 @@ OpenAssessment.StudioView.prototype = {
         // Add the full height class to every element from the XBlock
         // to the modal window in Studio.
         $(this.element)
-            .toggleClass('openassessment_full_height', true)
+            .addClass('openassessment_full_height')
             .parentsUntil('.modal-window')
-            .toggleClass('openassessment_full_height', true);
+            .addClass('openassessment_full_height');
 
         // Add the modal window class to the modal window
         $(this.element)
             .closest('.modal-window')
-            .toggleClass('openassessment_modal_window', true);
+            .addClass('openassessment_modal_window');
+    },
+
+    /**
+    Installs click listeners which initialize drag and drop functionality for assessment modules.
+    **/
+    initializeSortableAssessments: function () {
+        var liveElement = this.liveElement;
+        // Initialize Drag and Drop of Assessment Modules
+        $('#openassessment_assessment_module_settings_editors', liveElement).sortable({
+            // On Start, we want to collapse all draggable items so that dragging is visually simple (no scrolling)
+            start: function(event, ui) {
+                // Hide all of the contents (not the headers) of the divs, to collapse during dragging.
+                $('.openassessment_assessment_module_editor', liveElement).hide();
+
+                var targetHeight = 'auto';
+                // Shrink the blank area behind the dragged item.
+                ui.placeholder.height(targetHeight);
+                // Shrink the dragged item itself.
+                ui.helper.height(targetHeight);
+                // Update the sortable
+                $('#openassessment_assessment_module_settings_editors', liveElement)
+                    .sortable('refresh').sortable('refreshPositions');
+            },
+            // On stop, we redisplay the divs to their original state
+            stop: function(event, ui){
+                $('.openassessment_assessment_module_editor', liveElement).show();
+            },
+            snap: true,
+            axis: "y",
+            handle: ".drag-handle",
+            cursorAt: {top: 20}
+        });
+        $('#openassessment_assessment_module_settings_editors', liveElement).disableSelection();
     },
 
     /**

@@ -259,12 +259,45 @@
     font-size: 80%;
   }
 
+  .openassessment_assessment_module_settings_editor.openassessment_shrink_for_drag{
+    height: 40px;
+  }
+
   .openassessment_assessment_module_settings_editor{
-    overflow-y: scroll;
     padding: 5px;
     margin: 10px;
-    border: 1px solid lightgray;
+    border: 1px solid $edx-gray-l3;
     border-radius: 3px;
+    position: relative;
+
+    .drag-handle{
+      position: absolute;
+      background-color: $edx-gray-l4;
+      background-position: center;
+      display: block;
+      top: 0px;
+      right: 0px;
+      z-index: 10;
+      width: 15px;
+      height: 100%;
+      border-left: 1px solid $edx-gray-l3;
+      cursor: move;
+      @include transition(none);
+    }
+
+    .openassessment_description{
+      padding: 0 20px 0 10px;
+    }
+
+  }
+
+  .openassessment_assessment_module_settings_editor:hover {
+    border-color: $blue;
+    .drag-handle {
+      background-color: #009fe6;
+      border-color: #009fe6;
+      @include transition(none);
+    }
   }
 
   .openassessment_description{
@@ -333,6 +366,12 @@
     .openassessment_description{
       padding-left: 15px;
     }
+  }
+
+
+  .ui-widget-header .ui-state-active:hover,
+  .ui-widget-header .ui-state-default:hover{
+    background: $edx-gray-l2;
   }
 
   #oa_rubric_editor_wrapper{
@@ -646,3 +685,4 @@
 {
   height: 100%;
 }
+

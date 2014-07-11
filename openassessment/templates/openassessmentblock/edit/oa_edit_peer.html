@@ -1,6 +1,7 @@
 {% load i18n %}
 {% spaceless %}
-<div class="openassessment_assessment_module_settings_editor" id="oa_peer_assessment_editor">
+<li class="openassessment_assessment_module_settings_editor" id="oa_peer_assessment_editor">
+    <div class = "drag-handle action"></div>
     <div class="openassessment_inclusion_wrapper">
         <input type="checkbox" id="include_peer_assessment"
                 {% if assessments.peer_assessment %} checked="true" {% endif %}>
@@ -48,5 +49,5 @@
             </ul>
         </div>
     </div>
-</div>
+</li>
 {% endspaceless %}
