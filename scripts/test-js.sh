@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 cd `dirname $BASH_SOURCE` && cd ..
-./scripts/install-js.sh
 
 echo "Generating HTML fixtures for JavaScript tests..."
 export DJANGO_SETTINGS_MODULE="settings.test"

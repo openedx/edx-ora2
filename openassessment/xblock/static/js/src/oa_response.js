@@ -9,9 +9,10 @@ Args:
 Returns:
     OpenAssessment.ResponseView
 **/
-OpenAssessment.ResponseView = function(element, server, baseView) {
+OpenAssessment.ResponseView = function(element, server, fileUploader, baseView) {
     this.element = element;
     this.server = server;
+    this.fileUploader = fileUploader;
     this.baseView = baseView;
     this.savedResponse = "";
     this.files = null;
@@ -437,7 +438,7 @@ OpenAssessment.ResponseView.prototype = {
             this.baseView.toggleActionError('upload', null);
             this.files = files;
         }
-        $("#file__upload").toggleClass("is--disabled", this.files == null);
+        $("#file__upload").toggleClass("is--disabled", this.files === null);
     },
 
 
@@ -452,32 +453,26 @@ OpenAssessment.ResponseView.prototype = {
         var fileUpload = $("#file__upload");
         fileUpload.addClass("is--disabled");
 
+        var handleError = function(errMsg) {
+            view.baseView.toggleActionError('upload', errMsg);
+            fileUpload.removeClass("is--disabled");
+        };
+
         // Call getUploadUrl to get the one-time upload URL for this file. Once
         // completed, execute a sequential AJAX call to upload to the returned
         // URL. This request requires appropriate CORS configuration for AJAX
         // PUT requests on the server.
-        this.server.getUploadUrl(view.imageType).done(function(url) {
-            var image = view.files[0];
-            $.ajax({
-                url: url,
-                type: 'PUT',
-                data: image,
-                async: false,
-                processData: false,
-                contentType: view.imageType,
-                success: function(data, textStatus, jqXHR) {
-                    view.imageUrl();
-                    this.baseView.toggleActionError('upload', null);
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    view.baseView.toggleActionError('upload', textStatus);
-                    fileUpload.removeClass("is--disabled");
-                }
-            });
-        }).fail(function(errMsg) {
-            view.baseView.toggleActionError('upload', errMsg);
-            fileUpload.removeClass("is--disabled");
-        });
+        this.server.getUploadUrl(view.imageType).done(
+            function(url) {
+                var image = view.files[0];
+                view.fileUploader.upload(url, image, view.imageType)
+                    .done(function() {
+                        view.imageUrl();
+                        view.baseView.toggleActionError('upload', null);
+                    })
+                    .fail(handleError);
+            }
+        ).fail(handleError);
     },
 
     /**

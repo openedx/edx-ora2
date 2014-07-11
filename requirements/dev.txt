@@ -1,7 +1,5 @@
 -r test.txt
 
-git+https://github.com/edx/i18n-tools.git@f5303e82dff368c7595884d9325aeea1d802da25#egg=i18n_tools
-
 # Debug tools
 bpython==0.13
 django-debug-panel==0.8.0
@@ -9,17 +7,5 @@ django-debug-toolbar==1.0.1
 django-pdb==0.3.2
 sqlparse==0.1.10
 
-# Doc generation
-docutils==0.11
-Jinja2==2.7.1
-MarkupSafe==0.18
-Pygments==1.6
-Sphinx==1.2
-sphinx-rtd-theme==0.1.5
-sphinxcontrib-napoleon==0.2.3
-
 # runserver_plus
 Werkzeug==0.9.4
-
-# caching
-python-memcached==1.53

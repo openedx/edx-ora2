@@ -3,7 +3,7 @@
 # Need to exit with an error code to fail the Travis build
 set -e
 
-pip install Sphinx sphinx_rtd_theme
+pip install -q Sphinx sphinx_rtd_theme
 
 # go into docs directory
 cd docs/en_us
@@ -11,7 +11,7 @@ cd docs/en_us
 # build course authors docs
 cd course_authors
 if [ -f requirements.txt ]; then
-    pip install -r requirements.txt
+    pip install -q -r requirements.txt
 fi
 make html
 cd ..
@@ -19,7 +19,7 @@ cd ..
 # build developer docs
 cd developers
 if [ -f requirements.txt ]; then
-    pip install -r requirements.txt
+    pip install -q -r requirements.txt
 fi
 make html
 cd ..
