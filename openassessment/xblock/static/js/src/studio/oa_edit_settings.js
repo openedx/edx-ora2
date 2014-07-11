@@ -11,8 +11,7 @@ Returns:
 **/
 OpenAssessment.EditSettingsView = function(element, assessmentViews) {
     this.settingsElement = element;
-    this.assessmentsElement = $('#openassessment_assessment_module_settings_editors',
-        $(element).closest('#oa_settings_editor_wrapper'));
+    this.assessmentsElement = $(element).siblings('#openassessment_assessment_module_settings_editors').get(0);
     this.assessmentViews = assessmentViews;
 };
 

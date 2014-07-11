@@ -68,6 +68,11 @@ describe("OpenAssessment.EditSettingsView", function() {
     });
 
     it("builds a description of enabled assessments", function() {
+        // In this test we also verify that the mechansim that reads off of the DOM is correct, in that it gets
+        // the right order of assessments, in addition to performing the correct calls.  Note that this test's
+        // success depends on our Template having the original order (as it does in an unconfigured ORA problem)
+        // of TRAINING -> PEER -> SELF -> AI
+
         // The Peer and Self Editor ID's
         var peerID = "oa_peer_assessment_editor";
         var selfID = "oa_self_assessment_editor";
