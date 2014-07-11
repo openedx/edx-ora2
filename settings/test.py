@@ -23,12 +23,13 @@ NOSE_ARGS = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
-    }
+        'NAME': 'test_ora2db',
+        'TEST_NAME': 'test_ora2db',
+    },
+    'read_replica': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'TEST_MIRROR': 'default',
+    },
 }
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'

@@ -6,7 +6,7 @@
 git+https://github.com/edx/XBlock.git@fc5fea25c973ec66d8db63cf69a817ce624f5ef5#egg=XBlock
 git+https://github.com/edx/xblock-sdk.git@643900aadcb18aaeb7fe67271ca9dbf36e463ee6#egg=xblock-sdk
 
-edx-submissions==0.0.2
+edx-submissions==0.0.3
 
 # Third Party Requirements
 boto==2.13.3
