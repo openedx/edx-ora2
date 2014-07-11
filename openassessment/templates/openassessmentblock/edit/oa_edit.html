@@ -58,13 +58,19 @@
                 {% trans "Select the steps that students must complete. All steps are optional, but every assignment must include at least one step. To change the order in which students will complete the steps, drag them into the desired order." %}
             </p>
             <ol id="openassessment_assessment_module_settings_editors">
-                {% include "openassessmentblock/edit/oa_edit_training.html"  %}
 
-                {% include "openassessmentblock/edit/oa_edit_peer.html"  %}
+                {% for assessment in used_assessments %}
+                    {% with "openassessmentblock/edit/oa_edit_"|add:assessment|add:".html" as template %}
+                    {% include template %}
+                    {% endwith %}
+                {% endfor %}
 
-                {% include "openassessmentblock/edit/oa_edit_self.html"  %}
+                {% for assessment in unused_assessments %}
+                    {% with "openassessmentblock/edit/oa_edit_"|add:assessment|add:".html" as template %}
+                    {% include template %}
+                    {% endwith %}
+                {% endfor %}
 
-                {% include "openassessmentblock/edit/oa_edit_ai.html"  %}
             </ol>
         </div>
     </div>
