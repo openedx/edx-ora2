@@ -1,6 +1,7 @@
 {% load i18n %}
 {% spaceless %}
-<div class="openassessment_assessment_module_settings_editor" id="oa_self_assessment_editor">
+<li class="openassessment_assessment_module_settings_editor" id="oa_self_assessment_editor">
+    <div class = "drag-handle action"></div>
     <div class = "openassessment_inclusion_wrapper">
         <input id="include_self_assessment" type="checkbox"
                 {% if assessments.self_assessment %} checked="true" {% endif %}>
@@ -34,5 +35,5 @@
             </ul>
         </div>
     </div>
-</div>
+</li>
 {% endspaceless %}

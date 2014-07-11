@@ -55,19 +55,18 @@
             </ul>
 
             <p class="openassessment_description" id="openassessment_step_select_description">
-                {% trans "Select the steps that students must complete. All steps are optional, but every assignment must include at least one step." %}
+                {% trans "Select the steps that students must complete. All steps are optional, but every assignment must include at least one step. To change the order in which students will complete the steps, drag them into the desired order." %}
             </p>
+            <ol id="openassessment_assessment_module_settings_editors">
+                {% include "openassessmentblock/edit/oa_edit_training.html"  %}
 
-            {% include "openassessmentblock/edit/oa_edit_training.html"  %}
+                {% include "openassessmentblock/edit/oa_edit_peer.html"  %}
 
-            {% include "openassessmentblock/edit/oa_edit_peer.html"  %}
+                {% include "openassessmentblock/edit/oa_edit_self.html"  %}
 
-            {% include "openassessmentblock/edit/oa_edit_self.html"  %}
-
-            {% include "openassessmentblock/edit/oa_edit_ai.html"  %}
-
+                {% include "openassessmentblock/edit/oa_edit_ai.html"  %}
+            </ol>
         </div>
-
     </div>
 
     <div class="openassessment_editor_buttons xblock-actions">

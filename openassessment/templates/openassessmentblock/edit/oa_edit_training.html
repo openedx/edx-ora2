@@ -1,6 +1,7 @@
 {% load i18n %}
 {% spaceless %}
-<div class="openassessment_assessment_module_settings_editor" id="oa_student_training_editor">
+<li class="openassessment_assessment_module_settings_editor" id="oa_student_training_editor">
+    <div class = "drag-handle action"></div>
     <div class = "openassessment_inclusion_wrapper">
         <input type="checkbox" id="include_student_training"
                 {% if assessments.student_training %} checked="true" {% endif %}>
@@ -19,5 +20,5 @@
             <textarea id="student_training_examples">{{ assessments.student_training.examples }}</textarea>
         </div>
     </div>
-</div>
+</li>
 {% endspaceless %}
