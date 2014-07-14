@@ -1,54 +1,4 @@
 /**
-Show and hide elements based on a checkbox.
-
-Args:
-    element (DOM element): The parent element, used to scope the selectors.
-    hiddenSelector (string): The CSS selector string for elements
-        to show when the checkbox is in the "off" state.
-    shownSelector (string): The CSS selector string for elements
-        to show when the checkbox is in the "on" state.
-**/
-OpenAssessment.ToggleControl = function(element, hiddenSelector, shownSelector) {
-    this.element = element;
-    this.hiddenSelector = hiddenSelector;
-    this.shownSelector = shownSelector;
-};
-
-OpenAssessment.ToggleControl.prototype = {
-    /**
-    Install the event handler for the checkbox,
-    passing in the toggle control object as the event data.
-
-    Args:
-        checkboxSelector (string): The CSS selector string for the checkbox.
-
-    Returns:
-        OpenAssessment.ToggleControl
-    **/
-    install: function(checkboxSelector) {
-        $(checkboxSelector, this.element).change(
-            this, function(event) {
-                var control = event.data;
-                if (this.checked) { control.show(); }
-                else { control.hide(); }
-            }
-        );
-        return this;
-    },
-
-    show: function() {
-        $(this.hiddenSelector, this.element).addClass('is--hidden');
-        $(this.shownSelector, this.element).removeClass('is--hidden');
-    },
-
-    hide: function() {
-        $(this.hiddenSelector, this.element).removeClass('is--hidden');
-        $(this.shownSelector, this.element).addClass('is--hidden');
-    }
-};
-
-
-/**
 Interface for editing peer assessment settings.
 
 Args:
@@ -62,11 +12,25 @@ OpenAssessment.EditPeerAssessmentView = function(element) {
     this.element = element;
     this.name = "peer-assessment";
 
+    // Configure the toggle checkbox to enable/disable this assessment
     new OpenAssessment.ToggleControl(
         this.element,
         "#peer_assessment_description_closed",
         "#peer_assessment_settings_editor"
     ).install("#include_peer_assessment");
+
+    // Configure the date and time fields
+    this.startDatetimeControl = new OpenAssessment.DatetimeControl(
+        this.element,
+        "#peer_assessment_start_date",
+        "#peer_assessment_start_time"
+    ).install();
+
+    this.dueDatetimeControl = new OpenAssessment.DatetimeControl(
+        this.element,
+        "#peer_assessment_due_date",
+        "#peer_assessment_due_time"
+    ).install();
 };
 
 OpenAssessment.EditPeerAssessmentView.prototype = {
@@ -141,28 +105,28 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
     Get or set the start date and time of the assessment.
 
     Args:
-        datetime (string, optional): If provided, set the datetime to this value.
+        dateString (string, optional): If provided, set the date (YY-MM-DD).
+        timeString (string, optional): If provided, set the time (HH:MM, 24-hour clock).
 
     Returns:
         string (ISO-formatted UTC datetime)
     **/
-    startDatetime: function(datetime) {
-        var sel = $("#peer_assessment_start_date", this.element);
-        return OpenAssessment.Fields.datetimeField(sel, datetime);
+    startDatetime: function(dateString, timeString) {
+        return this.startDatetimeControl.datetime(dateString, timeString);
     },
 
     /**
     Get or set the due date and time of the assessment.
 
     Args:
-        datetime (string, optional): If provided, set the datetime to this value.
+        dateString (string, optional): If provided, set the date (YY-MM-DD).
+        timeString (string, optional): If provided, set the time (HH:MM, 24-hour clock).
 
     Returns:
         string (ISO-formatted UTC datetime)
     **/
-    dueDatetime: function(datetime) {
-        var sel = $("#peer_assessment_due_date", this.element);
-        return OpenAssessment.Fields.datetimeField(sel, datetime);
+    dueDatetime: function(dateString, timeString) {
+        return this.dueDatetimeControl.datetime(dateString, timeString);
     },
 
     /**
@@ -191,11 +155,25 @@ OpenAssessment.EditSelfAssessmentView = function(element) {
     this.element = element;
     this.name = "self-assessment";
 
+    // Configure the toggle checkbox to enable/disable this assessment
     new OpenAssessment.ToggleControl(
         this.element,
         "#self_assessment_description_closed",
         "#self_assessment_settings_editor"
     ).install("#include_self_assessment");
+
+    // Configure the date and time fields
+    this.startDatetimeControl = new OpenAssessment.DatetimeControl(
+        this.element,
+        "#self_assessment_start_date",
+        "#self_assessment_start_time"
+    ).install();
+
+    this.dueDatetimeControl = new OpenAssessment.DatetimeControl(
+        this.element,
+        "#self_assessment_due_date",
+        "#self_assessment_due_time"
+    ).install();
 };
 
 OpenAssessment.EditSelfAssessmentView.prototype = {
@@ -239,28 +217,28 @@ OpenAssessment.EditSelfAssessmentView.prototype = {
     Get or set the start date and time of the assessment.
 
     Args:
-        datetime (string, optional): If provided, set the datetime to this value.
+        dateString (string, optional): If provided, set the date (YY-MM-DD).
+        timeString (string, optional): If provided, set the time (HH:MM, 24-hour clock).
 
     Returns:
         string (ISO-formatted UTC datetime)
     **/
-    startDatetime: function(datetime) {
-        var sel = $("#self_assessment_start_date", this.element);
-        return OpenAssessment.Fields.datetimeField(sel, datetime);
+    startDatetime: function(dateString, timeString) {
+        return this.startDatetimeControl.datetime(dateString, timeString);
     },
 
     /**
     Get or set the due date and time of the assessment.
 
     Args:
-        datetime (string, optional): If provided, set the datetime to this value.
+        dateString (string, optional): If provided, set the date (YY-MM-DD).
+        timeString (string, optional): If provided, set the time (HH:MM, 24-hour clock).
 
     Returns:
         string (ISO-formatted UTC datetime)
     **/
-    dueDatetime: function(datetime) {
-        var sel = $("#self_assessment_due_date", this.element);
-        return OpenAssessment.Fields.datetimeField(sel, datetime);
+    dueDatetime: function(dateString, timeString) {
+        return this.dueDatetimeControl.datetime(dateString, timeString);
     },
 
     /**

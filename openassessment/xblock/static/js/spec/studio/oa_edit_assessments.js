@@ -36,8 +36,8 @@ describe("OpenAssessment edit assessment views", function() {
         it("Loads a description", function() {
             view.mustGradeNum(1);
             view.mustBeGradedByNum(2);
-            view.startDatetime("2014-01-01T00:00");
-            view.dueDatetime("2014-03-04T00:00");
+            view.startDatetime("2014-01-01", "00:00");
+            view.dueDatetime("2014-03-04", "00:00");
             expect(view.description()).toEqual({
                 must_grade: 1,
                 must_be_graded_by: 2,
@@ -65,8 +65,8 @@ describe("OpenAssessment edit assessment views", function() {
         it("Enables and disables", function() { testEnableAndDisable(view); });
 
         it("Loads a description", function() {
-            view.startDatetime("2014-01-01T00:00");
-            view.dueDatetime("2014-03-04T00:00");
+            view.startDatetime("2014-01-01", "00:00");
+            view.dueDatetime("2014-03-04", "00:00");
             expect(view.description()).toEqual({
                 start: "2014-01-01T00:00",
                 due: "2014-03-04T00:00"
@@ -74,8 +74,8 @@ describe("OpenAssessment edit assessment views", function() {
         });
 
         it("Handles default dates", function() {
-            view.startDatetime("");
-            view.dueDatetime("");
+            view.startDatetime("", "");
+            view.dueDatetime("", "");
             expect(view.description().start).toBe(null);
             expect(view.description().due).toBe(null);
         });

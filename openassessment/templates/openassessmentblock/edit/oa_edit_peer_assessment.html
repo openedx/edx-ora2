@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load tz %}
 {% spaceless %}
 <li class="openassessment_assessment_module_settings_editor" id="oa_peer_assessment_editor">
     <div class = "drag-handle action"></div>
@@ -33,16 +34,44 @@
                 <li class="field comp-setting-entry">
                     <div class="wrapper-comp-setting">
                         <label for="peer_assessment_start_date" class="setting-label">{% trans "Start Date" %}</label>
-                        <input id="peer_assessment_start_date" type="datetime-local" class="input setting-input" value="{{ assessments.peer_assessment.start }}">
+                        <input
+                            id="peer_assessment_start_date"
+                            type="text"
+                            class="input setting-input"
+                            value="{{ assessments.peer_assessment.start|utc|date:"Y-m-d" }}"
+                        >
                     </div>
-                    <p class="setting-help">{% trans "If desired, specify a start date for the peer assessment period.  If no date is specified, peer assessment can begin when submissions begin."%}</p>
+                    <div class="wrapper-comp-setting">
+                        <label for="peer_assessment_start_time" class="setting-label">{% trans "Start Time" %}</label>
+                        <input
+                            id="peer_assessment_start_time"
+                            type="text"
+                            class="input setting-input"
+                            value="{{ assessments.peer_assessment.start|utc|date:"H:i" }}"
+                        >
+                    </div>
+                    <p class="setting-help">{% trans "Specify a start date for the peer assessment period." %}</p>
                 </li>
                 <li class="field comp-setting-entry">
                     <div class="wrapper-comp-setting">
                         <label for="peer_assessment_due_date" class="setting-label">{% trans "Due Date" %}</label>
-                        <input id="peer_assessment_due_date" type="datetime-local" class="input setting-input" value="{{ assessments.peer_assessment.due }}">
+                        <input
+                            id="peer_assessment_due_date"
+                            type="text"
+                            class="input setting-input"
+                            value="{{ assessments.peer_assessment.due|utc|date:"Y-m-d" }}"
+                        >
                     </div>
-                    <p class="setting-help">{% trans "If desired, specify a due date for the peer assessment period.  If no date is specified, peer assessment can run as long as the problem is open."%}</p>
+                    <div class="wrapper-comp-setting">
+                        <label for="peer_assessment_due_time" class="setting-label">{% trans "Due Time" %}</label>
+                        <input
+                            id="peer_assessment_due_time"
+                            type="text"
+                            class="input setting-input"
+                            value="{{ assessments.peer_assessment.due|utc|date:"H:i" }}"
+                        >
+                    </div>
+                    <p class="setting-help">{% trans "Specify a due date for the peer assessment period." %}</p>
                 </li>
             </ul>
         </div>
