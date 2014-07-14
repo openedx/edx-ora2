@@ -37,13 +37,13 @@ OpenAssessment.ToggleControl.prototype = {
     },
 
     show: function() {
-        $(this.hiddenSelector, this.element).fadeOut('fast');
-        $(this.shownSelector, this.element).fadeIn();
+        $(this.hiddenSelector, this.element).addClass('is--hidden');
+        $(this.shownSelector, this.element).removeClass('is--hidden');
     },
 
     hide: function() {
-        $(this.hiddenSelector, this.element).fadeIn();
-        $(this.shownSelector, this.element).fadeOut();
+        $(this.hiddenSelector, this.element).removeClass('is--hidden');
+        $(this.shownSelector, this.element).addClass('is--hidden');
     }
 };
 

@@ -67,12 +67,19 @@ class StudioMixin(object):
         # the openassessmentblock definition.
         # Django Templates cannot handle dict keys with dashes, so we'll convert
         # the dashes to underscores.
+
+        # used_assessments (and its unused counterpart) are lists intended to indicate
+        # the order that settings editors should be rendered.  Using lists allows a set order
+        # which django can easily convert into template names.
+        used_assessments = []
         assessments = {}
         for assessment in self.rubric_assessments:
-            name = assessment['name']
-            assessments[name.replace('-', '_')] = copy.deepcopy(
-                assessment
-            )
+            name = assessment['name'].replace('-', '_')
+            used_assessments.append(name)
+            assessments[name] = copy.deepcopy(assessment)
+
+        unused_assessments = {'student_training', 'peer_assessment', 'self_assessment', 'example_based_assessment'}
+        unused_assessments = unused_assessments - set(used_assessments)
 
         student_training_module = self.get_assessment_module(
             'student-training'
@@ -108,6 +115,8 @@ class StudioMixin(object):
             'assessments': assessments,
             'criteria': criteria,
             'feedbackprompt': unicode(self.rubric_feedback_prompt),
+            'unused_assessments': unused_assessments,
+            'used_assessments': used_assessments
         }
 
     @XBlock.json_handler

@@ -444,7 +444,15 @@
                 "self_assessment": {
                     "due": ""
                 }
-            }
+            },
+            "used_assessments": [
+                "peer_assessment",
+                "self_assessment"
+            ],
+            "unused_assessments": [
+                "student_training",
+                "example_based_assessment"
+            ]
         },
         "output": "oa_edit.html"
     },
