@@ -83,6 +83,7 @@ OpenAssessment.Container.prototype = {
         // Remove any CSS IDs (since now the element is not unique)
         // and add the item class so we can find it later.
         $(this.templateElement)
+            .children().first()
             .clone()
             .removeAttr('id')
             .toggleClass('is--hidden', false)
