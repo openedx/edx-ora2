@@ -80,6 +80,7 @@ def deserialize_training_examples(examples, rubric_dict):
 
     Raises:
         InvalidRubric
+        InvalidRubricSelection
         InvalidTrainingExample
 
     Example usage:

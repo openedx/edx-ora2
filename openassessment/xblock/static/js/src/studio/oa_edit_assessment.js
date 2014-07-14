@@ -37,13 +37,13 @@ OpenAssessment.ToggleControl.prototype = {
     },
 
     show: function() {
-        $(this.hiddenSelector, this.element).fadeOut('fast');
-        $(this.shownSelector, this.element).fadeIn();
+        $(this.hiddenSelector, this.element).addClass('is--hidden');
+        $(this.shownSelector, this.element).removeClass('is--hidden');
     },
 
     hide: function() {
-        $(this.hiddenSelector, this.element).fadeIn();
-        $(this.shownSelector, this.element).fadeOut();
+        $(this.hiddenSelector, this.element).removeClass('is--hidden');
+        $(this.shownSelector, this.element).addClass('is--hidden');
     }
 };
 
@@ -121,7 +121,7 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
     mustGradeNum: function(num) {
         var sel = $("#peer_assessment_must_grade", this.element);
         return OpenAssessment.Fields.intField(sel, num);
-   },
+    },
 
     /**
     Get or set the required number of peer-assessments a student must receive.
@@ -149,7 +149,7 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
     startDatetime: function(datetime) {
         var sel = $("#peer_assessment_start_date", this.element);
         return OpenAssessment.Fields.datetimeField(sel, datetime);
-   },
+    },
 
     /**
     Get or set the due date and time of the assessment.
@@ -164,6 +164,16 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
         var sel = $("#peer_assessment_due_date", this.element);
         return OpenAssessment.Fields.datetimeField(sel, datetime);
     },
+
+    /**
+    Gets the ID of the assessment
+
+    Returns:
+        string (CSS ID of the Element object)
+    **/
+    getID: function() {
+        return $(this.element).attr('id');
+    }
 };
 
 
@@ -237,7 +247,7 @@ OpenAssessment.EditSelfAssessmentView.prototype = {
     startDatetime: function(datetime) {
         var sel = $("#self_assessment_start_date", this.element);
         return OpenAssessment.Fields.datetimeField(sel, datetime);
-   },
+    },
 
     /**
     Get or set the due date and time of the assessment.
@@ -251,7 +261,17 @@ OpenAssessment.EditSelfAssessmentView.prototype = {
     dueDatetime: function(datetime) {
         var sel = $("#self_assessment_due_date", this.element);
         return OpenAssessment.Fields.datetimeField(sel, datetime);
-   },
+    },
+
+    /**
+     Gets the ID of the assessment
+
+     Returns:
+     string (CSS ID of the Element object)
+     **/
+    getID: function() {
+        return $(this.element).attr('id');
+    }
 };
 
 /**
@@ -308,7 +328,7 @@ OpenAssessment.EditStudentTrainingView.prototype = {
     isEnabled: function(isEnabled) {
         var sel = $("#include_student_training", this.element);
         return OpenAssessment.Fields.booleanField(sel, isEnabled);
-   },
+    },
 
     /**
     Get or set the XML defining the training examples.
@@ -324,6 +344,16 @@ OpenAssessment.EditStudentTrainingView.prototype = {
         var sel = $("#student_training_examples", this.element);
         return OpenAssessment.Fields.stringField(sel, xml);
     },
+
+    /**
+     Gets the ID of the assessment
+
+     Returns:
+     string (CSS ID of the Element object)
+     **/
+    getID: function() {
+        return $(this.element).attr('id');
+    }
 };
 
 /**
@@ -396,4 +426,14 @@ OpenAssessment.EditExampleBasedAssessmentView.prototype = {
         var sel = $("#ai_training_examples", this.element);
         return OpenAssessment.Fields.stringField(sel, xml);
     },
+
+    /**
+     Gets the ID of the assessment
+
+     Returns:
+     string (CSS ID of the Element object)
+     **/
+    getID: function() {
+        return $(this.element).attr('id');
+    }
 };

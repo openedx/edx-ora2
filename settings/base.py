@@ -131,8 +131,10 @@ INSTALLED_APPS = (
     # ora2 apps
     'submissions',
     'openassessment',
+    'openassessment.fileupload',
     'openassessment.workflow',
     'openassessment.assessment',
+
 )
 
 # TODO: add config for XBLOCK_WORKBENCH { SCENARIO_CLASSES }

@@ -98,14 +98,37 @@ OpenAssessment.Rubric.prototype = {
 
     **/
     canSubmitCallback: function(callback) {
-        $(this.element).change(
-            function() {
-                var numChecked = $('input[type=radio]:checked', this).length;
-                var numAvailable = $('.field--radio.assessment__rubric__question', this).length;
-                var canSubmit = numChecked == numAvailable;
-                callback(canSubmit);
-            }
+        var rubric = this;
+
+        // Set the initial state
+        callback(rubric.canSubmit());
+
+        // Install a handler to update on change
+        $(this.element).on('change keyup drop paste',
+            function() { callback(rubric.canSubmit()); }
         );
+    },
+
+    /**
+    Check whether the user has filled in all the required fields
+    to be able to submit an assessment.
+
+    Returns:
+        boolean
+
+    **/
+    canSubmit: function() {
+        var numChecked = $('input[type=radio]:checked', this.element).length;
+        var numAvailable = $('.field--radio.assessment__rubric__question.has--options', this.element).length;
+        var completedRequiredComments = true;
+        $('textarea[required]', this.element).each(function() {
+            var trimmedText = $.trim($(this).val());
+            if (trimmedText === "") {
+                completedRequiredComments = false;
+            }
+        });
+
+        return (numChecked == numAvailable && completedRequiredComments);
     },
 
     /**

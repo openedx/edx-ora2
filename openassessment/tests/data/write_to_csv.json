@@ -151,5 +151,33 @@
                 ["2", "I disagree with one or more of the peer assessments of my response."]
             ]
         }
+    },
+
+    "feedback_only_criterion": {
+        "fixture": "db_fixtures/feedback_only_criterion.json",
+        "course_id": "edX/Enchantment_101/April_1",
+        "expected_csv": {
+            "assessment": [
+                [
+                    "id", "submission_uuid", "scored_at", "scorer_id", "score_type",
+                    "points_possible", "feedback"
+                ],
+                [
+                    "1", "cf5190b8-d0aa-11e3-a734-14109fd8dc43",
+                    "2014-04-30 21:06:35.019000+00:00",
+                    "other",
+                    "PE",
+                    "20",
+                    "Donec consequat vitae ante in pellentesque."
+                ]
+            ],
+            "assessment_part": [
+                ["assessment_id", "points_earned", "criterion_name", "option_name", "feedback"],
+                ["1", "4", "concise", "Neal Stephenson (early)", "Praesent ac lorem ac nunc tincidunt ultricies sit amet ut magna."],
+                ["1", "5", "form", "The Elements of Style", "Fusce varius, elit ut blandit consequat, odio ante mollis lectus"],
+                ["1", "3", "clear-headed", "Isaac Asimov", ""],
+                ["1", "0", "feedback only", "", "Feedback!"]
+            ]
+        }
     }
 }

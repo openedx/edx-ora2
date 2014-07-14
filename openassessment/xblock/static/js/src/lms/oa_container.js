@@ -93,7 +93,7 @@ OpenAssessment.Container.prototype = {
         // Since we just added the new element to the container,
         // it should be the last one.
         var container = this;
-        var containerItem = $("." + this.containerItemClass, this.containerElement).last()
+        var containerItem = $("." + this.containerItemClass, this.containerElement).last();
         containerItem.find('.' + this.removeButtonClass)
             .click(function(eventData) { container.remove(eventData.target); } );
 

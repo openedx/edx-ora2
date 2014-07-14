@@ -11,11 +11,35 @@
   <span class="step__status__value">
     <i class="ico icon-ok"></i>
     <span class="copy">
-      {% blocktrans with graded=graded must_grade=must_grade %}Complete (<span class="step__status__value--completed">{{ graded }}</span> of <span class="step__status__value--required">{{ must_grade }}</span>){% endblocktrans %}
+      <span class="step__status__value--completed">{{ graded }}</span> {% trans "Completed" %}
     </span>
   </span>
 </span>
 {% endblock %}
 
 {% block body %}
+    <div class="ui-toggle-visibility__content">
+        <div class="wrapper--step__content">
+
+            <div class="step__message message message--complete">
+                <h3 class="message__title">{% trans "Peer Assessments Complete" %}</h3>
+                <div class="message__content">{% trans "You have successfully completed all of the required peer assessments for this assignment. You may assess additional peer responses if you want to. Completing additional assessments will not affect your final grade." %}</div>
+            </div>
+
+            <div class="step__actions">
+                <div class="message message--inline message--error message--error-server">
+                    <h3 class="message__title">{% trans "We could not retrieve additional submissions for assessment" %}</h3>
+                </div>
+
+                <ul class="list list--actions">
+                    <li class="list--actions__item">
+                        <button type="submit" id="peer-assessment__continue__grading" class="action action--continue--grading">
+                            <span class="copy">{%  trans "Continue Assessing Peers" %}</span>
+                            <i class="ico icon-caret-right"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 {% endblock %}

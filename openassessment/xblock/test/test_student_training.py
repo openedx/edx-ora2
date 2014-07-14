@@ -14,20 +14,55 @@ from openassessment.workflow import api as workflow_api
 from openassessment.workflow.errors import AssessmentWorkflowError
 from .base import XBlockHandlerTestCase, scenario
 
-@ddt.ddt
-class StudentTrainingAssessTest(XBlockHandlerTestCase):
+
+class StudentTrainingTest(XBlockHandlerTestCase):
     """
-    Tests for student training assessment.
+    Base class for student training tests.
     """
     SUBMISSION = {
         'submission': u'Thé őbjéćt őf édúćátíőń íś tő téáćh úś tő ĺővé ẃhát íś béáútífúĺ.'
     }
 
+    def assert_path_and_context(self, xblock, expected_path, expected_context):
+        """
+        Render the student training step and verify that the expected template
+        and context were used.  Also check that the template renders without error.
+
+        Args:
+            xblock (OpenAssessmentBlock): The XBlock under test.
+            expected_path (str): The expected template path.
+            expected_context (dict): The expected template context.
+
+        Raises:
+            AssertionError
+
+        """
+        path, context = xblock.training_path_and_context()
+        self.assertEqual(path, expected_path)
+        self.assertEqual(len(context), len(expected_context))
+        for key in expected_context.keys():
+            if key == 'training_due':
+                iso_date = context['training_due'].isoformat()
+                self.assertEqual(iso_date, expected_context[key])
+            else:
+                self.assertEqual(context[key], expected_context[key])
+
+            # Verify that we render without error
+        resp = self.request(xblock, 'render_student_training', json.dumps({}))
+        self.assertGreater(len(resp), 0)
+
+
+@ddt.ddt
+class StudentTrainingAssessTest(StudentTrainingTest):
+    """
+    Tests for student training assessment.
+    """
+
     @scenario('data/student_training.xml', user_id="Plato")
     @ddt.file_data('data/student_training_mixin.json')
     def test_correct(self, xblock, data):
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
-        self._assert_path_and_context(xblock, data["expected_template"], data["expected_context"])
+        self.assert_path_and_context(xblock, data["expected_template"], data["expected_context"])
 
         # Agree with the course author's assessment
         # (as defined in the scenario XML)
@@ -47,7 +82,7 @@ class StudentTrainingAssessTest(XBlockHandlerTestCase):
     @ddt.file_data('data/student_training_mixin.json')
     def test_correct_with_error(self, xblock, data):
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
-        self._assert_path_and_context(xblock, data["expected_template"], data["expected_context"])
+        self.assert_path_and_context(xblock, data["expected_template"], data["expected_context"])
 
         # Agree with the course author's assessment
         # (as defined in the scenario XML)
@@ -70,7 +105,7 @@ class StudentTrainingAssessTest(XBlockHandlerTestCase):
     @ddt.file_data('data/student_training_mixin.json')
     def test_incorrect(self, xblock, data):
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
-        self._assert_path_and_context(xblock, data["expected_template"], data["expected_context"])
+        self.assert_path_and_context(xblock, data["expected_template"], data["expected_context"])
 
         # Disagree with the course author's assessment
         # (as defined in the scenario XML)
@@ -92,7 +127,7 @@ class StudentTrainingAssessTest(XBlockHandlerTestCase):
         expected_context = data["expected_context"].copy()
         expected_template = data["expected_template"]
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
-        self._assert_path_and_context(xblock, expected_template, expected_context)
+        self.assert_path_and_context(xblock, expected_template, expected_context)
 
         # Agree with the course author's assessment
         # (as defined in the scenario XML)
@@ -120,7 +155,7 @@ class StudentTrainingAssessTest(XBlockHandlerTestCase):
         expected_context["training_num_completed"] = 1
         expected_context["training_num_current"] = 2
         expected_context["training_essay"] = u"тєѕт αηѕωєя"
-        self._assert_path_and_context(xblock, expected_template, expected_context)
+        self.assert_path_and_context(xblock, expected_template, expected_context)
         resp = self.request(xblock, 'training_assess', json.dumps(selected_data), response_format='json')
 
         # Expect that we were correct
@@ -128,7 +163,27 @@ class StudentTrainingAssessTest(XBlockHandlerTestCase):
         self.assertFalse(resp['corrections'])
         expected_context = {}
         expected_template = "openassessmentblock/student_training/student_training_complete.html"
-        self._assert_path_and_context(xblock, expected_template, expected_context)
+        self.assert_path_and_context(xblock, expected_template, expected_context)
+
+    @scenario('data/feedback_only_criterion_student_training.xml', user_id='Bob')
+    def test_feedback_only_criterion(self, xblock):
+        xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        self.request(xblock, 'render_student_training', json.dumps({}))
+
+        # Agree with the course author's assessment
+        # (as defined in the scenario XML)
+        # We do NOT pass in an option for the feedback-only criterion,
+        # because it doesn't have any options.
+        data = {
+            'options_selected': {
+                'vocabulary': 'good',
+            }
+        }
+        resp = self.request(xblock, 'training_assess', json.dumps(data), response_format='json')
+
+        # Expect that we were correct
+        self.assertTrue(resp['success'], msg=resp.get('msg'))
+        self.assertFalse(resp['corrections'])
 
     @scenario('data/student_training.xml', user_id="Plato")
     @ddt.file_data('data/student_training_mixin.json')
@@ -136,7 +191,7 @@ class StudentTrainingAssessTest(XBlockHandlerTestCase):
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
         expected_context = data["expected_context"].copy()
         expected_template = data["expected_template"]
-        self._assert_path_and_context(xblock, expected_template, expected_context)
+        self.assert_path_and_context(xblock, expected_template, expected_context)
         resp = self.request(xblock, 'training_assess', json.dumps({}), response_format='json')
         self.assertFalse(resp['success'], msg=resp.get('msg'))
 
@@ -152,7 +207,7 @@ class StudentTrainingAssessTest(XBlockHandlerTestCase):
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
         expected_context = data["expected_context"].copy()
         expected_template = data["expected_template"]
-        self._assert_path_and_context(xblock, expected_template, expected_context)
+        self.assert_path_and_context(xblock, expected_template, expected_context)
 
         selected_data = {
             'options_selected': {
@@ -208,7 +263,7 @@ class StudentTrainingAssessTest(XBlockHandlerTestCase):
         self.assertGreater(len(resp), 0)
 
 
-class StudentTrainingRenderTest(StudentTrainingAssessTest):
+class StudentTrainingRenderTest(StudentTrainingTest):
     """
     Tests for student training step rendering.
     """
@@ -235,7 +290,7 @@ class StudentTrainingRenderTest(StudentTrainingAssessTest):
         expected_context = {
             'training_due': "2000-01-01T00:00:00+00:00"
         }
-        self._assert_path_and_context(xblock, expected_template, expected_context)
+        self.assert_path_and_context(xblock, expected_template, expected_context)
 
     @scenario('data/student_training.xml', user_id="Plato")
     @patch.object(StudentTrainingWorkflow, "get_workflow")
@@ -252,4 +307,4 @@ class StudentTrainingRenderTest(StudentTrainingAssessTest):
         expected_context = {
             'training_start': datetime.datetime(3000, 1, 1).replace(tzinfo=pytz.utc)
         }
-        self._assert_path_and_context(xblock, expected_template, expected_context)
+        self.assert_path_and_context(xblock, expected_template, expected_context)

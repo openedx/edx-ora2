@@ -14,6 +14,8 @@ OpenAssessment.ResponseView = function(element, server, baseView) {
     this.server = server;
     this.baseView = baseView;
     this.savedResponse = "";
+    this.files = null;
+    this.imageType = null;
     this.lastChangeTime = Date.now();
     this.errorOnLastSave = false;
     this.autoSaveTimerId = null;
@@ -28,6 +30,9 @@ OpenAssessment.ResponseView.prototype = {
     // Required delay after the user changes a response or a save occurs
     // before we can autosave.
     AUTO_SAVE_WAIT: 30000,
+
+    // Maximum file size (5 MB) for an attached file.
+    MAX_FILE_SIZE: 5242880,
 
     /**
     Load the response (submission) view.
@@ -61,6 +66,9 @@ OpenAssessment.ResponseView.prototype = {
         var handleChange = function(eventData) { view.handleResponseChanged(); };
         sel.find('#submission__answer__value').on('change keyup drop paste', handleChange);
 
+        var handlePrepareUpload = function(eventData) { view.prepareUpload(eventData.target.files); };
+        sel.find('input[type=file]').on('change', handlePrepareUpload);
+
         // Install a click handler for submission
         sel.find('#step--response__submit').click(
             function(eventObject) {
@@ -76,6 +84,15 @@ OpenAssessment.ResponseView.prototype = {
                 // Override default form submission
                 eventObject.preventDefault();
                 view.save();
+            }
+        );
+
+        // Install a click handler for the save button
+        sel.find('#file__upload').click(
+            function(eventObject) {
+                // Override default form submission
+                eventObject.preventDefault();
+                view.fileUpload();
             }
         );
     },
@@ -224,7 +241,6 @@ OpenAssessment.ResponseView.prototype = {
             sel.val(text);
         }
     },
-
 
     /**
     Check whether the response text has changed since the last save.
@@ -393,5 +409,87 @@ OpenAssessment.ResponseView.prototype = {
             if (confirm(msg)) { defer.resolve(); }
             else { defer.reject(); }
         });
+    },
+
+    /**
+     When selecting a file for upload, do some quick client-side validation
+     to ensure that it is an image, and is not larger than the maximum file
+     size.
+
+     Args:
+        files (list): A collection of files used for upload. This function assumes
+            there is only one file being uploaded at any time. This file must
+            be less than 5 MB and an image.
+
+     **/
+    prepareUpload: function(files) {
+        this.files = null;
+        this.imageType = files[0].type;
+        if (files[0].size > this.MAX_FILE_SIZE) {
+            this.baseView.toggleActionError(
+                'upload', gettext("File size must be 5MB or less.")
+            );
+        } else if (this.imageType.substring(0,6) != 'image/') {
+            this.baseView.toggleActionError(
+                'upload', gettext("File must be an image.")
+            );
+        } else {
+            this.baseView.toggleActionError('upload', null);
+            this.files = files;
+        }
+        $("#file__upload").toggleClass("is--disabled", this.files == null);
+    },
+
+
+    /**
+     Manages file uploads for submission attachments. Retrieves a one-time
+     upload URL from the server, and uses it to upload images to a designated
+     location.
+
+     **/
+    fileUpload: function() {
+        var view = this;
+        var fileUpload = $("#file__upload");
+        fileUpload.addClass("is--disabled");
+
+        // Call getUploadUrl to get the one-time upload URL for this file. Once
+        // completed, execute a sequential AJAX call to upload to the returned
+        // URL. This request requires appropriate CORS configuration for AJAX
+        // PUT requests on the server.
+        this.server.getUploadUrl(view.imageType).done(function(url) {
+            var image = view.files[0];
+            $.ajax({
+                url: url,
+                type: 'PUT',
+                data: image,
+                async: false,
+                processData: false,
+                contentType: view.imageType,
+                success: function(data, textStatus, jqXHR) {
+                    view.imageUrl();
+                    this.baseView.toggleActionError('upload', null);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    view.baseView.toggleActionError('upload', textStatus);
+                    fileUpload.removeClass("is--disabled");
+                }
+            });
+        }).fail(function(errMsg) {
+            view.baseView.toggleActionError('upload', errMsg);
+            fileUpload.removeClass("is--disabled");
+        });
+    },
+
+    /**
+     Set the image URL, or retrieve it.
+     **/
+    imageUrl: function() {
+        var view = this;
+        var image = $('#submission__answer__image', view.element);
+        view.server.getDownloadUrl().done(function(url) {
+            image.attr('src', url);
+            return url;
+        });
     }
+
 };

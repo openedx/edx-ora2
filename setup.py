@@ -4,6 +4,7 @@ from setuptools import setup
 PACKAGES = [
     'openassessment',
     'openassessment.assessment',
+    'openassessment.fileupload',
     'openassessment.workflow',
     'openassessment.management',
     'openassessment.xblock'

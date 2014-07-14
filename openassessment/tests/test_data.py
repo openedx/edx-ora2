@@ -8,14 +8,14 @@ from StringIO import StringIO
 import csv
 from django.core.management import call_command
 import ddt
-from openassessment.test_utils import CacheResetTest
 from submissions import api as sub_api
+from openassessment.test_utils import TransactionCacheResetTest
 from openassessment.workflow import api as workflow_api
 from openassessment.data import CsvWriter
 
 
 @ddt.ddt
-class CsvWriterTest(CacheResetTest):
+class CsvWriterTest(TransactionCacheResetTest):
     """
     Test for writing openassessment data to CSV.
     """

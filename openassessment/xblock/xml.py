@@ -113,10 +113,10 @@ def _serialize_criteria(criteria_root, criteria_list):
         criterion_prompt = etree.SubElement(criterion_el, 'prompt')
         criterion_prompt.text = unicode(criterion.get('prompt', u''))
 
-        # Criterion feedback disabled or optional
+        # Criterion feedback disabled, optional, or required
         # If disabled, do not set the attribute.
-        if criterion.get('feedback') == "optional":
-            criterion_el.set('feedback', 'optional')
+        if criterion.get('feedback') in ["optional", "required"]:
+            criterion_el.set('feedback', criterion['feedback'])
 
         # Criterion options
         options_list = criterion.get('options', None)
@@ -186,11 +186,26 @@ def parse_date(date_str, name=""):
         formatted_date = parsed_date.strftime("%Y-%m-%dT%H:%M:%S")
         return unicode(formatted_date)
     except (ValueError, TypeError):
-        msg = (
+        msg = _(
             'The format of the given date ({date}) for the {name} is invalid. '
             'Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'
         ).format(date=date_str, name=name)
-        raise UpdateFromXmlError(_(msg))
+        raise UpdateFromXmlError(msg)
+
+
+def _parse_boolean(boolean_str):
+    """
+    Attempt to parse a boolean string into a boolean value. Leniently accepts
+    both 'True' and 'true', but is otherwise declared false.
+
+    Args:
+        boolean_str (unicode): The boolean string to parse.
+
+    Returns:
+        The boolean value of the string. True if the string equals 'True' or
+        'true'
+    """
+    return boolean_str in ['True', 'true']
 
 
 def _parse_options_xml(options_root):
@@ -282,12 +297,12 @@ def _parse_criteria_xml(criteria_root):
         else:
             raise UpdateFromXmlError(_('Every "criterion" element must contain a "prompt" element.'))
 
-        # Criterion feedback (disabled or optional)
+        # Criterion feedback (disabled, optional, or required)
         criterion_feedback = criterion.get('feedback', 'disabled')
-        if criterion_feedback in ['optional', 'disabled']:
+        if criterion_feedback in ['optional', 'disabled', 'required']:
             criterion_dict['feedback'] = criterion_feedback
         else:
-            raise UpdateFromXmlError(_('Invalid value for "feedback" attribute: if specified, it must be set set to "optional"'))
+            raise UpdateFromXmlError(_('Invalid value for "feedback" attribute: if specified, it must be set set to "optional" or "required".'))
 
         # Criterion options
         criterion_dict['options'] = _parse_options_xml(criterion)
@@ -556,6 +571,10 @@ def serialize_content_to_xml(oa_block, root):
     if oa_block.submission_due is not None:
         root.set('submission_due', unicode(oa_block.submission_due))
 
+    # Allow file upload
+    if oa_block.allow_file_upload is not None:
+        root.set('allow_file_upload', unicode(oa_block.allow_file_upload))
+
     # Open assessment displayed title
     title = etree.SubElement(root, 'title')
     title.text = unicode(oa_block.title)
@@ -674,6 +693,10 @@ def parse_from_xml(root):
     if 'submission_due' in root.attrib:
         submission_due = parse_date(unicode(root.attrib['submission_due']), name="submission due date")
 
+    allow_file_upload = False
+    if 'allow_file_upload' in root.attrib:
+        allow_file_upload = _parse_boolean(unicode(root.attrib['allow_file_upload']))
+
     # Retrieve the title
     title_el = root.find('title')
     if title_el is None:
@@ -703,6 +726,7 @@ def parse_from_xml(root):
         'rubric_feedback_prompt': rubric['feedbackprompt'],
         'submission_start': submission_start,
         'submission_due': submission_due,
+        'allow_file_upload': allow_file_upload
     }
 
 

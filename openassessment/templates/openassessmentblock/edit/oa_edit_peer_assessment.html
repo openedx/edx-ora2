@@ -1,17 +1,16 @@
 {% load i18n %}
 {% spaceless %}
-<div class="openassessment_assessment_module_settings_editor" id="oa_peer_assessment_editor">
+<li class="openassessment_assessment_module_settings_editor" id="oa_peer_assessment_editor">
+    <div class = "drag-handle action"></div>
     <div class="openassessment_inclusion_wrapper">
         <input type="checkbox" id="include_peer_assessment"
                 {% if assessments.peer_assessment %} checked="true" {% endif %}>
         <label for="include_peer_assessment">{% trans "Step: Peer Assessment" %}</label>
     </div>
     <div class = "openassessment_assessment_module_editor">
-        {% if not assessments.peer_assessment %}
-            <p id="peer_assessment_description_closed" class="openassessment_description_closed">
-                {% trans "Students assess a specified number of other students' responses using the rubric for the assignment." %}
-            </p>
-        {% endif %}
+        <p id="peer_assessment_description_closed" class="openassessment_description_closed {% if assessments.peer_assessment %} is--hidden {% endif %}">
+            {% trans "Students assess a specified number of other students' responses using the rubric for the assignment." %}
+        </p>
         <div id="peer_assessment_settings_editor" class="assessment_settings_wrapper {% if not assessments.peer_assessment %} is--hidden {% endif %}">
             <p class="openassessment_description">
                 {% trans "Specify the following values for the peer assessment step. The numeric grading requirements must be given a value." %}
@@ -48,5 +47,5 @@
             </ul>
         </div>
     </div>
-</div>
+</li>
 {% endspaceless %}

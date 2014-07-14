@@ -19,4 +19,5 @@ if [[ -n "$DEBUG_JS" ]]; then
     UGLIFY_EXTRA_ARGS="--beautify"
 fi
 
-node_modules/.bin/uglifyjs $STATIC_JS/src/oa_shared.js $STATIC_JS/src/*.js $UGLIFY_EXTRA_ARGS > "$STATIC_JS/openassessment.min.js"
+node_modules/.bin/uglifyjs $STATIC_JS/src/oa_shared.js $STATIC_JS/src/*.js $STATIC_JS/src/lms/*.js $UGLIFY_EXTRA_ARGS > "$STATIC_JS/openassessment-lms.min.js"
+node_modules/.bin/uglifyjs $STATIC_JS/src/oa_shared.js $STATIC_JS/src/*.js $STATIC_JS/src/studio/*.js $UGLIFY_EXTRA_ARGS > "$STATIC_JS/openassessment-studio.min.js"

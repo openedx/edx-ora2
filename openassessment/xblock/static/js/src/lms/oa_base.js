@@ -45,18 +45,11 @@ OpenAssessment.BaseView.prototype = {
 
     Args:
         parentSel (JQuery selector): CSS selector for the container element.
-        onExpand (function): Function to execute when expanding (if provided).  Accepts no args.
     **/
-    setUpCollapseExpand: function(parentSel, onExpand) {
+    setUpCollapseExpand: function(parentSel) {
         parentSel.find('.ui-toggle-visibility__control').click(
             function(eventData) {
                 var sel = $(eventData.target).closest('.ui-toggle-visibility');
-
-                // If we're expanding and have an `onExpand` callback defined, execute it.
-                if (sel.hasClass('is--collapsed') && onExpand !== undefined) {
-                    onExpand();
-                }
-
                 sel.toggleClass('is--collapsed');
             }
         );
@@ -122,6 +115,9 @@ OpenAssessment.BaseView.prototype = {
         else if (type == 'feedback_assess') {
             container = '.submission__feedback__actions';
         }
+        else if (type == 'upload') {
+            container = '#upload__error';
+        }
 
         // If we don't have anywhere to put the message, just log it to the console
         if (container === null) {
@@ -132,7 +128,6 @@ OpenAssessment.BaseView.prototype = {
             // Insert the error message
             var msgHtml = (msg === null) ? "" : msg;
             $(container + " .message__content", element).html('<p>' + msgHtml + '</p>');
-
             // Toggle the error class
             $(container, element).toggleClass('has--error', msg !== null);
         }

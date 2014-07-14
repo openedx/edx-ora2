@@ -57,7 +57,7 @@ OpenAssessment.RubricCriterion = function(element) {
             containerElement: $(".openassessment_criterion_option_list", this.element).get(0),
             templateElement: $("#openassessment_option_template").get(0),
             addButtonElement: $(".openassessment_criterion_add_option", this.element).get(0),
-            removeButtonClass: "openassessment_rubric_remove_button",
+            removeButtonClass: "openassessment_criterion_option_remove_button",
             containerItemClass: "openassessment_criterion_option",
         }
     );

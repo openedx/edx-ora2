@@ -10,7 +10,8 @@ Returns:
 
 **/
 OpenAssessment.EditSettingsView = function(element, assessmentViews) {
-    this.element = element;
+    this.settingsElement = element;
+    this.assessmentsElement = $(element).siblings('#openassessment_assessment_module_settings_editors').get(0);
     this.assessmentViews = assessmentViews;
 };
 
@@ -28,7 +29,7 @@ OpenAssessment.EditSettingsView.prototype = {
 
     **/
     displayName: function(name) {
-        var sel = $("#openassessment_title_editor", this.element);
+        var sel = $("#openassessment_title_editor", this.settingsElement);
         return OpenAssessment.Fields.stringField(sel, name);
     },
 
@@ -43,7 +44,7 @@ OpenAssessment.EditSettingsView.prototype = {
 
     **/
     submissionStart: function(datetime) {
-        var sel = $("#openassessment_submission_start_editor", this.element);
+        var sel = $("#openassessment_submission_start_editor", this.settingsElement);
         return OpenAssessment.Fields.datetimeField(sel, datetime);
     },
 
@@ -58,7 +59,7 @@ OpenAssessment.EditSettingsView.prototype = {
 
     **/
     submissionDue: function(datetime) {
-        var sel = $("#openassessment_submission_start_editor", this.element);
+        var sel = $("#openassessment_submission_start_editor", this.settingsElement);
         return OpenAssessment.Fields.datetimeField(sel, datetime);
     },
 
@@ -73,7 +74,7 @@ OpenAssessment.EditSettingsView.prototype = {
 
     **/
     imageSubmissionEnabled: function(isEnabled) {
-        var sel = $("#openassessment_submission_image_editor", this.element);
+        var sel = $("#openassessment_submission_image_editor", this.settingsElement);
         if (typeof(isEnabled) !== "undefined") {
             if (isEnabled) { sel.val(1); }
             else { sel.val(0); }
@@ -105,15 +106,17 @@ OpenAssessment.EditSettingsView.prototype = {
     ]
     **/
     assessmentsDescription: function() {
-        assessmentDescList = [];
-        for (var idx in this.assessmentViews) {
-            var asmntView = this.assessmentViews[idx];
+        var assessmentDescList = [];
+        var view = this;
+        // Finds all assessment modules within our element in the DOM, and appends their definitions to the DescList
+        $('.openassessment_assessment_module_settings_editor', this.assessmentsElement).each( function () {
+            var asmntView = view.assessmentViews[$(this).attr('id')];
             if (asmntView.isEnabled()) {
                 var description = asmntView.description();
                 description["name"] = asmntView.name;
                 assessmentDescList.push(description);
             }
-        }
+        });
         return assessmentDescList;
-    },
+    }
 };

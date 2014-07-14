@@ -1,17 +1,16 @@
 {% load i18n %}
 {% spaceless %}
-<div class="openassessment_assessment_module_settings_editor" id="oa_student_training_editor">
+<li class="openassessment_assessment_module_settings_editor" id="oa_student_training_editor">
+    <div class = "drag-handle action"></div>
     <div class = "openassessment_inclusion_wrapper">
         <input type="checkbox" id="include_student_training"
                 {% if assessments.student_training %} checked="true" {% endif %} >
         <label for="include_student_training">{% trans "Step: Student Training" %}</label>
     </div>
     <div class = "openassessment_assessment_module_editor">
-        {% if not assessments.student_training %}
-            <p id="student_training_description_closed" class="openassessment_description_closed">
-                {% trans "Students learn to assess responses by scoring pre-assessed sample responses that the instructor provides. Students move to the next step when the scores they give match the instructor's scores. Note that Student Training Requires that the Peer Assessment module is also selected." %}
-            </p>
-        {% endif %}
+        <p id="student_training_description_closed" class="openassessment_description_closed {% if assessments.student_training %} is--hidden {% endif %}">
+            {% trans "Students learn to assess responses by scoring pre-assessed sample responses that the instructor provides. Students move to the next step when the scores they give match the instructor's scores. Note that Student Training Requires that the Peer Assessment module is also selected." %}
+        </p>
         <div id="student_training_settings_editor" class="assessment_settings_wrapper {% if not assessments.student_training %} is--hidden {% endif %}">
             <p class="openassessment_description">
                 {% trans "Enter one or more sample responses that you've created, together with the scores you would give those responses. Be sure to format the responses and scores according to the placeholder text below." %}
@@ -35,19 +34,18 @@
                         <div class="openassessment_training_example_scored_rubric wrapper-comp-settings">
                             <h2>{% trans "Scored Rubric" %}</h2>
                             <ol class="openassessment_training_example_criteria_selections list-input settings-list">
-
                                 {% for criterion in criteria %}
                                 <li class="field comp-setting-entry">
                                     <div class="wrapper-comp-setting">
                                         <label class="openassessment_training_example_criterion_name setting-label">
-                                            <h2>{{criterion.name}}</h2>
+                                            {{criterion.name}}
+                                            <select class="openassessment_training_example_criterion_option setting-input">
+                                                <option value="Not Scored">{% trans "Not Scored" %}</option>
+                                                {% for option in criterion.options %}
+                                                    <option value={{option.name}}>{{option.name}} - {{option.points}} {% trans "points" %}</option>
+                                                {% endfor %}
+                                            </select>
                                         </label>
-                                        <select class="openassessment_training_example_criterion_option setting-input">
-                                            <option value="Not Scored">{% trans "Not Scored" %}</option>
-                                            {% for option in criterion.options %}
-                                                <option value={{option.name}}>{{option.name}} - {{option.points}} {% trans "points" %}</option>
-                                            {% endfor %}
-                                        </select>
                                     </div>
                                 </li>
                                 {% endfor %}
@@ -68,5 +66,5 @@
 
         </div>
     </div>
-</div>
+</li>
 {% endspaceless %}

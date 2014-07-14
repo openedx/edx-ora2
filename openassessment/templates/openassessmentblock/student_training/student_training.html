@@ -73,7 +73,11 @@
                     <fieldset class="assessment__fields">
                         <ol class="list list--fields assessment__rubric">
                             {% for criterion in training_rubric.criteria %}
-                                <li class="field field--radio is--required assessment__rubric__question ui-toggle-visibility" id="assessment__rubric__question--{{ criterion.order_num }}">
+                                {% if criterion.options %}
+                                <li
+                                    class="field field--radio is--required assessment__rubric__question ui-toggle-visibility has--options"
+                                    id="assessment__rubric__question--{{ criterion.order_num }}"
+                                >
                                     <h4 class="question__title ui-toggle-visibility__control">
                                         <i class="ico icon-caret-right"></i>
                                         <span class="question__title__copy">{{ criterion.prompt }}</span>
@@ -115,6 +119,7 @@
                                         </ol>
                                     </div>
                                 </li>
+                                {% endif %}
                             {% endfor %}
                         </ol>
                     </fieldset>

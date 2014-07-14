@@ -506,6 +506,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 1,
+      "criterion": 5,
       "option": 25,
       "feedback": ""
     }
@@ -515,6 +516,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 1,
+      "criterion": 4,
       "option": 19,
       "feedback": "Elit nonumy m\u00eal ut, nam \u00e9sse fabul\u00e1s n\u00f3"
     }
@@ -524,6 +526,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 1,
+      "criterion": 6,
       "option": 30,
       "feedback": "Per in\u00e2n\u00ed dol\u00f3re an, \u00fat s\u00e9a t\u00f4ta qu\u00e0eque d\u00edssenti\u00fant"
     }
@@ -533,6 +536,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 2,
+      "criterion": 5,
       "option": 25,
       "feedback": ""
     }
@@ -542,6 +546,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 2,
+      "criterion": 4,
       "option": 20,
       "feedback": ""
     }
@@ -551,6 +556,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 2,
+      "criterion": 6,
       "option": 30,
       "feedback": ""
     }
@@ -560,6 +566,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 3,
+      "criterion": 5,
       "option": 24,
       "feedback": ""
     }
@@ -569,6 +576,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 3,
+      "criterion": 4,
       "option": 19,
       "feedback": ""
     }
@@ -578,6 +586,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 3,
+      "criterion": 6,
       "option": 31,
       "feedback": ""
     }
@@ -587,6 +596,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 4,
+      "criterion": 4,
       "option": 18,
       "feedback": ""
     }
@@ -596,6 +606,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 4,
+      "criterion": 6,
       "option": 30,
       "feedback": ""
     }
@@ -605,6 +616,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 4,
+      "criterion": 5,
       "option": 23,
       "feedback": ""
     }
