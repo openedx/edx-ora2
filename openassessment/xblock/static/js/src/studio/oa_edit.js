@@ -19,8 +19,8 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     // Resize the editing modal
     this.fixModalHeight();
 
-    // Initialize the tabs
-    $(".openassessment_editor_content_and_tabs", this.element).tabs();
+    // Initializes the tabbing functionality and activates the last used.
+    this.initializeTabs();
 
     // Initialize the prompt tab view
     this.promptView = new OpenAssessment.EditPromptView(
@@ -82,6 +82,36 @@ OpenAssessment.StudioView.prototype = {
     },
 
     /**
+    Initializes the tabs that seperate the sections of the editor.
+
+    Because this function relies on the OpenAssessment Name space, the tab that it first
+    active will be the one that the USER was presented with, regardless of which editor they
+    were using.  I.E.  If I leave Editor A in the settings state, and enter editor B, editor B
+    will automatically open with the settings state.
+
+    **/
+    initializeTabs: function() {
+        // If this is the first editor that the user has opened, default to the prompt view.
+        if (typeof(OpenAssessment.lastOpenEditingTab) === "undefined") {
+            OpenAssessment.lastOpenEditingTab = 0;
+        }
+        // Initialize JQuery UI Tabs, and activates the appropriate tab.
+        $(".openassessment_editor_content_and_tabs", this.element)
+            .tabs()
+            .tabs('option', 'active', OpenAssessment.lastOpenEditingTab);
+    },
+
+    /**
+     Saves the state of the editing tabs in a variable outside of the scope of the editor.
+     When the user reopens the editing view, they will be greeted by the same tab that they left.
+     This code is called by the two paths that we could exit the modal through: Saving and canceling.
+     **/
+    saveTabState: function() {
+        var tabElement = $(".openassessment_editor_content_and_tabs", this.element);
+        OpenAssessment.lastOpenEditingTab = tabElement.tabs('option', 'active');
+    },
+
+    /**
     Installs click listeners which initialize drag and drop functionality for assessment modules.
     **/
     initializeSortableAssessments: function () {
@@ -125,7 +155,7 @@ OpenAssessment.StudioView.prototype = {
     **/
     save: function () {
         var view = this;
-
+        this.saveTabState();
         // Check whether the problem has been released; if not,
         // warn the user and allow them to cancel.
         this.server.checkReleased().done(
@@ -187,7 +217,8 @@ OpenAssessment.StudioView.prototype = {
     Cancel editing.
     **/
     cancel: function () {
-        // Notify the client-side runtime so it will close the editing modal.
+        // Notify the client-side runtime so it will close the editing modal
+        this.saveTabState();
         this.runtime.notify('cancel', {});
     },
 
