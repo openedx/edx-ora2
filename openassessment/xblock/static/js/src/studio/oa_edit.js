@@ -202,7 +202,8 @@ OpenAssessment.StudioView.prototype = {
             title: view.settingsView.displayName(),
             submissionStart: view.settingsView.submissionStart(),
             submissionDue: view.settingsView.submissionDue(),
-            assessments: view.settingsView.assessmentsDescription()
+            assessments: view.settingsView.assessmentsDescription(),
+            imageSubmissionEnabled: view.settingsView.imageSubmissionEnabled()
         }).done(
             // Notify the client-side runtime that we finished saving
             // so it can hide the "Saving..." notification.

@@ -413,6 +413,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
             submissionDue (ISO-formatted datetime string or null): The date the submission is due.
             criteria (list of object literals): The rubric criteria.
             assessments (list of object literals): The assessments the student will be evaluated on.
+            imageSubmissionEnabled (boolean): TRUE if image attachments are allowed.
 
         Returns:
             A JQuery promise, which resolves with no arguments
@@ -428,7 +429,8 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
                 submission_start: kwargs.submissionStart,
                 submission_due: kwargs.submissionDue,
                 criteria: kwargs.criteria,
-                assessments: kwargs.assessments
+                assessments: kwargs.assessments,
+                allow_file_upload: kwargs.imageSubmissionEnabled
             });
             return $.Deferred(function(defer) {
                 $.ajax({

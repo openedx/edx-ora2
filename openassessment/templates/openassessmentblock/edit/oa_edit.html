@@ -92,7 +92,7 @@
                         <label for="openassessment_submission_image_editor" class="setting-label">{% trans "Allow Image Submissions"%}</label>
                         <select id="openassessment_submission_image_editor" class="input setting-input" name="image submission">
                             <option value="0">{% trans "Disabled"%}</option>
-                            <option value="1">{% trans "Enabled"%}</option>
+                            <option value="1" {% if allow_file_upload %} selected="true" {% endif %}>{% trans "Enabled"%}</option>
                         </select>
                     </div>
                     <p class="setting-help">{% trans "If enabled, students will be able to submit an image along with their open response." %}</p>

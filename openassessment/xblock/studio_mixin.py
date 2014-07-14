@@ -109,7 +109,8 @@ class StudioMixin(object):
             'criteria': criteria,
             'feedbackprompt': self.rubric_feedback_prompt,
             'unused_assessments': unused_assessments,
-            'used_assessments': used_assessments
+            'used_assessments': used_assessments,
+            'allow_file_upload': self.allow_file_upload
         }
 
     @XBlock.json_handler
@@ -162,6 +163,7 @@ class StudioMixin(object):
         self.rubric_feedback_prompt = data['feedback_prompt']
         self.submission_start = data['submission_start']
         self.submission_due = data['submission_due']
+        self.allow_file_upload = bool(data['allow_file_upload'])
 
         return {'success': True, 'msg': _(u'Successfully updated OpenAssessment XBlock')}
 
