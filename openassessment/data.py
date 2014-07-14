@@ -3,6 +3,7 @@ Aggregate data for openassessment.
 """
 import csv
 import json
+from django.conf import settings
 from submissions import api as sub_api
 from openassessment.workflow.models import AssessmentWorkflow
 from openassessment.assessment.models import AssessmentPart, AssessmentFeedback
@@ -110,14 +111,18 @@ class CsvWriter(object):
 
             # Django 1.4 doesn't follow reverse relations when using select_related,
             # so we select AssessmentPart and follow the foreign key to the Assessment.
-            parts = AssessmentPart.objects.select_related(
-                'assessment', 'option', 'option__criterion'
-            ).filter(assessment__submission_uuid=submission_uuid).order_by('assessment__pk')
+            parts = self._use_read_replica(
+                AssessmentPart.objects.select_related('assessment', 'option', 'option__criterion')
+                    .filter(assessment__submission_uuid=submission_uuid)
+                    .order_by('assessment__pk')
+            )
             self._write_assessment_to_csv(parts, rubric_points_cache)
 
-            feedback_query = AssessmentFeedback.objects.filter(
-                submission_uuid=submission_uuid
-            ).prefetch_related('options')
+            feedback_query = self._use_read_replica(
+                AssessmentFeedback.objects
+                    .filter(submission_uuid=submission_uuid)
+                    .prefetch_related('options')
+            )
             for assessment_feedback in feedback_query:
                 self._write_assessment_feedback_to_csv(assessment_feedback)
                 feedback_option_set.update(set(
@@ -146,8 +151,8 @@ class CsvWriter(object):
         """
         num_results = 0
         start = 0
-        total_results = AssessmentWorkflow.objects.filter(
-            course_id=course_id
+        total_results = self._use_read_replica(
+            AssessmentWorkflow.objects.filter(course_id=course_id)
         ).count()
 
         while num_results < total_results:
@@ -156,9 +161,11 @@ class CsvWriter(object):
             # so if we counted N at the start of the loop,
             # there should be >= N for us to process.
             end = start + self.QUERY_INTERVAL
-            query = AssessmentWorkflow.objects.filter(
-                course_id=course_id
-            ).order_by('created').values('submission_uuid')[start:end]
+            query = self._use_read_replica(
+                AssessmentWorkflow.objects
+                    .filter(course_id=course_id)
+                    .order_by('created')
+            ).values('submission_uuid')[start:end]
 
             for workflow_dict in query:
                 num_results += 1
@@ -184,7 +191,7 @@ class CsvWriter(object):
             None
 
         """
-        submission = sub_api.get_submission_and_student(submission_uuid)
+        submission = sub_api.get_submission_and_student(submission_uuid, read_replica=True)
         self._write_unicode('submission', [
             submission['uuid'],
             submission['student_item']['student_id'],
@@ -194,7 +201,7 @@ class CsvWriter(object):
             json.dumps(submission['answer'])
         ])
 
-        score = sub_api.get_latest_score_for_submission(submission_uuid)
+        score = sub_api.get_latest_score_for_submission(submission_uuid, read_replica=True)
         if score is not None:
             self._write_unicode('score', [
                 score['submission_uuid'],
@@ -221,9 +228,9 @@ class CsvWriter(object):
         for part in assessment_parts:
             self._write_unicode('assessment_part', [
                 part.assessment.id,
-                part.option.points,
-                part.option.criterion.name,
-                part.option.name,
+                part.points_earned,
+                part.criterion.name,
+                part.option.name if part.option is not None else u"",
                 part.feedback
             ])
 
@@ -307,3 +314,20 @@ class CsvWriter(object):
         if writer is not None:
             encoded_row = [unicode(field).encode('utf-8') for field in row]
             writer.writerow(encoded_row)
+
+    def _use_read_replica(self, queryset):
+        """
+        Use the read replica if it's available.
+
+        Args:
+            queryset (QuerySet)
+
+        Returns:
+            QuerySet
+
+        """
+        return (
+            queryset.using("read_replica")
+            if "read_replica" in settings.DATABASES
+            else queryset
+        )

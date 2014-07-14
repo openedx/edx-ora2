@@ -692,6 +692,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 1,
+      "criterion": 4,
       "option": 32,
       "feedback": "Praesent ac lorem ac nunc tincidunt ultricies sit amet ut magna."
     }
@@ -701,6 +702,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 1,
+      "criterion": 10,
       "option": 44,
       "feedback": "Fusce varius, elit ut blandit consequat, odio ante mollis lectus"
     }
@@ -710,6 +712,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 1,
+      "criterion": 9,
       "option": 37,
       "feedback": ""
     }
@@ -719,6 +722,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 2,
+      "criterion": 8,
       "option": 33,
       "feedback": ""
     }
@@ -728,6 +732,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 2,
+      "criterion": 10,
       "option": 44,
       "feedback": ""
     }
@@ -737,6 +742,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 2,
+      "criterion": 9,
       "option": 38,
       "feedback": ""
     }
@@ -746,6 +752,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 3,
+      "criterion": 8,
       "option": 32,
       "feedback": "Aenean vehicula nunc quis semper porttitor. "
     }
@@ -755,6 +762,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 3,
+      "criterion": 10,
       "option": 42,
       "feedback": "Etiam vitae facilisis ante, in tristique lacus."
     }
@@ -764,6 +772,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 3,
+      "criterion": 9,
       "option": 38,
       "feedback": ""
     }
@@ -773,6 +782,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 4,
+      "criterion": 10,
       "option": 43,
       "feedback": ""
     }
@@ -782,6 +792,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 4,
+      "criterion": 9,
       "option": 38,
       "feedback": ""
     }
@@ -791,6 +802,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 4,
+      "criterion": 8,
       "option": 31,
       "feedback": ""
     }

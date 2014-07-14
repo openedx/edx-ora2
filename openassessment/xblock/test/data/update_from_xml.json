@@ -478,28 +478,28 @@
     "criterion_feedback_optional": {
         "xml": [
             "<openassessment>",
-            "<title>Foo</title>",
+            "<title>foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
             "</assessments>",
             "<rubric>",
-                "<prompt>Test prompt</prompt>",
+                "<prompt>test prompt</prompt>",
                 "<criterion>",
-                    "<name>Test criterion</name>",
-                    "<prompt>Test criterion prompt</prompt>",
-                    "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
-                    "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+                    "<name>test criterion</name>",
+                    "<prompt>test criterion prompt</prompt>",
+                    "<option points=\"0\"><name>no</name><explanation>no explanation</explanation></option>",
+                    "<option points=\"2\"><name>yes</name><explanation>yes explanation</explanation></option>",
                 "</criterion>",
                 "<criterion feedback=\"optional\">",
-                    "<name>Second criterion</name>",
-                    "<prompt>Second criterion prompt</prompt>",
-                    "<option points=\"1\"><name>Maybe</name><explanation>Maybe explanation</explanation></option>",
+                    "<name>second criterion</name>",
+                    "<prompt>second criterion prompt</prompt>",
+                    "<option points=\"1\"><name>maybe</name><explanation>maybe explanation</explanation></option>",
                 "</criterion>",
             "</rubric>",
             "</openassessment>"
         ],
-        "title": "Foo",
-        "prompt": "Test prompt",
+        "title": "foo",
+        "prompt": "test prompt",
         "start": "2000-01-01T00:00:00",
         "due": "3000-01-01T00:00:00",
         "submission_start": null,
@@ -507,35 +507,111 @@
         "criteria": [
             {
                 "order_num": 0,
-                "name": "Test criterion",
-                "prompt": "Test criterion prompt",
+                "name": "test criterion",
+                "prompt": "test criterion prompt",
                 "feedback": "disabled",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
-                        "name": "No",
-                        "explanation": "No explanation"
+                        "name": "no",
+                        "explanation": "no explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
-                        "name": "Yes",
-                        "explanation": "Yes explanation"
+                        "name": "yes",
+                        "explanation": "yes explanation"
                     }
                 ]
             },
             {
                 "order_num": 1,
-                "name": "Second criterion",
-                "prompt": "Second criterion prompt",
+                "name": "second criterion",
+                "prompt": "second criterion prompt",
                 "feedback": "optional",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 1,
-                        "name": "Maybe",
-                        "explanation": "Maybe explanation"
+                        "name": "maybe",
+                        "explanation": "maybe explanation"
+                    }
+                ]
+            }
+        ],
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "start": "2014-02-27T09:46:28",
+                "due": "2014-03-01T00:00:00",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            }
+        ]
+    },
+
+    "criterion_feedback_required": {
+        "xml": [
+            "<openassessment>",
+            "<title>foo</title>",
+            "<assessments>",
+                "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
+            "</assessments>",
+            "<rubric>",
+                "<prompt>test prompt</prompt>",
+                "<criterion>",
+                    "<name>test criterion</name>",
+                    "<prompt>test criterion prompt</prompt>",
+                    "<option points=\"0\"><name>no</name><explanation>no explanation</explanation></option>",
+                    "<option points=\"2\"><name>yes</name><explanation>yes explanation</explanation></option>",
+                "</criterion>",
+                "<criterion feedback=\"required\">",
+                    "<name>second criterion</name>",
+                    "<prompt>second criterion prompt</prompt>",
+                    "<option points=\"1\"><name>maybe</name><explanation>maybe explanation</explanation></option>",
+                "</criterion>",
+            "</rubric>",
+            "</openassessment>"
+        ],
+        "title": "foo",
+        "prompt": "test prompt",
+        "start": "2000-01-01T00:00:00",
+        "due": "3000-01-01T00:00:00",
+        "submission_start": null,
+        "submission_due": null,
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "test criterion",
+                "prompt": "test criterion prompt",
+                "feedback": "disabled",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "no",
+                        "explanation": "no explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "yes",
+                        "explanation": "yes explanation"
+                    }
+                ]
+            },
+            {
+                "order_num": 1,
+                "name": "second criterion",
+                "prompt": "second criterion prompt",
+                "feedback": "required",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 1,
+                        "name": "maybe",
+                        "explanation": "maybe explanation"
                     }
                 ]
             }
@@ -964,6 +1040,70 @@
                         ]
                     }
                 ]
+            }
+        ]
+    },
+
+    "file_upload": {
+        "xml": [
+            "<openassessment allow_file_upload=\"True\">",
+            "<title>Foo</title>",
+            "<assessments>",
+                "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
+                "<assessment name=\"self-assessment\" start=\"2014-04-01T00:00:00\" due=\"2014-06-01T00:00:00\" />",
+            "</assessments>",
+            "<rubric>",
+                "<prompt>Test prompt</prompt>",
+                "<criterion>",
+                    "<name>Test criterion</name>",
+                    "<prompt>Test criterion prompt</prompt>",
+                    "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+                    "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+                "</criterion>",
+            "</rubric>",
+            "</openassessment>"
+        ],
+        "title": "Foo",
+        "prompt": "Test prompt",
+        "start": "2000-01-01T00:00:00",
+        "due": "3000-01-01T00:00:00",
+        "submission_start": null,
+        "submission_due": null,
+        "allow_file_upload": true,
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "feedback": "disabled",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ]
+            }
+        ],
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "start": "2014-02-27T09:46:28",
+                "due": "2014-03-01T00:00:00",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment",
+                "start": "2014-04-01T00:00:00",
+                "due": "2014-06-01T00:00:00"
             }
         ]
     }

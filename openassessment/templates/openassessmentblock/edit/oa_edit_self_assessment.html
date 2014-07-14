@@ -8,11 +8,9 @@
         <label for="include_self_assessment">{% trans "Step: Self Assessment" %}</label>
     </div>
     <div class="openassessment_assessment_module_editor">
-        {% if not assessments.self_assessment %}
-            <p id="self_assessment_description_closed" class="openassessment_description_closed">
-                {% trans "Students assess their own responses using the rubric for the assignment." %}
-            </p>
-        {% endif %}
+        <p id="self_assessment_description_closed" class="openassessment_description_closed {% if assessments.self_assessment %} is--hidden {% endif %}">
+            {% trans "Students assess their own responses using the rubric for the assignment." %}
+        </p>
         <div id="self_assessment_settings_editor" class="assessment_settings_wrapper {% if not assessments.self_assessment %} is--hidden {% endif %}">
             <p class="openassessment_description">
                 {% trans "Specify start and due dates for the self assessment step. To allow self assessment to run as long as the assignment is open, leave both fields blank." %}

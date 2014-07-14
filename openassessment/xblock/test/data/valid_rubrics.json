@@ -596,5 +596,20 @@
             ]
         },
         "is_released": true
+    },
+
+    "zero_options": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [],
+                    "feedback": "required"
+                }
+            ]
+        }
     }
 }

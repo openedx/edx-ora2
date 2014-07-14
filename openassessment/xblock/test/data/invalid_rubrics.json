@@ -6,20 +6,6 @@
         }
     },
 
-    "zero_options": {
-        "rubric": {
-            "prompt": "Test Prompt",
-            "criteria": [
-                {
-                    "order_num": 0,
-                    "name": "Test criterion",
-                    "prompt": "Test criterion prompt",
-                    "options": []
-                }
-            ]
-        }
-    },
-
     "negative_points": {
         "rubric": {
             "prompt": "Test Prompt",
@@ -541,6 +527,50 @@
                             "explanation": "Yes explanation"
                         }
                     ]
+                }
+            ]
+        }
+    },
+
+    "zero_options_feedback_optional": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [],
+                    "feedback": "optional"
+                }
+            ]
+        }
+    },
+
+    "zero_options_feedback_disabled": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [],
+                    "feedback": "disabled"
+                }
+            ]
+        }
+    },
+
+    "zero_options_no_feedback": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": []
                 }
             ]
         }

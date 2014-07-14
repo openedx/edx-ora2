@@ -39,6 +39,9 @@ class TrainingExample(models.Model):
         Returns:
             TrainingExample
 
+        Raises:
+            InvalidRubricSelection
+
         """
         content_hash = cls.calculate_hash(answer, options_selected, rubric)
         example = TrainingExample.objects.create(
@@ -46,11 +49,12 @@ class TrainingExample(models.Model):
             raw_answer=json.dumps(answer),
             rubric=rubric
         )
-        options_ids = rubric.options_ids(options_selected)
 
-        for option in CriterionOption.objects.filter(pk__in=list(options_ids)):
+        # This will raise `InvalidRubricSelection` if the selected options
+        # do not match the rubric.
+        for criterion_name, option_name in options_selected.iteritems():
+            option = rubric.index.find_option(criterion_name, option_name)
             example.options_selected.add(option)
-
         return example
 
     @property

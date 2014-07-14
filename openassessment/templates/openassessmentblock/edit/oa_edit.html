@@ -61,13 +61,13 @@
 
                 {% for assessment in used_assessments %}
                     {% with "openassessmentblock/edit/oa_edit_"|add:assessment|add:".html" as template %}
-                    {% include template %}
+                        {% include template %}
                     {% endwith %}
                 {% endfor %}
 
                 {% for assessment in unused_assessments %}
                     {% with "openassessmentblock/edit/oa_edit_"|add:assessment|add:".html" as template %}
-                    {% include template %}
+                        {% include template %}
                     {% endwith %}
                 {% endfor %}
 

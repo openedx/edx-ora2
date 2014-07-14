@@ -105,6 +105,7 @@ class TestSerializeContent(TestCase):
         self.oa_block.submission_due = data['submission_due']
         self.oa_block.rubric_criteria = data['criteria']
         self.oa_block.rubric_assessments = data['assessments']
+        self.oa_block.allow_file_upload = data['allow_file_upload']
 
     @ddt.file_data('data/serialize.json')
     def test_serialize(self, data):
@@ -224,6 +225,7 @@ class TestSerializeContent(TestCase):
         self.oa_block.due = None
         self.oa_block.submission_start = None
         self.oa_block.submission_due = None
+        self.oa_block.allow_file_upload = None
 
         for mutated_value in [0, u"\u9282", None]:
             setattr(self.oa_block, field, mutated_value)

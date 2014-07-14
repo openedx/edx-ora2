@@ -8,11 +8,9 @@
         <label for="include_student_training">{% trans "Step: Student Training" %}</label>
     </div>
     <div class = "openassessment_assessment_module_editor">
-        {% if not assessments.student_training %}
-            <p id="student_training_description_closed" class="openassessment_description_closed">
-                {% trans "Students learn to assess responses by scoring pre-assessed sample responses that the instructor provides. Students move to the next step when the scores they give match the instructor's scores. Note that Student Training Requires that the Peer Assessment module is also selected." %}
-            </p>
-        {% endif %}
+        <p id="student_training_description_closed" class="openassessment_description_closed {% if assessments.student_training %} is--hidden {% endif %}">
+            {% trans "Students learn to assess responses by scoring pre-assessed sample responses that the instructor provides. Students move to the next step when the scores they give match the instructor's scores. Note that Student Training Requires that the Peer Assessment module is also selected." %}
+        </p>
         <div id="student_training_settings_editor" class="assessment_settings_wrapper {% if not assessments.student_training %} is--hidden {% endif %}">
             <p class="openassessment_description">
                 {% trans "Enter one or more sample responses that you've created, together with the scores you would give those responses. Be sure to format the responses and scores according to the placeholder text below." %}

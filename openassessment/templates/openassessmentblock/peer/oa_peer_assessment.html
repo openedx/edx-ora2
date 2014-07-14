@@ -47,12 +47,28 @@
                         <article class="peer-assessment" id="peer-assessment--001">
                             <div class="peer-assessment__display">
                                 <header class="peer-assessment__display__header">
-                                    {% blocktrans with review_num=review_num must_grade=must_grade%}<h3 class="peer-assessment__display__title">Assessment # <span class="peer-assessment__number--current">{{ review_num }}</span> of <span class="peer-assessment__number--required">{{ must_grade }}</span></h3>{% endblocktrans %}
+                                    {% blocktrans with review_num=review_num must_grade=must_grade%}
+                                    <h3 class="peer-assessment__display__title">
+                                        Assessment # <span class="peer-assessment__number--current">{{ review_num }}</span> of <span class="peer-assessment__number--required">{{ must_grade }}</span>
+                                    </h3>
+                                    {% endblocktrans %}
                                 </header>
 
                                 <div class="peer-assessment__display__response">
                                     {{ peer_submission.answer.text|linebreaks }}
                                 </div>
+
+                                {% if allow_file_upload and peer_file_url %}
+                                <header class="peer-assessment__display__header">
+                                    <h3 class="peer-assessment__display__title">
+                                        {% trans "Associated Image" %}
+                                    </h3>
+                                </header>
+
+                                <div class="peer-assessment__display__image">
+                                    <img class="submission--image" alt="{% trans "The image associated with your peer's submission." %}" src="{{ peer_file_url }}"/>
+                                </div>
+                                {% endif %}
                             </div>
 
                             <form id="peer-assessment--001__assessment" class="peer-assessment__assessment" method="post">
@@ -60,7 +76,10 @@
                                     <ol class="list list--fields assessment__rubric">
 
                                         {% for criterion in rubric_criteria %}
-                                        <li class="field field--radio is--required assessment__rubric__question ui-toggle-visibility" id="assessment__rubric__question--{{ criterion.order_num }}">
+                                        <li
+                                            class="field field--radio is--required assessment__rubric__question ui-toggle-visibility {% if criterion.options %}has--options{% endif %}"
+                                            id="assessment__rubric__question--{{ criterion.order_num }}"
+                                        >
                                             <h4 class="question__title ui-toggle-visibility__control">
                                                 <i class="ico icon-caret-right"></i>
                                                 <span class="ui-toggle-visibility__control__copy question__title__copy">{{ criterion.prompt }}</span>
@@ -88,7 +107,7 @@
                                                     </li>
                                                     {% endfor %}
 
-                                                    {% if criterion.feedback == 'optional' %}
+                                                    {% if criterion.feedback == 'optional' or criterion.feedback == 'required' %}
                                                     <li class="answer--feedback">
                                                         <div class="wrapper--input">
                                                             <label for="assessment__rubric__question--{{ criterion.order_num }}__feedback" class="answer__label">{% trans "Comments" %}</label>
@@ -98,6 +117,7 @@
                                                                 value="{{ criterion.name }}"
                                                                 name="{{ criterion.name }}"
                                                                 maxlength="300"
+                                                                {% if criterion.feedback == 'required' %}required{% endif %}
                                                                 >
                                                             </textarea>
                                                         </div>

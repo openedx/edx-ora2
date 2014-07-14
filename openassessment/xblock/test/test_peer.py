@@ -321,6 +321,8 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             'must_grade': 5,
             'review_num': 1,
             'peer_submission': submission,
+            'allow_file_upload': False,
+            'peer_file_url': '',
             'submit_button_text': 'submit your assessment & move to response #2',
         }
         self._assert_path_and_context(
@@ -456,6 +458,8 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
              'must_grade': 5,
              'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
              'peer_submission': submission,
+             'allow_file_upload': False,
+             'peer_file_url': '',
              'review_num': 1,
              'rubric_criteria': xblock.rubric_criteria,
              'submit_button_text': 'Submit your assessment & review another response',
@@ -602,6 +606,26 @@ class TestPeerAssessHandler(XBlockHandlerTestCase):
         # Expect that per-criterion feedback were ignored
         for part in assessment['parts']:
             self.assertEqual(part['feedback'], '')
+
+    @scenario('data/feedback_only_criterion_peer.xml', user_id='Bob')
+    def test_peer_assess_feedback_only_criterion(self, xblock):
+        # Submit a peer assessment for a rubric with a feedback-only criterion
+        assessment_dict = {
+            'options_selected': {u'vocabulary': u'good'},
+            'criterion_feedback': {u'𝖋𝖊𝖊𝖉𝖇𝖆𝖈𝖐 𝖔𝖓𝖑𝖞': u'Ṫḧïṡ ïṡ ṡöṁë ḟëëḋḅäċḳ'},
+            'overall_feedback': u''
+        }
+        _, assessment = self._submit_peer_assessment(xblock, 'Sally', 'Bob', assessment_dict)
+
+        # Check the assessment for the criterion that has options
+        self.assertEqual(assessment['parts'][0]['criterion']['name'], 'vocabulary')
+        self.assertEqual(assessment['parts'][0]['option']['name'], 'good')
+        self.assertEqual(assessment['parts'][0]['option']['points'], 1)
+
+        # Check the feedback-only criterion score/feedback
+        self.assertEqual(assessment['parts'][1]['criterion']['name'], u'𝖋𝖊𝖊𝖉𝖇𝖆𝖈𝖐 𝖔𝖓𝖑𝖞')
+        self.assertIs(assessment['parts'][1]['option'], None)
+        self.assertEqual(assessment['parts'][1]['feedback'], u'Ṫḧïṡ ïṡ ṡöṁë ḟëëḋḅäċḳ')
 
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_submission_uuid_input_regression(self, xblock):
