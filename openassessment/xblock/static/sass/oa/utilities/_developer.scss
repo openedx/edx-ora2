@@ -390,6 +390,10 @@
     .openassessment_criterion {
       padding-bottom: 10px;
 
+      .openassessment_criterion_remove_button{
+        @extend .openassessment_rubric_remove_button;
+      }
+
       .openassessment_criterion_header {
         margin: 10px;
         padding: 5px;
@@ -500,6 +504,10 @@
 
     .openassessment_criterion_option{
       padding: 5px;
+
+      .openassessment_criterion_option_remove_button{
+        @extend .openassessment_rubric_remove_button;
+      }
 
       .openassessment_option_header{
         background-color: $edx-gray-l2;
