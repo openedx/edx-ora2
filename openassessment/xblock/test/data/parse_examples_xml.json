@@ -1,10 +1,12 @@
 {
     "student_training_one_example": {
         "xml": [
+            "<examples>",
             "<example>",
             "<answer>ẗëṡẗ äṅṡẅëṛ</answer>",
             "<select criterion=\"Test criterion\" option=\"Yes\" />",
-            "</example>"
+            "</example>",
+            "</examples>"
         ],
         "examples": [
             {
@@ -21,6 +23,7 @@
 
     "student_training_multiple_examples": {
         "xml": [
+            "<examples>",
             "<example>",
             "<answer>ẗëṡẗ äṅṡẅëṛ</answer>",
             "<select criterion=\"Test criterion\" option=\"Yes\" />",
@@ -30,7 +33,8 @@
             "<answer>äṅöẗḧëṛ ẗëṡẗ äṅṡẅëṛ</answer>",
             "<select criterion=\"Another test criterion\" option=\"Yes\" />",
             "<select criterion=\"Test criterion\" option=\"No\" />",
-            "</example>"
+            "</example>",
+            "</examples>"
         ],
         "examples": [
             {

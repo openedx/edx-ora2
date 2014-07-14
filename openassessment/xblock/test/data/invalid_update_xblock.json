@@ -18,8 +18,7 @@
             }
         ],
         "submission_due": "2014-02-27T09:46",
-        "submission_start": "2014-02-10T09:46",
-        "expected_error": "error updating xblock configuration"
+        "submission_start": "2014-02-10T09:46"
     },
 
     "no_prompt": {
@@ -62,8 +61,7 @@
             }
         ],
         "submission_due": "2014-02-27T09:46",
-        "submission_start": "2014-02-10T09:46",
-        "expected_error": "error"
+        "submission_start": "2014-02-10T09:46"
     },
 
     "no_feedback_prompt": {
@@ -106,8 +104,7 @@
             }
         ],
         "submission_due": "2014-02-27T09:46",
-        "submission_start": "2014-02-10T09:46",
-        "expected_error": "error"
+        "submission_start": "2014-02-10T09:46"
     },
 
     "no_submission_due": {
@@ -150,11 +147,10 @@
                 "due": null
             }
         ],
-        "submission_start": "2014-02-10T09:46",
-        "expected_error": "error updating xblock configuration"
+        "submission_start": "2014-02-10T09:46"
     },
 
-    "invalid_dates_one": {
+    "invalid_dates": {
         "feedback_prompt": "Feedback prompt",
         "prompt": "Test Prompt",
         "criteria": [
@@ -196,7 +192,7 @@
             ],
         "submission_due": "2012-02-27T09:46",
         "submission_start": "2015-02-10T09:46",
-        "expected_error": "cannot be later"
+        "expected_error": "the start date '2015-02-10 09:46:00+00:00' cannot be later than the due date '2012-02-27 09:46:00+00:00'"
     },
 
     "invalid_dates_two": {
@@ -278,8 +274,7 @@
                 }
             ],
         "submission_due": null,
-        "submission_start": null,
-        "expected_error": "error updating xblock configuration"
+        "submission_start": null
     },
 
     "feedback_missing": {
@@ -315,8 +310,7 @@
             }
         ],
         "submission_due": null,
-        "submission_start": null,
-        "expected_error": "error updating xblock configuration"
+        "submission_start": null
     },
 
     "criterion_not_a_dict": {
@@ -334,8 +328,7 @@
             }
         ],
         "submission_due": null,
-        "submission_start": null,
-        "expected_error": "error updating xblock configuration"
+        "submission_start": null
     },
 
     "criteria_missing_keys": {
@@ -371,8 +364,7 @@
             }
         ],
         "submission_due": null,
-        "submission_start": null,
-        "expected_error": "error updating xblock configuration"
+        "submission_start": null
     },
 
     "options_not_a_list": {
@@ -396,8 +388,7 @@
             }
         ],
         "submission_due": null,
-        "submission_start": null,
-        "expected_error": "error updating xblock configuration"
+        "submission_start": null
     },
 
     "option_not_a_dictionary": {
@@ -429,8 +420,7 @@
             }
         ],
         "submission_due": null,
-        "submission_start": null,
-        "expected_error": "error updating xblock configuration"
+        "submission_start": null
     },
 
     "option_missing_keys": {
@@ -466,8 +456,7 @@
             }
         ],
         "submission_due": null,
-        "submission_start": null,
-        "expected_error": "error updating xblock configuration"
+        "submission_start": null
     },
 
     "option_points_must_be_int": {
@@ -504,7 +493,297 @@
             }
         ],
         "submission_due": null,
-        "submission_start": null,
-        "expected_error": "error updating xblock configuration"
+        "submission_start": null
+    },
+
+    "student_training_example_missing_answer": {
+       "criteria": [
+            {
+                "order_num": 0,
+                "name": "тєѕт ¢яιтєяιση",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "Ṅö",
+                        "explanation": "Ṅö explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "sǝʎ",
+                        "explanation": "sǝʎ explanation"
+                    }
+                ],
+                "feedback": "required"
+            }
+        ],
+        "prompt": "My new prompt.",
+        "feedback_prompt": "Feedback prompt",
+        "submission_due": "4014-02-27T09:46",
+        "submission_start": "4014-02-10T09:46",
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "student-training",
+                "examples": [
+                    {
+                        "options_selected": [
+                            { "criterion": "тєѕт ¢яιтєяιση", "option": "Ṅö" }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": "4014-03-10T00:00"
+            }
+        ]
+    },
+
+    "student_training_example_missing_options_selected": {
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "тєѕт ¢яιтєяιση",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "Ṅö",
+                        "explanation": "Ṅö explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "sǝʎ",
+                        "explanation": "sǝʎ explanation"
+                    }
+                ],
+                "feedback": "required"
+            }
+        ],
+        "prompt": "My new prompt.",
+        "feedback_prompt": "Feedback prompt",
+        "submission_due": "4014-02-27T09:46",
+        "submission_start": "4014-02-10T09:46",
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "student-training",
+                "examples": [
+                    {
+                        "answer": "Ṫḧïṡ ïṡ äṅ äṅṡẅëṛ"
+                    }
+                ]
+            },
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": "4014-03-10T00:00"
+            }
+        ]
+    },
+
+    "student_training_example_missing_criterion": {
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "тєѕт ¢яιтєяιση",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "Ṅö",
+                        "explanation": "Ṅö explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "sǝʎ",
+                        "explanation": "sǝʎ explanation"
+                    }
+                ],
+                "feedback": "required"
+            }
+        ],
+        "prompt": "My new prompt.",
+        "feedback_prompt": "Feedback prompt",
+        "submission_due": "4014-02-27T09:46",
+        "submission_start": "4014-02-10T09:46",
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "student-training",
+                "examples": [
+                    {
+                        "answer": "This is another answer",
+                        "options_selected": [
+                            { "option": "sǝʎ" }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": "4014-03-10T00:00"
+            }
+        ]
+    },
+
+    "student_training_example_missing_option": {
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "тєѕт ¢яιтєяιση",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "Ṅö",
+                        "explanation": "Ṅö explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "sǝʎ",
+                        "explanation": "sǝʎ explanation"
+                    }
+                ],
+                "feedback": "required"
+            }
+        ],
+        "prompt": "My new prompt.",
+        "feedback_prompt": "Feedback prompt",
+        "submission_due": "4014-02-27T09:46",
+        "submission_start": "4014-02-10T09:46",
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "student-training",
+                "examples": [
+                    {
+                        "answer": "Ṫḧïṡ ïṡ äṅ äṅṡẅëṛ",
+                        "options_selected": [
+                            { "criterion": "тєѕт ¢яιтєяιση" }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": "4014-03-10T00:00"
+            }
+        ]
+    },
+
+    "student_training_no_examples": {
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "тєѕт ¢яιтєяιση",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "Ṅö",
+                        "explanation": "Ṅö explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "sǝʎ",
+                        "explanation": "sǝʎ explanation"
+                    }
+                ],
+                "feedback": "required"
+            }
+        ],
+        "prompt": "My new prompt.",
+        "feedback_prompt": "Feedback prompt",
+        "submission_due": "4014-02-27T09:46",
+        "submission_start": "4014-02-10T09:46",
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "student-training",
+                "examples": []
+            },
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": "4014-03-10T00:00"
+            }
+        ],
+        "expected_error": "you must provide at least one example response for student training"
+    },
+
+    "student_training_example_does_not_match_rubric": {
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "тєѕт ¢яιтєяιση",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "Ṅö",
+                        "explanation": "Ṅö explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "sǝʎ",
+                        "explanation": "sǝʎ explanation"
+                    }
+                ],
+                "feedback": "required"
+            }
+        ],
+        "prompt": "My new prompt.",
+        "feedback_prompt": "Feedback prompt",
+        "submission_due": "4014-02-27T09:46",
+        "submission_start": "4014-02-10T09:46",
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "student-training",
+                "examples": [
+                    {
+                        "answer": "Ṫḧïṡ ïṡ äṅ äṅṡẅëṛ",
+                        "options_selected": [
+                            { "criterion": "Not a criterion!", "option": "Ṅö" }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": "4014-03-10T00:00"
+            }
+        ],
+        "expected_error": "example 1 has an extra option"
     }
 }

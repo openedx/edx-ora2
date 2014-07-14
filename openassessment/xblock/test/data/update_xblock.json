@@ -85,5 +85,61 @@
                 "due": null
             }
         ]
+    },
+
+    "student_training": {
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "тєѕт ¢яιтєяιση",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "Ṅö",
+                        "explanation": "Ṅö explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "sǝʎ",
+                        "explanation": "sǝʎ explanation"
+                    }
+                ],
+                "feedback": "required"
+            }
+        ],
+        "prompt": "My new prompt.",
+        "feedback_prompt": "Feedback prompt",
+        "submission_due": "4014-02-27T09:46",
+        "submission_start": "4014-02-10T09:46",
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "student-training",
+                "examples": [
+                    {
+                        "answer": "Ṫḧïṡ ïṡ äṅ äṅṡẅëṛ",
+                        "options_selected": [
+                            { "criterion": "тєѕт ¢яιтєяιση", "option": "Ṅö" }
+                        ]
+                    },
+                    {
+                        "answer": "This is another answer",
+                        "options_selected": [
+                            { "criterion": "тєѕт ¢яιтєяιση", "option": "sǝʎ" }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": "4014-03-10T00:00"
+            }
+        ]
     }
 }

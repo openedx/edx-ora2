@@ -5,7 +5,6 @@ Schema for validating and sanitizing data received from the JavaScript client.
 import dateutil
 from pytz import utc
 from voluptuous import Schema, Required, All, Any, Range, In, Invalid
-from openassessment.xblock.xml import parse_examples_xml_str, UpdateFromXmlError
 
 
 def utf8_validator(value):
@@ -57,25 +56,6 @@ def datetime_validator(value):
         raise Invalid(u"Could not parse datetime from value \"{val}\"".format(val=value))
 
 
-def examples_xml_validator(value):
-    """Parse and validate student training examples XML.
-
-    Args:
-        value: The value to parse.
-
-    Returns:
-        list of training examples, serialized as dictionaries.
-
-    Raises:
-        Invalid
-
-    """
-    try:
-        return parse_examples_xml_str(value)
-    except UpdateFromXmlError:
-        raise Invalid(u"Could not parse examples from XML")
-
-
 # Schema definition for an update from the Studio JavaScript editor.
 EDITOR_UPDATE_SCHEMA = Schema({
     Required('prompt'): utf8_validator,
@@ -98,7 +78,17 @@ EDITOR_UPDATE_SCHEMA = Schema({
             Required('due', default=None): Any(datetime_validator, None),
             'must_grade': All(int, Range(min=0)),
             'must_be_graded_by': All(int, Range(min=0)),
-            'examples': All(utf8_validator, examples_xml_validator)
+            'examples': [
+                Schema({
+                    Required('answer'): utf8_validator,
+                    Required('options_selected'): [
+                        Schema({
+                            Required('criterion'): utf8_validator,
+                            Required('option'): utf8_validator
+                        })
+                    ]
+                })
+            ]
         })
     ],
     Required('feedbackprompt', default=u""): utf8_validator,

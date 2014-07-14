@@ -4,7 +4,6 @@ View-level tests for Studio view of OpenAssessment XBlock.
 
 import json
 import datetime as dt
-import lxml.etree as etree
 import pytz
 from ddt import ddt, file_data
 from .base import scenario, XBlockHandlerTestCase
@@ -31,7 +30,13 @@ class StudioViewTest(XBlockHandlerTestCase):
     @file_data('data/invalid_update_xblock.json')
     @scenario('data/basic_scenario.xml')
     def test_update_context_invalid_request_data(self, xblock, data):
-        expected_error = data.pop('expected_error')
+        # All schema validation errors have the same error message, so use that as the default
+        # Remove the expected error from the dictionary so we don't get an unexpected key error.
+        if 'expected_error' in data:
+            expected_error = data.pop('expected_error')
+        else:
+            expected_error = 'error updating xblock configuration'
+
         xblock.published_date = None
         resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
         self.assertFalse(resp['success'])
