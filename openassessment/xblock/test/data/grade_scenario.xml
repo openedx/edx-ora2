@@ -40,28 +40,6 @@
         </criterion>
     </rubric>
     <assessments>
-        <assessment name="example-based-assessment" algorithm_id="fake">
-            <example>
-                <answer>Example Answer One</answer>
-                <select criterion="𝓒𝓸𝓷𝓬𝓲𝓼𝓮" option="Ġööḋ" />
-                <select criterion="Form" option="Poor" />
-            </example>
-            <example>
-                <answer>Example Answer Two</answer>
-                <select criterion="𝓒𝓸𝓷𝓬𝓲𝓼𝓮" option="ﻉซƈﻉɭɭﻉกՇ" />
-                <select criterion="Form" option="Fair" />
-            </example>
-            <example>
-                <answer>Example Answer Three</answer>
-                <select criterion="𝓒𝓸𝓷𝓬𝓲𝓼𝓮" option="Ġööḋ" />
-                <select criterion="Form" option="Good" />
-            </example>
-            <example>
-                <answer>Example Answer Four</answer>
-                <select criterion="𝓒𝓸𝓷𝓬𝓲𝓼𝓮" option="ﻉซƈﻉɭɭﻉกՇ" />
-                <select criterion="Form" option="Good" />
-            </example>
-        </assessment>
         <assessment name="peer-assessment" must_grade="2" must_be_graded_by="2" />
         <assessment name="self-assessment" />
     </assessments>

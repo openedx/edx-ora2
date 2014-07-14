@@ -238,6 +238,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 1,
+      "criterion": 3,
       "option": 9,
       "feedback": "\u0547\ufec9\u0e23\u0547 \u0e23\u0547\u027c\u0671\u0e01\ufeed"
     }
@@ -247,6 +248,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 1,
+      "criterion": 4,
       "option": 11,
       "feedback": ""
     }
@@ -256,6 +258,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 2,
+      "criterion": 4,
       "option": 12,
       "feedback": ""
     }
@@ -265,6 +268,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 2,
+      "criterion": 3,
       "option": 7,
       "feedback": ""
     }
@@ -274,6 +278,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 3,
+      "criterion": 3,
       "option": 9,
       "feedback": "\u0547\ufec9\u0e23\u0547 \u0e23\u0547\u027c\u0671\u0e01\ufeed"
     }
@@ -283,6 +288,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 3,
+      "criterion": 4,
       "option": 12,
       "feedback": ""
     }
@@ -292,6 +298,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 4,
+      "criterion": 4,
       "option": 12,
       "feedback": ""
     }
@@ -301,6 +308,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 4,
+      "criterion": 3,
       "option": 7,
       "feedback": ""
     }

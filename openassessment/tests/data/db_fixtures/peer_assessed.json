@@ -656,6 +656,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 1,
+      "criterion": 8,
       "option": 32,
       "feedback": "Praesent ac lorem ac nunc tincidunt ultricies sit amet ut magna."
     }
@@ -665,6 +666,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 1,
+      "criterion": 10,
       "option": 44,
       "feedback": "Fusce varius, elit ut blandit consequat, odio ante mollis lectus"
     }
@@ -674,6 +676,7 @@
     "model": "assessment.assessmentpart",
     "fields": {
       "assessment": 1,
+      "criterion": 9,
       "option": 37,
       "feedback": ""
     }

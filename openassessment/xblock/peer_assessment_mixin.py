@@ -8,8 +8,9 @@ from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.errors import (
     PeerAssessmentRequestError, PeerAssessmentInternalError, PeerAssessmentWorkflowError
 )
-import openassessment.workflow.api as workflow_api
 from openassessment.workflow.errors import AssessmentWorkflowError
+from openassessment.fileupload import api as file_upload_api
+from openassessment.fileupload.api import FileUploadError
 
 from .resolve_dates import DISTANT_FUTURE
 
@@ -80,7 +81,8 @@ class PeerAssessmentMixin(object):
                 )
 
                 # Emit analytics event...
-                self._publish_peer_assessment_event(assessment)
+                self.publish_assessment_event("openassessmentblock.peer_assess", assessment)
+
             except (PeerAssessmentRequestError, PeerAssessmentWorkflowError):
                 logger.warning(
                     u"Peer API error for submission UUID {}".format(self.submission_uuid),
@@ -204,6 +206,10 @@ class PeerAssessmentMixin(object):
             if peer_sub:
                 path = 'openassessmentblock/peer/oa_peer_turbo_mode.html'
                 context_dict["peer_submission"] = peer_sub
+
+                # Determine if file upload is supported for this XBlock.
+                context_dict["allow_file_upload"] = self.allow_file_upload
+                context_dict["peer_file_url"] = self.get_download_url_from_submission(peer_sub)
             else:
                 path = 'openassessmentblock/peer/oa_peer_turbo_mode_waiting.html'
         elif reason == 'due' and problem_closed:
@@ -216,6 +222,9 @@ class PeerAssessmentMixin(object):
             if peer_sub:
                 path = 'openassessmentblock/peer/oa_peer_assessment.html'
                 context_dict["peer_submission"] = peer_sub
+                # Determine if file upload is supported for this XBlock.
+                context_dict["allow_file_upload"] = self.allow_file_upload
+                context_dict["peer_file_url"] = self.get_download_url_from_submission(peer_sub)
                 # Sets the XBlock boolean to signal to Message that it WAS NOT able to grab a submission
                 self.no_peers = False
             else:
@@ -260,42 +269,6 @@ class PeerAssessmentMixin(object):
 
         return peer_submission
 
-    def _publish_peer_assessment_event(self, assessment):
-        """
-        Emit an analytics event for the peer assessment.
-
-        Args:
-            assessment (dict): The serialized assessment model.
-
-        Returns:
-            None
-
-        """
-        self.runtime.publish(
-            self,
-            "openassessmentblock.peer_assess",
-            {
-                "feedback": assessment["feedback"],
-                "rubric": {
-                    "content_hash": assessment["rubric"]["content_hash"],
-                },
-                "scorer_id": assessment["scorer_id"],
-                "score_type": assessment["score_type"],
-                "scored_at": assessment["scored_at"],
-                "submission_uuid": assessment["submission_uuid"],
-                "parts": [
-                    {
-                        "option": {
-                            "name": part["option"]["name"],
-                            "points": part["option"]["points"],
-                        },
-                        "feedback": part["feedback"],
-                    }
-                    for part in assessment["parts"]
-                ]
-            }
-        )
-
     def _clean_criterion_feedback(self, criterion_feedback):
         """
         Remove per-criterion feedback for criteria with feedback disabled
@@ -312,5 +285,5 @@ class PeerAssessmentMixin(object):
             criterion['name']: criterion_feedback[criterion['name']]
             for criterion in self.rubric_criteria
             if criterion['name'] in criterion_feedback
-            and criterion.get('feedback', 'disabled') == 'optional'
+            and criterion.get('feedback', 'disabled') in ['optional', 'required']
         }

@@ -314,6 +314,11 @@
         "output": "oa_peer_assessment.html"
     },
     {
+        "template": "openassessmentblock/peer/oa_peer_complete.html",
+        "context": {},
+        "output": "oa_peer_complete.html"
+    },
+    {
         "template": "openassessmentblock/grade/oa_grade_complete.html",
         "context": {
             "score": "",
@@ -473,5 +478,55 @@
             ]
         },
         "output": "oa_staff_info.html"
+    },
+    {
+        "template": "openassessmentblock/peer/oa_peer_assessment.html",
+        "context": {
+            "rubric_criteria": [
+                {
+                    "name": "vocabulary",
+                    "prompt": "vocabulary",
+                    "order_num": 0,
+                    "feedback": "optional",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "Bad"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 1,
+                            "name": "Good"
+                        }
+                    ]
+                },
+                {
+                    "name": "grammar",
+                    "prompt": "grammar",
+                    "order_num": 1,
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "Bad"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 1,
+                            "name": "Good"
+                        }
+                    ]
+                },
+                {
+                    "name": "feedback_only",
+                    "prompt": "Feedback only, no options!",
+                    "order_num": 2,
+                    "feedback": "required",
+                    "options": []
+                }
+            ]
+        },
+        "output": "oa_rubric.html"
     }
 ]

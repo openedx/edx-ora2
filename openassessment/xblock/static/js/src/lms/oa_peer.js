@@ -46,6 +46,7 @@ OpenAssessment.PeerView.prototype = {
     **/
     loadContinuedAssessment: function() {
         var view = this;
+        view.continueAssessmentEnabled(false);
         this.server.renderContinuedPeer().done(
             function(html) {
                 // Load the HTML and install event handlers
@@ -54,7 +55,28 @@ OpenAssessment.PeerView.prototype = {
             }
         ).fail(function(errMsg) {
             view.baseView.showLoadError('peer-assessment');
+            view.continueAssessmentEnabled(true);
         });
+    },
+
+    /**
+    Enable and disable the continue assessment button.
+
+    Args:
+        enabled (bool): If specified, sets the button as enabled or disabled.
+            if not specified, return the current value.
+
+    Returns:
+        A boolean. TRUE if the continue assessment button is enabled.
+
+    **/
+    continueAssessmentEnabled: function(enabled) {
+        var button = $('#peer-assessment__continue__grading', this.element);
+        if (typeof enabled === 'undefined') {
+            return !button.hasClass('is--disabled');
+        } else {
+            button.toggleClass('is--disabled', !enabled);
+        }
     },
 
     /**
@@ -70,7 +92,7 @@ OpenAssessment.PeerView.prototype = {
         var view = this;
 
         // Install a click handler for collapse/expand
-        this.baseView.setUpCollapseExpand(sel, $.proxy(view.loadContinuedAssessment, view));
+        this.baseView.setUpCollapseExpand(sel);
 
         // Initialize the rubric
         var rubricSelector = $("#peer-assessment--001__assessment", this.element);
@@ -93,6 +115,14 @@ OpenAssessment.PeerView.prototype = {
                 // Handle the click
                 if (!isContinuedAssessment) { view.peerAssess(); }
                 else { view.continuedPeerAssess(); }
+            }
+        );
+
+        // Install a click handler for continued assessment
+        sel.find('#peer-assessment__continue__grading').click(
+            function(eventObject) {
+                eventObject.preventDefault();
+                view.loadContinuedAssessment();
             }
         );
     },

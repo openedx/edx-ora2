@@ -75,15 +75,6 @@ class CriterionSerializer(NestedModelSerializer):
         model = Criterion
         fields = ('order_num', 'name', 'prompt', 'options', 'points_possible')
 
-    def validate_options(self, attrs, source):
-        """Make sure we have at least one CriterionOption in a Criterion."""
-        options = attrs[source]
-        if not options:
-            raise serializers.ValidationError(
-                "Criterion must have at least one option."
-            )
-        return attrs
-
 
 class RubricSerializer(NestedModelSerializer):
     """Serializer for :class:`Rubric`."""
@@ -150,7 +141,7 @@ class AssessmentPartSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AssessmentPart
-        fields = ('option', 'feedback')
+        fields = ('option', 'criterion', 'feedback')
 
 
 class AssessmentSerializer(serializers.ModelSerializer):
@@ -219,12 +210,15 @@ def full_assessment_dict(assessment, rubric_dict=None):
     # `CriterionOption` again, we simply index into the places we expect them to
     # be from the big, saved `Rubric` serialization.
     parts = []
-    for part in assessment.parts.all().select_related("option__criterion"):
-        criterion_dict = rubric_dict["criteria"][part.option.criterion.order_num]
-        options_dict = criterion_dict["options"][part.option.order_num]
-        options_dict["criterion"] = criterion_dict
+    for part in assessment.parts.all().select_related("criterion", "option"):
+        criterion_dict = rubric_dict["criteria"][part.criterion.order_num]
+        options_dict = None
+        if part.option is not None:
+            options_dict = criterion_dict["options"][part.option.order_num]
+            options_dict["criterion"] = criterion_dict
         parts.append({
             "option": options_dict,
+            "criterion": criterion_dict,
             "feedback": part.feedback
         })
 
@@ -232,7 +226,9 @@ def full_assessment_dict(assessment, rubric_dict=None):
     # `Assessment` so we can again avoid DB calls.
     assessment_dict["parts"] = parts
     assessment_dict["points_earned"] = sum(
-        part_dict["option"]["points"] for part_dict in parts
+        part_dict["option"]["points"]
+        if part_dict["option"] is not None else 0
+        for part_dict in parts
     )
     assessment_dict["points_possible"] = rubric_dict["points_possible"]
 
