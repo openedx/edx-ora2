@@ -93,9 +93,6 @@ class StudioMixin(object):
             except:
                 logger.exception("An error occurred while serializing the XBlock")
 
-        submission_due = parse_date(self.submission_due).replace(tzinfo=pytz.utc) if self.submission_due else ''
-        submission_start = parse_date(self.submission_start).replace(tzinfo=pytz.utc) if self.submission_start else ''
-
         # Every rubric requires one criterion. If there is no criteria
         # configured for the XBlock, return one empty default criterion, with
         # an empty default option.
