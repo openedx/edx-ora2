@@ -30,15 +30,59 @@
                 </li>
                 <li class="openassessment_date_editor field comp-setting-entry">
                     <div class="wrapper-comp-setting">
-                        <label for="openassessment_submission_start_editor" class="setting-label">{% trans "Response Submission Start Date"%} </label>
-                        <input type="datetime-local" class="input setting-input" id="openassessment_submission_start_editor" value="{{ submission_start }}">
+                        <label
+                            for="openassessment_submission_start_date"
+                            class="setting-label">
+                            {% trans "Submission Start Date" %}
+                        </label>
+                        <input
+                            type="text"
+                            class="input setting-input"
+                            id="openassessment_submission_start_date"
+                            value="{{ submission_start|date:"y-m-d" }}"
+                        >
+                    </div>
+                    <div class="wrapper-comp-setting">
+                        <label
+                            for="openassessment_submission_start_time"
+                            class="setting-label">
+                            {% trans "Submission Start Time" %}
+                        </label>
+                        <input
+                            type="text"
+                            class="input setting-input"
+                            id="openassessment_submission_start_time"
+                            value="{{ submission_start|date:"H:i" }}"
+                        >
                     </div>
                     <p class="setting-help">{% trans "The date at which submissions will first be accepted." %}</p>
                 </li>
                 <li class="openassessment_date_editor field comp-setting-entry">
                     <div class="wrapper-comp-setting">
-                        <label for="openassessment_submission_due_editor" class="setting-label">{% trans "Response Submission Due Date" %}</label>
-                        <input type="datetime-local" class="input setting-input" id="openassessment_submission_due_editor" value="{{ submission_due }}">
+                        <label
+                            for="openassessment_submission_due_date"
+                            class="setting-label">
+                            {% trans "Submission Due Date" %}
+                        </label>
+                        <input
+                            type="text"
+                            class="input setting-input"
+                            id="openassessment_submission_due_date"
+                            value="{{ submission_due|date:"y-m-d" }}"
+                        >
+                    </div>
+                    <div class="wrapper-comp-setting">
+                        <label
+                            for="openassessment_submission_due_time"
+                            class="setting-label">
+                            {% trans "Submission Due Time" %}
+                        </label>
+                        <input
+                            type="text"
+                            class="input setting-input"
+                            id="openassessment_submission_due_time"
+                            value="{{ submission_due|date:"H:i" }}"
+                        >
                     </div>
                     <p class="setting-help">{% trans "The date at which submissions will stop being accepted." %}</p>
                 </li>

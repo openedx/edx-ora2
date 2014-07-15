@@ -13,6 +13,19 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews) {
     this.settingsElement = element;
     this.assessmentsElement = $(element).siblings('#openassessment_assessment_module_settings_editors').get(0);
     this.assessmentViews = assessmentViews;
+
+    // Configure the date and time fields
+    this.startDatetimeControl = new OpenAssessment.DatetimeControl(
+        this.element,
+        "#openassessment_submission_start_date",
+        "#openassessment_submission_start_time"
+    ).install();
+
+    this.dueDatetimeControl = new OpenAssessment.DatetimeControl(
+        this.element,
+        "#openassessment_submission_due_date",
+        "#openassessment_submission_due_time"
+    ).install();
 };
 
 
@@ -37,30 +50,30 @@ OpenAssessment.EditSettingsView.prototype = {
     Get or set the submission start date.
 
     Args:
-        datetime (string, optional): If provided, set the datetime.
+        dateString (string, optional): If provided, set the date (YY-MM-DD).
+        timeString (string, optional): If provided, set the time (HH:MM, 24-hour clock).
 
     Returns:
         string (ISO-format UTC datetime)
 
     **/
-    submissionStart: function(datetime) {
-        var sel = $("#openassessment_submission_start_editor", this.settingsElement);
-        return OpenAssessment.Fields.datetimeField(sel, datetime);
+    submissionStart: function(dateString, timeString) {
+        return this.startDatetimeControl.datetime(dateString, timeString);
     },
 
     /**
     Get or set the submission end date.
 
     Args:
-        datetime (string, optional): If provided, set the datetime.
+        dateString (string, optional): If provided, set the date (YY-MM-DD).
+        timeString (string, optional): If provided, set the time (HH:MM, 24-hour clock).
 
     Returns:
         string (ISO-format UTC datetime)
 
     **/
-    submissionDue: function(datetime) {
-        var sel = $("#openassessment_submission_start_editor", this.settingsElement);
-        return OpenAssessment.Fields.datetimeField(sel, datetime);
+    submissionDue: function(dateString, timeString) {
+        return this.dueDatetimeControl.datetime(dateString, timeString);
     },
 
     /**
