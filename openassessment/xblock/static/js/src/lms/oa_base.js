@@ -13,8 +13,9 @@ OpenAssessment.BaseView = function(runtime, element, server) {
     this.runtime = runtime;
     this.element = element;
     this.server = server;
+    this.fileUploader = new OpenAssessment.FileUploader();
 
-    this.responseView = new OpenAssessment.ResponseView(this.element, this.server, this);
+    this.responseView = new OpenAssessment.ResponseView(this.element, this.server, this.fileUploader, this);
     this.trainingView = new OpenAssessment.StudentTrainingView(this.element, this.server, this);
     this.selfView = new OpenAssessment.SelfView(this.element, this.server, this);
     this.peerView = new OpenAssessment.PeerView(this.element, this.server, this);
@@ -74,15 +75,15 @@ OpenAssessment.BaseView.prototype = {
         this.selfView.load();
         this.gradeView.load();
         /**
-        this.messageView.load() is intentionally omitted. 
-        Because of the asynchronous loading, there is no way to tell (from the perspective of the 
-        messageView) whether or not the peer view was able to grab an assessment to assess. Any 
-        asynchronous strategy would run into a race condition based around this problem at some 
-        point.  Instead, we created a field in the XBlock called no_peers, which is set by the 
+        this.messageView.load() is intentionally omitted.
+        Because of the asynchronous loading, there is no way to tell (from the perspective of the
+        messageView) whether or not the peer view was able to grab an assessment to assess. Any
+        asynchronous strategy would run into a race condition based around this problem at some
+        point.  Instead, we created a field in the XBlock called no_peers, which is set by the
         Peer XBlock Handler, and which is examined by the Message XBlock Handler.
 
         To Avoid rendering the message more than one time per update/load (and avoiding all comp-
-        lications that that would likely induce), we chose to load the method view only after 
+        lications that that would likely induce), we chose to load the method view only after
         the peer view has been loaded.  This is achieved by having the peer view  call to render
         the message view after rendering itself but before exiting its load method.
         */

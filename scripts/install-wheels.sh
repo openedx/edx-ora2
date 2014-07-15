@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 
+cd `dirname $BASH_SOURCE` && cd ..
+
 # Install "wheel" archives of the requirements for running the test suite.
 # http://pip.readthedocs.org/en/latest/reference/pip_wheel.html
 # This runs in Travis to install pre-built binary packages, which
 # means the builds are faster and more reliable.
-
-cd `dirname $BASH_SOURCE` && cd ..
-
 pip install --upgrade pip
 pip install wheel
 
