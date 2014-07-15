@@ -110,7 +110,7 @@ class StudioMixin(object):
             'submission_start': submission_start,
             'assessments': assessments,
             'criteria': criteria,
-            'feedbackprompt': unicode(self.rubric_feedback_prompt),
+            'feedbackprompt': self.rubric_feedback_prompt,
             'unused_assessments': unused_assessments,
             'used_assessments': used_assessments
         }
