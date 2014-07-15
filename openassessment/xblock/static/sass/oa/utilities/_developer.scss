@@ -265,7 +265,7 @@
   }
 
   .openassessment_assessment_module_settings_editor{
-    padding: 5px;
+    padding: 5px 20px 5px 5px;
     margin: 10px;
     border: 1px solid $edx-gray-l3;
     border-radius: 3px;
@@ -750,6 +750,7 @@
         left: 10px;
         height: 100%;
         textarea {
+          min-height: 90px;
           height: Calc(100% - 35px);
           resize: none;
           box-sizing: border-box;
@@ -773,8 +774,11 @@
         float: right;
         .openassessment_training_example_criteria_selections {
           .comp-setting-entry {
+            .wrapper-comp-setting{
+              min-width: 100px;
+            }
             margin: 0;
-            padding: 7.5px 5px;
+            padding: 10px;
             label{
               width: 100%;
               margin-left: 0;
@@ -790,16 +794,17 @@
   }
 
   .openassessment_add_training_example {
-    :before {
-      font-family: "FontAwesome";
-      display: inline-block;
-      margin-left: 5px;
-      margin-right: 10px;
-      width: auto;
-      height: auto;
-      content: "\f067";
-    }
     color: #009fe6;
+  }
+
+  .openassessment_add_training_example:before {
+    font-family: "FontAwesome";
+    display: inline-block;
+    margin-left: 5px;
+    margin-right: 10px;
+    width: auto;
+    height: auto;
+    content: "\f067";
     margin-left: 10px;
   }
 

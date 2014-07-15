@@ -85,17 +85,7 @@ class StudioMixin(object):
             'student-training'
         )
         if student_training_module:
-            student_training_module = copy.deepcopy(student_training_module)
-            try:
-                examples = xml.serialize_examples_to_xml_str(
-                    student_training_module
-                )
-                student_training_module["examples"] = examples
-                assessments['training'] = student_training_module
-            # We do not expect serialization to raise an exception, but if it does,
-            # handle it gracefully.
-            except:
-                logger.exception("An error occurred while serializing the XBlock")
+            assessments['training'] = copy.deepcopy(student_training_module)
 
         submission_due = self.submission_due if self.submission_due else ''
         submission_start = self.submission_start if self.submission_start else ''
