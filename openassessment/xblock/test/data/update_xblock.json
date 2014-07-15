@@ -3,19 +3,19 @@
         "criteria": [
             {
                 "order_num": 0,
-                "name": "Test criterion",
+                "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
-                        "name": "No",
+                        "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
-                        "name": "Yes",
+                        "label": "Yes",
                         "explanation": "Yes explanation"
                     }
                 ],
@@ -48,19 +48,19 @@
         "criteria": [
             {
                 "order_num": 0,
-                "name": "Ṫëṡẗ ċṛïẗëïṛöṅ",
+                "label": "Ṫëṡẗ ċṛïẗëïṛöṅ",
                 "prompt": "Téśt ćŕítéíŕőń ṕŕőḿṕt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
-                        "name": "Ṅö",
+                        "label": "Ṅö",
                         "explanation": "Ńő éxṕĺáńátíőń"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
-                        "name": "sǝʎ",
+                        "label": "sǝʎ",
                         "explanation": "Чэѕ эхрlаиатіои"
                     }
                 ],
@@ -94,18 +94,21 @@
             {
                 "order_num": 0,
                 "name": "тєѕт ¢яιтєяιση",
+                "label": "тєѕт ¢яιтєяιση",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
                         "name": "Ṅö",
+                        "label": "Ṅö",
                         "explanation": "Ṅö explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
                         "name": "sǝʎ",
+                        "label": "sǝʎ",
                         "explanation": "sǝʎ explanation"
                     }
                 ],
@@ -142,6 +145,54 @@
                 "must_be_graded_by": 3,
                 "start": null,
                 "due": "4014-03-10T00:00"
+            }
+        ]
+    },
+
+    "already_has_criteria_and_options_names_assigned": {
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "cd316c145cb14e06b377db65719ed41c",
+                "label": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "7c080ee29c38414291c92eb42b2ab310",
+                        "label": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "8bcdb0769b15482d9b2c3791d22e8ad2",
+                        "label": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ],
+                "feedback": "required"
+            }
+        ],
+        "prompt": "My new prompt.",
+        "feedback_prompt": "Feedback prompt",
+        "submission_due": "4014-02-27T09:46",
+        "submission_start": "4014-02-10T09:46",
+        "allow_file_upload": false,
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": "4014-03-10T00:00"
+            },
+            {
+                "name": "self-assessment",
+                "start": null,
+                "due": null
             }
         ]
     }

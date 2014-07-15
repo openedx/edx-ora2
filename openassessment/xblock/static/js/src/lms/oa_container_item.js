@@ -26,9 +26,9 @@ OpenAssessment.RubricOption.prototype = {
         }
     **/
     getFieldValues: function () {
-        return {
-            name: OpenAssessment.Fields.stringField(
-                $('.openassessment_criterion_option_name', this.element)
+        var fields = {
+            label: OpenAssessment.Fields.stringField(
+                $('.openassessment_criterion_option_label', this.element)
             ),
             points: OpenAssessment.Fields.intField(
                 $('.openassessment_criterion_option_points', this.element)
@@ -37,6 +37,16 @@ OpenAssessment.RubricOption.prototype = {
                 $('.openassessment_criterion_option_explanation', this.element)
             )
         };
+
+        // New options won't have unique names assigned.
+        // By convention, we exclude the "name" key from the JSON dict
+        // sent to the server, and the server will assign a unique name.
+        var nameString = OpenAssessment.Fields.stringField(
+            $('.openassessment_criterion_option_name', this.element)
+        );
+        if (nameString !== "") { fields.name = nameString; }
+
+        return fields;
     }
 };
 
@@ -85,9 +95,9 @@ OpenAssessment.RubricCriterion.prototype = {
         }
     **/
     getFieldValues: function () {
-        return {
-            name: OpenAssessment.Fields.stringField(
-                $('.openassessment_criterion_name', this.element)
+        var fields = {
+            label: OpenAssessment.Fields.stringField(
+                $('.openassessment_criterion_label', this.element)
             ),
             prompt: OpenAssessment.Fields.stringField(
                 $('.openassessment_criterion_prompt', this.element)
@@ -97,5 +107,23 @@ OpenAssessment.RubricCriterion.prototype = {
             ),
             options: this.optionContainer.getItemValues()
         };
+
+        // New criteria won't have unique names assigned.
+        // By convention, we exclude the "name" key from the JSON dict
+        // sent to the server, and the server will assign a unique name.
+        var nameString = OpenAssessment.Fields.stringField(
+            $('.openassessment_criterion_name', this.element)
+        );
+        if (nameString !== "") { fields.name = nameString; }
+
+        return fields;
+    },
+
+    /**
+    Add an option to the criterion.
+    Uses the client-side template to create the new option.
+    **/
+    addOption: function() {
+        this.optionContainer.add();
     }
 };

@@ -11,24 +11,28 @@
                     {
                         "order_num": 0,
                         "name": "Vocabulary",
+                        "label": "Vocabulary",
                         "prompt": "How varied is the vocabulary?",
                         "options": [
                             {
                                 "order_num": 0,
                                 "points": 0,
                                 "name": "Poor",
+                                "label": "Poor",
                                 "explanation": "Poor job"
                             },
                             {
                                 "order_num": 1,
                                 "points": 1,
                                 "name": "Good",
+                                "label": "Good",
                                 "explanation": "Good job"
                             },
                             {
                                 "order_num": 2,
                                 "points": 3,
                                 "name": "Excellent",
+                                "label": "Excellent",
                                 "explanation": "Excellent job"
                             }
                         ],
@@ -37,24 +41,28 @@
                     {
                         "order_num": 1,
                         "name": "Grammar",
+                        "label": "Grammar",
                         "prompt": "How correct is the grammar?",
                         "options": [
                             {
                                 "order_num": 0,
                                 "points": 0,
                                 "name": "Poor",
+                                "label": "Poor",
                                 "explanation": "Poor job"
                             },
                             {
                                 "order_num": 1,
                                 "points": 1,
                                 "name": "Good",
+                                "label": "Good",
                                 "explanation": "Good job"
                             },
                             {
                                 "order_num": 2,
                                 "points": 3,
                                 "name": "Excellent",
+                                "label": "Excellent",
                                 "explanation": "Excellent job"
                             }
                         ],

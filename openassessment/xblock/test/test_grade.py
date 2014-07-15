@@ -295,6 +295,43 @@ class TestGrade(XBlockHandlerTestCase):
         self.assertFalse(resp['success'])
         self.assertGreater(len(resp['msg']), 0)
 
+    @scenario('data/grade_scenario.xml', user_id='Greggs')
+    def test_grade_display_assigns_labels(self, xblock):
+        # Strip out labels defined for criteria and options in the problem definition
+        for criterion in xblock.rubric_criteria:
+            if 'label' in criterion:
+                del criterion['label']
+            for option in criterion['options']:
+                if 'label' in option:
+                    del option['label']
+
+        # Create a submission and assessments so we can get a grade
+        self._create_submission_and_assessments(
+            xblock, self.SUBMISSION, self.PEERS, self.ASSESSMENTS, self.ASSESSMENTS[0]
+        )
+
+        # Verify that criteria and options are assigned labels before
+        # being passed to the Django template.
+        # Remember the criteria and option labels so we can verify
+        # that the same labels are applied to the assessment parts.
+        __, context = xblock.render_grade_complete(xblock.get_workflow_info())
+        criterion_labels = {}
+        option_labels = {}
+        for criterion in context['rubric_criteria']:
+            self.assertEqual(criterion['label'], criterion['name'])
+            criterion_labels[criterion['name']] = criterion['label']
+            for option in criterion['options']:
+                self.assertEqual(option['label'], option['name'])
+                option_labels[(criterion['name'], option['name'])] = option['label']
+
+        # Verify that assessment part options are also assigned labels
+        for asmnt in context['peer_assessments'] + [context['self_assessment']]:
+            for part in asmnt['parts']:
+                expected_criterion_label = criterion_labels[part['criterion']['name']]
+                self.assertEqual(part['criterion']['label'], expected_criterion_label)
+                expected_option_label = option_labels[(part['criterion']['name'], part['option']['name'])]
+                self.assertEqual(part['option']['label'], expected_option_label)
+
     def _create_submission_and_assessments(
         self, xblock, submission_text, peers, peer_assessments, self_assessment,
         waiting_for_peer=False,

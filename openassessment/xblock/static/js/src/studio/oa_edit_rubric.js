@@ -74,5 +74,38 @@ OpenAssessment.EditRubricView.prototype = {
     feedbackPrompt: function(text) {
         var sel = $("#openassessment_rubric_feedback", this.element);
         return OpenAssessment.Fields.stringField(sel, text);
+    },
+
+    /**
+    Remove all criteria in this rubric.
+    Mainly useful for testing.
+    **/
+    removeAllCriteria: function() {
+        var items = this.criteriaContainer.getAllItems();
+        var view = this;
+        $.each(items, function() { view.criteriaContainer.remove(this); });
+    },
+
+    /**
+    Add a new criterion to the rubric.
+    Uses a client-side template to create the new criterion.
+    **/
+    addCriterion: function() {
+        this.criteriaContainer.add();
+    },
+
+    /**
+    Retrieve a criterion item (a container item) from the rubric
+    at a particular index.
+
+    Args:
+        index (int): The index of the criterion, starting from 0.
+
+    Returns:
+        OpenAssessment.RubricCriterion
+
+    **/
+    getCriterionItem: function(index) {
+        return this.criteriaContainer.getItem(index);
     }
 };

@@ -6,6 +6,8 @@ describe("OpenAssessment.Container", function () {
 
     var counter = 0;
     var StubContainerItem = function(element) {
+        this.element = element;
+
         // Assign an ID to the item if it doesn't already have one.
         if ($(element).attr("test_id") === "") {
             $(element).attr("test_id", counter);
@@ -79,20 +81,20 @@ describe("OpenAssessment.Container", function () {
         ]);
 
         // Remove the second item
-        container.remove(container.getItemElement(1));
+        container.remove(container.getItem(1));
         expect(container.getItemValues()).toEqual([
             { id: 0 },
             { id: 2 },
         ]);
 
         // Remove the first item
-        container.remove(container.getItemElement(0));
+        container.remove(container.getItem(0));
         expect(container.getItemValues()).toEqual([
             { id: 2 },
         ]);
 
         // Remove the last item
-        container.remove(container.getItemElement(0));
+        container.remove(container.getItem(0));
         expect(container.getItemValues()).toEqual([]);
     });
 
@@ -113,7 +115,7 @@ describe("OpenAssessment.Container", function () {
         expect(container.getItemValues().length).toEqual(3);
 
         // Remove the first element
-        container.remove(container.getItemElement(0));
+        container.remove(container.getItem(0));
         expect(container.getItemValues().length).toEqual(2);
     });
 
@@ -132,7 +134,7 @@ describe("OpenAssessment.Container", function () {
         expect(container.getItemValues().length).toEqual(3);
 
         // Press the button to delete the second item
-        $(".remove_button", container.getItemElement(1)).click();
+        $(".remove_button", container.getItem(1).element).click();
         expect(container.getItemValues().length).toEqual(2);
         expect(container.getItemValues()).toEqual([
             { id: 0 },
@@ -157,7 +159,7 @@ describe("OpenAssessment.Container", function () {
 
         // Expect that we can click the "remove" button
         // to remove the item.
-        $(".remove_button", container.getItemElement(0)).click();
+        $(".remove_button", container.getItem(0).element).click();
         expect(container.getItemValues().length).toEqual(0);
     });
 });

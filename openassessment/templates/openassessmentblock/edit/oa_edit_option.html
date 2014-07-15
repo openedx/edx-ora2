@@ -8,15 +8,17 @@
         </div>
     </div>
     <div class="wrapper-comp-settings">
+        <input type="hidden" class="openassessment_criterion_option_name" value="{{ option_name }}" />
         <ul class="list-input settings-list">
             <li class="field comp-setting-entry openassessment_criterion_option_name_wrapper">
                 <div class="wrapper-comp-setting">
                     <label class="openassessment_criterion_option_name_label setting-label">
                         {% trans "Option Name"%}
                         <input
-                            class="openassessment_criterion_option_name input input-label"
+                            class="openassessment_criterion_option_label input input-label"
                             type="text"
-                            value="{{ option_name }}"
+                            name="{{ option_name }}"
+                            value="{{ option_label }}"
                         >
                     </label>
                 </div>
