@@ -47,17 +47,17 @@ describe("OpenAssessment.EditSettingsView", function() {
     });
 
     it("sets and loads the submission start/due dates", function() {
-        view.submissionStart("");
+        view.submissionStart("", "");
         expect(view.submissionStart()).toBe(null);
 
-        view.submissionStart("2014-04-01T00:00.0000Z");
-        expect(view.submissionStart()).toEqual("2014-04-01T00:00.0000Z");
+        view.submissionStart("2014-04-01", "00:00");
+        expect(view.submissionStart()).toEqual("2014-04-01T00:00");
 
-        view.submissionDue("");
+        view.submissionDue("", "");
         expect(view.submissionDue()).toBe(null);
 
-        view.submissionDue("2014-05-02T00:00.0000Z");
-        expect(view.submissionDue()).toEqual("2014-05-02T00:00.0000Z");
+        view.submissionDue("2014-05-02", "00:00");
+        expect(view.submissionDue()).toEqual("2014-05-02T00:00");
     });
 
     it("sets and loads the image enabled state", function() {

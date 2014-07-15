@@ -747,7 +747,7 @@
         width: 58%;
         display: inline-block;
         position: absolute;
-        left: 10px;
+        left: 15px;
         height: 100%;
         textarea {
           min-height: 90px;
@@ -772,6 +772,7 @@
         width: 40%;
         display: inline-block;
         float: right;
+        min-height: 150px;
         .openassessment_training_example_criteria_selections {
           .comp-setting-entry {
             .wrapper-comp-setting{

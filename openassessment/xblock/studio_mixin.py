@@ -7,6 +7,8 @@ import copy
 import logging
 from django.template.loader import get_template
 from django.utils.translation import ugettext as _
+from dateutil.parser import parse as parse_date
+import pytz
 from voluptuous import MultipleInvalid
 from xblock.core import XBlock
 from xblock.fragment import Fragment
@@ -14,6 +16,7 @@ from openassessment.xblock import xml
 from openassessment.xblock.validation import validator
 from openassessment.xblock.data_conversion import create_rubric_dict
 from openassessment.xblock.schema import EDITOR_UPDATE_SCHEMA
+from openassessment.xblock.resolve_dates import resolve_dates
 
 
 logger = logging.getLogger(__name__)
@@ -62,33 +65,21 @@ class StudioMixin(object):
                 'assessments (dict)
 
         """
-        # Copies the rubric assessments so that we can change student
-        # training examples from dict -> str without negatively modifying
-        # the openassessmentblock definition.
-        # Django Templates cannot handle dict keys with dashes, so we'll convert
-        # the dashes to underscores.
-
-        # used_assessments (and its unused counterpart) are lists intended to indicate
-        # the order that settings editors should be rendered.  Using lists allows a set order
-        # which django can easily convert into template names.
-        used_assessments = []
-        assessments = {}
-        for assessment in self.rubric_assessments:
-            name = assessment['name'].replace('-', '_')
-            used_assessments.append(name)
-            assessments[name] = copy.deepcopy(assessment)
-
-        unused_assessments = {'student_training', 'peer_assessment', 'self_assessment', 'example_based_assessment'}
-        unused_assessments = unused_assessments - set(used_assessments)
-
-        student_training_module = self.get_assessment_module(
-            'student-training'
+        # In the authoring GUI, date and time fields should never be null.
+        # Therefore, we need to resolve all "default" dates to datetime objects
+        # before displaying them in the editor.
+        __, __, date_ranges = resolve_dates(
+            self.start, self.due,
+            [(self.submission_start, self.submission_due)] +
+            [(asmnt.get('start'), asmnt.get('due')) for asmnt in self.valid_assessments]
         )
-        if student_training_module:
-            assessments['training'] = copy.deepcopy(student_training_module)
 
-        submission_due = self.submission_due if self.submission_due else ''
-        submission_start = self.submission_start if self.submission_start else ''
+        submission_start, submission_due = date_ranges[0]
+        assessments = self._assessments_editor_context(date_ranges[1:])
+
+        used_assessments = set(assessments.keys()) - {'training'}
+        all_assessments = set(['student_training', 'peer_assessment', 'self_assessment', 'example_based_assessment'])
+        unused_assessments = all_assessments - used_assessments
 
         # Every rubric requires one criterion. If there is no criteria
         # configured for the XBlock, return one empty default criterion, with
@@ -104,7 +95,7 @@ class StudioMixin(object):
             'submission_start': submission_start,
             'assessments': assessments,
             'criteria': criteria,
-            'feedbackprompt': unicode(self.rubric_feedback_prompt),
+            'feedbackprompt': self.rubric_feedback_prompt,
             'unused_assessments': unused_assessments,
             'used_assessments': used_assessments
         }
@@ -182,3 +173,59 @@ class StudioMixin(object):
             'success': True, 'msg': u'',
             'is_released': self.is_released()
         }
+
+    def _assessments_editor_context(self, assessment_dates):
+        """
+        Transform the rubric assessments list into the context
+        we will pass to the Django template.
+
+        Args:
+            assessment_dates: List of assessment date ranges (tuples of start/end datetimes).
+
+        Returns:
+            dict
+
+        """
+        assessments = {}
+        for asmnt, date_range in zip(self.rubric_assessments, assessment_dates):
+            # Django Templates cannot handle dict keys with dashes, so we'll convert
+            # the dashes to underscores.
+            name = asmnt['name']
+            template_name = name.replace('-', '_')
+            assessments[template_name] = copy.deepcopy(asmnt)
+            assessments[template_name]['start'] = date_range[0]
+            assessments[template_name]['due'] = date_range[1]
+
+        # In addition to the data in the student training assessment, we need to include two additional
+        # pieces of information: a blank context to render the empty template with, and the criteria
+        # for each example (so we don't have any complicated logic within the template). Though this
+        # could be accomplished within the template, we are opting to remove logic from the template.
+        student_training_module = self.get_assessment_module('student-training')
+
+        student_training_template = {'answer': ""}
+        criteria_list = copy.deepcopy(self.rubric_criteria)
+        for criterion in criteria_list:
+            criterion['option_selected'] = ""
+        student_training_template['criteria'] = criteria_list
+
+        if student_training_module:
+            example_list = []
+            # Adds each example to a modified version of the student training module dictionary.
+            for example in student_training_module['examples']:
+                criteria_list = copy.deepcopy(self.rubric_criteria)
+                # Equivalent to a Join Query, this adds the selected option to the Criterion's dictionary, so that
+                # it can be easily referenced in the template without searching through the selected options.
+                for criterion in criteria_list:
+                    for option_selected in example['options_selected']:
+                        if option_selected['criterion'] == criterion['name']:
+                            criterion['option_selected'] = option_selected['option']
+                example_list.append({
+                    'answer': example['answer'],
+                    'criteria': criteria_list,
+                })
+            assessments['training'] = {'examples': example_list, 'template': student_training_template}
+        # If we don't have student training enabled, we still need to render a single (empty, or default) example
+        else:
+            assessments['training'] = {'examples': [student_training_template], 'template': student_training_template}
+
+        return assessments

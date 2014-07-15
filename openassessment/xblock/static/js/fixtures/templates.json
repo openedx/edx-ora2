@@ -437,7 +437,8 @@
             ],
             "assessments": {
                 "peer_assessment": {
-                    "start": "2014-10-04T00:00:00",
+                    "start": "",
+                    "due": "",
                     "must_grade": 5,
                     "must_be_graded_by": 3
                 },

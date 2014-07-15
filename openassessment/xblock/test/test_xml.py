@@ -12,8 +12,8 @@ from django.test import TestCase
 import ddt
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from openassessment.xblock.xml import (
-    serialize_content, parse_from_xml_str, parse_rubric_xml_str,
-    parse_examples_xml_str, parse_assessments_xml_str,
+    serialize_content, parse_from_xml_str, parse_rubric_xml,
+    parse_examples_xml, parse_assessments_xml,
     serialize_rubric_to_xml_str, serialize_examples_to_xml_str,
     serialize_assessments_to_xml_str, UpdateFromXmlError
 )
@@ -335,7 +335,8 @@ class TestParseRubricFromXml(TestCase):
 
     @ddt.file_data("data/parse_rubric_xml.json")
     def test_parse_rubric_from_xml(self, data):
-        rubric = parse_rubric_xml_str("".join(data['xml']))
+        xml = etree.fromstring("".join(data['xml']))
+        rubric = parse_rubric_xml(xml)
 
         self.assertEqual(rubric['prompt'], data['prompt'])
         self.assertEqual(rubric['feedbackprompt'], data['feedbackprompt'])
@@ -347,8 +348,8 @@ class TestParseExamplesFromXml(TestCase):
 
     @ddt.file_data("data/parse_examples_xml.json")
     def test_parse_examples_from_xml(self, data):
-        examples = parse_examples_xml_str("".join(data['xml']))
-
+        xml = etree.fromstring("".join(data['xml']))
+        examples = parse_examples_xml(xml)
         self.assertEqual(examples, data['examples'])
 
 @ddt.ddt
@@ -356,8 +357,8 @@ class TestParseAssessmentsFromXml(TestCase):
 
     @ddt.file_data("data/parse_assessments_xml.json")
     def test_parse_assessments_from_xml(self, data):
-        assessments = parse_assessments_xml_str("".join(data['xml']))
-
+        xml = etree.fromstring("".join(data['xml']))
+        assessments = parse_assessments_xml(xml)
         self.assertEqual(assessments, data['assessments'])
 
 
@@ -401,4 +402,3 @@ class TestUpdateFromXml(TestCase):
     def test_parse_from_xml_error(self, data):
         with self.assertRaises(UpdateFromXmlError):
             parse_from_xml_str("".join(data['xml']))
-
