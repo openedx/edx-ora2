@@ -26,7 +26,7 @@ describe("OpenAssessment.Container", function () {
                 templateElement: $("#template").get(0),
                 addButtonElement: $("#add_button").get(0),
                 removeButtonClass: "remove_button",
-                containerItemClass: "test_item",
+                containerItemClass: "container_item",
             }
         );
     };
@@ -40,8 +40,10 @@ describe("OpenAssessment.Container", function () {
         // so we just define the fixture inline.
         setFixtures(
             '<div id="container" />' +
-            '<div id="template" test_id="">' +
-                '<div class="remove_button" />' +
+            '<div id="template">' +
+                '<div class="container_item" test_id="">' +
+                    '<div class="remove_button" />' +
+                '</div>' +
             '</div>' +
             '<div id="add_button" />'
         );
@@ -142,7 +144,7 @@ describe("OpenAssessment.Container", function () {
         // Add an item directly to the container element in the DOM,
         // before initializing the container object.
         $("#container").append(
-            '<div class="test_item" test_id="0">' +
+            '<div class="container_item" test_id="0">' +
                 '<div class="remove_button" />' +
             '<div>'
         );

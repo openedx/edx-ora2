@@ -10,10 +10,18 @@ For example, to create a container for an item called "test_item",
 the DOM should look something like:
     <div id="test_container" />
     <div id="test_item_template">
-        <div class="test_item_remove_button">Remove</div>
-        <p>This is the default value for the item.</p>
+        <div class="test_item">
+            <div class="test_item_remove_button">Remove</div>
+            <p>This is the default value for the item.</p>
+        </div>
     </div>
     <div id="test_item_add_button">Add</div>
+
+A critical property of this setup is that the element you want to
+include/duplicate is wrapped inside of a template element which is
+the one that your reference when referring to a template. In the
+above example, $("#test_item_template") would be the appropriate
+reference to the template.
 
 You can then initialize the container:
 >>> var container = $("#test_container").get(0);
@@ -82,7 +90,10 @@ OpenAssessment.Container.prototype = {
         // Copy the template into the container
         // Remove any CSS IDs (since now the element is not unique)
         // and add the item class so we can find it later.
+        // Note that the element we add is the first child of the template element.
+        // For more on the template structure expected, see the class comment
         $(this.templateElement)
+            .children().first()
             .clone()
             .removeAttr('id')
             .toggleClass('is--hidden', false)
