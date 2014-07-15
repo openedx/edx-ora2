@@ -4,12 +4,20 @@ Tests for OpenAssessment response (submission) view.
 
 describe("OpenAssessment.ResponseView", function() {
 
-    // Stub server
+    var FAKE_URL = "http://www.example.com";
+
     var StubServer = function() {
+
         var successPromise = $.Deferred(
-            function(defer) {
-                defer.resolve();
-            }
+            function(defer) { defer.resolve(); }
+        ).promise();
+
+        var successPromiseWithUrl = $.Deferred(
+            function(defer) { defer.resolveWith(this, [FAKE_URL]); }
+        ).promise();
+
+        var errorPromise = $.Deferred(
+            function(defer) { defer.rejectWith(this, ["ERROR"]); }
         ).promise();
 
         this.save = function(submission) {
@@ -24,17 +32,37 @@ describe("OpenAssessment.ResponseView", function() {
             return successPromise;
         };
 
+        this.uploadUrlError = false;
         this.getUploadUrl = function(contentType) {
-            return successPromise;
+            return this.uploadUrlError ? errorPromise : successPromiseWithUrl;
         };
 
         this.getDownloadUrl = function() {
-            return successPromise;
-        }
+            return successPromiseWithUrl;
+        };
 
     };
 
-    // Stub base view
+    var StubFileUploader = function() {
+        var successPromise = $.Deferred(function(defer) { defer.resolve(); }).promise();
+        var errorPromise = $.Deferred(function(defer) { defer.rejectWith(this, ["ERROR"]); }).promise();
+
+        this.uploadError = false;
+        this.uploadArgs = null;
+
+        this.upload = function(url, data, contentType) {
+            // Store the args we were passed so we can verify them
+            this.uploadArgs = {
+                url: url,
+                data: data,
+                contentType: contentType
+            };
+
+            // Return a promise indicating success or error
+            return this.uploadError ? errorPromise : successPromise;
+        };
+    };
+
     var StubBaseView = function() {
         this.loadAssessmentModules = function() {};
         this.peerView = { load: function() {} };
@@ -47,6 +75,7 @@ describe("OpenAssessment.ResponseView", function() {
     // Stubs
     var baseView = null;
     var server = null;
+    var fileUploader = null;
 
     // View under test
     var view = null;
@@ -71,15 +100,14 @@ describe("OpenAssessment.ResponseView", function() {
         jasmine.getFixtures().fixturesPath = 'base/fixtures';
         loadFixtures('oa_response.html');
 
-        // Create the stub server
+        // Create stub objects
         server = new StubServer();
-
-        // Create the stub base view
+        fileUploader = new StubFileUploader();
         baseView = new StubBaseView();
 
         // Create and install the view
         var el = $('#openassessment-base').get(0);
-        view = new OpenAssessment.ResponseView(el, server, baseView);
+        view = new OpenAssessment.ResponseView(el, server, fileUploader, baseView);
         view.installHandlers();
 
         // Stub the confirmation step
@@ -377,23 +405,50 @@ describe("OpenAssessment.ResponseView", function() {
         spyOn(baseView, 'toggleActionError').andCallThrough();
         var files = [{type: 'image/jpg', size: 6000000, name: 'huge-picture.jpg', data: ''}];
         view.prepareUpload(files);
-        expect(baseView.toggleActionError).toHaveBeenCalled();
+        expect(baseView.toggleActionError).toHaveBeenCalledWith('upload', 'File size must be 5MB or less.');
     });
 
     it("selects the wrong file type", function() {
         spyOn(baseView, 'toggleActionError').andCallThrough();
         var files = [{type: 'bogus/jpg', size: 1024, name: 'picture.exe', data: ''}];
         view.prepareUpload(files);
-        expect(baseView.toggleActionError).toHaveBeenCalled();
+        expect(baseView.toggleActionError).toHaveBeenCalledWith('upload', 'File must be an image.');
     });
 
-    it("requests a file upload", function() {
-        spyOn(baseView, 'toggleActionError').andCallThrough();
-        spyOn(server, 'getUploadUrl').andCallThrough();
+    it("uploads a file using a one-time URL", function() {
         var files = [{type: 'image/jpg', size: 1024, name: 'picture.jpg', data: ''}];
         view.prepareUpload(files);
         view.fileUpload();
-        expect(server.getUploadUrl).toHaveBeenCalled();
-        expect(baseView.toggleActionError).toHaveBeenCalled();
+        expect(fileUploader.uploadArgs.url).toEqual(FAKE_URL);
+        expect(fileUploader.uploadArgs.data).toEqual(files[0]);
+        expect(fileUploader.uploadArgs.contentType).toEqual('image/jpg');
+    });
+
+    it("displays an error if a one-time file upload URL cannot be retrieved", function() {
+        // Configure the server to fail when retrieving the one-time URL
+        server.uploadUrlError = true;
+        spyOn(baseView, 'toggleActionError').andCallThrough();
+
+        // Attempt to upload a file
+        var files = [{type: 'image/jpg', size: 1024, name: 'picture.jpg', data: ''}];
+        view.prepareUpload(files);
+        view.fileUpload();
+
+        // Expect an error to be displayed
+        expect(baseView.toggleActionError).toHaveBeenCalledWith('upload', 'ERROR');
+    });
+
+    it("displays an error if a file could not be uploaded", function() {
+        // Configure the file upload server to return an error
+        fileUploader.uploadError = true;
+        spyOn(baseView, 'toggleActionError').andCallThrough();
+
+        // Attempt to upload a file
+        var files = [{type: 'image/jpg', size: 1024, name: 'picture.jpg', data: ''}];
+        view.prepareUpload(files);
+        view.fileUpload();
+
+        // Expect an error to be displayed
+        expect(baseView.toggleActionError).toHaveBeenCalledWith('upload', 'ERROR');
     });
 });

@@ -12,20 +12,21 @@
 __ http://edx.readthedocs.org/projects/edx-open-response-assessments
 
 
-This is an initial prototype for redesigning Peer Grading and general Open Ended
-Submission Evaluation. This project is in the early stages of development and is
-not ready for general use.
-
-
 Installation
 ============
 
 The intent of this project is to be installed as Django apps that will be
 included in `edx-platform <https://github.com/edx/edx-platform>`_.
 
-For JavaScript minification and unit tests, you must `install NodeJS <http://nodejs.org/>`_.
+To install all dependencies (assumes Ubuntu 12.04):
 
-To install dependencies and start the development ("workbench") server:
+.. code:: bash
+
+    make install
+
+
+Running the Development Server
+==============================
 
 .. code:: bash
 
@@ -46,30 +47,14 @@ to start the server on port 8001:
     ./scripts/workbench.sh 8001
 
 
-Celery Workers
-==============
-
-Some of the OpenAssessment APIs execute tasks asynchronously using `celery <http://docs.celeryproject.org>`_.
-The tasks are executed by worker processes.
-
-First, you will need to `install RabbitMQ <http://http://www.rabbitmq.com/download.html>`_.
-
-Once RabbitMQ is installed, you can start a worker process locally:
-
-.. code:: bash
-
-    ./scripts/celery-worker.sh
-
-
-
 Running Tests
 =============
 
-To run the Python and Javascript unit test suites:
+To run all tests:
 
 .. code:: bash
 
-    ./scripts/test.sh
+    make test
 
 To limit Python tests to a particular module:
 
@@ -88,70 +73,6 @@ To run the JavaScript tests in Chrome so you can use the debugger:
 .. code:: bash
 
     ./scripts/js-debugger.sh
-
-
-Quality Check
-=============
-
-Install pylint:
-
-.. code:: bash
-
-    pip install pylint==0.28.0
-
-Check for quality violations:
-
-.. code:: bash
-
-    pylint openassessment
-
-Disable quality violations on a line or file:
-
-.. code:: python
-
-    # pylint: disable=W0123,E4567
-
-
-Vagrant
-=======
-
-This repository includes a Vagrant configuration file, which is useful for testing
-ORA2 in an environment that is closer to production:
-
-* Uses `gunicorn <http://gunicorn.org/>`_ to serve the workbench application.
-  Unlike Django ``runserver``, gunicorn will process requests in parallel.
-
-* Uses `mysql <http://www.mysql.com/>`_ as the database, which (unlike
-  `sqlite <http://www.sqlite.org/>`_) allows for simultaneous writes.
-
-* Serves static files using `nginx <http://wiki.nginx.org/Main>`_ instead
-  of Django `staticfiles <https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/>`_.
-
-* Runs multiple `celery workers <http://celery.readthedocs.org/en/latest/>`_.
-
-* Uses `memcached <http://memcached.org/>`_.
-
-* Installs `EASE <https://github.com/edx/ease>`_ for AI grading, including
-  its many requirements.
-
-To use the Vagrant VM:
-
-1) `Install Vagrant <https://docs.vagrantup.com/v2/installation/>`_.
-2) ``vagrant up`` to start and provision the Vagrant VM.
-3) Visit `http://192.168.44.10 <http://192.168.44.10>`_
-4) You should see the workbench index page load.
-
-After making a change to the code in the ``edx-ora2`` directory,
-you must restart the services on the Vagrant VM:
-
-1) ``vagrant ssh`` to ssh into the Vagrant VM.
-2) ``./update.sh`` to restart the services, run database migrations, and collect static assets.
-3) Visit `http://192.168.44.10 <http://192.168.44.10>`_
-
-By default, the Vagrant VM also includes a monitoring tool for Celery tasks called `Flower <https://github.com/mher/flower>`_.
-To use the tool, visit: `http://192.168.44.10:5555 <http://192.168.44.10:5555>`_
-
-The log files from the Vagrant VM are located in ``edx-ora2/logs/vagrant``, which is shared with the host machine.
 
 
 i18n
@@ -177,9 +98,7 @@ Please see ``LICENSE.txt`` for details.
 How to Contribute
 =================
 
-Due to the very early stage of development we're at, we are not accepting
-contributions at this time. Large portions of the API can change with little
-notice.
+Contributions are very welcome. The easiest way is to fork this repo, and then make a pull request from your fork. The first time you make a pull request, you may be asked to sign a Contributor Agreement.
 
 Reporting Security Issues
 =========================

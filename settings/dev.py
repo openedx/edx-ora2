@@ -42,19 +42,19 @@ LOGGING = {
         'apps_info': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': 'logs/dev/apps_info.log',
+            'filename': 'logs/apps_info.log',
             'formatter': 'simple',
         },
         'apps_debug': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'logs/dev/apps_debug.log',
+            'filename': 'logs/apps_debug.log',
             'formatter': 'simple',
         },
         'trace': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': 'logs/dev/trace.log',
+            'filename': 'logs/trace.log',
             'formatter': 'simple',
             'maxBytes': 1000000,
             'backupCount': 2,
@@ -62,13 +62,13 @@ LOGGING = {
         'events': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': 'logs/dev/events.log',
+            'filename': 'logs/events.log',
             'formatter': 'simple',
         },
         'errors': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': 'logs/dev/errors.log',
+            'filename': 'logs/errors.log',
             'formatter': 'simple',
         }
     },
@@ -100,16 +100,3 @@ LOGGING = {
 
 # Store uploaded files in a dev-specific directory
 MEDIA_ROOT = os.path.join(BASE_DIR, 'storage/dev')
-
-# Celery Broker
-CELERY_BROKER_TRANSPORT = "amqp"
-CELERY_BROKER_HOSTNAME = "localhost:5672//"
-CELERY_BROKER_USER = "guest"
-CELERY_BROKER_PASSWORD = "guest"
-
-BROKER_URL = "{0}://{1}:{2}@{3}".format(
-    CELERY_BROKER_TRANSPORT,
-    CELERY_BROKER_USER,
-    CELERY_BROKER_PASSWORD,
-    CELERY_BROKER_HOSTNAME,
-)
