@@ -77,9 +77,7 @@ class StudioMixin(object):
         submission_start, submission_due = date_ranges[0]
         assessments = self._assessments_editor_context(date_ranges[1:])
 
-        used_assessments = set(assessments.keys()) - {'training'}
-        all_assessments = set(['student_training', 'peer_assessment', 'self_assessment', 'example_based_assessment'])
-        unused_assessments = all_assessments - used_assessments
+        used_assessments, unused_assessments = self._get_assessment_order_and_use()
 
         # Every rubric requires one criterion. If there is no criteria
         # configured for the XBlock, return one empty default criterion, with
@@ -231,3 +229,26 @@ class StudioMixin(object):
             assessments['training'] = {'examples': [student_training_template], 'template': student_training_template}
 
         return assessments
+
+    def _get_assessment_order_and_use(self):
+        """
+        Returns the names of assessments that should be displayed to the author, in the format that
+        our template expects, and in the order in which they are currently stored in the OA problem
+        definition.
+
+        Returns:
+            Tuple of the form ((list of str), (list of str))
+                Between the two lists, all of the assessment modules that the author should see are displayed.
+        """
+        used_assessments = []
+
+        for assessment in self.rubric_assessments:
+            used_assessments.append(
+                assessment['name'].replace('-','_')
+            )
+
+        # NOTE: This is a perfect opportunity to gate the author to allow or disallow Example Based Assessment.
+        all_assessments = {'student_training', 'peer_assessment', 'self_assessment', 'example_based_assessment'}
+        unused_assessments = list(all_assessments - set(used_assessments))
+
+        return used_assessments, unused_assessments
