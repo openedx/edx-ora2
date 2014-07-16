@@ -12,6 +12,7 @@ from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.api import FileUploadError
 
+from .data_conversion import create_rubric_dict
 from .resolve_dates import DISTANT_FUTURE
 
 logger = logging.getLogger(__name__)
@@ -64,10 +65,6 @@ class PeerAssessmentMixin(object):
 
         assessment_ui_model = self.get_assessment_module('peer-assessment')
         if assessment_ui_model:
-            rubric_dict = {
-                'criteria': self.rubric_criteria
-            }
-
             try:
                 # Create the assessment
                 assessment = peer_api.create_assessment(
@@ -76,7 +73,7 @@ class PeerAssessmentMixin(object):
                     data['options_selected'],
                     self._clean_criterion_feedback(data['criterion_feedback']),
                     data['overall_feedback'],
-                    rubric_dict,
+                    create_rubric_dict(self.prompt, self.rubric_criteria_with_labels),
                     assessment_ui_model['must_be_graded_by']
                 )
 
@@ -154,7 +151,7 @@ class PeerAssessmentMixin(object):
         problem_closed, reason, start_date, due_date = self.is_closed(step="peer-assessment")
 
         context_dict = {
-            "rubric_criteria": self.rubric_criteria,
+            "rubric_criteria": self.rubric_criteria_with_labels,
             "estimated_time": "20 minutes"  # TODO: Need to configure this.
         }
 
@@ -283,7 +280,7 @@ class PeerAssessmentMixin(object):
         """
         return {
             criterion['name']: criterion_feedback[criterion['name']]
-            for criterion in self.rubric_criteria
+            for criterion in self.rubric_criteria_with_labels
             if criterion['name'] in criterion_feedback
             and criterion.get('feedback', 'disabled') in ['optional', 'required']
         }

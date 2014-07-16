@@ -63,7 +63,7 @@ class CriterionOptionSerializer(NestedModelSerializer):
     """Serializer for :class:`CriterionOption`"""
     class Meta:
         model = CriterionOption
-        fields = ('order_num', 'points', 'name', 'explanation')
+        fields = ('order_num', 'points', 'name', 'label', 'explanation')
 
 
 class CriterionSerializer(NestedModelSerializer):
@@ -73,7 +73,7 @@ class CriterionSerializer(NestedModelSerializer):
 
     class Meta:
         model = Criterion
-        fields = ('order_num', 'name', 'prompt', 'options', 'points_possible')
+        fields = ('order_num', 'name', 'label', 'prompt', 'options', 'points_possible')
 
 
 class RubricSerializer(NestedModelSerializer):

@@ -3,12 +3,14 @@
 import datetime as dt
 import logging
 import pkg_resources
+import copy
 
 import pytz
 
 from django.template.context import Context
 from django.template.loader import get_template
 from webob import Response
+from lazy import lazy
 
 from xblock.core import XBlock
 from xblock.fields import List, Scope, String, Boolean
@@ -233,7 +235,6 @@ class OpenAssessmentBlock(
         context_dict = {
             "title": self.title,
             "question": self.prompt,
-            "rubric_criteria": self.rubric_criteria,
             "rubric_assessments": ui_models,
             "show_staff_debug_info": self.is_course_staff and not self.in_studio_preview,
         }
@@ -393,6 +394,33 @@ class OpenAssessmentBlock(
     @property
     def assessment_steps(self):
         return [asmnt['name'] for asmnt in self.valid_assessments]
+
+    @lazy
+    def rubric_criteria_with_labels(self):
+        """
+        Backwards compatibility: We used to treat "name" as both a user-facing label
+        and a unique identifier for criteria and options.
+        Now we treat "name" as a unique identifier, and we've added an additional "label"
+        field that we display to the user.
+        If criteria/options in the problem definition do NOT have a "label" field
+        (because they were created before this change),
+        we create a new label that has the same value as "name".
+
+        The result of this call is cached, so it should NOT be used in a runtime
+        that can modify the XBlock settings (in the LMS, settings are read-only).
+
+        Returns:
+            list of criteria dictionaries
+
+        """
+        criteria = copy.deepcopy(self.rubric_criteria)
+        for criterion in criteria:
+            if 'label' not in criterion:
+                criterion['label'] = criterion['name']
+            for option in criterion['options']:
+                if 'label' not in option:
+                    option['label'] = option['name']
+        return criteria
 
     def render_assessment(self, path, context_dict=None):
         """Render an Assessment Module's HTML

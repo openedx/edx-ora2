@@ -1,10 +1,11 @@
 """
 Studio editing view for OpenAssessment XBlock.
 """
-from django.template import Context
 import pkg_resources
 import copy
 import logging
+from uuid import uuid4
+from django.template import Context
 from django.template.loader import get_template
 from django.utils.translation import ugettext as _
 from dateutil.parser import parse as parse_date
@@ -29,8 +30,10 @@ class StudioMixin(object):
 
     DEFAULT_CRITERIA = [
         {
+            'label': '',
             'options': [
                 {
+                    'label': ''
                 },
             ]
         }
@@ -84,7 +87,7 @@ class StudioMixin(object):
         # Every rubric requires one criterion. If there is no criteria
         # configured for the XBlock, return one empty default criterion, with
         # an empty default option.
-        criteria = copy.deepcopy(self.rubric_criteria)
+        criteria = copy.deepcopy(self.rubric_criteria_with_labels)
         if not criteria:
             criteria = self.DEFAULT_CRITERIA
 
@@ -131,6 +134,19 @@ class StudioMixin(object):
         except MultipleInvalid:
             logger.exception('Editor context is invalid')
             return {'success': False, 'msg': _('Error updating XBlock configuration')}
+
+        # Backwards compatibility: We used to treat "name" as both a user-facing label
+        # and a unique identifier for criteria and options.
+        # Now we treat "name" as a unique identifier, and we've added an additional "label"
+        # field that we display to the user.
+        # If the JavaScript editor sends us a criterion or option without a "name"
+        # field, we should assign it a unique identifier.
+        for criterion in data['criteria']:
+            if 'name' not in criterion:
+                criterion['name'] = uuid4().hex
+            for option in criterion['options']:
+                if 'name' not in option:
+                    option['name'] = uuid4().hex
 
         xblock_validator = validator(self)
         success, msg = xblock_validator(

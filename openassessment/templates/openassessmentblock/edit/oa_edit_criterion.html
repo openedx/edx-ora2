@@ -7,15 +7,16 @@
         <div class="openassessment_criterion_remove_button"><h2>{% trans "Remove" %}</h2></div>
     </div>
     <div class="openassessment_criterion_body wrapper-comp-settings">
+        <input type="hidden" class="openassessment_criterion_name" value="{{ criterion_name }}" />
         <ul class="list-input settings-list openassessment_criterion_basic_editor">
             <li class="field comp-setting-entry">
                 <div class="wrapper-comp-settings">
                     <label class="openassessment_criterion_name_label setting-label">
                         {% trans "Criterion Name" %}
                         <input
-                            class="openassessment_criterion_name input setting-input"
+                            class="openassessment_criterion_label input setting-input"
                             type="text"
-                            value="{{ criterion_name }}"
+                            value="{{ criterion_label }}"
                         >
                     </label>
                 </div>
@@ -31,7 +32,7 @@
         </ul>
         <ul class="openassessment_criterion_option_list">
             {% for option in criterion_options %}
-                {% include "openassessmentblock/edit/oa_edit_option.html" with option_name=option.name option_points=option.points option_explanation=option.explanation %}
+                {% include "openassessmentblock/edit/oa_edit_option.html" with option_name=option.name option_label=option.label option_points=option.points option_explanation=option.explanation %}
             {% endfor %}
         </ul>
 

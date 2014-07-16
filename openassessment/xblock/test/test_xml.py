@@ -43,6 +43,7 @@ class TestSerializeContent(TestCase):
     BASIC_CRITERIA = [
         {
             "order_num": 0,
+            "label": "Test criterion",
             "name": "Test criterion",
             "prompt": "Test criterion prompt",
             "feedback": "disabled",
@@ -50,6 +51,7 @@ class TestSerializeContent(TestCase):
                 {
                     "order_num": 0,
                     "points": 0,
+                    "label": "Maybe",
                     "name": "Maybe",
                     "explanation": "Maybe explanation"
                 }
@@ -238,6 +240,47 @@ class TestSerializeContent(TestCase):
                     field=field, value=mutated_value, ex=ex
                 )
                 self.fail(msg)
+
+    def test_serialize_missing_names_and_labels(self):
+        # Configure rubric criteria and options with no names or labels
+        # This *should* never happen, but if it does, recover gracefully
+        # by assigning unique names and empty labels
+        self.oa_block.rubric_criteria = copy.deepcopy(self.BASIC_CRITERIA)
+        self.oa_block.rubric_assessments = self.BASIC_ASSESSMENTS
+        self.oa_block.start = None
+        self.oa_block.due = None
+        self.oa_block.submission_start = None
+        self.oa_block.submission_due = None
+        self.oa_block.allow_file_upload = None
+
+        for criterion in self.oa_block.rubric_criteria:
+            del criterion['name']
+            del criterion['label']
+            for option in criterion['options']:
+                del option['name']
+                del option['label']
+
+        xml = serialize_content(self.oa_block)
+        content_dict = parse_from_xml_str(xml)
+
+        # Verify that all names are unique
+        # and that all labels are empty
+        criterion_names = set()
+        option_names = set()
+        criteria_count = 0
+        options_count = 0
+        for criterion in content_dict['rubric_criteria']:
+            criterion_names.add(criterion['name'])
+            self.assertEqual(criterion['label'], u'')
+            criteria_count += 1
+
+            for option in criterion['options']:
+                option_names.add(option['name'])
+                self.assertEqual(option['label'], u'')
+                options_count += 1
+
+        self.assertEqual(len(criterion_names), criteria_count)
+        self.assertEqual(len(option_names), options_count)
 
     def _dict_mutations(self, input_dict):
         """

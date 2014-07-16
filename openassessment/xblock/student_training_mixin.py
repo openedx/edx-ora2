@@ -114,7 +114,7 @@ class StudentTrainingMixin(object):
                 self.submission_uuid,
                 {
                     'prompt': self.prompt,
-                    'criteria': self.rubric_criteria
+                    'criteria': self.rubric_criteria_with_labels
                 },
                 examples
             )

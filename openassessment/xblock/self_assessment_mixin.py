@@ -7,6 +7,7 @@ from webob import Response
 from openassessment.assessment.api import self as self_api
 from openassessment.workflow import api as workflow_api
 from submissions import api as submission_api
+from .data_conversion import create_rubric_dict
 from .resolve_dates import DISTANT_FUTURE
 
 logger = logging.getLogger(__name__)
@@ -81,7 +82,7 @@ class SelfAssessmentMixin(object):
                     path = 'openassessmentblock/self/oa_self_closed.html'
             else:
                 submission = submission_api.get_submission(self.submission_uuid)
-                context["rubric_criteria"] = self.rubric_criteria
+                context["rubric_criteria"] = self.rubric_criteria_with_labels
                 context["estimated_time"] = "20 minutes"  # TODO: Need to configure this.
                 context["self_submission"] = submission
 
@@ -120,7 +121,7 @@ class SelfAssessmentMixin(object):
                 self.submission_uuid,
                 self.get_student_item_dict()['student_id'],
                 data['options_selected'],
-                {"criteria": self.rubric_criteria}
+                create_rubric_dict(self.prompt, self.rubric_criteria_with_labels)
             )
             self.publish_assessment_event("openassessmentblock.self_assess", assessment)
 

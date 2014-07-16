@@ -13,7 +13,15 @@
                 ["submission_uuid", "feedback_text", "options"]
             ],
             "assessment_part": [
-                ["assessment_id", "points_earned", "criterion_name", "option_name", "feedback"]
+                [
+                    "assessment_id",
+                    "points_earned",
+                    "criterion_name",
+                    "criterion_label",
+                    "option_name",
+                    "option_label",
+                    "feedback"
+                ]
             ],
             "assessment_feedback_option": [
                 ["id", "text"]
@@ -62,10 +70,10 @@
                 ]
             ],
             "assessment_part": [
-                ["assessment_id", "points_earned", "criterion_name", "option_name", "feedback"],
-                ["1", "4", "concise", "Neal Stephenson (early)", "Praesent ac lorem ac nunc tincidunt ultricies sit amet ut magna."],
-                ["1", "5", "form", "The Elements of Style", "Fusce varius, elit ut blandit consequat, odio ante mollis lectus"],
-                ["1", "3", "clear-headed", "Isaac Asimov", ""]
+                ["assessment_id", "points_earned", "criterion_name", "criterion_label", "option_name", "option_label", "feedback"],
+                ["1", "4", "concise", "concise label", "Neal Stephenson (early)", "Neal Stephenson (early) label", "Praesent ac lorem ac nunc tincidunt ultricies sit amet ut magna."],
+                ["1", "5", "form", "form label", "The Elements of Style", "The Elements of Style label", "Fusce varius, elit ut blandit consequat, odio ante mollis lectus"],
+                ["1", "3", "clear-headed", "clear-headed label", "Isaac Asimov", "Isaac Asimov label", ""]
             ]
         }
     },
@@ -97,13 +105,13 @@
                 ]
             ],
             "assessment_part": [
-                ["assessment_id", "points_earned", "criterion_name", "option_name", "feedback"],
-                ["1", "4", "concise", "Neal Stephenson (early)", "Praesent ac lorem ac nunc tincidunt ultricies sit amet ut magna."],
-                ["1", "5", "form", "The Elements of Style", "Fusce varius, elit ut blandit consequat, odio ante mollis lectus"],
-                ["1", "3", "clear-headed", "Isaac Asimov", ""],
-                ["2", "5", "concise", "Earnest Hemingway", ""],
-                ["2", "5", "form", "The Elements of Style", ""],
-                ["2", "10", "clear-headed", "Spock", ""]
+                ["assessment_id", "points_earned", "criterion_name", "criterion_label", "option_name", "option_label", "feedback"],
+                ["1", "4", "concise", "concise label", "Neal Stephenson (early)", "Neal Stephenson (early) label", "Praesent ac lorem ac nunc tincidunt ultricies sit amet ut magna."],
+                ["1", "5", "form", "form label", "The Elements of Style", "The Elements of Style label", "Fusce varius, elit ut blandit consequat, odio ante mollis lectus"],
+                ["1", "3", "clear-headed", "clear-headed label", "Isaac Asimov", "Isaac Asimov label", ""],
+                ["2", "5", "concise", "concise label", "Earnest Hemingway", "Earnest Hemingway label", ""],
+                ["2", "5", "form", "form label", "The Elements of Style", "The Elements of Style label", ""],
+                ["2", "10", "clear-headed", "clear-headed label", "Spock", "Spock label", ""]
             ]
         }
     },
@@ -172,11 +180,11 @@
                 ]
             ],
             "assessment_part": [
-                ["assessment_id", "points_earned", "criterion_name", "option_name", "feedback"],
-                ["1", "4", "concise", "Neal Stephenson (early)", "Praesent ac lorem ac nunc tincidunt ultricies sit amet ut magna."],
-                ["1", "5", "form", "The Elements of Style", "Fusce varius, elit ut blandit consequat, odio ante mollis lectus"],
-                ["1", "3", "clear-headed", "Isaac Asimov", ""],
-                ["1", "0", "feedback only", "", "Feedback!"]
+                ["assessment_id", "points_earned", "criterion_name", "criterion_label", "option_name", "option_label", "feedback"],
+                ["1", "4", "concise", "concise label", "Neal Stephenson (early)", "Neal Stephenson (early) label", "Praesent ac lorem ac nunc tincidunt ultricies sit amet ut magna."],
+                ["1", "5", "form", "form label", "The Elements of Style", "The Elements of Style label", "Fusce varius, elit ut blandit consequat, odio ante mollis lectus"],
+                ["1", "3", "clear-headed", "clear-headed label", "Isaac Asimov", "Isaac Asimov label", ""],
+                ["1", "0", "feedback only", "feedback only label", "", "", "Feedback!"]
             ]
         }
     }

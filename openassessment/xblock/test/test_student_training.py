@@ -19,9 +19,11 @@ class StudentTrainingTest(XBlockHandlerTestCase):
     """
     Base class for student training tests.
     """
+
     SUBMISSION = {
         'submission': u'Thé őbjéćt őf édúćátíőń íś tő téáćh úś tő ĺővé ẃhát íś béáútífúĺ.'
     }
+
 
     def assert_path_and_context(self, xblock, expected_path, expected_context):
         """
