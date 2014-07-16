@@ -15,8 +15,20 @@
             <p class="openassessment_description">
                 {% trans "Enter one or more sample responses that you've created, together with the scores you would give those responses. Be sure to format the responses and scores according to the placeholder text below." %}
             </p>
-            <textarea id="student_training_examples">{{ assessments.student_training.examples }}</textarea>
+            <ol>
+                {% for example in assessments.training.examples %}
+                    {% include "openassessmentblock/edit/oa_training_example.html" with example=example %}
+                {% endfor %}
+            </ol>
+            <div>
+                <h2 class='openassessment_add_training_example'>{% trans "Add Scored Response" %}</h2>
+            </div>
+
         </div>
     </div>
 </li>
+
+<div id="openassessment_training_example_template" class="is--hidden">
+    {% include "openassessmentblock/edit/oa_training_example.html" with example=assessments.training.template %}
+</div>
 {% endspaceless %}

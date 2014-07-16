@@ -77,21 +77,9 @@ class StudioMixin(object):
         submission_start, submission_due = date_ranges[0]
         assessments = self._assessments_editor_context(date_ranges[1:])
 
-        used_assessments = assessments.keys()
+        used_assessments = set(assessments.keys()) - {'training'}
         all_assessments = set(['student_training', 'peer_assessment', 'self_assessment', 'example_based_assessment'])
-        unused_assessments = all_assessments - set(used_assessments)
-
-        student_training_module = self.get_assessment_module('student-training')
-        if student_training_module:
-            student_training_module = copy.deepcopy(student_training_module)
-            try:
-                examples = xml.serialize_examples_to_xml_str(student_training_module )
-                student_training_module["examples"] = examples
-                assessments['training'] = student_training_module
-            # We do not expect serialization to raise an exception, but if it does,
-            # handle it gracefully.
-            except:
-                logger.exception("An error occurred while serializing the XBlock")
+        unused_assessments = all_assessments - used_assessments
 
         # Every rubric requires one criterion. If there is no criteria
         # configured for the XBlock, return one empty default criterion, with
@@ -207,5 +195,37 @@ class StudioMixin(object):
             assessments[template_name] = copy.deepcopy(asmnt)
             assessments[template_name]['start'] = date_range[0]
             assessments[template_name]['due'] = date_range[1]
+
+        # In addition to the data in the student training assessment, we need to include two additional
+        # pieces of information: a blank context to render the empty template with, and the criteria
+        # for each example (so we don't have any complicated logic within the template). Though this
+        # could be accomplished within the template, we are opting to remove logic from the template.
+        student_training_module = self.get_assessment_module('student-training')
+
+        student_training_template = {'answer': ""}
+        criteria_list = copy.deepcopy(self.rubric_criteria)
+        for criterion in criteria_list:
+            criterion['option_selected'] = ""
+        student_training_template['criteria'] = criteria_list
+
+        if student_training_module:
+            example_list = []
+            # Adds each example to a modified version of the student training module dictionary.
+            for example in student_training_module['examples']:
+                criteria_list = copy.deepcopy(self.rubric_criteria)
+                # Equivalent to a Join Query, this adds the selected option to the Criterion's dictionary, so that
+                # it can be easily referenced in the template without searching through the selected options.
+                for criterion in criteria_list:
+                    for option_selected in example['options_selected']:
+                        if option_selected['criterion'] == criterion['name']:
+                            criterion['option_selected'] = option_selected['option']
+                example_list.append({
+                    'answer': example['answer'],
+                    'criteria': criteria_list,
+                })
+            assessments['training'] = {'examples': example_list, 'template': student_training_template}
+        # If we don't have student training enabled, we still need to render a single (empty, or default) example
+        else:
+            assessments['training'] = {'examples': [student_training_template], 'template': student_training_template}
 
         return assessments
