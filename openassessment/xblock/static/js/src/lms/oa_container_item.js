@@ -89,7 +89,7 @@ OpenAssessment.RubricCriterion.prototype = {
                     'name': 'Real Bad',
                     'points': 1,
                     'explanation': 'Essay was primarily composed of emojis.'
-                }
+                },
                 ...
             ]
         }
@@ -126,4 +126,42 @@ OpenAssessment.RubricCriterion.prototype = {
     addOption: function() {
         this.optionContainer.add();
     }
+};
+
+
+/**
+ The TrainingExample class is used to construct and retrieve information from its element within the DOM
+
+ Args:
+ element (JQuery Object): the selection which identifies the scope of the training example.
+
+ Returns:
+ OpenAssessment.TrainingExample
+ **/
+OpenAssessment.TrainingExample = function(element){
+    this.element = element;
+};
+
+OpenAssessment.TrainingExample.prototype = {
+    /**
+     Returns the values currently stored in the fields associated with this training example.
+     **/
+    getFieldValues: function () {
+
+        // Iterates through all of the options selected by the training example, and adds them
+        // to a list.
+        var optionsSelected = [];
+        $(".openassessment_training_example_criterion_option", this.element) .each( function () {
+            optionsSelected.push({
+                criterion: $(this).data('criterion'),
+                option: $(this).prop('value')
+            });
+        });
+
+        return {
+            answer: $('.openassessment_training_example_essay', this.element).first().prop('value'),
+            options_selected: optionsSelected
+        };
+    }
+
 };

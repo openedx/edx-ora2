@@ -59,6 +59,11 @@ class StudioViewTest(XBlockHandlerTestCase):
         frag = self.runtime.render(xblock, 'studio_view')
         self.assertTrue(frag.body_html().find('openassessment-edit'))
 
+    @scenario('data/student_training.xml')
+    def test_render_studio_with_training(self, xblock):
+        frag = self.runtime.render(xblock, 'studio_view')
+        self.assertTrue(frag.body_html().find('openassessment-edit'))
+
     @file_data('data/update_xblock.json')
     @scenario('data/basic_scenario.xml')
     def test_update_context(self, xblock, data):

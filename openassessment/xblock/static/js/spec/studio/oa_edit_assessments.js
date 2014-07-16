@@ -90,8 +90,29 @@ describe("OpenAssessment edit assessment views", function() {
         });
 
         it("Enables and disables", function() { testEnableAndDisable(view); });
-        // This test was deleted because it is obsolete due to Context Changes, but has not yet been
-        // Replaced by functionality in the JavaScript (which will be tested)
+        it("Loads a description", function () {
+            // This assumes a particular structure of the DOM,
+            // which is set by the HTML fixture.
+            var examples = view.exampleContainer.getItemValues();
+            expect(examples.length).toEqual(0);
+        });
+        it("Modifies a description", function () {
+            view.exampleContainer.add();
+            var examples = view.exampleContainer.getItemValues();
+            expect(examples.length).toEqual(1);
+        });
+        it("Returns the correct format", function () {
+            view.exampleContainer.add();
+            var examples = view.exampleContainer.getItemValues();
+            expect(examples).toEqual(
+                [
+                    {
+                        answer: "",
+                        options_selected: []
+                    }
+                ]
+            );
+        });
     });
 
     describe("OpenAssessment.EditExampleBasedAssessmentView", function() {
