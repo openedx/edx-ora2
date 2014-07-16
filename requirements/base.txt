@@ -21,7 +21,7 @@ djangorestframework==2.3.5
 lazy==1.1
 loremipsum==1.0.2
 python-dateutil==2.1
-python-memcached==1.53
+python-memcached==1.48
 pytz==2012h
 South==0.7.6
 
