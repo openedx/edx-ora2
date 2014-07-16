@@ -271,6 +271,16 @@ OpenAssessment.EditStudentTrainingView = function(element) {
         "#student_training_description_closed",
         "#student_training_settings_editor"
     ).install("#include_student_training");
+
+    this.exampleContainer = new OpenAssessment.Container(
+        OpenAssessment.TrainingExample, {
+            containerElement: $("#openassessment_training_example_list", this.element).get(0),
+            templateElement: $("#openassessment_training_example_template", this.element).get(0),
+            addButtonElement: $(".openassessment_add_training_example", this.element).get(0),
+            removeButtonClass: "openassessment_training_example_remove",
+            containerItemClass: "openassessment_training_example"
+        }
+    )
 };
 
 OpenAssessment.EditStudentTrainingView.prototype = {
@@ -284,13 +294,27 @@ OpenAssessment.EditStudentTrainingView.prototype = {
     Example usage:
     >>> editTrainingView.description();
     {
-        examples: "XML DEFINITION HERE"
+        examples: [
+            {
+                answer: "I love pokemon",
+                options_selected: [
+                    {
+                        criterion: "brevity",
+                        option: "suberb"
+                    },
+                        criterion: "accuracy",
+                        option: "alright"
+                    }
+                    ...
+                ]
+            },
+            ...
+        ]
     }
-
     **/
     description: function() {
         return {
-            examples: this.exampleDefinitions()
+            examples: this.exampleContainer.getItemValues()
         };
     },
 
