@@ -47,6 +47,12 @@ OpenAssessment.RubricOption.prototype = {
         if (nameString !== "") { fields.name = nameString; }
 
         return fields;
+    },
+
+    removeHandler: function (rubricValidationHandler){
+        var criterionName = $(this.element).data('criterion');
+        var optionName = $(this.element).data('option');
+        rubricValidationHandler.optionRemove(criterionName, optionName);
     }
 };
 

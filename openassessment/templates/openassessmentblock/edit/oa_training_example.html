@@ -19,7 +19,7 @@
             <h2>{% trans "Scored Rubric" %}</h2>
             <ol class="openassessment_training_example_criteria_selections list-input settings-list">
                 {% for criterion in example.criteria %}
-                <li class="field comp-setting-entry">
+                <li class="field comp-setting-entry openassessment_training_example_criterion" data-criterion={{criterion.name}}>
                     <div class="wrapper-comp-setting">
                         <label class="openassessment_training_example_criterion_name setting-label">
                             {{criterion.label}}

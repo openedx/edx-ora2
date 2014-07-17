@@ -83,6 +83,8 @@ OpenAssessment.Container = function(containerItem, kwargs) {
     $("." + this.containerItemClass, this.containerElement).each(
         function(index, element) { new container.containerItem(element); }
     );
+
+    this.modificationHandler = new OpenAssessment.RubricValidationEventHandler('#oa_student_training_editor');
 };
 
 OpenAssessment.Container.prototype = {
@@ -129,6 +131,7 @@ OpenAssessment.Container.prototype = {
     **/
     remove: function(item) {
         $(item.element).closest("." + this.containerItemClass).remove();
+        this.containerItem.removeHandler(this.modificationHandler);
     },
 
     /**
