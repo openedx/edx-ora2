@@ -58,6 +58,7 @@ coverage
 ora2db
 storage/*
 openassessment/xblock/static/js/fixtures/*.html
+test/selenium/screenshots/*
 
 # logging
 logs/*.log*
