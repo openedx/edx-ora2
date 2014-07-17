@@ -317,6 +317,9 @@ class SubmissionMixin(object):
             context["submission_due"] = due_date
 
         context['allow_file_upload'] = self.allow_file_upload
+        context['has_peer'] = 'peer-assessment' in self.assessment_steps
+        context['has_self'] = 'self-assessment' in self.assessment_steps
+
         if self.allow_file_upload:
             context['file_url'] = self._get_download_url()
 
