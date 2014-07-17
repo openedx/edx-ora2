@@ -81,10 +81,10 @@ OpenAssessment.Container = function(containerItem, kwargs) {
     // Initialize existing items, in case they need to install their
     // own event handlers.
     $("." + this.containerItemClass, this.containerElement).each(
-        function(index, element) { new container.containerItem(element); }
+        function(index, element) {
+            new container.containerItem(element);
+        }
     );
-
-    this.modificationHandler = new OpenAssessment.RubricValidationEventHandler('#oa_student_training_editor');
 };
 
 OpenAssessment.Container.prototype = {
@@ -117,7 +117,9 @@ OpenAssessment.Container.prototype = {
             } );
 
         // Initialize the item, allowing it to install event handlers.
-        new this.containerItem(containerItem.get(0));
+        // Fire event handler for adding a new element
+        var handlerItem = new this.containerItem(containerItem);
+        handlerItem.addHandler();
     },
 
     /**
@@ -130,8 +132,10 @@ OpenAssessment.Container.prototype = {
 
     **/
     remove: function(item) {
-        $(item.element).closest("." + this.containerItemClass).remove();
-        this.containerItem.removeHandler(this.modificationHandler);
+        var itemElement = $(item.element).closest("." + this.containerItemClass);
+        var containerItem = new this.containerItem(itemElement);
+        containerItem.removeHandler();
+        itemElement.remove();
     },
 
     /**
@@ -183,5 +187,5 @@ OpenAssessment.Container.prototype = {
         var container = this;
         return $("." + this.containerItemClass, this.containerElement)
             .map(function() { return new container.containerItem(this); });
-    },
+    }
 };

@@ -1,3 +1,29 @@
+OpenAssessment.ItemUtilities = {
+    /**
+     Utility method for creating a unique name given a set of
+     options.
+
+     Args:
+     selector (JQuery selector): Selector used to find the relative attribute
+     for the name.
+     nameAttribute (str): The name of the attribute that stores the unique
+     names for a particular set.
+
+     Returns:
+     A unique name for an object in the collection.
+     */
+    createUniqueName: function(selector, nameAttribute) {
+        var index = 0;
+        while (index <= selector.length) {
+            if (selector.parent().find("*[" + nameAttribute + "='" + index + "']").length == 0) {
+                return index.toString();
+            }
+            index++;
+        }
+        return null;
+    }
+};
+
 /**
 The RubricOption Class used to construct and maintain references to rubric options from within an options
 container object. Constructs a new RubricOption element.
@@ -10,6 +36,8 @@ Returns:
 **/
 OpenAssessment.RubricOption = function(element) {
     this.element = element;
+    this.modificationHandler = new OpenAssessment.RubricEventHandler();
+    $(this.element).focusout($.proxy(this.updateHandler, this));
 };
 
 OpenAssessment.RubricOption.prototype = {
@@ -49,10 +77,74 @@ OpenAssessment.RubricOption.prototype = {
         return fields;
     },
 
-    removeHandler: function (rubricValidationHandler){
+    /**
+     Hook into the event handler for removal of a criterion option.
+
+     */
+    addHandler: function (){
+
+        var criterionElement = $(this.element).closest(".openassessment_criterion");
+        var criterionName = $(criterionElement).data('criterion');
+        var criterionLabel = $(".openassessment_criterion_label", criterionElement).val();
+        var options = $(".openassessment_criterion_option", this.element.parent());
+        // Create the unique name for this option.
+        var name = OpenAssessment.ItemUtilities.createUniqueName(options, "data-option");
+
+        // Set the criterion name and option name in the new rubric element.
+        $(this.element)
+            .attr("data-criterion", criterionName)
+            .attr("data-option", name);
+        $(".openassessment_criterion_option_name", this.element).attr("value", name);
+
+        var fields = this.getFieldValues();
+        this.modificationHandler.notificationFired(
+            "optionAdd",
+            {
+                "criterionName": criterionName,
+                "criterionLabel": criterionLabel,
+                "name": name,
+                "label": fields.label,
+                "points": fields.points
+            }
+        );
+    },
+
+    /**
+     Hook into the event handler for removal of a criterion option.
+
+     */
+    removeHandler: function (){
         var criterionName = $(this.element).data('criterion');
         var optionName = $(this.element).data('option');
-        rubricValidationHandler.optionRemove(criterionName, optionName);
+        this.modificationHandler.notificationFired(
+            "optionRemove",
+            {
+                "criterionName": criterionName,
+                "name": optionName
+            }
+        );
+    },
+
+    /**
+     Hook into the event handler when a rubric criterion option is
+     modified.
+
+     */
+    updateHandler: function(){
+        var fields = this.getFieldValues();
+        var criterionName = $(this.element).data('criterion');
+        var optionName = $(this.element).data('option');
+        var optionLabel = fields.label;
+        var optionPoints = fields.points;
+        this.modificationHandler.notificationFired(
+            "optionUpdated",
+            {
+                "criterionName": criterionName,
+                "name": optionName,
+                "label": optionLabel,
+                "points": optionPoints
+            }
+        );
     }
 };
 
@@ -68,15 +160,18 @@ Returns:
  **/
 OpenAssessment.RubricCriterion = function(element) {
     this.element = element;
+    this.modificationHandler = new OpenAssessment.RubricEventHandler();
     this.optionContainer = new OpenAssessment.Container(
         OpenAssessment.RubricOption, {
             containerElement: $(".openassessment_criterion_option_list", this.element).get(0),
             templateElement: $("#openassessment_option_template").get(0),
             addButtonElement: $(".openassessment_criterion_add_option", this.element).get(0),
             removeButtonClass: "openassessment_criterion_option_remove_button",
-            containerItemClass: "openassessment_criterion_option",
+            containerItemClass: "openassessment_criterion_option"
         }
     );
+
+    $(this.element).focusout($.proxy(this.updateHandler, this));
 };
 
 
@@ -131,6 +226,42 @@ OpenAssessment.RubricCriterion.prototype = {
     **/
     addOption: function() {
         this.optionContainer.add();
+    },
+
+    /**
+     Hook into the event handler for addition of a criterion.
+
+     */
+    addHandler: function (){
+        var criteria = $(".openassessment_criterion", this.element.parent());
+        // Create the unique name for this option.
+        var name = OpenAssessment.ItemUtilities.createUniqueName(criteria, "data-criterion");
+        // Set the criterion name in the new rubric element.
+        $(this.element).attr("data-criterion", name);
+        $(".openassessment_criterion_name", this.element).attr("value", name);
+    },
+
+    /**
+     Hook into the event handler for removal of a criterion.
+
+     */
+    removeHandler: function(){
+        var criterionName = $(this.element).data('criterion');
+        this.modificationHandler.notificationFired("criterionRemove", {'criterionName': criterionName});
+    },
+
+    /**
+     Hook into the event handler when a rubric criterion is modified.
+
+     */
+    updateHandler: function(){
+        var fields = this.getFieldValues();
+        var criterionName = fields.name;
+        var criterionLabel = fields.label;
+        this.modificationHandler.notificationFired(
+            "criterionUpdated",
+            {'criterionName': criterionName, 'criterionLabel': criterionLabel}
+        );
     }
 };
 
@@ -168,6 +299,10 @@ OpenAssessment.TrainingExample.prototype = {
             answer: $('.openassessment_training_example_essay', this.element).first().prop('value'),
             options_selected: optionsSelected
         };
-    }
+    },
+
+    addHandler: function() {},
+    removeHandler: function() {},
+    updateHandler: function() {}
 
 };

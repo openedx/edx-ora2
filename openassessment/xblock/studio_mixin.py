@@ -4,7 +4,6 @@ Studio editing view for OpenAssessment XBlock.
 import pkg_resources
 import copy
 import logging
-from uuid import uuid4
 from django.template import Context
 from django.template.loader import get_template
 from django.utils.translation import ugettext as _
@@ -172,7 +171,7 @@ class StudioMixin(object):
                     return {'success': False, 'msg': _(
                         u'Validation error: No examples were provided for example based assessment.'
                     )}
-                # This is where we default to EASE for problems which are edited in the GUI
+                    # This is where we default to EASE for problems which are edited in the GUI
                 assessment['algorithm_id'] = 'ease'
 
         xblock_validator = validator(self)

@@ -48,9 +48,10 @@ class StudioViewTest(XBlockHandlerTestCase):
         ]
     }
 
-    RUBRIC_CRITERIA_WITH_AND_WITHOUT_NAMES = [
+    RUBRIC_CRITERIA = [
         {
             "order_num": 0,
+            "name": "0",
             "label": "Test criterion with no name",
             "prompt": "Test criterion prompt",
             "feedback": "disabled",
@@ -58,6 +59,7 @@ class StudioViewTest(XBlockHandlerTestCase):
                 {
                     "order_num": 0,
                     "points": 0,
+                    "name": "0",
                     "label": "Test option with no name",
                     "explanation": "Test explanation"
                 }
@@ -66,13 +68,14 @@ class StudioViewTest(XBlockHandlerTestCase):
         {
             "order_num": 1,
             "label": "Test criterion that already has a name",
-            "name": "cd316c145cb14e06b377db65719ed41c",
+            "name": "1",
             "prompt": "Test criterion prompt",
             "feedback": "disabled",
             "options": [
                 {
                     "order_num": 0,
                     "points": 0,
+                    "name": "0",
                     "label": "Test option with no name",
                     "explanation": "Test explanation"
                 },
@@ -80,7 +83,7 @@ class StudioViewTest(XBlockHandlerTestCase):
                     "order_num": 1,
                     "points": 0,
                     "label": "Test option that already has a name",
-                    "name": "8bcdb0769b15482d9b2c3791d22e8ad2",
+                    "name": "1",
                     "explanation": "Test explanation"
                 },
             ]
@@ -155,30 +158,6 @@ class StudioViewTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
         self.assertTrue(resp['success'], msg=resp.get('msg'))
         self.assertEqual(xblock.editor_assessments_order, data['editor_assessments_order'])
-
-    @scenario('data/basic_scenario.xml')
-    def test_update_editor_context_assign_unique_names(self, xblock):
-        # Update the XBlock with a rubric that is missing
-        # some of the (unique) names for rubric criteria/options.
-        data = copy.deepcopy(self.UPDATE_EDITOR_DATA)
-        data['criteria'] = self.RUBRIC_CRITERIA_WITH_AND_WITHOUT_NAMES
-
-        xblock.published_date = None
-        resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
-        self.assertTrue(resp['success'], msg=resp.get('msg'))
-
-        # Check that the XBlock has assigned unique names for all criteria
-        criteria_names = set([criterion.get('name') for criterion in xblock.rubric_criteria])
-        self.assertEqual(len(criteria_names), 2)
-        self.assertNotIn(None, criteria_names)
-
-        # Check that the XBlock has assigned unique names for all options
-        option_names = set()
-        for criterion in xblock.rubric_criteria:
-            for option in criterion['options']:
-                option_names.add(option.get('name'))
-        self.assertEqual(len(option_names), 3)
-        self.assertNotIn(None, option_names)
 
     @file_data('data/invalid_update_xblock.json')
     @scenario('data/basic_scenario.xml')

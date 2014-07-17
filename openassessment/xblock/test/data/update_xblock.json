@@ -3,18 +3,21 @@
         "criteria": [
             {
                 "order_num": 0,
+                "name": "0",
                 "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
+                        "name": "0",
                         "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
+                        "name": "1",
                         "label": "Yes",
                         "explanation": "Yes explanation"
                     }
@@ -49,18 +52,21 @@
         "criteria": [
             {
                 "order_num": 0,
+                "name": "0",
                 "label": "Ṫëṡẗ ċṛïẗëïṛöṅ",
                 "prompt": "Téśt ćŕítéíŕőń ṕŕőḿṕt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
+                        "name": "0",
                         "label": "Ṅö",
                         "explanation": "Ńő éxṕĺáńátíőń"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
+                        "name": "1",
                         "label": "sǝʎ",
                         "explanation": "Чэѕ эхрlаиатіои"
                     }

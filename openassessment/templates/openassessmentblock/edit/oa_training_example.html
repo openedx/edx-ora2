@@ -19,30 +19,14 @@
             <h2>{% trans "Scored Rubric" %}</h2>
             <ol class="openassessment_training_example_criteria_selections list-input settings-list">
                 {% for criterion in example.criteria %}
-                <li class="field comp-setting-entry openassessment_training_example_criterion" data-criterion={{criterion.name}}>
-                    <div class="wrapper-comp-setting">
-                        <label class="openassessment_training_example_criterion_name setting-label">
-                            {{criterion.label}}
-                            <select class="openassessment_training_example_criterion_option setting-input" data-criterion={{criterion.name}}>
-                                <option value="Not Scored">{% trans "Not Scored" %}</option>
-                                {% for option in criterion.options %}
-                                    <option value={{option.name}}
-                                    {% if criterion.option_selected == option.name %} selected {% endif %}
-                                    >
-                                    {{option.label}} - {{option.points}} {% trans "points" %}
-                                    </option>
-                                {% endfor %}
-                            </select>
-                        </label>
-                    </div>
-                </li>
+                    {% include "openassessmentblock/edit/oa_training_example_criterion.html" with criterion=criterion %}
                 {% endfor %}
             </ol>
         </div>
 
         <div class="openassessment_training_example_essay_wrapper">
             <h2>{% trans "Response" %}</h2>
-            <textarea class="openassessment_training_example_essay">{{example.answer}}</textarea>
+            <textarea class="openassessment_training_example_essay">{{ example.answer }}</textarea>
         </div>
     </div>
 </li>

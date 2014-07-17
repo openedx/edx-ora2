@@ -9,7 +9,7 @@ OpenAssessment.EditRubricView = function(element) {
             templateElement: $("#openassessment_criterion_template", this.element).get(0),
             addButtonElement: $("#openassessment_rubric_add_criterion", this.element).get(0),
             removeButtonClass: "openassessment_criterion_remove_button",
-            containerItemClass: "openassessment_criterion",
+            containerItemClass: "openassessment_criterion"
         }
     );
     this.alert = new OpenAssessment.ValidationAlert($('#openassessment_rubric_validation_alert', this.element));
@@ -123,7 +123,6 @@ Returns:
  */
 OpenAssessment.ValidationAlert = function (element) {
     this.element = element;
-    this.visible = false;
     this.title = $(".openassessment_alert_title", this.element);
     this.message = $(".openassessment_alert_message", this.element);
 };
@@ -131,29 +130,27 @@ OpenAssessment.ValidationAlert = function (element) {
 OpenAssessment.ValidationAlert.prototype = {
 
     /**
-    Hides the alert.
-    **/
+     Hides the alert.
+     */
     hide: function () {
-        this.visible = false;
         this.element.addClass('is--hidden');
     },
 
     /**
-    Displays the alert.
-    **/
+     Displays the alert.
+     */
     show : function () {
-        this.visible = true;
         this.element.removeClass('is--hidden');
     },
 
     /**
-    Sets the message of the alert.
-    How will this work with internationalization?
+     Sets the message of the alert.
+     How will this work with internationalization?
 
-    Args:
-        newTitle (str): the new title that the message will have
-        newMessage (str): the new text that the message's body will contain
-    **/
+     Args:
+         newTitle (str): the new title that the message will have
+         newMessage (str): the new text that the message's body will contain
+     */
     setMessage: function (newTitle, newMessage){
         this.title.text(newTitle);
         this.message.text(newMessage);

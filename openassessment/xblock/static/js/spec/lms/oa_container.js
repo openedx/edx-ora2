@@ -18,6 +18,10 @@ describe("OpenAssessment.Container", function () {
             var testIdNum = parseInt($(element).attr("test_id"), 10);
             return { id: testIdNum };
         };
+
+        this.addHandler = function() {};
+        this.removeHandler = function() {};
+        this.updateHandler = function() {};
     };
 
     var container = null;
