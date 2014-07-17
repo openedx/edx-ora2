@@ -12,6 +12,7 @@ OpenAssessment.EditRubricView = function(element) {
             containerItemClass: "openassessment_criterion",
         }
     );
+    this.alert = new OpenAssessment.ValidationAlert($('#openassessment_rubric_validation_alert', this.element));
 };
 
 OpenAssessment.EditRubricView.prototype = {
@@ -109,3 +110,53 @@ OpenAssessment.EditRubricView.prototype = {
         return this.criteriaContainer.getItem(index);
     }
 };
+
+/**
+A class which controls the validation alert which we place at the top of the rubric page after
+changes are made which will propagate to the settings section.
+
+Args:
+    element (element): The element that specifies the div that the validation consists of.
+
+Returns:
+    Openassessment.ValidationAlert
+ */
+OpenAssessment.ValidationAlert = function (element) {
+    this.element = element;
+    this.visible = false;
+    this.title = $(".openassessment_alert_title", this.element);
+    this.message = $(".openassessment_alert_message", this.element);
+};
+
+OpenAssessment.ValidationAlert.prototype = {
+
+    /**
+    Hides the alert.
+    **/
+    hide: function () {
+        this.visible = false;
+        this.element.addClass('is--hidden');
+    },
+
+    /**
+    Displays the alert.
+    **/
+    show : function () {
+        this.visible = true;
+        this.element.removeClass('is--hidden');
+    },
+
+    /**
+    Sets the message of the alert.
+    How will this work with internationalization?
+
+    Args:
+        newTitle (str): the new title that the message will have
+        newMessage (str): the new text that the message's body will contain
+    **/
+    setMessage: function (newTitle, newMessage){
+        this.title.text(newTitle);
+        this.message.text(newMessage);
+    }
+};
+
