@@ -72,7 +72,10 @@ OpenAssessment.Container = function(containerItem, kwargs) {
     // handlers for the delete buttons.
     var container = this;
     $("." + this.removeButtonClass, this.containerElement).click(
-        function(eventData) { container.remove(eventData.target); }
+        function(eventData) {
+            var item = new container.containerItem(eventData.target);
+            container.remove(item);
+        }
     );
 
     // Initialize existing items, in case they need to install their
@@ -106,7 +109,10 @@ OpenAssessment.Container.prototype = {
         var container = this;
         var containerItem = $("." + this.containerItemClass, this.containerElement).last();
         containerItem.find('.' + this.removeButtonClass)
-            .click(function(eventData) { container.remove(eventData.target); } );
+            .click(function(eventData) {
+                var containerItem = new container.containerItem(eventData.target);
+                container.remove(containerItem);
+            } );
 
         // Initialize the item, allowing it to install event handlers.
         new this.containerItem(containerItem.get(0));
@@ -118,12 +124,11 @@ OpenAssessment.Container.prototype = {
     DOM tree until an item is found.
 
     Args:
-        element (DOM element): An element representing the container item
-            or an element within the container item.
+        item: The container item object to remove.
 
     **/
-    remove: function(element) {
-        $(element).closest("." + this.containerItemClass).remove();
+    remove: function(item) {
+        $(item.element).closest("." + this.containerItemClass).remove();
     },
 
     /**
@@ -156,11 +161,24 @@ OpenAssessment.Container.prototype = {
         index (int): The index of the item, starting from 0.
 
     Returns:
-        DOM element if the item is found, otherwise null.
+        Container item object or null.
 
     **/
-    getItemElement: function(index) {
+    getItem: function(index) {
         var element = $("." + this.containerItemClass, this.containerElement).get(index);
-        return (element !== undefined) ? element : null;
+        return (element !== undefined) ? new this.containerItem(element) : null;
+    },
+
+    /**
+    Retrieve all elements representing items in this container.
+
+    Returns:
+        array of container item objects
+
+    **/
+    getAllItems: function() {
+        var container = this;
+        return $("." + this.containerItemClass, this.containerElement)
+            .map(function() { return new container.containerItem(this); });
     },
 };

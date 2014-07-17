@@ -48,7 +48,7 @@
                         <li class="question question--{{ criterion_num }} ui-toggle-visibility">
                             <h4 class="question__title ui-toggle-visibility__control">
                                 <i class="ico icon-caret-right"></i>
-                                <span class="question__title__copy">{{ criterion.name }}</span>
+                                <span class="question__title__copy">{{ criterion.label }}</span>
 
                                 <span class="question__score">
                                   <span class="label sr">{% trans "Overall Grade" %}</span>
@@ -78,11 +78,11 @@
                                                     <span class="answer__value">
                                                         <span class="answer__value__label sr">{% trans "Peer's Assessment" %}: </span>
                                                         <span class="answer__value__value">
-                                                            {{ part.option.name }}
+                                                            {{ part.option.label }}
 
                                                             <span class="ui-hint hint--top" data-hint="{{ part.option.explanation }}">
                                                               <i class="ico icon-info-sign"
-                                                                 title="{% blocktrans with name=part.option.name %}More information about {{ name }}{% endblocktrans %}"></i>
+                                                                 title="{% blocktrans with name=part.option.label %}More information about {{ name }}{% endblocktrans %}"></i>
                                                             </span>
 
                                                         </span>
@@ -109,11 +109,11 @@
                                         <span class="answer__value">
                                             <span class="answer__value__label sr">{% trans "Your Assessment" %}: </span>
                                             <span class="answer__value__value">
-                                                {{ part.option.name }}
+                                                {{ part.option.label }}
 
                                                 <span class="ui-hint hint--top" data-hint="{{ part.option.explanation }}">
                                                   <i class="ico icon-info-sign"
-                                                     title="{% blocktrans with name=part.option.name %}More information about {{ name }}{% endblocktrans %}"></i>
+                                                     title="{% blocktrans with name=part.option.label %}More information about {{ name }}{% endblocktrans %}"></i>
                                                 </span>
                                             </span>
                                         </span>
@@ -133,11 +133,11 @@
                                         <span class="answer__value">
                                             <span class="answer__value__label sr">{% trans "Example-Based Assessment" %}: </span>
                                             <span class="answer__value__value">
-                                                {{ part.option.name }}
+                                                {{ part.option.label }}
 
                                                 <span class="ui-hint hint--top" data-hint="{{ part.option.explanation }}">
                                                   <i class="ico icon-info-sign"
-                                                     title="{% blocktrans with name=part.option.name %}More information about {{ name }}{% endblocktrans %}"></i>
+                                                     title="{% blocktrans with name=part.option.label %}More information about {{ name }}{% endblocktrans %}"></i>
                                                 </span>
                                             </span>
                                         </span>

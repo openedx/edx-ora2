@@ -11,9 +11,10 @@
                 "<prompt>Test prompt</prompt>",
                 "<criterion>",
                     "<name>Test criterion</name>",
+                    "<label>Test criterion label</label>",
                     "<prompt>Test criterion prompt</prompt>",
-                    "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
-                    "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+                    "<option points=\"0\"><name>No</name><label>No label</label><explanation>No explanation</explanation></option>",
+                    "<option points=\"2\"><name>Yes</name><label>Yes label</label><explanation>Yes explanation</explanation></option>",
                 "</criterion>",
             "</rubric>",
             "</openassessment>"
@@ -28,6 +29,7 @@
             {
                 "order_num": 0,
                 "name": "Test criterion",
+                "label": "Test criterion label",
                 "prompt": "Test criterion prompt",
                 "feedback": "disabled",
                 "options": [
@@ -35,12 +37,14 @@
                         "order_num": 0,
                         "points": 0,
                         "name": "No",
+                        "label": "No label",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
                         "name": "Yes",
+                        "label": "Yes label",
                         "explanation": "Yes explanation"
                     }
                 ]
@@ -89,6 +93,7 @@
             {
                 "order_num": 0,
                 "name": "Test criterion",
+                "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "feedback": "disabled",
                 "options": [
@@ -96,12 +101,14 @@
                         "order_num": 0,
                         "points": 0,
                         "name": "No",
+                        "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
                         "name": "Yes",
+                        "label": "Yes",
                         "explanation": "Yes explanation"
                     }
                 ]
@@ -144,6 +151,7 @@
             {
                 "order_num": 0,
                 "name": "Test criterion",
+                "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "feedback": "disabled",
                 "options": [
@@ -151,12 +159,14 @@
                         "order_num": 0,
                         "points": 0,
                         "name": "No",
+                        "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
                         "name": "Yes",
+                        "label": "Yes",
                         "explanation": "Yes explanation"
                     }
                 ]
@@ -182,9 +192,10 @@
                 "<prompt>ՇєรՇ קг๏๓קՇ</prompt>",
                 "<criterion>",
                     "<name>𝓣𝓮𝓼𝓽 𝓬𝓻𝓲𝓽𝓮𝓻𝓲𝓸𝓷</name>",
+                    "<label>Ṫëṡẗ ċṛïẗëṛïöṅ ḷäḅëḷ</label>",
                     "<prompt>Ŧɇsŧ ȼɍɨŧɇɍɨøn ꝑɍømꝑŧ</prompt>",
-                    "<option points=\"0\"><name>𝕹𝖔</name><explanation>𝕹𝖔 𝖊𝖝𝖕𝖑𝖆𝖓𝖆𝖙𝖎𝖔𝖓</explanation></option>",
-                    "<option points=\"2\"><name>ﻉร</name><explanation>ﻉร ﻉซρɭคกคՇٱѻก</explanation></option>",
+                    "<option points=\"0\"><name>𝕹𝖔</name><label>Ṅö ḷäḅëḷ</label><explanation>𝕹𝖔 𝖊𝖝𝖕𝖑𝖆𝖓𝖆𝖙𝖎𝖔𝖓</explanation></option>",
+                    "<option points=\"2\"><name>ﻉร</name><label>Ÿëṡ ḷäḅëḷ</label><explanation>ﻉร ﻉซρɭคกคՇٱѻก</explanation></option>",
                 "</criterion>",
             "</rubric>",
             "</openassessment>"
@@ -199,6 +210,7 @@
             {
                 "order_num": 0,
                 "name": "𝓣𝓮𝓼𝓽 𝓬𝓻𝓲𝓽𝓮𝓻𝓲𝓸𝓷",
+                "label": "Ṫëṡẗ ċṛïẗëṛïöṅ ḷäḅëḷ",
                 "prompt": "Ŧɇsŧ ȼɍɨŧɇɍɨøn ꝑɍømꝑŧ",
                 "feedback": "disabled",
                 "options": [
@@ -206,12 +218,14 @@
                         "order_num": 0,
                         "points": 0,
                         "name": "𝕹𝖔",
+                        "label": "Ṅö ḷäḅëḷ",
                         "explanation": "𝕹𝖔 𝖊𝖝𝖕𝖑𝖆𝖓𝖆𝖙𝖎𝖔𝖓"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
                         "name": "ﻉร",
+                        "label": "Ÿëṡ ḷäḅëḷ",
                         "explanation": "ﻉร ﻉซρɭคกคՇٱѻก"
                     }
                 ]
@@ -261,6 +275,7 @@
             {
                 "order_num": 0,
                 "name": "Test criterion",
+                "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "feedback": "disabled",
                 "options": [
@@ -268,12 +283,14 @@
                         "order_num": 0,
                         "points": 0,
                         "name": "No",
+                        "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
                         "name": "Yes",
+                        "label": "Yes",
                         "explanation": "Yes explanation"
                     }
                 ]
@@ -281,6 +298,7 @@
             {
                 "order_num": 1,
                 "name": "Second criterion",
+                "label": "Second criterion",
                 "prompt": "Second criterion prompt",
                 "feedback": "disabled",
                 "options": [
@@ -288,6 +306,7 @@
                         "order_num": 0,
                         "points": 1,
                         "name": "Maybe",
+                        "label": "Maybe",
                         "explanation": "Maybe explanation"
                     }
                 ]
@@ -332,6 +351,7 @@
             {
                 "order_num": 0,
                 "name": "Test criterion",
+                "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "feedback": "disabled",
                 "options": [
@@ -339,12 +359,14 @@
                         "order_num": 0,
                         "points": 0,
                         "name": "No",
+                        "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
                         "name": "Yes",
+                        "label": "Yes",
                         "explanation": "Yes explanation"
                     }
                 ]
@@ -389,6 +411,7 @@
             {
                 "order_num": 0,
                 "name": "Test criterion",
+                "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "feedback": "disabled",
                 "options": [
@@ -396,12 +419,14 @@
                         "order_num": 0,
                         "points": 0,
                         "name": "No",
+                        "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
                         "name": "Yes",
+                        "label": "Yes",
                         "explanation": "Yes explanation"
                     }
                 ]
@@ -446,6 +471,7 @@
             {
                 "order_num": 0,
                 "name": "Test criterion",
+                "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "feedback": "disabled",
                 "options": [
@@ -453,12 +479,14 @@
                         "order_num": 0,
                         "points": 0,
                         "name": "No",
+                        "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
                         "name": "Yes",
+                        "label": "Yes",
                         "explanation": "Yes explanation"
                     }
                 ]
@@ -508,6 +536,7 @@
             {
                 "order_num": 0,
                 "name": "test criterion",
+                "label": "test criterion",
                 "prompt": "test criterion prompt",
                 "feedback": "disabled",
                 "options": [
@@ -515,12 +544,14 @@
                         "order_num": 0,
                         "points": 0,
                         "name": "no",
+                        "label": "no",
                         "explanation": "no explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
                         "name": "yes",
+                        "label": "yes",
                         "explanation": "yes explanation"
                     }
                 ]
@@ -528,6 +559,7 @@
             {
                 "order_num": 1,
                 "name": "second criterion",
+                "label": "second criterion",
                 "prompt": "second criterion prompt",
                 "feedback": "optional",
                 "options": [
@@ -535,6 +567,7 @@
                         "order_num": 0,
                         "points": 1,
                         "name": "maybe",
+                        "label": "maybe",
                         "explanation": "maybe explanation"
                     }
                 ]
@@ -584,6 +617,7 @@
             {
                 "order_num": 0,
                 "name": "test criterion",
+                "label": "test criterion",
                 "prompt": "test criterion prompt",
                 "feedback": "disabled",
                 "options": [
@@ -591,12 +625,14 @@
                         "order_num": 0,
                         "points": 0,
                         "name": "no",
+                        "label": "no",
                         "explanation": "no explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
                         "name": "yes",
+                        "label": "yes",
                         "explanation": "yes explanation"
                     }
                 ]
@@ -604,6 +640,7 @@
             {
                 "order_num": 1,
                 "name": "second criterion",
+                "label": "second criterion",
                 "prompt": "second criterion prompt",
                 "feedback": "required",
                 "options": [
@@ -611,6 +648,7 @@
                         "order_num": 0,
                         "points": 1,
                         "name": "maybe",
+                        "label": "maybe",
                         "explanation": "maybe explanation"
                     }
                 ]
@@ -655,6 +693,7 @@
             {
                 "order_num": 0,
                 "name": "Test criterion",
+                "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "feedback": "disabled",
                 "options": [
@@ -662,12 +701,14 @@
                         "order_num": 0,
                         "points": 0,
                         "name": "No",
+                        "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
                         "name": "Yes",
+                        "label": "Yes",
                         "explanation": "Yes explanation"
                     }
                 ]
@@ -716,6 +757,7 @@
             {
                 "order_num": 0,
                 "name": "Test criterion",
+                "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "feedback": "disabled",
                 "options": [
@@ -723,12 +765,14 @@
                         "order_num": 0,
                         "points": 0,
                         "name": "No",
+                        "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
                         "name": "Yes",
+                        "label": "Yes",
                         "explanation": "Yes explanation"
                     }
                 ]
@@ -799,6 +843,7 @@
             {
                 "order_num": 0,
                 "name": "Test criterion",
+                "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "feedback": "disabled",
                 "options": [
@@ -806,12 +851,14 @@
                         "order_num": 0,
                         "points": 0,
                         "name": "No",
+                        "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
                         "name": "Yes",
+                        "label": "Yes",
                         "explanation": "Yes explanation"
                     }
                 ]
@@ -819,6 +866,7 @@
             {
                 "order_num": 1,
                 "name": "Another test criterion",
+                "label": "Another test criterion",
                 "prompt": "Another test criterion prompt",
                 "feedback": "disabled",
                 "options": [
@@ -826,12 +874,14 @@
                         "order_num": 0,
                         "points": 0,
                         "name": "No",
+                        "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
                         "name": "Yes",
+                        "label": "Yes",
                         "explanation": "Yes explanation"
                     }
                 ]
@@ -911,6 +961,7 @@
             {
                 "order_num": 0,
                 "name": "test criterion",
+                "label": "test criterion",
                 "prompt": "test criterion prompt",
                 "feedback": "disabled",
                 "options": [
@@ -918,12 +969,14 @@
                         "order_num": 0,
                         "points": 0,
                         "name": "no",
+                        "label": "no",
                         "explanation": "no explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
                         "name": "yes",
+                        "label": "yes",
                         "explanation": "yes explanation"
                     }
                 ]
@@ -996,6 +1049,7 @@
             {
                 "order_num": 0,
                 "name": "test criterion",
+                "label": "test criterion",
                 "prompt": "test criterion prompt",
                 "feedback": "disabled",
                 "options": [
@@ -1003,12 +1057,14 @@
                         "order_num": 0,
                         "points": 0,
                         "name": "no",
+                        "label": "no",
                         "explanation": "no explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
                         "name": "yes",
+                        "label": "yes",
                         "explanation": "yes explanation"
                     }
                 ]
@@ -1074,6 +1130,7 @@
             {
                 "order_num": 0,
                 "name": "Test criterion",
+                "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "feedback": "disabled",
                 "options": [
@@ -1081,12 +1138,80 @@
                         "order_num": 0,
                         "points": 0,
                         "name": "No",
+                        "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
                         "name": "Yes",
+                        "label": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ]
+            }
+        ],
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "start": "2014-02-27T09:46:28",
+                "due": "2014-03-01T00:00:00",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment",
+                "start": "2014-04-01T00:00:00",
+                "due": "2014-06-01T00:00:00"
+            }
+        ]
+    },
+
+    "missing_labels": {
+        "xml": [
+            "<openassessment>",
+            "<title>Foo</title>",
+            "<assessments>",
+                "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
+                "<assessment name=\"self-assessment\" start=\"2014-04-01T00:00:00\" due=\"2014-06-01T00:00:00\" />",
+            "</assessments>",
+            "<rubric>",
+                "<prompt>Test prompt</prompt>",
+                "<criterion>",
+                    "<name>Test criterion</name>",
+                    "<prompt>Test criterion prompt</prompt>",
+                    "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+                    "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+                "</criterion>",
+            "</rubric>",
+            "</openassessment>"
+        ],
+        "title": "Foo",
+        "prompt": "Test prompt",
+        "start": "2000-01-01T00:00:00",
+        "due": "3000-01-01T00:00:00",
+        "submission_start": null,
+        "submission_due": null,
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "Test criterion",
+                "label": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "feedback": "disabled",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "No",
+                        "label": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "Yes",
+                        "label": "Yes",
                         "explanation": "Yes explanation"
                     }
                 ]

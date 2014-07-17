@@ -28,19 +28,19 @@
         "criteria": [
             {
                 "order_num": 0,
-                "name": "Test criterion",
+                "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
-                        "name": "No",
+                        "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
-                        "name": "Yes",
+                        "label": "Yes",
                         "explanation": "Yes explanation"
                     }
                 ],
@@ -72,19 +72,19 @@
         "criteria": [
             {
                 "order_num": 0,
-                "name": "Test criterion",
+                "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
-                        "name": "No",
+                        "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
-                        "name": "Yes",
+                        "label": "Yes",
                         "explanation": "Yes explanation"
                     }
                 ],
@@ -117,19 +117,19 @@
         "criteria": [
             {
                 "order_num": 0,
-                "name": "Test criterion",
+                "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
-                        "name": "No",
+                        "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
-                        "name": "Yes",
+                        "label": "Yes",
                         "explanation": "Yes explanation"
                     }
                 ],
@@ -161,19 +161,19 @@
         "criteria": [
             {
                 "order_num": 0,
-                "name": "Test criterion",
+                "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
-                        "name": "No",
+                        "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
-                        "name": "Yes",
+                        "label": "Yes",
                         "explanation": "Yes explanation"
                     }
                 ],
@@ -207,19 +207,19 @@
         "criteria": [
             {
                 "order_num": 0,
-                "name": "Test criterion",
+                "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
-                        "name": "No",
+                        "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
-                        "name": "Yes",
+                        "label": "Yes",
                         "explanation": "Yes explanation"
                     }
                 ],
@@ -253,19 +253,19 @@
         "criteria": [
             {
                 "order_num": "Hello",
-                "name": "Test criterion",
+                "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
-                        "name": "No",
+                        "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
-                        "name": "Yes",
+                        "label": "Yes",
                         "explanation": "Yes explanation"
                     }
                 ],
@@ -291,19 +291,19 @@
         "criteria": [
             {
                 "order_num": 0,
-                "name": "Test criterion",
+                "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
-                        "name": "No",
+                        "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
-                        "name": "Yes",
+                        "label": "Yes",
                         "explanation": "Yes explanation"
                     }
                 ]
@@ -347,18 +347,18 @@
         "criteria": [
             {
                 "order_num": 0,
-                "name": "Test criterion",
+                "label": "Test criterion",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
-                        "name": "No",
+                        "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
-                        "name": "Yes",
+                        "label": "Yes",
                         "explanation": "Yes explanation"
                     }
                 ],
@@ -384,7 +384,7 @@
         "criteria": [
             {
                 "order_num": 0,
-                "name": "Test criterion",
+                "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": "not a list",
                 "feedback": "optional"
@@ -409,13 +409,13 @@
         "criteria": [
             {
                 "order_num": 0,
-                "name": "Test criterion",
+                "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
-                        "name": "No",
+                        "label": "No",
                         "explanation": "No explanation"
                     },
                     []
@@ -442,18 +442,18 @@
         "criteria": [
             {
                 "order_num": 0,
-                "name": "Test criterion",
+                "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "points": 0,
-                        "name": "No",
+                        "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
-                        "name": "Yes",
+                        "label": "Yes",
                         "explanation": "Yes explanation"
                     }
                 ],
@@ -557,19 +557,19 @@
         "criteria": [
             {
                 "order_num": 0,
-                "name": "Test criterion",
+                "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": "a million stanley nickels",
-                        "name": "No",
+                        "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": "One Shrutebuck",
-                        "name": "Yes",
+                        "label": "Yes",
                         "explanation": "Yes explanation"
                     }
                 ],
@@ -592,19 +592,19 @@
        "criteria": [
             {
                 "order_num": 0,
-                "name": "тєѕт ¢яιтєяιση",
+                "label": "тєѕт ¢яιтєяιση",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
-                        "name": "Ṅö",
+                        "label": "Ṅö",
                         "explanation": "Ṅö explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
-                        "name": "sǝʎ",
+                        "label": "sǝʎ",
                         "explanation": "sǝʎ explanation"
                     }
                 ],
@@ -642,19 +642,19 @@
         "criteria": [
             {
                 "order_num": 0,
-                "name": "тєѕт ¢яιтєяιση",
+                "label": "тєѕт ¢яιтєяιση",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
-                        "name": "Ṅö",
+                        "label": "Ṅö",
                         "explanation": "Ṅö explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
-                        "name": "sǝʎ",
+                        "label": "sǝʎ",
                         "explanation": "sǝʎ explanation"
                     }
                 ],
@@ -690,19 +690,19 @@
         "criteria": [
             {
                 "order_num": 0,
-                "name": "тєѕт ¢яιтєяιση",
+                "label": "тєѕт ¢яιтєяιση",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
-                        "name": "Ṅö",
+                        "label": "Ṅö",
                         "explanation": "Ṅö explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
-                        "name": "sǝʎ",
+                        "label": "sǝʎ",
                         "explanation": "sǝʎ explanation"
                     }
                 ],
@@ -741,19 +741,19 @@
         "criteria": [
             {
                 "order_num": 0,
-                "name": "тєѕт ¢яιтєяιση",
+                "label": "тєѕт ¢яιтєяιση",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
-                        "name": "Ṅö",
+                        "label": "Ṅö",
                         "explanation": "Ṅö explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
-                        "name": "sǝʎ",
+                        "label": "sǝʎ",
                         "explanation": "sǝʎ explanation"
                     }
                 ],
@@ -792,19 +792,19 @@
         "criteria": [
             {
                 "order_num": 0,
-                "name": "тєѕт ¢яιтєяιση",
+                "label": "тєѕт ¢яιтєяιση",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
-                        "name": "Ṅö",
+                        "label": "Ṅö",
                         "explanation": "Ṅö explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
-                        "name": "sǝʎ",
+                        "label": "sǝʎ",
                         "explanation": "sǝʎ explanation"
                     }
                 ],
@@ -837,19 +837,19 @@
         "criteria": [
             {
                 "order_num": 0,
-                "name": "тєѕт ¢яιтєяιση",
+                "label": "тєѕт ¢яιтєяιση",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
-                        "name": "Ṅö",
+                        "label": "Ṅö",
                         "explanation": "Ṅö explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
-                        "name": "sǝʎ",
+                        "label": "sǝʎ",
                         "explanation": "sǝʎ explanation"
                     }
                 ],

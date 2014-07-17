@@ -1,6 +1,7 @@
 """
 Serialize and deserialize OpenAssessment XBlock content to/from XML.
 """
+from uuid import uuid4 as uuid
 import lxml.etree as etree
 import pytz
 import dateutil.parser
@@ -76,9 +77,16 @@ def _serialize_options(options_root, options_list):
         # Points (default to 0)
         option_el.set('points', unicode(option.get('points', 0)))
 
-        # Name (default to empty str)
+        # Name (default to a UUID)
         option_name = etree.SubElement(option_el, 'name')
-        option_name.text = unicode(option.get('name', u''))
+        if 'name' in option:
+            option_name.text = unicode(option['name'])
+        else:
+            option_name.text = unicode(uuid().hex)
+
+        # Label (default to the option name, then an empty string)
+        option_label = etree.SubElement(option_el, 'label')
+        option_label.text = unicode(option.get('label', option.get('name', u'')))
 
         # Explanation (default to empty str)
         option_explanation = etree.SubElement(option_el, 'explanation')
@@ -105,9 +113,16 @@ def _serialize_criteria(criteria_root, criteria_list):
     for criterion in _sort_by_order_num(criteria_list):
         criterion_el = etree.SubElement(criteria_root, 'criterion')
 
-        # Criterion name (default to empty string)
+        # Criterion name (default to a UUID)
         criterion_name = etree.SubElement(criterion_el, u'name')
-        criterion_name.text = unicode(criterion.get('name', ''))
+        if 'name' in criterion:
+            criterion_name.text = unicode(criterion['name'])
+        else:
+            criterion_name.text = unicode(uuid().hex)
+
+        # Criterion label (default to the name, then an empty string)
+        criterion_label = etree.SubElement(criterion_el, 'label')
+        criterion_label.text = unicode(criterion.get('label', criterion.get('name', u'')))
 
         # Criterion prompt (default to empty string)
         criterion_prompt = etree.SubElement(criterion_el, 'prompt')
@@ -247,6 +262,16 @@ def _parse_options_xml(options_root):
         else:
             raise UpdateFromXmlError(_('Every "option" element must contain a "name" element.'))
 
+        # Option label
+        # Backwards compatibility: Older problem definitions won't have this.
+        # If no label is defined, default to the option name.
+        option_label = option.find('label')
+        option_dict['label'] = (
+            _safe_get_text(option_label)
+            if option_label is not None
+            else option_dict['name']
+        )
+
         # Option explanation
         option_explanation = option.find('explanation')
         if option_explanation is not None:
@@ -289,6 +314,16 @@ def _parse_criteria_xml(criteria_root):
             criterion_dict['name'] = _safe_get_text(criterion_name)
         else:
             raise UpdateFromXmlError(_('Every "criterion" element must contain a "name" element.'))
+
+        # Criterion label
+        # Backwards compatibility: Older problem definitions won't have this,
+        # so if it isn't set, default to the criterion name.
+        criterion_label = criterion.find('label')
+        criterion_dict['label'] = (
+            _safe_get_text(criterion_label)
+            if criterion_label is not None
+            else criterion_dict['name']
+        )
 
         # Criterion prompt
         criterion_prompt = criterion.find('prompt')

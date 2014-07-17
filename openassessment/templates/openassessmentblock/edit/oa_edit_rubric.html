@@ -2,11 +2,11 @@
 {% spaceless %}
 <div id="oa_rubric_editor_wrapper" class="oa_editor_content_wrapper">
     <div id="openassessment_criterion_template" class="is--hidden">
-        {% include "openassessmentblock/edit/oa_edit_criterion.html" with criterion_name="" criterion_prompt="" criterion_options=False criterion_feedback="disabled" %}
+        {% include "openassessmentblock/edit/oa_edit_criterion.html" with criterion_name="" criterion_label="" criterion_prompt="" criterion_options=False criterion_feedback="disabled" %}
     </div>
 
     <div id="openassessment_option_template" class="is--hidden">
-        {% include "openassessmentblock/edit/oa_edit_option.html" with option_name="" option_points="" option_explanation="" %}
+        {% include "openassessmentblock/edit/oa_edit_option.html" with option_name="" option_label="" option_points=1 option_explanation="" %}
     </div>
 
     <div id="openassessment_rubric_instructions">
@@ -17,7 +17,7 @@
 
     <ul id="openassessment_criterion_list" >
         {% for criterion in criteria %}
-            {% include "openassessmentblock/edit/oa_edit_criterion.html" with criterion_name=criterion.name criterion_prompt=criterion.prompt criterion_options=criterion.options criterion_feedback=criterion.feedback %}
+            {% include "openassessmentblock/edit/oa_edit_criterion.html" with criterion_name=criterion.name criterion_label=criterion.label criterion_prompt=criterion.prompt criterion_options=criterion.options criterion_feedback=criterion.feedback %}
         {% endfor %}
     </ul>
 
