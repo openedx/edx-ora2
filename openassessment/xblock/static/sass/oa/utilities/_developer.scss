@@ -377,6 +377,46 @@
 
   #oa_rubric_editor_wrapper{
 
+    #openassessment_rubric_validation_alert{
+      -webkit-animation: notificationSlideDown 1s ease-in-out 1;
+      -moz-animation: notificationSlideDown 1s ease-in-out 1;
+      animation: notificationSlideDown 1s ease-in-out 1;
+      -webkit-animation-fill-mode: forwards;
+      -moz-animation-fill-mode: forwards;
+      animation-fill-mode: forwards;
+
+      background-color: #323232;
+      height: auto;
+      border-bottom: 3px solid rgb(192, 172, 0);
+      padding: 10px;
+      position: absolute;
+      z-index: 10;
+
+      .openassessment_alert_icon:before{
+        font-family: FontAwesome;
+        content: "\f071";
+        display: inline-block;
+        color: rgb(192, 172, 0);
+        float: left;
+        font-size: 200%;
+        margin: 20px 0px 0px 25px;
+      }
+      .openassessment_alert_header {
+        width: 85%;
+        margin: 0 5% 0 10%;
+
+        .openassessment_alert_title {
+          width: auto;
+          color: white;
+        }
+
+        .openassessment_alert_message {
+          font-size: 80%;
+          color: darkgray;
+        }
+      }
+    }
+
     .wrapper-comp-settings{
       display: initial;
     }
@@ -828,6 +868,9 @@
   }
 }
 
+.openassessment_error_field{
+  background-color: $edx-pink-l4;
+}
 
 //---------------------------
 // Developer Styles for Image Submission
