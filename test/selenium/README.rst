@@ -15,7 +15,7 @@ To use the tests:
 .. code:: bash
 
     cd edx-ora2
-    make install-test
+    pip install -r requirements/test-acceptance.txt
 
 
 2. Run the tests
