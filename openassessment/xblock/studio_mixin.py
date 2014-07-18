@@ -8,14 +8,13 @@ from uuid import uuid4
 from django.template import Context
 from django.template.loader import get_template
 from django.utils.translation import ugettext as _
-from dateutil.parser import parse as parse_date
-import pytz
 from voluptuous import MultipleInvalid
 from xblock.core import XBlock
+from xblock.fields import List, Scope
 from xblock.fragment import Fragment
-from openassessment.xblock import xml
+from openassessment.xblock.defaults import DEFAULT_EDITOR_ASSESSMENTS_ORDER
 from openassessment.xblock.validation import validator
-from openassessment.xblock.data_conversion import create_rubric_dict
+from openassessment.xblock.data_conversion import create_rubric_dict, make_django_template_key
 from openassessment.xblock.schema import EDITOR_UPDATE_SCHEMA
 from openassessment.xblock.resolve_dates import resolve_dates
 
@@ -38,6 +37,17 @@ class StudioMixin(object):
             ]
         }
     ]
+
+    # Since the XBlock problem definition contains only assessment
+    # modules that are enabled, we need to keep track of the order
+    # that the user left assessments in the editor, including
+    # the ones that were disabled.  This allows us to keep the order
+    # that the user specified.
+    editor_assessments_order = List(
+        default=DEFAULT_EDITOR_ASSESSMENTS_ORDER,
+        scope=Scope.content,
+        help="The order to display assessments in the editor."
+    )
 
     def studio_view(self, context=None):
         """
@@ -79,8 +89,7 @@ class StudioMixin(object):
 
         submission_start, submission_due = date_ranges[0]
         assessments = self._assessments_editor_context(date_ranges[1:])
-
-        used_assessments, unused_assessments = self._get_assessment_order_and_use()
+        editor_assessments_order = self._editor_assessments_order_context()
 
         # Every rubric requires one criterion. If there is no criteria
         # configured for the XBlock, return one empty default criterion, with
@@ -97,9 +106,11 @@ class StudioMixin(object):
             'assessments': assessments,
             'criteria': criteria,
             'feedbackprompt': self.rubric_feedback_prompt,
-            'unused_assessments': unused_assessments,
-            'used_assessments': used_assessments,
-            'allow_file_upload': self.allow_file_upload
+            'allow_file_upload': self.allow_file_upload,
+            'editor_assessments_order': [
+                make_django_template_key(asmnt)
+                for asmnt in editor_assessments_order
+            ],
         }
 
     @XBlock.json_handler
@@ -133,6 +144,11 @@ class StudioMixin(object):
             logger.exception('Editor context is invalid')
             return {'success': False, 'msg': _('Error updating XBlock configuration')}
 
+        # Check that the editor assessment order contains all the assessments
+        if set(DEFAULT_EDITOR_ASSESSMENTS_ORDER) != set(data['editor_assessments_order']):
+            logger.exception('editor_assessments_order does not contain all expected assessment types')
+            return {'success': False, 'msg': _('Error updating XBlock configuration')}
+
         # Backwards compatibility: We used to treat "name" as both a user-facing label
         # and a unique identifier for criteria and options.
         # Now we treat "name" as a unique identifier, and we've added an additional "label"
@@ -162,6 +178,7 @@ class StudioMixin(object):
         self.prompt = data['prompt']
         self.rubric_criteria = data['criteria']
         self.rubric_assessments = data['assessments']
+        self.editor_assessments_order = data['editor_assessments_order']
         self.rubric_feedback_prompt = data['feedback_prompt']
         self.submission_start = data['submission_start']
         self.submission_due = data['submission_due']
@@ -206,8 +223,7 @@ class StudioMixin(object):
         for asmnt, date_range in zip(self.rubric_assessments, assessment_dates):
             # Django Templates cannot handle dict keys with dashes, so we'll convert
             # the dashes to underscores.
-            name = asmnt['name']
-            template_name = name.replace('-', '_')
+            template_name = make_django_template_key(asmnt['name'])
             assessments[template_name] = copy.deepcopy(asmnt)
             assessments[template_name]['start'] = date_range[0]
             assessments[template_name]['due'] = date_range[1]
@@ -246,25 +262,33 @@ class StudioMixin(object):
 
         return assessments
 
-    def _get_assessment_order_and_use(self):
+    def _editor_assessments_order_context(self):
         """
-        Returns the names of assessments that should be displayed to the author, in the format that
-        our template expects, and in the order in which they are currently stored in the OA problem
-        definition.
+        Create a list of assessment names in the order
+        the user last set in the editor, including
+        assessments that are not currently enabled.
 
         Returns:
-            Tuple of the form ((list of str), (list of str))
-                Between the two lists, all of the assessment modules that the author should see are displayed.
+            list of assessment names
+
         """
-        used_assessments = []
+        order = copy.deepcopy(self.editor_assessments_order)
 
-        for assessment in self.rubric_assessments:
-            used_assessments.append(
-                assessment['name'].replace('-','_')
-            )
+        # Backwards compatibility:
+        # If the editor assessments order doesn't match the problem order,
+        # fall back to the problem order.
+        # This handles the migration of problems created pre-authoring,
+        # which will have the default editor order.
+        used_assessments = [asmnt['name'] for asmnt in self.valid_assessments]
+        problem_order_indices = [
+            order.index(asmnt_name) for asmnt_name in used_assessments
+            if asmnt_name in order
+        ]
+        if problem_order_indices != sorted(problem_order_indices):
+            unused_assessments = list(set(DEFAULT_EDITOR_ASSESSMENTS_ORDER) - set(used_assessments))
+            return sorted(unused_assessments) + used_assessments
 
-        # NOTE: This is a perfect opportunity to gate the author to allow or disallow Example Based Assessment.
-        all_assessments = {'student_training', 'peer_assessment', 'self_assessment', 'example_based_assessment'}
-        unused_assessments = list(all_assessments - set(used_assessments))
-
-        return used_assessments, unused_assessments
+        # Forwards compatibility:
+        # Include any additional assessments that may have been added since the problem was created.
+        else:
+            return order + list(set(DEFAULT_EDITOR_ASSESSMENTS_ORDER) - set(order))

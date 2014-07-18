@@ -132,3 +132,9 @@ DEFAULT_ASSESSMENT_MODULES = [
     DEFAULT_SELF_ASSESSMENT,
 ]
 
+DEFAULT_EDITOR_ASSESSMENTS_ORDER = [
+    "student-training",
+    "peer-assessment",
+    "self-assessment",
+    "example-based-assessment"
+]

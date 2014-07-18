@@ -2,12 +2,12 @@
 View-level tests for Studio view of OpenAssessment XBlock.
 """
 
+import copy
 import json
 import datetime as dt
 import pytz
 from ddt import ddt, file_data
 from .base import scenario, XBlockHandlerTestCase
-import xml.etree.ElementTree as etree
 
 
 @ddt
@@ -15,6 +15,39 @@ class StudioViewTest(XBlockHandlerTestCase):
     """
     Test the view and handlers for editing the OpenAssessment XBlock in Studio.
     """
+    UPDATE_EDITOR_DATA = {
+        "title": "Test title",
+        "prompt": "Test prompt",
+        "feedback_prompt": "Test feedback prompt",
+        "submission_start": "4014-02-10T09:46",
+        "submission_due": "4014-02-27T09:46",
+        "allow_file_upload": False,
+        "assessments": [{"name": "self-assessment"}],
+        "editor_assessments_order": [
+            "example-based-assessment",
+            "student-training",
+            "peer-assessment",
+            "self-assessment",
+        ],
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "Test criterion",
+                "label": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "feedback": "disabled",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "Test option",
+                        "label": "Test option",
+                        "explanation": "Test explanation"
+                    }
+                ]
+            },
+        ]
+    }
 
     RUBRIC_CRITERIA_WITH_AND_WITHOUT_NAMES = [
         {
@@ -55,6 +88,13 @@ class StudioViewTest(XBlockHandlerTestCase):
         }
     ]
 
+    ASSESSMENT_CSS_IDS = {
+        "example-based-assessment": "oa_ai_assessment_editor",
+        "peer-assessment": "oa_peer_assessment_editor",
+        "self-assessment": "oa_self_assessment_editor",
+        "student-training": "oa_student_training_editor"
+    }
+
     @scenario('data/basic_scenario.xml')
     def test_render_studio_view(self, xblock):
         frag = self.runtime.render(xblock, 'studio_view')
@@ -67,25 +107,33 @@ class StudioViewTest(XBlockHandlerTestCase):
 
     @file_data('data/update_xblock.json')
     @scenario('data/basic_scenario.xml')
-    def test_update_context(self, xblock, data):
+    def test_update_editor_context(self, xblock, data):
         xblock.published_date = None
         resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
         self.assertTrue(resp['success'], msg=resp.get('msg'))
 
     @scenario('data/basic_scenario.xml')
+    def test_update_editor_context_saves_assessment_order(self, xblock):
+        # Update the XBlock with a different editor assessment order
+        data = copy.deepcopy(self.UPDATE_EDITOR_DATA)
+        data['editor_assessments_order'] = [
+            "example-based-assessment",
+            "student-training",
+            "peer-assessment",
+            "self-assessment",
+        ]
+        xblock.published_date = None
+        resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
+        self.assertTrue(resp['success'], msg=resp.get('msg'))
+        self.assertEqual(xblock.editor_assessments_order, data['editor_assessments_order'])
+
+    @scenario('data/basic_scenario.xml')
     def test_update_editor_context_assign_unique_names(self, xblock):
         # Update the XBlock with a rubric that is missing
         # some of the (unique) names for rubric criteria/options.
-        data = {
-            "title": "Test title",
-            "prompt": "Test prompt",
-            "feedback_prompt": "Test feedback prompt",
-            "submission_start": "4014-02-10T09:46",
-            "submission_due": "4014-02-27T09:46",
-            "allow_file_upload": False,
-            "assessments": [{"name": "self-assessment"}],
-            "criteria": self.RUBRIC_CRITERIA_WITH_AND_WITHOUT_NAMES
-        }
+        data = copy.deepcopy(self.UPDATE_EDITOR_DATA)
+        data['criteria'] = self.RUBRIC_CRITERIA_WITH_AND_WITHOUT_NAMES
+
         xblock.published_date = None
         resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
         self.assertTrue(resp['success'], msg=resp.get('msg'))
@@ -158,69 +206,68 @@ class StudioViewTest(XBlockHandlerTestCase):
         self.assertFalse(resp['is_released'])
         self.assertIn('msg', resp)
 
-    @scenario('data/example_based_assessment.xml')
-    def test_assessment_module_ordering_example_based(self, xblock):
-        self.assert_assessment_order_(xblock)
-
-    @scenario('data/basic_scenario.xml')
-    def test_assessment_module_ordering_basic(self, xblock):
-        self.assert_assessment_order_(xblock)
-
     @scenario('data/self_then_peer.xml')
-    def test_assessment_module_ordering_self_peer(self, xblock):
-        self.assert_assessment_order_(xblock)
+    def test_render_editor_assessment_order(self, xblock):
+        # Initially, the editor assessment order should be the default
+        # (because we haven't set it yet by saving in Studio)
+        # However, the assessment order IS set when we import the problem from XML,
+        # and it differs from the default order (self->peer instead of peer->self)
+        # Expect that the editor uses the order defined by the problem.
+        self._assert_rendered_editor_order(xblock, [
+            'example-based-assessment',
+            'student-training',
+            'self-assessment',
+            'peer-assessment',
+        ])
 
-    @scenario('data/student_training.xml')
-    def test_assessment_module_ordering_student_training(self, xblock):
-        self.assert_assessment_order_(xblock)
+        # Change the order (simulates what would happen when the author saves).
+        xblock.editor_assessments_order = [
+            'student-training',
+            'example-based-assessment',
+            'peer-assessment',
+            'self-assessment',
+        ]
+        xblock.rubric_assessments = [
+            xblock.get_assessment_module('peer-assessment'),
+            xblock.get_assessment_module('self-assessment'),
+        ]
 
-    @scenario('data/self_only_scenario.xml')
-    def test_assessment_module_ordering_self_only(self, xblock):
-        self.assert_assessment_order_(xblock)
+        # Expect that the rendered view reflects the new order
+        self._assert_rendered_editor_order(xblock, [
+            'student-training',
+            'example-based-assessment',
+            'peer-assessment',
+            'self-assessment',
+        ])
 
-    def assert_assessment_order_(self, xblock):
+    def _assert_rendered_editor_order(self, xblock, expected_assessment_order):
         """
-        Asserts that the assessment module editors are rendered in the correct order.
-        Renders the Studio View, and then examines the html body for the tags that we anticipate
-        to be in the tag for each editor, and compare the order. If it is anything besides
-        strictly increasing, we say that they rendered in the incorrect order.
+        Render the XBlock Studio editor view and verify that the
+        assessments were listed in a particular order.
+
+        Args:
+            xblock (OpenAssessmentBlock)
+            expected_assessment_order (list of string): The list of assessment names,
+                in the order we expect.
+
+        Raises:
+            AssertionError
+
         """
-        frag = self.runtime.render(xblock, 'studio_view')
-        frag = frag.body_html()
-
-        assessments_in_order = self._find_assessment_order(xblock)
-
-        assessment_indicies = [frag.find(assessment) for assessment in assessments_in_order]
-
-        # Asserts that for any pairwise comparison of elements n and n-1 in the lookup of indicies
-        # the value at n will be greater than n-1 (i.e. the place we find one ID is after the one before it)
-        self.assertTrue(
-            all(a < b for a, b in zip(assessment_indicies, assessment_indicies[1:]))
-        )
-
-    def _find_assessment_order(self, xblock):
-        """
-        Finds the order that we anticipate HTML ID tags of the section editors within the settings editor.
-
-        Returns:
-            A list with the four setting editor IDs, in the the order that we would anticipate given
-            the Xblock's problem definition that is handed in.
-        """
-        assessments = []
-        for assessment in xblock.rubric_assessments:
-            assessments.append(assessment['name'].replace('-', '_'))
-
-        all_assessments = {'student_training', 'peer_assessment', 'self_assessment', 'example_based_assessment'}
-        unused_assessments = list(all_assessments - set(assessments))
-        assessments.extend(unused_assessments)
-
-        id_dictionary = {
-            "example_based_assessment": "oa_ai_assessment_editor",
-            "peer_assessment": "oa_peer_assessment_editor",
-            "self_assessment": "oa_self_assessment_editor",
-            "student_training": "oa_student_training_editor"
-        }
-        return [id_dictionary[name] for name in assessments]
+        rendered_html = self.runtime.render(xblock, 'studio_view').body_html()
+        assessment_indices = [
+            {
+                "name": asmnt_name,
+                "index": rendered_html.find(asmnt_css_id)
+            }
+            for asmnt_name, asmnt_css_id
+            in self.ASSESSMENT_CSS_IDS.iteritems()
+        ]
+        actual_assessment_order = [
+            index_dict['name']
+            for index_dict in sorted(assessment_indices, key=lambda d: d['index'])
+        ]
+        self.assertEqual(actual_assessment_order, expected_assessment_order)
 
     @scenario('data/basic_scenario.xml')
     def test_editor_context_assigns_labels(self, xblock):
