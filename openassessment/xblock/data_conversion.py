@@ -73,3 +73,19 @@ def create_rubric_dict(prompt, criteria):
         "prompt": prompt,
         "criteria": criteria
     }
+
+
+def make_django_template_key(key):
+    """
+    Django templates access dictionary items using dot notation,
+    which means that dictionary keys with hyphens don't work.
+    This function sanitizes a key for use in Django templates
+    by replacing hyphens with underscores.
+
+    Args:
+        key (basestring): The key to sanitize.
+
+    Returns:
+        basestring
+    """
+    return key.replace('-', '_')

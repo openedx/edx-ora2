@@ -75,6 +75,13 @@ describe("OpenAssessment.Server", function() {
         }
     ];
 
+    var EDITOR_ASSESSMENTS_ORDER = [
+        "student_training",
+        "peer_assessment",
+        "self_assessment",
+        "example_based_assessment"
+    ];
+
     var TITLE = 'This is the title.';
     var SUBMISSION_START = '2012-10-09T00:00:00';
     var SUBMISSION_DUE = '2015-10-10T00:00:00';
@@ -199,9 +206,8 @@ describe("OpenAssessment.Server", function() {
         });
     });
 
-    it("updates the XBlock's Context definition", function() {
+    it("updates the XBlock's editor context definition", function() {
         stubAjax(true, { success: true });
-
         server.updateEditorContext({
             prompt: PROMPT,
             feedbackPrompt: FEEDBACK_PROMPT,
@@ -209,7 +215,8 @@ describe("OpenAssessment.Server", function() {
             submissionStart: SUBMISSION_START,
             submissionDue: SUBMISSION_DUE,
             criteria: CRITERIA,
-            assessments: ASSESSMENTS
+            assessments: ASSESSMENTS,
+            editorAssessmentsOrder: EDITOR_ASSESSMENTS_ORDER
         });
         expect($.ajax).toHaveBeenCalledWith({
             type: "POST", url: '/update_editor_context',
@@ -220,7 +227,8 @@ describe("OpenAssessment.Server", function() {
                 submission_start: SUBMISSION_START,
                 submission_due: SUBMISSION_DUE,
                 criteria: CRITERIA,
-                assessments: ASSESSMENTS
+                assessments: ASSESSMENTS,
+                editor_assessments_order: EDITOR_ASSESSMENTS_ORDER
             })
         });
     });

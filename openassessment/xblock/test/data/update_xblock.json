@@ -41,7 +41,8 @@
                 "start": null,
                 "due": null
             }
-        ]
+        ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"]
     },
 
     "unicode": {
@@ -86,7 +87,8 @@
                 "start": null,
                 "due": null
             }
-        ]
+        ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"]
     },
 
     "student_training": {
@@ -146,7 +148,8 @@
                 "start": null,
                 "due": "4014-03-10T00:00"
             }
-        ]
+        ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"]
     },
 
     "already_has_criteria_and_options_names_assigned": {
@@ -194,6 +197,7 @@
                 "start": null,
                 "due": null
             }
-        ]
+        ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"]
     }
 }

@@ -18,6 +18,7 @@
                 "due": null
             }
         ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
         "submission_due": "2014-02-27T09:46",
         "submission_start": "2014-02-10T09:46"
     },
@@ -44,6 +45,7 @@
                         "explanation": "Yes explanation"
                     }
                 ],
+                "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
                 "feedback": "optional"
             }
         ],
@@ -106,6 +108,7 @@
                 "due": null
             }
         ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
         "submission_due": "2014-02-27T09:46",
         "submission_start": "2014-02-10T09:46"
     },
@@ -151,6 +154,7 @@
                 "due": null
             }
         ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
         "submission_start": "2014-02-10T09:46"
     },
 
@@ -182,19 +186,20 @@
         ],
         "title": "My new title.",
         "assessments": [
-                {
-                    "name": "peer-assessment",
-                    "must_grade": 5,
-                    "must_be_graded_by": 3,
-                    "start": null,
-                    "due": null
-                },
-                {
-                    "name": "self-assessment",
-                    "start": null,
-                    "due": null
-                }
-            ],
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": null
+            },
+            {
+                "name": "self-assessment",
+                "start": null,
+                "due": null
+            }
+        ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
         "submission_due": "2012-02-27T09:46",
         "submission_start": "2015-02-10T09:46",
         "expected_error": "the start date '2015-02-10 09:46:00+00:00' cannot be later than the due date '2012-02-27 09:46:00+00:00'"
@@ -228,19 +233,20 @@
         ],
         "title": "My new title.",
         "assessments": [
-                {
-                    "name": "peer-assessment",
-                    "must_grade": 5,
-                    "must_be_graded_by": 3,
-                    "start": null,
-                    "due": null
-                },
-                {
-                    "name": "self-assessment",
-                    "start": null,
-                    "due": "2003-01-02T00:00"
-                }
-            ],
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": null
+            },
+            {
+                "name": "self-assessment",
+                "start": null,
+                "due": "2003-01-02T00:00"
+            }
+        ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
         "submission_due": "2012-02-27T09:46",
         "submission_start": null,
         "expected_error": "cannot be later"
@@ -274,12 +280,13 @@
         ],
         "title": "My new title.",
         "assessments": [
-                {
-                    "name": "self-assessment",
-                    "start": null,
-                    "due": null
-                }
-            ],
+            {
+                "name": "self-assessment",
+                "start": null,
+                "due": null
+            }
+        ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
         "submission_due": null,
         "submission_start": null
     },
@@ -317,6 +324,7 @@
                 "due": null
             }
         ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
         "submission_due": null,
         "submission_start": null
     },
@@ -336,6 +344,7 @@
                 "due": null
             }
         ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
         "submission_due": null,
         "submission_start": null
     },
@@ -373,6 +382,7 @@
                 "due": null
             }
         ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
         "submission_due": null,
         "submission_start": null
     },
@@ -398,6 +408,7 @@
                 "due": null
             }
         ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
         "submission_due": null,
         "submission_start": null
     },
@@ -431,6 +442,7 @@
                 "due": null
             }
         ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
         "submission_due": null,
         "submission_start": null
     },
@@ -468,6 +480,7 @@
                 "due": null
             }
         ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
         "submission_due": null,
         "submission_start": null
     },
@@ -506,6 +519,7 @@
                 "due": null
             }
         ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
         "submission_due": null,
         "submission_start": null,
         "expected_error": "error updating xblock configuration"
@@ -545,6 +559,7 @@
                 "due": null
             }
         ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
         "submission_due": null,
         "submission_start": null,
         "expected_error": "error updating xblock configuration"
@@ -584,6 +599,7 @@
                 "due": null
             }
         ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
         "submission_due": null,
         "submission_start": null
     },
@@ -635,7 +651,8 @@
                 "start": null,
                 "due": "4014-03-10T00:00"
             }
-        ]
+        ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"]
     },
 
     "student_training_example_missing_options_selected": {
@@ -683,7 +700,8 @@
                 "start": null,
                 "due": "4014-03-10T00:00"
             }
-        ]
+        ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"]
     },
 
     "student_training_example_missing_criterion": {
@@ -734,7 +752,8 @@
                 "start": null,
                 "due": "4014-03-10T00:00"
             }
-        ]
+        ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"]
     },
 
     "student_training_example_missing_option": {
@@ -785,7 +804,8 @@
                 "start": null,
                 "due": "4014-03-10T00:00"
             }
-        ]
+        ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"]
     },
 
     "student_training_no_examples": {
@@ -830,6 +850,7 @@
                 "due": "4014-03-10T00:00"
             }
         ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
         "expected_error": "you must provide at least one example response for student training"
     },
 
@@ -882,6 +903,148 @@
                 "due": "4014-03-10T00:00"
             }
         ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
         "expected_error": "example 1 has an extra option"
+    },
+
+    "missing_editor_assessments_order": {
+        "criteria": [
+            {
+                "order_num": 0,
+                "label": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "label": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "label": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ],
+                "feedback": "required"
+            }
+        ],
+        "prompt": "My new prompt.",
+        "feedback_prompt": "Feedback prompt",
+        "submission_due": "4014-02-27T09:46",
+        "submission_start": "4014-02-10T09:46",
+        "title": "My new title.",
+        "allow_file_upload": false,
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": "4014-03-10T00:00"
+            },
+            {
+                "name": "self-assessment",
+                "start": null,
+                "due": null
+            }
+        ]
+    },
+
+    "missing_assessment_in_editor_assessments_order": {
+        "criteria": [
+            {
+                "order_num": 0,
+                "label": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "label": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "label": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ],
+                "feedback": "required"
+            }
+        ],
+        "prompt": "My new prompt.",
+        "feedback_prompt": "Feedback prompt",
+        "submission_due": "4014-02-27T09:46",
+        "submission_start": "4014-02-10T09:46",
+        "title": "My new title.",
+        "allow_file_upload": false,
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": "4014-03-10T00:00"
+            },
+            {
+                "name": "self-assessment",
+                "start": null,
+                "due": null
+            }
+        ],
+        "editor_assessments_order": ["student-training", "self-assessment", "example-based-assessment"]
+    },
+
+    "unrecognized_assessment_in_editor_assessments_order": {
+        "criteria": [
+            {
+                "order_num": 0,
+                "label": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "label": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "label": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ],
+                "feedback": "required"
+            }
+        ],
+        "prompt": "My new prompt.",
+        "feedback_prompt": "Feedback prompt",
+        "submission_due": "4014-02-27T09:46",
+        "submission_start": "4014-02-10T09:46",
+        "title": "My new title.",
+        "allow_file_upload": false,
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": "4014-03-10T00:00"
+            },
+            {
+                "name": "self-assessment",
+                "start": null,
+                "due": null
+            }
+        ],
+        "editor_assessments_order": [
+            "student-training", "peer-assessment",
+            "self-assessment", "example-based-assessment",
+            "NOT A VALID ASSESSMENT"
+        ]
     }
 }

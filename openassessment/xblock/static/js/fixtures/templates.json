@@ -452,12 +452,10 @@
                     "due": ""
                 }
             },
-            "used_assessments": [
-                "peer_assessment",
-                "self_assessment"
-            ],
-            "unused_assessments": [
+            "editor_assessments_order": [
                 "student_training",
+                "peer_assessment",
+                "self_assessment",
                 "example_based_assessment"
             ]
         },

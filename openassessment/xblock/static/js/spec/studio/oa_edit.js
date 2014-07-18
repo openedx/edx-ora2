@@ -41,6 +41,84 @@ describe("OpenAssessment.StudioView", function() {
     var server = null;
     var view = null;
 
+    var EXPECTED_SERVER_DATA = {
+        title: "The most important of all questions.",
+        prompt: "How much do you like waffles?",
+        feedbackPrompt: "",
+        submissionStart: null,
+        submissionDue: null,
+        imageSubmissionEnabled: false,
+        criteria: [
+            {
+                order_num: 0,
+                label: "Criterion with two options",
+                name: "52bfbd0eb3044212b809564866e77079",
+                prompt: "Prompt for criterion with two options",
+                feedback: "disabled",
+                options: [
+                    {
+                        order_num: 0,
+                        points: 1,
+                        name: "85bbbecbb6a343f8a2146cde0e609ad0",
+                        label: "Fair",
+                        explanation: "Fair explanation"
+                    },
+                    {
+                        order_num: 1,
+                        points: 2,
+                        name: "5936d5b9e281403ca123964055d4719a",
+                        label: "Good",
+                        explanation: "Good explanation"
+                    }
+                ]
+            },
+            {
+                name: "d96bb68a69ee4ccb8f86c753b6924f75",
+                label: "Criterion with no options",
+                prompt: "Prompt for criterion with no options",
+                order_num: 1,
+                options: [],
+                feedback: "required",
+            },
+            {
+                name: "2ca052403b06424da714f7a80dfb954d",
+                label: "Criterion with optional feedback",
+                prompt: "Prompt for criterion with optional feedback",
+                order_num: 2,
+                feedback: "optional",
+                options: [
+                    {
+                        order_num: 0,
+                        points: 2,
+                        name: "d7445661a89b4b339b9788cb7225a603",
+                        label: "Good",
+                        explanation: "Good explanation"
+                    }
+                ],
+            }
+        ],
+        assessments: [
+            {
+                name: "peer-assessment",
+                start: null,
+                due: null,
+                must_grade: 5,
+                must_be_graded_by: 3
+            },
+            {
+                name: "self-assessment",
+                start: null,
+                due: null
+            }
+        ],
+        editorAssessmentsOrder: [
+            "student-training",
+            "peer-assessment",
+            "self-assessment",
+            "example-based-assessment"
+        ]
+    };
+
     beforeEach(function() {
         // Load the DOM fixture
         jasmine.getFixtures().fixturesPath = 'base/fixtures';
@@ -55,6 +133,40 @@ describe("OpenAssessment.StudioView", function() {
         // Create the object under test
         var el = $('#openassessment-editor').get(0);
         view = new OpenAssessment.StudioView(runtime, el, server);
+    });
+
+    it("sends the editor context to the server", function() {
+        // Save the current state of the problem
+        // (defined by the current state of the DOM),
+        // and verify that the correct information was sent
+        // to the server.  This depends on the HTML fixture
+        // used for this test.
+        view.save();
+
+        // Top-level attributes
+        expect(server.receivedData.title).toEqual(EXPECTED_SERVER_DATA.title);
+        expect(server.receivedData.prompt).toEqual(EXPECTED_SERVER_DATA.prompt);
+        expect(server.receivedData.feedbackPrompt).toEqual(EXPECTED_SERVER_DATA.feedbackPrompt);
+        expect(server.receivedData.submissionStart).toEqual(EXPECTED_SERVER_DATA.submissionStart);
+        expect(server.receivedData.submissionDue).toEqual(EXPECTED_SERVER_DATA.submissionDue);
+        expect(server.receivedData.imageSubmissionEnabled).toEqual(EXPECTED_SERVER_DATA.imageSubmissionEnabled);
+
+        // Criteria
+        for (var criterion_idx = 0; criterion_idx < EXPECTED_SERVER_DATA.criteria.length; criterion_idx++) {
+            var actual_criterion = server.receivedData.criteria[criterion_idx];
+            var expected_criterion = EXPECTED_SERVER_DATA.criteria[criterion_idx];
+            expect(actual_criterion).toEqual(expected_criterion);
+        }
+
+        // Assessments
+        for (var asmnt_idx = 0; asmnt_idx < EXPECTED_SERVER_DATA.assessments.length; asmnt_idx++) {
+            var actual_asmnt = server.receivedData.assessments[asmnt_idx];
+            var expected_asmnt = EXPECTED_SERVER_DATA.assessments[asmnt_idx];
+            expect(actual_asmnt).toEqual(expected_asmnt);
+        }
+
+        // Editor assessment order
+        expect(server.receivedData.editorAssessmentsOrder).toEqual(EXPECTED_SERVER_DATA.editorAssessmentsOrder);
     });
 
     it("confirms changes for a released problem", function() {
