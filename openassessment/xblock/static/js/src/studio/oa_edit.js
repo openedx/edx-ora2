@@ -146,7 +146,7 @@ OpenAssessment.StudioView.prototype = {
             handle: ".drag-handle",
             cursorAt: {top: 20}
         });
-        $('#openassessment_assessment_module_settings_editors', view.element).disableSelection();
+        $('#openassessment_assessment_module_settings_editors .drag-handle', view.element).disableSelection();
     },
 
     /**
