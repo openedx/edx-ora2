@@ -93,7 +93,7 @@ OpenAssessment.StudioView.prototype = {
     initializeTabs: function() {
         // If this is the first editor that the user has opened, default to the prompt view.
         if (typeof(OpenAssessment.lastOpenEditingTab) === "undefined") {
-            OpenAssessment.lastOpenEditingTab = 0;
+            OpenAssessment.lastOpenEditingTab = 2;
         }
         // Initialize JQuery UI Tabs, and activates the appropriate tab.
         $(".openassessment_editor_content_and_tabs", this.element)
