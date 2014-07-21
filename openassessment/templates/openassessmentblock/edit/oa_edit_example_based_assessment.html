@@ -1,0 +1,22 @@
+{% load i18n %}
+{% spaceless %}
+<li class="openassessment_assessment_module_settings_editor" id="oa_ai_assessment_editor">
+    <div class = "drag-handle action"></div>
+    <div class = "openassessment_inclusion_wrapper">
+        <input id="include_ai_assessment" type="checkbox"
+                {% if assessments.example_based_assessment %} checked="true" {% endif %}>
+        <label for="include_ai_assessment">{% trans "Step: Example-Based Assessment" %}</label>
+    </div>
+    <div class="openassessment_assessment_module_editor">
+        <p id="ai_assessment_description_closed" class="openassessment_description_closed {% if assessments.example_based_assessment %} is--hidden {% endif %}">
+            {% trans "An algorithm assesses students' responses by comparing the responses to pre-assessed sample responses that the instructor provides."%}
+        </p>
+        <div id="ai_assessment_settings_editor" class="assessment_settings_wrapper {% if not assessments.example_based_assessment %} is--hidden {% endif %}">
+            <p class="openassessment_description">
+                {% trans "Enter one or more sample responses that you've created, together with the scores you would give those responses. Be sure to format the responses and scores according to the placeholder text below. The algorithm assesses students' responses by comparing them to the sample responses and scores that you provide."%}
+            </p>
+            <textarea id="ai_training_examples">{{ assessments.example_based_assessment.examples }}</textarea>
+        </div>
+    </div>
+</li>
+{% endspaceless %}

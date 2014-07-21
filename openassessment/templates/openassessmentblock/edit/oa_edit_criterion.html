@@ -1,0 +1,64 @@
+{% load i18n %}
+{% spaceless %}
+<li class="openassessment_criterion is-collapsible">
+    <div class="openassessment_criterion_header view-outline">
+        <a class="action expand-collapse collapse"><i class="icon-caret-down ui-toggle-expansion"></i></a>
+        <h6 class="openassessment_criterion_header_title">{% trans "Criterion" %}</h6>
+        <div class="openassessment_criterion_remove_button"><h2>{% trans "Remove" %}</h2></div>
+    </div>
+    <div class="openassessment_criterion_body wrapper-comp-settings">
+        <input type="hidden" class="openassessment_criterion_name" value="{{ criterion_name }}" />
+        <ul class="list-input settings-list openassessment_criterion_basic_editor">
+            <li class="field comp-setting-entry">
+                <div class="wrapper-comp-settings">
+                    <label class="openassessment_criterion_name_label setting-label">
+                        {% trans "Criterion Name" %}
+                        <input
+                            class="openassessment_criterion_label input setting-input"
+                            type="text"
+                            value="{{ criterion_label }}"
+                        >
+                    </label>
+                </div>
+            </li>
+            <li class="field comp-setting-entry">
+                <div class="wrapper-comp-settings">
+                    <label class="openassessment_criterion_prompt_label setting-label">
+                        {% trans "Criterion Prompt" %}
+                        <textarea class="openassessment_criterion_prompt setting-input">{{ criterion_prompt }}</textarea>
+                    </label>
+                </div>
+            </li>
+        </ul>
+        <ul class="openassessment_criterion_option_list">
+            {% for option in criterion_options %}
+                {% include "openassessmentblock/edit/oa_edit_option.html" with option_name=option.name option_label=option.label option_points=option.points option_explanation=option.explanation %}
+            {% endfor %}
+        </ul>
+
+        <div class="openassessment_criterion_add_option openassessment_option_header">
+            <h2>{% trans "Add Another Option"%}</h2>
+        </div>
+
+        <div class="openassessment_criterion_feedback_wrapper wrapper-comp-settings">
+            <ul class="list-input settings-list">
+                <li class="field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label class="setting-label">
+                            {% trans "Criterion Feedback" %}
+                            <select class="openassessment_criterion_feedback input setting-input">
+                                <option value="disabled">{% trans "Disabled" %}</option>
+                                <option value="optional" {% if criterion_feedback == "optional" %} selected="true" {% endif %}>{% trans "Optional" %}</option>
+                                <option value="required" {% if criterion_feedback == "required" %} selected="true" {% endif %}>{% trans "Required" %}</option>
+                            </select>
+                        </label>
+                    </div>
+                    <p class="setting-help">
+                        {% trans "Select one of the options above. This describes whether or not the student will have to provide criterion feedback." %}
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</li>
+{% endspaceless %}

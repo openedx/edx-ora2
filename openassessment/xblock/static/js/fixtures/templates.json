@@ -384,8 +384,83 @@
         "output": "oa_grade_complete.html"
     },
     {
-        "template": "openassessmentblock/oa_edit.html",
-        "context": {},
+        "template": "openassessmentblock/edit/oa_edit.html",
+        "context": {
+            "prompt": "How much do you like waffles?",
+            "title": "The most important of all questions.",
+            "submission_due": "2014-10-1T10:00:00",
+            "criteria": [
+                {
+                    "name": "52bfbd0eb3044212b809564866e77079",
+                    "label": "Criterion with two options",
+                    "prompt": "Prompt for criterion with two options",
+                    "order_num": 0,
+                    "feedback": "disabled",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 1,
+                            "name": "85bbbecbb6a343f8a2146cde0e609ad0",
+                            "label": "Fair",
+                            "explanation": "Fair explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "5936d5b9e281403ca123964055d4719a",
+                            "label": "Good",
+                            "explanation": "Good explanation"
+                        }
+                    ],
+                    "points_possible": 2
+                },
+                {
+                    "name": "d96bb68a69ee4ccb8f86c753b6924f75",
+                    "label": "Criterion with no options",
+                    "prompt": "Prompt for criterion with no options",
+                    "order_num": 0,
+                    "options": [],
+                    "feedback": "required",
+                    "points_possible": 0
+                },
+                {
+                    "name": "2ca052403b06424da714f7a80dfb954d",
+                    "label": "Criterion with optional feedback",
+                    "prompt": "Prompt for criterion with optional feedback",
+                    "order_num": 2,
+                    "feedback": "optional",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 2,
+                            "name": "d7445661a89b4b339b9788cb7225a603",
+                            "label": "Good",
+                            "explanation": "Good explanation"
+                        }
+                    ],
+                    "points_possible": 2
+                }
+            ],
+            "assessments": {
+                "peer_assessment": {
+                    "start": "",
+                    "due": "",
+                    "must_grade": 5,
+                    "must_be_graded_by": 3
+                },
+                "self_assessment": {
+                    "due": ""
+                }
+            },
+            "used_assessments": [
+                "peer_assessment",
+                "self_assessment"
+            ],
+            "unused_assessments": [
+                "student_training",
+                "example_based_assessment"
+            ]
+        },
         "output": "oa_edit.html"
     },
     {

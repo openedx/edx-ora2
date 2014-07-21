@@ -114,14 +114,16 @@ class StudentTrainingMixin(object):
                 self.submission_uuid,
                 {
                     'prompt': self.prompt,
-                    'criteria': self.rubric_criteria
+                    'criteria': self.rubric_criteria_with_labels
                 },
                 examples
             )
-
             if example:
                 context['training_essay'] = example['answer']
-                context['training_rubric'] = example['rubric']
+                context['training_rubric'] = {
+                    'criteria': example['rubric']['criteria'],
+                    'points_possible': example['rubric']['points_possible']
+                }
                 template = 'openassessmentblock/student_training/student_training.html'
             else:
                 logger.error(

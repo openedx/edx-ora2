@@ -1,0 +1,44 @@
+{
+    "missing_feedback": {
+        "rubric": {
+            "prompt": "Test Prompt",
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "prompt": "My new prompt.",
+        "submission_due": "4014-02-27T09:46:28",
+        "submission_start": "4014-02-10T09:46:28",
+        "title": "My new title.",
+        "allow_file_upload": false,
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": "",
+                "due": "4014-03-10T00:00:00"
+            },
+            {
+                "name": "self-assessment",
+                "start": "",
+                "due": ""
+            }
+        ],
+
+        "expected-assessment": "peer-assessment",
+        "expected-criterion-prompt": "Test criterion prompt"
+    }
+}

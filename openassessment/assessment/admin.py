@@ -26,7 +26,7 @@ class RubricAdmin(admin.ModelAdmin):
         """Short description of criteria for presenting in a list."""
         rubric_data = RubricSerializer.serialized_from_cache(rubric_obj)
         return u", ".join(
-            u"{}: {}".format(criterion["name"], criterion["points_possible"])
+            u"{} - {}: {}".format(criterion["name"], criterion['label'], criterion["points_possible"])
             for criterion in rubric_data["criteria"]
         )
 
@@ -88,11 +88,13 @@ class AssessmentAdmin(admin.ModelAdmin):
     def parts_summary(self, assessment_obj):
         return "<br/>".join(
             html.escape(
-                u"{}/{} - {}: {} - {}".format(
+                u"{}/{} - {} - {}: {} - {} - {}".format(
                     part.points_earned,
                     part.points_possible,
                     part.criterion.name,
+                    part.criterion.label,
                     part.option.name if part.option else "None",
+                    part.option.label if part.option else "None",
                     part.feedback,
                 )
             )

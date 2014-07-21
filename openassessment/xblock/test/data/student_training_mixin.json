@@ -7,31 +7,32 @@
             "training_num_available": 2,
             "training_essay": "This is my answer.",
             "training_rubric": {
-                "id": 2,
-                "content_hash": "de2bb2b7e2c6e3df014e53b8c65f37d511cc4344",
-                "structure_hash": "a513b20d93487d6d80e31e1d974bf22519332567",
                 "criteria": [
                     {
                         "order_num": 0,
                         "name": "Vocabulary",
+                        "label": "Vocabulary",
                         "prompt": "How varied is the vocabulary?",
                         "options": [
                             {
                                 "order_num": 0,
                                 "points": 0,
                                 "name": "Poor",
+                                "label": "Poor",
                                 "explanation": "Poor job"
                             },
                             {
                                 "order_num": 1,
                                 "points": 1,
                                 "name": "Good",
+                                "label": "Good",
                                 "explanation": "Good job"
                             },
                             {
                                 "order_num": 2,
                                 "points": 3,
                                 "name": "Excellent",
+                                "label": "Excellent",
                                 "explanation": "Excellent job"
                             }
                         ],
@@ -40,24 +41,28 @@
                     {
                         "order_num": 1,
                         "name": "Grammar",
+                        "label": "Grammar",
                         "prompt": "How correct is the grammar?",
                         "options": [
                             {
                                 "order_num": 0,
                                 "points": 0,
                                 "name": "Poor",
+                                "label": "Poor",
                                 "explanation": "Poor job"
                             },
                             {
                                 "order_num": 1,
                                 "points": 1,
                                 "name": "Good",
+                                "label": "Good",
                                 "explanation": "Good job"
                             },
                             {
                                 "order_num": 2,
                                 "points": 3,
                                 "name": "Excellent",
+                                "label": "Excellent",
                                 "explanation": "Excellent job"
                             }
                         ],

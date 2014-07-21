@@ -28,7 +28,8 @@ class CsvWriter(object):
         ],
         'assessment_part': [
             'assessment_id', 'points_earned',
-            'criterion_name', 'option_name', 'feedback'
+            'criterion_name', 'criterion_label',
+            'option_name', 'option_label', 'feedback'
         ],
         'assessment_feedback': [
             'submission_uuid', 'feedback_text', 'options'
@@ -230,7 +231,9 @@ class CsvWriter(object):
                 part.assessment.id,
                 part.points_earned,
                 part.criterion.name,
+                part.criterion.label,
                 part.option.name if part.option is not None else u"",
+                part.option.label if part.option is not None else u"",
                 part.feedback
             ])
 

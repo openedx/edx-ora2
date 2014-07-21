@@ -1,0 +1,48 @@
+{% load i18n %}
+{% spaceless %}
+<div id="oa_rubric_editor_wrapper" class="oa_editor_content_wrapper">
+    <div id="openassessment_criterion_template" class="is--hidden">
+        {% include "openassessmentblock/edit/oa_edit_criterion.html" with criterion_name="" criterion_label="" criterion_prompt="" criterion_options=False criterion_feedback="disabled" %}
+    </div>
+
+    <div id="openassessment_option_template" class="is--hidden">
+        {% include "openassessmentblock/edit/oa_edit_option.html" with option_name="" option_label="" option_points=1 option_explanation="" %}
+    </div>
+
+    <div id="openassessment_rubric_instructions">
+        <p class = openassessment_description>
+            {% trans "For open response problems, assessment is rubric-based.  Rubric criterion have point breakdowns and explanations to help students with peer and self assessment steps. For more information on how to build your rubric, see our online help documentation."%}
+        </p>
+    </div>
+
+    <ul id="openassessment_criterion_list" >
+        {% for criterion in criteria %}
+            {% include "openassessmentblock/edit/oa_edit_criterion.html" with criterion_name=criterion.name criterion_label=criterion.label criterion_prompt=criterion.prompt criterion_options=criterion.options criterion_feedback=criterion.feedback %}
+        {% endfor %}
+    </ul>
+
+    <div id="openassessment_rubric_add_criterion">
+        <h6>
+            {% trans "Add Another Criterion" %}
+        </h6>
+    </div>
+
+    <div id="openassessment_rubric_feedback_wrapper" class="wrapper-comp-settings">
+        <div id="openassessment_rubric_feedback_header">
+            <span>{% trans "Rubric Feedback" %}</span>
+        </div>
+        <ul class="list-input settings-list">
+            <li class="field comp-setting-entry">
+                <div class="wrapper-comp-setting" id="openassessment_rubric_feedback_input_wrapper">
+                    <label for="openassessment_rubric_feedback" class="setting-label">{% trans "Feedback Direction" %}</label>
+                    <textarea id="openassessment_rubric_feedback" class="input setting-input">{{ feedbackprompt }}</textarea>
+                </div>
+                <p class="setting-help">
+                    {% trans "If you would like your students to be able to provide feedback on the rubric, add a prompt to ask them for it." %}
+                </p>
+            </li>
+
+        </ul>
+    </div>
+</div>
+{% endspaceless %}

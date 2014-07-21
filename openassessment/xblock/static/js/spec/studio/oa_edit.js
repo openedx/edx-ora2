@@ -10,36 +10,23 @@ describe("OpenAssessment.StudioView", function() {
 
     // Stub server that returns dummy data or reports errors.
     var StubServer = function() {
-        this.loadError = false;
         this.updateError = false;
-        this.xml = '<openassessment></openassessment>';
         this.isReleased = false;
-
+        this.receivedData = null;
+        this.successPromise = $.Deferred(function(defer) {
+            defer.resolve();
+        });
         this.errorPromise = $.Deferred(function(defer) {
             defer.rejectWith(this, ['Test error']);
         }).promise();
 
-        this.loadXml = function() {
-            var xml = this.xml;
-            if (!this.loadError) {
-                return $.Deferred(function(defer) {
-                    defer.resolveWith(this, [xml]);
-                }).promise();
-            }
-            else {
+        this.updateEditorContext = function(kwargs) {
+            if (this.updateError) {
                 return this.errorPromise;
             }
-        };
-
-        this.updateXml = function(xml) {
-            if (!this.updateError) {
-                this.xml = xml;
-                return $.Deferred(function(defer) {
-                    defer.resolve();
-                }).promise();
-            }
             else {
-                return this.errorPromise;
+                this.receivedData = kwargs;
+                return this.successPromise;
             }
         };
 
@@ -55,7 +42,6 @@ describe("OpenAssessment.StudioView", function() {
     var view = null;
 
     beforeEach(function() {
-
         // Load the DOM fixture
         jasmine.getFixtures().fixturesPath = 'base/fixtures';
         loadFixtures('oa_edit.html');
@@ -67,32 +53,8 @@ describe("OpenAssessment.StudioView", function() {
         spyOn(runtime, 'notify');
 
         // Create the object under test
-        var el = $('#openassessment-edit').get(0);
+        var el = $('#openassessment-editor').get(0);
         view = new OpenAssessment.StudioView(runtime, el, server);
-    });
-
-    it("loads the XML definition", function() {
-        // Initialize the view
-        view.load();
-
-        // Expect that the XML definition was loaded
-        var contents = view.codeBox.getValue();
-        expect(contents).toEqual('<openassessment></openassessment>');
-    });
-
-    it("saves the XML definition", function() {
-        // Update the XML
-        view.codeBox.setValue('<openassessment>test!</openassessment>');
-
-        // Save the updated XML
-        view.save();
-
-        // Expect the saving notification to start/end
-        expect(runtime.notify).toHaveBeenCalledWith('save', {state: 'start'});
-        expect(runtime.notify).toHaveBeenCalledWith('save', {state: 'end'});
-
-        // Expect the server's XML to have been updated
-        expect(server.xml).toEqual('<openassessment>test!</openassessment>');
     });
 
     it("confirms changes for a released problem", function() {
@@ -104,7 +66,7 @@ describe("OpenAssessment.StudioView", function() {
             function(onConfirm) { onConfirm(); }
         );
 
-        // Save the updated XML
+        // Save the updated context
         view.save();
 
         // Verify that the user was asked to confirm the changes
@@ -116,16 +78,19 @@ describe("OpenAssessment.StudioView", function() {
         expect(runtime.notify).toHaveBeenCalledWith('cancel', {});
     });
 
-    it("displays an error when server reports a load XML error", function() {
-        server.loadError = true;
-        view.load();
-        expect(runtime.notify).toHaveBeenCalledWith('error', {msg: 'Test error'});
-    });
-
     it("displays an error when server reports an update XML error", function() {
         server.updateError = true;
-        view.save('<openassessment>test!</openassessment>');
+        view.save();
         expect(runtime.notify).toHaveBeenCalledWith('error', {msg: 'Test error'});
     });
 
+    it("displays the correct tab on initialization", function() {
+        $(".oa_editor_tab", view.element).each(function(){
+            if ($(this).attr('aria-controls') == "oa_prompt_editor_wrapper"){
+                expect($(this).hasClass('ui-state-active')).toBe(true);
+            } else {
+                expect($(this).hasClass('ui-state-active')).toBe(false);
+            }
+        });
+    });
 });
