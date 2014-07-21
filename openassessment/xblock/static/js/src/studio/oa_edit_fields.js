@@ -21,6 +21,7 @@ OpenAssessment.Fields = {
 
 /**
 Show and hide elements based on a checkbox.
+Optionally includes a function to call when the checkbox is changed.
 
 Args:
     element (DOM element): The parent element, used to scope the selectors.
@@ -28,11 +29,18 @@ Args:
         to show when the checkbox is in the "off" state.
     shownSelector (string): The CSS selector string for elements
         to show when the checkbox is in the "on" state.
+    updateFunction (function): OPTIONAL (defaults to function(){})
+        a parameter-less function to execute after control has been toggled
 **/
-OpenAssessment.ToggleControl = function(element, hiddenSelector, shownSelector) {
+OpenAssessment.ToggleControl = function(element, hiddenSelector, shownSelector, updateFunction) {
     this.element = element;
     this.hiddenSelector = hiddenSelector;
     this.shownSelector = shownSelector;
+    if (typeof updateFunction === "undefined"){
+        this.updateFunction = function () {};
+    } else {
+        this.updateFunction = updateFunction;
+    }
 };
 
 OpenAssessment.ToggleControl.prototype = {
@@ -60,11 +68,13 @@ OpenAssessment.ToggleControl.prototype = {
     show: function() {
         $(this.hiddenSelector, this.element).addClass('is--hidden');
         $(this.shownSelector, this.element).removeClass('is--hidden');
+        this.updateFunction();
     },
 
     hide: function() {
         $(this.hiddenSelector, this.element).removeClass('is--hidden');
         $(this.shownSelector, this.element).addClass('is--hidden');
+        this.updateFunction();
     }
 };
 

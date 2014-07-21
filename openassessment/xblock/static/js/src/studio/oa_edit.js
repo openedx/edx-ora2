@@ -97,8 +97,9 @@ OpenAssessment.StudioView.prototype = {
         }
         // Initialize JQuery UI Tabs, and activates the appropriate tab.
         $(".openassessment_editor_content_and_tabs", this.element)
-            .tabs()
-            .tabs('option', 'active', OpenAssessment.lastOpenEditingTab);
+            .tabs({
+                active: OpenAssessment.lastOpenEditingTab
+            });
     },
 
     /**
