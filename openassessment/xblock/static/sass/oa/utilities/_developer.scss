@@ -26,7 +26,7 @@
 // --------------------
 // Developer styles for Staff Section
 // --------------------
-.staff-info__status {
+.staff-info__status, .staff-info__analytics_download {
   .action--submit {
     @extend %btn--secondary;
     @extend %action-2;

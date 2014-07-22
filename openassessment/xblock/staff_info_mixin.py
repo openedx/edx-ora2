@@ -99,6 +99,10 @@ class StaffInfoMixin(object):
         # so course staff can use the locations to delete student state.
         context['item_id'] = student_item["item_id"]
 
+        # Include a link to the instructor dash so course staff can find
+        # ORA2 data downloads.
+        context['instructor_dash_url'] = self._instructor_dash_url
+
         # Calculate how many students are in each step of the workflow
         status_counts, num_submissions = self.get_workflow_status_counts()
         context['status_counts'] = status_counts
@@ -285,3 +289,21 @@ class StaffInfoMixin(object):
                 'success': False,
                 'msg': _(u"An error occurred while rescheduling tasks: {}".format(ex))
             }
+
+    @property
+    def _instructor_dash_url(self):
+        """
+        Construct a link to the instructor dashboard for the course
+        that contains this XBlock.
+
+        This assumes that the LMS will maintain backwards compatibility
+        for instructor dash links (for old course identifiers)
+        and forwards compatibility when the course identifiers change.
+
+        Returns:
+            unicode
+
+        """
+        return u"/courses/{course_id}/instructor#view-analytics".format(
+            course_id=self.get_student_item_dict()['course_id']
+        )
