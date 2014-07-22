@@ -125,24 +125,5 @@ describe("OpenAssessment.EditSettingsView", function() {
                 dummy: "Self assessment description"
             }
         ]);
-
-        // NOTE: Because the fixtures are generated with the context that only peer and self assessments
-        // are enabled, student training is placed at the end.  Even when we enable it, we do not fundamentally
-        // change the order in the DOM, so peer assessment will come before student training.
-        // Enable Training and Peer assessments
-        assessmentViews[peerID].isEnabled(true);
-        assessmentViews[selfID].isEnabled(false);
-        assessmentViews[aiID].isEnabled(false);
-        assessmentViews[studentID].isEnabled(true);
-        expect(view.assessmentsDescription()).toEqual([
-            {
-                name: "peer-assessment",
-                dummy: "Peer assessment description"
-            },
-            {
-                name: "student-training",
-                dummy: "Student Training description"
-            }
-        ]);
     });
 });

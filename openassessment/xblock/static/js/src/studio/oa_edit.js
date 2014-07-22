@@ -58,8 +58,6 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     // Install the save and cancel buttons
     $(".openassessment_save_button", this.element).click($.proxy(this.save, this));
     $(".openassessment_cancel_button", this.element).click($.proxy(this.cancel, this));
-
-    this.initializeSortableAssessments()
 };
 
 OpenAssessment.StudioView.prototype = {
@@ -109,44 +107,6 @@ OpenAssessment.StudioView.prototype = {
     saveTabState: function() {
         var tabElement = $(".openassessment_editor_content_and_tabs", this.element);
         OpenAssessment.lastOpenEditingTab = tabElement.tabs('option', 'active');
-    },
-
-    /**
-    Installs click listeners which initialize drag and drop functionality for assessment modules.
-    **/
-    initializeSortableAssessments: function () {
-        var view = this;
-        // Initialize Drag and Drop of Assessment Modules
-        $('#openassessment_assessment_module_settings_editors', view.element).sortable({
-            // On Start, we want to collapse all draggable items so that dragging is visually simple (no scrolling)
-            start: function(event, ui) {
-                // Hide all of the contents (not the headers) of the divs, to collapse during dragging.
-                $('.openassessment_assessment_module_editor', view.element).hide();
-
-                // Because of the way that JQuery actively resizes elements during dragging (directly setting
-                // the style property), the only way to over come it is to use an important tag ( :( ), or
-                // to tell JQuery to set the height to be Automatic (i.e. resize to the minimum nescesary size.)
-                // Because all of the information we don't want displayed is now hidden, an auto height will
-                // perform the apparent "collapse" that we are looking for in the Placeholder and Helper.
-                var targetHeight = 'auto';
-                // Shrink the blank area behind the dragged item.
-                ui.placeholder.height(targetHeight);
-                // Shrink the dragged item itself.
-                ui.helper.height(targetHeight);
-                // Update the sortable to reflect these changes.
-                $('#openassessment_assessment_module_settings_editors', view.element)
-                    .sortable('refresh').sortable('refreshPositions');
-            },
-            // On stop, we redisplay the divs to their original state
-            stop: function(event, ui){
-                $('.openassessment_assessment_module_editor', view.element).show();
-            },
-            snap: true,
-            axis: "y",
-            handle: ".drag-handle",
-            cursorAt: {top: 20}
-        });
-        $('#openassessment_assessment_module_settings_editors .drag-handle', view.element).disableSelection();
     },
 
     /**
@@ -203,7 +163,8 @@ OpenAssessment.StudioView.prototype = {
             submissionStart: view.settingsView.submissionStart(),
             submissionDue: view.settingsView.submissionDue(),
             assessments: view.settingsView.assessmentsDescription(),
-            imageSubmissionEnabled: view.settingsView.imageSubmissionEnabled()
+            imageSubmissionEnabled: view.settingsView.imageSubmissionEnabled(),
+            editorAssessmentsOrder: view.settingsView.editorAssessmentsOrder()
         }).done(
             // Notify the client-side runtime that we finished saving
             // so it can hide the "Saving..." notification.

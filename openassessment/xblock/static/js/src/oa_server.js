@@ -430,6 +430,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
                 submission_due: kwargs.submissionDue,
                 criteria: kwargs.criteria,
                 assessments: kwargs.assessments,
+                editor_assessments_order: kwargs.editorAssessmentsOrder,
                 allow_file_upload: kwargs.imageSubmissionEnabled
             });
             return $.Deferred(function(defer) {

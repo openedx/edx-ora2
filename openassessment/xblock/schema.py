@@ -56,6 +56,14 @@ def datetime_validator(value):
         raise Invalid(u"Could not parse datetime from value \"{val}\"".format(val=value))
 
 
+VALID_ASSESSMENT_TYPES = [
+    u'peer-assessment',
+    u'self-assessment',
+    u'example-based-assessment',
+    u'student-training'
+]
+
+
 # Schema definition for an update from the Studio JavaScript editor.
 EDITOR_UPDATE_SCHEMA = Schema({
     Required('prompt'): utf8_validator,
@@ -66,15 +74,7 @@ EDITOR_UPDATE_SCHEMA = Schema({
     Required('allow_file_upload'): bool,
     Required('assessments'): [
         Schema({
-            Required('name'): All(
-                utf8_validator,
-                In([
-                    u'peer-assessment',
-                    u'self-assessment',
-                    u'example-based-assessment',
-                    u'student-training'
-                ])
-            ),
+            Required('name'): All(utf8_validator, In(VALID_ASSESSMENT_TYPES)),
             Required('start', default=None): Any(datetime_validator, None),
             Required('due', default=None): Any(datetime_validator, None),
             'must_grade': All(int, Range(min=0)),
@@ -91,6 +91,9 @@ EDITOR_UPDATE_SCHEMA = Schema({
                 })
             ]
         })
+    ],
+    Required('editor_assessments_order'): [
+        All(utf8_validator, In(VALID_ASSESSMENT_TYPES))
     ],
     Required('feedbackprompt', default=u""): utf8_validator,
     Required('criteria'): [
