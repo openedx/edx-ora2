@@ -372,20 +372,12 @@ OpenAssessment.EditExampleBasedAssessmentView = function(element) {
     this.element = element;
     this.name = "example-based-assessment";
 
-    this.codeBox = CodeMirror.fromTextArea(
-        $(element).find('#ai_training_examples').first().get(0),
-        {mode: "xml", lineNumbers: true, lineWrapping: true}
-    );
-
     var view = this;
 
     new OpenAssessment.ToggleControl(
         this.element,
         "#ai_assessment_description_closed",
-        "#ai_assessment_settings_editor",
-        function () {
-            view.codeBox.refresh();
-        }
+        "#ai_assessment_settings_editor"
     ).install("#include_ai_assessment");
 };
 

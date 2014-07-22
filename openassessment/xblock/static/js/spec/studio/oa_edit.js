@@ -205,32 +205,4 @@ describe("OpenAssessment.StudioView", function() {
             }
         });
     });
-
-    it("installs checkbox listeners with callback", function () {
-        this.funct = function(){};
-
-        spyOn(this, 'funct');
-
-        var toggler = new OpenAssessment.ToggleControl(
-            view.element,
-            "#ai_assessment_description_closed",
-            "#ai_assessment_settings_editor"
-        );
-
-        toggler.show();
-        toggler.hide();
-        expect(this.funct.calls.length).toEqual(0);
-
-        toggler = new OpenAssessment.ToggleControl(
-            view.element,
-            "#ai_assessment_description_closed",
-            "#ai_assessment_settings_editor",
-            this.funct
-        );
-
-        toggler.show();
-        toggler.hide();
-        expect(this.funct.calls.length).toEqual(2);
-
-    });
 });

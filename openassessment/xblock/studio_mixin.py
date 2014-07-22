@@ -17,7 +17,7 @@ from openassessment.xblock.validation import validator
 from openassessment.xblock.data_conversion import create_rubric_dict, make_django_template_key
 from openassessment.xblock.schema import EDITOR_UPDATE_SCHEMA
 from openassessment.xblock.resolve_dates import resolve_dates
-
+from openassessment.xblock.xml import serialize_examples_to_xml_str, parse_examples_from_xml_str
 
 logger = logging.getLogger(__name__)
 
@@ -144,8 +144,9 @@ class StudioMixin(object):
             logger.exception('Editor context is invalid')
             return {'success': False, 'msg': _('Error updating XBlock configuration')}
 
-        # Check that the editor assessment order contains all the assessments
-        if set(DEFAULT_EDITOR_ASSESSMENTS_ORDER) != set(data['editor_assessments_order']):
+        # Check that the editor assessment order contains all the assessments.  We are more flexible on example-based.
+        if (set(DEFAULT_EDITOR_ASSESSMENTS_ORDER) - {'example-based-assessment'}) \
+                != (set(data['editor_assessments_order']) - {'example-based-assessment'}):
             logger.exception('editor_assessments_order does not contain all expected assessment types')
             return {'success': False, 'msg': _('Error updating XBlock configuration')}
 
@@ -161,6 +162,12 @@ class StudioMixin(object):
             for option in criterion['options']:
                 if 'name' not in option:
                     option['name'] = uuid4().hex
+
+        # If example based assessment is enabled, we replace it's xml definition with the dictionary
+        # definition we expect for validation and storing.
+        for assessment in data['assessments']:
+            if assessment['name'] == 'example-based-assessment':
+                assessment['examples'] = parse_examples_from_xml_str(assessment['examples'])
 
         xblock_validator = validator(self)
         success, msg = xblock_validator(
@@ -260,6 +267,13 @@ class StudioMixin(object):
         else:
             assessments['training'] = {'examples': [student_training_template], 'template': student_training_template}
 
+        example_based_assessment = self.get_assessment_module('example-based-assessment')
+
+        if example_based_assessment:
+            assessments['example_based_assessment'] = {
+                'examples': serialize_examples_to_xml_str(example_based_assessment)
+            }
+
         return assessments
 
     def _editor_assessments_order_context(self):
@@ -285,7 +299,7 @@ class StudioMixin(object):
             if asmnt_name in order
         ]
         if problem_order_indices != sorted(problem_order_indices):
-            unused_assessments = list(set(DEFAULT_EDITOR_ASSESSMENTS_ORDER) - set(used_assessments))
+            unused_assessments = list(set(DEFAULT_EDITOR_ASSESSMENTS_ORDER) - {'example-based-assessment'} - set(used_assessments))
             return sorted(unused_assessments) + used_assessments
 
         # Forwards compatibility:

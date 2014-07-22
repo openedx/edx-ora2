@@ -24,7 +24,6 @@ class StudioViewTest(XBlockHandlerTestCase):
         "allow_file_upload": False,
         "assessments": [{"name": "self-assessment"}],
         "editor_assessments_order": [
-            "example-based-assessment",
             "student-training",
             "peer-assessment",
             "self-assessment",
@@ -117,7 +116,6 @@ class StudioViewTest(XBlockHandlerTestCase):
         # Update the XBlock with a different editor assessment order
         data = copy.deepcopy(self.UPDATE_EDITOR_DATA)
         data['editor_assessments_order'] = [
-            "example-based-assessment",
             "student-training",
             "peer-assessment",
             "self-assessment",
