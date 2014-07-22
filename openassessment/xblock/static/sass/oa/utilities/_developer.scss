@@ -270,6 +270,17 @@
     height: 40px;
   }
 
+  #ai_training_examples{
+    margin: 5px 20px 10px 10px;
+    height: 300px;
+    width: Calc(100% - 20px);
+    resize: none;
+    font: inherit;
+    line-height: 110%;
+    font-size: 80%;
+    padding: 5px 10px;
+  }
+
   .openassessment_assessment_module_settings_editor{
     padding: 0 15px 0 0;
     margin: 10px;

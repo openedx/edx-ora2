@@ -167,7 +167,7 @@ class StudioMixin(object):
         # definition we expect for validation and storing.
         for assessment in data['assessments']:
             if assessment['name'] == 'example-based-assessment':
-                assessment['examples'] = parse_examples_from_xml_str(assessment['examples'])
+                assessment['examples'] = parse_examples_from_xml_str(assessment['examples_xml'])
 
         xblock_validator = validator(self)
         success, msg = xblock_validator(

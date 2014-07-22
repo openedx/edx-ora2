@@ -392,13 +392,15 @@ OpenAssessment.EditExampleBasedAssessmentView.prototype = {
     Example usage:
     >>> editTrainingView.description();
     {
-        examples: "XML DEFINITION HERE"
+        examples_xml: "XML DEFINITION HERE",
+        algorithm: 'ease'
     }
 
     **/
     description: function() {
         return {
-            examples: this.exampleDefinitions()
+            examples_xml: this.exampleDefinitions(),
+            algorithm_id: 'ease'
         };
     },
 
