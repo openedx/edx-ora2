@@ -169,6 +169,7 @@ class StudioMixin(object):
         # At this point, all the input data has been validated,
         # so we can safely modify the XBlock fields.
         self.title = data['title']
+        self.display_name = data['title']
         self.prompt = data['prompt']
         self.rubric_criteria = data['criteria']
         self.rubric_assessments = data['assessments']
