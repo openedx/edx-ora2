@@ -93,6 +93,7 @@ OpenAssessment.ResponseView.prototype = {
             function(eventObject) {
                 // Override default form submission
                 eventObject.preventDefault();
+                $('.submission__answer__display__image', view.element).removeClass('is--hidden');
                 view.fileUpload();
             }
         );
