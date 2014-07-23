@@ -1,0 +1,10 @@
+Different tags in source and translation
+  msgid: You'll receive your grade after some of your peers have assessed your
+         response and you complete the <a data-behavior="ui-scroll" href
+         ="#openassessment__peer-assessment">peer assessment</a> step.
+  -----> 您將會在足夠同儕完成對您的評分以後，並且您也完成<a data-behavior="ui-scroll" href
+         ="#openassessment__self-assessment">自我評量</a>後收到成績。
+  -----> "<a data-behavior="ui-scroll" href="#openassessment__peer-
+         assessment">" vs "<a data-behavior="ui-scroll" href
+         ="#openassessment__self-assessment">"
+
