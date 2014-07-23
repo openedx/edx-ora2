@@ -6,7 +6,6 @@ from bok_choy.promise import EmptyPromise
 
 import os
 BASE_URL = os.environ.get('BASE_URL')
-assert BASE_URL is not None, 'No base URL specified - please set the `BASE_URL` environment variable'
 
 
 class PageConfigurationError(Exception):
