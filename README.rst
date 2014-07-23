@@ -78,13 +78,23 @@ To run the JavaScript tests in Chrome so you can use the debugger:
 i18n
 ====
 
-You will need to install `getttext <http://www.gnu.org/software/gettext/>`_.
+You will need to:
 
-To extract strings and compile messages:
+1. Install `i18n-tools <https://github.com/edx/i18n-tools>`_.
+2. Configure Transifex, as described in the `docs <http://docs.transifex.com/developer/client/setup>`_.
+3. Install `gettext <http://www.gnu.org/software/gettext/>`_.
+
+To extract strings and push to Transifex
 
 .. code:: bash
 
-    ./scripts/i18n.sh
+    ./scripts/i18n-push.sh
+
+To pull strings from Transifex
+
+.. code:: bash
+
+    ./scripts/i18n-pull.sh
 
 
 License
