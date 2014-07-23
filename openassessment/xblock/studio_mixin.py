@@ -18,6 +18,7 @@ from openassessment.xblock.data_conversion import create_rubric_dict, make_djang
 from openassessment.xblock.schema import EDITOR_UPDATE_SCHEMA
 from openassessment.xblock.resolve_dates import resolve_dates
 from openassessment.xblock.xml import serialize_examples_to_xml_str, parse_examples_from_xml_str
+from xml import UpdateFromXmlError
 
 logger = logging.getLogger(__name__)
 
@@ -119,14 +120,8 @@ class StudioMixin(object):
         Update the XBlock's configuration.
 
         Args:
-            data (dict): Data from the request; should have a value for the keys: 'rubric', 'prompt',
-            'title', 'submission_start', 'submission_due', and 'assessments'.
-                -- The 'rubric' should be an XML representation of the new rubric.
-                -- The 'prompt' and 'title' should be plain text.
-                -- The dates 'submission_start' and 'submission_due' are both ISO strings
-                -- The 'assessments' is a list of assessment dictionaries (much like self.rubric_assessments)
-                   with the notable exception that all examples (for Student Training and eventually AI)
-                   are in XML string format and need to be parsed into dictionaries.
+            data (dict): Data from the request; should have the format described
+            in the editor schema.
 
         Kwargs:
             suffix (str): Not used
@@ -145,8 +140,7 @@ class StudioMixin(object):
             return {'success': False, 'msg': _('Error updating XBlock configuration')}
 
         # Check that the editor assessment order contains all the assessments.  We are more flexible on example-based.
-        if (set(DEFAULT_EDITOR_ASSESSMENTS_ORDER) - {'example-based-assessment'}) \
-                != (set(data['editor_assessments_order']) - {'example-based-assessment'}):
+        if set(DEFAULT_EDITOR_ASSESSMENTS_ORDER) != (set(data['editor_assessments_order']) - {'example-based-assessment'}):
             logger.exception('editor_assessments_order does not contain all expected assessment types')
             return {'success': False, 'msg': _('Error updating XBlock configuration')}
 
@@ -167,7 +161,19 @@ class StudioMixin(object):
         # definition we expect for validation and storing.
         for assessment in data['assessments']:
             if assessment['name'] == 'example-based-assessment':
-                assessment['examples'] = parse_examples_from_xml_str(assessment['examples_xml'])
+                try:
+                    assessment['examples'] = parse_examples_from_xml_str(assessment['examples_xml'])
+                except UpdateFromXmlError:
+                    return {'success': False, 'msg': _(
+                        u'Validation error: There was an error in the XML definition of the '
+                        u'examples provided by the user. Please correct the XML definition before saving.')
+                    }
+                except KeyError:
+                    return {'success': False, 'msg': _(
+                        u'Validation error: No examples were provided for example based assessment.'
+                    )}
+                # This is where we default to EASE for problems which are edited in the GUI
+                assessment['algorithm_id'] = 'ease'
 
         xblock_validator = validator(self)
         success, msg = xblock_validator(
@@ -299,7 +305,7 @@ class StudioMixin(object):
             if asmnt_name in order
         ]
         if problem_order_indices != sorted(problem_order_indices):
-            unused_assessments = list(set(DEFAULT_EDITOR_ASSESSMENTS_ORDER) - {'example-based-assessment'} - set(used_assessments))
+            unused_assessments = list(set(DEFAULT_EDITOR_ASSESSMENTS_ORDER) - set(used_assessments))
             return sorted(unused_assessments) + used_assessments
 
         # Forwards compatibility:

@@ -91,7 +91,6 @@ EDITOR_UPDATE_SCHEMA = Schema({
                 })
             ],
             'examples_xml': utf8_validator,
-            'algorithm_id': All(utf8_validator, In(['ease','fake']))
         })
     ],
     Required('editor_assessments_order'): [

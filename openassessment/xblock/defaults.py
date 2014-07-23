@@ -63,7 +63,7 @@ DEFAULT_RUBRIC_CRITERIA = [
 # The rubric's feedback prompt is a set of instructions letting the student
 # know they can provide additional free form feedback in their assessment.
 DEFAULT_RUBRIC_FEEDBACK_PROMPT = """
-    (Optional) What aspects of this response stood out to you? What did it do well? How could it improve?
+(Optional) What aspects of this response stood out to you? What did it do well? How could it improve?
 """
 
 DEFAULT_EXAMPLE_ANSWER = """
@@ -133,8 +133,7 @@ DEFAULT_ASSESSMENT_MODULES = [
 ]
 
 DEFAULT_EDITOR_ASSESSMENTS_ORDER = [
-    "example-based-assessment",
     "student-training",
     "peer-assessment",
-    "self-assessment"
+    "self-assessment",
 ]

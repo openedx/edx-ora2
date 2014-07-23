@@ -605,7 +605,7 @@
     },
 
     "student_training_example_missing_answer": {
-       "criteria": [
+        "criteria": [
             {
                 "order_num": 0,
                 "label": "тєѕт ¢яιтєяιση",
@@ -1041,6 +1041,10 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "NOT A VALID ASSESSMENT"]
+        "editor_assessments_order": [
+            "student-training", "peer-assessment",
+            "self-assessment", "example-based-assessment",
+            "NOT A VALID ASSESSMENT"
+        ]
     }
 }

@@ -187,12 +187,6 @@
     height: Calc(100% - 97px);
   }
 
-  #openassessment_editor_header{
-    background-color: #e5e5e5;
-    width: 100%;
-    top: 0;
-  }
-
   #oa_editor_window_title{
     float: left;
   }
@@ -203,17 +197,40 @@
     background-image: linear-gradient(#F2F2F2,#FFF);
   }
 
-  .oa_editor_tab{
-    float: right;
-    padding: ($baseline-v/8) ($baseline-h/8);
-    margin: ($baseline-v/8) ($baseline-h/8);
-    border-radius: ($baseline-v/4);
-    box-shadow: none;
-    border: 0;
+  #openassessment_editor_header {
+    background-color: #e5e5e5;
+    width: 100%;
+    top: 0;
+    height: 42px;
+
+    .editor_tabs {
+
+      width: 35%;
+      min-width: 190px;
+      max-width: 360px;
+      float: right;
+
+      .oa_editor_tab {
+        float: right;
+        padding: 0;
+        width: 29%;
+        margin: 0px 2%;
+        height: 35px;
+        border-radius: 5px;
+        box-shadow: none;
+        border: 0;
+        text-align: center;
+
+        a {
+          padding: 8px 0 0 0;
+          width: 100%;
+        }
+      }
+    }
   }
 
   .oa_editor_content_wrapper {
-    height: Calc(100% - 1px);
+    height: 100%;
     width: 100%;
     border-radius: 3px;
     border: 1px solid $edx-gray-d1;
@@ -419,7 +436,6 @@
     }
 
     .openassessment_criterion {
-      padding-bottom: 10px;
 
       .openassessment_criterion_remove_button{
         @extend .openassessment_rubric_remove_button;
@@ -469,8 +485,8 @@
         border: 1px solid;
         color: #009fe6;
         background-color: white;
-        padding: 5px;
-        margin: 10px;
+        padding: 7.5px;
+        margin: 10px 10px 10px 20px;
         border-radius: 3px;
         cursor: pointer;
       }
@@ -551,7 +567,7 @@
     }
 
     .openassessment_criterion_option{
-      padding: 7.5px;
+      padding: 5px 5px 5px 15px;
 
       .openassessment_criterion_option_remove_button{
         @extend .openassessment_rubric_remove_button;
@@ -583,13 +599,14 @@
         margin: 0;
 
         .wrapper-comp-setting{
-          min-width: 200px;
+          min-width: 150px;
         }
 
         label{
           width: auto;
-          padding-left: 15%;
+          padding-left: Calc((100% - 150px)/2);
           margin: 0;
+          float: right;
 
           input{
             min-width: 50px;
@@ -599,8 +616,6 @@
             font-size: 11px;
           }
         }
-
-
       }
 
       .openassessment_criterion_option_name_wrapper{
@@ -728,13 +743,13 @@
       }
 
       background-color: white;
-      border-top: 1px solid;
-      border-bottom: 1px solid;
+      border: 1px solid;
+      border-radius: 4px;
       text-align: center;
       color: #009fe6;
 
       padding: 10px;
-      margin: 10px, 0;
+      margin: 15px 10px;
     }
 
     #openassessment_rubric_add_criterion:hover{
@@ -760,6 +775,7 @@
 .modal-lg.modal-window.confirm.openassessment_modal_window{
   height: 80%;
   top: 10%;
+  min-width: 600px;
 }
 
 .openassessment_full_height.edit-xblock-modal,

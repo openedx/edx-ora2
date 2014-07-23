@@ -372,8 +372,6 @@ OpenAssessment.EditExampleBasedAssessmentView = function(element) {
     this.element = element;
     this.name = "example-based-assessment";
 
-    var view = this;
-
     new OpenAssessment.ToggleControl(
         this.element,
         "#ai_assessment_description_closed",
@@ -393,14 +391,12 @@ OpenAssessment.EditExampleBasedAssessmentView.prototype = {
     >>> editTrainingView.description();
     {
         examples_xml: "XML DEFINITION HERE",
-        algorithm: 'ease'
     }
 
     **/
     description: function() {
         return {
-            examples_xml: this.exampleDefinitions(),
-            algorithm_id: 'ease'
+            examples_xml: this.exampleDefinitions()
         };
     },
 

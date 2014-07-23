@@ -14,7 +14,7 @@ describe("OpenAssessment edit assessment views", function() {
     var testLoadXMLExamples = function(view) {
         var xml = "XML DEFINITIONS WOULD BE HERE";
         view.exampleDefinitions(xml);
-        expect(view.description()).toEqual({ examples: xml });
+        expect(view.description()).toEqual({ examples_xml: xml });
     };
 
     beforeEach(function() {
