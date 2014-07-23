@@ -14,6 +14,7 @@ TEST_APPS = (
 
 # Configure nose
 NOSE_ARGS = [
+    "-a '!acceptance'",
     '--with-coverage',
     '--cover-package=' + ",".join(TEST_APPS),
     '--cover-branches',

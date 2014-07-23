@@ -22,6 +22,6 @@ To use the tests:
 
 .. code:: bash
 
-    cd edx-ora2/test/selenium
+    cd edx-ora2/test/acceptance
     export BASE_URL=https://{USER}:{PASSWORD}@example.com
     python tests.py

@@ -5,6 +5,7 @@ import os
 import unittest
 import time
 from functools import wraps
+from nose.plugins.attrib import attr
 from bok_choy.web_app_test import WebAppTest
 from bok_choy.promise import BrokenPromise
 from auto_auth import AutoAuthPage
@@ -86,6 +87,7 @@ class SelfAssessmentTest(OpenAssessmentTest):
         super(SelfAssessmentTest, self).setUp('self_only')
 
     @retry()
+    @attr('acceptance')
     def test_self_assessment(self):
         # Submit a response
         self.auto_auth_page.visit()
@@ -115,6 +117,7 @@ class PeerAssessmentTest(OpenAssessmentTest):
         super(PeerAssessmentTest, self).setUp('peer_only')
 
     @retry()
+    @attr('acceptance')
     def test_peer_assessment(self):
         # Create a submission for the first student, so there's
         # at least one submission to assess.
@@ -150,6 +153,7 @@ class StudentTrainingTest(OpenAssessmentTest):
         super(StudentTrainingTest, self).setUp('student_training')
 
     @retry()
+    @attr('acceptance')
     def test_student_training(self):
         # Create a submission so we can get to student training
         self.auto_auth_page.visit()

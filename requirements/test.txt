@@ -1,5 +1,5 @@
-# Grab everything in base requirements
 -r base.txt
+-r test-acceptance.txt
 
 ddt==0.8.0
 django-nose==1.2
