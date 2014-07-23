@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-11 09:17-0400\n"
+"POT-Creation-Date: 2014-07-23 14:23-0400\n"
 "PO-Revision-Date: 2014-06-23 07:51+0000\n"
 "Last-Translator: Nabeel El-Dughailib <nabeel@qordoba.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/projects/p/edx-platform/"
@@ -21,7 +21,7 @@ msgstr ""
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_base.js:146
+#: openassessment/xblock/static/js/src/oa_base.js:147
 msgid "Unable to Load"
 msgstr "لا يمكن إجراء عملية التحميل"
 
@@ -35,12 +35,12 @@ msgstr ""
 "فقط.."
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_response.js:191
+#: openassessment/xblock/static/js/src/oa_response.js:192
 msgid "Status of Your Response"
 msgstr "حالة الرد الخاص بك."
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_response.js:217
+#: openassessment/xblock/static/js/src/oa_response.js:218
 msgid ""
 "If you leave this page without saving or submitting your response, you'll "
 "lose any work you've done on the response."
@@ -49,32 +49,32 @@ msgstr ""
 "في ما يتعلّق بالرد."
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_response.js:290
+#: openassessment/xblock/static/js/src/oa_response.js:291
 msgid "This response has not been saved."
 msgstr "لم يتمّ حفظ هذا الردّ."
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_response.js:308
+#: openassessment/xblock/static/js/src/oa_response.js:309
 msgid "Saving..."
 msgstr "جاري الحفظ..."
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_response.js:326
+#: openassessment/xblock/static/js/src/oa_response.js:327
 msgid "This response has been saved but not submitted."
 msgstr "تمّ حفظ هذا الردّ لكن لم يتم تقديمه."
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_response.js:329
+#: openassessment/xblock/static/js/src/oa_response.js:330
 msgid "Error"
 msgstr "خطأ"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_response.js:430
+#: openassessment/xblock/static/js/src/oa_response.js:431
 msgid "File size must be 5MB or less."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_response.js:434
+#: openassessment/xblock/static/js/src/oa_response.js:435
 msgid "File must be an image."
 msgstr ""
 
