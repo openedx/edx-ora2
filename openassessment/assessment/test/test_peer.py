@@ -151,7 +151,7 @@ class TestPeerApi(CacheResetTest):
     Tests for the peer assessment API functions.
     """
 
-    CREATE_ASSESSMENT_NUM_QUERIES = 59
+    CREATE_ASSESSMENT_NUM_QUERIES = 63
 
     def test_create_assessment_points(self):
         self._create_student_and_submission("Tim", "Tim's answer")

@@ -169,8 +169,6 @@ class TestSelfApi(CacheResetTest):
         options = copy.deepcopy(self.OPTIONS_SELECTED)
         del options['clarity']
 
-        import pudb,sys as __sys;__sys.stdout=__sys.__stdout__;pudb.set_trace() # -={XX}=-={XX}=-={XX}=
-
         # Attempt to create a self-assessment with options that do not match the rubric
         with self.assertRaises(SelfAssessmentRequestError):
             create_assessment(

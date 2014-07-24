@@ -655,8 +655,8 @@ class AssessmentPart(models.Model):
             }
 
         # Validate that we have selections for all criteria
-        # This will raise an exception if we're missing any criteria
-        cls._check_has_all_criteria(rubric_index, set(selected.keys() + feedback.keys()))
+        # This will raise an exception if we're missing any selections/feedback required for criteria
+        cls._check_all_criteria_assessed(rubric_index, selected.keys(), feedback.keys())
 
         # Retrieve the criteria/option/feedback for criteria that have options.
         # Since we're using the rubric's index, we'll get an `InvalidRubricSelection` error
@@ -770,6 +770,37 @@ class AssessmentPart(models.Model):
             InvalidRubricSelection
         """
         missing_criteria = rubric_index.find_missing_criteria(selected_criteria)
+        if len(missing_criteria) > 0:
+            msg = u"Missing selections for criteria: {missing}".format(missing=missing_criteria)
+            raise InvalidRubricSelection(msg)
+
+
+    @classmethod
+    def _check_all_criteria_assessed(cls, rubric_index, selected_criteria, criteria_feedback):
+        """
+        Verify that we've selected options OR have feedback for all criteria in the rubric.
+
+        Verifies the predicate for all criteria (X) in the rubric:
+            has-an-option-selected(X) OR (has-zero-options(X) AND has-criterion-feedback(X))
+
+        Args:
+            rubric_index (RubricIndex): The index of the rubric's data.
+            selected_criteria (list): list of criterion names
+
+        Returns:
+            None
+
+        Raises:
+            InvalidRubricSelection
+        """
+        missing_option_selections = rubric_index.find_missing_criteria(selected_criteria)
+        zero_option_criteria = set([c.name for c in rubric_index.find_criteria_without_options()])
+
+        zero_option_criteria_missing_feedback = zero_option_criteria - set(criteria_feedback)
+        optioned_criteria_missing_selection = missing_option_selections - zero_option_criteria
+
+        missing_criteria = zero_option_criteria_missing_feedback | optioned_criteria_missing_selection
+
         if len(missing_criteria) > 0:
             msg = u"Missing selections for criteria: {missing}".format(missing=missing_criteria)
             raise InvalidRubricSelection(msg)
