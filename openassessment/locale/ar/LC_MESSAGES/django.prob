@@ -1,0 +1,12 @@
+Different tags in source and translation
+  msgid: This step's due date '{due}' cannot be later than the next step's due
+         date '{prev}'.
+  -----> لا يمكن أن يكون التاريخ النهائي الخاص بهذه الخطوة '{start}' بعد
+         التاريخ النهائي للخطوة التالية '{prev}'.
+  -----> "{due}" vs "{start}"
+
+Different tags in source and translation
+  msgid: Validation error: {error}
+  -----> خطأ في عملية التحقق: {خطأ}
+  -----> "{error}" vs "{خطأ}"
+

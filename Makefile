@@ -1,8 +1,11 @@
 all: install test
 
+.PHONY: install test
+
 install-system:
 	sudo apt-get update -y -qq
 	sudo xargs -a apt-packages.txt apt-get install -y -qq --fix-missing
+
 
 install-node:
 	sudo add-apt-repository -y ppa:chris-lea/node.js
