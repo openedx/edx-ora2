@@ -100,7 +100,7 @@ EDITOR_UPDATE_SCHEMA = Schema({
     Required('criteria'): [
         Schema({
             Required('order_num'): All(int, Range(min=0)),
-            'name': utf8_validator,
+            Required('name'): utf8_validator,
             Required('label'): utf8_validator,
             Required('prompt'): utf8_validator,
             Required('feedback'): All(
@@ -114,7 +114,7 @@ EDITOR_UPDATE_SCHEMA = Schema({
             Required('options'): [
                 Schema({
                     Required('order_num'): All(int, Range(min=0)),
-                    'name': utf8_validator,
+                    Required('name'): utf8_validator,
                     Required('label'): utf8_validator,
                     Required('explanation'): utf8_validator,
                     Required('points'): All(int, Range(min=0)),

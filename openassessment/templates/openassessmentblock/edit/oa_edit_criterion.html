@@ -1,6 +1,6 @@
 {% load i18n %}
 {% spaceless %}
-<li class="openassessment_criterion is-collapsible">
+<li class="openassessment_criterion is-collapsible" data-criterion="{{ criterion_name }}">
     <div class="openassessment_criterion_header view-outline">
         <a class="action expand-collapse collapse"><i class="icon-caret-down ui-toggle-expansion"></i></a>
         <h6 class="openassessment_criterion_header_title">{% trans "Criterion" %}</h6>
@@ -32,7 +32,7 @@
         </ul>
         <ul class="openassessment_criterion_option_list">
             {% for option in criterion_options %}
-                {% include "openassessmentblock/edit/oa_edit_option.html" with option_name=option.name option_label=option.label option_points=option.points option_explanation=option.explanation %}
+                {% include "openassessmentblock/edit/oa_edit_option.html" with criterion_name=criterion_name option_name=option.name option_label=option.label option_points=option.points option_explanation=option.explanation %}
             {% endfor %}
         </ul>
 

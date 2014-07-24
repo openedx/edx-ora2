@@ -204,3 +204,7 @@
     color: $copy-staff-color !important;
   }
 }
+
+.modal-lg.modal-window.confirm.openassessment_modal_window{
+  z-index: 100000;
+}
