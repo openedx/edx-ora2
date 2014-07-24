@@ -100,7 +100,11 @@
             </ul>
 
             <p class="openassessment_description" id="openassessment_step_select_description">
-                {% trans "Select the steps that students must complete. All steps are optional, but every assignment must include at least one step. To change the order in which students will complete the steps, drag them into the desired order." %}
+                {% if 'example_based_assessment' in editor_assessments_order %}
+                    {% trans "In this assignment, you can include example based assessment, student training, peer assessment, and self assessment steps. Select the steps that you want below, and then drag them into the order that you want.  If you include an example based assessment step, it must be the first step.  If you include a student training step, it must precede the peer assessment step." %}
+                {% else %}
+                    {% trans "In this assignment, you can include student training, peer assessment, and self assessment steps. Select the steps that you want below, and then drag them into the order that you want.  If you include a student training step, it must precede the peer assessment step." %}
+                {% endif %}
             </p>
             <ol id="openassessment_assessment_module_settings_editors">
                 {% for assessment in editor_assessments_order %}

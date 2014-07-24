@@ -89,7 +89,8 @@ EDITOR_UPDATE_SCHEMA = Schema({
                         })
                     ]
                 })
-            ]
+            ],
+            'examples_xml': utf8_validator,
         })
     ],
     Required('editor_assessments_order'): [

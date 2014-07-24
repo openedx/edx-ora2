@@ -803,3 +803,19 @@ def _unicode_to_xml(xml):
         return safe_etree.fromstring(xml.encode('utf-8'))
     except (ValueError, safe_etree.ParseError):
         raise UpdateFromXmlError(_("An error occurred while parsing the XML content."))
+
+
+def parse_examples_from_xml_str(xml):
+    """
+    Converts an XML string of examples (Student Training or AI) into a dictionary
+    representing the same information.
+
+    Args:
+        xml (unicode): The XML definition of the examples
+
+    Returns
+        (list of dict): The example definition
+    """
+    examples_root = _unicode_to_xml(xml)
+    examples = examples_root.findall('example')
+    return parse_examples_xml(examples)
