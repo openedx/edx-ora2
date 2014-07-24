@@ -90,23 +90,26 @@ describe("OpenAssessment.EditRubricView", function() {
 
         expect(criteria[0]).toEqual({
             order_num: 0,
+            name: "0",
             label: "",
             prompt: "",
             feedback: "disabled",
-            options: [],
+            options: []
         });
 
         expect(criteria[1]).toEqual({
+            name: "1",
             order_num: 1,
             label: "",
             prompt: "",
             feedback: "disabled",
             options: [
                 {
-                    order_num: 0,
                     label: "",
                     points: 1,
-                    explanation: ""
+                    explanation: "",
+                    name: "0",
+                    order_num: 0
                 }
             ]
         });

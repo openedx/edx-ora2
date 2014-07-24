@@ -9,6 +9,14 @@
         {% include "openassessmentblock/edit/oa_edit_option.html" with option_name="" option_label="" option_points=1 option_explanation="" %}
     </div>
 
+    <div id="openassessment_rubric_validation_alert" class="is--hidden">
+        <i class="openassessment_alert_icon"></i>
+        <div class="openassessment_alert_header">
+            <h2 class="openassessment_alert_title">{% trans "Rubric Change Impacts Settings Section" %}</h2>
+            <p class="openassessment_alert_message">{% trans "A change that you made to this assessment's rubric has an impact on some examples laid out in the settings tab. For more information, go to the Settings section and fix areas highlighted in red." %}</p>
+        </div>
+    </div>
+
     <div id="openassessment_rubric_instructions">
         <p class = openassessment_description>
             {% trans "For open response problems, assessment is rubric-based.  Rubric criterion have point breakdowns and explanations to help students with peer and self assessment steps. For more information on how to build your rubric, see our online help documentation."%}

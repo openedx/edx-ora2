@@ -29,18 +29,21 @@
         "criteria": [
             {
                 "order_num": 0,
+                "name": "0",
                 "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
+                        "name": "0",
                         "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
+                        "name": "1",
                         "label": "Yes",
                         "explanation": "Yes explanation"
                     }
@@ -74,18 +77,21 @@
         "criteria": [
             {
                 "order_num": 0,
+                "name": "0",
                 "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
+                        "name": "0",
                         "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
+                        "name": "1",
                         "label": "Yes",
                         "explanation": "Yes explanation"
                     }
@@ -120,18 +126,21 @@
         "criteria": [
             {
                 "order_num": 0,
+                "name": "0",
                 "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
+                        "name": "1",
                         "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
+                        "name": "1",
                         "label": "Yes",
                         "explanation": "Yes explanation"
                     }
@@ -165,18 +174,21 @@
         "criteria": [
             {
                 "order_num": 0,
+                "name": "0",
                 "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
+                        "name": "0",
                         "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
+                        "name": "1",
                         "label": "Yes",
                         "explanation": "Yes explanation"
                     }
@@ -212,18 +224,21 @@
         "criteria": [
             {
                 "order_num": 0,
+                "name": "0",
                 "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
+                        "name": "0",
                         "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
+                        "name": "1",
                         "label": "Yes",
                         "explanation": "Yes explanation"
                     }
@@ -259,18 +274,21 @@
         "criteria": [
             {
                 "order_num": "Hello",
+                "name": "0",
                 "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
+                        "name": "0",
                         "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
+                        "name": "1",
                         "label": "Yes",
                         "explanation": "Yes explanation"
                     }
@@ -298,18 +316,21 @@
         "criteria": [
             {
                 "order_num": 0,
+                "name": "0",
                 "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
+                        "name": "0",
                         "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
+                        "name": "1",
                         "label": "Yes",
                         "explanation": "Yes explanation"
                     }
@@ -356,17 +377,20 @@
         "criteria": [
             {
                 "order_num": 0,
+                "name": "0",
                 "label": "Test criterion",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
+                        "name": "0",
                         "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
+                        "name": "1",
                         "label": "Yes",
                         "explanation": "Yes explanation"
                     }
@@ -394,6 +418,7 @@
         "criteria": [
             {
                 "order_num": 0,
+                "name": "0",
                 "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": "not a list",
@@ -420,12 +445,14 @@
         "criteria": [
             {
                 "order_num": 0,
+                "name": "0",
                 "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
+                        "name": "0",
                         "label": "No",
                         "explanation": "No explanation"
                     },
@@ -454,17 +481,20 @@
         "criteria": [
             {
                 "order_num": 0,
+                "name": "0",
                 "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "points": 0,
+                        "name": "0",
                         "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
+                        "name": "1",
                         "label": "Yes",
                         "explanation": "Yes explanation"
                     }
@@ -572,18 +602,21 @@
         "criteria": [
             {
                 "order_num": 0,
+                "name": "0",
                 "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": "a million stanley nickels",
+                        "name": "1",
                         "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": "One Shrutebuck",
+                        "name": "2",
                         "label": "Yes",
                         "explanation": "Yes explanation"
                     }
@@ -608,18 +641,21 @@
         "criteria": [
             {
                 "order_num": 0,
+                "name": "0",
                 "label": "тєѕт ¢яιтєяιση",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
+                        "name": "1",
                         "label": "Ṅö",
                         "explanation": "Ṅö explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
+                        "name": "2",
                         "label": "sǝʎ",
                         "explanation": "sǝʎ explanation"
                     }
@@ -659,18 +695,21 @@
         "criteria": [
             {
                 "order_num": 0,
+                "name": "0",
                 "label": "тєѕт ¢яιтєяιση",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
+                        "name": "0",
                         "label": "Ṅö",
                         "explanation": "Ṅö explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
+                        "name": "1",
                         "label": "sǝʎ",
                         "explanation": "sǝʎ explanation"
                     }
@@ -708,18 +747,21 @@
         "criteria": [
             {
                 "order_num": 0,
+                "name": "0",
                 "label": "тєѕт ¢яιтєяιση",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
+                        "name": "0",
                         "label": "Ṅö",
                         "explanation": "Ṅö explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
+                        "name": "1",
                         "label": "sǝʎ",
                         "explanation": "sǝʎ explanation"
                     }
@@ -760,18 +802,21 @@
         "criteria": [
             {
                 "order_num": 0,
+                "name": "0",
                 "label": "тєѕт ¢яιтєяιση",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
+                        "name": "0",
                         "label": "Ṅö",
                         "explanation": "Ṅö explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
+                        "name": "1",
                         "label": "sǝʎ",
                         "explanation": "sǝʎ explanation"
                     }
@@ -812,18 +857,21 @@
         "criteria": [
             {
                 "order_num": 0,
+                "name": "0",
                 "label": "тєѕт ¢яιтєяιση",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
+                        "name": "0",
                         "label": "Ṅö",
                         "explanation": "Ṅö explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
+                        "name": "1",
                         "label": "sǝʎ",
                         "explanation": "sǝʎ explanation"
                     }
@@ -858,18 +906,21 @@
         "criteria": [
             {
                 "order_num": 0,
+                "name": "0",
                 "label": "тєѕт ¢яιтєяιση",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
+                        "name": "1",
                         "label": "Ṅö",
                         "explanation": "Ṅö explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
+                        "name": "2",
                         "label": "sǝʎ",
                         "explanation": "sǝʎ explanation"
                     }
@@ -911,18 +962,21 @@
         "criteria": [
             {
                 "order_num": 0,
+                "name": "0",
                 "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
+                        "name": "0",
                         "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
+                        "name": "1",
                         "label": "Yes",
                         "explanation": "Yes explanation"
                     }
@@ -956,18 +1010,21 @@
         "criteria": [
             {
                 "order_num": 0,
+                "name": "0",
                 "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
+                        "name": "0",
                         "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
+                        "name": "1",
                         "label": "Yes",
                         "explanation": "Yes explanation"
                     }
@@ -1002,18 +1059,21 @@
         "criteria": [
             {
                 "order_num": 0,
+                "name": "0",
                 "label": "Test criterion",
                 "prompt": "Test criterion prompt",
                 "options": [
                     {
                         "order_num": 0,
                         "points": 0,
+                        "name": "0",
                         "label": "No",
                         "explanation": "No explanation"
                     },
                     {
                         "order_num": 1,
                         "points": 2,
+                        "name": "1",
                         "label": "Yes",
                         "explanation": "Yes explanation"
                     }
@@ -1046,5 +1106,221 @@
             "self-assessment", "example-based-assessment",
             "NOT A VALID ASSESSMENT"
         ]
+    },
+
+    "no_criteria_name": {
+        "prompt": "Test Prompt",
+        "feedback_prompt": "Feedback prompt",
+        "allow_file_upload": false,
+        "criteria": [
+            {
+                "order_num": 0,
+                "label": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "0",
+                        "label": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "1",
+                        "label": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ],
+                "feedback": "optional"
+            }
+        ],
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": null
+            },
+            {
+                "name": "self-assessment",
+                "start": null,
+                "due": null
+            }
+        ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
+        "submission_due": "2014-02-27T09:46",
+        "submission_start": "2014-02-10T09:46"
+    },
+
+    "no_option_name": {
+        "prompt": "Test Prompt",
+        "feedback_prompt": "Feedback prompt",
+        "allow_file_upload": false,
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "0",
+                "label": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "label": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "1",
+                        "label": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ],
+                "feedback": "optional"
+            }
+        ],
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": null
+            },
+            {
+                "name": "self-assessment",
+                "start": null,
+                "due": null
+            }
+        ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
+        "submission_due": "2014-02-27T09:46",
+        "submission_start": "2014-02-10T09:46"
+    },
+
+    "criteria_names_not_unique": {
+        "prompt": "Test Prompt",
+        "feedback_prompt": "Feedback prompt",
+        "allow_file_upload": false,
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "0",
+                "label": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "label": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "1",
+                        "label": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ],
+                "feedback": "optional"
+            },
+            {
+                "order_num": 1,
+                "name": "0",
+                "label": "Test criterion too",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "label": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "1",
+                        "label": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ],
+                "feedback": "optional"
+            }
+        ],
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": null
+            },
+            {
+                "name": "self-assessment",
+                "start": null,
+                "due": null
+            }
+        ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
+        "submission_due": "2014-02-27T09:46",
+        "submission_start": "2014-02-10T09:46"
+    },
+
+    "option_names_not_unique": {
+        "expected_error": "validation error: options",
+        "prompt": "Test Prompt",
+        "feedback_prompt": "Feedback prompt",
+        "allow_file_upload": false,
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "0",
+                "label": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "0",
+                        "label": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "0",
+                        "label": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ],
+                "feedback": "optional"
+            }
+        ],
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": null
+            },
+            {
+                "name": "self-assessment",
+                "start": null,
+                "due": null
+            }
+        ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
+        "submission_due": "2014-02-27T09:46",
+        "submission_start": "2014-02-10T09:46"
     }
 }
