@@ -107,6 +107,29 @@ describe("OpenAssessment.Server", function() {
         });
     });
 
+    it("sends a self-assessment to the XBlock", function() {
+        stubAjax(true, {success: true, msg: ''});
+
+        var success = false;
+        var options = {clarity: "Very clear", precision: "Somewhat precise"};
+        var criterionFeedback = {clarity: "This essay was very clear."};
+        server.selfAssess(options, criterionFeedback, "Excellent job!").done(
+            function() { success = true; }
+        );
+
+        expect(success).toBe(true);
+        expect($.ajax).toHaveBeenCalledWith({
+            url: '/self_assess',
+            type: "POST",
+            data: JSON.stringify({
+                options_selected: options,
+                criterion_feedback: criterionFeedback,
+                overall_feedback: "Excellent job!"
+            })
+        });
+
+    });
+
     it("sends a training assessment to the XBlock", function() {
         stubAjax(true, {success: true, msg: '', correct: true});
         var success = false;
@@ -241,7 +264,7 @@ describe("OpenAssessment.Server", function() {
     it("informs the caller of an AJAX error when sending a self assessment", function() {
         stubAjax(false, null);
         var receivedMsg = null;
-        server.selfAssess("Test").fail(function(errorMsg) { receivedMsg = errorMsg; });
+        server.selfAssess("Test", {}, "Excellent job!").fail(function(errorMsg) { receivedMsg = errorMsg; });
         expect(receivedMsg).toContain('This assessment could not be submitted');
     });
 
