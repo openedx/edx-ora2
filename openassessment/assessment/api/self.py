@@ -89,7 +89,15 @@ def get_score(submission_uuid, requirements):
     }
 
 
-def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, scored_at=None):
+def create_assessment(
+    submission_uuid,
+    user_id,
+    options_selected,
+    criterion_feedback,
+    overall_feedback,
+    rubric_dict,
+    scored_at=None
+):
     """
     Create a self-assessment for a submission.
 
@@ -97,6 +105,11 @@ def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, s
         submission_uuid (str): The unique identifier for the submission being assessed.
         user_id (str): The ID of the user creating the assessment.  This must match the ID of the user who made the submission.
         options_selected (dict): Mapping of rubric criterion names to option values selected.
+        criterion_feedback (dict): Dictionary mapping criterion names to the
+            free-form text feedback the user gave for the criterion.
+            Since criterion feedback is optional, some criteria may not appear
+            in the dictionary.
+        overall_feedback (unicode): Free-form text feedback on the submission overall.
         rubric_dict (dict): Serialized Rubric model.
 
     Kwargs:

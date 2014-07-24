@@ -9,6 +9,7 @@ import mock
 import pytz
 from openassessment.assessment.api import self as self_api
 from openassessment.workflow import api as workflow_api
+from openassessment.xblock.data_conversion import create_rubric_dict
 from .base import XBlockHandlerTestCase, scenario
 
 
@@ -23,6 +24,8 @@ class TestSelfAssessment(XBlockHandlerTestCase):
 
     ASSESSMENT = {
         'options_selected': {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ﻉซƈﻉɭɭﻉกՇ', u'Form': u'Fair'},
+        'criterion_feedback': {},
+        'overall_feedback': ""
     }
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
@@ -87,6 +90,7 @@ class TestSelfAssessment(XBlockHandlerTestCase):
         # Submit a self assessment for a rubric with a feedback-only criterion
         assessment_dict = {
             'options_selected': {u'vocabulary': u'good'},
+            'criterion_feedback': {u'vocabulary': 'Awesome job!'},
             'overall_feedback': u''
         }
         resp = self.request(xblock, 'self_assess', json.dumps(assessment_dict), response_format='json')
@@ -99,10 +103,9 @@ class TestSelfAssessment(XBlockHandlerTestCase):
         self.assertEqual(assessment['parts'][0]['option']['points'], 1)
 
         # Check the feedback-only criterion score/feedback
-        # The written feedback should default to an empty string
         self.assertEqual(assessment['parts'][1]['criterion']['name'], u'𝖋𝖊𝖊𝖉𝖇𝖆𝖈𝖐 𝖔𝖓𝖑𝖞')
         self.assertIs(assessment['parts'][1]['option'], None)
-        self.assertEqual(assessment['parts'][1]['feedback'], u'')
+        self.assertEqual(assessment['parts'][1]['feedback'], u'Awesome job!')
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_self_assess_workflow_error(self, xblock):
@@ -267,7 +270,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             submission['uuid'],
             xblock.get_student_item_dict()['student_id'],
             {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ﻉซƈﻉɭɭﻉกՇ', u'Form': u'Fair'},
-            {'criteria': xblock.rubric_criteria}
+            {}, "Good job!",
+            create_rubric_dict(xblock.prompt, xblock.rubric_criteria)
         )
         self._assert_path_and_context(
             xblock, 'openassessmentblock/self/oa_self_complete.html', {},
@@ -302,7 +306,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             submission['uuid'],
             xblock.get_student_item_dict()['student_id'],
             {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ﻉซƈﻉɭɭﻉกՇ', u'Form': u'Fair'},
-            {'criteria': xblock.rubric_criteria}
+            {}, "Good job!",
+            create_rubric_dict(xblock.prompt, xblock.rubric_criteria)
         )
 
         # This case probably isn't possible, because presumably when we create
