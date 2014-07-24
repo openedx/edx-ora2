@@ -115,9 +115,16 @@ class TestGrade(XBlockHandlerTestCase):
                 u'𝖋𝖊𝖊𝖉𝖇𝖆𝖈𝖐 𝖔𝖓𝖑𝖞': u"Ṫḧïṡ ïṡ ṡöṁë ḟëëḋḅäċḳ."
             }
 
+        self_assessment = copy.deepcopy(self.ASSESSMENTS[0])
+        self_assessment['criterion_feedback'] = {
+            u'𝖋𝖊𝖊𝖉𝖇𝖆𝖈𝖐 𝖔𝖓𝖑𝖞': "Feedback here",
+            u'Form': 'lots of feedback yes"',
+            u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': "such feedback"
+        }
+
         # Submit, assess, and render the grade view
         self._create_submission_and_assessments(
-            xblock, self.SUBMISSION, self.PEERS, peer_assessments, self.ASSESSMENTS[0]
+            xblock, self.SUBMISSION, self.PEERS, peer_assessments, self_assessment
         )
 
         # Render the grade section
@@ -365,5 +372,6 @@ class TestGrade(XBlockHandlerTestCase):
         if self_assessment is not None:
             self_api.create_assessment(
                 submission['uuid'], student_id, self_assessment['options_selected'],
+                self_assessment['criterion_feedback'], self_assessment['overall_feedback'],
                 {'criteria': xblock.rubric_criteria}
             )

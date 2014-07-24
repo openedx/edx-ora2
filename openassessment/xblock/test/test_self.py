@@ -90,7 +90,10 @@ class TestSelfAssessment(XBlockHandlerTestCase):
         # Submit a self assessment for a rubric with a feedback-only criterion
         assessment_dict = {
             'options_selected': {u'vocabulary': u'good'},
-            'criterion_feedback': {u'vocabulary': 'Awesome job!'},
+            'criterion_feedback': {
+                u'vocabulary': 'Awesome job!',
+                u'𝖋𝖊𝖊𝖉𝖇𝖆𝖈𝖐 𝖔𝖓𝖑𝖞': 'fairly illegible.'
+            },
             'overall_feedback': u''
         }
         resp = self.request(xblock, 'self_assess', json.dumps(assessment_dict), response_format='json')
@@ -105,7 +108,7 @@ class TestSelfAssessment(XBlockHandlerTestCase):
         # Check the feedback-only criterion score/feedback
         self.assertEqual(assessment['parts'][1]['criterion']['name'], u'𝖋𝖊𝖊𝖉𝖇𝖆𝖈𝖐 𝖔𝖓𝖑𝖞')
         self.assertIs(assessment['parts'][1]['option'], None)
-        self.assertEqual(assessment['parts'][1]['feedback'], u'Awesome job!')
+        self.assertEqual(assessment['parts'][1]['feedback'], u'fairly illegible.')
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_self_assess_workflow_error(self, xblock):

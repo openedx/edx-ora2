@@ -107,7 +107,7 @@ class Command(BaseCommand):
             print "-- Creating self assessment"
             self_api.create_assessment(
                 submission_uuid, student_item['student_id'],
-                options_selected, rubric
+                options_selected, {}, "  ".join(loremipsum.get_paragraphs(2)), rubric
             )
 
     @property

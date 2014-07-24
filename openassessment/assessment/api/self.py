@@ -156,8 +156,17 @@ def create_assessment(
         rubric = rubric_from_dict(rubric_dict)
 
         # Create the self assessment
-        assessment = Assessment.create(rubric, user_id, submission_uuid, SELF_TYPE, scored_at=scored_at)
-        AssessmentPart.create_from_option_names(assessment, options_selected)
+        assessment = Assessment.create(
+            rubric,
+            user_id,
+            submission_uuid,
+            SELF_TYPE,
+            scored_at=scored_at,
+            feedback=overall_feedback
+        )
+
+        # This will raise an `InvalidRubricSelection` if the selected options do not match the rubric.
+        AssessmentPart.create_from_option_names(assessment, options_selected, feedback=criterion_feedback)
         _log_assessment(assessment, submission)
     except InvalidRubric:
         msg = "Invalid rubric definition"
