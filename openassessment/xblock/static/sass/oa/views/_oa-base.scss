@@ -201,7 +201,7 @@
     // step content wrapper
     .wrapper--step__content {
       margin-top: ($baseline-v/2);
-      padding-top: $baseline-v;
+      padding-top: ($baseline-v/2);
       border-top: 1px solid $color-decorative-tertiary;
     }
 
