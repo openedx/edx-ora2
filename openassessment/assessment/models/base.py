@@ -785,7 +785,8 @@ class AssessmentPart(models.Model):
 
         Args:
             rubric_index (RubricIndex): The index of the rubric's data.
-            selected_criteria (list): list of criterion names
+            selected_criteria (list): list of criterion names that have an option selected
+            criteria_feedback (list): list of criterion names that have feedback on them
 
         Returns:
             None

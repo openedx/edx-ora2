@@ -56,8 +56,8 @@ class TestSelfApi(CacheResetTest):
         "accuracy": "Like my sister's cutting comments about my weight, I may not have enjoyed the piece, but I cannot fault it for its factual nature."
     }
 
-    OVERALL_FEEDBACK = "Unfortunately, the nature of being is too complex to comment, judge, or discern any one" + \
-                       "arbitrary set of things over another."
+    OVERALL_FEEDBACK = (u"Unfortunately, the nature of being is too complex to comment, judge, or discern any one"
+                        u"arbitrary set of things over another.")
 
     def test_create_assessment(self):
         # Initially, there should be no submission or self assessment

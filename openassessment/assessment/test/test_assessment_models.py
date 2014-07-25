@@ -7,7 +7,7 @@ from openassessment.test_utils import CacheResetTest
 from openassessment.assessment.serializers import rubric_from_dict
 from openassessment.assessment.models import Assessment, AssessmentPart, InvalidRubricSelection
 from .constants import RUBRIC
-
+import mock
 
 class AssessmentTest(CacheResetTest):
     """
@@ -148,3 +148,41 @@ class AssessmentTest(CacheResetTest):
             criterion['options'] = []
         return rubric_from_dict(rubric_dict)
 
+    def test_check_all_criteria_assessed(self):
+        """
+        Runs a problem with 8 criterion (representing the 8 permutations of possible needs)
+        through this validator.  Represented as:
+            A -- Has an option selected for it.
+            B -- Has Zero Options
+            C -- Has Feedback given
+        """
+
+        all_criteria = ['---','--C','-B-','-BC','A--','A-C','AB-','ABC']
+        selected_criteria = [crit for crit in all_criteria if ('A' in crit)]
+        zero_option_criteria_names = [crit for crit in all_criteria if ('B' in crit)]
+        feedback_given_criteria = [crit for crit in all_criteria if ('C' in crit)]
+
+        zero_option_criteria = []
+        for zoc in zero_option_criteria_names:
+            a = mock.Mock()
+            a.name = zoc
+            zero_option_criteria.append(a)
+
+        fake_rubric_index = mock.Mock()
+        fake_rubric_index.find_criteria_without_options = mock.Mock(return_value=zero_option_criteria)
+        fake_rubric_index.find_missing_criteria = mock.Mock(return_value=(set(all_criteria) - set(selected_criteria)))
+
+        expected_not_assessed = {'---','--C','-B-','AB-'}
+        expected_assessed = set(all_criteria) - expected_not_assessed
+
+        error = False
+        try:
+            AssessmentPart._check_all_criteria_assessed(fake_rubric_index, selected_criteria, feedback_given_criteria)
+        except InvalidRubricSelection as ex:
+            for criterion in expected_not_assessed:
+                self.assertTrue(criterion in ex.message)
+            for criterion in expected_assessed:
+                self.assertFalse(criterion in ex.message)
+            error = True
+
+        self.assertTrue(error)
