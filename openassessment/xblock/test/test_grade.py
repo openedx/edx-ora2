@@ -179,11 +179,13 @@ class TestGrade(XBlockHandlerTestCase):
         # Verify that the context for the grade complete page contains the feedback
         _, context = xblock.render_grade_complete(xblock.get_workflow_info())
         criteria = context['rubric_criteria']
-        self.assertEqual(criteria[0]['feedback'], [
+
+        self.assertEqual(criteria[0]['peer_feedback'], [
             u'Peer 2: ฝﻉɭɭ ɗѻกﻉ!',
             u'Peer 1: ฝﻉɭɭ ɗѻกﻉ!',
         ])
-        self.assertEqual(criteria[1]['feedback'], [u'Peer 2: ƒαιя נσв'])
+        self.assertEqual(criteria[0]['self_feedback'], u'Peer 1: ฝﻉɭɭ ɗѻกﻉ!')
+        self.assertEqual(criteria[1]['peer_feedback'], [u'Peer 2: ƒαιя נσв'])
 
         # The order of the peers in the per-criterion feedback needs
         # to match the order of the peer assessments

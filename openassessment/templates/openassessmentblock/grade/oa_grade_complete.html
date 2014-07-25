@@ -156,7 +156,7 @@
                                     {% endif %}
 
                                     <ul class="answer--feedback__content {% if criterion.options %}ui-toggle-visibility__content{% endif %}">
-                                        {% for feedback in criterion.feedback %}
+                                        {% for feedback in criterion.peer_feedback %}
                                         <li class="feedback feedback--{{ forloop.counter }}">
                                             <h6 class="feedback__source">
                                               {% trans "Peer" %} {{ forloop.counter }}
@@ -167,6 +167,17 @@
                                             </div>
                                         </li>
                                         {% endfor %}
+                                        {% if criterion.self_feedback %}
+                                        <li class="feedback feedback--{{ forloop.counter }}">
+                                            <h6 class="feedback__source">
+                                              {% trans "My Assessment" %}
+                                            </h6>
+
+                                            <div class="feedback__value">
+                                            {{ criterion.self_feedback }}
+                                            </div>
+                                        </li>
+                                        {% endif %}
                                     </ul>
                                 </li>
                                 {% endif %}
