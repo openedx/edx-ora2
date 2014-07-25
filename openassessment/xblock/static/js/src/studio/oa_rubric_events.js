@@ -123,6 +123,9 @@ OpenAssessment.StudentTrainingListener.prototype = {
                 if ($(criterionOption).val() == data.name) {
                     $(criterionOption).val("");
                     $(criterionOption).addClass("openassessment_highlighted_field");
+                    $(criterionOption).click(function() {
+                        $(criterionOption).removeClass("openassessment_highlighted_field");
+                    });
                     changed = true;
                 }
 
