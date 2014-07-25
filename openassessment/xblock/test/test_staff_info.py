@@ -70,6 +70,14 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIn("course staff information", resp.decode('utf-8').lower())
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_course_staff_debug_link_to_instructor_dash(self, xblock):
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+        resp = self.request(xblock, 'render_staff_info', json.dumps({}))
+        self.assertIn('/courses/test_course/instructor#view-analytics', resp.decode('utf-8'))
+
+    @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_course_student_debug_info(self, xblock):
         # If we're not course staff, we shouldn't see the debug info
         xblock.xmodule_runtime =  self._create_mock_runtime(
