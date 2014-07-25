@@ -280,7 +280,7 @@ OpenAssessment.EditStudentTrainingView = function(element) {
             removeButtonClass: "openassessment_training_example_remove",
             containerItemClass: "openassessment_training_example"
         }
-    )
+    );
 };
 
 OpenAssessment.EditStudentTrainingView.prototype = {
@@ -330,21 +330,6 @@ OpenAssessment.EditStudentTrainingView.prototype = {
     isEnabled: function(isEnabled) {
         var sel = $("#include_student_training", this.element);
         return OpenAssessment.Fields.booleanField(sel, isEnabled);
-    },
-
-    /**
-    Get or set the XML defining the training examples.
-
-    Args:
-        xml (string, optional): The XML of the training example definitions.
-
-    Returns:
-        string
-
-    **/
-    exampleDefinitions: function(xml) {
-        var sel = $("#student_training_examples", this.element);
-        return OpenAssessment.Fields.stringField(sel, xml);
     },
 
     /**

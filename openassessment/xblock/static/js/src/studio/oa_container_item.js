@@ -15,7 +15,7 @@ OpenAssessment.ItemUtilities = {
     createUniqueName: function(selector, nameAttribute) {
         var index = 0;
         while (index <= selector.length) {
-            if (selector.parent().find("*[" + nameAttribute + "='" + index + "']").length == 0) {
+            if (selector.parent().find("*[" + nameAttribute + "='" + index + "']").length === 0) {
                 return index.toString();
             }
             index++;
@@ -30,13 +30,14 @@ container object. Constructs a new RubricOption element.
 
 Args:
     element (OpenAssessment.Container): The container that the option is a member of.
+    notifier (OpenAssessment.Notifier): Used to send notifications of updates to rubric options.
 
 Returns:
     OpenAssessment.RubricOption
 **/
-OpenAssessment.RubricOption = function(element) {
+OpenAssessment.RubricOption = function(element, notifier) {
     this.element = element;
-    this.modificationHandler = new OpenAssessment.RubricEventHandler();
+    this.notifier = notifier;
     $(this.element).focusout($.proxy(this.updateHandler, this));
 };
 
@@ -78,7 +79,7 @@ OpenAssessment.RubricOption.prototype = {
     },
 
     /**
-     Hook into the event handler for removal of a criterion option.
+     Hook into the event handler for addition of a criterion option.
 
      */
     addHandler: function (){
@@ -97,7 +98,7 @@ OpenAssessment.RubricOption.prototype = {
         $(".openassessment_criterion_option_name", this.element).attr("value", name);
 
         var fields = this.getFieldValues();
-        this.modificationHandler.notificationFired(
+        this.notifier.notificationFired(
             "optionAdd",
             {
                 "criterionName": criterionName,
@@ -116,7 +117,7 @@ OpenAssessment.RubricOption.prototype = {
     removeHandler: function (){
         var criterionName = $(this.element).data('criterion');
         var optionName = $(this.element).data('option');
-        this.modificationHandler.notificationFired(
+        this.notifier.notificationFired(
             "optionRemove",
             {
                 "criterionName": criterionName,
@@ -136,7 +137,7 @@ OpenAssessment.RubricOption.prototype = {
         var optionName = $(this.element).data('option');
         var optionLabel = fields.label;
         var optionPoints = fields.points;
-        this.modificationHandler.notificationFired(
+        this.notifier.notificationFired(
             "optionUpdated",
             {
                 "criterionName": criterionName,
@@ -154,20 +155,22 @@ the DOM.
 
 Args:
     element (JQuery Object): The selection which describes the scope of the criterion.
+    notifier (OpenAssessment.Notifier): Used to send notifications of updates to rubric criteria.
 
 Returns:
     OpenAssessment.RubricCriterion
  **/
-OpenAssessment.RubricCriterion = function(element) {
+OpenAssessment.RubricCriterion = function(element, notifier) {
     this.element = element;
-    this.modificationHandler = new OpenAssessment.RubricEventHandler();
+    this.notifier = notifier;
     this.optionContainer = new OpenAssessment.Container(
         OpenAssessment.RubricOption, {
             containerElement: $(".openassessment_criterion_option_list", this.element).get(0),
             templateElement: $("#openassessment_option_template").get(0),
             addButtonElement: $(".openassessment_criterion_add_option", this.element).get(0),
             removeButtonClass: "openassessment_criterion_option_remove_button",
-            containerItemClass: "openassessment_criterion_option"
+            containerItemClass: "openassessment_criterion_option",
+            notifier: this.notifier
         }
     );
 
@@ -247,7 +250,7 @@ OpenAssessment.RubricCriterion.prototype = {
      */
     removeHandler: function(){
         var criterionName = $(this.element).data('criterion');
-        this.modificationHandler.notificationFired("criterionRemove", {'criterionName': criterionName});
+        this.notifier.notificationFired("criterionRemove", {'criterionName': criterionName});
     },
 
     /**
@@ -258,7 +261,7 @@ OpenAssessment.RubricCriterion.prototype = {
         var fields = this.getFieldValues();
         var criterionName = fields.name;
         var criterionLabel = fields.label;
-        this.modificationHandler.notificationFired(
+        this.notifier.notificationFired(
             "criterionUpdated",
             {'criterionName': criterionName, 'criterionLabel': criterionLabel}
         );
@@ -270,10 +273,11 @@ OpenAssessment.RubricCriterion.prototype = {
  The TrainingExample class is used to construct and retrieve information from its element within the DOM
 
  Args:
- element (JQuery Object): the selection which identifies the scope of the training example.
+     element (JQuery Object): the selection which identifies the scope of the training example.
 
  Returns:
- OpenAssessment.TrainingExample
+     OpenAssessment.TrainingExample
+
  **/
 OpenAssessment.TrainingExample = function(element){
     this.element = element;
@@ -304,5 +308,4 @@ OpenAssessment.TrainingExample.prototype = {
     addHandler: function() {},
     removeHandler: function() {},
     updateHandler: function() {}
-
 };

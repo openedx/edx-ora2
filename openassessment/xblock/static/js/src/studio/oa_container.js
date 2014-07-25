@@ -44,8 +44,8 @@ including for pre-existing items in the container element.
 Templates elements are never deleted, so they should be hidden using CSS styles.
 
 Args:
-    containerItem (object): The container item object used to access
-        the contents of items in the container.
+    containerItem (constructor): The constructor of the container item object
+        used to access the contents of items in the container.
 
 Kwargs:
     containerElement (DOM element): The element representing the container.
@@ -55,25 +55,33 @@ Kwargs:
         There may be one of these for each item in the container.
     containerItemClass (string): The CSS class of items in the container.
         New items will be assigned this class.
+    notifier (OpenAssessment.Notifier): Used to send notifications of updates to container items.
 
 **/
 OpenAssessment.Container = function(containerItem, kwargs) {
-    this.containerItem = containerItem;
     this.containerElement = kwargs.containerElement;
     this.templateElement = kwargs.templateElement;
     this.addButtonElement = kwargs.addButtonElement;
     this.removeButtonClass = kwargs.removeButtonClass;
     this.containerItemClass = kwargs.containerItemClass;
+    this.notifier = kwargs.notifier;
+
+    // Since every container item should be instantiated with
+    // the notifier we were given, create a helper method
+    // that does this automatically.
+    var container = this;
+    this.createContainerItem = function(element) {
+        return new containerItem(element, container.notifier);
+    };
 
     // Install a click handler for the add button
     $(this.addButtonElement).click($.proxy(this.add, this));
 
     // Find items already in the container and install click
     // handlers for the delete buttons.
-    var container = this;
     $("." + this.removeButtonClass, this.containerElement).click(
         function(eventData) {
-            var item = new container.containerItem(eventData.target);
+            var item = container.createContainerItem(eventData.target);
             container.remove(item);
         }
     );
@@ -82,7 +90,7 @@ OpenAssessment.Container = function(containerItem, kwargs) {
     // own event handlers.
     $("." + this.containerItemClass, this.containerElement).each(
         function(index, element) {
-            new container.containerItem(element);
+            container.createContainerItem(element);
         }
     );
 };
@@ -112,13 +120,13 @@ OpenAssessment.Container.prototype = {
         var containerItem = $("." + this.containerItemClass, this.containerElement).last();
         containerItem.find('.' + this.removeButtonClass)
             .click(function(eventData) {
-                var containerItem = new container.containerItem(eventData.target);
+                var containerItem = container.createContainerItem(eventData.target);
                 container.remove(containerItem);
             } );
 
         // Initialize the item, allowing it to install event handlers.
         // Fire event handler for adding a new element
-        var handlerItem = new this.containerItem(containerItem);
+        var handlerItem = container.createContainerItem(containerItem);
         handlerItem.addHandler();
     },
 
@@ -133,7 +141,7 @@ OpenAssessment.Container.prototype = {
     **/
     remove: function(item) {
         var itemElement = $(item.element).closest("." + this.containerItemClass);
-        var containerItem = new this.containerItem(itemElement);
+        var containerItem = this.createContainerItem(itemElement);
         containerItem.removeHandler();
         itemElement.remove();
     },
@@ -152,7 +160,7 @@ OpenAssessment.Container.prototype = {
 
         $("." + this.containerItemClass, this.containerElement).each(
             function(index, element) {
-                var containerItem = new container.containerItem(element);
+                var containerItem = container.createContainerItem(element);
                 var fieldValues = containerItem.getFieldValues();
                 values.push(fieldValues);
             }
@@ -173,7 +181,7 @@ OpenAssessment.Container.prototype = {
     **/
     getItem: function(index) {
         var element = $("." + this.containerItemClass, this.containerElement).get(index);
-        return (element !== undefined) ? new this.containerItem(element) : null;
+        return (element !== undefined) ? this.createContainerItem(element) : null;
     },
 
     /**
@@ -186,6 +194,6 @@ OpenAssessment.Container.prototype = {
     getAllItems: function() {
         var container = this;
         return $("." + this.containerItemClass, this.containerElement)
-            .map(function() { return new container.containerItem(this); });
+            .map(function() { return container.createContainerItem(this); });
     }
 };

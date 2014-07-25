@@ -3,7 +3,7 @@ Editing interface for OpenAssessment settings (including assessments).
 
 Args:
     element (DOM element): The DOM element representing this view.
-    assessmentViews (array): List of assessment view objects.
+    assessmentViews (object literal): Mapping of CSS IDs to view objects.
 
 Returns:
     OpenAssessment.EditSettingsView

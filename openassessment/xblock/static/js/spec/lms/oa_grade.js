@@ -42,7 +42,6 @@ describe("OpenAssessment.GradeView", function() {
 
     beforeEach(function() {
         // Load the DOM fixture
-        jasmine.getFixtures().fixturesPath = 'base/fixtures';
         loadFixtures('oa_grade_complete.html');
 
         // Create the stub server

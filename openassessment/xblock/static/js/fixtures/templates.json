@@ -391,7 +391,7 @@
             "submission_due": "2014-10-1T10:00:00",
             "criteria": [
                 {
-                    "name": "52bfbd0eb3044212b809564866e77079",
+                    "name": "criterion_1",
                     "label": "Criterion with two options",
                     "prompt": "Prompt for criterion with two options",
                     "order_num": 0,
@@ -400,14 +400,14 @@
                         {
                             "order_num": 0,
                             "points": 1,
-                            "name": "85bbbecbb6a343f8a2146cde0e609ad0",
+                            "name": "option_1",
                             "label": "Fair",
                             "explanation": "Fair explanation"
                         },
                         {
                             "order_num": 1,
                             "points": 2,
-                            "name": "5936d5b9e281403ca123964055d4719a",
+                            "name": "option_2",
                             "label": "Good",
                             "explanation": "Good explanation"
                         }
@@ -415,7 +415,7 @@
                     "points_possible": 2
                 },
                 {
-                    "name": "d96bb68a69ee4ccb8f86c753b6924f75",
+                    "name": "criterion_2",
                     "label": "Criterion with no options",
                     "prompt": "Prompt for criterion with no options",
                     "order_num": 0,
@@ -424,7 +424,7 @@
                     "points_possible": 0
                 },
                 {
-                    "name": "2ca052403b06424da714f7a80dfb954d",
+                    "name": "criterion_3",
                     "label": "Criterion with optional feedback",
                     "prompt": "Prompt for criterion with optional feedback",
                     "order_num": 2,
@@ -433,7 +433,7 @@
                         {
                             "order_num": 0,
                             "points": 2,
-                            "name": "d7445661a89b4b339b9788cb7225a603",
+                            "name": "option_1",
                             "label": "Good",
                             "explanation": "Good explanation"
                         }
@@ -460,6 +460,148 @@
             ]
         },
         "output": "oa_edit.html"
+    },
+    {
+        "template": "openassessmentblock/edit/oa_edit.html",
+        "context": {
+            "prompt": "Test prompt",
+            "title": "Test title",
+            "submission_due": "2014-10-1T10:00:00",
+            "criteria": [
+                {
+                    "name": "criterion_with_two_options",
+                    "label": "Criterion with two options",
+                    "prompt": "Criterion with two options prompt",
+                    "order_num": 0,
+                    "feedback": "disabled",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 1,
+                            "name": "option_1",
+                            "label": "Fair",
+                            "explanation": "Fair explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "option_2",
+                            "label": "Good",
+                            "explanation": "Good explanation"
+                        }
+                    ],
+                    "points_possible": 2
+                },
+                {
+                    "name": "criterion_no_options",
+                    "label": "Criterion with no options",
+                    "prompt": "Criterion with no options prompt",
+                    "order_num": 0,
+                    "options": [],
+                    "feedback": "required",
+                    "points_possible": 0
+                }
+            ],
+            "assessments": {
+                "training": {
+                    "examples": [
+                        {
+                            "answer": "Test answer",
+                            "criteria": [
+                                {
+                                    "name": "criterion_with_two_options",
+                                    "label": "Criterion with two options",
+                                    "prompt": "Criterion with two options prompt",
+                                    "order_num": 0,
+                                    "feedback": "disabled",
+                                    "options": [
+                                        {
+                                            "order_num": 0,
+                                            "points": 1,
+                                            "name": "option_1",
+                                            "label": "Fair",
+                                            "explanation": "Fair explanation"
+                                        },
+                                        {
+                                            "order_num": 1,
+                                            "points": 2,
+                                            "name": "option_2",
+                                            "label": "Good",
+                                            "explanation": "Good explanation"
+                                        }
+                                    ],
+                                    "points_possible": 2,
+                                    "option_selected": "option_1"
+                                },
+                                {
+                                    "name": "criterion_no_options",
+                                    "label": "Criterion with no options",
+                                    "prompt": "Criterion with no options prompt",
+                                    "order_num": 0,
+                                    "options": [],
+                                    "feedback": "required",
+                                    "points_possible": 0,
+                                    "option_selected": ""
+                                }
+                            ]
+                        }
+                    ],
+                    "template": {
+                        "answer": "",
+                        "criteria": [
+                            {
+                                "name": "criterion_with_two_options",
+                                "label": "Criterion with two options",
+                                "prompt": "Criterion with two options prompt",
+                                "order_num": 0,
+                                "feedback": "disabled",
+                                "options": [
+                                    {
+                                        "order_num": 0,
+                                        "points": 1,
+                                        "name": "option_1",
+                                        "label": "Fair",
+                                        "explanation": "Fair explanation"
+                                    },
+                                    {
+                                        "order_num": 1,
+                                        "points": 2,
+                                        "name": "option_2",
+                                        "label": "Good",
+                                        "explanation": "Good explanation"
+                                    }
+                                ],
+                                "points_possible": 2,
+                                "option_selected": ""
+                            },
+                            {
+                                "name": "criterion_no_options",
+                                "label": "Criterion with no options",
+                                "prompt": "Criterion with no options prompt",
+                                "order_num": 0,
+                                "options": [],
+                                "feedback": "required",
+                                "points_possible": 0,
+                                "option_selected": ""
+                            }
+                        ]
+                    }
+                },
+                "peer_assessment": {
+                    "start": "",
+                    "due": "",
+                    "must_grade": 5,
+                    "must_be_graded_by": 3
+                }
+            },
+            "editor_assessments_order": [
+                "student_training",
+                "peer_assessment",
+                "self_assessment",
+                "example_based_assessment"
+            ]
+        },
+        "output": "oa_edit_student_training.html"
     },
     {
         "template": "openassessmentblock/staff_debug/staff_debug.html",

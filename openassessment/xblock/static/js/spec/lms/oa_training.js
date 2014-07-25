@@ -45,7 +45,6 @@ describe("OpenAssessment.StudentTrainingView", function() {
 
     beforeEach(function() {
         // Load the DOM fixture
-        jasmine.getFixtures().fixturesPath = 'base/fixtures';
         loadFixtures('oa_student_training.html');
 
         // Create a new stub server

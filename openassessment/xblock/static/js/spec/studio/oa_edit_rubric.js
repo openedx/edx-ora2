@@ -3,13 +3,25 @@ Tests for the rubric editing view.
 **/
 describe("OpenAssessment.EditRubricView", function() {
 
+    // Use a stub notifier implementation that simply stores
+    // the notifications it receives.
+    var notifier = null;
+    var StubNotifier = function() {
+        this.notifications = [];
+        this.notificationFired = function(name, data) {
+            this.notifications.push({
+                name: name,
+                data: data
+            });
+        };
+    };
+
     var view = null;
     beforeEach(function() {
-        jasmine.getFixtures().fixturesPath = 'base/fixtures';
         loadFixtures('oa_edit.html');
-
         var el = $("#oa_rubric_editor_wrapper").get(0);
-        view = new OpenAssessment.EditRubricView(el);
+        notifier = new StubNotifier();
+        view = new OpenAssessment.EditRubricView(el, notifier);
     });
 
     it("reads a criteria definition from the editor", function() {
@@ -20,7 +32,7 @@ describe("OpenAssessment.EditRubricView", function() {
 
         // Criterion with two options, feedback disabled
         expect(criteria[0]).toEqual({
-            name: "52bfbd0eb3044212b809564866e77079",
+            name: "criterion_1",
             label: "Criterion with two options",
             prompt: "Prompt for criterion with two options",
             order_num: 0,
@@ -29,14 +41,14 @@ describe("OpenAssessment.EditRubricView", function() {
                 {
                     order_num: 0,
                     points: 1,
-                    name: "85bbbecbb6a343f8a2146cde0e609ad0",
+                    name: "option_1",
                     label: "Fair",
                     explanation: "Fair explanation"
                 },
                 {
                     order_num: 1,
                     points: 2,
-                    name: "5936d5b9e281403ca123964055d4719a",
+                    name: "option_2",
                     label: "Good",
                     explanation: "Good explanation"
                 }
@@ -45,7 +57,7 @@ describe("OpenAssessment.EditRubricView", function() {
 
         // Criterion with no options, feedback required
         expect(criteria[1]).toEqual({
-            name: "d96bb68a69ee4ccb8f86c753b6924f75",
+            name: "criterion_2",
             label: "Criterion with no options",
             prompt: "Prompt for criterion with no options",
             order_num: 1,
@@ -55,7 +67,7 @@ describe("OpenAssessment.EditRubricView", function() {
 
         // Criterion with one option, feeback optional
         expect(criteria[2]).toEqual({
-            name: "2ca052403b06424da714f7a80dfb954d",
+            name: "criterion_3",
             label: "Criterion with optional feedback",
             prompt: "Prompt for criterion with optional feedback",
             order_num: 2,
@@ -64,7 +76,7 @@ describe("OpenAssessment.EditRubricView", function() {
                 {
                     order_num: 0,
                     points: 2,
-                    name: "d7445661a89b4b339b9788cb7225a603",
+                    name: "option_1",
                     label: "Good",
                     explanation: "Good explanation"
                 }
@@ -75,14 +87,13 @@ describe("OpenAssessment.EditRubricView", function() {
     it("creates new criteria and options", function() {
         // Delete all existing criteria from the rubric
         // Then add new criteria (created from a client-side template)
-        view.removeAllCriteria();
+        $.each(view.getAllCriteria(), function() { view.removeCriterion(this); });
         view.addCriterion();
         view.addCriterion();
 
         // Add an option to the second criterion
-        view.getCriterionItem(1).addOption();
+        view.addOption(1);
 
-        // Check the definition
         // Since no criteria/option names are set, leave them out of the description.
         // This will cause the server to assign them unique names.
         var criteria = view.criteriaDefinition();
@@ -124,4 +135,77 @@ describe("OpenAssessment.EditRubricView", function() {
         expect(view.feedbackPrompt()).toEqual(prompt);
     });
 
+
+    it("fires a notification when an option is added", function() {
+        view.addOption();
+        expect(notifier.notifications).toContain({
+            name: "optionAdd",
+            data: {
+                criterionName: 'criterion_1',
+                criterionLabel: 'Criterion with two options',
+                name:'0',
+                label: '',
+                points : 1
+            }
+        });
+
+        // Add a second option and ensure that it is given a unique name
+        view.addOption();
+        expect(notifier.notifications).toContain({
+            name: "optionAdd",
+            data: {
+                criterionName: 'criterion_1',
+                criterionLabel: 'Criterion with two options',
+                name:'1',
+                label: '',
+                points : 1
+            }
+        });
+    });
+
+    it("fires a notification when an option is removed", function() {
+        view.removeOption(0, view.getOptionItem(0, 0));
+        expect(notifier.notifications).toContain({
+            name: "optionRemove",
+            data: {
+                criterionName: 'criterion_1',
+                name: 'option_1'
+            }
+        });
+    });
+
+    it("fires a notification when an option's label or points are updated", function() {
+        // Simulate what happens when the options label or points are updated
+        view.getOptionItem(0, 0).updateHandler();
+        expect(notifier.notifications).toContain({
+            name: "optionUpdated",
+            data: {
+                criterionName: 'criterion_1',
+                name: 'option_1',
+                label: 'Fair',
+                points: 1
+            }
+        });
+    });
+
+    it("fires a notification when a criterion's label is updated", function() {
+        // Simulate what happens when a criterion label is updated
+        view.getCriterionItem(0).updateHandler();
+        expect(notifier.notifications).toContain({
+            name: "criterionUpdated",
+            data: {
+                criterionName: 'criterion_1',
+                criterionLabel: 'Criterion with two options'
+            }
+        });
+
+    });
+
+    it("fires a notification when a criterion is removed", function() {
+        view.criteriaContainer.remove(view.getCriterionItem(0));
+        expect(notifier.notifications).toContain({
+            name: "criterionRemove",
+            data: {criterionName : 'criterion_1'}
+        });
+    });
 });

@@ -18,7 +18,6 @@ describe("OpenAssessment edit assessment views", function() {
     };
 
     beforeEach(function() {
-        jasmine.getFixtures().fixturesPath = 'base/fixtures';
         loadFixtures('oa_edit.html');
     });
 

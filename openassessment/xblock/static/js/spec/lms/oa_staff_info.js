@@ -69,9 +69,6 @@ describe("OpenAssessment.StaffInfoView", function() {
     };
 
     beforeEach(function() {
-        // Configure the Jasmine fixtures path
-        jasmine.getFixtures().fixturesPath = 'base/fixtures';
-
         // Create a new stub server
         server = new StubServer();
 
