@@ -245,11 +245,11 @@ OpenAssessment.StudentTrainingListener.prototype = {
             .children().first()
             .clone()
             .removeAttr('id')
-            .attr('data-criterion', data.name)
+            .attr('data-criterion', data.criterionName)
             .toggleClass('is--hidden', false)
             .appendTo(".openassessment_training_example_criteria_selections", view);
 
-        criterion.find(".openassessment_training_example_criterion_option").attr('data-criterion', data.name);
+        criterion.find(".openassessment_training_example_criterion_option").attr('data-criterion', data.criterionName);
         criterion.find(".openassessment_training_example_criterion_name_wrapper").text(data.label);
     }
 
