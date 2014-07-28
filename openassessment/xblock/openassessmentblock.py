@@ -271,8 +271,6 @@ class OpenAssessmentBlock(
         else:
             return False
 
-
-
     @property
     def in_studio_preview(self):
         """
@@ -649,4 +647,3 @@ class OpenAssessmentBlock(
             return key.to_deprecated_string()
         else:
             return unicode(key)
-

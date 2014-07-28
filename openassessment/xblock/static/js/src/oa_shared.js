@@ -17,3 +17,10 @@ if (typeof OpenAssessment == "undefined" || !OpenAssessment) {
 if (typeof window.gettext === 'undefined') {
     window.gettext = function(text) { return text; };
 }
+
+// Stub event logging if the runtime doesn't provide it
+if (typeof window.Logger === 'undefined') {
+    window.Logger = {
+        log: function(event_type, data, kwargs) {}
+    };
+}
