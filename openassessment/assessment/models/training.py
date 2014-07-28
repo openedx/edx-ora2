@@ -93,7 +93,7 @@ class TrainingExample(models.Model):
         Create a cache key based on the content hash
         for serialized versions of this model.
 
-        Kwargs:
+        Keyword Arguments:
             attribute: The name of the attribute being serialized.
                 If not specified, assume that we are serializing the entire model.
 

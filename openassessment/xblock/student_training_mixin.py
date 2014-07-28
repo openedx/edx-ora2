@@ -37,7 +37,7 @@ class StudentTrainingMixin(object):
         Args:
             data: Not used.
 
-        Kwargs:
+        Keyword Arguments:
             suffix: Not used.
 
         Returns:

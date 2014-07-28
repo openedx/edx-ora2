@@ -4,8 +4,6 @@
 AI Grading
 ##########
 
-.. warning:: This is a DRAFT that has not yet been implemented.
-
 
 Overview
 --------
@@ -234,76 +232,10 @@ Recovery from Failure
     c. Horizontally scale workers to handle additional load.
 
 
-Data Model
-----------
-
-1. **GradingWorkflow**
-
-    a. Submission UUID (varchar)
-    b. ClassifierSet (Foreign Key, Nullable)
-    c. Assessment (Foreign Key, Nullable)
-    d. Rubric (Foreign Key): Used to search for classifier sets if none are available when the workflow is started.
-    e. Algorithm ID (varchar): Used to search for classifier sets if none are available when the workflow is started.
-    f. Scheduled at (timestamp): The time the task was placed on the queue.
-    g. Completed at (timestamp): The time the task was completed.  If set, the task is considered complete.
-    h. Course ID (varchar): The ID of the course associated with the submission.  Useful for rescheduling failed grading tasks in a particular course.
-    i. Item ID (varchar): The ID of the item (problem) associated with the submission.  Useful for rescheduling failed grading tasks in a particular item in a course.
-
-
-2. **TrainingWorkflow**
-
-    a. Algorithm ID (varchar)
-    b. Many-to-many relation with **TrainingExample**.  We can re-use examples for multiple workflows.
-    c. ClassifierSet (Foreign Key)
-    d. Scheduled at (timestamp): The time the task was placed on the queue.
-    e. Completed at (timestamp): The time the task was completed.  If set, the task is considered complete.
-
-3. **TrainingExample**
-
-    a. Response text (text)
-    b. Options selected (many to many relation with CriterionOption)
-
-4. **ClassifierSet**
-
-    a. Rubric (Foreign Key)
-    b. Created at (timestamp)
-    c. Algorithm ID (varchar)
-
-5. **Classifier**
-
-    a. ClassifierSet (Foreign Key)
-    b. URL for trained classifier (varchar)
-    c. Criterion (Foreign Key)
-
-6. **Assessment** (same as current implementation)
-
-    a. Submission UUID (varchar)
-    b. Rubric (Foreign Key)
-
-7. **AssessmentPart** (same as current implementation)
-
-    a. Assessment (Foreign Key)
-    b. Option (Foreign Key to a **CriterionOption**)
-
-8. **Rubric** (same as current implementation)
-
-9. **Criterion** (same as current implementation)
-
-    a. Rubric (Foreign Key)
-    b. Name (varchar)
-
-10. **CriterionOption** (same as current implementation)
-
-    a. Criterion (Foreign Key)
-    b. Points (positive integer)
-    c. Name (varchar)
-
 
 Notes:
 
-    * We use a URL to reference the trained classifier so we can avoid storing it in the database.
-      In practice, the URL will almost certainly point to Amazon S3, but in principle we could use
-      other backends.
+    * The storage backend is pluggable.  In production, we use Amazon S3, but in principle we could use other backends (including the local filesystem in local dev).
 
     * Unfortunately, the ML algorithm we will use for initial release (EASE) requires that we
       persist the trained classifiers using Python's ``pickle`` module.  This has security implications

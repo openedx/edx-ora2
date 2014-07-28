@@ -309,7 +309,7 @@ class TestGrade(XBlockHandlerTestCase):
             peer_assessments (list of dict): List of assessment dictionaries for peer assessments.
             self_assessment (dict): Dict of assessment for self-assessment.
 
-        Kwargs:
+        Keyword Arguments:
             waiting_for_peer (bool): If true, skip creation of peer assessments for the user's submission.
 
         Returns:

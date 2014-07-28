@@ -225,7 +225,7 @@ def create_assessment(
             assessments is reached, the grading_completed_at timestamp is set
             for the Workflow.
 
-    Kwargs:
+    Keyword Args:
         scored_at (datetime): Optional argument to override the time in which
             the assessment took place. If not specified, scored_at is set to
             now.
@@ -358,8 +358,8 @@ def get_assessment_median_scores(submission_uuid):
             appropriate median score.
 
     Returns:
-        (dict): A dictionary of rubric criterion names, with a median score of
-            the peer assessments.
+        dict: A dictionary of rubric criterion names,
+        with a median score of the peer assessments.
 
     Raises:
         PeerAssessmentInternalError: If any error occurs while retrieving
@@ -430,15 +430,18 @@ def get_assessments(submission_uuid, scored_only=True, limit=None):
         submission_uuid (str): The submission all the requested assessments are
             associated with. Required.
 
-    Kwargs:
+    Keyword Arguments:
         scored (boolean): Only retrieve the assessments used to generate a score
             for this submission.
+
         limit (int): Limit the returned assessments. If None, returns all.
 
+
     Returns:
-        list(dict): A list of dictionaries, where each dictionary represents a
+        list: A list of dictionaries, where each dictionary represents a
             separate assessment. Each assessment contains points earned, points
             possible, time scored, scorer id, score type, and feedback.
+
 
     Raises:
         PeerAssessmentRequestError: Raised when the submission_id is invalid.
@@ -496,7 +499,7 @@ def get_submitted_assessments(submission_uuid, scored_only=True, limit=None):
         submission_uuid (str): The submission of the student whose assessments
         we are requesting. Required.
 
-    Kwargs:
+    Keyword Arguments:
         scored (boolean): Only retrieve the assessments used to generate a score
             for this submission.
         limit (int): Limit the returned assessments. If None, returns all.

@@ -4,8 +4,6 @@
 Understanding the Workflow
 ##########################
 
-.. warning:: The following section refers to features that are not yet fully
-             implemented.
 
 The `openassessment.workflow` application is tasked with managing the overall
 life-cycle of a student's submission as it goes through various evaluation steps
@@ -49,7 +47,9 @@ Isolation of Assessment types
       a non `None` value has been returned by this function for a given
       `submission_uuid`, repeated calls to this function should return the same
       thing.
-    `on_start(submission_uuid)`
+   `on_init(submission_uuid)`
+      Notification to the API that the student has submitted a response.
+   `on_start(submission_uuid)`
       Notification to the API that the student has started the assessment step.
 
    In the long run, it could be that `OpenAssessmentBlock` becomes a wrapper

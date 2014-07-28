@@ -358,7 +358,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             expected_path (str): The expected template path.
             expected_context (dict): The expected template context.
 
-        Kwargs:
+        Keyword Arguments:
             workflow_status (str): If provided, simulate this status from the workflow API.
             workflow_status (str): If provided, simulate these details from the workflow API.
             submission_uuid (str): If provided, simulate this submision UUI for the current workflow.

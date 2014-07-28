@@ -45,7 +45,7 @@ class StudioMixin(object):
             data (dict): Data from the request; should have a value for the key 'xml'
                 containing the XML for this XBlock.
 
-        Kwargs:
+        Keyword Arguments:
             suffix (str): Not used
 
         Returns:
@@ -75,7 +75,7 @@ class StudioMixin(object):
         Args:
             data (dict): Not used
 
-        Kwargs:
+        Keyword Arguments:
             suffix (str): Not used
 
         Returns:
@@ -101,7 +101,7 @@ class StudioMixin(object):
         Args:
             data (dict): Not used
 
-        Kwargs:
+        Keyword Arguments:
             suffix (str): Not used
 
         Returns:

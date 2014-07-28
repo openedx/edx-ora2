@@ -444,7 +444,7 @@ class Assessment(models.Model):
             submission_uuid (str): The UUID of the submission being assessed.
             score_type (unicode): The type of assessment (e.g. peer, self, or AI)
 
-        Kwargs:
+        Keyword Arguments:
             feedback (unicode): Overall feedback on the submission.
             scored_at (datetime): The time the assessment was created.  Defaults to the current time.
 
@@ -629,7 +629,7 @@ class AssessmentPart(models.Model):
             assessment (Assessment): The assessment we're adding parts to.
             selected (dict): A dictionary mapping criterion names to option names.
 
-        Kwargs:
+        Keyword Arguments:
             feedback (dict): A dictionary mapping criterion names to written
                 feedback for the criterion.
 
@@ -703,7 +703,7 @@ class AssessmentPart(models.Model):
             assessment (Assessment): The assessment we're adding parts to.
             selected (dict): A dictionary mapping criterion names to option point values.
 
-        Kwargs:
+        Keyword Arguments:
             feedback (dict): A dictionary mapping criterion names to written
                 feedback for the criterion.
 

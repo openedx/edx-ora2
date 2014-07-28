@@ -99,7 +99,7 @@ def create_assessment(submission_uuid, user_id, options_selected, rubric_dict, s
         options_selected (dict): Mapping of rubric criterion names to option values selected.
         rubric_dict (dict): Serialized Rubric model.
 
-    Kwargs:
+    Keyword Arguments:
         scored_at (datetime): The timestamp of the assessment; defaults to the current time.
 
     Returns:

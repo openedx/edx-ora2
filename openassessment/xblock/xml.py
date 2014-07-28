@@ -589,7 +589,7 @@ def update_from_xml(oa_block, root, validator=DEFAULT_VALIDATOR):
         oa_block (OpenAssessmentBlock): The open assessment block to update.
         root (lxml.etree.Element): The XML definition of the XBlock's content.
 
-    Kwargs:
+    Keyword Arguments:
         validator(callable): Function of the form:
             (rubric_dict, submission_dict, assessments) -> (bool, unicode)
             where the returned bool indicates whether the XML is semantically valid,
@@ -679,7 +679,7 @@ def update_from_xml_str(oa_block, xml, **kwargs):
         oa_block (OpenAssessmentBlock): The open assessment block to update.
         xml (unicode): The XML definition of the XBlock's content.
 
-    Kwargs:
+    Keyword Arguments:
         same as `update_from_xml`
 
     Returns:
