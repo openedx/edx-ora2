@@ -12,7 +12,11 @@
                     <option value={{ option.name }}
                                     {% if criterion.option_selected == option.name %} selected {% endif %}
                             >
-                        {{ option.label }} - {{ option.points }} {% trans "points" %}
+                        {% if option.points == 1 %}
+                          {{ option.label }} - {{ option.points }} {% trans "point" %}
+                        {% else %}
+                          {{ option.label }} - {{ option.points }} {% trans "points" %}
+                        {% endif %}
                     </option>
                 {% endfor %}
             </select>
