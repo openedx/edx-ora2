@@ -26,14 +26,15 @@ class SubmissionMixin(object):
 
     """
 
-    submit_errors = {
+    SUBMIT_ERRORS = {
         # Reported to user sometimes, and useful in tests
-        'ENODATA':  _(u'API returned an empty response.'),
-        'EBADFORM': _(u'API Submission Request Error.'),
-        'EUNKNOWN': _(u'API returned unclassified exception.'),
+        'ENODATA':  _(u'An unexpected error occurred.'),
+        'EBADFORM': _(u'An unexpected error occurred.'),
+        'EUNKNOWN': _(u'An unexpected error occurred.'),
         'ENOMULTI': _(u'Multiple submissions are not allowed.'),
         'ENOPREVIEW': _(u'To submit a response, view this component in Preview or Live mode.'),
-        'EBADARGS': _(u'"submission" required to submit answer.')
+        'EBADARGS': _(u'An unexpected error occurred.'),
+        'EANSWERLENGTH': _(u'This response exceeds the size limit.')
     }
 
     @XBlock.json_handler
@@ -57,7 +58,7 @@ class SubmissionMixin(object):
 
         """
         if 'submission' not in data:
-            return False, 'EBADARGS', self.submit_errors['EBADARGS']
+            return False, 'EBADARGS', self.SUBMIT_ERRORS['EBADARGS']
 
         status = False
         status_text = None
@@ -67,7 +68,7 @@ class SubmissionMixin(object):
         # Short-circuit if no user is defined (as in Studio Preview mode)
         # Since students can't submit, they will never be able to progress in the workflow
         if self.in_studio_preview:
-            return False, 'ENOPREVIEW', self.submit_errors['ENOPREVIEW']
+            return False, 'ENOPREVIEW', self.SUBMIT_ERRORS['ENOPREVIEW']
 
         workflow = self.get_workflow_info()
 
@@ -80,10 +81,35 @@ class SubmissionMixin(object):
                     student_sub
                 )
             except api.SubmissionRequestError as err:
-                status_tag = 'EBADFORM'
-                status_text = unicode(err.field_errors)
+
+                # Handle the case of an answer that's too long as a special case,
+                # so we can display a more specific error message.
+                # Although we limit the number of characters the user can
+                # enter on the client side, the submissions API uses the JSON-serialized
+                # submission to calculate length.  If each character submitted
+                # by the user takes more than 1 byte to encode (for example, double-escaped
+                # newline characters or non-ASCII unicode), then the user might
+                # exceed the limits set by the submissions API.  In that case,
+                # we display an error message indicating that the answer is too long.
+                answer_too_long = any(
+                    "maximum answer size exceeded" in answer_err.lower()
+                    for answer_err in err.field_errors.get('answer', [])
+                )
+                if answer_too_long:
+                    status_tag = 'EANSWERLENGTH'
+                else:
+                    msg = (
+                        u"The submissions API reported an invalid request error "
+                        u"when submitting a response for the user: {student_item}"
+                    ).format(student_item=student_item_dict)
+                    logger.exception(msg)
+                    status_tag = 'EBADFORM'
             except (api.SubmissionError, AssessmentWorkflowError):
-                logger.exception("This response was not submitted.")
+                msg = (
+                    u"An unknown error occurred while submitting "
+                    u"a response for the user: {student_item}"
+                ).format(student_item=student_item_dict)
+                logger.exception(msg)
                 status_tag = 'EUNKNOWN'
             else:
                 status = True
@@ -91,7 +117,7 @@ class SubmissionMixin(object):
                 status_text = submission.get('attempt_number')
 
         # relies on success being orthogonal to errors
-        status_text = status_text if status_text else self.submit_errors[status_tag]
+        status_text = status_text if status_text else self.SUBMIT_ERRORS[status_tag]
         return status, status_tag, status_text
 
     @XBlock.json_handler
