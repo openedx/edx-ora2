@@ -180,9 +180,9 @@ class AssessmentTest(CacheResetTest):
             AssessmentPart._check_all_criteria_assessed(fake_rubric_index, selected_criteria, feedback_given_criteria)
         except InvalidRubricSelection as ex:
             for criterion in expected_not_assessed:
-                self.assertTrue(criterion in ex.message)
+                self.assertTrue(criterion in str(ex))
             for criterion in expected_assessed:
-                self.assertFalse(criterion in ex.message)
+                self.assertFalse(criterion in str(ex))
             error = True
 
         self.assertTrue(error)

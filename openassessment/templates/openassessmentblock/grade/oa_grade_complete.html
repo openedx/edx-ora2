@@ -154,7 +154,7 @@
                                       {% if criterion.self_feedback %}
                                         <span class="answer--feedback__title__copy">{% trans "Additional Comments" %} ({{ criterion.peer_feedback|length|add:'1' }})</span>
                                       {% else %}
-                                      <span class="answer--feedback__title__copy">{% trans "Additional Comments" %} ({{ criterion.peer_feedback|length }})</span>
+                                        <span class="answer--feedback__title__copy">{% trans "Additional Comments" %} ({{ criterion.peer_feedback|length }})</span>
                                       {% endif %}
                                     </h5>
                                     {% endif %}
@@ -167,7 +167,7 @@
                                             </h6>
 
                                             <div class="feedback__value">
-                                            {{ feedback }}
+                                              {{ feedback }}
                                             </div>
                                         </li>
                                         {% endfor %}
@@ -178,7 +178,7 @@
                                             </h6>
 
                                             <div class="feedback__value">
-                                            {{ criterion.self_feedback }}
+                                              {{ criterion.self_feedback }}
                                             </div>
                                         </li>
                                         {% endif %}
