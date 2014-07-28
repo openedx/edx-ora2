@@ -14,8 +14,7 @@ from openassessment.assessment.api import ai as ai_api
 from openassessment.assessment.models import (
     AITrainingWorkflow, AIGradingWorkflow, AIClassifierSet, Assessment
 )
-from openassessment.assessment.models import AITrainingWorkflow, AIGradingWorkflow, AIClassifierSet
-from openassessment.assessment.worker.algorithm import AIAlgorithm, AIAlgorithmError
+from openassessment.assessment.worker.algorithm import AIAlgorithm
 from openassessment.assessment.serializers import rubric_from_dict
 from openassessment.assessment.errors import (
     AITrainingRequestError, AITrainingInternalError, AIGradingRequestError,
@@ -133,6 +132,50 @@ class AITrainingTest(CacheResetTest):
                 self.assertEqual(received_example.score, expected_score)
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_train_classifiers_feedback_only_criterion(self):
+        # Modify the rubric to include a feedback-only criterion
+        # (a criterion with no options, just written feedback)
+        rubric = copy.deepcopy(RUBRIC)
+        rubric['criteria'].append({
+            'name': 'feedback only',
+            'prompt': 'feedback',
+            'options': []
+        })
+
+        # Schedule a training task
+        # (we use training examples that do NOT include the feedback-only criterion)
+        workflow_uuid = ai_api.train_classifiers(rubric, EXAMPLES, COURSE_ID, ITEM_ID, ALGORITHM_ID)
+
+        # Verify that no classifier was created for the feedback-only criterion
+        # Since there's no points associated with that criterion,
+        # there's no way for the AI algorithm to score it anyway.
+        workflow = AITrainingWorkflow.objects.get(uuid=workflow_uuid)
+        classifier_data = workflow.classifier_set.classifier_data_by_criterion
+        self.assertNotIn('feedback only', classifier_data)
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_train_classifiers_all_feedback_only_criteria(self):
+        # Modify the rubric to include only feedback-only criteria
+        # (a criterion with no options, just written feedback)
+        rubric = copy.deepcopy(RUBRIC)
+        for criterion in rubric['criteria']:
+            criterion['options'] = []
+
+        # Modify the training examples to provide no scores
+        examples = copy.deepcopy(EXAMPLES)
+        for example in examples:
+            example['options_selected'] = {}
+
+        # Schedule a training task
+        # Our training examples have no options
+        workflow_uuid = ai_api.train_classifiers(rubric, examples, COURSE_ID, ITEM_ID, ALGORITHM_ID)
+
+        # Verify that no classifier was created for the feedback-only criteria
+        workflow = AITrainingWorkflow.objects.get(uuid=workflow_uuid)
+        classifier_data = workflow.classifier_set.classifier_data_by_criterion
+        self.assertEqual(classifier_data, {})
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     def test_train_classifiers_invalid_examples(self):
         # Mutate an example so it does not match the rubric
         mutated_examples = copy.deepcopy(EXAMPLES)
@@ -200,6 +243,69 @@ class AIGradingTest(CacheResetTest):
         score = ai_api.get_score(self.submission_uuid, {})
         self.assertEquals(score["points_possible"], 4)
         self.assertEquals(score["points_earned"], 3)
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_grade_essay_feedback_only_criterion(self):
+        # Modify the rubric to include a feedback-only criterion
+        # (a criterion with no options, just written feedback)
+        rubric = copy.deepcopy(RUBRIC)
+        rubric['criteria'].append({
+            'name': 'feedback only',
+            'prompt': 'feedback',
+            'options': []
+        })
+
+        # Train classifiers for the rubric
+        train_classifiers(rubric, self.CLASSIFIER_SCORE_OVERRIDES)
+
+        # Schedule a grading task and retrieve the assessment
+        ai_api.on_init(self.submission_uuid, rubric=rubric, algorithm_id=ALGORITHM_ID)
+        assessment = ai_api.get_latest_assessment(self.submission_uuid)
+
+        # Verify that the criteria with options were given scores
+        # (from the score override used by our fake classifiers)
+        self.assertEqual(assessment['parts'][0]['criterion']['name'], u"vøȼȺƀᵾłȺɍɏ")
+        self.assertEqual(assessment['parts'][0]['option']['points'], 1)
+        self.assertEqual(assessment['parts'][1]['criterion']['name'], u"ﻭɼค๓๓คɼ")
+        self.assertEqual(assessment['parts'][1]['option']['points'], 2)
+
+        # Verify that the criteria with no options (only feedback)
+        # has no score and empty feedback
+        self.assertEqual(assessment['parts'][2]['criterion']['name'], u"feedback only")
+        self.assertIs(assessment['parts'][2]['option'], None)
+        self.assertEqual(assessment['parts'][2]['feedback'], u"")
+
+        # Check the scores by criterion dict
+        score_dict = ai_api.get_assessment_scores_by_criteria(self.submission_uuid)
+        self.assertEqual(score_dict[u"vøȼȺƀᵾłȺɍɏ"], 1)
+        self.assertEqual(score_dict[u"ﻭɼค๓๓คɼ"], 2)
+        self.assertEqual(score_dict['feedback only'], 0)
+
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def test_grade_essay_all_feedback_only_criteria(self):
+        # Modify the rubric to include only feedback-only criteria
+        rubric = copy.deepcopy(RUBRIC)
+        for criterion in rubric['criteria']:
+            criterion['options'] = []
+
+        # Train classifiers for the rubric
+        train_classifiers(rubric, {})
+
+        # Schedule a grading task and retrieve the assessment
+        ai_api.on_init(self.submission_uuid, rubric=rubric, algorithm_id=ALGORITHM_ID)
+        assessment = ai_api.get_latest_assessment(self.submission_uuid)
+
+        # Verify that all assessment parts have feedback set to an empty string
+        for part in assessment['parts']:
+            self.assertEqual(part['feedback'], u"")
+
+        # Check the scores by criterion dict
+        # Since none of the criteria had options, the scores should all default to 0
+        score_dict = ai_api.get_assessment_scores_by_criteria(self.submission_uuid)
+        self.assertItemsEqual(score_dict, {
+            u"vøȼȺƀᵾłȺɍɏ": 0,
+            u"ﻭɼค๓๓คɼ": 0,
+        })
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     def test_get_assessment_scores_by_criteria(self):
@@ -331,7 +437,7 @@ class AIReschedulingTest(CacheResetTest):
             training_done (bool): whether the user expects there to be unfinished training workflows
             grading_done (bool): whether the user expects there to be unfinished grading workflows
         """
-        incomplete_training_workflows = AITrainingWorkflow.get_incomplete_workflows(course_id=COURSE_ID,item_id=ITEM_ID)
+        incomplete_training_workflows = AITrainingWorkflow.get_incomplete_workflows(course_id=COURSE_ID, item_id=ITEM_ID)
         incomplete_grading_workflows = AIGradingWorkflow.get_incomplete_workflows(course_id=COURSE_ID, item_id=ITEM_ID)
         if training_done is not None:
             self.assertEqual(self._is_empty_generator(incomplete_training_workflows), training_done)
@@ -371,7 +477,7 @@ class AIReschedulingTest(CacheResetTest):
         """
         try:
             ai_api.reschedule_unfinished_tasks(course_id=COURSE_ID, item_id=ITEM_ID, task_type=task_type)
-        except Exception as ex:
+        except Exception:   # pylint: disable=W0703
             # This exception is being raised because of a timeout.
             pass
 
@@ -392,7 +498,7 @@ class AIReschedulingTest(CacheResetTest):
         self._assert_complete(grading_done=True, training_done=True)
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
-    def test_reschedule_training_success(self):
+    def test_reschedule_training_and_grading_success(self):
         # Reschedule everything, expect all successes
         ai_api.reschedule_unfinished_tasks(course_id=COURSE_ID, item_id=ITEM_ID, task_type=None)
 
@@ -411,7 +517,7 @@ class AIReschedulingTest(CacheResetTest):
         holds up for querysets with 125+ entries
         """
         # Creates 125 more grades (for a total of 135)
-        for i in range(0, 125):
+        for _ in range(0, 125):
             submission = sub_api.create_submission(STUDENT_ITEM, ANSWER)
             self.submission_uuid = submission['uuid']
             ai_api.on_init(self.submission_uuid, rubric=RUBRIC, algorithm_id=ALGORITHM_ID)
@@ -430,27 +536,27 @@ class AIReschedulingTest(CacheResetTest):
         with mock.patch(patched_method) as mock_grade:
             mock_grade.side_effect = NotConfigured
             with self.assertRaises(AIGradingInternalError):
-                ai_api.reschedule_unfinished_tasks(course_id=COURSE_ID,item_id=ITEM_ID)
+                ai_api.reschedule_unfinished_tasks(course_id=COURSE_ID, item_id=ITEM_ID)
 
     def test_reschedule_train_celery_error(self):
         patched_method = 'openassessment.assessment.api.ai.training_tasks.reschedule_training_tasks.apply_async'
         with mock.patch(patched_method) as mock_train:
             mock_train.side_effect = NotConfigured
             with self.assertRaises(AITrainingInternalError):
-                ai_api.reschedule_unfinished_tasks(course_id=COURSE_ID,item_id=ITEM_ID, task_type=None)
+                ai_api.reschedule_unfinished_tasks(course_id=COURSE_ID, item_id=ITEM_ID, task_type=None)
 
     @mock.patch.object(AIGradingWorkflow, 'get_incomplete_workflows')
     def test_get_incomplete_workflows_error_grading(self, mock_incomplete):
         mock_incomplete.side_effect = DatabaseError
         with self.assertRaises(AIReschedulingInternalError):
-            ai_api.reschedule_unfinished_tasks(course_id=COURSE_ID,item_id=ITEM_ID)
+            ai_api.reschedule_unfinished_tasks(course_id=COURSE_ID, item_id=ITEM_ID)
 
     def test_get_incomplete_workflows_error_training(self):
         patched_method =  'openassessment.assessment.models.ai.AIWorkflow.get_incomplete_workflows'
         with mock.patch(patched_method) as mock_incomplete:
             mock_incomplete.side_effect = DatabaseError
             with self.assertRaises(Exception):
-                ai_api.reschedule_unfinished_tasks(course_id=COURSE_ID,item_id=ITEM_ID, task_type=u"train")
+                ai_api.reschedule_unfinished_tasks(course_id=COURSE_ID, item_id=ITEM_ID, task_type=u"train")
 
     def test_reschedule_train_internal_celery_error(self):
         patched_method = 'openassessment.assessment.worker.training.train_classifiers.apply_async'
@@ -458,7 +564,7 @@ class AIReschedulingTest(CacheResetTest):
             mock_train.side_effect = NotConfigured("NotConfigured")
             with mock.patch('openassessment.assessment.worker.training.logger.exception') as mock_logger:
                 with self.assertRaises(Exception):
-                    ai_api.reschedule_unfinished_tasks(course_id=COURSE_ID,item_id=ITEM_ID, task_type=u"train")
+                    ai_api.reschedule_unfinished_tasks(course_id=COURSE_ID, item_id=ITEM_ID, task_type=u"train")
                 last_call = mock_logger.call_args[0][0]
                 self.assertTrue(u"NotConfigured" in last_call)
 

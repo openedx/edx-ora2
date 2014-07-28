@@ -14,7 +14,7 @@ from openassessment.assessment.errors import (
 )
 from openassessment.assessment.models import (
     Assessment, AITrainingWorkflow, AIGradingWorkflow,
-    InvalidOptionSelection, NoTrainingExamples,
+    InvalidRubricSelection, NoTrainingExamples,
     AI_ASSESSMENT_TYPE, AIClassifierSet
 )
 from openassessment.assessment.worker import training as training_tasks
@@ -268,7 +268,7 @@ def train_classifiers(rubric_dict, examples, course_id, item_id, algorithm_id):
     # Get or create the rubric and training examples
     try:
         examples = deserialize_training_examples(examples, rubric_dict)
-    except (InvalidRubric, InvalidTrainingExample, InvalidOptionSelection) as ex:
+    except (InvalidRubric, InvalidTrainingExample, InvalidRubricSelection) as ex:
         msg = u"Could not parse rubric and/or training examples: {ex}".format(ex=ex)
         raise AITrainingRequestError(msg)
 

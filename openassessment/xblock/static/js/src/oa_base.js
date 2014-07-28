@@ -13,8 +13,9 @@ OpenAssessment.BaseView = function(runtime, element, server) {
     this.runtime = runtime;
     this.element = element;
     this.server = server;
+    this.fileUploader = new OpenAssessment.FileUploader();
 
-    this.responseView = new OpenAssessment.ResponseView(this.element, this.server, this);
+    this.responseView = new OpenAssessment.ResponseView(this.element, this.server, this.fileUploader, this);
     this.trainingView = new OpenAssessment.StudentTrainingView(this.element, this.server, this);
     this.selfView = new OpenAssessment.SelfView(this.element, this.server, this);
     this.peerView = new OpenAssessment.PeerView(this.element, this.server, this);
@@ -46,18 +47,11 @@ OpenAssessment.BaseView.prototype = {
 
     Args:
         parentSel (JQuery selector): CSS selector for the container element.
-        onExpand (function): Function to execute when expanding (if provided).  Accepts no args.
     **/
-    setUpCollapseExpand: function(parentSel, onExpand) {
+    setUpCollapseExpand: function(parentSel) {
         parentSel.find('.ui-toggle-visibility__control').click(
             function(eventData) {
                 var sel = $(eventData.target).closest('.ui-toggle-visibility');
-
-                // If we're expanding and have an `onExpand` callback defined, execute it.
-                if (sel.hasClass('is--collapsed') && onExpand !== undefined) {
-                    onExpand();
-                }
-
                 sel.toggleClass('is--collapsed');
             }
         );
@@ -83,15 +77,15 @@ OpenAssessment.BaseView.prototype = {
         this.gradeView.load();
         this.leaderboardView.load();
         /**
-        this.messageView.load() is intentionally omitted. 
-        Because of the asynchronous loading, there is no way to tell (from the perspective of the 
-        messageView) whether or not the peer view was able to grab an assessment to assess. Any 
-        asynchronous strategy would run into a race condition based around this problem at some 
-        point.  Instead, we created a field in the XBlock called no_peers, which is set by the 
+        this.messageView.load() is intentionally omitted.
+        Because of the asynchronous loading, there is no way to tell (from the perspective of the
+        messageView) whether or not the peer view was able to grab an assessment to assess. Any
+        asynchronous strategy would run into a race condition based around this problem at some
+        point.  Instead, we created a field in the XBlock called no_peers, which is set by the
         Peer XBlock Handler, and which is examined by the Message XBlock Handler.
 
         To Avoid rendering the message more than one time per update/load (and avoiding all comp-
-        lications that that would likely induce), we chose to load the method view only after 
+        lications that that would likely induce), we chose to load the method view only after
         the peer view has been loaded.  This is achieved by having the peer view  call to render
         the message view after rendering itself but before exiting its load method.
         */
@@ -124,6 +118,9 @@ OpenAssessment.BaseView.prototype = {
         else if (type == 'feedback_assess') {
             container = '.submission__feedback__actions';
         }
+        else if (type == 'upload') {
+            container = '#upload__error';
+        }
 
         // If we don't have anywhere to put the message, just log it to the console
         if (container === null) {
@@ -134,7 +131,6 @@ OpenAssessment.BaseView.prototype = {
             // Insert the error message
             var msgHtml = (msg === null) ? "" : msg;
             $(container + " .message__content", element).html('<p>' + msgHtml + '</p>');
-
             // Toggle the error class
             $(container, element).toggleClass('has--error', msg !== null);
         }

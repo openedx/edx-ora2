@@ -21,7 +21,15 @@
 
         <div class="step__message message message--complete">
             <h3 class="message__title">{% trans "Your Response Has Been Submitted" %}</h3>
-            <div class="message__content">{% blocktrans %}You'll receive your grade after some of your peers have assessed your response and you complete the <a data-behavior="ui-scroll" href="#openassessment__peer-assessment">peer assessment</a> and <a data-behavior="ui-scroll" href="#openassessment__self-assessment">self assessment</a> steps{% endblocktrans %}.</div>
+            <div class="message__content">
+                {% if has_peer and has_self %}
+                    {% blocktrans %}You'll receive your grade after some of your peers have assessed your response and you complete the <a data-behavior="ui-scroll" href="#openassessment__peer-assessment">peer assessment</a> and <a data-behavior="ui-scroll" href="#openassessment__self-assessment">self assessment</a> steps{% endblocktrans %}.
+                {% elif has_peer %}
+                    {% blocktrans %}You'll receive your grade after some of your peers have assessed your response and you complete the <a data-behavior="ui-scroll" href="#openassessment__peer-assessment">peer assessment</a> step.{% endblocktrans %}
+                {% elif has_self %}
+                    {% blocktrans %}You'll receive your grade after you complete the <a data-behavior="ui-scroll" href="#openassessment__self-assessment">self assessment</a> step.{% endblocktrans %}
+                {% endif %}
+            </div>
         </div>
 
         <div class="step__content">
@@ -31,6 +39,14 @@
                 <div class="submission__answer__display__content">
                     {{ student_submission.answer.text|linebreaks }}
                 </div>
+
+                {% if allow_file_upload and file_url %}
+                <h3 class="submission__answer__display__title">{% trans "Your Image" %}</h3>
+
+                <div class="submission__answer__display__image">
+                    <img class="submission--image" alt="{% trans "The image associated with your submission." %}" src="{{ file_url }}"/>
+                </div>
+                {% endif %}
             </article>
         </div>
     </div>

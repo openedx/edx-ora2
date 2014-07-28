@@ -1,4 +1,4 @@
-<openassessment submission_due="2015-03-11T18:20">
+<openassessment allow_file_upload="True" submission_due="2015-03-11T18:20">
     <title>
         Global Poverty
     </title>
@@ -8,7 +8,7 @@
 
             Read for conciseness, clarity of thought, and form.
         </prompt>
-        <criterion feedback='optional'>
+        <criterion feedback="optional">
             <name>concise</name>
             <prompt>How concise is it?</prompt>
             <option points="0">
@@ -74,7 +74,7 @@
                 </explanation>
             </option>
         </criterion>
-        <criterion feedback='optional'>
+        <criterion feedback="optional">
             <name>form</name>
             <prompt>Lastly, how is its form? Punctuation, grammar, and spelling all count.</prompt>
             <option points="0">
@@ -101,6 +101,10 @@
                 <name>The Elements of Style</name>
                 <explanation></explanation>
             </option>
+        </criterion>
+        <criterion feedback="required">
+            <name>Feedback only</name>
+            <prompt>This criterion has only written feedback, no options</prompt>
         </criterion>
     </rubric>
     <assessments>

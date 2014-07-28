@@ -5,22 +5,15 @@ Tests for grade handlers in Open Assessment XBlock.
 import copy
 import ddt
 import json
+import mock
 from django.test.utils import override_settings
 from submissions import api as sub_api
 from openassessment.workflow import api as workflow_api
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
-from openassessment.xblock.data_conversion import create_rubric_dict
+from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from .base import XBlockHandlerTestCase, scenario
-# Test dependency on Stub AI Algorithm configuration
-from openassessment.assessment.test.test_ai import (
-    ALGORITHM_ID, AI_ALGORITHMS, train_classifiers
-)
 
-CLASSIFIER_SCORE_OVERRIDES = {
-    u"𝓒𝓸𝓷𝓬𝓲𝓼𝓮": {'score_override': 1},
-    u"Form": {'score_override': 2}
-}
 
 @ddt.ddt
 class TestGrade(XBlockHandlerTestCase):
@@ -52,12 +45,12 @@ class TestGrade(XBlockHandlerTestCase):
 
     STEPS = ['peer', 'self']
 
+    AI_ALGORITHMS = {
+        'fake': 'openassessment.assessment.worker.algorithm.FakeAIAlgorithm'
+    }
 
-    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @scenario('data/grade_scenario.xml', user_id='Greggs')
     def test_render_grade(self, xblock):
-        rubric = create_rubric_dict(xblock.prompt, xblock.rubric_criteria)
-        train_classifiers(rubric, CLASSIFIER_SCORE_OVERRIDES)
         # Submit, assess, and render the grade view
         self._create_submission_and_assessments(
             xblock, self.SUBMISSION, self.PEERS, self.ASSESSMENTS, self.ASSESSMENTS[0]
@@ -84,15 +77,12 @@ class TestGrade(XBlockHandlerTestCase):
         self.assertIn('self', resp.lower())
         self.assertIn('complete', resp.lower())
 
-    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @scenario('data/grade_scenario_self_only.xml', user_id='Greggs')
     def test_render_grade_self_only(self, xblock):
-        rubric = create_rubric_dict(xblock.prompt, xblock.rubric_criteria)
-        train_classifiers(rubric, CLASSIFIER_SCORE_OVERRIDES)
         # Submit, assess, and render the grade view
         self._create_submission_and_assessments(
             xblock, self.SUBMISSION, [], [], self.ASSESSMENTS[0],
-            waiting_for_peer=True, waiting_for_ai=True
+            waiting_for_peer=True
         )
         resp = self.request(xblock, 'render_grade', json.dumps(dict()))
 
@@ -116,11 +106,36 @@ class TestGrade(XBlockHandlerTestCase):
         self.assertIn('self', resp.lower())
         self.assertIn('complete', resp.lower())
 
+    @scenario('data/feedback_only_criterion_grade.xml', user_id='Greggs')
+    def test_render_grade_feedback_only_criterion(self, xblock):
+        # Add in per-criterion feedback for the feedback-only criterion
+        peer_assessments = copy.deepcopy(self.ASSESSMENTS)
+        for asmnt in peer_assessments:
+            asmnt['criterion_feedback'] = {
+                u'𝖋𝖊𝖊𝖉𝖇𝖆𝖈𝖐 𝖔𝖓𝖑𝖞': u"Ṫḧïṡ ïṡ ṡöṁë ḟëëḋḅäċḳ."
+            }
+
+        # Submit, assess, and render the grade view
+        self._create_submission_and_assessments(
+            xblock, self.SUBMISSION, self.PEERS, peer_assessments, self.ASSESSMENTS[0]
+        )
+
+        # Render the grade section
+        resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+        self.assertIn('your response', resp.lower())
+
+        # Verify that feedback from each scorer appears in the view
+        self.assertIn(u'єאςєɭɭєภՇ ฬ๏гк!', resp.decode('utf-8'))
+        self.assertIn(u'Good job!', resp.decode('utf-8'))
+
+    @mock.patch.object(OpenAssessmentBlock, 'is_admin', new_callable=mock.PropertyMock)
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @scenario('data/grade_scenario_ai_only.xml', user_id='Greggs')
-    def test_render_grade_ai_only(self, xblock):
-        rubric = create_rubric_dict(xblock.prompt, xblock.rubric_criteria)
-        train_classifiers(rubric, CLASSIFIER_SCORE_OVERRIDES)
+    def test_render_grade_ai_only(self, xblock, mock_is_admin):
+        # Train classifiers using the fake AI algorithm
+        mock_is_admin.return_value = True
+        self.request(xblock, 'schedule_training', json.dumps({}), response_format='json')
+
         # Submit, assess, and render the grade view
         self._create_submission_and_assessments(
             xblock, self.SUBMISSION, [], [], None, waiting_for_peer=True
@@ -129,7 +144,7 @@ class TestGrade(XBlockHandlerTestCase):
 
         # Verify that feedback from each scorer appears in the view
         self.assertNotIn(u'єאςєɭɭєภՇ', resp.decode('utf-8'))
-        self.assertIn(u'Fair', resp.decode('utf-8'))
+        self.assertIn(u'Poor', resp.decode('utf-8'))
 
         # Verify that the submission and peer steps show that we're graded
         # This isn't strictly speaking part of the grade step rendering,
@@ -147,7 +162,6 @@ class TestGrade(XBlockHandlerTestCase):
         self.assertNotIn('self', resp.lower())
         self.assertNotIn('complete', resp.lower())
 
-    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @scenario('data/feedback_per_criterion.xml', user_id='Bernard')
     def test_render_grade_feedback_per_criterion(self, xblock):
         # Submit, assess, and render the grade view
@@ -179,22 +193,27 @@ class TestGrade(XBlockHandlerTestCase):
         self.assertIn(u'Peer 2: ฝﻉɭɭ ɗѻกﻉ!', resp.decode('utf-8'))
         self.assertIn(u'Peer 2: ƒαιя נσв', resp.decode('utf-8'))
 
-    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @ddt.file_data('data/waiting_scenarios.json')
-    @scenario('data/grade_scenario.xml', user_id='Omar')
+    @scenario('data/grade_waiting_scenario.xml', user_id='Omar')
     def test_grade_waiting(self, xblock, data):
-        train_classifiers({'criteria': xblock.rubric_criteria}, CLASSIFIER_SCORE_OVERRIDES)
+        # If AI classifiers are not trained, then we should see a "waiting for AI" display
+        if not data["waiting_for_ai"]:
+            with mock.patch.object(
+                OpenAssessmentBlock, 'is_admin', new_callable=mock.PropertyMock
+            ) as mock_is_admin:
+                mock_is_admin.return_value = True
+                self.request(xblock, 'schedule_training', json.dumps({}), response_format='json')
+
         # Waiting to be assessed by a peer
         self._create_submission_and_assessments(
             xblock, self.SUBMISSION, self.PEERS, self.ASSESSMENTS, self.ASSESSMENTS[0],
-            waiting_for_peer=data["waiting_for_peer"], waiting_for_ai=data["waiting_for_ai"]
+            waiting_for_peer=data["waiting_for_peer"]
         )
         resp = self.request(xblock, 'render_grade', json.dumps(dict()))
 
         # Verify that we're on the waiting template
         self.assertIn(data["expected_response"], resp.decode('utf-8').lower())
 
-    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @scenario('data/grade_incomplete_scenario.xml', user_id='Bunk')
     def test_grade_incomplete_missing_self(self, xblock):
         # Graded peers, but haven't completed self assessment
@@ -206,7 +225,6 @@ class TestGrade(XBlockHandlerTestCase):
         # Verify that we're on the right template
         self.assertIn(u'not completed', resp.decode('utf-8').lower())
 
-    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @scenario('data/grade_incomplete_scenario.xml', user_id='Daniels')
     def test_grade_incomplete_missing_peer(self, xblock):
         # Have not yet completed peer assessment
@@ -218,7 +236,6 @@ class TestGrade(XBlockHandlerTestCase):
         # Verify that we're on the right template
         self.assertIn(u'not completed', resp.decode('utf-8').lower())
 
-    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @scenario('data/grade_scenario.xml', user_id='Greggs')
     def test_submit_feedback(self, xblock):
         # Create submissions and assessments
@@ -242,7 +259,6 @@ class TestGrade(XBlockHandlerTestCase):
             feedback['options'], [{'text': u'Option 1'}, {'text': u'Option 2'}]
         )
 
-    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @scenario('data/grade_scenario.xml', user_id='Bob')
     def test_submit_feedback_no_options(self, xblock):
         # Create submissions and assessments
@@ -263,7 +279,6 @@ class TestGrade(XBlockHandlerTestCase):
         self.assertIsNot(feedback, None)
         self.assertItemsEqual(feedback['options'], [])
 
-    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @scenario('data/grade_scenario.xml', user_id='Bob')
     def test_submit_feedback_invalid_options(self, xblock):
         # Create submissions and assessments
@@ -282,7 +297,7 @@ class TestGrade(XBlockHandlerTestCase):
 
     def _create_submission_and_assessments(
         self, xblock, submission_text, peers, peer_assessments, self_assessment,
-        waiting_for_peer=False, waiting_for_ai=False
+        waiting_for_peer=False,
     ):
         """
         Create a submission and peer/self assessments, so that the user can receive a grade.
@@ -296,7 +311,6 @@ class TestGrade(XBlockHandlerTestCase):
 
         Kwargs:
             waiting_for_peer (bool): If true, skip creation of peer assessments for the user's submission.
-            waiting_for_ai (bool): If True, skip creation of ai assessment.
 
         Returns:
             None
@@ -305,10 +319,6 @@ class TestGrade(XBlockHandlerTestCase):
         # Create a submission from the user
         student_item = xblock.get_student_item_dict()
         student_id = student_item['student_id']
-        example_based_assessment = xblock.get_assessment_module('example-based-assessment')
-        if not waiting_for_ai and example_based_assessment:
-            train_classifiers({'criteria': xblock.rubric_criteria}, CLASSIFIER_SCORE_OVERRIDES)
-            example_based_assessment['algorithm_id'] = ALGORITHM_ID
         submission = xblock.create_submission(student_item, submission_text)
 
         # Create submissions and assessments from other users

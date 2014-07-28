@@ -78,6 +78,32 @@ class TestSelfAssessment(XBlockHandlerTestCase):
             }
             mock_api.update_from_assessments.assert_called_once_with(submission['uuid'], expected_reqs)
 
+    @scenario('data/feedback_only_criterion_self.xml', user_id='Bob')
+    def test_self_assess_feedback_only_criterion(self, xblock):
+        # Create a submission for the student
+        student_item = xblock.get_student_item_dict()
+        submission = xblock.create_submission(student_item, self.SUBMISSION)
+
+        # Submit a self assessment for a rubric with a feedback-only criterion
+        assessment_dict = {
+            'options_selected': {u'vocabulary': u'good'},
+            'overall_feedback': u''
+        }
+        resp = self.request(xblock, 'self_assess', json.dumps(assessment_dict), response_format='json')
+        self.assertTrue(resp['success'])
+        assessment = self_api.get_assessment(submission["uuid"])
+
+        # Check the assessment for the criterion that has options
+        self.assertEqual(assessment['parts'][0]['criterion']['name'], 'vocabulary')
+        self.assertEqual(assessment['parts'][0]['option']['name'], 'good')
+        self.assertEqual(assessment['parts'][0]['option']['points'], 1)
+
+        # Check the feedback-only criterion score/feedback
+        # The written feedback should default to an empty string
+        self.assertEqual(assessment['parts'][1]['criterion']['name'], u'𝖋𝖊𝖊𝖉𝖇𝖆𝖈𝖐 𝖔𝖓𝖑𝖞')
+        self.assertIs(assessment['parts'][1]['option'], None)
+        self.assertEqual(assessment['parts'][1]['feedback'], u'')
+
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_self_assess_workflow_error(self, xblock):
         # Create a submission for the student
@@ -222,7 +248,9 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             {
                 'rubric_criteria': xblock.rubric_criteria,
                 'estimated_time': '20 minutes',
-                'self_submission': submission
+                'self_submission': submission,
+                'allow_file_upload': False,
+                'self_file_url': '',
             },
             workflow_status='self',
             submission_uuid=submission['uuid']

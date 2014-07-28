@@ -116,6 +116,8 @@ class GradeMixin(object):
         # the score for our current submission UUID.
         # We look up the score by submission UUID instead of student item
         # to ensure that the score always matches the rubric.
+        # It's possible for the score to be `None` even if the workflow status is "done"
+        # when all the criteria in the rubric are feedback-only (no options).
         score = workflow['score']
 
         context = {
@@ -127,6 +129,8 @@ class GradeMixin(object):
             'example_based_assessment': example_based_assessment,
             'rubric_criteria': self._rubric_criteria_with_feedback(peer_assessments),
             'has_submitted_feedback': has_submitted_feedback,
+            'allow_file_upload': self.allow_file_upload,
+            'file_url': self.get_download_url_from_submission(student_submission)
         }
 
         # Update the scores we will display to the user
@@ -246,7 +250,7 @@ class GradeMixin(object):
         for assessment in peer_assessments:
             for part in assessment['parts']:
                 if part['feedback']:
-                    part_criterion_name = part['option']['criterion']['name']
+                    part_criterion_name = part['criterion']['name']
                     criteria_feedback[part_criterion_name].append(part['feedback'])
 
         for criterion in criteria:

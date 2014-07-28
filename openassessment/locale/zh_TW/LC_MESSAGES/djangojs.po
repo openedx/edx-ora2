@@ -3,13 +3,15 @@
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
 #
 # Translators:
+# Lin Yu-Chun <iftwoplustwoequalsfive@gmail.com>, 2014
+# 徐琨閔 <qwer20108@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-24 09:55-0400\n"
-"PO-Revision-Date: 2014-06-11 13:04+0000\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2014-07-23 14:24-0400\n"
+"PO-Revision-Date: 2014-07-02 03:04+0000\n"
+"Last-Translator: 徐琨閔 <qwer20108@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/edx-"
 "platform/language/zh_TW/)\n"
 "Language: zh_TW\n"
@@ -19,47 +21,58 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_base.js:151
+#: openassessment/xblock/static/js/src/oa_base.js:147
 msgid "Unable to Load"
-msgstr ""
+msgstr "無法加載"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
 #: openassessment/xblock/static/js/src/oa_edit.js:81
 msgid ""
 "This problem has already been released. Any changes will apply only to "
 "future assessments."
-msgstr ""
+msgstr "此問題已經被釋出了。任何更改都只會在未來的評分中出現。"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_response.js:174
+#: openassessment/xblock/static/js/src/oa_response.js:192
 msgid "Status of Your Response"
-msgstr ""
+msgstr "您的回覆之狀態"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_response.js:200
+#: openassessment/xblock/static/js/src/oa_response.js:218
 msgid ""
 "If you leave this page without saving or submitting your response, you'll "
 "lose any work you've done on the response."
 msgstr ""
+"如果你不\"儲存\"或者\"提交\"回覆就離開，你可能會丟失掉所有你已完成的回覆。"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_response.js:274
+#: openassessment/xblock/static/js/src/oa_response.js:291
 msgid "This response has not been saved."
-msgstr ""
+msgstr "這一個回復還沒有被儲存。"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_response.js:292
+#: openassessment/xblock/static/js/src/oa_response.js:309
 msgid "Saving..."
-msgstr ""
+msgstr "儲存中"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_response.js:310
+#: openassessment/xblock/static/js/src/oa_response.js:327
 msgid "This response has been saved but not submitted."
+msgstr "這一份回复已經儲存了，但仍未提交。"
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_response.js:330
+msgid "Error"
+msgstr "錯誤"
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_response.js:431
+msgid "File size must be 5MB or less."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_response.js:313
-msgid "Error"
+#: openassessment/xblock/static/js/src/oa_response.js:435
+msgid "File must be an image."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
@@ -67,22 +80,22 @@ msgstr ""
 #: openassessment/xblock/static/js/src/oa_server.js:90
 #: openassessment/xblock/static/js/src/oa_server.js:109
 msgid "This section could not be loaded."
-msgstr ""
+msgstr "這個部分無法加載。"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:144
 msgid "This response could not be submitted."
-msgstr ""
+msgstr "回覆無法提交。"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:170
 msgid "This response could not be saved."
-msgstr ""
+msgstr "回覆無法保存。"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:207
 msgid "This feedback could not be submitted."
-msgstr ""
+msgstr "這條反饋意見無法提交。"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:253
@@ -90,24 +103,34 @@ msgstr ""
 #: openassessment/xblock/static/js/src/oa_server.js:334
 #: openassessment/xblock/static/js/src/oa_server.js:368
 msgid "This assessment could not be submitted."
-msgstr ""
+msgstr "這份評分無法提交。"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:392
 msgid "One or more rescheduling tasks failed."
-msgstr ""
+msgstr "一個或多個任務重新安排失敗。"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:420
 msgid "This problem could not be loaded."
-msgstr ""
+msgstr "此問題無法加載。"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:449
 msgid "This problem could not be saved."
-msgstr ""
+msgstr "此問題無法儲存。"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:479
 msgid "The server could not be contacted."
+msgstr "無法聯繫服務器。"
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:505
+msgid "Could not retrieve upload url."
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:526
+msgid "Could not retrieve download url."
 msgstr ""

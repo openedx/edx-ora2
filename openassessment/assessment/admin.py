@@ -91,8 +91,8 @@ class AssessmentAdmin(admin.ModelAdmin):
                 u"{}/{} - {}: {} - {}".format(
                     part.points_earned,
                     part.points_possible,
-                    part.option.criterion.name,
-                    part.option.name,
+                    part.criterion.name,
+                    part.option.name if part.option else "None",
                     part.feedback,
                 )
             )

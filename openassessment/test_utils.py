@@ -2,10 +2,17 @@
 Test utilities
 """
 from django.core.cache import cache
-from django.test import TestCase
+from django.test import TestCase, TransactionTestCase
 from openassessment.assessment.models.ai import (
     CLASSIFIERS_CACHE_IN_MEM, CLASSIFIERS_CACHE_IN_FILE
 )
+
+
+def _clear_all_caches():
+    """Clear the default cache and any custom caches."""
+    cache.clear()
+    CLASSIFIERS_CACHE_IN_MEM.clear()
+    CLASSIFIERS_CACHE_IN_FILE.clear()
 
 
 class CacheResetTest(TestCase):
@@ -14,16 +21,21 @@ class CacheResetTest(TestCase):
     """
     def setUp(self):
         super(CacheResetTest, self).setUp()
-        self._clear_all_caches()
+        _clear_all_caches()
 
     def tearDown(self):
         super(CacheResetTest, self).tearDown()
-        self._clear_all_caches()
+        _clear_all_caches()
 
-    def _clear_all_caches(self):
-        """
-        Clear the default cache and any custom caches.
-        """
-        cache.clear()
-        CLASSIFIERS_CACHE_IN_MEM.clear()
-        CLASSIFIERS_CACHE_IN_FILE.clear()
+
+class TransactionCacheResetTest(TransactionTestCase):
+    """
+    Transaction test case that resets the cache.
+    """
+    def setUp(self):
+        super(TransactionCacheResetTest, self).setUp()
+        _clear_all_caches()
+
+    def tearDown(self):
+        super(TransactionCacheResetTest, self).tearDown()
+        _clear_all_caches()

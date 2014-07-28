@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1a\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-24 09:28-0400\n"
+"POT-Creation-Date: 2014-07-23 14:23-0400\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: \n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_base.js:151
+#: openassessment/xblock/static/js/src/oa_base.js:147
 msgid "Unable to Load"
 msgstr "Ûnäßlé tö Löäd Ⱡ'#"
 
@@ -32,12 +32,12 @@ msgstr ""
 "fütüré ässéssménts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_response.js:174
+#: openassessment/xblock/static/js/src/oa_response.js:192
 msgid "Status of Your Response"
 msgstr "Stätüs öf Ýöür Réspönsé Ⱡ'σяє#"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_response.js:200
+#: openassessment/xblock/static/js/src/oa_response.js:218
 msgid ""
 "If you leave this page without saving or submitting your response, you'll "
 "lose any work you've done on the response."
@@ -47,24 +47,34 @@ msgstr ""
 "¢σηѕє¢т#"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_response.js:274
+#: openassessment/xblock/static/js/src/oa_response.js:291
 msgid "This response has not been saved."
 msgstr "Thïs réspönsé häs nöt ßéén sävéd. Ⱡ'σяєм ι#"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_response.js:292
+#: openassessment/xblock/static/js/src/oa_response.js:309
 msgid "Saving..."
 msgstr "Sävïng... #"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_response.js:310
+#: openassessment/xblock/static/js/src/oa_response.js:327
 msgid "This response has been saved but not submitted."
 msgstr "Thïs réspönsé häs ßéén sävéd ßüt nöt süßmïttéd. Ⱡ'σяєм ιρѕυм #"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
-#: openassessment/xblock/static/js/src/oa_response.js:313
+#: openassessment/xblock/static/js/src/oa_response.js:330
 msgid "Error"
 msgstr "Érrör Ⱡ'σяєм ι#"
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_response.js:431
+msgid "File size must be 5MB or less."
+msgstr "Fïlé sïzé müst ßé 5MB ör léss. Ⱡ'σяєм #"
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_response.js:435
+msgid "File must be an image."
+msgstr "Fïlé müst ßé än ïmägé. Ⱡ'σяє#"
 
 #: openassessment/xblock/static/js/openassessment.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:59
@@ -115,3 +125,13 @@ msgstr "Thïs prößlém çöüld nöt ßé sävéd. Ⱡ'σяєм ι#"
 #: openassessment/xblock/static/js/src/oa_server.js:479
 msgid "The server could not be contacted."
 msgstr "Thé sérvér çöüld nöt ßé çöntäçtéd. Ⱡ'σяєм ιρ#"
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:505
+msgid "Could not retrieve upload url."
+msgstr "Çöüld nöt rétrïévé üplöäd ürl. Ⱡ'σяєм #"
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:526
+msgid "Could not retrieve download url."
+msgstr "Çöüld nöt rétrïévé döwnlöäd ürl. Ⱡ'σяєм ι#"

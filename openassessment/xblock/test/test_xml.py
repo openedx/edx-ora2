@@ -103,6 +103,7 @@ class TestSerializeContent(TestCase):
         self.oa_block.leaderboard_show = data['leaderboard_show']
         self.oa_block.rubric_criteria = data['criteria']
         self.oa_block.rubric_assessments = data['assessments']
+        self.oa_block.allow_file_upload = data['allow_file_upload']
         xml = serialize_content(self.oa_block)
 
         # Compare the XML with our expected output
@@ -200,6 +201,7 @@ class TestSerializeContent(TestCase):
         self.oa_block.submission_start = None
         self.oa_block.submission_due = None
         self.oa_block.leaderboard_show = 10
+        self.oa_block.allow_file_upload = None
 
         for mutated_value in [0, u"\u9282", None]:
             setattr(self.oa_block, field, mutated_value)

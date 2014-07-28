@@ -1,3 +1,0 @@
-source /home/vagrant/.virtualenvs/edx-ora2/bin/activate
-export DISPLAY=:1
-export LC_ALL="en_US.UTF-8"

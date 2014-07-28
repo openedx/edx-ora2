@@ -44,13 +44,29 @@
                     <div class="self-assessment__display__response">
                         {{ self_submission.answer.text|linebreaks }}
                     </div>
+
+                    {% if allow_file_upload and self_file_url %}
+                    <header class="self-assessment__display__header">
+                        <h3 class="self-assessment__display__title">
+                            {% trans "Associated Image" %}
+                        </h3>
+                    </header>
+
+                    <div class="self-assessment__display__image">
+                        <img class="submission--image" alt="{% trans "The image associated with your submission." %}" src="{{ self_file_url }}"/>
+                    </div>
+                    {% endif %}
                 </article>
 
                 <form id="self-assessment--001__assessment" class="self-assessment__assessment" method="post">
                     <fieldset class="assessment__fields">
                         <ol class="list list--fields assessment__rubric">
                             {% for criterion in rubric_criteria %}
-                            <li class="field field--radio is--required assessment__rubric__question ui-toggle-visibility" id="assessment__rubric__question--{{ criterion.order_num }}">
+                            {% if criterion.options %}
+                            <li
+                                class="field field--radio is--required assessment__rubric__question ui-toggle-visibility has--options"
+                                id="assessment__rubric__question--{{ criterion.order_num }}"
+                            >
                                  <h4 class="question__title ui-toggle-visibility__control">
                                     <i class="ico icon-caret-right"></i>
                                     <span class="question__title__copy">{{ criterion.prompt }}</span>
@@ -79,6 +95,7 @@
                                     </ol>
                                 </div>
                             </li>
+                            {% endif %}
                             {% endfor %}
                         </ol>
                     </fieldset>

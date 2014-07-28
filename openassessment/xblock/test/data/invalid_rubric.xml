@@ -9,7 +9,15 @@
     <criterion>
         <name>Test criterion</name>
         <prompt>Test criterion prompt</prompt>
-        <!-- no options -->
+        <!-- duplicate option names -->
+        <option points="0">
+            <name>DUPLICATE</name>
+            <explanation></explanation>
+        </option>
+        <option points="1">
+            <name>DUPLICATE</name>
+            <explanation></explanation>
+        </option>
     </criterion>
 </rubric>
 </openassessment>

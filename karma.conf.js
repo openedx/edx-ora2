@@ -7,6 +7,13 @@ module.exports = function(config) {
     basePath: 'openassessment/xblock/static/js',
 
 
+    plugins: [
+      'karma-coverage',
+      'karma-jasmine',
+      'karma-chrome-launcher',
+      'karma-phantomjs-launcher',
+    ],
+
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine'],
@@ -66,11 +73,9 @@ module.exports = function(config) {
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: false,
 
-
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Firefox'],
-
+    browsers: ['PhantomJS'],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
