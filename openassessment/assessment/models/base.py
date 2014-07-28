@@ -243,10 +243,19 @@ class RubricIndex(object):
             criterion.name: criterion
             for criterion in criteria
         }
-        self._option_index = {
-            (option.criterion.name, option.name): option
-            for option in options
-        }
+
+        # Finds the set of all criteria which have options by traversing through the options, and adding all of
+        # the options' associated criteria to an expanding set.
+        criteria_with_options = set()
+        option_index = {}
+        for option in options:
+            option_index[(option.criterion.name, option.name)] = option
+            criteria_with_options.add(option.criterion)
+
+        # Anything not in the above mentioned set is a zero option criteria, and we save it here for future reference.
+        self._criteria_without_options = set(self._criteria_index.values()) - criteria_with_options
+
+        self._option_index = option_index
 
         # By convention, if multiple options in the same criterion have the
         # same point value, we return the *first* option.
@@ -379,10 +388,7 @@ class RubricIndex(object):
             set of `Criterion`
 
         """
-        return set(
-            criterion for criterion in self._criteria_index.values()
-            if criterion.options.count() == 0
-        )
+        return self._criteria_without_options
 
 
 class Assessment(models.Model):
