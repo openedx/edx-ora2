@@ -73,3 +73,23 @@ def create_rubric_dict(prompt, criteria):
         "prompt": prompt,
         "criteria": criteria
     }
+
+def clean_criterion_feedback(rubric_criteria, criterion_feedback):
+    """
+    Remove per-criterion feedback for criteria with feedback disabled
+    in the rubric.
+
+    Args:
+        rubric_criteria (list): The rubric criteria from the problem definition.
+        criterion_feedback (dict): Mapping of criterion names to feedback text.
+
+    Returns:
+        dict
+
+    """
+    return {
+        criterion['name']: criterion_feedback[criterion['name']]
+        for criterion in rubric_criteria
+        if criterion['name'] in criterion_feedback
+        and criterion.get('feedback', 'disabled') in ['optional', 'required']
+    }

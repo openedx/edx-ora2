@@ -146,27 +146,42 @@
                                     {% endif %}
                                 {% endfor %}
 
-                                {% if criterion.feedback %}
+                                {% if criterion.peer_feedback or criterion.self_feedback %}
                                 <li class="answer--feedback ui-toggle-visibility {% if criterion.options %}is--collapsed{% endif %}">
                                     {% if criterion.options %}
                                     <h5 class="answer--feedback__title ui-toggle-visibility__control">
                                       <i class="ico icon-caret-right"></i>
-                                      <span class="answer--feedback__title__copy">{% trans "Additional Comments" %} ({{ criterion.feedback|length }})</span>
+                                      {% if criterion.self_feedback %}
+                                        <span class="answer--feedback__title__copy">{% trans "Additional Comments" %} ({{ criterion.peer_feedback|length|add:'1' }})</span>
+                                      {% else %}
+                                        <span class="answer--feedback__title__copy">{% trans "Additional Comments" %} ({{ criterion.peer_feedback|length }})</span>
+                                      {% endif %}
                                     </h5>
                                     {% endif %}
 
                                     <ul class="answer--feedback__content {% if criterion.options %}ui-toggle-visibility__content{% endif %}">
-                                        {% for feedback in criterion.feedback %}
+                                        {% for feedback in criterion.peer_feedback %}
                                         <li class="feedback feedback--{{ forloop.counter }}">
                                             <h6 class="feedback__source">
                                               {% trans "Peer" %} {{ forloop.counter }}
                                             </h6>
 
                                             <div class="feedback__value">
-                                            {{ feedback }}
+                                              {{ feedback }}
                                             </div>
                                         </li>
                                         {% endfor %}
+                                        {% if criterion.self_feedback %}
+                                        <li class="feedback feedback--{{ forloop.counter }}">
+                                            <h6 class="feedback__source">
+                                              {% trans "Your Assessment" %}
+                                            </h6>
+
+                                            <div class="feedback__value">
+                                              {{ criterion.self_feedback }}
+                                            </div>
+                                        </li>
+                                        {% endif %}
                                     </ul>
                                 </li>
                                 {% endif %}
@@ -175,7 +190,7 @@
                         </li>
                         {% endwith %}
                         {% endfor %}
-                            {% if peer_assessments %}
+                            {% if peer_assessments or self_assessment.feedback %}
                             <li class="question question--feedback ui-toggle-visibility">
                                 <h4 class="question__title ui-toggle-visibility__control">
                                     <i class="ico icon-caret-right"></i>
@@ -204,6 +219,23 @@
                                     {% endif %}
                                     {% endwith %}
                                     {% endfor %}
+                                    {% if self_assessment.feedback %}
+                                    <li class="answer self-evaluation--0" id="question--feedback__answer-0">
+                                        <h5 class="answer__title">
+                                            <span class="answer__source">
+                                              <span class="label sr">{% trans "Self assessment" %}: </span>
+                                              <span class="value">{% trans "Self assessment" %}</span>
+                                            </span>
+                                        </h5>
+
+                                        <div class="answer__value">
+                                            <h6 class="label sr">{% trans "Your assessment" %}: </h6>
+                                            <div class="value">
+                                                <p>{{ self_assessment.feedback }}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {% endif %}
                                 </ul>
                             </li>
                             {% endif %}

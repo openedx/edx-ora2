@@ -32,6 +32,12 @@ ASSESSMENT_DICT = {
         "Clear-headed": "Yogi Berra",
         "Form": "Reddit",
     },
+    'criterion_feedback': {
+        "Concise": "Not very.",
+        "Clear-headed": "Indubitably",
+        "Form": "s ka tter ed"
+    }
+
 }
 
 
@@ -209,6 +215,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
             submission['uuid'],
             STUDENT_ITEM["student_id"],
             ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
             {'criteria': xblock.rubric_criteria},
         )
 
@@ -234,6 +242,13 @@ class TestCourseStaff(XBlockHandlerTestCase):
             "Ideas": "Good",
             "Content": "Poor",
         }
+
+        criterion_feedback = {
+            "Ideas": "Dear diary: Lots of creativity from my dream journal last night at 2 AM,",
+            "Content": "Not as insightful as I had thought in the wee hours of the morning!"
+        }
+
+        overall_feedback = "I think I should tell more people about how important worms are for the ecosystem."
 
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
@@ -265,6 +280,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
             submission['uuid'],
             STUDENT_ITEM["student_id"],
             options_selected,
+            criterion_feedback,
+            overall_feedback,
             {'criteria': xblock.rubric_criteria},
         )
 

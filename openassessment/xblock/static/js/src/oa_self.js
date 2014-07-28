@@ -103,8 +103,11 @@ OpenAssessment.SelfView.prototype = {
         baseView.toggleActionError('self', null);
         view.selfSubmitEnabled(false);
 
-        var options = this.rubric.optionsSelected();
-        this.server.selfAssess(options).done(
+        this.server.selfAssess(
+            this.rubric.optionsSelected(),
+            this.rubric.criterionFeedback(),
+            this.rubric.overallFeedback()
+        ).done(
             function() {
                 baseView.loadAssessmentModules();
                 baseView.scrollToTop();

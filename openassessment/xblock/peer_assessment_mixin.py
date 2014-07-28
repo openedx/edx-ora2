@@ -9,10 +9,8 @@ from openassessment.assessment.errors import (
     PeerAssessmentRequestError, PeerAssessmentInternalError, PeerAssessmentWorkflowError
 )
 from openassessment.workflow.errors import AssessmentWorkflowError
-from openassessment.fileupload import api as file_upload_api
-from openassessment.fileupload.api import FileUploadError
-
 from .resolve_dates import DISTANT_FUTURE
+from .data_conversion import create_rubric_dict, clean_criterion_feedback
 
 logger = logging.getLogger(__name__)
 
@@ -64,19 +62,15 @@ class PeerAssessmentMixin(object):
 
         assessment_ui_model = self.get_assessment_module('peer-assessment')
         if assessment_ui_model:
-            rubric_dict = {
-                'criteria': self.rubric_criteria
-            }
-
             try:
                 # Create the assessment
                 assessment = peer_api.create_assessment(
                     self.submission_uuid,
                     self.get_student_item_dict()["student_id"],
                     data['options_selected'],
-                    self._clean_criterion_feedback(data['criterion_feedback']),
+                    clean_criterion_feedback(self.rubric_criteria, data['criterion_feedback']),
                     data['overall_feedback'],
-                    rubric_dict,
+                    create_rubric_dict(self.prompt, self.rubric_criteria),
                     assessment_ui_model['must_be_graded_by']
                 )
 
@@ -268,22 +262,3 @@ class PeerAssessmentMixin(object):
             logger.exception(err)
 
         return peer_submission
-
-    def _clean_criterion_feedback(self, criterion_feedback):
-        """
-        Remove per-criterion feedback for criteria with feedback disabled
-        in the rubric.
-
-        Args:
-            criterion_feedback (dict): Mapping of criterion names to feedback text.
-
-        Returns:
-            dict
-
-        """
-        return {
-            criterion['name']: criterion_feedback[criterion['name']]
-            for criterion in self.rubric_criteria
-            if criterion['name'] in criterion_feedback
-            and criterion.get('feedback', 'disabled') in ['optional', 'required']
-        }
