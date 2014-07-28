@@ -193,6 +193,28 @@ class TestGrade(XBlockHandlerTestCase):
         self.assertIn(u'Peer 2: ฝﻉɭɭ ɗѻกﻉ!', resp.decode('utf-8'))
         self.assertIn(u'Peer 2: ƒαιя נσв', resp.decode('utf-8'))
 
+    @scenario('data/grade_scenario.xml', user_id='Bob')
+    def test_assessment_does_not_match_rubric(self, xblock):
+         # Get to the grade complete section
+        self._create_submission_and_assessments(
+            xblock, self.SUBMISSION, self.PEERS, self.ASSESSMENTS, self.ASSESSMENTS[0]
+        )
+
+        # Change the problem definition so it no longer
+        # matches the assessments.  This should never happen
+        # for a student (since we prevent authors from doing this post-release),
+        # but it may happen if a course author has submitted
+        # an assessment for a problem before it was published,
+        # or if course authors mess around with course import.
+        xblock.rubric_criteria[0]["name"] = "CHANGED NAME!"
+
+        # Expect that the page renders without an error
+        # It won't show the assessment criterion that changed
+        # (since it's not part of the original assessment),
+        # but at least it won't display an error.
+        resp = self.request(xblock, 'render_grade', json.dumps({}))
+        self.assertGreater(resp, 0)
+
     @ddt.file_data('data/waiting_scenarios.json')
     @scenario('data/grade_waiting_scenario.xml', user_id='Omar')
     def test_grade_waiting(self, xblock, data):
