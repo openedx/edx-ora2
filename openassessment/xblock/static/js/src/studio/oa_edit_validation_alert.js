@@ -9,9 +9,15 @@ Returns:
     Openassessment.ValidationAlert
  */
 OpenAssessment.ValidationAlert = function (element) {
+    var alert = this;
     this.element = element;
     this.title = $(".openassessment_alert_title", this.element);
     this.message = $(".openassessment_alert_message", this.element);
+    $(".openassessment_alert_close", element).click(function(eventObject) {
+            eventObject.preventDefault();
+            alert.hide();
+        }
+    );
 };
 
 OpenAssessment.ValidationAlert.prototype = {

@@ -439,6 +439,7 @@
       padding: 10px;
       position: absolute;
       z-index: 10;
+      width: 100%;
 
       .openassessment_alert_icon:before{
         font-family: FontAwesome;
@@ -461,6 +462,28 @@
         .openassessment_alert_message {
           font-size: 80%;
           color: darkgray;
+        }
+      }
+
+      // with cancel
+      .openassessment_alert_close {
+        display: inline-block;
+        position: absolute;
+        top: 0px;
+        right: 10px;
+        color: #e9e9e9;
+        background: #323232;
+        text-align: center;
+        padding: 2px 5px;
+
+        [class^="icon"] {
+          width: auto;
+          margin: 0;
+          padding: 2px;
+        }
+
+        &:hover {
+          color: $blue;
         }
       }
     }

@@ -20,7 +20,7 @@ OpenAssessment.ItemUtilities = {
             }
             index++;
         }
-        return null;
+        return index.toString();
     }
 };
 

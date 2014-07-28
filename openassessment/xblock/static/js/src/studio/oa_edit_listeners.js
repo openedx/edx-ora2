@@ -96,17 +96,17 @@ OpenAssessment.StudentTrainingListener.prototype = {
      */
     optionRemove: function(data) {
         var handler = this;
-        var changed = false;
+        var invalidated = false;
         $('.openassessment_training_example_criterion_option', this.element).each(function() {
             var criterionOption = this;
             if ($(criterionOption).data('criterion') === data.criterionName) {
-                if ($(criterionOption).val() == data.name) {
+                if ($(criterionOption).val() === data.name.toString()) {
                     $(criterionOption).val("");
                     $(criterionOption).addClass("openassessment_highlighted_field");
                     $(criterionOption).click(function() {
                         $(criterionOption).removeClass("openassessment_highlighted_field");
                     });
-                    changed = true;
+                    invalidated = true;
                 }
 
                 $('option[value="' + data.name + '"]', criterionOption).remove();
@@ -115,12 +115,12 @@ OpenAssessment.StudentTrainingListener.prototype = {
                 // the criterion entirely.
                 if ($("option", criterionOption).length == 1) {
                     handler.removeAllOptions(data);
-                    return;
+                    invalidated = false;
                 }
             }
         });
 
-        if (changed) {
+        if (invalidated) {
             this.displayAlertMsg(
                 gettext("Option Deletion Led to Invalidation"),
                 gettext("Because you deleted an option, some student training examples had to be reset.")
