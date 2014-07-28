@@ -264,7 +264,6 @@ class GradeMixin(object):
         for criterion in criteria:
             criterion_name = criterion['name']
             criterion['peer_feedback'] = peer_criteria_feedback[criterion_name]
-            if self_criteria_feedback.get(criterion_name, False):
-                criterion['self_feedback'] = self_criteria_feedback.get(criterion_name)
+            criterion['self_feedback'] = self_criteria_feedback.get(criterion_name)
 
         return criteria

@@ -168,12 +168,12 @@ def create_assessment(
         # This will raise an `InvalidRubricSelection` if the selected options do not match the rubric.
         AssessmentPart.create_from_option_names(assessment, options_selected, feedback=criterion_feedback)
         _log_assessment(assessment, submission)
-    except InvalidRubric:
-        msg = "Invalid rubric definition"
+    except InvalidRubric as ex:
+        msg = "Invalid rubric definition: " + str(ex)
         logger.warning(msg, exc_info=True)
         raise SelfAssessmentRequestError(msg)
-    except InvalidRubricSelection:
-        msg = "Selected options do not match the rubric"
+    except InvalidRubricSelection as ex:
+        msg = "Selected options do not match the rubric: " + str(ex)
         logger.warning(msg, exc_info=True)
         raise SelfAssessmentRequestError(msg)
 

@@ -1,0 +1,57 @@
+{
+    "No Option Selected, Has Options, No Feedback": {
+        "has_option_selected": false,
+        "has_zero_options": false,
+        "has_feedback": false,
+        "expected_error": true
+    },
+
+    "No Option Selected, Has Options, Has Feedback": {
+        "has_option_selected": false,
+        "has_zero_options": false,
+        "has_feedback": true,
+        "expected_error": true
+    },
+
+    "No Option Selected, No Options, No Feedback": {
+        "has_option_selected": false,
+        "has_zero_options": true,
+        "has_feedback": false,
+        "expected_error": true
+    },
+
+    "No Option Selected, No Options, Has Feedback": {
+        "has_option_selected": false,
+        "has_zero_options": true,
+        "has_feedback": true,
+        "expected_error": false
+    },
+
+    "Has Option Selected, Has Options, No Feedback": {
+        "has_option_selected": true,
+        "has_zero_options": false,
+        "has_feedback": false,
+        "expected_error": false
+    },
+
+    "Has Option Selected, No Options, Has Feedback": {
+        "has_option_selected": true,
+        "has_zero_options": true,
+        "has_feedback": true,
+        "expected_error": true
+    },
+
+    "Has Option Selected, No Options, No Feedback": {
+        "has_option_selected": true,
+        "has_zero_options": true,
+        "has_feedback": false,
+        "expected_error": true
+    },
+
+    "Has Option Selected, Has Options, Has Feedback": {
+        "has_option_selected": true,
+        "has_zero_options": false,
+        "has_feedback": true,
+        "expected_error": false
+    }
+}

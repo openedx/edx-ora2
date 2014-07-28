@@ -809,5 +809,5 @@ class AssessmentPart(models.Model):
         missing_criteria = zero_option_criteria_missing_feedback | optioned_criteria_missing_selection
 
         if len(missing_criteria) > 0:
-            msg = u"Missing selections for criteria: {missing}".format(missing=missing_criteria)
+            msg = u"Missing selections for criteria: {missing}".format(missing=', '.join(missing_criteria))
             raise InvalidRubricSelection(msg)
