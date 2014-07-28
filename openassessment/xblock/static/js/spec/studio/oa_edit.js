@@ -52,28 +52,28 @@ describe("OpenAssessment.StudioView", function() {
             {
                 order_num: 0,
                 label: "Criterion with two options",
-                name: "52bfbd0eb3044212b809564866e77079",
+                name: "criterion_1",
                 prompt: "Prompt for criterion with two options",
                 feedback: "disabled",
                 options: [
                     {
                         order_num: 0,
                         points: 1,
-                        name: "85bbbecbb6a343f8a2146cde0e609ad0",
+                        name: "option_1",
                         label: "Fair",
                         explanation: "Fair explanation"
                     },
                     {
                         order_num: 1,
                         points: 2,
-                        name: "5936d5b9e281403ca123964055d4719a",
+                        name: "option_2",
                         label: "Good",
                         explanation: "Good explanation"
                     }
                 ]
             },
             {
-                name: "d96bb68a69ee4ccb8f86c753b6924f75",
+                name: "criterion_2",
                 label: "Criterion with no options",
                 prompt: "Prompt for criterion with no options",
                 order_num: 1,
@@ -81,7 +81,7 @@ describe("OpenAssessment.StudioView", function() {
                 feedback: "required",
             },
             {
-                name: "2ca052403b06424da714f7a80dfb954d",
+                name: "criterion_3",
                 label: "Criterion with optional feedback",
                 prompt: "Prompt for criterion with optional feedback",
                 order_num: 2,
@@ -90,7 +90,7 @@ describe("OpenAssessment.StudioView", function() {
                     {
                         order_num: 0,
                         points: 2,
-                        name: "d7445661a89b4b339b9788cb7225a603",
+                        name: "option_1",
                         label: "Good",
                         explanation: "Good explanation"
                     }
@@ -121,7 +121,6 @@ describe("OpenAssessment.StudioView", function() {
 
     beforeEach(function() {
         // Load the DOM fixture
-        jasmine.getFixtures().fixturesPath = 'base/fixtures';
         loadFixtures('oa_edit.html');
 
         // Create the stub server
@@ -190,7 +189,7 @@ describe("OpenAssessment.StudioView", function() {
         expect(runtime.notify).toHaveBeenCalledWith('cancel', {});
     });
 
-    it("displays an error when server reports an update XML error", function() {
+    it("displays an error when server reports an error", function() {
         server.updateError = true;
         view.save();
         expect(runtime.notify).toHaveBeenCalledWith('error', {msg: 'Test error'});

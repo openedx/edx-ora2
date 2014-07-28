@@ -27,6 +27,7 @@ module.exports = function(config) {
       'src/*.js',
       'src/lms/*.js',
       'src/studio/*.js',
+      'spec/test_shared.js',
       'spec/*.js',
       'spec/lms/*.js',
       'spec/studio/*.js',
