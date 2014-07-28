@@ -33,7 +33,7 @@ class GradeMixin(object):
         Args:
             data: Not used.
 
-        Kwargs:
+        Keyword Arguments:
             suffix: Not used.
 
         Returns:
@@ -188,7 +188,7 @@ class GradeMixin(object):
             data (dict): Can provide keys 'feedback_text' (unicode) and
                 'feedback_options' (list of unicode).
 
-        Kwargs:
+        Keyword Arguments:
             suffix (str): Unused
 
         Returns:

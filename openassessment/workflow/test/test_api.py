@@ -364,7 +364,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
             item_id (unicode): Item ID for the submission
             status (unicode): One of acceptable status values (e.g. "peer", "self", "waiting", "done")
 
-        Kwargs:
+        Keyword Arguments:
             answer (unicode): Submission answer.
             steps (list): A list of steps to create the workflow with. If not
                 specified the default steps are "peer", "self".

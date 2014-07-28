@@ -112,7 +112,7 @@ def create_assessment(
         overall_feedback (unicode): Free-form text feedback on the submission overall.
         rubric_dict (dict): Serialized Rubric model.
 
-    Kwargs:
+    Keyword Arguments:
         scored_at (datetime): The timestamp of the assessment; defaults to the current time.
 
     Returns:

@@ -430,7 +430,7 @@ class OpenAssessmentBlock(
         the peer grading step AFTER the submission deadline has passed.
         This may not be necessary when we implement a grading interface specifically for course staff.
 
-        Kwargs:
+        Keyword Arguments:
             step (str): The step in the workflow to check.  Options are:
                 None: check whether the problem as a whole is open.
                 "submission": check whether the submission section is open.
@@ -540,7 +540,7 @@ class OpenAssessmentBlock(
         """
         Check if a question has been released.
 
-        Kwargs:
+        Keyword Arguments:
             step (str): The step in the workflow to check.
                 None: check whether the problem as a whole is open.
                 "submission": check whether the submission section is open.

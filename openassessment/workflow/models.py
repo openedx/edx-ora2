@@ -441,7 +441,7 @@ def update_workflow_async(sender, **kwargs):
     Args:
         sender (object): Not used
 
-    Kwargs:
+    Keyword Arguments:
         submission_uuid (str): The UUID of the submission associated
             with the workflow being updated.
 

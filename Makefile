@@ -32,7 +32,7 @@ install-nltk-data:
 
 STATIC_JS = openassessment/xblock/static/js
 
-minimize-js:
+minimize-js: install-js
 	node_modules/.bin/uglifyjs $(STATIC_JS)/src/oa_shared.js $(STATIC_JS)/src/*.js > "$(STATIC_JS)/openassessment.min.js"
 
 

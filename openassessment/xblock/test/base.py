@@ -19,7 +19,7 @@ def scenario(scenario_path, user_id=None):
     Args:
         scenario_path (str): Path to the scenario XML file.
 
-    Kwargs:
+    Keyword Arguments:
         user_id (str or None): User ID to log in as, or None.
 
     Returns:
@@ -109,7 +109,7 @@ class XBlockHandlerTestCase(CacheResetTest):
             handler_name (str): The name of the handler.
             content (unicode): Content of the request.
 
-        Kwargs:
+        Keyword Arguments:
             response_format (None or str): Expected format of the response string.
                 If `None`, return the raw response content; if 'json', parse the
                 response as JSON and return the result.
