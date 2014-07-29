@@ -293,22 +293,29 @@ class StudioMixin(object):
 
         """
         order = copy.deepcopy(self.editor_assessments_order)
+        used_assessments = [asmnt['name'] for asmnt in self.valid_assessments]
+        default_editor_order = copy.deepcopy(DEFAULT_EDITOR_ASSESSMENTS_ORDER)
+
+        # Backwards compatibility:
+        # If the problem already contains example-based assessment
+        # then allow the editor to display example-based assessments.
+        if 'example-based-assessment' in used_assessments:
+            default_editor_order.insert(0, 'example-based-assessment')
 
         # Backwards compatibility:
         # If the editor assessments order doesn't match the problem order,
         # fall back to the problem order.
         # This handles the migration of problems created pre-authoring,
         # which will have the default editor order.
-        used_assessments = [asmnt['name'] for asmnt in self.valid_assessments]
         problem_order_indices = [
             order.index(asmnt_name) for asmnt_name in used_assessments
             if asmnt_name in order
         ]
         if problem_order_indices != sorted(problem_order_indices):
-            unused_assessments = list(set(DEFAULT_EDITOR_ASSESSMENTS_ORDER) - set(used_assessments))
+            unused_assessments = list(set(default_editor_order) - set(used_assessments))
             return sorted(unused_assessments) + used_assessments
 
         # Forwards compatibility:
         # Include any additional assessments that may have been added since the problem was created.
         else:
-            return order + list(set(DEFAULT_EDITOR_ASSESSMENTS_ORDER) - set(order))
+            return order + list(set(default_editor_order) - set(order))
