@@ -11,6 +11,7 @@ Returns:
 OpenAssessment.ValidationAlert = function (element) {
     var alert = this;
     this.element = element;
+    this.rubricContentElement = $('#openassessment_rubric_content_editor');
     this.title = $(".openassessment_alert_title", this.element);
     this.message = $(".openassessment_alert_message", this.element);
     $(".openassessment_alert_close", element).click(function(eventObject) {
@@ -27,6 +28,7 @@ OpenAssessment.ValidationAlert.prototype = {
      */
     hide: function() {
         this.element.addClass('is--hidden');
+        this.rubricContentElement.removeClass('openassessment_alert_shown');
     },
 
     /**
@@ -34,6 +36,7 @@ OpenAssessment.ValidationAlert.prototype = {
      */
     show : function() {
         this.element.removeClass('is--hidden');
+        this.rubricContentElement.addClass('openassessment_alert_shown');
     },
 
     /**

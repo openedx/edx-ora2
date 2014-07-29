@@ -60,7 +60,7 @@ OpenAssessment.EditRubricView.prototype = {
     **/
     criteriaDefinition: function() {
         var criteria = this.criteriaContainer.getItemValues();
-
+        error;
         // Add order_num fields for criteria and options
         for (var criterion_idx = 0; criterion_idx < criteria.length; criterion_idx++) {
             var criterion = criteria[criterion_idx];
