@@ -167,6 +167,15 @@ class StudentTrainingMixin(object):
             corrections = student_training.assess_training_example(
                 self.submission_uuid, data['options_selected']
             )
+            self.runtime.publish(
+                self,
+                "openassessment.student_training_assess_example",
+                {
+                    "submission_uuid": self.submission_uuid,
+                    "options_selected": data["options_selected"],
+                    "corrections": corrections
+                }
+            )
         except student_training.StudentTrainingRequestError:
             msg = (
                 u"Could not check student training scores for "
