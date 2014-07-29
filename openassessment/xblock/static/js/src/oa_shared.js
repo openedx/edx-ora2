@@ -17,3 +17,15 @@ if (typeof OpenAssessment == "undefined" || !OpenAssessment) {
 if (typeof window.gettext === 'undefined') {
     window.gettext = function(text) { return text; };
 }
+
+
+// If ngettext isn't found (workbench, testing, etc.), return the simplistic english version
+if (typeof window.ngetgext === 'undefined') {
+    window.ngettext = function(singular_text, plural_text, n) {
+        if (n > 1){
+            return plural_text;
+        } else {
+            return singular_text;
+        }
+    }
+}
