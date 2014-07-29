@@ -47,7 +47,7 @@ to start the server on port 8001:
     ./scripts/workbench.sh 8001
 
 
-Combining and Minimizing JavaScript and Sass
+Combining and Minifying JavaScript and Sass
 ============================================
 
 To reduce page size, the OpenAssessment XBlock serves combined/minified
@@ -60,7 +60,7 @@ files:
 .. code:: bash
 
     # Combine/minify JavaScript
-    make minimize-js
+    make javascript
 
     # Combine/minify CSS (from Sass)
     ./scripts/sass.sh
