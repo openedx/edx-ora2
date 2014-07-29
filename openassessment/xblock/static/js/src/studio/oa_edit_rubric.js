@@ -141,11 +141,12 @@ OpenAssessment.EditRubricView.prototype = {
         criterionIndex (int): The index of the criterion to which
             the option will be added (starts from 0).
 
-    **/
+
     addOption: function(criterionIndex) {
         var criterionItem = this.getCriterionItem(criterionIndex);
         criterionItem.optionContainer.add();
     },
+     **/
 
     /**
     Remove an option from the rubric.
