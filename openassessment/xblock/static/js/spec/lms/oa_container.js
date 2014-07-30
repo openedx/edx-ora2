@@ -22,6 +22,7 @@ describe("OpenAssessment.Container", function () {
         this.addHandler = function() {};
         this.removeHandler = function() {};
         this.updateHandler = function() {};
+        this.addEventListeners = function() {};
     };
 
     var container = null;
@@ -57,6 +58,9 @@ describe("OpenAssessment.Container", function () {
         // Create the container and configure it
         // to use the stub container item.
         container = createContainer();
+
+        // Explicitly add event listeners.
+        container.addEventListeners();
     });
 
     it("adds and removes items", function() {
@@ -130,6 +134,19 @@ describe("OpenAssessment.Container", function () {
         expect(container.getItemValues().length).toEqual(1);
     });
 
+    it("only creates one item when add is fired", function() {
+        // Initialize multiple containers without explicitly adding event
+        // listeners
+        createContainer();
+        createContainer();
+        createContainer();
+
+        // Press the add button
+        expect(container.getItemValues().length).toEqual(0);
+        $("#add_button").click();
+        expect(container.getItemValues().length).toEqual(1);
+    });
+
     it("removes an element when the remove button is pressed", function() {
         // Add some items
         container.add();
@@ -157,6 +174,9 @@ describe("OpenAssessment.Container", function () {
 
         // Initialize the container object
         container = createContainer();
+
+        // Explicitly add event listeners.
+        container.addEventListeners();
 
         // Verify that the container recognizes the pre-existing item
         expect(container.getItemValues()).toEqual([{ id: 0 }]);

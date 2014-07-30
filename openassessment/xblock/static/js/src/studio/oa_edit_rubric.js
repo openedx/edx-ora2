@@ -26,6 +26,7 @@ OpenAssessment.EditRubricView = function(element, notifier) {
             notifier: notifier
         }
     );
+    this.criteriaContainer.addEventListeners();
     this.alert = new OpenAssessment.ValidationAlert($('#openassessment_rubric_validation_alert', this.element));
 };
 

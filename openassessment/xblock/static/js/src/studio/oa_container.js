@@ -73,29 +73,38 @@ OpenAssessment.Container = function(containerItem, kwargs) {
     this.createContainerItem = function(element) {
         return new containerItem(element, container.notifier);
     };
-
-    // Install a click handler for the add button
-    $(this.addButtonElement).click($.proxy(this.add, this));
-
-    // Find items already in the container and install click
-    // handlers for the delete buttons.
-    $("." + this.removeButtonClass, this.containerElement).click(
-        function(eventData) {
-            var item = container.createContainerItem(eventData.target);
-            container.remove(item);
-        }
-    );
-
-    // Initialize existing items, in case they need to install their
-    // own event handlers.
-    $("." + this.containerItemClass, this.containerElement).each(
-        function(index, element) {
-            container.createContainerItem(element);
-        }
-    );
 };
 
 OpenAssessment.Container.prototype = {
+
+    /**
+     Adds event listeners to the container and its children. Must be
+     called explicitly when the container is initially created.
+     */
+    addEventListeners: function() {
+        var container = this;
+        // Install a click handler for the add button
+        $(this.addButtonElement).click($.proxy(this.add, this));
+
+        // Find items already in the container and install click
+        // handlers for the delete buttons.
+        $("." + this.removeButtonClass, this.containerElement).click(
+            function(eventData) {
+                var item = container.createContainerItem(eventData.target);
+                container.remove(item);
+            }
+        );
+
+        // Initialize existing items, in case they need to install their
+        // own event handlers.
+        $("." + this.containerItemClass, this.containerElement).each(
+            function(index, element) {
+                var item = container.createContainerItem(element);
+                item.addEventListeners();
+            }
+        );
+    },
+
     /**
     Adds a new item to the container.
     **/
@@ -127,6 +136,7 @@ OpenAssessment.Container.prototype = {
         // Initialize the item, allowing it to install event handlers.
         // Fire event handler for adding a new element
         var handlerItem = container.createContainerItem(containerItem);
+        handlerItem.addEventListeners();
         handlerItem.addHandler();
     },
 

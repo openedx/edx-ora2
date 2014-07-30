@@ -69,7 +69,6 @@ Returns:
 OpenAssessment.RubricOption = function(element, notifier) {
     this.element = element;
     this.notifier = notifier;
-    $(this.element).focusout($.proxy(this.updateHandler, this));
 };
 
 OpenAssessment.RubricOption.prototype = {
@@ -177,6 +176,14 @@ OpenAssessment.RubricOption.prototype = {
                 "points": optionPoints
             }
         );
+    },
+
+    /**
+     Adds event listeners specific to this container item.
+     */
+    addEventListeners: function() {
+        // Install a focus out handler for container changes.
+        $(this.element).focusout($.proxy(this.updateHandler, this));
     }
 };
 
@@ -204,8 +211,6 @@ OpenAssessment.RubricCriterion = function(element, notifier) {
             notifier: this.notifier
         }
     );
-
-    $(this.element).focusout($.proxy(this.updateHandler, this));
 };
 
 
@@ -252,6 +257,17 @@ OpenAssessment.RubricCriterion.prototype = {
         if (nameString !== "") { fields.name = nameString; }
 
         return fields;
+    },
+
+    /**
+     Invoked by the container to add event listeners to all child containers
+     of this item, and add event listeners specific to this container item.
+
+     */
+    addEventListeners: function() {
+        this.optionContainer.addEventListeners();
+        // Install a focus out handler for container changes.
+        $(this.element).focusout($.proxy(this.updateHandler, this));
     },
 
     /**
@@ -343,6 +359,7 @@ OpenAssessment.TrainingExample.prototype = {
     },
 
     addHandler: function() {},
+    addEventListeners: function() {},
     removeHandler: function() {},
     updateHandler: function() {}
 };
