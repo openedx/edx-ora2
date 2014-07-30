@@ -9,3 +9,4 @@ Architecture
 
    workflow
    ai_grading
+   fileupload
