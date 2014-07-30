@@ -12,9 +12,8 @@ Setup
 -----
 ::
 
-  pip install -r requirements/dev.txt
-  pip install -e .
-  python manage.py runserver
+See the `README <https://github.com/edx/edx-ora2/blob/master/README.rst>`_
+
 
 
 Developer Documentation
@@ -34,4 +33,3 @@ API Documentation
    :maxdepth: 2
 
    api
-

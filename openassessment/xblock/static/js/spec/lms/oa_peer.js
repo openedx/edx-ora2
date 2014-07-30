@@ -76,7 +76,7 @@ describe("OpenAssessment.PeerView", function() {
 
         // Provide overall feedback
         var overallFeedback = "Good job!";
-        view.overallFeedback(overallFeedback);
+        view.rubric.overallFeedback(overallFeedback);
 
         // Submit the peer assessment
         view.peerAssess();

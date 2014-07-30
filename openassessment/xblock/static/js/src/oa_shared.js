@@ -21,11 +21,19 @@ if (typeof window.gettext === 'undefined') {
 
 // If ngettext isn't found (workbench, testing, etc.), return the simplistic english version
 if (typeof window.ngetgext === 'undefined') {
-    window.ngettext = function(singular_text, plural_text, n) {
-        if (n > 1){
+    window.ngettext = function (singular_text, plural_text, n) {
+        if (n > 1) {
             return plural_text;
         } else {
             return singular_text;
         }
     }
+}
+
+
+// Stub event logging if the runtime doesn't provide it
+if (typeof window.Logger === 'undefined') {
+    window.Logger = {
+        log: function(event_type, data, kwargs) {}
+    };
 }

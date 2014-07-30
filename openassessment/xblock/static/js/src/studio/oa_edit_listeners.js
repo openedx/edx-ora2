@@ -71,7 +71,7 @@ OpenAssessment.StudentTrainingListener.prototype = {
                     .data("points", data.points)
                     .data("label", data.label);
 
-                // Sets the option's text description, and ads it to the criterion.
+                // Sets the option's text description, and adds it to the criterion.
                 OpenAssessment.ItemUtilities.refreshOptionString(option);
                 $(criterion).append(option);
                 examplesUpdated = true;

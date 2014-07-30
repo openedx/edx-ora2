@@ -117,7 +117,7 @@ class StudioViewTest(XBlockHandlerTestCase):
     @scenario('data/example_based_only.xml')
     def test_render_studio_with_ai(self, xblock):
         frag = self.runtime.render(xblock, 'studio_view')
-        self.assertTrue(frag.body_html().find('openassessment-edit'))
+        self.assertTrue('ai_assessment_settings_editor' in frag.body_html())
 
     @file_data('data/update_xblock.json')
     @scenario('data/basic_scenario.xml')

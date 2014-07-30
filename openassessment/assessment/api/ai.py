@@ -90,7 +90,7 @@ def on_init(submission_uuid, rubric=None, algorithm_id=None):
     Args:
         submission_uuid (str): The UUID of the submission to assess.
 
-    Kwargs:
+    Keyword Arguments:
         rubric (dict): Serialized rubric model.
         algorithm_id (unicode): Use only classifiers trained with the specified algorithm.
 
@@ -104,8 +104,9 @@ def on_init(submission_uuid, rubric=None, algorithm_id=None):
         AIGradingRequestError
         AIGradingInternalError
 
-    Example usage:
-    >>> submit('74a9d63e8a5fea369fd391d07befbd86ae4dc6e2', rubric, 'ease')
+    Example Usage:
+
+    >>> on_init('74a9d63e8a5fea369fd391d07befbd86ae4dc6e2', rubric, 'ease')
     '10df7db776686822e501b05f452dc1e4b9141fe5'
 
     """
@@ -179,7 +180,8 @@ def get_latest_assessment(submission_uuid):
     Raises:
         AIGradingInternalError
 
-    Examle usage:
+    Example usage:
+
     >>> get_latest_assessment('10df7db776686822e501b05f452dc1e4b9141fe5')
     {
         'points_earned': 6,
@@ -261,6 +263,7 @@ def train_classifiers(rubric_dict, examples, course_id, item_id, algorithm_id):
         AITrainingInternalError
 
     Example usage:
+
     >>> train_classifiers(rubric, examples, 'ease')
     '10df7db776686822e501b05f452dc1e4b9141fe5'
 
@@ -307,7 +310,7 @@ def reschedule_unfinished_tasks(course_id=None, item_id=None, task_type=u"grade"
     only reschedule the unfinished grade tasks. Applied use case (with button in
     staff mixin) is to call without argument, and to reschedule grades only.
 
-    Kwargs:
+    Keyword Arguments:
         course_id (unicode): Restrict to unfinished tasks in a particular course.
         item_id (unicode): Restrict to unfinished tasks for a particular item in a course.
             NOTE: if you specify the item ID, you must also specify the course ID.

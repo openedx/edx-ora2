@@ -230,12 +230,13 @@
   }
 
   .oa_editor_content_wrapper {
-    height: 100%;
+    height: Calc(100% - 1px);
     width: 100%;
     border-radius: 3px;
     border: 1px solid $edx-gray-d1;
     background-color: white;
     overflow-y: scroll;
+    position: absolute;
   }
 
   #openassessment_prompt_editor {
@@ -426,20 +427,17 @@
   #oa_rubric_editor_wrapper{
 
     #openassessment_rubric_validation_alert{
-      -webkit-animation: notificationSlideDown 1s ease-in-out 1;
-      -moz-animation: notificationSlideDown 1s ease-in-out 1;
-      animation: notificationSlideDown 1s ease-in-out 1;
-      -webkit-animation-fill-mode: forwards;
-      -moz-animation-fill-mode: forwards;
-      animation-fill-mode: forwards;
-
-      background-color: #323232;
       height: auto;
+      width: 100%;
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
+      background-color: #323232;
       border-bottom: 3px solid rgb(192, 172, 0);
       padding: 10px;
       position: absolute;
       z-index: 10;
-      width: 100%;
+      min-height: 70px;
+      @include transition (color 0.50s ease-in-out 0s);
 
       .openassessment_alert_icon:before{
         font-family: FontAwesome;
@@ -448,7 +446,7 @@
         color: rgb(192, 172, 0);
         float: left;
         font-size: 200%;
-        margin: 20px 0px 0px 25px;
+        margin: 1.5% 0px 0px 2%;
       }
       .openassessment_alert_header {
         width: 85%;
@@ -470,11 +468,11 @@
         display: inline-block;
         position: absolute;
         top: 0px;
-        right: 10px;
+        right: 0px;
         color: #e9e9e9;
         background: #323232;
         text-align: center;
-        padding: 2px 5px;
+        margin: 5px 10px;
 
         [class^="icon"] {
           width: auto;
@@ -486,6 +484,17 @@
           color: $blue;
         }
       }
+    }
+
+    #openassessment_rubric_content_editor{
+      height: 100%;
+      overflow-y: scroll;
+    }
+
+    #openassessment_rubric_content_editor.openassessment_alert_shown{
+      height: Calc(100% - 70px);
+      position: absolute;
+      bottom: 0;
     }
 
     .wrapper-comp-settings{
@@ -1024,21 +1033,43 @@
   .action--upload {
     @extend %btn--secondary;
     @extend %action-2;
-    display: block;
     text-align: center;
-    margin-bottom: ($baseline-v/2);
+    float: right;
+    display: inline-block;
+    margin: ($baseline-v/2) 0;
+    box-shadow: none;
   }
 
   .file--upload {
-    margin-top: $baseline-v/2;
-    margin-bottom: $baseline-v/2;
+    margin: $baseline-v ($baseline-v/2);
   }
 }
+.self-assessment__display__header
+.self-assessment__display__title,
+.peer-assessment__display__header
+.peer-assessment__display__title,
+.submission__answer__display
+.submission__answer__display__title{
+  margin: 10px 0;
+}
 
-.submission--image {
-  max-height: 600px;
-  max-width: $max-width/2;
-  margin-bottom: $baseline-v;
+
+.self-assessment__display__image,
+.peer-assessment__display__image,
+.submission__answer__display__image{
+  @extend .submission__answer__display__content;
+  max-height: 400px;
+  text-align: left;
+  overflow: auto;
+  img{
+    max-height: 100%;
+    max-width: 100%;
+  }
+}
+.submission__answer__display__image
+.submission--image{
+  max-height: 250px;
+  max-width: 100%;
 }
 
 // Developer SASS for Continued Grading.

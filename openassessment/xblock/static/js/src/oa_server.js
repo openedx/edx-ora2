@@ -269,6 +269,8 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
         Args:
             optionsSelected (object literal): Keys are criteria names,
                 values are the option text the user selected for the criterion.
+            var criterionFeedback = { clarity: "The essay was very clear." };
+            var overallFeedback = "Good job!";
 
         Returns:
             A JQuery promise, which resolves with no args if successful
@@ -282,10 +284,12 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
                 function(errorMsg) { console.log(errorMsg); }
             );
         **/
-        selfAssess: function(optionsSelected) {
+        selfAssess: function(optionsSelected, criterionFeedback, overallFeedback) {
             var url = this.url('self_assess');
             var payload = JSON.stringify({
-                options_selected: optionsSelected
+                options_selected: optionsSelected,
+                criterion_feedback: criterionFeedback,
+                overall_feedback: overallFeedback
             });
             return $.Deferred(function(defer) {
                 $.ajax({ type: "POST", url: url, data: payload }).done(

@@ -306,7 +306,7 @@ def validator(oa_block, strict_post_release=True):
     Args:
         oa_block (OpenAssessmentBlock): The XBlock being updated.
 
-    Kwargs:
+    Keyword Arguments:
         strict_post_release (bool): If true, restrict what authors can update once
             a problem has been released.
 

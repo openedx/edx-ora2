@@ -507,7 +507,7 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             expected_path (str): The expected template path.
             expected_context (dict): The expected template context.
 
-        Kwargs:
+        Keyword Arguments:
             continue_grading (bool): If true, the user has chosen to continue grading.
             workflow_status (str): If provided, simulate this status from the workflow API.
             graded_enough (bool): Did the student meet the requirement by assessing enough peers?
@@ -679,7 +679,7 @@ class TestPeerAssessHandler(XBlockHandlerTestCase):
             scorer_id (unicode): The ID of the student creating the assessment.
             assessment (dict): Serialized assessment model.
 
-        Kwargs:
+        Keyword Arguments:
             expect_failure (bool): If true, expect a failure response and return None
 
         Returns:

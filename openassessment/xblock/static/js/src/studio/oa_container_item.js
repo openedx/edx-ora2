@@ -33,11 +33,15 @@ OpenAssessment.ItemUtilities = {
     refreshOptionString: function(element) {
         var points = $(element).data('points');
         var label = $(element).data('label');
-        var singular_string = label + " - " + points + " point";
-        var multiple_string = label + " - " + points + " points";
+        // We don't want the lack of a label to make it look like - 1 points.
+        if (label == ""){
+            label = gettext('Unnamed Option');
+        }
+        var singularString = label + " - " + points + " point";
+        var multipleString = label + " - " + points + " points";
         // If the option doesn't have a data points value, that indicates to us that it is not a user-specified option,
         // but represents the "Not Selected" option which all criterion drop-downs have.
-        if (typeof(points) === 'undefined'){
+        if (typeof points === 'undefined') {
             $(element).text(
                 gettext('Not Selected')
             );
@@ -45,7 +49,7 @@ OpenAssessment.ItemUtilities = {
         // Otherwise, set the text of the option element to be the properly conjugated, translated string.
         else {
             $(element).text(
-                ngettext(singular_string, multiple_string, points)
+                ngettext(singularString, multipleString, points)
             );
         }
     }

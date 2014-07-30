@@ -9,6 +9,7 @@ from openassessment.workflow import api as workflow_api
 from submissions import api as submission_api
 from .data_conversion import create_rubric_dict
 from .resolve_dates import DISTANT_FUTURE
+from .data_conversion import create_rubric_dict, clean_criterion_feedback
 
 logger = logging.getLogger(__name__)
 
@@ -113,6 +114,12 @@ class SelfAssessmentMixin(object):
         if 'options_selected' not in data:
             return {'success': False, 'msg': _(u"Missing options_selected key in request")}
 
+        if 'overall_feedback' not in data:
+            return {'success': False, 'msg': _('Must provide overall feedback in the assessment')}
+
+        if 'criterion_feedback' not in data:
+            return {'success': False, 'msg': _('Must provide feedback for criteria in the assessment')}
+
         if self.submission_uuid is None:
             return {'success': False, 'msg': _(u"You must submit a response before you can perform a self-assessment.")}
 
@@ -121,6 +128,8 @@ class SelfAssessmentMixin(object):
                 self.submission_uuid,
                 self.get_student_item_dict()['student_id'],
                 data['options_selected'],
+                clean_criterion_feedback(self.rubric_criteria, data['criterion_feedback']),
+                data['overall_feedback'],
                 create_rubric_dict(self.prompt, self.rubric_criteria_with_labels)
             )
             self.publish_assessment_event("openassessmentblock.self_assess", assessment)

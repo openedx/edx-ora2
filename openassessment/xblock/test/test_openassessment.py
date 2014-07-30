@@ -548,7 +548,7 @@ class TestDates(XBlockHandlerTestCase):
             expected_start (datetime): Expected start date.
             expected_due (datetime): Expected due date.
 
-        Kwargs:
+        Keyword Arguments:
             released (bool): If set, check whether the XBlock has been released.
             course_staff (bool): Whether to treat the user as course staff.
 
