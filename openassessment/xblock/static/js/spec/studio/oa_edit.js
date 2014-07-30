@@ -219,9 +219,6 @@ describe("OpenAssessment.StudioView", function() {
         // Also expect that an error is displayed
         expect(server.receivedData).toBe(null);
         expect(view.validationAlert.isVisible()).toBe(true);
-        expect(runtime.notify).toHaveBeenCalledWith(
-            "error", {msg: "The problem could not be saved."}
-        );
 
         // Expect that individual fields were highlighted
         expect(view.validationErrors()).toContain(
@@ -230,6 +227,7 @@ describe("OpenAssessment.StudioView", function() {
 
         // Fix the error and try to save again
         view.settingsView.submissionStart("2014-04-01", "00:00");
+        view.save();
 
         // Expect that the validation errors were cleared
         // and that data was successfully sent to the server.

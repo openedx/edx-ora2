@@ -28,32 +28,44 @@ OpenAssessment.ValidationAlert.prototype = {
     },
 
     /**
-     Hides the alert.
-     */
+    Hides the alert.
+
+    Returns:
+        TODO
+    */
     hide: function() {
         this.element.addClass('is--hidden');
         this.rubricContentElement.removeClass('openassessment_alert_shown');
+        return this;
     },
 
     /**
-     Displays the alert.
-     */
+    Displays the alert.
+
+    Returns:
+        TODO
+    */
     show : function() {
         this.element.removeClass('is--hidden');
         this.rubricContentElement.addClass('openassessment_alert_shown');
+        return this;
     },
 
     /**
-     Sets the message of the alert.
-     How will this work with internationalization?
+    Sets the message of the alert.
+    How will this work with internationalization?
 
-     Args:
-         newTitle (str): the new title that the message will have
-         newMessage (str): the new text that the message's body will contain
-     */
+    Args:
+        newTitle (str): the new title that the message will have
+        newMessage (str): the new text that the message's body will contain
+
+    Returns:
+        TODO
+    */
     setMessage: function(newTitle, newMessage) {
         this.title.text(newTitle);
         this.message.text(newMessage);
+        return this;
     },
 
     /**

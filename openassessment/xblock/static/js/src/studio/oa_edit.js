@@ -124,20 +124,32 @@ OpenAssessment.StudioView.prototype = {
     save: function () {
         var view = this;
         this.saveTabState();
-        // Check whether the problem has been released; if not,
-        // warn the user and allow them to cancel.
-        this.server.checkReleased().done(
-            function (isReleased) {
-                if (isReleased) {
-                    view.confirmPostReleaseUpdate($.proxy(view.updateEditorContext, view));
+
+        // Perform client-side validation
+        // TODO -- more explanation
+        this.validationAlert.hide();
+        this.clearValidationErrors();
+        if (!this.validate()) {
+            this.validationAlert.setMessage(
+                gettext("Validation errors! [TODO Sylvia please help!]")
+            ).show();
+        }
+        else {
+            // Check whether the problem has been released; if not,
+            // warn the user and allow them to cancel.
+            this.server.checkReleased().done(
+                function (isReleased) {
+                    if (isReleased) {
+                        view.confirmPostReleaseUpdate($.proxy(view.updateEditorContext, view));
+                    }
+                    else {
+                        view.updateEditorContext();
+                    }
                 }
-                else {
-                    view.updateEditorContext();
-                }
-            }
-        ).fail(function (errMsg) {
-            view.showError(errMsg);
-        });
+            ).fail(function (errMsg) {
+                view.showError(errMsg);
+            });
+        }
     },
 
     /**
