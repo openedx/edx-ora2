@@ -26,7 +26,9 @@ describe("OpenAssessment.DatetimeControl", function() {
     // the datetime control has the expected validation status
     var testValidateDate = function(control, dateValue, timeValue, isValid, expectedError) {
         control.datetime(dateValue, timeValue);
-        expect(control.validate()).toBe(isValid);
+
+        var actualIsValid = control.validate();
+        expect(actualIsValid).toBe(isValid);
 
         if (isValid) { expect(control.validationErrors()).toEqual([]); }
         else { expect(control.validationErrors()).toContain(expectedError); }
@@ -40,8 +42,6 @@ describe("OpenAssessment.DatetimeControl", function() {
         testValidateDate(datetimeControl, "123abcd", "00:00", false, expectedError);
         testValidateDate(datetimeControl, "2014-", "00:00", false, expectedError);
         testValidateDate(datetimeControl, "99999999-01-01", "00:00", false, expectedError);
-        testValidateDate(datetimeControl, "2014-99-01", "00:00", false, expectedError);
-        testValidateDate(datetimeControl, "2014-01-99", "00:00", false, expectedError);
         testValidateDate(datetimeControl, "2014-99999-01", "00:00", false, expectedError);
         testValidateDate(datetimeControl, "2014-01-99999", "00:00", false, expectedError);
     });
@@ -51,8 +51,6 @@ describe("OpenAssessment.DatetimeControl", function() {
 
         testValidateDate(datetimeControl, "2014-04-01", "", false, expectedError);
         testValidateDate(datetimeControl, "2014-04-01", "00:00abcd", false, expectedError);
-        testValidateDate(datetimeControl, "2014-04-01", "24:00", false, expectedError);
-        testValidateDate(datetimeControl, "2014-04-01", "00:60", false, expectedError);
         testValidateDate(datetimeControl, "2014-04-01", "1", false, expectedError);
         testValidateDate(datetimeControl, "2014-04-01", "1.23", false, expectedError);
         testValidateDate(datetimeControl, "2014-04-01", "1:1", false, expectedError);

@@ -118,7 +118,7 @@ OpenAssessment.DatetimeControl.prototype = {
     datetime: function(dateString, timeString) {
         var datePickerSel = $(this.datePicker, this.element);
         var timePickerSel = $(this.timePicker, this.element);
-        if (typeof(dateString) !== "undefined") { datePickerSel.datepicker("setDate", dateString); }
+        if (typeof(dateString) !== "undefined") { datePickerSel.val(dateString); }
         if (typeof(timeString) !== "undefined") { timePickerSel.val(timeString); }
 
         if (datePickerSel.val() === "" && timePickerSel.val() === "") {
@@ -132,25 +132,40 @@ OpenAssessment.DatetimeControl.prototype = {
     **/
     validate: function() {
         var datetimeString = this.datetime();
-        if (datetimeString === null) {
-            return false;
+        var isValid = false;
+
+        if (datetimeString !== null) {
+            var matches = datetimeString.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/g);
+            isValid = (matches !== null);
         }
-        else {
-            var matches = datetimeString.match(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/g);
-            return matches !== null;
+
+        if (!isValid) {
+            $(this.datePicker, this.element).addClass("openassessment_highlighted_field");
+            $(this.timePicker, this.element).addClass("openassessment_highlighted_field");
         }
+
+        return isValid;
     },
 
     /**
     TODO
     **/
     clearValidationErrors: function() {
+        $(this.datePicker, this.element).removeClass("openassessment_highlighted_field");
+        $(this.timePicker, this.element).removeClass("openassessment_highlighted_field");
     },
 
     /**
     TODO
     **/
     validationErrors: function() {
-        return [];
-    }
+        var errors = [];
+        var dateHasError = $(this.datePicker, this.element).hasClass("openassessment_highlighted_field");
+        var timeHasError = $(this.timePicker, this.element).hasClass("openassessment_highlighted_field");
+
+        if(dateHasError) { errors.push("Date is invalid"); }
+        if (timeHasError) { errors.push("Time is invalid"); }
+
+        return errors;
+    },
 };
