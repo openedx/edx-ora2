@@ -45,8 +45,8 @@ describe("OpenAssessment.StudioView", function() {
         title: "The most important of all questions.",
         prompt: "How much do you like waffles?",
         feedbackPrompt: "",
-        submissionStart: null,
-        submissionDue: null,
+        submissionStart: "2014-01-02T12:15",
+        submissionDue: "2014-10-01T04:53",
         imageSubmissionEnabled: false,
         criteria: [
             {
@@ -100,15 +100,15 @@ describe("OpenAssessment.StudioView", function() {
         assessments: [
             {
                 name: "peer-assessment",
-                start: null,
-                due: null,
+                start: "2014-01-02T00:00",
+                due: "2014-01-03T00:00",
                 must_grade: 5,
                 must_be_graded_by: 3
             },
             {
                 name: "self-assessment",
-                start: null,
-                due: null
+                start: "2014-01-04T00:00",
+                due: "2014-01-05T00:00"
             }
         ],
         editorAssessmentsOrder: [
@@ -225,7 +225,7 @@ describe("OpenAssessment.StudioView", function() {
 
         // Expect that individual fields were highlighted
         expect(view.validationErrors()).toContain(
-            "Submission start date is invalid"
+            "Submission start is invalid"
         );
 
         // Fix the error and try to save again

@@ -203,19 +203,45 @@ OpenAssessment.EditSettingsView.prototype = {
     TODO
     **/
     validate: function() {
-        return true;
+        var isValid = true;
+
+        isValid = isValid && this.startDatetimeControl.validate();
+        isValid = isValid && this.dueDatetimeControl.validate();
+
+        $.each(this.assessmentViews, function() {
+            // TODO -- explain why we need to do it this way
+            isValid = (isValid && this.validate());
+        });
+        return isValid;
     },
 
     /**
     TODO
     **/
     validationErrors: function() {
-        return [];
+        var errors = [];
+
+        if (this.startDatetimeControl.validationErrors().length > 0) {
+            errors.push("Submission start is invalid");
+        }
+        if (this.dueDatetimeControl.validationErrors().length > 0) {
+            errors.push("Submission due is invalid");
+        }
+
+        $.each(this.assessmentViews, function() {
+            errors.concat(this.validationErrors());
+        });
+        return errors;
     },
 
     /**
     TODO
     **/
     clearValidationErrors: function() {
+        this.startDatetimeControl.clearValidationErrors();
+        this.dueDatetimeControl.clearValidationErrors();
+        $.each(this.assessmentViews, function() {
+            this.clearValidationErrors();
+        });
     },
 };

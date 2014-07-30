@@ -17,6 +17,9 @@ describe("OpenAssessment edit assessment views", function() {
         expect(view.validate()).toBe(false);
         expect(view.validationErrors()).toContain(expectedError);
 
+        // Clear validation errors (simulate re-saving)
+        view.clearValidationErrors();
+
         // Test a valid datetime
         datetimeControl.datetime("2014-04-05", "00:00");
         expect(view.validate()).toBe(true);
@@ -40,6 +43,8 @@ describe("OpenAssessment edit assessment views", function() {
         beforeEach(function() {
             var element = $("#oa_peer_assessment_editor").get(0);
             view = new OpenAssessment.EditPeerAssessmentView(element);
+            view.startDatetime("2014-01-01", "00:00");
+            view.dueDatetime("2014-01-01", "00:00");
         });
 
         it("enables and disables", function() { testEnableAndDisable(view); });
@@ -55,13 +60,6 @@ describe("OpenAssessment edit assessment views", function() {
                 start: "2014-01-01T00:00",
                 due: "2014-03-04T00:00"
             });
-        });
-
-        it("handles default dates", function() {
-            view.startDatetime("");
-            view.dueDatetime("");
-            expect(view.description().start).toBe(null);
-            expect(view.description().due).toBe(null);
         });
 
         it("validates the start date and time", function() {
@@ -85,6 +83,8 @@ describe("OpenAssessment edit assessment views", function() {
         beforeEach(function() {
             var element = $("#oa_self_assessment_editor").get(0);
             view = new OpenAssessment.EditSelfAssessmentView(element);
+            view.startDatetime("2014-01-01", "00:00");
+            view.dueDatetime("2014-01-01", "00:00");
         });
 
         it("enables and disables", function() { testEnableAndDisable(view); });
@@ -96,13 +96,6 @@ describe("OpenAssessment edit assessment views", function() {
                 start: "2014-01-01T00:00",
                 due: "2014-03-04T00:00"
             });
-        });
-
-        it("handles default dates", function() {
-            view.startDatetime("", "");
-            view.dueDatetime("", "");
-            expect(view.description().start).toBe(null);
-            expect(view.description().due).toBe(null);
         });
 
         it("validates the start date and time", function() {

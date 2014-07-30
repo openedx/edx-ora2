@@ -32,6 +32,8 @@ describe("OpenAssessment.EditSettingsView", function() {
         expect(view.validate()).toBe(false);
         expect(view.validationErrors()).toContain(expectedError);
 
+        view.clearValidationErrors();
+
         // Test a valid datetime
         datetimeControl.datetime("2014-04-05", "00:00");
         expect(view.validate()).toBe(true);
@@ -61,7 +63,8 @@ describe("OpenAssessment.EditSettingsView", function() {
         // Create the view
         var element = $("#oa_basic_settings_editor").get(0);
         view = new OpenAssessment.EditSettingsView(element, assessmentViews);
-
+        view.submissionStart("2014-01-01", "00:00");
+        view.submissionDue("2014-03-04", "00:00");
     });
 
     it("sets and loads display name", function() {
@@ -72,17 +75,11 @@ describe("OpenAssessment.EditSettingsView", function() {
     });
 
     it("sets and loads the submission start/due dates", function() {
-        view.submissionStart("", "");
-        expect(view.submissionStart()).toBe(null);
+        view.submissionStart("2014-04-01", "12:34");
+        expect(view.submissionStart()).toEqual("2014-04-01T12:34");
 
-        view.submissionStart("2014-04-01", "00:00");
-        expect(view.submissionStart()).toEqual("2014-04-01T00:00");
-
-        view.submissionDue("", "");
-        expect(view.submissionDue()).toBe(null);
-
-        view.submissionDue("2014-05-02", "00:00");
-        expect(view.submissionDue()).toEqual("2014-05-02T00:00");
+        view.submissionDue("2014-05-02", "12:34");
+        expect(view.submissionDue()).toEqual("2014-05-02T12:34");
     });
 
     it("sets and loads the image enabled state", function() {
@@ -161,7 +158,7 @@ describe("OpenAssessment.EditSettingsView", function() {
     it("validates assessment views", function() {
         // Simulate one of the assessment views being invalid
         assessmentViews[PEER].isValid = false;
-        assessmentViews[PEER].validationErrors = "test error";
+        assessmentViews[PEER].validationErrors = ["test error"];
 
         // Expect that the parent view is also invalid
         expect(view.validate()).toBe(false);

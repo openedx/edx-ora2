@@ -143,20 +143,29 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
     TODO
     **/
     validate: function() {
-        return true;
+        return this.startDatetimeControl.validate() && this.dueDatetimeControl.validate();
     },
 
     /**
     TODO
     **/
     validationErrors: function() {
-        return [];
+        var errors = [];
+        if (this.startDatetimeControl.validationErrors().length > 0) {
+            errors.push("Peer assessment start is invalid");
+        }
+        if (this.dueDatetimeControl.validationErrors().length > 0) {
+            errors.push("Peer assessment due is invalid");
+        }
+        return errors;
     },
 
     /**
     TODO
     **/
     clearValidationErrors: function() {
+        this.startDatetimeControl.clearValidationErrors();
+        this.dueDatetimeControl.clearValidationErrors();
     },
 };
 
@@ -275,20 +284,29 @@ OpenAssessment.EditSelfAssessmentView.prototype = {
     TODO
     **/
     validate: function() {
-        return true;
+        return this.startDatetimeControl.validate() && this.dueDatetimeControl.validate();
     },
 
     /**
     TODO
     **/
     validationErrors: function() {
-        return [];
+        var errors = [];
+        if (this.startDatetimeControl.validationErrors().length > 0) {
+            errors.push("Self assessment start is invalid");
+        }
+        if (this.dueDatetimeControl.validationErrors().length > 0) {
+            errors.push("Self assessment due is invalid");
+        }
+        return errors;
     },
 
     /**
     TODO
     **/
     clearValidationErrors: function() {
+        this.startDatetimeControl.clearValidationErrors();
+        this.dueDatetimeControl.clearValidationErrors();
     },
 };
 

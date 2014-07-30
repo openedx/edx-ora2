@@ -120,10 +120,6 @@ OpenAssessment.DatetimeControl.prototype = {
         var timePickerSel = $(this.timePicker, this.element);
         if (typeof(dateString) !== "undefined") { datePickerSel.val(dateString); }
         if (typeof(timeString) !== "undefined") { timePickerSel.val(timeString); }
-
-        if (datePickerSel.val() === "" && timePickerSel.val() === "") {
-            return null;
-        }
         return datePickerSel.val() + "T" + timePickerSel.val();
     },
 
@@ -132,12 +128,8 @@ OpenAssessment.DatetimeControl.prototype = {
     **/
     validate: function() {
         var datetimeString = this.datetime();
-        var isValid = false;
-
-        if (datetimeString !== null) {
-            var matches = datetimeString.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/g);
-            isValid = (matches !== null);
-        }
+        var matches = datetimeString.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/g);
+        var isValid = (matches !== null);
 
         if (!isValid) {
             $(this.datePicker, this.element).addClass("openassessment_highlighted_field");
