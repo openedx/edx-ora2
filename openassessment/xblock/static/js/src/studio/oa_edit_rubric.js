@@ -93,6 +93,23 @@ OpenAssessment.EditRubricView.prototype = {
     },
 
     /**
+    Get or set the default feedback response text in the editor.
+    The text is used as a student's default response to the feedback
+    prompt. 
+
+    Args:
+        text (string, option): If provided, sets the default text to this value.
+
+    Returns:
+        string
+
+    **/
+    feedback_default_text: function(text) {
+        var sel = $("#openassessment_rubric_feedback_default_text", this.element);
+        return OpenAssessment.Fields.stringField(sel, text);
+    },
+
+    /**
     Add a new criterion to the rubric.
     Uses a client-side template to create the new criterion.
     **/

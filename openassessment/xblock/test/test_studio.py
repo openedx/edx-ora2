@@ -19,6 +19,7 @@ class StudioViewTest(XBlockHandlerTestCase):
         "title": "Test title",
         "prompt": "Test prompt",
         "feedback_prompt": "Test feedback prompt",
+        "feedback_default_text": "Test feedback default text",
         "submission_start": "4014-02-10T09:46",
         "submission_due": "4014-02-27T09:46",
         "allow_file_upload": False,

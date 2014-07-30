@@ -8,6 +8,7 @@ from openassessment.assessment.errors import (
     PeerAssessmentRequestError, PeerAssessmentInternalError, PeerAssessmentWorkflowError
 )
 from openassessment.workflow.errors import AssessmentWorkflowError
+from openassessment.xblock.defaults import DEFAULT_RUBRIC_FEEDBACK_TEXT
 from .data_conversion import create_rubric_dict
 from .resolve_dates import DISTANT_FUTURE
 from .data_conversion import clean_criterion_feedback
@@ -130,6 +131,12 @@ class PeerAssessmentMixin(object):
             return Response(u"")
         continue_grading = data.params.get('continue_grading', False)
         path, context_dict = self.peer_path_and_context(continue_grading)
+
+        # For backwards compatibility, if no feedback default text has been
+        # set, use the default text
+        if 'rubric_feedback_default_text' not in context_dict:
+            context_dict['rubric_feedback_default_text'] = DEFAULT_RUBRIC_FEEDBACK_TEXT
+
         return self.render_assessment(path, context_dict)
 
     def peer_path_and_context(self, continue_grading):
@@ -154,6 +161,9 @@ class PeerAssessmentMixin(object):
 
         if self.rubric_feedback_prompt is not None:
             context_dict["rubric_feedback_prompt"] = self.rubric_feedback_prompt
+
+        if self.rubric_feedback_default_text is not None:
+            context_dict['rubric_feedback_default_text'] = self.rubric_feedback_default_text
 
         # We display the due date whether the problem is open or closed.
         # If no date is set, it defaults to the distant future, in which

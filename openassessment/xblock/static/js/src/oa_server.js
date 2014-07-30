@@ -413,6 +413,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
             title (string): The title of the problem.
             prompt (string): The question prompt.
             feedbackPrompt (string): The directions to the student for giving overall feedback on a submission.
+            feedback_default_text (string): The default feedback text used as the student's feedback response
             submissionStart (ISO-formatted datetime string or null): The start date of the submission.
             submissionDue (ISO-formatted datetime string or null): The date the submission is due.
             criteria (list of object literals): The rubric criteria.
@@ -430,6 +431,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
             var payload = JSON.stringify({
                 prompt: kwargs.prompt,
                 feedback_prompt: kwargs.feedbackPrompt,
+                feedback_default_text: kwargs.feedback_default_text,
                 title: kwargs.title,
                 submission_start: kwargs.submissionStart,
                 submission_due: kwargs.submissionDue,

@@ -6,6 +6,7 @@ import lxml.etree as etree
 import pytz
 import dateutil.parser
 import defusedxml.ElementTree as safe_etree
+from defaults import DEFAULT_RUBRIC_FEEDBACK_TEXT
 
 
 class UpdateFromXmlError(Exception):
@@ -172,6 +173,10 @@ def serialize_rubric(rubric_root, oa_block, include_prompt=True):
     if oa_block.rubric_feedback_prompt is not None:
         feedback_prompt = etree.SubElement(rubric_root, 'feedbackprompt')
         feedback_prompt.text = unicode(oa_block.rubric_feedback_prompt)
+
+    if oa_block.rubric_feedback_default_text is not None:
+        feedback_text = etree.SubElement(rubric_root, 'feedback_default_text')
+        feedback_text.text = unicode(oa_block.rubric_feedback_default_text)
 
 
 def parse_date(date_str, name=""):
@@ -375,6 +380,12 @@ def parse_rubric_xml(rubric_root):
         rubric_dict['feedbackprompt'] = _safe_get_text(feedback_prompt_el)
     else:
         rubric_dict['feedbackprompt'] = None
+
+    feedback_text_el = rubric_root.find('feedback_default_text')
+    if feedback_text_el is not None:
+        rubric_dict['feedback_default_text'] = _safe_get_text(feedback_text_el)
+    else:
+        rubric_dict['feedback_default_text'] = None
 
     # Criteria
     rubric_dict['criteria'] = _parse_criteria_xml(rubric_root)
@@ -770,6 +781,7 @@ def parse_from_xml(root):
         'rubric_criteria': rubric['criteria'],
         'rubric_assessments': assessments,
         'rubric_feedback_prompt': rubric['feedbackprompt'],
+        'rubric_feedback_default_text': rubric['feedback_default_text'],
         'submission_start': submission_start,
         'submission_due': submission_due,
         'allow_file_upload': allow_file_upload,

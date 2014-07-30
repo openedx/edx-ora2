@@ -152,6 +152,12 @@ class OpenAssessmentBlock(
         help="The rubric feedback prompt displayed to the student"
     )
 
+    rubric_feedback_default_text = String(
+        default=DEFAULT_RUBRIC_FEEDBACK_TEXT,
+        scope=Scope.content,
+        help="The default rubric feedback text displayed to the student"
+    )
+
     rubric_assessments = List(
         default=DEFAULT_ASSESSMENT_MODULES,
         scope=Scope.content,
@@ -386,6 +392,7 @@ class OpenAssessmentBlock(
 
         block.rubric_criteria = config['rubric_criteria']
         block.rubric_feedback_prompt = config['rubric_feedback_prompt']
+        block.rubric_feedback_default_text = config['rubric_feedback_default_text']
         block.rubric_assessments = config['rubric_assessments']
         block.submission_start = config['submission_start']
         block.submission_due = config['submission_due']

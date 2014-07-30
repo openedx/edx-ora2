@@ -66,6 +66,12 @@ DEFAULT_RUBRIC_FEEDBACK_PROMPT = """
 (Optional) What aspects of this response stood out to you? What did it do well? How could it improve?
 """
 
+# The rubric's feedback text is the default text displayed and used as
+# the student's response to the feedback prompt
+DEFAULT_RUBRIC_FEEDBACK_TEXT = """
+I noticed that this response...
+"""
+
 DEFAULT_EXAMPLE_ANSWER = (
     "Replace this text with your own sample response for this assignment. "
     "Then, under Response Score to the right, select an option for each criterion. "
