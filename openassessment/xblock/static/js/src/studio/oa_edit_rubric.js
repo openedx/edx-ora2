@@ -189,5 +189,25 @@ OpenAssessment.EditRubricView.prototype = {
     getOptionItem: function(criterionIndex, optionIndex) {
         var criterionItem = this.getCriterionItem(criterionIndex);
         return criterionItem.optionContainer.getItem(optionIndex);
+    },
+
+    /**
+    TODO
+    **/
+    validate: function() {
+        return true;
+    },
+
+    /**
+    TODO
+    **/
+    validationErrors: function() {
+        return [];
+    },
+
+    /**
+    TODO
+    **/
+    clearValidationErrors: function() {
     }
 };

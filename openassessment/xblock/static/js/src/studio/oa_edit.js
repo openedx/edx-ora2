@@ -22,6 +22,10 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     // Initializes the tabbing functionality and activates the last used.
     this.initializeTabs();
 
+    // Initialize the validation alert
+    this.validationAlert = new OpenAssessment.ValidationAlert();
+    this.validationAlert.installEventHandlers();
+
     // Initialize the prompt tab view
     this.promptView = new OpenAssessment.EditPromptView(
         $("#oa_prompt_editor_wrapper", this.element).get(0)
@@ -196,6 +200,30 @@ OpenAssessment.StudioView.prototype = {
      **/
     showError: function (errorMsg) {
         this.runtime.notify('error', {msg: errorMsg});
+    },
+
+    /**
+    TODO
+    **/
+    validate: function() {
+        return this.settingsView.validate() && this.rubricView.validate();
+    },
+
+    /**
+    TODO
+    **/
+    validationErrors: function() {
+        return this.settingsView.validationErrors().concat(
+            this.rubricView.validationErrors()
+        );
+    },
+
+    /**
+    TODO
+    **/
+    clearValidationErrors: function() {
+        this.settingsView.clearValidationErrors();
+        this.rubricView.clearValidationErrors();
     },
 };
 

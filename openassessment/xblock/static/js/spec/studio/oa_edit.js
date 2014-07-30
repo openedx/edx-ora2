@@ -204,4 +204,37 @@ describe("OpenAssessment.StudioView", function() {
             }
         });
     });
+
+    it("validates fields before saving", function() {
+        // Initially, there should not be a validation alert
+        expect(view.validationAlert.isVisible()).toBe(false);
+
+        // Introduce a validation error (date field does format invalid)
+        view.settingsView.submissionStart("Not a valid date!", "00:00");
+
+        // Try to save the view
+        view.save();
+
+        // Since there was an invalid field, expect that data was NOT sent to the server.
+        // Also expect that an error is displayed
+        expect(server.receivedData).toBe(null);
+        expect(view.validationAlert.isVisible()).toBe(true);
+        expect(runtime.notify).toHaveBeenCalledWith(
+            "error", {msg: "The problem could not be saved."}
+        );
+
+        // Expect that individual fields were highlighted
+        expect(view.validationErrors()).toContain(
+            "Submission start date is invalid"
+        );
+
+        // Fix the error and try to save again
+        view.settingsView.submissionStart("2014-04-01", "00:00");
+
+        // Expect that the validation errors were cleared
+        // and that data was successfully sent to the server.
+        expect(view.validationErrors()).toEqual([]);
+        expect(view.validationAlert.isVisible()).toBe(false);
+        expect(server.receivedData).not.toBe(null);
+    });
 });

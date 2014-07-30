@@ -137,7 +137,27 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
     **/
     getID: function() {
         return $(this.element).attr('id');
-    }
+    },
+
+    /**
+    TODO
+    **/
+    validate: function() {
+        return true;
+    },
+
+    /**
+    TODO
+    **/
+    validationErrors: function() {
+        return [];
+    },
+
+    /**
+    TODO
+    **/
+    clearValidationErrors: function() {
+    },
 };
 
 
@@ -242,14 +262,34 @@ OpenAssessment.EditSelfAssessmentView.prototype = {
     },
 
     /**
-     Gets the ID of the assessment
+    Gets the ID of the assessment
 
-     Returns:
-     string (CSS ID of the Element object)
-     **/
+    Returns:
+    string (CSS ID of the Element object)
+    **/
     getID: function() {
         return $(this.element).attr('id');
-    }
+    },
+
+    /**
+    TODO
+    **/
+    validate: function() {
+        return true;
+    },
+
+    /**
+    TODO
+    **/
+    validationErrors: function() {
+        return [];
+    },
+
+    /**
+    TODO
+    **/
+    clearValidationErrors: function() {
+    },
 };
 
 /**
@@ -340,7 +380,27 @@ OpenAssessment.EditStudentTrainingView.prototype = {
      **/
     getID: function() {
         return $(this.element).attr('id');
-    }
+    },
+
+    /**
+    TODO
+    **/
+    validate: function() {
+        return true;
+    },
+
+    /**
+    TODO
+    **/
+    validationErrors: function() {
+        return [];
+    },
+
+    /**
+    TODO
+    **/
+    clearValidationErrors: function() {
+    },
 };
 
 /**
@@ -415,12 +475,32 @@ OpenAssessment.EditExampleBasedAssessmentView.prototype = {
     },
 
     /**
-     Gets the ID of the assessment
+    Gets the ID of the assessment
 
-     Returns:
-     string (CSS ID of the Element object)
-     **/
+    Returns:
+    string (CSS ID of the Element object)
+    **/
     getID: function() {
         return $(this.element).attr('id');
-    }
+    },
+
+    /**
+    TODO
+    **/
+    validate: function() {
+        return true;
+    },
+
+    /**
+    TODO
+    **/
+    validationErrors: function() {
+        return [];
+    },
+
+    /**
+    TODO
+    **/
+    clearValidationErrors: function() {
+    },
 };

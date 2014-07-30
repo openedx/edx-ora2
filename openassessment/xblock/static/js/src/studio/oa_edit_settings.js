@@ -198,4 +198,24 @@ OpenAssessment.EditSettingsView.prototype = {
         );
         return editorAssessments;
     },
+
+    /**
+    TODO
+    **/
+    validate: function() {
+        return true;
+    },
+
+    /**
+    TODO
+    **/
+    validationErrors: function() {
+        return [];
+    },
+
+    /**
+    TODO
+    **/
+    clearValidationErrors: function() {
+    },
 };

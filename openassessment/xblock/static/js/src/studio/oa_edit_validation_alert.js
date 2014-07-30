@@ -2,26 +2,30 @@
 A class which controls the validation alert which we place at the top of the rubric page after
 changes are made which will propagate to the settings section.
 
-Args:
-    element (element): The element that specifies the div that the validation consists of.
-
 Returns:
     Openassessment.ValidationAlert
  */
-OpenAssessment.ValidationAlert = function (element) {
-    var alert = this;
-    this.element = element;
+OpenAssessment.ValidationAlert = function() {
+    this.element = $('#openassessment_rubric_validation_alert');
     this.rubricContentElement = $('#openassessment_rubric_content_editor');
     this.title = $(".openassessment_alert_title", this.element);
     this.message = $(".openassessment_alert_message", this.element);
-    $(".openassessment_alert_close", element).click(function(eventObject) {
-            eventObject.preventDefault();
-            alert.hide();
-        }
-    );
 };
 
 OpenAssessment.ValidationAlert.prototype = {
+
+    /**
+    TODO
+    **/
+    installEventHandlers: function() {
+        var alert = this;
+        $(".openassessment_alert_close", this.element).click(
+            function(eventObject) {
+                eventObject.preventDefault();
+                alert.hide();
+            }
+        );
+    },
 
     /**
      Hides the alert.

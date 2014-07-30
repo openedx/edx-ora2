@@ -56,15 +56,9 @@ OpenAssessment.RubricOption.prototype = {
     **/
     getFieldValues: function () {
         var fields = {
-            label: OpenAssessment.Fields.stringField(
-                $('.openassessment_criterion_option_label', this.element)
-            ),
-            points: OpenAssessment.Fields.intField(
-                $('.openassessment_criterion_option_points', this.element)
-            ),
-            explanation: OpenAssessment.Fields.stringField(
-                $('.openassessment_criterion_option_explanation', this.element)
-            )
+            label: this.label(),
+            points: this.points(),
+            explanation: this.explanation()
         };
 
         // New options won't have unique names assigned.
@@ -76,6 +70,30 @@ OpenAssessment.RubricOption.prototype = {
         if (nameString !== "") { fields.name = nameString; }
 
         return fields;
+    },
+
+    /**
+    TODO
+    **/
+    label: function(label) {
+        var sel = $('.openassessment_criterion_option_label', this.element);
+        return OpenAssessment.Fields.stringField(sel, label);
+    },
+
+    /**
+    TODO
+    **/
+    points: function(points) {
+        var sel = $('.openassessment_criterion_option_points', this.element);
+        return OpenAssessment.Fields.intField(sel, points);
+    },
+
+    /**
+    TODO
+    **/
+    explanation: function(explanation) {
+        var sel = $('.openassessment_criterion_option_explanation', this.element);
+        return OpenAssessment.Fields.stringField(sel, explanation);
     },
 
     /**
@@ -200,15 +218,9 @@ OpenAssessment.RubricCriterion.prototype = {
     **/
     getFieldValues: function () {
         var fields = {
-            label: OpenAssessment.Fields.stringField(
-                $('.openassessment_criterion_label', this.element)
-            ),
-            prompt: OpenAssessment.Fields.stringField(
-                $('.openassessment_criterion_prompt', this.element)
-            ),
-            feedback: OpenAssessment.Fields.stringField(
-                $('.openassessment_criterion_feedback', this.element)
-            ),
+            label: this.label(),
+            prompt: this.prompt(),
+            feedback: this.feedback(),
             options: this.optionContainer.getItemValues()
         };
 
@@ -221,6 +233,30 @@ OpenAssessment.RubricCriterion.prototype = {
         if (nameString !== "") { fields.name = nameString; }
 
         return fields;
+    },
+
+    /**
+    TODO
+    **/
+    label: function(label) {
+        var sel = $('.openassessment_criterion_label', this.element);
+        return OpenAssessment.Fields.stringField(sel, label);
+    },
+
+    /**
+    TODO
+    **/
+    prompt: function(prompt) {
+        var sel = $('.openassessment_criterion_prompt', this.element);
+        return OpenAssessment.Fields.stringField(sel, prompt);
+    },
+
+    /**
+    TODO
+    **/
+    feedback: function(feedback) {
+        var sel = $('.openassessment_criterion_feedback', this.element);
+        return OpenAssessment.Fields.stringField(sel, feedback);
     },
 
     /**

@@ -11,6 +11,18 @@ describe("OpenAssessment edit assessment views", function() {
         expect(view.isEnabled()).toBe(true);
     };
 
+    var testValidateDate = function(view, datetimeControl, expectedError) {
+        // Test an invalid datetime
+        datetimeControl.datetime("invalid", "invalid");
+        expect(view.validate()).toBe(false);
+        expect(view.validationErrors()).toContain(expectedError);
+
+        // Test a valid datetime
+        datetimeControl.datetime("2014-04-05", "00:00");
+        expect(view.validate()).toBe(true);
+        expect(view.validationErrors()).toEqual([]);
+    };
+
     var testLoadXMLExamples = function(view) {
         var xml = "XML DEFINITIONS WOULD BE HERE";
         view.exampleDefinitions(xml);
@@ -30,9 +42,9 @@ describe("OpenAssessment edit assessment views", function() {
             view = new OpenAssessment.EditPeerAssessmentView(element);
         });
 
-        it("Enables and disables", function() { testEnableAndDisable(view); });
+        it("enables and disables", function() { testEnableAndDisable(view); });
 
-        it("Loads a description", function() {
+        it("loads a description", function() {
             view.mustGradeNum(1);
             view.mustBeGradedByNum(2);
             view.startDatetime("2014-01-01", "00:00");
@@ -45,11 +57,25 @@ describe("OpenAssessment edit assessment views", function() {
             });
         });
 
-        it("Handles default dates", function() {
+        it("handles default dates", function() {
             view.startDatetime("");
             view.dueDatetime("");
             expect(view.description().start).toBe(null);
             expect(view.description().due).toBe(null);
+        });
+
+        it("validates the start date and time", function() {
+            testValidateDate(
+                view, view.startDatetimeControl,
+                "Peer assessment start is invalid"
+            );
+        });
+
+        it("validates the due date and time", function() {
+            testValidateDate(
+                view, view.dueDatetimeControl,
+                "Peer assessment due is invalid"
+            );
         });
     });
 
@@ -61,9 +87,9 @@ describe("OpenAssessment edit assessment views", function() {
             view = new OpenAssessment.EditSelfAssessmentView(element);
         });
 
-        it("Enables and disables", function() { testEnableAndDisable(view); });
+        it("enables and disables", function() { testEnableAndDisable(view); });
 
-        it("Loads a description", function() {
+        it("loads a description", function() {
             view.startDatetime("2014-01-01", "00:00");
             view.dueDatetime("2014-03-04", "00:00");
             expect(view.description()).toEqual({
@@ -72,11 +98,25 @@ describe("OpenAssessment edit assessment views", function() {
             });
         });
 
-        it("Handles default dates", function() {
+        it("handles default dates", function() {
             view.startDatetime("", "");
             view.dueDatetime("", "");
             expect(view.description().start).toBe(null);
             expect(view.description().due).toBe(null);
+        });
+
+        it("validates the start date and time", function() {
+            testValidateDate(
+                view, view.startDatetimeControl,
+                "Self assessment start is invalid"
+            );
+        });
+
+        it("validates the due date and time", function() {
+            testValidateDate(
+                view, view.dueDatetimeControl,
+                "Self assessment due is invalid"
+            );
         });
     });
 
@@ -88,19 +128,19 @@ describe("OpenAssessment edit assessment views", function() {
             view = new OpenAssessment.EditStudentTrainingView(element);
         });
 
-        it("Enables and disables", function() { testEnableAndDisable(view); });
-        it("Loads a description", function () {
+        it("enables and disables", function() { testEnableAndDisable(view); });
+        it("loads a description", function () {
             // This assumes a particular structure of the DOM,
             // which is set by the HTML fixture.
             var examples = view.exampleContainer.getItemValues();
             expect(examples.length).toEqual(0);
         });
-        it("Modifies a description", function () {
+        it("modifies a description", function () {
             view.exampleContainer.add();
             var examples = view.exampleContainer.getItemValues();
             expect(examples.length).toEqual(1);
         });
-        it("Returns the correct format", function () {
+        it("returns the correct format", function () {
             view.exampleContainer.add();
             var examples = view.exampleContainer.getItemValues();
             expect(examples).toEqual(

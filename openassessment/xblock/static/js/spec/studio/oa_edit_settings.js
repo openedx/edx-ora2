@@ -5,6 +5,8 @@ describe("OpenAssessment.EditSettingsView", function() {
 
     var StubView = function(name, descriptionText) {
         this.name = name;
+        this.isValid = true;
+        this.validationErrors = [];
 
         this.description = function() {
             return { dummy: descriptionText };
@@ -15,22 +17,46 @@ describe("OpenAssessment.EditSettingsView", function() {
             if (typeof(isEnabled) !== "undefined") { this._enabled = isEnabled; }
             return this._enabled;
         };
+
+        this.validate = function() {
+            return this.isValid;
+        };
+
+        this.validationErrors = function() { return this.validationErrors; };
+        this.clearValidationErrors = function() {};
+    };
+
+    var testValidateDate = function(datetimeControl, expectedError) {
+        // Test an invalid datetime
+        datetimeControl.datetime("invalid", "invalid");
+        expect(view.validate()).toBe(false);
+        expect(view.validationErrors()).toContain(expectedError);
+
+        // Test a valid datetime
+        datetimeControl.datetime("2014-04-05", "00:00");
+        expect(view.validate()).toBe(true);
+        expect(view.validationErrors()).toEqual([]);
     };
 
     var view = null;
     var assessmentViews = null;
+
+    // The Peer and Self Editor ID's
+    var PEER = "oa_peer_assessment_editor";
+    var SELF = "oa_self_assessment_editor";
+    var AI = "oa_ai_assessment_editor";
+    var TRAINING = "oa_student_training_editor";
 
     beforeEach(function() {
         // Load the DOM fixture
         loadFixtures('oa_edit.html');
 
         // Create the stub assessment views
-        assessmentViews = {
-            "oa_self_assessment_editor": new StubView("self-assessment", "Self assessment description"),
-            "oa_peer_assessment_editor": new StubView("peer-assessment", "Peer assessment description"),
-            "oa_ai_assessment_editor": new StubView("ai-assessment", "Example Based assessment description"),
-            "oa_student_training_editor": new StubView("student-training", "Student Training description")
-        };
+        assessmentViews = {};
+        assessmentViews[SELF] = new StubView("self-assessment", "Self assessment description");
+        assessmentViews[PEER] = new StubView("peer-assessment", "Peer assessment description");
+        assessmentViews[AI] = new StubView("ai-assessment", "Example Based assessment description");
+        assessmentViews[TRAINING] = new StubView("student-training", "Student Training description");
 
         // Create the view
         var element = $("#oa_basic_settings_editor").get(0);
@@ -67,29 +93,21 @@ describe("OpenAssessment.EditSettingsView", function() {
     });
 
     it("builds a description of enabled assessments", function() {
-        // In this test we also verify that the mechansim that reads off of the DOM is correct, in that it gets
-        // the right order of assessments, in addition to performing the correct calls.  Note that this test's
-        // success depends on our Template having the original order (as it does in an unconfigured ORA problem)
-        // of TRAINING -> PEER -> SELF -> AI
-
-        // The Peer and Self Editor ID's
-        var peerID = "oa_peer_assessment_editor";
-        var selfID = "oa_self_assessment_editor";
-        var aiID = "oa_ai_assessment_editor";
-        var studentID = "oa_student_training_editor";
+        // Depends on the template having an original order
+        // of training --> peer --> self --> ai
 
         // Disable all assessments, and expect an empty description
-        assessmentViews[peerID].isEnabled(false);
-        assessmentViews[selfID].isEnabled(false);
-        assessmentViews[aiID].isEnabled(false);
-        assessmentViews[studentID].isEnabled(false);
+        assessmentViews[PEER].isEnabled(false);
+        assessmentViews[SELF].isEnabled(false);
+        assessmentViews[AI].isEnabled(false);
+        assessmentViews[TRAINING].isEnabled(false);
         expect(view.assessmentsDescription()).toEqual([]);
 
         // Enable the first assessment only
-        assessmentViews[peerID].isEnabled(false);
-        assessmentViews[selfID].isEnabled(true);
-        assessmentViews[aiID].isEnabled(false);
-        assessmentViews[studentID].isEnabled(false);
+        assessmentViews[PEER].isEnabled(false);
+        assessmentViews[SELF].isEnabled(true);
+        assessmentViews[AI].isEnabled(false);
+        assessmentViews[TRAINING].isEnabled(false);
         expect(view.assessmentsDescription()).toEqual([
             {
                 name: "self-assessment",
@@ -98,10 +116,10 @@ describe("OpenAssessment.EditSettingsView", function() {
         ]);
 
         // Enable the second assessment only
-        assessmentViews[peerID].isEnabled(true);
-        assessmentViews[selfID].isEnabled(false);
-        assessmentViews[aiID].isEnabled(false);
-        assessmentViews[studentID].isEnabled(false);
+        assessmentViews[PEER].isEnabled(true);
+        assessmentViews[SELF].isEnabled(false);
+        assessmentViews[AI].isEnabled(false);
+        assessmentViews[TRAINING].isEnabled(false);
         expect(view.assessmentsDescription()).toEqual([
             {
                 name: "peer-assessment",
@@ -110,10 +128,10 @@ describe("OpenAssessment.EditSettingsView", function() {
         ]);
 
         // Enable both assessments
-        assessmentViews[peerID].isEnabled(true);
-        assessmentViews[selfID].isEnabled(true);
-        assessmentViews[aiID].isEnabled(false);
-        assessmentViews[studentID].isEnabled(false);
+        assessmentViews[PEER].isEnabled(true);
+        assessmentViews[SELF].isEnabled(true);
+        assessmentViews[AI].isEnabled(false);
+        assessmentViews[TRAINING].isEnabled(false);
         expect(view.assessmentsDescription()).toEqual([
             {
                 name: "peer-assessment",
@@ -124,5 +142,29 @@ describe("OpenAssessment.EditSettingsView", function() {
                 dummy: "Self assessment description"
             }
         ]);
+    });
+
+    it("validates submission start datetime fields", function() {
+        testValidateDate(
+            view.startDatetimeControl,
+            "Submission start is invalid"
+        );
+    });
+
+    it("validates submission due datetime fields", function() {
+        testValidateDate(
+            view.dueDatetimeControl,
+            "Submission due is invalid"
+        );
+    });
+
+    it("validates assessment views", function() {
+        // Simulate one of the assessment views being invalid
+        assessmentViews[PEER].isValid = false;
+        assessmentViews[PEER].validationErrors = "test error";
+
+        // Expect that the parent view is also invalid
+        expect(view.validate()).toBe(false);
+        expect(view.validationErrors()).toContain("test error");
     });
 });

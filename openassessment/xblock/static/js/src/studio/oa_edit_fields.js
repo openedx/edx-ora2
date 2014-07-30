@@ -125,5 +125,25 @@ OpenAssessment.DatetimeControl.prototype = {
             return null;
         }
         return datePickerSel.val() + "T" + timePickerSel.val();
+    },
+
+    /**
+    TODO
+    **/
+    validate: function() {
+        return true;
+    },
+
+    /**
+    TODO
+    **/
+    clearValidationErrors: function() {
+    },
+
+    /**
+    TODO
+    **/
+    validationErrors: function() {
+        return [];
     }
 };
