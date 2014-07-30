@@ -195,19 +195,34 @@ OpenAssessment.EditRubricView.prototype = {
     TODO
     **/
     validate: function() {
-        return true;
+        var isValid = true;
+
+        $.each(this.getAllCriteria(), function() {
+            isValid = (isValid && this.validate());
+        });
+
+        return isValid;
     },
 
     /**
     TODO
     **/
     validationErrors: function() {
-        return [];
+        var errors = [];
+
+        $.each(this.getAllCriteria(), function() {
+            errors = errors.concat(this.validationErrors());
+        });
+
+        return errors;
     },
 
     /**
     TODO
     **/
     clearValidationErrors: function() {
+        $.each(this.getAllCriteria(), function() {
+            this.clearValidationErrors();
+        });
     }
 };

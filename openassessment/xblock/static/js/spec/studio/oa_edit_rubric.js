@@ -227,8 +227,8 @@ describe("OpenAssessment.EditRubricView", function() {
         // Valid option point values
         testValidateOptionPoints("0", true);
         testValidateOptionPoints("1", true);
-        testValidateOptionPoints("2", false);
-        testValidateOptionPoints("998", false);
-        testValidateOptionPoints("999", false);
+        testValidateOptionPoints("2", true);
+        testValidateOptionPoints("998", true);
+        testValidateOptionPoints("999", true);
     });
 });

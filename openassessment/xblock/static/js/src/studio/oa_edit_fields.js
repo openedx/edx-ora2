@@ -155,7 +155,7 @@ OpenAssessment.DatetimeControl.prototype = {
         var dateHasError = $(this.datePicker, this.element).hasClass("openassessment_highlighted_field");
         var timeHasError = $(this.timePicker, this.element).hasClass("openassessment_highlighted_field");
 
-        if(dateHasError) { errors.push("Date is invalid"); }
+        if (dateHasError) { errors.push("Date is invalid"); }
         if (timeHasError) { errors.push("Time is invalid"); }
 
         return errors;

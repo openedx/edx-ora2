@@ -25,6 +25,9 @@ templates.json file's directory.
 import sys
 import os.path
 import json
+import re
+import dateutil.parser
+import pytz
 
 # This is a bit of a hack to ensure that the root repo directory
 # is in the Python path, so Django can find the settings module.
@@ -34,6 +37,29 @@ from django.template.loader import get_template
 
 
 USAGE = u"{prog} TEMPLATE_DESC"
+
+
+ISO_DATE_REGEX = re.compile("^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$")
+
+def parse_dates(context):
+    """
+    TODO
+    """
+    if isinstance(context, dict):
+        return {
+            key: parse_dates(value)
+            for key, value in context.iteritems()
+        }
+    elif isinstance(context, list):
+        return [
+            parse_dates(item)
+            for item in context
+        ]
+    elif isinstance(context, basestring):
+        if ISO_DATE_REGEX.match(context) is not None:
+            return dateutil.parser.parse(context).replace(tzinfo=pytz.utc)
+
+    return context
 
 
 def render_templates(root_dir, template_json):
@@ -51,7 +77,8 @@ def render_templates(root_dir, template_json):
     """
     for template_dict in template_json:
         template = get_template(template_dict['template'])
-        rendered = template.render(Context(template_dict['context']))
+        context = parse_dates(template_dict['context'])
+        rendered = template.render(Context(context))
         output_path = os.path.join(root_dir, template_dict['output'])
 
         try:

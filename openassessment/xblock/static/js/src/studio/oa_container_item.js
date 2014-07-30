@@ -38,6 +38,7 @@ Returns:
 OpenAssessment.RubricOption = function(element, notifier) {
     this.element = element;
     this.notifier = notifier;
+    this.MAX_POINTS = 1000;
     $(this.element).focusout($.proxy(this.updateHandler, this));
 };
 
@@ -164,6 +165,37 @@ OpenAssessment.RubricOption.prototype = {
                 "points": optionPoints
             }
         );
+    },
+
+    /**
+    TODO
+    **/
+    validate: function() {
+        var pointString = $(".openassessment_criterion_option_points", this.element).val();
+        var matches = pointString.trim().match(/^\d{1,3}$/g);
+        var isValid = (matches !== null);
+        if (!isValid) {
+            $(".openassessment_criterion_option_points", this.element)
+                .addClass("openassessment_highlighted_field");
+        }
+        return isValid;
+    },
+
+    /**
+    TODO
+    **/
+    validationErrors: function() {
+        var sel = $(".openassessment_criterion_option_points", this.element);
+        var hasError = sel.hasClass("openassessment_highlighted_field");
+        return hasError ? ["Option points are invalid"] : [];
+    },
+
+    /**
+    TODO
+    **/
+    clearValidationErrors: function() {
+        $(".openassessment_criterion_option_points", this.element)
+            .removeClass("openassessment_highlighted_field");
     }
 };
 
@@ -301,6 +333,37 @@ OpenAssessment.RubricCriterion.prototype = {
             "criterionUpdated",
             {'criterionName': criterionName, 'criterionLabel': criterionLabel}
         );
+    },
+
+    /**
+    TODO
+    **/
+    validate: function() {
+        var isValid = true;
+        $.each(this.optionContainer.getAllItems(), function() {
+            isValid = (isValid && this.validate());
+        });
+        return isValid;
+    },
+
+    /**
+    TODO
+    **/
+    validationErrors: function() {
+        var errors = [];
+        $.each(this.optionContainer.getAllItems(), function() {
+            errors = errors.concat(this.validationErrors());
+        });
+        return errors;
+    },
+
+    /**
+    TODO
+    **/
+    clearValidationErrors: function() {
+        $.each(this.optionContainer.getAllItems(), function() {
+            this.clearValidationErrors();
+        });
     }
 };
 
@@ -343,5 +406,9 @@ OpenAssessment.TrainingExample.prototype = {
 
     addHandler: function() {},
     removeHandler: function() {},
-    updateHandler: function() {}
+    updateHandler: function() {},
+
+    validate: function() { return true; },
+    validationErrors: function() { return []; },
+    clearValidationErrors: function() {}
 };
