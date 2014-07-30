@@ -147,8 +147,15 @@ class GradeMixin(object):
 
         if median_scores is not None and max_scores is not None:
             for criterion in context["rubric_criteria"]:
-                criterion["median_score"] = median_scores[criterion["name"]]
-                criterion["total_value"] = max_scores[criterion["name"]]
+                # Although we prevent course authors from modifying criteria post-release,
+                # it's still possible for assessments created by course staff to
+                # have criteria that differ from the current problem definition.
+                # It's also possible to circumvent the post-release restriction
+                # if course authors directly import a course into Studio.
+                # If this happens, we simply leave the score blank so that the grade
+                # section can render without error.
+                criterion["median_score"] = median_scores.get(criterion["name"], '')
+                criterion["total_value"] = max_scores.get(criterion["name"], '')
 
         return ('openassessmentblock/grade/oa_grade_complete.html', context)
 
