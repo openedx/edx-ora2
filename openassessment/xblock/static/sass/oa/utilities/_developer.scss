@@ -499,7 +499,7 @@
     }
 
     .wrapper-comp-settings{
-      display: initial;
+      display: block;
     }
 
     #openassessment_rubric_instructions{
@@ -1034,21 +1034,43 @@
   .action--upload {
     @extend %btn--secondary;
     @extend %action-2;
-    display: block;
     text-align: center;
-    margin-bottom: ($baseline-v/2);
+    float: right;
+    display: inline-block;
+    margin: ($baseline-v/2) 0;
+    box-shadow: none;
   }
 
   .file--upload {
-    margin-top: $baseline-v/2;
-    margin-bottom: $baseline-v/2;
+    margin: $baseline-v ($baseline-v/2);
   }
 }
+.self-assessment__display__header
+.self-assessment__display__title,
+.peer-assessment__display__header
+.peer-assessment__display__title,
+.submission__answer__display
+.submission__answer__display__title{
+  margin: 10px 0;
+}
 
-.submission--image {
-  max-height: 600px;
-  max-width: $max-width/2;
-  margin-bottom: $baseline-v;
+
+.self-assessment__display__image,
+.peer-assessment__display__image,
+.submission__answer__display__image{
+  @extend .submission__answer__display__content;
+  max-height: 400px;
+  text-align: left;
+  overflow: auto;
+  img{
+    max-height: 100%;
+    max-width: 100%;
+  }
+}
+.submission__answer__display__image
+.submission--image{
+  max-height: 250px;
+  max-width: 100%;
 }
 
 // Developer SASS for Continued Grading.

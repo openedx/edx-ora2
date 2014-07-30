@@ -234,7 +234,7 @@ def validate_training_examples(rubric, examples):
                     errors.append(msg)
 
             # Check for missing criteria
-            # Ignore options 
+            # Ignore options
             all_example_criteria = set(options_selected.keys() + criteria_without_options)
             for missing_criterion in set(criteria_options.keys()) - all_example_criteria:
                 msg = _(
@@ -398,7 +398,7 @@ def assess_training_example(submission_uuid, options_selected, update_workflow=T
         submission_uuid (str): The UUID of the student's submission.
         options_selected (dict): The options the student selected.
 
-    Kwargs:
+    Keyword Arguments:
         update_workflow (bool): If true, mark the current item complete
             if the student has assessed the example correctly.
 

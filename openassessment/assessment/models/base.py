@@ -253,10 +253,19 @@ class RubricIndex(object):
             criterion.name: criterion
             for criterion in criteria
         }
-        self._option_index = {
-            (option.criterion.name, option.name): option
-            for option in options
-        }
+
+        # Finds the set of all criteria which have options by traversing through the options, and adding all of
+        # the options' associated criteria to an expanding set.
+        criteria_with_options = set()
+        option_index = {}
+        for option in options:
+            option_index[(option.criterion.name, option.name)] = option
+            criteria_with_options.add(option.criterion)
+
+        # Anything not in the above mentioned set is a zero option criteria, and we save it here for future reference.
+        self._criteria_without_options = set(self._criteria_index.values()) - criteria_with_options
+
+        self._option_index = option_index
 
         # By convention, if multiple options in the same criterion have the
         # same point value, we return the *first* option.
@@ -389,10 +398,7 @@ class RubricIndex(object):
             set of `Criterion`
 
         """
-        return set(
-            criterion for criterion in self._criteria_index.values()
-            if criterion.options.count() == 0
-        )
+        return self._criteria_without_options
 
 
 class Assessment(models.Model):
@@ -454,7 +460,7 @@ class Assessment(models.Model):
             submission_uuid (str): The UUID of the submission being assessed.
             score_type (unicode): The type of assessment (e.g. peer, self, or AI)
 
-        Kwargs:
+        Keyword Arguments:
             feedback (unicode): Overall feedback on the submission.
             scored_at (datetime): The time the assessment was created.  Defaults to the current time.
 
@@ -639,7 +645,7 @@ class AssessmentPart(models.Model):
             assessment (Assessment): The assessment we're adding parts to.
             selected (dict): A dictionary mapping criterion names to option names.
 
-        Kwargs:
+        Keyword Arguments:
             feedback (dict): A dictionary mapping criterion names to written
                 feedback for the criterion.
 
@@ -665,8 +671,8 @@ class AssessmentPart(models.Model):
             }
 
         # Validate that we have selections for all criteria
-        # This will raise an exception if we're missing any criteria
-        cls._check_has_all_criteria(rubric_index, set(selected.keys() + feedback.keys()))
+        # This will raise an exception if we're missing any selections/feedback required for criteria
+        cls._check_all_criteria_assessed(rubric_index, selected.keys(), feedback.keys())
 
         # Retrieve the criteria/option/feedback for criteria that have options.
         # Since we're using the rubric's index, we'll get an `InvalidRubricSelection` error
@@ -713,7 +719,7 @@ class AssessmentPart(models.Model):
             assessment (Assessment): The assessment we're adding parts to.
             selected (dict): A dictionary mapping criterion names to option point values.
 
-        Kwargs:
+        Keyword Arguments:
             feedback (dict): A dictionary mapping criterion names to written
                 feedback for the criterion.
 
@@ -782,4 +788,36 @@ class AssessmentPart(models.Model):
         missing_criteria = rubric_index.find_missing_criteria(selected_criteria)
         if len(missing_criteria) > 0:
             msg = u"Missing selections for criteria: {missing}".format(missing=missing_criteria)
+            raise InvalidRubricSelection(msg)
+
+
+    @classmethod
+    def _check_all_criteria_assessed(cls, rubric_index, selected_criteria, criteria_feedback):
+        """
+        Verify that we've selected options OR have feedback for all criteria in the rubric.
+
+        Verifies the predicate for all criteria (X) in the rubric:
+            has-an-option-selected(X) OR (has-zero-options(X) AND has-criterion-feedback(X))
+
+        Args:
+            rubric_index (RubricIndex): The index of the rubric's data.
+            selected_criteria (list): list of criterion names that have an option selected
+            criteria_feedback (list): list of criterion names that have feedback on them
+
+        Returns:
+            None
+
+        Raises:
+            InvalidRubricSelection
+        """
+        missing_option_selections = rubric_index.find_missing_criteria(selected_criteria)
+        zero_option_criteria = set([c.name for c in rubric_index.find_criteria_without_options()])
+
+        zero_option_criteria_missing_feedback = zero_option_criteria - set(criteria_feedback)
+        optioned_criteria_missing_selection = missing_option_selections - zero_option_criteria
+
+        missing_criteria = zero_option_criteria_missing_feedback | optioned_criteria_missing_selection
+
+        if len(missing_criteria) > 0:
+            msg = u"Missing selections for criteria: {missing}".format(missing=', '.join(missing_criteria))
             raise InvalidRubricSelection(msg)

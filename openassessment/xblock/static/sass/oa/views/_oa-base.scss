@@ -55,12 +55,12 @@
       }
 
       @include media($bp-dm) {
-        @include span-columns(9 of 12);
+        @include span-columns(8 of 12);
         margin-bottom: 0;
       }
 
       @include media($bp-dl) {
-        @include span-columns(9 of 12);
+        @include span-columns(8 of 12);
         margin-bottom: 0;
       }
 
@@ -173,14 +173,14 @@
       }
 
       @include media($bp-dm) {
-        @include span-columns(3 of 12);
+        @include span-columns(4 of 12);
         @include omega();
         position: relative;
         top:-12px;
       }
 
       @include media($bp-dl) {
-        @include span-columns(3 of 12);
+        @include span-columns(4 of 12);
         @include omega();
         position: relative;
         top: -12px;
@@ -201,7 +201,7 @@
     // step content wrapper
     .wrapper--step__content {
       margin-top: ($baseline-v/2);
-      padding-top: $baseline-v;
+      padding-top: ($baseline-v/2);
       border-top: 1px solid $color-decorative-tertiary;
     }
 

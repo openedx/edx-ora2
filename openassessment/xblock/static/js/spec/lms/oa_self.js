@@ -55,8 +55,28 @@ describe("OpenAssessment.SelfView", function() {
 
     it("Sends a self assessment to the server", function() {
         spyOn(server, 'selfAssess').andCallThrough();
+
+        // Select options in the rubric
+        var optionsSelected = {};
+        optionsSelected['Criterion 1'] = 'Poor';
+        optionsSelected['Criterion 2'] = 'Fair';
+        optionsSelected['Criterion 3'] = 'Good';
+        view.rubric.optionsSelected(optionsSelected);
+
+        // Provide per-criterion feedback
+        var criterionFeedback = {};
+        criterionFeedback['Criterion 1'] = "You did a fair job";
+        criterionFeedback['Criterion 3'] = "You did a good job";
+        view.rubric.criterionFeedback(criterionFeedback);
+
+        // Provide overall feedback
+        var overallFeedback = "Good job!";
+        view.rubric.overallFeedback(overallFeedback);
+
         view.selfAssess();
-        expect(server.selfAssess).toHaveBeenCalled();
+        expect(server.selfAssess).toHaveBeenCalledWith(
+            optionsSelected, criterionFeedback, overallFeedback
+        );
     });
 
     it("Re-enables the self assess button on error", function() {

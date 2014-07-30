@@ -34,7 +34,7 @@ def create_workflow(submission_uuid, steps, on_init_params=None):
         steps (list): List of steps that are part of the workflow, in the order
             that the user must complete them. Example: `["peer", "self"]`
 
-    Kwargs:
+    Keyword Arguments:
         on_init_params (dict): The parameters to pass to each assessment module
             on init.  Keys are the assessment step names.
 
@@ -279,7 +279,7 @@ def get_status_counts(course_id, item_id, steps):
     """
     Count how many workflows have each status, for a given item in a course.
 
-    Kwargs:
+    Keyword Arguments:
         course_id (unicode): The ID of the course.
         item_id (unicode): The ID of the item in the course.
         steps (list): A list of assessment steps for this problem.

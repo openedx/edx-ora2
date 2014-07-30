@@ -51,6 +51,16 @@ class TestSelfApi(CacheResetTest):
         "accuracy": "very accurate",
     }
 
+    CRITERION_FEEDBACK = {
+        "clarity": "Like a morning in the restful city of San Fransisco, the piece was indescribable, beautiful, and too foggy to properly comprehend.",
+        "accuracy": "Like my sister's cutting comments about my weight, I may not have enjoyed the piece, but I cannot fault it for its factual nature."
+    }
+
+    OVERALL_FEEDBACK = (
+        u"Unfortunately, the nature of being is too complex to comment, judge, or discern any one"
+        u"arbitrary set of things over another."
+    )
+
     def test_create_assessment(self):
         # Initially, there should be no submission or self assessment
         self.assertEqual(get_assessment("5"), None)
@@ -66,7 +76,7 @@ class TestSelfApi(CacheResetTest):
         # Create a self-assessment for the submission
         assessment = create_assessment(
             submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
-            self.OPTIONS_SELECTED, self.RUBRIC,
+            self.OPTIONS_SELECTED, self.CRITERION_FEEDBACK, self.OVERALL_FEEDBACK, self.RUBRIC,
             scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
         )
 
@@ -82,7 +92,7 @@ class TestSelfApi(CacheResetTest):
         self.assertEqual(assessment['submission_uuid'], submission['uuid'])
         self.assertEqual(assessment['points_earned'], 8)
         self.assertEqual(assessment['points_possible'], 10)
-        self.assertEqual(assessment['feedback'], u'')
+        self.assertEqual(assessment['feedback'], u'' + self.OVERALL_FEEDBACK)
         self.assertEqual(assessment['score_type'], u'SE')
 
     def test_create_assessment_no_submission(self):
@@ -90,7 +100,7 @@ class TestSelfApi(CacheResetTest):
         with self.assertRaises(SelfAssessmentRequestError):
             create_assessment(
                 'invalid_submission_uuid', u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
-                self.OPTIONS_SELECTED, self.RUBRIC,
+                self.OPTIONS_SELECTED, self.CRITERION_FEEDBACK, self.OVERALL_FEEDBACK, self.RUBRIC,
                 scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )
 
@@ -102,7 +112,22 @@ class TestSelfApi(CacheResetTest):
         with self.assertRaises(SelfAssessmentRequestError):
             create_assessment(
                 'invalid_submission_uuid', u'another user',
-                self.OPTIONS_SELECTED, self.RUBRIC,
+                self.OPTIONS_SELECTED, self.CRITERION_FEEDBACK, self.OVERALL_FEEDBACK, self.RUBRIC,
+                scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
+            )
+
+    def test_create_assessment_invalid_criterion_feedback(self):
+        # Create a submission
+        submission = create_submission(self.STUDENT_ITEM, "Test answer")
+
+        # Mutate the criterion feedback to not include all the appropriate criteria.
+        criterion_feedback = {"clarify": "not", "accurate": "sure"}
+
+        # Attempt to create a self-assessment with criterion_feedback that do not match the rubric
+        with self.assertRaises(SelfAssessmentRequestError):
+            create_assessment(
+                submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
+                self.OPTIONS_SELECTED, criterion_feedback, self.OVERALL_FEEDBACK, self.RUBRIC,
                 scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )
 
@@ -118,7 +143,7 @@ class TestSelfApi(CacheResetTest):
         with self.assertRaises(SelfAssessmentRequestError):
             create_assessment(
                 submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
-                options, self.RUBRIC,
+                options, self.CRITERION_FEEDBACK, self.OVERALL_FEEDBACK, self.RUBRIC,
                 scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )
 
@@ -134,7 +159,7 @@ class TestSelfApi(CacheResetTest):
         with self.assertRaises(SelfAssessmentRequestError):
             create_assessment(
                 submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
-                options, self.RUBRIC,
+                options, self.CRITERION_FEEDBACK, self.OVERALL_FEEDBACK, self.RUBRIC,
                 scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )
 
@@ -150,7 +175,7 @@ class TestSelfApi(CacheResetTest):
         with self.assertRaises(SelfAssessmentRequestError):
             create_assessment(
                 submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
-                options, self.RUBRIC,
+                options, self.CRITERION_FEEDBACK, self.OVERALL_FEEDBACK, self.RUBRIC,
                 scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )
 
@@ -165,7 +190,7 @@ class TestSelfApi(CacheResetTest):
         # Do not override the scored_at timestamp, so it should be set to the current time
         assessment = create_assessment(
             submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
-            self.OPTIONS_SELECTED, self.RUBRIC,
+            self.OPTIONS_SELECTED, self.CRITERION_FEEDBACK, self.OVERALL_FEEDBACK, self.RUBRIC,
         )
 
         # Retrieve the self-assessment
@@ -183,14 +208,14 @@ class TestSelfApi(CacheResetTest):
         # Self assess once
         assessment = create_assessment(
             submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
-            self.OPTIONS_SELECTED, self.RUBRIC,
+            self.OPTIONS_SELECTED, self.CRITERION_FEEDBACK, self.OVERALL_FEEDBACK, self.RUBRIC,
         )
 
         # Attempt to self-assess again, which should raise an exception
         with self.assertRaises(SelfAssessmentRequestError):
             create_assessment(
                 submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
-                self.OPTIONS_SELECTED, self.RUBRIC,
+                self.OPTIONS_SELECTED, self.CRITERION_FEEDBACK, self.OVERALL_FEEDBACK, self.RUBRIC,
             )
 
         # Expect that we still have the original assessment
@@ -213,17 +238,20 @@ class TestSelfApi(CacheResetTest):
             "options": []
         })
 
+        criterion_feedback = copy.deepcopy(self.CRITERION_FEEDBACK)
+        criterion_feedback['feedback only'] = "This is the feedback for the Zero Option Criterion."
+
         # Create a self-assessment for the submission
         assessment = create_assessment(
             submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
-            self.OPTIONS_SELECTED, rubric,
+            self.OPTIONS_SELECTED, criterion_feedback, self.OVERALL_FEEDBACK, rubric,
             scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
         )
 
         # The self-assessment should have set the feedback for
         # the criterion with no options to an empty string
         self.assertEqual(assessment["parts"][2]["option"], None)
-        self.assertEqual(assessment["parts"][2]["feedback"], u"")
+        self.assertEqual(assessment["parts"][2]["feedback"], u"This is the feedback for the Zero Option Criterion.")
 
     def test_create_assessment_all_criteria_have_zero_options(self):
         # Create a submission to self-assess
@@ -237,14 +265,25 @@ class TestSelfApi(CacheResetTest):
         # Create a self-assessment for the submission
         # We don't select any options, since none of the criteria have options
         options_selected = {}
+
+        # However, because they don't have options, they need to have criterion feedback.
+        criterion_feedback = {
+            'clarity': 'I thought it was about as accurate as Scrubs is to the medical profession.',
+            'accuracy': 'I thought it was about as accurate as Scrubs is to the medical profession.'
+        }
+
+        overall_feedback = ""
+
         assessment = create_assessment(
             submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
-            options_selected, rubric,
-            scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
+            options_selected,  criterion_feedback, overall_feedback,
+            rubric, scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
         )
 
         # The self-assessment should have set the feedback for
         # all criteria to an empty string.
         for part in assessment["parts"]:
             self.assertEqual(part["option"], None)
-            self.assertEqual(part["feedback"], u"")
+            self.assertEqual(
+                part["feedback"], u'I thought it was about as accurate as Scrubs is to the medical profession.'
+            )

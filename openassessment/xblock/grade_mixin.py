@@ -34,7 +34,7 @@ class GradeMixin(object):
         Args:
             data: Not used.
 
-        Kwargs:
+        Keyword Arguments:
             suffix: Not used.
 
         Returns:
@@ -135,7 +135,7 @@ class GradeMixin(object):
             'peer_assessments': peer_assessments,
             'self_assessment': self_assessment,
             'example_based_assessment': example_based_assessment,
-            'rubric_criteria': self._rubric_criteria_grade_context(peer_assessments),
+            'rubric_criteria': self._rubric_criteria_grade_context(peer_assessments, self_assessment),
             'has_submitted_feedback': has_submitted_feedback,
             'allow_file_upload': self.allow_file_upload,
             'file_url': self.get_download_url_from_submission(student_submission)
@@ -196,7 +196,7 @@ class GradeMixin(object):
             data (dict): Can provide keys 'feedback_text' (unicode) and
                 'feedback_options' (list of unicode).
 
-        Kwargs:
+        Keyword Arguments:
             suffix (str): Unused
 
         Returns:
@@ -226,7 +226,7 @@ class GradeMixin(object):
             )
             return {'success': True, 'msg': _(u"Feedback saved.")}
 
-    def _rubric_criteria_grade_context(self, peer_assessments):
+    def _rubric_criteria_grade_context(self, peer_assessments, self_assessment):
         """
         Sanitize the rubric criteria into a format that can be passed
         into the grade complete Django template.
@@ -237,6 +237,7 @@ class GradeMixin(object):
 
         Args:
             peer_assessments (list of dict): Serialized assessment models from the peer API.
+            self_assessment (dict): Serialized assessment model from the self API
 
         Returns:
             list of criterion dictionaries
@@ -258,17 +259,25 @@ class GradeMixin(object):
             ]
         """
         criteria = copy.deepcopy(self.rubric_criteria_with_labels)
-        criteria_feedback = defaultdict(list)
+        peer_criteria_feedback = defaultdict(list)
+        self_criteria_feedback = {}
 
         for assessment in peer_assessments:
             for part in assessment['parts']:
                 if part['feedback']:
                     part_criterion_name = part['criterion']['name']
-                    criteria_feedback[part_criterion_name].append(part['feedback'])
+                    peer_criteria_feedback[part_criterion_name].append(part['feedback'])
+
+        if self_assessment:
+            for part in self_assessment['parts']:
+                if part['feedback']:
+                    part_criterion_name = part['criterion']['name']
+                    self_criteria_feedback[part_criterion_name] = part['feedback']
 
         for criterion in criteria:
             criterion_name = criterion['name']
-            criterion['feedback'] = criteria_feedback[criterion_name]
+            criterion['peer_feedback'] = peer_criteria_feedback[criterion_name]
+            criterion['self_feedback'] = self_criteria_feedback.get(criterion_name)
 
         return criteria
 

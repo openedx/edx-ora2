@@ -74,6 +74,29 @@ Note that you can view your response at any time after you submit it. To do this
    :alt: Image of the Response field collapsed and then expanded
    :width: 550
 
+Submit an Image with Your Response
+***********************************
+
+Some assignments require you to submit an image with your text response. If you have to submit an image, you'll see buttons that you'll use to upload your image.
+
+.. image:: /Images/PA_Upload_ChooseFile.png 
+   :alt: Open response assessment example with Choose File and Upload Your Image buttons circled
+   :width: 500
+
+To upload your image:
+
+#. Click **Choose File**.
+#. In the dialog box that opens, select the file that you want, and then click **Open**.
+#. When the dialog box closes, click **Upload Your Image**.
+
+Your image appears below the response field, and the name of the image file appears next to the **Choose File** button. If you want to change the image, follow steps 1-3 again.
+
+.. image:: /Images/PA_Upload_WithImage.png
+   :alt: Example response with an image of Paris
+   :width: 500
+
+.. note:: You must submit text as well as your image in your response. You can't submit a response that doesn't contain text.
+
 ============================
 Learn to Assess Responses
 ============================

@@ -47,6 +47,27 @@ to start the server on port 8001:
     ./scripts/workbench.sh 8001
 
 
+Combining and Minifying JavaScript and Sass
+============================================
+
+To reduce page size, the OpenAssessment XBlock serves combined/minified
+versions of JavaScript and CSS.  This combined/minified files are checked
+into the git repository.
+
+If you modify JavaScript or Sass, you MUST regenerate the combined/minified
+files:
+
+.. code:: bash
+
+    # Combine/minify JavaScript
+    make javascript
+
+    # Combine/minify CSS (from Sass)
+    ./scripts/sass.sh
+
+Make sure you commit the combined/minified files to the git repository!
+
+
 Running Tests
 =============
 
