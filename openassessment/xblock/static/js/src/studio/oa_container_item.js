@@ -21,6 +21,37 @@ OpenAssessment.ItemUtilities = {
             index++;
         }
         return index.toString();
+    },
+
+    /**
+     Format the option label, including the point value, and add it to the option.
+     Relies on the data-points and data-label attributes to provide information about the option.
+
+     Args:
+     element (Jquery Element): The element that represents the object.
+     **/
+    refreshOptionString: function(element) {
+        var points = $(element).data('points');
+        var label = $(element).data('label');
+        // We don't want the lack of a label to make it look like - 1 points.
+        if (label == ""){
+            label = gettext('Unnamed Option');
+        }
+        var singularString = label + " - " + points + " point";
+        var multipleString = label + " - " + points + " points";
+        // If the option doesn't have a data points value, that indicates to us that it is not a user-specified option,
+        // but represents the "Not Selected" option which all criterion drop-downs have.
+        if (typeof points === 'undefined') {
+            $(element).text(
+                gettext('Not Selected')
+            );
+        }
+        // Otherwise, set the text of the option element to be the properly conjugated, translated string.
+        else {
+            $(element).text(
+                ngettext(singularString, multipleString, points)
+            );
+        }
     }
 };
 
@@ -281,6 +312,12 @@ OpenAssessment.RubricCriterion.prototype = {
  **/
 OpenAssessment.TrainingExample = function(element){
     this.element = element;
+    // Goes through and instantiates the option description in the training example for each option.
+    $(".openassessment_training_example_criterion_option", this.element) .each( function () {
+        $('option', this).each(function(){
+            OpenAssessment.ItemUtilities.refreshOptionString($(this));
+        });
+    });
 };
 
 OpenAssessment.TrainingExample.prototype = {
