@@ -108,7 +108,7 @@ OpenAssessment.DatetimeControl.prototype = {
     Get or set the date and time.
 
     Args:
-        dateString (string, optional): If provided, set the date (YY-MM-DD).
+        dateString (string, optional): If provided, set the date (YYYY-MM-DD).
         timeString (string, optional): If provided, set the time (HH:MM, 24-hour clock).
 
     Returns:
@@ -131,7 +131,14 @@ OpenAssessment.DatetimeControl.prototype = {
     TODO
     **/
     validate: function() {
-        return true;
+        var datetimeString = this.datetime();
+        if (datetimeString === null) {
+            return false;
+        }
+        else {
+            var matches = datetimeString.match(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/g);
+            return matches !== null;
+        }
     },
 
     /**

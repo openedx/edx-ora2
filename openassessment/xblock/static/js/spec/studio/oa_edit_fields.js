@@ -19,6 +19,7 @@ describe("OpenAssessment.DatetimeControl", function() {
             ".date_field",
             ".time_field"
         );
+        datetimeControl.install();
     });
 
     // Set the date and time values, then check whether
