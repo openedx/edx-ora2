@@ -212,6 +212,7 @@ OpenAssessment.EditSettingsView.prototype = {
             // TODO -- explain why we need to do it this way
             isValid = (isValid && this.validate());
         });
+
         return isValid;
     },
 
@@ -229,7 +230,7 @@ OpenAssessment.EditSettingsView.prototype = {
         }
 
         $.each(this.assessmentViews, function() {
-            errors.concat(this.validationErrors());
+            errors = errors.concat(this.validationErrors());
         });
         return errors;
     },

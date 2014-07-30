@@ -96,7 +96,7 @@ OpenAssessment.DatetimeControl.prototype = {
         var dateString = $(this.datePicker, this.element).val();
         $(this.datePicker, this.element).datepicker({ showButtonPanel: true })
             .datepicker("option", "dateFormat", "yy-mm-dd")
-            .datepicker("setDate", dateString);
+            .val(dateString);
         $(this.timePicker, this.element).timepicker({
             timeFormat: 'H:i',
             step: 60

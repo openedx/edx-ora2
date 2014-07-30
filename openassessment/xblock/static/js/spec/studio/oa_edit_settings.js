@@ -6,7 +6,8 @@ describe("OpenAssessment.EditSettingsView", function() {
     var StubView = function(name, descriptionText) {
         this.name = name;
         this.isValid = true;
-        this.validationErrors = [];
+
+        var validationErrors = [];
 
         this.description = function() {
             return { dummy: descriptionText };
@@ -22,8 +23,9 @@ describe("OpenAssessment.EditSettingsView", function() {
             return this.isValid;
         };
 
-        this.validationErrors = function() { return this.validationErrors; };
-        this.clearValidationErrors = function() {};
+        this.setValidationErrors = function(errors) { validationErrors = errors; };
+        this.validationErrors = function() { return validationErrors; };
+        this.clearValidationErrors = function() { validationErrors = []; };
     };
 
     var testValidateDate = function(datetimeControl, expectedError) {
@@ -158,10 +160,11 @@ describe("OpenAssessment.EditSettingsView", function() {
     it("validates assessment views", function() {
         // Simulate one of the assessment views being invalid
         assessmentViews[PEER].isValid = false;
-        assessmentViews[PEER].validationErrors = ["test error"];
+        assessmentViews[PEER].setValidationErrors(["test error"]);
 
         // Expect that the parent view is also invalid
         expect(view.validate()).toBe(false);
+        debugger;
         expect(view.validationErrors()).toContain("test error");
     });
 });
