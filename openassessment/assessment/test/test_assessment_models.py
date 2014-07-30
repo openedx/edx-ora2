@@ -2,13 +2,16 @@
 """
 Tests for the assessment Django models.
 """
-import copy
+import copy, ddt
 from openassessment.test_utils import CacheResetTest
 from openassessment.assessment.serializers import rubric_from_dict
 from openassessment.assessment.models import Assessment, AssessmentPart, InvalidRubricSelection
 from .constants import RUBRIC
+from openassessment.assessment.api.self import create_assessment
+from submissions.api import create_submission
+from openassessment.assessment.errors import SelfAssessmentRequestError
 
-
+@ddt.ddt
 class AssessmentTest(CacheResetTest):
     """
     Tests for the `Assessment` and `AssessmentPart` models.
@@ -148,3 +151,65 @@ class AssessmentTest(CacheResetTest):
             criterion['options'] = []
         return rubric_from_dict(rubric_dict)
 
+    @ddt.file_data('data/models_check_criteria_assessed.json')
+    def test_check_all_criteria_assessed(self, data):
+        student_item = {
+            'student_id': u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
+            'item_id': 'test_item',
+            'course_id': 'test_course',
+            'item_type': 'test_type'
+        }
+        submission = create_submission(student_item, "Test answer")
+
+        rubric, options_selected, criterion_feedback = self._create_data_structures_with_criterion_properties(
+            has_option_selected=data['has_option_selected'],
+            has_zero_options=data['has_zero_options'],
+            has_feedback=data['has_feedback']
+        )
+        error = False
+        try:
+            create_assessment(
+                submission['uuid'], student_item['student_id'], options_selected,
+                criterion_feedback, "overall feedback", rubric
+            )
+        except SelfAssessmentRequestError:
+            error = True
+        self.assertTrue(data['expected_error'] == error)
+
+    def _create_data_structures_with_criterion_properties(
+        self,
+        has_option_selected=True,
+        has_zero_options=True,
+        has_feedback=True
+    ):
+        """
+        Generates a dummy set of criterion definition structures that will allow us to specificy a specific combination
+        of criterion attributes for a test case.
+        """
+        options = []
+        if not has_zero_options:
+            options = [{
+                "name": "Okay",
+                "points": 1,
+                "description": "It was okay I guess."
+            }]
+
+        rubric = {
+            'criteria': [
+                {
+                    "name": "Quality",
+                    "prompt": "How 'good' was it?",
+                    "options": options
+                }
+            ]
+        }
+
+        options_selected = {}
+        if has_option_selected:
+            options_selected['Quality'] = 'Okay'
+
+        criterion_feedback = {}
+        if has_feedback:
+            criterion_feedback['Quality'] = "This was an assignment of average quality."
+
+        return rubric, options_selected, criterion_feedback

@@ -29,7 +29,7 @@ class WorkflowMixin(object):
         Args:
             data: Unused
 
-        Kwargs:
+        Keyword Arguments:
             suffix: Unused
 
         Returns:
@@ -92,7 +92,7 @@ class WorkflowMixin(object):
         from peer-assessment to self-assessment.  Creates a score
         if the student has completed all requirements.
 
-        Kwargs:
+        Keyword Arguments:
             submission_uuid (str): The submission associated with the workflow to update.
                 Defaults to the submission created by the current student.
 

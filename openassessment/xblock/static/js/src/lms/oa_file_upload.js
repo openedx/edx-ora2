@@ -8,7 +8,7 @@ PUT requests on the server.
 
 Args:
     url (string): The one-time URL we're uploading to.
-    data (object): The object to upload, which should have properties:
+    imageData (object): The object to upload, which should have properties:
         data (string)
         name (string)
         size (int)
@@ -20,18 +20,32 @@ Returns:
 
 */
 OpenAssessment.FileUploader = function() {
-    this.upload = function(url, data, contentType) {
+    this.upload = function(url, imageData, contentType) {
         return $.Deferred(
             function(defer) {
                 $.ajax({
                     url: url,
                     type: 'PUT',
-                    data: data,
+                    data: imageData,
                     async: false,
                     processData: false,
                     contentType: contentType,
                 }).done(
-                    function(data, textStatus, jqXHR) { defer.resolve(); }
+                    function(data, textStatus, jqXHR) {
+                        // Log an analytics event
+                        Logger.log(
+                            "openassessment.upload_file",
+                            {
+                                contentType: contentType,
+                                imageName: imageData.name,
+                                imageSize: imageData.size,
+                                imageType: imageData.type
+                            }
+                        );
+
+                        // Return control to the caller
+                        defer.resolve();
+                    }
                 ).fail(
                     function(data, textStatus, jqXHR) {
                         defer.rejectWith(this, [textStatus]);

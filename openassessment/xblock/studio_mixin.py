@@ -69,7 +69,14 @@ class StudioMixin(object):
 
     def editor_context(self):
         """
-        Retrieve the XBlock's content definition.
+        Update the XBlock's XML.
+
+        Args:
+            data (dict): Data from the request; should have a value for the key 'xml'
+                containing the XML for this XBlock.
+
+        Keyword Arguments:
+            suffix (str): Not used
 
         Returns:
             dict with keys
@@ -122,7 +129,7 @@ class StudioMixin(object):
             data (dict): Data from the request; should have the format described
             in the editor schema.
 
-        Kwargs:
+        Keyword Arguments:
             suffix (str): Not used
 
         Returns:
@@ -207,7 +214,7 @@ class StudioMixin(object):
         Args:
             data (dict): Not used
 
-        Kwargs:
+        Keyword Arguments:
             suffix (str): Not used
 
         Returns:
