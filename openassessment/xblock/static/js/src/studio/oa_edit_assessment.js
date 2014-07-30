@@ -137,7 +137,45 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
     **/
     getID: function() {
         return $(this.element).attr('id');
-    }
+    },
+
+    /**
+    Mark validation errors.
+
+    Returns:
+        Boolean indicating whether the view is valid.
+
+    **/
+    validate: function() {
+        return this.startDatetimeControl.validate() && this.dueDatetimeControl.validate();
+    },
+
+   /**
+    Return a list of validation errors visible in the UI.
+    Mainly useful for testing.
+
+    Returns:
+        list of string
+
+    **/
+    validationErrors: function() {
+        var errors = [];
+        if (this.startDatetimeControl.validationErrors().length > 0) {
+            errors.push("Peer assessment start is invalid");
+        }
+        if (this.dueDatetimeControl.validationErrors().length > 0) {
+            errors.push("Peer assessment due is invalid");
+        }
+        return errors;
+    },
+
+    /**
+    Clear all validation errors from the UI.
+    **/
+    clearValidationErrors: function() {
+        this.startDatetimeControl.clearValidationErrors();
+        this.dueDatetimeControl.clearValidationErrors();
+    },
 };
 
 
@@ -242,14 +280,52 @@ OpenAssessment.EditSelfAssessmentView.prototype = {
     },
 
     /**
-     Gets the ID of the assessment
+    Gets the ID of the assessment
 
-     Returns:
-     string (CSS ID of the Element object)
-     **/
+    Returns:
+    string (CSS ID of the Element object)
+    **/
     getID: function() {
         return $(this.element).attr('id');
-    }
+    },
+
+    /**
+    Mark validation errors.
+
+    Returns:
+        Boolean indicating whether the view is valid.
+
+    **/
+    validate: function() {
+        return this.startDatetimeControl.validate() && this.dueDatetimeControl.validate();
+    },
+
+   /**
+    Return a list of validation errors visible in the UI.
+    Mainly useful for testing.
+
+    Returns:
+        list of string
+
+    **/
+    validationErrors: function() {
+        var errors = [];
+        if (this.startDatetimeControl.validationErrors().length > 0) {
+            errors.push("Self assessment start is invalid");
+        }
+        if (this.dueDatetimeControl.validationErrors().length > 0) {
+            errors.push("Self assessment due is invalid");
+        }
+        return errors;
+    },
+
+    /**
+    Clear all validation errors from the UI.
+    **/
+    clearValidationErrors: function() {
+        this.startDatetimeControl.clearValidationErrors();
+        this.dueDatetimeControl.clearValidationErrors();
+    },
 };
 
 /**
@@ -340,7 +416,11 @@ OpenAssessment.EditStudentTrainingView.prototype = {
      **/
     getID: function() {
         return $(this.element).attr('id');
-    }
+    },
+
+    validate: function() { return true; },
+    validationErrors: function() { return []; },
+    clearValidationErrors: function() {},
 };
 
 /**
@@ -415,12 +495,16 @@ OpenAssessment.EditExampleBasedAssessmentView.prototype = {
     },
 
     /**
-     Gets the ID of the assessment
+    Gets the ID of the assessment
 
-     Returns:
-     string (CSS ID of the Element object)
-     **/
+    Returns:
+    string (CSS ID of the Element object)
+    **/
     getID: function() {
         return $(this.element).attr('id');
-    }
+    },
+
+    validate: function() { return true; },
+    validationErrors: function() { return []; },
+    clearValidationErrors: function() {},
 };

@@ -189,5 +189,49 @@ OpenAssessment.EditRubricView.prototype = {
     getOptionItem: function(criterionIndex, optionIndex) {
         var criterionItem = this.getCriterionItem(criterionIndex);
         return criterionItem.optionContainer.getItem(optionIndex);
+    },
+
+    /**
+    Mark validation errors.
+
+    Returns:
+        Boolean indicating whether the view is valid.
+
+    **/
+    validate: function() {
+        var isValid = true;
+
+        $.each(this.getAllCriteria(), function() {
+            isValid = (isValid && this.validate());
+        });
+
+        return isValid;
+    },
+
+   /**
+    Return a list of validation errors visible in the UI.
+    Mainly useful for testing.
+
+    Returns:
+        list of string
+
+    **/
+    validationErrors: function() {
+        var errors = [];
+
+        $.each(this.getAllCriteria(), function() {
+            errors = errors.concat(this.validationErrors());
+        });
+
+        return errors;
+    },
+
+    /**
+    Clear all validation errors from the UI.
+    **/
+    clearValidationErrors: function() {
+        $.each(this.getAllCriteria(), function() {
+            this.clearValidationErrors();
+        });
     }
 };

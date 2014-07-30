@@ -45,8 +45,8 @@ describe("OpenAssessment.StudioView", function() {
         title: "The most important of all questions.",
         prompt: "How much do you like waffles?",
         feedbackPrompt: "",
-        submissionStart: null,
-        submissionDue: null,
+        submissionStart: "2014-01-02T12:15",
+        submissionDue: "2014-10-01T04:53",
         imageSubmissionEnabled: false,
         criteria: [
             {
@@ -100,15 +100,15 @@ describe("OpenAssessment.StudioView", function() {
         assessments: [
             {
                 name: "peer-assessment",
-                start: null,
-                due: null,
+                start: "2014-01-02T00:00",
+                due: "2014-01-03T00:00",
                 must_grade: 5,
                 must_be_graded_by: 3
             },
             {
                 name: "self-assessment",
-                start: null,
-                due: null
+                start: "2014-01-04T00:00",
+                due: "2014-01-05T00:00"
             }
         ],
         editorAssessmentsOrder: [
@@ -203,5 +203,36 @@ describe("OpenAssessment.StudioView", function() {
                 expect($(this).hasClass('ui-state-active')).toBe(false);
             }
         });
+    });
+
+    it("validates fields before saving", function() {
+        // Initially, there should not be a validation alert
+        expect(view.validationAlert.isVisible()).toBe(false);
+
+        // Introduce a validation error (date field does format invalid)
+        view.settingsView.submissionStart("Not a valid date!", "00:00");
+
+        // Try to save the view
+        view.save();
+
+        // Since there was an invalid field, expect that data was NOT sent to the server.
+        // Also expect that an error is displayed
+        expect(server.receivedData).toBe(null);
+        expect(view.validationAlert.isVisible()).toBe(true);
+
+        // Expect that individual fields were highlighted
+        expect(view.validationErrors()).toContain(
+            "Submission start is invalid"
+        );
+
+        // Fix the error and try to save again
+        view.settingsView.submissionStart("2014-04-01", "00:00");
+        view.save();
+
+        // Expect that the validation errors were cleared
+        // and that data was successfully sent to the server.
+        expect(view.validationErrors()).toEqual([]);
+        expect(view.validationAlert.isVisible()).toBe(false);
+        expect(server.receivedData).not.toBe(null);
     });
 });

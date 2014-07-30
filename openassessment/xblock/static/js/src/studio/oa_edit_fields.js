@@ -96,7 +96,7 @@ OpenAssessment.DatetimeControl.prototype = {
         var dateString = $(this.datePicker, this.element).val();
         $(this.datePicker, this.element).datepicker({ showButtonPanel: true })
             .datepicker("option", "dateFormat", "yy-mm-dd")
-            .datepicker("setDate", dateString);
+            .val(dateString);
         $(this.timePicker, this.element).timepicker({
             timeFormat: 'H:i',
             step: 60
@@ -108,7 +108,7 @@ OpenAssessment.DatetimeControl.prototype = {
     Get or set the date and time.
 
     Args:
-        dateString (string, optional): If provided, set the date (YY-MM-DD).
+        dateString (string, optional): If provided, set the date (YYYY-MM-DD).
         timeString (string, optional): If provided, set the time (HH:MM, 24-hour clock).
 
     Returns:
@@ -118,12 +118,55 @@ OpenAssessment.DatetimeControl.prototype = {
     datetime: function(dateString, timeString) {
         var datePickerSel = $(this.datePicker, this.element);
         var timePickerSel = $(this.timePicker, this.element);
-        if (typeof(dateString) !== "undefined") { datePickerSel.datepicker("setDate", dateString); }
+        if (typeof(dateString) !== "undefined") { datePickerSel.val(dateString); }
         if (typeof(timeString) !== "undefined") { timePickerSel.val(timeString); }
-
-        if (datePickerSel.val() === "" && timePickerSel.val() === "") {
-            return null;
-        }
         return datePickerSel.val() + "T" + timePickerSel.val();
-    }
+    },
+
+    /**
+    Mark validation errors.
+
+    Returns:
+        Boolean indicating whether the fields are valid.
+
+    **/
+    validate: function() {
+        var datetimeString = this.datetime();
+        var matches = datetimeString.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/g);
+        var isValid = (matches !== null);
+
+        if (!isValid) {
+            $(this.datePicker, this.element).addClass("openassessment_highlighted_field");
+            $(this.timePicker, this.element).addClass("openassessment_highlighted_field");
+        }
+
+        return isValid;
+    },
+
+    /**
+    Clear all validation errors from the UI.
+    **/
+    clearValidationErrors: function() {
+        $(this.datePicker, this.element).removeClass("openassessment_highlighted_field");
+        $(this.timePicker, this.element).removeClass("openassessment_highlighted_field");
+    },
+
+   /**
+    Return a list of validation errors visible in the UI.
+    Mainly useful for testing.
+
+    Returns:
+        list of string
+
+    **/
+    validationErrors: function() {
+        var errors = [];
+        var dateHasError = $(this.datePicker, this.element).hasClass("openassessment_highlighted_field");
+        var timeHasError = $(this.timePicker, this.element).hasClass("openassessment_highlighted_field");
+
+        if (dateHasError) { errors.push("Date is invalid"); }
+        if (timeHasError) { errors.push("Time is invalid"); }
+
+        return errors;
+    },
 };

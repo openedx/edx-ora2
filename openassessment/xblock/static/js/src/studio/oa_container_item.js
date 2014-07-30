@@ -38,6 +38,7 @@ Returns:
 OpenAssessment.RubricOption = function(element, notifier) {
     this.element = element;
     this.notifier = notifier;
+    this.MAX_POINTS = 1000;
     $(this.element).focusout($.proxy(this.updateHandler, this));
 };
 
@@ -56,15 +57,9 @@ OpenAssessment.RubricOption.prototype = {
     **/
     getFieldValues: function () {
         var fields = {
-            label: OpenAssessment.Fields.stringField(
-                $('.openassessment_criterion_option_label', this.element)
-            ),
-            points: OpenAssessment.Fields.intField(
-                $('.openassessment_criterion_option_points', this.element)
-            ),
-            explanation: OpenAssessment.Fields.stringField(
-                $('.openassessment_criterion_option_explanation', this.element)
-            )
+            label: this.label(),
+            points: this.points(),
+            explanation: this.explanation()
         };
 
         // New options won't have unique names assigned.
@@ -76,6 +71,51 @@ OpenAssessment.RubricOption.prototype = {
         if (nameString !== "") { fields.name = nameString; }
 
         return fields;
+    },
+
+    /**
+    Get or set the label of the option.
+
+    Args:
+        label (string, optional): If provided, set the label to this string.
+
+    Returns:
+        string
+
+    **/
+    label: function(label) {
+        var sel = $('.openassessment_criterion_option_label', this.element);
+        return OpenAssessment.Fields.stringField(sel, label);
+    },
+
+    /**
+    Get or set the point value of the option.
+
+    Args:
+        points (int, optional): If provided, set the point value of the option.
+
+    Returns:
+        int
+
+    **/
+    points: function(points) {
+        var sel = $('.openassessment_criterion_option_points', this.element);
+        return OpenAssessment.Fields.intField(sel, points);
+    },
+
+    /**
+    Get or set the explanation for the option.
+
+    Args:
+        explanation (string, optional): If provided, set the explanation to this string.
+
+    Returns:
+        string
+
+    **/
+    explanation: function(explanation) {
+        var sel = $('.openassessment_criterion_option_explanation', this.element);
+        return OpenAssessment.Fields.stringField(sel, explanation);
     },
 
     /**
@@ -146,6 +186,46 @@ OpenAssessment.RubricOption.prototype = {
                 "points": optionPoints
             }
         );
+    },
+
+    /**
+    Mark validation errors.
+
+    Returns:
+        Boolean indicating whether the option is valid.
+
+    **/
+    validate: function() {
+        var pointString = $(".openassessment_criterion_option_points", this.element).val();
+        var matches = pointString.trim().match(/^\d{1,3}$/g);
+        var isValid = (matches !== null);
+        if (!isValid) {
+            $(".openassessment_criterion_option_points", this.element)
+                .addClass("openassessment_highlighted_field");
+        }
+        return isValid;
+    },
+
+    /**
+    Return a list of validation errors visible in the UI.
+    Mainly useful for testing.
+
+    Returns:
+        list of string
+
+    **/
+    validationErrors: function() {
+        var sel = $(".openassessment_criterion_option_points", this.element);
+        var hasError = sel.hasClass("openassessment_highlighted_field");
+        return hasError ? ["Option points are invalid"] : [];
+    },
+
+    /**
+    Clear all validation errors from the UI.
+    **/
+    clearValidationErrors: function() {
+        $(".openassessment_criterion_option_points", this.element)
+            .removeClass("openassessment_highlighted_field");
     }
 };
 
@@ -200,15 +280,9 @@ OpenAssessment.RubricCriterion.prototype = {
     **/
     getFieldValues: function () {
         var fields = {
-            label: OpenAssessment.Fields.stringField(
-                $('.openassessment_criterion_label', this.element)
-            ),
-            prompt: OpenAssessment.Fields.stringField(
-                $('.openassessment_criterion_prompt', this.element)
-            ),
-            feedback: OpenAssessment.Fields.stringField(
-                $('.openassessment_criterion_feedback', this.element)
-            ),
+            label: this.label(),
+            prompt: this.prompt(),
+            feedback: this.feedback(),
             options: this.optionContainer.getItemValues()
         };
 
@@ -221,6 +295,48 @@ OpenAssessment.RubricCriterion.prototype = {
         if (nameString !== "") { fields.name = nameString; }
 
         return fields;
+    },
+
+    /**
+    Get or set the label of the criterion.
+
+    Args:
+        label (string, optional): If provided, set the label to this string.
+
+    Returns:
+        string
+
+    **/
+    label: function(label) {
+        var sel = $('.openassessment_criterion_label', this.element);
+        return OpenAssessment.Fields.stringField(sel, label);
+    },
+
+    /**
+    Get or set the prompt of the criterion.
+
+    Args:
+        prompt (string, optional): If provided, set the prompt to this string.
+
+    Returns:
+        string
+
+    **/
+    prompt: function(prompt) {
+        var sel = $('.openassessment_criterion_prompt', this.element);
+        return OpenAssessment.Fields.stringField(sel, prompt);
+    },
+
+    /**
+    Get the feedback value for the criterion.
+    This is one of: "disabled", "optional", or "required".
+
+    Returns:
+        string
+
+    **/
+    feedback: function() {
+        return $('.openassessment_criterion_feedback', this.element).val();
     },
 
     /**
@@ -265,6 +381,46 @@ OpenAssessment.RubricCriterion.prototype = {
             "criterionUpdated",
             {'criterionName': criterionName, 'criterionLabel': criterionLabel}
         );
+    },
+
+    /**
+    Mark validation errors.
+
+    Returns:
+        Boolean indicating whether the criterion is valid.
+
+    **/
+    validate: function() {
+        var isValid = true;
+        $.each(this.optionContainer.getAllItems(), function() {
+            isValid = (isValid && this.validate());
+        });
+        return isValid;
+    },
+
+   /**
+    Return a list of validation errors visible in the UI.
+    Mainly useful for testing.
+
+    Returns:
+        list of string
+
+    **/
+    validationErrors: function() {
+        var errors = [];
+        $.each(this.optionContainer.getAllItems(), function() {
+            errors = errors.concat(this.validationErrors());
+        });
+        return errors;
+    },
+
+    /**
+    Clear all validation errors from the UI.
+    **/
+    clearValidationErrors: function() {
+        $.each(this.optionContainer.getAllItems(), function() {
+            this.clearValidationErrors();
+        });
     }
 };
 
@@ -307,5 +463,9 @@ OpenAssessment.TrainingExample.prototype = {
 
     addHandler: function() {},
     removeHandler: function() {},
-    updateHandler: function() {}
+    updateHandler: function() {},
+
+    validate: function() { return true; },
+    validationErrors: function() { return []; },
+    clearValidationErrors: function() {}
 };
