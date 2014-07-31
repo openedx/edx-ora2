@@ -5,7 +5,6 @@ ddt==0.8.0
 django-nose==1.2
 mock==1.0.1
 moto==0.2.22
-nose==1.3.0
 coverage==3.7.1
 pep8==1.4.6
 pylint<1.0
