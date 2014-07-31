@@ -184,7 +184,7 @@
 
   .openassessment_editor_content_and_tabs {
     width: 100%;
-    height: Calc(100% - 97px);
+    height: Calc(100% - 55px);
   }
 
   #oa_editor_window_title{
@@ -229,14 +229,75 @@
     }
   }
 
+  #openassessment_validation_alert{
+    height: auto;
+    width: 100%;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    background-color: #323232;
+    border-bottom: 3px solid rgb(192, 172, 0);
+    padding: 10px;
+    position: absolute;
+    z-index: 10;
+    min-height: 70px;
+    @include transition (color 0.50s ease-in-out 0s);
+
+    .openassessment_alert_icon:before{
+      font-family: FontAwesome;
+      content: "\f071";
+      display: inline-block;
+      color: rgb(192, 172, 0);
+      float: left;
+      font-size: 200%;
+      margin: 1.5% 0px 0px 2%;
+    }
+    .openassessment_alert_header {
+      width: 85%;
+      margin: 0 5% 0 10%;
+
+      .openassessment_alert_title {
+        width: auto;
+        color: white;
+      }
+
+      .openassessment_alert_message {
+        font-size: 80%;
+        color: darkgray;
+      }
+    }
+
+    // with cancel
+    .openassessment_alert_close {
+      display: inline-block;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      color: #e9e9e9;
+      background: #323232;
+      text-align: center;
+      margin: 5px 10px;
+
+      [class^="icon"] {
+        width: auto;
+        margin: 0;
+        padding: 2px;
+      }
+
+      &:hover {
+        color: $blue;
+      }
+    }
+  }
+
   .oa_editor_content_wrapper {
-    height: Calc(100% - 1px);
+    height: Calc(100% - 42px);
     width: 100%;
     border-radius: 3px;
     border: 1px solid $edx-gray-d1;
     background-color: white;
     overflow-y: scroll;
     position: absolute;
+    bottom: 0;
   }
 
   #openassessment_prompt_editor {
@@ -425,77 +486,6 @@
   }
 
   #oa_rubric_editor_wrapper{
-
-    #openassessment_rubric_validation_alert{
-      height: auto;
-      width: 100%;
-      border-top-left-radius: 2px;
-      border-top-right-radius: 2px;
-      background-color: #323232;
-      border-bottom: 3px solid rgb(192, 172, 0);
-      padding: 10px;
-      position: absolute;
-      z-index: 10;
-      min-height: 70px;
-      @include transition (color 0.50s ease-in-out 0s);
-
-      .openassessment_alert_icon:before{
-        font-family: FontAwesome;
-        content: "\f071";
-        display: inline-block;
-        color: rgb(192, 172, 0);
-        float: left;
-        font-size: 200%;
-        margin: 1.5% 0px 0px 2%;
-      }
-      .openassessment_alert_header {
-        width: 85%;
-        margin: 0 5% 0 10%;
-
-        .openassessment_alert_title {
-          width: auto;
-          color: white;
-        }
-
-        .openassessment_alert_message {
-          font-size: 80%;
-          color: darkgray;
-        }
-      }
-
-      // with cancel
-      .openassessment_alert_close {
-        display: inline-block;
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        color: #e9e9e9;
-        background: #323232;
-        text-align: center;
-        margin: 5px 10px;
-
-        [class^="icon"] {
-          width: auto;
-          margin: 0;
-          padding: 2px;
-        }
-
-        &:hover {
-          color: $blue;
-        }
-      }
-    }
-
-    #openassessment_rubric_content_editor{
-      height: 100%;
-      overflow-y: scroll;
-    }
-
-    #openassessment_rubric_content_editor.openassessment_alert_shown{
-      height: Calc(100% - 70px);
-      position: absolute;
-      bottom: 0;
-    }
 
     .wrapper-comp-settings{
       display: initial;
