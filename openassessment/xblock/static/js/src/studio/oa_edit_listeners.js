@@ -20,10 +20,7 @@ OpenAssessment.StudentTrainingListener.prototype = {
          points (int): The point value for the option.
      */
     optionUpdated: function(data) {
-        var view = this;
-        var sel = '.openassessment_training_example_criterion[data-criterion="' + data.criterionName + '"]';
-
-        $(sel, this.element).each(
+        this._optionSel(data.criterionName).each(
             function() {
                 var criterion = this;
                 var option = $('option[value="' + data.name + '"]', criterion)
@@ -52,34 +49,28 @@ OpenAssessment.StudentTrainingListener.prototype = {
      */
     optionAdd: function(data) {
         // First, check to see if the criterion exists on the training examples
-        var options = $('.openassessment_training_example_criterion_option[data-criterion="' + data.criterionName + '"]');
-        var view = this;
         var criterionAdded = false;
-        var examplesUpdated = false;
-        if (options.length === 0) {
+        if (this._optionSel(data.criterionName).length === 0) {
             this.criterionAdd(data);
             criterionAdded = true;
         }
 
-        $('.openassessment_training_example_criterion_option', this.element).each(function() {
-            if ($(this).data('criterion') === data.criterionName) {
-                var criterion = this;
-                // Risky; making an assumption that options will remain simple.
-                // updates could cause this to get out of sync with templates,
-                // but this avoids overly complex templating code.
-                var option = $("<option></option>")
-                    .attr("value", data.name)
-                    .data("points", data.points)
-                    .data("label", data.label);
+        this._optionSel(data.criterionName).each(function() {
+            var criterion = this;
+            // Risky; making an assumption that options will remain simple.
+            // updates could cause this to get out of sync with templates,
+            // but this avoids overly complex templating code.
+            var option = $("<option></option>")
+                .attr("value", data.name)
+                .data("points", data.points)
+                .data("label", data.label);
 
-                // Sets the option's text description, and adds it to the criterion.
-                OpenAssessment.ItemUtilities.refreshOptionString(option);
-                $(criterion).append(option);
-                examplesUpdated = true;
-            }
+            // Sets the option's text description, and adds it to the criterion.
+            OpenAssessment.ItemUtilities.refreshOptionString(option);
+            $(criterion).append(option);
         });
 
-        if (criterionAdded && examplesUpdated) {
+        if (criterionAdded) {
             this.displayAlertMsg(
                 gettext("Criterion Addition requires Training Example Updates"),
                 gettext("Because you added a criterion, student training examples will have to be updated.")
@@ -105,26 +96,24 @@ OpenAssessment.StudentTrainingListener.prototype = {
     optionRemove: function(data) {
         var handler = this;
         var invalidated = false;
-        $('.openassessment_training_example_criterion_option', this.element).each(function() {
+        this._optionSel(data.criterionName).each(function() {
             var criterionOption = this;
-            if ($(criterionOption).data('criterion') === data.criterionName) {
-                if ($(criterionOption).val() === data.name.toString()) {
-                    $(criterionOption).val("");
-                    $(criterionOption).addClass("openassessment_highlighted_field");
-                    $(criterionOption).click(function() {
-                        $(criterionOption).removeClass("openassessment_highlighted_field");
-                    });
-                    invalidated = true;
-                }
+            if ($(criterionOption).val() === data.name.toString()) {
+                $(criterionOption).val("")
+                .addClass("openassessment_highlighted_field")
+                .click(function() {
+                    $(criterionOption).removeClass("openassessment_highlighted_field");
+                });
+                invalidated = true;
+            }
 
-                $('option[value="' + data.name + '"]', criterionOption).remove();
+            $('option[value="' + data.name + '"]', criterionOption).remove();
 
-                // If all options have been removed from the Criterion, remove
-                // the criterion entirely.
-                if ($("option", criterionOption).length == 1) {
-                    handler.removeAllOptions(data);
-                    invalidated = false;
-                }
+            // If all options have been removed from the Criterion, remove
+            // the criterion entirely.
+            if ($("option", criterionOption).length == 1) {
+                handler.removeAllOptions(data);
+                invalidated = false;
             }
         });
 
@@ -134,6 +123,10 @@ OpenAssessment.StudentTrainingListener.prototype = {
                 gettext("Because you deleted an option, some student training examples had to be reset.")
             );
         }
+    },
+
+    _optionSel: function(criterionName) {
+        return $('.openassessment_training_example_criterion_option[data-criterion="' + criterionName + '"]', this.element);
     },
 
     /**
@@ -192,7 +185,8 @@ OpenAssessment.StudentTrainingListener.prototype = {
     },
 
     /**
-     Sets up the alert window based on a change message.
+     Sets up the alert window based on a change message. Checks that there is
+     at least one training example, and that student training is enabled.
 
      Args:
          title (str): Title of the alert message.
@@ -200,7 +194,11 @@ OpenAssessment.StudentTrainingListener.prototype = {
 
      */
     displayAlertMsg: function(title, msg) {
-        this.alert.setMessage(title, msg).show();
+        if ($("#include_student_training", this.element).is(":checked") &&
+                // Check for at least more than one example, to exclude the template
+                $(".openassessment_training_example", this.element).length > 1) {
+            this.alert.setMessage(title, msg).show();
+        }
     },
 
     /**

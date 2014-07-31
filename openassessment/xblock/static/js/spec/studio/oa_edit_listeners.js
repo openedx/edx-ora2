@@ -273,6 +273,48 @@ describe("OpenAssessment.StudentTrainingListener", function() {
         // The alert should be displayed
         expect(listener.alert.isVisible()).toBe(true);
     });
+
+    it("does not display an alert when student training is disabled", function() {
+        var studentTrainingView =
+            new OpenAssessment.EditStudentTrainingView($('#oa_student_training_editor'));
+        studentTrainingView.isEnabled(false);
+        // Initial state, set by the fixture
+        assertExampleLabels(
+            listener.examplesCriteriaLabels(),
+            { criterion_with_two_options: "Criterion with two options" }
+        );
+        expect(listener.alert.isVisible()).toBe(false);
+
+        // Remove the criterion
+        listener.criterionRemove({
+            criterionName: "criterion_with_two_options"
+        });
+
+        // The criterion should no longer be displayed
+        assertExampleLabels(listener.examplesCriteriaLabels(), {}, 1);
+
+        // The alert should not be displayed.
+        expect(listener.alert.isVisible()).toBe(false);
+    });
+
+    it("does not display an alert with no training examples", function() {
+        // Clear out all examples.
+        var studentTrainingView =
+            new OpenAssessment.EditStudentTrainingView($('#oa_student_training_editor'));
+        var items = studentTrainingView.exampleContainer.getAllItems();
+        $(items).each(function(){
+            studentTrainingView.exampleContainer.remove(this);
+        });
+        expect(listener.alert.isVisible()).toBe(false);
+
+        // Remove the criterion
+        listener.criterionRemove({
+            criterionName: "criterion_with_two_options"
+        });
+
+        // The alert should not be displayed.
+        expect(listener.alert.isVisible()).toBe(false);
+    });
 });
 
 
