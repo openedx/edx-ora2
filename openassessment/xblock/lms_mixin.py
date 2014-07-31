@@ -35,6 +35,8 @@ class LmsCompatibilityMixin(object):
         scope=Scope.settings
     )
 
+    icon_class = "problem"
+
     def has_dynamic_children(self):
         """Do we dynamically determine our children? No, we don't have any.
 

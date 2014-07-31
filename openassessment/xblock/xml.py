@@ -659,6 +659,7 @@ def update_from_xml(oa_block, root, validator=DEFAULT_VALIDATOR):
     # If we've gotten this far, then we've successfully parsed the XML
     # and validated the contents.  At long last, we can safely update the XBlock.
     oa_block.title = title
+    oa_block.display_name = title
     oa_block.prompt = rubric['prompt']
     oa_block.rubric_criteria = rubric['criteria']
     oa_block.rubric_assessments = assessments
