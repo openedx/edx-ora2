@@ -6,8 +6,8 @@ Returns:
     Openassessment.ValidationAlert
  */
 OpenAssessment.ValidationAlert = function() {
-    this.element = $('#openassessment_rubric_validation_alert');
-    this.rubricContentElement = $('#openassessment_rubric_content_editor');
+    this.element = $('#openassessment_validation_alert');
+    this.editorElement = $(this.element).parent();
     this.title = $(".openassessment_alert_title", this.element);
     this.message = $(".openassessment_alert_message", this.element);
 };
@@ -34,8 +34,19 @@ OpenAssessment.ValidationAlert.prototype = {
         OpenAssessment.ValidationAlert
     */
     hide: function() {
+        // Finds the height of all other elements in the editor_and_tabs (the Header) and sets the height
+        // of the editing area to be 100% of that element minus those constraints.
+        var headerHeight = $('#openassessment_editor_header', this.editorElement).outerHeight();
         this.element.addClass('is--hidden');
-        this.rubricContentElement.removeClass('openassessment_alert_shown');
+        var styles = {
+            'height': 'Calc(100% - ' + headerHeight + 'px)',
+            'border-top-right-radius': '3px',
+            'border-top-left-radius': '3px'
+        };
+
+        $('.oa_editor_content_wrapper', this.editorElement).each( function () {
+            $(this).css(styles);
+        });
         return this;
     },
 
@@ -47,7 +58,19 @@ OpenAssessment.ValidationAlert.prototype = {
     */
     show : function() {
         this.element.removeClass('is--hidden');
-        this.rubricContentElement.addClass('openassessment_alert_shown');
+        // Finds the height of all other elements in the editor_and_tabs (the Header and Alert) and sets
+        // the height of the editing area to be 100% of that element minus those constraints.
+        var headerHeight = $('#openassessment_editor_header', this.editorElement).outerHeight();
+        var heightString = 'Calc(100% - ' + (this.element.outerHeight() + headerHeight) + 'px)';
+        var styles = {
+            'height': heightString,
+            'border-top-right-radius': '0px',
+            'border-top-left-radius': '0px'
+        };
+
+        $('.oa_editor_content_wrapper', this.editorElement).each( function () {
+            $(this).css(styles);
+        });
         return this;
     },
 
