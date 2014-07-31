@@ -274,3 +274,28 @@ describe("OpenAssessment.StudentTrainingListener", function() {
         expect(listener.alert.isVisible()).toBe(true);
     });
 });
+
+
+describe("OpenAssessment.AssessmentToggleListener", function() {
+
+    var alert = null;
+    var listener = null;
+
+    beforeEach(function() {
+        loadFixtures('oa_edit.html');
+        alert = new OpenAssessment.ValidationAlert().install();
+        listener = new OpenAssessment.AssessmentToggleListener();
+    });
+
+    it("displays an alert when the user disables an assessment", function() {
+        expect(alert.isVisible()).toBe(false);
+        listener.toggleOff({});
+        expect(alert.isVisible()).toBe(true);
+    });
+
+    it("hides the alert when the user enables an assessment", function() {
+        alert.setMessage("test", "test").show();
+        listener.toggleOn({});
+        expect(alert.isVisible()).toBe(false);
+    });
+});

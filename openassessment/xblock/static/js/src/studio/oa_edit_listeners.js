@@ -200,8 +200,7 @@ OpenAssessment.StudentTrainingListener.prototype = {
 
      */
     displayAlertMsg: function(title, msg) {
-        this.alert.setMessage(title, msg);
-        this.alert.show();
+        this.alert.setMessage(title, msg).show();
     },
 
     /**
@@ -336,5 +335,28 @@ OpenAssessment.StudentTrainingListener.prototype = {
             }
         );
         return examples;
+    }
+};
+
+
+/**
+Show a warning when a user disables an assessment,
+since any data in the disabled section won't be persisted
+on save.
+**/
+OpenAssessment.AssessmentToggleListener = function() {
+    this.alert = new OpenAssessment.ValidationAlert();
+};
+
+OpenAssessment.AssessmentToggleListener.prototype = {
+    toggleOff: function(data) {
+        this.alert.setMessage(
+            gettext("Warning"),
+            gettext("Changes to steps that are not selected as part of the assignment will not be saved.")
+        ).show();
+    },
+
+    toggleOn: function(data) {
+        this.alert.hide();
     }
 };

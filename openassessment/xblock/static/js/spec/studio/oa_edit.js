@@ -207,7 +207,7 @@ describe("OpenAssessment.StudioView", function() {
 
     it("validates fields before saving", function() {
         // Initially, there should not be a validation alert
-        expect(view.validationAlert.isVisible()).toBe(false);
+        expect(view.alert.isVisible()).toBe(false);
 
         // Introduce a validation error (date field does format invalid)
         view.settingsView.submissionStart("Not a valid date!", "00:00");
@@ -218,7 +218,7 @@ describe("OpenAssessment.StudioView", function() {
         // Since there was an invalid field, expect that data was NOT sent to the server.
         // Also expect that an error is displayed
         expect(server.receivedData).toBe(null);
-        expect(view.validationAlert.isVisible()).toBe(true);
+        expect(view.alert.isVisible()).toBe(true);
 
         // Expect that individual fields were highlighted
         expect(view.validationErrors()).toContain(
@@ -232,7 +232,7 @@ describe("OpenAssessment.StudioView", function() {
         // Expect that the validation errors were cleared
         // and that data was successfully sent to the server.
         expect(view.validationErrors()).toEqual([]);
-        expect(view.validationAlert.isVisible()).toBe(false);
+        expect(view.alert.isVisible()).toBe(false);
         expect(server.receivedData).not.toBe(null);
     });
 });

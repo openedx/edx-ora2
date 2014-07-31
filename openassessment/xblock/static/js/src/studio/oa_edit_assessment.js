@@ -22,10 +22,13 @@ OpenAssessment.EditPeerAssessmentView = function(element) {
 
     // Configure the toggle checkbox to enable/disable this assessment
     new OpenAssessment.ToggleControl(
-        this.element,
-        "#peer_assessment_description_closed",
-        "#peer_assessment_settings_editor"
-    ).install("#include_peer_assessment");
+        $("#include_peer_assessment", this.element),
+        $("#peer_assessment_settings_editor", this.element),
+        $("#peer_assessment_description_closed", this.element),
+        new OpenAssessment.Notifier([
+            new OpenAssessment.AssessmentToggleListener()
+        ])
+    ).install();
 
     // Configure the date and time fields
     this.startDatetimeControl = new OpenAssessment.DatetimeControl(
@@ -79,6 +82,14 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
     isEnabled: function(isEnabled) {
         var sel = $("#include_peer_assessment", this.element);
         return OpenAssessment.Fields.booleanField(sel, isEnabled);
+    },
+
+    /**
+    Toggle whether the assessment is enabled or disabled.
+    This triggers the actual click event and is mainly useful for testing.
+    **/
+    toggleEnabled: function() {
+        $("#include_peer_assessment", this.element).click();
     },
 
     /**
@@ -215,10 +226,13 @@ OpenAssessment.EditSelfAssessmentView = function(element) {
 
     // Configure the toggle checkbox to enable/disable this assessment
     new OpenAssessment.ToggleControl(
-        this.element,
-        "#self_assessment_description_closed",
-        "#self_assessment_settings_editor"
-    ).install("#include_self_assessment");
+        $("#include_self_assessment", this.element),
+        $("#self_assessment_settings_editor", this.element),
+        $("#self_assessment_description_closed", this.element),
+        new OpenAssessment.Notifier([
+            new OpenAssessment.AssessmentToggleListener()
+        ])
+    ).install();
 
     // Configure the date and time fields
     this.startDatetimeControl = new OpenAssessment.DatetimeControl(
@@ -269,6 +283,14 @@ OpenAssessment.EditSelfAssessmentView.prototype = {
     isEnabled: function(isEnabled) {
         var sel = $("#include_self_assessment", this.element);
         return OpenAssessment.Fields.booleanField(sel, isEnabled);
+    },
+
+    /**
+    Toggle whether the assessment is enabled or disabled.
+    This triggers the actual click event and is mainly useful for testing.
+    **/
+    toggleEnabled: function() {
+        $("#include_self_assessment", this.element).click();
     },
 
     /**
@@ -365,10 +387,13 @@ OpenAssessment.EditStudentTrainingView = function(element) {
     this.name = "student-training";
 
     new OpenAssessment.ToggleControl(
-        this.element,
-        "#student_training_description_closed",
-        "#student_training_settings_editor"
-    ).install("#include_student_training");
+        $("#include_student_training", this.element),
+        $("#student_training_settings_editor", this.element),
+        $("#student_training_description_closed", this.element),
+        new OpenAssessment.Notifier([
+            new OpenAssessment.AssessmentToggleListener()
+        ])
+    ).install();
 
     this.exampleContainer = new OpenAssessment.Container(
         OpenAssessment.TrainingExample, {
@@ -379,7 +404,7 @@ OpenAssessment.EditStudentTrainingView = function(element) {
             containerItemClass: "openassessment_training_example"
         }
     );
-    
+
     this.exampleContainer.addEventListeners();
 };
 
@@ -433,6 +458,14 @@ OpenAssessment.EditStudentTrainingView.prototype = {
     },
 
     /**
+    Toggle whether the assessment is enabled or disabled.
+    This triggers the actual click event and is mainly useful for testing.
+    **/
+    toggleEnabled: function() {
+        $("#include_student_training", this.element).click();
+    },
+
+    /**
      Gets the ID of the assessment
 
      Returns:
@@ -462,10 +495,13 @@ OpenAssessment.EditExampleBasedAssessmentView = function(element) {
     this.name = "example-based-assessment";
 
     new OpenAssessment.ToggleControl(
-        this.element,
-        "#ai_assessment_description_closed",
-        "#ai_assessment_settings_editor"
-    ).install("#include_ai_assessment");
+        $("#include_ai_assessment", this.element),
+        $("#ai_assessment_settings_editor", this.element),
+        $("#ai_assessment_description_closed", this.element),
+        new OpenAssessment.Notifier([
+            new OpenAssessment.AssessmentToggleListener()
+        ])
+    ).install();
 };
 
 OpenAssessment.EditExampleBasedAssessmentView.prototype = {
@@ -501,6 +537,14 @@ OpenAssessment.EditExampleBasedAssessmentView.prototype = {
     isEnabled: function(isEnabled) {
         var sel = $("#include_ai_assessment", this.element);
         return OpenAssessment.Fields.booleanField(sel, isEnabled);
+    },
+
+    /**
+    Toggle whether the assessment is enabled or disabled.
+    This triggers the actual click event and is mainly useful for testing.
+    **/
+    toggleEnabled: function() {
+        $("#include_ai_assessment", this.element).click();
     },
 
     /**

@@ -26,6 +26,22 @@ describe("OpenAssessment edit assessment views", function() {
         expect(view.validationErrors()).toEqual([]);
     };
 
+    var testAlertOnDisable = function(view) {
+        var alert = new OpenAssessment.ValidationAlert();
+        expect(alert.isVisible()).toBe(false);
+
+        // Set the assessment to enabled initially
+        view.isEnabled(true);
+
+        // Disable an assessment, which should display an alert
+        view.toggleEnabled();
+        expect(alert.isVisible()).toBe(true);
+
+        // Enable an assessment, which dismisses the alert
+        view.toggleEnabled();
+        expect(alert.isVisible()).toBe(false);
+    };
+
     var testLoadXMLExamples = function(view) {
         var xml = "XML DEFINITIONS WOULD BE HERE";
         view.exampleDefinitions(xml);
@@ -103,6 +119,8 @@ describe("OpenAssessment edit assessment views", function() {
             expect(view.validate()).toBe(true);
             expect(view.validationErrors()).toEqual([]);
         });
+
+        it("shows an alert when disabled", function() { testAlertOnDisable(view); });
     });
 
     describe("OpenAssessment.EditSelfAssessmentView", function() {
@@ -139,6 +157,8 @@ describe("OpenAssessment edit assessment views", function() {
                 "Self assessment due is invalid"
             );
         });
+
+        it("shows an alert when disabled", function() { testAlertOnDisable(view); });
     });
 
     describe("OpenAssessment.EditStudentTrainingView", function() {
@@ -173,6 +193,8 @@ describe("OpenAssessment edit assessment views", function() {
                 ]
             );
         });
+
+        it("shows an alert when disabled", function() { testAlertOnDisable(view); });
     });
 
     describe("OpenAssessment.EditExampleBasedAssessmentView", function() {
@@ -185,5 +207,6 @@ describe("OpenAssessment edit assessment views", function() {
 
         it("Enables and disables", function() { testEnableAndDisable(view); });
         it("Loads a description", function() { testLoadXMLExamples(view); });
+        it("shows an alert when disabled", function() { testAlertOnDisable(view); });
     });
 });
