@@ -10,6 +10,8 @@ OpenAssessment.ValidationAlert = function() {
     this.editorElement = $(this.element).parent();
     this.title = $(".openassessment_alert_title", this.element);
     this.message = $(".openassessment_alert_message", this.element);
+    this.ALERT_YELLOW = 'rgb(192, 172, 0)';
+    this.DARK_GREY = '#323232';
 };
 
 OpenAssessment.ValidationAlert.prototype = {
@@ -37,7 +39,7 @@ OpenAssessment.ValidationAlert.prototype = {
         // Finds the height of all other elements in the editor_and_tabs (the Header) and sets the height
         // of the editing area to be 100% of that element minus those constraints.
         var headerHeight = $('#openassessment_editor_header', this.editorElement).outerHeight();
-        this.element.addClass('is--hidden');
+        this.element.addClass('covered');
         var styles = {
             'height': 'Calc(100% - ' + headerHeight + 'px)',
             'border-top-right-radius': '3px',
@@ -57,21 +59,31 @@ OpenAssessment.ValidationAlert.prototype = {
         OpenAssessment.ValidationAlert
     */
     show : function() {
-        this.element.removeClass('is--hidden');
-        // Finds the height of all other elements in the editor_and_tabs (the Header and Alert) and sets
-        // the height of the editing area to be 100% of that element minus those constraints.
-        var headerHeight = $('#openassessment_editor_header', this.editorElement).outerHeight();
-        var heightString = 'Calc(100% - ' + (this.element.outerHeight() + headerHeight) + 'px)';
-        var styles = {
-            'height': heightString,
-            'border-top-right-radius': '0px',
-            'border-top-left-radius': '0px'
-        };
+        var view = this;
+        if (this.isVisible()){
+            $(this.element).animate(
+                {'background-color': view.ALERT_YELLOW}, 300, 'swing', function () {
+                    $(this).animate({'background-color': view.DARK_GREY}, 700, 'swing');
+                }
+            );
+        } else {
+            // Finds the height of all other elements in the editor_and_tabs (the Header and Alert) and sets
+            // the height of the editing area to be 100% of that element minus those constraints.
+            this.element.removeClass('covered');
+            var alertHeight = this.element.outerHeight();
+            var headerHeight = $('#openassessment_editor_header', this.editorElement).outerHeight();
+            var heightString = 'Calc(100% - ' + (alertHeight + headerHeight) + 'px)';
+            var styles = {
+                'height': heightString,
+                'border-top-right-radius': '0px',
+                'border-top-left-radius': '0px'
+            };
 
-        $('.oa_editor_content_wrapper', this.editorElement).each( function () {
-            $(this).css(styles);
-        });
-        return this;
+            $('.oa_editor_content_wrapper', this.editorElement).each(function () {
+                $(this).css(styles);
+            });
+            return this;
+        }
     },
 
     /**
@@ -99,7 +111,7 @@ OpenAssessment.ValidationAlert.prototype = {
 
     **/
     isVisible: function() {
-        return !this.element.hasClass('is--hidden');
+        return !this.element.hasClass('covered');
     },
 
     /**

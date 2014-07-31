@@ -230,7 +230,6 @@
   }
 
   #openassessment_validation_alert{
-    height: auto;
     width: 100%;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
@@ -239,8 +238,14 @@
     padding: 10px;
     position: absolute;
     z-index: 10;
-    min-height: 70px;
-    @include transition (color 0.50s ease-in-out 0s);
+    max-height: 200px;
+
+    .openassessment_alert_icon{
+      position: absolute;
+      top: 35%;
+      font-size: 200%;
+      left: 3%;
+    }
 
     .openassessment_alert_icon:before{
       font-family: FontAwesome;
@@ -248,8 +253,8 @@
       display: inline-block;
       color: rgb(192, 172, 0);
       float: left;
-      font-size: 200%;
-      margin: 1.5% 0px 0px 2%;
+      height: 0;
+      width: 0;
     }
     .openassessment_alert_header {
       width: 85%;
@@ -273,7 +278,6 @@
       top: 0px;
       right: 0px;
       color: #e9e9e9;
-      background: #323232;
       text-align: center;
       margin: 5px 10px;
 
@@ -298,6 +302,11 @@
     overflow-y: scroll;
     position: absolute;
     bottom: 0;
+    z-index: 11;
+
+    transition: height 1s ease-in-out 0;
+    -webkit-transition: height 1s ease-in-out 0;
+    -moz-transition: height 1s ease-in-out 0;
   }
 
   #openassessment_prompt_editor {
