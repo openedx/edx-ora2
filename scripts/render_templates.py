@@ -39,11 +39,29 @@ from django.template.loader import get_template
 USAGE = u"{prog} TEMPLATE_DESC"
 
 
-ISO_DATE_REGEX = re.compile("^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$")
+DATETIME_REGEX = re.compile("^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$")
 
 def parse_dates(context):
     """
-    TODO
+    Transform datetime strings into Python datetime objects.
+
+    JSON does not provide a standard way to serialize datetime objects,
+    but some of the templates expect that the context contains
+    Python datetime objects.
+
+    This (somewhat hacky) solution recursively searches the context
+    for formatted datetime strings of the form "2014-01-02T12:34"
+    and converts them to Python datetime objects with the timezone
+    set to UTC.
+
+    Args:
+        context (JSON-serializable): The context (or part of the context)
+            that will be passed to the template.  Dictionaries and lists
+            will be recursively searched and transformed.
+
+    Returns:
+        JSON-serializable of the same type as the `context` argument.
+
     """
     if isinstance(context, dict):
         return {
@@ -56,7 +74,7 @@ def parse_dates(context):
             for item in context
         ]
     elif isinstance(context, basestring):
-        if ISO_DATE_REGEX.match(context) is not None:
+        if DATETIME_REGEX.match(context) is not None:
             return dateutil.parser.parse(context).replace(tzinfo=pytz.utc)
 
     return context

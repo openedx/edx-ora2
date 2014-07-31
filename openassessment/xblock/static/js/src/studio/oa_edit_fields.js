@@ -124,7 +124,11 @@ OpenAssessment.DatetimeControl.prototype = {
     },
 
     /**
-    TODO
+    Mark validation errors.
+
+    Returns:
+        Boolean indicating whether the fields are valid.
+
     **/
     validate: function() {
         var datetimeString = this.datetime();
@@ -140,15 +144,20 @@ OpenAssessment.DatetimeControl.prototype = {
     },
 
     /**
-    TODO
+    Clear all validation errors from the UI.
     **/
     clearValidationErrors: function() {
         $(this.datePicker, this.element).removeClass("openassessment_highlighted_field");
         $(this.timePicker, this.element).removeClass("openassessment_highlighted_field");
     },
 
-    /**
-    TODO
+   /**
+    Return a list of validation errors visible in the UI.
+    Mainly useful for testing.
+
+    Returns:
+        list of string
+
     **/
     validationErrors: function() {
         var errors = [];

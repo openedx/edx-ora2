@@ -192,7 +192,11 @@ OpenAssessment.EditRubricView.prototype = {
     },
 
     /**
-    TODO
+    Mark validation errors.
+
+    Returns:
+        Boolean indicating whether the view is valid.
+
     **/
     validate: function() {
         var isValid = true;
@@ -204,8 +208,13 @@ OpenAssessment.EditRubricView.prototype = {
         return isValid;
     },
 
-    /**
-    TODO
+   /**
+    Return a list of validation errors visible in the UI.
+    Mainly useful for testing.
+
+    Returns:
+        list of string
+
     **/
     validationErrors: function() {
         var errors = [];
@@ -218,7 +227,7 @@ OpenAssessment.EditRubricView.prototype = {
     },
 
     /**
-    TODO
+    Clear all validation errors from the UI.
     **/
     clearValidationErrors: function() {
         $.each(this.getAllCriteria(), function() {

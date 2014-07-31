@@ -140,14 +140,23 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
     },
 
     /**
-    TODO
+    Mark validation errors.
+
+    Returns:
+        Boolean indicating whether the view is valid.
+
     **/
     validate: function() {
         return this.startDatetimeControl.validate() && this.dueDatetimeControl.validate();
     },
 
-    /**
-    TODO
+   /**
+    Return a list of validation errors visible in the UI.
+    Mainly useful for testing.
+
+    Returns:
+        list of string
+
     **/
     validationErrors: function() {
         var errors = [];
@@ -161,7 +170,7 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
     },
 
     /**
-    TODO
+    Clear all validation errors from the UI.
     **/
     clearValidationErrors: function() {
         this.startDatetimeControl.clearValidationErrors();
@@ -281,14 +290,23 @@ OpenAssessment.EditSelfAssessmentView.prototype = {
     },
 
     /**
-    TODO
+    Mark validation errors.
+
+    Returns:
+        Boolean indicating whether the view is valid.
+
     **/
     validate: function() {
         return this.startDatetimeControl.validate() && this.dueDatetimeControl.validate();
     },
 
-    /**
-    TODO
+   /**
+    Return a list of validation errors visible in the UI.
+    Mainly useful for testing.
+
+    Returns:
+        list of string
+
     **/
     validationErrors: function() {
         var errors = [];
@@ -302,7 +320,7 @@ OpenAssessment.EditSelfAssessmentView.prototype = {
     },
 
     /**
-    TODO
+    Clear all validation errors from the UI.
     **/
     clearValidationErrors: function() {
         this.startDatetimeControl.clearValidationErrors();
@@ -400,25 +418,9 @@ OpenAssessment.EditStudentTrainingView.prototype = {
         return $(this.element).attr('id');
     },
 
-    /**
-    TODO
-    **/
-    validate: function() {
-        return true;
-    },
-
-    /**
-    TODO
-    **/
-    validationErrors: function() {
-        return [];
-    },
-
-    /**
-    TODO
-    **/
-    clearValidationErrors: function() {
-    },
+    validate: function() { return true; },
+    validationErrors: function() { return []; },
+    clearValidationErrors: function() {},
 };
 
 /**
@@ -502,23 +504,7 @@ OpenAssessment.EditExampleBasedAssessmentView.prototype = {
         return $(this.element).attr('id');
     },
 
-    /**
-    TODO
-    **/
-    validate: function() {
-        return true;
-    },
-
-    /**
-    TODO
-    **/
-    validationErrors: function() {
-        return [];
-    },
-
-    /**
-    TODO
-    **/
-    clearValidationErrors: function() {
-    },
+    validate: function() { return true; },
+    validationErrors: function() { return []; },
+    clearValidationErrors: function() {},
 };

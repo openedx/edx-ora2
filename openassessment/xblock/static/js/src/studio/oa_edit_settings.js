@@ -200,16 +200,21 @@ OpenAssessment.EditSettingsView.prototype = {
     },
 
     /**
-    TODO
+    Mark validation errors.
+
+    Returns:
+        Boolean indicating whether the view is valid.
+
     **/
     validate: function() {
-        var isValid = true;
+        // Validate the start and due datetime controls
+        var isValid = (
+            this.startDatetimeControl.validate() &&
+            this.dueDatetimeControl.validate()
+        );
 
-        isValid = isValid && this.startDatetimeControl.validate();
-        isValid = isValid && this.dueDatetimeControl.validate();
-
+        // Validate each of the assessment views
         $.each(this.assessmentViews, function() {
-            // TODO -- explain why we need to do it this way
             isValid = (isValid && this.validate());
         });
 
@@ -217,7 +222,12 @@ OpenAssessment.EditSettingsView.prototype = {
     },
 
     /**
-    TODO
+    Return a list of validation errors visible in the UI.
+    Mainly useful for testing.
+
+    Returns:
+        list of string
+
     **/
     validationErrors: function() {
         var errors = [];
@@ -236,7 +246,7 @@ OpenAssessment.EditSettingsView.prototype = {
     },
 
     /**
-    TODO
+    Clear all validation errors from the UI.
     **/
     clearValidationErrors: function() {
         this.startDatetimeControl.clearValidationErrors();

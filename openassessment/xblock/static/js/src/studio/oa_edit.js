@@ -125,13 +125,21 @@ OpenAssessment.StudioView.prototype = {
         var view = this;
         this.saveTabState();
 
-        // Perform client-side validation
-        // TODO -- more explanation
+        // Perform client-side validation:
+        // * Hide the validation alert
+        // * Clear errors from any field marked as invalid.
+        // * Mark invalid fields in the UI.
+        // * If there are any validation errors, show an alert.
+        //
+        // The `validate()` method calls `validate()` on any subviews,
+        // so that each subview has the opportunity to validate
+        // its fields.
         this.validationAlert.hide();
         this.clearValidationErrors();
         if (!this.validate()) {
             this.validationAlert.setMessage(
-                gettext("Validation errors! [TODO Sylvia please help!]")
+                gettext("Validation Errors"),
+                gettext("Some fields are not valid.  Please update the fields.")
             ).show();
         }
         else {
@@ -215,14 +223,23 @@ OpenAssessment.StudioView.prototype = {
     },
 
     /**
-    TODO
+    Mark validation errors.
+
+    Returns:
+        Boolean indicating whether the view is valid.
+
     **/
     validate: function() {
         return this.settingsView.validate() && this.rubricView.validate();
     },
 
-    /**
-    TODO
+   /**
+    Return a list of validation errors visible in the UI.
+    Mainly useful for testing.
+
+    Returns:
+        list of string
+
     **/
     validationErrors: function() {
         return this.settingsView.validationErrors().concat(
@@ -231,7 +248,7 @@ OpenAssessment.StudioView.prototype = {
     },
 
     /**
-    TODO
+    Clear all validation errors from the UI.
     **/
     clearValidationErrors: function() {
         this.settingsView.clearValidationErrors();

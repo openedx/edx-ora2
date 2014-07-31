@@ -74,7 +74,14 @@ OpenAssessment.RubricOption.prototype = {
     },
 
     /**
-    TODO
+    Get or set the label of the option.
+
+    Args:
+        label (string, optional): If provided, set the label to this string.
+
+    Returns:
+        string
+
     **/
     label: function(label) {
         var sel = $('.openassessment_criterion_option_label', this.element);
@@ -82,7 +89,14 @@ OpenAssessment.RubricOption.prototype = {
     },
 
     /**
-    TODO
+    Get or set the point value of the option.
+
+    Args:
+        points (int, optional): If provided, set the point value of the option.
+
+    Returns:
+        int
+
     **/
     points: function(points) {
         var sel = $('.openassessment_criterion_option_points', this.element);
@@ -90,7 +104,14 @@ OpenAssessment.RubricOption.prototype = {
     },
 
     /**
-    TODO
+    Get or set the explanation for the option.
+
+    Args:
+        explanation (string, optional): If provided, set the explanation to this string.
+
+    Returns:
+        string
+
     **/
     explanation: function(explanation) {
         var sel = $('.openassessment_criterion_option_explanation', this.element);
@@ -168,7 +189,11 @@ OpenAssessment.RubricOption.prototype = {
     },
 
     /**
-    TODO
+    Mark validation errors.
+
+    Returns:
+        Boolean indicating whether the option is valid.
+
     **/
     validate: function() {
         var pointString = $(".openassessment_criterion_option_points", this.element).val();
@@ -182,7 +207,12 @@ OpenAssessment.RubricOption.prototype = {
     },
 
     /**
-    TODO
+    Return a list of validation errors visible in the UI.
+    Mainly useful for testing.
+
+    Returns:
+        list of string
+
     **/
     validationErrors: function() {
         var sel = $(".openassessment_criterion_option_points", this.element);
@@ -191,7 +221,7 @@ OpenAssessment.RubricOption.prototype = {
     },
 
     /**
-    TODO
+    Clear all validation errors from the UI.
     **/
     clearValidationErrors: function() {
         $(".openassessment_criterion_option_points", this.element)
@@ -268,7 +298,14 @@ OpenAssessment.RubricCriterion.prototype = {
     },
 
     /**
-    TODO
+    Get or set the label of the criterion.
+
+    Args:
+        label (string, optional): If provided, set the label to this string.
+
+    Returns:
+        string
+
     **/
     label: function(label) {
         var sel = $('.openassessment_criterion_label', this.element);
@@ -276,7 +313,14 @@ OpenAssessment.RubricCriterion.prototype = {
     },
 
     /**
-    TODO
+    Get or set the prompt of the criterion.
+
+    Args:
+        prompt (string, optional): If provided, set the prompt to this string.
+
+    Returns:
+        string
+
     **/
     prompt: function(prompt) {
         var sel = $('.openassessment_criterion_prompt', this.element);
@@ -284,11 +328,15 @@ OpenAssessment.RubricCriterion.prototype = {
     },
 
     /**
-    TODO
+    Get the feedback value for the criterion.
+    This is one of: "disabled", "optional", or "required".
+
+    Returns:
+        string
+
     **/
-    feedback: function(feedback) {
-        var sel = $('.openassessment_criterion_feedback', this.element);
-        return OpenAssessment.Fields.stringField(sel, feedback);
+    feedback: function() {
+        return $('.openassessment_criterion_feedback', this.element).val();
     },
 
     /**
@@ -336,7 +384,11 @@ OpenAssessment.RubricCriterion.prototype = {
     },
 
     /**
-    TODO
+    Mark validation errors.
+
+    Returns:
+        Boolean indicating whether the criterion is valid.
+
     **/
     validate: function() {
         var isValid = true;
@@ -346,8 +398,13 @@ OpenAssessment.RubricCriterion.prototype = {
         return isValid;
     },
 
-    /**
-    TODO
+   /**
+    Return a list of validation errors visible in the UI.
+    Mainly useful for testing.
+
+    Returns:
+        list of string
+
     **/
     validationErrors: function() {
         var errors = [];
@@ -358,7 +415,7 @@ OpenAssessment.RubricCriterion.prototype = {
     },
 
     /**
-    TODO
+    Clear all validation errors from the UI.
     **/
     clearValidationErrors: function() {
         $.each(this.optionContainer.getAllItems(), function() {

@@ -6,6 +6,7 @@ Returns:
     Openassessment.ValidationAlert
  */
 OpenAssessment.ValidationAlert = function() {
+
     this.element = $('#openassessment_validation_alert');
     this.editorElement = $(this.element).parent();
     this.title = $(".openassessment_alert_title", this.element);
@@ -15,7 +16,7 @@ OpenAssessment.ValidationAlert = function() {
 OpenAssessment.ValidationAlert.prototype = {
 
     /**
-    TODO
+    Install the event handlers for the alert.
     **/
     installEventHandlers: function() {
         var alert = this;
@@ -31,13 +32,14 @@ OpenAssessment.ValidationAlert.prototype = {
     Hides the alert.
 
     Returns:
-        TODO
+        OpenAssessment.ValidationAlert
     */
     hide: function() {
         // Finds the height of all other elements in the editor_and_tabs (the Header) and sets the height
         // of the editing area to be 100% of that element minus those constraints.
         var headerHeight = $('#openassessment_editor_header', this.editorElement).outerHeight();
         this.element.addClass('is--hidden');
+
         var styles = {
             'height': 'Calc(100% - ' + headerHeight + 'px)',
             'border-top-right-radius': '3px',
@@ -47,6 +49,7 @@ OpenAssessment.ValidationAlert.prototype = {
         $('.oa_editor_content_wrapper', this.editorElement).each( function () {
             $(this).css(styles);
         });
+
         return this;
     },
 
@@ -54,7 +57,7 @@ OpenAssessment.ValidationAlert.prototype = {
     Displays the alert.
 
     Returns:
-        TODO
+        OpenAssessment.ValidationAlert
     */
     show : function() {
         this.element.removeClass('is--hidden');
@@ -71,6 +74,7 @@ OpenAssessment.ValidationAlert.prototype = {
         $('.oa_editor_content_wrapper', this.editorElement).each( function () {
             $(this).css(styles);
         });
+
         return this;
     },
 
@@ -83,7 +87,7 @@ OpenAssessment.ValidationAlert.prototype = {
         newMessage (str): the new text that the message's body will contain
 
     Returns:
-        TODO
+        OpenAssessment.ValidationAlert
     */
     setMessage: function(newTitle, newMessage) {
         this.title.text(newTitle);
