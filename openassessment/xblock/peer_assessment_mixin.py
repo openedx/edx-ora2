@@ -1,6 +1,5 @@
 import logging
 
-from django.utils.translation import ugettext as _
 from webob import Response
 from xblock.core import XBlock
 
@@ -9,11 +8,9 @@ from openassessment.assessment.errors import (
     PeerAssessmentRequestError, PeerAssessmentInternalError, PeerAssessmentWorkflowError
 )
 from openassessment.workflow.errors import AssessmentWorkflowError
-from openassessment.fileupload import api as file_upload_api
-from openassessment.fileupload.api import FileUploadError
 from .data_conversion import create_rubric_dict
 from .resolve_dates import DISTANT_FUTURE
-from .data_conversion import create_rubric_dict, clean_criterion_feedback
+from .data_conversion import clean_criterion_feedback
 
 logger = logging.getLogger(__name__)
 
@@ -52,16 +49,16 @@ class PeerAssessmentMixin(object):
         """
         # Validate the request
         if 'options_selected' not in data:
-            return {'success': False, 'msg': _('Must provide options selected in the assessment')}
+            return {'success': False, 'msg': self._('Must provide options selected in the assessment')}
 
         if 'overall_feedback' not in data:
-            return {'success': False, 'msg': _('Must provide overall feedback in the assessment')}
+            return {'success': False, 'msg': self._('Must provide overall feedback in the assessment')}
 
         if 'criterion_feedback' not in data:
-            return {'success': False, 'msg': _('Must provide feedback for criteria in the assessment')}
+            return {'success': False, 'msg': self._('Must provide feedback for criteria in the assessment')}
 
         if self.submission_uuid is None:
-            return {'success': False, 'msg': _('You must submit a response before you can peer-assess.')}
+            return {'success': False, 'msg': self._('You must submit a response before you can peer-assess.')}
 
         assessment_ui_model = self.get_assessment_module('peer-assessment')
         if assessment_ui_model:
@@ -85,12 +82,12 @@ class PeerAssessmentMixin(object):
                     u"Peer API error for submission UUID {}".format(self.submission_uuid),
                     exc_info=True
                 )
-                return {'success': False, 'msg': _(u"Your peer assessment could not be submitted.")}
+                return {'success': False, 'msg': self._(u"Your peer assessment could not be submitted.")}
             except PeerAssessmentInternalError:
                 logger.exception(
                     u"Peer API internal error for submission UUID: {}".format(self.submission_uuid)
                 )
-                msg = _("Your peer assessment could not be submitted.")
+                msg = self._("Your peer assessment could not be submitted.")
                 return {'success': False, 'msg': msg}
 
             # Update both the workflow that the submission we're assessing
@@ -104,7 +101,7 @@ class PeerAssessmentMixin(object):
                     u"Workflow error occurred when submitting peer assessment "
                     u"for submission {}".format(self.submission_uuid)
                 )
-                msg = _('Could not update workflow status.')
+                msg = self._('Could not update workflow status.')
                 return {'success': False, 'msg': msg}
 
             # Temp kludge until we fix JSON serialization for datetime
@@ -113,7 +110,7 @@ class PeerAssessmentMixin(object):
             return {'success': True, 'msg': u''}
 
         else:
-            return {'success': False, 'msg': _('Could not load peer assessment.')}
+            return {'success': False, 'msg': self._('Could not load peer assessment.')}
 
     @XBlock.handler
     def render_peer_assessment(self, data, suffix=''):
@@ -180,15 +177,15 @@ class PeerAssessmentMixin(object):
             context_dict["review_num"] = count + 1
 
             if continue_grading:
-                context_dict["submit_button_text"] = _(
+                context_dict["submit_button_text"] = self._(
                     "Submit your assessment & review another response"
                 )
             elif assessment["must_grade"] - count == 1:
-                context_dict["submit_button_text"] = _(
+                context_dict["submit_button_text"] = self._(
                     "Submit your assessment & move onto next step"
                 )
             else:
-                context_dict["submit_button_text"] = _(
+                context_dict["submit_button_text"] = self._(
                     "Submit your assessment & move to response #{response_number}"
                 ).format(response_number=(count + 2))
 

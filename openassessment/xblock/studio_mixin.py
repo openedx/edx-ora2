@@ -6,7 +6,6 @@ import copy
 import logging
 from django.template import Context
 from django.template.loader import get_template
-from django.utils.translation import ugettext as _
 from voluptuous import MultipleInvalid
 from xblock.core import XBlock
 from xblock.fields import List, Scope
@@ -91,7 +90,8 @@ class StudioMixin(object):
         __, __, date_ranges = resolve_dates(
             self.start, self.due,
             [(self.submission_start, self.submission_due)] +
-            [(asmnt.get('start'), asmnt.get('due')) for asmnt in self.valid_assessments]
+            [(asmnt.get('start'), asmnt.get('due')) for asmnt in self.valid_assessments],
+            self._
         )
 
         submission_start, submission_due = date_ranges[0]
@@ -143,12 +143,12 @@ class StudioMixin(object):
             data = EDITOR_UPDATE_SCHEMA(data)
         except MultipleInvalid:
             logger.exception('Editor context is invalid')
-            return {'success': False, 'msg': _('Error updating XBlock configuration')}
+            return {'success': False, 'msg': self._('Error updating XBlock configuration')}
 
         # Check that the editor assessment order contains all the assessments.  We are more flexible on example-based.
         if set(DEFAULT_EDITOR_ASSESSMENTS_ORDER) != (set(data['editor_assessments_order']) - {'example-based-assessment'}):
             logger.exception('editor_assessments_order does not contain all expected assessment types')
-            return {'success': False, 'msg': _('Error updating XBlock configuration')}
+            return {'success': False, 'msg': self._('Error updating XBlock configuration')}
 
         # Backwards compatibility: We used to treat "name" as both a user-facing label
         # and a unique identifier for criteria and options.
@@ -170,18 +170,18 @@ class StudioMixin(object):
                 try:
                     assessment['examples'] = parse_examples_from_xml_str(assessment['examples_xml'])
                 except UpdateFromXmlError:
-                    return {'success': False, 'msg': _(
+                    return {'success': False, 'msg': self._(
                         u'Validation error: There was an error in the XML definition of the '
                         u'examples provided by the user. Please correct the XML definition before saving.')
                     }
                 except KeyError:
-                    return {'success': False, 'msg': _(
+                    return {'success': False, 'msg': self._(
                         u'Validation error: No examples were provided for example based assessment.'
                     )}
                     # This is where we default to EASE for problems which are edited in the GUI
                 assessment['algorithm_id'] = 'ease'
 
-        xblock_validator = validator(self)
+        xblock_validator = validator(self, self._)
         success, msg = xblock_validator(
             create_rubric_dict(data['prompt'], data['criteria']),
             data['assessments'],
@@ -189,7 +189,7 @@ class StudioMixin(object):
             submission_due=data['submission_due'],
         )
         if not success:
-            return {'success': False, 'msg': _('Validation error: {error}').format(error=msg)}
+            return {'success': False, 'msg': self._('Validation error: {error}').format(error=msg)}
 
         # At this point, all the input data has been validated,
         # so we can safely modify the XBlock fields.
@@ -204,7 +204,7 @@ class StudioMixin(object):
         self.submission_due = data['submission_due']
         self.allow_file_upload = bool(data['allow_file_upload'])
 
-        return {'success': True, 'msg': _(u'Successfully updated OpenAssessment XBlock')}
+        return {'success': True, 'msg': self._(u'Successfully updated OpenAssessment XBlock')}
 
     @XBlock.json_handler
     def check_released(self, data, suffix=''):

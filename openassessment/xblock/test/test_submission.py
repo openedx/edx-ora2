@@ -9,7 +9,6 @@ import pytz
 from mock import patch, Mock
 from submissions import api as sub_api
 from submissions.api import SubmissionRequestError, SubmissionInternalError
-from openassessment.xblock.submission_mixin import SubmissionMixin
 from .base import XBlockHandlerTestCase, scenario
 
 
@@ -31,7 +30,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
         self.assertFalse(resp[0])
         self.assertEqual(resp[1], "ENOMULTI")
-        self.assertEqual(resp[2], xblock.submit_errors["ENOMULTI"])
+        self.assertIsNotNone(resp[2])
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     @patch.object(sub_api, 'create_submission')
@@ -40,7 +39,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
         self.assertFalse(resp[0])
         self.assertEqual(resp[1], "EUNKNOWN")
-        self.assertEqual(resp[2], SubmissionMixin().submit_errors["EUNKNOWN"])
+        self.assertIsNotNone(resp[2])
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     @patch.object(sub_api, 'create_submission')
@@ -49,6 +48,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
         self.assertFalse(resp[0])
         self.assertEqual(resp[1], "EBADFORM")
+        self.assertIsNotNone(resp[2])
 
     # In Studio preview mode, the runtime sets the user ID to None
     @scenario('data/basic_scenario.xml', user_id=None)

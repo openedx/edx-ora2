@@ -2,7 +2,6 @@
 Validate changes to an XBlock before it is updated.
 """
 from collections import Counter
-from django.utils.translation import ugettext as _
 from openassessment.assessment.serializers import rubric_from_dict, InvalidRubric
 from openassessment.assessment.api.student_training import validate_training_examples
 from openassessment.xblock.resolve_dates import resolve_dates, DateValidationError, InvalidDateFormat
@@ -82,7 +81,7 @@ def _is_valid_assessment_sequence(assessments):
     return sequence in valid_sequences
 
 
-def validate_assessments(assessments, current_assessments, is_released):
+def validate_assessments(assessments, current_assessments, is_released, _):
     """
     Check that the assessment dict is semantically valid.
 
@@ -99,6 +98,7 @@ def validate_assessments(assessments, current_assessments, is_released):
             assessment models. Used to determine if the assessment configuration
             has changed since the question had been released.
         is_released (boolean) : True if the question has been released.
+        _ (function): The service function used to get the appropriate i18n text
 
     Returns:
         tuple (is_valid, msg) where
@@ -158,7 +158,7 @@ def validate_assessments(assessments, current_assessments, is_released):
     return (True, u'')
 
 
-def validate_rubric(rubric_dict, current_rubric, is_released, is_example_based):
+def validate_rubric(rubric_dict, current_rubric, is_released, is_example_based, _):
     """
     Check that the rubric is semantically valid.
 
@@ -167,6 +167,7 @@ def validate_rubric(rubric_dict, current_rubric, is_released, is_example_based):
         current_rubric (dict): Serialized Rubric model representing the current state of the rubric.
         is_released (bool): True if and only if the problem has been released.
         is_example_based (bool): True if and only if this is an example-based assessment.
+        _ (function): The service function used to get the appropriate i18n text
 
     Returns:
         tuple (is_valid, msg) where
@@ -176,7 +177,7 @@ def validate_rubric(rubric_dict, current_rubric, is_released, is_example_based):
     try:
         rubric_from_dict(rubric_dict)
     except InvalidRubric:
-        return (False, u'This rubric definition is not valid.')
+        return (False, _(u'This rubric definition is not valid.'))
 
     # No duplicate criteria names
     duplicates = _duplicates([criterion['name'] for criterion in rubric_dict['criteria']])
@@ -229,7 +230,7 @@ def validate_rubric(rubric_dict, current_rubric, is_released, is_example_based):
         current_criterion_names = set(criterion.get('name') for criterion in current_rubric['criteria'])
         new_criterion_names = set(criterion.get('name') for criterion in rubric_dict['criteria'])
         if current_criterion_names != new_criterion_names:
-            return (False, u'Criteria names cannot be changed after a problem is released')
+            return (False, _(u'Criteria names cannot be changed after a problem is released'))
 
         # Number of options for each criterion must be the same
         for new_criterion, old_criterion in _match_by_order(rubric_dict['criteria'], current_rubric['criteria']):
@@ -244,7 +245,7 @@ def validate_rubric(rubric_dict, current_rubric, is_released, is_example_based):
     return (True, u'')
 
 
-def validate_dates(start, end, date_ranges):
+def validate_dates(start, end, date_ranges, _):
     """
     Check that start and due dates are valid.
 
@@ -252,6 +253,7 @@ def validate_dates(start, end, date_ranges):
         start (str): ISO-formatted date string indicating when the problem opens.
         end (str): ISO-formatted date string indicating when the problem closes.
         date_ranges (list of tuples): List of (start, end) pair for each submission / assessment.
+        _ (function): The service function used to get the appropriate i18n text
 
     Returns:
         tuple (is_valid, msg) where
@@ -259,20 +261,21 @@ def validate_dates(start, end, date_ranges):
             and msg describes any validation errors found.
     """
     try:
-        resolve_dates(start, end, date_ranges)
+        resolve_dates(start, end, date_ranges, _)
     except (DateValidationError, InvalidDateFormat) as ex:
         return (False, unicode(ex))
     else:
         return (True, u'')
 
 
-def validate_assessment_examples(rubric_dict, assessments):
+def validate_assessment_examples(rubric_dict, assessments, _):
     """
     Validate assessment training examples.
 
     Args:
         rubric_dict (dict): The serialized rubric model.
         assessments (list of dict): List of assessment dictionaries.
+        _ (function): The service function used to get the appropriate i18n text
 
     Returns:
         tuple (is_valid, msg) where
@@ -298,13 +301,14 @@ def validate_assessment_examples(rubric_dict, assessments):
     return True, u''
 
 
-def validator(oa_block, strict_post_release=True):
+def validator(oa_block, _, strict_post_release=True):
     """
     Return a validator function configured for the XBlock.
     This will validate assessments, rubrics, and dates.
 
     Args:
         oa_block (OpenAssessmentBlock): The XBlock being updated.
+        _ (function): The service function used to get the appropriate i18n text
 
     Keyword Arguments:
         strict_post_release (bool): If true, restrict what authors can update once
@@ -320,7 +324,7 @@ def validator(oa_block, strict_post_release=True):
 
         # Assessments
         current_assessments = oa_block.rubric_assessments
-        success, msg = validate_assessments(assessments, current_assessments, is_released)
+        success, msg = validate_assessments(assessments, current_assessments, is_released, _)
         if not success:
             return (False, msg)
 
@@ -330,19 +334,19 @@ def validator(oa_block, strict_post_release=True):
             'prompt': oa_block.prompt,
             'criteria': oa_block.rubric_criteria
         }
-        success, msg = validate_rubric(rubric_dict, current_rubric, is_released, is_example_based)
+        success, msg = validate_rubric(rubric_dict, current_rubric, is_released, is_example_based, _)
         if not success:
             return (False, msg)
 
         # Training examples
-        success, msg = validate_assessment_examples(rubric_dict, assessments)
+        success, msg = validate_assessment_examples(rubric_dict, assessments, _)
         if not success:
             return (False, msg)
 
         # Dates
         submission_dates = [(submission_start, submission_due)]
         assessment_dates = [(asmnt.get('start'), asmnt.get('due')) for asmnt in assessments]
-        success, msg = validate_dates(oa_block.start, oa_block.due, submission_dates + assessment_dates)
+        success, msg = validate_dates(oa_block.start, oa_block.due, submission_dates + assessment_dates, _)
         if not success:
             return (False, msg)
 
