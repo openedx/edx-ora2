@@ -2,13 +2,12 @@ describe("OpenAssessment.FileUploader", function() {
 
     var fileUploader = null;
     var TEST_URL = "http://www.example.com/upload";
-    var TEST_IMAGE = {
+    var TEST_FILE = {
         data: "abcdefghijklmnopqrstuvwxyz",
         name: "test.jpg",
         size: 10471,
         type: "image/jpeg"
     };
-    var TEST_CONTENT_TYPE = "image/jpeg";
 
     beforeEach(function() {
         fileUploader = new OpenAssessment.FileUploader();
@@ -25,15 +24,24 @@ describe("OpenAssessment.FileUploader", function() {
         spyOn(Logger, 'log');
 
         // Upload a file
-        fileUploader.upload(TEST_URL, TEST_IMAGE, TEST_CONTENT_TYPE);
+        fileUploader.upload(TEST_URL, TEST_FILE);
+
+        // Verify that a PUT request was sent with the right parameters
+        expect($.ajax).toHaveBeenCalledWith({
+            url: TEST_URL,
+            type: 'PUT',
+            data: TEST_FILE,
+            async: false,
+            processData: false,
+            contentType: 'image/jpeg'
+        });
 
         // Verify that the event was logged
         expect(Logger.log).toHaveBeenCalledWith(
             "openassessment.upload_file", {
-                contentType: TEST_CONTENT_TYPE,
-                imageName: TEST_IMAGE.name,
-                imageSize: TEST_IMAGE.size,
-                imageType: TEST_IMAGE.type
+                fileName: TEST_FILE.name,
+                fileSize: TEST_FILE.size,
+                fileType: TEST_FILE.type
             }
         );
     });

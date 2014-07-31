@@ -50,12 +50,11 @@ describe("OpenAssessment.ResponseView", function() {
         this.uploadError = false;
         this.uploadArgs = null;
 
-        this.upload = function(url, data, contentType) {
+        this.upload = function(url, data) {
             // Store the args we were passed so we can verify them
             this.uploadArgs = {
                 url: url,
                 data: data,
-                contentType: contentType
             };
 
             // Return a promise indicating success or error
@@ -421,7 +420,6 @@ describe("OpenAssessment.ResponseView", function() {
         view.fileUpload();
         expect(fileUploader.uploadArgs.url).toEqual(FAKE_URL);
         expect(fileUploader.uploadArgs.data).toEqual(files[0]);
-        expect(fileUploader.uploadArgs.contentType).toEqual('image/jpg');
     });
 
     it("displays an error if a one-time file upload URL cannot be retrieved", function() {
