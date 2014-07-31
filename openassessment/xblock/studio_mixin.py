@@ -150,19 +150,6 @@ class StudioMixin(object):
             logger.exception('editor_assessments_order does not contain all expected assessment types')
             return {'success': False, 'msg': _('Error updating XBlock configuration')}
 
-        # Backwards compatibility: We used to treat "name" as both a user-facing label
-        # and a unique identifier for criteria and options.
-        # Now we treat "name" as a unique identifier, and we've added an additional "label"
-        # field that we display to the user.
-        # If the JavaScript editor sends us a criterion or option without a "name"
-        # field, we should assign it a unique identifier.
-        for criterion in data['criteria']:
-            if 'name' not in criterion:
-                criterion['name'] = uuid4().hex
-            for option in criterion['options']:
-                if 'name' not in option:
-                    option['name'] = uuid4().hex
-
         # If example based assessment is enabled, we replace it's xml definition with the dictionary
         # definition we expect for validation and storing.
         for assessment in data['assessments']:
