@@ -38,7 +38,10 @@ Returns:
 OpenAssessment.RubricOption = function(element, notifier) {
     this.element = element;
     this.notifier = notifier;
-    this.MAX_POINTS = 1000;
+    this.pointsField = new OpenAssessment.IntField(
+        $(".openassessment_criterion_option_points", this.element),
+        { min: 0, max: 999 }
+    );
     $(this.element).focusout($.proxy(this.updateHandler, this));
 };
 
@@ -99,8 +102,8 @@ OpenAssessment.RubricOption.prototype = {
 
     **/
     points: function(points) {
-        var sel = $('.openassessment_criterion_option_points', this.element);
-        return OpenAssessment.Fields.intField(sel, points);
+        if (points !== undefined) { this.pointsField.set(points); }
+        return this.pointsField.get();
     },
 
     /**
@@ -196,14 +199,7 @@ OpenAssessment.RubricOption.prototype = {
 
     **/
     validate: function() {
-        var pointString = $(".openassessment_criterion_option_points", this.element).val();
-        var matches = pointString.trim().match(/^\d{1,3}$/g);
-        var isValid = (matches !== null);
-        if (!isValid) {
-            $(".openassessment_criterion_option_points", this.element)
-                .addClass("openassessment_highlighted_field");
-        }
-        return isValid;
+        return this.pointsField.validate();
     },
 
     /**
@@ -215,8 +211,7 @@ OpenAssessment.RubricOption.prototype = {
 
     **/
     validationErrors: function() {
-        var sel = $(".openassessment_criterion_option_points", this.element);
-        var hasError = sel.hasClass("openassessment_highlighted_field");
+        var hasError = (this.pointsField.validationErrors().length > 0);
         return hasError ? ["Option points are invalid"] : [];
     },
 
@@ -224,8 +219,7 @@ OpenAssessment.RubricOption.prototype = {
     Clear all validation errors from the UI.
     **/
     clearValidationErrors: function() {
-        $(".openassessment_criterion_option_points", this.element)
-            .removeClass("openassessment_highlighted_field");
+        this.pointsField.clearValidationErrors();
     }
 };
 

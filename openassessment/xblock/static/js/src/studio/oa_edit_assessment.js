@@ -11,6 +11,14 @@ Returns:
 OpenAssessment.EditPeerAssessmentView = function(element) {
     this.element = element;
     this.name = "peer-assessment";
+    this.mustGradeField = new OpenAssessment.IntField(
+        $("#peer_assessment_must_grade", this.element),
+        { min: 0, max: 99 }
+    );
+    this.mustBeGradedByField = new OpenAssessment.IntField(
+        $("#peer_assessment_graded_by", this.element),
+        { min: 0, max: 99 }
+    );
 
     // Configure the toggle checkbox to enable/disable this assessment
     new OpenAssessment.ToggleControl(
@@ -83,8 +91,8 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
         int
     **/
     mustGradeNum: function(num) {
-        var sel = $("#peer_assessment_must_grade", this.element);
-        return OpenAssessment.Fields.intField(sel, num);
+        if (num !== undefined) { this.mustGradeField.set(num); }
+        return this.mustGradeField.get();
     },
 
     /**
@@ -97,8 +105,8 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
         int
     **/
     mustBeGradedByNum: function(num) {
-        var sel = $("#peer_assessment_graded_by", this.element);
-        return OpenAssessment.Fields.intField(sel, num);
+        if (num !== undefined) { this.mustBeGradedByField.set(num); }
+        return this.mustBeGradedByField.get();
     },
 
     /**
@@ -149,7 +157,9 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
     validate: function() {
         var startValid = this.startDatetimeControl.validate();
         var dueValid = this.dueDatetimeControl.validate();
-        return startValid && dueValid;
+        var mustGradeValid = this.mustGradeField.validate();
+        var mustBeGradedByValid = this.mustBeGradedByField.validate();
+        return startValid && dueValid && mustGradeValid && mustBeGradedByValid;
     },
 
    /**
@@ -168,6 +178,12 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
         if (this.dueDatetimeControl.validationErrors().length > 0) {
             errors.push("Peer assessment due is invalid");
         }
+        if (this.mustGradeField.validationErrors().length > 0) {
+            errors.push("Peer assessment must grade is invalid");
+        }
+        if(this.mustBeGradedByField.validationErrors().length > 0) {
+            errors.push("Peer assessment must be graded by is invalid");
+        }
         return errors;
     },
 
@@ -177,6 +193,8 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
     clearValidationErrors: function() {
         this.startDatetimeControl.clearValidationErrors();
         this.dueDatetimeControl.clearValidationErrors();
+        this.mustGradeField.clearValidationErrors();
+        this.mustBeGradedByField.clearValidationErrors();
     },
 };
 

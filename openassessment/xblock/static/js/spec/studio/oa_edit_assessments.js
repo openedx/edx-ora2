@@ -75,6 +75,34 @@ describe("OpenAssessment edit assessment views", function() {
                 "Peer assessment due is invalid"
             );
         });
+
+        it("validates the must grade field", function() {
+            // Invalid value (not a number)
+            view.mustGradeNum("123abc");
+            expect(view.validate()).toBe(false);
+            expect(view.validationErrors()).toContain("Peer assessment must grade is invalid");
+
+            view.clearValidationErrors();
+
+            // Valid value
+            view.mustGradeNum("34");
+            expect(view.validate()).toBe(true);
+            expect(view.validationErrors()).toEqual([]);
+        });
+
+        it("validates the must be graded by field", function() {
+            // Invalid value (not a number)
+            view.mustBeGradedByNum("123abc");
+            expect(view.validate()).toBe(false);
+            expect(view.validationErrors()).toContain("Peer assessment must be graded by is invalid");
+
+            view.clearValidationErrors();
+
+            // Valid value
+            view.mustBeGradedByNum("34");
+            expect(view.validate()).toBe(true);
+            expect(view.validationErrors()).toEqual([]);
+        });
     });
 
     describe("OpenAssessment.EditSelfAssessmentView", function() {

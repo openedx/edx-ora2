@@ -3,18 +3,103 @@ Utilities for reading / writing fields.
 **/
 OpenAssessment.Fields = {
     stringField: function(sel, value) {
-        if (typeof(value) !== "undefined") { sel.val(value); }
+        if (value !== undefined) { sel.val(value); }
         return sel.val();
     },
 
-    intField: function(sel, value) {
-        if (typeof(value) !== "undefined") { sel.val(value); }
-        return parseInt(sel.val(), 10);
+    booleanField: function(sel, value) {
+        if (value !== undefined) { sel.prop("checked", value); }
+        return sel.prop("checked");
+    },
+};
+
+
+/**
+Integer input.
+
+Args:
+    inputSel (JQuery selector or DOM element): The input field.
+
+Keyword args:
+    min (int): The minimum value allowed in the input.
+    max (int): The maximum value allowed in the input.
+
+**/
+OpenAssessment.IntField = function(inputSel, restrictions) {
+    this.max = restrictions.max;
+    this.min = restrictions.min;
+    this.input = $(inputSel);
+};
+
+OpenAssessment.IntField.prototype = {
+
+    /**
+    Retrieve the integer value from the input.
+    Decimal values will be truncated, and non-numeric
+    values will become NaN.
+
+    Returns:
+        integer or NaN
+    **/
+    get: function() {
+        return parseInt(this.input.val().trim(), 10);
     },
 
-    booleanField: function(sel, value) {
-        if (typeof(value) !== "undefined") { sel.prop("checked", value); }
-        return sel.prop("checked");
+    /**
+    Set the input value.
+
+    Args:
+        val (int or string)
+
+    **/
+    set: function(val) {
+        this.input.val(val);
+    },
+
+    /**
+    Mark validation errors if the field does not satisfy the restrictions.
+    Fractional values are not considered valid integers.
+
+    This will trim whitespace from the field, so "   34  " would be considered
+    a valid input.
+
+    Returns:
+        Boolean indicating whether the field's value is valid.
+
+    **/
+    validate: function() {
+        var value = this.get();
+        var isValid = !isNaN(value) && value >= this.min && value <= this.max;
+
+        // Decimal values not allowed
+        if (this.input.val().indexOf(".") !== -1) {
+            isValid = false;
+        }
+
+        if (!isValid) {
+            this.input.addClass("openassessment_highlighted_field");
+        }
+        return isValid;
+    },
+
+    /**
+    Clear any validation errors from the UI.
+    **/
+    clearValidationErrors: function() {
+        this.input.removeClass("openassessment_highlighted_field");
+    },
+
+    /**
+    Return a list of validation errors currently displayed
+    in the UI.  Mainly useful for testing.
+
+    Returns:
+        list of strings
+
+    **/
+    validationErrors: function() {
+        var hasError = this.input.hasClass("openassessment_highlighted_field");
+        return hasError ? ["Int field is invalid"] : [];
     },
 };
 
