@@ -12,10 +12,12 @@
                 <span class="step__label">{% trans "Assess Your Response" %}</span>
                 {% if self_start %}
                 <span class="step__deadline">
+                    {# Translators: Please do not change the span tags. This is displaying a date outside of parentheses, then displays the time until that date inside a pair of parentheses with the word "in" #}
                     {% blocktrans with start_date=self_start|utc|date:"N j, Y H:i e" time_until=self_start|timeuntil %}available <span class="date">{{ start_date }} (in {{ time_until }})</span>{% endblocktrans %}
                 </span>
                 {% elif self_due %}
                 <span class="step__deadline">
+                    {# Translators: Please do not change the span tags. This is displaying a date outside of parentheses, then displays the time until that date inside a pair of parentheses with the word "in" #}
                     {% blocktrans with due_date=self_due|utc|date:"N j, Y H:i e" time_until=self_due|timeuntil %}due <span class="date">{{ due_date }}</span> (in {{ time_until }}){% endblocktrans %}
                 </span>
                 {% endif %}

@@ -3,13 +3,15 @@
 <div id="openassessment__message" class="openassessment__message message">
     <div class="message__content">
         <p>
-            {% blocktrans with tag="<strong>"|safe end_tag="</strong>"|safe %}
-                {% if approaching %}
+            {% if approaching %}
+                {% blocktrans with tag='<strong>'|safe end_tag="</strong>"|safe %}
                     Assignment submissions will close soon. To receive a grade, first provide a response to the question, then complete the steps below the {{tag}}Your Response{{end_tag}} field.
-                {% else %}
+                {% endblocktrans %}
+            {% else %}
+                {% blocktrans with tag="<strong>"|safe end_tag="</strong>"|safe %}
                     This assignment has several steps. In the first step, you'll provide a response to the question. The other steps appear below the {{tag}}Your Response{{end_tag}} field.
-                {% endif %}
-            {% endblocktrans %}
+                {% endblocktrans %}
+            {% endif %}
         </p>
     </div>
 </div>

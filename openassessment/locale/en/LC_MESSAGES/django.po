@@ -468,15 +468,15 @@ msgstr ""
 msgid "Assess Peers"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:15
-#: openassessment/templates/openassessmentblock/response/oa_response.html:15
-#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:15 #=#==#===#====#=???=#====#===#==#=#
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:15 #=#==#===#====#=GBW+1=#====#===#==#=#
+#: openassessment/templates/openassessmentblock/response/oa_response.html:15 #=#==#===#====#=GBW+1=#====#===#==#=#
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:15 #=#==#===#====#=GBW+1=#====#===#==#=#
 #, python-format
 msgid ""
 "available <span class=\"date\">%(start_date)s (in %(time_until)s)</span>"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:19 #=#==#===#====#=???=#====#===#==#=#
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:19 #=#==#===#====#=GBW+1=#====#===#==#=#
 #, python-format
 msgid "due <span class=\"date\">%(due_date)s (in %(time_until)s)</span>"
 msgstr ""
@@ -652,7 +652,7 @@ msgid ""
 "your response."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:19 #=#==#===#====#=???=#====#===#==#=#
+#: openassessment/templates/openassessmentblock/response/oa_response.html:19 #=#==#===#====#=GBW+1=#====#===#==#=#
 #, python-format
 msgid "due <span class=\"date\"> %(due_date)s (in %(time_until)s)</span>"
 msgstr ""
@@ -758,7 +758,7 @@ msgid "Assess Your Response"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:19
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:19 #=#==#===#====#=???=#====#===#==#=#
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:19 #=#==#===#====#=GBW+1=#====#===#==#=#
 #, python-format
 msgid "due <span class=\"date\">%(due_date)s</span> (in %(time_until)s)"
 msgstr ""
@@ -943,7 +943,7 @@ msgstr ""
 msgid "Learn to Assess Responses"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:15 #=#==#===#====#=???=#====#===#==#=#
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:15 #=#==#===#====#=GBW+1=#====#===#==#=#
 #, python-format
 msgid ""
 "available <span class=\"date\"> %(start_date)s (in %(time_until)s) </span>"
