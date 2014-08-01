@@ -197,7 +197,7 @@ OpenAssessment.PeerView.prototype = {
         this.server.peerAssess(
             this.rubric.optionsSelected(),
             this.rubric.criterionFeedback(),
-            this.overallFeedback()
+            this.rubric.overallFeedback()
         ).done(
             successFunction
         ).fail(function(errMsg) {
@@ -206,28 +206,5 @@ OpenAssessment.PeerView.prototype = {
         });
     },
 
-    /**
-    Get or set overall feedback on the submission.
 
-    Args:
-        overallFeedback (string or undefined): The overall feedback text (optional).
-
-    Returns:
-        string or undefined
-
-    Example usage:
-        >>> view.overallFeedback('Good job!');  // Set the feedback text
-        >>> view.overallFeedback();  // Retrieve the feedback text
-        'Good job!'
-
-    **/
-    overallFeedback: function(overallFeedback) {
-        var selector = '#assessment__rubric__question--feedback__value';
-        if (typeof overallFeedback === 'undefined') {
-            return $(selector, this.element).val();
-        }
-        else {
-            $(selector, this.element).val(overallFeedback);
-        }
-    }
 };

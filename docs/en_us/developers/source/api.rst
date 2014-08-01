@@ -39,8 +39,14 @@ Student Training
 .. automodule:: openassessment.assessment.api.student_training
    :members:
 
-Workflow Assessment
-*******************
+File Upload
+***********
+
+.. automodule:: openassessment.fileupload.api
+   :members:
+
+Workflow
+********
 
 .. automodule:: openassessment.workflow
    :members:

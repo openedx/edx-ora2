@@ -33,7 +33,7 @@ class GradeMixin(object):
         Args:
             data: Not used.
 
-        Kwargs:
+        Keyword Arguments:
             suffix: Not used.
 
         Returns:
@@ -127,7 +127,7 @@ class GradeMixin(object):
             'peer_assessments': peer_assessments,
             'self_assessment': self_assessment,
             'example_based_assessment': example_based_assessment,
-            'rubric_criteria': self._rubric_criteria_with_feedback(peer_assessments),
+            'rubric_criteria': self._rubric_criteria_with_feedback(peer_assessments, self_assessment),
             'has_submitted_feedback': has_submitted_feedback,
             'allow_file_upload': self.allow_file_upload,
             'file_url': self.get_download_url_from_submission(student_submission)
@@ -147,8 +147,15 @@ class GradeMixin(object):
 
         if median_scores is not None and max_scores is not None:
             for criterion in context["rubric_criteria"]:
-                criterion["median_score"] = median_scores[criterion["name"]]
-                criterion["total_value"] = max_scores[criterion["name"]]
+                # Although we prevent course authors from modifying criteria post-release,
+                # it's still possible for assessments created by course staff to
+                # have criteria that differ from the current problem definition.
+                # It's also possible to circumvent the post-release restriction
+                # if course authors directly import a course into Studio.
+                # If this happens, we simply leave the score blank so that the grade
+                # section can render without error.
+                criterion["median_score"] = median_scores.get(criterion["name"], '')
+                criterion["total_value"] = max_scores.get(criterion["name"], '')
 
         return ('openassessmentblock/grade/oa_grade_complete.html', context)
 
@@ -188,7 +195,7 @@ class GradeMixin(object):
             data (dict): Can provide keys 'feedback_text' (unicode) and
                 'feedback_options' (list of unicode).
 
-        Kwargs:
+        Keyword Arguments:
             suffix (str): Unused
 
         Returns:
@@ -218,13 +225,14 @@ class GradeMixin(object):
             )
             return {'success': True, 'msg': _(u"Feedback saved.")}
 
-    def _rubric_criteria_with_feedback(self, peer_assessments):
+    def _rubric_criteria_with_feedback(self, peer_assessments, self_assessment):
         """
         Add per-criterion feedback from peer assessments to the rubric criteria.
         Filters out empty feedback.
 
         Args:
             peer_assessments (list of dict): Serialized assessment models from the peer API.
+            self_assessment (dict): Serialized assessment model from the self API
 
         Returns:
             list of criterion dictionaries
@@ -245,16 +253,24 @@ class GradeMixin(object):
             ]
         """
         criteria = copy.deepcopy(self.rubric_criteria)
-        criteria_feedback = defaultdict(list)
+        peer_criteria_feedback = defaultdict(list)
+        self_criteria_feedback = {}
 
         for assessment in peer_assessments:
             for part in assessment['parts']:
                 if part['feedback']:
                     part_criterion_name = part['criterion']['name']
-                    criteria_feedback[part_criterion_name].append(part['feedback'])
+                    peer_criteria_feedback[part_criterion_name].append(part['feedback'])
+
+        if self_assessment:
+            for part in self_assessment['parts']:
+                if part['feedback']:
+                    part_criterion_name = part['criterion']['name']
+                    self_criteria_feedback[part_criterion_name] = part['feedback']
 
         for criterion in criteria:
             criterion_name = criterion['name']
-            criterion['feedback'] = criteria_feedback[criterion_name]
+            criterion['peer_feedback'] = peer_criteria_feedback[criterion_name]
+            criterion['self_feedback'] = self_criteria_feedback.get(criterion_name)
 
         return criteria

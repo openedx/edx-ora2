@@ -65,7 +65,7 @@ class CsvWriter(object):
             output_streams (dictionary): Provide the file handles
                 to write CSV data to.
 
-        Kwargs:
+        Keyword Arguments:
             progress_callback (callable): Callable that accepts
                 no arguments.  Called once per submission loaded
                 from the database.

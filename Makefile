@@ -32,7 +32,7 @@ install-nltk-data:
 
 STATIC_JS = openassessment/xblock/static/js
 
-minimize-js:
+javascript:
 	node_modules/.bin/uglifyjs $(STATIC_JS)/src/oa_shared.js $(STATIC_JS)/src/*.js > "$(STATIC_JS)/openassessment.min.js"
 
 
@@ -40,7 +40,7 @@ install-test:
 	pip install -q -r requirements/test.txt
 
 
-install: install-system install-node install-wheels install-python install-js install-nltk-data install-test minimize-js
+install: install-system install-node install-wheels install-python install-js install-nltk-data install-test javascript
 
 test:
 	./scripts/test.sh

@@ -115,9 +115,16 @@ class TestGrade(XBlockHandlerTestCase):
                 u'𝖋𝖊𝖊𝖉𝖇𝖆𝖈𝖐 𝖔𝖓𝖑𝖞': u"Ṫḧïṡ ïṡ ṡöṁë ḟëëḋḅäċḳ."
             }
 
+        self_assessment = copy.deepcopy(self.ASSESSMENTS[0])
+        self_assessment['criterion_feedback'] = {
+            u'𝖋𝖊𝖊𝖉𝖇𝖆𝖈𝖐 𝖔𝖓𝖑𝖞': "Feedback here",
+            u'Form': 'lots of feedback yes"',
+            u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': "such feedback"
+        }
+
         # Submit, assess, and render the grade view
         self._create_submission_and_assessments(
-            xblock, self.SUBMISSION, self.PEERS, peer_assessments, self.ASSESSMENTS[0]
+            xblock, self.SUBMISSION, self.PEERS, peer_assessments, self_assessment
         )
 
         # Render the grade section
@@ -172,11 +179,13 @@ class TestGrade(XBlockHandlerTestCase):
         # Verify that the context for the grade complete page contains the feedback
         _, context = xblock.render_grade_complete(xblock.get_workflow_info())
         criteria = context['rubric_criteria']
-        self.assertEqual(criteria[0]['feedback'], [
+
+        self.assertEqual(criteria[0]['peer_feedback'], [
             u'Peer 2: ฝﻉɭɭ ɗѻกﻉ!',
             u'Peer 1: ฝﻉɭɭ ɗѻกﻉ!',
         ])
-        self.assertEqual(criteria[1]['feedback'], [u'Peer 2: ƒαιя נσв'])
+        self.assertEqual(criteria[0]['self_feedback'], u'Peer 1: ฝﻉɭɭ ɗѻกﻉ!')
+        self.assertEqual(criteria[1]['peer_feedback'], [u'Peer 2: ƒαιя נσв'])
 
         # The order of the peers in the per-criterion feedback needs
         # to match the order of the peer assessments
@@ -192,6 +201,28 @@ class TestGrade(XBlockHandlerTestCase):
         self.assertIn(u'Peer 1: ฝﻉɭɭ ɗѻกﻉ!', resp.decode('utf-8'))
         self.assertIn(u'Peer 2: ฝﻉɭɭ ɗѻกﻉ!', resp.decode('utf-8'))
         self.assertIn(u'Peer 2: ƒαιя נσв', resp.decode('utf-8'))
+
+    @scenario('data/grade_scenario.xml', user_id='Bob')
+    def test_assessment_does_not_match_rubric(self, xblock):
+         # Get to the grade complete section
+        self._create_submission_and_assessments(
+            xblock, self.SUBMISSION, self.PEERS, self.ASSESSMENTS, self.ASSESSMENTS[0]
+        )
+
+        # Change the problem definition so it no longer
+        # matches the assessments.  This should never happen
+        # for a student (since we prevent authors from doing this post-release),
+        # but it may happen if a course author has submitted
+        # an assessment for a problem before it was published,
+        # or if course authors mess around with course import.
+        xblock.rubric_criteria[0]["name"] = "CHANGED NAME!"
+
+        # Expect that the page renders without an error
+        # It won't show the assessment criterion that changed
+        # (since it's not part of the original assessment),
+        # but at least it won't display an error.
+        resp = self.request(xblock, 'render_grade', json.dumps({}))
+        self.assertGreater(resp, 0)
 
     @ddt.file_data('data/waiting_scenarios.json')
     @scenario('data/grade_waiting_scenario.xml', user_id='Omar')
@@ -309,7 +340,7 @@ class TestGrade(XBlockHandlerTestCase):
             peer_assessments (list of dict): List of assessment dictionaries for peer assessments.
             self_assessment (dict): Dict of assessment for self-assessment.
 
-        Kwargs:
+        Keyword Arguments:
             waiting_for_peer (bool): If true, skip creation of peer assessments for the user's submission.
 
         Returns:
@@ -365,5 +396,6 @@ class TestGrade(XBlockHandlerTestCase):
         if self_assessment is not None:
             self_api.create_assessment(
                 submission['uuid'], student_id, self_assessment['options_selected'],
+                self_assessment['criterion_feedback'], self_assessment['overall_feedback'],
                 {'criteria': xblock.rubric_criteria}
             )
