@@ -136,8 +136,8 @@ OpenAssessment.StudioView.prototype = {
         this.clearValidationErrors();
         if (!this.validate()) {
             this.validationAlert.setMessage(
-                gettext("Validation Errors"),
-                gettext("Some fields are not valid.  Please update the fields.")
+                gettext("Couldn't Save This Assignment"),
+                gettext("Please correct the outlined fields.")
             ).show();
         }
         else {
