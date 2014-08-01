@@ -106,7 +106,7 @@ msgstr ""
 msgid "You have not completed all the steps of this problem."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:11
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:11 #=#==#===#====#=GBW+1=#====#===#==#=#
 #, python-format
 msgid ""
 "<span class=\"grade__value__earned\">%(points_earned)s</span> out of <span "
@@ -366,14 +366,14 @@ msgstr ""
 msgid "Review your grade and your assessment details."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/message/oa_message_open.html:7
+#: openassessment/templates/openassessmentblock/message/oa_message_open.html:7 #=#==#===#====#=GBW+1=#====#===#==#=#
 msgid ""
 "Assignment submissions will close soon. To receive a grade, first provide a "
 "response to the question, then complete the steps below the <strong>Your "
 "Response</strong> field."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/message/oa_message_open.html:9
+#: openassessment/templates/openassessmentblock/message/oa_message_open.html:9 #=#==#===#====#=GBW+1=#====#===#==#=#
 msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
 "response to the question. The other steps appear below the <strong>Your "
@@ -408,7 +408,7 @@ msgid ""
 "more students have submitted responses. "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/message/oa_message_peer.html:25
+#: openassessment/templates/openassessmentblock/message/oa_message_peer.html:25 #=#==#===#====#=GBW+1=#====#===#==#=#
 msgid ""
 "You'll receive your grade after you complete the <a data-behavior=\"ui-scroll"
 "\" href=\"#openassessment__peer-assessment\">peer assessment</a> and <a data-"
@@ -416,7 +416,7 @@ msgid ""
 "assessment</a> steps, and after your peers have assessed your response."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/message/oa_message_peer.html:27
+#: openassessment/templates/openassessmentblock/message/oa_message_peer.html:27 #=#==#===#====#=GBW+1=#====#===#==#=#
 msgid ""
 "You'll receive your grade after you complete the <a data-behavior=\"ui-scroll"
 "\" href=\"#openassessment__peer-assessment\">peer assessment</a> step."
@@ -434,15 +434,15 @@ msgstr ""
 msgid "Self evaluation of this assignment will close soon. "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/message/oa_message_self.html:22
+#: openassessment/templates/openassessmentblock/message/oa_message_self.html:22 #=#==#===#====#=GBW+1=#====#===#==#=#
 msgid ""
 "You'll receive your grade after the required number of your peers have "
 "assessed your response and you complete the <a data-behavior=\"ui-scroll\" "
 "href=\"#openassessment__self-assessment\">self assessment</a> step."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/message/oa_message_self.html:24
-#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:30
+#: openassessment/templates/openassessmentblock/message/oa_message_self.html:24 #=#==#===#====#=GBW+1=#====#===#==#=#
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:30 #=#==#===#====#=GBW+1=#====#===#==#=#
 msgid ""
 "You'll receive your grade after you complete the <a data-behavior=\"ui-scroll"
 "\" href=\"#openassessment__self-assessment\">self assessment</a> step."
@@ -468,15 +468,15 @@ msgstr ""
 msgid "Assess Peers"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:15
-#: openassessment/templates/openassessmentblock/response/oa_response.html:15
-#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:15
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:15 #=#==#===#====#=GBW+1=#====#===#==#=#
+#: openassessment/templates/openassessmentblock/response/oa_response.html:15 #=#==#===#====#=GBW+1=#====#===#==#=#
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:15 #=#==#===#====#=GBW+1=#====#===#==#=#
 #, python-format
 msgid ""
 "available <span class=\"date\">%(start_date)s (in %(time_until)s)</span>"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:19
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:19 #=#==#===#====#=GBW+1=#====#===#==#=#
 #, python-format
 msgid "due <span class=\"date\">%(due_date)s (in %(time_until)s)</span>"
 msgstr ""
@@ -504,8 +504,8 @@ msgstr ""
 msgid "This step's status"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:30
-#: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html:13
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:30 #=#==#===#====#=GBW+1=#====#===#==#=#
+#: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html:13 #=#==#===#====#=GBW+1=#====#===#==#=#
 #, python-format
 msgid ""
 "In Progress (<span class=\"step__status__value--completed\">%(graded)s</"
@@ -517,7 +517,7 @@ msgstr ""
 msgid "Read and assess the following response from one of your peers."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:50
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:50 #=#==#===#====#=GBW+1=#====#===#==#=#
 #, python-format
 msgid ""
 "\n"
@@ -564,7 +564,7 @@ msgstr ""
 msgid "We could not submit your assessment"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html:14
+#: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html:14 #=#==#===#====#=GBW+1=#====#===#==#=#
 #, python-format
 msgid ""
 "Incomplete (<span class=\"step__status__value--completed\">%(graded)s</span> "
@@ -611,7 +611,7 @@ msgstr ""
 msgid "Continue Assessing Peers"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:14
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:14 #=#==#===#====#=GBW+1=#====#===#==#=#
 #, python-format
 msgid ""
 "Complete (<span class=\"step__status__value--completed\">%(graded)s</span>)"
@@ -621,7 +621,7 @@ msgstr ""
 msgid "Assessment #"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:14
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:14 #=#==#===#====#=GBW+1=#====#===#==#=#
 #, python-format
 msgid ""
 " Complete (<span class=\"step__status__value--completed\">%(graded)s</span>)"
@@ -652,7 +652,7 @@ msgid ""
 "your response."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:19
+#: openassessment/templates/openassessmentblock/response/oa_response.html:19 #=#==#===#====#=GBW+1=#====#===#==#=#
 #, python-format
 msgid "due <span class=\"date\"> %(due_date)s (in %(time_until)s)</span>"
 msgstr ""
@@ -737,7 +737,7 @@ msgstr ""
 msgid "Your Response Has Been Submitted"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:26
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:26 #=#==#===#====#=GBW+1=#====#===#==#=#
 msgid ""
 "You'll receive your grade after some of your peers have assessed your "
 "response and you complete the <a data-behavior=\"ui-scroll\" href="
@@ -746,7 +746,7 @@ msgid ""
 "assessment</a> steps"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:28
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:28 #=#==#===#====#=GBW+1=#====#===#==#=#
 msgid ""
 "You'll receive your grade after some of your peers have assessed your "
 "response and you complete the <a data-behavior=\"ui-scroll\" href="
@@ -758,7 +758,7 @@ msgid "Assess Your Response"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:19
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:19
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:19 #=#==#===#====#=GBW+1=#====#===#==#=#
 #, python-format
 msgid "due <span class=\"date\">%(due_date)s</span> (in %(time_until)s)"
 msgstr ""
@@ -943,7 +943,7 @@ msgstr ""
 msgid "Learn to Assess Responses"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:15
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:15 #=#==#===#====#=GBW+1=#====#===#==#=#
 #, python-format
 msgid ""
 "available <span class=\"date\"> %(start_date)s (in %(time_until)s) </span>"
@@ -970,7 +970,7 @@ msgid ""
 "differently. Then, try the assessment again."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:63
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:63 #=#==#===#====#=GBW+1=#====#===#==#=#
 #, python-format
 msgid ""
 "Training Assessment #<span class=\"student-training__number--current\">"

@@ -10,7 +10,12 @@
   <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
     <span class="copy">
-        {% blocktrans with graded=graded must_grade=must_grade %}In Progress (<span class="step__status__value--completed">{{ graded }}</span> of <span class="step__status__value--required">{{ must_grade }}</span>){% endblocktrans %}
+        {% blocktrans with
+          graded_thus_far='<span class="step__status__value--completed">'|add:graded|add:'</span>'|safe
+          must_grade='<span class="step__status__value--required">'|add:must_grade|add:'</span>'|safe
+        %}
+            In Progress ({{ graded_thus_far }} of {{ must_grade }})
+        {% endblocktrans %}
     </span>
   </span>
 </span>
@@ -24,7 +29,7 @@
             <h3 class="message__title">{% trans "Waiting for Peer Responses" %}</h3>
 
             <div class="message__content">
-              <p>{% blocktrans %}All submitted peer responses have been assessed. Check back later to see if more students have submitted responses. You'll receive your grade after you've completed all the steps for this problem and your peers have assessed your response.{% endblocktrans %}</p>
+              <p>{% trans "All submitted peer responses have been assessed. Check back later to see if more students have submitted responses. You'll receive your grade after you've completed all the steps for this problem and your peers have assessed your response." %}</p>
             </div>
         </div>
     </div>

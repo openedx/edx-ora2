@@ -12,10 +12,12 @@
                 <span class="step__label">{% trans "Assess Peers" %}</span>
                 {% if peer_start %}
                 <span class="step__deadline">
+                    {# Translators: Please do not change the span tags. This is displaying a date outside of parentheses, then displays the time until that date inside a pair of parentheses with the word "in" #}
                     {% blocktrans with start_date=peer_start|utc|date:"N j, Y H:i e" time_until=peer_start|timeuntil %}available <span class="date">{{ start_date }} (in {{ time_until }})</span>{% endblocktrans %}
                 </span>
                 {% elif peer_due %}
                 <span class="step__deadline">
+                    {# Translators: Please do not change the span tags. This is displaying a date outside of parentheses, then displays the time until that date inside a pair of parentheses with the word "in" #}
                     {% blocktrans with due_date=peer_due|utc|date:"N j, Y H:i e" time_until=peer_due|timeuntil %}due <span class="date">{{ due_date }} (in {{ time_until }})</span>{% endblocktrans %}
                 </span>
                 {% endif %}
@@ -27,7 +29,12 @@
           <span class="step__status__label">{% trans "This step's status" %}:</span>
           <span class="step__status__value">
             <span class="copy">
-                {% blocktrans with graded=graded must_grade=must_grade%}In Progress (<span class="step__status__value--completed">{{ graded }}</span> of <span class="step__status__value--required">{{ must_grade }}</span>){% endblocktrans %}
+              {% blocktrans with
+                graded_thus_far='<span class="step__status__value--completed">'|add:graded|add:'</span>'|safe
+                must_grade='<span class="step__status__value--required">'|add:must_grade|add:'</span>'|safe
+              %}
+                  In Progress ({{ graded_thus_far }} of {{ must_grade }})
+              {% endblocktrans %}
             </span>
           </span>
         </span>
@@ -47,11 +54,14 @@
                         <article class="peer-assessment" id="peer-assessment--001">
                             <div class="peer-assessment__display">
                                 <header class="peer-assessment__display__header">
-                                    {% blocktrans with review_num=review_num must_grade=must_grade%}
                                     <h3 class="peer-assessment__display__title">
-                                        Assessment # <span class="peer-assessment__number--current">{{ review_num }}</span> of <span class="peer-assessment__number--required">{{ must_grade }}</span>
+                                        {% blocktrans with
+                                          review_num='<span class="peer-assessment__number--current">'|add:review_num|add:'</span>'|safe
+                                          must_grade='<span class="peer-assessment__number--required">'|add:must_grade|add:'</span>'|safe
+                                        %}
+                                            Assessment # {{ review_num }} of {{ must_grade }}
+                                        {% endblocktrans %}
                                     </h3>
-                                    {% endblocktrans %}
                                 </header>
 
                                 <div class="peer-assessment__display__response">

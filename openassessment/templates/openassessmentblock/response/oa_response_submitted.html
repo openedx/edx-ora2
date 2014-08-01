@@ -23,11 +23,26 @@
             <h3 class="message__title">{% trans "Your Response Has Been Submitted" %}</h3>
             <div class="message__content">
                 {% if has_peer and has_self %}
-                    {% blocktrans %}You'll receive your grade after some of your peers have assessed your response and you complete the <a data-behavior="ui-scroll" href="#openassessment__peer-assessment">peer assessment</a> and <a data-behavior="ui-scroll" href="#openassessment__self-assessment">self assessment</a> steps{% endblocktrans %}.
+                    {% blocktrans with
+                      peer_tag = '<a data-behavior="ui-scroll" href="#openassessment__peer-assessment">'|safe
+                      self_tag = '<a data-behavior="ui-scroll" href="#openassessment__self-assessment">'|safe
+                      close_tag = '</a>'|safe %}
+                        You'll receive your grade after some of your peers have assessed your response and you complete the {{peer_tag}}peer assessment{{close_tag}} and {{self_tag}}self assessment{{close_tag}} steps.
+                    {% endblocktrans %}
                 {% elif has_peer %}
-                    {% blocktrans %}You'll receive your grade after some of your peers have assessed your response and you complete the <a data-behavior="ui-scroll" href="#openassessment__peer-assessment">peer assessment</a> step.{% endblocktrans %}
+                    {% blocktrans with
+                      peer_tag = '<a data-behavior="ui-scroll" href="#openassessment__peer-assessment">'|safe
+                      close_tag = '</a>'|safe %}
+                        You'll receive your grade after some of your peers have assessed your response and you complete the {{peer_tag}}peer assessment{{close_tag}} step.
+                    {% endblocktrans %}
                 {% elif has_self %}
-                    {% blocktrans %}You'll receive your grade after you complete the <a data-behavior="ui-scroll" href="#openassessment__self-assessment">self assessment</a> step.{% endblocktrans %}
+                    {# Translators: Please do not modify the tag variables in the {{}} braces, and translate the sentence while keeping the segment that corresponds to the english version within the braces. #}
+                    {% blocktrans with
+                      self_tag = '<a data-behavior="ui-scroll" href="#openassessment__self-assessment">'|safe
+                      close_tag = '</a>'|safe
+                    %}
+                        You'll receive your grade after you complete the {{self_tag}}self assessment{{close_tag}} step.
+                    {% endblocktrans %}
                 {% endif %}
             </div>
         </div>
