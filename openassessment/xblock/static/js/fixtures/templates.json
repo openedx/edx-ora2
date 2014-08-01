@@ -592,7 +592,7 @@
                 },
                 "peer_assessment": {
                     "start": "2014-01-02T00:00",
-                    "due": "",
+                    "due": "2020-01-01T12:34",
                     "must_grade": 5,
                     "must_be_graded_by": 3
                 }
