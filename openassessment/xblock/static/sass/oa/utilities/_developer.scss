@@ -224,7 +224,28 @@
         a {
           padding: 8px 0 0 0;
           width: 100%;
+          text-transform: uppercase;
+          outline-color: transparent;
         }
+      }
+
+      .ui-state-default.oa_editor_tab{
+        background: #e5e5e5 none;
+        a {
+          color: $edx-gray-d3;
+        }
+      }
+
+      .ui-state-active.ui-state-default.oa_editor_tab:hover,
+      .ui-state-active.oa_editor_tab {
+        background: $edx-gray-d2 none;
+        a {
+          color: $white;
+        }
+      }
+
+      .ui-state-default.oa_editor_tab:hover{
+        background-color: $edx-gray-t3;
       }
     }
   }
@@ -401,29 +422,6 @@
      bottom: 0;
    }
 
-  .ui-widget-header .ui-state-default{
-    background: #e5e5e5;
-    a{
-      color: $edx-gray-d3;
-      text-transform: uppercase;
-      outline-color: transparent;
-    }
-  }
-  .ui-widget-header .ui-state-active.ui-state-default:hover,
-  .ui-widget-header .ui-state-active{
-    background: $edx-gray-d2;
-    color: $white;
-    a{
-      color: $white;
-      text-transform: uppercase;
-      outline-color: transparent;
-    }
-  }
-
-  .ui-widget-header .ui-state-default:hover{
-    background: $edx-gray-t3;
-  }
-
   #oa_rubric_editor_wrapper{
 
     #openassessment_rubric_validation_alert{
@@ -470,7 +468,7 @@
         top: 0px;
         right: 0px;
         color: #e9e9e9;
-        background: #323232;
+        background-color: #323232;
         text-align: center;
         margin: 5px 10px;
 
@@ -776,7 +774,7 @@
       float: right;
     }
     .openassessment_rubric_remove_button:hover{
-      background: $edx-gray-d2;
+      background-color: $edx-gray-d2;
       border-radius: 4px;
       color: white;
     }
