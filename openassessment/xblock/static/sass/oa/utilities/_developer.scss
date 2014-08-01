@@ -858,8 +858,11 @@
   height: 100%;
 }
 
-.openassessment_highlighted_field{
-    background-color: $edx-pink-l4;
+#openassessment-editor {
+  .openassessment_highlighted_field{
+     border-color: red;
+     border-width: 2px;
+  }
 }
 
 #student_training_settings_editor {
