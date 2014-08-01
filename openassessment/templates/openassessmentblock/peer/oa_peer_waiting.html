@@ -11,8 +11,9 @@
   <span class="step__status__value">
     <span class="copy">
         {% blocktrans with
-          graded_thus_far="<span class="step__status__value--completed">{0}</span>"|safewrap:graded
-          must_grade="<span class="step__status__value--required">{{ must_grade }}</span>"|safewrap:must_grade %}
+          graded_thus_far='<span class="step__status__value--completed">'|add:graded|add:'</span>'|safe
+          must_grade='<span class="step__status__value--required">'|add:must_grade|add:'</span>'|safe
+        %}
             In Progress ({{ graded_thus_far }} of {{ must_grade }})
         {% endblocktrans %}
     </span>

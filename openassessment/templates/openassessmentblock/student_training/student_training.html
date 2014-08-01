@@ -60,7 +60,11 @@
                 <article class="student-training__display" id="student-training">
                     <header class="student-training__display__header">
                         <h3 class="student-training__display__title">
-                            {% blocktrans with training_num_current=training_num_current training_num_available=training_num_available %}Training Assessment #<span class="student-training__number--current">{{ training_num_current }}</span> of <span class="student-training__number--required">{{ training_num_available }}</span>{% endblocktrans %}
+                        {% blocktrans with
+                          training_num_current='<span class="student-training__number--current">'|add:training_num_current|add:'</span>'|safe
+                          training_num_available='<span class="student-training__number--required">'|add:training_num_available|add:'</span>'|safe %}
+                            Training Assessment # {{ training_num_current }} of {{ training_num_available }}
+                        {% endblocktrans %}
                         </h3>
                     </header>
 
