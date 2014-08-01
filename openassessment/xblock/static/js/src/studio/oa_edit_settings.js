@@ -208,14 +208,14 @@ OpenAssessment.EditSettingsView.prototype = {
     **/
     validate: function() {
         // Validate the start and due datetime controls
-        var isValid = (
-            this.startDatetimeControl.validate() &&
-            this.dueDatetimeControl.validate()
-        );
+        var isValid = true;
+
+        isValid = (this.startDatetimeControl.validate() && isValid);
+        isValid = (this.dueDatetimeControl.validate() && isValid);
 
         // Validate each of the assessment views
         $.each(this.assessmentViews, function() {
-            isValid = (isValid && this.validate());
+            isValid = (this.validate() && isValid);
         });
 
         return isValid;

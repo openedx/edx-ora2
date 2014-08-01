@@ -393,7 +393,7 @@ OpenAssessment.RubricCriterion.prototype = {
     validate: function() {
         var isValid = true;
         $.each(this.optionContainer.getAllItems(), function() {
-            isValid = (isValid && this.validate());
+            isValid = (this.validate() && isValid);
         });
         return isValid;
     },

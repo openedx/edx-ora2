@@ -202,7 +202,7 @@ OpenAssessment.EditRubricView.prototype = {
         var isValid = true;
 
         $.each(this.getAllCriteria(), function() {
-            isValid = (isValid && this.validate());
+            isValid = (this.validate() && isValid);
         });
 
         return isValid;

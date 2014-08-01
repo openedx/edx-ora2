@@ -147,7 +147,9 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
 
     **/
     validate: function() {
-        return this.startDatetimeControl.validate() && this.dueDatetimeControl.validate();
+        var startValid = this.startDatetimeControl.validate();
+        var dueValid = this.dueDatetimeControl.validate();
+        return startValid && dueValid;
     },
 
    /**
@@ -297,7 +299,9 @@ OpenAssessment.EditSelfAssessmentView.prototype = {
 
     **/
     validate: function() {
-        return this.startDatetimeControl.validate() && this.dueDatetimeControl.validate();
+        var startValid = this.startDatetimeControl.validate();
+        var dueValid = this.dueDatetimeControl.validate();
+        return startValid && dueValid;
     },
 
    /**

@@ -232,7 +232,9 @@ OpenAssessment.StudioView.prototype = {
 
     **/
     validate: function() {
-        return this.settingsView.validate() && this.rubricView.validate();
+        var settingsValid = this.settingsView.validate();
+        var rubricValid = this.rubricView.validate();
+        return settingsValid && rubricValid;
     },
 
    /**
