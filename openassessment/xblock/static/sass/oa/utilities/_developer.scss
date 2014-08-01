@@ -858,11 +858,11 @@
   height: 100%;
 }
 
-#student_training_settings_editor {
-
-  .openassessment_highlighted_field{
+.openassessment_highlighted_field{
     background-color: $edx-pink-l4;
-  }
+}
+
+#student_training_settings_editor {
 
   .openassessment_training_example {
     padding: 5px;
