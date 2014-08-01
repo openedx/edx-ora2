@@ -126,7 +126,6 @@ OpenAssessment.StudioView.prototype = {
         this.saveTabState();
 
         // Perform client-side validation:
-        // * Hide the validation alert
         // * Clear errors from any field marked as invalid.
         // * Mark invalid fields in the UI.
         // * If there are any validation errors, show an alert.
@@ -134,7 +133,6 @@ OpenAssessment.StudioView.prototype = {
         // The `validate()` method calls `validate()` on any subviews,
         // so that each subview has the opportunity to validate
         // its fields.
-        this.validationAlert.hide();
         this.clearValidationErrors();
         if (!this.validate()) {
             this.validationAlert.setMessage(
@@ -143,6 +141,10 @@ OpenAssessment.StudioView.prototype = {
             ).show();
         }
         else {
+            // At this point, we know that all fields are valid,
+            // so we can dismiss the validation alert.
+            this.validationAlert.hide();
+
             // Check whether the problem has been released; if not,
             // warn the user and allow them to cancel.
             this.server.checkReleased().done(
