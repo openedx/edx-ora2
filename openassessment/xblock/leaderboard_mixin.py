@@ -60,14 +60,22 @@ class LeaderboardMixin(object):
             template_path (string), tuple of context (dict)
         """
 
-        scores = sub_api.get_top_submissions(student_item_dict['course_id'], student_item_dict['item_id'], student_item_dict['item_type'], self.leaderboard_show)
-        for i in xrange(len(scores)):
-            if 'text' in scores[i]['content']:
-                scores[i]['content'] = scores[i]['content']['text']
-        context = {
-            'topscores': scores
-        }
+        scores = sub_api.get_top_submissions(
+            student_item_dict['course_id'],
+            student_item_dict['item_id'],
+            student_item_dict['item_type'],
+            self.leaderboard_show
+        )
+        for score in scores:
+            if 'text' in score['content']:
+                score['content'] = score['content']['text']
+            elif isinstance(score['content'], basestring):
+                pass
+            # Currently, we do not handle non-text submissions.
+            else:
+                score['content'] = ""
 
+        context = { 'topscores': scores }
         return ('openassessmentblock/leaderboard/oa_leaderboard_show.html', context)
 
     def render_leaderboard_incomplete(self):
@@ -77,5 +85,4 @@ class LeaderboardMixin(object):
         Returns:
             template_path (string), tuple of context (dict)
         """
-
         return ('openassessmentblock/leaderboard/oa_leaderboard_waiting.html', {})

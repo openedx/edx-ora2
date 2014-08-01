@@ -1,4 +1,4 @@
-<openassessment>
+<openassessment leaderboard_show="3">
     <title>Open Assessment Test</title>
     <prompt>
         Given the state of the world today, what do you think should be done to
@@ -43,5 +43,4 @@
         <assessment name="peer-assessment" must_grade="1" must_be_graded_by="1" />
         <assessment name="self-assessment" />
     </assessments>
-    <leaderboard top="10" />
 </openassessment>

@@ -21,7 +21,6 @@ OpenAssessment.LeaderboardView.prototype = {
     Load the leaderboard view.
     **/
     load: function() {
-        console.log("A");
         var view = this;
         var baseView = this.baseView;
         this.server.render('leaderboard').done(
@@ -39,17 +38,9 @@ OpenAssessment.LeaderboardView.prototype = {
     Install event handlers for the view.
     **/
     installHandlers: function() {
-        console.log("B");
         // Install a click handler for collapse/expand
         var sel = $('#openassessment__leaderboard', this.element);
         this.baseView.setUpCollapseExpand(sel);
-
-//        // Install a click handler for assessment feedback
-//        var view = this;
-//        sel.find('#feedback__submit').click(function(eventObject) {
-//            eventObject.preventDefault();
-//            view.submitFeedbackOnAssessment();
-//        });
     },
 
     /**
@@ -63,7 +54,6 @@ OpenAssessment.LeaderboardView.prototype = {
         undefined
     **/
     setHidden: function(sel, hidden) {
-        console.log("E");
         sel.toggleClass('is--hidden', hidden);
         sel.attr('aria-hidden', hidden ? 'true' : 'false');
     },
@@ -78,7 +68,6 @@ OpenAssessment.LeaderboardView.prototype = {
         boolean
     **/
     isHidden: function(sel) {
-        console.log("F");
         return sel.hasClass('is--hidden') && sel.attr('aria-hidden') == 'true';
     }
 };

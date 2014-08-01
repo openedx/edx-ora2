@@ -518,8 +518,8 @@ def serialize_content_to_xml(oa_block, root):
         root.set('submission_due', unicode(oa_block.submission_due))
 
     # Set leaderboard show
-    if oa_block.leaderboard_show is not 0:
-        root.set('leaderboard_show', unicode(str(oa_block.leaderboard_show)))
+    if oa_block.leaderboard_show:
+        root.set('leaderboard_show', unicode(oa_block.leaderboard_show))
 
     if oa_block.allow_file_upload is not None:
         root.set('allow_file_upload', unicode(oa_block.allow_file_upload))
@@ -655,7 +655,7 @@ def update_from_xml(oa_block, root, validator=DEFAULT_VALIDATOR):
             leaderboard_show = int(root.attrib['leaderboard_show'])
             if leaderboard_show < 1:
                 raise UpdateFromXmlError(_('The leaderboard must have a positive integer value.'))
-        except ValueError:
+        except (TypeError, ValueError):
             raise UpdateFromXmlError(_('The leaderboard must have an integer value.'))
 
     # Retrieve the assessments

@@ -3,12 +3,6 @@
         "title": "Foo",
         "prompt": "Test prompt",
         "rubric_feedback_prompt": "Test Feedback Prompt",
-        "start": null,
-        "due": null,
-        "submission_start": null,
-        "submission_due": null,
-        "leaderboard_show": null,
-        "allow_file_upload": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -67,14 +61,7 @@
 
     "promptless": {
         "title": "Foo",
-        "prompt": null,
         "rubric_feedback_prompt": "Test Feedback Prompt",
-        "start": null,
-        "due": null,
-        "submission_start": null,
-        "submission_due": null,
-        "leaderboard_show": null,
-        "allow_file_upload": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -134,12 +121,6 @@
         "title": "Foo",
         "prompt": "",
         "rubric_feedback_prompt": "Test Feedback Prompt",
-        "start": null,
-        "due": null,
-        "submission_start": null,
-        "submission_due": null,
-        "leaderboard_show": null,
-        "allow_file_upload": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -200,12 +181,6 @@
         "title": "ƒσσ",
         "prompt": "Ṫëṡẗ ṗṛöṁṗẗ",
         "rubric_feedback_prompt": "†es† Feedbåck Prømp†",
-        "start": null,
-        "due": null,
-        "submission_start": null,
-        "submission_due": null,
-        "leaderboard_show": null,
-        "allow_file_upload": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -260,12 +235,6 @@
         "title": "Foo",
         "prompt": "Test prompt",
         "rubric_feedback_prompt": "",
-        "start": null,
-        "due": null,
-        "submission_start": null,
-        "submission_due": null,
-        "leaderboard_show": null,
-        "allow_file_upload": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -325,13 +294,6 @@
     "no_feedback_prompt": {
         "title": "Foo",
         "prompt": "Test prompt",
-        "rubric_feedback_prompt": null,
-        "start": null,
-        "due": null,
-        "submission_start": null,
-        "submission_due": null,
-        "leaderboard_show": null,
-        "allow_file_upload": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -391,12 +353,6 @@
         "title": "Foo",
         "prompt": "Test prompt",
         "rubric_feedback_prompt": "Test Feedback Prompt",
-        "start": null,
-        "due": null,
-        "submission_start": null,
-        "submission_due": null,
-        "leaderboard_show": null,
-        "allow_file_upload": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -451,12 +407,6 @@
         "title": "Foo",
         "prompt": "Test prompt",
         "rubric_feedback_prompt": "Test Feedback Prompt",
-        "start": null,
-        "due": null,
-        "submission_start": null,
-        "submission_due": null,
-        "leaderboard_show": null,
-        "allow_file_upload": null,
         "criteria": [
             {
                 "order_num": 2,
@@ -529,12 +479,6 @@
         "title": "Foo",
         "prompt": "Test prompt",
         "rubric_feedback_prompt": "Test Feedback Prompt",
-        "start": null,
-        "due": null,
-        "submission_start": null,
-        "submission_due": null,
-        "leaderboard_show": null,
-        "allow_file_upload": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -599,10 +543,7 @@
         "rubric_feedback_prompt": "Test Feedback Prompt",
         "start": "2010-04-01T00:00:00",
         "due": "2030-05-01T00:00:00",
-        "submission_start": null,
         "submission_due": "2020-04-15T00:00:00",
-        "leaderboard_show": null,
-        "allow_file_upload": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -665,12 +606,6 @@
         "title": "Foo",
         "prompt": "Test prompt",
         "rubric_feedback_prompt": "Test Feedback Prompt",
-        "start": null,
-        "due": null,
-        "submission_start": null,
-        "submission_due": null,
-        "leaderboard_show": null,
-        "allow_file_upload": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -732,11 +667,6 @@
         "title": "Foo",
         "prompt": "Test prompt",
         "rubric_feedback_prompt": "Test Feedback Prompt",
-        "start": null,
-        "due": null,
-        "submission_start": null,
-        "submission_due": null,
-        "allow_file_upload": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -798,12 +728,6 @@
         "title": "Foo",
         "prompt": "Test prompt",
         "rubric_feedback_prompt": "Test Feedback Prompt",
-        "start": null,
-        "due": null,
-        "submission_start": null,
-        "submission_due": null,
-        "leaderboard_show": null,
-        "allow_file_upload": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -857,12 +781,6 @@
         "title": "Foo",
         "prompt": "Test prompt",
         "rubric_feedback_prompt": "Test Feedback Prompt",
-        "start": null,
-        "due": null,
-        "submission_start": null,
-        "submission_due": null,
-        "leaderboard_show": null,
-        "allow_file_upload": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -961,12 +879,6 @@
         "title": "Foo",
         "prompt": "Test prompt",
         "rubric_feedback_prompt": "Test Feedback Prompt",
-        "start": null,
-        "due": null,
-        "submission_start": null,
-        "submission_due": null,
-        "leaderboard_show": null,
-        "allow_file_upload": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -1083,12 +995,6 @@
         "title": "Foo",
         "prompt": "Test prompt",
         "rubric_feedback_prompt": "Test Feedback Prompt",
-        "start": null,
-        "due": null,
-        "submission_start": null,
-        "submission_due": null,
-        "leaderboard_show": null,
-        "allow_file_upload": null,
         "criteria": [
             {
                 "order_num": 0,
@@ -1184,10 +1090,6 @@
         "prompt": "Test prompt",
         "rubric_feedback_prompt": "Test Feedback Prompt",
         "allow_file_upload": true,
-        "start": null,
-        "due": null,
-        "submission_start": null,
-        "submission_due": null,
         "criteria": [
             {
                 "order_num": 0,
