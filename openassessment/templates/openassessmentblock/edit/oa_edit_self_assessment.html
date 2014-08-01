@@ -14,7 +14,7 @@
         </p>
         <div id="self_assessment_settings_editor" class="assessment_settings_wrapper {% if not assessments.self_assessment %} is--hidden {% endif %}">
             <p class="openassessment_description">
-                {% trans "Specify start and due dates for the self assessment step. To allow self assessment to run as long as the assignment is open, leave both fields blank." %}
+                {% trans "Specify start and due dates for the self assessment step." %}
             </p>
             <ul class="list-input settings-list">
                 <li class="field comp-setting-entry">
@@ -36,7 +36,7 @@
                             value="{{ assessments.self_assessment.start|utc|date:"H:i" }}"
                         >
                     </div>
-                    <p class="setting-help">{% trans "Specify a start date for the self assessment period." %}</p>
+                    <p class="setting-help">{% trans "Enter the date and time when students can begin assessing their responses." %}</p>
                 </li>
                 <li class="field comp-setting-entry">
                     <div class="wrapper-comp-setting">
@@ -57,7 +57,7 @@
                             value="{{ assessments.self_assessment.due|utc|date:"H:i" }}"
                         >
                     </div>
-                    <p class="setting-help">{% trans "Specify a due date for the self assessment period." %}</p>
+                    <p class="setting-help">{% trans "Enter the date and time when all self assessments must be complete." %}</p>
                 </li>
             </ul>
         </div>

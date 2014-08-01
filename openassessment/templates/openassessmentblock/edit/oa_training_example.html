@@ -7,7 +7,7 @@
             <i class="icon-caret-down ui-toggle-expansion"></i>
         </a>
         <h6 class="openassessment_training_example_header_title">
-            {% blocktrans %} Scored Response {% endblocktrans %}
+            {% trans "Scored Response" %}
         </h6>
         <div class="openassessment_training_example_remove">
             <h2>{% trans "Remove" %}</h2>
@@ -16,7 +16,7 @@
 
     <div class="openassessment_training_example_body">
         <div class="openassessment_training_example_scored_rubric wrapper-comp-settings">
-            <h2>{% trans "Scored Rubric" %}</h2>
+            <h2>{% trans "Response Score" %}</h2>
             <ol class="openassessment_training_example_criteria_selections list-input settings-list">
                 {% for criterion in example.criteria %}
                     {%  if criterion.options %}

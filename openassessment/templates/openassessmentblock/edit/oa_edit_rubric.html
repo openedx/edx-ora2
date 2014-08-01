@@ -11,7 +11,7 @@
 
     <div id="openassessment_rubric_instructions">
         <p class="openassessment_description">
-            {% trans "For open response problems, assessment is rubric-based.  Rubric criterion have point breakdowns and explanations to help students with peer and self assessment steps. For more information on how to build your rubric, see our online help documentation."%}
+            {% trans "Rubrics are made up of criteria, which usually contain one or more options. Each option has a point value. This template contains two sample criteria and their options. Replace the sample text with your own text. For more information, see the ORA documentation." %}
         </p>
     </div>
 
@@ -23,22 +23,22 @@
 
     <div id="openassessment_rubric_add_criterion">
         <h6>
-            {% trans "Add Another Criterion" %}
+            {% trans "Add Criterion" %}
         </h6>
     </div>
 
     <div id="openassessment_rubric_feedback_wrapper" class="wrapper-comp-settings">
         <div id="openassessment_rubric_feedback_header">
-            <span>{% trans "Rubric Feedback" %}</span>
+            <span>{% trans "Feedback for This Response" %}</span>
         </div>
         <ul class="list-input settings-list">
             <li class="field comp-setting-entry">
                 <div class="wrapper-comp-setting" id="openassessment_rubric_feedback_input_wrapper">
-                    <label for="openassessment_rubric_feedback" class="setting-label">{% trans "Feedback Direction" %}</label>
+                    <label for="openassessment_rubric_feedback" class="setting-label">{% trans "Feedback Instructions" %}</label>
                     <textarea id="openassessment_rubric_feedback" class="input setting-input">{{ feedbackprompt }}</textarea>
                 </div>
                 <p class="setting-help">
-                    {% trans "If you would like your students to be able to provide feedback on the rubric, add a prompt to ask them for it." %}
+                    {% trans "Encourage your students to provide feedback on the response they've graded. You can replace the sample text with your own." %}
                 </p>
             </li>
 

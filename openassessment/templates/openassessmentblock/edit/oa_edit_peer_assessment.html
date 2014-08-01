@@ -14,7 +14,7 @@
         </p>
         <div id="peer_assessment_settings_editor" class="assessment_settings_wrapper {% if not assessments.peer_assessment %} is--hidden {% endif %}">
             <p class="openassessment_description">
-                {% trans "Specify the following values for the peer assessment step. The numeric grading requirements must be given a value." %}
+                {% trans "Specify the following values for the peer assessment step." %}
             </p>
             <ul class="list-input settings-list">
                 <li class="field comp-setting-entry">
@@ -22,14 +22,14 @@
                         <label for="peer_assessment_must_grade" class="setting-label">{% trans "Must Grade" %}</label>
                         <input id="peer_assessment_must_grade" class="input setting-input" type="number" value="{{ assessments.peer_assessment.must_grade }}" min="0" max="99">
                     </div>
-                    <p class="setting-help">{% trans "Each student must assess this number of peer responses in order to recieve a grade."%}</p>
+                    <p class="setting-help">{% trans "Specify the number of peer assessments that each student must complete."%}</p>
                 </li>
                 <li class="field comp-setting-entry">
                     <div class="wrapper-comp-setting">
                         <label for="peer_assessment_graded_by" class="setting-label"> {% trans "Graded By" %}</label>
                         <input id="peer_assessment_graded_by" class="input setting-input" type="number" value="{{ assessments.peer_assessment.must_be_graded_by }}" min="0" max="99">
                     </div>
-                    <p class="setting-help">{% trans "Each response must be assessed by at least this many students in order to tabulate a score."%}</p>
+                    <p class="setting-help">{% trans "Specify the number of students who must assess each response."%}</p>
                 </li>
                 <li class="field comp-setting-entry">
                     <div class="wrapper-comp-setting">
@@ -50,7 +50,7 @@
                             value="{{ assessments.peer_assessment.start|utc|date:"H:i" }}"
                         >
                     </div>
-                    <p class="setting-help">{% trans "Specify a start date for the peer assessment period." %}</p>
+                    <p class="setting-help">{% trans "Enter the date and time when students can begin assessing peer responses." %}</p>
                 </li>
                 <li class="field comp-setting-entry">
                     <div class="wrapper-comp-setting">
@@ -71,7 +71,7 @@
                             value="{{ assessments.peer_assessment.due|utc|date:"H:i" }}"
                         >
                     </div>
-                    <p class="setting-help">{% trans "Specify a due date for the peer assessment period." %}</p>
+                    <p class="setting-help">{% trans "Enter the date and time when all peer assessments must be complete." %}</p>
                 </li>
             </ul>
         </div>

@@ -100,12 +100,12 @@ class OpenAssessmentBlock(
     """Displays a prompt and provides an area where students can compose a response."""
 
     submission_start = String(
-        default=None, scope=Scope.settings,
+        default=DEFAULT_START, scope=Scope.settings,
         help="ISO-8601 formatted string representing the submission start date."
     )
 
     submission_due = String(
-        default=None, scope=Scope.settings,
+        default=DEFAULT_DUE, scope=Scope.settings,
         help="ISO-8601 formatted string representing the submission due date."
     )
 

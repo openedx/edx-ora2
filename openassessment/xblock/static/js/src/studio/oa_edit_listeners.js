@@ -72,8 +72,8 @@ OpenAssessment.StudentTrainingListener.prototype = {
 
         if (criterionAdded) {
             this.displayAlertMsg(
-                gettext("Criterion Addition requires Training Example Updates"),
-                gettext("Because you added a criterion, student training examples will have to be updated.")
+                gettext("Criterion Added"),
+                gettext("You've added a criterion. You'll need to select an option for the criterion in the Student Training step. To do this, click the Settings tab.")
             );
         }
     },
@@ -119,8 +119,8 @@ OpenAssessment.StudentTrainingListener.prototype = {
 
         if (invalidated) {
             this.displayAlertMsg(
-                gettext("Option Deletion Led to Invalidation"),
-                gettext("Because you deleted an option, some student training examples had to be reset.")
+                gettext("Option Deleted"),
+                gettext("You've deleted an option. The system has removed that option from its criterion in the sample responses in the Student Training step. You may have to select a new option for the criterion.")
             );
         }
     },
@@ -151,8 +151,8 @@ OpenAssessment.StudentTrainingListener.prototype = {
 
         if (changed) {
             this.displayAlertMsg(
-                gettext("Option Deletion Led to Invalidation"),
-                gettext("The deletion of the last criterion option caused the criterion to be removed in the student training examples.")
+                gettext("Option Deleted"),
+                gettext("You've deleted all the options for this criterion. The system has removed the criterion from the sample responses in the Student Training step.")
             );
         }
     },
@@ -178,8 +178,8 @@ OpenAssessment.StudentTrainingListener.prototype = {
 
         if (changed) {
             this.displayAlertMsg(
-                gettext("Criterion Deletion Led to Invalidation"),
-                gettext("Because you deleted a criterion, there were student training examples where the criterion had to be removed.")
+                gettext("Criterion Deleted"),
+                gettext("You've deleted a criterion. The system has removed the criterion from the sample responses in the Student Training step.")
             );
         }
     },
