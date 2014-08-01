@@ -379,6 +379,8 @@ OpenAssessment.EditStudentTrainingView = function(element) {
             containerItemClass: "openassessment_training_example"
         }
     );
+    
+    this.exampleContainer.addEventListeners();
 };
 
 OpenAssessment.EditStudentTrainingView.prototype = {

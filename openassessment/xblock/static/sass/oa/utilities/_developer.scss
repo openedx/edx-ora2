@@ -224,7 +224,28 @@
         a {
           padding: 8px 0 0 0;
           width: 100%;
+          text-transform: uppercase;
+          outline-color: transparent;
         }
+      }
+
+      .ui-state-default.oa_editor_tab{
+        background: #e5e5e5 none;
+        a {
+          color: $edx-gray-d3;
+        }
+      }
+
+      .ui-state-active.ui-state-default.oa_editor_tab:hover,
+      .ui-state-active.oa_editor_tab {
+        background: $edx-gray-d2 none;
+        a {
+          color: $white;
+        }
+      }
+
+      .ui-state-default.oa_editor_tab:hover{
+        background-color: $edx-gray-t3;
       }
     }
   }
@@ -471,33 +492,85 @@
      bottom: 0;
    }
 
-  .ui-widget-header .ui-state-default{
-    background: #e5e5e5;
-    a{
-      color: $edx-gray-d3;
-      text-transform: uppercase;
-      outline-color: transparent;
-    }
-  }
-  .ui-widget-header .ui-state-active.ui-state-default:hover,
-  .ui-widget-header .ui-state-active{
-    background: $edx-gray-d2;
-    color: $white;
-    a{
-      color: $white;
-      text-transform: uppercase;
-      outline-color: transparent;
-    }
-  }
-
-  .ui-widget-header .ui-state-default:hover{
-    background: $edx-gray-t3;
-  }
-
   #oa_rubric_editor_wrapper{
 
+<<<<<<< HEAD
+=======
+    #openassessment_rubric_validation_alert{
+      height: auto;
+      width: 100%;
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
+      background-color: #323232;
+      border-bottom: 3px solid rgb(192, 172, 0);
+      padding: 10px;
+      position: absolute;
+      z-index: 10;
+      min-height: 70px;
+      @include transition (color 0.50s ease-in-out 0s);
+
+      .openassessment_alert_icon:before{
+        font-family: FontAwesome;
+        content: "\f071";
+        display: inline-block;
+        color: rgb(192, 172, 0);
+        float: left;
+        font-size: 200%;
+        margin: 1.5% 0px 0px 2%;
+      }
+      .openassessment_alert_header {
+        width: 85%;
+        margin: 0 5% 0 10%;
+
+        .openassessment_alert_title {
+          width: auto;
+          color: white;
+        }
+
+        .openassessment_alert_message {
+          font-size: 80%;
+          color: darkgray;
+        }
+      }
+
+      // with cancel
+      .openassessment_alert_close {
+        display: inline-block;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        color: #e9e9e9;
+        background-color: #323232;
+        text-align: center;
+        margin: 5px 10px;
+
+        [class^="icon"] {
+          width: auto;
+          margin: 0;
+          padding: 2px;
+        }
+
+        &:hover {
+          color: $blue;
+        }
+      }
+    }
+
+    #openassessment_rubric_content_editor{
+      height: 100%;
+      width: 100%;
+      overflow-y: scroll;
+    }
+
+    #openassessment_rubric_content_editor.openassessment_alert_shown{
+      height: Calc(100% - 70px);
+      position: absolute;
+      bottom: 0;
+    }
+
+>>>>>>> origin/authoring
     .wrapper-comp-settings{
-      display: initial;
+      display: block;
     }
 
     #openassessment_rubric_instructions{
@@ -774,7 +847,7 @@
       float: right;
     }
     .openassessment_rubric_remove_button:hover{
-      background: $edx-gray-d2;
+      background-color: $edx-gray-d2;
       border-radius: 4px;
       color: white;
     }

@@ -25,8 +25,10 @@ OpenAssessment.StudentTrainingListener.prototype = {
         $(sel, this.element).each(
             function() {
                 var criterion = this;
-                var option = $('option[value="' + data.name + '"]', criterion);
-                $(option).text(view._generateOptionString(data.label, data.points));
+                var option = $('option[value="' + data.name + '"]', criterion)
+                    .data("points", data.points)
+                    .data("label", data.label);
+                OpenAssessment.ItemUtilities.refreshOptionString(option);
             }
         );
     },
@@ -64,9 +66,14 @@ OpenAssessment.StudentTrainingListener.prototype = {
                 // Risky; making an assumption that options will remain simple.
                 // updates could cause this to get out of sync with templates,
                 // but this avoids overly complex templating code.
-                $(criterion).append($("<option></option>")
+                var option = $("<option></option>")
                     .attr("value", data.name)
-                    .text(view._generateOptionString(data.label, data.points)));
+                    .data("points", data.points)
+                    .data("label", data.label);
+
+                // Sets the option's text description, and adds it to the criterion.
+                OpenAssessment.ItemUtilities.refreshOptionString(option);
+                $(criterion).append(option);
                 examplesUpdated = true;
             }
         });
@@ -328,19 +335,5 @@ OpenAssessment.StudentTrainingListener.prototype = {
             }
         );
         return examples;
-    },
-
-    /**
-    Format the option label, including the point value.
-
-    Args:
-        name (string): The option label (e.g. "Good", "Fair").
-        points (int): The number of points that the option is worth.
-
-    Returns:
-        string
-    **/
-    _generateOptionString: function(name, points) {
-        return name + ' - ' + points + gettext(' points');
     }
 };
