@@ -39,19 +39,26 @@ OpenAssessment.ItemUtilities = {
         }
         var singularString = label + " - " + points + " point";
         var multipleString = label + " - " + points + " points";
+
         // If the option doesn't have a data points value, that indicates to us that it is not a user-specified option,
         // but represents the "Not Selected" option which all criterion drop-downs have.
-        if (typeof points === 'undefined') {
-            $(element).text(
-                gettext('Not Selected')
-            );
+        var finalLabel = "";
+        if (points === undefined) {
+            finalLabel = gettext('Not Selected');
         }
+
+        // If the points are invalid, we'll be given NaN
+        // Don't show this to the user.
+        else if (isNaN(points)) {
+            finalLabel = label;
+        }
+
         // Otherwise, set the text of the option element to be the properly conjugated, translated string.
         else {
-            $(element).text(
-                ngettext(singularString, multipleString, points)
-            );
+            finalLabel = ngettext(singularString, multipleString, points);
         }
+
+        $(element).text(finalLabel);
     }
 };
 

@@ -22,6 +22,7 @@ OpenAssessment.StudentTrainingListener.prototype = {
     optionUpdated: function(data) {
         var view = this;
         var sel = '.openassessment_training_example_criterion[data-criterion="' + data.criterionName + '"]';
+
         $(sel, this.element).each(
             function() {
                 var criterion = this;
