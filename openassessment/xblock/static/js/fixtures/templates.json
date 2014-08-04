@@ -590,6 +590,10 @@
                         ]
                     }
                 },
+                "student_training": {
+                    "start": "",
+                    "due": ""
+                },
                 "peer_assessment": {
                     "start": "2014-01-02T00:00",
                     "due": "2020-01-01T12:34",
