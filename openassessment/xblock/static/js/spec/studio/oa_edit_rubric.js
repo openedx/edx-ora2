@@ -208,4 +208,27 @@ describe("OpenAssessment.EditRubricView", function() {
             data: {criterionName : 'criterion_1'}
         });
     });
+
+    it("validates option points", function () {
+        // Test that a particular value is marked as valid/invalid
+        var testValidateOptionPoints = function(value, isValid) {
+            var option = view.getOptionItem(0, 0);
+            option.points(value);
+            expect(view.validate()).toBe(isValid);
+        };
+
+        // Invalid option point values
+        testValidateOptionPoints("", false);
+        testValidateOptionPoints("123abcd", false);
+        testValidateOptionPoints("-1", false);
+        testValidateOptionPoints("1000", false);
+        testValidateOptionPoints("0.5", false);
+
+        // Valid option point values
+        testValidateOptionPoints("0", true);
+        testValidateOptionPoints("1", true);
+        testValidateOptionPoints("2", true);
+        testValidateOptionPoints("998", true);
+        testValidateOptionPoints("999", true);
+    });
 });

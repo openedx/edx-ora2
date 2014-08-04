@@ -388,7 +388,8 @@
         "context": {
             "prompt": "How much do you like waffles?",
             "title": "The most important of all questions.",
-            "submission_due": "2014-10-1T10:00:00",
+            "submission_start": "2014-01-02T12:15",
+            "submission_due": "2014-10-01T04:53",
             "criteria": [
                 {
                     "name": "criterion_1",
@@ -443,13 +444,14 @@
             ],
             "assessments": {
                 "peer_assessment": {
-                    "start": "",
-                    "due": "",
+                    "start": "2014-01-02T00:00",
+                    "due": "2014-01-03T00:00",
                     "must_grade": 5,
                     "must_be_graded_by": 3
                 },
                 "self_assessment": {
-                    "due": ""
+                    "start": "2014-01-04T00:00",
+                    "due": "2014-01-05T00:00"
                 }
             },
             "editor_assessments_order": [
@@ -466,6 +468,7 @@
         "context": {
             "prompt": "Test prompt",
             "title": "Test title",
+            "submission_start": "2014-01-1T10:00:00",
             "submission_due": "2014-10-1T10:00:00",
             "criteria": [
                 {
@@ -588,8 +591,8 @@
                     }
                 },
                 "peer_assessment": {
-                    "start": "",
-                    "due": "",
+                    "start": "2014-01-02T00:00",
+                    "due": "2020-01-01T12:34",
                     "must_grade": 5,
                     "must_be_graded_by": 3
                 }

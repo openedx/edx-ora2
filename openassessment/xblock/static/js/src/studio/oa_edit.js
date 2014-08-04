@@ -22,6 +22,10 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     // Initializes the tabbing functionality and activates the last used.
     this.initializeTabs();
 
+    // Initialize the validation alert
+    this.validationAlert = new OpenAssessment.ValidationAlert();
+    this.validationAlert.installEventHandlers();
+
     // Initialize the prompt tab view
     this.promptView = new OpenAssessment.EditPromptView(
         $("#oa_prompt_editor_wrapper", this.element).get(0)
@@ -120,20 +124,42 @@ OpenAssessment.StudioView.prototype = {
     save: function () {
         var view = this;
         this.saveTabState();
-        // Check whether the problem has been released; if not,
-        // warn the user and allow them to cancel.
-        this.server.checkReleased().done(
-            function (isReleased) {
-                if (isReleased) {
-                    view.confirmPostReleaseUpdate($.proxy(view.updateEditorContext, view));
+
+        // Perform client-side validation:
+        // * Clear errors from any field marked as invalid.
+        // * Mark invalid fields in the UI.
+        // * If there are any validation errors, show an alert.
+        //
+        // The `validate()` method calls `validate()` on any subviews,
+        // so that each subview has the opportunity to validate
+        // its fields.
+        this.clearValidationErrors();
+        if (!this.validate()) {
+            this.validationAlert.setMessage(
+                gettext("Couldn't Save This Assignment"),
+                gettext("Please correct the outlined fields.")
+            ).show();
+        }
+        else {
+            // At this point, we know that all fields are valid,
+            // so we can dismiss the validation alert.
+            this.validationAlert.hide();
+
+            // Check whether the problem has been released; if not,
+            // warn the user and allow them to cancel.
+            this.server.checkReleased().done(
+                function (isReleased) {
+                    if (isReleased) {
+                        view.confirmPostReleaseUpdate($.proxy(view.updateEditorContext, view));
+                    }
+                    else {
+                        view.updateEditorContext();
+                    }
                 }
-                else {
-                    view.updateEditorContext();
-                }
-            }
-        ).fail(function (errMsg) {
-            view.showError(errMsg);
-        });
+            ).fail(function (errMsg) {
+                view.showError(errMsg);
+            });
+        }
     },
 
     /**
@@ -196,6 +222,41 @@ OpenAssessment.StudioView.prototype = {
      **/
     showError: function (errorMsg) {
         this.runtime.notify('error', {msg: errorMsg});
+    },
+
+    /**
+    Mark validation errors.
+
+    Returns:
+        Boolean indicating whether the view is valid.
+
+    **/
+    validate: function() {
+        var settingsValid = this.settingsView.validate();
+        var rubricValid = this.rubricView.validate();
+        return settingsValid && rubricValid;
+    },
+
+   /**
+    Return a list of validation errors visible in the UI.
+    Mainly useful for testing.
+
+    Returns:
+        list of string
+
+    **/
+    validationErrors: function() {
+        return this.settingsView.validationErrors().concat(
+            this.rubricView.validationErrors()
+        );
+    },
+
+    /**
+    Clear all validation errors from the UI.
+    **/
+    clearValidationErrors: function() {
+        this.settingsView.clearValidationErrors();
+        this.rubricView.clearValidationErrors();
     },
 };
 

@@ -4,7 +4,7 @@ changes to the rubric.
 **/
 OpenAssessment.StudentTrainingListener = function() {
     this.element = $('#oa_student_training_editor');
-    this.alert = new OpenAssessment.ValidationAlert($('#openassessment_rubric_validation_alert'));
+    this.alert = new OpenAssessment.ValidationAlert();
 };
 
 OpenAssessment.StudentTrainingListener.prototype = {
@@ -22,6 +22,7 @@ OpenAssessment.StudentTrainingListener.prototype = {
     optionUpdated: function(data) {
         var view = this;
         var sel = '.openassessment_training_example_criterion[data-criterion="' + data.criterionName + '"]';
+
         $(sel, this.element).each(
             function() {
                 var criterion = this;

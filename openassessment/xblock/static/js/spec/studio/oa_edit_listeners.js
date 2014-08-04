@@ -79,6 +79,29 @@ describe("OpenAssessment.StudentTrainingListener", function() {
         );
     });
 
+    it("updates the label of an option with invalid points", function() {
+        // If an option has invalid points, the points will be set to NaN
+        listener.optionUpdated({
+            criterionName: "criterion_with_two_options",
+            name: "option_1",
+            label: "This is a new label!",
+            points: NaN
+        });
+
+        // Invalid points should be labeled as such
+        assertExampleLabels(
+            listener.examplesOptionsLabels(),
+            {
+                criterion_with_two_options: {
+                    "": "Not Scored",
+                    option_1: "This is a new label!",
+                    option_2: "Good - 2 points"
+                }
+            }
+        );
+
+    });
+
     it("removes an option and displays an alert", function() {
         // Initial state, set by the fixture
         assertExampleLabels(

@@ -25,6 +25,9 @@ templates.json file's directory.
 import sys
 import os.path
 import json
+import re
+import dateutil.parser
+import pytz
 
 # This is a bit of a hack to ensure that the root repo directory
 # is in the Python path, so Django can find the settings module.
@@ -34,6 +37,47 @@ from django.template.loader import get_template
 
 
 USAGE = u"{prog} TEMPLATE_DESC"
+
+
+DATETIME_REGEX = re.compile("^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$")
+
+def parse_dates(context):
+    """
+    Transform datetime strings into Python datetime objects.
+
+    JSON does not provide a standard way to serialize datetime objects,
+    but some of the templates expect that the context contains
+    Python datetime objects.
+
+    This (somewhat hacky) solution recursively searches the context
+    for formatted datetime strings of the form "2014-01-02T12:34"
+    and converts them to Python datetime objects with the timezone
+    set to UTC.
+
+    Args:
+        context (JSON-serializable): The context (or part of the context)
+            that will be passed to the template.  Dictionaries and lists
+            will be recursively searched and transformed.
+
+    Returns:
+        JSON-serializable of the same type as the `context` argument.
+
+    """
+    if isinstance(context, dict):
+        return {
+            key: parse_dates(value)
+            for key, value in context.iteritems()
+        }
+    elif isinstance(context, list):
+        return [
+            parse_dates(item)
+            for item in context
+        ]
+    elif isinstance(context, basestring):
+        if DATETIME_REGEX.match(context) is not None:
+            return dateutil.parser.parse(context).replace(tzinfo=pytz.utc)
+
+    return context
 
 
 def render_templates(root_dir, template_json):
@@ -51,7 +95,8 @@ def render_templates(root_dir, template_json):
     """
     for template_dict in template_json:
         template = get_template(template_dict['template'])
-        rendered = template.render(Context(template_dict['context']))
+        context = parse_dates(template_dict['context'])
+        rendered = template.render(Context(context))
         output_path = os.path.join(root_dir, template_dict['output'])
 
         try:

@@ -3,18 +3,103 @@ Utilities for reading / writing fields.
 **/
 OpenAssessment.Fields = {
     stringField: function(sel, value) {
-        if (typeof(value) !== "undefined") { sel.val(value); }
+        if (value !== undefined) { sel.val(value); }
         return sel.val();
     },
 
-    intField: function(sel, value) {
-        if (typeof(value) !== "undefined") { sel.val(value); }
-        return parseInt(sel.val(), 10);
+    booleanField: function(sel, value) {
+        if (value !== undefined) { sel.prop("checked", value); }
+        return sel.prop("checked");
+    },
+};
+
+
+/**
+Integer input.
+
+Args:
+    inputSel (JQuery selector or DOM element): The input field.
+
+Keyword args:
+    min (int): The minimum value allowed in the input.
+    max (int): The maximum value allowed in the input.
+
+**/
+OpenAssessment.IntField = function(inputSel, restrictions) {
+    this.max = restrictions.max;
+    this.min = restrictions.min;
+    this.input = $(inputSel);
+};
+
+OpenAssessment.IntField.prototype = {
+
+    /**
+    Retrieve the integer value from the input.
+    Decimal values will be truncated, and non-numeric
+    values will become NaN.
+
+    Returns:
+        integer or NaN
+    **/
+    get: function() {
+        return parseInt(this.input.val().trim(), 10);
     },
 
-    booleanField: function(sel, value) {
-        if (typeof(value) !== "undefined") { sel.prop("checked", value); }
-        return sel.prop("checked");
+    /**
+    Set the input value.
+
+    Args:
+        val (int or string)
+
+    **/
+    set: function(val) {
+        this.input.val(val);
+    },
+
+    /**
+    Mark validation errors if the field does not satisfy the restrictions.
+    Fractional values are not considered valid integers.
+
+    This will trim whitespace from the field, so "   34  " would be considered
+    a valid input.
+
+    Returns:
+        Boolean indicating whether the field's value is valid.
+
+    **/
+    validate: function() {
+        var value = this.get();
+        var isValid = !isNaN(value) && value >= this.min && value <= this.max;
+
+        // Decimal values not allowed
+        if (this.input.val().indexOf(".") !== -1) {
+            isValid = false;
+        }
+
+        if (!isValid) {
+            this.input.addClass("openassessment_highlighted_field");
+        }
+        return isValid;
+    },
+
+    /**
+    Clear any validation errors from the UI.
+    **/
+    clearValidationErrors: function() {
+        this.input.removeClass("openassessment_highlighted_field");
+    },
+
+    /**
+    Return a list of validation errors currently displayed
+    in the UI.  Mainly useful for testing.
+
+    Returns:
+        list of strings
+
+    **/
+    validationErrors: function() {
+        var hasError = this.input.hasClass("openassessment_highlighted_field");
+        return hasError ? ["Int field is invalid"] : [];
     },
 };
 
@@ -108,7 +193,7 @@ OpenAssessment.DatetimeControl.prototype = {
     Get or set the date and time.
 
     Args:
-        dateString (string, optional): If provided, set the date (YY-MM-DD).
+        dateString (string, optional): If provided, set the date (YYYY-MM-DD).
         timeString (string, optional): If provided, set the time (HH:MM, 24-hour clock).
 
     Returns:
@@ -118,12 +203,55 @@ OpenAssessment.DatetimeControl.prototype = {
     datetime: function(dateString, timeString) {
         var datePickerSel = $(this.datePicker, this.element);
         var timePickerSel = $(this.timePicker, this.element);
-        if (typeof(dateString) !== "undefined") { datePickerSel.datepicker("setDate", dateString); }
+        if (typeof(dateString) !== "undefined") { datePickerSel.val(dateString); }
         if (typeof(timeString) !== "undefined") { timePickerSel.val(timeString); }
-
-        if (datePickerSel.val() === "" && timePickerSel.val() === "") {
-            return null;
-        }
         return datePickerSel.val() + "T" + timePickerSel.val();
-    }
+    },
+
+    /**
+    Mark validation errors.
+
+    Returns:
+        Boolean indicating whether the fields are valid.
+
+    **/
+    validate: function() {
+        var datetimeString = this.datetime();
+        var matches = datetimeString.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/g);
+        var isValid = (matches !== null);
+
+        if (!isValid) {
+            $(this.datePicker, this.element).addClass("openassessment_highlighted_field");
+            $(this.timePicker, this.element).addClass("openassessment_highlighted_field");
+        }
+
+        return isValid;
+    },
+
+    /**
+    Clear all validation errors from the UI.
+    **/
+    clearValidationErrors: function() {
+        $(this.datePicker, this.element).removeClass("openassessment_highlighted_field");
+        $(this.timePicker, this.element).removeClass("openassessment_highlighted_field");
+    },
+
+   /**
+    Return a list of validation errors visible in the UI.
+    Mainly useful for testing.
+
+    Returns:
+        list of string
+
+    **/
+    validationErrors: function() {
+        var errors = [];
+        var dateHasError = $(this.datePicker, this.element).hasClass("openassessment_highlighted_field");
+        var timeHasError = $(this.timePicker, this.element).hasClass("openassessment_highlighted_field");
+
+        if (dateHasError) { errors.push("Date is invalid"); }
+        if (timeHasError) { errors.push("Time is invalid"); }
+
+        return errors;
+    },
 };
