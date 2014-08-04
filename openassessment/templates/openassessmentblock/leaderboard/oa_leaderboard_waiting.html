@@ -1,20 +1,17 @@
 {% load i18n %}
 {% spaceless %}
-<li id="openassessment__leaderboard" class="openassessment__steps__step step--grade">
+<li id="openassessment__leaderboard" class="openassessment__steps__step step--leaderboard">
     <header class="step__header">
         <h2 class="step__title">
             <span class="wrapper--copy">
-                <span class="step__label">{% trans "Leaderboard" %}: </span>
-                <span class="grade__value">
-                    <span class="grade__value__title">{% trans "Not Available" %}</span>
-                </span>
+                <span class="step__label">{% trans "Leaderboard: Not Available" %} </span>
             </span>
         </h2>
     </header>
 
     <div class="wrapper--step__content">
         <div class="step__content">
-            <div class="grade__value__description">
+            <div class="leaderboard__description">
                 <p>{% trans "The leaderboard is not available until your final grade is complete." %}</p>
             </div>
         </div>

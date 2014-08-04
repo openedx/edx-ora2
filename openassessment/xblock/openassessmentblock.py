@@ -358,6 +358,10 @@ class OpenAssessmentBlock(
                 "OpenAssessmentBlock Promptless Rubric",
                 load('static/xml/promptless_rubric_example.xml')
             ),
+            (
+                "OpenAssessmentBlock Leaderboard",
+                load("static/xml/leaderboard_example.xml")
+            ),
         ]
 
     @classmethod
