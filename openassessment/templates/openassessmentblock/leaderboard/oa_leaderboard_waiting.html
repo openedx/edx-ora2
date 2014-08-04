@@ -1,7 +1,7 @@
 {% load i18n %}
 {% spaceless %}
-<li id="openassessment__leaderboard" class="openassessment__steps__step step--grade ui-toggle-visibility">
-    <header class="step__header ui-toggle-visibility__control">
+<li id="openassessment__leaderboard" class="openassessment__steps__step step--grade">
+    <header class="step__header">
         <h2 class="step__title">
             <span class="wrapper--copy">
                 <span class="step__label">{% trans "Leaderboard" %}: </span>
@@ -12,12 +12,10 @@
         </h2>
     </header>
 
-    <div class="ui-toggle-visibility__content">
-        <div class="wrapper--step__content">
-            <div class="step__content">
-                <div class="grade__value__description">
-                    <p>{% trans "The leaderboard is not available until your final grade is complete." %}</p>
-                </div>
+    <div class="wrapper--step__content">
+        <div class="step__content">
+            <div class="grade__value__description">
+                <p>{% trans "The leaderboard is not available until your final grade is complete." %}</p>
             </div>
         </div>
     </div>
