@@ -73,7 +73,12 @@ class OpenAssessmentPage(object):
         """
         Log in as a unique user with access to the XBlock(s) under test.
         """
-        resp = self.client.get("auto_auth", params={'course_id': self.problem_fixture.course_id}, verify=False)
+        resp = self.client.get(
+            "auto_auth",
+            params={'course_id': self.problem_fixture.course_id},
+            verify=False,
+            timeout=120
+        )
         self.logged_in = (resp.status_code == 200)
         return self
 
