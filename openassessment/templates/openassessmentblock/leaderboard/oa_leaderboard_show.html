@@ -1,6 +1,6 @@
 {% load i18n %}
 {% spaceless %}
-<li id="openassessment__leaderboard" class="openassessment__steps__step step--grade is--complete">
+<li id="openassessment__leaderboard" class="openassessment__steps__step step--grade is--complete ui-toggle-visibility">
     <header class="step__header ui-toggle-visibility__control">
         <h2 class="step__title">
             <span class="wrapper--copy">
@@ -17,7 +17,7 @@
                             <ul class="question__answers">
                                 <li class="answer self-assessment">
                                     <h5 class="answer__title">
-                                        <span class="answer__value">{{ topscore.content }}</span>
+                                        <span class="answer__value">{{ topscore.content|linebreaks }}</span>
                                     </h5>
                                 </li>
                             </ul>
