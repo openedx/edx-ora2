@@ -5,7 +5,7 @@
     <div class="openassessment_editor_content_and_tabs">
 
         <div id="openassessment_editor_header">
-            <h6 id="oa_editor_window_title" class="title modal_window_title" >{% trans "Component: Open Response Problem" %}</h6>
+            <h6 id="oa_editor_window_title" class="title modal_window_title" >{% trans "Open Response Assessment" %}</h6>
             <ul class="editor_modes action_list action_modes editor_tabs">
                 <li class="view-button oa_editor_tab"><a href="#oa_settings_editor_wrapper">{% trans "Settings" %}</a></li>
                 <li class="view-button oa_editor_tab"><a href="#oa_rubric_editor_wrapper">{% trans "Rubric" %}</a></li>
@@ -46,7 +46,7 @@
                         <label
                             for="openassessment_submission_start_date"
                             class="setting-label">
-                            {% trans "Submission Start Date" %}
+                            {% trans "Response Start Date" %}
                         </label>
                         <input
                             type="text"
@@ -59,7 +59,7 @@
                         <label
                             for="openassessment_submission_start_time"
                             class="setting-label">
-                            {% trans "Submission Start Time" %}
+                            {% trans "Response Start Time" %}
                         </label>
                         <input
                             type="text"
@@ -68,14 +68,14 @@
                             value="{{ submission_start|utc|date:"H:i" }}"
                         >
                     </div>
-                    <p class="setting-help">{% trans "The date at which submissions will first be accepted." %}</p>
+                    <p class="setting-help">{% trans "The date and time when students can begin submitting responses." %}</p>
                 </li>
                 <li class="openassessment_date_editor field comp-setting-entry">
                     <div class="wrapper-comp-setting">
                         <label
                             for="openassessment_submission_due_date"
                             class="setting-label">
-                            {% trans "Submission Due Date" %}
+                            {% trans "Response Due Date" %}
                         </label>
                         <input
                             type="text"
@@ -88,7 +88,7 @@
                         <label
                             for="openassessment_submission_due_time"
                             class="setting-label">
-                            {% trans "Submission Due Time" %}
+                            {% trans "Response Due Time" %}
                         </label>
                         <input
                             type="text"
@@ -97,25 +97,25 @@
                             value="{{ submission_due|utc|date:"H:i" }}"
                         >
                     </div>
-                    <p class="setting-help">{% trans "The date at which submissions will stop being accepted." %}</p>
+                    <p class="setting-help">{% trans "The date and time when students can no longer submit responses." %}</p>
                 </li>
                 <li id="openassessment_sumbission_image_wrapper" class="field comp-setting-entry">
                     <div class="wrapper-comp-setting">
-                        <label for="openassessment_submission_image_editor" class="setting-label">{% trans "Allow Image Submissions"%}</label>
+                        <label for="openassessment_submission_image_editor" class="setting-label">{% trans "Allow Image Responses"%}</label>
                         <select id="openassessment_submission_image_editor" class="input setting-input" name="image submission">
-                            <option value="0">{% trans "Disabled"%}</option>
-                            <option value="1" {% if allow_file_upload %} selected="true" {% endif %}>{% trans "Enabled"%}</option>
+                            <option value="0">{% trans "False"%}</option>
+                            <option value="1" {% if allow_file_upload %} selected="true" {% endif %}>{% trans "True"%}</option>
                         </select>
                     </div>
-                    <p class="setting-help">{% trans "If enabled, students will be able to submit an image along with their open response." %}</p>
+                    <p class="setting-help">{% trans "Specify whether students can submit an image file along with their text response." %}</p>
                 </li>
             </ul>
 
             <p class="openassessment_description" id="openassessment_step_select_description">
                 {% if 'example_based_assessment' in editor_assessments_order %}
-                    {% trans "In this assignment, you can include example based assessment, student training, peer assessment, and self assessment steps. Select the steps that you want below, and then drag them into the order that you want.  If you include an example based assessment step, it must be the first step.  If you include a student training step, it must precede the peer assessment step." %}
+                    {% trans "In this assignment, you can include steps for student training, peer assessment, self assessment, and example based assessment. Select the steps that you want below, and then drag them into the order that you want. If you include an example based assessment step, it must precede all other steps. If you include a student training training step, it must precede peer and self assessment steps." %}
                 {% else %}
-                    {% trans "In this assignment, you can include student training, peer assessment, and self assessment steps. Select the steps that you want below, and then drag them into the order that you want.  If you include a student training step, it must precede the peer assessment step." %}
+                    {% trans "In this assignment, you can include steps for student training, peer assessment, and self assessment. Select the steps that you want below, and then drag them into the order that you want. If you include a student training step, it must precede all other steps." %}
                 {% endif %}
             </p>
             <ol id="openassessment_assessment_module_settings_editors">

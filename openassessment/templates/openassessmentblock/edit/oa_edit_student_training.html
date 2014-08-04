@@ -11,11 +11,11 @@
 
     <div class="openassessment_assessment_module_editor">
         <p id="student_training_description_closed" class="openassessment_description_closed {% if assessments.student_training %} is--hidden {% endif %}">
-            {% trans "Students learn to assess responses by scoring pre-assessed sample responses that the instructor provides. Students move to the next step when the scores they give match the instructor's scores. Note that Student Training Requires that the Peer Assessment module is also selected." %}
+            {% trans "Students learn to assess responses by scoring pre-assessed sample responses that you provide. Students move to the next step when the scores they give match your scores. Note that if you add this step, you must also add a peer assessment step. This step must come before the peer assessment step." %}
         </p>
         <div id="student_training_settings_editor" class="assessment_settings_wrapper {% if not assessments.student_training %} is--hidden {% endif %}">
             <p class="openassessment_description">
-                {% trans "Enter one or more sample responses that you've created, together with the scores you would give those responses. Be sure to format the responses and scores according to the placeholder text below." %}
+                {% trans "Enter one or more sample responses that you've created, and then specify the options that you would choose for each criterion in your rubric. Note that you must add your rubric to the Rubric tab before you can complete this step." %}
             </p>
             <ol id="openassessment_training_example_list">
                 {% for example in assessments.training.examples %}
@@ -23,7 +23,7 @@
                 {% endfor %}
             </ol>
             <div id="openassessment_add_training_example">
-                <h2 class='openassessment_add_training_example'>{% trans "Add Scored Response" %}</h2>
+                <h2 class='openassessment_add_training_example'>{% trans "Add Sample Response" %}</h2>
             </div>
 
         </div>

@@ -37,7 +37,7 @@
         </ul>
 
         <div class="openassessment_criterion_add_option openassessment_option_header">
-            <h2>{% trans "Add Another Option"%}</h2>
+            <h2>{% trans "Add Option" %}</h2>
         </div>
 
         <div class="openassessment_criterion_feedback_wrapper wrapper-comp-settings">
@@ -45,9 +45,9 @@
                 <li class="field comp-setting-entry">
                     <div class="wrapper-comp-setting">
                         <label class="setting-label">
-                            {% trans "Criterion Feedback" %}
+                            {% trans "Feedback for This Criterion" %}
                             <select class="openassessment_criterion_feedback input setting-input">
-                                <option value="disabled">{% trans "Disabled" %}</option>
+                                <option value="disabled">{% trans "None" %}</option>
                                 <option value="optional" {% if criterion_feedback == "optional" %} selected="true" {% endif %}>{% trans "Optional" %}</option>
                                 <option value="required" {% if criterion_feedback == "required" %} selected="true" {% endif %}>{% trans "Required" %}</option>
                             </select>
