@@ -23,8 +23,7 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     this.initializeTabs();
 
     // Initialize the validation alert
-    this.validationAlert = new OpenAssessment.ValidationAlert();
-    this.validationAlert.installEventHandlers();
+    this.alert = new OpenAssessment.ValidationAlert().install();
 
     // Initialize the prompt tab view
     this.promptView = new OpenAssessment.EditPromptView(
@@ -135,7 +134,7 @@ OpenAssessment.StudioView.prototype = {
         // its fields.
         this.clearValidationErrors();
         if (!this.validate()) {
-            this.validationAlert.setMessage(
+            this.alert.setMessage(
                 gettext("Couldn't Save This Assignment"),
                 gettext("Please correct the outlined fields.")
             ).show();
@@ -143,7 +142,7 @@ OpenAssessment.StudioView.prototype = {
         else {
             // At this point, we know that all fields are valid,
             // so we can dismiss the validation alert.
-            this.validationAlert.hide();
+            this.alert.hide();
 
             // Check whether the problem has been released; if not,
             // warn the user and allow them to cancel.

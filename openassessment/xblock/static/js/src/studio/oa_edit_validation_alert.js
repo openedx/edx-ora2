@@ -10,6 +10,7 @@ OpenAssessment.ValidationAlert = function() {
     this.editorElement = $(this.element).parent();
     this.title = $(".openassessment_alert_title", this.element);
     this.message = $(".openassessment_alert_message", this.element);
+    this.closeButton = $(".openassessment_alert_close", this.element);
     this.ALERT_YELLOW = 'rgb(192, 172, 0)';
     this.DARK_GREY = '#323232';
 };
@@ -19,14 +20,15 @@ OpenAssessment.ValidationAlert.prototype = {
     /**
     Install the event handlers for the alert.
     **/
-    installEventHandlers: function() {
+    install: function() {
         var alert = this;
-        $(".openassessment_alert_close", this.element).click(
+        this.closeButton.click(
             function(eventObject) {
                 eventObject.preventDefault();
                 alert.hide();
             }
         );
+        return this;
     },
 
     /**
@@ -49,6 +51,7 @@ OpenAssessment.ValidationAlert.prototype = {
         $('.oa_editor_content_wrapper', this.editorElement).each( function () {
             $(this).css(styles);
         });
+
         return this;
     },
 
@@ -60,13 +63,15 @@ OpenAssessment.ValidationAlert.prototype = {
     */
     show : function() {
         var view = this;
+
         if (this.isVisible()){
             $(this.element).animate(
                 {'background-color': view.ALERT_YELLOW}, 300, 'swing', function () {
                     $(this).animate({'background-color': view.DARK_GREY}, 700, 'swing');
                 }
             );
-        } else {
+        }
+        else {
             // Finds the height of all other elements in the editor_and_tabs (the Header and Alert) and sets
             // the height of the editing area to be 100% of that element minus those constraints.
             this.element.removeClass('covered');
@@ -82,8 +87,10 @@ OpenAssessment.ValidationAlert.prototype = {
             $('.oa_editor_content_wrapper', this.editorElement).each(function () {
                 $(this).css(styles);
             });
-            return this;
+
         }
+
+        return this;
     },
 
     /**
@@ -91,8 +98,8 @@ OpenAssessment.ValidationAlert.prototype = {
     How will this work with internationalization?
 
     Args:
-        newTitle (str): the new title that the message will have
-        newMessage (str): the new text that the message's body will contain
+        newTitle (string): the new title that the message will have
+        newMessage (string): the new text that the message's body will contain
 
     Returns:
         OpenAssessment.ValidationAlert
@@ -133,5 +140,5 @@ OpenAssessment.ValidationAlert.prototype = {
     **/
     getMessage: function() {
         return this.message.text();
-    }
+    },
 };

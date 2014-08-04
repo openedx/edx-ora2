@@ -77,3 +77,79 @@ describe("OpenAssessment.DatetimeControl", function() {
         expect(datetimeControl.validationErrors()).toEqual([]);
     });
 });
+
+describe("OpenAssessment.ToggleControl", function() {
+
+    var StubNotifier = function() {
+        this.receivedNotifications = [];
+        this.notificationFired = function(name, data) {
+            this.receivedNotifications.push({
+                name: name,
+                data: data
+            });
+        };
+    };
+
+    var notifier = null;
+    var toggleControl = null;
+
+    beforeEach(function() {
+        setFixtures(
+            '<div id="toggle_test">' +
+                '<div id="shown_section" />' +
+                '<div id="hidden_section" class="is--hidden"/>' +
+            '</div>' +
+            '<input type="checkbox" id="checkbox" checked />'
+        );
+
+        notifier = new StubNotifier();
+        toggleControl = new OpenAssessment.ToggleControl(
+            $("#checkbox"),
+            $("#shown_section"),
+            $("#hidden_section"),
+            notifier
+        ).install();
+    });
+
+    it("shows and hides elements", function() {
+        var assertIsVisible = function(isVisible) {
+            expect(toggleControl.hiddenSection.hasClass('is--hidden')).toBe(isVisible);
+            expect(toggleControl.shownSection.hasClass('is--hidden')).toBe(!isVisible);
+        };
+
+        // Initially, the section is visible (default from the fixture)
+        assertIsVisible(true);
+
+        // Simulate clicking the checkbox, hiding the section
+        toggleControl.checkbox.click();
+        assertIsVisible(false);
+
+        // Click it again to show it
+        toggleControl.checkbox.click();
+        assertIsVisible(true);
+    });
+
+    it("fires notifications", function() {
+        // Toggle off notification
+        toggleControl.checkbox.click();
+        expect(notifier.receivedNotifications).toContain({
+            name: "toggleOff",
+            data: {}
+        });
+
+        // Toggle back on
+        toggleControl.checkbox.click();
+        expect(notifier.receivedNotifications).toContain({
+            name: "toggleOn",
+            data: {}
+        });
+
+        // ... and toggle off
+        toggleControl.checkbox.click();
+        expect(notifier.receivedNotifications).toContain({
+            name: "toggleOff",
+            data: {}
+        });
+    });
+
+});

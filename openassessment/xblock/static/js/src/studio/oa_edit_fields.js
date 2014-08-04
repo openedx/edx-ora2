@@ -108,16 +108,21 @@ OpenAssessment.IntField.prototype = {
 Show and hide elements based on a checkbox.
 
 Args:
-    element (DOM element): The parent element, used to scope the selectors.
-    hiddenSelector (string): The CSS selector string for elements
-        to show when the checkbox is in the "off" state.
-    shownSelector (string): The CSS selector string for elements
-        to show when the checkbox is in the "on" state.
+    checkboxSel (JQuery selector): The checkbox used to toggle whether sections
+        are shown or hidden.
+    shownSel (JQuery selector): The section to show when the checkbox is checked.
+    hiddenSel (JQuery selector): The section to show when the checkbox is unchecked.
+    notifier (OpenAssessment.Notifier): Receives notifications when the checkbox state changes.
+
+Sends the following notifications:
+    * toggleOn
+    * toggleOff
 **/
-OpenAssessment.ToggleControl = function(element, hiddenSelector, shownSelector) {
-    this.element = element;
-    this.hiddenSelector = hiddenSelector;
-    this.shownSelector = shownSelector;
+OpenAssessment.ToggleControl = function(checkboxSel, shownSel, hiddenSel, notifier) {
+    this.checkbox = checkboxSel;
+    this.shownSection = shownSel;
+    this.hiddenSection = hiddenSel;
+    this.notifier = notifier;
 };
 
 OpenAssessment.ToggleControl.prototype = {
@@ -132,24 +137,30 @@ OpenAssessment.ToggleControl.prototype = {
         OpenAssessment.ToggleControl
     **/
     install: function(checkboxSelector) {
-        $(checkboxSelector, this.element).change(
+        this.checkbox.change(
             this, function(event) {
                 var control = event.data;
-                if (this.checked) { control.show(); }
-                else { control.hide(); }
+                if (this.checked) {
+                    control.notifier.notificationFired('toggleOn', {});
+                    control.show();
+                }
+                else {
+                    control.notifier.notificationFired('toggleOff', {});
+                    control.hide();
+                }
             }
         );
         return this;
     },
 
     show: function() {
-        $(this.hiddenSelector, this.element).addClass('is--hidden');
-        $(this.shownSelector, this.element).removeClass('is--hidden');
+        this.shownSection.removeClass('is--hidden');
+        this.hiddenSection.addClass('is--hidden');
     },
 
     hide: function() {
-        $(this.hiddenSelector, this.element).removeClass('is--hidden');
-        $(this.shownSelector, this.element).addClass('is--hidden');
+        this.shownSection.addClass('is--hidden');
+        this.hiddenSection.removeClass('is--hidden');
     }
 };
 
