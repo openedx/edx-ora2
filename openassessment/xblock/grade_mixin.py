@@ -5,7 +5,6 @@ import copy
 from collections import defaultdict
 from lazy import lazy
 
-from django.utils.translation import ugettext as _
 from xblock.core import XBlock
 
 from openassessment.assessment.api import peer as peer_api
@@ -59,7 +58,7 @@ class GradeMixin(object):
             else:  # status is 'self' or 'peer', which implies that the workflow is incomplete
                 path, context = self.render_grade_incomplete(workflow)
         except (sub_api.SubmissionError, PeerAssessmentError, SelfAssessmentError):
-            return self.render_error(_(u"An unexpected error occurred."))
+            return self.render_error(self._(u"An unexpected error occurred."))
         else:
             return self.render_assessment(path, context)
 
@@ -178,9 +177,9 @@ class GradeMixin(object):
 
         incomplete_steps = []
         if _is_incomplete("peer"):
-            incomplete_steps.append(_("Peer Assessment"))
+            incomplete_steps.append(self._("Peer Assessment"))
         if _is_incomplete("self"):
-            incomplete_steps.append(_("Self Assessment"))
+            incomplete_steps.append(self._("Self Assessment"))
 
         return (
             'openassessmentblock/grade/oa_grade_incomplete.html',
@@ -213,7 +212,7 @@ class GradeMixin(object):
                 'options': feedback_options,
             })
         except (peer_api.PeerAssessmentInternalError, peer_api.PeerAssessmentRequestError):
-            return {'success': False, 'msg': _(u"Assessment feedback could not be saved.")}
+            return {'success': False, 'msg': self._(u"Assessment feedback could not be saved.")}
         else:
             self.runtime.publish(
                 self,
@@ -224,7 +223,7 @@ class GradeMixin(object):
                     'options': feedback_options,
                 }
             )
-            return {'success': True, 'msg': _(u"Feedback saved.")}
+            return {'success': True, 'msg': self._(u"Feedback saved.")}
 
     def _rubric_criteria_grade_context(self, peer_assessments, self_assessment):
         """

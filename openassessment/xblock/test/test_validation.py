@@ -15,24 +15,25 @@ from openassessment.xblock.validation import (
     validate_dates, validate_assessment_examples
 )
 
+STUB_I18N = lambda x: x
 
 @ddt.ddt
 class AssessmentValidationTest(TestCase):
 
     @ddt.file_data('data/valid_assessments.json')
     def test_valid_assessment(self, data):
-        success, msg = validate_assessments(data["assessments"], data["current_assessments"], data["is_released"])
+        success, msg = validate_assessments(data["assessments"], data["current_assessments"], data["is_released"], STUB_I18N)
         self.assertTrue(success)
         self.assertEqual(msg, u'')
 
     @ddt.file_data('data/invalid_assessments.json')
     def test_invalid_assessment(self, data):
-        success, msg = validate_assessments(data["assessments"], data["current_assessments"], data["is_released"])
+        success, msg = validate_assessments(data["assessments"], data["current_assessments"], data["is_released"], STUB_I18N)
         self.assertFalse(success)
         self.assertGreater(len(msg), 0)
 
     def test_no_assessments(self):
-        success, msg = validate_assessments([], [], False)
+        success, msg = validate_assessments([], [], False, STUB_I18N)
         self.assertFalse(success)
         self.assertGreater(len(msg), 0)
 
@@ -69,7 +70,7 @@ class AssessmentValidationTest(TestCase):
             AssertionError
 
         """
-        success, msg = validate_assessments(assessments, current_assessments, is_released)
+        success, msg = validate_assessments(assessments, current_assessments, is_released, STUB_I18N)
         self.assertEqual(success, expected_is_valid, msg=msg)
 
         if not success:
@@ -85,7 +86,7 @@ class RubricValidationTest(TestCase):
         is_released = data.get('is_released', False)
         is_example_based = data.get('is_example_based', False)
         success, msg = validate_rubric(
-            data['rubric'], current_rubric,is_released, is_example_based
+            data['rubric'], current_rubric,is_released, is_example_based, STUB_I18N
         )
         self.assertTrue(success)
         self.assertEqual(msg, u'')
@@ -96,7 +97,7 @@ class RubricValidationTest(TestCase):
         is_released = data.get('is_released', False)
         is_example_based = data.get('is_example_based', False)
         success, msg = validate_rubric(
-            data['rubric'], current_rubric, is_released, is_example_based
+            data['rubric'], current_rubric, is_released, is_example_based, STUB_I18N
         )
         self.assertFalse(success)
         self.assertGreater(len(msg), 0)
@@ -107,13 +108,13 @@ class AssessmentExamplesValidationTest(TestCase):
 
     @ddt.file_data('data/valid_assessment_examples.json')
     def test_valid_assessment_examples(self, data):
-        success, msg = validate_assessment_examples(data['rubric'], data['assessments'])
+        success, msg = validate_assessment_examples(data['rubric'], data['assessments'], STUB_I18N)
         self.assertTrue(success)
         self.assertEqual(msg, u'')
 
     @ddt.file_data('data/invalid_assessment_examples.json')
     def test_invalid_assessment_examples(self, data):
-        success, msg = validate_assessment_examples(data['rubric'], data['assessments'])
+        success, msg = validate_assessment_examples(data['rubric'], data['assessments'], STUB_I18N)
         self.assertFalse(success)
         self.assertGreater(len(msg), 0)
 
@@ -152,7 +153,8 @@ class DateValidationTest(TestCase):
                 date_range('submission_start', 'submission_due'),
                 date_range('peer_start', 'peer_due'),
                 date_range('self_start', 'self_due'),
-            ]
+            ],
+            STUB_I18N
         )
 
         self.assertTrue(success, msg=msg)
@@ -172,7 +174,8 @@ class DateValidationTest(TestCase):
                 date_range('submission_start', 'submission_due'),
                 date_range('peer_start', 'peer_due'),
                 date_range('self_start', 'self_due'),
-            ]
+            ],
+            STUB_I18N
         )
 
         self.assertFalse(success)
@@ -181,16 +184,16 @@ class DateValidationTest(TestCase):
     def test_invalid_date_format(self):
         valid = dt(2014, 1, 1).replace(tzinfo=pytz.UTC).isoformat()
 
-        success, _ = validate_dates("invalid", valid, [(valid, valid)])
+        success, _ = validate_dates("invalid", valid, [(valid, valid)], STUB_I18N)
         self.assertFalse(success)
 
-        success, _ = validate_dates(valid, "invalid", [(valid, valid)])
+        success, _ = validate_dates(valid, "invalid", [(valid, valid)], STUB_I18N)
         self.assertFalse(success)
 
-        success, _ = validate_dates(valid, valid, [("invalid", valid)])
+        success, _ = validate_dates(valid, valid, [("invalid", valid)], STUB_I18N)
         self.assertFalse(success)
 
-        success, _ = validate_dates(valid, valid, [(valid, "invalid")])
+        success, _ = validate_dates(valid, valid, [(valid, "invalid")], STUB_I18N)
         self.assertFalse(success)
 
 
@@ -285,7 +288,7 @@ class ValidationIntegrationTest(TestCase):
         self.oa_block.rubric_criteria = []
         self.oa_block.start = None
         self.oa_block.due = None
-        self.validator = validator(self.oa_block)
+        self.validator = validator(self.oa_block, STUB_I18N)
 
     def test_validates_successfully(self):
         is_valid, msg = self.validator(self.RUBRIC, self.ASSESSMENTS)

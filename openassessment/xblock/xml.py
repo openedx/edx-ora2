@@ -6,7 +6,6 @@ import lxml.etree as etree
 import pytz
 import dateutil.parser
 import defusedxml.ElementTree as safe_etree
-from django.utils.translation import ugettext as _
 
 
 class UpdateFromXmlError(Exception):
@@ -201,7 +200,7 @@ def parse_date(date_str, name=""):
         formatted_date = parsed_date.strftime("%Y-%m-%dT%H:%M:%S")
         return unicode(formatted_date)
     except (ValueError, TypeError):
-        msg = _(
+        msg = (
             'The format of the given date ({date}) for the {name} is invalid. '
             'Make sure the date is formatted as YYYY-MM-DDTHH:MM:SS.'
         ).format(date=date_str, name=name)
@@ -251,16 +250,16 @@ def _parse_options_xml(options_root):
             try:
                 option_dict['points'] = int(option.get('points'))
             except ValueError:
-                raise UpdateFromXmlError(_('The value for "points" must be an integer.'))
+                raise UpdateFromXmlError('The value for "points" must be an integer.')
         else:
-            raise UpdateFromXmlError(_('Every "option" element must contain a "points" attribute.'))
+            raise UpdateFromXmlError('Every "option" element must contain a "points" attribute.')
 
         # Option name
         option_name = option.find('name')
         if option_name is not None:
             option_dict['name'] = _safe_get_text(option_name)
         else:
-            raise UpdateFromXmlError(_('Every "option" element must contain a "name" element.'))
+            raise UpdateFromXmlError('Every "option" element must contain a "name" element.')
 
         # Option label
         # Backwards compatibility: Older problem definitions won't have this.
@@ -277,7 +276,7 @@ def _parse_options_xml(options_root):
         if option_explanation is not None:
             option_dict['explanation'] = _safe_get_text(option_explanation)
         else:
-            raise UpdateFromXmlError(_('Every "option" element must contain an "explanation" element.'))
+            raise UpdateFromXmlError('Every "option" element must contain an "explanation" element.')
 
         # Add the options dictionary to the list
         options_list.append(option_dict)
@@ -313,7 +312,7 @@ def _parse_criteria_xml(criteria_root):
         if criterion_name is not None:
             criterion_dict['name'] = _safe_get_text(criterion_name)
         else:
-            raise UpdateFromXmlError(_('Every "criterion" element must contain a "name" element.'))
+            raise UpdateFromXmlError('Every "criterion" element must contain a "name" element.')
 
         # Criterion label
         # Backwards compatibility: Older problem definitions won't have this,
@@ -330,14 +329,14 @@ def _parse_criteria_xml(criteria_root):
         if criterion_prompt is not None:
             criterion_dict['prompt'] = _safe_get_text(criterion_prompt)
         else:
-            raise UpdateFromXmlError(_('Every "criterion" element must contain a "prompt" element.'))
+            raise UpdateFromXmlError('Every "criterion" element must contain a "prompt" element.')
 
         # Criterion feedback (disabled, optional, or required)
         criterion_feedback = criterion.get('feedback', 'disabled')
         if criterion_feedback in ['optional', 'disabled', 'required']:
             criterion_dict['feedback'] = criterion_feedback
         else:
-            raise UpdateFromXmlError(_('Invalid value for "feedback" attribute: if specified, it must be set set to "optional" or "required".'))
+            raise UpdateFromXmlError('Invalid value for "feedback" attribute: if specified, it must be set set to "optional" or "required".')
 
         # Criterion options
         criterion_dict['options'] = _parse_options_xml(criterion)
@@ -404,16 +403,16 @@ def parse_examples_xml(examples):
         # Retrieve the answer from the training example
         answer_elements = example_el.findall('answer')
         if len(answer_elements) != 1:
-            raise UpdateFromXmlError(_(u'Each "example" element must contain exactly one "answer" element'))
+            raise UpdateFromXmlError(u'Each "example" element must contain exactly one "answer" element')
         example_dict['answer'] = _safe_get_text(answer_elements[0])
 
         # Retrieve the options selected from the training example
         example_dict['options_selected'] = []
         for select_el in example_el.findall('select'):
             if 'criterion' not in select_el.attrib:
-                raise UpdateFromXmlError(_(u'Each "select" element must have a "criterion" attribute'))
+                raise UpdateFromXmlError(u'Each "select" element must have a "criterion" attribute')
             if 'option' not in select_el.attrib:
-                raise UpdateFromXmlError(_(u'Each "select" element must have an "option" attribute'))
+                raise UpdateFromXmlError(u'Each "select" element must have an "option" attribute')
 
             example_dict['options_selected'].append({
                 'criterion': unicode(select_el.get('criterion')),
@@ -449,14 +448,14 @@ def parse_assessments_xml(assessments_root):
         if 'name' in assessment.attrib:
             assessment_dict['name'] = unicode(assessment.get('name'))
         else:
-            raise UpdateFromXmlError(_('All "assessment" elements must contain a "name" element.'))
+            raise UpdateFromXmlError('All "assessment" elements must contain a "name" element.')
 
         # Assessment start
         if 'start' in assessment.attrib:
 
             # Example-based assessment is NOT allowed to have a start date
             if assessment_dict['name'] == 'example-based-assessment':
-                raise UpdateFromXmlError(_('Example-based assessment cannot have a start date'))
+                raise UpdateFromXmlError('Example-based assessment cannot have a start date')
 
             # Other assessment types CAN have a start date
             parsed_start = parse_date(assessment.get('start'), name="{} start date".format(assessment_dict['name']))
@@ -471,7 +470,7 @@ def parse_assessments_xml(assessments_root):
 
             # Example-based assessment is NOT allowed to have a due date
             if assessment_dict['name'] == 'example-based-assessment':
-                raise UpdateFromXmlError(_('Example-based assessment cannot have a due date'))
+                raise UpdateFromXmlError('Example-based assessment cannot have a due date')
 
             # Other assessment types CAN have a due date
             parsed_due = parse_date(assessment.get('due'), name="{} due date".format(assessment_dict['name']))
@@ -486,14 +485,14 @@ def parse_assessments_xml(assessments_root):
             try:
                 assessment_dict['must_grade'] = int(assessment.get('must_grade'))
             except ValueError:
-                raise UpdateFromXmlError(_('The "must_grade" value must be a positive integer.'))
+                raise UpdateFromXmlError('The "must_grade" value must be a positive integer.')
 
         # Assessment must_be_graded_by
         if 'must_be_graded_by' in assessment.attrib:
             try:
                 assessment_dict['must_be_graded_by'] = int(assessment.get('must_be_graded_by'))
             except ValueError:
-                raise UpdateFromXmlError(_('The "must_be_graded_by" value must be a positive integer.'))
+                raise UpdateFromXmlError('The "must_be_graded_by" value must be a positive integer.')
 
         # Training examples
         examples = assessment.findall('example')
@@ -714,7 +713,7 @@ def parse_from_xml(root):
 
     # Check that the root has the correct tag
     if root.tag != 'openassessment':
-        raise UpdateFromXmlError(_('Every open assessment problem must contain an "openassessment" element.'))
+        raise UpdateFromXmlError('Every open assessment problem must contain an "openassessment" element.')
 
     # Retrieve the start date for the submission
     # Set it to None by default; we will update it to the latest start date later on
@@ -735,21 +734,21 @@ def parse_from_xml(root):
     # Retrieve the title
     title_el = root.find('title')
     if title_el is None:
-        raise UpdateFromXmlError(_('Every assessment must contain a "title" element.'))
+        raise UpdateFromXmlError('Every assessment must contain a "title" element.')
     else:
         title = _safe_get_text(title_el)
 
     # Retrieve the rubric
     rubric_el = root.find('rubric')
     if rubric_el is None:
-        raise UpdateFromXmlError(_('Every assessment must contain a "rubric" element.'))
+        raise UpdateFromXmlError('Every assessment must contain a "rubric" element.')
     else:
         rubric = parse_rubric_xml(rubric_el)
 
     # Retrieve the assessments
     assessments_el = root.find('assessments')
     if assessments_el is None:
-        raise UpdateFromXmlError(_('Every assessment must contain an "assessments" element.'))
+        raise UpdateFromXmlError('Every assessment must contain an "assessments" element.')
     else:
         assessments = parse_assessments_xml(assessments_el)
 
@@ -802,7 +801,7 @@ def _unicode_to_xml(xml):
     try:
         return safe_etree.fromstring(xml.encode('utf-8'))
     except (ValueError, safe_etree.ParseError):
-        raise UpdateFromXmlError(_("An error occurred while parsing the XML content."))
+        raise UpdateFromXmlError("An error occurred while parsing the XML content.")
 
 
 def parse_examples_from_xml_str(xml):

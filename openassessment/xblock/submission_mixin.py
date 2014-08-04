@@ -1,6 +1,5 @@
 import logging
 
-from django.utils.translation import ugettext as _
 from xblock.core import XBlock
 
 from submissions import api
@@ -26,16 +25,6 @@ class SubmissionMixin(object):
 
     """
 
-    submit_errors = {
-        # Reported to user sometimes, and useful in tests
-        'ENODATA':  _(u'API returned an empty response.'),
-        'EBADFORM': _(u'API Submission Request Error.'),
-        'EUNKNOWN': _(u'API returned unclassified exception.'),
-        'ENOMULTI': _(u'Multiple submissions are not allowed.'),
-        'ENOPREVIEW': _(u'To submit a response, view this component in Preview or Live mode.'),
-        'EBADARGS': _(u'"submission" required to submit answer.')
-    }
-
     @XBlock.json_handler
     def submit(self, data, suffix=''):
         """Place the submission text into Openassessment system
@@ -57,23 +46,30 @@ class SubmissionMixin(object):
 
         """
         if 'submission' not in data:
-            return False, 'EBADARGS', self.submit_errors['EBADARGS']
+            return (
+                False,
+                'EBADARGS',
+                self._(u'"submission" required to submit answer.')
+            )
 
         status = False
-        status_text = None
         student_sub = data['submission']
         student_item_dict = self.get_student_item_dict()
 
         # Short-circuit if no user is defined (as in Studio Preview mode)
         # Since students can't submit, they will never be able to progress in the workflow
         if self.in_studio_preview:
-            return False, 'ENOPREVIEW', self.submit_errors['ENOPREVIEW']
+            return (
+                False,
+                'ENOPREVIEW',
+                self._(u'To submit a response, view this component in Preview or Live mode.')
+            )
 
         workflow = self.get_workflow_info()
 
         status_tag = 'ENOMULTI'  # It is an error to submit multiple times for the same item
+        status_text = self._(u'Multiple submissions are not allowed.')
         if not workflow:
-            status_tag = 'ENODATA'
             try:
                 submission = self.create_submission(
                     student_item_dict,
@@ -85,13 +81,12 @@ class SubmissionMixin(object):
             except (api.SubmissionError, AssessmentWorkflowError):
                 logger.exception("This response was not submitted.")
                 status_tag = 'EUNKNOWN'
+                status_text = self._(u'API returned unclassified exception.')
             else:
                 status = True
                 status_tag = submission.get('student_item')
                 status_text = submission.get('attempt_number')
 
-        # relies on success being orthogonal to errors
-        status_text = status_text if status_text else self.submit_errors[status_tag]
         return status, status_tag, status_text
 
     @XBlock.json_handler
@@ -122,11 +117,11 @@ class SubmissionMixin(object):
                     {"saved_response": self.saved_response}
                 )
             except:
-                return {'success': False, 'msg': _(u"This response could not be saved.")}
+                return {'success': False, 'msg': self._(u"This response could not be saved.")}
             else:
                 return {'success': True, 'msg': u''}
         else:
-            return {'success': False, 'msg': _(u"This response was not submitted.")}
+            return {'success': False, 'msg': self._(u"This response was not submitted.")}
 
     def create_submission(self, student_item_dict, student_sub):
 
@@ -166,11 +161,11 @@ class SubmissionMixin(object):
 
         """
         if "contentType" not in data:
-            return {'success': False, 'msg': _(u"Must specify contentType.")}
+            return {'success': False, 'msg': self._(u"Must specify contentType.")}
         content_type = data['contentType']
 
         if not content_type.startswith('image/'):
-            return {'success': False, 'msg': _(u"contentType must be an image.")}
+            return {'success': False, 'msg': self._(u"contentType must be an image.")}
 
         try:
             key = self._get_student_item_key()
@@ -178,7 +173,7 @@ class SubmissionMixin(object):
             return {'success': True, 'url': url}
         except FileUploadError:
             logger.exception("Error retrieving upload URL.")
-            return {'success': False, 'msg': _(u"Error retrieving upload URL.")}
+            return {'success': False, 'msg': self._(u"Error retrieving upload URL.")}
 
     @XBlock.json_handler
     def download_url(self, data, suffix=''):
@@ -270,7 +265,7 @@ class SubmissionMixin(object):
         Returns:
             unicode
         """
-        return _(u'This response has been saved but not submitted.') if self.has_saved else _(u'This response has not been saved.')
+        return self._(u'This response has been saved but not submitted.') if self.has_saved else self._(u'This response has not been saved.')
 
     @XBlock.handler
     def render_submission(self, data, suffix=''):

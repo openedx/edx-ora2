@@ -83,7 +83,7 @@ def load(path):
     data = pkg_resources.resource_string(__name__, path)
     return data.decode("utf8")
 
-
+@XBlock.needs("i18n")
 class OpenAssessmentBlock(
     XBlock,
     MessageMixin,
@@ -247,6 +247,7 @@ class OpenAssessmentBlock(
         frag.initialize_js('OpenAssessmentBlock')
         return frag
 
+
     @property
     def is_admin(self):
         """
@@ -353,7 +354,7 @@ class OpenAssessmentBlock(
         config = parse_from_xml(node)
         block = runtime.construct_xblock_from_class(cls, keys)
 
-        xblock_validator = validator(block, strict_post_release=False)
+        xblock_validator = validator(block, block._, strict_post_release=False)
         xblock_validator(
             create_rubric_dict(config['prompt'], config['rubric_criteria']),
             config['rubric_assessments'],
@@ -371,6 +372,11 @@ class OpenAssessmentBlock(
         block.allow_file_upload = config['allow_file_upload']
 
         return block
+
+    @property
+    def _(self):
+        i18nService = self.runtime.service(self, 'i18n')
+        return i18nService.ugettext
 
     @property
     def valid_assessments(self):
@@ -509,7 +515,7 @@ class OpenAssessmentBlock(
 
         # Resolve unspecified dates and date strings to datetimes
         start, due, date_ranges = resolve_dates(
-            self.start, self.due, [submission_range] + assessment_ranges
+            self.start, self.due, [submission_range] + assessment_ranges, self._
         )
 
         open_range = (start, due)

@@ -4,7 +4,6 @@ determine the flow of the problem.
 """
 import copy
 from functools import wraps
-from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy
 
 from xblock.core import XBlock
@@ -19,13 +18,13 @@ from openassessment.assessment.api import self as self_api
 from openassessment.assessment.api import ai as ai_api
 
 
-def require_global_admin(error_msg):
+def require_global_admin(error_key):
     """
     Method decorator to restrict access to an XBlock handler
     to only global staff.
 
     Args:
-        error_msg (unicode): The error message to display to the user
+        error_key (str): The key to the error message to display to the user
         if they do not have sufficient permissions.
 
     Returns:
@@ -35,22 +34,26 @@ def require_global_admin(error_msg):
     def _decorator(func):   # pylint: disable=C0111
         @wraps(func)
         def _wrapped(xblock, *args, **kwargs):  # pylint: disable=C0111
+            permission_errors = {
+                "SCHEDULE_TRAINING": xblock._(u"You do not have permission to schedule training"),
+                "RESCHEDULE_TASKS": xblock._(u"You do not have permission to reschedule tasks."),
+            }
             if not xblock.is_admin or xblock.in_studio_preview:
-                return {'success': False, 'msg': unicode(error_msg)}
+                return {'success': False, 'msg': permission_errors[error_key]}
             else:
                 return func(xblock, *args, **kwargs)
         return _wrapped
     return _decorator
 
 
-def require_course_staff(error_msg):
+def require_course_staff(error_key):
     """
     Method decorator to restrict access to an XBlock render
     method to only course staff.
 
     Args:
-        error_msg (unicode): The error message to display to the user
-        if they do not have sufficient permissions.
+        error_key (str): The key for the error message to display to the
+            user if they do not have sufficient permissions.
 
     Returns:
         decorated function
@@ -59,8 +62,13 @@ def require_course_staff(error_msg):
     def _decorator(func):  # pylint: disable=C0111
         @wraps(func)
         def _wrapped(xblock, *args, **kwargs):  # pylint: disable=C0111
+            permission_errors = {
+                "STAFF_INFO": xblock._(u"You do not have permission to access staff information"),
+                "STUDENT_INFO": xblock._(u"You do not have permission to access student information."),
+
+            }
             if not xblock.is_course_staff or xblock.in_studio_preview:
-                return xblock.render_error(unicode(error_msg))
+                return xblock.render_error(permission_errors[error_key])
             else:
                 return func(xblock, *args, **kwargs)
         return _wrapped
@@ -73,7 +81,7 @@ class StaffInfoMixin(object):
     """
 
     @XBlock.handler
-    @require_course_staff(ugettext_lazy(u"You do not have permission to access staff information"))
+    @require_course_staff("STAFF_INFO")
     def render_staff_info(self, data, suffix=''):   # pylint: disable=W0613
         """
         Template context dictionary for course staff debug panel.
@@ -142,7 +150,7 @@ class StaffInfoMixin(object):
         return path, context
 
     @XBlock.json_handler
-    @require_global_admin(ugettext_lazy(u"You do not have permission to schedule training"))
+    @require_global_admin("SCHEDULE_TRAINING")
     def schedule_training(self, data, suffix=''):   # pylint: disable=W0613
         """
         Schedule a new training task for example-based grading.
@@ -163,22 +171,22 @@ class StaffInfoMixin(object):
                 return {
                     'success': True,
                     'workflow_uuid': workflow_uuid,
-                    'msg': _(u"Training scheduled with new Workflow UUID: {uuid}".format(uuid=workflow_uuid))
+                    'msg': self._(u"Training scheduled with new Workflow UUID: {uuid}".format(uuid=workflow_uuid))
                 }
             except AIError as err:
                 return {
                     'success': False,
-                    'msg': _(u"An error occurred scheduling classifier training: {error}".format(error=err))
+                    'msg': self._(u"An error occurred scheduling classifier training: {error}".format(error=err))
                 }
 
         else:
             return {
                 'success': False,
-                'msg': _(u"Example Based Assessment is not configured for this location.")
+                'msg': self._(u"Example Based Assessment is not configured for this location.")
             }
 
     @XBlock.handler
-    @require_course_staff(ugettext_lazy(u"You do not have permission to access student information."))
+    @require_course_staff("STUDENT_INFO")
     def render_student_info(self, data, suffix=''): # pylint: disable=W0613
         """
         Renders all relative information for a specific student's workflow.
@@ -248,7 +256,7 @@ class StaffInfoMixin(object):
         return path, context
 
     @XBlock.json_handler
-    @require_global_admin(ugettext_lazy(u"You do not have permission to reschedule tasks."))
+    @require_global_admin("RESCHEDULE_TASKS")
     def reschedule_unfinished_tasks(self, data, suffix=''):  # pylint: disable=W0613
         """
         Wrapper which invokes the API call for rescheduling grading tasks.
@@ -278,10 +286,10 @@ class StaffInfoMixin(object):
             ai_api.reschedule_unfinished_tasks(course_id=course_id, item_id=item_id, task_type=u"grade")
             return {
                 'success': True,
-                'msg': _(u"All AI tasks associated with this item have been rescheduled successfully.")
+                'msg': self._(u"All AI tasks associated with this item have been rescheduled successfully.")
             }
         except AIError as ex:
             return {
                 'success': False,
-                'msg': _(u"An error occurred while rescheduling tasks: {}".format(ex))
+                'msg': self._(u"An error occurred while rescheduling tasks: {}".format(ex))
             }
