@@ -10,7 +10,8 @@
                     <ol class="list leaderboard__score__list">
                     {% for topscore in topscores %}
                         <li class="leaderboard__score__item">
-                            <h4 class="leaderboard__score__title">{{ forloop.counter }}. {% trans "Score" %} {{ topscore.score }}</h4>
+                            <h4 class="leaderboard__list__number">{{ forloop.counter }}</h4>
+                            <h4 class="leaderboard__score__title">{% trans "Score" %} {{ topscore.score }}</h4>
                             <div class="leaderboard__answer">{{ topscore.content|linebreaks }}</div>
                         </li>
                     {% endfor %}
