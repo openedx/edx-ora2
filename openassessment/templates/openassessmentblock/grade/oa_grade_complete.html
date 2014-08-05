@@ -28,9 +28,18 @@
                 <article class="submission__answer__display step__content__section">
                     <h3 class="submission__answer__display__title">{% trans "Your Response" %}</h3>
 
-                    <div class="submission__answer__display__content">
+                    <div class="submission__answer__display__content" id="submission__answer__display__content__original">
                         {{ student_submission.answer.text|linebreaks }}
                     </div>
+                    {% for assessment in peer_assessments %}
+                        {% with peer_num=forloop.counter %}
+                            {% if assessment.track_changes %}
+                                <div class="submission__answer__display__content submission__answer__display__content__edited" id="submission__answer__display__content__edited__peer{{ peer_num }}" data-peer-num="{{ peer_num }}">
+                                    {% autoescape off %}{{ assessment.track_changes }}{% endautoescape %}
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+                    {% endfor %}
 
                     {% if allow_file_upload and file_url %}
                     <h3 class="submission__answer__display__title">
@@ -203,42 +212,42 @@
 
                                 <ul class="question__answers ui-toggle-visibility__content">
                                     {% for assessment in peer_assessments %}
-                                    {% with peer_num=forloop.counter %}
-                                    {% if assessment.feedback %}
-                                    <li class="answer peer-evaluation--{{ peer_num }}" id="question--feedback__answer-{{ peer_num }}">
-                                        <h5 class="answer__title">
-                                            <span class="answer__source">
-                                              <span class="label sr">{% trans "Peer assessor" %}: </span>
-                                              <span class="value">{% blocktrans with peer_num=peer_num %}Peer {{ peer_num }}{% endblocktrans %}</span>
-                                            </span>
-                                        </h5>
+                                        {% with peer_num=forloop.counter %}
+                                            {% if assessment.feedback %}
+                                                <li class="answer peer-evaluation--{{ peer_num }}" id="question--feedback__answer-{{ peer_num }}">
+                                                    <h5 class="answer__title">
+                                                        <span class="answer__source">
+                                                          <span class="label sr">{% trans "Peer assessor" %}: </span>
+                                                          <span class="value">{% blocktrans with peer_num=peer_num %}Peer {{ peer_num }}{% endblocktrans %}</span>
+                                                        </span>
+                                                    </h5>
 
-                                        <div class="answer__value">
-                                            <h6 class="label sr">{% trans "Peer's assessment" %}: </h6>
-                                            <div class="value">
-                                                <p>{{ assessment.feedback }}</p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    {% endif %}
-                                    {% endwith %}
+                                                    <div class="answer__value">
+                                                        <h6 class="label sr">{% trans "Peer's assessment" %}: </h6>
+                                                        <div class="value">
+                                                            <p>{{ assessment.feedback }}</p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            {% endif %}
+                                        {% endwith %}
                                     {% endfor %}
                                     {% if self_assessment.feedback %}
-                                    <li class="answer self-evaluation--0" id="question--feedback__answer-0">
-                                        <h5 class="answer__title">
-                                            <span class="answer__source">
-                                              <span class="label sr">{% trans "Self assessment" %}: </span>
-                                              <span class="value">{% trans "Self assessment" %}</span>
-                                            </span>
-                                        </h5>
+                                        <li class="answer self-evaluation--0" id="question--feedback__answer-0">
+                                            <h5 class="answer__title">
+                                                <span class="answer__source">
+                                                  <span class="label sr">{% trans "Self assessment" %}: </span>
+                                                  <span class="value">{% trans "Self assessment" %}</span>
+                                                </span>
+                                            </h5>
 
-                                        <div class="answer__value">
-                                            <h6 class="label sr">{% trans "Your assessment" %}: </h6>
-                                            <div class="value">
-                                                <p>{{ self_assessment.feedback }}</p>
+                                            <div class="answer__value">
+                                                <h6 class="label sr">{% trans "Your assessment" %}: </h6>
+                                                <div class="value">
+                                                    <p>{{ self_assessment.feedback }}</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </li>
+                                        </li>
                                     {% endif %}
                                 </ul>
                             </li>

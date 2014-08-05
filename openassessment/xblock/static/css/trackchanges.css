@@ -1,0 +1,33 @@
+.submission__answer__display__content__peeredit__select {
+    display: block;
+    float: right;
+}
+.submission__answer__display__content__edited {
+    display: none;
+}
+
+ins, span.ins {
+    background-color: rgb(175, 255, 175);
+    text-decoration: none;
+    border-radius: 5px;
+}
+ins:before, ins:after,
+span.ins:before, span.ins:after {
+    content: "+";
+    padding: 0 5px;
+}
+del, span.del {
+    background-color: rgb(255, 175, 175);
+    text-decoration: none;
+    border-radius: 5px;
+    text-decoration: line-through;
+}
+del:before, del:after,
+span.del:before, span.del:after {
+    content: "-";
+    padding: 0 5px;
+}
+
+#track_changes_clear_button {
+    float: right;
+}

@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.conf.urls import include, patterns, url
-from django.views.i18n import javascript_catalog
 from django.contrib import admin
 
 import openassessment.assessment.urls

@@ -12,6 +12,7 @@ from openassessment.assessment.api import self as self_api
 from openassessment.assessment.api import ai as ai_api
 from openassessment.assessment.errors import SelfAssessmentError, PeerAssessmentError
 from submissions import api as sub_api
+from openassessment.assessment.models import TrackChanges
 
 
 class GradeMixin(object):
@@ -349,5 +350,11 @@ class GradeMixin(object):
             if part.get('option') is not None:
                 option_label_key = (part['criterion']['name'], part['option']['name'])
                 part['option']['label'] = option_labels.get(option_label_key, part['option']['name'])
+
+        assessment['track_changes'] = None
+        track_changes = TrackChanges.objects.filter(scorer_id = assessment['scorer_id'],
+                owner_submission_uuid = assessment['submission_uuid'])
+        if track_changes:
+            assessment['track_changes'] = track_changes.get().edited_content
 
         return assessment

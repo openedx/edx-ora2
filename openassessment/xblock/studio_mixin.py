@@ -111,6 +111,10 @@ class StudioMixin(object):
         if not feedback_default_text:
             feedback_default_text = DEFAULT_RUBRIC_FEEDBACK_TEXT
 
+        track_changes = copy.deepcopy(self.track_changes)
+        if not track_changes:
+            track_changes = ''
+
         return {
             'prompt': self.prompt,
             'title': self.title,
@@ -118,6 +122,7 @@ class StudioMixin(object):
             'submission_start': submission_start,
             'assessments': assessments,
             'criteria': criteria,
+            'track_changes': track_changes,
             'feedbackprompt': self.rubric_feedback_prompt,
             'feedback_default_text': feedback_default_text,
             'allow_file_upload': self.allow_file_upload,
@@ -201,6 +206,11 @@ class StudioMixin(object):
         if not success:
             return {'success': False, 'msg': self._('Validation error: {error}').format(error=msg)}
 
+        # Calculate track_changes URL
+        track_changes_url = ''
+        for assessment in data['assessments']:
+            track_changes_url = track_changes_url or assessment.get('track_changes', '')
+
         # At this point, all the input data has been validated,
         # so we can safely modify the XBlock fields.
         self.title = data['title']
@@ -209,6 +219,7 @@ class StudioMixin(object):
         self.rubric_criteria = data['criteria']
         self.rubric_assessments = data['assessments']
         self.editor_assessments_order = data['editor_assessments_order']
+        self.track_changes = track_changes_url
         self.rubric_feedback_prompt = data['feedback_prompt']
         self.rubric_feedback_default_text = data['feedback_default_text']
         self.submission_start = data['submission_start']

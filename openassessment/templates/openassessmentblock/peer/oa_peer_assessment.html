@@ -44,7 +44,15 @@
     <div class="ui-toggle-visibility__content">
         <div class="wrapper--step__content">
             <div class="step__instruction">
-                <p>{% trans "Read and assess the following response from one of your peers." %}</p>
+                <p>
+                    {% if track_changes %}
+                        {% blocktrans  with ins_start="<ins>" ins_end="</ins>" del_start="<del>" del_end="</del>" %}
+                            Read, edit and assess the following response from one of your peers. You can make {{ ins_start }}additions{{ ins_end }} and {{ del_start }}deletions{{ del_end }} to help improve the submission.
+                        {% endblocktrans %}
+                    {% else %}
+                        {% trans "Read and assess the following response from one of your peers." %}
+                    {% endif %}
+                </p>
             </div>
 
             <div class="step__content">
@@ -53,6 +61,7 @@
                         <article class="peer-assessment" id="peer-assessment--001">
                             <div class="peer-assessment__display">
                                 <header class="peer-assessment__display__header">
+                                    {% if track_changes %}<input id="track_changes_clear_button" type="button" value="Clear Changes" />{% endif %}
                                     <h3 class="peer-assessment__display__title">
                                         {% with review_num_string=review_num|stringformat:"s" must_grade_string=must_grade|stringformat:"s" %}
                                         {% blocktrans with review_number='<span class="peer-assessment__number--current">'|safe|add:review_num_string|add:'</span>'|safe num_must_grade='<span class="peer-assessment__number--required">'|safe|add:must_grade_string|add:'</span>'|safe %}
@@ -62,7 +71,7 @@
                                     </h3>
                                 </header>
 
-                                <div class="peer-assessment__display__response">
+                                <div class="peer-assessment__display__response" {% if track_changes %} id="track-changes-content" contenteditable="true" {% endif %}>
                                     {{ peer_submission.answer.text|linebreaks }}
                                 </div>
 

@@ -1,0 +1,51 @@
+<openassessment>
+    <title>Open Assessment Test</title>
+    <prompt>
+        Given the state of the world today, what do you think should be done to
+        combat poverty? Please answer in a short essay of 200-300 words.
+    </prompt>
+    <rubric>
+        <prompt>Read for conciseness, clarity of thought, and form.</prompt>
+        <criterion>
+            <name>𝓒𝓸𝓷𝓬𝓲𝓼𝓮</name>
+            <prompt>How concise is it?</prompt>
+            <option points="3">
+                <name>ﻉซƈﻉɭɭﻉกՇ</name>
+                <explanation>Extremely concise</explanation>
+            </option>
+            <option points="2">
+                <name>Ġööḋ</name>
+                <explanation>Concise</explanation>
+            </option>
+            <option points="1">
+                <name>ק๏๏г</name>
+                <explanation>Wordy</explanation>
+            </option>
+        </criterion>
+        <criterion>
+            <name>Form</name>
+            <prompt>How well-formed is it?</prompt>
+            <option points="3">
+                <name>Good</name>
+                <explanation>Good</explanation>
+            </option>
+            <option points="2">
+                <name>Fair</name>
+                <explanation>Fair</explanation>
+            </option>
+            <option points="1">
+                <name>Poor</name>
+                <explanation>Poor</explanation>
+            </option>
+        </criterion>
+    </rubric>
+    <assessments>
+        <assessment
+            name="peer-assessment"
+            must_grade="2"
+            must_be_graded_by="2"
+            track_changes="http://example.com/track_changes.js"
+        />
+        <assessment name="self-assessment" />
+    </assessments>
+</openassessment>

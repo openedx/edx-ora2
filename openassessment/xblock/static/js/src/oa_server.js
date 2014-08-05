@@ -258,12 +258,16 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
                 function(errorMsg) { console.log(errorMsg); }
             );
         **/
-        peerAssess: function(optionsSelected, criterionFeedback, overallFeedback) {
+        peerAssess: function(optionsSelected,
+                            criterionFeedback,
+                            overallFeedback,
+                            trackChangesEdits) {
             var url = this.url('peer_assess');
             var payload = JSON.stringify({
                 options_selected: optionsSelected,
                 criterion_feedback: criterionFeedback,
-                overall_feedback: overallFeedback
+                overall_feedback: overallFeedback,
+                track_changes_edits: trackChangesEdits
             });
             return $.Deferred(function(defer) {
                 $.ajax({ type: "POST", url: url, data: payload }).done(

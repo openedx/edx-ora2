@@ -74,7 +74,8 @@ describe("OpenAssessment edit assessment views", function() {
                 must_grade: 1,
                 must_be_graded_by: 2,
                 start: "2014-01-01T00:00",
-                due: "2014-03-04T00:00"
+                due: "2014-03-04T00:00",
+                track_changes: ""
             });
         });
 

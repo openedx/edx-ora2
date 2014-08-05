@@ -72,7 +72,8 @@ class PeerAssessmentMixin(object):
                     clean_criterion_feedback(self.rubric_criteria_with_labels, data['criterion_feedback']),
                     data['overall_feedback'],
                     create_rubric_dict(self.prompt, self.rubric_criteria_with_labels),
-                    assessment_ui_model['must_be_graded_by']
+                    assessment_ui_model['must_be_graded_by'],
+                    track_changes_edits=data.get('track_changes_edits', ''),
                 )
 
                 # Emit analytics event...
@@ -199,6 +200,8 @@ class PeerAssessmentMixin(object):
                 context_dict["submit_button_text"] = self._(
                     "Submit your assessment & move to response #{response_number}"
                 ).format(response_number=(count + 2))
+
+            context_dict['track_changes'] = assessment.get('track_changes', '')
 
         # Once a student has completed a problem, it stays complete,
         # so this condition needs to be first.

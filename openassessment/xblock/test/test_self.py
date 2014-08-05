@@ -77,7 +77,11 @@ class TestSelfAssessment(XBlockHandlerTestCase):
             # Verify that the workflow is updated when we submit a self-assessment
             self.assertTrue(resp['success'])
             expected_reqs = {
-                "peer": { "must_grade": 5, "must_be_graded_by": 3 }
+                "peer": {
+                    "must_grade": 5,
+                    "must_be_graded_by": 3,
+                    "track_changes": "",
+                }
             }
             mock_api.update_from_assessments.assert_called_once_with(submission['uuid'], expected_reqs)
 

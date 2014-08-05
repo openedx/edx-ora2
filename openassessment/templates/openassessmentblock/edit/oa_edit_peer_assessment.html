@@ -73,6 +73,13 @@
                     </div>
                     <p class="setting-help">{% trans "Enter the date and time when all peer assessments must be complete." %}</p>
                 </li>
+                <li class="field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label for="peer_assessment_track_changes" class="setting-label"> {% trans "Track Changes URL" %}</label>
+                        <input id="peer_assessment_track_changes" class="input setting-input" type="text" value="{{ assessments.peer_assessment.track_changes }}">
+                    </div>
+                    <p class="setting-help">{% trans "Specify the URL of the Track Changes library you wish to use. Leave empty to disable."%}</p>
+                </li>
             </ul>
         </div>
     </div>

@@ -130,6 +130,7 @@ DEFAULT_PEER_ASSESSMENT = {
     "due": DEFAULT_DUE,
     "must_grade": 5,
     "must_be_graded_by": 3,
+    "track_changes": "",
 }
 
 DEFAULT_SELF_ASSESSMENT = {
