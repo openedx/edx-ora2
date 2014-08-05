@@ -228,3 +228,59 @@
       @extend .action--submit;
     }
 }
+
+#openassessment__leaderboard{
+  font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  padding: 15px 20px;
+
+  .wrapper--copy{
+    margin-left: 0;
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .step__header .step__title{
+    width: 100%;
+  }
+
+  .leaderboard__title{
+    font-size: 16px;
+  }
+
+  .list.leaderboard__score__list{
+    list-style-type: none;
+
+    li.leaderboard__score__item {
+      margin: 15px 0;
+
+      .leaderboard__list__number{
+        display: inline-block;
+        background: $edx-gray-d2;
+        color: white;
+        padding: 5px 5px 3px 5px;
+        font-size: 16px;
+        min-width: 35px;
+        text-align: center;
+        border-top-right-radius: 2px;
+        border-top-left-radius: 2px;
+      }
+
+      .leaderboard__score__title{
+        font-size: 15px;
+        color: $edx-gray-l1;
+        text-transform: uppercase;
+        display: inline-block;
+        padding-left: 15px;
+      }
+
+      .leaderboard__answer{
+        border-top: 2px solid $edx-gray-d2;
+        box-shadow: inset 0 0 3px 1px rgba(10, 10, 10, 0.1);
+        padding: 5px 10px;
+        max-height: 200px;
+        overflow-y: scroll;
+        font-size: 14px;
+      }
+    }
+  }
+}
