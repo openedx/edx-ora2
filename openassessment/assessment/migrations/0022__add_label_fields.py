@@ -11,12 +11,12 @@ class Migration(SchemaMigration):
         # Adding field 'Criterion.label'
         db.add_column('assessment_criterion', 'label',
                       self.gf('django.db.models.fields.CharField')(default='', max_length=100, blank=True),
-                      keep_default=False)
+                      keep_default=True)
 
         # Adding field 'CriterionOption.label'
         db.add_column('assessment_criterionoption', 'label',
                       self.gf('django.db.models.fields.CharField')(default='', max_length=100, blank=True),
-                      keep_default=False)
+                      keep_default=True)
 
 
     def backwards(self, orm):
