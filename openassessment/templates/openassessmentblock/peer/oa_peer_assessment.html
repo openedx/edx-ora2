@@ -12,10 +12,12 @@
                 <span class="step__label">{% trans "Assess Peers" %}</span>
                 {% if peer_start %}
                 <span class="step__deadline">
+                    {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "available August 13th, 2014 (in 5 days and 45 minutes)" #}
                     {% blocktrans with start_date=peer_start|utc|date:"N j, Y H:i e" time_until=peer_start|timeuntil %}available <span class="date">{{ start_date }} (in {{ time_until }})</span>{% endblocktrans %}
                 </span>
                 {% elif peer_due %}
                 <span class="step__deadline">
+                    {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "due August 13th, 2014 (in 5 days and 45 minutes)" #}
                     {% blocktrans with due_date=peer_due|utc|date:"N j, Y H:i e" time_until=peer_due|timeuntil %}due <span class="date">{{ due_date }} (in {{ time_until }})</span>{% endblocktrans %}
                 </span>
                 {% endif %}
