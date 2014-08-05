@@ -299,6 +299,7 @@ OpenAssessment.EditSettingsView.prototype = {
             due: null
             must_grade: 5,
             must_be_graded_by: 2,
+            enable_track_changes: false
         },
         {
             name: "self-assessment",

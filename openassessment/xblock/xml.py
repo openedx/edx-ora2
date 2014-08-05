@@ -581,6 +581,11 @@ def parse_assessments_xml(assessments_root):
                 raise UpdateFromXmlError('The "required" field is only allowed for staff assessment.')
             assessment_dict['required'] = _parse_boolean(six.text_type(assessment.get('required')))
 
+        # Assessment track_changes
+        if 'enable_track_changes' in assessment.attrib:
+            enable_track_changes = _parse_boolean(six.text_type(assessment.get('enable_track_changes')))
+            assessment_dict['enable_track_changes'] = enable_track_changes
+
         # Training examples
         examples = assessment.findall('example')
 
@@ -672,6 +677,9 @@ def serialize_assessments(assessments_root, oa_block):
 
         if assessment_dict.get('required') is not None:
             assessment.set('required', six.text_type(assessment_dict['required']))
+
+        if assessment_dict.get('enable_track_changes') is not None:
+            assessment.set('enable_track_changes', six.text_type(assessment_dict['enable_track_changes']))
 
         # Training examples
         examples = assessment_dict.get('examples', [])

@@ -528,6 +528,15 @@ class OpenAssessmentBlock(MessageMixin,
 
             # minified additional_js should be already included in 'make javascript'
             fragment.add_javascript(load("static/js/openassessment-lms.min.js"))
+
+        peer_assessment = self.get_assessment_module('peer-assessment')
+        if peer_assessment and peer_assessment.get('enable_track_changes', False):
+            fragment.add_javascript_url(self.runtime.local_resource_url(self, 'static/js/lib/ice.min.js'))
+            if settings.DEBUG:
+                fragment.add_css_url(self.runtime.local_resource_url(self, "static/css/trackchanges.css"))
+            else:
+                fragment.add_css(load("static/css/trackchanges.css"))
+
         js_context_dict = {
             "ALLOWED_IMAGE_MIME_TYPES": self.ALLOWED_IMAGE_MIME_TYPES,
             "ALLOWED_FILE_MIME_TYPES": self.ALLOWED_FILE_MIME_TYPES,
@@ -677,6 +686,10 @@ class OpenAssessmentBlock(MessageMixin,
             (
                 "OpenAssessmentBlock Promptless Rubric",
                 load('static/xml/promptless_rubric_example.xml')
+            ),
+            (
+                "OpenAssessmentBlock Track Changes",
+                load('static/xml/track_changes_example.xml')
             ),
         ]
 

@@ -57,6 +57,7 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
      {
          must_grade: 5,
          must_be_graded_by: 2,
+         enable_track_changes: false,
          start: null,
          due: "2014-04-1T00:00"
      }
@@ -65,6 +66,7 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
         return {
             must_grade: this.mustGradeNum(),
             must_be_graded_by: this.mustBeGradedByNum(),
+            enable_track_changes: this.trackChangesEnabled(),
             start: this.startDatetime(),
             due: this.dueDatetime()
         };
@@ -118,6 +120,26 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
     mustBeGradedByNum: function(num) {
         if (num !== undefined) { this.mustBeGradedByField.set(num); }
         return this.mustBeGradedByField.get();
+    },
+
+    /**
+     Enable / disable track changes editing.
+
+     Args:
+        isEnabled(boolean, optional): if provided enable/disable track changes
+     Returns:
+        boolean
+    **/
+    trackChangesEnabled: function(isEnabled) {
+        var sel = $("#peer_assessment_track_changes", this.element);
+        if (isEnabled !== undefined) {
+            if (isEnabled) {
+                sel.val(1);
+            } else {
+                sel.val(0);
+            }
+        }
+        return sel.val() === "1";
     },
 
     /**

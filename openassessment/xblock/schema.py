@@ -114,6 +114,7 @@ EDITOR_UPDATE_SCHEMA = Schema({
             'required': bool,
             'must_grade': All(int, Range(min=0)),
             'must_be_graded_by': All(int, Range(min=0)),
+            'enable_track_changes': bool,
             'examples': [
                 Schema({
                     Required('answer'): [utf8_validator],

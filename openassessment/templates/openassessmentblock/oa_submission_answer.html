@@ -17,12 +17,40 @@
                 </div>
             </article>
             {% if part.text %}
-            <div class="submission__answer__part__text">
-                <h5 class="submission__answer__part__text__title">{{ answer_text_label }}</h5>
-                <div class="submission__answer__part__text__value">
-                    {{ part.text|escape|link_and_linebreak }}
+                {% if enable_track_changes %}
+                <div class="submission__answer__part__text">
+                    <div class="submission__answer__part__text__track-changes-header">
+                        <h5 class="submission__answer__part__text__title">{{ answer_text_label }}</h5>
+                        <input class="submission__answer__track-changes-clear-button" id="track_changes_clear_button_{{ forloop.counter0 }}" type="button" value="Clear Changes" />
+                    </div>
+                    <div class="submission__answer__part__text__value" id="track_changes_content_{{ forloop.counter0 }}" contenteditable="true">
+                        {{ part.text|escape|link_and_linebreak }}
+                    </div>
                 </div>
-            </div>
+                {% elif has_track_changes %}
+                <div class="submission__answer__part__text">
+                    <h5 class="submission__answer__part__text__title submission__answer__response__title">{{ answer_text_label }}</h5>
+                    <div class="submission__answer__part__text__value original">
+                        {{ part.text|escape|link_and_linebreak }}
+                    </div>
+                    {% for track_changes in part.track_changes %}
+                        {% with peer_num=forloop.counter %}
+                            {% autoescape off %}
+                                <div class="submission__answer__part__text__value edited peer{{ peer_num }}" data-peer-num="{{ peer_num }}">
+                                    {{ track_changes.text }}
+                                </div>
+                            {% endautoescape %}
+                        {% endwith %}
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="submission__answer__part__text">
+                    <h5 class="submission__answer__part__text__title">{{ answer_text_label }}</h5>
+                    <div class="submission__answer__part__text__value">
+                        {{ part.text|escape|link_and_linebreak }}
+                    </div>
+                </div>
+                {% endif %}
             {% endif %}
         </li>
     {% endfor %}

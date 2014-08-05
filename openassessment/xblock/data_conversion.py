@@ -255,3 +255,25 @@ def verify_assessment_parameters(func):
 
         return func(instance, data, suffix)
     return verify_and_call
+
+
+def add_trackchanges_to_submission_dict(submission, track_changes_edits):
+    """
+    Adds any trackchange edits to the submission dict.
+    This is to facilitate easier handling in the render_grade_complete template.
+
+    Args:
+        submission (dict): Submission dictionary.
+        track_changes_edits (list of lists) List of track changes edits.
+
+    Returns:
+        submission (dict)
+    """
+    # Transpose the matrix such that each peer's n'th edit is included in a list at the n'th element in the array.
+    track_changes_edits = zip(*track_changes_edits)
+    for index in range(len(submission['answer']['parts'])):
+        if submission['answer']['parts'][index]['text']:
+            # Only non-empty responses have track changes recorded
+            submission['answer']['parts'][index]['track_changes'] = track_changes_edits.pop(0)
+
+    return submission

@@ -4,13 +4,16 @@ Grade step in the OpenAssessment XBlock.
 from __future__ import absolute_import
 
 import copy
+import json
 
 from django.utils.translation import ugettext as _
 
 from lazy import lazy
 from openassessment.assessment.errors import PeerAssessmentError, SelfAssessmentError
+from openassessment.assessment.models import TrackChanges
 from xblock.core import XBlock
 
+from .data_conversion import add_trackchanges_to_submission_dict
 from .data_conversion import create_submission_dict
 
 
@@ -100,6 +103,7 @@ class GradeMixin(object):
         feedback = None
         peer_assessments = []
         has_submitted_feedback = False
+        has_track_changes = False
 
         if "peer-assessment" in assessment_steps:
             peer_api.get_score(submission_uuid, self.workflow_requirements()["peer"])
@@ -122,6 +126,19 @@ class GradeMixin(object):
         feedback_text = feedback.get('feedback', '') if feedback else ''
         student_submission = sub_api.get_submission(submission_uuid)
 
+        student_submission = create_submission_dict(student_submission, self.prompts)
+
+        # For peer assessments add track changes peer edits to the student_submission.
+        peer_assessment_module = self.get_assessment_module('peer-assessment')
+        if peer_assessment_module and peer_assessment_module.get('enable_track_changes', False):
+            track_changes = TrackChanges.objects.filter(
+                owner_submission_uuid=submission_uuid,
+            ).order_by('-id')
+            track_changes_edits = [json.loads(t.json_edited_content)['parts'] for t in track_changes]
+            if track_changes_edits:
+                has_track_changes = True
+                student_submission = add_trackchanges_to_submission_dict(student_submission, track_changes_edits)
+
         # We retrieve the score from the workflow, which in turn retrieves
         # the score for our current submission UUID.
         # We look up the score by submission UUID instead of student item
@@ -134,7 +151,8 @@ class GradeMixin(object):
             'score': score,
             'feedback_text': feedback_text,
             'has_submitted_feedback': has_submitted_feedback,
-            'student_submission': create_submission_dict(student_submission, self.prompts),
+            'has_track_changes': has_track_changes,
+            'student_submission': student_submission,
             'peer_assessments': peer_assessments,
             'grade_details': self.grade_details(
                 submission_uuid,

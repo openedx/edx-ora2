@@ -55,6 +55,39 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         self.assertIn('self', resp.lower())
         self.assertIn('complete', resp.lower())
 
+    @scenario('data/grade_scenario_track_changes.xml', user_id='Greggs')
+    def test_render_grade_with_track_changes(self, xblock):
+        # Submit, assess, and render the grade view
+        self.create_submission_and_assessments(
+            xblock,
+            self.SUBMISSION,
+            self.PEERS,
+            PEER_ASSESSMENTS,
+            SELF_ASSESSMENT,
+            should_track_changes=True,
+        )
+        resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+
+        # Verify that feedback from each scorer appears in the view
+        self.assertIn(u'єאςєɭɭєภՇ ฬ๏гк!', resp.decode('utf-8'))
+        self.assertIn(u'Good job!', resp.decode('utf-8'))
+
+        # Verify that the submission and peer steps show that we're graded
+        # This isn't strictly speaking part of the grade step rendering,
+        # but we've already done all the setup to get to this point in the flow,
+        # so we might as well verify it here.
+        resp = self.request(xblock, 'render_submission', json.dumps(dict()))
+        self.assertIn('response', resp.lower())
+        self.assertIn('complete', resp.lower())
+
+        resp = self.request(xblock, 'render_peer_assessment', json.dumps(dict()))
+        self.assertIn('peer', resp.lower())
+        self.assertIn('complete', resp.lower())
+
+        resp = self.request(xblock, 'render_self_assessment', json.dumps(dict()))
+        self.assertIn('self', resp.lower())
+        self.assertIn('complete', resp.lower())
+
     @scenario('data/grade_scenario_self_only.xml', user_id='Greggs')
     def test_render_grade_self_only(self, xblock):
         # Submit, assess, and render the grade view

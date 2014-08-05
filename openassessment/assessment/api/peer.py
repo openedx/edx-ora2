@@ -7,6 +7,7 @@ the workflow for a given submission.
 from __future__ import absolute_import
 
 import logging
+import json
 
 from django.db import DatabaseError, IntegrityError, transaction
 from django.utils import timezone
@@ -15,6 +16,7 @@ from openassessment.assessment.errors import (PeerAssessmentInternalError, PeerA
                                               PeerAssessmentWorkflowError)
 from openassessment.assessment.models import (Assessment, AssessmentFeedback, AssessmentPart, InvalidRubricSelection,
                                               PeerWorkflow, PeerWorkflowItem)
+from openassessment.assessment.models import TrackChanges
 from openassessment.assessment.serializers import (AssessmentFeedbackSerializer, InvalidRubric, RubricSerializer,
                                                    full_assessment_dict, rubric_from_dict, serialize_assessments)
 from submissions import api as sub_api
@@ -203,7 +205,8 @@ def create_assessment(
     overall_feedback,
     rubric_dict,
     num_required_grades,
-    scored_at=None
+    scored_at=None,
+    track_changes_edits=None,
 ):
     """Creates an assessment on the given submission.
 
@@ -232,6 +235,9 @@ def create_assessment(
         scored_at (datetime): Optional argument to override the time in which
             the assessment took place. If not specified, scored_at is set to
             now.
+        track_changes_edits (str): Optional argument to specify that a track_changes
+            entry should be created for this assessment, storing suggested edits to
+            the original submission.
 
     Returns:
         dict: the Assessment model, serialized as a dict.
@@ -273,6 +279,15 @@ def create_assessment(
             num_required_grades,
             scored_at
         )
+
+        if track_changes_edits:
+            json_edited_content = serialize_edited_content(track_changes_edits)
+            change_tracker = TrackChanges(
+                scorer_id=scorer_id,
+                owner_submission_uuid=peer_submission_uuid,
+                json_edited_content=json_edited_content,
+            )
+            change_tracker.save()
 
         _log_assessment(assessment, scorer_workflow)
         return full_assessment_dict(assessment)
@@ -940,3 +955,25 @@ def on_cancel(submission_uuid):
         )
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
+
+
+def serialize_edited_content(track_changes_edits):
+    """
+    Serialize submission content with track changes.
+
+    Required now that multiple prompts are possible.
+
+    Args:
+        track_change_edits (array): Content of assessment for each prompt with track changes.
+
+    Returns:
+        json representation of content of assessment for each prompt with track changes.
+    """
+    parts = [
+        {
+            'text': edited_content,
+        }
+        for edited_content in track_changes_edits
+    ]
+    content = json.dumps({'parts': parts})
+    return content

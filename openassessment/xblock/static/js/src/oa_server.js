@@ -281,12 +281,13 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          * @returns {promise} A promise which resolves with no arguments if successful,
          *     and which fails with an error message otherwise.
          */
-        peerAssess: function(optionsSelected, criterionFeedback, overallFeedback, submissionID) {
+        peerAssess: function(optionsSelected, criterionFeedback, overallFeedback, submissionID, trackChangesEdits) {
             return this.submitAssessment("peer_assess", {
                 options_selected: optionsSelected,
                 criterion_feedback: criterionFeedback,
                 overall_feedback: overallFeedback,
-                submission_uuid: submissionID
+                submission_uuid: submissionID,
+                track_changes_edits: trackChangesEdits
             });
         },
 

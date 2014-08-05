@@ -62,7 +62,15 @@
     <div class="ui-slidable__content" aria-labelledby="oa_peer_{{ xblock_id }}" id="oa_peer{{ xblock_id }}_content">
         <div class="wrapper--step__content">
             <div class="step__instruction">
-                <p>{% trans "Read and assess the following response from one of your peers." %}</p>
+                <p>
+                    {% if enable_track_changes %}
+                        {% blocktrans  with ins_start="<ins>" ins_end="</ins>" del_start="<del>" del_end="</del>" %}
+                            Read, edit and assess the following response from one of your peers. You can make {{ ins_start }}additions{{ ins_end }} and {{ del_start }}deletions{{ del_end }} to help improve the submission.
+                        {% endblocktrans %}
+                    {% else %}
+                        {% trans "Read and assess the following response from one of your peers." %}
+                    {% endif %}
+                </p>
             </div>
 
             <div class="step__content">
