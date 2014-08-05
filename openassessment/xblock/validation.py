@@ -118,13 +118,13 @@ def validate_assessments(assessments, current_assessments, is_released, _):
             must_be_graded_by = assessment_dict.get('must_be_graded_by')
 
             if must_grade is None or must_grade < 1:
-                return (False, _('The "must_grade" value must be a positive integer.'))
+                return (False, _('In peer assessment, the "Must Grade" value must be a positive integer.'))
 
             if must_be_graded_by is None or must_be_graded_by < 1:
-                return (False, _('The "must_be_graded_by" value must be a positive integer.'))
+                return (False, _('In peer assessment, the "Graded By" value must be a positive integer.'))
 
             if must_grade < must_be_graded_by:
-                return (False, _('The "must_grade" value must be greater than or equal to the "must_be_graded_by" value.'))
+                return (False, _('In peer assessment, the "Must Grade" value must be greater than or equal to the "Graded By" value.'))
 
         # Student Training must have at least one example, and all
         # examples must have unique answers.
