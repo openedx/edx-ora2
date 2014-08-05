@@ -294,7 +294,7 @@ def validate_assessment_examples(rubric_dict, assessments, _):
             # examples against the rubric.
             errors = validate_training_examples(rubric_dict, examples)
             if errors:
-                return False, "; ".join(errors)
+                return False, _(u"Student training example option does not match the rubric.")
 
     return True, u''
 

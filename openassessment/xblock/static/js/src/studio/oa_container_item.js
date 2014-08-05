@@ -34,7 +34,7 @@ OpenAssessment.ItemUtilities = {
         var points = $(element).data('points');
         var label = $(element).data('label');
         // We don't want the lack of a label to make it look like - 1 points.
-        if (label == ""){
+        if (label === ""){
             label = gettext('Unnamed Option');
         }
         var singularString = label + " - " + points + " point";
@@ -484,12 +484,17 @@ OpenAssessment.RubricCriterion.prototype = {
  **/
 OpenAssessment.TrainingExample = function(element){
     this.element = element;
-    // Goes through and instantiates the option description in the training example for each option.
-    $(".openassessment_training_example_criterion_option", this.element) .each( function () {
-        $('option', this).each(function(){
-            OpenAssessment.ItemUtilities.refreshOptionString($(this));
-        });
-    });
+    this.criteria = $(".openassessment_training_example_criterion_option", this.element);
+    this.answer = $('.openassessment_training_example_essay', this.element).first();
+
+    // Initialize the option label in the training example for each option.
+    this.criteria.each(
+        function () {
+            $('option', this).each(function(){
+                OpenAssessment.ItemUtilities.refreshOptionString($(this));
+            });
+        }
+    );
 };
 
 OpenAssessment.TrainingExample.prototype = {
@@ -500,16 +505,17 @@ OpenAssessment.TrainingExample.prototype = {
 
         // Iterates through all of the options selected by the training example, and adds them
         // to a list.
-        var optionsSelected = [];
-        $(".openassessment_training_example_criterion_option", this.element) .each( function () {
-            optionsSelected.push({
-                criterion: $(this).data('criterion'),
-                option: $(this).prop('value')
-            });
-        });
+        var optionsSelected = this.criteria.map(
+            function () {
+                return {
+                    criterion: $(this).data('criterion'),
+                    option: $(this).prop('value')
+                };
+            }
+        ).get();
 
         return {
-            answer: $('.openassessment_training_example_essay', this.element).first().prop('value'),
+            answer: this.answer.prop('value'),
             options_selected: optionsSelected
         };
     },
@@ -519,7 +525,61 @@ OpenAssessment.TrainingExample.prototype = {
     removeHandler: function() {},
     updateHandler: function() {},
 
-    validate: function() { return true; },
-    validationErrors: function() { return []; },
-    clearValidationErrors: function() {}
+    /**
+    Mark validation errors.
+
+    Returns:
+        Boolean indicating whether the criterion is valid.
+
+    **/
+    validate: function() {
+        var isValid = true;
+
+        this.criteria.each(
+            function() {
+                var isOptionValid = ($(this).prop('value') !== "");
+                isValid = isOptionValid && isValid;
+
+                if (!isOptionValid) {
+                    $(this).addClass("openassessment_highlighted_field");
+                }
+            }
+        );
+
+        return isValid;
+    },
+
+    /**
+    Return a list of validation errors visible in the UI.
+    Mainly useful for testing.
+
+    Returns:
+        list of string
+
+    **/
+    validationErrors: function() {
+        var errors = [];
+        this.criteria.each(
+            function() {
+                var hasError = $(this).hasClass("openassessment_highlighted_field");
+                if (hasError) {
+                    errors.push("Student training example is invalid.");
+                }
+            }
+        );
+        return errors;
+    },
+
+    /**
+    Retrieve all elements representing items in this container.
+
+    Returns:
+        array of container item objects
+
+    **/
+    clearValidationErrors: function() {
+        this.criteria.each(
+            function() { $(this).removeClass("openassessment_highlighted_field"); }
+        );
+    }
 };

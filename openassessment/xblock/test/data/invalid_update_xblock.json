@@ -955,7 +955,7 @@
             }
         ],
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"],
-        "expected_error": "example 1 has an extra option"
+        "expected_error": "student training example option does not match the rubric"
     },
 
     "missing_editor_assessments_order": {

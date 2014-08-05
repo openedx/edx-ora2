@@ -466,18 +466,56 @@ OpenAssessment.EditStudentTrainingView.prototype = {
     },
 
     /**
-     Gets the ID of the assessment
+    Gets the ID of the assessment
 
-     Returns:
-     string (CSS ID of the Element object)
-     **/
+    Returns:
+    string (CSS ID of the Element object)
+    **/
     getID: function() {
         return $(this.element).attr('id');
     },
 
-    validate: function() { return true; },
-    validationErrors: function() { return []; },
-    clearValidationErrors: function() {},
+    /**
+    Mark validation errors.
+
+    Returns:
+        Boolean indicating whether the view is valid.
+
+    **/
+    validate: function() {
+        var isValid = true;
+
+        $.each(this.exampleContainer.getAllItems(), function() {
+            isValid = this.validate() && isValid;
+        });
+
+        return isValid;
+    },
+
+    /**
+    Return a list of validation errors visible in the UI.
+    Mainly useful for testing.
+
+    Returns:
+        list of string
+
+    **/
+    validationErrors: function() {
+        var errors = [];
+        $.each(this.exampleContainer.getAllItems(), function() {
+            errors = errors.concat(this.validationErrors());
+        });
+        return errors;
+    },
+
+    /**
+    Clear all validation errors from the UI.
+    **/
+    clearValidationErrors: function() {
+        $.each(this.exampleContainer.getAllItems(), function() {
+            this.clearValidationErrors();
+        });
+    },
 };
 
 /**
