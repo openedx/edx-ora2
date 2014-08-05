@@ -22,6 +22,7 @@ class OpenAssessmentPage(object):
         'course_id', 'base_url', 'base_handler_url',
         'rubric_options', 'render_step_handlers'
     ])
+
     PROBLEMS = {
         'peer_then_self': ProblemFixture(
             course_id="ora2/1/1",
@@ -49,15 +50,17 @@ class OpenAssessmentPage(object):
         )
     }
 
-    def __init__(self, client, problem_name):
+    def __init__(self, hostname, client, problem_name):
         """
         Initialize the page to use specified HTTP client.
 
         Args:
+            hostname (unicode): The hostname (used for the referer HTTP header)
             client (HttpSession): The HTTP client to use.
             problem_name (unicode): Name of the problem (one of the keys in `OpenAssessmentPage.PROBLEMS`)
 
         """
+        self.hostname = hostname
         self.client = client
         self.problem_fixture = self.PROBLEMS[problem_name]
         self.logged_in = False
@@ -66,12 +69,16 @@ class OpenAssessmentPage(object):
         if 'BASIC_AUTH_USER' in os.environ and 'BASIC_AUTH_PASSWORD' in os.environ:
             self.client.auth = (os.environ['BASIC_AUTH_USER'], os.environ['BASIC_AUTH_PASSWORD'])
 
-
     def log_in(self):
         """
         Log in as a unique user with access to the XBlock(s) under test.
         """
-        resp = self.client.get("auto_auth", params={'course_id': self.problem_fixture.course_id}, verify=False)
+        resp = self.client.get(
+            "auto_auth",
+            params={'course_id': self.problem_fixture.course_id},
+            verify=False,
+            timeout=120
+        )
         self.logged_in = (resp.status_code == 200)
         return self
 
@@ -162,8 +169,8 @@ class OpenAssessmentPage(object):
             'Content-type': 'application/json',
             'Accept': 'application/json',
             'X-CSRFToken': self.client.cookies.get('csrftoken', ''),
+            'Referer': self.hostname
         }
-
 
 
 class OpenAssessmentTasks(TaskSet):
@@ -176,6 +183,7 @@ class OpenAssessmentTasks(TaskSet):
         Initialize the task set.
         """
         super(OpenAssessmentTasks, self).__init__(*args, **kwargs)
+        self.hostname = self.locust.host
         self.page = None
 
     @task
@@ -184,7 +192,7 @@ class OpenAssessmentTasks(TaskSet):
         Test the peer-->self workflow.
         """
         if self.page is None:
-            self.page = OpenAssessmentPage(self.client, 'peer_then_self')  # pylint: disable=E1101
+            self.page = OpenAssessmentPage(self.hostname, self.client, 'peer_then_self')  # pylint: disable=E1101
             self.page.log_in()
 
         if not self.page.logged_in:
@@ -209,7 +217,7 @@ class OpenAssessmentTasks(TaskSet):
         Test example-based assessment only.
         """
         if self.page is None:
-            self.page = OpenAssessmentPage(self.client, 'example_based')  # pylint: disable=E1101
+            self.page = OpenAssessmentPage(self.hostname, self.client, 'example_based')  # pylint: disable=E1101
             self.page.log_in()
 
         if not self.page.logged_in:
