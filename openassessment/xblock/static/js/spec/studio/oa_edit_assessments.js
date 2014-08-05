@@ -165,6 +165,10 @@ describe("OpenAssessment edit assessment views", function() {
         var view = null;
 
         beforeEach(function() {
+            // We need to load the student-training specific editing view
+            // so that the student training example template is properly initialized.
+            loadFixtures('oa_edit_student_training.html');
+
             var element = $("#oa_student_training_editor").get(0);
             view = new OpenAssessment.EditStudentTrainingView(element);
         });
@@ -173,28 +177,65 @@ describe("OpenAssessment edit assessment views", function() {
         it("loads a description", function () {
             // This assumes a particular structure of the DOM,
             // which is set by the HTML fixture.
-            var examples = view.exampleContainer.getItemValues();
-            expect(examples.length).toEqual(0);
-        });
-        it("modifies a description", function () {
-            view.exampleContainer.add();
-            var examples = view.exampleContainer.getItemValues();
-            expect(examples.length).toEqual(1);
-        });
-        it("returns the correct format", function () {
-            view.exampleContainer.add();
-            var examples = view.exampleContainer.getItemValues();
-            expect(examples).toEqual(
-                [
+            expect(view.description()).toEqual({
+                examples: [
                     {
-                        answer: "",
-                        options_selected: []
+                        answer: 'Test answer',
+                        options_selected: [
+                            {
+                                criterion: 'criterion_with_two_options',
+                                option: 'option_1'
+                            }
+                        ]
                     }
                 ]
-            );
+            });
+        });
+
+        it("modifies a description", function () {
+            view.exampleContainer.add();
+            expect(view.description()).toEqual({
+                examples: [
+                    {
+                        answer: 'Test answer',
+                        options_selected: [
+                            {
+                                criterion: 'criterion_with_two_options',
+                                option: 'option_1'
+                            }
+                        ]
+                    },
+                    {
+                        answer: '',
+                        options_selected: [
+                            {
+                                criterion: 'criterion_with_two_options',
+                                option: ''
+                            }
+                        ]
+                    }
+                ]
+            });
         });
 
         it("shows an alert when disabled", function() { testAlertOnDisable(view); });
+
+        it("validates selected options", function() {
+            // On page load, the examples should be valid
+            expect(view.validate()).toBe(true);
+            expect(view.validationErrors()).toEqual([]);
+
+            // Add a new training example (default no option selected)
+            view.exampleContainer.add();
+
+            // Now there should be a validation error
+            expect(view.validate()).toBe(false);
+            expect(view.validationErrors()).toContain("Student training example is invalid.");
+
+            // Clear validation errors
+            view.clearValidationErrors();
+            expect(view.validationErrors()).toEqual([]);
+        });
     });
 
     describe("OpenAssessment.EditExampleBasedAssessmentView", function() {
