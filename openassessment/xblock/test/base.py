@@ -100,7 +100,7 @@ class XBlockHandlerTestCase(CacheResetTest):
         )
         return self.runtime.get_block(block_id)
 
-    def request(self, xblock, handler_name, content, response_format=None):
+    def request(self, xblock, handler_name, content, request_method="POST", response_format=None):
         """
         Make a request to an XBlock handler.
 
@@ -110,6 +110,7 @@ class XBlockHandlerTestCase(CacheResetTest):
             content (unicode): Content of the request.
 
         Keyword Arguments:
+            request_method (str): The HTTP method of the request (defaults to POST)
             response_format (None or str): Expected format of the response string.
                 If `None`, return the raw response content; if 'json', parse the
                 response as JSON and return the result.
@@ -122,6 +123,7 @@ class XBlockHandlerTestCase(CacheResetTest):
         """
         # Create a fake request
         request = webob.Request(dict())
+        request.method = request_method
         request.body = content
 
         # Send the request to the XBlock handler

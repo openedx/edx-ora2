@@ -2,6 +2,7 @@
 from collections import namedtuple
 import json
 import datetime
+import urllib
 from mock import Mock, patch
 from django.test.utils import override_settings
 from openassessment.assessment.api import peer as peer_api
@@ -9,6 +10,7 @@ from openassessment.assessment.api import self as self_api
 from openassessment.assessment.api import ai as ai_api
 from openassessment.workflow import api as workflow_api
 from openassessment.assessment.errors.ai import AIError, AIGradingInternalError
+from openassessment.fileupload.api import FileUploadInternalError
 from submissions import api as sub_api
 from openassessment.xblock.test.base import scenario, XBlockHandlerTestCase
 
@@ -188,10 +190,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         )
 
         # Now Bob should be fully populated in the student info view.
-        request = namedtuple('Request', 'params')
-        request.params = {"student_id": "Bob"}
-        # Verify that we can render without error
-        path, context = xblock.get_student_info_path_and_context(request)
+        path, context = xblock.get_student_info_path_and_context("Bob")
         self.assertEquals("Bob Answer", context['submission']['answer']['text'])
         self.assertIsNone(context['self_assessment'])
         self.assertEquals("openassessmentblock/staff_debug/student_info.html", path)
@@ -220,14 +219,72 @@ class TestCourseStaff(XBlockHandlerTestCase):
             {'criteria': xblock.rubric_criteria},
         )
 
-        # Now Bob should be fully populated in the student info view.
-        request = namedtuple('Request', 'params')
-        request.params = {"student_id": "Bob"}
-        # Verify that we can render without error
-        path, context = xblock.get_student_info_path_and_context(request)
+        path, context = xblock.get_student_info_path_and_context("Bob")
         self.assertEquals("Bob Answer", context['submission']['answer']['text'])
         self.assertEquals([], context['peer_assessments'])
         self.assertEquals("openassessmentblock/staff_debug/student_info.html", path)
+
+    @scenario('data/self_only_scenario.xml', user_id='Bob')
+    def test_staff_debug_student_info_image_submission(self, xblock):
+        # Simulate that we are course staff
+        xblock.xmodule_runtime =  self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+
+        bob_item = STUDENT_ITEM.copy()
+        bob_item["item_id"] = xblock.scope_ids.usage_id
+
+        # Create an image submission for Bob
+        sub_api.create_submission(bob_item, {
+            'text':"Bob Answer",
+            'file_key': "test_key"
+        })
+
+        # Mock the file upload API to avoid hitting S3
+        with patch("openassessment.xblock.staff_info_mixin.file_api") as file_api:
+            file_api.get_download_url.return_value = "http://www.example.com/image.jpeg"
+            __, context = xblock.get_student_info_path_and_context("Bob")
+
+            # Check that the right file key was passed to generate the download url
+            file_api.get_download_url.assert_called_with("test_key")
+
+            # Check the context passed to the template
+            self.assertEquals('http://www.example.com/image.jpeg', context['submission']['image_url'])
+
+            # Check the fully rendered template
+            payload = urllib.urlencode({"student_id": "Bob"})
+            resp = self.request(xblock, "render_student_info", payload)
+            self.assertIn("http://www.example.com/image.jpeg", resp)
+
+    @scenario('data/self_only_scenario.xml', user_id='Bob')
+    def test_staff_debug_student_info_file_download_url_error(self, xblock):
+        # Simulate that we are course staff
+        xblock.xmodule_runtime =  self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+
+        bob_item = STUDENT_ITEM.copy()
+        bob_item["item_id"] = xblock.scope_ids.usage_id
+
+        # Create an image submission for Bob
+        sub_api.create_submission(bob_item, {
+            'text':"Bob Answer",
+            'file_key': "test_key"
+        })
+
+        # Mock the file upload API to simulate an error
+        with patch("openassessment.xblock.staff_info_mixin.file_api.get_download_url") as file_api_call:
+            file_api_call.side_effect = FileUploadInternalError("Error!")
+            __, context = xblock.get_student_info_path_and_context("Bob")
+
+            # Expect that the page still renders, but without the image url
+            self.assertIn('submission', context)
+            self.assertNotIn('image_url', context['submission'])
+
+            # Check the fully rendered template
+            payload = urllib.urlencode({"student_id": "Bob"})
+            resp = self.request(xblock, "render_student_info", payload)
+            self.assertIn("Bob Answer", resp)
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @scenario('data/example_based_assessment.xml', user_id='Bob')
