@@ -6,6 +6,7 @@ import pytz
 import dateutil.parser
 import defusedxml.ElementTree as safe_etree
 from django.utils.translation import ugettext as _
+from submissions.api import MAX_TOP_SUBMISSIONS
 
 
 class UpdateFromXmlError(Exception):
@@ -517,6 +518,10 @@ def serialize_content_to_xml(oa_block, root):
     if oa_block.submission_due is not None:
         root.set('submission_due', unicode(oa_block.submission_due))
 
+    # Set leaderboard show
+    if oa_block.leaderboard_show:
+        root.set('leaderboard_show', unicode(oa_block.leaderboard_show))
+
     if oa_block.allow_file_upload is not None:
         root.set('allow_file_upload', unicode(oa_block.allow_file_upload))
 
@@ -644,6 +649,21 @@ def update_from_xml(oa_block, root, validator=DEFAULT_VALIDATOR):
     else:
         rubric = _parse_rubric_xml(rubric_el)
 
+    # Retrieve the leaderboard if it exists, otherwise set it to 0
+    leaderboard_show = 0
+    if 'leaderboard_show' in root.attrib:
+        try:
+            leaderboard_show = int(root.attrib['leaderboard_show'])
+            if leaderboard_show < 1:
+                raise UpdateFromXmlError(_('The leaderboard must have a positive integer value.'))
+            if leaderboard_show > MAX_TOP_SUBMISSIONS:
+                msg = _('The number of leaderboard scores must be less than {max_num}').format(
+                    max_num=MAX_TOP_SUBMISSIONS
+                )
+                raise UpdateFromXmlError(msg)
+        except (TypeError, ValueError):
+            raise UpdateFromXmlError(_('The leaderboard must have an integer value.'))
+
     # Retrieve the assessments
     assessments_el = root.find('assessments')
     if assessments_el is None:
@@ -667,6 +687,7 @@ def update_from_xml(oa_block, root, validator=DEFAULT_VALIDATOR):
     oa_block.submission_start = submission_start
     oa_block.submission_due = submission_due
     oa_block.allow_file_upload = allow_file_upload
+    oa_block.leaderboard_show = leaderboard_show
 
     return oa_block
 
