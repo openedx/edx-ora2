@@ -64,7 +64,8 @@ class LeaderboardMixin(object):
             student_item_dict['course_id'],
             student_item_dict['item_id'],
             student_item_dict['item_type'],
-            self.leaderboard_show
+            self.leaderboard_show,
+            use_cache=False
         )
         for score in scores:
             if 'text' in score['content']:
