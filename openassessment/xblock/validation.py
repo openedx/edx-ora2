@@ -2,6 +2,7 @@
 Validate changes to an XBlock before it is updated.
 """
 from collections import Counter
+from submissions.api import MAX_TOP_SUBMISSIONS
 from openassessment.assessment.serializers import rubric_from_dict, InvalidRubric
 from openassessment.assessment.api.student_training import validate_training_examples
 from openassessment.xblock.resolve_dates import resolve_dates, DateValidationError, InvalidDateFormat
@@ -316,7 +317,7 @@ def validator(oa_block, _, strict_post_release=True):
         callable, of a form that can be passed to `update_from_xml`.
     """
 
-    def _inner(rubric_dict, assessments, submission_start=None, submission_due=None):
+    def _inner(rubric_dict, assessments, leaderboard_show=0, submission_start=None, submission_due=None):
 
         is_released = strict_post_release and oa_block.is_released()
 
@@ -347,6 +348,10 @@ def validator(oa_block, _, strict_post_release=True):
         success, msg = validate_dates(oa_block.start, oa_block.due, submission_dates + assessment_dates, _)
         if not success:
             return (False, msg)
+
+        # Leaderboard
+        if leaderboard_show < 0 or leaderboard_show > MAX_TOP_SUBMISSIONS:
+            return (False, _("Leaderboard number is invalid."))
 
         # Success!
         return (True, u'')

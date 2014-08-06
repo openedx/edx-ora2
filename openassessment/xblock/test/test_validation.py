@@ -334,3 +334,31 @@ class ValidationIntegrationTest(TestCase):
         is_valid, msg = self.validator(mutated_rubric, no_example_based)
         self.assertTrue(is_valid)
         self.assertEqual(msg, u'')
+
+    def test_leaderboard_num_validation(self):
+        self._assert_leaderboard_num_valid(-1, False)
+        self._assert_leaderboard_num_valid(0, True)
+        self._assert_leaderboard_num_valid(1, True)
+        self._assert_leaderboard_num_valid(100, True)
+        self._assert_leaderboard_num_valid(101, False)
+        self._assert_leaderboard_num_valid(102, False)
+
+    def _assert_leaderboard_num_valid(self, num, expected_is_valid):
+        """
+        Check that the leaderboard number is either valid or invalid.
+
+        Args:
+            num (int): The leaderboard number to check
+            expected_is_valid (bool): Whether the number is valid or invalid.
+
+        Raises:
+            AssertionError
+
+        """
+        is_valid, msg = self.validator(self.RUBRIC, self.ASSESSMENTS, num)
+        if expected_is_valid:
+            self.assertTrue(is_valid, msg="Leaderboard num {num} should be valid".format(num=num))
+            self.assertEqual(msg, '')
+        else:
+            self.assertFalse(is_valid, msg="Leaderboard num {num} should be invalid".format(num=num))
+            self.assertEqual(msg, 'Leaderboard number is invalid.')

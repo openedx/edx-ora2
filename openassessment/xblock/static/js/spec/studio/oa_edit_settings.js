@@ -91,6 +91,14 @@ describe("OpenAssessment.EditSettingsView", function() {
         expect(view.imageSubmissionEnabled()).toBe(false);
     });
 
+    it("sets and loads the leaderboard number", function() {
+        view.leaderboardNum(18);
+        expect(view.leaderboardNum()).toEqual(18);
+
+        view.leaderboardNum(0);
+        expect(view.leaderboardNum()).toEqual(0);
+    });
+
     it("builds a description of enabled assessments", function() {
         // Depends on the template having an original order
         // of training --> peer --> self --> ai
@@ -155,6 +163,32 @@ describe("OpenAssessment.EditSettingsView", function() {
             view.dueDatetimeControl,
             "Submission due is invalid"
         );
+    });
+
+    it("validates the leaderboard number field", function() {
+        // Valid value for the leaderboard number
+        view.leaderboardNum(0);
+        expect(view.validate()).toBe(true);
+        expect(view.validationErrors()).toEqual([]);
+
+        // Below the minimum
+        view.leaderboardNum(-1);
+        expect(view.validate()).toBe(false);
+        expect(view.validationErrors()).toContain(
+            "Leaderboard number is invalid"
+        );
+
+        // Clear validation errors
+        view.clearValidationErrors();
+        expect(view.validationErrors()).toEqual([]);
+
+        // Valid, near the maximum
+        view.leaderboardNum(100);
+        expect(view.validate()).toBe(true);
+
+        // Above the maximum
+        view.leaderboardNum(101);
+        expect(view.validate()).toBe(false);
     });
 
     it("validates assessment views", function() {
