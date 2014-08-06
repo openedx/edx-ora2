@@ -71,5 +71,6 @@ class LmsCompatibilityMixin(object):
         """
         return sum(
             max(option["points"] for option in criterion["options"])
+            if len(criterion["options"]) > 0 else 0
             for criterion in self.rubric_criteria
         )
