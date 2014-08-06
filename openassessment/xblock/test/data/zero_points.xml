@@ -1,0 +1,14 @@
+<openassessment>
+    <title>Feedback only criterion</title>
+    <prompt>Test prompt</prompt>
+    <rubric>
+        <prompt>Test rubric prompt</prompt>
+        <criterion feedback="required">
+            <name>𝖋𝖊𝖊𝖉𝖇𝖆𝖈𝖐 𝖔𝖓𝖑𝖞</name>
+            <prompt>This criterion accepts only written feedback, so it has no options</prompt>
+        </criterion>
+    </rubric>
+    <assessments>
+        <assessment name="self-assessment" />
+    </assessments>
+</openassessment>
