@@ -13,6 +13,14 @@
                 <div class="student__answer__display__content">
                     {{ submission.answer.text|linebreaks }}
                 </div>
+
+                {% if submission.image_url %}
+                <img
+                    class="submission--image"
+                    alt="{% trans "The image associated with this response" %}"
+                    src="{{ submission.image_url }}"
+                />
+                {% endif %}
             </div>
         </div>
 
