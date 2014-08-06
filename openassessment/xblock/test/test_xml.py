@@ -93,16 +93,17 @@ class TestSerializeContent(TestCase):
 
     @ddt.file_data('data/serialize.json')
     def test_serialize(self, data):
-        self.oa_block.title = data['title']
-        self.oa_block.prompt = data['prompt']
-        self.oa_block.rubric_feedback_prompt = data['rubric_feedback_prompt']
-        self.oa_block.start = _parse_date(data['start'])
-        self.oa_block.due = _parse_date(data['due'])
-        self.oa_block.submission_start = data['submission_start']
-        self.oa_block.submission_due = data['submission_due']
-        self.oa_block.rubric_criteria = data['criteria']
-        self.oa_block.rubric_assessments = data['assessments']
-        self.oa_block.allow_file_upload = data['allow_file_upload']
+        self.oa_block.title = data.get('title')
+        self.oa_block.prompt = data.get('prompt')
+        self.oa_block.rubric_feedback_prompt = data.get('rubric_feedback_prompt')
+        self.oa_block.start = _parse_date(data.get('start'))
+        self.oa_block.due = _parse_date(data.get('due'))
+        self.oa_block.submission_start = data.get('submission_start')
+        self.oa_block.submission_due = data.get('submission_due')
+        self.oa_block.leaderboard_show = data.get('leaderboard_show')
+        self.oa_block.rubric_criteria = data.get('criteria')
+        self.oa_block.rubric_assessments = data.get('assessments')
+        self.oa_block.allow_file_upload = data.get('allow_file_upload')
         xml = serialize_content(self.oa_block)
 
         # Compare the XML with our expected output
@@ -152,6 +153,7 @@ class TestSerializeContent(TestCase):
         self.oa_block.due = None
         self.oa_block.submission_start = None
         self.oa_block.submission_due = None
+        self.oa_block.leaderboard_show = 10
 
         # We have to be really permissive with the data we'll accept.
         # If the data we're retrieving is somehow corrupted,
@@ -177,6 +179,7 @@ class TestSerializeContent(TestCase):
         self.oa_block.due = None
         self.oa_block.submission_start = None
         self.oa_block.submission_due = None
+        self.oa_block.leaderboard_show = 10
 
         for assessment_dict in self.BASIC_ASSESSMENTS:
             for mutated_dict in self._dict_mutations(assessment_dict):
@@ -189,7 +192,7 @@ class TestSerializeContent(TestCase):
                     msg = "Could not parse mutated assessment dict {assessment}\n{ex}".format(assessment=mutated_dict, ex=ex)
                     self.fail(msg)
 
-    @ddt.data("title", "prompt", "start", "due", "submission_due", "submission_start")
+    @ddt.data("title", "prompt", "start", "due", "submission_due", "submission_start", "leaderboard_show")
     def test_mutated_field(self, field):
         self.oa_block.rubric_criteria = self.BASIC_CRITERIA
         self.oa_block.rubric_assessments = self.BASIC_ASSESSMENTS
@@ -197,6 +200,7 @@ class TestSerializeContent(TestCase):
         self.oa_block.due = None
         self.oa_block.submission_start = None
         self.oa_block.submission_due = None
+        self.oa_block.leaderboard_show = 10
         self.oa_block.allow_file_upload = None
 
         for mutated_value in [0, u"\u9282", None]:
@@ -319,11 +323,11 @@ class TestUpdateFromXml(TestCase):
         self.oa_block.prompt = ""
         self.oa_block.rubric_criteria = dict()
         self.oa_block.rubric_assessments = list()
-
         self.oa_block.start = dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc)
         self.oa_block.due = dt.datetime(3000, 1, 1).replace(tzinfo=pytz.utc)
         self.oa_block.submission_start = "2000-01-01T00:00:00"
         self.oa_block.submission_due = "2000-01-01T00:00:00"
+        self.oa_block.leaderboard_show = 0
 
     @ddt.file_data('data/update_from_xml.json')
     def test_update_from_xml(self, data):
@@ -335,14 +339,34 @@ class TestUpdateFromXml(TestCase):
         self.assertEqual(self.oa_block, returned_block)
 
         # Check that the contents of the modified XBlock are correct
-        self.assertEqual(self.oa_block.title, data['title'])
-        self.assertEqual(self.oa_block.prompt, data['prompt'])
-        self.assertEqual(self.oa_block.start, _parse_date(data['start']))
-        self.assertEqual(self.oa_block.due, _parse_date(data['due']))
-        self.assertEqual(self.oa_block.submission_start, data['submission_start'])
-        self.assertEqual(self.oa_block.submission_due, data['submission_due'])
-        self.assertEqual(self.oa_block.rubric_criteria, data['criteria'])
-        self.assertEqual(self.oa_block.rubric_assessments, data['assessments'])
+        expected_fields = [
+            'title',
+            'prompt',
+            'start',
+            'due',
+            'submission_start',
+            'submission_due',
+            'criteria',
+            'assessments',
+            'allow_file_upload',
+            'leaderboard_show'
+        ]
+        for field_name in expected_fields:
+            if field_name in data:
+                actual = getattr(self.oa_block, field_name)
+                expected = data[field_name]
+
+                if field_name in ['start', 'due']:
+                    expected = _parse_date(expected)
+
+                self.assertEqual(
+                    actual, expected,
+                    msg=u"Wrong value for '{key}': was {actual} but expected {expected}".format(
+                        key=field_name,
+                        actual=repr(actual),
+                        expected=repr(expected)
+                    )
+                )
 
     @ddt.file_data('data/update_from_xml_error.json')
     def test_update_from_xml_error(self, data):

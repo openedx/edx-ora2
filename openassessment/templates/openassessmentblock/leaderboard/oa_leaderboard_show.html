@@ -1,0 +1,28 @@
+{% load i18n %}
+{% spaceless %}
+<li id="openassessment__leaderboard" class="openassessment__steps__step step--leaderboard is--complete">
+    <header class="step__header">
+        <h2 class="step__title">
+            <span class="wrapper--copy">
+                <span class="step__label">{% trans "Leaderboard: Complete" %} </span>
+                <div class="wrapper--step__content">
+                    <h3 class="leaderboard__title">{% trans "Best Responses For This Assignment" %}</h3>
+                    <ol class="list leaderboard__score__list">
+                    {% for topscore in topscores %}
+                        <li class="leaderboard__score__item">
+                            <h4 class="leaderboard__list__number">{{ forloop.counter }}</h4>
+                            {% with num_points=topscore.score %}
+                            <h4 class="leaderboard__score__title">
+                                {% blocktrans %}{{ num_points }} points{% endblocktrans %}
+                            </h4>
+                            {% endwith %}
+                            <div class="leaderboard__answer">{{ topscore.content|linebreaks }}</div>
+                        </li>
+                    {% endfor %}
+                    </ol>
+                </div>
+            </span>
+        </h2>
+    </header>
+</li>
+{% endspaceless %}
