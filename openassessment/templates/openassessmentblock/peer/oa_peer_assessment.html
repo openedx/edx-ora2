@@ -28,13 +28,13 @@
         <span class="step__status">
           <span class="step__status__label">{% trans "This step's status" %}:</span>
           <span class="step__status__value">
-            {% with graded=graded must_grade=must_grade %}
             <span class="copy">
-                {% blocktrans with num_graded="<span class=\"step__status__value--completed\">"|add:graded|add:"</span>"|safe num_must_grade="<span class=\"step__status__value--required\">"|add:must_grade|add:"</span>"|safe %}
+                {% with graded_string=graded|stringformat:"s" must_grade_string=must_grade|stringformat:"s" %}
+                {% blocktrans with num_graded='<span class="step__status__value--completed">'|safe|add:graded_string|add:"</span>"|safe num_must_grade='<span class="step__status__value--required">'|safe|add:must_grade_string|add:"</span>"|safe %}
                     In Progress ({{ num_graded }} of {{ num_must_grade }})
                 {% endblocktrans %}
+                {% endwith %}
             </span>
-            {% endwith %}
           </span>
         </span>
         {% endblock %}
@@ -53,13 +53,13 @@
                         <article class="peer-assessment" id="peer-assessment--001">
                             <div class="peer-assessment__display">
                                 <header class="peer-assessment__display__header">
-                                    {% with review_num=review_num must_grade=must_grade %}
                                     <h3 class="peer-assessment__display__title">
-                                        {% blocktrans with review_number='<span>'|add:review_num|add:'</span>'|safe num_must_grade='<span class="peer-assessment__number--required">'|add:must_grade|add:'</span>'|safe %}
+                                        {% with review_num_string=review_num|stringformat:"s" must_grade_string=must_grade|stringformat:"s" %}
+                                        {% blocktrans with review_number='<span class="peer-assessment__number--current">'|safe|add:review_num_string|add:'</span>'|safe num_must_grade='<span class="peer-assessment__number--required">'|safe|add:must_grade_string|add:'</span>'|safe %}
                                             Assessment # {{ review_number }} of {{ num_must_grade }}
                                         {% endblocktrans %}
+                                        {% endwith %}
                                     </h3>
-                                    {% endwith %}
                                 </header>
 
                                 <div class="peer-assessment__display__response">
