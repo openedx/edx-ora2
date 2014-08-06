@@ -6,6 +6,7 @@ import pytz
 import dateutil.parser
 import defusedxml.ElementTree as safe_etree
 from django.utils.translation import ugettext as _
+from submissions.api import MAX_TOP_SUBMISSIONS
 
 
 class UpdateFromXmlError(Exception):
@@ -655,6 +656,11 @@ def update_from_xml(oa_block, root, validator=DEFAULT_VALIDATOR):
             leaderboard_show = int(root.attrib['leaderboard_show'])
             if leaderboard_show < 1:
                 raise UpdateFromXmlError(_('The leaderboard must have a positive integer value.'))
+            if leaderboard_show > MAX_TOP_SUBMISSIONS:
+                msg = _('The number of leaderboard scores must be less than {max_num}').format(
+                    max_num=MAX_TOP_SUBMISSIONS
+                )
+                raise UpdateFromXmlError(msg)
         except (TypeError, ValueError):
             raise UpdateFromXmlError(_('The leaderboard must have an integer value.'))
 
