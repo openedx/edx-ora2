@@ -161,10 +161,28 @@ describe("OpenAssessment.EditSettingsView", function() {
         // Simulate one of the assessment views being invalid
         assessmentViews[PEER].isValid = false;
         assessmentViews[PEER].setValidationErrors(["test error"]);
+        assessmentViews[PEER].isEnabled(true);
 
         // Expect that the parent view is also invalid
         expect(view.validate()).toBe(false);
-        debugger;
         expect(view.validationErrors()).toContain("test error");
+    });
+
+    it("validates only assessments that are enabled", function() {
+        // Simulate one of the assessment views being invalid but disabled
+        assessmentViews[PEER].isValid = false;
+        assessmentViews[PEER].setValidationErrors(["test error"]);
+        assessmentViews[PEER].isEnabled(false);
+
+        // Spy on the assessment view's validate() method so we can
+        // verify that it doesn't get called (thus marking the DOM)
+        spyOn(assessmentViews[PEER], 'validate').andCallThrough();
+
+        // Expect that the parent view is still valid
+        expect(view.validate()).toBe(true);
+
+        // Check that the assessment view didn't get a chance
+        // to mark anything as invalid
+        expect(assessmentViews[PEER].validate).not.toHaveBeenCalled();
     });
 });
