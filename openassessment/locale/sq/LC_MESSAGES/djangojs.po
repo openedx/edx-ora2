@@ -1,0 +1,133 @@
+# edX translation file.
+# Copyright (C) 2014 EdX
+# This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
+# 
+# Translators:
+# Faton Nuha <faton11@live.com>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: edx-platform\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-08-06 09:12-0400\n"
+"PO-Revision-Date: 2014-08-05 10:51+0000\n"
+"Last-Translator: Faton Nuha <faton11@live.com>\n"
+"Language-Team: Albanian (http://www.transifex.com/projects/p/edx-platform/language/sq/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: sq\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_base.js:149
+msgid "Unable to Load"
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_edit.js:81
+msgid ""
+"This problem has already been released. Any changes will apply only to "
+"future assessments."
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_response.js:193
+msgid "Status of Your Response"
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_response.js:219
+msgid ""
+"If you leave this page without saving or submitting your response, you'll "
+"lose any work you've done on the response."
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_response.js:292
+msgid "This response has not been saved."
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_response.js:310
+msgid "Saving..."
+msgstr "Ruaj..."
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_response.js:328
+msgid "This response has been saved but not submitted."
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_response.js:331
+msgid "Error"
+msgstr "Problem"
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_response.js:432
+msgid "File size must be 5MB or less."
+msgstr "Madhësia e fajllit duhet të jetë 5MB ose më pak."
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_response.js:436
+msgid "File must be an image."
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:60
+#: openassessment/xblock/static/js/src/oa_server.js:91
+#: openassessment/xblock/static/js/src/oa_server.js:110
+msgid "This section could not be loaded."
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:145
+msgid "This response could not be submitted."
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:171
+msgid "This response could not be saved."
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:208
+msgid "This feedback could not be submitted."
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:254
+#: openassessment/xblock/static/js/src/oa_server.js:298
+#: openassessment/xblock/static/js/src/oa_server.js:339
+#: openassessment/xblock/static/js/src/oa_server.js:373
+msgid "This assessment could not be submitted."
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:397
+msgid "One or more rescheduling tasks failed."
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:425
+msgid "This problem could not be loaded."
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:454
+msgid "This problem could not be saved."
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:484
+msgid "The server could not be contacted."
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:510
+msgid "Could not retrieve upload url."
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:531
+msgid "Could not retrieve download url."
+msgstr ""
