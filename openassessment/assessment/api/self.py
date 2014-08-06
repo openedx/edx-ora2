@@ -2,7 +2,7 @@
 Public interface for self-assessment.
 """
 import logging
-from django.db import DatabaseError
+from django.db import DatabaseError, transaction
 from dogapi import dog_stats_api
 
 from submissions.api import get_submission_and_student, SubmissionNotFoundError
@@ -152,21 +152,15 @@ def create_assessment(
         raise SelfAssessmentRequestError()
 
     try:
-        # Get or create the rubric
-        rubric = rubric_from_dict(rubric_dict)
-
-        # Create the self assessment
-        assessment = Assessment.create(
-            rubric,
-            user_id,
+        assessment = _complete_assessment(
             submission_uuid,
-            SELF_TYPE,
-            scored_at=scored_at,
-            feedback=overall_feedback
+            user_id,
+            options_selected,
+            criterion_feedback,
+            overall_feedback,
+            rubric_dict,
+            scored_at
         )
-
-        # This will raise an `InvalidRubricSelection` if the selected options do not match the rubric.
-        AssessmentPart.create_from_option_names(assessment, options_selected, feedback=criterion_feedback)
         _log_assessment(assessment, submission)
     except InvalidRubric as ex:
         msg = "Invalid rubric definition: " + str(ex)
@@ -179,6 +173,56 @@ def create_assessment(
 
     # Return the serialized assessment
     return full_assessment_dict(assessment)
+
+
+@transaction.commit_on_success
+def _complete_assessment(
+        submission_uuid,
+        user_id,
+        options_selected,
+        criterion_feedback,
+        overall_feedback,
+        rubric_dict,
+        scored_at
+):
+    """
+    Internal function for creating an assessment and its parts atomically.
+
+    Args:
+        submission_uuid (str): The unique identifier for the submission being
+            assessed.
+        user_id (str): The ID of the user creating the assessment. This must
+            match the ID of the user who made the submission.
+        options_selected (dict): Mapping of rubric criterion names to option
+            values selected.
+        criterion_feedback (dict): Dictionary mapping criterion names to the
+            free-form text feedback the user gave for the criterion.
+            Since criterion feedback is optional, some criteria may not appear
+            in the dictionary.
+        overall_feedback (unicode): Free-form text feedback on the submission overall.
+        rubric_dict (dict): Serialized Rubric model.
+        scored_at (datetime): The timestamp of the assessment.
+
+    Returns:
+        Assessment model
+
+    """
+    # Get or create the rubric
+    rubric = rubric_from_dict(rubric_dict)
+
+    # Create the self assessment
+    assessment = Assessment.create(
+        rubric,
+        user_id,
+        submission_uuid,
+        SELF_TYPE,
+        scored_at=scored_at,
+        feedback=overall_feedback
+    )
+
+    # This will raise an `InvalidRubricSelection` if the selected options do not match the rubric.
+    AssessmentPart.create_from_option_names(assessment, options_selected, feedback=criterion_feedback)
+    return assessment
 
 
 def get_assessment(submission_uuid):

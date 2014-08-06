@@ -6,7 +6,7 @@ the workflow for a given submission.
 """
 import logging
 from django.utils import timezone
-from django.db import DatabaseError, IntegrityError
+from django.db import DatabaseError, IntegrityError, transaction
 from dogapi import dog_stats_api
 
 from openassessment.assessment.models import (
@@ -259,25 +259,18 @@ def create_assessment(
             raise PeerAssessmentWorkflowError(message)
         peer_submission_uuid = peer_workflow_item.author.submission_uuid
 
-        # Get or create the rubric
-        rubric = rubric_from_dict(rubric_dict)
-
-        # Create the peer assessment
-        assessment = Assessment.create(
-            rubric,
+        assessment = _complete_assessment(
+            rubric_dict,
             scorer_id,
             peer_submission_uuid,
-            PEER_TYPE,
-            scored_at=scored_at,
-            feedback=overall_feedback
+            options_selected,
+            criterion_feedback,
+            scorer_workflow,
+            overall_feedback,
+            num_required_grades,
+            scored_at
         )
 
-        # Create assessment parts for each criterion in the rubric
-        # This will raise an `InvalidRubricSelection` if the selected options do not match the rubric.
-        AssessmentPart.create_from_option_names(assessment, options_selected, feedback=criterion_feedback)
-
-        # Close the active assessment
-        scorer_workflow.close_active_assessment(peer_submission_uuid, assessment, num_required_grades)
         _log_assessment(assessment, scorer_workflow)
         return full_assessment_dict(assessment)
     except PeerWorkflow.DoesNotExist:
@@ -301,6 +294,71 @@ def create_assessment(
         ).format(scorer_id)
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
+
+@transaction.commit_on_success
+def _complete_assessment(
+        rubric_dict,
+        scorer_id,
+        peer_submission_uuid,
+        options_selected,
+        criterion_feedback,
+        scorer_workflow,
+        overall_feedback,
+        num_required_grades,
+        scored_at
+):
+    """
+    Internal function for atomic assessment creation. Creates a peer assessment
+    and closes the associated peer workflow item in a single transaction.
+
+    Args:
+        rubric_dict (dict): The rubric model associated with this assessment
+        scorer_id (str): The user ID for the user giving this assessment. This
+            is required to create an assessment on a submission.
+        peer_submission_uuid (str): The submission uuid for the submission being
+            assessed.
+        options_selected (dict): Dictionary mapping criterion names to the
+            option names the user selected for that criterion.
+        criterion_feedback (dict): Dictionary mapping criterion names to the
+            free-form text feedback the user gave for the criterion.
+            Since criterion feedback is optional, some criteria may not appear
+            in the dictionary.
+        scorer_workflow (PeerWorkflow): The PeerWorkflow associated with the
+            scorer. Updates the workflow item associated with this assessment.
+        overall_feedback (unicode): Free-form text feedback on the submission overall.
+        num_required_grades (int): The required number of assessments a
+            submission requires before it is completed. If this number of
+            assessments is reached, the grading_completed_at timestamp is set
+            for the Workflow.
+        scored_at (datetime): Optional argument to override the time in which
+            the assessment took place. If not specified, scored_at is set to
+            now.
+
+    Returns:
+        The Assessment model
+
+    """
+    # Get or create the rubric
+    rubric = rubric_from_dict(rubric_dict)
+
+    # Create the peer assessment
+    assessment = Assessment.create(
+        rubric,
+        scorer_id,
+        peer_submission_uuid,
+        PEER_TYPE,
+        scored_at=scored_at,
+        feedback=overall_feedback
+    )
+
+    # Create assessment parts for each criterion in the rubric
+    # This will raise an `InvalidRubricSelection` if the selected options do not
+    # match the rubric.
+    AssessmentPart.create_from_option_names(assessment, options_selected, feedback=criterion_feedback)
+
+    # Close the active assessment
+    scorer_workflow.close_active_assessment(peer_submission_uuid, assessment, num_required_grades)
+    return assessment
 
 
 def get_rubric_max_scores(submission_uuid):
