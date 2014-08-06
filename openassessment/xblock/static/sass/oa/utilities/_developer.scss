@@ -822,6 +822,11 @@
       margin: 15px 10px;
     }
 
+    #openassessment_rubric_add_criterion.openassessment_highlighted_field{
+      color: red;
+      border-width: 2px;
+    }
+
     #openassessment_rubric_add_criterion:hover{
       color: white;
       background-color: #009fe6;

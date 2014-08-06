@@ -7,7 +7,7 @@
                 {{ criterion.label }}
             </div>
             <select class="openassessment_training_example_criterion_option setting-input" data-criterion="{{ criterion.name }}" data-option="{{ option.name }}">
-                <option value="">{% trans "Not Scored" %}</option>
+                <option value="">{% trans "Not Selected" %}</option>
                 {% for option in criterion.options %}
                     <option value="{{ option.name }}" data-points="{{ option.points }}" data-label="{{ option.label }}"
                                     {% if criterion.option_selected == option.name %} selected {% endif %}
