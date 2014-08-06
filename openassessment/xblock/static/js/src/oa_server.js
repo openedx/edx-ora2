@@ -418,6 +418,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
             criteria (list of object literals): The rubric criteria.
             assessments (list of object literals): The assessments the student will be evaluated on.
             imageSubmissionEnabled (boolean): TRUE if image attachments are allowed.
+            leaderboardNum (int): The number of scores to show in the leaderboard.
 
         Returns:
             A JQuery promise, which resolves with no arguments
@@ -435,7 +436,8 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
                 criteria: kwargs.criteria,
                 assessments: kwargs.assessments,
                 editor_assessments_order: kwargs.editorAssessmentsOrder,
-                allow_file_upload: kwargs.imageSubmissionEnabled
+                allow_file_upload: kwargs.imageSubmissionEnabled,
+                leaderboard_show: kwargs.leaderboardNum
             });
             return $.Deferred(function(defer) {
                 $.ajax({

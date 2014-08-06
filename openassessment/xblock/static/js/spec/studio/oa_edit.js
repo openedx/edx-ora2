@@ -48,6 +48,7 @@ describe("OpenAssessment.StudioView", function() {
         submissionStart: "2014-01-02T12:15",
         submissionDue: "2014-10-01T04:53",
         imageSubmissionEnabled: false,
+        leaderboardNum: 12,
         criteria: [
             {
                 order_num: 0,
@@ -149,6 +150,7 @@ describe("OpenAssessment.StudioView", function() {
         expect(server.receivedData.submissionStart).toEqual(EXPECTED_SERVER_DATA.submissionStart);
         expect(server.receivedData.submissionDue).toEqual(EXPECTED_SERVER_DATA.submissionDue);
         expect(server.receivedData.imageSubmissionEnabled).toEqual(EXPECTED_SERVER_DATA.imageSubmissionEnabled);
+        expect(server.receivedData.leaderboardNum).toEqual(EXPECTED_SERVER_DATA.leaderboardNum);
 
         // Criteria
         for (var criterion_idx = 0; criterion_idx < EXPECTED_SERVER_DATA.criteria.length; criterion_idx++) {

@@ -114,6 +114,7 @@ class StudioMixin(object):
             'criteria': criteria,
             'feedbackprompt': self.rubric_feedback_prompt,
             'allow_file_upload': self.allow_file_upload,
+            'leaderboard_show': self.leaderboard_show,
             'editor_assessments_order': [
                 make_django_template_key(asmnt)
                 for asmnt in editor_assessments_order
@@ -187,6 +188,7 @@ class StudioMixin(object):
             data['assessments'],
             submission_start=data['submission_start'],
             submission_due=data['submission_due'],
+            leaderboard_show=data['leaderboard_show']
         )
         if not success:
             return {'success': False, 'msg': self._('Validation error: {error}').format(error=msg)}
@@ -203,6 +205,7 @@ class StudioMixin(object):
         self.submission_start = data['submission_start']
         self.submission_due = data['submission_due']
         self.allow_file_upload = bool(data['allow_file_upload'])
+        self.leaderboard_show = data['leaderboard_show']
 
         return {'success': True, 'msg': self._(u'Successfully updated OpenAssessment XBlock')}
 

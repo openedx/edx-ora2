@@ -22,6 +22,7 @@ class StudioViewTest(XBlockHandlerTestCase):
         "submission_start": "4014-02-10T09:46",
         "submission_due": "4014-02-27T09:46",
         "allow_file_upload": False,
+        "leaderboard_show": 4,
         "assessments": [{"name": "self-assessment"}],
         "editor_assessments_order": [
             "student-training",
@@ -127,6 +128,11 @@ class StudioViewTest(XBlockHandlerTestCase):
         self.assertTrue(resp['success'], msg=resp.get('msg'))
 
     @scenario('data/basic_scenario.xml')
+    def test_include_leaderboard_in_editor(self, xblock):
+        xblock.leaderboard_show = 15
+        self.assertEqual(xblock.editor_context()['leaderboard_show'], 15)
+
+    @scenario('data/basic_scenario.xml')
     def test_update_editor_context_saves_assessment_order(self, xblock):
         # Update the XBlock with a different editor assessment order
         data = copy.deepcopy(self.UPDATE_EDITOR_DATA)
@@ -139,6 +145,7 @@ class StudioViewTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
         self.assertTrue(resp['success'], msg=resp.get('msg'))
         self.assertEqual(xblock.editor_assessments_order, data['editor_assessments_order'])
+
 
     @scenario('data/basic_scenario.xml')
     def test_update_editor_context_saves_assessment_order_with_ai(self, xblock):
@@ -158,6 +165,15 @@ class StudioViewTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
         self.assertTrue(resp['success'], msg=resp.get('msg'))
         self.assertEqual(xblock.editor_assessments_order, data['editor_assessments_order'])
+
+    @scenario('data/basic_scenario.xml')
+    def test_update_editor_context_saves_leaderboard(self, xblock):
+        data = copy.deepcopy(self.UPDATE_EDITOR_DATA)
+        data['leaderboard_show'] = 42
+        xblock.published_date = None
+        resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
+        self.assertTrue(resp['success'], msg=resp.get('msg'))
+        self.assertEqual(xblock.leaderboard_show, 42)
 
     @file_data('data/invalid_update_xblock.json')
     @scenario('data/basic_scenario.xml')

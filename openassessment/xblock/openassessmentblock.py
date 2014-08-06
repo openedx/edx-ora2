@@ -380,7 +380,8 @@ class OpenAssessmentBlock(
             create_rubric_dict(config['prompt'], config['rubric_criteria']),
             config['rubric_assessments'],
             submission_start=config['submission_start'],
-            submission_due=config['submission_due']
+            submission_due=config['submission_due'],
+            leaderboard_show=config['leaderboard_show']
         )
 
         block.rubric_criteria = config['rubric_criteria']

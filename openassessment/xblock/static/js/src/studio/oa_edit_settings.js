@@ -27,6 +27,11 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews) {
         "#openassessment_submission_due_time"
     ).install();
 
+    this.leaderboardIntField = new OpenAssessment.IntField(
+        $("#openassessment_leaderboard_editor", this.element),
+        { min: 0, max: 100 }
+    );
+
     this.initializeSortableAssessments();
 };
 
@@ -128,11 +133,29 @@ OpenAssessment.EditSettingsView.prototype = {
     **/
     imageSubmissionEnabled: function(isEnabled) {
         var sel = $("#openassessment_submission_image_editor", this.settingsElement);
-        if (typeof(isEnabled) !== "undefined") {
+        if (isEnabled !== undefined) {
             if (isEnabled) { sel.val(1); }
             else { sel.val(0); }
         }
         return (sel.val() == 1);
+    },
+
+    /**
+    Get or set the number of scores to show in the leaderboard.
+    If set to 0, the leaderboard will not be shown.
+
+    Args:
+        num (int, optional)
+
+    Returns:
+        int
+
+    **/
+    leaderboardNum: function(num) {
+        if (num !== undefined) {
+            this.leaderboardIntField.set(num);
+        }
+        return this.leaderboardIntField.get(num);
     },
 
     /**
@@ -212,6 +235,7 @@ OpenAssessment.EditSettingsView.prototype = {
 
         isValid = (this.startDatetimeControl.validate() && isValid);
         isValid = (this.dueDatetimeControl.validate() && isValid);
+        isValid = (this.leaderboardIntField.validate() && isValid);
 
         // Validate each of the *enabled* assessment views
         $.each(this.assessmentViews, function() {
@@ -240,10 +264,14 @@ OpenAssessment.EditSettingsView.prototype = {
         if (this.dueDatetimeControl.validationErrors().length > 0) {
             errors.push("Submission due is invalid");
         }
+        if (this.leaderboardIntField.validationErrors().length > 0) {
+            errors.push("Leaderboard number is invalid");
+        }
 
         $.each(this.assessmentViews, function() {
             errors = errors.concat(this.validationErrors());
         });
+
         return errors;
     },
 
@@ -253,6 +281,7 @@ OpenAssessment.EditSettingsView.prototype = {
     clearValidationErrors: function() {
         this.startDatetimeControl.clearValidationErrors();
         this.dueDatetimeControl.clearValidationErrors();
+        this.leaderboardIntField.clearValidationErrors();
         $.each(this.assessmentViews, function() {
             this.clearValidationErrors();
         });

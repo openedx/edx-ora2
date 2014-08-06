@@ -193,6 +193,7 @@ OpenAssessment.StudioView.prototype = {
             submissionDue: view.settingsView.submissionDue(),
             assessments: view.settingsView.assessmentsDescription(),
             imageSubmissionEnabled: view.settingsView.imageSubmissionEnabled(),
+            leaderboardNum: view.settingsView.leaderboardNum(),
             editorAssessmentsOrder: view.settingsView.editorAssessmentsOrder()
         }).done(
             // Notify the client-side runtime that we finished saving

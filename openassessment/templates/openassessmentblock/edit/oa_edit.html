@@ -99,7 +99,7 @@
                     </div>
                     <p class="setting-help">{% trans "The date and time when students can no longer submit responses." %}</p>
                 </li>
-                <li id="openassessment_sumbission_image_wrapper" class="field comp-setting-entry">
+                <li id="openassessment_submission_image_wrapper" class="field comp-setting-entry">
                     <div class="wrapper-comp-setting">
                         <label for="openassessment_submission_image_editor" class="setting-label">{% trans "Allow Image Responses"%}</label>
                         <select id="openassessment_submission_image_editor" class="input setting-input" name="image submission">
@@ -109,6 +109,20 @@
                     </div>
                     <p class="setting-help">{% trans "Specify whether students can submit an image file along with their text response." %}</p>
                 </li>
+                <li id="openassessment_leaderboard_wrapper" class="field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label for="openassessment_leaderboard_editor" class="setting-label">{% trans "Number of Leaderboard Scores" %}</label>
+                        <input
+                            id="openassessment_leaderboard_editor"
+                            class="input setting-input"
+                            type="number"
+                            value="{{ leaderboard_show }}"
+                            min="0" max="99"
+                        />
+                    </div>
+                    <p class="setting-help">{% trans "Set the number of scores to display on the leaderboard.  If set to 0, the leaderboard will not be shown." %}</p>
+                </li>
+                <li>
             </ul>
 
             <p class="openassessment_description" id="openassessment_step_select_description">

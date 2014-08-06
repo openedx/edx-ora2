@@ -6,7 +6,6 @@ import lxml.etree as etree
 import pytz
 import dateutil.parser
 import defusedxml.ElementTree as safe_etree
-from submissions.api import MAX_TOP_SUBMISSIONS
 
 
 class UpdateFromXmlError(Exception):
@@ -755,13 +754,6 @@ def parse_from_xml(root):
     if 'leaderboard_show' in root.attrib:
         try:
             leaderboard_show = int(root.attrib['leaderboard_show'])
-            if leaderboard_show < 1:
-                raise UpdateFromXmlError('The leaderboard must have a positive integer value.')
-            if leaderboard_show > MAX_TOP_SUBMISSIONS:
-                msg = 'The number of leaderboard scores must be less than {max_num}'.format(
-                    max_num=MAX_TOP_SUBMISSIONS
-                )
-                raise UpdateFromXmlError(msg)
         except (TypeError, ValueError):
             raise UpdateFromXmlError('The leaderboard must have an integer value.')
 
