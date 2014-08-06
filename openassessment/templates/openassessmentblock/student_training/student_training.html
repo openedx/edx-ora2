@@ -12,10 +12,12 @@
                 <span class="step__label">{% trans "Learn to Assess Responses" %}</span>
                 {% if training_start %}
                     <span class="step__deadline">
+                        {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "available August 13th, 2014 (in 5 days and 45 minutes)" #}
                         {% blocktrans with start_date=training_start|utc|date:"N j, Y H:i e" time_until=training_start|timeuntil %}available <span class="date"> {{ start_date }} (in {{ time_until }}) </span>{% endblocktrans %}
                     </span>
                 {% elif training_due %}
                     <span class="step__deadline">
+                        {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "due August 13th, 2014 (in 5 days and 45 minutes)" #}
                         {% blocktrans with due_date=training_due|utc|date:"N j, Y H:i e" time_until=training_due|timeuntil %}due <span class="date">{{ due_date }}</span> (in {{ time_until }}){% endblocktrans %}
                     </span>
                 </span>
@@ -59,9 +61,13 @@
             <div class="step__content">
                 <article class="student-training__display" id="student-training">
                     <header class="student-training__display__header">
+                        {% with training_num_current=training_num_current training_num_available=training_num_available %}
                         <h3 class="student-training__display__title">
-                            {% blocktrans with training_num_current=training_num_current training_num_available=training_num_available %}Training Assessment #<span class="student-training__number--current">{{ training_num_current }}</span> of <span class="student-training__number--required">{{ training_num_available }}</span>{% endblocktrans %}
+                            {% blocktrans with current_progress_num='<span class="student-training__number--current">'|add:training_num_current|add:'</span>'|safe num_to_complete='<span class="student-training__number--required">'|add:training_num_available|add:'</span>'|safe %}
+                                Training Assessment # {{ current_progress_num }} of {{ num_to_complete }}
+                            {% endblocktrans %}
                         </h3>
+                        {% endwith %}
                     </header>
 
                     <div class="student-training__display__response">

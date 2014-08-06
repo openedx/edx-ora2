@@ -466,7 +466,7 @@ OpenAssessment.ResponseView.prototype = {
         this.server.getUploadUrl(view.imageType).done(
             function(url) {
                 var image = view.files[0];
-                view.fileUploader.upload(url, image, view.imageType)
+                view.fileUploader.upload(url, image)
                     .done(function() {
                         view.imageUrl();
                         view.baseView.toggleActionError('upload', null);

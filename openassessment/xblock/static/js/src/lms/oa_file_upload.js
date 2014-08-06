@@ -8,38 +8,32 @@ PUT requests on the server.
 
 Args:
     url (string): The one-time URL we're uploading to.
-    imageData (object): The object to upload, which should have properties:
-        data (string)
-        name (string)
-        size (int)
-        type (string)
-    contentType (string): The MIME type of the data to upload.
+    file (File): The HTML5 file reference.
 
 Returns:
     JQuery promise
 
 */
 OpenAssessment.FileUploader = function() {
-    this.upload = function(url, imageData, contentType) {
+    this.upload = function(url, file) {
         return $.Deferred(
             function(defer) {
                 $.ajax({
                     url: url,
                     type: 'PUT',
-                    data: imageData,
+                    data: file,
                     async: false,
                     processData: false,
-                    contentType: contentType,
+                    contentType: file.type,
                 }).done(
                     function(data, textStatus, jqXHR) {
                         // Log an analytics event
                         Logger.log(
                             "openassessment.upload_file",
                             {
-                                contentType: contentType,
-                                imageName: imageData.name,
-                                imageSize: imageData.size,
-                                imageType: imageData.type
+                                fileName: file.name,
+                                fileSize: file.size,
+                                fileType: file.type
                             }
                         );
 

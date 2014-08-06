@@ -21,11 +21,10 @@
         ],
         "title": "Foo",
         "prompt": "Test prompt",
-        "start": "2000-01-01T00:00:00",
-        "due": "3000-01-01T00:00:00",
         "submission_start": null,
         "submission_due": null,
-        "criteria": [
+        "leaderboard_show": 0,
+        "rubric_criteria": [
             {
                 "order_num": 0,
                 "name": "Test criterion",
@@ -50,7 +49,7 @@
                 ]
             }
         ],
-        "assessments": [
+        "rubric_assessments": [
             {
                 "name": "peer-assessment",
                 "start": "2014-02-27T09:46:28",
@@ -83,44 +82,7 @@
             "</rubric>",
             "</openassessment>"
         ],
-        "title": "Foo",
-        "prompt": null,
-        "start": "2000-01-01T00:00:00",
-        "due": "3000-01-01T00:00:00",
-        "submission_start": null,
-        "submission_due": null,
-        "criteria": [
-            {
-                "order_num": 0,
-                "name": "Test criterion",
-                "label": "Test criterion",
-                "prompt": "Test criterion prompt",
-                "feedback": "disabled",
-                "options": [
-                    {
-                        "order_num": 0,
-                        "points": 0,
-                        "name": "No",
-                        "label": "No",
-                        "explanation": "No explanation"
-                    },
-                    {
-                        "order_num": 1,
-                        "points": 2,
-                        "name": "Yes",
-                        "label": "Yes",
-                        "explanation": "Yes explanation"
-                    }
-                ]
-            }
-        ],
-        "assessments": [
-            {
-                "name": "self-assessment",
-                "start": "2014-04-01T00:00:00",
-                "due": "2014-06-01T00:00:00"
-            }
-        ]
+        "prompt": null
     },
 
     "empty_prompt": {
@@ -141,44 +103,7 @@
             "</rubric>",
             "</openassessment>"
         ],
-        "title": "Foo",
-        "prompt": "",
-        "start": "2000-01-01T00:00:00",
-        "due": "3000-01-01T00:00:00",
-        "submission_start": null,
-        "submission_due": null,
-        "criteria": [
-            {
-                "order_num": 0,
-                "name": "Test criterion",
-                "label": "Test criterion",
-                "prompt": "Test criterion prompt",
-                "feedback": "disabled",
-                "options": [
-                    {
-                        "order_num": 0,
-                        "points": 0,
-                        "name": "No",
-                        "label": "No",
-                        "explanation": "No explanation"
-                    },
-                    {
-                        "order_num": 1,
-                        "points": 2,
-                        "name": "Yes",
-                        "label": "Yes",
-                        "explanation": "Yes explanation"
-                    }
-                ]
-            }
-        ],
-        "assessments": [
-            {
-                "name": "self-assessment",
-                "start": "2014-04-01T00:00:00",
-                "due": "2014-06-01T00:00:00"
-            }
-        ]
+        "prompt": ""
     },
 
     "unicode": {
@@ -201,12 +126,8 @@
             "</openassessment>"
         ],
         "title": "िѻѻ",
-        "start": "2000-01-01T00:00:00",
-        "due": "3000-01-01T00:00:00",
-        "submission_start": null,
-        "submission_due": null,
         "prompt": "ՇєรՇ קг๏๓קՇ",
-        "criteria": [
+        "rubric_criteria": [
             {
                 "order_num": 0,
                 "name": "𝓣𝓮𝓼𝓽 𝓬𝓻𝓲𝓽𝓮𝓻𝓲𝓸𝓷",
@@ -229,15 +150,6 @@
                         "explanation": "ﻉร ﻉซρɭคกคՇٱѻก"
                     }
                 ]
-            }
-        ],
-        "assessments": [
-            {
-                "name": "peer-assessment",
-                "start": "2014-02-27T09:46:28",
-                "due": "2014-03-01T00:00:00",
-                "must_grade": 5,
-                "must_be_graded_by": 3
             }
         ]
     },
@@ -265,13 +177,7 @@
             "</rubric>",
             "</openassessment>"
         ],
-        "title": "Foo",
-        "prompt": "Test prompt",
-        "start": "2000-01-01T00:00:00",
-        "due": "3000-01-01T00:00:00",
-        "submission_start": null,
-        "submission_due": null,
-        "criteria": [
+        "rubric_criteria": [
             {
                 "order_num": 0,
                 "name": "Test criterion",
@@ -311,15 +217,6 @@
                     }
                 ]
             }
-        ],
-        "assessments": [
-            {
-                "name": "peer-assessment",
-                "start": "2014-02-27T09:46:28",
-                "due": "2014-03-01T00:00:00",
-                "must_grade": 5,
-                "must_be_graded_by": 3
-            }
         ]
     },
 
@@ -341,46 +238,9 @@
             "</rubric>",
             "</openassessment>"
         ],
-        "title": "Foo",
         "prompt": "Test prompt",
-        "start": "2000-01-01T00:00:00",
-        "due": "3000-01-01T00:00:00",
         "submission_start": null,
-        "submission_due": null,
-        "criteria": [
-            {
-                "order_num": 0,
-                "name": "Test criterion",
-                "label": "Test criterion",
-                "prompt": "Test criterion prompt",
-                "feedback": "disabled",
-                "options": [
-                    {
-                        "order_num": 0,
-                        "points": 0,
-                        "name": "No",
-                        "label": "No",
-                        "explanation": "No explanation"
-                    },
-                    {
-                        "order_num": 1,
-                        "points": 2,
-                        "name": "Yes",
-                        "label": "Yes",
-                        "explanation": "Yes explanation"
-                    }
-                ]
-            }
-        ],
-        "assessments": [
-            {
-                "name": "peer-assessment",
-                "start": null,
-                "due": null,
-                "must_grade": 5,
-                "must_be_graded_by": 3
-            }
-        ]
+        "submission_due": null
     },
 
     "submission_due": {
@@ -401,46 +261,7 @@
             "</rubric>",
             "</openassessment>"
         ],
-        "title": "Foo",
-        "prompt": "Test prompt",
-        "start": "2000-01-01T00:00:00",
-        "due": "3000-01-01T00:00:00",
-        "submission_start": null,
-        "submission_due": "2014-01-01T00:00:00",
-        "criteria": [
-            {
-                "order_num": 0,
-                "name": "Test criterion",
-                "label": "Test criterion",
-                "prompt": "Test criterion prompt",
-                "feedback": "disabled",
-                "options": [
-                    {
-                        "order_num": 0,
-                        "points": 0,
-                        "name": "No",
-                        "label": "No",
-                        "explanation": "No explanation"
-                    },
-                    {
-                        "order_num": 1,
-                        "points": 2,
-                        "name": "Yes",
-                        "label": "Yes",
-                        "explanation": "Yes explanation"
-                    }
-                ]
-            }
-        ],
-        "assessments": [
-            {
-                "name": "peer-assessment",
-                "start": null,
-                "due": null,
-                "must_grade": 5,
-                "must_be_graded_by": 3
-            }
-        ]
+        "submission_due": "2014-01-01T00:00:00"
     },
 
     "submission_start": {
@@ -461,46 +282,7 @@
             "</rubric>",
             "</openassessment>"
         ],
-        "title": "Foo",
-        "prompt": "Test prompt",
-        "start": "2000-01-01T00:00:00",
-        "due": "3000-01-01T00:00:00",
-        "submission_start": "2000-01-02T00:00:00",
-        "submission_due": null,
-        "criteria": [
-            {
-                "order_num": 0,
-                "name": "Test criterion",
-                "label": "Test criterion",
-                "prompt": "Test criterion prompt",
-                "feedback": "disabled",
-                "options": [
-                    {
-                        "order_num": 0,
-                        "points": 0,
-                        "name": "No",
-                        "label": "No",
-                        "explanation": "No explanation"
-                    },
-                    {
-                        "order_num": 1,
-                        "points": 2,
-                        "name": "Yes",
-                        "label": "Yes",
-                        "explanation": "Yes explanation"
-                    }
-                ]
-            }
-        ],
-        "assessments": [
-            {
-                "name": "peer-assessment",
-                "start": null,
-                "due": null,
-                "must_grade": 5,
-                "must_be_graded_by": 3
-            }
-        ]
+        "submission_start": "2000-01-02T00:00:00"
     },
 
     "criterion_feedback_optional": {
@@ -526,13 +308,7 @@
             "</rubric>",
             "</openassessment>"
         ],
-        "title": "foo",
-        "prompt": "test prompt",
-        "start": "2000-01-01T00:00:00",
-        "due": "3000-01-01T00:00:00",
-        "submission_start": null,
-        "submission_due": null,
-        "criteria": [
+        "rubric_criteria": [
             {
                 "order_num": 0,
                 "name": "test criterion",
@@ -572,15 +348,6 @@
                     }
                 ]
             }
-        ],
-        "assessments": [
-            {
-                "name": "peer-assessment",
-                "start": "2014-02-27T09:46:28",
-                "due": "2014-03-01T00:00:00",
-                "must_grade": 5,
-                "must_be_graded_by": 3
-            }
         ]
     },
 
@@ -607,13 +374,7 @@
             "</rubric>",
             "</openassessment>"
         ],
-        "title": "foo",
-        "prompt": "test prompt",
-        "start": "2000-01-01T00:00:00",
-        "due": "3000-01-01T00:00:00",
-        "submission_start": null,
-        "submission_due": null,
-        "criteria": [
+        "rubric_criteria": [
             {
                 "order_num": 0,
                 "name": "test criterion",
@@ -653,15 +414,6 @@
                     }
                 ]
             }
-        ],
-        "assessments": [
-            {
-                "name": "peer-assessment",
-                "start": "2014-02-27T09:46:28",
-                "due": "2014-03-01T00:00:00",
-                "must_grade": 5,
-                "must_be_graded_by": 3
-            }
         ]
     },
 
@@ -683,38 +435,7 @@
             "</rubric>",
             "</openassessment>"
         ],
-        "title": "Foo",
-        "prompt": "Test prompt",
-        "start": "2000-01-01T00:00:00",
-        "due": "3000-01-01T00:00:00",
-        "submission_start": null,
-        "submission_due": null,
-        "criteria": [
-            {
-                "order_num": 0,
-                "name": "Test criterion",
-                "label": "Test criterion",
-                "prompt": "Test criterion prompt",
-                "feedback": "disabled",
-                "options": [
-                    {
-                        "order_num": 0,
-                        "points": 0,
-                        "name": "No",
-                        "label": "No",
-                        "explanation": "No explanation"
-                    },
-                    {
-                        "order_num": 1,
-                        "points": 2,
-                        "name": "Yes",
-                        "label": "Yes",
-                        "explanation": "Yes explanation"
-                    }
-                ]
-            }
-        ],
-        "assessments": [
+        "rubric_assessments": [
             {
                 "name": "student-training",
                 "start": "2014-04-01T00:00:00",
@@ -747,38 +468,7 @@
             "</rubric>",
             "</openassessment>"
         ],
-        "title": "Foo",
-        "prompt": "Test prompt",
-        "start": "2000-01-01T00:00:00",
-        "due": "3000-01-01T00:00:00",
-        "submission_start": null,
-        "submission_due": null,
-        "criteria": [
-            {
-                "order_num": 0,
-                "name": "Test criterion",
-                "label": "Test criterion",
-                "prompt": "Test criterion prompt",
-                "feedback": "disabled",
-                "options": [
-                    {
-                        "order_num": 0,
-                        "points": 0,
-                        "name": "No",
-                        "label": "No",
-                        "explanation": "No explanation"
-                    },
-                    {
-                        "order_num": 1,
-                        "points": 2,
-                        "name": "Yes",
-                        "label": "Yes",
-                        "explanation": "Yes explanation"
-                    }
-                ]
-            }
-        ],
-        "assessments": [
+        "rubric_assessments": [
             {
                 "name": "student-training",
                 "start": "2014-04-01T00:00:00",
@@ -833,61 +523,7 @@
             "</rubric>",
             "</openassessment>"
         ],
-        "title": "Foo",
-        "prompt": "Test prompt",
-        "start": "2000-01-01T00:00:00",
-        "due": "3000-01-01T00:00:00",
-        "submission_start": null,
-        "submission_due": null,
-        "criteria": [
-            {
-                "order_num": 0,
-                "name": "Test criterion",
-                "label": "Test criterion",
-                "prompt": "Test criterion prompt",
-                "feedback": "disabled",
-                "options": [
-                    {
-                        "order_num": 0,
-                        "points": 0,
-                        "name": "No",
-                        "label": "No",
-                        "explanation": "No explanation"
-                    },
-                    {
-                        "order_num": 1,
-                        "points": 2,
-                        "name": "Yes",
-                        "label": "Yes",
-                        "explanation": "Yes explanation"
-                    }
-                ]
-            },
-            {
-                "order_num": 1,
-                "name": "Another test criterion",
-                "label": "Another test criterion",
-                "prompt": "Another test criterion prompt",
-                "feedback": "disabled",
-                "options": [
-                    {
-                        "order_num": 0,
-                        "points": 0,
-                        "name": "No",
-                        "label": "No",
-                        "explanation": "No explanation"
-                    },
-                    {
-                        "order_num": 1,
-                        "points": 2,
-                        "name": "Yes",
-                        "label": "Yes",
-                        "explanation": "Yes explanation"
-                    }
-                ]
-            }
-        ],
-        "assessments": [
+        "rubric_assessments": [
             {
                 "name": "student-training",
                 "start": "2014-04-01T00:00:00",
@@ -951,38 +587,7 @@
             "</rubric>",
             "</openassessment>"
         ],
-        "title": "foo",
-        "prompt": "test prompt",
-        "start": "2000-01-01t00:00:00",
-        "due": "3000-01-01t00:00:00",
-        "submission_start": null,
-        "submission_due": null,
-        "criteria": [
-            {
-                "order_num": 0,
-                "name": "test criterion",
-                "label": "test criterion",
-                "prompt": "test criterion prompt",
-                "feedback": "disabled",
-                "options": [
-                    {
-                        "order_num": 0,
-                        "points": 0,
-                        "name": "no",
-                        "label": "no",
-                        "explanation": "no explanation"
-                    },
-                    {
-                        "order_num": 1,
-                        "points": 2,
-                        "name": "yes",
-                        "label": "yes",
-                        "explanation": "yes explanation"
-                    }
-                ]
-            }
-        ],
-        "assessments": [
+        "rubric_assessments": [
             {
                 "name": "example-based-assessment",
                 "start": null,
@@ -1039,38 +644,7 @@
             "</rubric>",
             "</openassessment>"
         ],
-        "title": "foo",
-        "prompt": "test prompt",
-        "start": "2000-01-01t00:00:00",
-        "due": "3000-01-01t00:00:00",
-        "submission_start": null,
-        "submission_due": null,
-        "criteria": [
-            {
-                "order_num": 0,
-                "name": "test criterion",
-                "label": "test criterion",
-                "prompt": "test criterion prompt",
-                "feedback": "disabled",
-                "options": [
-                    {
-                        "order_num": 0,
-                        "points": 0,
-                        "name": "no",
-                        "label": "no",
-                        "explanation": "no explanation"
-                    },
-                    {
-                        "order_num": 1,
-                        "points": 2,
-                        "name": "yes",
-                        "label": "yes",
-                        "explanation": "yes explanation"
-                    }
-                ]
-            }
-        ],
-        "assessments": [
+        "rubric_assessments": [
             {
                 "name": "example-based-assessment",
                 "start": null,
@@ -1119,57 +693,12 @@
             "</rubric>",
             "</openassessment>"
         ],
-        "title": "Foo",
-        "prompt": "Test prompt",
-        "start": "2000-01-01T00:00:00",
-        "due": "3000-01-01T00:00:00",
-        "submission_start": null,
-        "submission_due": null,
-        "allow_file_upload": true,
-        "criteria": [
-            {
-                "order_num": 0,
-                "name": "Test criterion",
-                "label": "Test criterion",
-                "prompt": "Test criterion prompt",
-                "feedback": "disabled",
-                "options": [
-                    {
-                        "order_num": 0,
-                        "points": 0,
-                        "name": "No",
-                        "label": "No",
-                        "explanation": "No explanation"
-                    },
-                    {
-                        "order_num": 1,
-                        "points": 2,
-                        "name": "Yes",
-                        "label": "Yes",
-                        "explanation": "Yes explanation"
-                    }
-                ]
-            }
-        ],
-        "assessments": [
-            {
-                "name": "peer-assessment",
-                "start": "2014-02-27T09:46:28",
-                "due": "2014-03-01T00:00:00",
-                "must_grade": 5,
-                "must_be_graded_by": 3
-            },
-            {
-                "name": "self-assessment",
-                "start": "2014-04-01T00:00:00",
-                "due": "2014-06-01T00:00:00"
-            }
-        ]
+        "allow_file_upload": true
     },
 
-    "missing_labels": {
+    "leaderboard": {
         "xml": [
-            "<openassessment>",
+            "<openassessment leaderboard_show=\"12\">",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -1186,50 +715,6 @@
             "</rubric>",
             "</openassessment>"
         ],
-        "title": "Foo",
-        "prompt": "Test prompt",
-        "start": "2000-01-01T00:00:00",
-        "due": "3000-01-01T00:00:00",
-        "submission_start": null,
-        "submission_due": null,
-        "criteria": [
-            {
-                "order_num": 0,
-                "name": "Test criterion",
-                "label": "Test criterion",
-                "prompt": "Test criterion prompt",
-                "feedback": "disabled",
-                "options": [
-                    {
-                        "order_num": 0,
-                        "points": 0,
-                        "name": "No",
-                        "label": "No",
-                        "explanation": "No explanation"
-                    },
-                    {
-                        "order_num": 1,
-                        "points": 2,
-                        "name": "Yes",
-                        "label": "Yes",
-                        "explanation": "Yes explanation"
-                    }
-                ]
-            }
-        ],
-        "assessments": [
-            {
-                "name": "peer-assessment",
-                "start": "2014-02-27T09:46:28",
-                "due": "2014-03-01T00:00:00",
-                "must_grade": 5,
-                "must_be_graded_by": 3
-            },
-            {
-                "name": "self-assessment",
-                "start": "2014-04-01T00:00:00",
-                "due": "2014-06-01T00:00:00"
-            }
-        ]
+        "leaderboard_show": 12
     }
 }

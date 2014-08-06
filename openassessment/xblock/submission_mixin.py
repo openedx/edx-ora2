@@ -76,10 +76,35 @@ class SubmissionMixin(object):
                     student_sub
                 )
             except api.SubmissionRequestError as err:
-                status_tag = 'EBADFORM'
-                status_text = unicode(err.field_errors)
+
+                # Handle the case of an answer that's too long as a special case,
+                # so we can display a more specific error message.
+                # Although we limit the number of characters the user can
+                # enter on the client side, the submissions API uses the JSON-serialized
+                # submission to calculate length.  If each character submitted
+                # by the user takes more than 1 byte to encode (for example, double-escaped
+                # newline characters or non-ASCII unicode), then the user might
+                # exceed the limits set by the submissions API.  In that case,
+                # we display an error message indicating that the answer is too long.
+                answer_too_long = any(
+                    "maximum answer size exceeded" in answer_err.lower()
+                    for answer_err in err.field_errors.get('answer', [])
+                )
+                if answer_too_long:
+                    status_tag = 'EANSWERLENGTH'
+                else:
+                    msg = (
+                        u"The submissions API reported an invalid request error "
+                        u"when submitting a response for the user: {student_item}"
+                    ).format(student_item=student_item_dict)
+                    logger.exception(msg)
+                    status_tag = 'EBADFORM'
             except (api.SubmissionError, AssessmentWorkflowError):
-                logger.exception("This response was not submitted.")
+                msg = (
+                    u"An unknown error occurred while submitting "
+                    u"a response for the user: {student_item}"
+                ).format(student_item=student_item_dict)
+                logger.exception(msg)
                 status_tag = 'EUNKNOWN'
                 status_text = self._(u'API returned unclassified exception.')
             else:

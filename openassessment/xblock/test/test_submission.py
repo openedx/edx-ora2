@@ -22,6 +22,17 @@ class SubmissionTest(XBlockHandlerTestCase):
         self.assertTrue(resp[0])
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_submit_answer_too_long(self, xblock):
+        # Maximum answer length is 100K, once the answer has been JSON-encoded
+        long_submission = json.dumps({
+            'submission': 'longcat is long ' * 100000
+        })
+        resp = self.request(xblock, 'submit', long_submission, response_format='json')
+        self.assertFalse(resp[0])
+        self.assertEqual(resp[1], "EANSWERLENGTH")
+        self.assertIsNot(resp[2], None)
+
+    @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_submission_multisubmit_failure(self, xblock):
         # We don't care about return value of first one
         self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
@@ -44,7 +55,7 @@ class SubmissionTest(XBlockHandlerTestCase):
     @scenario('data/basic_scenario.xml', user_id='Bob')
     @patch.object(sub_api, 'create_submission')
     def test_submission_API_failure(self, xblock, mock_submit):
-        mock_submit.side_effect = SubmissionRequestError("Cat on fire.")
+        mock_submit.side_effect = SubmissionRequestError(msg="Cat on fire.")
         resp = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
         self.assertFalse(resp[0])
         self.assertEqual(resp[1], "EBADFORM")
@@ -65,7 +76,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
         self.assertFalse(resp[0])
         self.assertEqual(resp[1], "ENOPREVIEW")
-        self.assertEqual(resp[2], "To submit a response, view this component in Preview or Live mode.")
+        self.assertIsNot(resp[2], None)
 
     @scenario('data/over_grade_scenario.xml', user_id='Alice')
     def test_closed_submissions(self, xblock):

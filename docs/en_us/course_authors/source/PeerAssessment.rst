@@ -81,6 +81,8 @@ Question
 
 You'll also specify the **question** that you want your students to answer. This appears near the top of the component, followed by a field where the student enters a response. You can require your students to enter text as a response, or you can require your students to both enter text and upload an image. (All student responses must include text. You cannot require students to only upload an image.)
 
+.. note:: Currently, course teams cannot see images that students upload. Images do not appear in information that course teams can access about individual students, and they are not included in the course data package.
+
 When you write your question, you can include helpful information for your students, such as what students can expect after they submit responses and the approximate number of words or sentences that a student's response should have. (A response cannot have more than 10,000 words.) 
 
 For more information, see :ref:`PA Add Question`.
@@ -473,6 +475,7 @@ If you want your students to upload an image as a part of their response, change
    :alt: Open response assessment example with Choose File and Upload Your Image buttons circled
    :width: 500
 
+.. note:: Currently, course teams cannot see images that students upload. Images do not appear in information that course teams can access about individual students, and they are not included in the course data package.
 
 Add Formatting or Images to the Question
 ****************************************

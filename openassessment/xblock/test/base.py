@@ -5,7 +5,7 @@ import os.path
 import json
 from functools import wraps
 
-from openassessment.test_utils import CacheResetTest
+from openassessment.test_utils import CacheResetTest, TransactionCacheResetTest
 from workbench.runtime import WorkbenchRuntime
 import webob
 
@@ -41,7 +41,7 @@ def scenario(scenario_path, user_id=None):
             xblock = None
             if args:
                 self = args[0]
-                if isinstance(self, XBlockHandlerTestCase):
+                if isinstance(self, XBlockHandlerTestCaseMixin):
 
                     # Print a debug message
                     print "Loading scenario from {path}".format(path=scenario_path)
@@ -61,7 +61,7 @@ def scenario(scenario_path, user_id=None):
     return _decorator
 
 
-class XBlockHandlerTestCase(CacheResetTest):
+class XBlockHandlerTestCaseMixin(object):
     """
     Load the XBlock in the workbench runtime to test its handler.
     """
@@ -70,6 +70,7 @@ class XBlockHandlerTestCase(CacheResetTest):
         """
         Create the runtime.
         """
+        super(XBlockHandlerTestCaseMixin, self).setUp()
         self.runtime = WorkbenchRuntime()
 
     def set_user(self, user_id):
@@ -149,3 +150,20 @@ class XBlockHandlerTestCase(CacheResetTest):
         base_dir = os.path.dirname(os.path.abspath(__file__))
         with open(os.path.join(base_dir, path)) as file_handle:
             return file_handle.read()
+
+
+class XBlockHandlerTestCase(XBlockHandlerTestCaseMixin, CacheResetTest):
+    """
+    Base XBlock handler test case.  Use this if you do NOT need to simulate the read-replica.
+    """
+    pass
+
+
+class XBlockHandlerTransactionTestCase(XBlockHandlerTestCaseMixin, TransactionCacheResetTest):
+    """
+    Variation of the XBlock handler test case that truncates the test database instead
+    of rolling back transactions.  This is necessary if the software under test relies
+    on the read replica.  It's also slower, so unless you're using the read-replica,
+    use `XBlockHandlerTestCase` instead.
+    """
+    pass

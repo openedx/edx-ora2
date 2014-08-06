@@ -13,10 +13,10 @@ from webob import Response
 from lazy import lazy
 
 from xblock.core import XBlock
-from xblock.fields import List, Scope, String, Boolean
+from xblock.fields import List, Scope, String, Boolean, Integer
 from xblock.fragment import Fragment
 from openassessment.xblock.grade_mixin import GradeMixin
-
+from openassessment.xblock.leaderboard_mixin import LeaderboardMixin
 from openassessment.xblock.defaults import * # pylint: disable=wildcard-import, unused-wildcard-import
 from openassessment.xblock.message_mixin import MessageMixin
 from openassessment.xblock.peer_assessment_mixin import PeerAssessmentMixin
@@ -67,6 +67,12 @@ UI_MODELS = {
         "class_id": "openassessment__grade",
         "navigation_text": "Your grade for this assignment",
         "title": "Your Grade:"
+    },
+     "leaderboard": {
+        "name": "leaderboard",
+        "class_id": "openassessment__leaderboard",
+        "navigation_text": "A leaderboard of the top submissions",
+        "title": "Leaderboard"
     }
 }
 
@@ -92,6 +98,7 @@ class OpenAssessmentBlock(
     SelfAssessmentMixin,
     StudioMixin,
     GradeMixin,
+    LeaderboardMixin,
     StaffInfoMixin,
     WorkflowMixin,
     StudentTrainingMixin,
@@ -119,6 +126,12 @@ class OpenAssessmentBlock(
         default="",
         scope=Scope.content,
         help="A title to display to a student (plain text)."
+    )
+
+    leaderboard_show = Integer(
+        default=0,
+        scope=Scope.content,
+        help="The number of leaderboard results to display (0 if none)"
     )
 
     prompt = String(
@@ -224,6 +237,7 @@ class OpenAssessmentBlock(
         # On page load, update the workflow status.
         # We need to do this here because peers may have graded us, in which
         # case we may have a score available.
+
         try:
             self.update_workflow_status()
         except AssessmentWorkflowError:
@@ -238,7 +252,6 @@ class OpenAssessmentBlock(
             "rubric_assessments": ui_models,
             "show_staff_debug_info": self.is_course_staff and not self.in_studio_preview,
         }
-
         template = get_template("openassessmentblock/oa_base.html")
         context = Context(context_dict)
         frag = Fragment(template.render(context))
@@ -303,6 +316,10 @@ class OpenAssessmentBlock(
             if ui_model:
                 ui_models.append(dict(assessment, **ui_model))
         ui_models.append(UI_MODELS["grade"])
+
+        if self.leaderboard_show > 0:
+            ui_models.append(UI_MODELS["leaderboard"])
+
         return ui_models
 
     @staticmethod
@@ -325,6 +342,10 @@ class OpenAssessmentBlock(
             (
                 "OpenAssessmentBlock Poverty Rubric",
                 load('static/xml/poverty_rubric_example.xml')
+            ),
+            (
+                "OpenAssessmentBlock Leaderboard",
+                load('static/xml/leaderboard.xml')
             ),
             (
                 "OpenAssessmentBlock (Peer Only) Rubric",
@@ -370,6 +391,7 @@ class OpenAssessmentBlock(
         block.title = config['title']
         block.prompt = config['prompt']
         block.allow_file_upload = config['allow_file_upload']
+        block.leaderboard_show = config['leaderboard_show']
 
         return block
 
