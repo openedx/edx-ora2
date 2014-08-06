@@ -9,7 +9,7 @@ git+https://github.com/edx/xblock-sdk.git@643900aadcb18aaeb7fe67271ca9dbf36e463e
 edx-submissions==0.0.6
 
 # Third Party Requirements
-boto>=2.30.0,<3.0.0
+boto>=2.13.0,<3.0.0
 celery==3.0.19
 defusedxml==0.4.1
 dogapi==1.2.1
@@ -27,4 +27,4 @@ South==0.7.6
 voluptuous==0.8.5
 
 # AI grading
-git+https://github.com/edx/ease.git@bcb36e84b5ffa4ac00813577079dd6eef4fff566#egg=ease
+git+https://github.com/edx/ease.git@f9f47fb6b5c7c8b6c3360efa72eb56561e1a03b0#egg=ease

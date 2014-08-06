@@ -18,3 +18,7 @@ class LmsMixinTest(XBlockHandlerTestCase):
     @scenario('data/basic_scenario.xml')
     def test_max_score(self, xblock):
         self.assertEqual(xblock.max_score(), 20)
+
+    @scenario('data/zero_points.xml')
+    def test_max_score_zero_option_criteria(self, xblock):
+        self.assertEqual(xblock.max_score(), 0)

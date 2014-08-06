@@ -4,7 +4,7 @@ determine the flow of the problem.
 """
 import copy
 from functools import wraps
-from django.utils.translation import ugettext_lazy
+import logging
 
 from xblock.core import XBlock
 from openassessment.assessment.errors.ai import AIError
@@ -16,6 +16,10 @@ from submissions import api as submission_api
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 from openassessment.assessment.api import ai as ai_api
+from openassessment.fileupload import api as file_api
+
+
+logger = logging.getLogger(__name__)
 
 
 def require_global_admin(error_key):
@@ -197,16 +201,19 @@ class StaffInfoMixin(object):
         Must be course staff to render this view.
 
         """
-        path, context = self.get_student_info_path_and_context(data)
+        student_id = data.params.get('student_id', '')
+        path, context = self.get_student_info_path_and_context(student_id)
         return self.render_assessment(path, context)
 
-    def get_student_info_path_and_context(self, data):
+    def get_student_info_path_and_context(self, student_id):
         """
         Get the proper path and context for rendering the the student info
         section of the staff debug panel.
 
+        Args:
+            student_id (unicode): The ID of the student to report.
+
         """
-        student_id = data.params.get('student_id', '')
         submission_uuid = None
         submission = None
         assessment_steps = self.assessment_steps
@@ -220,8 +227,22 @@ class StaffInfoMixin(object):
             submissions = submission_api.get_submissions(student_item, 1)
 
             if submissions:
-                submission = submissions[0]
                 submission_uuid = submissions[0]['uuid']
+                submission = submissions[0]
+
+                if 'file_key' in submission.get('answer', {}):
+                    file_key = submission['answer']['file_key']
+
+                    try:
+                        submission['image_url'] = file_api.get_download_url(file_key)
+                    except file_api.FileUploadError:
+                        # Log the error, but do not prevent the rest of the student info
+                        # from being displayed.
+                        msg = (
+                            u"Could not retrieve image URL for staff debug page.  "
+                            u"The student ID is '{student_id}', and the file key is {file_key}"
+                        ).format(student_id=student_id, file_key=file_key)
+                        logger.exception(msg)
 
         example_based_assessment = None
         self_assessment = None
