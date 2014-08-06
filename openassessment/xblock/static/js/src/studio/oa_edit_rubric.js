@@ -199,9 +199,18 @@ OpenAssessment.EditRubricView.prototype = {
 
     **/
     validate: function() {
-        var isValid = true;
+        var criteria = this.getAllCriteria();
+        var isValid = criteria.length > 0;
+        if (!isValid) {
+            $('#openassessment_rubric_add_criterion', this.element)
+                .addClass("openassessment_highlighted_field")
+                .click( function() {
+                    $(this).removeClass("openassessment_highlighted_field");
+                }
+            );
+        }
 
-        $.each(this.getAllCriteria(), function() {
+        $.each(criteria, function() {
             isValid = (this.validate() && isValid);
         });
 
@@ -218,8 +227,12 @@ OpenAssessment.EditRubricView.prototype = {
     **/
     validationErrors: function() {
         var errors = [];
+        var criteria = this.getAllCriteria();
+        if (criteria.length == 0) {
+            errors.push("The Rubric must contain at least one criterion")
+        }
 
-        $.each(this.getAllCriteria(), function() {
+        $.each(criteria, function() {
             errors = errors.concat(this.validationErrors());
         });
 
@@ -230,6 +243,8 @@ OpenAssessment.EditRubricView.prototype = {
     Clear all validation errors from the UI.
     **/
     clearValidationErrors: function() {
+        $('#openassessment_rubric_add_criterion', this.element).removeClass("openassessment_highlighted_field");
+
         $.each(this.getAllCriteria(), function() {
             this.clearValidationErrors();
         });
