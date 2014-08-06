@@ -11,7 +11,11 @@
                     {% for topscore in topscores %}
                         <li class="leaderboard__score__item">
                             <h4 class="leaderboard__list__number">{{ forloop.counter }}</h4>
-                            <h4 class="leaderboard__score__title">{% trans "Score" %} {{ topscore.score }}</h4>
+                            {% with num_points=topscore.score %}
+                            <h4 class="leaderboard__score__title">
+                                {% blocktrans %}{{ num_points }} points{% endblocktrans %}
+                            </h4>
+                            {% endwith %}
                             <div class="leaderboard__answer">{{ topscore.content|linebreaks }}</div>
                         </li>
                     {% endfor %}

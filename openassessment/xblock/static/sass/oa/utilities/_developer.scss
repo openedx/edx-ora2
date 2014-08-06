@@ -231,7 +231,10 @@
 
 #openassessment__leaderboard{
   font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
-  padding: 15px 20px;
+
+  .step__counter, .step__counter:before {
+    display: none;
+  }
 
   .wrapper--copy{
     margin-left: 0;
@@ -239,12 +242,38 @@
     border-left: 0;
   }
 
-  .step__header .step__title{
-    width: 100%;
+  @include media($bp-m) {
+    @include span-columns(4 of 4);
+  }
+
+  @include media($bp-ds) {
+    @include span-columns(6 of 6);
+  }
+
+  @include media($bp-dm) {
+    @include span-columns(12 of 12);
+  }
+
+  @include media($bp-dl) {
+    @include span-columns(12 of 12);
+  }
+
+  @include media($bp-dx) {
+    @include span-columns(12 of 12);
+  }
+
+  .step__label, .grade__value {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .step__label {
+    margin-right: ($baseline-h/4);
   }
 
   .leaderboard__title{
-    font-size: 16px;
+    @extend %t-superheading;
+    color: $heading-primary-color;
   }
 
   .list.leaderboard__score__list{

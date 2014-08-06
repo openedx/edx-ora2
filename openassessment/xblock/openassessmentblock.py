@@ -69,7 +69,7 @@ UI_MODELS = {
         "name": "leaderboard",
         "class_id": "openassessment__leaderboard",
         "navigation_text": "A leaderboard of the top submissions",
-        "title": "Leaderboard:"
+        "title": "Leaderboard"
     }
 }
 
@@ -313,8 +313,10 @@ class OpenAssessmentBlock(
             if ui_model:
                 ui_models.append(dict(assessment, **ui_model))
         ui_models.append(UI_MODELS["grade"])
+
         if self.leaderboard_show > 0:
             ui_models.append(UI_MODELS["leaderboard"])
+
         return ui_models
 
     @staticmethod
