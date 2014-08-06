@@ -22,11 +22,11 @@
                     {% trans "All submitted peer responses have been assessed. Check back later to see if more students have submitted responses. " %}
                 {% endif %}
                 {% if has_self %}
-                    {% blocktrans with peer_start_tag = '<a data-behavior="ui-scroll" href="#openassessment__peer-assessment">'|safe self_start_tag = '<a data-behavior="ui-scroll" href="#openassessment__self-assessment">'|safe end_tag = '</a>'|safe %}
+                    {% blocktrans with peer_start_tag='<a data-behavior="ui-scroll" href="#openassessment__peer-assessment">'|safe self_start_tag='<a data-behavior="ui-scroll" href="#openassessment__self-assessment">'|safe end_tag='</a>'|safe %}
                           You'll receive your grade after you complete the {{ peer_start_tag }}peer assessment{{ end_tag }} and {{ self_start_tag }}self assessment{{ end_tag }} steps, and after your peers have assessed your response.
                     {% endblocktrans %}
                 {% else %}
-                    {% blocktrans with start_tag = '<a data-behavior="ui-scroll" href="#openassessment__peer-assessment">'|safe end_tag = '</a>'|safe %}
+                    {% blocktrans with start_tag='<a data-behavior="ui-scroll" href="#openassessment__peer-assessment">'|safe end_tag='</a>'|safe %}
                         You'll receive your grade after you complete the {{ start_tag }}peer assessment{{ end_tag }} step.
                     {% endblocktrans %}
                 {% endif %}
