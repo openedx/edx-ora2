@@ -51,7 +51,7 @@ describe("OpenAssessment.StudentTrainingListener", function() {
             listener.examplesOptionsLabels(),
             {
                 criterion_with_two_options: {
-                    "": "Not Scored",
+                    "": "Not Selected",
                     option_1: "Fair - 1 points",
                     option_2: "Good - 2 points"
                 }
@@ -71,7 +71,7 @@ describe("OpenAssessment.StudentTrainingListener", function() {
             listener.examplesOptionsLabels(),
             {
                 criterion_with_two_options: {
-                    "": "Not Scored",
+                    "": "Not Selected",
                     option_1: "This is a new label! - 42 points",
                     option_2: "Good - 2 points"
                 }
@@ -93,7 +93,7 @@ describe("OpenAssessment.StudentTrainingListener", function() {
             listener.examplesOptionsLabels(),
             {
                 criterion_with_two_options: {
-                    "": "Not Scored",
+                    "": "Not Selected",
                     option_1: "This is a new label!",
                     option_2: "Good - 2 points"
                 }
@@ -108,7 +108,7 @@ describe("OpenAssessment.StudentTrainingListener", function() {
             listener.examplesOptionsLabels(),
             {
                 criterion_with_two_options: {
-                    "": "Not Scored",
+                    "": "Not Selected",
                     option_1: "Fair - 1 points",
                     option_2: "Good - 2 points"
                 }
@@ -127,7 +127,7 @@ describe("OpenAssessment.StudentTrainingListener", function() {
             listener.examplesOptionsLabels(),
             {
                 criterion_with_two_options: {
-                    "": "Not Scored",
+                    "": "Not Selected",
                     option_2: "Good - 2 points"
                 }
             }
@@ -219,12 +219,12 @@ describe("OpenAssessment.StudentTrainingListener", function() {
             listener.examplesOptionsLabels(),
             {
                 criterion_with_two_options: {
-                    "": "Not Scored",
+                    "": "Not Selected",
                     option_1: "Fair - 1 points",
                     option_2: "Good - 2 points",
                 },
                 new_criterion: {
-                    "": "Not Scored",
+                    "": "Not Selected",
                     new_option: "This is a new option! - 56 points"
                 }
             }
@@ -241,12 +241,12 @@ describe("OpenAssessment.StudentTrainingListener", function() {
             listener.examplesOptionsLabels(),
             {
                 criterion_with_two_options: {
-                    "": "Not Scored",
+                    "": "Not Selected",
                     option_1: "Fair - 1 points",
                     option_2: "Good - 2 points",
                 },
                 new_criterion: {
-                    "": "Not Scored",
+                    "": "Not Selected",
                     new_option: "This is a new option! - 56 points",
                     yet_another_option: "This is yet another option! - 27 points"
                 }
@@ -339,5 +339,137 @@ describe("OpenAssessment.AssessmentToggleListener", function() {
         alert.setMessage("test", "test").show();
         listener.toggleOn({});
         expect(alert.isVisible()).toBe(false);
+    });
+});
+
+describe("OpenAssessment.StudentTrainingListenerWithTrainingExamples", function() {
+
+    var listener = null;
+    var view = null;
+
+    /**
+     Check that all student training examples have the expected
+     criteria or option labels.
+
+     Args:
+     actual (array): A list of example criteria or option labels
+     (object literals) retrieved from the DOM.
+
+     expected (object literal): The expected value for each example.
+
+     numExamples (int, optional): The number of student training examples
+     (defaults to 1).
+
+     **/
+    var assertExampleLabels = function(actual, expected, numExamples) {
+        // The most common case is one example, so use that as a default.
+        if (typeof(numExamples) == "undefined") {
+            numExamples = 1;
+        }
+
+        // Add one to the number of examples to include the client-side template.
+        expect(actual.length).toEqual(numExamples + 1);
+
+        // Verify that each example matches what we expect.
+        // Since there is only one rubric for the problem,
+        // the training examples should always match that rubric.
+        for (var index in actual) {
+            for (var criterionName in expected) {
+                expect(actual[index][criterionName]).toEqual(expected[criterionName]);
+            }
+        }
+    };
+
+    beforeEach(function() {
+        loadFixtures('oa_edit_student_training.html');
+        listener = new OpenAssessment.StudentTrainingListener();
+        view = new OpenAssessment.EditStudentTrainingView('#oa_student_training_editor');
+    });
+
+
+    it("adds a criterion and an option, then adds a training example", function (){
+        // Initial state, set by the fixture
+        assertExampleLabels(
+            listener.examplesOptionsLabels(),
+            {
+                criterion_with_two_options: {
+                    "": "Not Selected",
+                    option_1: "Fair - 1 points",
+                    option_2: "Good - 2 points"
+                }
+            }
+        );
+
+        // Sets the option number to a number greater than one to prevent case conflicts
+        // (which are reliant on pieces of code not being tested here)
+        listener.optionUpdated({
+            criterionName: 'criterion_with_two_options',
+            name: 'option_1',
+            label: 'Fair',
+            points: '2'
+        });
+
+        assertExampleLabels(
+            listener.examplesOptionsLabels(),
+            {
+                criterion_with_two_options: {
+                    "": "Not Selected",
+                    option_1: "Fair - 2 points",
+                    option_2: "Good - 2 points"
+                }
+            }
+        );
+
+        // Adds a criterion
+        listener.criterionAdd({
+            criterionName: "new_criterion",
+            label: "This is a new criterion!"
+        });
+
+        // Add an option to the criterion
+        listener.optionAdd({
+            criterionName: "new_criterion",
+            name: "new_option",
+            label: "This is a new option!",
+            points: 56
+        });
+
+        assertExampleLabels(
+            listener.examplesOptionsLabels(),
+            {
+                criterion_with_two_options: {
+                    "": "Not Selected",
+                    option_1: "Fair - 2 points",
+                    option_2: "Good - 2 points",
+                },
+                new_criterion: {
+                    "": "Not Selected",
+                    new_option: "This is a new option! - 56 points"
+                }
+            }
+        );
+
+        // Adds a student training example
+        view.addTrainingExample();
+
+        var options = listener.examplesOptionsLabels();
+
+        // Asserts that the example labels are the same for the student training example
+        // and in doing so, checks that all changes were made to the studnet training template.
+        assertExampleLabels(
+            options,
+            {
+                criterion_with_two_options: {
+                    "": "Not Selected",
+                    option_1: "Fair - 2 points",
+                    option_2: "Good - 2 points",
+                },
+                new_criterion: {
+                    "": "Not Selected",
+                    new_option: "This is a new option! - 56 points"
+                }
+            },
+            2
+        );
     });
 });
