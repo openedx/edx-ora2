@@ -9,7 +9,7 @@ git+https://github.com/edx/xblock-sdk.git@643900aadcb18aaeb7fe67271ca9dbf36e463e
 edx-submissions==0.0.6
 
 # Third Party Requirements
-boto>=2.13.0,<3.0.0
+boto>=2.30.0,<3.0.0
 celery==3.0.19
 defusedxml==0.4.1
 dogapi==1.2.1

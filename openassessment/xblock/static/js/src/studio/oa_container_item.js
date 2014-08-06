@@ -33,6 +33,7 @@ OpenAssessment.ItemUtilities = {
     refreshOptionString: function(element) {
         var points = $(element).data('points');
         var label = $(element).data('label');
+        var name = $(element).val();
         // We don't want the lack of a label to make it look like - 1 points.
         if (label === ""){
             label = gettext('Unnamed Option');
@@ -40,10 +41,11 @@ OpenAssessment.ItemUtilities = {
         var singularString = label + " - " + points + " point";
         var multipleString = label + " - " + points + " points";
 
-        // If the option doesn't have a data points value, that indicates to us that it is not a user-specified option,
-        // but represents the "Not Selected" option which all criterion drop-downs have.
+        // If the option's name value is the empty string, that indicates to us that it is not a user-specified option,
+        // but represents the "Not Selected" option which all criterion drop-downs have. This is an acceptable
+        // assumption because we require name (option value) to be a unique identifier for each option.
         var finalLabel = "";
-        if (points === undefined) {
+        if (name === '') {
             finalLabel = gettext('Not Selected');
         }
 
@@ -486,15 +488,6 @@ OpenAssessment.TrainingExample = function(element){
     this.element = element;
     this.criteria = $(".openassessment_training_example_criterion_option", this.element);
     this.answer = $('.openassessment_training_example_essay', this.element).first();
-
-    // Initialize the option label in the training example for each option.
-    this.criteria.each(
-        function () {
-            $('option', this).each(function(){
-                OpenAssessment.ItemUtilities.refreshOptionString($(this));
-            });
-        }
-    );
 };
 
 OpenAssessment.TrainingExample.prototype = {
@@ -520,7 +513,14 @@ OpenAssessment.TrainingExample.prototype = {
         };
     },
 
-    addHandler: function() {},
+    addHandler: function() {
+        // Goes through and instantiates the option description in the training example for each option.
+        $(".openassessment_training_example_criterion_option", this.element) .each( function () {
+            $('option', this).each(function(){
+                OpenAssessment.ItemUtilities.refreshOptionString($(this));
+            });
+        });
+    },
     addEventListeners: function() {},
     removeHandler: function() {},
     updateHandler: function() {},

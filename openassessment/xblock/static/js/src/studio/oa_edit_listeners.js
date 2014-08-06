@@ -24,8 +24,8 @@ OpenAssessment.StudentTrainingListener.prototype = {
             function() {
                 var criterion = this;
                 var option = $('option[value="' + data.name + '"]', criterion)
-                    .data("points", data.points)
-                    .data("label", data.label);
+                    .attr("data-points", data.points)
+                    .attr("data-label", data.label);
                 OpenAssessment.ItemUtilities.refreshOptionString(option);
             }
         );
@@ -62,8 +62,8 @@ OpenAssessment.StudentTrainingListener.prototype = {
             // but this avoids overly complex templating code.
             var option = $("<option></option>")
                 .attr("value", data.name)
-                .data("points", data.points)
-                .data("label", data.label);
+                .attr("data-points", data.points)
+                .attr("data-label", data.label);
 
             // Sets the option's text description, and adds it to the criterion.
             OpenAssessment.ItemUtilities.refreshOptionString(option);

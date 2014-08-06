@@ -516,6 +516,14 @@ OpenAssessment.EditStudentTrainingView.prototype = {
             this.clearValidationErrors();
         });
     },
+
+    /**
+    Adds a new training example by copying the training example template.
+    Primarily used for testing.
+    **/
+    addTrainingExample: function() {
+        this.exampleContainer.add();
+    }
 };
 
 /**
