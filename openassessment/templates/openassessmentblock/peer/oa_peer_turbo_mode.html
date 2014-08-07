@@ -11,9 +11,11 @@
   <span class="step__status__value">
     <i class="ico icon-ok"></i>
     <span class="copy">
-      {% blocktrans with num_graded='<span class="step__status__value--completed">'|add:graded|add:'</span>'|safe %}
+      {% with graded_string=graded|stringformat:"s" %}
+      {% blocktrans with num_graded='<span class="step__status__value--completed">'|safe|add:graded_string|add:'</span>'|safe %}
         Complete ({{ num_graded }})
       {% endblocktrans %}
+      {% endwith %}
     </span>
   </span>
 </span>

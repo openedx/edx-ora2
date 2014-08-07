@@ -8,7 +8,11 @@
                 <span class="step__label">{% trans "Your Grade" %}: </span>
                 <span class="grade__value">
                     <span class="grade__value__title">
-                         {% blocktrans with points_earned=score.points_earned points_possible=score.points_possible%}<span class="grade__value__earned">{{ points_earned }}</span> out of <span class="grade__value__potential">{{ points_possible }}</span>{% endblocktrans %}
+                        {% with points_earned_string=score.points_earned|stringformat:"s" points_possible_string=score.points_possible|stringformat:"s" %}
+                        {% blocktrans with points_earned='<span class="grade__value__earned">'|safe|add:points_earned_string|add:'</span>'|safe points_possible='<span class="grade__value__potential">'|safe|add:points_possible_string|add:'</span>'|safe %}
+                            {{ points_earned }} out of {{ points_possible }}
+                        {% endblocktrans %}
+                        {% endwith %}
                     </span>
                 </span>
                 {% else %}

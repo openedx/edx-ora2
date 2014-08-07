@@ -46,7 +46,7 @@
                 <h3 class="message__title">{% trans "Learning to Assess Responses" %}</h3>
 
                 <div class="message__content">
-                    <p>{% blocktrans %}Before you begin to assess your peers' responses, you'll learn how to complete peer assessments by reviewing responses that instructors have already assessed. If you select the same options for the response that the instructor selected, you'll move to the next step. If you don't select the same options, you'll review the response and try again.{% endblocktrans %}</p>
+                    <p>{% trans "Before you begin to assess your peers' responses, you'll learn how to complete peer assessments by reviewing responses that instructors have already assessed. If you select the same options for the response that the instructor selected, you'll move to the next step. If you don't select the same options, you'll review the response and try again." %}</p>
                 </div>
             </div>
 
@@ -54,7 +54,7 @@
                 <h3 class="message__title">{% trans "Learning to Assess Responses" %}</h3>
 
                 <div class="message__content">
-                    <p>{% blocktrans %}Your assessment differs from the instructor's assessment of this response. Review the response and consider why the instructor may have assessed it differently. Then, try the assessment again.{% endblocktrans %}</p>
+                    <p>{% trans "Your assessment differs from the instructor's assessment of this response. Review the response and consider why the instructor may have assessed it differently. Then, try the assessment again." %}</p>
                 </div>
             </div>
 
@@ -63,9 +63,11 @@
                     <header class="student-training__display__header">
                         {% with training_num_current=training_num_current training_num_available=training_num_available %}
                         <h3 class="student-training__display__title">
-                            {% blocktrans with current_progress_num='<span class="student-training__number--current">'|add:training_num_current|add:'</span>'|safe num_to_complete='<span class="student-training__number--required">'|add:training_num_available|add:'</span>'|safe %}
+                            {% with training_num_current_string=training_num_current|stringformat:"s" training_num_available_string=training_num_available|stringformat:"s" %}
+                            {% blocktrans with current_progress_num='<span class="student-training__number--current">'|safe|add:training_num_current_string|add:'</span>'|safe num_to_complete='<span class="student-training__number--required">'|safe|add:training_num_available_string|add:'</span>'|safe %}
                                 Training Assessment # {{ current_progress_num }} of {{ num_to_complete }}
                             {% endblocktrans %}
+                            {% endwith %}
                         </h3>
                         {% endwith %}
                     </header>

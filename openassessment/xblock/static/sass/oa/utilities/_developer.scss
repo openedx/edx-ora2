@@ -1086,10 +1086,15 @@
     display: none;
   }
 
-  .wrapper--copy{
-    margin-left: 0;
-    padding-left: 0;
-    border-left: 0;
+  .step__title {
+    width: 100%;
+
+    .wrapper--copy{
+      margin-left: 0;
+      padding-left: 0;
+      border-left: 0;
+      width: 100%;
+    }
   }
 
   @include media($bp-m) {
