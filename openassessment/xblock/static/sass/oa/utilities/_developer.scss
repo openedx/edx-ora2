@@ -195,6 +195,7 @@
     background-image: -moz-linear-gradient(#F2F2F2,#FFF);
     background-image: -webkit-linear-gradient(#F2F2F2,#FFF);
     background-image: linear-gradient(#F2F2F2,#FFF);
+    width: 45%;
   }
 
   #openassessment_editor_header {
@@ -675,7 +676,7 @@
         }
 
         label{
-          width: auto;
+          width: 100%;
           padding-left: Calc((100% - 150px)/2);
           margin: 0;
           float: right;
