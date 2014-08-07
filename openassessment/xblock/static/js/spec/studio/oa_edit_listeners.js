@@ -45,7 +45,7 @@ describe("OpenAssessment.StudentTrainingListener", function() {
         listener = new OpenAssessment.StudentTrainingListener();
     });
 
-    it("updates the label of an option", function() {
+    it("updates the label and points of an option", function() {
         // Initial state, set by the fixture
         assertExampleLabels(
             listener.examplesOptionsLabels(),
@@ -73,6 +73,48 @@ describe("OpenAssessment.StudentTrainingListener", function() {
                 criterion_with_two_options: {
                     "": "Not Selected",
                     option_1: "This is a new label! - 42 points",
+                    option_2: "Good - 2 points"
+                }
+            }
+        );
+    });
+
+    it("updates an option twice", function() {
+        // Initial state, set by the fixture
+        assertExampleLabels(
+            listener.examplesOptionsLabels(),
+            {
+                criterion_with_two_options: {
+                    "": "Not Selected",
+                    option_1: "Fair - 1 points",
+                    option_2: "Good - 2 points"
+                }
+            }
+        );
+
+        // Update the option label and points,
+        listener.optionUpdated({
+             criterionName: "criterion_with_two_options",
+             name: "option_1",
+             label: "This is a new label!",
+             points: 42
+        });
+
+        // Update the option again
+        listener.optionUpdated({
+             criterionName: "criterion_with_two_options",
+             name: "option_1",
+             label: "This is YET ANOTHER label!",
+             points: 18
+        });
+
+        // Verify the final state
+        assertExampleLabels(
+            listener.examplesOptionsLabels(),
+            {
+                criterion_with_two_options: {
+                    "": "Not Selected",
+                    option_1: "This is YET ANOTHER label! - 18 points",
                     option_2: "Good - 2 points"
                 }
             }

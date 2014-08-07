@@ -31,8 +31,8 @@ OpenAssessment.ItemUtilities = {
      element (Jquery Element): The element that represents the object.
      **/
     refreshOptionString: function(element) {
-        var points = $(element).data('points');
-        var label = $(element).data('label');
+        var points = $(element).attr('data-points');
+        var label = $(element).attr('data-label');
         var name = $(element).val();
         // We don't want the lack of a label to make it look like - 1 points.
         if (label === ""){
