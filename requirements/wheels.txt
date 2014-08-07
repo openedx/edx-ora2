@@ -6,4 +6,4 @@ lxml==3.3.5
 nltk==2.0.4
 numpy==1.6.2
 scikit-learn==0.12.1
-scipy==0.11.0
+scipy==0.14.0
