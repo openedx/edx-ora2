@@ -15,6 +15,7 @@ This view fires the following notification events:
 **/
 OpenAssessment.EditRubricView = function(element, notifier) {
     this.element = element;
+    this.criterionAddButton = $('#openassessment_rubric_add_criterion', this.element);
 
     this.criteriaContainer = new OpenAssessment.Container(
         OpenAssessment.RubricCriterion, {
@@ -199,9 +200,18 @@ OpenAssessment.EditRubricView.prototype = {
 
     **/
     validate: function() {
-        var isValid = true;
+        var criteria = this.getAllCriteria();
+        var isValid = criteria.length > 0;
+        if (!isValid) {
+            this.criterionAddButton
+                .addClass("openassessment_highlighted_field")
+                .click( function() {
+                    $(this).removeClass("openassessment_highlighted_field");
+                }
+            );
+        }
 
-        $.each(this.getAllCriteria(), function() {
+        $.each(criteria, function() {
             isValid = (this.validate() && isValid);
         });
 
@@ -219,6 +229,11 @@ OpenAssessment.EditRubricView.prototype = {
     validationErrors: function() {
         var errors = [];
 
+        if (this.criterionAddButton.hasClass("openassessment_highlighted_field")) {
+            errors.push("The rubric must contain at least one criterion");
+        }
+
+        // Sub-validates the criteria defined by the rubric
         $.each(this.getAllCriteria(), function() {
             errors = errors.concat(this.validationErrors());
         });
@@ -230,6 +245,8 @@ OpenAssessment.EditRubricView.prototype = {
     Clear all validation errors from the UI.
     **/
     clearValidationErrors: function() {
+        this.criterionAddButton.removeClass("openassessment_highlighted_field");
+
         $.each(this.getAllCriteria(), function() {
             this.clearValidationErrors();
         });

@@ -135,7 +135,6 @@ describe("OpenAssessment.EditRubricView", function() {
         expect(view.feedbackPrompt()).toEqual(prompt);
     });
 
-
     it("fires a notification when an option is added", function() {
         view.addOption();
         expect(notifier.notifications).toContain({
@@ -230,5 +229,42 @@ describe("OpenAssessment.EditRubricView", function() {
         testValidateOptionPoints("2", true);
         testValidateOptionPoints("998", true);
         testValidateOptionPoints("999", true);
+    });
+
+    it("validates the criterion prompt field", function() {
+        // Filled in prompt should be valid
+        $.each(view.getAllCriteria(), function() {
+            this.prompt("This is a prompt.");
+        });
+        expect(view.validate()).toBe(true);
+
+        // Change one of the prompts to an empty string
+        view.getCriterionItem(0).prompt("");
+
+        // Now the view should be invalid
+        expect(view.validate()).toBe(false);
+        expect(view.validationErrors()).toContain("Criterion prompt is invalid.");
+
+        // Clear validation errors
+        view.clearValidationErrors();
+        expect(view.validationErrors()).toEqual([]);
+    });
+
+    it("validates the number of criteria in the rubric", function() {
+        // Starting with three criteria, we should be valid.
+        expect(view.validate()).toBe(true);
+
+        // Removes the rubric criteria
+        $.each(view.getAllCriteria(), function() {
+            view.removeCriterion(this);
+        });
+
+        // Now we should be invalid (# Criteria == 0)
+        expect(view.validate()).toBe(false);
+        expect(view.validationErrors()).toContain("The rubric must contain at least one criterion");
+
+        view.clearValidationErrors();
+        expect(view.validationErrors()).toEqual([]);
+
     });
 });
