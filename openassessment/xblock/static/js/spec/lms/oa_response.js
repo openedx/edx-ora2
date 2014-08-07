@@ -96,7 +96,6 @@ describe("OpenAssessment.ResponseView", function() {
 
     beforeEach(function() {
         // Load the DOM fixture
-        jasmine.getFixtures().fixturesPath = 'base/fixtures';
         loadFixtures('oa_response.html');
 
         // Create stub objects

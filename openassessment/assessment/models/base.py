@@ -149,7 +149,13 @@ class Criterion(models.Model):
     """
     rubric = models.ForeignKey(Rubric, related_name="criteria")
 
+    # Backwards compatibility: The "name" field was formerly
+    # used both as a display name and as a unique identifier.
+    # Now we're using it only as a unique identifier.
+    # We include the "label" (which is displayed to the user)
+    # in the data model so we can include it in analytics data packages.
     name = models.CharField(max_length=100, blank=False)
+    label = models.CharField(max_length=100, blank=True)
 
     # 0-based order in the Rubric
     order_num = models.PositiveIntegerField()
@@ -189,9 +195,13 @@ class CriterionOption(models.Model):
     # How many points this option is worth. 0 is allowed.
     points = models.PositiveIntegerField()
 
-    # Short name of the option. This is visible to the user.
-    # Examples: "Excellent", "Good", "Fair", "Poor"
+    # Backwards compatibility: The "name" field was formerly
+    # used both as a display name and as a unique identifier.
+    # Now we're using it only as a unique identifier.
+    # We include the "label" (which is displayed to the user)
+    # in the data model so we can include it in analytics data packages.
     name = models.CharField(max_length=100)
+    label = models.CharField(max_length=100, blank=True)
 
     # Longer text describing this option and why you should choose it.
     # Example: "The response makes 3-5 Monty Python references and at least one

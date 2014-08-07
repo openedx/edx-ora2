@@ -1,0 +1,68 @@
+{
+    "student_training_one_example": {
+        "xml": [
+            "<examples>",
+            "<example>",
+            "<answer>ẗëṡẗ äṅṡẅëṛ</answer>",
+            "<select criterion=\"Test criterion\" option=\"Yes\" />",
+            "</example>",
+            "</examples>"
+        ],
+        "examples": [
+            {
+                "answer": "ẗëṡẗ äṅṡẅëṛ",
+                "options_selected": [
+                    {
+                        "criterion": "Test criterion",
+                        "option": "Yes"
+                    }
+                ]
+            }
+        ]
+    },
+
+    "student_training_multiple_examples": {
+        "xml": [
+            "<examples>",
+            "<example>",
+            "<answer>ẗëṡẗ äṅṡẅëṛ</answer>",
+            "<select criterion=\"Test criterion\" option=\"Yes\" />",
+            "<select criterion=\"Another test criterion\" option=\"No\" />",
+            "</example>",
+            "<example>",
+            "<answer>äṅöẗḧëṛ ẗëṡẗ äṅṡẅëṛ</answer>",
+            "<select criterion=\"Another test criterion\" option=\"Yes\" />",
+            "<select criterion=\"Test criterion\" option=\"No\" />",
+            "</example>",
+            "</examples>"
+        ],
+        "examples": [
+            {
+                "answer": "ẗëṡẗ äṅṡẅëṛ",
+                "options_selected": [
+                    {
+                        "criterion": "Test criterion",
+                        "option": "Yes"
+                    },
+                    {
+                        "criterion": "Another test criterion",
+                        "option": "No"
+                    }
+                ]
+            },
+            {
+                "answer": "äṅöẗḧëṛ ẗëṡẗ äṅṡẅëṛ",
+                "options_selected": [
+                    {
+                        "criterion": "Another test criterion",
+                        "option": "Yes"
+                    },
+                    {
+                        "criterion": "Test criterion",
+                        "option": "No"
+                    }
+                ]
+            }
+        ]
+    }
+}

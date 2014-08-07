@@ -3,12 +3,14 @@
 import datetime as dt
 import logging
 import pkg_resources
+import copy
 
 import pytz
 
 from django.template.context import Context
 from django.template.loader import get_template
 from webob import Response
+from lazy import lazy
 
 from xblock.core import XBlock
 from xblock.fields import List, Scope, String, Boolean, Integer
@@ -22,13 +24,14 @@ from openassessment.xblock.lms_mixin import LmsCompatibilityMixin
 from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.studio_mixin import StudioMixin
-from openassessment.xblock.xml import update_from_xml, serialize_content_to_xml
+from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
 from openassessment.xblock.staff_info_mixin import StaffInfoMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.student_training_mixin import StudentTrainingMixin
 from openassessment.xblock.validation import validator
 from openassessment.xblock.resolve_dates import resolve_dates, DISTANT_PAST, DISTANT_FUTURE
+from openassessment.xblock.data_conversion import create_rubric_dict
 
 
 logger = logging.getLogger(__name__)
@@ -86,7 +89,7 @@ def load(path):
     data = pkg_resources.resource_string(__name__, path)
     return data.decode("utf8")
 
-
+@XBlock.needs("i18n")
 class OpenAssessmentBlock(
     XBlock,
     MessageMixin,
@@ -104,12 +107,12 @@ class OpenAssessmentBlock(
     """Displays a prompt and provides an area where students can compose a response."""
 
     submission_start = String(
-        default=None, scope=Scope.settings,
+        default=DEFAULT_START, scope=Scope.settings,
         help="ISO-8601 formatted string representing the submission start date."
     )
 
     submission_due = String(
-        default=None, scope=Scope.settings,
+        default=DEFAULT_DUE, scope=Scope.settings,
         help="ISO-8601 formatted string representing the submission due date."
     )
 
@@ -246,7 +249,6 @@ class OpenAssessmentBlock(
         context_dict = {
             "title": self.title,
             "question": self.prompt,
-            "rubric_criteria": self.rubric_criteria,
             "rubric_assessments": ui_models,
             "show_staff_debug_info": self.is_course_staff and not self.in_studio_preview,
         }
@@ -254,9 +256,10 @@ class OpenAssessmentBlock(
         context = Context(context_dict)
         frag = Fragment(template.render(context))
         frag.add_css(load("static/css/openassessment.css"))
-        frag.add_javascript(load("static/js/openassessment.min.js"))
+        frag.add_javascript(load("static/js/openassessment-lms.min.js"))
         frag.initialize_js('OpenAssessmentBlock')
         return frag
+
 
     @property
     def is_admin(self):
@@ -369,9 +372,34 @@ class OpenAssessmentBlock(
         Inherited by XBlock core.
 
         """
+        config = parse_from_xml(node)
         block = runtime.construct_xblock_from_class(cls, keys)
 
-        return update_from_xml(block, node, validator=validator(block, strict_post_release=False))
+        xblock_validator = validator(block, block._, strict_post_release=False)
+        xblock_validator(
+            create_rubric_dict(config['prompt'], config['rubric_criteria']),
+            config['rubric_assessments'],
+            submission_start=config['submission_start'],
+            submission_due=config['submission_due'],
+            leaderboard_show=config['leaderboard_show']
+        )
+
+        block.rubric_criteria = config['rubric_criteria']
+        block.rubric_feedback_prompt = config['rubric_feedback_prompt']
+        block.rubric_assessments = config['rubric_assessments']
+        block.submission_start = config['submission_start']
+        block.submission_due = config['submission_due']
+        block.title = config['title']
+        block.prompt = config['prompt']
+        block.allow_file_upload = config['allow_file_upload']
+        block.leaderboard_show = config['leaderboard_show']
+
+        return block
+
+    @property
+    def _(self):
+        i18nService = self.runtime.service(self, 'i18n')
+        return i18nService.ugettext
 
     @property
     def valid_assessments(self):
@@ -393,6 +421,33 @@ class OpenAssessmentBlock(
     @property
     def assessment_steps(self):
         return [asmnt['name'] for asmnt in self.valid_assessments]
+
+    @lazy
+    def rubric_criteria_with_labels(self):
+        """
+        Backwards compatibility: We used to treat "name" as both a user-facing label
+        and a unique identifier for criteria and options.
+        Now we treat "name" as a unique identifier, and we've added an additional "label"
+        field that we display to the user.
+        If criteria/options in the problem definition do NOT have a "label" field
+        (because they were created before this change),
+        we create a new label that has the same value as "name".
+
+        The result of this call is cached, so it should NOT be used in a runtime
+        that can modify the XBlock settings (in the LMS, settings are read-only).
+
+        Returns:
+            list of criteria dictionaries
+
+        """
+        criteria = copy.deepcopy(self.rubric_criteria)
+        for criterion in criteria:
+            if 'label' not in criterion:
+                criterion['label'] = criterion['name']
+            for option in criterion['options']:
+                if 'label' not in option:
+                    option['label'] = option['name']
+        return criteria
 
     def render_assessment(self, path, context_dict=None):
         """Render an Assessment Module's HTML
@@ -483,7 +538,7 @@ class OpenAssessmentBlock(
 
         # Resolve unspecified dates and date strings to datetimes
         start, due, date_ranges = resolve_dates(
-            self.start, self.due, [submission_range] + assessment_ranges
+            self.start, self.due, [submission_range] + assessment_ranges, self._
         )
 
         open_range = (start, due)

@@ -1,0 +1,159 @@
+{% load i18n %}
+{% load tz %}
+{% spaceless %}
+<div id="openassessment-editor" class="editor-with-buttons editor-with-tabs">
+    <div class="openassessment_editor_content_and_tabs">
+
+        <div id="openassessment_editor_header">
+            <h6 id="oa_editor_window_title" class="title modal_window_title" >{% trans "Open Response Assessment" %}</h6>
+            <ul class="editor_modes action_list action_modes editor_tabs">
+                <li class="view-button oa_editor_tab"><a href="#oa_settings_editor_wrapper">{% trans "Settings" %}</a></li>
+                <li class="view-button oa_editor_tab"><a href="#oa_rubric_editor_wrapper">{% trans "Rubric" %}</a></li>
+                <li class="view-button oa_editor_tab"><a href="#oa_prompt_editor_wrapper">{% trans "Prompt" %}</a></li>
+            </ul>
+        </div>
+
+        <div id="openassessment_validation_alert" class="covered">
+            <i class="openassessment_alert_icon"></i>
+            <div class="openassessment_alert_header">
+                <h2 class="openassessment_alert_title">{% trans "Rubric Change Impacts Settings Section" %}</h2>
+                <p class="openassessment_alert_message">{% trans "A change that you made to this assessment's rubric has an impact on some examples laid out in the settings tab. For more information, go to the Settings section and fix areas highlighted in red." %}</p>
+            </div>
+            <a href="" rel="view" class="action openassessment_alert_close">
+                <i class="icon-remove-sign"></i>
+                <span class="label is--hidden">{% trans "close alert" %}</span>
+            </a>
+        </div>
+
+        <div id="oa_prompt_editor_wrapper" class="oa_editor_content_wrapper">
+            <textarea id="openassessment_prompt_editor" maxlength="10000">{{ prompt }}</textarea>
+        </div>
+
+        {% include "openassessmentblock/edit/oa_edit_rubric.html"  %}
+
+        <div id="oa_settings_editor_wrapper" class="oa_editor_content_wrapper wrapper-comp-settings">
+
+            <ul id="oa_basic_settings_editor" class="list-input settings-list">
+                <li id="openassessment_title_editor_wrapper" class="field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label for="openassessment_title_editor" class="setting-label">{% trans "Display Name "%}</label>
+                        <input type="text" id="openassessment_title_editor" class="input setting-input" value="{{ title }}">
+                    </div>
+                    <p class="setting-help">{% trans "This name appears when you hover over the unit in the course ribbon at the top of the page." %}</p>
+                </li>
+                <li class="openassessment_date_editor field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label
+                            for="openassessment_submission_start_date"
+                            class="setting-label">
+                            {% trans "Response Start Date" %}
+                        </label>
+                        <input
+                            type="text"
+                            class="input setting-input"
+                            id="openassessment_submission_start_date"
+                            value="{{ submission_start|utc|date:"Y-m-d" }}"
+                        >
+                    </div>
+                    <div class="wrapper-comp-setting">
+                        <label
+                            for="openassessment_submission_start_time"
+                            class="setting-label">
+                            {% trans "Response Start Time" %}
+                        </label>
+                        <input
+                            type="text"
+                            class="input setting-input"
+                            id="openassessment_submission_start_time"
+                            value="{{ submission_start|utc|date:"H:i" }}"
+                        >
+                    </div>
+                    <p class="setting-help">{% trans "The date and time when students can begin submitting responses." %}</p>
+                </li>
+                <li class="openassessment_date_editor field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label
+                            for="openassessment_submission_due_date"
+                            class="setting-label">
+                            {% trans "Response Due Date" %}
+                        </label>
+                        <input
+                            type="text"
+                            class="input setting-input"
+                            id="openassessment_submission_due_date"
+                            value="{{ submission_due|utc|date:"Y-m-d" }}"
+                        >
+                    </div>
+                    <div class="wrapper-comp-setting">
+                        <label
+                            for="openassessment_submission_due_time"
+                            class="setting-label">
+                            {% trans "Response Due Time" %}
+                        </label>
+                        <input
+                            type="text"
+                            class="input setting-input"
+                            id="openassessment_submission_due_time"
+                            value="{{ submission_due|utc|date:"H:i" }}"
+                        >
+                    </div>
+                    <p class="setting-help">{% trans "The date and time when students can no longer submit responses." %}</p>
+                </li>
+                <li id="openassessment_submission_image_wrapper" class="field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label for="openassessment_submission_image_editor" class="setting-label">{% trans "Allow Image Responses"%}</label>
+                        <select id="openassessment_submission_image_editor" class="input setting-input" name="image submission">
+                            <option value="0">{% trans "False"%}</option>
+                            <option value="1" {% if allow_file_upload %} selected="true" {% endif %}>{% trans "True"%}</option>
+                        </select>
+                    </div>
+                    <p class="setting-help">{% trans "Specify whether students can submit an image file along with their text response." %}</p>
+                </li>
+                <li id="openassessment_leaderboard_wrapper" class="field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label for="openassessment_leaderboard_editor" class="setting-label">{% trans "Number of Leaderboard Scores" %}</label>
+                        <input
+                            id="openassessment_leaderboard_editor"
+                            class="input setting-input"
+                            type="number"
+                            value="{{ leaderboard_show }}"
+                            min="0" max="99"
+                        />
+                    </div>
+                    <p class="setting-help">{% trans "Set the number of scores to display on the leaderboard.  If set to 0, the leaderboard will not be shown." %}</p>
+                </li>
+                <li>
+            </ul>
+
+            <p class="openassessment_description" id="openassessment_step_select_description">
+                {% if 'example_based_assessment' in editor_assessments_order %}
+                    {% trans "In this assignment, you can include steps for student training, peer assessment, self assessment, and example based assessment. Select the steps that you want below, and then drag them into the order that you want. If you include an example based assessment step, it must precede all other steps. If you include a student training training step, it must precede peer and self assessment steps." %}
+                {% else %}
+                    {% trans "In this assignment, you can include steps for student training, peer assessment, and self assessment. Select the steps that you want below, and then drag them into the order that you want. If you include a student training step, it must precede all other steps." %}
+                {% endif %}
+            </p>
+            <ol id="openassessment_assessment_module_settings_editors">
+                {% for assessment in editor_assessments_order %}
+                    {% with "openassessmentblock/edit/oa_edit_"|add:assessment|add:".html" as template %}
+                        {% include template %}
+                    {% endwith %}
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+
+    <div class="openassessment_editor_buttons xblock-actions">
+        <h3 class="sr">Actions</h3>
+        <ul>
+            <li class="action-item">
+                <a href="#" class="button action-primary openassessment_save_button">{% trans "Save" %}</a>
+            </li>
+
+            <li class="action-item">
+                <a href="#" class="button openassessment_cancel_button">{% trans "Cancel" %}</a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+{% endspaceless %}

@@ -74,6 +74,7 @@ def create_rubric_dict(prompt, criteria):
         "criteria": criteria
     }
 
+
 def clean_criterion_feedback(rubric_criteria, criterion_feedback):
     """
     Remove per-criterion feedback for criteria with feedback disabled
@@ -93,3 +94,19 @@ def clean_criterion_feedback(rubric_criteria, criterion_feedback):
         if criterion['name'] in criterion_feedback
         and criterion.get('feedback', 'disabled') in ['optional', 'required']
     }
+
+
+def make_django_template_key(key):
+    """
+    Django templates access dictionary items using dot notation,
+    which means that dictionary keys with hyphens don't work.
+    This function sanitizes a key for use in Django templates
+    by replacing hyphens with underscores.
+
+    Args:
+        key (basestring): The key to sanitize.
+
+    Returns:
+        basestring
+    """
+    return key.replace('-', '_')

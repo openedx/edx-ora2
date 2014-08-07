@@ -7,7 +7,6 @@ describe("OpenAssessment.Rubric", function() {
     var rubric = null;
 
     beforeEach(function() {
-        jasmine.getFixtures().fixturesPath = 'base/fixtures';
         loadFixtures('oa_rubric.html');
 
         var el = $("#peer-assessment--001__assessment").get(0);

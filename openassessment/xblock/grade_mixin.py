@@ -3,8 +3,8 @@ Grade step in the OpenAssessment XBlock.
 """
 import copy
 from collections import defaultdict
+from lazy import lazy
 
-from django.utils.translation import ugettext as _
 from xblock.core import XBlock
 
 from openassessment.assessment.api import peer as peer_api
@@ -58,7 +58,7 @@ class GradeMixin(object):
             else:  # status is 'self' or 'peer', which implies that the workflow is incomplete
                 path, context = self.render_grade_incomplete(workflow)
         except (sub_api.SubmissionError, PeerAssessmentError, SelfAssessmentError):
-            return self.render_error(_(u"An unexpected error occurred."))
+            return self.render_error(self._(u"An unexpected error occurred."))
         else:
             return self.render_assessment(path, context)
 
@@ -100,14 +100,21 @@ class GradeMixin(object):
 
         if "peer-assessment" in assessment_steps:
             feedback = peer_api.get_assessment_feedback(submission_uuid)
-            peer_assessments = peer_api.get_assessments(submission_uuid)
+            peer_assessments = [
+                self._assessment_grade_context(asmnt)
+                for asmnt in peer_api.get_assessments(submission_uuid)
+            ]
             has_submitted_feedback = feedback is not None
 
         if "self-assessment" in assessment_steps:
-            self_assessment = self_api.get_assessment(submission_uuid)
+            self_assessment = self._assessment_grade_context(
+                self_api.get_assessment(submission_uuid)
+            )
 
         if "example-based-assessment" in assessment_steps:
-            example_based_assessment = ai_api.get_latest_assessment(submission_uuid)
+            example_based_assessment = self._assessment_grade_context(
+                ai_api.get_latest_assessment(submission_uuid)
+            )
 
         feedback_text = feedback.get('feedback', '') if feedback else ''
         student_submission = sub_api.get_submission(submission_uuid)
@@ -127,7 +134,7 @@ class GradeMixin(object):
             'peer_assessments': peer_assessments,
             'self_assessment': self_assessment,
             'example_based_assessment': example_based_assessment,
-            'rubric_criteria': self._rubric_criteria_with_feedback(peer_assessments, self_assessment),
+            'rubric_criteria': self._rubric_criteria_grade_context(peer_assessments, self_assessment),
             'has_submitted_feedback': has_submitted_feedback,
             'allow_file_upload': self.allow_file_upload,
             'file_url': self.get_download_url_from_submission(student_submission)
@@ -177,9 +184,9 @@ class GradeMixin(object):
 
         incomplete_steps = []
         if _is_incomplete("peer"):
-            incomplete_steps.append(_("Peer Assessment"))
+            incomplete_steps.append(self._("Peer Assessment"))
         if _is_incomplete("self"):
-            incomplete_steps.append(_("Self Assessment"))
+            incomplete_steps.append(self._("Self Assessment"))
 
         return (
             'openassessmentblock/grade/oa_grade_incomplete.html',
@@ -212,7 +219,7 @@ class GradeMixin(object):
                 'options': feedback_options,
             })
         except (peer_api.PeerAssessmentInternalError, peer_api.PeerAssessmentRequestError):
-            return {'success': False, 'msg': _(u"Assessment feedback could not be saved.")}
+            return {'success': False, 'msg': self._(u"Assessment feedback could not be saved.")}
         else:
             self.runtime.publish(
                 self,
@@ -223,12 +230,16 @@ class GradeMixin(object):
                     'options': feedback_options,
                 }
             )
-            return {'success': True, 'msg': _(u"Feedback saved.")}
+            return {'success': True, 'msg': self._(u"Feedback saved.")}
 
-    def _rubric_criteria_with_feedback(self, peer_assessments, self_assessment):
+    def _rubric_criteria_grade_context(self, peer_assessments, self_assessment):
         """
-        Add per-criterion feedback from peer assessments to the rubric criteria.
-        Filters out empty feedback.
+        Sanitize the rubric criteria into a format that can be passed
+        into the grade complete Django template.
+
+            * Add per-criterion feedback from peer assessments to the rubric criteria.
+            * Filters out empty feedback.
+            * Assign a "label" for criteria/options if none is defined (backwards compatibility).
 
         Args:
             peer_assessments (list of dict): Serialized assessment models from the peer API.
@@ -240,7 +251,8 @@ class GradeMixin(object):
         Example:
             [
                 {
-                    'name': 'Test name',
+                    'label': 'Test name',
+                    'name': 'f78ac7d4ca1e4134b0ba4b40ca212e72',
                     'prompt': 'Test prompt',
                     'order_num': 2,
                     'options': [...]
@@ -252,7 +264,7 @@ class GradeMixin(object):
                 ...
             ]
         """
-        criteria = copy.deepcopy(self.rubric_criteria)
+        criteria = copy.deepcopy(self.rubric_criteria_with_labels)
         peer_criteria_feedback = defaultdict(list)
         self_criteria_feedback = {}
 
@@ -274,3 +286,67 @@ class GradeMixin(object):
             criterion['self_feedback'] = self_criteria_feedback.get(criterion_name)
 
         return criteria
+
+    @lazy
+    def _criterion_and_option_labels(self):
+        """
+        Retrieve criteria and option labels from the rubric in the XBlock problem definition,
+        defaulting to the name value if no label is available (backwards compatibility).
+
+        Evaluated lazily, so it will return a cached value if called repeatedly.
+        For the grade mixin, this should be okay, since we can't change the problem
+        definition in the LMS (the settings fields are read-only).
+
+        Returns:
+            Tuple of dictionaries:
+                `criterion_labels` maps criterion names to criterion labels.
+                `option_labels` maps (criterion name, option name) tuples to option labels.
+
+        """
+        criterion_labels = {}
+        option_labels = {}
+        for criterion in self.rubric_criteria_with_labels:
+            criterion_labels[criterion['name']] = criterion['label']
+            for option in criterion['options']:
+                option_label_key = (criterion['name'], option['name'])
+                option_labels[option_label_key] = option['label']
+
+        return criterion_labels, option_labels
+
+    def _assessment_grade_context(self, assessment):
+        """
+        Sanitize an assessment dictionary into a format that can be
+        passed into the grade complete Django template.
+
+        Args:
+            assessment (dict): The serialized assessment model.
+
+        Returns:
+            dict
+
+        """
+        assessment = copy.deepcopy(assessment)
+
+        # Retrieve dictionaries mapping criteria/option names to the associated labels.
+        # This is a lazy property, so we can call it repeatedly for each assessment.
+        criterion_labels, option_labels = self._criterion_and_option_labels
+
+        # Backwards compatibility: We used to treat "name" as both a user-facing label
+        # and a unique identifier for criteria and options.
+        # Now we treat "name" as a unique identifier, and we've added an additional "label"
+        # field that we display to the user.
+        # If criteria/options in the problem definition do NOT have a "label" field
+        # (because they were created before this change),
+        # we create a new label that has the same value as "name".
+        for part in assessment['parts']:
+            criterion_label_key = part['criterion']['name']
+            part['criterion']['label'] = criterion_labels.get(criterion_label_key, part['criterion']['name'])
+
+            # We need to be a little bit careful here: some assessment parts
+            # have only written feedback, so they're not associated with any options.
+            # If that's the case, we don't need to add the label field.
+            if part.get('option') is not None:
+                option_label_key = (part['criterion']['name'], part['option']['name'])
+                part['option']['label'] = option_labels.get(option_label_key, part['option']['name'])
+
+        return assessment

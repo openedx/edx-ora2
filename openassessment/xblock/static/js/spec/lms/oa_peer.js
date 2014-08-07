@@ -44,7 +44,6 @@ describe("OpenAssessment.PeerView", function() {
 
     beforeEach(function() {
         // Load the DOM fixture
-        jasmine.getFixtures().fixturesPath = 'base/fixtures';
         loadFixtures('oa_peer_assessment.html');
 
         // Create a new stub server
