@@ -249,7 +249,7 @@ def create_assessment(
     try:
         # Retrieve workflow information
         scorer_workflow = PeerWorkflow.objects.get(submission_uuid=scorer_submission_uuid)
-        peer_workflow_item = scorer_workflow.get_latest_open_workflow_item()
+        peer_workflow_item = scorer_workflow.find_active_assessments()
         if peer_workflow_item is None:
             message = (
                 u"There are no open assessments associated with the scorer's "
@@ -257,7 +257,7 @@ def create_assessment(
             ).format(scorer_submission_uuid)
             logger.warning(message)
             raise PeerAssessmentWorkflowError(message)
-        peer_submission_uuid = peer_workflow_item.author.submission_uuid
+        peer_submission_uuid = peer_workflow_item.submission_uuid
 
         assessment = _complete_assessment(
             rubric_dict,
@@ -666,7 +666,8 @@ def get_submission_to_assess(submission_uuid, graded_by):
             u"A Peer Assessment Workflow does not exist for the student "
             u"with submission UUID {}".format(submission_uuid)
         )
-    peer_submission_uuid = workflow.find_active_assessments()
+    open_item = workflow.find_active_assessments()
+    peer_submission_uuid = open_item.submission_uuid if open_item else None
     # If there is an active assessment for this user, get that submission,
     # otherwise, get the first assessment for review, otherwise,
     # get the first submission available for over grading ("over-grading").

@@ -26,6 +26,16 @@ describe("OpenAssessment.BaseView", function() {
                 defer.resolveWith(this, [server.fragments[component]]);
             }).promise();
         };
+
+        var successPromise = $.Deferred(
+            function(defer) {
+                defer.resolve();
+            }
+        ).promise();
+
+        this.peerAssess = function(optionsSelected, feedback) {
+            return successPromise;
+        };
     };
 
     // Stub runtime
@@ -74,6 +84,22 @@ describe("OpenAssessment.BaseView", function() {
             expect(server.fragmentsLoaded).toContain("self_assessment");
             expect(server.fragmentsLoaded).toContain("peer_assessment");
             expect(server.fragmentsLoaded).toContain("grade");
+        });
+    });
+
+    it("Only load the peer section once on submit", function() {
+        loadSubviews(function() {
+            // Simulate a server error
+            view.peerView.peerAssess();
+            var numPeerLoads = 0;
+            for (var i = 0; i < server.fragmentsLoaded.length; i++) {
+                if (server.fragmentsLoaded[i] == 'peer_assessment') {
+                    numPeerLoads++;
+                }
+            }
+            // Peer should be called twice, once when loading the views,
+            // and again after the peer has been assessed.
+            expect(numPeerLoads).toBe(2);
         });
     });
 });

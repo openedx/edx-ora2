@@ -216,13 +216,29 @@ class PeerWorkflow(models.Model):
                 for this PeerWorkflow.
 
         Returns:
-            submission_uuid (str): The submission_uuid for the submission that the
+            (PeerWorkflowItem) The PeerWorkflowItem for the submission that the
                 student has open for active assessment.
 
         """
         oldest_acceptable = now() - self.TIME_LIMIT
-        workflows = self.graded.filter(assessment__isnull=True, started_at__gt=oldest_acceptable)   # pylint:disable=E1101
-        return workflows[0].submission_uuid if workflows else None
+        items = list(self.graded.all().order_by("-started_at", "-id"))
+        valid_open_items = []
+        completed_sub_uuids = []
+
+        # First, remove all completed items.
+        for item in items:
+            if item.assessment is not None:
+                completed_sub_uuids.append(item.submission_uuid)
+            else:
+                valid_open_items.append(item)
+
+        # Remove any open items which have a submission which has been completed.
+        for item in valid_open_items:
+            if (item.started_at < oldest_acceptable or
+                    item.submission_uuid in completed_sub_uuids):
+                valid_open_items.remove(item)
+
+        return valid_open_items[0] if valid_open_items else None
 
     def get_submission_for_review(self, graded_by):
         """
@@ -330,19 +346,6 @@ class PeerWorkflow(models.Model):
             ).format(self)
             logger.exception(error_message)
             raise PeerAssessmentInternalError(error_message)
-
-    def get_latest_open_workflow_item(self):
-        """
-        Return the latest open workflow item for this workflow.
-
-        Returns:
-            A PeerWorkflowItem that is open for assessment.
-            None if no item is found.
-
-        """
-        workflow_query = self.graded.filter(assessment__isnull=True).order_by("-started_at", "-id")  # pylint:disable=E1101
-        items = list(workflow_query[:1])
-        return items[0] if items else None
 
     def close_active_assessment(self, submission_uuid, assessment, num_required_grades):
         """
