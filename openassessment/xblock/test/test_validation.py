@@ -303,7 +303,10 @@ class ValidationIntegrationTest(TestCase):
         # Expect a validation error
         is_valid, msg = self.validator(self.RUBRIC, mutated_assessments)
         self.assertFalse(is_valid)
-        self.assertEqual(msg, u'Student training example option does not match the rubric.')
+        self.assertEqual(msg, (
+            u'Example 1 has an extra option for \"Invalid criterion!"; '
+            u'Example 1 is missing an option for "vocabulary"'
+        ))
 
     def test_student_training_examples_invalid_option(self):
         # Mutate the assessment training examples so the option names don't match the rubric
@@ -313,7 +316,7 @@ class ValidationIntegrationTest(TestCase):
         # Expect a validation error
         is_valid, msg = self.validator(self.RUBRIC, mutated_assessments)
         self.assertFalse(is_valid)
-        self.assertEqual(msg, u'Student training example option does not match the rubric.')
+        self.assertEqual(msg, u'Example 1 has an invalid option for "vocabulary": "Invalid option!"')
 
     def test_example_based_assessment_duplicate_point_values(self):
         # Mutate the rubric so that two options have the same point value

@@ -975,7 +975,7 @@
             }
         ],
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"],
-        "expected_error": "student training example option does not match the rubric"
+        "expected_error": "example 1 has an extra option for \"not a criterion!\"; example 1 is missing an option for \"0\""
     },
 
     "missing_editor_assessments_order": {
