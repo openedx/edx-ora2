@@ -283,6 +283,8 @@ Returns:
 OpenAssessment.RubricCriterion = function(element, notifier) {
     this.element = element;
     this.notifier = notifier;
+    this.labelSel = $('.openassessment_criterion_label', this.element);
+    this.promptSel = $('.openassessment_criterion_prompt', this.element);
     this.optionContainer = new OpenAssessment.Container(
         OpenAssessment.RubricOption, {
             containerElement: $(".openassessment_criterion_option_list", this.element).get(0),
@@ -357,8 +359,7 @@ OpenAssessment.RubricCriterion.prototype = {
 
     **/
     label: function(label) {
-        var sel = $('.openassessment_criterion_label', this.element);
-        return OpenAssessment.Fields.stringField(sel, label);
+        return OpenAssessment.Fields.stringField(this.labelSel, label);
     },
 
     /**
@@ -372,8 +373,7 @@ OpenAssessment.RubricCriterion.prototype = {
 
     **/
     prompt: function(prompt) {
-        var sel = $('.openassessment_criterion_prompt', this.element);
-        return OpenAssessment.Fields.stringField(sel, prompt);
+        return OpenAssessment.Fields.stringField(this.promptSel, prompt);
     },
 
     /**
@@ -440,7 +440,14 @@ OpenAssessment.RubricCriterion.prototype = {
 
     **/
     validate: function() {
-        var isValid = true;
+        // The criterion prompt is required.
+        var isValid = (this.prompt() !== "");
+
+        if (!isValid) {
+            this.promptSel.addClass("openassessment_highlighted_field");
+        }
+
+        // All options must be valid
         $.each(this.optionContainer.getAllItems(), function() {
             isValid = (this.validate() && isValid);
         });
@@ -457,9 +464,17 @@ OpenAssessment.RubricCriterion.prototype = {
     **/
     validationErrors: function() {
         var errors = [];
+
+        // Criterion prompt errors
+        if (this.promptSel.hasClass('openassessment_highlighted_field')) {
+            errors.push("Criterion prompt is invalid.");
+        }
+
+        // Option errors
         $.each(this.optionContainer.getAllItems(), function() {
             errors = errors.concat(this.validationErrors());
         });
+
         return errors;
     },
 
@@ -467,6 +482,10 @@ OpenAssessment.RubricCriterion.prototype = {
     Clear all validation errors from the UI.
     **/
     clearValidationErrors: function() {
+        // Clear criterion prompt errors
+        this.promptSel.removeClass("openassessment_highlighted_field");
+
+        // Clear option errors
         $.each(this.optionContainer.getAllItems(), function() {
             this.clearValidationErrors();
         });

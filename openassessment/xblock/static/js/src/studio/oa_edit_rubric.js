@@ -229,7 +229,7 @@ OpenAssessment.EditRubricView.prototype = {
         var errors = [];
         var criteria = this.getAllCriteria();
         if (criteria.length == 0) {
-            errors.push("The Rubric must contain at least one criterion")
+            errors.push("The Rubric must contain at least one criterion");
         }
 
         $.each(criteria, function() {

@@ -231,4 +231,23 @@ describe("OpenAssessment.EditRubricView", function() {
         testValidateOptionPoints("998", true);
         testValidateOptionPoints("999", true);
     });
+
+    it("validates the criterion prompt field", function() {
+        // Filled in prompt should be valid
+        $.each(view.getAllCriteria(), function() {
+            this.prompt("This is a prompt.");
+        });
+        expect(view.validate()).toBe(true);
+
+        // Change one of the prompts to an empty string
+        view.getCriterionItem(0).prompt("");
+
+        // Now the view should be invalid
+        expect(view.validate()).toBe(false);
+        expect(view.validationErrors()).toContain("Criterion prompt is invalid.");
+
+        // Clear validation errors
+        view.clearValidationErrors();
+        expect(view.validationErrors()).toEqual([]);
+    });
 });
