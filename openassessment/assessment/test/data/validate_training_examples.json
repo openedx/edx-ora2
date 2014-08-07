@@ -577,7 +577,7 @@
                 "options_selected": {}
             }
         ],
-        "errors": ["When you include a student training assessment, the rubric for the assessment must contain at least one criterion, and each criterion must contain at least two options."]
+        "errors": ["If your assignment includes a student training step, the rubric must have at least one criterion, and that criterion must have at least one option."]
     }
 
 }
