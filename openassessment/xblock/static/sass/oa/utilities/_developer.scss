@@ -589,6 +589,9 @@
               width: 70%;
               float: right;
             }
+            .openassessment_criterion_prompt.openassessment_highlighted_field{
+              border: 2px solid red;
+            }
           }
         }
       }
@@ -820,6 +823,11 @@
 
       padding: 10px;
       margin: 15px 10px;
+    }
+
+    #openassessment_rubric_add_criterion.openassessment_highlighted_field{
+      color: red;
+      border-width: 2px;
     }
 
     #openassessment_rubric_add_criterion:hover{
