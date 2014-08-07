@@ -258,7 +258,7 @@ class StudioMixin(object):
         student_training_module = self.get_assessment_module('student-training')
 
         student_training_template = {'answer': ""}
-        criteria_list = copy.deepcopy(self.rubric_criteria)
+        criteria_list = copy.deepcopy(self.rubric_criteria_with_labels)
         for criterion in criteria_list:
             criterion['option_selected'] = ""
         student_training_template['criteria'] = criteria_list
@@ -267,7 +267,7 @@ class StudioMixin(object):
             example_list = []
             # Adds each example to a modified version of the student training module dictionary.
             for example in student_training_module['examples']:
-                criteria_list = copy.deepcopy(self.rubric_criteria)
+                criteria_list = copy.deepcopy(self.rubric_criteria_with_labels)
                 # Equivalent to a Join Query, this adds the selected option to the Criterion's dictionary, so that
                 # it can be easily referenced in the template without searching through the selected options.
                 for criterion in criteria_list:

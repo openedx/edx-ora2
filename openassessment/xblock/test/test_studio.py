@@ -311,3 +311,16 @@ class StudioViewTest(XBlockHandlerTestCase):
             self.assertEqual(criterion['label'], criterion['name'])
             for option in criterion['options']:
                 self.assertEqual(option['label'], option['name'])
+
+        # Verify the same thing for the training example template
+        for criterion in context['assessments']['training']['template']['criteria']:
+            self.assertEqual(criterion['label'], criterion['name'])
+            for option in criterion['options']:
+                self.assertEqual(option['label'], option['name'])
+
+        # Verify the same thing for the context for student training examples
+        for example in context['assessments']['training']['examples']:
+            for criterion in example['criteria']:
+                self.assertEqual(criterion['label'], criterion['name'])
+                for option in criterion['options']:
+                    self.assertEqual(option['label'], option['name'])
