@@ -1298,7 +1298,6 @@
         margin: 5px;
         border-radius: 5px;
         font-size: 80%;
-        background-color: white;
         float: right;
         cursor: pointer;
         h2{
@@ -1324,6 +1323,12 @@
         margin: 0 0 0 5px;
       }
     }
+
+    .openassessment_ai_example_selector_item:hover{
+      background-color: $edx-gray-l5;
+      cursor: pointer;
+    }
+
   }
 
   #openassessment_ai_example_editor{
@@ -1407,4 +1412,8 @@
       }
     }
   }
+}
+
+#openassessment_ai_editor_normal_editing{
+  height: 100%;
 }

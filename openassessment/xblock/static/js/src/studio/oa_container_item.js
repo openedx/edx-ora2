@@ -602,3 +602,133 @@ OpenAssessment.TrainingExample.prototype = {
         );
     }
 };
+
+OpenAssessment.AIExample = function(element){
+    this.element = element;
+    this.labelSel = $('.openassessment_ai_example_label_field', this.element);
+    this.answer = $('.openassessment_ai_example_essay', this.element).first();
+    this.criteria = $(".openassessment_ai_example_criterion_option", this.element);
+};
+
+OpenAssessment.AIExample.prototype = {
+
+    /**
+     Returns the values currently stored in the fields associated with this training example.
+     **/
+    getFieldValues: function () {
+
+        // Iterates through all of the options selected by the training example, and adds them
+        // to a list.
+        var optionsSelected = this.criteria.map(
+            function () {
+                return {
+                    criterion: $(this).data('criterion'),
+                    option: $(this).prop('value')
+                };
+            }
+        ).get();
+
+        return {
+            answer: this.answer.prop('value'),
+            options_selected: optionsSelected
+        };
+    },
+
+    addHandler: function() {
+        // Goes through and instantiates the option description in the training example for each option.
+        $(".openassessment_ai_example_criterion_option", this.element) .each( function () {
+            $('option', this).each(function(){
+                OpenAssessment.ItemUtilities.refreshOptionString($(this));
+            });
+        });
+
+        $(this.element).attr(
+            'data-example', OpenAssessment.ItemUtilities.createUniqueName(this.element, 'data-example')
+        );
+    },
+
+    addEventListeners: function() {},
+    removeHandler: function() {},
+    updateHandler: function() {},
+
+    validate: function() {
+        var isValid = true;
+
+        this.criteria.each(
+            function() {
+                var isOptionValid = ($(this).prop('value') !== "");
+                isValid = isOptionValid && isValid;
+
+                if (!isOptionValid) {
+                    $(this).addClass("openassessment_highlighted_field");
+                }
+            }
+        );
+
+        return isValid;
+    },
+
+    validationErrors: function() {
+        var errors = [];
+        this.criteria.each(
+            function() {
+                var hasError = $(this).hasClass("openassessment_highlighted_field");
+                if (hasError) {
+                    errors.push("An Example Based Assessment Example is invalid.");
+                }
+            }
+        );
+        return errors;
+    },
+
+    /**
+     Retrieve all elements representing items in this container.
+
+     Returns:
+     array of container item objects
+
+     **/
+    clearValidationErrors: function() {
+        this.criteria.each(
+            function() { $(this).removeClass("openassessment_highlighted_field"); }
+        );
+    }
+};
+
+OpenAssessment.AIExampleMenuItem = function(element){
+    this.element = element;
+    this.labelSel = $('.openassessment_ai_example_label_field', this.element);
+};
+
+OpenAssessment.AIExampleMenuItem.prototype = {
+
+    addEventListeners: function() {
+        var exampleName = $(this.element).attr('data-example');
+        $(this.element).click(function() {
+            $('.openassessment_ai_example').each(function() {
+                if ($(this).attr('data-example') == exampleName){
+                    $(this).removeClass('is--hidden');
+                } else {
+                    $(this).addClass('is--hidden');
+                }
+            });
+        });
+    },
+
+    removeHandler: function() {
+        this.partneredAIExample.remove();
+        $('.openassessment_ai_example["'+ $(this.element).attr('data-example') +'"]').remove();
+    },
+
+    getFieldValues: function () {},
+    addHandler: function() {
+        $(this.element).attr(
+            'data-example', OpenAssessment.ItemUtilities.createUniqueName(this.element, 'data-example')
+        );
+        this.addEventListeners();
+    },
+    updateHandler: function() {},
+    validate: function() { return true; },
+    validationErrors: function() { return []; },
+    clearValidationErrors: function() {}
+};

@@ -61,6 +61,10 @@ OpenAssessment.StudioView = function(runtime, element, server) {
         ])
     );
 
+    this.aiView = new OpenAssessment.EditAIView(
+        $("#oa_ai_editor_wrapper", this.element).get(0)
+    );
+
     // Install the save and cancel buttons
     $(".openassessment_save_button", this.element).click($.proxy(this.save, this));
     $(".openassessment_cancel_button", this.element).click($.proxy(this.cancel, this));

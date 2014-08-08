@@ -285,7 +285,8 @@ class StudioMixin(object):
             ai_examples = copy.deepcopy(example_list)
             count = 1
             for example in ai_examples:
-                example['name'] = "AI Example " + str(count)
+                example['label'] = "AI Example " + str(count)
+                example['name'] = count
                 count += 1
             assessments['ai'] = {'examples': ai_examples, 'template': student_training_template}
 
