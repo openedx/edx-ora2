@@ -1,10 +1,4 @@
-.. image:: https://travis-ci.org/edx/edx-ora2.png?branch=master
-    :alt: Travis build status
-
-
-.. image:: https://coveralls.io/repos/edx/edx-ora2/badge.png?branch=master
-    :target: https://coveralls.io/r/edx/edx-ora2?branch=master
-    :alt: Coverage badge
+|build-status| |coverage-status|
 
 
 `User documentation available on ReadTheDocs`__.
@@ -139,3 +133,10 @@ Mailing List and IRC Channel
 You can discuss this code on the
 `edx-code Google Group <https://groups.google.com/forum/#!forum/edx-code>`_ or
 in the `edx-code` IRC channel on Freenode.
+
+.. |build-status| image:: https://travis-ci.org/edx/edx-ora2.png?branch=master
+   :target: https://travis-ci.org/edx/edx-ora2
+   :alt: Travis build status
+.. |coverage-status| image:: https://coveralls.io/repos/edx/edx-ora2/badge.png?branch=master
+   :target: https://coveralls.io/r/edx/edx-ora2?branch=master
+   :alt: Coverage badge
