@@ -279,6 +279,17 @@ class StudioMixin(object):
                     'criteria': criteria_list,
                 })
             assessments['training'] = {'examples': example_list, 'template': student_training_template}
+
+
+            # Mocking this step out to allow template rendering:
+            ai_examples = copy.deepcopy(example_list)
+            count = 1
+            for example in ai_examples:
+                example['name'] = "AI Example " + str(count)
+                count += 1
+            assessments['ai'] = {'examples': ai_examples, 'template': student_training_template}
+
+
         # If we don't have student training enabled, we still need to render a single (empty, or default) example
         else:
             assessments['training'] = {'examples': [student_training_template], 'template': student_training_template}

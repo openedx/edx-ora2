@@ -2,65 +2,103 @@
 {% spaceless %}
 <div id="oa_ai_editor_wrapper" class="oa_editor_content_wrapper">
 
-    <div id="openassessment_ai_editor_instructions">
-        <p>
-            Fill in the examples below. Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.
-        </p>
-    </div>
-
-
-    <div id="openassessment_ai_editor_selector_and_editor">
-
-        <div id="openassessment_ai_selector_wrapper">
-
-            <div id="openassessment_ai_selector_header">
-                <div id="openassessment_ai_editor_upload_buttons">
-                    <div id="openassessment_ai_editor_upload_csv" class="openassessment_ai_editor_upload_button">
-                        Upload CSV
-                    </div>
-                    <div id="openassessment_ai_editor_upload_xml" class="openassessment_ai_editor_upload_button">
-                        Upload XML
-                    </div>
-                </div>
-                <div id="openassessment_ai_selector_title">
-                    <h2>Examples</h2>
-                </div>
-            </div>
-            <ol id="openassessment_ai_example_selector">
-
-                {% for i in "xxxxxxxxxx" %}
-                <li class="openassessment_ai_example_selector_item">
-                    <h2>Example Name</h2>
-                    <div class="openassessment_ai_example_remove_button">
-                        <h2>Remove</h2>
-                    </div>
-                </li>
-                {% endfor %}
-            </ol>
-            <div id="openassessment_ai_selector_add_example">
-                Add Example
-            </div>
+    <div id="openassessment_ai_editor_normal_editing">
+        <div id="openassessment_ai_editor_instructions">
+            <p>
+                Fill in the examples below. Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.
+            </p>
         </div>
 
-        <div id="openassessment_ai_example_editor">
-            <div class="openassessment_ai_example_settings">
-                <label class="openassessment_ai_example_label_field">
-                    Example Label
-                    <input type="text">
-                </label>
-                <h2 class="openassessment_ai_example_total_score">Total Score: 26 / 30</h2>
-            </div>
-            <div class="openassessment_ai_example_essay_wrapper">
-                <textarea class="openassessment_ai_example_essay"></textarea>
-            </div>
-            <div class="openassessment_ai_example_scored_rubric">
-                <div class="openassessment_ai_example_scored_rubric_criterion">
-                    <label> Criterion Name
-                        <select>
-                            <option></option>
-                        </select>
-                    </label>
+        <div id="openassessment_ai_editor_selector_and_editor">
+
+            <div id="openassessment_ai_selector_wrapper">
+
+                <div id="openassessment_ai_selector_header">
+                    <div id="openassessment_ai_editor_upload_buttons">
+                        <div id="openassessment_ai_editor_upload_csv" class="openassessment_ai_editor_upload_button">
+                            Upload CSV
+                        </div>
+                        <div id="openassessment_ai_editor_upload_xml" class="openassessment_ai_editor_upload_button">
+                            Upload XML
+                        </div>
+                    </div>
+                    <div id="openassessment_ai_selector_title">
+                        <h2>Examples</h2>
+                    </div>
                 </div>
+                <ol id="openassessment_ai_example_selector">
+
+                    {% for example in assessments.ai.examples %}
+                    <li class="openassessment_ai_example_selector_item">
+                        <h2 class="openassessment_ai_example_selector_name">{{ example.name }}</h2>
+                        <div class="openassessment_ai_example_remove_button">
+                            <h2>Remove</h2>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ol>
+                <div id="openassessment_ai_selector_add_example">
+                    Add Example
+                </div>
+            </div>
+
+            <div id="openassessment_ai_example_editor">
+                <ol id="openassessment_ai_examples">
+                    {% for example in assessments.ai.examples %}
+                    <li class="openassessment_ai_example">
+                        <div class="openassessment_ai_example_settings">
+                            <label class="openassessment_ai_example_label_field">
+                                Example Name
+                                <input type="text" value="{{ example.name }}">
+                            </label>
+                            <h2 class="openassessment_ai_example_total_score">Total Score: 26 / 30</h2>
+                        </div>
+                        <div class="openassessment_ai_example_essay_wrapper">
+                            <textarea class="openassessment_ai_example_essay">{{ example.answer }}</textarea>
+                        </div>
+                        <div class="openassessment_ai_example_scored_rubric">
+                            {% for criterion in example.criteria %}
+                            <div class="openassessment_ai_example_scored_rubric_criterion">
+                                <label> {{ criterion.label }}
+                                    <select value="{{ criterion.option_selected }}" data-criterion="{{ criterion.name }}">
+                                        {% for option in criterion.options %}
+                                            <option data-criterion="{{ criterion.name }}" value="{{ option.name }}"
+                                                    {% if option.name == criterion.option_selected %} selected {% endif %}>
+                                                {{ option.label }} - {{ option.points }} points
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ol>
+
+
+            </div>
+        </div>
+    </div>
+    <div id="openassessment_ai_editor_import_sub_modal" class="is--hidden">
+        <div id="openassessment_ai_editor_sub_modal_header">
+
+        </div>
+        <div id="openassessment_ai_editor_sub_modal_instructions">
+
+        </div>
+        <div id="openassessment_ai_editor_sub_modal_file_upload">
+
+        </div>
+        <div id="openassessment_ai_editor_sub_modal_file_status">
+
+        </div>
+        <div id="openassessment_ai_editor_sub_modal_buttons">
+            <div id="openassessment_ai_editor_sub_modal_save">
+                Save
+            </div>
+            <div id="openassessment_ai_editor_sub_modal_cancel">
+                Cancel
             </div>
         </div>
     </div>

@@ -207,7 +207,7 @@
     .editor_tabs {
       width: 45%;
       min-width: 190px;
-      max-width: 360px;
+      max-width: 450px;
       float: right;
 
       .oa_editor_tab {
@@ -1204,6 +1204,7 @@
       width: Calc(50% - 10px);
       text-align: center;
       border: 1px solid;
+      cursor: pointer;
     }
 
     .openassessment_ai_editor_upload_button:hover{
@@ -1236,6 +1237,10 @@
         font-size: 80%;
         text-align: center;
         padding: 5px;
+        border-bottom: 1px solid $edx-gray-l3;
+        h2{
+          padding-top: 1px;
+        }
       }
     }
 
@@ -1256,13 +1261,15 @@
       margin: 5px;
       text-align: center;
       border-radius: 3px;
+      cursor: pointer;
+      font-size: 95%;
     }
 
     #openassessment_ai_selector_add_example:before{
       font-family: FontAwesome;
       content: "\f067";
       display: inline-block;
-      margin: 0 5px;
+      font-size: 90%;
     }
 
     #openassessment_ai_selector_add_example:hover {
@@ -1277,11 +1284,12 @@
       overflow-x: scroll;
       border-bottom: 1px solid $edx-gray-l3;
 
-      h2 {
+      .openassessment_ai_example_selector_name {
         display: inline-block;
         text-transform: uppercase;
         float: left;
         padding: 5px;
+        font-size: 90%;
       }
 
       .openassessment_ai_example_remove_button{
@@ -1292,11 +1300,14 @@
         font-size: 80%;
         background-color: white;
         float: right;
+        cursor: pointer;
         h2{
             display: inline-block;
             text-transform: uppercase;
             float: left;
             padding: 0 4px 0 0;
+            cursor: pointer;
+            font-size: 90%;
         }
       }
 
@@ -1317,12 +1328,22 @@
 
   #openassessment_ai_example_editor{
     width: Calc(100% - 250px);
-    padding: 5px;
     overflow-y: scroll;
     height: 100%;
     display: inline-block;
     position: absolute;
     right: 0;
+
+    #openassessment_ai_examples{
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      .openassessment_ai_example{
+        height: 100%;
+        width: 100%;
+        padding: 7.5px;
+      }
+    }
 
     .openassessment_ai_example_settings{
       width: 100%;
@@ -1341,7 +1362,7 @@
     }
     .openassessment_ai_example_essay_wrapper{
       width: 100%;
-      height: Calc(100% - 100px);
+      height: Calc(100% - 102px);
 
       textarea{
         width: 100%;
@@ -1360,21 +1381,29 @@
   }
 
   .openassessment_ai_example_scored_rubric{
-    width: 50%;
+    width: 100%;
     display: inline-block;
-    label{
-      padding: 5px;
-      width: 100%;
-      display: block;
-      select{
-        min-width: 100px;
-        float: right;
-        font-size: 14px;
-        padding: 10px;
-        width: 45%;
-        border-radius: 3px;
-        border: 1px solid #B2B2B2;
-        text-overflow: ellipsis;
+    height: 66px;
+    overflow-y: scroll;
+
+    .openassessment_ai_example_scored_rubric_criterion{
+      width: 50%;
+      display: inline-block;
+
+      label{
+        padding: 5px 5px 5px 20px;
+        width: 100%;
+        display: block;
+        select{
+          min-width: 100px;
+          margin-left: 15%;
+          font-size: 14px;
+          padding: 10px;
+          width: 55%;
+          border-radius: 3px;
+          border: 1px solid #B2B2B2;
+          text-overflow: ellipsis;
+        }
       }
     }
   }
