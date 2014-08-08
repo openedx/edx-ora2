@@ -11,6 +11,10 @@
 
 __ http://edx.readthedocs.org/projects/edx-open-response-assessments
 
+`Developer documentation also available on ReadTheDocs`__.
+
+__ http://edx.readthedocs.org/projects/edx-ora-2
+
 
 Installation
 ============
@@ -31,13 +35,6 @@ Running the Development Server
 .. code:: bash
 
     ./scripts/workbench.sh
-
-By default, the XBlock JavaScript will be combined and minified.  To
-preserve indentation and line breaks in JavaScript source files:
-
-.. code:: bash
-
-    DEBUG_JS=1 ./scripts/workbench.sh
 
 Additional arguments are passed to ``runserver``.  For example,
 to start the server on port 8001:
