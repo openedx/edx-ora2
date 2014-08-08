@@ -36,6 +36,9 @@ configured:
 * FILE_UPLOAD_STORAGE_BUCKET_NAME - The name of the S3 Bucket configured for uploading and downloading content.
 * FILE_UPLOAD_STORAGE_PREFIX (optional) - The file prefix within the bucket for storing all content. Defaults to 'submissions_attachments'
 
+Note that your S3 bucket must have a DNS compliant name, which will be used by
+the File Upload Service to generate the upload and download URLs.
+
 In addition, your S3 bucket must be have CORS configuration set up to allow PUT
 and GET requests to be performed across request origins.  To do so, you must:
 
