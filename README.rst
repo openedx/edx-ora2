@@ -1,13 +1,6 @@
 |build-status| |coverage-status|
 
-
-`User documentation available on ReadTheDocs`__.
-
-__ http://edx.readthedocs.org/projects/edx-open-response-assessments
-
-`Developer documentation also available on ReadTheDocs`__.
-
-__ http://edx.readthedocs.org/projects/edx-ora-2
+User docs: |user-docs| Developer docs: |dev-docs|
 
 
 Installation
@@ -140,3 +133,9 @@ in the `edx-code` IRC channel on Freenode.
 .. |coverage-status| image:: https://coveralls.io/repos/edx/edx-ora2/badge.png?branch=master
    :target: https://coveralls.io/r/edx/edx-ora2?branch=master
    :alt: Coverage badge
+.. |user-docs| image:: https://readthedocs.org/projects/edx-open-response-assessments/badge/?version=latest
+   :target: http://edx.readthedocs.org/projects/edx-open-response-assessments
+   :alt: User documentation
+.. |dev-docs| image:: https://readthedocs.org/projects/edx-ora-2/badge/?version=latest
+   :target: http://edx.readthedocs.org/projects/edx-ora-2
+   :alt: Developer documentation
