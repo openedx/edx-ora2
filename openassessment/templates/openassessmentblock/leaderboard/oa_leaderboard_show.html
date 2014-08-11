@@ -16,7 +16,12 @@
                                 {% blocktrans %}{{ num_points }} points{% endblocktrans %}
                             </h4>
                             {% endwith %}
-                            <div class="leaderboard__answer">{{ topscore.content|linebreaks }}</div>
+                            <div class="leaderboard__answer">
+                                {% if topscore.file %}
+                                <img class="leaderboard__score__image" alt="{% trans "The image associated with your peer's submission." %}" src="{{ topscore.file }}" />
+                                {% endif %}
+                                {{ topscore.content|linebreaks }}
+                            </div>
                         </li>
                     {% endfor %}
                     </ol>
