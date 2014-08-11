@@ -548,6 +548,11 @@ OpenAssessment.EditExampleBasedAssessmentView = function(element) {
             new OpenAssessment.AssessmentToggleListener()
         ])
     ).install();
+
+    $("#include_ai_assessment", this.element).click(function() {
+        $('#oa_editor_tab_ai').toggleClass('is--hidden');
+        debugger;
+    });
 };
 
 OpenAssessment.EditExampleBasedAssessmentView.prototype = {

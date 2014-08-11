@@ -13,9 +13,8 @@
         </p>
         <div id="ai_assessment_settings_editor" class="assessment_settings_wrapper {% if not assessments.example_based_assessment %} is--hidden {% endif %}">
             <p class="openassessment_description">
-                {% trans "Enter one or more sample responses that you've created, and then specify the options that you would choose for each criterion in your rubric. Note that you must add your rubric to the Rubric tab before you can complete this step." %}
+                {% trans "Enter one or more sample responses that you've created in the new tab labeled AI, and then specify the options that you would choose for each criterion in your rubric. Note that you must add your rubric to the Rubric tab before you can complete this step." %}
             </p>
-            <textarea id="ai_training_examples">{{ assessments.example_based_assessment.examples }}</textarea>
         </div>
     </div>
 </li>

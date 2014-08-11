@@ -39,13 +39,12 @@
                     {% for example in assessments.ai.examples %}
                         {% include 'openassessmentblock/edit/ai/oa_edit_ai_example.html' with example=example %}
                     {% endfor %}
-
                     <li id="openassessment_ai_editor_import_xml" class="is--hidden openassessment_ai_editor_single_visibility">
-                        <h2 id="openassessment_ai_editor_sub_modal_header"> Upload from XML file </h2>
-                        <div id="openassessment_ai_editor_sub_modal_instructions">
+                        <h2 id="openassessment_ai_editor_upload_header"> Upload from XML file </h2>
+                        <div id="openassessment_ai_editor_upload_instructions">
                             <p>Upload your file using this selector. Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.</p>
                         </div>
-                        <div id="openassessment_ai_editor_sub_modal_file_upload">
+                        <div id="openassessment_ai_editor_upload_file_upload">
                             <label>Upload XML File
                                 <input type="file">
                             </label>
@@ -56,6 +55,10 @@
                             <li class="openassessment_ai_editor_file_status_importing">Verify Rubric</li>
                             <li class="openassessment_ai_editor_file_status_importing">Ready for Import</li>
                         </ol>
+                        <textarea id="ai_training_examples">{{ assessments.example_based_assessment.examples }}</textarea>
+                        <div id="openassessment_ai_editor_upload_warning">
+                            <p>Upload your file using this selector. Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.</p>
+                        </div>
                         <div id="openassessment_ai_editor_sub_modal_buttons">
                             <div id="openassessment_ai_editor_sub_modal_save">Confirm</div>
                             <div id="openassessment_ai_editor_sub_modal_cancel">Cancel</div>
