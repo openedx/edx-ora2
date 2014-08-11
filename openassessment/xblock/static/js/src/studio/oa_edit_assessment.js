@@ -551,7 +551,6 @@ OpenAssessment.EditExampleBasedAssessmentView = function(element) {
 
     $("#include_ai_assessment", this.element).click(function() {
         $('#oa_editor_tab_ai').toggleClass('is--hidden');
-        debugger;
     });
 };
 

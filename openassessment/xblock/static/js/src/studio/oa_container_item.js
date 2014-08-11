@@ -63,11 +63,11 @@ OpenAssessment.ItemUtilities = {
         $(element).text(finalLabel);
     },
 
-    hideAllShowOne: function(element, selectorToHide, selectorToShow){
+    addClassToAllButOne: function(element, selectorToHide, selectorToShow, className){
         $(selectorToHide, element).each(function() {
-            $(this).addClass('is--hidden');
+            $(this).addClass(className);
         });
-        $(selectorToShow).removeClass('is--hidden');
+        $(selectorToShow, element).removeClass(className);
     }
 };
 
@@ -723,10 +723,17 @@ OpenAssessment.AIExampleMenuItem.prototype = {
         var exampleName = $(this.element).attr('data-example');
         var view = this;
         $(this.element).click(function() {
-            OpenAssessment.ItemUtilities.hideAllShowOne(
+            OpenAssessment.ItemUtilities.addClassToAllButOne(
                 $(view.element).closest('#openassessment_ai_editor_menu_and_editor'),
                 '.openassessment_ai_editor_single_visibility',
-                '.openassessment_ai_example[data-example="' + exampleName + '"]'
+                '.openassessment_ai_example[data-example="' + exampleName + '"]',
+                'is--hidden'
+            );
+            OpenAssessment.ItemUtilities.addClassToAllButOne(
+                $(view.element).closest('#openassessment_ai_editor_menu_and_editor'),
+                '.openassessment_ai_example_menu_item',
+                '.openassessment_ai_example_menu_item[data-example="' + exampleName + '"]',
+                'is--faded'
             );
         });
     },

@@ -1233,7 +1233,7 @@
 
       #openassessment_ai_menu_title{
         text-transform: uppercase;
-        color: #838486;
+        color: #626364;
         font-size: 80%;
         text-align: center;
         padding: 5px;
@@ -1283,6 +1283,8 @@
       overflow-y: hidden;
       overflow-x: scroll;
       border-bottom: 1px solid $edx-gray-l3;
+      background-color: #626364;
+      color: white;
 
       .openassessment_ai_example_menu_item_name {
         display: inline-block;
@@ -1324,8 +1326,14 @@
       }
     }
 
-    .openassessment_ai_example_menu_item:hover{
-      background-color: $edx-gray-l5;
+    .openassessment_ai_example_menu_item.is--faded:hover{
+      background-color: $edx-gray-l4;
+      cursor: pointer;
+    }
+
+    .openassessment_ai_example_menu_item.is--faded{
+      background-color: white;
+      color: #626364;
       cursor: pointer;
     }
 
