@@ -552,6 +552,7 @@ OpenAssessment.EditExampleBasedAssessmentView = function(element) {
     $("#include_ai_assessment", this.element).click(function() {
         $('#oa_editor_tab_ai').toggleClass('is--hidden');
     });
+
 };
 
 OpenAssessment.EditExampleBasedAssessmentView.prototype = {
@@ -608,7 +609,7 @@ OpenAssessment.EditExampleBasedAssessmentView.prototype = {
 
     **/
     exampleDefinitions: function(xml) {
-        var sel = $("#ai_training_examples", this.element);
+        var sel = $("#ai_training_examples");
         return OpenAssessment.Fields.stringField(sel, xml);
     },
 

@@ -6,7 +6,7 @@
             Example Name
             <input type="text" value="{{ example.label }}">
         </label>
-        <h2 class="openassessment_ai_example_total_score">Total Score: 26 / 30</h2>
+        <h2 class="openassessment_ai_example_total_score">Total Score: -- / --</h2>
     </div>
     <div class="openassessment_ai_example_essay_wrapper">
         <textarea class="openassessment_ai_example_essay">{{ example.answer }}</textarea>
@@ -16,8 +16,8 @@
         <div class="openassessment_ai_example_scored_rubric_criterion" data-criterion=="{{ criterion.name }}">
             <label> {{ criterion.label }}
                 <select value="{{ criterion.option_selected }}" data-criterion="{{ criterion.name }}">
+                    <option value="">Not Selected</option>
                     {% for option in criterion.options %}
-                        <option value="">Not Selected</option>
                         <option class="openassessment_ai_example_criterion_option" data-criterion="{{ criterion.name }}" value="{{ option.name }}"
                         {% if option.name == criterion.option_selected %} selected {% endif %}>
                             {{ option.label }} - {{ option.points }} points

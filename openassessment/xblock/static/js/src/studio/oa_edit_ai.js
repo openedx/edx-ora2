@@ -24,6 +24,37 @@ OpenAssessment.EditAIView = function(element) {
         }
     );
     this.exampleMenuContainer.addEventListeners();
+
+    $("#openassessment_ai_editor_upload_xml", this.element).click(function() {
+        OpenAssessment.ItemUtilities.addClassToAllButOne(
+            $(this).closest("#openassessment_ai_editor_menu_and_editor"),
+            '.openassessment_ai_editor_single_visibility',
+            '#openassessment_ai_editor_import_xml',
+            'is--hidden'
+        );
+        OpenAssessment.ItemUtilities.addClassToAllButOne(
+            $(this).closest("#openassessment_ai_editor_menu_and_editor"),
+            '.openassessment_ai_menu_single_visibility',
+            '#openassessment_ai_editor_upload_xml',
+            'is--faded'
+        );
+    });
+
+    $("#openassessment_ai_editor_upload_csv", this.element).click(function() {
+        OpenAssessment.ItemUtilities.addClassToAllButOne(
+            $(this).closest("#openassessment_ai_editor_menu_and_editor"),
+            '.openassessment_ai_editor_single_visibility',
+            '#openassessment_ai_editor_import_csv',
+            'is--hidden'
+        );
+        OpenAssessment.ItemUtilities.addClassToAllButOne(
+            $(this).closest("#openassessment_ai_editor_menu_and_editor"),
+            '.openassessment_ai_menu_single_visibility',
+            '#openassessment_ai_editor_upload_csv',
+            'is--faded'
+        );
+    });
+
 };
 
 

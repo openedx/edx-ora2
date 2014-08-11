@@ -5,7 +5,7 @@
     <div id="openassessment_ai_editor_normal_editing">
         <div id="openassessment_ai_editor_instructions">
             <p>
-                Fill in the examples below. Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.
+                Example Based Assessment requires that course authors provide a number of graded responses to use as examples to base future assessments on. Use the menu on the left to navigate through the examples that you have made for this purpose, or use one of our upload features.
             </p>
         </div>
 
@@ -13,11 +13,11 @@
             <div id="openassessment_ai_menu_wrapper">
                 <div id="openassessment_ai_menu_header">
                     <div id="openassessment_ai_editor_upload_buttons">
-                        <div id="openassessment_ai_editor_upload_csv" class="openassessment_ai_editor_upload_button">
-                            Upload CSV
-                        </div>
-                        <div id="openassessment_ai_editor_upload_xml" class="openassessment_ai_editor_upload_button">
+                        <div id="openassessment_ai_editor_upload_xml" class="openassessment_ai_editor_upload_button openassessment_ai_menu_single_visibility is--faded">
                             Upload XML
+                        </div>
+                        <div id="openassessment_ai_editor_upload_csv" class="openassessment_ai_editor_upload_button openassessment_ai_menu_single_visibility is--faded">
+                            Grade Real
                         </div>
                     </div>
                     <div id="openassessment_ai_menu_title">
@@ -40,29 +40,28 @@
                         {% include 'openassessmentblock/edit/ai/oa_edit_ai_example.html' with example=example %}
                     {% endfor %}
                     <li id="openassessment_ai_editor_import_xml" class="is--hidden openassessment_ai_editor_single_visibility">
-                        <h2 id="openassessment_ai_editor_upload_header"> Upload from XML file </h2>
+                        <h1 id="openassessment_ai_editor_upload_header"> Upload from XML file </h1>
                         <div id="openassessment_ai_editor_upload_instructions">
-                            <p>Upload your file using this selector. Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.</p>
+                            <p>Upload your file using the selector below.  Note that the file must be a plain text file (.txt), which is formatted according to the XML specifications for ORA examples.  For more information on that specification, or to see how to download that specification from an existing course, see the documentation. </p>
                         </div>
                         <div id="openassessment_ai_editor_upload_file_upload">
                             <label>Upload XML File
                                 <input type="file">
                             </label>
                         </div>
-                        <ol class="openassessment_ai_editor_file_status">
-                            <li class="openassessment_ai_editor_file_status_importing">Import File</li>
-                            <li class="openassessment_ai_editor_file_status_importing">Parse File</li>
-                            <li class="openassessment_ai_editor_file_status_importing">Verify Rubric</li>
-                            <li class="openassessment_ai_editor_file_status_importing">Ready for Import</li>
-                        </ol>
                         <textarea id="ai_training_examples">{{ assessments.example_based_assessment.examples }}</textarea>
                         <div id="openassessment_ai_editor_upload_warning">
-                            <p>Upload your file using this selector. Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.</p>
+                            <p>Warning!  Danger!  If you upload your XML here, it will overwrite the existing definitions!  Make sure that your Rubric is properly assembled before pressing confirm!  It is recommended that you save your work before you upload any Examples for AI Assessment!</p>
                         </div>
-                        <div id="openassessment_ai_editor_sub_modal_buttons">
-                            <div id="openassessment_ai_editor_sub_modal_save">Confirm</div>
-                            <div id="openassessment_ai_editor_sub_modal_cancel">Cancel</div>
+                        <div id="openassessment_ai_editor_upload_action_buttons">
+                            <div id="openassessment_ai_editor_upload_save">Confirm</div>
+                            <div id="openassessment_ai_editor_upload_cancel">Cancel</div>
                         </div>
+                    </li>
+
+                    <li id="openassessment_ai_editor_import_csv" class="is--hidden openassessment_ai_editor_single_visibility">
+                        <h1>Just Kidding</h1>
+                        <p> No Support for basing Example Based Grading off of real student submissions. <bold>YET!</bold></p>
                     </li>
 
                     <li id="openassessment_ai_example_editor_background" class="openassessment_ai_editor_single_visibility">

@@ -611,7 +611,7 @@ OpenAssessment.TrainingExample.prototype = {
 };
 
 OpenAssessment.AIExample = function(element){
-    this.element = element;
+    this.element = $(element).addClass('is--hidden');
     this.labelSel = $('.openassessment_ai_example_label_field', this.element).find('input').first();
     this.answer = $('.openassessment_ai_example_essay', this.element).first();
     this.criteria = $(".openassessment_ai_example_criterion_option", this.element);
@@ -731,7 +731,7 @@ OpenAssessment.AIExampleMenuItem.prototype = {
             );
             OpenAssessment.ItemUtilities.addClassToAllButOne(
                 $(view.element).closest('#openassessment_ai_editor_menu_and_editor'),
-                '.openassessment_ai_example_menu_item',
+                '.openassessment_ai_menu_single_visibility',
                 '.openassessment_ai_example_menu_item[data-example="' + exampleName + '"]',
                 'is--faded'
             );
@@ -739,7 +739,13 @@ OpenAssessment.AIExampleMenuItem.prototype = {
     },
 
     removeHandler: function() {
-        $('.openassessment_ai_example[data-example="'+ $(this.element).attr('data-example') +'"]').remove();
+        var pairedExample = $('.openassessment_ai_example[data-example="'+ $(this.element).attr('data-example') +'"]');
+        var lastExample = $('.openassessment_ai_example', $(pairedExample).parent()).length == 1;
+        var currentlySelected = ! $(pairedExample).hasClass('is--hidden');
+        if (lastExample || currentlySelected){
+            $('#openassessment_ai_example_editor_background', $(pairedExample).parent()).removeClass('is--hidden');
+        }
+        $(pairedExample).remove();
     },
 
     getFieldValues: function () {},

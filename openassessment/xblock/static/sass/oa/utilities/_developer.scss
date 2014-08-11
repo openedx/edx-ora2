@@ -379,17 +379,6 @@
     height: 40px;
   }
 
-  #ai_training_examples{
-    margin: 5px 20px 10px 10px;
-    height: 300px;
-    width: Calc(100% - 20px);
-    resize: none;
-    font: inherit;
-    line-height: 110%;
-    font-size: 80%;
-    padding: 5px 10px;
-  }
-
   .openassessment_assessment_module_settings_editor{
     padding: 0 15px 0 0;
     margin: 10px;
@@ -1194,8 +1183,6 @@
     border-bottom: 1px solid #838486;
 
     .openassessment_ai_editor_upload_button{
-      background-color: white;
-      color: #009fe6;
       display: inline-block;
       padding: 3px 0;
       border-radius: 5px;
@@ -1207,6 +1194,12 @@
       cursor: pointer;
     }
 
+    .openassessment_ai_editor_upload_button.is--faded{
+      background-color: white;
+      color: #009fe6;
+    }
+
+    .openassessment_ai_editor_upload_button,
     .openassessment_ai_editor_upload_button:hover{
       color: white;
       background-color: #009fe6
@@ -1362,33 +1355,77 @@
       height: 100%;
       width: 100%;
       padding: 10px;
-      #openassessment_ai_editor_sub_modal_instructions{
-        font-size: 80%;
-
+      #openassessment_ai_editor_upload_header{
+        margin: 0 10px;
       }
-      #openassessment_ai_editor_file_upload{
-        text-align: center
+
+      #openassessment_ai_editor_upload_instructions{
+        font-size: 80%;
+        margin: 10px;
+      }
+      #openassessment_ai_editor_upload_file_upload{
+        text-align: center;
+        margin: 10px;
         input{
           padding-left: 40px;
         }
       }
-      #openassessment_ai_editor_file_status{
-        padding-left: 35%;
-        padding-top: 20px;
-        li:before{
-          font-family: FontAwesome;
-          content: '\f021';
-          display: inline-block;
-        }
+
+      #ai_training_examples{
+        margin: 5px 20px 10px 10px;
+        height: Calc(100% - 325px);
+        width: Calc(100% - 20px);
+        resize: none;
+        font: inherit;
+        line-height: 150%;
+        font-size: 80%;
+        padding: 5px 10px;
       }
-      #openassessment_ai_editor_sub_modal_buttons{
+
+      #openassessment_ai_editor_upload_warning p{
+        border: 1px solid grey;
+        padding: 5px;
+        margin: 10px;
+        padding-left: 35px;
+        font-size: 80%;
+      }
+
+      #openassessment_ai_editor_upload_warning:before{
+        font-family: FontAwesome;
+        content: "\f071";
+        display: inline-block;
+        color: #626364;
+        float: left;
+        height: 0;
+        width: 0;
+        padding-left: 20px;
+        padding-top: 7.5px;
+      }
+
+      #openassessment_ai_editor_upload_action_buttons{
+        position: absolute;
+        bottom: 8px;
+
         div{
           display: inline-block;
           padding: 5px 10px;
           border-radius: 5px;
           margin: 10px;
+          color: #009FE6;
+        }
+
+        #openassessment_ai_editor_upload_save{
+          background-color: #009FE6;
+          color: white;
+          box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset,0 1px 1px rgba(0, 0, 0, 0.15);
         }
       }
+    }
+
+    #openassessment_ai_editor_import_csv{
+      text-align: center;
+      padding: 20%;
+      height: 100%;
     }
 
     #openassessment_ai_examples{
@@ -1416,6 +1453,7 @@
         display: inline-block;
         float: right;
         padding: 3px 5% 10px 0;
+        width: 30%;
       }
     }
     .openassessment_ai_example_essay_wrapper{
