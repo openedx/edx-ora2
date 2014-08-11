@@ -273,7 +273,7 @@ class StudioMixin(object):
         example_based_module = self.get_assessment_module('example-based-assessment')
 
         example_based_template = copy.deepcopy(student_training_template)
-        example_based_template['label'] = 'Unnamed Example'
+        example_based_template['label'] = 'New Example'
 
         if example_based_module:
             ai_examples = self._construct_scored_rubrics_for_examples(example_based_module['examples'])
@@ -288,7 +288,9 @@ class StudioMixin(object):
                 'examples': serialize_examples_to_xml_str(example_based_assessment)
             }
         else:
-            assessments['ai'] = {'examples': [example_based_template], 'template': example_based_template}
+            default_example_list = copy.deepcopy(example_based_template)
+            default_example_list['name'] = 0
+            assessments['ai'] = {'examples': [default_example_list], 'template': example_based_template}
 
         return assessments
 

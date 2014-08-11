@@ -1247,7 +1247,7 @@
     #openassessment_ai_example_menu{
       width:100%;
       overflow-y: scroll;
-      height: Calc(100% - 115px);
+      height: Calc(100% - 117px);
       margin-bottom: 0;
       border-bottom: 1px solid $edx-gray-l3;
     }
@@ -1331,6 +1331,17 @@
 
   }
 
+  #openassessment_ai_example_editor_background{
+    height: 100%;
+    width: 100%;
+    padding: 25% 40px 0 40px;
+    position: absolute;
+    h1{
+      text-align: center;
+      padding: 10px;
+    }
+  }
+
   #openassessment_ai_example_editor{
     width: Calc(100% - 250px);
     overflow-y: scroll;
@@ -1338,6 +1349,39 @@
     display: inline-block;
     position: absolute;
     right: 0;
+
+    #openassessment_ai_editor_import_xml{
+      height: 100%;
+      width: 100%;
+      padding: 10px;
+      #openassessment_ai_editor_sub_modal_instructions{
+        font-size: 80%;
+
+      }
+      #openassessment_ai_editor_file_upload{
+        text-align: center
+        input{
+          padding-left: 40px;
+        }
+      }
+      #openassessment_ai_editor_file_status{
+        padding-left: 35%;
+        padding-top: 20px;
+        li:before{
+          font-family: FontAwesome;
+          content: '\f021';
+          display: inline-block;
+        }
+      }
+      #openassessment_ai_editor_sub_modal_buttons{
+        div{
+          display: inline-block;
+          padding: 5px 10px;
+          border-radius: 5px;
+          margin: 10px;
+        }
+      }
+    }
 
     #openassessment_ai_examples{
       height: 100%;
@@ -1347,6 +1391,7 @@
         height: 100%;
         width: 100%;
         padding: 7.5px;
+        background-color: white;
       }
     }
 

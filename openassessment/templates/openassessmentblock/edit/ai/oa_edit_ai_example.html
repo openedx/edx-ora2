@@ -1,6 +1,6 @@
 {% load i18n %}
 {% spaceless %}
-<li class="openassessment_ai_example" data-example="{{ example.name }}">
+<li class="openassessment_ai_example openassessment_ai_editor_single_visibility is--hidden" data-example="{{ example.name }}">
     <div class="openassessment_ai_example_settings">
         <label class="openassessment_ai_example_label_field">
             Example Name
@@ -13,10 +13,11 @@
     </div>
     <div class="openassessment_ai_example_scored_rubric">
         {% for criterion in example.criteria %}
-        <div class="openassessment_ai_example_scored_rubric_criterion">
+        <div class="openassessment_ai_example_scored_rubric_criterion" data-criterion=="{{ criterion.name }}">
             <label> {{ criterion.label }}
                 <select value="{{ criterion.option_selected }}" data-criterion="{{ criterion.name }}">
                     {% for option in criterion.options %}
+                        <option value="">Not Selected</option>
                         <option class="openassessment_ai_example_criterion_option" data-criterion="{{ criterion.name }}" value="{{ option.name }}"
                         {% if option.name == criterion.option_selected %} selected {% endif %}>
                             {{ option.label }} - {{ option.points }} points

@@ -142,4 +142,5 @@ DEFAULT_EDITOR_ASSESSMENTS_ORDER = [
     "student-training",
     "peer-assessment",
     "self-assessment",
+    "example-based-assessment",
 ]

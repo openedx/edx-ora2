@@ -61,6 +61,13 @@ OpenAssessment.ItemUtilities = {
         }
 
         $(element).text(finalLabel);
+    },
+
+    hideAllShowOne: function(element, selectorToHide, selectorToShow){
+        $(selectorToHide, element).each(function() {
+            $(this).addClass('is--hidden');
+        });
+        $(selectorToShow).removeClass('is--hidden');
     }
 };
 
@@ -605,7 +612,7 @@ OpenAssessment.TrainingExample.prototype = {
 
 OpenAssessment.AIExample = function(element){
     this.element = element;
-    this.labelSel = $('.openassessment_ai_example_label_field', this.element);
+    this.labelSel = $('.openassessment_ai_example_label_field', this.element).find('input').first();
     this.answer = $('.openassessment_ai_example_essay', this.element).first();
     this.criteria = $(".openassessment_ai_example_criterion_option", this.element);
 };
@@ -645,11 +652,21 @@ OpenAssessment.AIExample.prototype = {
         $(this.element).attr(
             'data-example', OpenAssessment.ItemUtilities.createUniqueName(this.element, 'data-example')
         );
+
+        this.addEventListeners();
     },
 
-    addEventListeners: function() {},
+    addEventListeners: function() {
+        // Install a focus out handler for container changes.
+        $(this.labelSel).focusout($.proxy(this.updateHandler, this));
+    },
     removeHandler: function() {},
-    updateHandler: function() {},
+    updateHandler: function() {
+        var view = this;
+        $(".openassessment_ai_example_menu_item[data-example='"+ $(this.element).attr('data-example') +"']")
+            .find('h2').first()
+            .text($(view.labelSel).val());
+    },
 
     validate: function() {
         var isValid = true;
@@ -704,20 +721,18 @@ OpenAssessment.AIExampleMenuItem.prototype = {
 
     addEventListeners: function() {
         var exampleName = $(this.element).attr('data-example');
+        var view = this;
         $(this.element).click(function() {
-            $('.openassessment_ai_example').each(function() {
-                if ($(this).attr('data-example') == exampleName){
-                    $(this).removeClass('is--hidden');
-                } else {
-                    $(this).addClass('is--hidden');
-                }
-            });
+            OpenAssessment.ItemUtilities.hideAllShowOne(
+                $(view.element).closest('#openassessment_ai_editor_menu_and_editor'),
+                '.openassessment_ai_editor_single_visibility',
+                '.openassessment_ai_example[data-example="' + exampleName + '"]'
+            );
         });
     },
 
     removeHandler: function() {
-        this.partneredAIExample.remove();
-        $('.openassessment_ai_example["'+ $(this.element).attr('data-example') +'"]').remove();
+        $('.openassessment_ai_example[data-example="'+ $(this.element).attr('data-example') +'"]').remove();
     },
 
     getFieldValues: function () {},

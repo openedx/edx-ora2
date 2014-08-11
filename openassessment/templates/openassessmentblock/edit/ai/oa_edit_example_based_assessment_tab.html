@@ -39,6 +39,33 @@
                     {% for example in assessments.ai.examples %}
                         {% include 'openassessmentblock/edit/ai/oa_edit_ai_example.html' with example=example %}
                     {% endfor %}
+
+                    <li id="openassessment_ai_editor_import_xml" class="is--hidden openassessment_ai_editor_single_visibility">
+                        <h2 id="openassessment_ai_editor_sub_modal_header"> Upload from XML file </h2>
+                        <div id="openassessment_ai_editor_sub_modal_instructions">
+                            <p>Upload your file using this selector. Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.  Lorem ipsum dolce decorum est.</p>
+                        </div>
+                        <div id="openassessment_ai_editor_sub_modal_file_upload">
+                            <label>Upload XML File
+                                <input type="file">
+                            </label>
+                        </div>
+                        <ol class="openassessment_ai_editor_file_status">
+                            <li class="openassessment_ai_editor_file_status_importing">Import File</li>
+                            <li class="openassessment_ai_editor_file_status_importing">Parse File</li>
+                            <li class="openassessment_ai_editor_file_status_importing">Verify Rubric</li>
+                            <li class="openassessment_ai_editor_file_status_importing">Ready for Import</li>
+                        </ol>
+                        <div id="openassessment_ai_editor_sub_modal_buttons">
+                            <div id="openassessment_ai_editor_sub_modal_save">Confirm</div>
+                            <div id="openassessment_ai_editor_sub_modal_cancel">Cancel</div>
+                        </div>
+                    </li>
+
+                    <li id="openassessment_ai_example_editor_background" class="openassessment_ai_editor_single_visibility">
+                        <h1>No Example Selected</h1>
+                        <p>Select an example at the side to edit it in this space. Alternatively, you can create new training examples or import them from an XML document.</p>
+                    </li>
                 </ol>
             </div>
         </div>
@@ -52,30 +79,6 @@
         {% include 'openassessmentblock/edit/ai/oa_edit_ai_example_menu_item.html' with example=assessments.ai.template %}
     </ol>
 
-    <!--
-    <div id="openassessment_ai_editor_import_sub_modal" class="is--hidden">
-        <div id="openassessment_ai_editor_sub_modal_header">
-
-        </div>
-        <div id="openassessment_ai_editor_sub_modal_instructions">
-
-        </div>
-        <div id="openassessment_ai_editor_sub_modal_file_upload">
-
-        </div>
-        <div id="openassessment_ai_editor_sub_modal_file_status">
-
-        </div>
-        <div id="openassessment_ai_editor_sub_modal_buttons">
-            <div id="openassessment_ai_editor_sub_modal_save">
-                Save
-            </div>
-            <div id="openassessment_ai_editor_sub_modal_cancel">
-                Cancel
-            </div>
-        </div>
-    </div>
-    -->
 </div>
 
 {% endspaceless %}
