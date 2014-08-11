@@ -1,0 +1,31 @@
+{% load i18n %}
+{% spaceless %}
+<li class="openassessment_ai_example" data-example="{{ example.name }}">
+    <div class="openassessment_ai_example_settings">
+        <label class="openassessment_ai_example_label_field">
+            Example Name
+            <input type="text" value="{{ example.label }}">
+        </label>
+        <h2 class="openassessment_ai_example_total_score">Total Score: 26 / 30</h2>
+    </div>
+    <div class="openassessment_ai_example_essay_wrapper">
+        <textarea class="openassessment_ai_example_essay">{{ example.answer }}</textarea>
+    </div>
+    <div class="openassessment_ai_example_scored_rubric">
+        {% for criterion in example.criteria %}
+        <div class="openassessment_ai_example_scored_rubric_criterion">
+            <label> {{ criterion.label }}
+                <select value="{{ criterion.option_selected }}" data-criterion="{{ criterion.name }}">
+                    {% for option in criterion.options %}
+                        <option class="openassessment_ai_example_criterion_option" data-criterion="{{ criterion.name }}" value="{{ option.name }}"
+                        {% if option.name == criterion.option_selected %} selected {% endif %}>
+                            {{ option.label }} - {{ option.points }} points
+                        </option>
+                    {% endfor %}
+                </select>
+            </label>
+        </div>
+        {% endfor %}
+    </div>
+</li>
+{% endspaceless %}

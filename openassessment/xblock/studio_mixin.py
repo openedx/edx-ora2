@@ -264,45 +264,52 @@ class StudioMixin(object):
         student_training_template['criteria'] = criteria_list
 
         if student_training_module:
-            example_list = []
-            # Adds each example to a modified version of the student training module dictionary.
-            for example in student_training_module['examples']:
-                criteria_list = copy.deepcopy(self.rubric_criteria_with_labels)
-                # Equivalent to a Join Query, this adds the selected option to the Criterion's dictionary, so that
-                # it can be easily referenced in the template without searching through the selected options.
-                for criterion in criteria_list:
-                    for option_selected in example['options_selected']:
-                        if option_selected['criterion'] == criterion['name']:
-                            criterion['option_selected'] = option_selected['option']
-                example_list.append({
-                    'answer': example['answer'],
-                    'criteria': criteria_list,
-                })
+            example_list = self._construct_scored_rubrics_for_examples(student_training_module['examples'])
             assessments['training'] = {'examples': example_list, 'template': student_training_template}
-
-
-            # Mocking this step out to allow template rendering:
-            ai_examples = copy.deepcopy(example_list)
-            count = 1
-            for example in ai_examples:
-                example['label'] = "AI Example " + str(count)
-                example['name'] = count
-                count += 1
-            assessments['ai'] = {'examples': ai_examples, 'template': student_training_template}
-
-
         # If we don't have student training enabled, we still need to render a single (empty, or default) example
         else:
             assessments['training'] = {'examples': [student_training_template], 'template': student_training_template}
 
-        example_based_assessment = self.get_assessment_module('example-based-assessment')
+        example_based_module = self.get_assessment_module('example-based-assessment')
 
-        if example_based_assessment:
+        example_based_template = copy.deepcopy(student_training_template)
+        example_based_template['label'] = 'Unnamed Example'
+
+        if example_based_module:
+            ai_examples = self._construct_scored_rubrics_for_examples(example_based_module['examples'])
+            count = 1
+            for example in ai_examples:
+                if not example.get('label'):
+                    example['label'] = "AI Example " + str(count)
+                example['name'] = count
+                count += 1
+            assessments['ai'] = {'examples': ai_examples, 'template': example_based_template}
             assessments['example_based_assessment'] = {
                 'examples': serialize_examples_to_xml_str(example_based_assessment)
             }
+        else:
+            assessments['ai'] = {'examples': [example_based_template], 'template': example_based_template}
 
         return assessments
+
+    def _construct_scored_rubrics_for_examples(self, original_example_list):
+        """
+
+        """
+        example_list = []
+        for example in original_example_list:
+            criteria_list = copy.deepcopy(self.rubric_criteria_with_labels)
+            # Equivalent to a Join Query, this adds the selected option to the Criterion's dictionary, so that
+            # it can be easily referenced in the template without searching through the selected options.
+            for criterion in criteria_list:
+                for option_selected in example['options_selected']:
+                    if option_selected['criterion'] == criterion['name']:
+                        criterion['option_selected'] = option_selected['option']
+            example_list.append({
+                'answer': example['answer'],
+                'criteria': criteria_list,
+            })
+        return example_list
 
     def _editor_assessments_order_context(self):
         """

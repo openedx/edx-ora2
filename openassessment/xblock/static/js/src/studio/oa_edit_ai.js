@@ -1,13 +1,13 @@
 OpenAssessment.EditAIView = function(element) {
     this.element = element;
 
-    this.exampleAddButton = $('#openassessment_ai_selector_add_example', this.element);
+    this.exampleAddButton = $('#openassessment_ai_menu_add_example', this.element);
 
     this.exampleContainer = new OpenAssessment.Container(
         OpenAssessment.AIExample, {
             containerElement: $("#openassessment_ai_examples", this.element).get(0),
             templateElement: $("#openassessment_ai_example_template", this.element).get(0),
-            addButtonElement: $("#openassessment_ai_selector_add_example", this.element).get(0),
+            addButtonElement: $("#openassessment_ai_menu_add_example", this.element).get(0),
             removeButtonClass: "openassessment_ai_example_remove_button",
             containerItemClass: "openassessment_ai_example"
         }
@@ -16,11 +16,11 @@ OpenAssessment.EditAIView = function(element) {
 
     this.exampleMenuContainer = new OpenAssessment.Container(
         OpenAssessment.AIExampleMenuItem, {
-            containerElement: $("#openassessment_ai_example_selector", this.element).get(0),
-            templateElement: $("#openassessment_ai_example_selector_item_template", this.element).get(0),
-            addButtonElement: $("#openassessment_ai_selector_add_example", this.element).get(0),
+            containerElement: $("#openassessment_ai_example_menu", this.element).get(0),
+            templateElement: $("#openassessment_ai_example_menu_item_template", this.element).get(0),
+            addButtonElement: $("#openassessment_ai_menu_add_example", this.element).get(0),
             removeButtonClass: "openassessment_ai_example_remove_button",
-            containerItemClass: "openassessment_ai_example_selector_item"
+            containerItemClass: "openassessment_ai_example_menu_item"
         }
     );
     this.exampleMenuContainer.addEventListeners();

@@ -1213,25 +1213,25 @@
     }
   }
 
-  #openassessment_ai_editor_selector_and_editor{
+  #openassessment_ai_editor_menu_and_editor{
     height: calc(100% - 67px);
     overflow: hidden;
     position: relative;
   }
 
-  #openassessment_ai_selector_wrapper{
+  #openassessment_ai_menu_wrapper{
     width: 250px;
     border-right: 1px solid #838486;
     height: 100%;
     display: inline-block;
     position: absolute;
 
-    #openassessment_ai_selector_header{
-      height: 75px;
+    #openassessment_ai_menu_header{
+      height: 77px;
       width: 100%;
       background-color: white;
 
-      #openassessment_ai_selector_title{
+      #openassessment_ai_menu_title{
         text-transform: uppercase;
         color: #838486;
         font-size: 80%;
@@ -1244,7 +1244,7 @@
       }
     }
 
-    #openassessment_ai_example_selector{
+    #openassessment_ai_example_menu{
       width:100%;
       overflow-y: scroll;
       height: Calc(100% - 115px);
@@ -1252,7 +1252,7 @@
       border-bottom: 1px solid $edx-gray-l3;
     }
 
-    #openassessment_ai_selector_add_example{
+    #openassessment_ai_menu_add_example{
       height: 30px;
       padding: 3px;
       border: 1px solid;
@@ -1265,26 +1265,26 @@
       font-size: 95%;
     }
 
-    #openassessment_ai_selector_add_example:before{
+    #openassessment_ai_menu_add_example:before{
       font-family: FontAwesome;
       content: "\f067";
       display: inline-block;
       font-size: 90%;
     }
 
-    #openassessment_ai_selector_add_example:hover {
+    #openassessment_ai_menu_add_example:hover {
       background-color: #009FE6;
       color: white;
     }
 
-    .openassessment_ai_example_selector_item{
+    .openassessment_ai_example_menu_item{
       padding: 0 5px;
       width: 100%;
       overflow-y: hidden;
       overflow-x: scroll;
       border-bottom: 1px solid $edx-gray-l3;
 
-      .openassessment_ai_example_selector_name {
+      .openassessment_ai_example_menu_item_name {
         display: inline-block;
         text-transform: uppercase;
         float: left;
@@ -1324,7 +1324,7 @@
       }
     }
 
-    .openassessment_ai_example_selector_item:hover{
+    .openassessment_ai_example_menu_item:hover{
       background-color: $edx-gray-l5;
       cursor: pointer;
     }
@@ -1408,6 +1408,7 @@
           border-radius: 3px;
           border: 1px solid #B2B2B2;
           text-overflow: ellipsis;
+          float: right;
         }
       }
     }
