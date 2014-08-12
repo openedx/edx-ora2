@@ -63,11 +63,21 @@ OpenAssessment.ItemUtilities = {
         $(element).text(finalLabel);
     },
 
-    addClassToAllButOne: function(element, selectorToHide, selectorToShow, className){
-        $(selectorToHide, element).each(function() {
+    /**
+     Adds a class to all elements of a given type except for a single element.
+     The primary use of this function is to allow paired highlighting and showing.
+
+     Args:
+        element (JQuery Element): The parent element that we want to search within
+        whoToAddTo (JQuery Selector): The selector that we search for, and subsequently add the class to.
+        dontAddToMe (JQuery Selector): The selector that we search for and remove the class from
+        className (str): The Class of interest (is--hidden or is--faded in most contexts)
+     */
+    addClassToAllButOne: function(element, whoToAddTo, dontAddToMe, className){
+        $(whoToAddTo, element).each(function() {
             $(this).addClass(className);
         });
-        $(selectorToShow, element).removeClass(className);
+        $(dontAddToMe, element).removeClass(className);
     }
 };
 
@@ -610,7 +620,19 @@ OpenAssessment.TrainingExample.prototype = {
     }
 };
 
+/**
+ The AIExample class is used to construct and retrieve information from its element within the DOM
+ Note the similarity of the AI Example class and the TrainingExample Class.
+
+ Args:
+ element (JQuery Object): the selection which identifies the scope of the AI training example.
+
+ Returns:
+ OpenAssessment.AIExample
+
+ **/
 OpenAssessment.AIExample = function(element){
+    // Hides the element on load
     this.element = $(element).addClass('is--hidden');
     this.labelSel = $('.openassessment_ai_example_label_field', this.element).find('input').first();
     this.answer = $('.openassessment_ai_example_essay', this.element).first();
@@ -635,20 +657,23 @@ OpenAssessment.AIExample.prototype = {
             }
         ).get();
 
+        // Adds the label and answer to the dictionary definition of the AI example
         return {
             answer: this.answer.prop('value'),
+            label: this.labelSel.prop('value'),
             options_selected: optionsSelected
         };
     },
 
     addHandler: function() {
-        // Goes through and instantiates the option description in the training example for each option.
+        // Goes through and refreshes the option description in the training example for each option.
         $(".openassessment_ai_example_criterion_option", this.element) .each( function () {
             $('option', this).each(function(){
                 OpenAssessment.ItemUtilities.refreshOptionString($(this));
             });
         });
 
+        // Constructs a unique name for the example so that it can be paired with a AIMenuItem
         $(this.element).attr(
             'data-example', OpenAssessment.ItemUtilities.createUniqueName(this.element, 'data-example')
         );
@@ -657,17 +682,28 @@ OpenAssessment.AIExample.prototype = {
     },
 
     addEventListeners: function() {
-        // Install a focus out handler for container changes.
+        // Install a focus out handler to propagate label changes to their corresponding menu items.
         $(this.labelSel).focusout($.proxy(this.updateHandler, this));
     },
-    removeHandler: function() {},
+
     updateHandler: function() {
         var view = this;
-        $(".openassessment_ai_example_menu_item[data-example='"+ $(this.element).attr('data-example') +"']")
-            .find('h2').first()
+        // On an update of the label field, we need to find the corresponding menu item and change
+        // it's text to be the new value for the label field.
+        var sel = ".openassessment_ai_example_menu_item[data-example='"+ $(this.element).attr('data-example') +"']"
+        $(sel, $(this.element).closest('#openassessment_ai_editor_menu_and_editor'))
+            .find('h2')
+            .first()
             .text($(view.labelSel).val());
     },
 
+    /**
+     Mark validation errors.
+
+     Returns:
+     Boolean indicating whether the criterion is valid.
+
+     **/
     validate: function() {
         var isValid = true;
 
@@ -685,6 +721,14 @@ OpenAssessment.AIExample.prototype = {
         return isValid;
     },
 
+    /**
+     Return a list of validation errors visible in the UI.
+     Mainly useful for testing.
+
+     Returns:
+     list of string
+
+     **/
     validationErrors: function() {
         var errors = [];
         this.criteria.each(
@@ -709,28 +753,50 @@ OpenAssessment.AIExample.prototype = {
         this.criteria.each(
             function() { $(this).removeClass("openassessment_highlighted_field"); }
         );
-    }
+    },
+
+    removeHandler: function() {}
+
 };
 
+/**
+ The AIExampleMenuItem class is used as a partner to the AIExample class, with the idea being a 1:1 relationship
+ maintains a menu which can be used to navigate through examples, displaying one at a time.
+
+ Args:
+ element (JQuery Object): the selection which identifies the scope of the AI Menu Item.
+
+ Returns:
+ OpenAssessment.AIExampleMenuItem
+
+ **/
 OpenAssessment.AIExampleMenuItem = function(element){
     this.element = element;
     this.labelSel = $('.openassessment_ai_example_label_field', this.element);
+    // The first element up the DOM tree which contains both the editing panels and the menu items.
+    this.menuAndEditor = $(this.element).closest('#openassessment_ai_editor_menu_and_editor');
 };
 
 OpenAssessment.AIExampleMenuItem.prototype = {
 
+    /**
+     Adds a click handler to the item that will display its corresponding panel, while highlighting
+     itself and removing higlighting from all other menu items.
+    **/
     addEventListeners: function() {
         var exampleName = $(this.element).attr('data-example');
         var view = this;
         $(this.element).click(function() {
+            // Hides all of the examples, then displays the one which has the same data-example value as the menu item.
             OpenAssessment.ItemUtilities.addClassToAllButOne(
-                $(view.element).closest('#openassessment_ai_editor_menu_and_editor'),
+                view.menuAndEditor,
                 '.openassessment_ai_editor_single_visibility',
                 '.openassessment_ai_example[data-example="' + exampleName + '"]',
                 'is--hidden'
             );
+            // Adds a "faded" look to all of the menu items, and then bolds the one which has the same data-example value.
             OpenAssessment.ItemUtilities.addClassToAllButOne(
-                $(view.element).closest('#openassessment_ai_editor_menu_and_editor'),
+                view.menuAndEditor,
                 '.openassessment_ai_menu_single_visibility',
                 '.openassessment_ai_example_menu_item[data-example="' + exampleName + '"]',
                 'is--faded'
@@ -738,23 +804,37 @@ OpenAssessment.AIExampleMenuItem.prototype = {
         });
     },
 
+    /**
+     Finds the example that the MenuItem corresponds to, and removes it from the DOM after doing some checks
+     to examine what element should next be displayed.
+     */
     removeHandler: function() {
-        var pairedExample = $('.openassessment_ai_example[data-example="'+ $(this.element).attr('data-example') +'"]');
+        // Finds the paired example
+        var pairedExample = $('.openassessment_ai_example[data-example="'+ $(this.element).attr('data-example') +'"]', this.menuAndEditor);
+        // Boolean indicating whether or not the paired example is the last example in the list
         var lastExample = $('.openassessment_ai_example', $(pairedExample).parent()).length == 1;
+        // Boolean indicating whether or not the paired example is currently selected
         var currentlySelected = ! $(pairedExample).hasClass('is--hidden');
+        // If either of the above are true, when we delete from the MenuItem, we want the "empty" screen to show up.
         if (lastExample || currentlySelected){
             $('#openassessment_ai_example_editor_background', $(pairedExample).parent()).removeClass('is--hidden');
         }
         $(pairedExample).remove();
     },
 
-    getFieldValues: function () {},
+    /**
+     On add, we create a unique name for the exampleMenuItem, and because we only instantiate AIExampleMenuItems
+     at the same time as we instantiate AIExamples, these numbers always match, because they share the same generation
+     code.  Note that this is certainly a weak point of this solution, and should be changed if adequate time is
+     provided.
+     */
     addHandler: function() {
         $(this.element).attr(
             'data-example', OpenAssessment.ItemUtilities.createUniqueName(this.element, 'data-example')
         );
         this.addEventListeners();
     },
+    getFieldValues: function () {},
     updateHandler: function() {},
     validate: function() { return true; },
     validationErrors: function() { return []; },

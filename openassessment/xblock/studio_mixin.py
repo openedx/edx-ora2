@@ -296,7 +296,16 @@ class StudioMixin(object):
 
     def _construct_scored_rubrics_for_examples(self, original_example_list):
         """
+        Creates a version of an example list where each criterion has the value of the option selected
+        as a field of it, with the goal of removing the need for a nested query in the templates.
 
+        Synthesizes:
+        (Option Selected, Criterion) and (Criterion -> Options) into (Criterion -> Options + Option Selected)
+
+        Args:
+            original_example_list (list of example dicts): Dictionary representation of our examples
+        Returns:
+            (list of dict): examples now with the criteria having "option_selected" return the name of an option.
         """
         example_list = []
         for example in original_example_list:

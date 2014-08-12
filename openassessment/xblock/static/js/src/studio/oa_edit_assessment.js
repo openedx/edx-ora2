@@ -549,6 +549,7 @@ OpenAssessment.EditExampleBasedAssessmentView = function(element) {
         ])
     ).install();
 
+    // Have the enable checkbox also toggle whether or not to display the EXAMPLES tab.
     $("#include_ai_assessment", this.element).click(function() {
         $('#oa_editor_tab_ai').toggleClass('is--hidden');
     });
@@ -609,6 +610,7 @@ OpenAssessment.EditExampleBasedAssessmentView.prototype = {
 
     **/
     exampleDefinitions: function(xml) {
+        // Needs global search power because we include the ai_training_examples in a different section (the Examples tab)
         var sel = $("#ai_training_examples");
         return OpenAssessment.Fields.stringField(sel, xml);
     },

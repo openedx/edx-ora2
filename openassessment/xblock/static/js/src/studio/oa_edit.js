@@ -61,6 +61,7 @@ OpenAssessment.StudioView = function(runtime, element, server) {
         ])
     );
 
+    // Initialize the AI Example Editing Tab
     this.aiView = new OpenAssessment.EditAIView(
         $("#oa_ai_editor_wrapper", this.element).get(0)
     );
