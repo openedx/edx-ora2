@@ -7,6 +7,11 @@ import mock
 from django.core.cache import cache
 from submissions import api as sub_api
 from .base import XBlockHandlerTransactionTestCase, scenario
+from django.test.utils import override_settings
+from moto import mock_s3
+import boto
+from boto.s3.key import Key
+from openassessment.fileupload import api
 
 class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
 
@@ -74,14 +79,46 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
             {"content": "test answer", "score": 1}
         ])
 
+    @mock_s3
+    @override_settings(
+        AWS_ACCESS_KEY_ID='foobar',
+        AWS_SECRET_ACCESS_KEY='bizbaz',
+        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
+    )
     @scenario('data/leaderboard_show.xml')
     def test_non_text_submission(self, xblock):
+        # Create a mock bucket
+        conn = boto.connect_s3()
+        bucket = conn.create_bucket('mybucket')
         # Create a non-text submission (the submission dict doesn't contain "text")
         self._create_submissions_and_scores(xblock, [("s3key", 1)], submission_key="file_key")
 
         # Expect that we default to an empty string for content
         self._assert_scores(xblock, [
-            {"content": "", "score": 1}
+            {"content": "", "score": 1, "file": ""}
+        ])
+
+    @mock_s3
+    @override_settings(
+        AWS_ACCESS_KEY_ID='foobar',
+        AWS_SECRET_ACCESS_KEY='bizbaz',
+        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
+    )
+    @scenario('data/leaderboard_show_allowfiles.xml')
+    def test_image_and_text_submission(self, xblock):
+        # Create a file and get the download URL
+        conn = boto.connect_s3()
+        bucket = conn.create_bucket('mybucket')
+        key = Key(bucket)
+        key.key = "submissions_attachments/foo"
+        key.set_contents_from_string("How d'ya do?")
+        downloadUrl = api.get_download_url("foo")
+        # Create a image and text submission
+        self._create_submissions_and_scores(xblock, [({"text": "test answer", "file_key": "foo"}, 1)], submission_key=None)
+
+        # Expect that we retrieve both the text and the download URL for the file
+        self._assert_scores(xblock, [
+            {"content": "test answer", "score": 1, "file": downloadUrl}
         ])
 
     def _create_submissions_and_scores(

@@ -1157,6 +1157,14 @@
         border-top-left-radius: 2px;
       }
 
+      .leaderboard__score__image{
+        max-height:150px;
+        max-width:100%;
+        margin-right:20px;
+        margin-bottom:20px;
+        float:left;
+      }
+
       .leaderboard__score__title{
         font-size: 15px;
         color: $edx-gray-l1;
@@ -1168,7 +1176,7 @@
       .leaderboard__answer{
         border-top: 2px solid $edx-gray-d2;
         box-shadow: inset 0 0 3px 1px rgba(10, 10, 10, 0.1);
-        padding: 5px 10px;
+        padding: 10px;
         max-height: 200px;
         overflow-y: scroll;
         font-size: 14px;

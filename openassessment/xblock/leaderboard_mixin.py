@@ -6,7 +6,7 @@ from xblock.core import XBlock
 
 from openassessment.assessment.errors import SelfAssessmentError, PeerAssessmentError
 from submissions import api as sub_api
-
+from openassessment.fileupload import api as file_upload_api
 
 class LeaderboardMixin(object):
     """Leaderboard Mixin introduces all handlers for displaying the leaderboard
@@ -70,6 +70,8 @@ class LeaderboardMixin(object):
             self.leaderboard_show
         )
         for score in scores:
+            if 'file_key' in score['content']:
+                score['file'] = file_upload_api.get_download_url(score['content']['file_key'])
             if 'text' in score['content']:
                 score['content'] = score['content']['text']
             elif isinstance(score['content'], basestring):
