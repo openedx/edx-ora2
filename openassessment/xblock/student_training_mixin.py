@@ -72,6 +72,9 @@ class StudentTrainingMixin(object):
         context = {}
         template = 'openassessmentblock/student_training/student_training_unavailable.html'
 
+        # add allow_latex field to the context
+        context['allow_latex'] = self.allow_latex
+
         if not workflow_status:
             return template, context
 

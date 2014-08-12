@@ -149,7 +149,8 @@ class PeerAssessmentMixin(object):
 
         context_dict = {
             "rubric_criteria": self.rubric_criteria_with_labels,
-            "estimated_time": "20 minutes"  # TODO: Need to configure this.
+            "estimated_time": "20 minutes",  # TODO: Need to configure this.
+            "allow_latex": self.allow_latex,
         }
 
         if self.rubric_feedback_prompt is not None:

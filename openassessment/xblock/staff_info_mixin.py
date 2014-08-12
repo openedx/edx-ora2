@@ -137,6 +137,9 @@ class StaffInfoMixin(object):
         # Include release/due dates for each step in the problem
         context['step_dates'] = list()
 
+        # Include Latex setting
+        context['allow_latex'] = self.allow_latex
+
         steps = ['submission'] + self.assessment_steps
         for step in steps:
 

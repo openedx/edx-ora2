@@ -4,6 +4,7 @@
         "title": "My new title.",
         "feedback_prompt": "Feedback prompt",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -27,6 +28,7 @@
     "no_prompt": {
         "feedback_prompt": "Feedback prompt",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -76,6 +78,7 @@
     "no_feedback_prompt": {
         "prompt": "Test prompt",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -126,6 +129,7 @@
         "feedback_prompt": "Feedback prompt",
         "prompt": "Test Prompt",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -175,6 +179,7 @@
         "feedback_prompt": "Feedback prompt",
         "prompt": "Test Prompt",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -226,6 +231,7 @@
         "feedback_prompt": "Feedback prompt",
         "prompt": "Test Prompt",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -277,6 +283,7 @@
         "feedback_prompt": "Feedback prompt",
         "prompt": "Test Prompt",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -320,6 +327,7 @@
         "feedback_prompt": "Feedback prompt",
         "prompt": "Test Prompt",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -362,6 +370,7 @@
         "feedback_prompt": "Feedback prompt",
         "prompt": "prompty",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
             []
@@ -383,6 +392,7 @@
         "feedback_prompt": "Feedback prompt",
         "prompt": "Test Prompt",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -425,6 +435,7 @@
         "feedback_prompt": "Feedback prompt",
         "prompt": "Test Prompt",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -453,6 +464,7 @@
         "feedback_prompt": "Feedback prompt",
         "prompt": "Test Prompt",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -490,6 +502,7 @@
         "feedback_prompt": "Feedback prompt",
         "prompt": "Test Prompt",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -532,6 +545,7 @@
         "feedback_prompt": "Feedback prompt",
         "prompt": "Test Prompt",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -573,6 +587,7 @@
         "feedback_prompt": "Feedback prompt",
         "prompt": "Test Prompt",
         "allow_file_upload": 6,
+        "allow_latex": false,
         "criteria": [
             {
                 "order_num": 0,
@@ -613,6 +628,7 @@
         "feedback_prompt": "Feedback prompt",
         "prompt": "Test Prompt",
         "allow_file_upload": null,
+        "allow_latex": false,
         "criteria": [
             {
                 "order_num": 0,
@@ -683,6 +699,7 @@
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -738,6 +755,7 @@
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -791,6 +809,7 @@
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -847,6 +866,7 @@
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -903,6 +923,7 @@
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -953,6 +974,7 @@
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -1010,6 +1032,7 @@
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -1059,6 +1082,7 @@
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -1109,6 +1133,7 @@
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -1135,6 +1160,7 @@
         "prompt": "Test Prompt",
         "feedback_prompt": "Feedback prompt",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -1184,6 +1210,7 @@
         "prompt": "Test Prompt",
         "feedback_prompt": "Feedback prompt",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -1233,6 +1260,7 @@
         "prompt": "Test Prompt",
         "feedback_prompt": "Feedback prompt",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
             {
@@ -1305,6 +1333,7 @@
         "prompt": "Test Prompt",
         "feedback_prompt": "Feedback prompt",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
             {

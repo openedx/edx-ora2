@@ -107,6 +107,7 @@ class TestSerializeContent(TestCase):
         self.oa_block.rubric_criteria = data.get('criteria', copy.deepcopy(self.BASIC_CRITERIA))
         self.oa_block.rubric_assessments = data.get('assessments', copy.deepcopy(self.BASIC_ASSESSMENTS))
         self.oa_block.allow_file_upload = data.get('allow_file_upload')
+        self.oa_block.allow_latex = data.get('allow_latex')
         self.oa_block.leaderboard_show = data.get('leaderboard_show', 0)
 
     @ddt.file_data('data/serialize.json')
@@ -407,6 +408,7 @@ class TestParseFromXml(TestCase):
             'criteria',
             'assessments',
             'allow_file_upload',
+            'allow_latex',
             'leaderboard_show'
         ]
         for field_name in expected_fields:

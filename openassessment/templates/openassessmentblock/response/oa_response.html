@@ -103,6 +103,24 @@
                                     </h3>
                                 </div>
                             </li>
+                            {% if allow_latex %}
+                            <li class="list--actions__item">
+                                <button type="submit" id="submission__preview" class="action action--save submission__save is--disabled">{% trans "Preview in Latex"%}</button>
+                                <div id="response__preview_explanation" class="response__submission__status">
+                                    <h3 class="response__submission__status__title">
+                                        {% trans "Click to preview your submission in Latex"%}
+                                    </h3>
+                                </div>
+                            </li>
+                            <li id = "submission__preview__item" class="list--actions__item">
+                                <article class="submission__answer__display">
+                                    <h3 class="submission__answer__display__title">Preview Response</h3>
+                                    <div class="submission__answer__display__content">
+                                        <p id="preview_content"></p>
+                                    </div>
+                                </article>
+                            </li>
+                            {% endif %}
                         </ul>
                     </div>
                 </form>

@@ -613,6 +613,9 @@ def serialize_content_to_xml(oa_block, root):
     if oa_block.allow_file_upload is not None:
         root.set('allow_file_upload', unicode(oa_block.allow_file_upload))
 
+    if oa_block.allow_latex is not None:
+        root.set('allow_latex', unicode(oa_block.allow_latex))
+
     # Open assessment displayed title
     title = etree.SubElement(root, 'title')
     title.text = unicode(oa_block.title)
@@ -735,6 +738,10 @@ def parse_from_xml(root):
     if 'allow_file_upload' in root.attrib:
         allow_file_upload = _parse_boolean(unicode(root.attrib['allow_file_upload']))
 
+    allow_latex = False
+    if 'allow_latex' in root.attrib:
+        allow_latex = _parse_boolean(unicode(root.attrib['allow_latex']))
+
     # Retrieve the title
     title_el = root.find('title')
     if title_el is None:
@@ -773,6 +780,7 @@ def parse_from_xml(root):
         'submission_start': submission_start,
         'submission_due': submission_due,
         'allow_file_upload': allow_file_upload,
+        'allow_latex': allow_latex,
         'leaderboard_show': leaderboard_show
     }
 

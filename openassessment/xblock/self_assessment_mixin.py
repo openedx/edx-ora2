@@ -51,7 +51,7 @@ class SelfAssessmentMixin(object):
             SubmissionError: Error occurred while retrieving the current submission.
             SelfAssessmentRequestError: Error occurred while checking if we had a self-assessment.
         """
-        context = {}
+        context = {'allow_latex': self.allow_latex}
         path = 'openassessmentblock/self/oa_self_unavailable.html'
         problem_closed, reason, start_date, due_date = self.is_closed(step="self-assessment")
 
