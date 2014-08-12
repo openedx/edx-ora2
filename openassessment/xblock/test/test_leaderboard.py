@@ -79,8 +79,17 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
             {"content": "test answer", "score": 1}
         ])
 
+    @mock_s3
+    @override_settings(
+        AWS_ACCESS_KEY_ID='foobar',
+        AWS_SECRET_ACCESS_KEY='bizbaz',
+        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
+    )
     @scenario('data/leaderboard_show.xml')
     def test_non_text_submission(self, xblock):
+        # Create a mock bucket
+        conn = boto.connect_s3()
+        bucket = conn.create_bucket('mybucket')
         # Create a non-text submission (the submission dict doesn't contain "text")
         self._create_submissions_and_scores(xblock, [("s3key", 1)], submission_key="file_key")
 
