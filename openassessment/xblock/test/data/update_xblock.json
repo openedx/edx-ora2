@@ -1,0 +1,213 @@
+{
+    "simple": {
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "0",
+                "label": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "0",
+                        "label": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "1",
+                        "label": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ],
+                "feedback": "required"
+            }
+        ],
+        "prompt": "My new prompt.",
+        "feedback_prompt": "Feedback prompt",
+        "submission_due": "4014-02-27T09:46",
+        "submission_start": "4014-02-10T09:46",
+        "title": "My new title.",
+        "allow_file_upload": false,
+        "leaderboard_show": 0,
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": "4014-03-10T00:00"
+            },
+            {
+                "name": "self-assessment",
+                "start": null,
+                "due": null
+            }
+        ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"]
+    },
+
+    "unicode": {
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "0",
+                "label": "Ṫëṡẗ ċṛïẗëïṛöṅ",
+                "prompt": "Téśt ćŕítéíŕőń ṕŕőḿṕt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "0",
+                        "label": "Ṅö",
+                        "explanation": "Ńő éxṕĺáńátíőń"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "1",
+                        "label": "sǝʎ",
+                        "explanation": "Чэѕ эхрlаиатіои"
+                    }
+                ],
+                "feedback": "required"
+            }
+        ],
+        "prompt": "Ṁÿ ṅëẅ ṗṛöṁṗẗ.",
+        "feedback_prompt": "ḟëëḋḅäċḳ ṗṛöṁṗẗ",
+        "submission_due": "4014-02-27T09:46",
+        "submission_start": "4014-02-10T09:46",
+        "title": "ɯʎ uǝʍ ʇıʇןǝ",
+        "allow_file_upload": false,
+        "leaderboard_show": 0,
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": "4014-03-10T00:00"
+            },
+            {
+                "name": "self-assessment",
+                "start": null,
+                "due": null
+            }
+        ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"]
+    },
+
+    "student_training": {
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "тєѕт ¢яιтєяιση",
+                "label": "тєѕт ¢яιтєяιση",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "Ṅö",
+                        "label": "Ṅö",
+                        "explanation": "Ṅö explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "sǝʎ",
+                        "label": "sǝʎ",
+                        "explanation": "sǝʎ explanation"
+                    }
+                ],
+                "feedback": "required"
+            }
+        ],
+        "prompt": "My new prompt.",
+        "feedback_prompt": "Feedback prompt",
+        "submission_due": "4014-02-27T09:46",
+        "submission_start": "4014-02-10T09:46",
+        "title": "My new title.",
+        "allow_file_upload": false,
+        "leaderboard_show": 0,
+        "assessments": [
+            {
+                "name": "student-training",
+                "examples": [
+                    {
+                        "answer": "Ṫḧïṡ ïṡ äṅ äṅṡẅëṛ",
+                        "options_selected": [
+                            { "criterion": "тєѕт ¢яιтєяιση", "option": "Ṅö" }
+                        ]
+                    },
+                    {
+                        "answer": "This is another answer",
+                        "options_selected": [
+                            { "criterion": "тєѕт ¢яιтєяιση", "option": "sǝʎ" }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": "4014-03-10T00:00"
+            }
+        ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"]
+    },
+
+    "already_has_criteria_and_options_names_assigned": {
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "cd316c145cb14e06b377db65719ed41c",
+                "label": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "7c080ee29c38414291c92eb42b2ab310",
+                        "label": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "8bcdb0769b15482d9b2c3791d22e8ad2",
+                        "label": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ],
+                "feedback": "required"
+            }
+        ],
+        "prompt": "My new prompt.",
+        "feedback_prompt": "Feedback prompt",
+        "submission_due": "4014-02-27T09:46",
+        "submission_start": "4014-02-10T09:46",
+        "allow_file_upload": false,
+        "leaderboard_show": 0,
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": "4014-03-10T00:00"
+            },
+            {
+                "name": "self-assessment",
+                "start": null,
+                "due": null
+            }
+        ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"]
+    }
+}

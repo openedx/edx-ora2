@@ -9,6 +9,8 @@ import ddt
 from openassessment.xblock.resolve_dates import resolve_dates, DISTANT_PAST, DISTANT_FUTURE
 
 
+STUB_I18N = lambda x: x
+
 @ddt.ddt
 class ResolveDatesTest(TestCase):
 
@@ -35,7 +37,8 @@ class ResolveDatesTest(TestCase):
             [
                 (self.DATE_STRINGS[start], self.DATE_STRINGS[end])
                 for start, end in tuple(data['date_ranges'])
-            ]
+            ],
+            STUB_I18N
         )
         self.assertEqual(resolved_start, self.DATES[data['resolved_start']])
         self.assertEqual(resolved_end, self.DATES[data['resolved_end']])
@@ -57,7 +60,8 @@ class ResolveDatesTest(TestCase):
                 ("1999-01-01", "1999-02-03"),
                 ("2003-01-01", "2003-02-03"),
                 ("3234-01-01", "3234-02-03"),
-            ]
+            ],
+            STUB_I18N
         )
 
         # Should default to the min of all specified start dates
@@ -76,7 +80,8 @@ class ResolveDatesTest(TestCase):
                 ("1999-01-01", "1999-02-03"),
                 ("2003-01-01", "2003-02-03"),
                 ("3234-01-01", "3234-02-03"),
-            ]
+            ],
+            STUB_I18N
         )
 
         # Should default to the max of all specified end dates
@@ -95,7 +100,8 @@ class ResolveDatesTest(TestCase):
                 (None, "2014-08-01"),
                 (None, None),
                 (None, None)
-            ]
+            ],
+            STUB_I18N
         )
 
     def test_start_after_step_due(self):
@@ -106,7 +112,8 @@ class ResolveDatesTest(TestCase):
                 (None, "2014-08-01"),
                 (None, None),
                 (None, None)
-            ]
+            ],
+            STUB_I18N
         )
 
     def test_due_before_step_start(self):
@@ -117,5 +124,6 @@ class ResolveDatesTest(TestCase):
                 (None, None),
                 ("2014-02-03", None),
                 (None, None)
-            ]
+            ],
+            STUB_I18N
         )

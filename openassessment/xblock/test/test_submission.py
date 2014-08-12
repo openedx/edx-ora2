@@ -30,7 +30,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'submit', long_submission, response_format='json')
         self.assertFalse(resp[0])
         self.assertEqual(resp[1], "EANSWERLENGTH")
-        self.assertEqual(resp[2], xblock.SUBMIT_ERRORS["EANSWERLENGTH"])
+        self.assertIsNot(resp[2], None)
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_submission_multisubmit_failure(self, xblock):
@@ -41,7 +41,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
         self.assertFalse(resp[0])
         self.assertEqual(resp[1], "ENOMULTI")
-        self.assertEqual(resp[2], xblock.SUBMIT_ERRORS["ENOMULTI"])
+        self.assertIsNotNone(resp[2])
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     @patch.object(sub_api, 'create_submission')
@@ -50,7 +50,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
         self.assertFalse(resp[0])
         self.assertEqual(resp[1], "EUNKNOWN")
-        self.assertEqual(resp[2], xblock.SUBMIT_ERRORS["EUNKNOWN"])
+        self.assertIsNotNone(resp[2])
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     @patch.object(sub_api, 'create_submission')
@@ -59,7 +59,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
         self.assertFalse(resp[0])
         self.assertEqual(resp[1], "EBADFORM")
-        self.assertEqual(resp[2], xblock.SUBMIT_ERRORS["EBADFORM"])
+        self.assertIsNotNone(resp[2])
 
     # In Studio preview mode, the runtime sets the user ID to None
     @scenario('data/basic_scenario.xml', user_id=None)
@@ -76,7 +76,7 @@ class SubmissionTest(XBlockHandlerTestCase):
         resp = self.request(xblock, 'submit', self.SUBMISSION, response_format='json')
         self.assertFalse(resp[0])
         self.assertEqual(resp[1], "ENOPREVIEW")
-        self.assertEqual(resp[2], xblock.SUBMIT_ERRORS["ENOPREVIEW"])
+        self.assertIsNot(resp[2], None)
 
     @scenario('data/over_grade_scenario.xml', user_id='Alice')
     def test_closed_submissions(self, xblock):

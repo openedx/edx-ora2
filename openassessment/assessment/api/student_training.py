@@ -189,9 +189,9 @@ def validate_training_examples(rubric, examples):
     ]
     if len(set(criteria_options) - set(criteria_without_options)) == 0:
         return [_(
-            u"When you include a student training assessment, "
-            u"the rubric for the assessment must contain at least one criterion, "
-            u"and each criterion must contain at least two options."
+            "If your assignment includes a student training step, "
+            "the rubric must have at least one criterion, "
+            "and that criterion must have at least one option."
         )]
 
     # Check each example

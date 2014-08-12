@@ -1,5 +1,4 @@
 import logging
-from django.utils.translation import ugettext as _
 
 from xblock.core import XBlock
 from webob import Response
@@ -7,8 +6,9 @@ from webob import Response
 from openassessment.assessment.api import self as self_api
 from openassessment.workflow import api as workflow_api
 from submissions import api as submission_api
+from .data_conversion import create_rubric_dict
 from .resolve_dates import DISTANT_FUTURE
-from .data_conversion import create_rubric_dict, clean_criterion_feedback
+from .data_conversion import clean_criterion_feedback
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +35,7 @@ class SelfAssessmentMixin(object):
         except:
             msg = u"Could not retrieve self assessment for submission {}".format(self.submission_uuid)
             logger.exception(msg)
-            return self.render_error(_(u"An unexpected error occurred."))
+            return self.render_error(self._(u"An unexpected error occurred."))
         else:
             return self.render_assessment(path, context)
 
@@ -82,7 +82,7 @@ class SelfAssessmentMixin(object):
                     path = 'openassessmentblock/self/oa_self_closed.html'
             else:
                 submission = submission_api.get_submission(self.submission_uuid)
-                context["rubric_criteria"] = self.rubric_criteria
+                context["rubric_criteria"] = self.rubric_criteria_with_labels
                 context["estimated_time"] = "20 minutes"  # TODO: Need to configure this.
                 context["self_submission"] = submission
 
@@ -111,16 +111,16 @@ class SelfAssessmentMixin(object):
             and "msg" (unicode) containing additional information if an error occurs.
         """
         if 'options_selected' not in data:
-            return {'success': False, 'msg': _(u"Missing options_selected key in request")}
+            return {'success': False, 'msg': self._(u"Missing options_selected key in request")}
 
         if 'overall_feedback' not in data:
-            return {'success': False, 'msg': _('Must provide overall feedback in the assessment')}
+            return {'success': False, 'msg': self._('Must provide overall feedback in the assessment')}
 
         if 'criterion_feedback' not in data:
-            return {'success': False, 'msg': _('Must provide feedback for criteria in the assessment')}
+            return {'success': False, 'msg': self._('Must provide feedback for criteria in the assessment')}
 
         if self.submission_uuid is None:
-            return {'success': False, 'msg': _(u"You must submit a response before you can perform a self-assessment.")}
+            return {'success': False, 'msg': self._(u"You must submit a response before you can perform a self-assessment.")}
 
         try:
             assessment = self_api.create_assessment(
@@ -129,7 +129,7 @@ class SelfAssessmentMixin(object):
                 data['options_selected'],
                 clean_criterion_feedback(self.rubric_criteria, data['criterion_feedback']),
                 data['overall_feedback'],
-                create_rubric_dict(self.prompt, self.rubric_criteria)
+                create_rubric_dict(self.prompt, self.rubric_criteria_with_labels)
             )
             self.publish_assessment_event("openassessmentblock.self_assess", assessment)
 
@@ -141,14 +141,14 @@ class SelfAssessmentMixin(object):
                 u"for the submission {}".format(self.submission_uuid),
                 exc_info=True
             )
-            msg = _(u"Your self assessment could not be submitted.")
+            msg = self._(u"Your self assessment could not be submitted.")
             return {'success': False, 'msg': msg}
         except (self_api.SelfAssessmentInternalError, workflow_api.AssessmentWorkflowInternalError):
             logger.exception(
                 u"An error occurred while submitting a self assessment "
                 u"for the submission {}".format(self.submission_uuid),
             )
-            msg = _(u"Your self assessment could not be submitted.")
+            msg = self._(u"Your self assessment could not be submitted.")
             return {'success': False, 'msg': msg}
         else:
             return {'success': True, 'msg': u""}

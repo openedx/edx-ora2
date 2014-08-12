@@ -36,6 +36,9 @@ configured:
 * FILE_UPLOAD_STORAGE_BUCKET_NAME - The name of the S3 Bucket configured for uploading and downloading content.
 * FILE_UPLOAD_STORAGE_PREFIX (optional) - The file prefix within the bucket for storing all content. Defaults to 'submissions_attachments'
 
+Note that your S3 bucket must have a DNS compliant name, which will be used by
+the File Upload Service to generate the upload and download URLs.
+
 In addition, your S3 bucket must be have CORS configuration set up to allow PUT
 and GET requests to be performed across request origins.  To do so, you must:
 
@@ -55,3 +58,34 @@ and GET requests to be performed across request origins.  To do so, you must:
             <AllowedMethod>GET</AllowedMethod>
         </CORSRule>
     </CORSConfiguration>
+
+Note that you must configure an IAM user and role for access to your S3 bucket.
+
+1. From Amazon AWS, select services, IAM.
+2. Select Groups
+3. Create a new 'upload' group.
+4. This new group will require a policy. The following is a lenient upload
+policy for S3:
+
+.. code-block:: json
+
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "Stmt1403207543000",
+          "Effect": "Allow",
+          "Action": [
+            "s3:*"
+          ],
+          "Resource": [
+            "*"
+          ]
+        }
+      ]
+    }
+
+5. Create a new User, add this user to the new 'upload' Group. Choose to
+generate a new access key for this user.
+6. This new access key must be used in the settings described above:
+AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY.

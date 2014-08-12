@@ -1,15 +1,7 @@
-.. image:: https://travis-ci.org/edx/edx-ora2.png?branch=master
-    :alt: Travis build status
+Open Response Assessment |build-status| |coverage-status|
+=========================================================
 
-
-.. image:: https://coveralls.io/repos/edx/edx-ora2/badge.png?branch=master
-    :target: https://coveralls.io/r/edx/edx-ora2?branch=master
-    :alt: Coverage badge
-
-
-`User documentation available on ReadTheDocs`__.
-
-__ http://edx.readthedocs.org/projects/edx-open-response-assessments
+User docs: |user-docs| Developer docs: |dev-docs|
 
 
 Installation
@@ -31,13 +23,6 @@ Running the Development Server
 .. code:: bash
 
     ./scripts/workbench.sh
-
-By default, the XBlock JavaScript will be combined and minified.  To
-preserve indentation and line breaks in JavaScript source files:
-
-.. code:: bash
-
-    DEBUG_JS=1 ./scripts/workbench.sh
 
 Additional arguments are passed to ``runserver``.  For example,
 to start the server on port 8001:
@@ -142,3 +127,16 @@ Mailing List and IRC Channel
 You can discuss this code on the
 `edx-code Google Group <https://groups.google.com/forum/#!forum/edx-code>`_ or
 in the `edx-code` IRC channel on Freenode.
+
+.. |build-status| image:: https://travis-ci.org/edx/edx-ora2.png?branch=master
+   :target: https://travis-ci.org/edx/edx-ora2
+   :alt: Travis build status
+.. |coverage-status| image:: https://coveralls.io/repos/edx/edx-ora2/badge.png?branch=master
+   :target: https://coveralls.io/r/edx/edx-ora2?branch=master
+   :alt: Coverage badge
+.. |user-docs| image:: https://readthedocs.org/projects/edx-open-response-assessments/badge/?version=latest
+   :target: http://edx.readthedocs.org/projects/edx-open-response-assessments
+   :alt: User documentation
+.. |dev-docs| image:: https://readthedocs.org/projects/edx-ora-2/badge/?version=latest
+   :target: http://edx.readthedocs.org/projects/edx-ora-2
+   :alt: Developer documentation

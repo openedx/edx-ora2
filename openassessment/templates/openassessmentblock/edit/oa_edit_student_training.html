@@ -1,0 +1,39 @@
+{% load i18n %}
+{% spaceless %}
+<li class="openassessment_assessment_module_settings_editor" id="oa_student_training_editor">
+    <div class="drag-handle action"></div>
+
+    <div class="openassessment_inclusion_wrapper">
+        <input type="checkbox" id="include_student_training"
+                {% if assessments.student_training %} checked="true" {% endif %}>
+        <label for="include_student_training">{% trans "Step: Student Training" %}</label>
+    </div>
+
+    <div class="openassessment_assessment_module_editor">
+        <p id="student_training_description_closed" class="openassessment_description_closed {% if assessments.student_training %} is--hidden {% endif %}">
+            {% trans "Students learn to assess responses by scoring pre-assessed sample responses that you provide. Students move to the next step when the scores they give match your scores. Note that if you add this step, you must also add a peer assessment step. This step must come before the peer assessment step." %}
+        </p>
+        <div id="student_training_settings_editor" class="assessment_settings_wrapper {% if not assessments.student_training %} is--hidden {% endif %}">
+            <p class="openassessment_description">
+                {% trans "Enter one or more sample responses that you've created, and then specify the options that you would choose for each criterion in your rubric. Note that you must add your rubric to the Rubric tab before you can complete this step." %}
+            </p>
+            <ol id="openassessment_training_example_list">
+                {% for example in assessments.training.examples %}
+                    {% include "openassessmentblock/edit/oa_training_example.html" with example=example %}
+                {% endfor %}
+            </ol>
+            <div id="openassessment_add_training_example">
+                <h2 class='openassessment_add_training_example'>{% trans "Add Sample Response" %}</h2>
+            </div>
+
+        </div>
+        <ol id="openassessment_training_example_template" class="is--hidden">
+            {% include "openassessmentblock/edit/oa_training_example.html" with example=assessments.training.template %}
+        </ol>
+        <ol id="openassessment_training_example_criterion_template" class="is--hidden">
+            {% include "openassessmentblock/edit/oa_training_example_criterion.html" %}
+        </ol>
+    </div>
+
+</li>
+{% endspaceless %}

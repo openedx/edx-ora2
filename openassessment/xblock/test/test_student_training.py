@@ -5,6 +5,7 @@ Tests for the student training step in the Open Assessment XBlock.
 import datetime
 import ddt
 import json
+import pprint
 from mock import patch
 import pytz
 from django.db import DatabaseError
@@ -18,9 +19,11 @@ class StudentTrainingTest(XBlockHandlerTestCase):
     """
     Base class for student training tests.
     """
+
     SUBMISSION = {
         'submission': u'Thé őbjéćt őf édúćátíőń íś tő téáćh úś tő ĺővé ẃhát íś béáútífúĺ.'
     }
+
 
     def assert_path_and_context(self, xblock, expected_path, expected_context):
         """
@@ -228,6 +231,38 @@ class StudentTrainingAssessTest(StudentTrainingTest):
         }
         resp = self.request(xblock, 'training_assess', json.dumps(selected_data))
         self.assertIn("Your scores could not be checked", resp.decode('utf-8'))
+
+    def _assert_path_and_context(self, xblock, expected_path, expected_context):
+        """
+        Render the student training step and verify that the expected template
+        and context were used.  Also check that the template renders without error.
+
+        Args:
+            xblock (OpenAssessmentBlock): The XBlock under test.
+            expected_path (str): The expected template path.
+            expected_context (dict): The expected template context.
+
+        Raises:
+            AssertionError
+
+        """
+        path, context = xblock.training_path_and_context()
+        self.assertEqual(path, expected_path)
+        self.assertEqual(len(context), len(expected_context))
+        for key in expected_context.keys():
+            if key == 'training_due':
+                iso_date = context['training_due'].isoformat()
+                self.assertEqual(iso_date, expected_context[key])
+            else:
+                msg = u"Expected \n {expected} \n but found \n {actual}".format(
+                    actual=pprint.pformat(context[key]),
+                    expected=pprint.pformat(expected_context[key])
+                )
+                self.assertEqual(context[key], expected_context[key], msg=msg)
+
+            # Verify that we render without error
+        resp = self.request(xblock, 'render_student_training', json.dumps({}))
+        self.assertGreater(len(resp), 0)
 
 
 class StudentTrainingRenderTest(StudentTrainingTest):

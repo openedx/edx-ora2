@@ -12,5 +12,6 @@ Creating Peer Assessments
    :maxdepth: 2
 
    PeerAssessment
-   PeerAssessment_Students
+   CreatePeerAssessment
    Access_PA_Info
+   PeerAssessment_Students

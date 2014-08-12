@@ -60,12 +60,14 @@ class LeaderboardMixin(object):
             template_path (string), tuple of context (dict)
         """
 
+        # Retrieve top scores from the submissions API
+        # Since this uses the read-replica and caches the results,
+        # there will be some delay in the request latency.
         scores = sub_api.get_top_submissions(
             student_item_dict['course_id'],
             student_item_dict['item_id'],
             student_item_dict['item_type'],
-            self.leaderboard_show,
-            use_cache=False
+            self.leaderboard_show
         )
         for score in scores:
             if 'file_key' in score['content']:

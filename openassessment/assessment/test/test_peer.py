@@ -151,7 +151,7 @@ class TestPeerApi(CacheResetTest):
     Tests for the peer assessment API functions.
     """
 
-    CREATE_ASSESSMENT_NUM_QUERIES = 59
+    CREATE_ASSESSMENT_NUM_QUERIES = 58
 
     def test_create_assessment_points(self):
         self._create_student_and_submission("Tim", "Tim's answer")
@@ -879,8 +879,8 @@ class TestPeerApi(CacheResetTest):
         PeerWorkflow.create_item(buffy_workflow, xander_answer["uuid"])
 
         # Check to see if Buffy is still actively reviewing Xander's submission.
-        submission_uuid = buffy_workflow.find_active_assessments()
-        self.assertEqual(xander_answer["uuid"], submission_uuid)
+        item = buffy_workflow.find_active_assessments()
+        self.assertEqual(xander_answer["uuid"], item.submission_uuid)
 
     def test_get_workflow_by_uuid(self):
         buffy_answer, _ = self._create_student_and_submission("Buffy", "Buffy's answer")
@@ -1211,6 +1211,70 @@ class TestPeerApi(CacheResetTest):
             REQUIRED_GRADED_BY,
             MONDAY,
         )
+
+    def test_ignore_duplicate_workflow_items(self):
+        """
+        A race condition may cause two workflow items to be opened for a single
+        submission. In this case, we want to be defensive in the API, such that
+        no open workflow item is acknowledged if an assessment has already been
+        made against the associated submission.
+
+        """
+        bob_sub, bob = self._create_student_and_submission('Bob', 'Bob submission')
+        tim_sub, tim = self._create_student_and_submission('Tim', 'Tim submission')
+        sally_sub, sally = self._create_student_and_submission('Sally', 'Sally submission')
+        jane_sub, jane = self._create_student_and_submission('Jane', 'Jane submission')
+
+        # Create two workflow items.
+        peer_api.create_peer_workflow_item(bob_sub['uuid'], tim_sub['uuid'])
+        peer_api.create_peer_workflow_item(bob_sub['uuid'], tim_sub['uuid'])
+
+        # Assess the submission, then get the next submission.
+        peer_api.create_assessment(
+            bob_sub['uuid'],
+            bob['student_id'],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
+            REQUIRED_GRADED_BY,
+            MONDAY
+        )
+
+        # Verify the next submission is not Tim again, but Sally.
+        next_sub = peer_api.get_submission_to_assess(bob_sub['uuid'], REQUIRED_GRADED_BY)
+        self.assertEqual(next_sub['uuid'], sally_sub['uuid'])
+
+        # Request another peer submission. Should pick up Sally again.
+        next_sub = peer_api.get_submission_to_assess(bob_sub['uuid'], REQUIRED_GRADED_BY)
+        self.assertEqual(next_sub['uuid'], sally_sub['uuid'])
+
+        # Ensure that the next assessment made is against Sally, not Tim.
+        # Assess the submission, then get the next submission.
+        peer_api.create_assessment(
+            bob_sub['uuid'],
+            bob['student_id'],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
+            REQUIRED_GRADED_BY,
+            MONDAY
+        )
+
+        # Make sure Tim has one assessment.
+        tim_assessments = peer_api.get_assessments(tim_sub['uuid'], scored_only=False)
+        self.assertEqual(1, len(tim_assessments))
+
+        # Make sure Sally has one assessment.
+        sally_assessments = peer_api.get_assessments(sally_sub['uuid'], scored_only=False)
+        self.assertEqual(1, len(sally_assessments))
+
+        # Make sure Jane has no assessment.
+        jane_assessments = peer_api.get_assessments(jane_sub['uuid'], scored_only=False)
+        self.assertEqual(0, len(jane_assessments))
+
+
 
     def test_get_submission_to_assess_no_workflow(self):
         # Try to retrieve a submission to assess when the student

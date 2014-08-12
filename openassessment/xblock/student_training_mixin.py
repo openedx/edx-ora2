@@ -2,7 +2,6 @@
 Student training step in the OpenAssessment XBlock.
 """
 import logging
-from django.utils.translation import ugettext as _
 from webob import Response
 from xblock.core import XBlock
 from openassessment.assessment.api import student_training
@@ -52,7 +51,7 @@ class StudentTrainingMixin(object):
         except: # pylint:disable=W0702
             msg = u"Could not render student training step for submission {}".format(self.submission_uuid)
             logger.exception(msg)
-            return self.render_error(_(u"An unexpected error occurred."))
+            return self.render_error(self._(u"An unexpected error occurred."))
         else:
             return self.render_assessment(path, context)
 
@@ -114,14 +113,16 @@ class StudentTrainingMixin(object):
                 self.submission_uuid,
                 {
                     'prompt': self.prompt,
-                    'criteria': self.rubric_criteria
+                    'criteria': self.rubric_criteria_with_labels
                 },
                 examples
             )
-
             if example:
                 context['training_essay'] = example['answer']
-                context['training_rubric'] = example['rubric']
+                context['training_rubric'] = {
+                    'criteria': example['rubric']['criteria'],
+                    'points_possible': example['rubric']['points_possible']
+                }
                 template = 'openassessmentblock/student_training/student_training.html'
             else:
                 logger.error(
@@ -156,9 +157,9 @@ class StudentTrainingMixin(object):
 
         """
         if 'options_selected' not in data:
-            return {'success': False, 'msg': _(u"Missing options_selected key in request")}
+            return {'success': False, 'msg': self._(u"Missing options_selected key in request")}
         if not isinstance(data['options_selected'], dict):
-            return {'success': False, 'msg': _(u"options_selected must be a dictionary")}
+            return {'success': False, 'msg': self._(u"options_selected must be a dictionary")}
 
         # Check the student's scores against the course author's scores.
         # This implicitly updates the student training workflow (which example essay is shown)
@@ -184,23 +185,23 @@ class StudentTrainingMixin(object):
             logger.warning(msg, exc_info=True)
             return {
                 'success': False,
-                'msg': _(u"Your scores could not be checked.")
+                'msg': self._(u"Your scores could not be checked.")
             }
         except student_training.StudentTrainingInternalError:
             return {
                 'success': False,
-                'msg': _(u"Your scores could not be checked.")
+                'msg': self._(u"Your scores could not be checked.")
             }
         except:
             return {
                 'success': False,
-                'msg': _(u"An unexpected error occurred.")
+                'msg': self._(u"An unexpected error occurred.")
             }
         else:
             try:
                 self.update_workflow_status()
             except AssessmentWorkflowError:
-                msg = _('Could not update workflow status.')
+                msg = self._('Could not update workflow status.')
                 logger.exception(msg)
                 return {'success': False, 'msg': msg}
             return {

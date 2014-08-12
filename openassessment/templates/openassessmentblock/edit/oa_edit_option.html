@@ -1,0 +1,50 @@
+{% load i18n %}
+{% spaceless %}
+<li class="openassessment_criterion_option" data-criterion="{{ criterion_name }}" data-option="{{ option_name }}">
+    <div class="openassessment_option_header">
+        <div class="openassessment_option_header_title">{% trans "Option" %}</div>
+        <div class="openassessment_criterion_option_remove_button">
+            <h2>{% trans "Remove" %}</h2>
+        </div>
+    </div>
+    <div class="wrapper-comp-settings">
+        <input type="hidden" class="openassessment_criterion_option_name" value="{{ option_name }}" />
+        <ul class="list-input settings-list">
+            <li class="field comp-setting-entry openassessment_criterion_option_name_wrapper">
+                <div class="wrapper-comp-setting">
+                    <label class="openassessment_criterion_option_name_label setting-label">
+                        {% trans "Option Name"%}
+                        <input
+                            class="openassessment_criterion_option_label input input-label"
+                            type="text"
+                            name="{{ option_name }}"
+                            value="{{ option_label }}"
+                        >
+                    </label>
+                </div>
+            </li>
+            <li class="field comp-setting-entry openassessment_criterion_option_point_wrapper">
+                <div class="wrapper-comp-setting">
+                    <label class="openassessment_criterion_option_points_label setting-label">
+                        {% trans "Option Points"%}
+                        <input
+                            class="openassessment_criterion_option_points input setting-input"
+                            type="number"
+                            value="{{ option_points }}"
+                            min="0" max="999"
+                        >
+                    </label>
+                </div>
+            </li>
+            <li class="field comp-setting-entry openassessment_criterion_option_explanation_wrapper">
+                <div class="wrapper-comp-setting">
+                    <label class="openassessment_criterion_option_explanation_label setting-label">
+                        {% trans "Option Explanation"%}
+                        <textarea class="openassessment_criterion_option_explanation setting-input" maxlength="10000">{{ option_explanation }}</textarea>
+                    </label>
+                </div>
+            </li>
+        </ul>
+    </div>
+</li>
+{% endspaceless %}

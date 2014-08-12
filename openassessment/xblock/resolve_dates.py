@@ -4,7 +4,6 @@ Resolve unspecified dates and date strings to datetimes.
 import datetime as dt
 import pytz
 from dateutil.parser import parse as parse_date
-from django.utils.translation import ugettext as _
 
 
 class InvalidDateFormat(Exception):
@@ -25,12 +24,14 @@ DISTANT_PAST = dt.datetime(dt.MINYEAR, 1, 1, tzinfo=pytz.utc)
 DISTANT_FUTURE = dt.datetime(dt.MAXYEAR, 1, 1, tzinfo=pytz.utc)
 
 
-def _parse_date(value):
+def _parse_date(value, _):
     """
     Parse an ISO formatted datestring into a datetime object with timezone set to UTC.
 
     Args:
         value (str or datetime): The ISO formatted date string or datetime object.
+        _ (function): The i18n service function used to get the appropriate
+            text for a message.
 
     Returns:
         datetime.datetime
@@ -51,7 +52,7 @@ def _parse_date(value):
         raise InvalidDateFormat(_("'{date}' must be a date string or datetime").format(date=value))
 
 
-def resolve_dates(start, end, date_ranges):
+def resolve_dates(start, end, date_ranges, _):
     """
     Resolve date strings (including "default" dates) to datetimes.
     The basic rules are:
@@ -124,6 +125,8 @@ def resolve_dates(start, end, date_ranges):
         end (str, ISO date format, or datetime): When the problem closes.  A value of None indicates that the problem never closes.
         date_ranges (list of tuples): list of (start, end) ISO date string tuples indicating
             the start/end timestamps (date string or datetime) of each submission/assessment.
+        _ (function): An i18n service function to use for retrieving the
+            proper text.
 
     Returns:
         start (datetime): The resolved start date
@@ -135,8 +138,8 @@ def resolve_dates(start, end, date_ranges):
         InvalidDateFormat
     """
     # Resolve problem start and end dates to minimum and maximum dates
-    start = _parse_date(start) if start is not None else DISTANT_PAST
-    end = _parse_date(end) if end is not None else DISTANT_FUTURE
+    start = _parse_date(start, _) if start is not None else DISTANT_PAST
+    end = _parse_date(end, _) if end is not None else DISTANT_FUTURE
     resolved_starts = []
     resolved_ends = []
 
@@ -162,11 +165,11 @@ def resolve_dates(start, end, date_ranges):
     # defaults.  See the docstring above for a more detailed justification.
     for step_start, step_end in date_ranges:
         if step_start is not None:
-            parsed_start = _parse_date(step_start)
+            parsed_start = _parse_date(step_start, _)
             start = min(start, parsed_start)
             end = max(end, parsed_start + dt.timedelta(milliseconds=1))
         if step_end is not None:
-            parsed_end = _parse_date(step_end)
+            parsed_end = _parse_date(step_end, _)
             end = max(end, parsed_end)
             start = min(start, parsed_end - dt.timedelta(milliseconds=1))
 
@@ -182,13 +185,13 @@ def resolve_dates(start, end, date_ranges):
         # If I set a start date for peer-assessment, but don't set a start date for the following self-assessment,
         # then the self-assessment should default to the same start date as the peer-assessment.
         step_start, __ = date_ranges[index]
-        step_start = _parse_date(step_start) if step_start is not None else prev_start
+        step_start = _parse_date(step_start, _) if step_start is not None else prev_start
 
         # Resolve "default" end dates to the following end date.
         # If I set a due date for self-assessment, but don't set a due date for the previous peer-assessment,
         # then the peer-assessment should default to the same due date as the self-assessment.
         __, step_end = date_ranges[reverse_index]
-        step_end = _parse_date(step_end) if step_end is not None else prev_end
+        step_end = _parse_date(step_end, _) if step_end is not None else prev_end
 
         if step_start < prev_start:
             msg = _(u"This step's start date '{start}' cannot be earlier than the previous step's start date '{prev}'.").format(

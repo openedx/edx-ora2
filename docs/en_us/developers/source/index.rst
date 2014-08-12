@@ -25,6 +25,15 @@ Developer Documentation
    architecture/index
 
 
+Migrating AI Problems to ORA2
+-----------------------------
+
+.. toctree::
+   :maxdepth: 2
+
+   migrate_ai
+
+
 
 API Documentation
 -----------------
