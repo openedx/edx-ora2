@@ -1,6 +1,6 @@
 {% load i18n %}
 {% spaceless %}
-<li id="openassessment__leaderboard" class="openassessment__steps__step step--leaderboard is--complete">
+<li id="openassessment__leaderboard" class="openassessment__steps__step step--leaderboard is--complete {% if allow_latex %} allow--latex{% endif %}">
     <header class="step__header">
         <h2 class="step__title">
             <span class="wrapper--copy">

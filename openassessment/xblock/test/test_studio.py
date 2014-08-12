@@ -23,6 +23,7 @@ class StudioViewTest(XBlockHandlerTestCase):
         "submission_start": "4014-02-10T09:46",
         "submission_due": "4014-02-27T09:46",
         "allow_file_upload": False,
+        "allow_latex": False,
         "leaderboard_show": 4,
         "assessments": [{"name": "self-assessment"}],
         "editor_assessments_order": [

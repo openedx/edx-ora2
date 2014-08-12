@@ -69,6 +69,8 @@ OpenAssessment.ResponseView.prototype = {
 
         var handlePrepareUpload = function(eventData) { view.prepareUpload(eventData.target.files); };
         sel.find('input[type=file]').on('change', handlePrepareUpload);
+        // keep the preview as display none at first 
+        sel.find('#submission__preview__item').hide();
 
         // Install a click handler for submission
         sel.find('#step--response__submit').click(
@@ -85,6 +87,23 @@ OpenAssessment.ResponseView.prototype = {
                 // Override default form submission
                 eventObject.preventDefault();
                 view.save();
+            }
+        );
+
+        // Install click handler for the preview button
+        sel.find('#submission__preview').click(
+            function(eventObject) {
+                eventObject.preventDefault();
+                // extract typed-in response and replace newline with br
+                var preview_text = sel.find('#submission__answer__value').val();
+                var preview_container = sel.find('#preview_content');
+                preview_container.html(preview_text.replace(/\r\n|\r|\n/g,"<br />"));
+
+                // Render in mathjax
+                sel.find('#submission__preview__item').show();
+                if (MathJax !== undefined && MathJax !== null) {
+                    MathJax.Hub.Queue(['Typeset', MathJax.Hub, preview_container[0]]);
+                }
             }
         );
 
@@ -173,6 +192,19 @@ OpenAssessment.ResponseView.prototype = {
         }
     },
 
+    /**
+    Enable/disable the preview button.
+
+    Works exactly the same way as saveEnabled method.
+    **/
+    previewEnabled: function(enabled) {
+        var sel = $('#submission__preview', this.element);
+        if (typeof enabled === 'undefined') {
+            return !sel.hasClass('is--disabled');
+        } else {
+            sel.toggleClass('is--disabled', !enabled);
+        }
+    },
     /**
     Set the save status message.
     Retrieve the save status message.
@@ -289,6 +321,7 @@ OpenAssessment.ResponseView.prototype = {
         // only if the response has changed
         if (this.responseChanged()) {
             this.saveEnabled(isBlank);
+            this.previewEnabled(isBlank);
             this.saveStatus(gettext('This response has not been saved.'));
             this.unsavedWarningEnabled(true);
         }

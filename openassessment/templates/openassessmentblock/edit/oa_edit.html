@@ -109,6 +109,16 @@
                     </div>
                     <p class="setting-help">{% trans "Specify whether students can submit an image file along with their text response." %}</p>
                 </li>
+                <li id="openassessment_submission_latex_wrapper" class="field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label for="openassessment_submission_latex_editor" class="setting-label">{% trans "Allow Latex Responses"%}</label>
+                        <select id="openassessment_submission_latex_editor" class="input setting-input" name="latex submission">
+                            <option value="0">{% trans "False"%}</option>
+                            <option value="1" {% if allow_latex %} selected="true" {% endif %}>{% trans "True"%}</option>
+                        </select>
+                    </div>
+                    <p class="setting-help">{% trans "Specify whether students can write Latex formatted strings"%}</p>
+                </li>
                 <li id="openassessment_leaderboard_wrapper" class="field comp-setting-entry">
                     <div class="wrapper-comp-setting">
                         <label for="openassessment_leaderboard_editor" class="setting-label">{% trans "Top Responses" %}</label>

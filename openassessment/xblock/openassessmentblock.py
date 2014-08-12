@@ -122,6 +122,12 @@ class OpenAssessmentBlock(
         help="File upload allowed with submission."
     )
 
+    allow_latex = Boolean(
+        default=False,
+        scope=Scope.settings,
+        help="Latex rendering allowed with submission."
+    )
+
     title = String(
         default="",
         scope=Scope.content,
@@ -399,6 +405,7 @@ class OpenAssessmentBlock(
         block.title = config['title']
         block.prompt = config['prompt']
         block.allow_file_upload = config['allow_file_upload']
+        block.allow_latex = config['allow_latex']
         block.leaderboard_show = config['leaderboard_show']
 
         return block
