@@ -1,24 +1,23 @@
 # edX translation file.
 # Copyright (C) 2014 EdX
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
-#
+# 
 # Translators:
+# ovoschee <all.spam.there@gmail.com>, 2014
 # Weyedide <weyedide@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-08 10:24-0400\n"
-"PO-Revision-Date: 2014-06-13 20:40+0000\n"
-"Last-Translator: Weyedide <weyedide@gmail.com>\n"
-"Language-Team: Russian (http://www.transifex.com/projects/p/edx-platform/"
-"language/ru/)\n"
-"Language: ru\n"
+"POT-Creation-Date: 2014-08-08 09:52-0400\n"
+"PO-Revision-Date: 2014-08-12 11:16+0000\n"
+"Last-Translator: ovoschee <all.spam.there@gmail.com>\n"
+"Language-Team: Russian (http://www.transifex.com/projects/p/edx-platform/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
@@ -181,8 +180,8 @@ msgstr ""
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:123
 msgid ""
 "You've deleted an option. The system has removed that option from its "
-"criterion in the sample responses in the Student Training step. You may have "
-"to select a new option for the criterion."
+"criterion in the sample responses in the Student Training step. You may have"
+" to select a new option for the criterion."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
@@ -212,6 +211,6 @@ msgstr ""
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:353
 msgid ""
-"Changes to steps that are not selected as part of the assignment will not be "
-"saved."
+"Changes to steps that are not selected as part of the assignment will not be"
+" saved."
 msgstr ""

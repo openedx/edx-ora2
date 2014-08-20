@@ -1,23 +1,24 @@
 # edX translation file.
 # Copyright (C) 2014 EdX
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
-#
+# 
 # Translators:
+# howard_liu <howard55662004@yahoo.com>, 2014
 # Lin Yu-Chun <iftwoplustwoequalsfive@gmail.com>, 2014
-# 徐琨閔 <qwer20108@gmail.com>, 2014
+# Xaver Y.R. Chen <yrchen@atcity.org>, 2014
+# KUN-MIN SYU <qwer20108@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-08 10:35-0400\n"
-"PO-Revision-Date: 2014-07-02 03:04+0000\n"
-"Last-Translator: 徐琨閔 <qwer20108@gmail.com>\n"
-"Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/edx-"
-"platform/language/zh_TW/)\n"
-"Language: zh_TW\n"
+"POT-Creation-Date: 2014-08-08 09:52-0400\n"
+"PO-Revision-Date: 2014-08-16 06:51+0000\n"
+"Last-Translator: KUN-MIN SYU <qwer20108@gmail.com>\n"
+"Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/edx-platform/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
@@ -77,13 +78,13 @@ msgstr "無法聯繫服務器。"
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:505
 msgid "Could not retrieve upload url."
-msgstr ""
+msgstr "無法找到上傳網址"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:526
 msgid "Could not retrieve download url."
-msgstr ""
+msgstr "無法找到下載網址"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_base.js:149
@@ -100,13 +101,12 @@ msgstr "您的回覆之狀態"
 msgid ""
 "If you leave this page without saving or submitting your response, you'll "
 "lose any work you've done on the response."
-msgstr ""
-"如果你不\"儲存\"或者\"提交\"回覆就離開，你可能會丟失掉所有你已完成的回覆。"
+msgstr "如果您不\"儲存\"或者\"提交\"回覆就離開，您可能會丟失掉所有您已完成的回覆。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:292
 msgid "This response has not been saved."
-msgstr "這一個回復還沒有被儲存。"
+msgstr "回覆尚未儲存。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:310
@@ -126,32 +126,32 @@ msgstr "錯誤"
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:432
 msgid "File size must be 5MB or less."
-msgstr ""
+msgstr "檔案必須小於5MB"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:436
 msgid "File must be an image."
-msgstr ""
+msgstr "檔案必須是圖像檔"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_container_item.js:39
 msgid "Unnamed Option"
-msgstr ""
+msgstr "未命名的選項"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_container_item.js:49
 msgid "Not Selected"
-msgstr ""
+msgstr "未選取"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:138
 msgid "Couldn't Save This Assignment"
-msgstr ""
+msgstr "不能儲存這作業"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:139
 msgid "Please correct the outlined fields."
-msgstr ""
+msgstr "請更正系統顯示的欄位。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:173
@@ -163,59 +163,56 @@ msgstr "此問題已經被釋出了。任何更改都只會在未來的評分中
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:75
 msgid "Criterion Added"
-msgstr ""
+msgstr " 增加評分標準"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:76
 msgid ""
 "You've added a criterion. You'll need to select an option for the criterion "
 "in the Student Training step. To do this, click the Settings tab."
-msgstr ""
+msgstr "您必須增加評分標準。您將會需要在學生練習步驟中選擇評分標準選項。請點選設定標識以完成此步驟。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:122
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:154
 msgid "Option Deleted"
-msgstr ""
+msgstr "刪除選項"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:123
 msgid ""
 "You've deleted an option. The system has removed that option from its "
-"criterion in the sample responses in the Student Training step. You may have "
-"to select a new option for the criterion."
-msgstr ""
+"criterion in the sample responses in the Student Training step. You may have"
+" to select a new option for the criterion."
+msgstr "您已經刪除 一個選項。在學生訓練步驟中，系統已經從範例回覆裡刪除評分標準中的選項。您必須為這評分標準選擇新的選項。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:155
 msgid ""
 "You've deleted all the options for this criterion. The system has removed "
 "the criterion from the sample responses in the Student Training step."
-msgstr ""
+msgstr "您已經刪除了這評分標準中所有的選項。在學生訓練步驟中，系統已經從範例回覆裡刪除評分標準。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:181
 msgid "Criterion Deleted"
-msgstr ""
+msgstr "刪除評分標準"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:182
 msgid ""
 "You've deleted a criterion. The system has removed the criterion from the "
 "sample responses in the Student Training step."
-msgstr ""
+msgstr "您已經刪除一個評分標準了。在學生訓練步驟中，系統已經從範例回覆裡刪除評分標準。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:352
 msgid "Warning"
-msgstr ""
+msgstr "警告"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:353
 msgid ""
-"Changes to steps that are not selected as part of the assignment will not be "
-"saved."
-msgstr ""
-
-#~ msgid "This problem could not be loaded."
-#~ msgstr "此問題無法加載。"
+"Changes to steps that are not selected as part of the assignment will not be"
+" saved."
+msgstr "您已取消選擇此評分步驟，這將使它不會被儲存。"
