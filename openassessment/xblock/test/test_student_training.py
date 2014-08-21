@@ -290,7 +290,8 @@ class StudentTrainingRenderTest(StudentTrainingTest):
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
         expected_template = "openassessmentblock/student_training/student_training_closed.html"
         expected_context = {
-            'training_due': "2000-01-01T00:00:00+00:00"
+            'training_due': "2000-01-01T00:00:00+00:00",
+            'allow_latex': False,
         }
         self.assert_path_and_context(xblock, expected_template, expected_context)
 
@@ -307,6 +308,7 @@ class StudentTrainingRenderTest(StudentTrainingTest):
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
         expected_template = "openassessmentblock/student_training/student_training_unavailable.html"
         expected_context = {
-            'training_start': datetime.datetime(3000, 1, 1).replace(tzinfo=pytz.utc)
+            'training_start': datetime.datetime(3000, 1, 1).replace(tzinfo=pytz.utc),
+            'allow_latex': False,
         }
         self.assert_path_and_context(xblock, expected_template, expected_context)
