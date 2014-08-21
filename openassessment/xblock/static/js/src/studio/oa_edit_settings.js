@@ -141,6 +141,25 @@ OpenAssessment.EditSettingsView.prototype = {
     },
 
     /**
+    Enable / disable latex rendering.
+
+    Args: 
+        isEnabled(boolean, optional): if provided enable/disable latex rendering
+    Returns:
+        boolean
+    **/
+    latexEnabled: function(isEnabled) {
+        var sel = $('#openassessment_submission_latex_editor', this.settingsElement);
+        if (isEnabled !== undefined) {
+            if (isEnabled) {
+                sel.val(1);
+            } else {
+                sel.val(0)
+            }
+        }
+        return (sel.val() == 1);
+    },
+    /**
     Get or set the number of scores to show in the leaderboard.
     If set to 0, the leaderboard will not be shown.
 

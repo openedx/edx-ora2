@@ -102,7 +102,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'allow_file_upload': False,
                 'submission_start': dt.datetime(4999, 4, 1).replace(tzinfo=pytz.utc),
                 'has_peer': True,
-                'has_self': True
+                'has_self': True,
+                'allow_latex': False,
             }
         )
 
@@ -123,7 +124,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'student_submission': submission,
                 'allow_file_upload': False,
                 'has_peer': True,
-                'has_self': True
+                'has_self': True,
+                'allow_latex': False,
             }
         )
 
@@ -138,7 +140,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'submit_enabled': False,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'has_peer': True,
-                'has_self': True
+                'has_self': True,
+                'allow_latex': False,
             }
         )
 
@@ -152,7 +155,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'save_status': 'This response has not been saved.',
                 'submit_enabled': False,
                 'has_peer': True,
-                'has_self': False
+                'has_self': False,
+                'allow_latex': False,
             }
         )
 
@@ -172,7 +176,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'submit_enabled': True,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'has_peer': True,
-                'has_self': True
+                'has_self': True,
+                'allow_latex': False,
             }
         )
 
@@ -189,7 +194,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'student_submission': submission,
                 'allow_file_upload': False,
                 'has_peer': True,
-                'has_self': True
+                'has_self': True,
+                'allow_latex': False,
             }
         )
 
@@ -201,7 +207,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'allow_file_upload': False,
                 'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
                 'has_peer': False,
-                'has_self': True
+                'has_self': True,
+                'allow_latex': False,
             }
         )
 
@@ -218,7 +225,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'student_submission': submission,
                 'allow_file_upload': False,
                 'has_peer': False,
-                'has_self': True
+                'has_self': True,
+                'allow_latex': False,
             }
         )
 
@@ -243,7 +251,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'student_submission': submission,
                 'allow_file_upload': False,
                 'has_peer': True,
-                'has_self': True
+                'has_self': True,
+                'allow_latex': False,
             }
         )
 
@@ -268,7 +277,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'student_submission': submission,
                 'allow_file_upload': False,
                 'has_peer': False,
-                'has_self': True
+                'has_self': True,
+                'allow_latex': False,
             }
         )
 

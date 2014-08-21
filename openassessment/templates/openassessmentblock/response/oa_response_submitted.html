@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block list_item %}
-<li id="openassessment__response" class="openassessment__steps__step step--response is--complete ui-toggle-visibility is--collapsed">
+<li id="openassessment__response" class="openassessment__steps__step step--response is--complete ui-toggle-visibility is--collapsed {% if allow_latex %}allow--latex{%endif%}">
 {% endblock %}
 
 {% block title %}

@@ -541,6 +541,7 @@
         display: block;
         text-align: center;
         margin-bottom: ($baseline-v/2);
+        min-width: 215px;
 
         @include media($bp-ds) {
           display: inline-block;
