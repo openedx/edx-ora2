@@ -32,6 +32,7 @@ describe("OpenAssessment.Server", function() {
 
     var PROMPT = "Hello this is the prompt yes.";
     var FEEDBACK_PROMPT = "Prompt for feedback";
+    var FEEDBACK_DEFAULT_TEXT = "Default feedback response text";
 
     var RUBRIC = '<rubric>'+
         '<criterion>'+
@@ -234,6 +235,7 @@ describe("OpenAssessment.Server", function() {
         server.updateEditorContext({
             prompt: PROMPT,
             feedbackPrompt: FEEDBACK_PROMPT,
+            feedback_default_text: FEEDBACK_DEFAULT_TEXT,
             title: TITLE,
             submissionStart: SUBMISSION_START,
             submissionDue: SUBMISSION_DUE,
@@ -248,6 +250,7 @@ describe("OpenAssessment.Server", function() {
             data: JSON.stringify({
                 prompt: PROMPT,
                 feedback_prompt: FEEDBACK_PROMPT,
+                feedback_default_text: FEEDBACK_DEFAULT_TEXT,
                 title: TITLE,
                 submission_start: SUBMISSION_START,
                 submission_due: SUBMISSION_DUE,

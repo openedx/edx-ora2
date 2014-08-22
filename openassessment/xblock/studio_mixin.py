@@ -10,7 +10,7 @@ from voluptuous import MultipleInvalid
 from xblock.core import XBlock
 from xblock.fields import List, Scope
 from xblock.fragment import Fragment
-from openassessment.xblock.defaults import DEFAULT_EDITOR_ASSESSMENTS_ORDER
+from openassessment.xblock.defaults import DEFAULT_EDITOR_ASSESSMENTS_ORDER, DEFAULT_RUBRIC_FEEDBACK_TEXT
 from openassessment.xblock.validation import validator
 from openassessment.xblock.data_conversion import create_rubric_dict, make_django_template_key
 from openassessment.xblock.schema import EDITOR_UPDATE_SCHEMA
@@ -105,6 +105,12 @@ class StudioMixin(object):
         if not criteria:
             criteria = self.DEFAULT_CRITERIA
 
+        # To maintain backwards compatibility, if there is no 
+        # feedback_default_text configured for the xblock, use the default text
+        feedback_default_text = copy.deepcopy(self.rubric_feedback_default_text)
+        if not feedback_default_text:
+            feedback_default_text = DEFAULT_RUBRIC_FEEDBACK_TEXT
+
         return {
             'prompt': self.prompt,
             'title': self.title,
@@ -113,6 +119,7 @@ class StudioMixin(object):
             'assessments': assessments,
             'criteria': criteria,
             'feedbackprompt': self.rubric_feedback_prompt,
+            'feedback_default_text': feedback_default_text,
             'allow_file_upload': self.allow_file_upload,
             'leaderboard_show': self.leaderboard_show,
             'editor_assessments_order': [
@@ -202,6 +209,7 @@ class StudioMixin(object):
         self.rubric_assessments = data['assessments']
         self.editor_assessments_order = data['editor_assessments_order']
         self.rubric_feedback_prompt = data['feedback_prompt']
+        self.rubric_feedback_default_text = data['feedback_default_text']
         self.submission_start = data['submission_start']
         self.submission_due = data['submission_due']
         self.allow_file_upload = bool(data['allow_file_upload'])

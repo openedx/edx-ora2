@@ -100,6 +100,7 @@ class TestSerializeContent(TestCase):
         self.oa_block.title = data.get('title', '')
         self.oa_block.prompt = data.get('prompt')
         self.oa_block.rubric_feedback_prompt = data.get('rubric_feedback_prompt')
+        self.oa_block.rubric_feedback_default_text = data.get('rubric_feedback_default_text')
         self.oa_block.start = _parse_date(data.get('start'))
         self.oa_block.due = _parse_date(data.get('due'))
         self.oa_block.submission_start = data.get('submission_start')

@@ -69,6 +69,7 @@ EDITOR_UPDATE_SCHEMA = Schema({
     Required('prompt'): utf8_validator,
     Required('title'): utf8_validator,
     Required('feedback_prompt'): utf8_validator,
+    Required('feedback_default_text'): utf8_validator,
     Required('submission_start'): Any(datetime_validator, None),
     Required('submission_due'): Any(datetime_validator, None),
     Required('allow_file_upload'): bool,

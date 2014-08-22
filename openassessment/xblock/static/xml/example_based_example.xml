@@ -65,5 +65,8 @@
         <feedbackprompt>
             (Optional) What aspects of this response stood out to you? What did it do well? How could it improve?
         </feedbackprompt>
+        <feedback_default_text>
+            I noticed that this response...
+        </feedback_default_text>
     </rubric>
 </openassessment>

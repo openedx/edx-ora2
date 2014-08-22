@@ -3,6 +3,7 @@
         "prompt": "My new prompt.",
         "title": "My new title.",
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "allow_file_upload": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -26,6 +27,7 @@
 
     "no_prompt": {
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "allow_file_upload": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -124,6 +126,7 @@
 
     "no_submission_due": {
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "prompt": "Test Prompt",
         "allow_file_upload": false,
         "leaderboard_show": 0,
@@ -173,6 +176,7 @@
 
     "invalid_dates": {
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "prompt": "Test Prompt",
         "allow_file_upload": false,
         "leaderboard_show": 0,
@@ -224,6 +228,7 @@
 
     "invalid_dates_two": {
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "prompt": "Test Prompt",
         "allow_file_upload": false,
         "leaderboard_show": 0,
@@ -275,6 +280,7 @@
 
     "order_num_is_string": {
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "prompt": "Test Prompt",
         "allow_file_upload": false,
         "leaderboard_show": 0,
@@ -318,6 +324,7 @@
 
     "feedback_missing": {
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "prompt": "Test Prompt",
         "allow_file_upload": false,
         "leaderboard_show": 0,
@@ -360,6 +367,7 @@
 
     "criterion_not_a_dict": {
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "prompt": "prompty",
         "allow_file_upload": false,
         "leaderboard_show": 0,
@@ -381,6 +389,7 @@
 
     "criteria_missing_keys": {
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "prompt": "Test Prompt",
         "allow_file_upload": false,
         "leaderboard_show": 0,
@@ -423,6 +432,7 @@
 
     "options_not_a_list": {
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "prompt": "Test Prompt",
         "allow_file_upload": false,
         "leaderboard_show": 0,
@@ -451,6 +461,7 @@
 
     "option_not_a_dictionary": {
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "prompt": "Test Prompt",
         "allow_file_upload": false,
         "leaderboard_show": 0,
@@ -488,6 +499,7 @@
 
     "option_missing_keys": {
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "prompt": "Test Prompt",
         "allow_file_upload": false,
         "leaderboard_show": 0,
@@ -530,6 +542,7 @@
 
     "option_points_must_be_int": {
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "prompt": "Test Prompt",
         "allow_file_upload": false,
         "leaderboard_show": 0,
@@ -571,6 +584,7 @@
 
     "allow_file_upload_must_be_boolean": {
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "prompt": "Test Prompt",
         "allow_file_upload": 6,
         "criteria": [
@@ -611,6 +625,7 @@
 
     "allow_file_upload_null": {
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "prompt": "Test Prompt",
         "allow_file_upload": null,
         "criteria": [
@@ -679,6 +694,7 @@
         ],
         "prompt": "My new prompt.",
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
@@ -734,6 +750,7 @@
         ],
         "prompt": "My new prompt.",
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
@@ -787,6 +804,7 @@
         ],
         "prompt": "My new prompt.",
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
@@ -843,6 +861,7 @@
         ],
         "prompt": "My new prompt.",
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
@@ -899,6 +918,7 @@
         ],
         "prompt": "My new prompt.",
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
@@ -949,6 +969,7 @@
         ],
         "prompt": "My new prompt.",
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
@@ -1006,6 +1027,7 @@
         ],
         "prompt": "My new prompt.",
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
@@ -1055,6 +1077,7 @@
         ],
         "prompt": "My new prompt.",
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
@@ -1105,6 +1128,7 @@
         ],
         "prompt": "My new prompt.",
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
@@ -1134,6 +1158,7 @@
     "no_criteria_name": {
         "prompt": "Test Prompt",
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "allow_file_upload": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -1183,6 +1208,7 @@
     "no_option_name": {
         "prompt": "Test Prompt",
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "allow_file_upload": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -1232,6 +1258,7 @@
     "criteria_names_not_unique": {
         "prompt": "Test Prompt",
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "allow_file_upload": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -1304,6 +1331,7 @@
         "expected_error": "validation error: options",
         "prompt": "Test Prompt",
         "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
         "allow_file_upload": false,
         "leaderboard_show": 0,
         "criteria": [
