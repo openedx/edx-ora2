@@ -101,9 +101,7 @@ OpenAssessment.ResponseView.prototype = {
 
                 // Render in mathjax
                 sel.find('#submission__preview__item').show();
-                if (MathJax !== undefined && MathJax !== null) {
-                    MathJax.Hub.Queue(['Typeset', MathJax.Hub, preview_container[0]]);
-                }
+                MathJax.Hub.Queue(['Typeset', MathJax.Hub, preview_container[0]]);
             }
         );
 

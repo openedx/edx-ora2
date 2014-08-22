@@ -52,9 +52,6 @@ OpenAssessment.PeerView.prototype = {
                 // Load the HTML and install event handlers
                 $('#openassessment__peer-assessment', view.element).replaceWith(html);
                 view.installHandlers(true);
-                if (MathJax != undefined && MathJax != null) {
-                    MathJax.Hub.Typeset($('#openassessment__peer-assessment', view.element)[0]);
-                }
             }
         ).fail(function(errMsg) {
             view.baseView.showLoadError('peer-assessment');

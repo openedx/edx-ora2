@@ -64,9 +64,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
                     dataType: "html"
                 }).done(function(data) {
                     defer.resolveWith(this, [data]);
-                    if (window.MathJax) {
-                        that.renderLatex(); 
-                    }
+                    that.renderLatex(data);
                 }).fail(function(data) {
                     defer.rejectWith(this, [gettext('This section could not be loaded.')]);
                 });
@@ -75,17 +73,16 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
 
         /**
         Render Latex for all new DOM elements with class 'allow--latex'.
-        Once rendered, remove the class so that a single element does
-        not get rendered multiple times.
+
+        Args:
+            element: The element to modify.
         **/
-        renderLatex: function() {
-            var i, latex_elems = $('.allow--latex');
-            if (latex_elems && latex_elems.length !== 0) {
-                for (i = 0; i < latex_elems.length; i++) {
-                    MathJax.Hub.Queue(['Typeset', MathJax.Hub, latex_elems[i]]);
+        renderLatex: function(element) {
+            $('.allow--latex', element).each(
+                function() {
+                    MathJax.Hub.Queue(['Typeset', MathJax.Hub, this]);
                 }
-            }
-            latex_elems.removeClass('allow--latex');
+            );
         },
 
         /**
@@ -104,6 +101,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
             )
          **/
         renderContinuedPeer: function() {
+            var view = this;
             var url = this.url('render_peer_assessment');
             return $.Deferred(function(defer) {
                 $.ajax({
@@ -113,6 +111,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
                     data: {continue_grading: true}
                 }).done(function(data) {
                         defer.resolveWith(this, [data]);
+                        view.renderLatex(data);
                     }).fail(function(data) {
                         defer.rejectWith(this, [gettext('This section could not be loaded.')]);
                     });
