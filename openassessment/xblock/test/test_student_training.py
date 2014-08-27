@@ -24,7 +24,6 @@ class StudentTrainingTest(XBlockHandlerTestCase):
         'submission': u'Thé őbjéćt őf édúćátíőń íś tő téáćh úś tő ĺővé ẃhát íś béáútífúĺ.'
     }
 
-
     def assert_path_and_context(self, xblock, expected_path, expected_context):
         """
         Render the student training step and verify that the expected template
@@ -49,7 +48,7 @@ class StudentTrainingTest(XBlockHandlerTestCase):
             else:
                 self.assertEqual(context[key], expected_context[key])
 
-            # Verify that we render without error
+        # Verify that we render without error
         resp = self.request(xblock, 'render_student_training', json.dumps({}))
         self.assertGreater(len(resp), 0)
 
@@ -163,7 +162,7 @@ class StudentTrainingAssessTest(StudentTrainingTest):
         # Expect that we were correct
         self.assertTrue(resp['success'], msg=resp.get('msg'))
         self.assertFalse(resp['corrections'])
-        expected_context = {}
+        expected_context = {"allow_latex": False}
         expected_template = "openassessmentblock/student_training/student_training_complete.html"
         self.assert_path_and_context(xblock, expected_template, expected_context)
 
@@ -290,7 +289,8 @@ class StudentTrainingRenderTest(StudentTrainingTest):
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
         expected_template = "openassessmentblock/student_training/student_training_closed.html"
         expected_context = {
-            'training_due': "2000-01-01T00:00:00+00:00"
+            'training_due': "2000-01-01T00:00:00+00:00",
+            'allow_latex': False,
         }
         self.assert_path_and_context(xblock, expected_template, expected_context)
 
@@ -307,6 +307,7 @@ class StudentTrainingRenderTest(StudentTrainingTest):
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
         expected_template = "openassessmentblock/student_training/student_training_unavailable.html"
         expected_context = {
-            'training_start': datetime.datetime(3000, 1, 1).replace(tzinfo=pytz.utc)
+            'training_start': datetime.datetime(3000, 1, 1).replace(tzinfo=pytz.utc),
+            'allow_latex': False,
         }
         self.assert_path_and_context(xblock, expected_template, expected_context)

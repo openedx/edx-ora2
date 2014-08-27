@@ -37,3 +37,14 @@ if (typeof window.Logger === 'undefined') {
         log: function(event_type, data, kwargs) {}
     };
 }
+
+
+// Stub MathJax is the runtime doesn't provide it
+if (typeof window.MathJax === 'undefined') {
+    window.MathJax = {
+        Hub: {
+            Typeset: function(data){},
+            Queue: function(list){}
+        }
+    };
+}

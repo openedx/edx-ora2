@@ -55,6 +55,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
             )
         **/
         render: function(component) {
+            var that = this;
             var url = this.url('render_' + component);
             return $.Deferred(function(defer) {
                 $.ajax({
@@ -63,10 +64,25 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
                     dataType: "html"
                 }).done(function(data) {
                     defer.resolveWith(this, [data]);
+                    that.renderLatex(data);
                 }).fail(function(data) {
                     defer.rejectWith(this, [gettext('This section could not be loaded.')]);
                 });
             }).promise();
+        },
+
+        /**
+        Render Latex for all new DOM elements with class 'allow--latex'.
+
+        Args:
+            element: The element to modify.
+        **/
+        renderLatex: function(element) {
+            $('.allow--latex', element).each(
+                function() {
+                    MathJax.Hub.Queue(['Typeset', MathJax.Hub, this]);
+                }
+            );
         },
 
         /**
@@ -85,6 +101,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
             )
          **/
         renderContinuedPeer: function() {
+            var view = this;
             var url = this.url('render_peer_assessment');
             return $.Deferred(function(defer) {
                 $.ajax({
@@ -94,6 +111,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
                     data: {continue_grading: true}
                 }).done(function(data) {
                         defer.resolveWith(this, [data]);
+                        view.renderLatex(data);
                     }).fail(function(data) {
                         defer.rejectWith(this, [gettext('This section could not be loaded.')]);
                     });
@@ -419,6 +437,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
             criteria (list of object literals): The rubric criteria.
             assessments (list of object literals): The assessments the student will be evaluated on.
             imageSubmissionEnabled (boolean): TRUE if image attachments are allowed.
+            latexEnabled: TRUE if latex rendering is enabled.
             leaderboardNum (int): The number of scores to show in the leaderboard.
 
         Returns:
@@ -439,6 +458,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
                 assessments: kwargs.assessments,
                 editor_assessments_order: kwargs.editorAssessmentsOrder,
                 allow_file_upload: kwargs.imageSubmissionEnabled,
+                allow_latex: kwargs.latexEnabled,
                 leaderboard_show: kwargs.leaderboardNum
             });
             return $.Deferred(function(defer) {

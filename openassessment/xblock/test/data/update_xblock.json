@@ -32,6 +32,7 @@
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -83,6 +84,7 @@
         "submission_start": "4014-02-10T09:46",
         "title": "ɯʎ uǝʍ ʇıʇןǝ",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -134,6 +136,7 @@
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
             {
@@ -196,6 +199,7 @@
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "allow_file_upload": false,
+        "allow_latex": false,
         "leaderboard_show": 0,
         "title": "My new title.",
         "assessments": [

@@ -171,7 +171,8 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
             xblock,
             'openassessmentblock/leaderboard/oa_leaderboard_show.html',
             {
-                'topscores': scores
+                'topscores': scores,
+                'allow_latex': xblock.allow_latex,
             },
             workflow_status='done'
         )

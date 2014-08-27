@@ -80,7 +80,9 @@ class LeaderboardMixin(object):
             else:
                 score['content'] = ""
 
-        context = { 'topscores': scores }
+        context = { 'topscores': scores,
+                    'allow_latex': self.allow_latex,
+                  }
         return ('openassessmentblock/leaderboard/oa_leaderboard_show.html', context)
 
     def render_leaderboard_incomplete(self):

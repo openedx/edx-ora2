@@ -121,6 +121,7 @@ class StudioMixin(object):
             'feedbackprompt': self.rubric_feedback_prompt,
             'feedback_default_text': feedback_default_text,
             'allow_file_upload': self.allow_file_upload,
+            'allow_latex': self.allow_latex,
             'leaderboard_show': self.leaderboard_show,
             'editor_assessments_order': [
                 make_django_template_key(asmnt)
@@ -213,6 +214,7 @@ class StudioMixin(object):
         self.submission_start = data['submission_start']
         self.submission_due = data['submission_due']
         self.allow_file_upload = bool(data['allow_file_upload'])
+        self.allow_latex = bool(data['allow_latex'])
         self.leaderboard_show = data['leaderboard_show']
 
         return {'success': True, 'msg': self._(u'Successfully updated OpenAssessment XBlock')}
