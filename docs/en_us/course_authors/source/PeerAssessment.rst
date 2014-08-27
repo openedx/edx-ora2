@@ -47,6 +47,7 @@ The **prompt**, or question that you want your students to answer, appears near 
    :width: 500
    :alt: ORA question and blank response field
 
+.. note:: If students upload an image, the image file must be a .jpg or .png file, and it must be smaller than 5 MB in size.
 
 When you write your question, you can include helpful information for your students, such as what students can expect after they submit responses and the approximate number of words or sentences that a student's response should have. (A response cannot have more than 10,000 words.) 
 

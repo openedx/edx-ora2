@@ -68,6 +68,7 @@ To allow students to submit an image with a response:
 
 .. note:: 
  
+   * The image file must be a .jpg or .png file, and it must be smaller than 5 MB in size.
    * Currently, course teams cannot see any of the images that students submit. Images are not visible in the body of the assignment in the courseware, and they are not included in the course data package.
    * You can allow students to upload an image, but you cannot require it.
    * Students can only submit one image with a response.
