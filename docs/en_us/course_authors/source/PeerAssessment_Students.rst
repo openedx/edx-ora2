@@ -91,6 +91,8 @@ To upload your image:
 #. In the dialog box that opens, select the file that you want, and then click **Open**.
 #. When the dialog box closes, click **Upload Your Image**.
 
+..note:: The image file must be a .jpg or .png file, and it must be smaller than 5 MB in size.
+
 Your image appears below the response field, and the name of the image file appears next to the **Choose File** button. If you want to change the image, follow steps 1-3 again. You can only upload one image.
 
 .. image:: /Images/PA_Upload_WithImage.png
