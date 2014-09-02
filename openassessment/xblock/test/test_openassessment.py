@@ -4,7 +4,7 @@ Tests the Open Assessment XBlock functionality.
 from collections import namedtuple
 import datetime as dt
 import pytz
-from mock import Mock, patch
+from mock import Mock, patch, MagicMock
 
 from openassessment.xblock import openassessmentblock
 from openassessment.xblock.resolve_dates import DISTANT_PAST, DISTANT_FUTURE
@@ -395,23 +395,22 @@ class TestDates(XBlockHandlerTestCase):
 
     @scenario('data/basic_scenario.xml')
     def test_is_released_unpublished(self, xblock):
-        # Simulate the runtime published_date mixin field
         # The scenario doesn't provide a start date, so `is_released()`
-        # should be controlled only by the published date.
-        xblock.published_date = None
+        # should be controlled only by the published state.
+        xblock.runtime.modulestore = MagicMock()
+        xblock.runtime.modulestore.has_published_version.return_value = False
         self.assertFalse(xblock.is_released())
 
     @scenario('data/basic_scenario.xml')
     def test_is_released_published(self, xblock):
-        # Simulate the runtime published_date mixin field
         # The scenario doesn't provide a start date, so `is_released()`
-        # should be controlled only by the published date.
-        xblock.published_date = dt.datetime(2013, 1, 1).replace(tzinfo=pytz.utc)
+        # should be controlled only by the published state which defaults to True
+        xblock.runtime.modulestore = MagicMock()
+        xblock.runtime.modulestore.has_published_version.return_value = True
         self.assertTrue(xblock.is_released())
 
     @scenario('data/basic_scenario.xml')
-    def test_is_released_no_published_date_field(self, xblock):
-        # If the runtime doesn't provide a published_date field, assume we've been published
+    def test_is_released_no_ms(self, xblock):
         self.assertTrue(xblock.is_released())
 
     @scenario('data/basic_scenario.xml')
@@ -419,13 +418,13 @@ class TestDates(XBlockHandlerTestCase):
         # Simulate being course staff
         xblock.xmodule_runtime = Mock(user_is_staff=True)
 
-        # Not published, should be not released
-        xblock.published_date = None
-        self.assertFalse(xblock.is_released())
-
         # Published, should be released
-        xblock.published_date = dt.datetime(2013, 1, 1).replace(tzinfo=pytz.utc)
         self.assertTrue(xblock.is_released())
+
+        # Not published, should be not released
+        xblock.runtime.modulestore = MagicMock()
+        xblock.runtime.modulestore.has_published_version.return_value = False
+        self.assertFalse(xblock.is_released())
 
     @scenario('data/staff_dates_scenario.xml')
     def test_course_staff_dates(self, xblock):

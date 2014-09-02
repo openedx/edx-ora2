@@ -7,6 +7,7 @@ import json
 import datetime as dt
 import pytz
 from ddt import ddt, file_data
+from mock import MagicMock
 from .base import scenario, XBlockHandlerTestCase
 
 
@@ -125,7 +126,8 @@ class StudioViewTest(XBlockHandlerTestCase):
     @file_data('data/update_xblock.json')
     @scenario('data/basic_scenario.xml')
     def test_update_editor_context(self, xblock, data):
-        xblock.published_date = None
+        xblock.runtime.modulestore = MagicMock()
+        xblock.runtime.modulestore.has_published_version.return_value = False
         resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
         self.assertTrue(resp['success'], msg=resp.get('msg'))
 
@@ -143,7 +145,8 @@ class StudioViewTest(XBlockHandlerTestCase):
             "peer-assessment",
             "self-assessment",
         ]
-        xblock.published_date = None
+        xblock.runtime.modulestore = MagicMock()
+        xblock.runtime.modulestore.has_published_version.return_value = False
         resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
         self.assertTrue(resp['success'], msg=resp.get('msg'))
         self.assertEqual(xblock.editor_assessments_order, data['editor_assessments_order'])
@@ -163,7 +166,8 @@ class StudioViewTest(XBlockHandlerTestCase):
             "peer-assessment",
             "self-assessment",
             ]
-        xblock.published_date = None
+        xblock.runtime.modulestore = MagicMock()
+        xblock.runtime.modulestore.has_published_version.return_value = False
         resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
         self.assertTrue(resp['success'], msg=resp.get('msg'))
         self.assertEqual(xblock.editor_assessments_order, data['editor_assessments_order'])
@@ -172,7 +176,8 @@ class StudioViewTest(XBlockHandlerTestCase):
     def test_update_editor_context_saves_leaderboard(self, xblock):
         data = copy.deepcopy(self.UPDATE_EDITOR_DATA)
         data['leaderboard_show'] = 42
-        xblock.published_date = None
+        xblock.runtime.modulestore = MagicMock()
+        xblock.runtime.modulestore.has_published_version.return_value = False
         resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
         self.assertTrue(resp['success'], msg=resp.get('msg'))
         self.assertEqual(xblock.leaderboard_show, 42)
@@ -187,7 +192,8 @@ class StudioViewTest(XBlockHandlerTestCase):
         else:
             expected_error = 'error updating xblock configuration'
 
-        xblock.published_date = None
+        xblock.runtime.modulestore = MagicMock()
+        xblock.runtime.modulestore.has_published_version.return_value = False
         resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
         self.assertFalse(resp['success'])
         self.assertIn(expected_error, resp['msg'].lower())
@@ -225,7 +231,8 @@ class StudioViewTest(XBlockHandlerTestCase):
         self.assertIn('msg', resp)
 
         # Set the problem to unpublished with a start date in the future
-        xblock.published_date = None
+        xblock.runtime.modulestore = MagicMock()
+        xblock.runtime.modulestore.has_published_version.return_value = False
         xblock.start = dt.datetime(3000, 1, 1).replace(tzinfo=pytz.utc)
         resp = self.request(xblock, 'check_released', json.dumps(""), response_format='json')
         self.assertTrue(resp['success'])
