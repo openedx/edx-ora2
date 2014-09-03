@@ -1,8 +1,12 @@
 language: python
 python:
   - "2.7"
+env:
+  - DJANGO_VERSION=1.4.15
+  - DJANGO_VERSION=1.5.10
 install:
   - "pip install coveralls"
+  - "pip install -q Django==$DJANGO_VERSION"
   - "make install"
 before_script:
   - "export DISPLAY=:99.0"
