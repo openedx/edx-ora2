@@ -639,7 +639,10 @@ class OpenAssessmentBlock(
             bool
         """
         # By default, assume that we're published, in case the runtime doesn't support publish date.
-        is_published = getattr(self, 'published_date', True) is not None
+        if hasattr(self.runtime, 'modulestore'):
+            is_published = self.runtime.modulestore.has_published_version(self)
+        else:
+            is_published = True
         is_closed, reason, __, __ = self.is_closed(step=step)
         return is_published and (not is_closed or reason == 'due')
 
