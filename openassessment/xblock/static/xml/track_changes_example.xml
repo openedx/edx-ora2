@@ -109,6 +109,7 @@
                     due="2015-12-21T22:22-7:00"
                     must_grade="2"
                     must_be_graded_by="2"
-                    track_changes="http://d5j76nbt6pruj.cloudfront.net/ice-master.min.js"/>
+                    track_changes="http://example.org/track_changes.js"
+        />
     </assessments>
 </openassessment>
