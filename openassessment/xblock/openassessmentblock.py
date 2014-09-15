@@ -146,10 +146,10 @@ class OpenAssessmentBlock(
         help="A prompt to display to a student (plain text)."
     )
 
-    track_changes = String(
-        default="",
+    track_changes = Boolean(
+        default=False,
         scope=Scope.content,
-        help="URL to track changes library, currently ICE"
+        help="Whether to enable change tracking on peer assessments."
     )
 
     rubric_criteria = List(
@@ -276,10 +276,10 @@ class OpenAssessmentBlock(
         frag.add_css(load("static/css/openassessment.css"))
         frag.add_javascript(load("static/js/openassessment-lms.min.js"))
 
-        track_changes_fragments = set([x['track_changes'] for x in ui_models if x.get('track_changes', None)])
-        if any(track_changes_fragments):
-            for tr_frag in track_changes_fragments:
-                frag.add_javascript_url(tr_frag) # TODO: move the URL to course advanced setting
+        tr_frag = self.runtime.platform_settings.get('ORA2_TRACKCHANGES_URL', '')
+        tr_configured_anywhere = any((m.get('track_changes', False) for m in ui_models))
+        if tr_frag and tr_configured_anywhere:
+            frag.add_javascript_url(tr_frag)
             frag.add_css(load("static/css/trackchanges.css"))
 
         frag.initialize_js('OpenAssessmentBlock')

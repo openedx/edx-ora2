@@ -201,7 +201,7 @@ class PeerAssessmentMixin(object):
                     "Submit your assessment & move to response #{response_number}"
                 ).format(response_number=(count + 2))
 
-            context_dict['track_changes'] = assessment.get('track_changes', '')
+            context_dict['track_changes'] = assessment.get('track_changes', False)
 
         # Once a student has completed a problem, it stays complete,
         # so this condition needs to be first.

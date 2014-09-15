@@ -82,7 +82,7 @@ EDITOR_UPDATE_SCHEMA = Schema({
             Required('due', default=None): Any(datetime_validator, None),
             'must_grade': All(int, Range(min=0)),
             'must_be_graded_by': All(int, Range(min=0)),
-            'track_changes': utf8_validator,
+            'track_changes': bool,
             'examples': [
                 Schema({
                     Required('answer'): utf8_validator,

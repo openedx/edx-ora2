@@ -1,6 +1,7 @@
 """
 Grade step in the OpenAssessment XBlock.
 """
+import bleach
 import copy
 from collections import defaultdict
 from lazy import lazy
@@ -355,6 +356,12 @@ class GradeMixin(object):
         track_changes = TrackChanges.objects.filter(scorer_id = assessment['scorer_id'],
                 owner_submission_uuid = assessment['submission_uuid'])
         if track_changes:
-            assessment['track_changes'] = track_changes.get().edited_content
+            # In case malicious HTML should find its way into the TrackChanges
+            # store, here we restrict output to the tags TrackChanges needs to
+            # function.
+            assessment['track_changes'] = bleach.clean(track_changes.get().edited_content, 
+                                                       tags=['p', 'span'], 
+                                                       attributes=["*", "class", "data-userid", 
+                                                                   "data-cid", "data-username", "data-time"])
 
         return assessment

@@ -19,7 +19,7 @@ OpenAssessment.EditPeerAssessmentView = function(element) {
         $("#peer_assessment_graded_by", this.element),
         { min: 0, max: 99 }
     );
-    this.trackChangesField = new OpenAssessment.Fields.stringField(
+    this.trackChangesField = new OpenAssessment.Fields.booleanField(
         $("#peer_assessment_track_changes", this.element)
     );
 
@@ -124,9 +124,9 @@ OpenAssessment.EditPeerAssessmentView.prototype = {
         return this.mustBeGradedByField.get();
     },
 
-    trackChanges: function(text) {
+    trackChanges: function(val) {
         var sel = $("#peer_assessment_track_changes", this.element);
-        return OpenAssessment.Fields.stringField(sel, text);
+        return OpenAssessment.Fields.booleanField(sel, val);
     },
 
     /**
