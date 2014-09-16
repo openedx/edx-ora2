@@ -6,7 +6,7 @@
 git+https://github.com/edx/XBlock.git@fc5fea25c973ec66d8db63cf69a817ce624f5ef5#egg=XBlock
 git+https://github.com/edx/xblock-sdk.git@643900aadcb18aaeb7fe67271ca9dbf36e463ee6#egg=xblock-sdk
 
-edx-submissions>=0.0.7,<0.1.0
+edx-submissions>=0.0.8,<0.1.0
 
 # Third Party Requirements
 boto>=2.13.0,<3.0.0
@@ -17,7 +17,7 @@ django>=1.4,<1.5
 django-celery==3.0.17
 django-extensions==1.2.5
 django-model-utils==1.4.0
-djangorestframework==2.3.5
+djangorestframework<2.4
 lazy==1.1
 loremipsum==1.0.2
 python-dateutil==2.1
