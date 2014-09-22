@@ -77,6 +77,39 @@ class TestGrade(XBlockHandlerTestCase):
         self.assertIn('self', resp.lower())
         self.assertIn('complete', resp.lower())
 
+    @scenario('data/grade_scenario_track_changes.xml', user_id='Greggs')
+    def test_render_grade_with_track_changes(self, xblock):
+        # Submit, assess, and render the grade view
+        self._create_submission_and_assessments(
+            xblock,
+            self.SUBMISSION,
+            self.PEERS,
+            self.ASSESSMENTS,
+            self.ASSESSMENTS[0],
+            should_track_changes=True,
+        )
+        resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+
+        # Verify that feedback from each scorer appears in the view
+        self.assertIn(u'єאςєɭɭєภՇ ฬ๏гк!', resp.decode('utf-8'))
+        self.assertIn(u'Good job!', resp.decode('utf-8'))
+
+        # Verify that the submission and peer steps show that we're graded
+        # This isn't strictly speaking part of the grade step rendering,
+        # but we've already done all the setup to get to this point in the flow,
+        # so we might as well verify it here.
+        resp = self.request(xblock, 'render_submission', json.dumps(dict()))
+        self.assertIn('response', resp.lower())
+        self.assertIn('complete', resp.lower())
+
+        resp = self.request(xblock, 'render_peer_assessment', json.dumps(dict()))
+        self.assertIn('peer', resp.lower())
+        self.assertIn('complete', resp.lower())
+
+        resp = self.request(xblock, 'render_self_assessment', json.dumps(dict()))
+        self.assertIn('self', resp.lower())
+        self.assertIn('complete', resp.lower())
+
     @scenario('data/grade_scenario_self_only.xml', user_id='Greggs')
     def test_render_grade_self_only(self, xblock):
         # Submit, assess, and render the grade view
@@ -366,6 +399,7 @@ class TestGrade(XBlockHandlerTestCase):
     def _create_submission_and_assessments(
         self, xblock, submission_text, peers, peer_assessments, self_assessment,
         waiting_for_peer=False,
+        should_track_changes=False,
     ):
         """
         Create a submission and peer/self assessments, so that the user can receive a grade.
@@ -405,6 +439,10 @@ class TestGrade(XBlockHandlerTestCase):
             # Store the scorer's submission so our user can assess it later
             scorer_submissions.append(scorer_sub)
 
+            track_changes_edits = ''
+            if should_track_changes:
+                track_changes_edits = submission_text + u'<span class="ins"> is wrong!</span>'
+
             # Create an assessment of the user's submission
             if not waiting_for_peer:
                 peer_api.create_assessment(
@@ -413,7 +451,8 @@ class TestGrade(XBlockHandlerTestCase):
                     assessment['criterion_feedback'],
                     assessment['overall_feedback'],
                     {'criteria': xblock.rubric_criteria},
-                    xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
+                    xblock.get_assessment_module('peer-assessment')['must_be_graded_by'],
+                    track_changes_edits=track_changes_edits,
                 )
 
         # Have our user make assessments (so she can get a score)

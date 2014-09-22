@@ -12,6 +12,7 @@ from dogapi import dog_stats_api
 from openassessment.assessment.models import (
     Assessment, AssessmentFeedback, AssessmentPart,
     InvalidRubricSelection, PeerWorkflow, PeerWorkflowItem,
+    TrackChanges,
 )
 from openassessment.assessment.serializers import (
     AssessmentFeedbackSerializer, RubricSerializer,
@@ -200,7 +201,8 @@ def create_assessment(
     overall_feedback,
     rubric_dict,
     num_required_grades,
-    scored_at=None
+    scored_at=None,
+    track_changes_edits=None,
 ):
     """Creates an assessment on the given submission.
 
@@ -229,6 +231,9 @@ def create_assessment(
         scored_at (datetime): Optional argument to override the time in which
             the assessment took place. If not specified, scored_at is set to
             now.
+        track_changes_edits (str): Optional argument to specify that a track_changes
+            entry should be created for this assessment, storing suggested edits to
+            the original submission.
 
     Returns:
         dict: the Assessment model, serialized as a dict.
@@ -270,6 +275,14 @@ def create_assessment(
             num_required_grades,
             scored_at
         )
+
+        if track_changes_edits:
+            change_tracker = TrackChanges(
+                scorer_id=scorer_id,
+                owner_submission_uuid=peer_submission_uuid,
+                edited_content=track_changes_edits
+            )
+            change_tracker.save()
 
         _log_assessment(assessment, scorer_workflow)
         return full_assessment_dict(assessment)

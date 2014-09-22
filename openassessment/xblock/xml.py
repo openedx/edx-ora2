@@ -1,12 +1,16 @@
 """
 Serialize and deserialize OpenAssessment XBlock content to/from XML.
 """
+
 from uuid import uuid4 as uuid
+import logging
 import lxml.etree as etree
 import pytz
 import dateutil.parser
 import defusedxml.ElementTree as safe_etree
-from defaults import DEFAULT_RUBRIC_FEEDBACK_TEXT
+from django.core.validators import URLValidator
+
+logger = logging.getLogger(__name__)
 
 
 class UpdateFromXmlError(Exception):
@@ -505,6 +509,11 @@ def parse_assessments_xml(assessments_root):
             except ValueError:
                 raise UpdateFromXmlError('The "must_be_graded_by" value must be a positive integer.')
 
+        # Assessment track_changes
+        if 'track_changes' in assessment.attrib:
+            enable_track_changes = assessment.get('track_changes', 'False') == 'True'
+            assessment_dict['track_changes'] = enable_track_changes
+
         # Training examples
         examples = assessment.findall('example')
 
@@ -586,6 +595,8 @@ def serialize_assessments(assessments_root, oa_block):
 
         if assessment_dict.get('algorithm_id') is not None:
             assessment.set('algorithm_id', unicode(assessment_dict['algorithm_id']))
+
+        assessment.set('track_changes', unicode(assessment_dict.get('track_changes', False)))
 
         # Training examples
         examples = assessment_dict.get('examples', [])

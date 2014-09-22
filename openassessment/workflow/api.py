@@ -6,14 +6,9 @@ import logging
 
 from django.db import DatabaseError
 
-from openassessment.assessment.api import peer as peer_api
-from openassessment.assessment.api import ai as ai_api
-from openassessment.assessment.api import student_training as training_api
-from openassessment.assessment.errors import (
-    PeerAssessmentError, StudentTrainingInternalError, AIError
-)
+from openassessment.assessment.errors import PeerAssessmentError
 from submissions import api as sub_api
-from .models import AssessmentWorkflow, AssessmentWorkflowStep
+from .models import AssessmentWorkflow
 from .serializers import AssessmentWorkflowSerializer
 from .errors import (
     AssessmentWorkflowInternalError, AssessmentWorkflowRequestError,

@@ -471,5 +471,26 @@
             "</rubric>",
             "</openassessment>"
         ]
+    },
+
+    "track_changes_invalid_url": {
+        "xml": [
+            "<openassessment>",
+                "<title>Track Changes</title>",
+                "<assessments>",
+                    "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" track_changes=\"://example.com/track_changes.js\" />",
+                "</assessments>",
+                "<rubric>",
+                    "<prompt>Test prompt</prompt>",
+                    "<criterion>",
+                        "<name>Test criterion</name>",
+                        "<label>Test criterion label</label>",
+                        "<prompt>Test criterion prompt</prompt>",
+                        "<option points=\"0\"><name>No</name><label>No label</label><explanation>No explanation</explanation></option>",
+                        "<option points=\"2\"><name>Yes</name><label>Yes label</label><explanation>Yes explanation</explanation></option>",
+                    "</criterion>",
+                "</rubric>",
+            "</openassessment>"
+        ]
     }
 }

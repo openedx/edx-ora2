@@ -8,7 +8,6 @@ from mock import Mock, patch, MagicMock
 
 from openassessment.xblock import openassessmentblock
 from openassessment.xblock.resolve_dates import DISTANT_PAST, DISTANT_FUTURE
-from openassessment.workflow import api as workflow_api
 from openassessment.workflow.errors import AssessmentWorkflowError
 from .base import XBlockHandlerTestCase, scenario
 
@@ -80,7 +79,11 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         with patch('openassessment.xblock.workflow_mixin.workflow_api') as mock_api:
             self.runtime.render(xblock, "student_view")
             expected_reqs = {
-                "peer": { "must_grade": 5, "must_be_graded_by": 3 }
+                "peer": {
+                    "must_grade": 5,
+                    "must_be_graded_by": 3,
+                    "track_changes": "",
+                }
             }
             mock_api.update_from_assessments.assert_called_once_with('test_submission', expected_reqs)
 

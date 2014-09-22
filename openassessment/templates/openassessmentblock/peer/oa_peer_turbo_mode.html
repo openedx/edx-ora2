@@ -31,7 +31,15 @@
         </div>
 
         <div class="step__instruction">
-            <p>{% trans "Read and assess the following response from one of your peers." %}</p>
+          <p>
+              {% if track_changes %}
+                  {% blocktrans  with ins_start="<ins>" ins_end="</ins>" del_start="<del>" del_end="</del>" %}
+                      Read, edit and assess the following response from one of your peers. You can make {{ ins_start }}additions{{ ins_end }} and {{ del_start }}deletions{{ del_end }} to help improve the submission.
+                  {% endblocktrans %}
+              {% else %}
+                  {% trans "Read and assess the following response from one of your peers." %}
+              {% endif %}
+          </p>
         </div>
 
         <div class="step__content">
@@ -40,13 +48,14 @@
                     <article class="peer-assessment" id="peer-assessment--001">
                         <div class="peer-assessment__display">
                             <header class="peer-assessment__display__header">
+                                {% if track_changes %}<input id="track_changes_clear_button" type="button" value="Clear Changes" />{% endif %}
                                 <h3 class="peer-assessment__display__title">{% trans "Assessment #" %}
                                     <span class="peer-assessment__number--current">{{ review_num }}</span> of
                                     <span class="peer-assessment__number--required">{{ must_grade }}</span>
                                 </h3>
                             </header>
 
-                            <div class="peer-assessment__display__response">
+                            <div class="peer-assessment__display__response" {% if track_changes %} id="track-changes-content" contenteditable="true" {% endif %}>
                                 {{ peer_submission.answer.text|linebreaks }}
                             </div>
 
