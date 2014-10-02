@@ -31,7 +31,7 @@
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -83,7 +83,7 @@
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "ɯʎ uǝʍ ʇıʇןǝ",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -135,7 +135,7 @@
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -198,7 +198,113 @@
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
+        "file_upload_type": null,
+        "allow_latex": false,
+        "leaderboard_show": 0,
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": "4014-03-10T00:00"
+            },
+            {
+                "name": "self-assessment",
+                "start": null,
+                "due": null
+            }
+        ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"]
+    },
+
+    "allow_file_upload_true_treated_as_image_file_upload_type": {
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "cd316c145cb14e06b377db65719ed41c",
+                "label": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "7c080ee29c38414291c92eb42b2ab310",
+                        "label": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "8bcdb0769b15482d9b2c3791d22e8ad2",
+                        "label": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ],
+                "feedback": "required"
+            }
+        ],
+        "prompt": "My new prompt.",
+        "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
+        "submission_due": "4014-02-27T09:46",
+        "submission_start": "4014-02-10T09:46",
+        "allow_file_upload": true,
+        "file_upload_type": null,
+        "allow_latex": false,
+        "leaderboard_show": 0,
+        "title": "My new title.",
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": "4014-03-10T00:00"
+            },
+            {
+                "name": "self-assessment",
+                "start": null,
+                "due": null
+            }
+        ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"]
+    },
+    
+    "allow_file_upload_false_treated_as_none_file_upload_type": {
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "cd316c145cb14e06b377db65719ed41c",
+                "label": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "7c080ee29c38414291c92eb42b2ab310",
+                        "label": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "8bcdb0769b15482d9b2c3791d22e8ad2",
+                        "label": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ],
+                "feedback": "required"
+            }
+        ],
+        "prompt": "My new prompt.",
+        "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
+        "submission_due": "4014-02-27T09:46",
+        "submission_start": "4014-02-10T09:46",
         "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "title": "My new title.",

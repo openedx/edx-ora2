@@ -676,7 +676,7 @@
 
     "file_upload": {
         "xml": [
-            "<openassessment allow_file_upload=\"True\">",
+            "<openassessment file_upload_type=\"image\">",
             "<title>Foo</title>",
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
@@ -693,7 +693,7 @@
             "</rubric>",
             "</openassessment>"
         ],
-        "allow_file_upload": true
+        "file_upload_type": "image"
     },
 
     "leaderboard": {

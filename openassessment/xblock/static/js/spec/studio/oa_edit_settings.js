@@ -85,10 +85,12 @@ describe("OpenAssessment.EditSettingsView", function() {
     });
 
     it("sets and loads the image enabled state", function() {
-        view.imageSubmissionEnabled(true);
-        expect(view.imageSubmissionEnabled()).toBe(true);
-        view.imageSubmissionEnabled(false);
-        expect(view.imageSubmissionEnabled()).toBe(false);
+        view.fileSubmissionEnabled('image');
+        expect(view.fileSubmissionEnabled()).toBe('image');
+        view.fileSubmissionEnabled('file');
+        expect(view.fileSubmissionEnabled()).toBe('file');
+        view.fileSubmissionEnabled('none');
+        expect(view.fileSubmissionEnabled()).toBe('none');
     });
 
     it("sets and loads the leaderboard number", function() {

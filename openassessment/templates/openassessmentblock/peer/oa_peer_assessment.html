@@ -70,15 +70,23 @@
                                     {{ peer_submission.answer.text|linebreaks }}
                                 </div>
 
-                                {% if allow_file_upload and peer_file_url %}
+                                {% if file_upload_type and peer_file_url %}
                                 <header class="peer-assessment__display__header">
                                     <h3 class="peer-assessment__display__title">
-                                        {% trans "Associated Image" %}
+                                        {% trans "Associated Uploaded File" %}
                                     </h3>
                                 </header>
 
-                                <div class="peer-assessment__display__image">
-                                    <img class="submission--image" alt="{% trans "The image associated with your peer's submission." %}" src="{{ peer_file_url }}"/>
+                                <div class="peer-assessment__display__file">
+                                    {% if file_upload_type == "image" %}
+                                    <img class="submission--image"
+                                        alt='{% trans "The image associated with your peer's submission." %}'
+                                        src="{{ peer_file_url }}"/>
+                                    {% elif file_upload_type == "file" %}
+                                    <a href="{{ file_url }}" class="submission--file">
+                                        {% trans "The file associated with your peer's submission." %}
+                                    </a>
+                                    {% endif %}
                                 </div>
                                 {% endif %}
                             </div>

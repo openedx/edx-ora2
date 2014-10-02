@@ -175,7 +175,7 @@ def _get_key_name(key):
         A key name (str) to use constructing URLs.
     """
     # The specified file prefix for the storage must be publicly viewable
-    # or all uploaded images will not be seen.
+    # or all uploaded files will not be accessible.
     prefix = getattr(settings, FILE_STORAGE_SETTING, FILE_STORAGE)
     return u"{prefix}/{key}".format(
         prefix=prefix,

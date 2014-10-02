@@ -6,6 +6,7 @@ import pkg_resources
 import copy
 
 import pytz
+import mimetypes
 
 from django.template.context import Context
 from django.template.loader import get_template
@@ -117,10 +118,10 @@ class OpenAssessmentBlock(
         help="ISO-8601 formatted string representing the submission due date."
     )
 
-    allow_file_upload = Boolean(
-        default=False,
+    file_upload_type = String(
+        default=None,
         scope=Scope.content,
-        help="File upload allowed with submission."
+        help="File upload to be included with submission (can be 'image' or 'file')."
     )
 
     allow_latex = Boolean(
@@ -218,7 +219,7 @@ class OpenAssessmentBlock(
         """
         return self.runtime.service(self, 'user').get_anonymous_user_id(username, course_id)
 
-    def get_student_item_dict(self, anonymous_user_id=None):
+    def get_student_item_dict(self, anonymous_user_id=None, content_type=None):
         """Create a student_item_dict from our surrounding context.
 
         See also: submissions.api for details.
@@ -246,6 +247,9 @@ class OpenAssessmentBlock(
                 student_id = None
             else:
                 student_id = unicode(self.scope_ids.user_id)
+        
+        if content_type is not None:
+            item_id = item_id + '.' + mimetypes.guess_extension(content_type)
 
         student_item_dict = dict(
             student_id=student_id,
@@ -373,6 +377,10 @@ class OpenAssessmentBlock(
         """
         return [
             (
+                "OpenAssessmentBlock File Upload",
+                load('static/xml/file_upload.xml')
+            ),
+            (
                 "OpenAssessmentBlock Unicode",
                 load('static/xml/unicode.xml')
             ),
@@ -433,7 +441,7 @@ class OpenAssessmentBlock(
         block.submission_due = config['submission_due']
         block.title = config['title']
         block.prompt = config['prompt']
-        block.allow_file_upload = config['allow_file_upload']
+        block.file_upload_type = config['file_upload_type']
         block.allow_latex = config['allow_latex']
         block.leaderboard_show = config['leaderboard_show']
 

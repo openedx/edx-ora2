@@ -193,7 +193,7 @@ OpenAssessment.StudioView.prototype = {
             submissionStart: view.settingsView.submissionStart(),
             submissionDue: view.settingsView.submissionDue(),
             assessments: view.settingsView.assessmentsDescription(),
-            imageSubmissionEnabled: view.settingsView.imageSubmissionEnabled(),
+            fileSubmissionEnabled: view.settingsView.fileSubmissionEnabled(),
             latexEnabled: view.settingsView.latexEnabled(),
             leaderboardNum: view.settingsView.leaderboardNum(),
             editorAssessmentsOrder: view.settingsView.editorAssessmentsOrder()

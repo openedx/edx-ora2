@@ -120,7 +120,7 @@ class StudioMixin(object):
             'criteria': criteria,
             'feedbackprompt': self.rubric_feedback_prompt,
             'feedback_default_text': feedback_default_text,
-            'allow_file_upload': self.allow_file_upload,
+            'file_upload_type': copy.deepcopy(self.file_upload_type),
             'allow_latex': self.allow_latex,
             'leaderboard_show': self.leaderboard_show,
             'editor_assessments_order': [
@@ -172,6 +172,15 @@ class StudioMixin(object):
                 if 'name' not in option:
                     option['name'] = uuid4().hex
 
+        # Backwards compatibility: if the allow_file_upload flag is set,
+        # set file_upload_type flag to 'image'
+        file_upload_type = None
+        if 'allow_file_upload' in data:
+            if bool(data['allow_file_upload']):
+                file_upload_type = 'image'
+        else:
+            file_upload_type = data['file_upload_type']
+
         # If example based assessment is enabled, we replace it's xml definition with the dictionary
         # definition we expect for validation and storing.
         for assessment in data['assessments']:
@@ -213,7 +222,7 @@ class StudioMixin(object):
         self.rubric_feedback_default_text = data['feedback_default_text']
         self.submission_start = data['submission_start']
         self.submission_due = data['submission_due']
-        self.allow_file_upload = bool(data['allow_file_upload'])
+        self.file_upload_type = file_upload_type
         self.allow_latex = bool(data['allow_latex'])
         self.leaderboard_show = data['leaderboard_show']
 

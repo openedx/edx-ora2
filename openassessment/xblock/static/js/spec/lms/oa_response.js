@@ -402,21 +402,36 @@ describe("OpenAssessment.ResponseView", function() {
 
     it("selects too large of a file", function() {
         spyOn(baseView, 'toggleActionError').andCallThrough();
-        var files = [{type: 'image/jpg', size: 6000000, name: 'huge-picture.jpg', data: ''}];
-        view.prepareUpload(files);
+        var files = [{type: 'image/jpeg', size: 6000000, name: 'huge-picture.jpg', data: ''}];
+        view.prepareUpload(files, 'image');
         expect(baseView.toggleActionError).toHaveBeenCalledWith('upload', 'File size must be 5MB or less.');
     });
 
-    it("selects the wrong file type", function() {
+    it("selects the wrong image file type", function() {
         spyOn(baseView, 'toggleActionError').andCallThrough();
-        var files = [{type: 'bogus/jpg', size: 1024, name: 'picture.exe', data: ''}];
-        view.prepareUpload(files);
-        expect(baseView.toggleActionError).toHaveBeenCalledWith('upload', 'File must be an image.');
+        var files = [{type: 'image/jpg', size: 1024, name: 'picture.exe', data: ''}];
+        view.prepareUpload(files, 'image');
+        expect(baseView.toggleActionError).toHaveBeenCalledWith('upload', 'File must be of an allowed image type.');
     });
 
-    it("uploads a file using a one-time URL", function() {
-        var files = [{type: 'image/jpg', size: 1024, name: 'picture.jpg', data: ''}];
-        view.prepareUpload(files);
+    it("selects the wrong general file type", function() {
+        spyOn(baseView, 'toggleActionError').andCallThrough();
+        var files = [{type: 'application/exe', size: 1024, name: 'application.exe', data: ''}];
+        view.prepareUpload(files, 'file');
+        expect(baseView.toggleActionError).toHaveBeenCalledWith('upload', 'File must be of an allowed file type.');
+    });
+
+    it("uploads an image using a one-time URL", function() {
+        var files = [{type: 'image/jpeg', size: 1024, name: 'picture.jpg', data: ''}];
+        view.prepareUpload(files, 'image');
+        view.fileUpload();
+        expect(fileUploader.uploadArgs.url).toEqual(FAKE_URL);
+        expect(fileUploader.uploadArgs.data).toEqual(files[0]);
+    });
+    
+    it("uploads a PDF using a one-time URL", function() {
+        var files = [{type: 'application/pdf', size: 1024, name: 'application.pdf', data: ''}];
+        view.prepareUpload(files, 'file');
         view.fileUpload();
         expect(fileUploader.uploadArgs.url).toEqual(FAKE_URL);
         expect(fileUploader.uploadArgs.data).toEqual(files[0]);
@@ -428,8 +443,8 @@ describe("OpenAssessment.ResponseView", function() {
         spyOn(baseView, 'toggleActionError').andCallThrough();
 
         // Attempt to upload a file
-        var files = [{type: 'image/jpg', size: 1024, name: 'picture.jpg', data: ''}];
-        view.prepareUpload(files);
+        var files = [{type: 'image/jpeg', size: 1024, name: 'picture.jpg', data: ''}];
+        view.prepareUpload(files, 'image');
         view.fileUpload();
 
         // Expect an error to be displayed
@@ -442,8 +457,8 @@ describe("OpenAssessment.ResponseView", function() {
         spyOn(baseView, 'toggleActionError').andCallThrough();
 
         // Attempt to upload a file
-        var files = [{type: 'image/jpg', size: 1024, name: 'picture.jpg', data: ''}];
-        view.prepareUpload(files);
+        var files = [{type: 'image/jpeg', size: 1024, name: 'picture.jpg', data: ''}];
+        view.prepareUpload(files, 'image');
         view.fileUpload();
 
         // Expect an error to be displayed

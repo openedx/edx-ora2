@@ -4,7 +4,7 @@
         "title": "My new title.",
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -29,7 +29,7 @@
     "no_prompt": {
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -79,7 +79,7 @@
 
     "no_feedback_prompt": {
         "prompt": "Test prompt",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -131,7 +131,7 @@
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompt": "Test Prompt",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -182,7 +182,7 @@
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompt": "Test Prompt",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -235,7 +235,7 @@
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompt": "Test Prompt",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -288,7 +288,7 @@
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompt": "Test Prompt",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -333,7 +333,7 @@
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompt": "Test Prompt",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -377,7 +377,7 @@
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompt": "prompty",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -400,7 +400,7 @@
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompt": "Test Prompt",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -444,7 +444,7 @@
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompt": "Test Prompt",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -474,7 +474,7 @@
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompt": "Test Prompt",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -513,7 +513,7 @@
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompt": "Test Prompt",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -557,7 +557,7 @@
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompt": "Test Prompt",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -596,11 +596,11 @@
         "expected_error": "error updating xblock configuration"
     },
 
-    "allow_file_upload_must_be_boolean": {
+    "file_upload_type_must_be_string": {
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompt": "Test Prompt",
-        "allow_file_upload": 6,
+        "file_upload_type": true,
         "allow_latex": false,
         "criteria": [
             {
@@ -638,50 +638,6 @@
         "expected_error": "error updating xblock configuration"
     },
 
-    "allow_file_upload_null": {
-        "feedback_prompt": "Feedback prompt",
-        "feedback_default_text": "Feedback default text",
-        "prompt": "Test Prompt",
-        "allow_file_upload": null,
-        "allow_latex": false,
-        "criteria": [
-            {
-                "order_num": 0,
-                "name": "0",
-                "label": "Test criterion",
-                "prompt": "Test criterion prompt",
-                "options": [
-                    {
-                        "order_num": 0,
-                        "points": "a million stanley nickels",
-                        "name": "1",
-                        "label": "No",
-                        "explanation": "No explanation"
-                    },
-                    {
-                        "order_num": 1,
-                        "points": "One Shrutebuck",
-                        "name": "2",
-                        "label": "Yes",
-                        "explanation": "Yes explanation"
-                    }
-                ],
-                "feedback": "optional"
-            }
-        ],
-        "title": "My new title.",
-        "assessments": [
-            {
-                "name": "self-assessment",
-                "start": null,
-                "due": null
-            }
-        ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"],
-        "submission_due": null,
-        "submission_start": null
-    },
-
     "student_training_example_missing_answer": {
         "criteria": [
             {
@@ -714,7 +670,7 @@
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -771,7 +727,7 @@
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -826,7 +782,7 @@
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -884,7 +840,7 @@
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -942,7 +898,7 @@
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -994,7 +950,7 @@
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -1053,7 +1009,7 @@
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -1104,7 +1060,7 @@
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -1156,7 +1112,7 @@
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -1184,7 +1140,7 @@
         "prompt": "Test Prompt",
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -1235,7 +1191,7 @@
         "prompt": "Test Prompt",
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -1286,7 +1242,7 @@
         "prompt": "Test Prompt",
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -1360,7 +1316,7 @@
         "prompt": "Test Prompt",
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [

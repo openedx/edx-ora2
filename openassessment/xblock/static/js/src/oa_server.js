@@ -433,7 +433,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
             submissionDue (ISO-formatted datetime string or null): The date the submission is due.
             criteria (list of object literals): The rubric criteria.
             assessments (list of object literals): The assessments the student will be evaluated on.
-            imageSubmissionEnabled (boolean): TRUE if image attachments are allowed.
+            fileSubmissionEnabled (string): 'image' if image attachments are allowed, 'file' if file attachments.
             latexEnabled: TRUE if latex rendering is enabled.
             leaderboardNum (int): The number of scores to show in the leaderboard.
 
@@ -454,7 +454,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
                 criteria: kwargs.criteria,
                 assessments: kwargs.assessments,
                 editor_assessments_order: kwargs.editorAssessmentsOrder,
-                allow_file_upload: kwargs.imageSubmissionEnabled,
+                file_upload_type: kwargs.fileSubmissionEnabled,
                 allow_latex: kwargs.latexEnabled,
                 leaderboard_show: kwargs.leaderboardNum
             });
@@ -512,11 +512,11 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
             files.
 
          **/
-        getUploadUrl: function(contentType) {
+        getUploadUrl: function(contentType, uploadType) {
             var url = this.url('upload_url');
             return $.Deferred(function(defer) {
                 $.ajax({
-                    type: "POST", url: url, data: JSON.stringify({contentType: contentType})
+                    type: "POST", url: url, data: JSON.stringify({contentType: contentType, uploadType: uploadType})
                 }).done(function(data) {
                         if (data.success) { defer.resolve(data.url); }
                         else { defer.rejectWith(this, [data.msg]); }

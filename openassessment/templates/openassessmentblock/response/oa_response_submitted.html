@@ -46,11 +46,19 @@
                     {{ student_submission.answer.text|linebreaks }}
                 </div>
 
-                {% if allow_file_upload and file_url %}
-                <h3 class="submission__answer__display__title">{% trans "Your Image" %}</h3>
+                {% if file_upload_type and file_url %}
+                <h3 class="submission__answer__display__title">{% trans "Your Uploaded File" %}</h3>
 
-                <div class="submission__answer__display__image">
-                    <img class="submission--image" alt="{% trans "The image associated with your submission." %}" src="{{ file_url }}"/>
+                <div class="submission__answer__display__file" id="submission__{{ file_upload_type }}__upload">
+                    {% if file_upload_type == "image" %}
+                    <img class="submission--image"
+                        alt="{% trans "The image associated with your submission." %}"
+                        src="{{ file_url }}" />
+                    {% elif file_upload_type == "file" %}
+                    <a href="{{ file_url }}" class="submission--file">
+                        {% trans "The file associated with your submission." %}
+                    </a>
+                    {% endif %}
                 </div>
                 {% endif %}
             </article>
