@@ -68,17 +68,7 @@
 
                                 {% include "openassessmentblock/oa_submission_answer.html" with answer=peer_submission.answer answer_text_label="Your peer's response to the question above:" %}
 
-                                {% if allow_file_upload and peer_file_url %}
-                                <header class="peer-assessment__display__header">
-                                    <h3 class="peer-assessment__display__title">
-                                        {% trans "Associated Image" %}
-                                    </h3>
-                                </header>
-
-                                <div class="peer-assessment__display__image">
-                                    <img class="submission--image" alt="{% trans "The image associated with your peer's submission." %}" src="{{ peer_file_url }}"/>
-                                </div>
-                                {% endif %}
+                                {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=peer_file_url header="Associated File" class_prefix="peer-assessment" show_warning="true" %}
                             </div>
 
                             <form id="peer-assessment--001__assessment" class="peer-assessment__assessment" method="post">

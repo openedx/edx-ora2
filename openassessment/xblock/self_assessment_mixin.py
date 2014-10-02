@@ -90,8 +90,8 @@ class SelfAssessmentMixin(object):
                 context["estimated_time"] = "20 minutes"  # TODO: Need to configure this.
                 context["self_submission"] = create_submission_dict(submission, self.prompts)
 
-                # Determine if file upload is supported for this XBlock.
-                context["allow_file_upload"] = self.allow_file_upload
+                # Determine if file upload is supported for this XBlock and what kind of files can be uploaded.
+                context["file_upload_type"] = self.file_upload_type
                 context['self_file_url'] = self.get_download_url_from_submission(submission)
 
                 path = 'openassessmentblock/self/oa_self_assessment.html'

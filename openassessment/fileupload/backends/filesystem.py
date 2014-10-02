@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 
 class Backend(BaseBackend):
     """
-    Upload openassessment student files (images) to a local filesystem. Note
+    Upload openassessment student files to a local filesystem. Note
     that in order to use this file storage backend, you need to include the
     urls from openassessment.fileupload in your urls.py file:
 
