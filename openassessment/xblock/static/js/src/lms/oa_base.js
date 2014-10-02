@@ -5,17 +5,18 @@ Args:
     runtime (Runtime): an XBlock runtime instance.
     element (DOM element): The DOM element representing this XBlock.
     server (OpenAssessment.Server): The interface to the XBlock server.
+    data (Object): The data object passed from XBlock backend.
 
 Returns:
     OpenAssessment.BaseView
 **/
-OpenAssessment.BaseView = function(runtime, element, server) {
+OpenAssessment.BaseView = function(runtime, element, server, data) {
     this.runtime = runtime;
     this.element = element;
     this.server = server;
     this.fileUploader = new OpenAssessment.FileUploader();
 
-    this.responseView = new OpenAssessment.ResponseView(this.element, this.server, this.fileUploader, this);
+    this.responseView = new OpenAssessment.ResponseView(this.element, this.server, this.fileUploader, this, data);
     this.trainingView = new OpenAssessment.StudentTrainingView(this.element, this.server, this);
     this.selfView = new OpenAssessment.SelfView(this.element, this.server, this);
     this.peerView = new OpenAssessment.PeerView(this.element, this.server, this);
@@ -150,11 +151,11 @@ OpenAssessment.BaseView.prototype = {
 };
 
 /* XBlock JavaScript entry point for OpenAssessmentXBlock. */
-function OpenAssessmentBlock(runtime, element) {
+function OpenAssessmentBlock(runtime, element, data) {
     /**
     Render views within the base view on page load.
     **/
     var server = new OpenAssessment.Server(runtime, element);
-    var view = new OpenAssessment.BaseView(runtime, element, server);
+    var view = new OpenAssessment.BaseView(runtime, element, server, data);
     view.load();
 }

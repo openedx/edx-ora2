@@ -21,7 +21,7 @@
         "submission_due": "4014-02-27T09:46:28",
         "submission_start": "4014-02-10T09:46:28",
         "title": "My new title.",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "assessments": [
             {
                 "name": "peer-assessment",

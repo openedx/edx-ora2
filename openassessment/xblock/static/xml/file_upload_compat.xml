@@ -1,4 +1,4 @@
-<openassessment file_upload_type="image" submission_due="2015-03-11T18:20">
+<openassessment allow_file_upload="true" submission_due="2035-03-11T18:20">
     <title>
         Global Poverty
     </title>
@@ -110,7 +110,7 @@
     <assessments>
         <assessment name="peer-assessment"
                     start="2014-03-11T10:00-18:10"
-                    due="2015-12-21T22:22-7:00"
+                    due="2035-12-21T22:22-7:00"
                     must_grade="1"
                     must_be_graded_by="1" />
         <assessment name="self-assessment" />

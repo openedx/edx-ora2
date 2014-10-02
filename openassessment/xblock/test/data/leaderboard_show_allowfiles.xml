@@ -1,4 +1,4 @@
-<openassessment leaderboard_show="3" allow_file_upload="True">
+<openassessment leaderboard_show="3" file_upload_type="image">
     <title>Open Assessment Test</title>
     <prompts>
         <prompt>
