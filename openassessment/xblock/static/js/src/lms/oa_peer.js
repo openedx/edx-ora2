@@ -189,6 +189,8 @@ OpenAssessment.PeerView.prototype = {
     **/
     peerAssessRequest: function(successFunction) {
         var view = this;
+        var uuid = $('#openassessment__peer-assessment').data('submission-uuid');
+
         view.baseView.toggleActionError('peer', null);
         view.peerSubmitEnabled(false);
 
@@ -196,7 +198,8 @@ OpenAssessment.PeerView.prototype = {
         this.server.peerAssess(
             this.rubric.optionsSelected(),
             this.rubric.criterionFeedback(),
-            this.rubric.overallFeedback()
+            this.rubric.overallFeedback(),
+            uuid
         ).done(
             successFunction
         ).fail(function(errMsg) {

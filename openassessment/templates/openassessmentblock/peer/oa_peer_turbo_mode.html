@@ -2,7 +2,11 @@
 {% load i18n %}
 
 {% block list_item %}
-<li id="openassessment__peer-assessment"class="openassessment__steps__step step--peer-assessment ui-toggle-visibility is--complete">
+<li
+    id="openassessment__peer-assessment"
+    class="openassessment__steps__step step--peer-assessment ui-toggle-visibility is--complete"
+    data-submission-uuid="{{ peer_submission.uuid }}"
+>
 {% endblock %}
 
 {% block title %}

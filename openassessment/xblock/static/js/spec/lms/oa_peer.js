@@ -84,7 +84,7 @@ describe("OpenAssessment.PeerView", function() {
         // Expect that the peer assessment was sent to the server
         // with the options and feedback we selected
         expect(server.peerAssess).toHaveBeenCalledWith(
-            optionsSelected, criterionFeedback, overallFeedback
+            optionsSelected, criterionFeedback, overallFeedback, ''
         );
     });
 
