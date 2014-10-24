@@ -557,7 +557,7 @@ class TestPeerAssessHandler(XBlockHandlerTestCase):
         'overall_feedback': u'єאςєɭɭєภՇ ฬ๏гк!',
     }
 
-    ASSESSMENT_WITH_SUBMISSION_UUID = {
+    ASSESSMENT_WITH_INVALID_SUBMISSION_UUID = {
         'options_selected': {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ﻉซƈﻉɭɭﻉกՇ', u'Form': u'Fair'},
         'criterion_feedback': {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ı ʇɥonƃɥʇ ʇɥıs ʍɐs ʌǝɹʎ ɔouɔısǝ.'},
         'overall_feedback': u'єאςєɭɭєภՇ ฬ๏гк!',
@@ -641,16 +641,15 @@ class TestPeerAssessHandler(XBlockHandlerTestCase):
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_submission_uuid_input_regression(self, xblock):
         # Submit a peer assessment
-        submission_uuid, assessment = self._submit_peer_assessment(
-            xblock, 'Sally', 'Bob', self.ASSESSMENT_WITH_SUBMISSION_UUID
+        assessment = self._submit_peer_assessment(
+            xblock,
+            'Sally',
+            'Bob',
+            self.ASSESSMENT_WITH_INVALID_SUBMISSION_UUID,
+            expect_failure=True,
         )
 
-        # Retrieve the assessment and check that it matches what we sent
-        self.assertEqual(assessment['submission_uuid'], submission_uuid)
-        self.assertEqual(assessment['points_earned'], 5)
-        self.assertEqual(assessment['points_possible'], 6)
-        self.assertEqual(assessment['scorer_id'], 'Bob')
-        self.assertEqual(assessment['score_type'], 'PE')
+        self.assertIsNone(assessment)
 
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_peer_assess_rubric_option_mismatch(self, xblock):
@@ -712,6 +711,7 @@ class TestPeerAssessHandler(XBlockHandlerTestCase):
 
         # Submit an assessment and expect a successful response
         assessment = copy.deepcopy(assessment)
+        assessment['submission_uuid'] = assessment.get('submission_uuid', submission.get('uuid', None))
         resp = self.request(xblock, 'peer_assess', json.dumps(assessment), response_format='json')
 
         if expect_failure:

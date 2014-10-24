@@ -1,7 +1,11 @@
 {% load tz %}
 {% load i18n %}
 {% block list_item %}
-<li id="openassessment__peer-assessment" class="openassessment__steps__step step--peer-assessment ui-toggle-visibility {% if allow_latex %} allow--latex {%endif%}">
+<li
+    id="openassessment__peer-assessment"
+    class="openassessment__steps__step step--peer-assessment ui-toggle-visibility {% if allow_latex %} allow--latex {%endif%}"
+    data-submission-uuid="{{ peer_submission.uuid }}"
+>
 {% endblock %}
 {% spaceless %}
 
