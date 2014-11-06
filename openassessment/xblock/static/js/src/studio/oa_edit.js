@@ -182,7 +182,6 @@ OpenAssessment.StudioView.prototype = {
         // Notify the client-side runtime that we are starting
         // to save so it can show the "Saving..." notification
         this.runtime.notify('save', {state: 'start'});
-
         var view = this;
         this.server.updateEditorContext({
             prompt: view.promptView.promptText(),
@@ -194,6 +193,8 @@ OpenAssessment.StudioView.prototype = {
             submissionDue: view.settingsView.submissionDue(),
             assessments: view.settingsView.assessmentsDescription(),
             imageSubmissionEnabled: view.settingsView.imageSubmissionEnabled(),
+	    fileuploadSubmissionEnabled: view.settingsView.fileuploadSubmissionEnabled(),
+	    fileExtSubmissionEnabled: view.settingsView.fileExtSubmissionEnabled(),
             latexEnabled: view.settingsView.latexEnabled(),
             leaderboardNum: view.settingsView.leaderboardNum(),
             editorAssessmentsOrder: view.settingsView.editorAssessmentsOrder()

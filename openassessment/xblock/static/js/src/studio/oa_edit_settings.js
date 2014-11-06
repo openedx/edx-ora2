@@ -141,6 +141,52 @@ OpenAssessment.EditSettingsView.prototype = {
     },
 
     /**
+    Enable / disable fileupload submission.
+
+    Args:
+        isEnabled (boolean, optional): If provided, enable/disable fileupload submission.
+
+    Returns:
+        boolean
+
+    **/
+    fileuploadSubmissionEnabled: function(isEnabled) {
+        var sel = $("#openassessment_submission_fileupload_editor", this.settingsElement);
+        if (isEnabled !== undefined) {
+            if (isEnabled) { sel.val(1); }
+            else { sel.val(0); }
+        }
+        return (sel.val() == 1);
+    },
+
+
+    /**
+    Enable / disable fileupload submission.
+
+    Args:
+        isEnabled (boolean, optional): If provided, enable/disable fileupload submission.
+
+    Returns:
+        boolean
+
+    **/
+    fileExtSubmissionEnabled: function(ext) {
+	console.log(ext);
+        var sel = $("#openassessment_fileext_editor", this.settingsElement);
+        if (ext !== undefined) {
+           if(jQuery.type(ext) == "array") {
+		sel.val(ext.join(","));
+	   } else {
+		sel.val(ext);
+	   }
+        }
+
+	var v = sel.val();
+        return v.split(",");
+    },
+
+
+    /**
     Enable / disable latex rendering.
 
     Args: 

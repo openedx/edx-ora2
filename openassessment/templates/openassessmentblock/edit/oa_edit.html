@@ -101,13 +101,38 @@
                 </li>
                 <li id="openassessment_submission_image_wrapper" class="field comp-setting-entry">
                     <div class="wrapper-comp-setting">
-                        <label for="openassessment_submission_image_editor" class="setting-label">{% trans "Allow Image Responses"%}</label>
+                        <label for="openassessment_submission_image_editor" class="setting-label">{% trans "Allow upload image"%}</label>
                         <select id="openassessment_submission_image_editor" class="input setting-input" name="image submission">
                             <option value="0">{% trans "False"%}</option>
                             <option value="1" {% if allow_file_upload %} selected="true" {% endif %}>{% trans "True"%}</option>
                         </select>
                     </div>
                     <p class="setting-help">{% trans "Specify whether students can submit an image file along with their text response." %}</p>
+                </li>
+		<li id="openassessment_submission_fileupload_wrapper" class="field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label for="openassessment_submission_fileupload_editor" class="setting-label">{% trans "Allow upload files"%}</label>
+                        <select id="openassessment_submission_fileupload_editor" class="input setting-input" name="fileupload submission">
+                            <option value="0">{% trans "False"%}</option>
+                            <option value="1" {% if allow_file_upload2 %} selected="true" {% endif %}>{% trans "True"%}</option>
+                        </select>
+                    </div>
+                    <p class="setting-help">{% trans "Specify whether students can submit an image file along with their text response." %}</p>
+                </li>
+		<li id="openassessment_submission_fileext_wrapper" class="field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label for="openassessment_submission_fileext_editor" class="setting-label">{% trans "Allow file ext"%}</label>
+                        <input
+                            id="openassessment_fileext_editor"
+                            class="input setting-input"
+                            type="text"
+                            value="{% for t in allow_file_ext %}
+{% if not forloop.first %},{% endif %}
+{{ t }}
+{% endfor %}"
+                        />
+                    </div>
+                    <p class="setting-help">{% trans "Specify whether students can submit a upload file along with their text response." %}</p>
                 </li>
                 <li id="openassessment_submission_latex_wrapper" class="field comp-setting-entry">
                     <div class="wrapper-comp-setting">

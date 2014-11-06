@@ -119,7 +119,19 @@ class OpenAssessmentBlock(
     allow_file_upload = Boolean(
         default=False,
         scope=Scope.content,
+        help="Image upload allowed with submission."
+    )
+
+    allow_file_upload2 = Boolean(
+        default=False,
+        scope=Scope.content,
         help="File upload allowed with submission."
+    )
+
+    allow_file_ext = List(
+        default=["pdf"],
+        scope=Scope.content,
+        help="Extentions file allowed with submission."
     )
 
     allow_latex = Boolean(
@@ -405,6 +417,8 @@ class OpenAssessmentBlock(
         block.title = config['title']
         block.prompt = config['prompt']
         block.allow_file_upload = config['allow_file_upload']
+	block.allow_file_upload2 = config['allow_file_upload2']
+	block.allow_file_ext = config['allow_file_ext']
         block.allow_latex = config['allow_latex']
         block.leaderboard_show = config['leaderboard_show']
 

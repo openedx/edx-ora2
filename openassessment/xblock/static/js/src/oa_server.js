@@ -446,7 +446,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
 
         **/
         updateEditorContext: function(kwargs) {
-            var url = this.url('update_editor_context');
+	    var url = this.url('update_editor_context');
             var payload = JSON.stringify({
                 prompt: kwargs.prompt,
                 feedback_prompt: kwargs.feedbackPrompt,
@@ -458,6 +458,8 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
                 assessments: kwargs.assessments,
                 editor_assessments_order: kwargs.editorAssessmentsOrder,
                 allow_file_upload: kwargs.imageSubmissionEnabled,
+		allow_file_upload2: kwargs.fileuploadSubmissionEnabled,
+		allow_file_ext: kwargs.fileExtSubmissionEnabled,
                 allow_latex: kwargs.latexEnabled,
                 leaderboard_show: kwargs.leaderboardNum
             });
@@ -515,11 +517,11 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
             files.
 
          **/
-        getUploadUrl: function(contentType) {
+        getUploadUrl: function(contentType, fileName) {
             var url = this.url('upload_url');
             return $.Deferred(function(defer) {
                 $.ajax({
-                    type: "POST", url: url, data: JSON.stringify({contentType: contentType})
+                    type: "POST", url: url, data: JSON.stringify({contentType: contentType, fileName: fileName})
                 }).done(function(data) {
                         if (data.success) { defer.resolve(data.url); }
                         else { defer.rejectWith(this, [data.msg]); }

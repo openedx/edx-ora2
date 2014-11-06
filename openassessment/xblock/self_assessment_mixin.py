@@ -90,6 +90,8 @@ class SelfAssessmentMixin(object):
                 context["allow_file_upload"] = self.allow_file_upload
                 context['self_file_url'] = self.get_download_url_from_submission(submission)
 
+		context["allow_file_upload2"] = self.allow_file_upload2
+
                 path = 'openassessmentblock/self/oa_self_assessment.html'
         else:
             # No submission yet or in peer assessment

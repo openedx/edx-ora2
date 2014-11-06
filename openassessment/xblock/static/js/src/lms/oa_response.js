@@ -17,6 +17,7 @@ OpenAssessment.ResponseView = function(element, server, fileUploader, baseView) 
     this.savedResponse = "";
     this.files = null;
     this.imageType = null;
+    this.fileName = null;
     this.lastChangeTime = Date.now();
     this.errorOnLastSave = false;
     this.autoSaveTimerId = null;
@@ -67,7 +68,7 @@ OpenAssessment.ResponseView.prototype = {
         var handleChange = function(eventData) { view.handleResponseChanged(); };
         sel.find('#submission__answer__value').on('change keyup drop paste', handleChange);
 
-        var handlePrepareUpload = function(eventData) { view.prepareUpload(eventData.target.files); };
+        var handlePrepareUpload = function(eventData) {view.prepareUpload(eventData.target); };
         sel.find('input[type=file]').on('change', handlePrepareUpload);
         // keep the preview as display none at first 
         sel.find('#submission__preview__item').hide();
@@ -455,20 +456,43 @@ OpenAssessment.ResponseView.prototype = {
             be less than 5 MB and an image.
 
      **/
-    prepareUpload: function(files) {
+    prepareUpload: function(target) {
+	var files = target.files;
+	if(files.length == 0) return;
         this.files = null;
-        this.imageType = files[0].type;
-        if (files[0].size > this.MAX_FILE_SIZE) {
-            this.baseView.toggleActionError(
-                'upload', gettext("File size must be 5MB or less.")
-            );
-        } else if (this.imageType.substring(0,6) != 'image/') {
-            this.baseView.toggleActionError(
-                'upload', gettext("File must be an image.")
-            );
-        } else {
-            this.baseView.toggleActionError('upload', null);
-            this.files = files;
+	this.fileName = files[0].name;
+	var str_extention = $(target).attr('data-extention') || "";
+	this.extentions = str_extention.split(",");
+	this.fileExt = this.fileName.substr(this.fileName.lastIndexOf(".")+1).toLowerCase();
+	this.imageType = files[0].type;
+
+	if(this.extentions.length > 0) {
+            if (files[0].size > this.MAX_FILE_SIZE) {
+                this.baseView.toggleActionError(
+                     'upload', gettext("File size must be 5MB or less.")
+                );
+            } else if (jQuery.inArray(this.fileExt, this.extentions) == -1) {
+	    /* else if (this.imageType.substring(0,6) != 'image/') {*/
+            	this.baseView.toggleActionError(
+       	       		'upload', gettext("File must be")+" "+this.extentions.join(", ")
+       	     	);
+            } else {
+        	this.baseView.toggleActionError('upload', null);
+        	this.files = files;
+            }
+	} else {
+	    if (files[0].size > this.MAX_FILE_SIZE) {
+                this.baseView.toggleActionError(
+                     'upload', gettext("File size must be 5MB or less.")
+                );
+            } else if (this.imageType.substring(0,6) != 'image/') {
+                this.baseView.toggleActionError(
+                        'upload', gettext("File must be an image.")
+                );
+            } else {
+               this.baseView.toggleActionError('upload', null);
+               this.files = files;
+            }
         }
         $("#file__upload").toggleClass("is--disabled", this.files === null);
     },
@@ -494,7 +518,7 @@ OpenAssessment.ResponseView.prototype = {
         // completed, execute a sequential AJAX call to upload to the returned
         // URL. This request requires appropriate CORS configuration for AJAX
         // PUT requests on the server.
-        this.server.getUploadUrl(view.imageType).done(
+        this.server.getUploadUrl(view.imageType, view.fileName).done(
             function(url) {
                 var image = view.files[0];
                 view.fileUploader.upload(url, image)
@@ -512,9 +536,16 @@ OpenAssessment.ResponseView.prototype = {
      **/
     imageUrl: function() {
         var view = this;
-        var image = $('#submission__answer__image', view.element);
+        /*var image = $('#submission__answer__image', view.element);
         view.server.getDownloadUrl().done(function(url) {
+	    console.log(arguments);
             image.attr('src', url);
+            return url;
+        });*/
+	var file = $('#submission__answer__file', view.element);
+	view.server.getDownloadUrl().done(function(url) {
+            console.log(arguments);
+            file.attr('href', url);
             return url;
         });
     }

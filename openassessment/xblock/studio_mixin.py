@@ -121,6 +121,8 @@ class StudioMixin(object):
             'feedbackprompt': self.rubric_feedback_prompt,
             'feedback_default_text': feedback_default_text,
             'allow_file_upload': self.allow_file_upload,
+	    'allow_file_upload2': self.allow_file_upload2,
+	    'allow_file_ext' : self.allow_file_ext,
             'allow_latex': self.allow_latex,
             'leaderboard_show': self.leaderboard_show,
             'editor_assessments_order': [
@@ -149,6 +151,7 @@ class StudioMixin(object):
         # If the data is invalid, this means something is wrong with
         # our JavaScript, so we log an exception.
         try:
+	    logger.error("DATA  = "+repr(data))
             data = EDITOR_UPDATE_SCHEMA(data)
         except MultipleInvalid:
             logger.exception('Editor context is invalid')
@@ -214,6 +217,8 @@ class StudioMixin(object):
         self.submission_start = data['submission_start']
         self.submission_due = data['submission_due']
         self.allow_file_upload = bool(data['allow_file_upload'])
+	self.allow_file_upload2 = bool(data['allow_file_upload2'])
+	self.allow_file_ext = list(data['allow_file_ext'])
         self.allow_latex = bool(data['allow_latex'])
         self.leaderboard_show = data['leaderboard_show']
 
