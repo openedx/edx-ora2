@@ -151,7 +151,6 @@ class StudioMixin(object):
         # If the data is invalid, this means something is wrong with
         # our JavaScript, so we log an exception.
         try:
-	    logger.error("DATA  = "+repr(data))
             data = EDITOR_UPDATE_SCHEMA(data)
         except MultipleInvalid:
             logger.exception('Editor context is invalid')
@@ -161,6 +160,12 @@ class StudioMixin(object):
         if set(DEFAULT_EDITOR_ASSESSMENTS_ORDER) != (set(data['editor_assessments_order']) - {'example-based-assessment'}):
             logger.exception('editor_assessments_order does not contain all expected assessment types')
             return {'success': False, 'msg': self._('Error updating XBlock configuration')}
+
+
+	# Check if upload file and image are both activate
+	if data['allow_file_upload2'] == True and data['allow_file_upload'] == True:
+	    logger.exception('You cannot activate upload image and file at same time')
+            return {'success': False, 'msg': self._('Error updating XBlock: is not allow to activate upload image and file at same time')}
 
         # Backwards compatibility: We used to treat "name" as both a user-facing label
         # and a unique identifier for criteria and options.

@@ -99,7 +99,18 @@
                     </div>
                     <p class="setting-help">{% trans "The date and time when students can no longer submit responses." %}</p>
                 </li>
-                <li id="openassessment_submission_image_wrapper" class="field comp-setting-entry">
+		<li id="openassessment_submission_image_wrapper" class="field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label for="openassessment_submission_upload_selector" class="setting-label">{% trans "Allow upload"%}</label>
+                        <select id="openassessment_submission_upload_selector" class="input setting-input" name="upload submission">
+                            <option value="0">{% trans "False"%}</option>
+                            <option value="1" {% if allow_file_upload %} selected="true" {% endif %}>{% trans "Image"%}</option>
+			    <option value="2" {% if allow_file_upload2 %} selected="true" {% endif %}>{% trans "File"%}</option>
+                        </select>
+                    </div>
+                    <p class="setting-help">{% trans "Specify whether students can submit an image file along with their text response." %}</p>
+                </li>
+                <li id="openassessment_submission_image_wrapper" class="field comp-setting-entry is--hidden">
                     <div class="wrapper-comp-setting">
                         <label for="openassessment_submission_image_editor" class="setting-label">{% trans "Allow upload image"%}</label>
                         <select id="openassessment_submission_image_editor" class="input setting-input" name="image submission">
@@ -109,7 +120,7 @@
                     </div>
                     <p class="setting-help">{% trans "Specify whether students can submit an image file along with their text response." %}</p>
                 </li>
-		<li id="openassessment_submission_fileupload_wrapper" class="field comp-setting-entry">
+		<li id="openassessment_submission_fileupload_wrapper" class="field comp-setting-entry is--hidden">
                     <div class="wrapper-comp-setting">
                         <label for="openassessment_submission_fileupload_editor" class="setting-label">{% trans "Allow upload files"%}</label>
                         <select id="openassessment_submission_fileupload_editor" class="input setting-input" name="fileupload submission">
@@ -119,7 +130,7 @@
                     </div>
                     <p class="setting-help">{% trans "Specify whether students can submit an image file along with their text response." %}</p>
                 </li>
-		<li id="openassessment_submission_fileext_wrapper" class="field comp-setting-entry">
+		<li id="openassessment_submission_fileext_wrapper" class="field comp-setting-entry {% if not allow_file_upload2 %}is--hidden{% endif %}">
                     <div class="wrapper-comp-setting">
                         <label for="openassessment_submission_fileext_editor" class="setting-label">{% trans "Allow file ext"%}</label>
                         <input
