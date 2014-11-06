@@ -53,6 +53,13 @@
                     <img class="submission--image" alt="{% trans "The image associated with your submission." %}" src="{{ file_url }}"/>
                 </div>
                 {% endif %}
+		{% if allow_file_upload2 and file_url %}
+                <h3 class="submission__answer__display__title">{% trans "Your file" %}</h3>
+
+                <div class="submission__answer__display__fileupload2">
+                    <a href="{{ file_url }}" target="_target">{% trans "Download file" %}</a>
+                </div>
+                {% endif %}
             </article>
         </div>
     </div>

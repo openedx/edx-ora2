@@ -61,6 +61,18 @@
                                 <img class="submission--image" alt="{% trans "The image associated with your peer's submission." %}" src="{{ peer_file_url }}"/>
                             </div>
                             {% endif %}
+
+			    {% if allow_file_upload2 and peer_file_url %}
+                                <header class="peer-assessment__display__header">
+                                    <h3 class="peer-assessment__display__title">
+                                        {% trans "Associated File" %}
+                                    </h3>
+                                </header>
+
+                            <div class="peer-assessment__display__fileupload2">
+                                <a href="{{ peer_file_url }}" target="_blank">{% trans "Download file" %}</a>
+                            </div>
+                            {% endif %}
                         </div>
 
                         <form id="peer-assessment--001__assessment" class="peer-assessment__assessment" method="post">

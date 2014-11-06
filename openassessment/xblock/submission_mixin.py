@@ -154,7 +154,7 @@ class SubmissionMixin(object):
         # so that later we can add additional response fields.
         student_sub_dict = {'text': student_sub}
 
-        if self.allow_file_upload:
+        if self.allow_file_upload or self.allow_file_upload2:
             student_sub_dict['file_key'] = self._get_student_item_key()
         submission = api.create_submission(student_item_dict, student_sub_dict)
         self.create_workflow(submission["uuid"])
@@ -261,6 +261,7 @@ class SubmissionMixin(object):
         """
         url = ""
         key = submission['answer'].get('file_key', '')
+	logger.error("file_KEY = "+key)
         try:
             if key:
                 url = file_upload_api.get_download_url(key)
