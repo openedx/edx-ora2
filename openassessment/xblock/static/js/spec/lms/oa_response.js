@@ -524,6 +524,7 @@ OpenAssessment.ResponseView.prototype = {
                 view.fileUploader.upload(url, image)
                     .done(function() {
                         view.imageUrl();
+			view.fileUrl();
                         view.baseView.toggleActionError('upload', null);
                     })
                     .fail(handleError);
@@ -536,18 +537,24 @@ OpenAssessment.ResponseView.prototype = {
      **/
     imageUrl: function() {
         var view = this;
-        /*var image = $('#submission__answer__image', view.element);
+        var image = $('#submission__answer__image', view.element);
         view.server.getDownloadUrl().done(function(url) {
-	    console.log(arguments);
             image.attr('src', url);
             return url;
-        });*/
-	var file = $('#submission__answer__file', view.element);
-	view.server.getDownloadUrl().done(function(url) {
-            console.log(arguments);
+        });
+    },
+
+    /**
+     Set the file URL, or retrieve it.
+     **/
+    fileUrl: function() {
+	var view = this;
+        var file = $('#submission__answer__file', view.element);
+        var contener = $('.submission__answer__display__fileupload2', view.element);
+        view.server.getDownloadUrl().done(function(url) {
             file.attr('href', url);
+            contener.removeClass('is--hidden');
             return url;
         });
     }
-
 };
