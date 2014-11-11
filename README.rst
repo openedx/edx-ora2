@@ -7,13 +7,45 @@ User docs: |user-docs| Developer docs: |dev-docs|
 Installation
 ============
 
-The intent of this project is to be installed as Django apps that will be
-included in `edx-platform <https://github.com/edx/edx-platform>`_.
+The intent of this project is to be installed as Django apps that will be included in `edx-platform <https://github.com/edx/edx-platform>`_.
 
-To install all dependencies (assumes Ubuntu 12.04):
+But development is done in the Workbench which is part of the `xblock-sdk <https://github.com/edx/xblock-sdk>`_. Currently Ubuntu 12.04 is assumed. You can setup everything in a Vagrant instance.
+
+To do so install the latest VirtualBox >= 4.3.12 and the latest Vagrant >= 1.6.5.
+
+Clone the repo:
 
 .. code:: bash
 
+    mkdir orastack
+    cd orastack
+    git clone git@github.com:edx/edx-ora2.git
+
+Create the Vagrant instance:
+
+.. code:: bash
+
+    ln -s ./edx-ora2/Vagrantfile ./
+    vagrant plugin install vagrant-vbguest
+    vagrant up
+
+The first vagrant up will fail when setting up shared folders (because the user ora2 does not exist) so do:
+
+.. code:: bash
+
+    vagrant provision
+    vagrant reload
+
+Now you can ssh into the vagrant machine:
+
+.. code:: bash
+
+    vagrant ssh
+    sudo su ora2
+
+To install all dependencies:
+
+.. code:: bash
     make install
 
 
@@ -29,7 +61,7 @@ to start the server on port 8001:
 
 .. code:: bash
 
-    ./scripts/workbench.sh 8001
+    ./scripts/workbench.sh 9001
 
 
 Combining and Minifying JavaScript and Sass
