@@ -47,6 +47,7 @@ To install all dependencies:
 
 .. code:: bash
     make install
+    make install-dev
 
 
 Running the Development Server
