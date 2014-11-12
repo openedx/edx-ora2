@@ -18,3 +18,4 @@ python2.7-dev
 python-mysqldb
 python-pip
 python-software-properties
+rubygems
