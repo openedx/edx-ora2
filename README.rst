@@ -58,11 +58,11 @@ Running the Development Server
     ./scripts/workbench.sh
 
 Additional arguments are passed to ``runserver``.  For example,
-to start the server on port 8001:
+to start the server on port 9000:
 
 .. code:: bash
 
-    ./scripts/workbench.sh 9001
+    ./scripts/workbench.sh 0.0.0.0:9000
 
 
 Combining and Minifying JavaScript and Sass
