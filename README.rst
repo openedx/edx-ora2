@@ -46,6 +46,7 @@ Now you can ssh into the vagrant machine:
 To install all dependencies:
 
 .. code:: bash
+
     make install
     make install-dev
 
