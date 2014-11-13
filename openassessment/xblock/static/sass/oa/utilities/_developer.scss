@@ -1105,26 +1105,6 @@
     }
   }
 
-  @include media($bp-m) {
-    @include span-columns(4 of 4);
-  }
-
-  @include media($bp-ds) {
-    @include span-columns(6 of 6);
-  }
-
-  @include media($bp-dm) {
-    @include span-columns(12 of 12);
-  }
-
-  @include media($bp-dl) {
-    @include span-columns(12 of 12);
-  }
-
-  @include media($bp-dx) {
-    @include span-columns(12 of 12);
-  }
-
   .step__label, .grade__value {
     display: inline-block;
     vertical-align: middle;
