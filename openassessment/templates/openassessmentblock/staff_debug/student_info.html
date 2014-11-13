@@ -46,7 +46,7 @@
                         {% for part in assessment.parts %}
                             {% if part.option.criterion.name == criterion.name %}
                         <tr>
-                            <td class="label">{{ criterion.name }}</td>
+                            <td class="label">{{ criterion.label }}</td>
                             <td class="value">{{ part.option.name }}</td>
                             <td class="value">{{ part.feedback }}</td>
                             <td class="value">{{ part.option.points }}</td>
@@ -88,7 +88,7 @@
                             {% for part in assessment.parts %}
                                 {% if part.option.criterion.name == criterion.name %}
                                     <tr>
-                                        <td class="label">{{ criterion.name }}</td>
+                                        <td class="label">{{ criterion.label }}</td>
                                         <td class="value">{{ part.option.name }}</td>
                                         <td class="value">{{ part.feedback }}</td>
                                         <td class="value">{{ part.option.points }}</td>
@@ -126,7 +126,7 @@
                     {% for part in self_assessment.parts %}
                         {% if part.option.criterion.name == criterion.name %}
                             <tr>
-                                <td class="label">{{ criterion.name }}</td>
+                                <td class="label">{{ criterion.label }}</td>
                                 <td class="value">{{ part.option.name }}</td>
                                 <td class="value">{{ part.option.points }}</td>
                                 <td class="value">{{ criterion.total_value }}</td>
@@ -157,7 +157,7 @@
                         {% for part in example_based_assessment.parts %}
                             {% if part.option.criterion.name == criterion.name %}
                                 <tr>
-                                    <td class="label">{{ criterion.name }}</td>
+                                    <td class="label">{{ criterion.label }}</td>
                                     <td class="value">{{ part.option.name }}</td>
                                     <td class="value">{{ part.option.points }}</td>
                                     <td class="value">{{ criterion.total_value }}</td>
