@@ -530,13 +530,20 @@
           }
         }
 
+        .openassessment_criterion_header_title_box {
+            float: left;
+            width: 80%;
+            display: inline-block;
+        }
+
         .openassessment_criterion_header_title {
           text-transform: uppercase;
-          width: 50%;
-          display: inline-block;
-          float: left;
           cursor: default;
           padding-top: 2px;
+        }
+
+        .openassessment_criterion_guide {
+            @extend %t-small;
         }
 
         .openassessment_criterion_header_remove {
@@ -1103,26 +1110,6 @@
       border-left: 0;
       width: 100%;
     }
-  }
-
-  @include media($bp-m) {
-    @include span-columns(4 of 4);
-  }
-
-  @include media($bp-ds) {
-    @include span-columns(6 of 6);
-  }
-
-  @include media($bp-dm) {
-    @include span-columns(12 of 12);
-  }
-
-  @include media($bp-dl) {
-    @include span-columns(12 of 12);
-  }
-
-  @include media($bp-dx) {
-    @include span-columns(12 of 12);
   }
 
   .step__label, .grade__value {
