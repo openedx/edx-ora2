@@ -170,6 +170,12 @@ def create_assessment(
         msg = "Selected options do not match the rubric: " + str(ex)
         logger.warning(msg, exc_info=True)
         raise SelfAssessmentRequestError(msg)
+    except DatabaseError:
+        error_message = (
+            u"Error creating self assessment for submission {}"
+        ).format(submission_uuid)
+        logger.exception(error_message)
+        raise SelfAssessmentInternalError(error_message)
 
     # Return the serialized assessment
     return full_assessment_dict(assessment)
