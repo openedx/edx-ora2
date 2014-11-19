@@ -6,12 +6,16 @@ Tests for self-assessment API.
 import copy
 import datetime
 import pytz
-from openassessment.test_utils import CacheResetTest
-from submissions.api import create_submission
+
+from django.db import DatabaseError
+from mock import patch
+
 from openassessment.assessment.api.self import (
     create_assessment, submitter_is_finished, get_assessment
 )
-from openassessment.assessment.errors import SelfAssessmentRequestError
+from openassessment.assessment.errors import SelfAssessmentInternalError, SelfAssessmentRequestError
+from openassessment.test_utils import CacheResetTest
+from submissions.api import create_submission
 
 
 class TestSelfApi(CacheResetTest):
@@ -286,4 +290,19 @@ class TestSelfApi(CacheResetTest):
             self.assertEqual(part["option"], None)
             self.assertEqual(
                 part["feedback"], u'I thought it was about as accurate as Scrubs is to the medical profession.'
+            )
+
+    @patch('openassessment.assessment.api.self._complete_assessment')
+    def test_create_assessment_database_error(self, mock_complete_assessment):
+        mock_complete_assessment.side_effect = DatabaseError
+
+        # Create a submission to self-assess
+        submission = create_submission(self.STUDENT_ITEM, "Test answer")
+
+        with self.assertRaises(SelfAssessmentInternalError):
+            # Create a self-assessment for the submission
+            assessment = create_assessment(
+                submission['uuid'], u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
+                self.OPTIONS_SELECTED, self.CRITERION_FEEDBACK, self.OVERALL_FEEDBACK, self.RUBRIC,
+                scored_at=datetime.datetime(2014, 4, 1).replace(tzinfo=pytz.utc)
             )
