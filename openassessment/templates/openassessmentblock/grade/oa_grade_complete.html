@@ -171,7 +171,9 @@
                                             </h6>
 
                                             <div class="feedback__value">
-                                              {{ feedback }}
+                                                <div class="value">
+                                                    <p>{{ feedback }}</p>
+                                                </div>
                                             </div>
                                         </li>
                                         {% endfor %}
@@ -182,7 +184,9 @@
                                             </h6>
 
                                             <div class="feedback__value">
-                                              {{ criterion.self_feedback }}
+                                                <div class="value">
+                                                    <p>{{ criterion.self_feedback }}</p>
+                                                </div>
                                             </div>
                                         </li>
                                         {% endif %}

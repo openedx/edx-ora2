@@ -176,6 +176,7 @@
     @extend %t-heading;
     margin-left: ($baseline-h/4);
     color: $heading-color;
+    white-space: pre-wrap;
   }
 }
 
@@ -245,6 +246,7 @@
   }
 
   .answer__tip {
+    white-space: pre-wrap;
     margin-bottom: ($baseline-v/2);
 
     @extend %copy-3;
