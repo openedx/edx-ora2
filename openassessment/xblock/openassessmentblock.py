@@ -24,7 +24,7 @@ from openassessment.xblock.lms_mixin import LmsCompatibilityMixin
 from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.studio_mixin import StudioMixin
-from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
+from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml, parse_from_xml_str
 from openassessment.xblock.staff_info_mixin import StaffInfoMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.workflow.errors import AssessmentWorkflowError
@@ -105,6 +105,12 @@ class OpenAssessmentBlock(
     LmsCompatibilityMixin
 ):
     """Displays a prompt and provides an area where students can compose a response."""
+
+    @property
+    def editor_tabs(self):
+        return [
+            {"display_name": "XML", "id": "xml"}
+        ]
 
     submission_start = String(
         default=DEFAULT_START, scope=Scope.settings,
@@ -740,3 +746,21 @@ class OpenAssessmentBlock(
             return key.to_deprecated_string()
         else:
             return unicode(key)
+
+    def update_from_xml(self, xml):
+        """ Override the Authoring Mixin function to parse and save from an XML String.
+
+        """
+        data = parse_from_xml_str(xml)
+        self.title = data['title']
+        self.display_name = data['title']
+        self.prompt = data['prompt']
+        self.rubric_criteria = data['rubric_criteria']
+        self.rubric_assessments = data['rubric_assessments']
+        self.rubric_feedback_prompt = data['rubric_feedback_prompt']
+        self.rubric_feedback_default_text = data['rubric_feedback_default_text']
+        self.submission_start = data['submission_start']
+        self.submission_due = data['submission_due']
+        self.allow_file_upload = bool(data['allow_file_upload'])
+        self.allow_latex = bool(data['allow_latex'])
+        self.leaderboard_show = data['leaderboard_show']
