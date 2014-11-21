@@ -10,11 +10,10 @@ edx-submissions>=0.0.8,<0.1.0
 
 # Third Party Requirements
 boto>=2.13.0,<3.0.0
-celery==3.0.19
+celery==3.1.17
 defusedxml==0.4.1
 dogapi==1.2.1
 django>=1.4
-django-celery==3.0.17
 django-extensions==1.2.5
 django-model-utils==1.4.0
 djangorestframework<2.4
