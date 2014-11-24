@@ -267,7 +267,13 @@ class OpenAssessmentBlock(
         template = get_template("openassessmentblock/oa_base.html")
         context = Context(context_dict)
         frag = Fragment(template.render(context))
-        frag.add_css(load("static/css/openassessment.css"))
+
+        i18n_service = self.runtime.service(self, 'i18n')
+        if hasattr(i18n_service, 'get_language_bidi') and i18n_service.get_language_bidi():
+            frag.add_css(load("static/css/openassessment-rtl.css"))
+        else:
+            frag.add_css(load("static/css/openassessment-ltr.css"))
+
         frag.add_javascript(load("static/js/openassessment-lms.min.js"))
         frag.initialize_js('OpenAssessmentBlock')
         return frag
