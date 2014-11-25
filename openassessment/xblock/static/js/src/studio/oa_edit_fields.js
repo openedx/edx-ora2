@@ -237,7 +237,8 @@ OpenAssessment.DatetimeControl.prototype = {
             var parsedDate = $.datepicker.parseDate($.datepicker.ISO_8601, dateString);
             isDateValid = parsedDate instanceof Date;
         } catch (err) {
-            // parseDate throws error if date is not in expected format.
+            // parseDate function throws error if date is not in expected format.
+            // isDateValid flag would remain false.
         }
         if (!isDateValid) {
             $(this.datePicker, this.element).addClass("openassessment_highlighted_field");
