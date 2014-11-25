@@ -44,6 +44,10 @@ describe("OpenAssessment.DatetimeControl", function() {
         testValidateDate(datetimeControl, "99999999-01-01", "00:00", false, expectedError);
         testValidateDate(datetimeControl, "2014-99999-01", "00:00", false, expectedError);
         testValidateDate(datetimeControl, "2014-01-99999", "00:00", false, expectedError);
+        //invalid month
+        testValidateDate(datetimeControl, "2014-13-01", "00:00", false, expectedError);
+        //invalid day
+        testValidateDate(datetimeControl, "2014-02-30", "00:00", false, expectedError);
     });
 
     it("validates invalid times", function() {
@@ -64,6 +68,8 @@ describe("OpenAssessment.DatetimeControl", function() {
         testValidateDate(datetimeControl, "2001-12-31", "00:00", true);
         testValidateDate(datetimeControl, "2014-04-01", "12:34", true);
         testValidateDate(datetimeControl, "2014-04-01", "23:59", true);
+        // single character for month and date.
+        testValidateDate(datetimeControl, "2014-4-1", "23:59", true);
     });
 
     it("clears validation errors", function() {
