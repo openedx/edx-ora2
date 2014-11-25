@@ -235,10 +235,8 @@ OpenAssessment.DatetimeControl.prototype = {
 
         //try: to catch the error thrown by parseDate if date is not in expected format.
         try {
-            var parsedDate = $.datepicker.parseDate("yy-mm-dd", dateString);
-            if (parsedDate instanceof Date) {
-                isDateValid = true;
-            }
+            var parsedDate = $.datepicker.parseDate($.datepicker.ISO_8601, dateString);
+            isDateValid = parsedDate instanceof Date;
         }
         catch (err) {
             // do nothing.
