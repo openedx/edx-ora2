@@ -37,7 +37,7 @@
 %ui-section {
   @include transition(all $tmg-f1 ease-in-out);
   @include transform(scale(1.0));
-  border-radius: ($baseline-v/10);
+  @include border-radius(($baseline-v/10));
   box-shadow: 0 1px 1px $shadow-l1;
   margin-bottom: $baseline-v;
   border: 1px solid $color-decorative-tertiary;
@@ -174,7 +174,7 @@
 
   .question__title__copy {
     @extend %t-heading;
-    margin-left: ($baseline-h/4);
+    @include margin-left(($baseline-h/4));
     white-space: pre-wrap;
     color: $heading-color;
   }
@@ -184,7 +184,7 @@
 %ui-rubric-answers {
   margin-top: $baseline-v;
   margin-bottom: $baseline-v;
-  margin-left: ($baseline-h/2);
+  @include margin-left(($baseline-h/2));
 
   .answer, .answer--feedback {
     @include row();
@@ -210,7 +210,7 @@
     }
 
     .answer__value {
-      margin-right: ($baseline-v/2);
+      @include margin-right(($baseline-v/2));
 
       // STATE: checked
       &:checked {
@@ -250,24 +250,24 @@
     white-space: pre-wrap;
 
     @extend %copy-3;
-    margin-right: $baseline-v;
+    @include margin-right($baseline-v);
     color: $copy-secondary-color;
 
     @include media($bp-dm) {
       @include span-columns(6 of 8);
-      float: left;
+      @include float(left);
       margin-bottom: 0;
     }
 
     @include media($bp-dl) {
       @include span-columns(6 of 8);
-      float: left;
+      @include float(left);
       margin-bottom: 0;
     }
 
     @include media($bp-dx) {
       @include span-columns(6 of 8);
-      float: left;
+      @include float(left);
       margin-bottom: 0;
     }
 
@@ -281,24 +281,24 @@
     color: $copy-secondary-color;
 
     @include media($bp-dm) {
-      float: right;
-      text-align: right;
+      @include float(right);
+      @include text-align(right);
     }
 
     @include media($bp-dl) {
-      float: right;
-      text-align: right;
+      @include float(right);
+      @include text-align(right);
     }
 
     @include media($bp-dx) {
-      float: right;
-      text-align: right;
+      @include float(right);
+      @include text-align(right);
     }
   }
 
   .answer__points__label {
     display: inline-block; // FIX: need to reset base label style
-    margin-left: ($baseline-v/4);
+    @include margin-left(($baseline-v/4));
     color: $copy-secondary-color;
   }
 
@@ -337,7 +337,7 @@
     .answer__value {
       @extend %ui-content-longanswer;
       min-height: ($baseline-v*5);
-      margin-right: 0;
+      @include margin-right(0);
     }
   }
 }

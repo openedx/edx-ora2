@@ -27,7 +27,7 @@
     }
 
     .ui-toggle-visibility__control__copy {
-      margin-left: ($baseline-h/4);
+      @include margin-left(($baseline-h/4));
     }
 
     &:hover, &:focus {
@@ -45,8 +45,8 @@
     @extend %trans-opacity;
     max-height: ($baseline-v*2000);
     opacity: 1.0;
-    padding-left: ($baseline-h/20);
-    padding-right: ($baseline-h/20);
+    @include padding-left(($baseline-h/20));
+    @include padding-right(($baseline-h/20));
   }
 
   // STATE: is collapsed
@@ -79,7 +79,7 @@
   @extend %fake-link;
 
   .ico {
-    margin-left: ($baseline-h/8);
+    @include margin-left(($baseline-h/8));
   }
 
   // STATE: hover
@@ -89,7 +89,7 @@
 
 //   actual tooltip rendered
   &:after {
-    left: 0;
+    @include left(0);
     display: block;
     white-space: normal;
     width: ($baseline-h*5);
@@ -97,7 +97,7 @@
   }
 
   &.hint--top:after {
-    left: 0;
-    margin-left: -($baseline-v);
+    @include left(0);
+    @include margin-left(-($baseline-v));
   }
 }

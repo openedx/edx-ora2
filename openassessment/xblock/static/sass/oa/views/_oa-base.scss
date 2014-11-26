@@ -75,14 +75,14 @@
       }
 
       .wrapper--copy {
-        margin-left: ($baseline-h/2);
-        border-left: 1px solid $color-decorative-tertiary;
-        padding-left: ($baseline-h/2);
+        @include margin-left(($baseline-h/2));
+        @include border-left(1px solid $color-decorative-tertiary);
+        @include padding-left(($baseline-h/2));
 
         @include media($bp-m) {
-          margin-left: 0;
-          border-left: none;
-          padding-left: 0;
+          @include margin-left(0);
+          @include border-left(none);
+          @include padding-left(0);
         }
       }
 
@@ -153,7 +153,7 @@
         @extend %icon-3;
         display: inline-block;
         vertical-align: baseline;
-        margin-right: ($baseline-h/4);
+        @include margin-right(($baseline-h/4));
       }
 
       .copy {
@@ -234,22 +234,22 @@
     // step actions
     .step__actions {
       margin-bottom: ($baseline-v/2);
-      text-align: center;
+      @include text-align(center);
 
       @include media($bp-ds) {
-        text-align: right;
+        @include text-align(right);
       }
 
       @include media($bp-dm) {
-       text-align: right;
+       @include text-align(right);
       }
 
       @include media($bp-dl) {
-        text-align: right;
+        @include text-align(right);
       }
 
       @include media($bp-dx) {
-        text-align: right;
+        @include text-align(right);
       }
 
       .action--submit {
@@ -270,7 +270,7 @@
 
         .message {
           margin-bottom: $baseline-v;
-          text-align: left;
+          @include text-align(left);
         }
       }
     }
@@ -464,8 +464,8 @@
     position: relative;
     margin-bottom: $baseline-v;
     border: 1px solid $color-decorative-tertiary;
-    border-left: ($baseline-h/4) solid $color-decorative-secondary;
-    padding-left: ($baseline-h*0.75);
+    @include border-left(($baseline-h/4) solid $color-decorative-secondary);
+    @include padding-left(($baseline-h*0.75));
   }
 
   .openassessment__prompt__title {
@@ -525,7 +525,7 @@
     .response__submission__status {
       display: inline-block;
       vertical-align: middle;
-      margin-left: ($baseline-h/4);
+      @include margin-left(($baseline-h/4));
     }
 
     .response__submission__status__title {
@@ -539,31 +539,31 @@
         @extend %btn--secondary;
         @extend %action-2;
         display: block;
-        text-align: center;
+        @include text-align(center);
         margin-bottom: ($baseline-v/2);
         min-width: 215px;
 
         @include media($bp-ds) {
           display: inline-block;
-          margin-right: ($baseline-v/2);
+          @include margin-right(($baseline-v/2));
           margin-bottom: 0;
         }
 
         @include media($bp-dm) {
           display: inline-block;
-          margin-right: ($baseline-v/2);
+          @include margin-right(($baseline-v/2));
           margin-bottom: 0;
         }
 
         @include media($bp-dl) {
           display: inline-block;
-          margin-right: ($baseline-v/2);
+          @include margin-right(($baseline-v/2));
           margin-bottom: 0;
         }
 
         @include media($bp-dx) {
           display: inline-block;
-          margin-right: ($baseline-v/2);
+          @include margin-right(($baseline-v/2));
           margin-bottom: 0;
         }
       }
@@ -633,7 +633,7 @@
         }
 
         .question__title__copy {
-          margin-left: 0;
+          @include margin-left(0);
           white-space: pre-wrap;
         }
 
@@ -716,9 +716,9 @@
     }
 
     .wrapper--copy {
-      margin-left: 0;
-      border-left: none;
-      padding-left: 0;
+      @include margin-left(0);
+      @include border-left(none);
+      @include padding-left(0);
     }
   }
 
@@ -751,7 +751,7 @@
       }
 
       .step__label {
-        margin-right: ($baseline-h/4);
+        @include margin-right(($baseline-h/4));
       }
 
       .grade__value__title {
@@ -858,15 +858,15 @@
 
     .question__title__copy {
       @extend %t-heading;
-      margin-left: ($baseline-h/4);
+      @include margin-left(($baseline-h/4));
       white-space: pre-wrap;
       color: $heading-color;
     }
 
     .question__score {
       @extend %t-score;
-      float: right;
-      margin-left: $baseline-v;
+      @include float(right);
+      @include margin-left($baseline-v);
     }
 
     .question__score__value {
@@ -875,7 +875,7 @@
 
       &:after {
         content: "/";
-        margin-left: ($baseline-v/4);
+        @include margin-left(($baseline-v/4));
         color: $heading-secondary-color;
       }
     }
@@ -886,7 +886,7 @@
 
       .unit {
         @extend %t-strong;
-        margin-left: ($baseline-v/4);
+        @include margin-left(($baseline-v/4));
       }
     }
 
@@ -923,8 +923,8 @@
 
       // CASE: self assessment
       &.self-assessment {
-        border-left: ($baseline-h/8) solid $color-decorative-quaternary;
-        padding-left: ($baseline-h/2);
+        @include border-left(($baseline-h/8) solid $color-decorative-quaternary);
+        @include padding-left(($baseline-h/2));
 
         .answer__source {
           color: $color-decorative-tertiary;
@@ -997,7 +997,7 @@
     }
 
     .answer--feedback__title__copy {
-      margin-left: ($baseline-h/4);
+      @include margin-left(($baseline-h/4));
     }
 
     .answer--feedback__content {
@@ -1050,7 +1050,7 @@
 
   .submission__feedback__title__copy {
     @extend %t-heading;
-    margin-left: ($baseline-h/4);
+    @include margin-left(($baseline-h/4));
   }
 
   .submission__feeedback__content {
@@ -1102,7 +1102,7 @@
     .action--submit {
       @extend %btn--secondary;
       @extend %action-2;
-      margin-right: ($baseline-v/2);
+      @include margin-right(($baseline-v/2));
     }
   }
 

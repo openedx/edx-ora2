@@ -30,7 +30,7 @@
   .action--submit {
     @extend %btn--secondary;
     @extend %action-2;
-    margin: ($baseline-v/2) ($baseline-v/2) ($baseline-v/2) ($baseline-v/2);
+    @include margin(($baseline-v/2), ($baseline-v/2), ($baseline-v/2), ($baseline-v/2));
   }
 }
 .staff-info__student {
@@ -42,7 +42,7 @@
   .action--submit {
     @extend %btn--secondary;
     @extend %action-2;
-    margin: ($baseline-v/2) ($baseline-v/2) ($baseline-v/2) ($baseline-v/2);
+    @include margin(($baseline-v/2), ($baseline-v/2), ($baseline-v/2), ($baseline-v/2));
   }
 
   .title {
@@ -59,7 +59,7 @@
 
   .student__answer__display__content {
     border: 1px solid rgba($color-decorative-staff, 0.25);
-    padding: ($baseline-v/2) ($baseline-h/2) ($baseline-v/2) ($baseline-h/2);
+    @include padding(($baseline-v/2), ($baseline-h/2), ($baseline-v/2), ($baseline-h/2));
     margin-bottom: ($baseline-v/2);
   }
 
@@ -188,7 +188,7 @@
   }
 
   #oa_editor_window_title{
-    float: left;
+    @include float(left);
   }
 
   input[type="number"]{
@@ -209,21 +209,21 @@
       width: 35%;
       min-width: 190px;
       max-width: 360px;
-      float: right;
+      @include float(right);
 
       .oa_editor_tab {
-        float: right;
+        @include float(right);
         padding: 0;
         width: 29%;
         margin: 0px 2%;
         height: 35px;
-        border-radius: 5px;
+        @include border-radius(5px);
         box-shadow: none;
         border: 0;
-        text-align: center;
+        @include text-align(center);
 
         a {
-          padding: 8px 0 0 0;
+          @include padding(8px, 0, 0, 0);
           width: 100%;
           text-transform: uppercase;
           outline-color: transparent;
@@ -253,8 +253,8 @@
 
   #openassessment_validation_alert{
     width: 100%;
-    border-top-left-radius: 2px;
-    border-top-right-radius: 2px;
+    @include border-top-left-radius(2px);
+    @include border-top-right-radius(2px);
     background-color: #323232;
     border-bottom: 3px solid rgb(192, 172, 0);
     padding: 10px;
@@ -266,7 +266,7 @@
       position: absolute;
       top: 35%;
       font-size: 200%;
-      left: 3%;
+      @include left(3%);
     }
 
     .openassessment_alert_icon:before{
@@ -274,13 +274,13 @@
       content: "\f071";
       display: inline-block;
       color: rgb(192, 172, 0);
-      float: left;
+      @include float(left);
       height: 0;
       width: 0;
     }
     .openassessment_alert_header {
       width: 85%;
-      margin: 0 5% 0 10%;
+      @include margin(0, 5%, 0, 10%);
 
       .openassessment_alert_title {
         width: auto;
@@ -298,9 +298,9 @@
       display: inline-block;
       position: absolute;
       top: 0px;
-      right: 0px;
+      @include right(0px);
       color: #e9e9e9;
-      text-align: center;
+      @include text-align(center);
       margin: 5px 10px;
 
       [class^="icon"] {
@@ -318,7 +318,7 @@
   .oa_editor_content_wrapper {
     height: Calc(100% - 42px);
     width: 100%;
-    border-radius: 3px;
+    @include border-radius(3px);
     border: 1px solid $edx-gray-d1;
     background-color: white;
     overflow-y: scroll;
@@ -336,7 +336,7 @@
     height: 100%;
     resize: none;
     border: none;
-    border-radius: 4px;
+    @include border-radius(4px);
     padding: 10px;
     font-family: $f-sans-serif;
 
@@ -360,7 +360,7 @@
     #openassessment_title_editor_wrapper{
       label{
         width: 25%;
-        text-align: left;
+        @include text-align(left);
       }
       input{
         width: 45%;
@@ -370,7 +370,7 @@
   }
 
   #openassessment_step_select_description{
-    padding: 10px 10px 0 10px;
+    @include padding(10px, 10px, 0, 10px);
     font-size: 80%;
     border-top: 1px solid $edx-gray-d1;
     margin: 7.5px;
@@ -381,7 +381,7 @@
   }
 
   #ai_training_examples{
-    margin: 5px 20px 10px 10px;
+    @include margin(5px, 20px, 10px, 10px);
     height: 300px;
     width: Calc(100% - 20px);
     resize: none;
@@ -392,10 +392,10 @@
   }
 
   .openassessment_assessment_module_settings_editor{
-    padding: 0 15px 0 0;
+    @include padding(0, 15px, 0, 0);
     margin: 10px;
     border: 1px solid $edx-gray-l3;
-    border-radius: 3px;
+    @include border-radius(3px);
     position: relative;
     background-color: white;
 
@@ -404,22 +404,22 @@
       background: center $edx-gray-t1;
       display: block;
       top: 0px;
-      right: 0px;
+      @include right(0px);
       z-index: 10;
       width: 15px;
       height: 100%;
-      border-left: 1px solid $edx-gray-l3;
+      @include border-left(1px solid $edx-gray-l3);
       cursor: move;
       @include transition(none);
     }
 
     .openassessment_description_closed{
-      padding: 5px 15px 5px 15px;
+      @include padding(5px, 15px, 5px, 15px);
       font-size: 75%;
       margin: 0;
     }
     .openassessment_description{
-      padding: 5px 15px 0 15px;
+      @include padding(5px, 15px, 0, 15px);
       font-size: 75%;
       margin: 0;
     }
@@ -448,9 +448,9 @@
   .openassessment_inclusion_wrapper{
     background-color: $edx-gray-t1;
     margin: 0;
-    padding: 7px 5px 7px 13px;
-    border-top-left-radius: 2px;
-    border-top-right-radius: 2px;
+    @include padding(7px, 5px, 7px, 13px);
+    @include border-top-left-radius(2px);
+    @include border-top-right-radius(2px);
 
     label{
       cursor: pointer;
@@ -463,7 +463,7 @@
     input[type="checkbox"] + label:before {
       font-family: "FontAwesome";
       display: inline-block;
-      margin-right: ($baseline-h/4);
+      @include margin-right(($baseline-h/4));
       width: auto;
       height: auto;
       content: "\f096";
@@ -483,7 +483,7 @@
   }
 
   label{
-    padding-right: 10px;
+    @include padding-right(10px);
   }
 
   .xblock_actions {
@@ -519,7 +519,7 @@
         color: $edx-gray-d2;
 
         .action.expand-collapse {
-          float: left;
+          @include float(left);
           .ui-toggle-expansion {
             color: $edx-gray-d2;
             cursor: pointer;
@@ -531,13 +531,16 @@
         }
 
         .openassessment_criterion_header_title_box {
-            float: left;
+            @include float(left);
             width: 80%;
             display: inline-block;
         }
 
         .openassessment_criterion_header_title {
+          @include float(left);
           text-transform: uppercase;
+          width: 50%;
+          display: inline-block;
           cursor: default;
           padding-top: 2px;
         }
@@ -558,13 +561,13 @@
           display: inline-block;
           margin: 0 5px;
         }
-        text-align: center;
+        @include text-align(center);
         border: 1px solid;
         color: #009fe6;
         background-color: white;
         padding: 7.5px;
-        margin: 10px 10px 10px 20px;
-        border-radius: 3px;
+        @include margin(10px, 10px, 10px, 20px);
+        @include border-radius(3px);
         cursor: pointer;
       }
 
@@ -575,8 +578,8 @@
 
       .openassessment_criterion_basic_editor{
         .comp-setting-entry{
-          padding-right: 0;
-          margin-right: 10px;
+          @include padding-right(0);
+          @include margin-right(10px);
           overflow: auto;
 
           .wrapper-comp-settings{
@@ -587,7 +590,7 @@
 
               input{
                 font-size: 11px;
-                float: right;
+                @include float(right);
                 width: 70%;
               }
             }
@@ -595,7 +598,7 @@
               padding: 10px;
               @extend .openassessment_large_text_input;
               width: 70%;
-              float: right;
+              @include float(right);
             }
             .openassessment_criterion_prompt.openassessment_highlighted_field{
               border: 2px solid red;
@@ -610,21 +613,21 @@
           background-color: $edx-gray-l2;
           padding: 5px;
           margin: 10px;
-          border-radius: 3px;
+          @include border-radius(3px);
 
         }
 
         label{
           width: 100%;
           select{
-            float: right;
-            margin-right: 24%;
+            @include float(right);
+            @include margin-right(24%);
           }
         }
 
         .openassessment_criterion_feedback_direction{
           label{
-            margin-left: 15px;
+            @include margin-left(15px);
           }
         }
       }
@@ -636,7 +639,7 @@
       }
       .openassessment_criterion_header{
         .action.expand-collapse {
-          float: left;
+          @include float(left);
           .ui-toggle-expansion {
             @include transform(rotate(-90deg));
             @include transform-origin(50% 50%);
@@ -647,7 +650,7 @@
     }
 
     .openassessment_criterion_option{
-      padding: 5px 5px 5px 15px;
+      @include padding(5px, 5px, 5px, 15px);
 
       .openassessment_criterion_option_remove_button{
         @extend .openassessment_rubric_remove_button;
@@ -655,15 +658,15 @@
 
       .openassessment_option_header{
         background-color: $edx-gray-t1;
-        padding: 5px 5px 5px 10px;
-        margin: 5px 5px 8px 5px;
-        border-radius: 3px;
+        @include padding(5px, 5px, 5px, 10px);
+        @include margin(5px, 5px, 8px, 5px);
+        @include border-radius(3px);
         overflow: auto;
 
         .openassessment_option_header_title{
           cursor: default;
-          float: left;
-          padding: 2.5px 0 0 5px;
+          @include float(left);
+          @include padding(2.5px, 0, 0, 5px);
         }
 
         .openassessment_option_header_remove{
@@ -674,8 +677,8 @@
       .openassessment_criterion_option_point_wrapper{
         width: 30%;
         border-top: none;
-        padding: 10px 5px 10px 0px;
-        float: left;
+        @include padding(10px, 5px, 10px, 0px);
+        @include float(left);
         margin: 0;
 
         .wrapper-comp-setting{
@@ -684,14 +687,14 @@
 
         label{
           width: 100%;
-          padding-left: Calc((100% - 150px)/2);
+          @include padding-left(Calc((100% - 150px)/2));
           margin: 0;
-          float: right;
+          @include float(right);
 
           input{
             min-width: 50px;
             padding: 10px;
-            float: right;
+            @include float(right);
             width: 30%;
             font-size: 11px;
           }
@@ -699,9 +702,9 @@
       }
 
       .openassessment_criterion_option_name_wrapper{
-        float: left;
+        @include float(left);
         width: 70%;
-        padding: 10px 10px 10px 20px;
+        @include padding(10px, 10px, 10px, 20px);
         border-top: 0;
         margin: 0;
 
@@ -715,20 +718,20 @@
             padding: 10px;
             font-size: 11px;
             width: 56%;
-            float: right;
+            @include float(right);
           }
         }
       }
 
       .openassessment_criterion_option_explanation_wrapper{
-        padding: 15px 5px 0px 20px;
+        @include padding(15px, 5px, 0px, 20px);
         width: 100%;
         display: inline-block;
         margin: 0;
 
         label {
           width: 100%;
-          text-align: left;
+          @include text-align(left);
           margin: 0;
 
           textarea {
@@ -736,7 +739,7 @@
             @extend .openassessment_input_styling;
             height: 70px;
             width: 69.5%;
-            float: right;
+            @include float(right);
           }
         }
       }
@@ -753,7 +756,7 @@
       box-sizing: border-box;
       border: 1px solid #b2b2b2;
       border-radius: 2px;
-      padding: 6px 8px 8px;
+      @include padding(6px, 8px, 8px, 0px);
       background-image: -webkit-linear-gradient(#F2F2F2,#FFF);
       background-image: -moz-linear-gradient(#F2F2F2,#FFF);
       background-image: linear-gradient(#F2F2F2,#FFF);
@@ -776,11 +779,11 @@
       h2{
         text-transform: uppercase;
         font-size: 80%;
-        float: right;
+        @include float(right);
         display: inline-block;
-        padding: 3px 8px 3px 13px;
+        @include padding(3px, 8px, 3px, 13px);
       }
-      float: right;
+      @include float(right);
     }
     .openassessment_rubric_remove_button:hover{
       background-color: $edx-gray-d2;
@@ -794,8 +797,8 @@
 
       #openassessment_rubric_feedback_header{
         background-color: $edx-gray-t1;
-        padding: 7.5px 7.5px 7.5px 15px;
-        margin: 10px 10px 0 10px;
+        @include padding(7.5px, 7.5px, 7.5px, 15px);
+        @include margin(10px, 10px, 0, 10px);
         border-radius: 3px;
       }
 
@@ -807,7 +810,7 @@
         padding: 10px;
         @extend .openassessment_large_text_input;
         width: 70%;
-        float: right;
+        @include float(right);
       }
     }
 
@@ -816,8 +819,8 @@
       h6:before{
         font-family: "FontAwesome";
         display: inline-block;
-        margin-left: 5px;
-        margin-right: 10px;
+        @include margin-left(5px);
+        @include margin-right(10px);
         width: auto;
         height: auto;
         content: "\f067";
@@ -826,7 +829,7 @@
       background-color: white;
       border: 1px solid;
       border-radius: 4px;
-      text-align: center;
+      @include text-align(center);
       color: #009fe6;
 
       padding: 10px;
@@ -890,7 +893,7 @@
       overflow: auto;
       color: $edx-gray-d2;
       .action.expand-collapse {
-        float: left;
+        @include float(left);
         .ui-toggle-expansion {
           cursor: pointer;
           color: $edx-gray-d2;
@@ -903,12 +906,12 @@
         text-transform: uppercase;
         width: 50%;
         display: inline-block;
-        float: left;
+        @include float(left);
         padding-top: 2px;
       }
 
       .openassessment_training_example_remove {
-        padding: 3px 5px 3px 7px;
+        @include padding(3px, 5px, 3px, 7px);
         cursor: pointer;
         border-radius: 4px;
 
@@ -922,10 +925,10 @@
         h2 {
           text-transform: uppercase;
           font-size: 80%;
-          float: right;
+          @include float(right);
           display: inline-block;
         }
-        float: right;
+        @include float(right);
       }
 
       .openassessment_training_example_remove:hover {
@@ -935,14 +938,14 @@
     }
 
     .openassessment_training_example_body {
-      padding: 0 15px 15px 15px;
+      @include padding(0, 15px, 15px, 15px);
       position: relative;
       overflow: hidden;
       .openassessment_training_example_essay_wrapper {
         width: 58%;
         display: inline-block;
         position: absolute;
-        left: 15px;
+        @include left(15px);
         height: 100%;
         textarea {
           min-height: 90px;
@@ -951,14 +954,14 @@
           box-sizing: border-box;
           border: 1px solid #b2b2b2;
           border-radius: 2px;
-          padding: 6px 8px 8px;
+          @include padding(6px, 8px, 8px, 8px);
           background-color: white;
           box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
           font-family: 'Open Sans', sans-serif;
           font-size: 11px;
           color: #4c4c4c;
           outline: 0;
-          margin: 5px 15px 0 10px;
+          @include margin(5px, 15px, 0, 10px);
           width: Calc(100% - 25px);
         }
       }
@@ -966,7 +969,7 @@
       .openassessment_training_example_scored_rubric {
         width: 40%;
         display: inline-block;
-        float: right;
+        @include float(right);
         min-height: 150px;
         .openassessment_training_example_criteria_selections {
           .comp-setting-entry {
@@ -977,10 +980,10 @@
             padding: 10px;
             label{
               width: 100%;
-              margin-left: 0;
+              @include margin-left(0);
               select {
                 width: 60%;
-                float: right;
+                @include float(right);
               }
             }
           }
@@ -991,7 +994,7 @@
 
   .openassessment_add_training_example {
     color: #009fe6;
-    text-align: center;
+    @include text-align(center);
     padding: 5px;
     border: 1px solid;
     border-radius: 4px;
@@ -1019,7 +1022,7 @@
     }
     .openassessment_training_example_header {
       .action.expand-collapse {
-        float: left;
+        @include float(left);
         .ui-toggle-expansion {
           @include transform(rotate(-90deg));
           @include transform-origin(50% 50%);
@@ -1049,8 +1052,8 @@
   .action--upload {
     @extend %btn--secondary;
     @extend %action-2;
-    text-align: center;
-    float: right;
+    @include text-align(center);
+    @include float(right);
     display: inline-block;
     margin: ($baseline-v/2) 0;
     box-shadow: none;
@@ -1075,7 +1078,7 @@
 .submission__answer__display__image{
   @extend .submission__answer__display__content;
   max-height: 400px;
-  text-align: left;
+  @include text-align(left);
   overflow: auto;
   img{
     max-height: 100%;
@@ -1105,9 +1108,9 @@
   .step__title {
 
     .wrapper--copy{
-      margin-left: 0;
-      padding-left: 0;
-      border-left: 0;
+      @include margin-left(0);
+      @include padding-left(0);
+      @include border-left(0);
       width: 100%;
     }
   }
@@ -1136,20 +1139,20 @@
         display: inline-block;
         background: $edx-gray-d2;
         color: white;
-        padding: 5px 5px 3px 5px;
+        @include padding(5px, 5px, 3px, 5px);
         font-size: 16px;
         min-width: 35px;
-        text-align: center;
-        border-top-right-radius: 2px;
-        border-top-left-radius: 2px;
+        @include text-align(center);
+        @include border-top-right-radius(2px);
+        @include border-top-left-radius(2px);
       }
 
       .leaderboard__score__image{
         max-height:150px;
         max-width:100%;
-        margin-right:20px;
-        margin-bottom:20px;
-        float:left;
+        @include margin-right(20px);
+        margin-bottom: 20px;
+        @include float(left);
       }
 
       .leaderboard__score__title{
@@ -1157,7 +1160,7 @@
         color: $edx-gray-l1;
         text-transform: uppercase;
         display: inline-block;
-        padding-left: 15px;
+        @include padding-left(15px);
       }
 
       .leaderboard__answer{
