@@ -194,8 +194,8 @@ OpenAssessment.StudioView.prototype = {
             submissionDue: view.settingsView.submissionDue(),
             assessments: view.settingsView.assessmentsDescription(),
             imageSubmissionEnabled: view.settingsView.imageSubmissionEnabled(),
-	    fileuploadSubmissionEnabled: view.settingsView.fileuploadSubmissionEnabled(),
-	    fileExtSubmissionEnabled: view.settingsView.fileExtSubmissionEnabled(),
+            fileuploadSubmissionEnabled: view.settingsView.fileuploadSubmissionEnabled(),
+            fileExtSubmissionEnabled: view.settingsView.fileExtSubmissionEnabled(),
             latexEnabled: view.settingsView.latexEnabled(),
             leaderboardNum: view.settingsView.leaderboardNum(),
             editorAssessmentsOrder: view.settingsView.editorAssessmentsOrder()
@@ -264,31 +264,31 @@ OpenAssessment.StudioView.prototype = {
     },
 
     onChangeUploadSettings: function() {
-	var that = $("#openassessment_submission_upload_selector", this.element);
-	var file = $("#openassessment_submission_fileupload_editor", this.element);
-	var image = $("#openassessment_submission_image_editor", this.element);
-	var ext = $("#openassessment_submission_fileext_wrapper", this.element);
+        var that = $("#openassessment_submission_upload_selector", this.element);
+        var file = $("#openassessment_submission_fileupload_editor", this.element);
+        var image = $("#openassessment_submission_image_editor", this.element);
+        var ext = $("#openassessment_submission_fileext_wrapper", this.element);
 
-	switch(parseInt(that.val())) {
-		case 0:
-			/* FALSE */
-			file.val(0);
-			image.val(0);
-			ext.addClass("is--hidden");
-		break;
-		case 1:
-			/* IMAGE */
-			file.val(0);
-                        image.val(1);
-			ext.addClass("is--hidden");
-		break;
-		case 2:
-			/* FILE */
-			file.val(1);
-                        image.val(0);
-			ext.removeClass("is--hidden");
-		break;
-	}
+        switch(parseInt(that.val())) {
+            case 0:
+                /* FALSE */
+                file.val(0);
+                image.val(0);
+                ext.addClass("is--hidden");
+            break;
+            case 1:
+                /* IMAGE */
+                file.val(0);
+                image.val(1);
+                ext.addClass("is--hidden");
+            break;
+            case 2:
+                /* FILE */
+                file.val(1);
+                image.val(0);
+                ext.removeClass("is--hidden");
+            break;
+        }
     }
 };
 

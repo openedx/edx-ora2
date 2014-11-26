@@ -455,43 +455,43 @@ OpenAssessment.ResponseView.prototype = {
             there is only one file being uploaded at any time. This file must
             be less than 5 MB and an image.
 
-     **/
+        **/
     prepareUpload: function(target) {
-	var files = target.files;
-	if(files.length == 0) return;
-        this.files = null;
-	this.fileName = files[0].name;
-	var str_extention = $(target).attr('data-extention') || "";
-	this.extentions = str_extention.split(",");
-	this.fileExt = this.fileName.substr(this.fileName.lastIndexOf(".")+1).toLowerCase();
-	this.imageType = files[0].type;
+        var files = target.files;
+        if(files.length == 0) return;
+            this.files = null;
+        this.fileName = files[0].name;
+        var str_extention = $(target).attr('data-extention') || "";
+        this.extentions = str_extention.split(",");
+        this.fileExt = this.fileName.substr(this.fileName.lastIndexOf(".")+1).toLowerCase();
+        this.imageType = files[0].type;
 
-	if(this.extentions.length > 0) {
+        if(this.extentions.length > 0) {
             if (files[0].size > this.MAX_FILE_SIZE) {
                 this.baseView.toggleActionError(
-                     'upload', gettext("File size must be 5MB or less.")
+                    'upload', gettext("File size must be 5MB or less.")
                 );
             } else if (jQuery.inArray(this.fileExt, this.extentions) == -1) {
-	    /* else if (this.imageType.substring(0,6) != 'image/') {*/
-            	this.baseView.toggleActionError(
-       	       		'upload', gettext("File must be")+" "+this.extentions.join(", ")
-       	     	);
-            } else {
-        	this.baseView.toggleActionError('upload', null);
-        	this.files = files;
-            }
-	} else {
-	    if (files[0].size > this.MAX_FILE_SIZE) {
+            /* else if (this.imageType.substring(0,6) != 'image/') {*/
                 this.baseView.toggleActionError(
-                     'upload', gettext("File size must be 5MB or less.")
+                    'upload', gettext("File must be")+" "+this.extentions.join(", ")
+                );
+            } else {
+                this.baseView.toggleActionError('upload', null);
+                this.files = files;
+            }
+        } else {
+            if (files[0].size > this.MAX_FILE_SIZE) {
+                this.baseView.toggleActionError(
+                    'upload', gettext("File size must be 5MB or less.")
                 );
             } else if (this.imageType.substring(0,6) != 'image/') {
                 this.baseView.toggleActionError(
-                        'upload', gettext("File must be an image.")
+                    'upload', gettext("File must be an image.")
                 );
             } else {
-               this.baseView.toggleActionError('upload', null);
-               this.files = files;
+                this.baseView.toggleActionError('upload', null);
+                this.files = files;
             }
         }
         $("#file__upload").toggleClass("is--disabled", this.files === null);
@@ -524,7 +524,7 @@ OpenAssessment.ResponseView.prototype = {
                 view.fileUploader.upload(url, image)
                     .done(function() {
                         view.imageUrl();
-			view.fileUrl();
+                        view.fileUrl();
                         view.baseView.toggleActionError('upload', null);
                     })
                     .fail(handleError);
@@ -548,7 +548,7 @@ OpenAssessment.ResponseView.prototype = {
      Set the file URL, or retrieve it.
      **/
     fileUrl: function() {
-	var view = this;
+        var view = this;
         var file = $('#submission__answer__file', view.element);
         var contener = $('.submission__answer__display__fileupload2', view.element);
         view.server.getDownloadUrl().done(function(url) {

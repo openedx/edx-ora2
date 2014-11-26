@@ -188,17 +188,17 @@ class SubmissionMixin(object):
         if "contentType" not in data:
             return {'success': False, 'msg': self._(u"Must specify contentType.")}
         content_type = data['contentType']
-	filename = data['fileName'];
+        filename = data['fileName'];
         #if not content_type.startswith('image/'):
         #    return {'success': False, 'msg': self._(u"contentType must be an image.")}
 
-	if not filename:
-	    return {'success': False, 'msg': self._(u"we should have filename.")}
+        if not filename:
+            return {'success': False, 'msg': self._(u"we should have filename.")}
 
-	fileext = filename[filename.rfind(".")+1:]
+        fileext = filename[filename.rfind(".")+1:]
 
-	if fileext.lower() not in self.allow_file_ext:
-	    return {'success': False, 'msg': self._(u"extention is not good.")}
+        if fileext.lower() not in self.allow_file_ext:
+            return {'success': False, 'msg': self._(u"extention is not good.")}
 
 
         try:
@@ -261,7 +261,6 @@ class SubmissionMixin(object):
         """
         url = ""
         key = submission['answer'].get('file_key', '')
-	logger.error("file_KEY = "+key)
         try:
             if key:
                 url = file_upload_api.get_download_url(key)
@@ -347,8 +346,8 @@ class SubmissionMixin(object):
             context["submission_due"] = due_date
 
         context['allow_file_upload'] = self.allow_file_upload
-	context['allow_file_upload2'] = self.allow_file_upload2
-	context['allow_file_ext'] = ",".join(self.allow_file_ext)
+        context['allow_file_upload2'] = self.allow_file_upload2
+        context['allow_file_ext'] = ",".join(self.allow_file_ext)
         context['allow_latex'] = self.allow_latex
         context['has_peer'] = 'peer-assessment' in self.assessment_steps
         context['has_self'] = 'self-assessment' in self.assessment_steps

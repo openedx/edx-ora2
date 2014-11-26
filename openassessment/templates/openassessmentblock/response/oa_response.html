@@ -80,12 +80,12 @@
                                      {% if file_url %}
                                      alt="{% trans "The image associated with your submission." %}"
                                      {% endif %}
-                                     src="{{ file_url }}"/>	
+                                     src="{{ file_url }}"/> 
                             </div>
                         </li>
                         {% endif %}
 
-			{% if allow_file_upload2 %}
+                        {% if allow_file_upload2 %}
                         <li class="field">
                             <div id="upload__error">
                                 <div class="message message--inline message--error message--error-server">
@@ -97,11 +97,11 @@
                             <input type="file" id="submission__answer__fileupload2" class="file--upload" data-extention="{{ allow_file_ext }}">
                             <button type="submit" id="file__upload" class="action action--upload is--disabled">{% trans "Upload your file" %}</button>
                         </li>
-			<li class="field">
-				<div class="submission__answer__display__fileupload2  {% if not file_url %}is--hidden{% endif %}">
-					<a href="{{ file_url }}" id="submission__answer__file" target="_blank">{% trans "Download file" %}</a>
-				</div>
-			</li>
+                        <li class="field">
+                            <div class="submission__answer__display__fileupload2  {% if not file_url %}is--hidden{% endif %}">
+                                <a href="{{ file_url }}" id="submission__answer__file" target="_blank">{% trans "Download file" %}</a>
+                            </div>
+                        </li>
                         {% endif %}
                     </ol>
 

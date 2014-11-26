@@ -171,17 +171,16 @@ OpenAssessment.EditSettingsView.prototype = {
 
     **/
     fileExtSubmissionEnabled: function(ext) {
-	console.log(ext);
         var sel = $("#openassessment_fileext_editor", this.settingsElement);
         if (ext !== undefined) {
-           if(jQuery.type(ext) == "array") {
-		sel.val(ext.join(","));
-	   } else {
-		sel.val(ext);
-	   }
+            if(jQuery.type(ext) == "array") {
+                sel.val(ext.join(","));
+            } else {
+                sel.val(ext);
+            }
         }
 
-	var v = sel.val();
+        var v = sel.val();
         return v.split(",");
     },
 

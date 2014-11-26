@@ -121,8 +121,8 @@ class StudioMixin(object):
             'feedbackprompt': self.rubric_feedback_prompt,
             'feedback_default_text': feedback_default_text,
             'allow_file_upload': self.allow_file_upload,
-	    'allow_file_upload2': self.allow_file_upload2,
-	    'allow_file_ext' : self.allow_file_ext,
+            'allow_file_upload2': self.allow_file_upload2,
+            'allow_file_ext' : self.allow_file_ext,
             'allow_latex': self.allow_latex,
             'leaderboard_show': self.leaderboard_show,
             'editor_assessments_order': [
@@ -162,9 +162,9 @@ class StudioMixin(object):
             return {'success': False, 'msg': self._('Error updating XBlock configuration')}
 
 
-	# Check if upload file and image are both activate
-	if data['allow_file_upload2'] == True and data['allow_file_upload'] == True:
-	    logger.exception('You cannot activate upload image and file at same time')
+        # Check if upload file and image are both activate
+        if data['allow_file_upload2'] == True and data['allow_file_upload'] == True:
+            logger.exception('You cannot activate upload image and file at same time')
             return {'success': False, 'msg': self._('Error updating XBlock: is not allow to activate upload image and file at same time')}
 
         # Backwards compatibility: We used to treat "name" as both a user-facing label
@@ -222,8 +222,8 @@ class StudioMixin(object):
         self.submission_start = data['submission_start']
         self.submission_due = data['submission_due']
         self.allow_file_upload = bool(data['allow_file_upload'])
-	self.allow_file_upload2 = bool(data['allow_file_upload2'])
-	self.allow_file_ext = list(data['allow_file_ext'])
+        self.allow_file_upload2 = bool(data['allow_file_upload2'])
+        self.allow_file_ext = list(data['allow_file_ext'])
         self.allow_latex = bool(data['allow_latex'])
         self.leaderboard_show = data['leaderboard_show']
 

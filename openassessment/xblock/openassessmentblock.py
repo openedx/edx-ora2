@@ -417,8 +417,8 @@ class OpenAssessmentBlock(
         block.title = config['title']
         block.prompt = config['prompt']
         block.allow_file_upload = config['allow_file_upload']
-	block.allow_file_upload2 = config['allow_file_upload2']
-	block.allow_file_ext = config['allow_file_ext']
+        block.allow_file_upload2 = config['allow_file_upload2']
+        block.allow_file_ext = config['allow_file_ext']
         block.allow_latex = config['allow_latex']
         block.leaderboard_show = config['leaderboard_show']
 
