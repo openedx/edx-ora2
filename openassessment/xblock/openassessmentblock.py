@@ -33,6 +33,7 @@ from openassessment.xblock.validation import validator
 from openassessment.xblock.resolve_dates import resolve_dates, DISTANT_PAST, DISTANT_FUTURE
 from openassessment.xblock.data_conversion import create_rubric_dict
 
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -129,7 +130,7 @@ class OpenAssessmentBlock(
     )
 
     allow_file_ext = List(
-        default=["pdf"],
+        default=getattr(settings, 'ORA2_DEFAULT_FILE_EXT', []),
         scope=Scope.content,
         help="Extentions file allowed with submission."
     )

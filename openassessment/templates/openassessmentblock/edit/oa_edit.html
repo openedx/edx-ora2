@@ -137,10 +137,11 @@
                             id="openassessment_fileext_editor"
                             class="input setting-input"
                             type="text"
+                            {% if not file_ext_editable %} disabled {% endif %}
                             value="{% for t in allow_file_ext %}
-                                   {% if not forloop.first %},{% endif %}
-                                       {{ t }}
-                                   {% endfor %}"
+{% if not forloop.first %},{% endif %}
+{{ t }}
+{% endfor %}"
                         />
                     </div>
                     <p class="setting-help">{% trans "Specify whether students can upload ONLY these file extentions (example: pdf,doc,docx)." %}</p>

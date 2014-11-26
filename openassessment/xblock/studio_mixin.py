@@ -17,6 +17,7 @@ from openassessment.xblock.schema import EDITOR_UPDATE_SCHEMA
 from openassessment.xblock.resolve_dates import resolve_dates
 from openassessment.xblock.xml import serialize_examples_to_xml_str, parse_examples_from_xml_str
 from xml import UpdateFromXmlError
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -110,7 +111,13 @@ class StudioMixin(object):
         feedback_default_text = copy.deepcopy(self.rubric_feedback_default_text)
         if not feedback_default_text:
             feedback_default_text = DEFAULT_RUBRIC_FEEDBACK_TEXT
+       
+        default_file_ext = getattr(settings, 'ORA2_DEFAULT_FILE_EXT', [])
+        file_ext_editable = getattr(settings, 'ORA2_FILE_EXT_EDITABLE', True)
 
+        if file_ext_editable == False:
+            self.allow_file_ext = default_file_ext
+ 
         return {
             'prompt': self.prompt,
             'title': self.title,
@@ -120,11 +127,12 @@ class StudioMixin(object):
             'criteria': criteria,
             'feedbackprompt': self.rubric_feedback_prompt,
             'feedback_default_text': feedback_default_text,
-            'allow_file_upload': self.allow_file_upload,
-            'allow_file_upload2': self.allow_file_upload2,
+            'allow_file_uploa': self.allow_file_upload,
+            'allow_fbleile_upload2': self.allow_file_upload2,
             'allow_file_ext' : self.allow_file_ext,
             'allow_latex': self.allow_latex,
             'leaderboard_show': self.leaderboard_show,
+            'file_ext_editable' : getattr(settings, 'ORA2_FILE_EXT_EDITABLE', True),
             'editor_assessments_order': [
                 make_django_template_key(asmnt)
                 for asmnt in editor_assessments_order
@@ -166,6 +174,11 @@ class StudioMixin(object):
         if data['allow_file_upload2'] == True and data['allow_file_upload'] == True:
             logger.exception('You cannot activate upload image and file at same time')
             return {'success': False, 'msg': self._('Error updating XBlock: is not allow to activate upload image and file at same time')}
+
+
+        # Check if ORA2_FILE_EXT_EDITABLE == false and in this case set allow_file_ext to default
+        if getattr(settings, 'ORA2_FILE_EXT_EDITABLE', True) == False and getattr(settings, 'ORA2_DEFAULT_FILE_EXT', []) != []:
+            data['allow_file_ext'] = ','.join(settings.ORA2_DEFAULT_FILE_EXT)
 
         # Backwards compatibility: We used to treat "name" as both a user-facing label
         # and a unique identifier for criteria and options.
