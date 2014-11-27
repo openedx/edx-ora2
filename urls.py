@@ -4,6 +4,7 @@ from django.views.i18n import javascript_catalog
 from django.contrib import admin
 
 import openassessment.assessment.urls
+import openassessment.fileupload.urls
 import workbench.urls
 
 admin.autodiscover()
@@ -26,6 +27,9 @@ urlpatterns = patterns(
 
     # JavaScript i18n
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', JS_INFO_DICT),
+
+    # File upload to local filesystem
+    url(r'^openassessment/storage', include(openassessment.fileupload.urls)),
 )
 
 # We need to do explicit setup of the Django debug toolbar because autodiscovery
