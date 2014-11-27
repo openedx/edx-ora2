@@ -641,7 +641,7 @@
         .action.expand-collapse {
           @include float(left);
           .ui-toggle-expansion {
-            @include transform(rotate(-90deg));
+            @include transform(rotate(bidi-rotate-angle(-90deg)));
             @include transform-origin(50% 50%);
             color: $edx-gray-d3;
           }
@@ -1024,7 +1024,7 @@
       .action.expand-collapse {
         @include float(left);
         .ui-toggle-expansion {
-          @include transform(rotate(-90deg));
+          @include transform(rotate(bidi-rotate-angle(-90deg)));
           @include transform-origin(50% 50%);
           .icon-caret-down:before {
             color: #009fe6;

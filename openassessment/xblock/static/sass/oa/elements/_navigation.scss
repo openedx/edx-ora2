@@ -7,6 +7,7 @@
 // --------------------
 // collapse/expand
 // --------------------
+
 .ui-toggle-visibility {
 
   // control to toggle
@@ -23,7 +24,7 @@
 
     > .ico {
       @include transition(all $tmg-f2 ease-in-out 0s);
-      @include transform(rotate(90deg));
+      @include transform(rotate(bidi-rotate-angle(90deg)));
     }
 
     .ui-toggle-visibility__control__copy {
@@ -53,7 +54,7 @@
   &.is--collapsed {
 
     >.ui-toggle-visibility__control > .ico {
-      @include transform(rotate(0deg));
+      @include transform(rotate(bidi-rotate-angle(0deg)));
       @include transform-origin(50% 50%);
     }
 

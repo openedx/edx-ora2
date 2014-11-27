@@ -14,3 +14,11 @@
   }
   box-shadow: $shadow;
 }
+
+@function bidi-rotate-angle($degrees) {
+  @if $bi-app-direction == ltr {
+    @return $degrees;
+  } @else {
+    @return 180deg - $degrees;
+  }
+}
