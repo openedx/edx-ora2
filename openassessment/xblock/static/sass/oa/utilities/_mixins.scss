@@ -1,0 +1,16 @@
+// openassessment: utilities - mixins
+// ====================
+
+@mixin single-box-shadow($offset-x, $offset-y, $blur-radius: 0, $spread-radius: 0, $color: grey, $inset: null) {
+  $shadow : "";
+  @if $bi-app-direction == ltr {
+    $shadow: $offset-x $offset-y $blur-radius $spread-radius $color;
+  } @else {
+    $shadow: -($offset-x) $offset-y $blur-radius $spread-radius $color;
+  }
+
+  @if $inset == inset {
+    $shadow: inset $shadow;
+  }
+  box-shadow: $shadow;
+}

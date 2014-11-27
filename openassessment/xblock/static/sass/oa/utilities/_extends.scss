@@ -38,7 +38,7 @@
   @include transition(all $tmg-f1 ease-in-out);
   @include transform(scale(1.0));
   @include border-radius(($baseline-v/10));
-  box-shadow: 0 1px 1px $shadow-l1;
+  @include single-box-shadow(0, 1px, 1px, 0, $shadow-l1);
   margin-bottom: $baseline-v;
   border: 1px solid $color-decorative-tertiary;
   border-top: ($baseline-v/4) solid $color-decorative-tertiary;
@@ -53,13 +53,13 @@
   &:hover, &:focus {
     @include transform(scale(1.0));
     border-color: $color-decorative-tertiary;
-    box-shadow: 0 1px 1px $shadow-l2;
+    @include single-box-shadow(0, 1px, 1px, 0, $shadow-l2);
   }
 
   // STATE: is collapsed
   &.is--collapsed {
     @include transform(scale(0.99));
-    box-shadow: 0 1px 1px $shadow-l2;
+    @include single-box-shadow(0, 1px, 1px, 0, $shadow-l2);
 
     &:hover, &:focus {
       @include transform(scale(1.0));
@@ -69,7 +69,7 @@
   // STATE: is loading
   &.is--loading {
     @include transform(scale(0.99));
-    box-shadow: 0 1px 1px $shadow-l2;
+    @include single-box-shadow(0, 1px, 1px, 0, $shadow-l2);
   }
 
   // STATE: is empty
@@ -139,7 +139,7 @@
 // UI: well
 // --------------------
 %ui-well {
-  box-shadow: inset 0 1px 2px 1px $shadow-l1;
+  @include single-box-shadow(0, 1px, 2px, 1px, $shadow-l1, inset);
   padding: $baseline-v ($baseline-h/2);
   background: $color-decorative-quinternary;
 }
