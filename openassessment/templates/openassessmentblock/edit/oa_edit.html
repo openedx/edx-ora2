@@ -138,11 +138,14 @@
                             class="input setting-input"
                             type="text"
                             {% if not file_ext_editable %} disabled {% endif %}
-                            value="{% for t in allow_file_ext %}
-{% if not forloop.first %},{% endif %}
-{{ t }}
-{% endfor %}"
+                            value="{% for t in allow_file_ext %}{% if not forloop.first %},{% endif %}{{ t }}{% endfor %}"
                         />
+                        <select id="openassessment_submission_fileext_predefine" class="input setting-input" style="width:210px;margin-left:10px" {% if not file_ext_editable %} disabled {% endif %}>
+                            <option selected value="">{% trans "Predefined file types" %}</option>
+                            <option value="pdf,doc,docx,odt,rtf">{% trans "Documents type (pdf,doc,docx,odt,rtf)" %}</option>
+                            <option value="jpg,png,gif,tiff">{% trans "Image type (jpg,png,gif,tiff)" %}</option>
+                            <option value="xls,xlsx,csv,ods">{% trans "Spreadsheet type (xls,xlsx,csv,ods)" %}</option>
+                        </select>
                     </div>
                     <p class="setting-help">{% trans "Specify whether students can upload ONLY these file extentions (example: pdf,doc,docx)." %}</p>
                 </li>

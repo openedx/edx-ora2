@@ -7,7 +7,7 @@ from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.api import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
 from .resolve_dates import DISTANT_FUTURE
-
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -196,8 +196,14 @@ class SubmissionMixin(object):
             return {'success': False, 'msg': self._(u"we should have filename.")}
 
         fileext = filename[filename.rfind(".")+1:]
+        
+        default_file_ext = getattr(settings, 'ORA2_DEFAULT_FILE_EXT', [])
+        file_ext_editable = getattr(settings, 'ORA2_FILE_EXT_EDITABLE', True)
+        file_ext = self.allow_file_ext 
+        if file_ext_editable == False:
+            file_ext = default_file_ext
 
-        if fileext.lower() not in self.allow_file_ext:
+        if fileext.lower() not in file_ext:
             return {'success': False, 'msg': self._(u"extention is not good.")}
 
 
@@ -345,9 +351,15 @@ class SubmissionMixin(object):
         if due_date < DISTANT_FUTURE:
             context["submission_due"] = due_date
 
+        default_file_ext = getattr(settings, 'ORA2_DEFAULT_FILE_EXT', [])
+        file_ext_editable = getattr(settings, 'ORA2_FILE_EXT_EDITABLE', True)
+        file_ext = self.allow_file_ext
+        if file_ext_editable == False:
+            file_ext = default_file_ext
+
         context['allow_file_upload'] = self.allow_file_upload
         context['allow_file_upload2'] = self.allow_file_upload2
-        context['allow_file_ext'] = ",".join(self.allow_file_ext)
+        context['allow_file_ext'] = ",".join(file_ext)
         context['allow_latex'] = self.allow_latex
         context['has_peer'] = 'peer-assessment' in self.assessment_steps
         context['has_self'] = 'self-assessment' in self.assessment_steps

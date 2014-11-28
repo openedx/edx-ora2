@@ -93,7 +93,8 @@
                                     <div class="message__content"></div>
                                 </div>
                             </div>
-                            <label class="sr" for="submission__answer__fileupload2">{% trans "Select an image to upload for this submission." %}</label>
+                            <br />
+                            <div>{% blocktrans with allow_file_ext=allow_file_ext %}Select a file ({{ allow_file_ext }}) to upload for this submission.{% endblocktrans %}</div>
                             <input type="file" id="submission__answer__fileupload2" class="file--upload" data-extention="{{ allow_file_ext }}">
                             <button type="submit" id="file__upload" class="action action--upload is--disabled">{% trans "Upload your file" %}</button>
                         </li>

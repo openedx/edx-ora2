@@ -60,11 +60,11 @@ OpenAssessment.StudioView = function(runtime, element, server) {
             new OpenAssessment.StudentTrainingListener()
         ])
     );
-
     // Install the save and cancel buttons
     $(".openassessment_save_button", this.element).click($.proxy(this.save, this));
     $(".openassessment_cancel_button", this.element).click($.proxy(this.cancel, this));
     $("#openassessment_submission_upload_selector", this.element).on('change', $.proxy(this.onChangeUploadSettings, this));
+    $("#openassessment_submission_fileext_predefine", this.element).on('change', $.proxy(this.setPredefineFileExt, this));
 };
 
 OpenAssessment.StudioView.prototype = {
@@ -288,6 +288,14 @@ OpenAssessment.StudioView.prototype = {
                 image.val(0);
                 ext.removeClass("is--hidden");
             break;
+        }
+    },
+
+    setPredefineFileExt: function() {
+        var that = $("#openassessment_submission_fileext_predefine", this.element);
+        if(that.val()) {
+            var ext = $("#openassessment_fileext_editor", this.element);
+            ext.val(that.val());
         }
     }
 };
