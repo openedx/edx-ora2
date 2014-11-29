@@ -50,22 +50,22 @@
       margin-bottom: ($baseline-v/2);
 
       @include media($bp-ds) {
-        @include span-columns(4 of 6);
+        @include bidi-span-columns(4 of 6);
         margin-bottom: 0;
       }
 
       @include media($bp-dm) {
-        @include span-columns(8 of 12);
+        @include bidi-span-columns(8 of 12);
         margin-bottom: 0;
       }
 
       @include media($bp-dl) {
-        @include span-columns(8 of 12);
+        @include bidi-span-columns(8 of 12);
         margin-bottom: 0;
       }
 
       @include media($bp-dx) {
-        @include span-columns(9 of 12);
+        @include bidi-span-columns(9 of 12);
         margin-bottom: 0;
       }
 
@@ -166,29 +166,29 @@
       }
 
       @include media($bp-ds) {
-        @include span-columns(2 of 6);
-        @include omega();
+        @include bidi-span-columns(2 of 6);
+        @include bidi-omega();
         position: relative;
         top: -12px;
       }
 
       @include media($bp-dm) {
-        @include span-columns(4 of 12);
-        @include omega();
+        @include bidi-span-columns(4 of 12);
+        @include bidi-omega();
         position: relative;
         top:-12px;
       }
 
       @include media($bp-dl) {
-        @include span-columns(4 of 12);
-        @include omega();
+        @include bidi-span-columns(4 of 12);
+        @include bidi-omega();
         position: relative;
         top: -12px;
       }
 
       @include media($bp-dx) {
-        @include span-columns(3 of 12);
-        @include omega();
+        @include bidi-span-columns(3 of 12);
+        @include bidi-omega();
         position: relative;
         top: -12px;
       }
@@ -726,23 +726,23 @@
 
     .step__title {
       @include media($bp-m) {
-        @include span-columns(4 of 4);
+        @include bidi-span-columns(4 of 4);
       }
 
       @include media($bp-ds) {
-        @include span-columns(6 of 6);
+        @include bidi-span-columns(6 of 6);
       }
 
       @include media($bp-dm) {
-        @include span-columns(12 of 12);
+        @include bidi-span-columns(12 of 12);
       }
 
       @include media($bp-dl) {
-        @include span-columns(12 of 12);
+        @include bidi-span-columns(12 of 12);
       }
 
       @include media($bp-dx) {
-        @include span-columns(12 of 12);
+        @include bidi-span-columns(12 of 12);
       }
 
       .step__label, .grade__value {
@@ -902,23 +902,23 @@
       margin-bottom: $baseline-v;
 
       @include media($bp-ds) {
-        @include span-columns(3 of 6);
-        @include omega(2n);
+        @include bidi-span-columns(3 of 6);
+        @include bidi-omega(2n);
       }
 
       @include media($bp-dm) {
-        @include span-columns(4 of 12);
-        @include omega(3n);
+        @include bidi-span-columns(4 of 12);
+        @include bidi-omega(3n);
       }
 
       @include media($bp-dl) {
-        @include span-columns(4 of 12);
-        @include omega(3n);
+        @include bidi-span-columns(4 of 12);
+        @include bidi-omega(3n);
       }
 
       @include media($bp-dx) {
-        @include span-columns(4 of 12);
-        @include omega(3n);
+        @include bidi-span-columns(4 of 12);
+        @include bidi-omega(3n);
       }
 
       // CASE: self assessment
@@ -977,19 +977,19 @@
   .answer--feedback {
 
     @include media($bp-ds) {
-      @include span-columns(6 of 6);
+      @include bidi-span-columns(6 of 6);
     }
 
     @include media($bp-dm) {
-      @include span-columns(12 of 12);
+      @include bidi-span-columns(12 of 12);
     }
 
     @include media($bp-dl) {
-      @include span-columns(12 of 12);
+      @include bidi-span-columns(12 of 12);
     }
 
     @include media($bp-dx) {
-      @include span-columns(12 of 12);
+      @include bidi-span-columns(12 of 12);
     }
 
     .answer--feedback__title {

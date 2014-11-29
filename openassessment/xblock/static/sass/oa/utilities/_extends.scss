@@ -176,6 +176,7 @@
     @extend %t-heading;
     @include margin-left(($baseline-h/4));
     white-space: pre-wrap;
+    display: inline;
     color: $heading-color;
   }
 }
@@ -226,17 +227,17 @@
     display: block;
 
     @include media($bp-dm) {
-      @include span-columns(8 of 12);
+      @include bidi-span-columns(8 of 12);
       margin-bottom: 0;
     }
 
     @include media($bp-dl) {
-      @include span-columns(8 of 12);
+      @include bidi-span-columns(8 of 12);
       margin-bottom: 0;
     }
 
     @include media($bp-dx) {
-      @include span-columns(8 of 12);
+      @include bidi-span-columns(8 of 12);
       margin-bottom: 0;
     }
   }
@@ -254,19 +255,19 @@
     color: $copy-secondary-color;
 
     @include media($bp-dm) {
-      @include span-columns(6 of 8);
+      @include bidi-span-columns(6 of 8);
       @include float(left);
       margin-bottom: 0;
     }
 
     @include media($bp-dl) {
-      @include span-columns(6 of 8);
+      @include bidi-span-columns(6 of 8);
       @include float(left);
       margin-bottom: 0;
     }
 
     @include media($bp-dx) {
-      @include span-columns(6 of 8);
+      @include bidi-span-columns(6 of 8);
       @include float(left);
       margin-bottom: 0;
     }
@@ -307,21 +308,21 @@
 
     .wrapper--input {
       @include media($bp-ds) {
-        @include span-columns(6 of 6);
+        @include bidi-span-columns(6 of 6);
       }
 
       @include media($bp-dm) {
-        @include span-columns(4 of 12);
+        @include bidi-span-columns(4 of 12);
         margin-bottom: 0;
       }
 
       @include media($bp-dl) {
-        @include span-columns(4 of 12);
+        @include bidi-span-columns(4 of 12);
         margin-bottom: 0;
       }
 
       @include media($bp-dx) {
-        @include span-columns(4 of 12);
+        @include bidi-span-columns(4 of 12);
         margin-bottom: 0;
       }
     }

@@ -45,19 +45,19 @@
       }
 
       @include media($bp-ds) {
-        @include span-columns(4 of 6);
+        @include bidi-span-columns(4 of 6);
       }
 
       @include media($bp-dm) {
-        @include span-columns(8 of 12);
+        @include bidi-span-columns(8 of 12);
       }
 
       @include media($bp-dl) {
-        @include span-columns(8 of 12);
+        @include bidi-span-columns(8 of 12);
       }
 
       @include media($bp-dx) {
-        @include span-columns(9 of 12);
+        @include bidi-span-columns(9 of 12);
       }
 
       .step__label {

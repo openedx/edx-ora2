@@ -22,3 +22,28 @@
     @return 180deg - $degrees;
   }
 }
+
+// Bidi versions of neat mixins.
+@mixin  bidi-omega($query: block, $direction: default) {
+  @if $bi-app-direction == ltr {
+    @include direction-context(left-to-right) {
+      @include omega($query: $query, $direction: $direction);
+    }
+  } @else {
+    @include direction-context(right-to-left) {
+      @include omega($query: $query, $direction: $direction);
+    }
+  }
+}
+
+@mixin bidi-span-columns($span: $columns of $container-columns, $display: block) {
+  @if $bi-app-direction == ltr {
+    @include direction-context(left-to-right) {
+      @include span-columns($span: $span, $display: $display);
+    }
+  } @else {
+    @include direction-context(right-to-left) {
+      @include span-columns($span: $span, $display: $display);
+    }
+  }
+}
