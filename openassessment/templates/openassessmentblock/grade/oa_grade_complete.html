@@ -171,9 +171,7 @@
                                             </h6>
 
                                             <div class="feedback__value">
-                                                <div class="value">
-                                                    <p>{{ feedback }}</p>
-                                                </div>
+                                                <p class="feedback__value__raw">{{ feedback }}</p>
                                             </div>
                                         </li>
                                         {% endfor %}
@@ -184,9 +182,7 @@
                                             </h6>
 
                                             <div class="feedback__value">
-                                                <div class="value">
-                                                    <p>{{ criterion.self_feedback }}</p>
-                                                </div>
+                                                <p class="feedback__value__raw">{{ criterion.self_feedback }}</p>
                                             </div>
                                         </li>
                                         {% endif %}
@@ -219,9 +215,7 @@
 
                                         <div class="answer__value">
                                             <h6 class="label sr">{% trans "Peer's assessment" %}: </h6>
-                                            <div class="value">
-                                                <p>{{ assessment.feedback }}</p>
-                                            </div>
+                                                <p class="answer__value__raw">{{ assessment.feedback }}</p>
                                         </div>
                                     </li>
                                     {% endif %}
@@ -238,9 +232,7 @@
 
                                         <div class="answer__value">
                                             <h6 class="label sr">{% trans "Your assessment" %}: </h6>
-                                            <div class="value">
-                                                <p>{{ self_assessment.feedback }}</p>
-                                            </div>
+                                            <p class="answer__value__raw">{{ self_assessment.feedback }}</p>
                                         </div>
                                     </li>
                                     {% endif %}

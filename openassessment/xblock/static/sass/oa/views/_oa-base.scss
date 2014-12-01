@@ -944,7 +944,8 @@
       display: block;
       margin-bottom: ($baseline-v/2);
       color: $heading-primary-color;
-      .value {
+
+      .answer__value__raw {
         white-space: pre-wrap;
       }
     }
@@ -1020,7 +1021,11 @@
     .feedback__value {
       @extend %copy-3;
       display: block;
-      white-space: pre-wrap;
+
+      .feedback__value__raw {
+        white-space: pre-wrap;
+      }
+
     }
   }
 
