@@ -227,16 +227,31 @@ OpenAssessment.DatetimeControl.prototype = {
 
     **/
     validate: function() {
-        var datetimeString = this.datetime();
-        var matches = datetimeString.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/g);
-        var isValid = (matches !== null);
+        var dateString = $(this.datePicker, this.element).val();
+        var timeString = $(this.timePicker, this.element).val();
 
-        if (!isValid) {
+        //date validation
+        var isDateValid = false;
+
+        try {
+            var parsedDate = $.datepicker.parseDate($.datepicker.ISO_8601, dateString);
+            isDateValid = parsedDate instanceof Date;
+        } catch (err) {
+            // parseDate function throws error if date is not in expected format.
+            // isDateValid flag would remain false.
+        }
+        if (!isDateValid) {
             $(this.datePicker, this.element).addClass("openassessment_highlighted_field");
+        }
+
+        //time validation
+        var matches = timeString.match(/^\d{2}:\d{2}$/g);
+        var isTimeValid = (matches !== null);
+        if(!isTimeValid) {
             $(this.timePicker, this.element).addClass("openassessment_highlighted_field");
         }
 
-        return isValid;
+        return (isDateValid && isTimeValid);
     },
 
     /**

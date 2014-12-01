@@ -6,24 +6,20 @@ from django.db import models
 
 
 class Migration(SchemaMigration):
+    """
+    Migration 0020 incorrectly altered field AssessmentPart.criterion to point to the CriterionOption table
+    instead of the Criterion table. This migration points it back to the Criterion table.
+    """
 
     def forwards(self, orm):
-        # Make the AssessmentPart.criterion field NOT nullable
-        # Bug: The field was also (incorrectly) altered to point to the CriterionOption table instead of the Criterion
-        # table. This is fixed in migration 0024.
-        db.alter_column('assessment_assessmentpart', 'criterion_id',
-            self.gf('django.db.models.fields.related.ForeignKey')(
-                related_name='+', null=False, to=orm['assessment.CriterionOption']
-            )
-        )
+
+        # Changing field 'AssessmentPart.criterion'
+        db.alter_column('assessment_assessmentpart', 'criterion_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['assessment.Criterion']))
 
     def backwards(self, orm):
-        # Make the AssessmentPart.criterion field nullable
-        db.alter_column('assessment_assessmentpart', 'criterion_id',
-            self.gf('django.db.models.fields.related.ForeignKey')(
-                related_name='+', null=True, to=orm['assessment.CriterionOption']
-            )
-        )
+
+        # Changing field 'AssessmentPart.criterion'
+        db.alter_column('assessment_assessmentpart', 'criterion_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['assessment.CriterionOption']))
 
     models = {
         'assessment.aiclassifier': {
@@ -96,7 +92,7 @@ class Migration(SchemaMigration):
         'assessment.assessmentpart': {
             'Meta': {'object_name': 'AssessmentPart'},
             'assessment': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'parts'", 'to': "orm['assessment.Assessment']"}),
-            'criterion': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'+'", 'null': 'True', 'to': "orm['assessment.CriterionOption']"}),
+            'criterion': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'+'", 'to': "orm['assessment.Criterion']"}),
             'feedback': ('django.db.models.fields.TextField', [], {'default': "''", 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'option': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'+'", 'null': 'True', 'to': "orm['assessment.CriterionOption']"})
@@ -104,6 +100,7 @@ class Migration(SchemaMigration):
         'assessment.criterion': {
             'Meta': {'ordering': "['rubric', 'order_num']", 'object_name': 'Criterion'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'label': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'order_num': ('django.db.models.fields.PositiveIntegerField', [], {}),
             'prompt': ('django.db.models.fields.TextField', [], {'max_length': '10000'}),
@@ -114,6 +111,7 @@ class Migration(SchemaMigration):
             'criterion': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'options'", 'to': "orm['assessment.Criterion']"}),
             'explanation': ('django.db.models.fields.TextField', [], {'max_length': '10000', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'label': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'order_num': ('django.db.models.fields.PositiveIntegerField', [], {}),
             'points': ('django.db.models.fields.PositiveIntegerField', [], {})
