@@ -48,8 +48,8 @@ OpenAssessment.StaffInfoView.prototype = {
     loadStudentInfo: function() {
         var view = this;
         var sel = $('#openassessment__staff-info', this.element);
-        var student_id = sel.find('#openassessment__student_id').val();
-        this.server.studentInfo(student_id).done(
+        var student_username = sel.find('#openassessment__student_username').val();
+        this.server.studentInfo(student_username).done(
             function(html) {
                 // Load the HTML and install event handlers
                 $('#openassessment__student-info', view.element).replaceWith(html);
@@ -81,7 +81,7 @@ OpenAssessment.StaffInfoView.prototype = {
         );
 
         // Install a click handler for requesting student info
-        sel.find('#submit_student_id').click(
+        sel.find('#submit_student_username').click(
             function(eventObject) {
                 eventObject.preventDefault();
                 view.loadStudentInfo();
