@@ -859,8 +859,8 @@
     .question__title__copy {
       @extend %t-heading;
       margin-left: ($baseline-h/4);
-      color: $heading-color;
       white-space: pre-wrap;
+      color: $heading-color;
     }
 
     .question__score {
