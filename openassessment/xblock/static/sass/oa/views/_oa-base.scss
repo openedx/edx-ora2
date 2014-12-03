@@ -634,6 +634,7 @@
 
         .question__title__copy {
           margin-left: 0;
+          white-space: pre-wrap;
         }
 
         textarea {
@@ -858,6 +859,7 @@
     .question__title__copy {
       @extend %t-heading;
       margin-left: ($baseline-h/4);
+      white-space: pre-wrap;
       color: $heading-color;
     }
 
@@ -942,6 +944,10 @@
       display: block;
       margin-bottom: ($baseline-v/2);
       color: $heading-primary-color;
+
+      .answer__value__raw {
+        white-space: pre-wrap;
+      }
     }
 
     .answer__value__value {
@@ -1015,6 +1021,11 @@
     .feedback__value {
       @extend %copy-3;
       display: block;
+
+      .feedback__value__raw {
+        white-space: pre-wrap;
+      }
+
     }
   }
 

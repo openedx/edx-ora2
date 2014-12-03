@@ -175,6 +175,7 @@
   .question__title__copy {
     @extend %t-heading;
     margin-left: ($baseline-h/4);
+    white-space: pre-wrap;
     color: $heading-color;
   }
 }
@@ -246,6 +247,7 @@
 
   .answer__tip {
     margin-bottom: ($baseline-v/2);
+    white-space: pre-wrap;
 
     @extend %copy-3;
     margin-right: $baseline-v;
