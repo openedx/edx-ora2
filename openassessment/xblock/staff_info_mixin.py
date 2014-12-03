@@ -279,6 +279,14 @@ class StaffInfoMixin(object):
         path = 'openassessmentblock/staff_debug/student_info.html'
         return path, context
 
+    @XBlock.handler
+    @require_course_staff("STAFF_INFO")
+    def save_staff_regraded_info(self, data, suffix=''):
+        pass
+        # TODO!
+        # path, context = self.get_staff_path_and_context()
+        # return self.render_assessment(path, context)
+
     @XBlock.json_handler
     @require_global_admin("RESCHEDULE_TASKS")
     def reschedule_unfinished_tasks(self, data, suffix=''):  # pylint: disable=W0613

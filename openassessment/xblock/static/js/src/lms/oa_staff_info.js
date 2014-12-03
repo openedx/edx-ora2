@@ -60,17 +60,64 @@ OpenAssessment.StaffInfoView.prototype = {
     },
 
     /**
+     Save the staff regraded info for a particular peer assessment.
+     **/
+    saveStaffRegradedInfo: function() {
+        var view = this;
+        var sel = $('#openassessment__staff-regraded-info', this.element);
+        var assessment_uuid = sel.find('#assessment_uuid').val();
+        var new_grade = sel.find('#openassessment__staff-info__regrade_id').val();
+        var staff_comment = sel.find('#openassessment__staff-info__regraded_comments').val();
+        this.server.regradedInfo(assessment_uuid, new_grade, staff_comment).done(
+            function() {
+            // Update the corresponding peer assessment heading
+                $('#openassessment__student-info', view.element).replaceWith(html);
+            }
+        ).fail(function(errMsg) {
+            view.showLoadError('staff-regraded-info');
+            });
+    },
+    /**
+     Upon request, overrides the current assessment grade.
+     **/
+    overrideStaffGrade: function(assessment_uuid) {
+        alert('adkdf');
+        var view = this;
+        var sel = $('#openassessment__staff-info', this.element);
+        var new_grade = sel.find('#openassessment__staff-info__regrade_id').val();
+        var staff_comment = sel.find('#openassessment__staff-info__regraded_comments').val();
+
+        var student_id = sel.find('#openassessment__student_id').val();
+        this.server.regradedInfo(assessment_uuid, new_grade, staff_comment).done(
+            function(html) {
+                // Load the HTML and install event handlers
+                $('#openassessment__student-info', view.element).replaceWith(html);
+            }
+        ).fail(function(errMsg) {
+                view.showLoadError('student_info');
+            });
+    },
+
+    /**
      Install event handlers for the view.
      **/
     installHandlers: function() {
         var sel = $('#openassessment__staff-info', this.element);
+        var selStudentInfo = $('#openassessment__student-info', this.element);
         var view = this;
 
         if (sel.length <= 0) {
             return;
         }
 
+        if (selStudentInfo.length <= 0) {
+            return;
+        }
+
         this.baseView.setUpCollapseExpand(sel, function() {});
+
+        // For Staff regrade section.
+        this.baseView.setUpCollapseExpand(selStudentInfo, function() {});
 
         // Install key handler for student id field
         sel.find('#openassessment_student_info_form').submit(
@@ -85,6 +132,23 @@ OpenAssessment.StaffInfoView.prototype = {
             function(eventObject) {
                 eventObject.preventDefault();
                 view.loadStudentInfo();
+            }
+        );
+
+        // Install key handler for new staff grade field.
+        selStudentInfo.on('submit', '#openassessment_staff_regrade_form', function (eventObject) {
+                eventObject.preventDefault();
+                var assessment_uuid=eventObject.data('assesment-uuid');
+                alert('blah');
+                view.overrideStaffGrade(assessment_uuid);
+            }
+        );
+        // Install a click handler for overriding grade
+        selStudentInfo.on('click', '.submit_new_staff_grade', function(eventObject){
+                alert('click');
+            console.log(eventObject.data('assesment-uuid'));
+            eventObject.preventDefault();
+            view.overrideStaffGrade(assessment_uuid);
             }
         );
 
