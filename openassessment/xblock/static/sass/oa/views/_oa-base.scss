@@ -263,6 +263,11 @@
         .ico {
           @extend %icon-2;
         }
+
+        .icon-caret-right:before {
+          @include transform(rotate(bidi-rotate-angle(0deg)));
+        }
+
       }
 
       // STATE: actions has an error

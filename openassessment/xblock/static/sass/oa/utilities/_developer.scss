@@ -1057,6 +1057,7 @@
     display: inline-block;
     margin: ($baseline-v/2) 0;
     box-shadow: none;
+
   }
 
   .file--upload {
@@ -1141,7 +1142,7 @@
   }
 
   .step__label {
-    margin-right: ($baseline-h/4);
+    @include margin-right(($baseline-h/4));
   }
 
   .leaderboard__title{
