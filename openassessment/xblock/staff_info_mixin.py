@@ -7,7 +7,9 @@ from functools import wraps
 import logging
 
 from xblock.core import XBlock
+from openassessment.assessment.errors import PeerAssessmentInternalError, PeerAssessmentRequestError
 from openassessment.assessment.errors.ai import AIError
+from openassessment.assessment.models import Assessment, AssessmentOverride
 from openassessment.xblock.resolve_dates import DISTANT_PAST, DISTANT_FUTURE
 from openassessment.xblock.data_conversion import (
     create_rubric_dict, convert_training_examples_list_to_dict
@@ -281,11 +283,35 @@ class StaffInfoMixin(object):
 
     @XBlock.handler
     @require_course_staff("STAFF_INFO")
-    def save_staff_regraded_info(self, data, suffix=''):
-        pass
-        # TODO!
-        # path, context = self.get_staff_path_and_context()
-        # return self.render_assessment(path, context)
+    def override_assessment(self, data, suffix=''):
+        assessment_id = data.params.get('assessment_id', '')
+        points = data.params.get('points', None)
+        comments = data.params.get('comments', '')
+        if points is None:
+            return (
+                False,
+                'EBADARGS',
+                self._(u'"override_assessment" required new grade value.')
+            )
+        try:
+            overridden_assessment = peer_api.create_overridden_assessment(assessment_id=assessment_id, points=points, comments=comments,
+                                                  scorer_id=self.get_student_item_dict()["student_id"])
+
+            path='openassessmentblock/staff_debug/staff_regrade_info.html'
+            context = {
+                'overridden_assessment': overridden_assessment
+            }
+            return self.render_assessment(path, context)
+
+        except PeerAssessmentRequestError as ex:
+            msg = ex.message
+            logger.exception(msg)
+            return {'success': False, 'msg': msg}
+        except PeerAssessmentInternalError as ex:
+            msg = ex.message
+            logger.exception(msg)
+            return {'success': False, 'msg': msg}
+
 
     @XBlock.json_handler
     @require_global_admin("RESCHEDULE_TASKS")

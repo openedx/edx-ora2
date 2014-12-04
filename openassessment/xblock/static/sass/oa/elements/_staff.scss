@@ -18,6 +18,39 @@
     border-top: ($baseline-v/4) solid $color-decorative-staff;
     padding: $baseline-v ($baseline-h/2);
     background: $staff-bg;
+
+    &.wrapper--staff-info {
+      &.wrapper--ui--regrade {
+        h2 {
+          .staff-info__regrade__title__copy {
+            font-weight: bold;
+            color: #fff;
+          }
+        }
+        ul {
+          list-style: none;
+          padding: 0;
+          input[type="number"] {
+            height: 35px;
+            color: #3c3c3c;
+            padding: 0 5px;
+            text-align: center;
+            width: 55px;
+            font-weight: 600;
+          }
+          textarea.regrade_comments {
+            width: 350px;
+            height: 100px;
+            text-align: left;
+          }
+        }
+        ul.list--actions{
+          .action--submit {
+            margin: 10px 0px;
+          }
+        }
+      }
+    }
   }
 
   .ui-staff {

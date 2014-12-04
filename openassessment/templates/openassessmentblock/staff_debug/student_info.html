@@ -62,7 +62,7 @@
                 {{ assessment.feedback|linebreaks }}
             </div>
 
-            <div id="openassessment__staff-info__regrade" class="wrapper--staff-info wrapper--ui-staff">
+            <div id="openassessment__staff-info__regrade" class="wrapper--staff-info wrapper--ui-staff wrapper--ui--regrade">
 
                 <div class="staff-info__regrade ui-staff ui-toggle-visibility is--collapsed">
                     <h2 class="staff-info__title ui-staff__title ui-toggle-visibility__control">
@@ -73,32 +73,33 @@
                     <div class="staff-info__regrade__content ui-staff__content ui-toggle-visibility__content">
                         <div class="staff-info__regrade ui-staff__regrade__content__section">
                             <div class="wrapper--input" class="staff-info__regrade__form">
-                                <form id="openassessment_staff_regrade_form" data-assesment-uuid="{{ assessment.submission_uuid }}">
+                                <form id="openassessment_staff_regrade_form" data-assessment-id="{{ assessment.id }}">
                                     <ul>
                                         <li>
-                                            <label for="openassessment__staff-regrade_id" class="label">{% trans "New Total Garde" %}</label>
+                                            <label for="openassessment__staff-info__regrade_points" class="label">{% trans "New Total Garde" %}</label>
                                         </li>
                                         <li>
-                                            <input id="openassessment__staff-regrade_id" type="number" class="value"
-                                                   maxlength="255" min="0" max="99">
+                                            <input id="openassessment__staff-info__regrade_points" type="number"
+                                                   maxlength="3" min="0" max="100">
                                         </li>
                                         <li>
-                                          <label for="openassessment__staff-info__regraded_comments" class="label">{% trans "Comments" %}</label>
+                                          <label for="openassessment__staff-info__regrade_comments" class="label">{% trans "(OPTIONAL) Comments" %}</label>
                                         </li>
                                         <li>
                                             <textarea
-                                                id="openassessment__staff-info__regraded_comments"
-                                                class="answer__value"
-                                                value=""
-                                                name=""
-                                                maxlength="10000">
-                                        </textarea>
+                                                    id="openassessment__staff-info__regrade_comments"
+                                                    class="regrade_comments"
+                                                    value=""
+                                                    name=""
+                                                    maxlength="10000"></textarea>
                                         </li>
                                     </ul>
                                     <ul class="list list--actions">
                                         <li class="list--actions__item">
-                                            <a data-assesment-uuid="{{ assessment.submission_uuid }}" aria-role="button" href="" id="submit_new_staff_grade" class="submit_new_staff_grade action--submit"><span
-                                                    class="copy">{% trans "Save" %}</span></a>
+                                            <a data-assessment-id="{{ assessment.id }}" aria-role="button" href="" id="submit_new_staff_grade" class="submit_new_staff_grade action--submit">
+                                                <span
+                                                    class="copy">{% trans "Save" %}</span>
+                                            </a>
                                         </li>
                                     </ul>
                                 </form>

@@ -138,21 +138,22 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
         },
 
         /**
-         Save the re-graded info.
-         **/
-        regradeInfo: function(assessment_uuid, new_grade, staff_comment) {
-            var url = this.url('save_staff_regraded_info');
-            return $.Deferred(function(defer) {
+          Save the re-graded info.
+          **/
+        assessmentOverride: function (assessmentId, points, comments) {
+            var url = this.url('override_assessment');
+            return $.Deferred(function (defer) {
                 $.ajax({
                     url: url,
                     type: "POST",
                     dataType: "html",
-                    data: {assessment_uuid: assessment_uuid, new_grade: new_grade, staff_comment: staff_comment}
-                }).done(function(data) {
+                    data: {assessment_id: assessmentId, points: points, comments: comments}
+                }).done(function (data) {
                     defer.resolveWith(this, [data]);
-                        }).fail(function(data) {
-            defer.rejectWith(this, [gettext('This section could not be loaded.')]);
-            });
+
+                }).fail(function (data) {
+                    defer.rejectWith(this, [gettext('This section could not be loaded.')]);
+                });
             }).promise();
         },
 

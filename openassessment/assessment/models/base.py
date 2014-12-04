@@ -821,3 +821,57 @@ class AssessmentPart(models.Model):
         if len(missing_criteria) > 0:
             msg = u"Missing selections for criteria: {missing}".format(missing=', '.join(missing_criteria))
             raise InvalidRubricSelection(msg)
+
+
+class AssessmentOverride(models.Model):
+    """Override/Regrade an Assessment.
+
+    This is an assessment state information and is created when a staff overrides
+    an assessment of some student.
+
+    """
+    MAX_COMMENT_SIZE = 1000 * 10
+
+    assessment = models.ForeignKey(Assessment, related_name='override')
+
+    scored_at = models.DateTimeField(default=now, db_index=True)
+    scorer_id = models.CharField(max_length=40, db_index=True)
+
+    points = models.IntegerField(db_index=True)
+    comments = models.TextField(max_length=10000, default="", blank=True)
+
+    class Meta:
+        app_label = "assessment"
+
+    @classmethod
+    def create(cls, assessment, points, scorer_id, comments=None, scored_at=None):
+        """
+        Create a new override assessment.
+
+        Args:
+            assessment (Assessment): The assessment associated with this override.
+            scorer_id (unicode): The ID of the staff.
+            points (int): The points given by staff.
+
+        Keyword Arguments:
+            feedback (unicode): Overall feedback on the submission.
+            scored_at (datetime): The time the assessment override was created.  Defaults to the current time.
+
+        Returns:
+            AssessmentOverride
+
+        """
+        assessment_params = {
+            'points': points,
+            'scorer_id': scorer_id,
+            'assessment': assessment,
+        }
+
+        if scored_at is not None:
+            assessment_params['scored_at'] = scored_at
+
+        # Truncate the comment if it exceeds the maximum size
+        if comments is not None:
+            assessment_params['comment'] = comments[0:cls.MAX_COMMENT_SIZE]
+
+        return cls.objects.create(**assessment_params)

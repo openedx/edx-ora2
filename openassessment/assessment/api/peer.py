@@ -12,7 +12,7 @@ from dogapi import dog_stats_api
 from openassessment.assessment.models import (
     Assessment, AssessmentFeedback, AssessmentPart,
     InvalidRubricSelection, PeerWorkflow, PeerWorkflowItem,
-)
+    AssessmentOverride)
 from openassessment.assessment.serializers import (
     AssessmentFeedbackSerializer, RubricSerializer,
     full_assessment_dict, rubric_from_dict, serialize_assessments,
@@ -510,6 +510,7 @@ def get_assessments(submission_uuid, scored_only=True, limit=None):
         >>> get_assessments("1", scored_only=True, limit=2)
         [
             {
+                'id': 1,
                 'points_earned': 6,
                 'points_possible': 12,
                 'scored_at': datetime.datetime(2014, 1, 29, 17, 14, 52, 649284 tzinfo=<UTC>),
@@ -517,6 +518,7 @@ def get_assessments(submission_uuid, scored_only=True, limit=None):
                 'feedback': u'Your submission was thrilling.'
             },
             {
+                'id': 32,
                 'points_earned': 11,
                 'points_possible': 12,
                 'scored_at': datetime.datetime(2014, 1, 31, 14, 10, 17, 544214 tzinfo=<UTC>),
@@ -945,3 +947,40 @@ def _log_workflow(submission_uuid, workflow):
     tags.append(u"overgrading")
 
     dog_stats_api.increment('openassessment.assessment.peer_workflow.count', tags=tags)
+
+
+def create_overridden_assessment(assessment_id, points, scorer_id, comments=None, scored_at=None):
+    """
+    Create a new override assessment.
+
+    Args:
+        assessment (Assessment): The assessment associated with this override.
+        scorer_id (unicode): The ID of the staff.
+        points (int): The points given by staff.
+
+    Keyword Arguments:
+        comment (unicode): Overall feedback on the submission.
+        scored_at (datetime): The time the assessment override was created.  Defaults to the current time.
+
+    Returns:
+        AssessmentOverride
+    """
+    try:
+        points = int(points)
+        # Get the particular assessment to Override/Regrade
+        assessment = Assessment.objects.get(pk=assessment_id)
+        return AssessmentOverride.create(assessment=assessment, points=points, comments=comments, scorer_id=scorer_id,
+                                         scored_at=scored_at)
+
+    except ValueError:
+        raise PeerAssessmentRequestError(u'New grade must be an integer')
+
+    except Assessment.DoesNotExist:
+        error_message = u"There is no assessment associated with the given assessment ID {}.".format(assessment_id)
+        logger.exception(error_message)
+        raise PeerAssessmentInternalError(error_message)
+
+    except DatabaseError:
+        error_message = u"An error occurred while overriding the assessment grade."
+        logger.exception(error_message)
+        raise PeerAssessmentInternalError(error_message)
