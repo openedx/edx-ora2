@@ -141,7 +141,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
           Save the re-graded info.
           **/
         assessmentOverride: function (assessmentId, points, comments) {
-            var url = this.url('override_assessment');
+            var url = this.url('staff_override_assessment');
             return $.Deferred(function (defer) {
                 $.ajax({
                     url: url,

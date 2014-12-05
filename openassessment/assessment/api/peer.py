@@ -5,10 +5,11 @@ the workflow for a given submission.
 
 """
 import logging
+
 from django.utils import timezone
 from django.db import DatabaseError, IntegrityError, transaction
-from dogapi import dog_stats_api
 
+from dogapi import dog_stats_api
 from openassessment.assessment.models import (
     Assessment, AssessmentFeedback, AssessmentPart,
     InvalidRubricSelection, PeerWorkflow, PeerWorkflowItem,
@@ -22,6 +23,7 @@ from openassessment.assessment.errors import (
     PeerAssessmentRequestError, PeerAssessmentWorkflowError, PeerAssessmentInternalError
 )
 from submissions import api as sub_api
+
 
 logger = logging.getLogger("openassessment.assessment.api.peer")
 
@@ -294,6 +296,7 @@ def create_assessment(
         ).format(scorer_id)
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
+
 
 @transaction.commit_on_success
 def _complete_assessment(
@@ -896,9 +899,9 @@ def _log_assessment(assessment, scorer_workflow):
     try:
         workflow_item = assessment.peerworkflowitem_set.get()
     except (
-        PeerWorkflowItem.DoesNotExist,
-        PeerWorkflowItem.MultipleObjectsReturned,
-        DatabaseError
+            PeerWorkflowItem.DoesNotExist,
+            PeerWorkflowItem.MultipleObjectsReturned,
+            DatabaseError
     ):
         msg = u"Could not retrieve peer workflow item for assessment: {assessment}".format(
             assessment=assessment.id
@@ -967,13 +970,16 @@ def create_overridden_assessment(assessment_id, points, scorer_id, comments=None
     """
     try:
         points = int(points)
+
         # Get the particular assessment to Override/Regrade
         assessment = Assessment.objects.get(pk=assessment_id)
-        return AssessmentOverride.create(assessment=assessment, points=points, comments=comments, scorer_id=scorer_id,
-                                         scored_at=scored_at)
+        if points > assessment.points_possible:
+            raise PeerAssessmentRequestError(u'New grade points must be less than or equal to possible points.')
 
+        return AssessmentOverride.create(assessment=assessment, points=points, comments=comments,
+                                         scorer_id=scorer_id, scored_at=scored_at)
     except ValueError:
-        raise PeerAssessmentRequestError(u'New grade must be an integer')
+        raise PeerAssessmentRequestError(u'New grade must be an integer.')
 
     except Assessment.DoesNotExist:
         error_message = u"There is no assessment associated with the given assessment ID {}.".format(assessment_id)

@@ -29,7 +29,9 @@
             <h3 class="title">{% trans "Peer Assessments for This Student" %}</h3>
             {% for assessment in peer_assessments %}
                 {% with peer_num=forloop.counter %}
-                <h4 class="title--sub"> {% trans "Peer" %} {{ peer_num }}: </h4>
+                <h4 class="title--sub"> {% trans "Peer" %} {{ peer_num }}:
+                    {%if assessment.staff_overridden_grade %}{% trans "(Staff Re-graded)" %}{% endif %}
+                </h4>
                 <table class="staff-info__status__table" summary="{% trans "Assessment" %}">
                     <thead>
                     <tr>
@@ -61,6 +63,11 @@
             <div class="student__answer__display__content">
                 {{ assessment.feedback|linebreaks }}
             </div>
+            <div id="openassessment__staff-info__regrade-info" class="staff-info__regrade-info">
+                {% if assessment.staff_overridden_grade %}
+                    {% include "openassessmentblock/staff_debug/staff_regrade_info.html" with overridden_points=assessment.staff_overridden_grade.points overridden_comments=assessment.staff_overridden_grade.comments %}
+                {% endif %}
+            </div>
 
             <div id="openassessment__staff-info__regrade" class="wrapper--staff-info wrapper--ui-staff wrapper--ui--regrade">
 
@@ -76,14 +83,14 @@
                                 <form id="openassessment_staff_regrade_form" data-assessment-id="{{ assessment.id }}">
                                     <ul>
                                         <li>
-                                            <label for="openassessment__staff-info__regrade_points" class="label">{% trans "New Total Garde" %}</label>
+                                            <label for="openassessment__staff-info__regrade_points" class="label">{% trans "New Total Grade" %}</label>
                                         </li>
                                         <li>
                                             <input id="openassessment__staff-info__regrade_points" type="number"
                                                    maxlength="3" min="0" max="100">
                                         </li>
                                         <li>
-                                          <label for="openassessment__staff-info__regrade_comments" class="label">{% trans "(OPTIONAL) Comments" %}</label>
+                                          <label for="openassessment__staff-info__regrade_comments" class="label">{% trans "(Optional) Comments" %}</label>
                                         </li>
                                         <li>
                                             <textarea
@@ -108,7 +115,6 @@
                     </div>
                 </div>
             </div>
-            <div id="openassessment__staff-info__regrade-info" class="staff-info__regrade-info"></div>
 
 
 

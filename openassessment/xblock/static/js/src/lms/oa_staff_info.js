@@ -62,20 +62,16 @@ OpenAssessment.StaffInfoView.prototype = {
                 // Install key handler for new staff grade Save button.
                 var selStudentInfo = $('#openassessment__staff-info__regrade', this.element);
                 selStudentInfo.on('click', '#submit_new_staff_grade', function (eventObject) {
-                        var assessmentId = $(this).data('assessment-id');
                         eventObject.preventDefault();
-                        view.overrideStaffGrade(assessmentId);
+                        view.overrideStaffGrade($(this).data('assessment-id'));
                     }
                 );
                 // Install key handler for new staff grade field.
                 selStudentInfo.on('submit', '#openassessment_staff_regrade_form', function (eventObject) {
-                        var assessmentId = $(this).data('assessment-id');
                         eventObject.preventDefault();
-                        view.overrideStaffGrade(assessmentId);
+                        view.overrideStaffGrade($(this).data('assessment-id'));
                     }
                 );
-
-
             }
         ).fail(function(errMsg) {
                 view.showLoadError('student_info');
@@ -85,16 +81,19 @@ OpenAssessment.StaffInfoView.prototype = {
     /**
      Upon request, overrides the current assessment grade.
      **/
-    overrideStaffGrade: function(assessment_uuid) {
+    overrideStaffGrade: function(assessmentId) {
         var view = this;
         var sel = $('#openassessment__staff-info', this.element);
         var points = sel.find('#openassessment__staff-info__regrade_points').val();
         var comments = sel.find('#openassessment__staff-info__regrade_comments').val();
 
-        this.server.assessmentOverride(assessment_uuid, points, comments).done(
+        this.server.assessmentOverride(assessmentId, points, comments).done(
             function(html) {
                 // Load the HTML and install event handlers
-                $('#openassessment__staff-info__regrade-info', view.element).replaceWith(html);
+                if (html) {
+
+                }
+                $('#openassessment__staff-info__regrade-info', view.element).html(html);
             }
         ).fail(function(errMsg) {
                 view.showLoadError('student_info');

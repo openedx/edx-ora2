@@ -1,12 +1,12 @@
 {% load i18n %}
 {% load tz %}
 
-    <h5 class="title--sub">{% trans "New Staff Grade" %}</h5>
-    <div class="student__answer__display__content">
-    {{ overridden_assessment.points }}
-    </div>
+<h5 class="title--sub">{% trans "New Staff Grade" %}</h5>
+<div class="student__answer__display__content">
+    {{ overridden_points }}
+</div>
 
-    <h5 class="title--sub">{% trans "Regrade Comments" %}</h5>
-    <div class="student__answer__display__content">
-    {{ overridden_assessment.comments|linebreaks }}
-    </div>
+<h5 class="title--sub">{% trans "Regrade Comments" %}</h5>
+<div class="student__answer__display__content">
+    {{ overridden_comments|linebreaks }}
+</div>

@@ -160,7 +160,7 @@ class AssessmentSerializer(serializers.ModelSerializer):
 
 
 def serialize_assessments(assessments_qset):
-    assessments = list(assessments_qset.select_related("rubric"))
+    assessments = list(assessments_qset.select_related("rubric", "override"))
     rubric_cache = {}
 
     return [
@@ -188,6 +188,7 @@ def full_assessment_dict(assessment, rubric_dict=None):
 
     Returns:
         dict with keys 'rubric' (serialized Rubric model) and 'parts' (serialized assessment parts)
+        and overridden staff grade if exists.
     """
     assessment_cache_key = "assessment.full_assessment_dict.{}.{}.{}".format(
         assessment.id, assessment.submission_uuid, assessment.scored_at.isoformat()
@@ -232,6 +233,9 @@ def full_assessment_dict(assessment, rubric_dict=None):
     )
     assessment_dict["points_possible"] = rubric_dict["points_possible"]
     assessment_dict["id"] = assessment.id
+
+    # Get the latest overridden staff grade
+    assessment_dict["staff_overridden_grade"] = assessment.latest_overridden_assessment
 
     cache.set(assessment_cache_key, assessment_dict)
 

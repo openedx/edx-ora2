@@ -283,34 +283,34 @@ class StaffInfoMixin(object):
 
     @XBlock.handler
     @require_course_staff("STAFF_INFO")
-    def override_assessment(self, data, suffix=''):
+    def staff_override_assessment(self, data, suffix=''):
         assessment_id = data.params.get('assessment_id', '')
         points = data.params.get('points', None)
         comments = data.params.get('comments', '')
+
         if points is None:
-            return (
-                False,
-                'EBADARGS',
-                self._(u'"override_assessment" required new grade value.')
-            )
+            return self.render_error(self._(u'"override_assessment" required new grade value.'))
+
         try:
             overridden_assessment = peer_api.create_overridden_assessment(assessment_id=assessment_id, points=points, comments=comments,
                                                   scorer_id=self.get_student_item_dict()["student_id"])
 
             path='openassessmentblock/staff_debug/staff_regrade_info.html'
             context = {
-                'overridden_assessment': overridden_assessment
+                'overridden_points': overridden_assessment.points,
+                'overridden_comments': overridden_assessment.comments
             }
             return self.render_assessment(path, context)
 
         except PeerAssessmentRequestError as ex:
             msg = ex.message
             logger.exception(msg)
-            return {'success': False, 'msg': msg}
+            return self.render_error(self._(msg))
+
         except PeerAssessmentInternalError as ex:
             msg = ex.message
             logger.exception(msg)
-            return {'success': False, 'msg': msg}
+            return self.render_error(self._(msg))
 
 
     @XBlock.json_handler

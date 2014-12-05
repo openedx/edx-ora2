@@ -593,6 +593,11 @@ class Assessment(models.Model):
         cache.set(cache_key, scores)
         return scores
 
+    @property
+    def latest_overridden_assessment(self):
+        if self.overridden.exists():
+            return self.overridden.order_by('-scored_at')[0]
+
 
 class AssessmentPart(models.Model):
     """Part of an Assessment corresponding to a particular Criterion.
@@ -832,7 +837,7 @@ class AssessmentOverride(models.Model):
     """
     MAX_COMMENT_SIZE = 1000 * 10
 
-    assessment = models.ForeignKey(Assessment, related_name='override')
+    assessment = models.ForeignKey(Assessment, related_name='overridden')
 
     scored_at = models.DateTimeField(default=now, db_index=True)
     scorer_id = models.CharField(max_length=40, db_index=True)
@@ -872,6 +877,6 @@ class AssessmentOverride(models.Model):
 
         # Truncate the comment if it exceeds the maximum size
         if comments is not None:
-            assessment_params['comment'] = comments[0:cls.MAX_COMMENT_SIZE]
+            assessment_params['comments'] = comments[0:cls.MAX_COMMENT_SIZE]
 
         return cls.objects.create(**assessment_params)
