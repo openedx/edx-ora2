@@ -82,8 +82,11 @@
                                                     <span class="answer__value">
                                                         <span class="answer__value__label sr">{% trans "Peer's Assessment" %}: </span>
                                                         <span class="answer__value__value">
-                                                            {{ part.option.label }}
-
+                                                            {% if assessment.staff_overridden_grade %}
+                                                                <s> {{ part.option.label }} </s>
+                                                            {% else %}
+                                                                {{ part.option.label }}
+                                                            {% endif %}
                                                             <span class="ui-hint hint--top" data-hint="{{ part.option.explanation }}">
                                                               <i class="ico icon-info-sign"
                                                                  title="{% blocktrans with name=part.option.label %}More information about {{ name }}{% endblocktrans %}"></i>
@@ -94,7 +97,13 @@
                                                 </h5>
                                                 <span class="answer__score">
                                                     <span class="answer__score__label sr">{% trans "Grade Earned" %}: </span>
-                                                    <span class="answer__score__value">{{ part.option.points }} {% trans "points" %}</span>
+                                                    <span class="answer__score__value">
+                                                        {% if assessment.staff_overridden_grade %}
+                                                            <s>{{ part.option.points }} {% trans "points" %}</s>
+                                                        {% else %}
+                                                            {{ part.option.points }} {% trans "points" %}
+                                                        {% endif %}
+                                                    </span>
                                                 </span>
                                             </li>
                                             {% endif %}
@@ -165,15 +174,15 @@
 
                                     <ul class="answer--feedback__content {% if criterion.options %}ui-toggle-visibility__content{% endif %}">
                                         {% for feedback in criterion.peer_feedback %}
-                                        <li class="feedback feedback--{{ forloop.counter }}">
-                                            <h6 class="feedback__source">
-                                              {% trans "Peer" %} {{ forloop.counter }}
-                                            </h6>
+                                            <li class="feedback feedback--{{ forloop.counter }}">
+                                                <h6 class="feedback__source">
+                                                  {% trans "Peer" %} {{ forloop.counter }}
+                                                </h6>
 
-                                            <div class="feedback__value">
-                                              {{ feedback }}
-                                            </div>
-                                        </li>
+                                                <div class="feedback__value">
+                                                  {{ feedback }}
+                                                </div>
+                                            </li>
                                         {% endfor %}
                                         {% if criterion.self_feedback %}
                                         <li class="feedback feedback--{{ forloop.counter }}">
@@ -203,25 +212,39 @@
 
                                 <ul class="question__answers ui-toggle-visibility__content">
                                     {% for assessment in peer_assessments %}
-                                    {% with peer_num=forloop.counter %}
-                                    {% if assessment.feedback %}
-                                    <li class="answer peer-evaluation--{{ peer_num }}" id="question--feedback__answer-{{ peer_num }}">
-                                        <h5 class="answer__title">
-                                            <span class="answer__source">
-                                              <span class="label sr">{% trans "Peer assessor" %}: </span>
-                                              <span class="value">{% blocktrans with peer_num=peer_num %}Peer {{ peer_num }}{% endblocktrans %}</span>
-                                            </span>
-                                        </h5>
+                                        {% with peer_num=forloop.counter %}
+                                            {% if assessment.staff_overridden_grade.comments %}
+                                                {% if assessment.feedback %}
+                                                <li class="answer peer-evaluation--{{ peer_num }}"
+                                                    id="question--feedback__answer-{{ peer_num }}">
+                                                    <h5 class="answer__title">
+                                                        <span class="answer__source">
+                                                          <span class="label sr">{% trans "Peer assessor" %}: </span>
+                                                          <span class="value">
 
-                                        <div class="answer__value">
-                                            <h6 class="label sr">{% trans "Peer's assessment" %}: </h6>
-                                            <div class="value">
-                                                <p>{{ assessment.feedback }}</p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    {% endif %}
-                                    {% endwith %}
+                                                              {% blocktrans with peer_num=peer_num %}Peer {{ peer_num }}
+                                                              {% endblocktrans %}
+                                                              {% if assessment.staff_overridden_grade.comments %}
+                                                                {% trans  "(Staff re-grade comments)" %}
+                                                              {% endif %}
+                                                          </span>
+                                                        </span>
+                                                    </h5>
+
+                                                    <div class="answer__value">
+                                                        <h6 class="label sr">{% trans "Peer's assessment" %}: </h6>
+                                                        <div class="value">
+                                                            {% if assessment.staff_overridden_grade.comments %}
+                                                                <p>{{ assessment.staff_overridden_grade.comments }}</p>
+                                                            {% else %}
+                                                                <p>{{ assessment.feedback }}</p>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endwith %}
                                     {% endfor %}
                                     {% if self_assessment.feedback %}
                                     <li class="answer self-evaluation--0" id="question--feedback__answer-0">
