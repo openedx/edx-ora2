@@ -5,6 +5,8 @@ determine the flow of the problem.
 import copy
 from functools import wraps
 import logging
+from django.template import Context
+from django.template.loader import get_template
 
 from xblock.core import XBlock
 from openassessment.assessment.errors import PeerAssessmentInternalError, PeerAssessmentRequestError
@@ -281,26 +283,27 @@ class StaffInfoMixin(object):
         path = 'openassessmentblock/staff_debug/student_info.html'
         return path, context
 
-    @XBlock.handler
+    @XBlock.json_handler
     @require_course_staff("STAFF_INFO")
     def staff_override_assessment(self, data, suffix=''):
-        assessment_id = data.params.get('assessment_id', '')
-        points = data.params.get('points', None)
-        comments = data.params.get('comments', '')
+        assessment_id = data.get('assessment_id', '')
+        points = data.get('points', '')
+        comments = data.get('comments', '')
 
-        if points is None:
-            return self.render_error(self._(u'"override_assessment" required new grade value.'))
+        if points in ['', None]:
+            return {"success": False, "msg": self._(u'Please enter integer value for new grade.')}
+            # return self.render_error(self._(u'"override_assessment" required new grade value.'))
 
         try:
             overridden_assessment = peer_api.create_overridden_assessment(assessment_id=assessment_id, points=points, comments=comments,
                                                   scorer_id=self.get_student_item_dict()["student_id"])
 
-            path='openassessmentblock/staff_debug/staff_regrade_info.html'
-            context = {
+            path = 'openassessmentblock/staff_debug/staff_regrade_info.html'
+            context_dict = {
                 'overridden_points': overridden_assessment.points,
                 'overridden_comments': overridden_assessment.comments
             }
-            return self.render_assessment(path, context)
+            return {"success": True, "rendered_html": self.render_html(path, context_dict)}
 
         except PeerAssessmentRequestError as ex:
             msg = ex.message

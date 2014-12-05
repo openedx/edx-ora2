@@ -142,17 +142,23 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
           **/
         assessmentOverride: function (assessmentId, points, comments) {
             var url = this.url('staff_override_assessment');
+            var payload = JSON.stringify({
+                'assessment_id': assessmentId,
+                'points': points,
+                'comments': comments
+            });
             return $.Deferred(function (defer) {
-                $.ajax({
-                    url: url,
-                    type: "POST",
-                    dataType: "html",
-                    data: {assessment_id: assessmentId, points: points, comments: comments}
-                }).done(function (data) {
-                    defer.resolveWith(this, [data]);
-
-                }).fail(function (data) {
-                    defer.rejectWith(this, [gettext('This section could not be loaded.')]);
+                $.ajax({ type: "POST", url: url, data: payload }).done(
+                    function(data) {
+                        if (data.success) {
+                            defer.resolveWith(this, [data.rendered_html]);
+                        }
+                        else {
+                            defer.rejectWith(this, [data.msg]);
+                        }
+                    }
+                ).fail(function(data) {
+                    defer.rejectWith(this, [gettext('The staff overridden could not be submitted.')]);
                 });
             }).promise();
         },

@@ -90,13 +90,12 @@ OpenAssessment.StaffInfoView.prototype = {
         this.server.assessmentOverride(assessmentId, points, comments).done(
             function(html) {
                 // Load the HTML and install event handlers
-                if (html) {
-
-                }
+                $('.override-grade-error').html('');
                 $('#openassessment__staff-info__regrade-info', view.element).html(html);
+
             }
         ).fail(function(errMsg) {
-                view.showLoadError('student_info');
+                $('.override-grade-error').html(errMsg);
             });
     },
 

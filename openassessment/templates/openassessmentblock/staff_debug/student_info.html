@@ -83,14 +83,14 @@
                                 <form id="openassessment_staff_regrade_form" data-assessment-id="{{ assessment.id }}">
                                     <ul>
                                         <li>
-                                            <label for="openassessment__staff-info__regrade_points" class="label">{% trans "New Total Grade" %}</label>
+                                            <label for="openassessment__staff-info__regrade_points" class="label">{% trans "New Total Grade (Required)" %}</label>
                                         </li>
                                         <li>
                                             <input id="openassessment__staff-info__regrade_points" type="number"
                                                    maxlength="3" min="0" max="100">
                                         </li>
                                         <li>
-                                          <label for="openassessment__staff-info__regrade_comments" class="label">{% trans "(Optional) Comments" %}</label>
+                                          <label for="openassessment__staff-info__regrade_comments" class="label">{% trans "Comments (Optional)" %}</label>
                                         </li>
                                         <li>
                                             <textarea
@@ -107,6 +107,7 @@
                                                 <span
                                                     class="copy">{% trans "Save" %}</span>
                                             </a>
+                                            <div class="override-grade-error"></div>
                                         </li>
                                     </ul>
                                 </form>

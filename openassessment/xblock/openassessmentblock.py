@@ -487,6 +487,27 @@ class OpenAssessmentBlock(
         context = Context(context_dict)
         return Response(template.render(context), content_type='application/html', charset='UTF-8')
 
+    def render_html(self, path, context_dict=None):
+        """Render Module's HTML
+
+        Args:
+            path (str): The path to the template used to render this HTML
+                section.
+            context_dict (dict): A dictionary of context variables used to
+                populate this HTML section.
+
+        Returns:
+            (Response): A Rendered Object with the generated HTML fragment. This
+                is intended for AJAX calls to load dynamically into a larger
+                document.
+        """
+        if not context_dict:
+            context_dict = {}
+
+        template = get_template(path)
+        context = Context(context_dict)
+        return template.render(context)
+
     def add_xml_to_node(self, node):
         """
         Serialize the XBlock to XML for exporting.
