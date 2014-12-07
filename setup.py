@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from setuptools import setup
+from setuptools import setup, find_packages
 
 PACKAGES = [
     'openassessment',
@@ -9,6 +9,7 @@ PACKAGES = [
     'openassessment.management',
     'openassessment.xblock'
 ]
+PACKAGES += find_packages()
 
 def is_requirement(line):
     """
