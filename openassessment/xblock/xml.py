@@ -55,6 +55,35 @@ def _safe_get_text(element):
     return unicode(element.text) if element.text is not None else u""
 
 
+def _serialize_prompts(prompts_root, prompts_list):
+    """
+    Serialize prompts as XML, adding children to the XML with root
+    node `prompts_root`.
+
+    We don't make any assumptions about the contents of `prompts_list`,
+    and we handle unexpected inputs gracefully.
+
+    Args:
+        prompts_root (lxml.etree.Element): The root node of the tree.
+        prompts_list (list): List of prompt dictionaries.
+
+    Returns:
+        None
+    """
+
+    # Sort the prompts by order number, then serialize as XML
+    for prompt in _sort_by_order_num(prompts_list):
+        prompt_el = etree.SubElement(prompts_root, 'prompt')
+
+        # Prompt uuid
+        prompt_uuid = etree.SubElement(prompt_el, u'uuid')
+        prompt_uuid.text = unicode(prompt['uuid'])
+
+        # Prompt description
+        prompt_description = etree.SubElement(prompt_el, 'description')
+        prompt_description.text = unicode(prompt.get('description', u''))
+
+
 def _serialize_options(options_root, options_list):
     """
     Serialize rubric criterion options as XML, adding children to the XML
@@ -139,7 +168,7 @@ def _serialize_criteria(criteria_root, criteria_list):
             _serialize_options(criterion_el, options_list)
 
 
-def serialize_rubric(rubric_root, oa_block, include_prompt=True):
+def serialize_rubric(rubric_root, oa_block):
     """
     Serialize a rubric dictionary as XML, adding children to the XML
     with root node `rubric_root`.
@@ -153,17 +182,9 @@ def serialize_rubric(rubric_root, oa_block, include_prompt=True):
         rubric_dict (dict): A dictionary representation of the rubric, of the form
             described in the serialized Rubric model (peer grading serializers).
 
-    Kwargs:
-        include_prompt (bool): Whether or not to include the prompt in the
-            serialized format for a rubric. Defaults to True.
     Returns:
         None
     """
-    # Rubric prompt (default to empty text); None indicates no input element
-    if include_prompt and oa_block.prompt is not None:
-        prompt = etree.SubElement(rubric_root, 'prompt')
-        prompt.text = unicode(oa_block.prompt)
-
     # Criteria
     criteria_list = oa_block.rubric_criteria
 
@@ -225,6 +246,44 @@ def _parse_boolean(boolean_str):
         'true'
     """
     return boolean_str in ['True', 'true']
+
+
+def _parse_prompts_xml(prompts_root):
+    """
+    Parse <prompts> element in the OpenAssessment XBlock's content XML.
+
+    Args:
+        prompts_root (lxml.etree.Element): The root node of the tree.
+
+    Returns:
+        list of prompts dictionaries.
+
+    Raises:
+        UpdateFromXmlError: The XML definition is invalid or the XBlock could not be updated.
+    """
+    prompts_list = []
+    order_num = 0
+
+    for prompt in prompts_root.findall('prompts'):
+        prompt_dict = dict()
+
+        # Prompt order number (sequential)
+        prompt_dict['order_num'] = order_num
+        order_num += 1
+
+        # Prompt uuid
+        prompt_uuid = prompt.find('uuid')
+        if prompt_uuid is not None:
+            prompt_dict['uuid'] = _safe_get_text(prompt_uuid)
+        else:
+            raise UpdateFromXmlError('Every "prompt" element must contain a "uuid" element.')
+
+        # Prompt description
+        prompt_description = prompt.find('description')
+        if prompt_description is not None:
+            prompt_dict['description'] = _safe_get_text(prompt_description)
+        else:
+            raise UpdateFromXmlError('Every "prompt" element must contain a "description" element.')
 
 
 def _parse_options_xml(options_root):
@@ -635,6 +694,10 @@ def serialize_content_to_xml(oa_block, root):
     assessments_root = etree.SubElement(root, 'assessments')
     serialize_assessments(assessments_root, oa_block)
 
+    # Prompts
+    prompts_root = etree.SubElement(root, 'prompts')
+    _serialize_prompts(prompts_root, oa_block)
+
     # Rubric
     rubric_root = etree.SubElement(root, 'rubric')
     serialize_rubric(rubric_root, oa_block)
@@ -673,7 +736,7 @@ def serialize_rubric_to_xml_str(oa_block):
 
     """
     rubric_root = etree.Element('rubric')
-    serialize_rubric(rubric_root, oa_block, include_prompt=False)
+    serialize_rubric(rubric_root, oa_block)
     return etree.tostring(rubric_root, pretty_print=True, encoding='unicode')
 
 
@@ -782,9 +845,20 @@ def parse_from_xml(root):
     else:
         assessments = parse_assessments_xml(assessments_el)
 
+    prompts_el = root.find('prompts')
+    if prompts_el:
+        prompts = _parse_prompts_xml(root)
+    else:
+        prompts = [
+            {
+                'description': rubric['prompt'],
+                'order_num': 0,
+            }
+        ]
+
     return {
         'title': title,
-        'prompt': rubric['prompt'],
+        'prompts': prompts,
         'rubric_criteria': rubric['criteria'],
         'rubric_assessments': assessments,
         'rubric_feedback_prompt': rubric['feedbackprompt'],
