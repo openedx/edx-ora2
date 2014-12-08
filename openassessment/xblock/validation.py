@@ -214,6 +214,17 @@ def validate_rubric(rubric_dict, current_rubric, is_released, is_example_based, 
     # but nothing that would change the point value of a rubric.
     if is_released:
 
+        # Number of prompts must be the same
+        if len(rubric_dict['prompts']) != len(current_rubric['prompts']):
+            return (False, _(u'Prompts cannot be deleted or created after a problem is released.'))
+
+        # Prompts order must be the same
+        for current_prompt, updated_prompt in zip(current_rubric['prompts'], rubric_dict['prompts']):
+            # current_prompt will not have a uuid attribute if it is the DEFAULT_PROMPT so it is okay
+            # to override it.
+            if (hasattr(current_prompt, 'uuid') and current_prompt['uuid'] != updated_prompt['uuid']):
+                return (False, _(u'Prompts cannot be reordered after a problem is released.'))
+
         # Number of criteria must be the same
         if len(rubric_dict['criteria']) != len(current_rubric['criteria']):
             return (False, _(u'The number of criteria cannot be changed after a problem is released.'))
@@ -330,7 +341,7 @@ def validator(oa_block, _, strict_post_release=True):
         # Rubric
         is_example_based = 'example-based-assessment' in [asmnt.get('name') for asmnt in assessments]
         current_rubric = {
-            'prompt': oa_block.prompt,
+            'prompts': oa_block.prompts,
             'criteria': oa_block.rubric_criteria
         }
         success, msg = validate_rubric(rubric_dict, current_rubric, is_released, is_example_based, _)

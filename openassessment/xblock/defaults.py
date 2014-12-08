@@ -12,6 +12,13 @@ DEFAULT_PROMPT = """
     Read for conciseness, clarity of thought, and form.
 """
 
+DEFAULT_PROMPTS = [
+    {
+        'description': DEFAULT_PROMPT,
+        'order_num': 0,
+    }
+]
+
 DEFAULT_RUBRIC_CRITERIA = [
     {
         'name': "Ideas",
