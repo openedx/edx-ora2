@@ -26,8 +26,8 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     this.alert = new OpenAssessment.ValidationAlert().install();
 
     // Initialize the prompt tab view
-    this.promptView = new OpenAssessment.EditPromptView(
-        $("#oa_prompt_editor_wrapper", this.element).get(0)
+    this.promptsView = new OpenAssessment.EditPromptsView(
+        $("#oa_prompts_editor_wrapper", this.element).get(0)
     );
 
     // Initialize the settings tab view
@@ -185,7 +185,7 @@ OpenAssessment.StudioView.prototype = {
 
         var view = this;
         this.server.updateEditorContext({
-            prompt: view.promptView.promptText(),
+            prompts: view.promptsView.promptsDefinition(),
             feedbackPrompt: view.rubricView.feedbackPrompt(),
             feedback_default_text: view.rubricView.feedback_default_text(),
             criteria: view.rubricView.criteriaDefinition(),
@@ -236,7 +236,8 @@ OpenAssessment.StudioView.prototype = {
     validate: function() {
         var settingsValid = this.settingsView.validate();
         var rubricValid = this.rubricView.validate();
-        return settingsValid && rubricValid;
+        var promptsValid = this.promptsView.validate();
+        return settingsValid && rubricValid && promptsValid;
     },
 
    /**
@@ -249,7 +250,9 @@ OpenAssessment.StudioView.prototype = {
     **/
     validationErrors: function() {
         return this.settingsView.validationErrors().concat(
-            this.rubricView.validationErrors()
+            this.rubricView.validationErrors().concat(
+                this.promptsView.validationErrors()
+            )
         );
     },
 
@@ -259,6 +262,7 @@ OpenAssessment.StudioView.prototype = {
     clearValidationErrors: function() {
         this.settingsView.clearValidationErrors();
         this.rubricView.clearValidationErrors();
+        this.promptsView.clearValidationErrors();
     },
 };
 
