@@ -449,7 +449,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
         updateEditorContext: function(kwargs) {
             var url = this.url('update_editor_context');
             var payload = JSON.stringify({
-                prompt: kwargs.prompt,
+                prompts: kwargs.prompts,
                 feedback_prompt: kwargs.feedbackPrompt,
                 feedback_default_text: kwargs.feedback_default_text,
                 title: kwargs.title,
