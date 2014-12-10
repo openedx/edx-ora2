@@ -5,13 +5,10 @@ determine the flow of the problem.
 import copy
 from functools import wraps
 import logging
-from django.template import Context
-from django.template.loader import get_template
 
 from xblock.core import XBlock
 from openassessment.assessment.errors import PeerAssessmentInternalError, PeerAssessmentRequestError
 from openassessment.assessment.errors.ai import AIError
-from openassessment.assessment.models import Assessment, AssessmentOverride
 from openassessment.xblock.resolve_dates import DISTANT_PAST, DISTANT_FUTURE
 from openassessment.xblock.data_conversion import (
     create_rubric_dict, convert_training_examples_list_to_dict
@@ -39,7 +36,8 @@ def require_global_admin(error_key):
         Decorated function
 
     """
-    def _decorator(func):   # pylint: disable=C0111
+
+    def _decorator(func):  # pylint: disable=C0111
         @wraps(func)
         def _wrapped(xblock, *args, **kwargs):  # pylint: disable=C0111
             permission_errors = {
@@ -50,7 +48,9 @@ def require_global_admin(error_key):
                 return {'success': False, 'msg': permission_errors[error_key]}
             else:
                 return func(xblock, *args, **kwargs)
+
         return _wrapped
+
     return _decorator
 
 
@@ -67,6 +67,7 @@ def require_course_staff(error_key):
         decorated function
 
     """
+
     def _decorator(func):  # pylint: disable=C0111
         @wraps(func)
         def _wrapped(xblock, *args, **kwargs):  # pylint: disable=C0111
@@ -79,7 +80,9 @@ def require_course_staff(error_key):
                 return xblock.render_error(permission_errors[error_key])
             else:
                 return func(xblock, *args, **kwargs)
+
         return _wrapped
+
     return _decorator
 
 
@@ -90,7 +93,7 @@ class StaffInfoMixin(object):
 
     @XBlock.handler
     @require_course_staff("STAFF_INFO")
-    def render_staff_info(self, data, suffix=''):   # pylint: disable=W0613
+    def render_staff_info(self, data, suffix=''):  # pylint: disable=W0613
         """
         Template context dictionary for course staff debug panel.
 
@@ -162,7 +165,7 @@ class StaffInfoMixin(object):
 
     @XBlock.json_handler
     @require_global_admin("SCHEDULE_TRAINING")
-    def schedule_training(self, data, suffix=''):   # pylint: disable=W0613
+    def schedule_training(self, data, suffix=''):  # pylint: disable=W0613
         """
         Schedule a new training task for example-based grading.
         """
@@ -198,7 +201,7 @@ class StaffInfoMixin(object):
 
     @XBlock.handler
     @require_course_staff("STUDENT_INFO")
-    def render_student_info(self, data, suffix=''): # pylint: disable=W0613
+    def render_student_info(self, data, suffix=''):  # pylint: disable=W0613
         """
         Renders all relative information for a specific student's workflow.
 
@@ -286,17 +289,23 @@ class StaffInfoMixin(object):
     @XBlock.json_handler
     @require_course_staff("STAFF_INFO")
     def staff_override_assessment(self, data, suffix=''):
-        assessment_id = data.get('assessment_id', '')
-        points = data.get('points', '')
-        comments = data.get('comments', '')
+        assessment_id = data.get('assessment_id')
+        overridden_points = data.get('points')
+        overridden_feedback = data.get('overridden_feedback')
+        overridden_name = data.get('overridden_name')
+        overridden_criterion = data.get('overridden_criterion')
 
-        if points in ['', None]:
+        if overridden_points in ['', None]:
             return {"success": False, "msg": self._(u'Please enter integer value for new grade.')}
             # return self.render_error(self._(u'"override_assessment" required new grade value.'))
 
         try:
-            overridden_assessment = peer_api.create_overridden_assessment(assessment_id=assessment_id, points=points, comments=comments,
-                                                  scorer_id=self.get_student_item_dict()["student_id"])
+            overridden_assessment = peer_api.create_overridden_assessment(assessment_id=assessment_id,
+                                                                          overridden_name=overridden_name,
+                                                                          overridden_points=overridden_points,
+                                                                          overridden_feedback=overridden_feedback,
+                                                                          scorer_id=self.get_student_item_dict()[
+                                                                              "student_id"])
 
             path = 'openassessmentblock/staff_debug/staff_regrade_info.html'
             context_dict = {

@@ -235,7 +235,7 @@ def full_assessment_dict(assessment, rubric_dict=None):
     assessment_dict["id"] = assessment.id
 
     # Get the latest overridden staff grade
-    assessment_dict["staff_overridden_grade"] = assessment.latest_overridden_assessment
+    # assessment_dict["staff_overridden_grade"] = assessment.latest_overridden_assessment
 
     cache.set(assessment_cache_key, assessment_dict)
 

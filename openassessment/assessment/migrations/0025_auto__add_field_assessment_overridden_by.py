@@ -8,23 +8,15 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Deleting field 'AssessmentOverride.comment'
-        db.delete_column('assessment_assessmentoverride', 'comment')
-
-        # Adding field 'AssessmentOverride.comments'
-        db.add_column('assessment_assessmentoverride', 'comments',
-                      self.gf('django.db.models.fields.TextField')(default='', max_length=10000, blank=True),
+        # Adding field 'Assessment.overridden_by'
+        db.add_column('assessment_assessment', 'overridden_by',
+                      self.gf('django.db.models.fields.related.ForeignKey')(default=None, to=orm['assessment.Assessment'], blank=True),
                       keep_default=False)
 
 
     def backwards(self, orm):
-        # Adding field 'AssessmentOverride.comment'
-        db.add_column('assessment_assessmentoverride', 'comment',
-                      self.gf('django.db.models.fields.TextField')(default='', max_length=10000, blank=True),
-                      keep_default=False)
-
-        # Deleting field 'AssessmentOverride.comments'
-        db.delete_column('assessment_assessmentoverride', 'comments')
+        # Deleting field 'Assessment.overridden_by'
+        db.delete_column('assessment_assessment', 'overridden_by_id')
 
 
     models = {
@@ -76,6 +68,7 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "['-scored_at', '-id']", 'object_name': 'Assessment'},
             'feedback': ('django.db.models.fields.TextField', [], {'default': "''", 'max_length': '10000', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'overridden_by': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['assessment.Assessment']", 'blank': 'True'}),
             'rubric': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['assessment.Rubric']"}),
             'score_type': ('django.db.models.fields.CharField', [], {'max_length': '2'}),
             'scored_at': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'db_index': 'True'}),
@@ -94,15 +87,6 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'AssessmentFeedbackOption'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'text': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'})
-        },
-        'assessment.assessmentoverride': {
-            'Meta': {'object_name': 'AssessmentOverride'},
-            'assessment': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'override'", 'to': "orm['assessment.Assessment']"}),
-            'comments': ('django.db.models.fields.TextField', [], {'default': "''", 'max_length': '10000', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'points': ('django.db.models.fields.IntegerField', [], {'db_index': 'True'}),
-            'scored_at': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'db_index': 'True'}),
-            'scorer_id': ('django.db.models.fields.CharField', [], {'max_length': '40', 'db_index': 'True'})
         },
         'assessment.assessmentpart': {
             'Meta': {'object_name': 'AssessmentPart'},

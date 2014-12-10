@@ -271,7 +271,8 @@ class GradeMixin(object):
 
         for assessment in peer_assessments:
             for part in assessment['parts']:
-                feedback = None if assessment['staff_overridden_grade'] else part.get('feedback')
+                # feedback = None if assessment['staff_overridden_grade'] else part.get('feedback')
+                feedback = part.get('feedback')
                 if feedback:
                     part_criterion_name = part['criterion']['name']
                     peer_criteria_feedback[part_criterion_name].append(feedback)

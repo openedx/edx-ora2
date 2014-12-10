@@ -4,6 +4,7 @@ The Peer Assessment Workflow API exposes all public actions required to complete
 the workflow for a given submission.
 
 """
+import copy
 import logging
 
 from django.utils import timezone
@@ -12,8 +13,7 @@ from django.db import DatabaseError, IntegrityError, transaction
 from dogapi import dog_stats_api
 from openassessment.assessment.models import (
     Assessment, AssessmentFeedback, AssessmentPart,
-    InvalidRubricSelection, PeerWorkflow, PeerWorkflowItem,
-    AssessmentOverride)
+    InvalidRubricSelection, PeerWorkflow, PeerWorkflowItem)
 from openassessment.assessment.serializers import (
     AssessmentFeedbackSerializer, RubricSerializer,
     full_assessment_dict, rubric_from_dict, serialize_assessments,
@@ -308,7 +308,7 @@ def _complete_assessment(
         scorer_workflow,
         overall_feedback,
         num_required_grades,
-        scored_at
+        scored_at,
 ):
     """
     Internal function for atomic assessment creation. Creates a peer assessment
@@ -672,6 +672,8 @@ def get_submission_to_assess(submission_uuid, graded_by):
             u"with submission UUID {}".format(submission_uuid)
         )
     open_item = workflow.find_active_assessments()
+    import pudb;pu.db
+
     peer_submission_uuid = open_item.submission_uuid if open_item else None
     # If there is an active assessment for this user, get that submission,
     # otherwise, get the first assessment for review, otherwise,
@@ -952,7 +954,8 @@ def _log_workflow(submission_uuid, workflow):
     dog_stats_api.increment('openassessment.assessment.peer_workflow.count', tags=tags)
 
 
-def create_overridden_assessment(assessment_id, points, scorer_id, comments=None, scored_at=None):
+@transaction.commit_on_success
+def create_overridden_assessment(assessment_id, overridden_name, overridden_points, scorer_id, overridden_feedback=None, scored_at=None):
     """
     Create a new override assessment.
 
@@ -969,15 +972,45 @@ def create_overridden_assessment(assessment_id, points, scorer_id, comments=None
         AssessmentOverride
     """
     try:
-        points = int(points)
+        points = int(overridden_points)
 
         # Get the particular assessment to Override/Regrade
         assessment = Assessment.objects.get(pk=assessment_id)
-        if points > assessment.points_possible:
-            raise PeerAssessmentRequestError(u'New grade points must be less than or equal to possible points.')
 
-        return AssessmentOverride.create(assessment=assessment, points=points, comments=comments,
-                                         scorer_id=scorer_id, scored_at=scored_at)
+        #
+        # if points > assessment.points_possible:
+        #     raise PeerAssessmentRequestError(u'New grade points must be less than or equal to possible points.')
+
+        # Create the peer assessment
+        overridden_assessment = Assessment.create(
+            assessment.rubric,
+            scorer_id,
+            assessment.submission_uuid,
+            score_type='ST',
+            scored_at=scored_at,
+            feedback=assessment.feedback
+        )
+        options_selected = {'Idea': 'Good'}
+        criterion_feedback = {'Idea': overridden_feedback}
+        overridden_assessment_part = AssessmentPart.create_from_option_names(overridden_assessment, options_selected, feedback=criterion_feedback)
+        # TODO should we create criteria option with new points????
+        #
+        # for part in assessment.parts.all():
+        #     overridden_part = copy.deepcopy(part)
+        #     if part.criterion.name == overridden_name:
+        #         overridden_part.criterion.feedback = overridden_feedback
+        #         overridden_part.option.points = overridden_points
+
+
+
+        # assessment.overridden_by = overridden_assessment
+        assessment.save()
+        # Create assessment parts for each criterion in the rubric
+        # This will raise an `InvalidRubricSelection` if the selected options do not
+        # match the rubric.
+        # AssessmentPart.create_from_option_names(assessment, options_selected, feedback=criterion_feedback)
+
+        return overridden_assessment
     except ValueError:
         raise PeerAssessmentRequestError(u'New grade must be an integer.')
 
