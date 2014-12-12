@@ -48,9 +48,8 @@ OpenAssessment.BaseView.prototype = {
     Args:
         parentSel (JQuery selector): CSS selector for the container element.
     **/
-    setUpCollapseExpand: function(parentSel) {
-        parentSel.find('.ui-toggle-visibility__control').click(
-            function(eventData) {
+    setUpCollapseExpand: function (parentSel) {
+        parentSel.on('click', '.ui-toggle-visibility__control', function (eventData) {
                 var sel = $(eventData.target).closest('.ui-toggle-visibility');
                 sel.toggleClass('is--collapsed');
             }

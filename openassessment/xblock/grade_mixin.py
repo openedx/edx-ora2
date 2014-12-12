@@ -49,7 +49,10 @@ class GradeMixin(object):
 
         # Render the grading section based on the status of the workflow
         try:
-            if status == "done":
+            if status == "cancelled":
+                path = 'openassessmentblock/grade/oa_grade_cancelled.html'
+                context = {'score': workflow['score']}
+            elif status == "done":
                 path, context = self.render_grade_complete(workflow)
             elif status == "waiting":
                 path, context = self.render_grade_waiting(workflow)

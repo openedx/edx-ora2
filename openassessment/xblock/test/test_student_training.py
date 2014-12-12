@@ -6,7 +6,7 @@ import datetime
 import ddt
 import json
 import pprint
-from mock import patch
+from mock import Mock, patch
 import pytz
 from django.db import DatabaseError
 from openassessment.assessment.models import StudentTrainingWorkflow
@@ -290,6 +290,19 @@ class StudentTrainingRenderTest(StudentTrainingTest):
         expected_template = "openassessmentblock/student_training/student_training_closed.html"
         expected_context = {
             'training_due': "2000-01-01T00:00:00+00:00",
+            'allow_latex': False,
+        }
+        self.assert_path_and_context(xblock, expected_template, expected_context)
+
+    @scenario('data/student_training.xml', user_id="Plato")
+    def test_cancelled_submission(self, xblock):
+        submission = xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+        xblock.get_workflow_info = Mock(return_value={
+            'status': 'cancelled',
+            'submission_uuid': submission['uuid']
+        })
+        expected_template = "openassessmentblock/student_training/student_training_cancelled.html"
+        expected_context = {
             'allow_latex': False,
         }
         self.assert_path_and_context(xblock, expected_template, expected_context)

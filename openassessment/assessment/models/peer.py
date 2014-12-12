@@ -114,10 +114,21 @@ class PeerWorkflow(models.Model):
     created_at = models.DateTimeField(default=now, db_index=True)
     completed_at = models.DateTimeField(null=True, db_index=True)
     grading_completed_at = models.DateTimeField(null=True, db_index=True)
+    cancelled_at = models.DateTimeField(null=True, db_index=True)
 
     class Meta:
         ordering = ["created_at", "id"]
         app_label = "assessment"
+
+    @property
+    def is_cancelled(self):
+        """
+        Check if workflow is cancelled.
+
+        Returns:
+            True/False
+        """
+        return bool(self.cancelled_at)
 
     @classmethod
     def get_by_submission_uuid(cls, submission_uuid):
@@ -206,7 +217,8 @@ class PeerWorkflow(models.Model):
 
         Before retrieving a new submission for a peer assessor, check to see if that
         assessor already has a submission out for assessment. If an unfinished
-        assessment is found that has not expired, return the associated submission.
+        assessment is found that has not expired or has not been cancelled,
+        return the associated submission.
 
         TODO: If a user begins an assessment, then resubmits, this will never find
         the unfinished assessment. Is this OK?
@@ -221,13 +233,12 @@ class PeerWorkflow(models.Model):
 
         """
         oldest_acceptable = now() - self.TIME_LIMIT
-        items = list(self.graded.all().order_by("-started_at", "-id"))
+        items = list(self.graded.all().select_related('author').order_by("-started_at", "-id"))
         valid_open_items = []
         completed_sub_uuids = []
-
         # First, remove all completed items.
         for item in items:
-            if item.assessment is not None:
+            if item.assessment is not None or item.author.is_cancelled:
                 completed_sub_uuids.append(item.submission_uuid)
             else:
                 valid_open_items.append(item)
@@ -266,6 +277,7 @@ class PeerWorkflow(models.Model):
         #  3) Is not something you have already scored.
         #  4) Does not have a combination of completed assessments or open
         #     assessments equal to or more than the requirement.
+        #  5) Has not been cancelled.
         try:
             peer_workflows = list(PeerWorkflow.objects.raw(
                 "select pw.id, pw.submission_uuid "
@@ -274,6 +286,7 @@ class PeerWorkflow(models.Model):
                 "and pw.course_id=%s "
                 "and pw.student_id<>%s "
                 "and pw.grading_completed_at is NULL "
+                "and pw.cancelled_at is NULL "
                 "and pw.id not in ("
                 "   select pwi.author_id "
                 "   from assessment_peerworkflowitem pwi "
@@ -318,6 +331,7 @@ class PeerWorkflow(models.Model):
         # that:
         #  1) Does not belong to you
         #  2) Is not something you have already scored
+        #  3) Has not been cancelled.
         try:
             query = list(PeerWorkflow.objects.raw(
                 "select pw.id, pw.submission_uuid "
@@ -325,6 +339,7 @@ class PeerWorkflow(models.Model):
                 "where course_id=%s "
                 "and item_id=%s "
                 "and student_id<>%s "
+                "and pw.cancelled_at is NULL "
                 "and pw.id not in ( "
                     "select pwi.author_id "
                     "from assessment_peerworkflowitem pwi "

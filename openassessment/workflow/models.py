@@ -20,7 +20,7 @@ from model_utils import Choices
 from model_utils.models import StatusModel, TimeStampedModel
 from submissions import api as sub_api
 from openassessment.assessment.signals import assessment_complete_signal
-from .errors import AssessmentApiLoadError
+from .errors import AssessmentApiLoadError, AssessmentWorkflowError, AssessmentWorkflowInternalError
 
 
 logger = logging.getLogger('openassessment.workflow.models')
@@ -76,6 +76,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                     # graded yet -- we're waiting for assessments of their
                     # submission by others.
         "done",  # Complete
+        "cancelled"  # User submission has been cancelled.
     ]
 
     STATUS_VALUES = STEPS + STATUSES
@@ -205,6 +206,43 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 }
         return status_dict
 
+    def get_score(self, assessment_requirements, step_for_name):
+        """Iterate through the assessment APIs in priority order
+         and return the first reported score.
+
+        Args:
+            assessment_requirements (dict): Dictionary passed to the assessment API.
+                This defines the requirements for each assessment step; the APIs
+                can refer to this to decide whether the requirements have been
+                met.  Note that the requirements could change if the author
+                updates the problem definition.
+            step_for_name (dict): a key value pair for step name: step
+
+        Returns:
+             score dict.
+        """
+        score = None
+        for assessment_step_name in ASSESSMENT_SCORE_PRIORITY:
+
+            # Check if the problem contains this assessment type
+            assessment_step = step_for_name.get(assessment_step_name)
+
+            # Query the corresponding assessment API for a score
+            # If we find one, then stop looking
+            if assessment_step is not None:
+
+                # Check if the assessment API defines a score function at all
+                get_score_func = getattr(assessment_step.api(), 'get_score', None)
+                if get_score_func is not None:
+                    if assessment_requirements is None:
+                        requirements = None
+                    else:
+                        requirements = assessment_requirements.get(assessment_step_name, {})
+                    score = get_score_func(self.submission_uuid, requirements)
+                    break
+
+        return score
+
     def update_from_assessments(self, assessment_requirements):
         """Query assessment APIs and change our status if appropriate.
 
@@ -239,14 +277,15 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 updates the problem definition.
 
         """
-        # If we're done, we're done -- it doesn't matter if requirements have
+        # If the status is done or cancelled, we're done -- it doesn't matter if requirements have
         # changed because we've already written a score.
-        if self.status == self.STATUS.done:
+        if self.status in (self.STATUS.done, self.STATUS.cancelled):
             return
 
         # Update our AssessmentWorkflowStep models with the latest from our APIs
         steps = self._get_steps()
-        step_for_name = {step.name:step for step in steps}
+
+        step_for_name = {step.name: step for step in steps}
 
         # Go through each step and update its status.
         for step in steps:
@@ -271,29 +310,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         if (new_status == self.STATUS.waiting and
             all(step.assessment_completed_at for step in steps)):
 
-            # At this point, we're trying to give a score. We currently have a
-            # very simple rule for this -- we iterate through the
-            # assessment APIs in priority order and use the first reported score.
-            score = None
-            for assessment_step_name in ASSESSMENT_SCORE_PRIORITY:
-
-                # Check if the problem contains this assessment type
-                assessment_step = step_for_name.get(assessment_step_name)
-
-                # Query the corresponding assessment API for a score
-                # If we find one, then stop looking
-                if assessment_step is not None:
-
-                    # Check if the assessment API defines a score function at all
-                    get_score_func = getattr(assessment_step.api(), 'get_score', None)
-                    if get_score_func is not None:
-                        if assessment_requirements is None:
-                            requirements = None
-                        else:
-                            requirements = assessment_requirements.get(assessment_step_name, {})
-                        score = get_score_func(self.submission_uuid, requirements)
-                        break
-
+            score = self.get_score(assessment_requirements, step_for_name)
             # If we found a score, then we're done
             if score is not None:
                 self.set_score(score)
@@ -341,6 +358,122 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             score["points_earned"],
             score["points_possible"]
         )
+
+    def cancel(self, assessment_requirements):
+        """
+        Cancel workflow for all steps.
+
+        Set the points earned to 0 and workflow status to cancelled.
+
+        Args:
+            assessment_requirements (dict): Dictionary that currently looks like:
+                `{"peer": {"must_grade": <int>, "must_be_graded_by": <int>}}`
+                `must_grade` is the number of assessments a student must complete.
+                `must_be_graded_by` is the number of assessments a submission must
+                receive to be scored. `must_grade` should be greater than
+                `must_be_graded_by` to ensure that everyone will get scored.
+                The intention is to eventually pass in more assessment sequence
+                specific requirements in this dict.
+        """
+        steps = self._get_steps()
+        step_for_name = {step.name: step for step in steps}
+
+        # Cancel the workflow for each step.
+        for step in steps:
+            on_cancel_func = getattr(step.api(), 'on_cancel', None)
+            if on_cancel_func is not None:
+                on_cancel_func(self.submission_uuid)
+
+        score = self.get_score(assessment_requirements, step_for_name)
+
+        # Set the points_earned to 0.
+        if score is not None:
+            score['points_earned'] = 0
+            self.set_score(score)
+
+        # Save status if it is not cancelled.
+        if self.status != self.STATUS.cancelled:
+            self.status = self.STATUS.cancelled
+            self.save()
+            logger.info(
+                u"Workflow for submission UUID {uuid} has updated status to {status}".format(
+                    uuid=self.submission_uuid, status=self.STATUS.cancelled
+                )
+            )
+
+    @classmethod
+    def cancel_workflow(cls, submission_uuid, comments, cancelled_by_id, assessment_requirements):
+        """
+        Add an entry in AssessmentWorkflowCancellation table for a AssessmentWorkflow.
+
+        AssessmentWorkflow which has been cancelled is no longer included in the
+        peer grading pool.
+
+        Args:
+            submission_uuid (str): The UUID of the workflow's submission.
+            comments (str): The reason for cancellation.
+            cancelled_by_id (str): The ID of the user who cancelled the peer workflow.
+            assessment_requirements (dict): Dictionary that currently looks like:
+            `{"peer": {"must_grade": <int>, "must_be_graded_by": <int>}}`
+            `must_grade` is the number of assessments a student must complete.
+            `must_be_graded_by` is the number of assessments a submission must
+            receive to be scored. `must_grade` should be greater than
+            `must_be_graded_by` to ensure that everyone will get scored.
+            The intention is to eventually pass in more assessment sequence
+            specific requirements in this dict.
+        """
+        try:
+            workflow = cls.objects.get(submission_uuid=submission_uuid)
+            AssessmentWorkflowCancellation.create(workflow=workflow, comments=comments, cancelled_by_id=cancelled_by_id)
+            # Cancel the related step's workflow.
+            workflow.cancel(assessment_requirements)
+        except (cls.DoesNotExist, cls.MultipleObjectsReturned):
+            error_message = u"Error finding workflow for submission UUID {}.".format(submission_uuid)
+            logger.exception(error_message)
+            raise AssessmentWorkflowError(error_message)
+        except DatabaseError:
+            error_message = u"Error creating assessment workflow cancellation for submission UUID {}.".format(
+                submission_uuid)
+            logger.exception(error_message)
+            raise AssessmentWorkflowInternalError(error_message)
+
+    @classmethod
+    def get_by_submission_uuid(cls, submission_uuid):
+        """
+        Retrieve the Assessment Workflow associated with the given submission UUID.
+
+        Args:
+            submission_uuid (str): The string representation of the UUID belonging
+                to the associated Assessment Workflow.
+
+        Returns:
+            workflow (AssessmentWorkflow): The most recent assessment workflow associated with
+                this submission UUID.
+
+        Raises:
+            AssessmentWorkflowError: Thrown when no workflow can be found for
+                the associated submission UUID. This should always exist before a
+                student is allow to request submissions for peer assessment.
+
+        """
+        try:
+            return cls.objects.get(submission_uuid=submission_uuid)
+        except cls.DoesNotExist:
+            return None
+        except DatabaseError:
+            error_message = u"Error finding workflow for submission UUID {}.".format(submission_uuid)
+            logger.exception(error_message)
+            raise AssessmentWorkflowError(error_message)
+
+    @property
+    def is_cancelled(self):
+        """
+        Check if assessment workflow is cancelled.
+
+        Returns:
+            True/False
+        """
+        return self.cancellations.exists()
 
 
 class AssessmentWorkflowStep(models.Model):
@@ -472,3 +605,64 @@ def update_workflow_async(sender, **kwargs):
             u"for submission UUID {}"
         ).format(submission_uuid)
         logger.exception(msg)
+
+
+class AssessmentWorkflowCancellation(models.Model):
+    """Model for tracking cancellations of assessment workflow.
+
+    It is created when a staff member requests removal of a submission
+    from the peer grading pool.
+    """
+    workflow = models.ForeignKey(AssessmentWorkflow, related_name='cancellations')
+    comments = models.TextField(max_length=10000)
+    cancelled_by_id = models.CharField(max_length=40, db_index=True)
+
+    created_at = models.DateTimeField(default=now, db_index=True)
+
+    class Meta:
+        ordering = ["created_at", "id"]
+
+    def __repr__(self):
+        return (
+            "AssessmentWorkflowCancellation(workflow={0.workflow}, "
+            "comments={0.comments}, cancelled_by_id={0.cancelled_by_id}, "
+            "created_at={0.created_at})"
+        ).format(self)
+
+    def __unicode__(self):
+        return repr(self)
+
+    @classmethod
+    def create(cls, workflow, comments, cancelled_by_id):
+        """
+        Create a new AssessmentWorkflowCancellation object.
+
+        Args:
+            workflow (AssessmentWorkflow): The cancelled workflow.
+            comments (unicode): The reason for cancellation.
+            cancelled_by_id (unicode): The ID of the user who cancelled the workflow.
+
+        Returns:
+            AssessmentWorkflowCancellation
+
+        """
+        cancellation_params = {
+            'workflow': workflow,
+            'comments': comments,
+            'cancelled_by_id': cancelled_by_id,
+        }
+        return cls.objects.create(**cancellation_params)
+
+    @classmethod
+    def get_latest_workflow_cancellation(cls, submission_uuid):
+        """
+        Get the latest AssessmentWorkflowCancellation for a submission's workflow.
+
+        Args:
+            submission_uuid (str): The UUID of the workflow's submission.
+
+        Returns:
+            AssessmentWorkflowCancellation or None
+        """
+        workflow_cancellations = cls.objects.filter(workflow__submission_uuid=submission_uuid).order_by("-created_at")
+        return workflow_cancellations[0] if workflow_cancellations.exists() else None

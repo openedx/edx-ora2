@@ -7,6 +7,7 @@ import json
 import datetime as dt
 import pytz
 from mock import patch, Mock
+from openassessment.workflow import api as workflow_api
 from submissions import api as sub_api
 from submissions.api import SubmissionRequestError, SubmissionInternalError
 from .base import XBlockHandlerTestCase, scenario
@@ -196,6 +197,45 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'has_peer': True,
                 'has_self': True,
                 'allow_latex': False,
+            }
+        )
+
+    @scenario('data/submission_open.xml', user_id="Bob")
+    def test_cancelled_submission(self, xblock):
+        student_item = xblock.get_student_item_dict()
+        submission = xblock.create_submission(
+            student_item,
+            'A man must have a code'
+        )
+        xblock.get_workflow_info = Mock(return_value={
+            'status': 'cancelled',
+            'submission_uuid': submission['uuid']
+        })
+
+        xblock.get_username = Mock(return_value='Bob')
+
+        workflow_api.get_assessment_workflow_cancellation = Mock(return_value={
+            'comments': 'Inappropriate language',
+            'cancelled_by_id': 'Bob',
+            'created_at': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+            'cancelled_by': 'Bob'
+        })
+
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/response/oa_response_cancelled.html',
+            {
+                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+                'student_submission': submission,
+                'allow_file_upload': False,
+                'has_peer': True,
+                'has_self': True,
+                'allow_latex': False,
+                'workflow_cancellation': {
+                    'comments': 'Inappropriate language',
+                    'cancelled_by_id': 'Bob',
+                    'created_at': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+                    'cancelled_by': 'Bob'
+                }
             }
         )
 

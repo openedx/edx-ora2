@@ -7,6 +7,7 @@ from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.errors import (
     PeerAssessmentRequestError, PeerAssessmentInternalError, PeerAssessmentWorkflowError
 )
+from openassessment.workflow import api as workflow_api
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.defaults import DEFAULT_RUBRIC_FEEDBACK_TEXT
 from .data_conversion import create_rubric_dict
@@ -72,7 +73,7 @@ class PeerAssessmentMixin(object):
             )
             return {
                 'success': False,
-                'msg': self._('This feedback has already been submitted.'),
+                'msg': self._('This feedback has already been submitted or the submission has been cancelled.'),
             }
 
         assessment_ui_model = self.get_assessment_module('peer-assessment')
@@ -187,6 +188,7 @@ class PeerAssessmentMixin(object):
             context_dict['peer_due'] = due_date
 
         workflow = self.get_workflow_info()
+        workflow_status = workflow.get('status')
         peer_complete = workflow.get('status_details', {}).get('peer', {}).get('complete', False)
         continue_grading = continue_grading and peer_complete
 
@@ -214,9 +216,14 @@ class PeerAssessmentMixin(object):
                     "Submit your assessment & move to response #{response_number}"
                 ).format(response_number=(count + 2))
 
+        if workflow_status == "cancelled":
+            path = 'openassessmentblock/peer/oa_peer_cancelled.html'
+            # Sets the XBlock boolean to signal to Message that it WAS able to grab a submission
+            self.no_peers = True
+
         # Once a student has completed a problem, it stays complete,
         # so this condition needs to be first.
-        if (workflow.get('status') == 'done' or finished) and not continue_grading:
+        elif (workflow.get('status') == 'done' or finished) and not continue_grading:
             path = "openassessmentblock/peer/oa_peer_complete.html"
 
         # Allow continued grading even if the problem due date has passed

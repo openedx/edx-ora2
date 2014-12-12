@@ -549,6 +549,34 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
                         defer.rejectWith(this, [gettext('Could not retrieve download url.')]);
                     });
             }).promise();
+        },
+
+        /**
+            Cancel the submission from peer grading pool.
+            Args:
+                submissionUUID: ID for submission to be cancelled from pool.
+                comments: reason to cancel the submission
+          **/
+        cancelSubmission: function (submissionUUID, comments) {
+            var url = this.url('cancel_submission');
+            var payload = JSON.stringify({
+                submission_uuid: submissionUUID,
+                comments: comments
+            });
+            return $.Deferred(function (defer) {
+                $.ajax({ type: "POST", url: url, data: payload }).done(
+                    function(data) {
+                        if (data.success) {
+                            defer.resolveWith(this, [data.msg]);
+                        }
+                        else {
+                            defer.rejectWith(this, [data.msg]);
+                        }
+                    }
+                ).fail(function(data) {
+                    defer.rejectWith(this, [gettext('The submission could not be removed from the grading pool.')]);
+                });
+            }).promise();
         }
     };
 }

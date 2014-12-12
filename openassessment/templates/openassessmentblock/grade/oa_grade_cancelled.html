@@ -1,0 +1,31 @@
+{% load i18n %}
+{% spaceless %}
+<li id="openassessment__grade" class="openassessment__steps__step step--grade has--error">
+    <header class="step__header ui-toggle-visibility__control">
+        <h2 class="step__title">
+            <span class="wrapper--copy">
+                <span class="step__label">{% trans "Your Grade" %}: </span>
+                <span class="grade__value">
+                    <span class="grade__value__title">
+                        {% with points_earned_string=score.points_earned|stringformat:"s" points_possible_string=score.points_possible|stringformat:"s" %}
+                            {% blocktrans with points_earned='<span class="grade__value__earned">'|safe|add:points_earned_string|add:'</span>'|safe points_possible='<span class="grade__value__potential">'|safe|add:points_possible_string|add:'</span>'|safe %}
+                                {{ points_earned }} out of {{ points_possible }}
+                            {% endblocktrans %}
+                        {% endwith %}
+                    </span>
+                </span>
+            </span>
+        </h2>
+    </header>
+
+    <div class="ui-toggle-visibility__content">
+        <div class="wrapper--step__content">
+            <div class="step__content">
+                <div class="grade__value__description">
+                    <p>{% trans "Your submission has been cancelled." %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</li>
+{% endspaceless %}

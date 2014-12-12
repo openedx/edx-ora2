@@ -661,11 +661,16 @@ def get_submission_to_assess(submission_uuid, graded_by):
 
     """
     workflow = PeerWorkflow.get_by_submission_uuid(submission_uuid)
+
     if not workflow:
         raise PeerAssessmentWorkflowError(
             u"A Peer Assessment Workflow does not exist for the student "
             u"with submission UUID {}".format(submission_uuid)
         )
+
+    if workflow.is_cancelled:
+        return None
+
     open_item = workflow.find_active_assessments()
     peer_submission_uuid = open_item.submission_uuid if open_item else None
     # If there is an active assessment for this user, get that submission,
@@ -945,3 +950,48 @@ def _log_workflow(submission_uuid, workflow):
     tags.append(u"overgrading")
 
     dog_stats_api.increment('openassessment.assessment.peer_workflow.count', tags=tags)
+
+
+def is_workflow_cancelled(submission_uuid):
+    """
+    Check if workflow submission is cancelled.
+
+    Args:
+        submission_uuid (str): The UUID of the workflow's submission.
+
+    Returns:
+        True/False
+    """
+    if submission_uuid is None:
+        return False
+    try:
+        workflow = PeerWorkflow.get_by_submission_uuid(submission_uuid)
+        return workflow.is_cancelled if workflow else False
+    except PeerAssessmentWorkflowError:
+        return False
+
+
+def on_cancel(submission_uuid):
+    """Cancel the peer workflow for submission.
+
+    Sets the cancelled_at field in peer workflow.
+
+    Args:
+        submission_uuid (str): The submission UUID associated with this workflow.
+
+    Returns:
+        None
+
+    """
+    try:
+        workflow = PeerWorkflow.get_by_submission_uuid(submission_uuid)
+        workflow.cancelled_at = timezone.now()
+        workflow.save()
+    except (PeerAssessmentWorkflowError, DatabaseError):
+        error_message = (
+            u"An internal error occurred while cancelling the peer"
+            u"workflow for submission {}"
+            .format(submission_uuid)
+        )
+        logger.exception(error_message)
+        raise PeerAssessmentInternalError(error_message)
