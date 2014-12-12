@@ -211,7 +211,6 @@ class OpenAssessmentBlock(
         """
 
         item_id = self._serialize_opaque_key(self.scope_ids.usage_id)
-
         # This is not the real way course_ids should work, but this is a
         # temporary expediency for LMS integration
         if hasattr(self, "xmodule_runtime"):
@@ -746,3 +745,7 @@ class OpenAssessmentBlock(
             return key.to_deprecated_string()
         else:
             return unicode(key)
+
+    def get_username(self, anonymous_user_id):
+        if hasattr(self, "xmodule_runtime"):
+            return self.xmodule_runtime.get_real_user(anonymous_user_id).username

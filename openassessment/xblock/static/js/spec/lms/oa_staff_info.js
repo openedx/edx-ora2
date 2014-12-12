@@ -34,6 +34,14 @@ describe("OpenAssessment.StaffInfoView", function() {
             }).promise();
         };
 
+        var successPromise = $.Deferred(
+            function(defer) { defer.resolve(); }
+        ).promise();
+
+        this.cancelSubmission = function(submissionUUID) {
+            return successPromise;
+        };
+
         this.data = {};
 
     };
@@ -152,5 +160,50 @@ describe("OpenAssessment.StaffInfoView", function() {
         // Expect that the server was instructed to reschedule Unifinished Taks
         expect(server.rescheduleUnfinishedTasks).toHaveBeenCalled();
     });
+
+    it("updates submission cancellation button when comments changes", function() {
+        // Prevent the server's response from resolving,
+        // so we can see what happens before view gets re-rendered.
+        spyOn(server, 'cancelSubmission').andCallFake(function() {
+            return $.Deferred(function(defer) {}).promise();
+        });
+
+        // Load the fixture
+        loadFixtures('oa_student_info.html');
+
+        var el = $("#openassessment-base").get(0);
+        var view = new OpenAssessment.StaffInfoView(el, server, baseView);
+
+        // comments is blank --> cancel submission button disabled
+        view.comment('');
+        view.handleCommentChanged();
+        expect(view.cancelSubmissionEnabled()).toBe(false);
+
+        // Response is whitespace --> cancel submission button disabled
+        view.comment('               \n      \n      ');
+        view.handleCommentChanged();
+        expect(view.cancelSubmissionEnabled()).toBe(false);
+
+        // Response is not blank --> cancel submission button enabled
+        view.comment('Test comments');
+        view.handleCommentChanged();
+        expect(view.cancelSubmissionEnabled()).toBe(true);
+    });
+
+    it("submits the cancel submission comments to the server", function() {
+        spyOn(server, 'cancelSubmission').andCallThrough();
+
+        // Load the fixture
+        loadFixtures('oa_student_info.html');
+
+        var el = $("#openassessment-base").get(0);
+        var view = new OpenAssessment.StaffInfoView(el, server, baseView);
+
+        view.comment('Test comments');
+        view.cancelSubmission('Bob');
+
+        expect(server.cancelSubmission).toHaveBeenCalledWith('Bob', 'Test comments');
+    });
+
 
 });

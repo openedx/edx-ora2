@@ -130,6 +130,26 @@ describe("OpenAssessment.Server", function() {
         });
     });
 
+    it("sends a submission to XBlock for cancellation", function() {
+        stubAjax(true, {success:true, msg:'test message'});
+
+        var submissionUUID = 'Bob';
+        var comments = 'Test comments';
+        var success = false;
+        server.cancelSubmission(submissionUUID, comments).done(
+            function() {
+                success=true;
+            }
+        );
+
+        expect(success).toBe(true);
+        expect($.ajax).toHaveBeenCalledWith({
+            url: '/cancel_submission',
+            type: "POST",
+            data: JSON.stringify({submission_uuid: submissionUUID, comments: comments})
+        });
+    });
+
     it("saves a response submission", function() {
         stubAjax(true, {'success': true, 'msg': ''});
         var success = false;

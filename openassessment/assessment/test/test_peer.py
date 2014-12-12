@@ -13,7 +13,7 @@ from openassessment.test_utils import CacheResetTest
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.models import (
     Assessment, AssessmentPart, AssessmentFeedback, AssessmentFeedbackOption,
-    PeerWorkflow, PeerWorkflowItem
+    PeerWorkflow, PeerWorkflowCancellation, PeerWorkflowItem
 )
 from openassessment.workflow import api as workflow_api
 from submissions import api as sub_api
@@ -151,7 +151,7 @@ class TestPeerApi(CacheResetTest):
     Tests for the peer assessment API functions.
     """
 
-    CREATE_ASSESSMENT_NUM_QUERIES = 58
+    CREATE_ASSESSMENT_NUM_QUERIES = 59
 
     def test_create_assessment_points(self):
         self._create_student_and_submission("Tim", "Tim's answer")
@@ -882,6 +882,15 @@ class TestPeerApi(CacheResetTest):
         item = buffy_workflow.find_active_assessments()
         self.assertEqual(xander_answer["uuid"], item.submission_uuid)
 
+        # Cancel the Xander's submission.
+        xander_workflow = PeerWorkflow.get_by_submission_uuid(xander_answer['uuid'])
+        PeerWorkflowCancellation.create(workflow=xander_workflow, comments='test comments', cancelled_by_id=_['student_id'])
+
+        # Check to see if Buffy is actively reviewing Xander's submission.
+        # She isn't able to get the submission to assess.
+        item = buffy_workflow.find_active_assessments()
+        self.assertIsNone(item)
+
     def test_get_workflow_by_uuid(self):
         buffy_answer, _ = self._create_student_and_submission("Buffy", "Buffy's answer")
         self._create_student_and_submission("Xander", "Xander's answer")
@@ -902,6 +911,16 @@ class TestPeerApi(CacheResetTest):
         # Get the next submission for review
         submission_uuid = buffy_workflow.get_submission_for_review(3)
         self.assertEqual(xander_answer["uuid"], submission_uuid)
+
+        # Cancel the Xander's submission.
+        xander_workflow = PeerWorkflow.get_by_submission_uuid(xander_answer['uuid'])
+        PeerWorkflowCancellation.create(workflow=xander_workflow, comments='test comments',
+                                        cancelled_by_id=_['student_id'])
+
+        # Check to see if Buffy is actively reviewing Xander's submission.
+        # She isn't able to get the submission uuid to assess.
+        submission_uuid = buffy_workflow.get_submission_for_review(3)
+        self.assertNotEqual(xander_answer["uuid"], submission_uuid)
 
     def test_get_submission_for_over_grading(self):
         buffy_answer, _ = self._create_student_and_submission("Buffy", "Buffy's answer")

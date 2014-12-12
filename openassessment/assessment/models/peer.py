@@ -206,7 +206,8 @@ class PeerWorkflow(models.Model):
 
         Before retrieving a new submission for a peer assessor, check to see if that
         assessor already has a submission out for assessment. If an unfinished
-        assessment is found that has not expired, return the associated submission.
+        assessment is found that has not expired or has not been cancelled,
+        return the associated submission.
 
         TODO: If a user begins an assessment, then resubmits, this will never find
         the unfinished assessment. Is this OK?
@@ -221,13 +222,12 @@ class PeerWorkflow(models.Model):
 
         """
         oldest_acceptable = now() - self.TIME_LIMIT
-        items = list(self.graded.all().order_by("-started_at", "-id"))
+        items = list(self.graded.all().select_related('author').order_by("-started_at", "-id"))
         valid_open_items = []
         completed_sub_uuids = []
-
         # First, remove all completed items.
         for item in items:
-            if item.assessment is not None:
+            if item.assessment is not None or item.author.cancellation.exists():
                 completed_sub_uuids.append(item.submission_uuid)
             else:
                 valid_open_items.append(item)
@@ -266,6 +266,7 @@ class PeerWorkflow(models.Model):
         #  3) Is not something you have already scored.
         #  4) Does not have a combination of completed assessments or open
         #     assessments equal to or more than the requirement.
+        #  5) Has not been cancelled.
         try:
             peer_workflows = list(PeerWorkflow.objects.raw(
                 "select pw.id, pw.submission_uuid "
@@ -274,6 +275,11 @@ class PeerWorkflow(models.Model):
                 "and pw.course_id=%s "
                 "and pw.student_id<>%s "
                 "and pw.grading_completed_at is NULL "
+                "and ("
+                "   select count(pwc.id)"
+                "   from assessment_peerworkflowcancellation pwc"
+                "   where pwc.workflow_id=pw.id"
+                ") = 0 "
                 "and pw.id not in ("
                 "   select pwi.author_id "
                 "   from assessment_peerworkflowitem pwi "
@@ -318,6 +324,7 @@ class PeerWorkflow(models.Model):
         # that:
         #  1) Does not belong to you
         #  2) Is not something you have already scored
+        #  3) Has not been cancelled.
         try:
             query = list(PeerWorkflow.objects.raw(
                 "select pw.id, pw.submission_uuid "
@@ -325,6 +332,11 @@ class PeerWorkflow(models.Model):
                 "where course_id=%s "
                 "and item_id=%s "
                 "and student_id<>%s "
+                "and ("
+                "   select count(pwc.id)"
+                "   from assessment_peerworkflowcancellation pwc"
+                "   where pwc.workflow_id=pw.id"
+                ") = 0 "
                 "and pw.id not in ( "
                     "select pwi.author_id "
                     "from assessment_peerworkflowitem pwi "
@@ -461,3 +473,51 @@ class PeerWorkflowItem(models.Model):
 
     def __unicode__(self):
         return repr(self)
+
+
+class PeerWorkflowCancellation(models.Model):
+    """Model for tracking cancellations of peer workflows.
+
+    It is created when a staff member requests removal of a submission
+    from the peer grading pool.
+    """
+    workflow = models.ForeignKey(PeerWorkflow, related_name='cancellation')
+    comments = models.TextField(max_length=10000)
+    cancelled_by_id = models.CharField(max_length=40, db_index=True)
+
+    created_at = models.DateTimeField(default=now, db_index=True)
+
+    class Meta:
+        ordering = ["created_at", "id"]
+        app_label = "assessment"
+
+    def __repr__(self):
+        return (
+            "PeerWorkflowCancellation(workflow={0.workflow}, "
+            "comments={0.comments}, cancelled_by_id={0.cancelled_by_id}, "
+            "created_at={0.created_at})"
+        ).format(self)
+
+    def __unicode__(self):
+        return repr(self)
+
+    @classmethod
+    def create(cls, workflow, comments, cancelled_by_id):
+        """
+        Create a new PeerWorkflowCancellation object.
+
+        Args:
+            workflow (PeerWorkflow): The cancelled peer workflow.
+            comments (unicode): The reason for cancellation.
+            cancelled_by_id (unicode): The ID of the user who cancelled the peer workflow.
+
+        Returns:
+            PeerWorkflowCancellation
+
+        """
+        workflow_params = {
+            'workflow': workflow,
+            'comments': comments,
+            'cancelled_by_id': cancelled_by_id,
+        }
+        return cls.objects.create(**workflow_params)

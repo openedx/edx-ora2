@@ -133,4 +133,19 @@
     }
   }
 
+  // UI cancel submission.
+  .staff-info__cancel-submission__content {
+    textarea {
+      width: 100%;
+      height: 100px;
+      text-align: left;
+    }
+
+    ul.list--actions {
+      .action--submit {
+        margin: 10px 0px;
+      }
+    }
+  }
+
 }

@@ -7,6 +7,9 @@ from functools import wraps
 import logging
 
 from xblock.core import XBlock
+from openassessment.assessment.errors import (
+    PeerAssessmentInternalError, PeerAssessmentWorkflowError,
+)
 from openassessment.assessment.errors.ai import AIError
 from openassessment.xblock.resolve_dates import DISTANT_PAST, DISTANT_FUTURE
 from openassessment.xblock.data_conversion import (
@@ -35,7 +38,7 @@ def require_global_admin(error_key):
         Decorated function
 
     """
-    def _decorator(func):   # pylint: disable=C0111
+    def _decorator(func):  # pylint: disable=C0111
         @wraps(func)
         def _wrapped(xblock, *args, **kwargs):  # pylint: disable=C0111
             permission_errors = {
@@ -86,7 +89,7 @@ class StaffInfoMixin(object):
 
     @XBlock.handler
     @require_course_staff("STAFF_INFO")
-    def render_staff_info(self, data, suffix=''):   # pylint: disable=W0613
+    def render_staff_info(self, data, suffix=''):  # pylint: disable=W0613
         """
         Template context dictionary for course staff debug panel.
 
@@ -158,7 +161,7 @@ class StaffInfoMixin(object):
 
     @XBlock.json_handler
     @require_global_admin("SCHEDULE_TRAINING")
-    def schedule_training(self, data, suffix=''):   # pylint: disable=W0613
+    def schedule_training(self, data, suffix=''):  # pylint: disable=W0613
         """
         Schedule a new training task for example-based grading.
         """
@@ -194,7 +197,7 @@ class StaffInfoMixin(object):
 
     @XBlock.handler
     @require_course_staff("STUDENT_INFO")
-    def render_student_info(self, data, suffix=''): # pylint: disable=W0613
+    def render_student_info(self, data, suffix=''):  # pylint: disable=W0613
         """
         Renders all relative information for a specific student's workflow.
 
@@ -204,9 +207,13 @@ class StaffInfoMixin(object):
         Must be course staff to render this view.
 
         """
-        student_id = data.params.get('student_id', '')
-        path, context = self.get_student_info_path_and_context(student_id)
-        return self.render_assessment(path, context)
+        try:
+            student_id = data.params.get('student_id', '')
+            path, context = self.get_student_info_path_and_context(student_id)
+            return self.render_assessment(path, context)
+
+        except PeerAssessmentInternalError as ex:
+            return self.render_error(self._(ex.message))
 
     def get_student_info_path_and_context(self, student_id):
         """
@@ -262,8 +269,13 @@ class StaffInfoMixin(object):
         if "example-based-assessment" in assessment_steps:
             example_based_assessment = ai_api.get_latest_assessment(submission_uuid)
 
+        submission_cancellation = peer_api.get_submission_cancellation(submission_uuid)
+        if submission_cancellation:
+            submission_cancellation['cancelled_by'] = self.get_username(submission_cancellation['cancelled_by_id'])
+
         context = {
             'submission': submission,
+            'submission_cancellation': submission_cancellation,
             'peer_assessments': peer_assessments,
             'submitted_assessments': submitted_assessments,
             'self_assessment': self_assessment,
@@ -317,3 +329,45 @@ class StaffInfoMixin(object):
                 'success': False,
                 'msg': self._(u"An error occurred while rescheduling tasks: {}".format(ex))
             }
+
+    @XBlock.json_handler
+    @require_course_staff("STUDENT_INFO")
+    def cancel_submission(self, data, suffix=''):
+        """
+            This will cancel the peer workflow for the particular submission.
+
+            Args:
+                data (dict): Data contain two attributes: submission_uuid and
+                    comments. submission_uuid is id of submission which is to be
+                    removed from the grading pool.comments is the reason given
+                    by the user.
+
+                suffix (not used)
+
+            Return:
+                Json serializable dict with the following elements:
+                    'success': (bool) Indicates whether or not the workflow cancelled successfully.
+                    'msg': The response (could be error message or success message).
+        """
+        submission_uuid = data.get('submission_uuid')
+        comments = data.get('comments')
+
+        if not comments:
+            return {"success": False, "msg": self._(u'Please enter valid reason to remove the submission.')}
+
+        student_item_dict = self.get_student_item_dict()
+        try:
+            peer_api.cancel_submission_peer_workflow(
+                submission_uuid=submission_uuid, comments=comments, cancelled_by_id=student_item_dict['student_id']
+            )
+            return {"success": True, 'msg': self._(u"Student submission was removed from the peer grading pool."
+                                                       u" If you'd like to allow the student to submit a new response,"
+                                                       u" please also reset the student state of the problem from"
+                                                       u" the Instructor Dashboard.")}
+        except (
+                PeerAssessmentWorkflowError,
+                PeerAssessmentInternalError
+        ) as ex:
+            msg = ex.message
+            logger.exception(msg)
+            return {"success": False, 'msg': msg}
