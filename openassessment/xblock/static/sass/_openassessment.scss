@@ -73,6 +73,7 @@
 // specific UI for this application
 // --------------------
 @import 'vendor/hint';                         // vendor - hint/tooltip UI
+@import 'oa/utilities/mixins';                 // open assessment mixins
 @import 'oa/utilities/variables';              // specific variables and overrides
 @import 'oa/utilities/extends';                // open assessment extends
 @import 'oa/elements/header';                  // view/app headers

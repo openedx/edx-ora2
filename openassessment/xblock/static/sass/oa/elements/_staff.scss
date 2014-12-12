@@ -11,9 +11,9 @@
   // general: staff UI
   // --------------------
   .wrapper--ui-staff {
-    box-shadow: inset 0 1px -2px 1px $shadow-d1;
+    @include single-box-shadow(0, 1px, -2px, 1px, $shadow-d1, inset);
     margin-top: ($baseline-v*2);
-    border-radius: ($baseline-v/10);
+    @include border-radius(($baseline-v/10));
     border: 1px solid shade($color-decorative-staff, 25%);
     border-top: ($baseline-v/4) solid $color-decorative-staff;
     padding: $baseline-v ($baseline-h/2);
@@ -26,7 +26,7 @@
     &.ui-toggle-visibility {
 
       .staff-info__title__copy {
-        margin-left: ($baseline-h/4);
+        @include margin-left(($baseline-h/4));
       }
 
       // STATE: is collapsed
@@ -75,7 +75,7 @@
     }
 
     .label {
-      margin-right: ($baseline-h/4);
+      @include margin-right(($baseline-h/4));
     }
 
     .value {
@@ -90,12 +90,12 @@
 
   .staff-info__status__table, .staff-info__classifierset__table {
     @extend %copy-3;
-    border-radius: ($baseline-v/10);
+    @include border-radius(($baseline-v/10));
     color: $copy-staff-color;
 
     .title {
       @extend %hd-2;
-      text-align: left;
+      @include text-align(left);
       color: $heading-staff-color;
       margin-bottom: ($baseline-v/2);
     }
@@ -115,7 +115,7 @@
     }
 
     th, td[scope] {
-      text-align: left;
+      @include text-align(left);
 
     }
 

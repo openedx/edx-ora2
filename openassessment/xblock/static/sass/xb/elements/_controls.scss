@@ -87,7 +87,7 @@
   }
 
   .copy {
-    margin-right: ($baseline-v/2);
+    @include margin-right(($baseline-v/2));
   }
 }
 

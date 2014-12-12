@@ -37,8 +37,8 @@
 %ui-section {
   @include transition(all $tmg-f1 ease-in-out);
   @include transform(scale(1.0));
-  border-radius: ($baseline-v/10);
-  box-shadow: 0 1px 1px $shadow-l1;
+  @include border-radius(($baseline-v/10));
+  @include single-box-shadow(0, 1px, 1px, 0, $shadow-l1);
   margin-bottom: $baseline-v;
   border: 1px solid $color-decorative-tertiary;
   border-top: ($baseline-v/4) solid $color-decorative-tertiary;
@@ -53,13 +53,13 @@
   &:hover, &:focus {
     @include transform(scale(1.0));
     border-color: $color-decorative-tertiary;
-    box-shadow: 0 1px 1px $shadow-l2;
+    @include single-box-shadow(0, 1px, 1px, 0, $shadow-l2);
   }
 
   // STATE: is collapsed
   &.is--collapsed {
     @include transform(scale(0.99));
-    box-shadow: 0 1px 1px $shadow-l2;
+    @include single-box-shadow(0, 1px, 1px, 0, $shadow-l2);
 
     &:hover, &:focus {
       @include transform(scale(1.0));
@@ -69,7 +69,7 @@
   // STATE: is loading
   &.is--loading {
     @include transform(scale(0.99));
-    box-shadow: 0 1px 1px $shadow-l2;
+    @include single-box-shadow(0, 1px, 1px, 0, $shadow-l2);
   }
 
   // STATE: is empty
@@ -139,7 +139,7 @@
 // UI: well
 // --------------------
 %ui-well {
-  box-shadow: inset 0 1px 2px 1px $shadow-l1;
+  @include single-box-shadow(0, 1px, 2px, 1px, $shadow-l1, inset);
   padding: $baseline-v ($baseline-h/2);
   background: $color-decorative-quinternary;
 }
@@ -174,8 +174,9 @@
 
   .question__title__copy {
     @extend %t-heading;
-    margin-left: ($baseline-h/4);
+    @include margin-left(($baseline-h/4));
     white-space: pre-wrap;
+    display: inline;
     color: $heading-color;
   }
 }
@@ -184,7 +185,7 @@
 %ui-rubric-answers {
   margin-top: $baseline-v;
   margin-bottom: $baseline-v;
-  margin-left: ($baseline-h/2);
+  @include margin-left(($baseline-h/2));
 
   .answer, .answer--feedback {
     @include row();
@@ -210,7 +211,7 @@
     }
 
     .answer__value {
-      margin-right: ($baseline-v/2);
+      @include margin-right(($baseline-v/2));
 
       // STATE: checked
       &:checked {
@@ -226,17 +227,17 @@
     display: block;
 
     @include media($bp-dm) {
-      @include span-columns(8 of 12);
+      @include bidi-span-columns(8 of 12);
       margin-bottom: 0;
     }
 
     @include media($bp-dl) {
-      @include span-columns(8 of 12);
+      @include bidi-span-columns(8 of 12);
       margin-bottom: 0;
     }
 
     @include media($bp-dx) {
-      @include span-columns(8 of 12);
+      @include bidi-span-columns(8 of 12);
       margin-bottom: 0;
     }
   }
@@ -250,24 +251,24 @@
     white-space: pre-wrap;
 
     @extend %copy-3;
-    margin-right: $baseline-v;
+    @include margin-right($baseline-v);
     color: $copy-secondary-color;
 
     @include media($bp-dm) {
-      @include span-columns(6 of 8);
-      float: left;
+      @include bidi-span-columns(6 of 8);
+      @include float(left);
       margin-bottom: 0;
     }
 
     @include media($bp-dl) {
-      @include span-columns(6 of 8);
-      float: left;
+      @include bidi-span-columns(6 of 8);
+      @include float(left);
       margin-bottom: 0;
     }
 
     @include media($bp-dx) {
-      @include span-columns(6 of 8);
-      float: left;
+      @include bidi-span-columns(6 of 8);
+      @include float(left);
       margin-bottom: 0;
     }
 
@@ -281,24 +282,24 @@
     color: $copy-secondary-color;
 
     @include media($bp-dm) {
-      float: right;
-      text-align: right;
+      @include float(right);
+      @include text-align(right);
     }
 
     @include media($bp-dl) {
-      float: right;
-      text-align: right;
+      @include float(right);
+      @include text-align(right);
     }
 
     @include media($bp-dx) {
-      float: right;
-      text-align: right;
+      @include float(right);
+      @include text-align(right);
     }
   }
 
   .answer__points__label {
     display: inline-block; // FIX: need to reset base label style
-    margin-left: ($baseline-v/4);
+    @include margin-left(($baseline-v/4));
     color: $copy-secondary-color;
   }
 
@@ -307,21 +308,21 @@
 
     .wrapper--input {
       @include media($bp-ds) {
-        @include span-columns(6 of 6);
+        @include bidi-span-columns(6 of 6);
       }
 
       @include media($bp-dm) {
-        @include span-columns(4 of 12);
+        @include bidi-span-columns(4 of 12);
         margin-bottom: 0;
       }
 
       @include media($bp-dl) {
-        @include span-columns(4 of 12);
+        @include bidi-span-columns(4 of 12);
         margin-bottom: 0;
       }
 
       @include media($bp-dx) {
-        @include span-columns(4 of 12);
+        @include bidi-span-columns(4 of 12);
         margin-bottom: 0;
       }
     }
@@ -337,7 +338,7 @@
     .answer__value {
       @extend %ui-content-longanswer;
       min-height: ($baseline-v*5);
-      margin-right: 0;
+      @include margin-right(0);
     }
   }
 }

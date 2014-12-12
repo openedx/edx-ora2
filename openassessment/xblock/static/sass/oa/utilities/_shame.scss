@@ -38,26 +38,26 @@
     // step title/name
     h2.step__title {
       margin-top: 0 !important;
-      text-align: left !important;
+      @include text-align(left);
 
       @include media($bp-m) {
         margin-bottom: ($baseline-v/2);
       }
 
       @include media($bp-ds) {
-        @include span-columns(4 of 6);
+        @include bidi-span-columns(4 of 6);
       }
 
       @include media($bp-dm) {
-        @include span-columns(8 of 12);
+        @include bidi-span-columns(8 of 12);
       }
 
       @include media($bp-dl) {
-        @include span-columns(8 of 12);
+        @include bidi-span-columns(8 of 12);
       }
 
       @include media($bp-dx) {
-        @include span-columns(9 of 12);
+        @include bidi-span-columns(9 of 12);
       }
 
       .step__label {
@@ -97,7 +97,7 @@
 
   .list--actions {
     list-style: none !important;
-    padding-left: 0 !important;
+    @include padding-left(0);
     text-indent: 0 !important;
 
     li {
@@ -132,7 +132,7 @@
   // peer assessment
   .step--peer-assessment .list--peer-assessments {
     list-style: none outside none !important;
-    padding-left: 0 !important;;
+    @include padding-left(0);
   }
 
   // self assessment
@@ -144,7 +144,7 @@
 
   // shown submission/results
   .question__answers {
-    padding-left: 0 !important;
+    @include padding-left(0);
   }
 
 
