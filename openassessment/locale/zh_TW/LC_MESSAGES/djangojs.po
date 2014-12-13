@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-11 17:06-0400\n"
+"POT-Creation-Date: 2014-12-13 06:36-0500\n"
 "PO-Revision-Date: 2014-08-16 06:51+0000\n"
 "Last-Translator: KUN-MIN SYU <qwer20108@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/edx-"
@@ -50,40 +50,40 @@ msgstr "這條反饋意見無法提交。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:279
-#: openassessment/xblock/static/js/src/oa_server.js:323
-#: openassessment/xblock/static/js/src/oa_server.js:364
-#: openassessment/xblock/static/js/src/oa_server.js:398
+#: openassessment/xblock/static/js/src/oa_server.js:280
+#: openassessment/xblock/static/js/src/oa_server.js:324
+#: openassessment/xblock/static/js/src/oa_server.js:365
+#: openassessment/xblock/static/js/src/oa_server.js:399
 msgid "This assessment could not be submitted."
 msgstr "這份評分無法提交。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:422
+#: openassessment/xblock/static/js/src/oa_server.js:423
 msgid "One or more rescheduling tasks failed."
 msgstr "一個或多個任務重新安排失敗。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:471
+#: openassessment/xblock/static/js/src/oa_server.js:472
 msgid "This problem could not be saved."
 msgstr "此問題無法儲存。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:501
+#: openassessment/xblock/static/js/src/oa_server.js:502
 msgid "The server could not be contacted."
 msgstr "無法聯繫服務器。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:527
+#: openassessment/xblock/static/js/src/oa_server.js:528
 msgid "Could not retrieve upload url."
 msgstr "無法找到上傳網址"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:548
+#: openassessment/xblock/static/js/src/oa_server.js:549
 msgid "Could not retrieve download url."
 msgstr "無法找到下載網址"
 
