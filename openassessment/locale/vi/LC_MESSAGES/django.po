@@ -1,26 +1,28 @@
 # edX translation file.
 # Copyright (C) 2014 EdX
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
-#
+# 
 # Translators:
 # dangitdang <dangpham@mit.edu>, 2014
+# Doan Viet Hung <viethung.doan@gmail.com>, 2014
 # Hoang Ha <halink0803@gmail.com>, 2014
+# Lê Như Ý <nhuyle89@gmail.com>, 2014
 # Minh Tue Vo <mvo@edx.org>, 2014
 # NGUYEN CONG NAM <congnam0409@gmail.com>, 2014
+# NGUYEN HOANG AN <neyugn2909@gmail.com>, 2014
 # Sarina Canelake <sarina@edx.org>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-13 05:25-0500\n"
-"PO-Revision-Date: 2014-09-11 21:20+0000\n"
-"Last-Translator: Andy Armstrong <andya@edx.org>\n"
-"Language-Team: Vietnamese (http://www.transifex.com/projects/p/edx-platform/"
-"language/vi/)\n"
-"Language: vi\n"
+"POT-Creation-Date: 2014-12-13 05:12-0500\n"
+"PO-Revision-Date: 2014-12-13 12:38+0000\n"
+"Last-Translator: Usman Khalid\n"
+"Language-Team: Vietnamese (http://www.transifex.com/projects/p/edx-platform/language/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: openassessment/assessment/api/student_training.py:180
@@ -29,13 +31,13 @@ msgstr ""
 
 #: openassessment/assessment/api/student_training.py:192
 msgid ""
-"If your assignment includes a student training step, the rubric must have at "
-"least one criterion, and that criterion must have at least one option."
+"If your assignment includes a student training step, the rubric must have at"
+" least one criterion, and that criterion must have at least one option."
 msgstr ""
 
 #: openassessment/assessment/api/student_training.py:204
 msgid "Example {example_number} has a validation error: {error}"
-msgstr ""
+msgstr "Ví dụ {example_number} có một lỗi xác nhận: {error}"
 
 #: openassessment/assessment/api/student_training.py:218
 msgid ""
@@ -57,14 +59,14 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/oa_base.html:18
 msgid "Your grade for this problem"
-msgstr ""
+msgstr "Điểm của bạn cho bài này"
 
 #: openassessment/templates/openassessmentblock/oa_base.html:27
 msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
 "response to the question. The other steps appear below the Your Response "
 "field."
-msgstr ""
+msgstr "Bài tập này gồm nhiều bước. Bước đầu, bạn sẽ trả lời câu hỏi. Các bước tiếp theo sẽ hiện ra dưới mục Trả Lời Của Bạn."
 
 #: openassessment/templates/openassessmentblock/oa_base.html:36
 msgid "The prompt for this assignment"
@@ -72,11 +74,11 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/oa_base.html:58
 msgid "This step's status:"
-msgstr ""
+msgstr "Tình trạng của bước này:"
 
 #: openassessment/templates/openassessmentblock/oa_base.html:61
 msgid "Loading"
-msgstr ""
+msgstr "Đang tải"
 
 #: openassessment/templates/openassessmentblock/oa_rubric.html:14
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:55
@@ -91,16 +93,16 @@ msgstr "Bắt buộc"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:101
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:123
 msgid "points"
-msgstr ""
+msgstr "điểm"
 
 #: openassessment/templates/openassessmentblock/oa_rubric.html:41
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:109
 msgid "Comments"
-msgstr ""
+msgstr "Nhận xét"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:8
 msgid "Open Response Assessment"
-msgstr ""
+msgstr "Đánh Giá Câu Trả Lời Mở"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:10
 msgid "Settings"
@@ -108,7 +110,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:11
 msgid "Rubric"
-msgstr ""
+msgstr "Phiếu tự đánh giá"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:12
 msgid "Prompt"
@@ -207,8 +209,8 @@ msgstr ""
 msgid ""
 "In this assignment, you can include steps for student training, peer "
 "assessment, self assessment, and example based assessment. Select the steps "
-"that you want below, and then drag them into the order that you want. If you "
-"include an example based assessment step, it must precede all other steps. "
+"that you want below, and then drag them into the order that you want. If you"
+" include an example based assessment step, it must precede all other steps. "
 "If you include a student training training step, it must precede peer and "
 "self assessment steps."
 msgstr ""
@@ -290,9 +292,10 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/edit/oa_edit_example_based_assessment.html:16
 #: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:18
 msgid ""
-"Enter one or more sample responses that you've created, and then specify the "
-"options that you would choose for each criterion in your rubric. Note that "
-"you must add your rubric to the Rubric tab before you can complete this step."
+"Enter one or more sample responses that you've created, and then specify the"
+" options that you would choose for each criterion in your rubric. Note that "
+"you must add your rubric to the Rubric tab before you can complete this "
+"step."
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:5
@@ -330,7 +333,8 @@ msgid "Must Grade"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:25
-msgid "Specify the number of peer assessments that each student must complete."
+msgid ""
+"Specify the number of peer assessments that each student must complete."
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:29
@@ -639,9 +643,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:302
 msgid "I disagree with one or more of the peer assessments of my response."
-msgstr ""
-"Tôi không đồng tình với một hay các đánh giá của học viên khác về câu trả "
-"lời của mình."
+msgstr "Tôi không đồng tình với một hay các đánh giá của học viên khác về câu trả lời của mình."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:310
 msgid "Some comments I received were inappropriate."
@@ -686,10 +688,7 @@ msgid ""
 "Your response is still undergoing peer assessment. After your peers have "
 "assessed your response, you'll see their comments and receive your final "
 "grade."
-msgstr ""
-"Câu trả lời của bạn vẫn đang được các học viên khác đánh giá. Sau khi họ "
-"đánh giá xong câu trả lời của bạn, bạn sẽ thấy nhận xét của họ và nhận được "
-"điểm số cuối cùng."
+msgstr "Câu trả lời của bạn vẫn đang được các học viên khác đánh giá. Sau khi họ đánh giá xong câu trả lời của bạn, bạn sẽ thấy nhận xét của họ và nhận được điểm số cuối cùng."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:22
 msgid ""
@@ -753,8 +752,7 @@ msgstr ""
 msgid ""
 "Your grade will be available when your peers have completed their "
 "assessments of your response."
-msgstr ""
-"Bạn sẽ có điểm khi các học viên khác hoàn thành đánh giá câu trả lời của bạn."
+msgstr "Bạn sẽ có điểm khi các học viên khác hoàn thành đánh giá câu trả lời của bạn."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_complete.html:10
 msgid ""
@@ -777,9 +775,7 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"                    Assignment submissions will close soon. To receive a "
-"grade, first provide a response to the question, then complete the steps "
-"below the %(start_tag)sYour Response%(end_tag)s field.\n"
+"                    Assignment submissions will close soon. To receive a grade, first provide a response to the question, then complete the steps below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
 msgstr ""
 
@@ -787,9 +783,7 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"                    This assignment has several steps. In the first step, "
-"you'll provide a response to the question. The other steps appear below the "
-"%(start_tag)sYour Response%(end_tag)s field.\n"
+"                    This assignment has several steps. In the first step, you'll provide a response to the question. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
 "                "
 msgstr ""
 
@@ -825,10 +819,7 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"                          You'll receive your grade after you complete the "
-"%(peer_start_tag)speer assessment%(end_tag)s and %(self_start_tag)sself "
-"assessment%(end_tag)s steps, and after your peers have assessed your "
-"response.\n"
+"                          You'll receive your grade after you complete the %(peer_start_tag)speer assessment%(end_tag)s and %(self_start_tag)sself assessment%(end_tag)s steps, and after your peers have assessed your response.\n"
 "                    "
 msgstr ""
 
@@ -836,8 +827,7 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"                        You'll receive your grade after you complete the "
-"%(start_tag)speer assessment%(end_tag)s step.\n"
+"                        You'll receive your grade after you complete the %(start_tag)speer assessment%(end_tag)s step.\n"
 "                    "
 msgstr ""
 
@@ -857,9 +847,7 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"                          You'll receive your grade after the required "
-"number of your peers have assessed your response and you complete the "
-"%(start_tag)sself assessment%(end_tag)s step.\n"
+"                          You'll receive your grade after the required number of your peers have assessed your response and you complete the %(start_tag)sself assessment%(end_tag)s step.\n"
 "                    "
 msgstr ""
 
@@ -867,8 +855,7 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"                          You'll receive your grade after you complete the "
-"%(start_tag)sself assessment%(end_tag)s step.\n"
+"                          You'll receive your grade after you complete the %(start_tag)sself assessment%(end_tag)s step.\n"
 "                    "
 msgstr ""
 
@@ -892,16 +879,19 @@ msgstr ""
 msgid "Assess Peers"
 msgstr ""
 
-#. Translators: This string displays a date to the user, then tells them the time until that date.  Example: "available August 13th, 2014 (in 5 days and 45 minutes)"
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "available August 13th, 2014 (in 5 days and
+#. 45 minutes)"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:20
 #: openassessment/templates/openassessmentblock/response/oa_response.html:16
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:16
 #, python-format
-msgid ""
-"available <span class=\"date\">%(start_date)s (in %(time_until)s)</span>"
+msgid "available <span class=\"date\">%(start_date)s (in %(time_until)s)</span>"
 msgstr ""
 
-#. Translators: This string displays a date to the user, then tells them the time until that date.  Example: "due August 13th, 2014 (in 5 days and 45 minutes)"
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
+#. minutes)"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:25
 #, python-format
 msgid "due <span class=\"date\">%(due_date)s (in %(time_until)s)</span>"
@@ -947,8 +937,7 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"                                            Assessment # %(review_number)s "
-"of %(num_must_grade)s\n"
+"                                            Assessment # %(review_number)s of %(num_must_grade)s\n"
 "                                        "
 msgstr ""
 
@@ -1054,11 +1043,13 @@ msgstr ""
 msgid ""
 "All submitted peer responses have been assessed. Check back later to see if "
 "more students have submitted responses. You'll receive your grade after "
-"you've completed all the steps for this problem and your peers have assessed "
-"your response."
+"you've completed all the steps for this problem and your peers have assessed"
+" your response."
 msgstr ""
 
-#. Translators: This string displays a date to the user, then tells them the time until that date.  Example: "due August 13th, 2014 (in 5 days and 45 minutes)"
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
+#. minutes)"
 #: openassessment/templates/openassessmentblock/response/oa_response.html:21
 #, python-format
 msgid "due <span class=\"date\"> %(due_date)s (in %(time_until)s)</span>"
@@ -1156,10 +1147,7 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"                        You'll receive your grade after some of your peers "
-"have assessed your response and you complete the %(peer_start_tag)speer "
-"assessment%(end_tag)s and %(self_start_tag)sself assessment%(end_tag)s "
-"steps.\n"
+"                        You'll receive your grade after some of your peers have assessed your response and you complete the %(peer_start_tag)speer assessment%(end_tag)s and %(self_start_tag)sself assessment%(end_tag)s steps.\n"
 "                    "
 msgstr ""
 
@@ -1167,9 +1155,7 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"                        You'll receive your grade after some of your peers "
-"have assessed your response and you complete the %(start_tag)speer assessment"
-"%(end_tag)s step.\n"
+"                        You'll receive your grade after some of your peers have assessed your response and you complete the %(start_tag)speer assessment%(end_tag)s step.\n"
 "                    "
 msgstr ""
 
@@ -1177,8 +1163,7 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"                        You'll receive your grade after you complete the "
-"%(start_tag)sself assessment%(end_tag)s step.\n"
+"                        You'll receive your grade after you complete the %(start_tag)sself assessment%(end_tag)s step.\n"
 "                    "
 msgstr ""
 
@@ -1186,7 +1171,9 @@ msgstr ""
 msgid "Assess Your Response"
 msgstr ""
 
-#. Translators: This string displays a date to the user, then tells them the time until that date.  Example: "due August 13th, 2014 (in 5 days and 45 minutes)"
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
+#. minutes)"
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:21
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:21
 #, python-format
@@ -1366,11 +1353,12 @@ msgstr ""
 msgid "Learn to Assess Responses"
 msgstr ""
 
-#. Translators: This string displays a date to the user, then tells them the time until that date.  Example: "available August 13th, 2014 (in 5 days and 45 minutes)"
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "available August 13th, 2014 (in 5 days and
+#. 45 minutes)"
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:16
 #, python-format
-msgid ""
-"available <span class=\"date\"> %(start_date)s (in %(time_until)s) </span>"
+msgid "available <span class=\"date\"> %(start_date)s (in %(time_until)s) </span>"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:46
@@ -1398,8 +1386,7 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"                                Training Assessment # "
-"%(current_progress_num)s of %(num_to_complete)s\n"
+"                                Training Assessment # %(current_progress_num)s of %(num_to_complete)s\n"
 "                            "
 msgstr ""
 
@@ -1416,7 +1403,8 @@ msgid "Selected Options Differ"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:106
-msgid "The option you selected is not the option that the instructor selected."
+msgid ""
+"The option you selected is not the option that the instructor selected."
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:139
@@ -1429,8 +1417,8 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:25
 msgid ""
-"This step is now closed.You can no longer continue with this assignment, and "
-"you'll receive a grade of Incomplete."
+"This step is now closed.You can no longer continue with this assignment, and"
+" you'll receive a grade of Incomplete."
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/student_training/student_training_error.html:9
@@ -1451,7 +1439,7 @@ msgstr ""
 
 #: openassessment/xblock/grade_mixin.py:188
 msgid "Peer Assessment"
-msgstr "Bình duyệt"
+msgstr ""
 
 #: openassessment/xblock/grade_mixin.py:223
 msgid "Assessment feedback could not be saved."
@@ -1480,9 +1468,8 @@ msgid "You must submit a response before you can peer-assess."
 msgstr ""
 
 #: openassessment/xblock/peer_assessment_mixin.py:75
-#, fuzzy
 msgid "This feedback has already been submitted."
-msgstr "Câu trả lời này đã được lưu nhưng chưa được gửi đi."
+msgstr ""
 
 #: openassessment/xblock/peer_assessment_mixin.py:100
 #: openassessment/xblock/peer_assessment_mixin.py:105
@@ -1673,8 +1660,7 @@ msgid "The assessment order you selected is invalid."
 msgstr ""
 
 #: openassessment/xblock/validation.py:122
-msgid ""
-"In peer assessment, the \"Must Grade\" value must be a positive integer."
+msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
 msgstr ""
 
 #: openassessment/xblock/validation.py:125

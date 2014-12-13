@@ -1,0 +1,5 @@
+Different tags in source and translation
+  msgid: The start date '{start}' cannot be later than the due date '{due}'
+  -----> 起始時間 '{start}' 不能晚於截止時間 '{date}'
+  -----> "{due}" vs "{date}"
+
