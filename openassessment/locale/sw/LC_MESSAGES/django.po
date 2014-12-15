@@ -1,0 +1,1735 @@
+# edX translation file.
+# Copyright (C) 2014 EdX
+# This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
+# 
+# Translators:
+msgid ""
+msgstr ""
+"Project-Id-Version: edx-platform\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-12-13 05:12-0500\n"
+"PO-Revision-Date: 2014-12-13 12:38+0000\n"
+"Last-Translator: Usman Khalid\n"
+"Language-Team: Swahili (http://www.transifex.com/projects/p/edx-platform/language/sw/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: sw\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: openassessment/assessment/api/student_training.py:180
+msgid "Could not parse serialized rubric"
+msgstr ""
+
+#: openassessment/assessment/api/student_training.py:192
+msgid ""
+"If your assignment includes a student training step, the rubric must have at"
+" least one criterion, and that criterion must have at least one option."
+msgstr ""
+
+#: openassessment/assessment/api/student_training.py:204
+msgid "Example {example_number} has a validation error: {error}"
+msgstr ""
+
+#: openassessment/assessment/api/student_training.py:218
+msgid ""
+"Example {example_number} has an invalid option for \"{criterion_name}\": "
+"\"{option_name}\""
+msgstr ""
+
+#: openassessment/assessment/api/student_training.py:228
+msgid "Example {example_number} has an extra option for \"{criterion_name}\""
+msgstr ""
+
+#: openassessment/assessment/api/student_training.py:241
+msgid "Example {example_number} is missing an option for \"{criterion_name}\""
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/oa_base.html:9
+msgid "Skip to a specific step"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/oa_base.html:18
+msgid "Your grade for this problem"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/oa_base.html:27
+msgid ""
+"This assignment has several steps. In the first step, you'll provide a "
+"response to the question. The other steps appear below the Your Response "
+"field."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/oa_base.html:36
+msgid "The prompt for this assignment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/oa_base.html:58
+msgid "This step's status:"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/oa_base.html:61
+msgid "Loading"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/oa_rubric.html:14
+#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:55
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:82
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:92
+msgid "Required"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/oa_rubric.html:33
+#: openassessment/templates/openassessmentblock/edit/oa_training_example_criterion.html:15
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:97
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:101
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:123
+msgid "points"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/oa_rubric.html:41
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:109
+msgid "Comments"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:8
+msgid "Open Response Assessment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:10
+msgid "Settings"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:11
+msgid "Rubric"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:12
+msgid "Prompt"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:19
+msgid "Rubric Change Impacts Settings Section"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:20
+msgid ""
+"A change that you made to this assessment's rubric has an impact on some "
+"examples laid out in the settings tab. For more information, go to the "
+"Settings section and fix areas highlighted in red."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:24
+msgid "close alert"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:39
+msgid "Display Name "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:42
+msgid ""
+"This name appears when you hover over the unit in the course ribbon at the "
+"top of the page."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:49
+msgid "Response Start Date"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:62
+msgid "Response Start Time"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:71
+msgid "The date and time when students can begin submitting responses."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:78
+msgid "Response Due Date"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:91
+msgid "Response Due Time"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:100
+msgid "The date and time when students can no longer submit responses."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:104
+msgid "Allow Image Responses"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:106
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:116
+msgid "False"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:107
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:117
+msgid "True"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:110
+msgid ""
+"Specify whether students can submit an image file along with their text "
+"response."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:114
+msgid "Allow Latex Responses"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:120
+msgid "Specify whether students can write Latex formatted strings"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:124
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:7
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:7
+msgid "Top Responses"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:133
+msgid ""
+"Specify the number of top-scoring responses to display. If the number is 0, "
+"the Top Responses section won't appear to students."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:140
+msgid ""
+"In this assignment, you can include steps for student training, peer "
+"assessment, self assessment, and example based assessment. Select the steps "
+"that you want below, and then drag them into the order that you want. If you"
+" include an example based assessment step, it must precede all other steps. "
+"If you include a student training training step, it must precede peer and "
+"self assessment steps."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:142
+msgid ""
+"In this assignment, you can include steps for student training, peer "
+"assessment, and self assessment. Select the steps that you want below, and "
+"then drag them into the order that you want. If you include a student "
+"training step, it must precede all other steps."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:159
+msgid "Save"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:163
+msgid "Cancel"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:7
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:36
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:78
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:117
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:148
+msgid "Criterion"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:8
+msgid "You cannot delete a criterion after the assignment has been released."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:10
+#: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:7
+#: openassessment/templates/openassessmentblock/edit/oa_training_example.html:13
+msgid "Remove"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:18
+msgid "Criterion Name"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:30
+msgid "Criterion Prompt"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:43
+msgid "Add Option"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:51
+msgid "Feedback for This Criterion"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:53
+msgid "None"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:54
+msgid "Optional"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:60
+msgid ""
+"Select one of the options above. This describes whether or not the student "
+"will have to provide criterion feedback."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_example_based_assessment.html:8
+msgid "Step: Example-Based Assessment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_example_based_assessment.html:12
+msgid ""
+"An algorithm assesses students' responses by comparing the responses to pre-"
+"assessed sample responses that the instructor provides."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_example_based_assessment.html:16
+#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:18
+msgid ""
+"Enter one or more sample responses that you've created, and then specify the"
+" options that you would choose for each criterion in your rubric. Note that "
+"you must add your rubric to the Rubric tab before you can complete this "
+"step."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:5
+msgid "Option"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:16
+msgid "Option Name"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:29
+msgid "Option Points"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:42
+msgid "Option Explanation"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:9
+msgid "Step: Peer Assessment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:13
+msgid ""
+"Students assess a specified number of other students' responses using the "
+"rubric for the assignment."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:17
+msgid "Specify the following values for the peer assessment step."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:22
+msgid "Must Grade"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:25
+msgid ""
+"Specify the number of peer assessments that each student must complete."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:29
+msgid "Graded By"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:32
+msgid "Specify the number of students who must assess each response."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:36
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:22
+msgid "Start Date"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:45
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:31
+msgid "Start Time"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:53
+msgid ""
+"Enter the date and time when students can begin assessing peer responses."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:57
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:43
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:55
+msgid "Due Date"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:66
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:52
+msgid "Due Time"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:74
+msgid "Enter the date and time when all peer assessments must be complete."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:14
+msgid ""
+"Rubrics are made up of criteria, which usually contain one or more options. "
+"Each option has a point value. This template contains two sample criteria "
+"and their options. Replace the sample text with your own text. For more "
+"information, see the ORA documentation."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:26
+msgid "Add Criterion"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:32
+msgid "Feedback for This Response"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:37
+msgid "Feedback Instructions"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:41
+msgid ""
+"Encourage your students to provide feedback on the response they've graded. "
+"You can replace the sample text with your own."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:46
+msgid "Default Feedback Text"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:50
+msgid ""
+"Enter feedback text that students will see before they enter their own "
+"feedback. Use this text to show students a good example peer assessment."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:9
+msgid "Step: Self Assessment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:13
+msgid ""
+"Students assess their own responses using the rubric for the assignment."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:17
+msgid "Specify start and due dates for the self assessment step."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:39
+msgid ""
+"Enter the date and time when students can begin assessing their responses."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:60
+msgid "Enter the date and time when all self assessments must be complete."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:9
+msgid "Step: Student Training"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:14
+msgid ""
+"Students learn to assess responses by scoring pre-assessed sample responses "
+"that you provide. Students move to the next step when the scores they give "
+"match your scores. Note that if you add this step, you must also add a peer "
+"assessment step. This step must come before the peer assessment step."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:26
+msgid "Add Sample Response"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_training_example.html:10
+msgid "Scored Response"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_training_example.html:19
+msgid "Response Score"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_training_example.html:30
+msgid "Response"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_training_example_criterion.html:10
+msgid "Not Selected"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_closed.html:7
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:8
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:19
+#: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:7
+#: openassessment/templates/openassessmentblock/grade/oa_grade_not_started.html:7
+#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:7
+msgid "Your Grade"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_closed.html:9
+#: openassessment/templates/openassessmentblock/response/oa_response_closed.html:12
+#: openassessment/templates/openassessmentblock/self/oa_self_closed.html:13
+#: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:13
+msgid "Incomplete"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_closed.html:10
+#: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:19
+msgid "You have not completed all the steps of this problem."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:12
+#, python-format
+msgid ""
+"\n"
+"                            %(points_earned)s out of %(points_possible)s\n"
+"                        "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:29
+#: openassessment/templates/openassessmentblock/response/oa_response.html:12
+#: openassessment/templates/openassessmentblock/response/oa_response_graded.html:23
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:43
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:43
+msgid "Your Response"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:37
+#: openassessment/templates/openassessmentblock/response/oa_response_graded.html:30
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:50
+msgid "Your Image"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:41
+#: openassessment/templates/openassessmentblock/response/oa_response.html:81
+#: openassessment/templates/openassessmentblock/response/oa_response_graded.html:33
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:53
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:58
+msgid "The image associated with your submission."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:47
+msgid "Assessments of Your Response"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:58
+msgid "Overall Grade"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:63
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:39
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:81
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:119
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:150
+msgid "Points"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:77
+msgid "Assessor"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:79
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:212
+#, python-format
+msgid "Peer %(peer_num)s"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:83
+msgid "Peer's Assessment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:89
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:120
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:144
+#, python-format
+msgid "More information about %(name)s"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:96
+msgid "Grade Earned"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:111
+msgid "Your Self Assessment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:114
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:181
+msgid "Your Assessment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:135
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:138
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:144
+msgid "Example-Based Assessment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:159
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:161
+msgid "Additional Comments"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:170
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:32
+msgid "Peer"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:201
+msgid "Additional comments on your response"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:211
+msgid "Peer assessor"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:217
+msgid "Peer's assessment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:228
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:229
+msgid "Self assessment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:234
+msgid "Your assessment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:249
+msgid "Provide Feedback on Peer Assessments"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:258
+msgid "Submitting Feedback"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:264
+msgid "Your Feedback Has Been Submitted"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:266
+msgid ""
+"Your feedback has been submitted. Course staff will be able to see this "
+"feedback when they review course records."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:272
+msgid ""
+"Course staff will be able to see any feedback that you provide here when "
+"they review course records."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:278
+msgid ""
+"Select the statements below that best reflect your experience with peer "
+"assessments"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:286
+msgid "These assessments were useful."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:294
+msgid "These assessments were not useful."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:302
+msgid "I disagree with one or more of the peer assessments of my response."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:310
+msgid "Some comments I received were inappropriate."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:315
+msgid ""
+"Please provide any feedback on the grade or comments that you received from "
+"your peers."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:318
+msgid "I feel the feedback I received was..."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:329
+msgid "We could not submit your feedback"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:335
+msgid "Submit Feedback on Peer Assessments"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:9
+msgid "Not Completed"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_not_started.html:9
+msgid "Not Started"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_not_started.html:19
+msgid "You have not started this problem yet."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:9
+msgid "Waiting for Assessments"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:20
+msgid ""
+"Your response is still undergoing peer assessment. After your peers have "
+"assessed your response, you'll see their comments and receive your final "
+"grade."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:22
+msgid ""
+"Your response is still undergoing example-based assessment. After your "
+"response has been assessed, you'll see the comments and receive your final "
+"grade."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:24
+msgid ""
+"Your response is still undergoing peer assessment and example-based "
+"assessment. After your peers have assessed your response and example-based "
+"assessment is complete, you'll see your peers' comments and receive your "
+"final grade."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:9
+msgid "Top-Scoring Responses for This Assignment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:16
+#, python-format
+msgid "%(num_points)s points"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:21
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:81
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:65
+msgid "The image associated with your peer's submission."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:15
+msgid ""
+"After you complete all the steps of this assignment, you can see the top-"
+"scoring responses from your peers."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_closed.html:6
+msgid "This Task Is Not Yet Available"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_closed.html:8
+msgid "This Assignment Has Closed"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_closed.html:14
+msgid "Check back to complete the assignment once this section has opened."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_closed.html:16
+msgid ""
+"One or more deadlines for this assignment have passed. You will receive an "
+"incomplete grade for this assignment."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_complete.html:4
+msgid "You Have Completed This Assignment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_complete.html:8
+msgid ""
+"Your grade will be available when your peers have completed their "
+"assessments of your response."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_complete.html:10
+msgid ""
+"Your grade will be available when the example-based assessment of your "
+"response is complete."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_complete.html:12
+msgid ""
+"Your grade will be available when your peers have completed their "
+"assessments of your response and the example-based assessment of your "
+"response is complete."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_complete.html:14
+msgid "Review your grade and your assessment details."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_open.html:7
+#, python-format
+msgid ""
+"\n"
+"                    Assignment submissions will close soon. To receive a grade, first provide a response to the question, then complete the steps below the %(start_tag)sYour Response%(end_tag)s field.\n"
+"                "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_open.html:11
+#, python-format
+msgid ""
+"\n"
+"                    This assignment has several steps. In the first step, you'll provide a response to the question. The other steps appear below the %(start_tag)sYour Response%(end_tag)s field.\n"
+"                "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_peer.html:6
+msgid "Waiting for Peer Submissions"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_peer.html:8
+msgid "The Period For Peer Evaluation Has Not Started"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_peer.html:10
+#: openassessment/templates/openassessmentblock/message/oa_message_self.html:8
+msgid "Your Response Has Been Submitted For Peer Assessment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_peer.html:16
+#: openassessment/templates/openassessmentblock/message/oa_message_self.html:16
+msgid "Check back later when the assessment period has opened."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_peer.html:19
+msgid "Peer evaluation of this assignment will close soon. "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_peer.html:22
+msgid ""
+"All submitted peer responses have been assessed. Check back later to see if "
+"more students have submitted responses. "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_peer.html:25
+#, python-format
+msgid ""
+"\n"
+"                          You'll receive your grade after you complete the %(peer_start_tag)speer assessment%(end_tag)s and %(self_start_tag)sself assessment%(end_tag)s steps, and after your peers have assessed your response.\n"
+"                    "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_peer.html:29
+#, python-format
+msgid ""
+"\n"
+"                        You'll receive your grade after you complete the %(start_tag)speer assessment%(end_tag)s step.\n"
+"                    "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_self.html:6
+msgid "The Period For Self Evaluation Has Not Started"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_self.html:10
+msgid "Your Response Is Ready For Self Assessment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_self.html:19
+msgid "Self evaluation of this assignment will close soon. "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_self.html:22
+#, python-format
+msgid ""
+"\n"
+"                          You'll receive your grade after the required number of your peers have assessed your response and you complete the %(start_tag)sself assessment%(end_tag)s step.\n"
+"                    "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_self.html:26
+#, python-format
+msgid ""
+"\n"
+"                          You'll receive your grade after you complete the %(start_tag)sself assessment%(end_tag)s step.\n"
+"                    "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_training.html:7
+msgid "Student training for peer assessment will close soon. "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_training.html:9
+msgid "Complete the student training section to move on to peer assessment."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html:4
+msgid "Instructions Unavailable"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html:6
+msgid "The instructions for this step could not be loaded."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:16
+msgid "Assess Peers"
+msgstr ""
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "available August 13th, 2014 (in 5 days and
+#. 45 minutes)"
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:20
+#: openassessment/templates/openassessmentblock/response/oa_response.html:16
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:16
+#, python-format
+msgid "available <span class=\"date\">%(start_date)s (in %(time_until)s)</span>"
+msgstr ""
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
+#. minutes)"
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:25
+#, python-format
+msgid "due <span class=\"date\">%(due_date)s (in %(time_until)s)</span>"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:33
+#: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html:10
+#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:10
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:14
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:10
+#: openassessment/templates/openassessmentblock/peer/oa_peer_unavailable.html:10
+#: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html:10
+#: openassessment/templates/openassessmentblock/response/oa_response.html:29
+#: openassessment/templates/openassessmentblock/response/oa_response_closed.html:9
+#: openassessment/templates/openassessmentblock/response/oa_response_graded.html:10
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:10
+#: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:10
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:29
+#: openassessment/templates/openassessmentblock/self/oa_self_closed.html:10
+#: openassessment/templates/openassessmentblock/self/oa_self_complete.html:10
+#: openassessment/templates/openassessmentblock/self/oa_self_unavailable.html:10
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:30
+#: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:10
+#: openassessment/templates/openassessmentblock/student_training/student_training_complete.html:10
+#: openassessment/templates/openassessmentblock/student_training/student_training_unavailable.html:10
+msgid "This step's status"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:37
+#, python-format
+msgid ""
+"\n"
+"                    In Progress (%(num_graded)s of %(num_must_grade)s)\n"
+"                "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:51
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:38
+msgid "Read and assess the following response from one of your peers."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:62
+#, python-format
+msgid ""
+"\n"
+"                                            Assessment # %(review_number)s of %(num_must_grade)s\n"
+"                                        "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:76
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:60
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:53
+msgid "Associated Image"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:96
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:150
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:70
+msgid "We could not submit your assessment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html:15
+#, python-format
+msgid ""
+"\n"
+"            Incomplete (%(num_graded)s of %(num_must_grade)s)\n"
+"        "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html:28
+#: openassessment/templates/openassessmentblock/response/oa_response_closed.html:22
+#: openassessment/templates/openassessmentblock/self/oa_self_closed.html:23
+#: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:23
+msgid "The Due Date for This Step Has Passed"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html:30
+msgid ""
+"This step is now closed. You can no longer complete peer assessments or "
+"continue with this assignment, and you'll receive a grade of Incomplete."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:14
+msgid "Completed"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:25
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:33
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:29
+msgid "Peer Assessments Complete"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:26
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:34
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:31
+msgid ""
+"You have successfully completed all of the required peer assessments for "
+"this assignment. You may assess additional peer responses if you want to. "
+"Completing additional assessments will not affect your final grade."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:31
+msgid "We could not retrieve additional submissions for assessment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:37
+msgid "Continue Assessing Peers"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:19
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:15
+#, python-format
+msgid ""
+"\n"
+"        Complete (%(num_graded)s)\n"
+"      "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:47
+msgid "Assessment #"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:33
+msgid ""
+"All submitted peer responses have been assessed. Check back later to see if "
+"more students have submitted responses."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_unavailable.html:12
+#: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:12
+#: openassessment/templates/openassessmentblock/self/oa_self_unavailable.html:12
+#: openassessment/templates/openassessmentblock/student_training/student_training_unavailable.html:12
+msgid "Not Available"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html:14
+#, python-format
+msgid ""
+"\n"
+"          In Progress (%(num_graded)s of %(num_must_grade)s)\n"
+"        "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html:28
+msgid "Waiting for Peer Responses"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html:31
+msgid ""
+"All submitted peer responses have been assessed. Check back later to see if "
+"more students have submitted responses. You'll receive your grade after "
+"you've completed all the steps for this problem and your peers have assessed"
+" your response."
+msgstr ""
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
+#. minutes)"
+#: openassessment/templates/openassessmentblock/response/oa_response.html:21
+#, python-format
+msgid "due <span class=\"date\"> %(due_date)s (in %(time_until)s)</span>"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:31
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:31
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:32
+msgid "In Progress"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:42
+#: openassessment/templates/openassessmentblock/response/oa_response.html:56
+msgid "Enter your response to the question."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:44
+msgid ""
+"You can save your progress and return to complete your response at any time "
+"before the due date"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:46
+msgid ""
+"You can save your progress and return to complete your response at any time."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:48
+msgid "After you submit your response, you cannot edit it"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:62
+msgid "You may continue to work on your response until you submit it."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:68
+msgid "We could not upload this image"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:72
+msgid "Select an image to upload for this submission."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:74
+msgid "Upload your image"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:91
+msgid "We could not save your progress"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:97
+msgid "Save Your Progress"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:101
+msgid "Your Submission Status"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:108
+msgid "Preview in Latex"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:111
+msgid "Click to preview your submission in Latex"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:131
+msgid "We could not submit your response"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:139
+msgid "Submit your response and move to the next step"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response_closed.html:25
+msgid ""
+"This step is now closed. You can no longer submit a response or continue "
+"with this problem, and you'll receive a grade of Incomplete. If you saved "
+"but did not submit a response, the response appears in the course records."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response_graded.html:13
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:13
+#: openassessment/templates/openassessmentblock/self/oa_self_complete.html:13
+#: openassessment/templates/openassessmentblock/student_training/student_training_complete.html:13
+msgid "Complete"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:23
+msgid "Your Response Has Been Submitted"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:26
+#, python-format
+msgid ""
+"\n"
+"                        You'll receive your grade after some of your peers have assessed your response and you complete the %(peer_start_tag)speer assessment%(end_tag)s and %(self_start_tag)sself assessment%(end_tag)s steps.\n"
+"                    "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:30
+#, python-format
+msgid ""
+"\n"
+"                        You'll receive your grade after some of your peers have assessed your response and you complete the %(start_tag)speer assessment%(end_tag)s step.\n"
+"                    "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:34
+#, python-format
+msgid ""
+"\n"
+"                        You'll receive your grade after you complete the %(start_tag)sself assessment%(end_tag)s step.\n"
+"                    "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:12
+msgid "Assess Your Response"
+msgstr ""
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
+#. minutes)"
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:21
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:21
+#, python-format
+msgid "due <span class=\"date\">%(due_date)s</span> (in %(time_until)s)"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:77
+msgid "Submit Your Assessment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/self/oa_self_closed.html:25
+msgid ""
+"This step is now closed. You can no longer complete a self assessment or "
+"continue with this assignment, and you'll receive a grade of Incomplete."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:7
+msgid "Course Staff Information"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:14
+msgid "Response total"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:20
+msgid "Location"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:24
+msgid "Where are your students currently in this problem"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:26
+msgid "Student Progress"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:30
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:53
+msgid "Problem Step"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:31
+msgid "Active Students in Step"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:47
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:49
+msgid "Dates"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:54
+msgid "Release Date"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:67
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:73
+msgid "N/A"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:84
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:85
+msgid "Classifier set"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:87
+msgid "Field"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:88
+msgid "Value"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:92
+msgid "Created at"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:96
+msgid "Algorithm ID"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:100
+msgid "Course ID"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:104
+msgid "Item ID"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:110
+msgid "No classifiers are available for this problem"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:115
+msgid "Schedule Example-Based Assessment Training"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:122
+msgid "Reschedule All Unfinished Example-Based Assessment Grading Tasks"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:132
+msgid "Get Student Info"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/staff_debug.html:140
+msgid "Submit"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:6
+msgid "Student Information"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:12
+msgid "Student Response"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:20
+msgid "The image associated with this response"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:29
+msgid "Peer Assessments for This Student"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:33
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:74
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:75
+msgid "Assessment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:37
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:79
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:118
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:149
+msgid "Selected Option"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:38
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:80
+msgid "Feedback"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:40
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:82
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:120
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:151
+msgid "Points Possible"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:60
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:102
+msgid "Overall Feedback"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:71
+msgid "Peer Assessments Completed by This Student"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:113
+msgid "Student's Self Assessment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:114
+#: openassessment/xblock/grade_mixin.py:190
+msgid "Self Assessment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:145
+msgid "Example Based Assessment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:174
+msgid "Couldn't find a response for this student."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:12
+msgid "Learn to Assess Responses"
+msgstr ""
+
+#. Translators: This string displays a date to the user, then tells them the
+#. time until that date.  Example: "available August 13th, 2014 (in 5 days and
+#. 45 minutes)"
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:16
+#, python-format
+msgid "available <span class=\"date\"> %(start_date)s (in %(time_until)s) </span>"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:46
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:54
+msgid "Learning to Assess Responses"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:49
+msgid ""
+"Before you begin to assess your peers' responses, you'll learn how to "
+"complete peer assessments by reviewing responses that instructors have "
+"already assessed. If you select the same options for the response that the "
+"instructor selected, you'll move to the next step. If you don't select the "
+"same options, you'll review the response and try again."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:57
+msgid ""
+"Your assessment differs from the instructor's assessment of this response. "
+"Review the response and consider why the instructor may have assessed it "
+"differently. Then, try the assessment again."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:67
+#, python-format
+msgid ""
+"\n"
+"                                Training Assessment # %(current_progress_num)s of %(num_to_complete)s\n"
+"                            "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:96
+msgid "Selected Options Agree"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:99
+msgid "The option you selected is the option that the instructor selected."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:103
+msgid "Selected Options Differ"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:106
+msgid ""
+"The option you selected is not the option that the instructor selected."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:139
+msgid "We could not check your assessment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:146
+msgid "Compare your selections with the instructor's selections"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:25
+msgid ""
+"This step is now closed.You can no longer continue with this assignment, and"
+" you'll receive a grade of Incomplete."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/student_training/student_training_error.html:9
+msgid "Error Loading Student Training Examples"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/student_training/student_training_error.html:12
+msgid "We couldn't load the student training step of this assignment."
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:61
+#: openassessment/xblock/leaderboard_mixin.py:48
+#: openassessment/xblock/self_assessment_mixin.py:38
+#: openassessment/xblock/student_training_mixin.py:54
+#: openassessment/xblock/student_training_mixin.py:201
+msgid "An unexpected error occurred."
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:188
+msgid "Peer Assessment"
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:223
+msgid "Assessment feedback could not be saved."
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:234
+msgid "Feedback saved."
+msgstr ""
+
+#: openassessment/xblock/peer_assessment_mixin.py:53
+msgid "Must provide options selected in the assessment"
+msgstr ""
+
+#: openassessment/xblock/peer_assessment_mixin.py:56
+#: openassessment/xblock/self_assessment_mixin.py:117
+msgid "Must provide overall feedback in the assessment"
+msgstr ""
+
+#: openassessment/xblock/peer_assessment_mixin.py:59
+#: openassessment/xblock/self_assessment_mixin.py:120
+msgid "Must provide feedback for criteria in the assessment"
+msgstr ""
+
+#: openassessment/xblock/peer_assessment_mixin.py:62
+msgid "You must submit a response before you can peer-assess."
+msgstr ""
+
+#: openassessment/xblock/peer_assessment_mixin.py:75
+msgid "This feedback has already been submitted."
+msgstr ""
+
+#: openassessment/xblock/peer_assessment_mixin.py:100
+#: openassessment/xblock/peer_assessment_mixin.py:105
+msgid "Your peer assessment could not be submitted."
+msgstr ""
+
+#: openassessment/xblock/peer_assessment_mixin.py:119
+#: openassessment/xblock/student_training_mixin.py:207
+msgid "Could not update workflow status."
+msgstr ""
+
+#: openassessment/xblock/peer_assessment_mixin.py:128
+msgid "Could not load peer assessment."
+msgstr ""
+
+#: openassessment/xblock/peer_assessment_mixin.py:206
+msgid "Submit your assessment & review another response"
+msgstr ""
+
+#: openassessment/xblock/peer_assessment_mixin.py:210
+msgid "Submit your assessment & move onto next step"
+msgstr ""
+
+#: openassessment/xblock/peer_assessment_mixin.py:214
+msgid "Submit your assessment & move to response #{response_number}"
+msgstr ""
+
+#: openassessment/xblock/resolve_dates.py:49
+msgid ""
+"'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
+"MM-DDTHH:MM:SS."
+msgstr ""
+
+#: openassessment/xblock/resolve_dates.py:52
+msgid "'{date}' must be a date string or datetime"
+msgstr ""
+
+#: openassessment/xblock/resolve_dates.py:197
+msgid ""
+"This step's start date '{start}' cannot be earlier than the previous step's "
+"start date '{prev}'."
+msgstr ""
+
+#: openassessment/xblock/resolve_dates.py:203
+msgid ""
+"This step's due date '{due}' cannot be later than the next step's due date "
+"'{prev}'."
+msgstr ""
+
+#: openassessment/xblock/resolve_dates.py:219
+msgid "The start date '{start}' cannot be later than the due date '{due}'"
+msgstr ""
+
+#: openassessment/xblock/self_assessment_mixin.py:114
+#: openassessment/xblock/student_training_mixin.py:163
+msgid "Missing options_selected key in request"
+msgstr ""
+
+#: openassessment/xblock/self_assessment_mixin.py:123
+msgid "You must submit a response before you can perform a self-assessment."
+msgstr ""
+
+#: openassessment/xblock/self_assessment_mixin.py:144
+#: openassessment/xblock/self_assessment_mixin.py:151
+msgid "Your self assessment could not be submitted."
+msgstr ""
+
+#: openassessment/xblock/staff_info_mixin.py:42
+msgid "You do not have permission to schedule training"
+msgstr ""
+
+#: openassessment/xblock/staff_info_mixin.py:43
+msgid "You do not have permission to reschedule tasks."
+msgstr ""
+
+#: openassessment/xblock/staff_info_mixin.py:70
+msgid "You do not have permission to access staff information"
+msgstr ""
+
+#: openassessment/xblock/staff_info_mixin.py:71
+msgid "You do not have permission to access student information."
+msgstr ""
+
+#: openassessment/xblock/staff_info_mixin.py:181
+msgid "Training scheduled with new Workflow UUID: {uuid}"
+msgstr ""
+
+#: openassessment/xblock/staff_info_mixin.py:186
+msgid "An error occurred scheduling classifier training: {error}"
+msgstr ""
+
+#: openassessment/xblock/staff_info_mixin.py:192
+msgid "Example Based Assessment is not configured for this location."
+msgstr ""
+
+#: openassessment/xblock/staff_info_mixin.py:313
+msgid ""
+"All AI tasks associated with this item have been rescheduled successfully."
+msgstr ""
+
+#: openassessment/xblock/staff_info_mixin.py:318
+msgid "An error occurred while rescheduling tasks: {}"
+msgstr ""
+
+#: openassessment/xblock/student_training_mixin.py:165
+msgid "options_selected must be a dictionary"
+msgstr ""
+
+#: openassessment/xblock/student_training_mixin.py:191
+#: openassessment/xblock/student_training_mixin.py:196
+msgid "Your scores could not be checked."
+msgstr ""
+
+#: openassessment/xblock/studio_mixin.py:155
+#: openassessment/xblock/studio_mixin.py:160
+msgid "Error updating XBlock configuration"
+msgstr ""
+
+#: openassessment/xblock/studio_mixin.py:183
+msgid ""
+"Validation error: There was an error in the XML definition of the examples "
+"provided by the user. Please correct the XML definition before saving."
+msgstr ""
+
+#: openassessment/xblock/studio_mixin.py:188
+msgid ""
+"Validation error: No examples were provided for example based assessment."
+msgstr ""
+
+#: openassessment/xblock/studio_mixin.py:202
+msgid "Validation error: {error}"
+msgstr ""
+
+#: openassessment/xblock/studio_mixin.py:220
+msgid "Successfully updated OpenAssessment XBlock"
+msgstr ""
+
+#: openassessment/xblock/submission_mixin.py:52
+msgid "\"submission\" required to submit answer."
+msgstr ""
+
+#: openassessment/xblock/submission_mixin.py:65
+msgid "To submit a response, view this component in Preview or Live mode."
+msgstr ""
+
+#: openassessment/xblock/submission_mixin.py:71
+msgid "Multiple submissions are not allowed."
+msgstr ""
+
+#: openassessment/xblock/submission_mixin.py:109
+msgid "API returned unclassified exception."
+msgstr ""
+
+#: openassessment/xblock/submission_mixin.py:145
+msgid "This response could not be saved."
+msgstr ""
+
+#: openassessment/xblock/submission_mixin.py:149
+msgid "This response was not submitted."
+msgstr ""
+
+#: openassessment/xblock/submission_mixin.py:189
+msgid "Must specify contentType."
+msgstr ""
+
+#: openassessment/xblock/submission_mixin.py:193
+msgid "contentType must be an image."
+msgstr ""
+
+#: openassessment/xblock/submission_mixin.py:201
+msgid "Error retrieving upload URL."
+msgstr ""
+
+#: openassessment/xblock/submission_mixin.py:293
+msgid "This response has been saved but not submitted."
+msgstr ""
+
+#: openassessment/xblock/submission_mixin.py:293
+msgid "This response has not been saved."
+msgstr ""
+
+#: openassessment/xblock/validation.py:108
+msgid "This problem must include at least one assessment."
+msgstr ""
+
+#: openassessment/xblock/validation.py:112
+msgid "The assessment order you selected is invalid."
+msgstr ""
+
+#: openassessment/xblock/validation.py:122
+msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
+msgstr ""
+
+#: openassessment/xblock/validation.py:125
+msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
+msgstr ""
+
+#: openassessment/xblock/validation.py:128
+msgid ""
+"In peer assessment, the \"Must Grade\" value must be greater than or equal "
+"to the \"Graded By\" value."
+msgstr ""
+
+#: openassessment/xblock/validation.py:136
+msgid "You must provide at least one example response for student training."
+msgstr ""
+
+#: openassessment/xblock/validation.py:139
+msgid "Each example response for student training must be unique."
+msgstr ""
+
+#: openassessment/xblock/validation.py:146
+msgid "The \"algorithm_id\" value must be set to \"ease\" or \"fake\""
+msgstr ""
+
+#: openassessment/xblock/validation.py:150
+msgid ""
+"The number of assessments cannot be changed after the problem has been "
+"released."
+msgstr ""
+
+#: openassessment/xblock/validation.py:155
+msgid ""
+"The assessment type cannot be changed after the problem has been released."
+msgstr ""
+
+#: openassessment/xblock/validation.py:179
+msgid "This rubric definition is not valid."
+msgstr ""
+
+#: openassessment/xblock/validation.py:184
+msgid "Criteria duplicate name(s): {duplicates}"
+msgstr ""
+
+#: openassessment/xblock/validation.py:193
+msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
+msgstr ""
+
+#: openassessment/xblock/validation.py:201
+msgid "Criteria with no options must require written feedback."
+msgstr ""
+
+#: openassessment/xblock/validation.py:210
+msgid "Example-based assessments cannot have duplicate point values."
+msgstr ""
+
+#: openassessment/xblock/validation.py:219
+msgid "The number of criteria cannot be changed after a problem is released."
+msgstr ""
+
+#: openassessment/xblock/validation.py:232
+msgid "Criteria names cannot be changed after a problem is released"
+msgstr ""
+
+#: openassessment/xblock/validation.py:237
+msgid "The number of options cannot be changed after a problem is released."
+msgstr ""
+
+#: openassessment/xblock/validation.py:242
+msgid "Point values cannot be changed after a problem is released."
+msgstr ""
+
+#: openassessment/xblock/validation.py:292
+msgid ""
+"Student training and example-based assessments must have at least one "
+"training example"
+msgstr ""
+
+#: openassessment/xblock/validation.py:354
+msgid "Leaderboard number is invalid."
+msgstr ""
