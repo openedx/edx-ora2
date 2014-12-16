@@ -185,7 +185,7 @@ describe("OpenAssessment.StaffInfoView", function() {
         expect(view.cancelSubmissionEnabled()).toBe(false);
 
         // Response is not blank --> cancel submission button enabled
-        view.comment('Test comments');
+        view.comment('Cancellation reason.');
         view.handleCommentChanged();
         expect(view.cancelSubmissionEnabled()).toBe(true);
     });
@@ -199,10 +199,10 @@ describe("OpenAssessment.StaffInfoView", function() {
         var el = $("#openassessment-base").get(0);
         var view = new OpenAssessment.StaffInfoView(el, server, baseView);
 
-        view.comment('Test comments');
+        view.comment('Cancellation reason.');
         view.cancelSubmission('Bob');
 
-        expect(server.cancelSubmission).toHaveBeenCalledWith('Bob', 'Test comments');
+        expect(server.cancelSubmission).toHaveBeenCalledWith('Bob', 'Cancellation reason.');
     });
 
 

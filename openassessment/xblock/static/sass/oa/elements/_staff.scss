@@ -133,19 +133,26 @@
     }
   }
 
-  // UI cancel submission.
+}
+
+// UI cancel submission.
+.openassessment__staff-info__cancel__submission {
+  margin-bottom: ($baseline-v) !important;
+
   .staff-info__cancel-submission__content {
+
     textarea {
       width: 100%;
-      height: 100px;
+      height: ($baseline-v*5);
       text-align: left;
     }
 
     ul.list--actions {
       .action--submit {
-        margin: 10px 0px;
+        margin: ($baseline-v/2) 0px;
       }
     }
+
   }
 
 }

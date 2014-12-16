@@ -5,8 +5,8 @@ from rest_framework import serializers
 from .base import AssessmentSerializer
 from openassessment.assessment.models import (
     AssessmentFeedback, AssessmentFeedbackOption,
-    PeerWorkflow, PeerWorkflowItem,
-    PeerWorkflowCancellation)
+    PeerWorkflow, PeerWorkflowCancellation, PeerWorkflowItem
+)
 
 
 class AssessmentFeedbackOptionSerializer(serializers.ModelSerializer):

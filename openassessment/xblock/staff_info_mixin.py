@@ -339,7 +339,7 @@ class StaffInfoMixin(object):
             Args:
                 data (dict): Data contain two attributes: submission_uuid and
                     comments. submission_uuid is id of submission which is to be
-                    removed from the grading pool.comments is the reason given
+                    removed from the grading pool. Comments is the reason given
                     by the user.
 
                 suffix (not used)

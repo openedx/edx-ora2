@@ -884,7 +884,9 @@ class TestPeerApi(CacheResetTest):
 
         # Cancel the Xander's submission.
         xander_workflow = PeerWorkflow.get_by_submission_uuid(xander_answer['uuid'])
-        PeerWorkflowCancellation.create(workflow=xander_workflow, comments='test comments', cancelled_by_id=_['student_id'])
+        PeerWorkflowCancellation.create(
+            workflow=xander_workflow, comments='Cancellation reason', cancelled_by_id=_['student_id']
+        )
 
         # Check to see if Buffy is actively reviewing Xander's submission.
         # She isn't able to get the submission to assess.
@@ -914,8 +916,9 @@ class TestPeerApi(CacheResetTest):
 
         # Cancel the Xander's submission.
         xander_workflow = PeerWorkflow.get_by_submission_uuid(xander_answer['uuid'])
-        PeerWorkflowCancellation.create(workflow=xander_workflow, comments='test comments',
-                                        cancelled_by_id=_['student_id'])
+        PeerWorkflowCancellation.create(
+            workflow=xander_workflow, comments='Cancellation reason', cancelled_by_id=_['student_id']
+        )
 
         # Check to see if Buffy is actively reviewing Xander's submission.
         # She isn't able to get the submission uuid to assess.

@@ -11,13 +11,13 @@ from dogapi import dog_stats_api
 
 from openassessment.assessment.models import (
     Assessment, AssessmentFeedback, AssessmentPart,
-    InvalidRubricSelection, PeerWorkflow, PeerWorkflowItem,
-    PeerWorkflowCancellation)
+    InvalidRubricSelection, PeerWorkflow, PeerWorkflowItem, PeerWorkflowCancellation
+)
 from openassessment.assessment.serializers import (
     AssessmentFeedbackSerializer, RubricSerializer,
     full_assessment_dict, rubric_from_dict, serialize_assessments,
-    InvalidRubric,
-    PeerWorkflowCancellationSerializer)
+    InvalidRubric, PeerWorkflowCancellationSerializer
+)
 from openassessment.assessment.errors import (
     PeerAssessmentRequestError, PeerAssessmentWorkflowError, PeerAssessmentInternalError
 )
@@ -951,11 +951,11 @@ def cancel_submission_peer_workflow(submission_uuid, comments, cancelled_by_id):
     """
     Add an entry in PeerWorkflowCancellation table for a PeerWorkflow.
 
-    PeerWorkflow which has been cancelled are no longer included in the
+    PeerWorkflow which has been cancelled is no longer included in the
     peer grading pool.
 
     Args:
-        submission_uuid (str): The UUID of the peer workflow.
+        submission_uuid (str): The UUID of the peer workflow's submission.
         comments: The reason for cancellation.
         cancelled_by_id: The ID of the user who cancelled the peer workflow.
     """
@@ -980,16 +980,15 @@ def get_submission_cancellation(submission_uuid):
     Get cancellation information for a submission's peer workflow.
 
     Args:
-        submission_uuid (str): The UUID of the peer workflow.
+        submission_uuid (str): The UUID of the peer workflow's submission.
     """
     try:
         workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
-        workflow_cancellation = workflow.cancellation.get()
+        workflow_cancellation = workflow.cancellations.latest('created_at')
         return PeerWorkflowCancellationSerializer(workflow_cancellation).data
     except (
         PeerWorkflow.DoesNotExist,
         PeerWorkflowCancellation.DoesNotExist,
-        PeerWorkflowCancellation.MultipleObjectsReturned
     ):
         return None
     except DatabaseError:

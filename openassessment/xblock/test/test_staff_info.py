@@ -198,7 +198,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
     @scenario('data/self_only_scenario.xml', user_id='Bob')
     def test_staff_debug_student_info_self_only(self, xblock):
         # Simulate that we are course staff
-        xblock.xmodule_runtime =  self._create_mock_runtime(
+        xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
 
@@ -240,7 +240,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         peer_api.cancel_submission_peer_workflow(
             submission_uuid=submission["uuid"],
-            comments="vulgar language",
+            comments="Inappropriate language",
             cancelled_by_id=bob_item['student_id']
         )
 
@@ -252,7 +252,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
     @scenario('data/self_only_scenario.xml', user_id='Bob')
     def test_staff_debug_student_info_image_submission(self, xblock):
         # Simulate that we are course staff
-        xblock.xmodule_runtime =  self._create_mock_runtime(
+        xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
 
@@ -548,14 +548,14 @@ class TestCourseStaff(XBlockHandlerTestCase):
         workflow_api.create_workflow(submission["uuid"], ['peer'])
 
         incorrect_submission_uuid = 'abc'
-        params = {"submission_uuid": incorrect_submission_uuid, "comments": "vulgar language."}
+        params = {"submission_uuid": incorrect_submission_uuid, "comments": "Inappropriate language."}
         # Raise flow not found exception.
         resp = self.request(xblock, 'cancel_submission', json.dumps(params), response_format='json')
         self.assertIn("Error finding workflow", resp['msg'])
         self.assertEqual(False, resp['success'])
 
         # Verify that we can render without error
-        params = {"submission_uuid": submission["uuid"], "comments": "vulgar language."}
+        params = {"submission_uuid": submission["uuid"], "comments": "Inappropriate language."}
         resp = self.request(xblock, 'cancel_submission', json.dumps(params), response_format='json')
         self.assertIn("Student submission was removed from the ", resp['msg'])
         self.assertEqual(True, resp['success'])

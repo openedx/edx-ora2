@@ -134,7 +134,7 @@ describe("OpenAssessment.Server", function() {
         stubAjax(true, {success:true, msg:'test message'});
 
         var submissionUUID = 'Bob';
-        var comments = 'Test comments';
+        var comments = 'Cancellation reason.';
         var success = false;
         server.cancelSubmission(submissionUUID, comments).done(
             function() {

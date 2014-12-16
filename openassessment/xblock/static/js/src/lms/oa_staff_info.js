@@ -126,6 +126,7 @@ OpenAssessment.StaffInfoView.prototype = {
 
      **/
     scheduleTraining: function() {
+        var view = this;
         this.server.scheduleTraining().done(
                 function(msg) {
                     $('#schedule_training_message', this.element).text(msg)
@@ -156,7 +157,7 @@ OpenAssessment.StaffInfoView.prototype = {
      Upon request, cancel the submission from grading pool.
      **/
     cancelSubmission: function(submissionUUID) {
-        // Immediately disable the submit button to prevent multiple submission
+        // Immediately disable the button to prevent multiple requests.
         this.cancelSubmissionEnabled(false);
         var view = this;
         var sel = $('#openassessment__student-info', this.element);

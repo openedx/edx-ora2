@@ -574,7 +574,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
                         }
                     }
                 ).fail(function(data) {
-                    defer.rejectWith(this, [gettext('The submission could not be removed from grading pool.')]);
+                    defer.rejectWith(this, [gettext('The submission could not be removed from the grading pool.')]);
                 });
             }).promise();
         }

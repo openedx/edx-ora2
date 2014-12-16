@@ -16,6 +16,7 @@
                             Student submission removed by {{ removed_by_username }} on {{ removed_datetime }}
                         {% endblocktrans %}
                         <br>
+                        <!-- Comments: Reason for Cancellation-->
                         {% blocktrans with comments=submission_cancellation.comments %}
                             Comments: {{ comments }}
                         {% endblocktrans %}
@@ -36,7 +37,7 @@
 
         {% if not submission_cancellation %}
         <div id="openassessment__staff-info__cancel__submission"
-             class="openassessment__staff-info__cancel__submission wrapper--staff-info wrapper--ui-staff wrapper--ui--collapse">
+             class="openassessment__staff-info__cancel__submission wrapper--ui-staff wrapper--ui--collapse">
             <div class="ui-staff ui-toggle-visibility is--collapsed">
                 <h2 class="staff-info__title ui-staff__title ui-toggle-visibility__control">
                     <i class="ico icon-caret-right"></i>

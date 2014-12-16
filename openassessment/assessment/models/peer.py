@@ -227,7 +227,7 @@ class PeerWorkflow(models.Model):
         completed_sub_uuids = []
         # First, remove all completed items.
         for item in items:
-            if item.assessment is not None or item.author.cancellation.exists():
+            if item.assessment is not None or item.author.cancellations.exists():
                 completed_sub_uuids.append(item.submission_uuid)
             else:
                 valid_open_items.append(item)
@@ -481,7 +481,7 @@ class PeerWorkflowCancellation(models.Model):
     It is created when a staff member requests removal of a submission
     from the peer grading pool.
     """
-    workflow = models.ForeignKey(PeerWorkflow, related_name='cancellation')
+    workflow = models.ForeignKey(PeerWorkflow, related_name='cancellations')
     comments = models.TextField(max_length=10000)
     cancelled_by_id = models.CharField(max_length=40, db_index=True)
 
@@ -515,9 +515,9 @@ class PeerWorkflowCancellation(models.Model):
             PeerWorkflowCancellation
 
         """
-        workflow_params = {
+        cancellation_params = {
             'workflow': workflow,
             'comments': comments,
             'cancelled_by_id': cancelled_by_id,
         }
-        return cls.objects.create(**workflow_params)
+        return cls.objects.create(**cancellation_params)
