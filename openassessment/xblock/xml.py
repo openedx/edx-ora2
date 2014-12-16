@@ -168,7 +168,7 @@ def _serialize_criteria(criteria_root, criteria_list):
             _serialize_options(criterion_el, options_list)
 
 
-def serialize_rubric(rubric_root, oa_block, include_prompt=False):
+def serialize_rubric(rubric_root, oa_block):
     """
     Serialize a rubric dictionary as XML, adding children to the XML
     with root node `rubric_root`.
@@ -182,17 +182,9 @@ def serialize_rubric(rubric_root, oa_block, include_prompt=False):
         rubric_dict (dict): A dictionary representation of the rubric, of the form
             described in the serialized Rubric model (peer grading serializers).
 
-    Kwargs:
-        include_prompt (bool): Whether or not to include the prompt in the
-            serialized format for a rubric. Defaults to True.
     Returns:
         None
     """
-    # Rubric prompt (default to empty text); None indicates no input element
-    if include_prompt and oa_block.prompt is not None:
-        prompt = etree.SubElement(rubric_root, 'prompt')
-        prompt.text = unicode(oa_block.prompt)
-
     # Criteria
     criteria_list = oa_block.rubric_criteria
 
@@ -702,6 +694,10 @@ def serialize_content_to_xml(oa_block, root):
     assessments_root = etree.SubElement(root, 'assessments')
     serialize_assessments(assessments_root, oa_block)
 
+    # Prompts
+    prompts_root = etree.SubElement(root, 'prompts')
+    _serialize_prompts(prompts_root, oa_block)
+
     # Rubric
     rubric_root = etree.SubElement(root, 'rubric')
     serialize_rubric(rubric_root, oa_block)
@@ -740,7 +736,7 @@ def serialize_rubric_to_xml_str(oa_block):
 
     """
     rubric_root = etree.Element('rubric')
-    serialize_rubric(rubric_root, oa_block, include_prompt=False)
+    serialize_rubric(rubric_root, oa_block)
     return etree.tostring(rubric_root, pretty_print=True, encoding='unicode')
 
 
