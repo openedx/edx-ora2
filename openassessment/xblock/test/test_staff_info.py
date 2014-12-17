@@ -521,8 +521,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # If we're not course staff, we shouldn't be able to see the
         # cancel submission option
         xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, False, False, "Bob"
+            xblock.scope_ids.usage_id, True, False, "Bob"
         )
+
         resp = self.request(xblock, 'cancel_submission', json.dumps({}))
         self.assertIn("you do not have permission", resp.decode('utf-8').lower())
 
@@ -537,15 +538,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
     def test_cancel_submission_full_flow(self, xblock):
         # Simulate that we are course staff
         xblock.xmodule_runtime = self._create_mock_runtime(
-            xblock.scope_ids.usage_id, False, False, "Bob"
+            xblock.scope_ids.usage_id, True, False, "Bob"
         )
-
-        resp = self.request(xblock, 'cancel_submission', json.dumps({}))
-        self.assertIn("you do not have permission", resp.decode('utf-8').lower())
-
-        # If we ARE course staff, then we should see the cancel submission option
-        # with valid error message.
-        xblock.xmodule_runtime.user_is_staff = True
 
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
