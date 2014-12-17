@@ -520,6 +520,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
     def test_cancel_submission_without_reason(self, xblock):
         # If we're not course staff, we shouldn't be able to see the
         # cancel submission option
+        xblock.xmodule_runtime = Mock(user_is_staff=False)
+
 
         resp = self.request(xblock, 'cancel_submission', json.dumps({}))
         self.assertIn("you do not have permission", resp.decode('utf-8').lower())
