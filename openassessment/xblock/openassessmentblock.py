@@ -91,7 +91,6 @@ def load(path):
 
 @XBlock.needs("i18n")
 class OpenAssessmentBlock(
-    XBlock,
     MessageMixin,
     SubmissionMixin,
     PeerAssessmentMixin,
@@ -102,7 +101,8 @@ class OpenAssessmentBlock(
     StaffInfoMixin,
     WorkflowMixin,
     StudentTrainingMixin,
-    LmsCompatibilityMixin
+    LmsCompatibilityMixin,
+    XBlock,
 ):
     """Displays a prompt and provides an area where students can compose a response."""
 
