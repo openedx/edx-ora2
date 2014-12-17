@@ -523,13 +523,13 @@ class TestCourseStaff(XBlockHandlerTestCase):
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, False, False, "Bob"
         )
-        resp = self.request(xblock, 'cancel_submission', json.dumps({'submission_uuid': "Bob"}))
+        resp = self.request(xblock, 'cancel_submission', json.dumps({}), response_format='json')
         self.assertIn("you do not have permission", resp.decode('utf-8').lower())
 
         # If we ARE course staff, then we should see the cancel submission option
         # with valid error message.
         xblock.xmodule_runtime.user_is_staff = True
-        resp = self.request(xblock, 'cancel_submission', json.dumps({'submission_uuid': "Bob"}), response_format='json')
+        resp = self.request(xblock, 'cancel_submission', json.dumps({}), response_format='json')
         self.assertIn("Please enter valid reason", resp['msg'])
         self.assertEqual(False, resp['success'])
 
