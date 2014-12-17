@@ -529,7 +529,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # If we ARE course staff, then we should see the cancel submission option
         # with valid error message.
         xblock.xmodule_runtime.user_is_staff = True
-        resp = self.request(xblock, 'cancel_submission', json.dumps({}), response_format='json')
+        resp = self.request(xblock, 'cancel_submission', json.dumps({'submission_uuid': "Bob"}), response_format='json')
         self.assertIn("Please enter valid reason", resp['msg'])
         self.assertEqual(False, resp['success'])
 
