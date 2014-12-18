@@ -521,3 +521,17 @@ class PeerWorkflowCancellation(models.Model):
             'cancelled_by_id': cancelled_by_id,
         }
         return cls.objects.create(**cancellation_params)
+
+    @classmethod
+    def get_latest_workflow_cancellation(cls, submission_uuid):
+        """
+        Get the latest PeerWorkflowCancellation for a submission's workflow.
+
+        Args:
+            submission_uuid (str): The UUID of the peer workflow's submission.
+
+        Returns:
+            PeerWorkflowCancellation or None
+        """
+        workflow_cancellations = cls.objects.filter(workflow__submission_uuid=submission_uuid).order_by("-created_at")
+        return workflow_cancellations[0] if workflow_cancellations.exists() else None

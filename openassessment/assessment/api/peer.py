@@ -956,8 +956,8 @@ def cancel_submission_peer_workflow(submission_uuid, comments, cancelled_by_id):
 
     Args:
         submission_uuid (str): The UUID of the peer workflow's submission.
-        comments: The reason for cancellation.
-        cancelled_by_id: The ID of the user who cancelled the peer workflow.
+        comments (str): The reason for cancellation.
+        cancelled_by_id (str): The ID of the user who cancelled the peer workflow.
     """
     try:
         workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
@@ -983,14 +983,8 @@ def get_submission_cancellation(submission_uuid):
         submission_uuid (str): The UUID of the peer workflow's submission.
     """
     try:
-        workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
-        workflow_cancellation = workflow.cancellations.latest('created_at')
-        return PeerWorkflowCancellationSerializer(workflow_cancellation).data
-    except (
-        PeerWorkflow.DoesNotExist,
-        PeerWorkflowCancellation.DoesNotExist,
-    ):
-        return None
+        workflow_cancellation = PeerWorkflowCancellation.get_latest_workflow_cancellation(submission_uuid=submission_uuid)
+        return PeerWorkflowCancellationSerializer(workflow_cancellation).data if workflow_cancellation else None
     except DatabaseError:
         error_message = u"Error finding peer workflow cancellation for submission UUID {}.".format(submission_uuid)
         logger.exception(error_message)

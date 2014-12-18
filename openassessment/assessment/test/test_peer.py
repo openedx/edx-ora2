@@ -893,6 +893,47 @@ class TestPeerApi(CacheResetTest):
         item = buffy_workflow.find_active_assessments()
         self.assertIsNone(item)
 
+    @raises(peer_api.PeerAssessmentWorkflowError)
+    def test_assess_the_cancelled_submission(self):
+        # This will assess the pulled out submission to assess.
+        buffy_sub, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
+        xander_sub, xander = self._create_student_and_submission("Xander", "Xander's answer")
+
+        # Check for a workflow for Buffy.
+        buffy_workflow = PeerWorkflow.get_by_submission_uuid(buffy_sub['uuid'])
+        self.assertIsNotNone(buffy_workflow)
+
+        # Buffy is going to review Xander's submission, so create a workflow
+        # item for Buffy.
+        PeerWorkflow.create_item(buffy_workflow, xander_sub["uuid"])
+
+        # Check to see if Buffy is actively reviewing Xander's submission.
+        item = buffy_workflow.find_active_assessments()
+        self.assertEqual(xander_sub["uuid"], item.submission_uuid)
+
+        # Cancel the Xander's submission.
+        xander_workflow = PeerWorkflow.get_by_submission_uuid(xander_sub['uuid'])
+        PeerWorkflowCancellation.create(
+            workflow=xander_workflow, comments='Cancellation reason', cancelled_by_id=buffy['student_id']
+        )
+
+        # Check to see if Buffy is actively reviewing Xander's submission.
+        # She isn't able to get the submission to assess.
+        item = buffy_workflow.find_active_assessments()
+        self.assertIsNone(item)
+
+        # Try to assess the cancelled submission
+        # This will raise PeerAssessmentWorkflowError
+        peer_api.create_assessment(
+            buffy_sub['uuid'],
+            buffy["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
+            REQUIRED_GRADED_BY,
+        )
+
     def test_get_workflow_by_uuid(self):
         buffy_answer, _ = self._create_student_and_submission("Buffy", "Buffy's answer")
         self._create_student_and_submission("Xander", "Xander's answer")
