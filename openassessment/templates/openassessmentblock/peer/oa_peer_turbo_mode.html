@@ -50,9 +50,7 @@
                                 </h3>
                             </header>
 
-                            <div class="peer-assessment__display__response">
-                                {{ peer_submission.answer.text|linebreaks }}
-                            </div>
+                            {% include "openassessmentblock/oa_submission_answer.html" with answer=peer_submission.answer %}
 
                             {% if allow_file_upload and peer_file_url %}
                                 <header class="peer-assessment__display__header">
