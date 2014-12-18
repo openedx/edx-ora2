@@ -8,7 +8,7 @@ from openassessment.workflow import api as workflow_api
 from submissions import api as submission_api
 from .data_conversion import create_rubric_dict
 from .resolve_dates import DISTANT_FUTURE
-from .data_conversion import clean_criterion_feedback
+from .data_conversion import clean_criterion_feedback, create_submission_dict
 
 logger = logging.getLogger(__name__)
 
@@ -84,7 +84,7 @@ class SelfAssessmentMixin(object):
                 submission = submission_api.get_submission(self.submission_uuid)
                 context["rubric_criteria"] = self.rubric_criteria_with_labels
                 context["estimated_time"] = "20 minutes"  # TODO: Need to configure this.
-                context["self_submission"] = submission
+                context["self_submission"] = create_submission_dict(submission, self.prompts)
 
                 # Determine if file upload is supported for this XBlock.
                 context["allow_file_upload"] = self.allow_file_upload
