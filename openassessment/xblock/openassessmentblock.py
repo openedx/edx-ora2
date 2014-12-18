@@ -1,10 +1,10 @@
 """An XBlock where students can read a question and compose their response"""
 
+import copy
 import datetime as dt
 import json
 import logging
 import pkg_resources
-import copy
 
 import pytz
 
@@ -284,7 +284,7 @@ class OpenAssessmentBlock(
         # All data we intend to pass to the front end.
         context_dict = {
             "title": self.title,
-            "question": self.prompt,
+            "prompts": self.prompts,
             "rubric_assessments": ui_models,
             "show_staff_debug_info": self.is_course_staff and not self.in_studio_preview,
         }
