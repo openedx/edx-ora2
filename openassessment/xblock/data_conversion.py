@@ -126,6 +126,46 @@ def clean_criterion_feedback(rubric_criteria, criterion_feedback):
     }
 
 
+def prepare_submission_for_serialization(submission_data):
+    """
+    Convert a list of answers into the right format dict for serialization.
+
+    Args:
+        submission_data (list of unicode): The answers.
+
+    Returns:
+        dict
+    """
+    return {
+        'parts': [{'text': text} for text in submission_data],
+    }
+
+
+def create_submission_dict(submission, prompts):
+    """
+    1. Convert from legacy format.
+    3. Add prompts to submission['answer']['parts'] to simplify iteration in the template.
+
+    Args:
+        submission (dict): Submission dictionary.
+        prompts (list of dict): The prompts from the problem definition.
+
+    Returns:
+        dict
+    """
+    parts = [{ 'prompt': prompt, 'text': ''} for prompt in prompts]
+
+    if 'text' in submission['answer']:
+        parts[0]['text'] = submission['answer'].pop('text')
+    else:
+        for index, part in enumerate(submission['answer'].pop('parts')):
+            parts[index]['text'] = part['text']
+
+    submission['answer']['parts'] = parts
+
+    return submission
+
+
 def make_django_template_key(key):
     """
     Django templates access dictionary items using dot notation,
