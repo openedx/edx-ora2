@@ -53,7 +53,7 @@ def require_global_admin(error_key):
     return _decorator
 
 
-def require_course_staff(error_key):
+def require_course_staff(error_key, with_json_handler=False):
     """
     Method decorator to restrict access to an XBlock render
     method to only course staff.
@@ -74,7 +74,7 @@ def require_course_staff(error_key):
                 "STUDENT_INFO": xblock._(u"You do not have permission to access student information."),
 
             }
-            if not xblock.is_course_staff or xblock.in_studio_preview:
+            if (not xblock.is_course_staff and with_json_handler) or xblock.in_studio_preview:
                 return xblock.render_error(permission_errors[error_key])
             else:
                 return func(xblock, *args, **kwargs)
@@ -331,7 +331,7 @@ class StaffInfoMixin(object):
             }
 
     @XBlock.json_handler
-    @require_course_staff("STUDENT_INFO")
+    @require_course_staff("STUDENT_INFO", with_json_handler=True)
     def cancel_submission(self, data, suffix=''):
         """
             This will cancel the peer workflow for the particular submission.
