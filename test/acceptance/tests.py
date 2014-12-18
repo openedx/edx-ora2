@@ -103,6 +103,9 @@ class SelfAssessmentTest(OpenAssessmentTest):
         # Verify the grade
         self.assertEqual(self.grade_page.wait_for_page().score, self.EXPECTED_SCORE)
 
+        # Check browser scrolled back to top
+        self.assertTrue(self.self_asmnt_page.is_on_top)
+
 
 class PeerAssessmentTest(OpenAssessmentTest):
     """
@@ -168,6 +171,9 @@ class StudentTrainingTest(OpenAssessmentTest):
                 self.fail(msg)
 
             self.student_training_page.wait_for_page().wait_for_response().assess(options_selected)
+
+            # Check browser scrolled back to top only on first example
+            self.assertEqual(self.self_asmnt_page.is_on_top, example_num == 0)
 
         # Check that we've completed student training
         try:

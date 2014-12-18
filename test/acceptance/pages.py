@@ -116,6 +116,11 @@ class AssessmentPage(OpenAssessmentPage):
         )
         return self.q(css=css_id).is_present()
 
+    @property
+    def is_on_top(self):
+	pos = self.browser.get_window_position()
+	return pos['y'] < 100
+
     def assess(self, options_selected):
         """
         Create an assessment.
