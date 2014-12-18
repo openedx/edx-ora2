@@ -1337,13 +1337,34 @@ class TestPeerApi(CacheResetTest):
         jane_assessments = peer_api.get_assessments(jane_sub['uuid'], scored_only=False)
         self.assertEqual(0, len(jane_assessments))
 
-
-
     def test_get_submission_to_assess_no_workflow(self):
         # Try to retrieve a submission to assess when the student
         # doing the assessment hasn't yet submitted.
         with self.assertRaises(peer_api.PeerAssessmentWorkflowError):
             peer_api.get_submission_to_assess("no_such_submission", "scorer ID")
+
+    def test_get_submission_to_assess_but_cancelled(self):
+        buffy_sub, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
+        xander_sub, xander = self._create_student_and_submission("Xander", "Xander's answer")
+
+        # Check for a workflow for Buffy.
+        buffy_workflow = PeerWorkflow.get_by_submission_uuid(buffy_sub['uuid'])
+        self.assertIsNotNone(buffy_workflow)
+
+        # Buffy is going to review Xander's submission, so create a workflow
+        # item for Buffy.
+        PeerWorkflow.create_item(buffy_workflow, xander_sub["uuid"])
+
+        # Cancel the Xander's submission.
+        xander_workflow = PeerWorkflow.get_by_submission_uuid(xander_sub['uuid'])
+        PeerWorkflowCancellation.create(
+            workflow=xander_workflow, comments='Cancellation reason', cancelled_by_id=buffy['student_id']
+        )
+
+        # Check to see if Buffy is able to review Xander's submission.
+        # She isn't able to get the submission to assess.
+        item = peer_api.get_submission_to_assess(buffy_sub['uuid'], 1)
+        self.assertIsNone(item)
 
     def test_too_many_assessments_counted_in_score_bug(self):
         # This bug allowed a score to be calculated using more
