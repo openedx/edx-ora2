@@ -908,8 +908,8 @@ class TestPeerApi(CacheResetTest):
         PeerWorkflow.create_item(buffy_workflow, xander_sub["uuid"])
 
         # Check to see if Buffy is actively reviewing Xander's submission.
-        item = buffy_workflow.find_active_assessments()
-        self.assertEqual(xander_sub["uuid"], item.submission_uuid)
+        submission = peer_api.get_submission_to_assess(buffy_sub['uuid'], 1)
+        self.assertEqual(xander_sub["uuid"], submission['uuid'])
 
         # Cancel the Xander's submission.
         xander_workflow = PeerWorkflow.get_by_submission_uuid(xander_sub['uuid'])
@@ -919,8 +919,8 @@ class TestPeerApi(CacheResetTest):
 
         # Check to see if Buffy is actively reviewing Xander's submission.
         # She isn't able to get the submission to assess.
-        item = buffy_workflow.find_active_assessments()
-        self.assertIsNone(item)
+        submission = peer_api.get_submission_to_assess(buffy_sub['uuid'], 1)
+        self.assertIsNone(submission)
 
         # Try to assess the cancelled submission
         # This will raise PeerAssessmentWorkflowError
