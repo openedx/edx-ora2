@@ -4,9 +4,11 @@ determine the flow of the problem.
 """
 import copy
 from functools import wraps
+import json
 import logging
 
 from xblock.core import XBlock
+import sys
 from openassessment.assessment.errors import (
     PeerAssessmentInternalError, PeerAssessmentWorkflowError,
 )
@@ -74,7 +76,10 @@ def require_course_staff(error_key, with_json_handler=False):
                 "STUDENT_INFO": xblock._(u"You do not have permission to access student information."),
 
             }
-            if (not xblock.is_course_staff and with_json_handler) or xblock.in_studio_preview:
+
+            if not xblock.is_course_staff and with_json_handler:
+                return {"success": False, "msg": permission_errors[error_key]}
+            elif not xblock.is_course_staff or xblock.in_studio_preview:
                 return xblock.render_error(permission_errors[error_key])
             else:
                 return func(xblock, *args, **kwargs)
