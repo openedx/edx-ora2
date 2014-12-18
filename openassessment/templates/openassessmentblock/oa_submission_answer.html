@@ -1,0 +1,15 @@
+{% spaceless %}
+{% load i18n %}
+<ol class="submission__answer__display__content">
+    {% for part in answer.parts %}
+        <li class="submission__answer__part">
+            <article class="submission__answer__part__prompt">
+                {{ part.prompt.description|linebreaks }}
+            </article>
+            <div class="submission__answer__part__text">
+                {{ part.text|linebreaks }}
+            </div>
+        </li>
+    {% endfor %}
+</ol>
+{% endspaceless %}
