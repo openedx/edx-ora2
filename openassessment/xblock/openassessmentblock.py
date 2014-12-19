@@ -31,7 +31,7 @@ from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.student_training_mixin import StudentTrainingMixin
 from openassessment.xblock.validation import validator
 from openassessment.xblock.resolve_dates import resolve_dates, DISTANT_PAST, DISTANT_FUTURE
-from openassessment.xblock.data_conversion import create_rubric_dict
+from openassessment.xblock.data_conversion import create_prompts_list, create_rubric_dict
 
 
 logger = logging.getLogger(__name__)
@@ -144,7 +144,7 @@ class OpenAssessmentBlock(
     prompt = String(
         default=DEFAULT_PROMPT,
         scope=Scope.content,
-        help="A prompt to display to a student (plain text)."
+        help="The prompts to display to a student."
     )
 
     rubric_criteria = List(
@@ -443,6 +443,40 @@ class OpenAssessmentBlock(
     def _(self):
         i18nService = self.runtime.service(self, 'i18n')
         return i18nService.ugettext
+
+    @property
+    def prompts(self):
+        """
+        Return the prompts.
+
+        Initially a block had a single prompt which was saved as a simple
+        string in the prompt field. Now prompts are saved as a serialized
+        list of dicts in the same field. If prompt field contains valid json,
+        parse and return it. Otherwise, assume it is a simple string prompt
+        and return it in a list of dict.
+
+        Returns:
+            list of dict
+        """
+        return create_prompts_list(self.prompt)
+
+    @prompts.setter
+    def prompts(self, value):
+        """
+        Serialize the prompts and save to prompt field.
+
+        Args:
+            value (list of dict): The prompts to set.
+        """
+
+        if value is None:
+            self.prompt = ''
+        elif len(value) == 1:
+            # For backwards compatibility. To be removed after all code
+            # is migrated to use prompts property instead of prompt field.
+            self.prompt = value[0]['description']
+        else:
+            self.prompt = json.dumps(value)
 
     @property
     def valid_assessments(self):

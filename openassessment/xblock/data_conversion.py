@@ -2,6 +2,7 @@
 Data Conversion utility methods for handling ORA2 XBlock data transformations.
 
 """
+import json
 
 
 def convert_training_examples_list_to_dict(examples_list):
@@ -56,13 +57,42 @@ def convert_training_examples_list_to_dict(examples_list):
     ]
 
 
-def create_rubric_dict(prompt, criteria):
+def create_prompts_list(prompt_or_serialized_prompts):
+    """
+    Construct a list of prompts.
+
+    Initially a block had a single prompt which was saved as a simple string.
+    In that case a new prompt dict is constructed from it.
+
+    Args:
+        prompt_or_serialized_prompts (unicode): A string which can either
+        be a single prompt text or json for a list of prompts.
+
+    Returns:
+        list of dict
+    """
+
+    if prompt_or_serialized_prompts is None:
+        prompt_or_serialized_prompts = ''
+
+    try:
+        prompts = json.loads(prompt_or_serialized_prompts)
+    except ValueError:
+        prompts = [
+            {
+                'description': prompt_or_serialized_prompts,
+            }
+        ]
+    return prompts
+
+
+def create_rubric_dict(prompts, criteria):
     """
     Construct a serialized rubric model in the format expected
     by the assessments app.
 
     Args:
-        prompt (unicode): The rubric prompt.
+        prompts (list of dict): The rubric prompts.
         criteria (list of dict): The serialized rubric criteria.
 
     Returns:
@@ -70,7 +100,7 @@ def create_rubric_dict(prompt, criteria):
 
     """
     return {
-        "prompt": prompt,
+        "prompts" : prompts,
         "criteria": criteria
     }
 
