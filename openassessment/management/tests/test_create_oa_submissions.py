@@ -14,9 +14,8 @@ class CreateSubmissionsTest(TestCase):
     def test_create_submissions(self):
 
         # Create some submissions
-        cmd = create_oa_submissions.Command()
-        cmd.handle("test_course", "test_item", "5")
-
+        cmd = create_oa_submissions.Command(**{'self_assessment_required': True})
+        cmd.handle("test_course", "test_item", "5", 100)
         self.assertEqual(len(cmd.student_items), 5)
         for student_item in cmd.student_items:
 

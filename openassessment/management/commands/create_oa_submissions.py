@@ -11,7 +11,6 @@ from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 
 STEPS = ['peer', 'self']
-SELF_ASSESSMENT_REQUIRED = False # if you want to make self assessments then make this True.
 
 
 class Command(BaseCommand):
@@ -35,8 +34,11 @@ class Command(BaseCommand):
     NUM_OPTIONS = 5
 
     def __init__(self, *args, **kwargs):
+        self.self_assessment_required = kwargs.get('self_assessment_required', False)
+        kwargs = {}
         super(Command, self).__init__(*args, **kwargs)
         self._student_items = list()
+
 
     def handle(self, *args, **options):
         """
@@ -48,7 +50,7 @@ class Command(BaseCommand):
             num_submissions (int): Number of submissions to create.
             percentage (int or float): Percentage for assessments to be made against submissions.
         """
-        if len(args) < 3:
+        if len(args) < 4:
             raise CommandError('Usage: create_oa_submissions <COURSE_ID> <ITEM_ID> <NUM_SUBMISSIONS> <PERCENTAGE>')
 
         course_id = unicode(args[0])
@@ -113,9 +115,9 @@ class Command(BaseCommand):
                         rubric,
                         self.NUM_PEER_ASSESSMENTS
                     )
-                    assessments_created += 1
+            assessments_created += 1
 
-            if SELF_ASSESSMENT_REQUIRED:
+            if self.self_assessment_required:
                 # Create a self-assessment
                 print "-- Creating self assessment"
                 self_api.create_assessment(
