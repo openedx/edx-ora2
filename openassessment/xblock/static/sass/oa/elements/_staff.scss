@@ -135,21 +135,21 @@
 
 }
 
-// UI cancel submission.
+// UI - cancel submission (action)
 .openassessment__staff-info__cancel__submission {
   margin-bottom: ($baseline-v) !important;
 
   .staff-info__cancel-submission__content {
 
-    textarea {
+    .cancel_submission_comments {
       width: 100%;
-      height: ($baseline-v*5);
+      min-height: ($baseline-v*5);
       text-align: left;
     }
 
-    ul.list--actions {
+    .list--actions {
       .action--submit {
-        margin: ($baseline-v/2) 0px;
+        margin: ($baseline-v/2) 0;
       }
     }
 
