@@ -395,7 +395,7 @@ class OpenAssessmentBlock(
 
         xblock_validator = validator(block, block._, strict_post_release=False)
         xblock_validator(
-            create_rubric_dict(config['prompt'], config['rubric_criteria']),
+            create_rubric_dict(config['prompts'], config['rubric_criteria']),
             config['rubric_assessments'],
             submission_start=config['submission_start'],
             submission_due=config['submission_due'],
@@ -409,7 +409,7 @@ class OpenAssessmentBlock(
         block.submission_start = config['submission_start']
         block.submission_due = config['submission_due']
         block.title = config['title']
-        block.prompt = config['prompt']
+        block.prompts = config['prompts']
         block.allow_file_upload = config['allow_file_upload']
         block.allow_latex = config['allow_latex']
         block.leaderboard_show = config['leaderboard_show']
