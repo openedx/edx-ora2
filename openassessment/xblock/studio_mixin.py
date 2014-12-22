@@ -1,9 +1,11 @@
 """
 Studio editing view for OpenAssessment XBlock.
 """
-import pkg_resources
 import copy
 import logging
+import pkg_resources
+from uuid import uuid4
+
 from django.template import Context
 from django.template.loader import get_template
 from voluptuous import MultipleInvalid
@@ -112,7 +114,7 @@ class StudioMixin(object):
             feedback_default_text = DEFAULT_RUBRIC_FEEDBACK_TEXT
 
         return {
-            'prompt': self.prompt,
+            'prompts': self.prompts,
             'title': self.title,
             'submission_due': submission_due,
             'submission_start': submission_start,
@@ -192,7 +194,7 @@ class StudioMixin(object):
 
         xblock_validator = validator(self, self._)
         success, msg = xblock_validator(
-            create_rubric_dict(data['prompt'], data['criteria']),
+            create_rubric_dict(data['prompts'], data['criteria']),
             data['assessments'],
             submission_start=data['submission_start'],
             submission_due=data['submission_due'],
@@ -205,7 +207,7 @@ class StudioMixin(object):
         # so we can safely modify the XBlock fields.
         self.title = data['title']
         self.display_name = data['title']
-        self.prompt = data['prompt']
+        self.prompts = data['prompts']
         self.rubric_criteria = data['criteria']
         self.rubric_assessments = data['assessments']
         self.editor_assessments_order = data['editor_assessments_order']
