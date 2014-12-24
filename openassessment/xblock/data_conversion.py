@@ -2,6 +2,7 @@
 Data Conversion utility methods for handling ORA2 XBlock data transformations.
 
 """
+import json
 
 
 def convert_training_examples_list_to_dict(examples_list):
@@ -56,13 +57,42 @@ def convert_training_examples_list_to_dict(examples_list):
     ]
 
 
-def create_rubric_dict(prompt, criteria):
+def create_prompts_dict(prompt_or_serialized_prompts):
+    """
+    Construct a list of prompts.
+
+    Initially a block had a single prompt which was saved as a simple string.
+    In that case a new prompt dict is constructed from it.
+
+    Args:
+        prompt_or_serialized_prompts (unicode): A string which can either
+        be a single prompt text or json for a list of prompts.
+
+    Returns:
+        list of dict
+    """
+
+    if prompt_or_serialized_prompts is None:
+        prompt_or_serialized_prompts = ''
+
+    try:
+        prompts = json.loads(prompt_or_serialized_prompts)
+    except ValueError:
+        prompts = [
+            {
+                'description': prompt_or_serialized_prompts,
+            }
+        ]
+    return prompts
+
+
+def create_rubric_dict(prompts, criteria):
     """
     Construct a serialized rubric model in the format expected
     by the assessments app.
 
     Args:
-        prompt (unicode): The rubric prompt.
+        prompts (list of dict): The rubric prompts.
         criteria (list of dict): The serialized rubric criteria.
 
     Returns:
@@ -70,7 +100,7 @@ def create_rubric_dict(prompt, criteria):
 
     """
     return {
-        "prompt": prompt,
+        "prompts" : prompts,
         "criteria": criteria
     }
 
@@ -94,6 +124,46 @@ def clean_criterion_feedback(rubric_criteria, criterion_feedback):
         if criterion['name'] in criterion_feedback
         and criterion.get('feedback', 'disabled') in ['optional', 'required']
     }
+
+
+def prepare_submission_for_serialization(submission_data):
+    """
+    Convert a list of answers into the right format dict for serialization.
+
+    Args:
+        submission_data (list of unicode): The answers.
+
+    Returns:
+        dict
+    """
+    return {
+        'parts': [{'text': text} for text in submission_data],
+    }
+
+
+def create_submission_dict(submission, prompts):
+    """
+    1. Convert from legacy format.
+    3. Add prompts to submission['answer']['parts'] to simplify iteration in the template.
+
+    Args:
+        submission (dict): Submission dictionary.
+        prompts (list of dict): The prompts from the problem definition.
+
+    Returns:
+        dict
+    """
+    parts = [{ 'prompt': prompt, 'text': ''} for prompt in prompts]
+
+    if 'text' in submission['answer']:
+        parts[0]['text'] = submission['answer'].pop('text')
+    else:
+        for index, part in enumerate(submission['answer'].pop('parts')):
+            parts[index]['text'] = part['text']
+
+    submission['answer']['parts'] = parts
+
+    return submission
 
 
 def make_django_template_key(key):

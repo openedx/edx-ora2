@@ -357,3 +357,33 @@ def validator(oa_block, _, strict_post_release=True):
         return (True, u'')
 
     return _inner
+
+
+def validate_submission(submission, prompts, _):
+    """
+    Validate submission dict.
+
+    Args:
+        submission (list of unicode): Responses for the prompts.
+        prompts (list of dict): The prompts from the problem definition.
+        _ (function): The service function used to get the appropriate i18n text.
+
+    Returns:
+        tuple (is_valid, msg) where
+            is_valid is a boolean indicating whether the submission is semantically valid
+            and msg describes any validation errors found.
+    """
+
+    message = _(u"The submission format is invalid.")
+
+    if type(submission) != list:
+        return (False, message)
+
+    if len(submission) != len(prompts):
+        return (False, message)
+
+    for submission_part in submission:
+        if type(submission_part) != unicode:
+            return (False, message)
+
+    return (True, u'')

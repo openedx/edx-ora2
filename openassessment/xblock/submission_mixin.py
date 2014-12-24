@@ -1,3 +1,4 @@
+import json
 import logging
 
 from xblock.core import XBlock
@@ -8,6 +9,8 @@ from openassessment.fileupload.api import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
 from .resolve_dates import DISTANT_FUTURE
 
+from data_conversion import create_submission_dict, prepare_submission_for_serialization
+from validation import validate_submission
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +56,15 @@ class SubmissionMixin(object):
             )
 
         status = False
-        student_sub = data['submission']
+        student_sub_data = data['submission']
+        success, msg = validate_submission(student_sub_data, self.prompts, self._)
+        if not success:
+            return (
+                False,
+                'EBADARGS',
+                msg
+            )
+
         student_item_dict = self.get_student_item_dict()
 
         # Short-circuit if no user is defined (as in Studio Preview mode)
@@ -73,7 +84,7 @@ class SubmissionMixin(object):
             try:
                 submission = self.create_submission(
                     student_item_dict,
-                    student_sub
+                    student_sub_data
                 )
             except api.SubmissionRequestError as err:
 
@@ -131,8 +142,14 @@ class SubmissionMixin(object):
             dict: Contains a bool 'success' and unicode string 'msg'.
         """
         if 'submission' in data:
+            student_sub_data = data['submission']
+            success, msg = validate_submission(student_sub_data, self.prompts, self._)
+            if not success:
+                return {'success': False, 'msg': msg}
             try:
-                self.saved_response = unicode(data['submission'])
+                self.saved_response = json.dumps(
+                    prepare_submission_for_serialization(student_sub_data)
+                )
                 self.has_saved = True
 
                 # Emit analytics event...
@@ -148,11 +165,11 @@ class SubmissionMixin(object):
         else:
             return {'success': False, 'msg': self._(u"This response was not submitted.")}
 
-    def create_submission(self, student_item_dict, student_sub):
+    def create_submission(self, student_item_dict, student_sub_data):
 
         # Store the student's response text in a JSON-encodable dict
         # so that later we can add additional response fields.
-        student_sub_dict = {'text': student_sub}
+        student_sub_dict = prepare_submission_for_serialization(student_sub_data)
 
         if self.allow_file_upload:
             student_sub_dict['file_key'] = self._get_student_item_key()
@@ -351,7 +368,21 @@ class SubmissionMixin(object):
                 context['submission_start'] = start_date
                 path = 'openassessmentblock/response/oa_response_unavailable.html'
         elif not workflow:
-            context['saved_response'] = self.saved_response
+            # For backwards compatibility. Initially, problems had only one prompt
+            # and a string answer. We convert it to the appropriate dict.
+            try:
+                json.loads(self.saved_response)
+                saved_response = {
+                    'answer': json.loads(self.saved_response),
+                }
+            except ValueError:
+                saved_response = {
+                    'answer': {
+                        'text': self.saved_response,
+                    },
+                }
+
+            context['saved_response'] = create_submission_dict(saved_response, self.prompts)
             context['save_status'] = self.save_status
             context['submit_enabled'] = self.saved_response != ''
             path = "openassessmentblock/response/oa_response.html"
@@ -359,12 +390,13 @@ class SubmissionMixin(object):
             student_submission = self.get_user_submission(
                 workflow["submission_uuid"]
             )
-            context["student_submission"] = student_submission
+            context["student_submission"] = create_submission_dict(student_submission, self.prompts)
             path = 'openassessmentblock/response/oa_response_graded.html'
         else:
-            context["student_submission"] = self.get_user_submission(
+            student_submission = self.get_user_submission(
                 workflow["submission_uuid"]
             )
+            context["student_submission"] = create_submission_dict(student_submission, self.prompts)
             path = 'openassessmentblock/response/oa_response_submitted.html'
 
         return path, context
