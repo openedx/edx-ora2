@@ -72,7 +72,7 @@ class PeerAssessmentMixin(object):
             )
             return {
                 'success': False,
-                'msg': self._('This feedback has already been submitted.'),
+                'msg': self._('This feedback has already been submitted or the submission has been cancelled.'),
             }
 
         assessment_ui_model = self.get_assessment_module('peer-assessment')
@@ -267,6 +267,7 @@ class PeerAssessmentMixin(object):
         """
         peer_submission = False
         try:
+            from nose.tools import set_trace; set_trace()
             peer_submission = peer_api.get_submission_to_assess(
                 self.submission_uuid,
                 assessment["must_be_graded_by"]

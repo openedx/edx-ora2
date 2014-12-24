@@ -119,6 +119,16 @@ class PeerWorkflow(models.Model):
         ordering = ["created_at", "id"]
         app_label = "assessment"
 
+    @property
+    def is_cancelled(self):
+        """
+        Check if workflow is cancelled?
+
+        Returns:
+            True/False
+        """
+        return bool(self.cancellations.exists())
+
     @classmethod
     def get_by_submission_uuid(cls, submission_uuid):
         """

@@ -661,6 +661,8 @@ def get_submission_to_assess(submission_uuid, graded_by):
 
     """
     workflow = PeerWorkflow.get_by_submission_uuid(submission_uuid)
+    if workflow.is_cancelled:
+        return None
     if not workflow:
         raise PeerAssessmentWorkflowError(
             u"A Peer Assessment Workflow does not exist for the student "
@@ -959,8 +961,11 @@ def cancel_submission_peer_workflow(submission_uuid, comments, cancelled_by_id):
         comments (str): The reason for cancellation.
         cancelled_by_id (str): The ID of the user who cancelled the peer workflow.
     """
+    from nose.tools import set_trace; set_trace()
+
     try:
         workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
+
         return PeerWorkflowCancellation.create(workflow=workflow, comments=comments, cancelled_by_id=cancelled_by_id)
     except (
         PeerWorkflow.DoesNotExist,
