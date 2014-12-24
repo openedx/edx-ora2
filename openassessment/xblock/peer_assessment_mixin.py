@@ -267,7 +267,6 @@ class PeerAssessmentMixin(object):
         """
         peer_submission = False
         try:
-            from nose.tools import set_trace; set_trace()
             peer_submission = peer_api.get_submission_to_assess(
                 self.submission_uuid,
                 assessment["must_be_graded_by"]

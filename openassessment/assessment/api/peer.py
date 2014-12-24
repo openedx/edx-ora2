@@ -961,10 +961,19 @@ def cancel_submission_peer_workflow(submission_uuid, comments, cancelled_by_id):
         comments (str): The reason for cancellation.
         cancelled_by_id (str): The ID of the user who cancelled the peer workflow.
     """
-    from nose.tools import set_trace; set_trace()
-
     try:
         workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
+
+        assessment = workflow.graded_by.filter(
+            assessment__submission_uuid=submission_uuid, assessment__score_type=PEER_TYPE
+        ).order_by('-assessment')
+
+        if assessment:
+            sub_api.set_score(
+                submission_uuid,
+                0,
+                assessment.points_possible
+            )
 
         return PeerWorkflowCancellation.create(workflow=workflow, comments=comments, cancelled_by_id=cancelled_by_id)
     except (
