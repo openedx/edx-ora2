@@ -170,6 +170,30 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # Check that we can render the student view without error
         self.runtime.render(xblock, 'student_view')
 
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_prompts_fields(self, xblock):
+
+        self.assertEqual(xblock.prompts, [{'description':'Read for conciseness, clarity of thought, and form.'}])
+
+        xblock.prompt = None
+        self.assertEqual(xblock.prompts, [{'description': ''}])
+
+        xblock.prompt = 'Prompt.'
+        self.assertEqual(xblock.prompts, [{'description': 'Prompt.'}])
+
+        xblock.prompt = '[{"description": "Prompt 1."}, {"description": "Prompt 2."}, {"description": "Prompt 3."}]'
+        self.assertEqual(xblock.prompts, [
+            {'description': 'Prompt 1.'}, {'description': 'Prompt 2.'}, {'description': 'Prompt 3.'}
+        ])
+
+        xblock.prompts = None
+        self.assertEqual(xblock.prompt, None)
+
+        xblock.prompts = [{'description': 'Prompt.'}]
+        self.assertEqual(xblock.prompt, 'Prompt.')
+
+        xblock.prompts = [{'description': 'Prompt 4.'}, {'description': 'Prompt 5.'}]
+        self.assertEqual(xblock.prompt, '[{"description": "Prompt 4."}, {"description": "Prompt 5."}]')
 
 class TestDates(XBlockHandlerTestCase):
 
