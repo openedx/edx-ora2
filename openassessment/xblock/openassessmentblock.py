@@ -1,6 +1,7 @@
 """An XBlock where students can read a question and compose their response"""
 
 import datetime as dt
+import json
 import logging
 import pkg_resources
 import copy
@@ -447,7 +448,7 @@ class OpenAssessmentBlock(
         """
 
         if value is None:
-            self.prompt = ''
+            self.prompt = None
         elif len(value) == 1:
             # For backwards compatibility. To be removed after all code
             # is migrated to use prompts property instead of prompt field.
