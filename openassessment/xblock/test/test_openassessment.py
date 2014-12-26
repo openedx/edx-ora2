@@ -173,7 +173,12 @@ class TestOpenAssessment(XBlockHandlerTestCase):
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_prompts_fields(self, xblock):
 
-        self.assertEqual(xblock.prompts, [{'description':'Read for conciseness, clarity of thought, and form.'}])
+        self.assertEqual(xblock.prompts, [
+            {
+                'description': (u'Given the state of the world today, what do you think should be done to '
+                                u'combat poverty? Please answer in a short essay of 200-300 words.')
+            }
+        ])
 
         xblock.prompt = None
         self.assertEqual(xblock.prompts, [{'description': ''}])
