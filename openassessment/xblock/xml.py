@@ -67,6 +67,9 @@ def _serialize_prompts(prompts_root, prompts_list):
     Returns:
         None
     """
+    if not isinstance(prompts_list, list):
+        return
+
     for prompt in prompts_list:
         prompt_el = etree.SubElement(prompts_root, 'prompt')
 

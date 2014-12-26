@@ -211,6 +211,77 @@
         ]
     },
 
+    "multiple_prompts": {
+        "title": "Foo",
+        "prompt": "[{\"description\": \"Test prompt 1.\"}, {\"description\": \"Test prompt 2.\"}]",
+        "rubric_feedback_prompt": "Test Feedback Prompt",
+        "rubric_feedback_default_text": "Test default text...",
+        "start": null,
+        "due": null,
+        "submission_start": null,
+        "submission_due": null,
+        "allow_file_upload": null,
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ]
+            }
+        ],
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "start": "2014-02-27T09:46:28",
+                "due": "2014-03-01T00:00:00",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment",
+                "start": "2014-04-01T00:00:00",
+                "due": "2014-06-01T00:00:00"
+            }
+        ],
+        "expected_xml": [
+            "<openassessment>",
+            "<title>Foo</title>",
+            "<assessments>",
+                "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
+                "<assessment name=\"self-assessment\" start=\"2014-04-01T00:00:00\" due=\"2014-06-01T00:00:00\" />",
+            "</assessments>",
+            "<prompts>",
+                "<prompt><description>Test prompt 1.</description></prompt>",
+                "<prompt><description>Test prompt 2.</description></prompt>",
+            "</prompts>",
+            "<rubric>",
+                "<criterion>",
+                    "<name>Test criterion</name>",
+                    "<label>Test criterion</label>",
+                    "<prompt>Test criterion prompt</prompt>",
+                    "<option points=\"0\"><name>No</name><label>No</label><explanation>No explanation</explanation></option>",
+                    "<option points=\"2\"><name>Yes</name><label>Yes</label><explanation>Yes explanation</explanation></option>",
+                "</criterion>",
+                "<feedbackprompt>Test Feedback Prompt</feedbackprompt>",
+                "<feedback_default_text>Test default text...</feedback_default_text>",
+            "</rubric>",
+            "</openassessment>"
+        ]
+    },
+
     "unicode": {
         "title": "ƒσσ",
         "prompt": "Ṫëṡẗ ṗṛöṁṗẗ",

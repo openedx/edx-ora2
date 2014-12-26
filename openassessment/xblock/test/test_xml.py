@@ -14,7 +14,7 @@ import ddt
 from openassessment.xblock.data_conversion import create_prompts_list
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from openassessment.xblock.xml import (
-    serialize_content, parse_from_xml_str, parse_rubric_xml,
+    serialize_content, parse_from_xml_str, _parse_prompts_xml, parse_rubric_xml,
     parse_examples_xml, parse_assessments_xml,
     serialize_rubric_to_xml_str, serialize_examples_to_xml_str,
     serialize_assessments_to_xml_str, UpdateFromXmlError
@@ -59,6 +59,17 @@ class TestSerializeContent(TestCase):
                 }
             ]
         }
+    ]
+
+    BASIC_PROMPTS = [
+        [
+            {
+                "description": "Prompt 1."
+            },
+            {
+                "description": "Prompt 2."
+            }
+        ]
     ]
 
     BASIC_ASSESSMENTS = [
@@ -200,6 +211,20 @@ class TestSerializeContent(TestCase):
                     msg = "Could not parse mutated criteria dict {criteria}\n{ex}".format(criteria=mutated_dict, ex=ex)
                     self.fail(msg)
 
+    def test_mutated_prompts_dict(self):
+        self._configure_xblock({})
+
+        for prompts_list in self.BASIC_PROMPTS:
+            for mutated_list in self._list_mutations(prompts_list):
+                self.oa_block.prompts = mutated_list
+                xml = serialize_content(self.oa_block)
+
+                try:
+                    etree.fromstring(xml)
+                except Exception as ex:  # pylint:disable=W0703
+                    msg = "Could not parse mutated prompts list {prompts}\n{ex}".format(prompts=mutated_list, ex=ex)
+                    self.fail(msg)
+
     def test_mutated_assessments_dict(self):
         self._configure_xblock({})
 
@@ -320,6 +345,33 @@ class TestSerializeContent(TestCase):
                 for mutated in self._value_mutations(input_dict, key):
                     yield mutated
 
+    def _list_mutations(self, input_list):
+        """
+        Iterator over mutations of a list:
+        1) Empty list
+        2) Replace list with None
+        3) Replace list with unicode
+        4) Replace list with an integer
+
+        Args:
+            input_list (list): A JSON-serializable list to traverse.
+
+        Yields:
+            list
+        """
+        print "== Emptying list"
+        yield list()
+
+        # Mutation #3-5: value mutations
+        for mutated in (None, u"\u9731", 0):
+            yield mutated
+
+        # Recursively mutate sub-items
+        for index, item in enumerate(input_list):
+            if isinstance(item, dict):
+                for sub_mutation in self._dict_mutations(item):
+                    yield self._mutate_list(input_list, index, sub_mutation)
+
     def _value_mutations(self, input_dict, key):
         """
         Iterate over mutations of the value for `key` in a dictionary.
@@ -355,6 +407,34 @@ class TestSerializeContent(TestCase):
         mutated = copy.deepcopy(input_dict)
         mutated[key] = new_val
         return mutated
+
+    def _mutate_list(self, input_list, index, new_val):
+        """
+        Copy and update a list.
+
+        Args:
+            input_list (list): The list to copy and update.
+            index (int): The index of the value to update.
+            new_val: The new value to set at the index.
+
+        Returns:
+            A copy of the list with the value at `index` set to `new_val`.
+        """
+        mutated = copy.deepcopy(input_list)
+        mutated[index] = new_val
+        return mutated
+
+
+@ddt.ddt
+class TestParsePromptsFromXml(TestCase):
+
+    @ddt.file_data("data/parse_prompts_xml.json")
+    def test_parse_prompts_from_xml(self, data):
+        xml = etree.fromstring("".join(data['xml']))
+        prompts = _parse_prompts_xml(xml)
+
+        self.assertEqual(prompts, data['prompts'])
+
 
 @ddt.ddt
 class TestParseRubricFromXml(TestCase):
