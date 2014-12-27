@@ -18,7 +18,7 @@ class StudioViewTest(XBlockHandlerTestCase):
     """
     UPDATE_EDITOR_DATA = {
         "title": "Test title",
-        "prompt": "Test prompt",
+        "prompts": [{"description": "Test prompt"}],
         "feedback_prompt": "Test feedback prompt",
         "feedback_default_text": "Test feedback default text",
         "submission_start": "4014-02-10T09:46",

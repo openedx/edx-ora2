@@ -1,7 +1,7 @@
 {
     "simple": {
         "rubric": {
-            "prompt": "Test Prompt",
+            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -28,7 +28,7 @@
 
     "unicode": {
         "rubric": {
-            "prompt": "☃",
+            "prompts": [{"description": "Test Prompt 1 ☃."}, {"description": "Test Prompt 2 ☃."}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -55,7 +55,7 @@
 
     "change_points_before_release": {
         "rubric": {
-            "prompt": "Test Prompt",
+            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -79,7 +79,7 @@
             ]
         },
         "current_rubric": {
-            "prompt": "Test Prompt",
+            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -107,7 +107,7 @@
 
     "add_criteria_before_release": {
         "rubric": {
-            "prompt": "Test Prompt",
+            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -131,7 +131,7 @@
             ]
         },
         "current_rubric": {
-            "prompt": "Test Prompt",
+            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -178,7 +178,7 @@
 
     "remove_criteria_before_release": {
         "rubric": {
-            "prompt": "Test Prompt",
+            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -221,7 +221,7 @@
             ]
         },
         "current_rubric": {
-            "prompt": "Test Prompt",
+            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -249,7 +249,7 @@
 
     "add_options_before_release": {
         "rubric": {
-            "prompt": "Test Prompt",
+            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -273,7 +273,7 @@
             ]
         },
         "current_rubric": {
-            "prompt": "Test Prompt",
+            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -294,7 +294,7 @@
 
     "remove_options_before_release": {
         "rubric": {
-            "prompt": "Test Prompt",
+            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -312,7 +312,7 @@
             ]
         },
         "current_rubric": {
-            "prompt": "Test Prompt",
+            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -340,7 +340,7 @@
 
     "change_text_before_release": {
         "rubric": {
-            "prompt": "Changed Prompt",
+            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -364,7 +364,7 @@
             ]
         },
         "current_rubric": {
-            "prompt": "Test Prompt",
+            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -392,7 +392,7 @@
 
     "change_criteria_prompt_after_release": {
         "rubric": {
-            "prompt": "Test Prompt",
+            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -416,7 +416,7 @@
             ]
         },
         "current_rubric": {
-            "prompt": "Test Prompt",
+            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -444,7 +444,7 @@
 
     "change_option_name_after_release": {
         "rubric": {
-            "prompt": "Test Prompt",
+            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -468,7 +468,7 @@
             ]
         },
         "current_rubric": {
-            "prompt": "Test Prompt",
+            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -496,7 +496,7 @@
 
     "change_option_explanation_after_release": {
         "rubric": {
-            "prompt": "Test Prompt",
+            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -520,7 +520,7 @@
             ]
         },
         "current_rubric": {
-            "prompt": "Test Prompt",
+            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -548,7 +548,7 @@
 
     "rename_options_after_release": {
         "rubric": {
-            "prompt": "Test Prompt",
+            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -572,7 +572,7 @@
             ]
         },
         "current_rubric": {
-            "prompt": "Test Prompt",
+            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -600,7 +600,7 @@
 
     "zero_options": {
         "rubric": {
-            "prompt": "Test Prompt",
+            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
             "criteria": [
                 {
                     "order_num": 0,
