@@ -426,9 +426,19 @@ def get_assessment_median_scores(submission_uuid):
     try:
         workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
         items = workflow.graded_by.filter(scored=True)
+
         assessments = [item.assessment for item in items]
         scores = Assessment.scores_by_criterion(assessments)
-        return Assessment.get_median_score_dict(scores)
+        score_dict = Assessment.get_median_score_dict(scores)
+
+        # Is it OK way to give zero score to a cancelled submission? Another way could be don't calculate
+        # the score above and just return a fake score dict but this may have side effects?
+        if workflow.is_cancelled:
+            for key in score_dict:
+                score_dict[key] = 0
+
+        return score_dict
+
     except DatabaseError:
         error_message = (
             u"Error getting assessment median scores for submission {uuid}"
@@ -661,13 +671,16 @@ def get_submission_to_assess(submission_uuid, graded_by):
 
     """
     workflow = PeerWorkflow.get_by_submission_uuid(submission_uuid)
-    if workflow.is_cancelled:
-        return None
+
     if not workflow:
         raise PeerAssessmentWorkflowError(
             u"A Peer Assessment Workflow does not exist for the student "
             u"with submission UUID {}".format(submission_uuid)
         )
+
+    if workflow.is_cancelled:
+        return None
+
     open_item = workflow.find_active_assessments()
     peer_submission_uuid = open_item.submission_uuid if open_item else None
     # If there is an active assessment for this user, get that submission,
@@ -964,15 +977,15 @@ def cancel_submission_peer_workflow(submission_uuid, comments, cancelled_by_id):
     try:
         workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
 
-        assessment = workflow.graded_by.filter(
+        items = workflow.graded_by.filter(
             assessment__submission_uuid=submission_uuid, assessment__score_type=PEER_TYPE
         ).order_by('-assessment')
 
-        if assessment:
+        if items:
             sub_api.set_score(
                 submission_uuid,
                 0,
-                assessment.points_possible
+                items[0].assessment.points_possible
             )
 
         return PeerWorkflowCancellation.create(workflow=workflow, comments=comments, cancelled_by_id=cancelled_by_id)
@@ -1003,3 +1016,22 @@ def get_submission_cancellation(submission_uuid):
         error_message = u"Error finding peer workflow cancellation for submission UUID {}.".format(submission_uuid)
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
+
+
+def is_peer_workflow_submission_cancelled(submission_uuid):
+    """
+    Check if peer workflow submission is cancelled?
+
+    Args:
+        submission_uuid (str): The UUID of the peer workflow's submission.
+    """
+    # Users must submit a response before they can peer-assess.
+    if submission_uuid is None:
+        return False
+
+    workflow = PeerWorkflow.get_by_submission_uuid(submission_uuid)
+    if workflow:
+        return workflow.is_cancelled
+
+    return False
+

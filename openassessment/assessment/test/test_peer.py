@@ -934,6 +934,62 @@ class TestPeerApi(CacheResetTest):
             REQUIRED_GRADED_BY,
         )
 
+    def test_cancelled_submission_peerworkflow_status(self):
+        """
+        Test cancelled submissions peerworkflow status.
+        """
+        buffy_sub, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
+
+        # Check for a workflow for Buffy.
+        buffy_workflow = PeerWorkflow.get_by_submission_uuid(buffy_sub['uuid'])
+        self.assertIsNotNone(buffy_workflow)
+
+        # Cancel the buffy's submission.
+        PeerWorkflowCancellation.create(
+            workflow=buffy_workflow, comments='Cancellation reason', cancelled_by_id=buffy['student_id']
+        )
+
+        workflow = PeerWorkflow.get_by_submission_uuid(buffy_sub["uuid"])
+        self.assertTrue(workflow.is_cancelled)
+
+    def test_cancelled_submission_peerworkflow_score(self):
+        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
+
+        sub = peer_api.get_submission_to_assess(tim_sub['uuid'], 1)
+        peer_api.create_assessment(
+            tim_sub["uuid"], tim["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
+            1,
+        )
+
+        sub = peer_api.get_submission_to_assess(bob_sub['uuid'], 1)
+        peer_api.create_assessment(
+            bob_sub["uuid"], bob["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            RUBRIC_DICT,
+            1,
+        )
+
+        requirements = {
+            'must_grade': 1,
+            'must_be_graded_by': 1
+        }
+
+        peer_api.cancel_submission_peer_workflow(
+            submission_uuid=bob_sub["uuid"],
+            comments="Inappropriate language",
+            cancelled_by_id=bob['student_id']
+        )
+
+        score = peer_api.get_score(bob_sub["uuid"], requirements)
+        self.assertEqual(score['points_earned'], 0)
+
     def test_get_workflow_by_uuid(self):
         buffy_answer, _ = self._create_student_and_submission("Buffy", "Buffy's answer")
         self._create_student_and_submission("Xander", "Xander's answer")

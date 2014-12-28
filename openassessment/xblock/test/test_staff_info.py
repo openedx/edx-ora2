@@ -249,6 +249,33 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIsNotNone(context['submission_cancellation'])
         self.assertEquals("openassessmentblock/staff_debug/student_info.html", path)
 
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_cancelled_submission_peer_aseseement_render_path(self, xblock):
+        """
+        Test that peer assessment path should be oa_peer_waiting.html for a cancelled submission.
+        """
+        # Simulate that we are course staff
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+
+        bob_item = STUDENT_ITEM.copy()
+        bob_item["item_id"] = xblock.scope_ids.usage_id
+        # Create a submission for Bob, and corresponding workflow.
+        submission = sub_api.create_submission(bob_item, {'text': "Bob Answer"})
+        peer_api.on_start(submission["uuid"])
+        workflow_api.create_workflow(submission["uuid"], ['self'])
+
+        peer_api.cancel_submission_peer_workflow(
+            submission_uuid=submission["uuid"],
+            comments="Inappropriate language",
+            cancelled_by_id=bob_item['student_id']
+        )
+
+        xblock.submission_uuid = submission["uuid"]
+        path, context = xblock.peer_path_and_context(False)
+        self.assertEquals("openassessmentblock/peer/oa_peer_waiting.html", path)
+
     @scenario('data/self_only_scenario.xml', user_id='Bob')
     def test_staff_debug_student_info_image_submission(self, xblock):
         # Simulate that we are course staff
