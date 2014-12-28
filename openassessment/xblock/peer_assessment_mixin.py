@@ -72,7 +72,7 @@ class PeerAssessmentMixin(object):
             )
             return {
                 'success': False,
-                'msg': self._('This feedback has already been submitted.'),
+                'msg': self._('This feedback has already been submitted or the submission has been cancelled.'),
             }
 
         assessment_ui_model = self.get_assessment_module('peer-assessment')
@@ -214,9 +214,14 @@ class PeerAssessmentMixin(object):
                     "Submit your assessment & move to response #{response_number}"
                 ).format(response_number=(count + 2))
 
+        if peer_api.is_peer_workflow_submission_cancelled(self.submission_uuid):
+            path = 'openassessmentblock/peer/oa_peer_waiting.html'
+            # Sets the XBlock boolean to signal to Message that it WAS able to grab a submission
+            self.no_peers = True
+
         # Once a student has completed a problem, it stays complete,
         # so this condition needs to be first.
-        if (workflow.get('status') == 'done' or finished) and not continue_grading:
+        elif (workflow.get('status') == 'done' or finished) and not continue_grading:
             path = "openassessmentblock/peer/oa_peer_complete.html"
 
         # Allow continued grading even if the problem due date has passed

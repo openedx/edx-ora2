@@ -198,7 +198,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
     @scenario('data/self_only_scenario.xml', user_id='Bob')
     def test_staff_debug_student_info_self_only(self, xblock):
         # Simulate that we are course staff
-        xblock.xmodule_runtime =  self._create_mock_runtime(
+        xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
 
@@ -224,10 +224,62 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertEquals([], context['peer_assessments'])
         self.assertEquals("openassessmentblock/staff_debug/student_info.html", path)
 
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_staff_debug_student_info_with_cancelled_submission(self, xblock):
+        # Simulate that we are course staff
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+
+        bob_item = STUDENT_ITEM.copy()
+        bob_item["item_id"] = xblock.scope_ids.usage_id
+        # Create a submission for Bob, and corresponding workflow.
+        submission = sub_api.create_submission(bob_item, {'text': "Bob Answer"})
+        peer_api.on_start(submission["uuid"])
+        workflow_api.create_workflow(submission["uuid"], ['self'])
+
+        peer_api.cancel_submission_peer_workflow(
+            submission_uuid=submission["uuid"],
+            comments="Inappropriate language",
+            cancelled_by_id=bob_item['student_id']
+        )
+
+        path, context = xblock.get_student_info_path_and_context("Bob")
+        self.assertEquals("Bob Answer", context['submission']['answer']['text'])
+        self.assertIsNotNone(context['submission_cancellation'])
+        self.assertEquals("openassessmentblock/staff_debug/student_info.html", path)
+
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_cancelled_submission_peer_aseseement_render_path(self, xblock):
+        """
+        Test that peer assessment path should be oa_peer_waiting.html for a cancelled submission.
+        """
+        # Simulate that we are course staff
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+
+        bob_item = STUDENT_ITEM.copy()
+        bob_item["item_id"] = xblock.scope_ids.usage_id
+        # Create a submission for Bob, and corresponding workflow.
+        submission = sub_api.create_submission(bob_item, {'text': "Bob Answer"})
+        peer_api.on_start(submission["uuid"])
+        workflow_api.create_workflow(submission["uuid"], ['self'])
+
+        peer_api.cancel_submission_peer_workflow(
+            submission_uuid=submission["uuid"],
+            comments="Inappropriate language",
+            cancelled_by_id=bob_item['student_id']
+        )
+
+        xblock.submission_uuid = submission["uuid"]
+        path, context = xblock.peer_path_and_context(False)
+        self.assertEquals("openassessmentblock/peer/oa_peer_waiting.html", path)
+
     @scenario('data/self_only_scenario.xml', user_id='Bob')
     def test_staff_debug_student_info_image_submission(self, xblock):
         # Simulate that we are course staff
-        xblock.xmodule_runtime =  self._create_mock_runtime(
+        xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
 
@@ -490,6 +542,51 @@ class TestCourseStaff(XBlockHandlerTestCase):
         )
         __, context = xblock.get_staff_path_and_context()
         self.assertNotIn('classifierset', context)
+
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_cancel_submission_without_reason(self, xblock):
+        # If we're not course staff, we shouldn't be able to see the
+        # cancel submission option
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, False, False, "Bob"
+        )
+
+        resp = self.request(xblock, 'cancel_submission', json.dumps({}))
+        self.assertIn("you do not have permission", resp.decode('utf-8').lower())
+
+        # If we ARE course staff, then we should see the cancel submission option
+        # with valid error message.
+        xblock.xmodule_runtime.user_is_staff = True
+        resp = self.request(xblock, 'cancel_submission', json.dumps({}), response_format='json')
+        self.assertIn("Please enter valid reason", resp['msg'])
+        self.assertEqual(False, resp['success'])
+
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_cancel_submission_full_flow(self, xblock):
+        # Simulate that we are course staff
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+
+        bob_item = STUDENT_ITEM.copy()
+        bob_item["item_id"] = xblock.scope_ids.usage_id
+        # Create a submission for Bob, and corresponding workflow.
+        submission = sub_api.create_submission(bob_item, {'text': "Bob Answer"})
+        peer_api.on_start(submission["uuid"])
+        workflow_api.create_workflow(submission["uuid"], ['peer'])
+
+        incorrect_submission_uuid = 'abc'
+        params = {"submission_uuid": incorrect_submission_uuid, "comments": "Inappropriate language."}
+        # Raise flow not found exception.
+        resp = self.request(xblock, 'cancel_submission', json.dumps(params), response_format='json')
+        self.assertIn("Error finding workflow", resp['msg'])
+        self.assertEqual(False, resp['success'])
+
+        # Verify that we can render without error
+        params = {"submission_uuid": submission["uuid"], "comments": "Inappropriate language."}
+        resp = self.request(xblock, 'cancel_submission', json.dumps(params), response_format='json')
+        self.assertIn("Student submission was removed from the ", resp['msg'])
+        self.assertEqual(True, resp['success'])
 
     def _create_mock_runtime(self, item_id, is_staff, is_admin, anonymous_user_id):
         mock_runtime = Mock(
