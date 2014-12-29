@@ -214,7 +214,7 @@ class PeerAssessmentMixin(object):
                     "Submit your assessment & move to response #{response_number}"
                 ).format(response_number=(count + 2))
 
-        if peer_api.is_peer_workflow_submission_cancelled(self.submission_uuid):
+        if peer_api.is_workflow_submission_cancelled(self.submission_uuid):
             path = 'openassessmentblock/peer/oa_peer_waiting.html'
             # Sets the XBlock boolean to signal to Message that it WAS able to grab a submission
             self.no_peers = True

@@ -250,7 +250,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertEquals("openassessmentblock/staff_debug/student_info.html", path)
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
-    def test_cancelled_submission_peer_aseseement_render_path(self, xblock):
+    def test_cancelled_submission_peer_assessment_render_path(self, xblock):
         """
         Test that peer assessment path should be oa_peer_waiting.html for a cancelled submission.
         """

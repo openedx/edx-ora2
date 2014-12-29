@@ -127,7 +127,7 @@ class PeerWorkflow(models.Model):
         Returns:
             True/False
         """
-        return bool(self.cancellations.exists())
+        return self.cancellations.exists()
 
     @classmethod
     def get_by_submission_uuid(cls, submission_uuid):

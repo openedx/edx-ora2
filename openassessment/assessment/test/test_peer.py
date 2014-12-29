@@ -952,7 +952,7 @@ class TestPeerApi(CacheResetTest):
         workflow = PeerWorkflow.get_by_submission_uuid(buffy_sub["uuid"])
         self.assertTrue(workflow.is_cancelled)
 
-    def test_cancelled_submission_peerworkflow_score(self):
+    def test_cancelled_submission_peerworkflow_final_score(self):
         tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
 
@@ -981,12 +981,20 @@ class TestPeerApi(CacheResetTest):
             'must_be_graded_by': 1
         }
 
+        # Check the final score it should be 6.
+        score = peer_api.get_score(bob_sub["uuid"], requirements)
+        self.assertEqual(score['points_earned'], 6)
+
+        # Cancel the workflow for bob submission.
         peer_api.cancel_submission_peer_workflow(
             submission_uuid=bob_sub["uuid"],
             comments="Inappropriate language",
             cancelled_by_id=bob['student_id']
         )
+        # Check if the submission cancelled successfully.
+        self.assertTrue(peer_api.is_workflow_submission_cancelled(bob_sub["uuid"]))
 
+        # After cancellation the score should be 0.
         score = peer_api.get_score(bob_sub["uuid"], requirements)
         self.assertEqual(score['points_earned'], 0)
 

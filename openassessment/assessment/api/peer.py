@@ -1018,20 +1018,20 @@ def get_submission_cancellation(submission_uuid):
         raise PeerAssessmentInternalError(error_message)
 
 
-def is_peer_workflow_submission_cancelled(submission_uuid):
+def is_workflow_submission_cancelled(submission_uuid):
     """
-    Check if peer workflow submission is cancelled?
+    Check if workflow submission is cancelled?
 
     Args:
-        submission_uuid (str): The UUID of the peer workflow's submission.
+        submission_uuid (str): The UUID of the workflow's submission.
+
+    Returns:
+        True/False
     """
-    # Users must submit a response before they can peer-assess.
     if submission_uuid is None:
         return False
-
-    workflow = PeerWorkflow.get_by_submission_uuid(submission_uuid)
-    if workflow:
-        return workflow.is_cancelled
-
-    return False
-
+    try:
+        workflow = PeerWorkflow.get_by_submission_uuid(submission_uuid)
+        return workflow.is_cancelled if workflow else False
+    except PeerAssessmentWorkflowError:
+        return False
