@@ -1,24 +1,23 @@
 {
     "missing_feedback": {
-        "rubric": {
-            "prompt": "Test Prompt",
-            "criteria": [
-                {
-                    "order_num": 0,
-                    "name": "Test criterion",
-                    "prompt": "Test criterion prompt",
-                    "options": [
-                        {
-                            "order_num": 0,
-                            "points": 0,
-                            "name": "No",
-                            "explanation": "No explanation"
-                        }
-                    ]
-                }
-            ]
-        },
-        "prompt": "My new prompt.",
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "Test criterion",
+                "label": "Test criterion label",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "No",
+                        "label": "No label",
+                        "explanation": "No explanation"
+                    }
+                ]
+            }
+        ],
+        "prompts": [{"description": "My new prompt."}],
         "submission_due": "4014-02-27T09:46:28",
         "submission_start": "4014-02-10T09:46:28",
         "title": "My new title.",
@@ -36,9 +35,59 @@
                 "start": "",
                 "due": ""
             }
+        ]
+    },
+
+    "prompts_is_string": {
+        "title": "Foo",
+        "prompts": "My new prompt.",
+        "feedback_prompt": "Test Feedback Prompt",
+        "feedback_default_text": "Test default text...",
+        "submission_start": null,
+        "submission_due": null,
+        "allow_file_upload": true,
+        "leaderboard_show": true,
+        "allow_latex": false,
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "Test criterion",
+                "label": "Test criterion label",
+                "prompt": "Test criterion prompt",
+                "feedback": "optional",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "label": "No label",
+                        "name": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "label": "Yes label",
+                        "name": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ]
+            }
+        ],
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "start": "2014-02-27T09:46:28",
+                "due": "2014-03-01T00:00:00",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "self-assessment",
+                "start": "2014-04-01T00:00:00",
+                "due": "2014-06-01T00:00:00"
+            }
         ],
 
-        "expected-assessment": "peer-assessment",
-        "expected-criterion-prompt": "Test criterion prompt"
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"]
     }
 }
