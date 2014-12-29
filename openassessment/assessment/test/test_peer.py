@@ -1426,7 +1426,31 @@ class TestPeerApi(CacheResetTest):
         )
 
         # Check to see if Buffy is able to review Xander's submission.
-        # She isn't able to get the submission to assess.
+        # She isn't able to get the submission to assess because xander's
+        # submission is cancelled.
+        item = peer_api.get_submission_to_assess(buffy_sub['uuid'], 1)
+        self.assertIsNone(item)
+
+    def test_get_submission_to_assess_with_cancelled_submission(self):
+        buffy_sub, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
+        xander_sub, xander = self._create_student_and_submission("Xander", "Xander's answer")
+
+        # Check for a workflow for Buffy.
+        buffy_workflow = PeerWorkflow.get_by_submission_uuid(buffy_sub['uuid'])
+        self.assertIsNotNone(buffy_workflow)
+
+        # Buffy is going to review Xander's submission, so create a workflow
+        # item for Buffy.
+        PeerWorkflow.create_item(buffy_workflow, xander_sub["uuid"])
+
+        # Cancel the Buffy's submission.
+        PeerWorkflowCancellation.create(
+            workflow=buffy_workflow, comments='Inappropriate language.', cancelled_by_id=xander['student_id']
+        )
+
+        # Check to see if Buffy is able to review Xander's submission.
+        # She isn't able to get the submission to assess because it's own
+        # submission is cancelled.
         item = peer_api.get_submission_to_assess(buffy_sub['uuid'], 1)
         self.assertIsNone(item)
 
