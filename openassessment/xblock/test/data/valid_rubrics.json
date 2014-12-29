@@ -53,6 +53,58 @@
         }
     },
 
+    "change_prompts_number_before_release": {
+        "rubric": {
+            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}, {"description": "Test Prompt 3."}],
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "current_rubric": {
+            "prompts": [{"description": "Test Prompt 3."}, {"description": "Test Prompt 4."}],
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "is_released": false
+    },
+
     "change_points_before_release": {
         "rubric": {
             "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
@@ -388,6 +440,58 @@
             ]
         },
         "is_released": false
+    },
+
+    "change_prompts_description_after_release": {
+        "rubric": {
+            "prompts": [{"description": "Test Prompt 3."}, {"description": "Test Prompt 4."}],
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "current_rubric": {
+            "prompts": [{"description": "Test Prompt 3."}, {"description": "Test Prompt 4."}],
+            "criteria": [
+                {
+                    "order_num": 0,
+                    "name": "Test criterion",
+                    "prompt": "Test criterion prompt",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "No",
+                            "explanation": "No explanation"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 2,
+                            "name": "Yes",
+                            "explanation": "Yes explanation"
+                        }
+                    ]
+                }
+            ]
+        },
+        "is_released": true
     },
 
     "change_criteria_prompt_after_release": {

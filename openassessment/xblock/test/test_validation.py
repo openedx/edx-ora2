@@ -81,7 +81,7 @@ class AssessmentValidationTest(TestCase):
 class RubricValidationTest(TestCase):
 
     @ddt.file_data('data/valid_rubrics.json')
-    def test_valid_assessment(self, data):
+    def test_valid_rubric(self, data):
         current_rubric = data.get('current_rubric')
         is_released = data.get('is_released', False)
         is_example_based = data.get('is_example_based', False)
@@ -92,7 +92,7 @@ class RubricValidationTest(TestCase):
         self.assertEqual(msg, u'')
 
     @ddt.file_data('data/invalid_rubrics.json')
-    def test_invalid_assessment(self, data):
+    def test_invalid_rubric(self, data):
         current_rubric = data.get('current_rubric')
         is_released = data.get('is_released', False)
         is_example_based = data.get('is_example_based', False)
