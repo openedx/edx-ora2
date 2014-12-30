@@ -87,7 +87,6 @@ OpenAssessment.Prompt.prototype = {
     Returns:
         object literal of the form:
         {
-            'uuid': 'djn98jr4inu',
             'description': 'Write a nice long essay about anything.'
         }
     **/
@@ -95,15 +94,6 @@ OpenAssessment.Prompt.prototype = {
         var fields = {
             description: this.description()
         };
-
-        // New prompts won't have unique uuids assigned.
-        // By convention, we exclude the "uuid" key from the JSON dict
-        // sent to the server, and the server will assign a unique uuid.
-        var uuid = OpenAssessment.Fields.stringField(
-            $('.openassessment_prompt_uuid', this.element)
-        );
-        if (uuid !== "") { fields.uuid = uuid; }
-
         return fields;
     },
 
