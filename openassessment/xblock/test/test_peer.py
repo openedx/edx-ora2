@@ -103,6 +103,34 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         self.assertGreater(len(resp['msg']), 0)
 
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
+    def test_peer_assess_for_already_cancelled_submission(self, xblock):
+        # Create a submission for this problem from another user
+        student_item = xblock.get_student_item_dict()
+        submission = xblock.create_submission(student_item, self.SUBMISSION)
+
+        # Create a submission for the scorer (required before assessing another student)
+        another_student = copy.deepcopy(student_item)
+        another_submission = xblock.create_submission(another_student, self.SUBMISSION)
+
+        assessment = self.ASSESSMENT
+        assessment['submission_uuid'] = assessment.get('submission_uuid', submission.get('uuid', None))
+
+        # Pull the submission to assess
+        peer_api.get_submission_to_assess(another_submission['uuid'], 3)
+
+        peer_api.cancel_submission_peer_workflow(
+            submission_uuid=submission['uuid'],
+            comments="Inappropriate Language.",
+            cancelled_by_id=another_student['student_id']
+        )
+
+        # Submit an assessment and expect a failure
+        resp = self.request(xblock, 'peer_assess', json.dumps(assessment), response_format='json')
+
+        self.assertEqual(resp['success'], False)
+        self.assertGreater(len(resp['msg']), 0)
+
+    @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_missing_keys_in_request(self, xblock):
         for missing in ['criterion_feedback', 'overall_feedback', 'options_selected']:
             assessment = copy.deepcopy(self.ASSESSMENT)

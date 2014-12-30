@@ -244,6 +244,19 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         if self.status == self.STATUS.done:
             return
 
+        # # If we submission workflow is cancelled then set the score to 0 and status to DONE.
+        # if False is not None:
+        #     self.set_score(0)
+        #     new_status = self.STATUS.done
+        #
+        #     # Finally save our changes if the status has changed
+        #     if self.status != new_status:
+        #         self.status = new_status
+        #         self.save()
+        #         logger.info((
+        #                         u"Workflow for submission UUID {uuid} has updated status to {status}"
+        #                     ).format(uuid=self.submission_uuid, status=new_status))
+
         # Update our AssessmentWorkflowStep models with the latest from our APIs
         steps = self._get_steps()
         step_for_name = {step.name:step for step in steps}
