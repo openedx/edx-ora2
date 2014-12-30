@@ -46,13 +46,6 @@ OpenAssessment.EditPromptsView.prototype = {
     **/
     promptsDefinition: function() {
         var prompts = this.promptsContainer.getItemValues();
-
-        // Add order_num fields for prompts
-        for (var prompt_idx = 0; prompt_idx < prompts.length; prompt_idx++) {
-            var prompt = prompts[prompt_idx];
-            prompt.order_num = prompt_idx;
-        }
-
         return prompts;
     },
 
