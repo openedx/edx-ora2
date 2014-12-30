@@ -398,7 +398,7 @@
     {
         "template": "openassessmentblock/edit/oa_edit.html",
         "context": {
-            "prompt": "How much do you like waffles?",
+            "prompts": [{ "description": "How much do you like waffles?" }, { "description": "How much do you like waffles 2?" }],
             "title": "The most important of all questions.",
             "submission_start": "2014-01-02T12:15",
             "submission_due": "2014-10-01T04:53",
@@ -479,7 +479,7 @@
     {
         "template": "openassessmentblock/edit/oa_edit.html",
         "context": {
-            "prompt": "Test prompt",
+            "prompts": [{ "description": "How much do you like waffles?" }, { "description": "How much do you like waffles 2?" }],
             "title": "Test title",
             "submission_start": "2014-01-1T10:00:00",
             "submission_due": "2014-10-1T10:00:00",
