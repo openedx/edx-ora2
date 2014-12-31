@@ -1,9 +1,14 @@
 language: python
 python:
   - "2.7"
+env:
+  - DJANGO_VERSION=1.4
+  - DJANGO_VERSION=1.5
+  - DJANGO_VERSION=1.6
 install:
-  - "pip install coveralls"
-  - "make install"
+  - pip install coveralls
+  - pip install -q "Django<$DJANGO_VERSION.99"
+  - make install
 before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
