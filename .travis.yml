@@ -12,6 +12,7 @@ install:
   - "make install-test"
   - "make install-dev"
   - "make javascript"
+  - "pip freeze | grep celery"
 before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
