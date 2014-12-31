@@ -46,7 +46,7 @@ javascript:
 
 
 install-test:
-	pip install -q -r requirements/test.txt
+	pip install -r requirements/test.txt
 
 install-dev:
 	sudo gem install sass
