@@ -48,24 +48,6 @@ class StudioMixin(object):
         help="The order to display assessments in the editor."
     )
 
-    def studio_view(self, context=None):
-        """
-        Render the OpenAssessment XBlock for editing in Studio.
-
-        Args:
-            context: Not actively used for this view.
-
-        Returns:
-            (Fragment): An HTML fragment for editing the configuration of this XBlock.
-        """
-        rendered_template = get_template(
-            'openassessmentblock/edit/oa_edit.html'
-        ).render(Context(self.editor_context()))
-        frag = Fragment(rendered_template)
-        frag.add_javascript(pkg_resources.resource_string(__name__, "static/js/openassessment-studio.min.js"))
-        frag.initialize_js('OpenAssessmentEditor')
-        return frag
-
     def editor_context(self):
         """
         Update the XBlock's XML.
