@@ -13,6 +13,7 @@ install:
   - "make install-dev"
   - "make javascript"
   - "pip freeze | grep celery"
+  - "pip freeze | grep django"
 before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
