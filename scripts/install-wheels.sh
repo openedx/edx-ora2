@@ -19,4 +19,4 @@ echo "********************* NUMPY WHEEL INSTALLED *********************"
 echo "********************* INSTALLING OTHER WHEELS *********************"
 # Then install everything else
 pip install -v --use-wheel --no-index --upgrade --find-links=$WHEELHOUSE -r requirements/wheels.txt
-echo "********************* INSTALLING OTHER WHEELS *********************"
+echo "********************* OTHER WHEELS INSTALLED *********************"
