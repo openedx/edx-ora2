@@ -46,11 +46,15 @@ javascript:
 
 
 install-test:
+	@echo '***************** install-test started *****************'
 	pip install -r requirements/test.txt
+	@echo '***************** install-test finished *****************'
 
 install-dev:
+	@echo '***************** install-dev started *****************'
 	sudo gem install sass
 	pip install -q -r requirements/dev.txt
+	@echo '***************** install-dev finished *****************'
 
 install: install-system install-node install-wheels install-python install-js install-nltk-data install-test install-dev javascript
 
