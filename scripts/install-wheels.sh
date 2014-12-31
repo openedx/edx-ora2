@@ -13,10 +13,10 @@ WHEELHOUSE="scripts/data/wheelhouse"
 
 echo "********************* INSTALLING NUMPY WHEEL *********************"
 # Ensure that numpy is installed first; otherwise scipy won't be able to install
-pip install -v --use-wheel --no-index --upgrade --find-links=$WHEELHOUSE numpy
+pip install --use-wheel --no-index --upgrade --find-links=$WHEELHOUSE numpy
 echo "********************* NUMPY WHEEL INSTALLED *********************"
 
 echo "********************* INSTALLING OTHER WHEELS *********************"
 # Then install everything else
-pip install -v --use-wheel --no-index --upgrade --find-links=$WHEELHOUSE -r requirements/wheels.txt
+pip install --use-wheel --no-index --upgrade --find-links=$WHEELHOUSE -r requirements/wheels.txt
 echo "********************* OTHER WHEELS INSTALLED *********************"
