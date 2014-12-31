@@ -52,7 +52,7 @@ install-dev:
 	sudo gem install sass
 	pip install -q -r requirements/dev.txt
 
-install: install-system install-wheels install-python
+install: install-system install-node install-wheels install-python install-js install-nltk-data install-test install-dev javascript
 
 test:
 	./scripts/test.sh
