@@ -1,6 +1,9 @@
 -r base.txt
 -r test-acceptance.txt
 
+git+https://github.com/pmitros/django-pyfs.git@d175715e0fe3367ec0f1ee429c242d603f6e8b10#egg=djpyfs
+git+https://github.com/edx/xblock-sdk.git@3d9fe74906ad1d24195a14c225160b15387fe2a6#egg=xblock-sdk
+
 ddt==0.8.0
 django-nose==1.2
 mock==1.0.1
