@@ -22,7 +22,7 @@ lazy==1.1
 loremipsum==1.0.2
 python-dateutil==2.1
 python-memcached==1.48
-pytz==2012h
+pytz==2014.10
 South==0.7.6
 voluptuous==0.8.5
 
