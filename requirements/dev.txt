@@ -8,4 +8,4 @@ django-pdb==0.3.2
 sqlparse==0.1.10
 
 # runserver_plus
-Werkzeug==0.9.4
+Werkzeug==0.9.6

@@ -1,12 +1,14 @@
 -r base.txt
 -r test-acceptance.txt
 
+coverage==3.7.1
 ddt==0.8.0
-django-nose==1.2
+django-nose==1.3
 mock==1.0.1
 moto==0.2.22
-coverage==3.7.1
-pep8==1.4.6
+pep8==1.5.7
 pylint<1.0
 
-git+https://github.com/edx/i18n-tools.git@f5303e82dff368c7595884d9325aeea1d802da25#egg=i18n_tools
+git+https://github.com/pmitros/django-pyfs.git@d175715e0fe3367ec0f1ee429c242d603f6e8b10#egg=djpyfs
+git+https://github.com/edx/i18n-tools.git@56f048af9b6868613c14aeae760548834c495011#egg=i18n_tools
+git+https://github.com/edx/xblock-sdk.git@44d66a1091947fda130cb3e36135f6dfc3b135f0#egg=xblock-sdk
