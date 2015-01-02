@@ -270,7 +270,6 @@ OpenAssessment.ResponseView.prototype = {
     response: function(texts) {
         var sel = $('.submission__answer__part__text__value', this.element);
         if (typeof texts === 'undefined') {
-
             return sel.map(function() {
                 return $.trim($(this).val());
             }).get();
