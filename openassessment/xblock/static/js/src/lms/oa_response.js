@@ -269,7 +269,7 @@ OpenAssessment.ResponseView.prototype = {
     **/
     response: function(texts) {
         var sel = $('.submission__answer__part__text__value', this.element);
-        if (typeof text === 'undefined') {
+        if (typeof texts === 'undefined') {
             return sel.map(function() {
                 return $.trim($(this).val());
             }).get();
@@ -320,14 +320,16 @@ OpenAssessment.ResponseView.prototype = {
     **/
     handleResponseChanged: function() {
         // Enable the save/submit button only for non-blank responses
-        var isBlank = ($.trim(this.response()) !== '');
-        this.submitEnabled(isBlank);
+        var isNotBlank = !this.response().every(function(element, index, array) {
+                return $.trim(element) == '';
+            });
+        this.submitEnabled(isNotBlank);
 
         // Update the save button, save status, and "unsaved changes" warning
         // only if the response has changed
         if (this.responseChanged()) {
-            this.saveEnabled(isBlank);
-            this.previewEnabled(isBlank);
+            this.saveEnabled(isNotBlank);
+            this.previewEnabled(isNotBlank);
             this.saveStatus(gettext('This response has not been saved.'));
             this.unsavedWarningEnabled(true);
         }

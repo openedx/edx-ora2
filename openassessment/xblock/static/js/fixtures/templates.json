@@ -86,7 +86,12 @@
     {
         "template": "openassessmentblock/response/oa_response.html",
         "context": {
-            "saved_response": "",
+            "saved_response": {"answer":
+                {"parts": [
+                    { "text": "", "prompt": { "description": "Prompt 1" }},
+                    { "text": "", "prompt": { "description": "Prompt 2" }}
+                ]}
+            },
             "save_status": "This response has not been saved.",
             "submit_enabled": false,
             "submission_due": ""
