@@ -126,23 +126,29 @@ describe("OpenAssessment.ResponseView", function() {
         view.setAutoSaveEnabled(false);
     });
 
+    it("updates and retrieves response text correctly", function() {
+        view.response(['Test response 1', 'Test response 2']);
+        expect(view.response()[0]).toBe('Test response 1');
+        expect(view.response()[1]).toBe('Test response 2');
+    });
+
     it("updates submit/save buttons and save status when response text changes", function() {
         // Response is blank --> save/submit buttons disabled
-        view.response('');
+        view.response(['', '']);
         view.handleResponseChanged();
         expect(view.submitEnabled()).toBe(false);
         expect(view.saveEnabled()).toBe(false);
         expect(view.saveStatus()).toContain('This response has not been saved.');
 
         // Response is whitespace --> save/submit buttons disabled
-        view.response('               \n      \n      ');
+        view.response(['               \n      \n      ', ' ']);
         view.handleResponseChanged();
         expect(view.submitEnabled()).toBe(false);
         expect(view.saveEnabled()).toBe(false);
         expect(view.saveStatus()).toContain('This response has not been saved.');
 
         // Response is not blank --> submit button enabled
-        view.response('Test response');
+        view.response(['Test response 1', ' ']);
         view.handleResponseChanged();
         expect(view.submitEnabled()).toBe(true);
         expect(view.saveEnabled()).toBe(true);
@@ -158,7 +164,7 @@ describe("OpenAssessment.ResponseView", function() {
         expect(view.saveStatus()).toContain('saved but not submitted');
 
         // Response is not blank --> submit button enabled
-        view.response('Test response');
+        view.response(['Test response 1', 'Test response 2']);
         view.save();
         expect(view.submitEnabled()).toBe(true);
         expect(view.saveEnabled()).toBe(false);
@@ -167,21 +173,21 @@ describe("OpenAssessment.ResponseView", function() {
 
     it("shows unsaved draft only when response text has changed", function() {
         // Save the initial response
-        view.response('Lorem ipsum');
+        view.response(['Test response 1', 'Test response 2']);
         view.save();
         expect(view.saveEnabled()).toBe(false);
         expect(view.saveStatus()).toContain('saved but not submitted');
 
         // Keep the text the same, but trigger an update
         // Should still be saved
-        view.response('Lorem ipsum');
+        view.response(['Test response 1', 'Test response 2']);
         view.handleResponseChanged();
         expect(view.saveEnabled()).toBe(false);
         expect(view.saveStatus()).toContain('saved but not submitted');
 
         // Change the text
         // This should cause it to change to unsaved draft
-        view.response('changed ');
+        view.response(['Test response 1', 'Test response 3']);
         view.handleResponseChanged();
         expect(view.saveEnabled()).toBe(true);
         expect(view.saveStatus()).toContain('This response has not been saved.');
@@ -189,16 +195,16 @@ describe("OpenAssessment.ResponseView", function() {
 
     it("sends the saved submission to the server", function() {
         spyOn(server, 'save').andCallThrough();
-        view.response('Test response');
+        view.response(['Test response 1', 'Test response 2']);
         view.save();
-        expect(server.save).toHaveBeenCalledWith('Test response');
+        expect(server.save).toHaveBeenCalledWith(['Test response 1', 'Test response 2']);
     });
 
     it("submits a response to the server", function() {
         spyOn(server, 'submit').andCallThrough();
-        view.response('Test response');
+        view.response(['Test response 1', 'Test response 2']);
         view.submit();
-        expect(server.submit).toHaveBeenCalledWith('Test response');
+        expect(server.submit).toHaveBeenCalledWith(['Test response 1', 'Test response 2']);
     });
 
     it("allows the user to cancel before submitting", function() {
@@ -207,7 +213,7 @@ describe("OpenAssessment.ResponseView", function() {
         spyOn(server, 'submit').andCallThrough();
 
         // Start a submission
-        view.response('Test response');
+        view.response(['Test response 1', 'Test response 2']);
         view.submit();
 
         // Expect that the submission was not sent to the server
@@ -221,7 +227,7 @@ describe("OpenAssessment.ResponseView", function() {
             return $.Deferred(function(defer) {}).promise();
         });
 
-        view.response('Test response');
+        view.response(['Test response 1', 'Test response 2']);
         view.submit();
         expect(view.submitEnabled()).toBe(false);
     });
@@ -234,7 +240,7 @@ describe("OpenAssessment.ResponseView", function() {
             }).promise();
         });
 
-        view.response('Test response');
+        view.response(['Test response 1', 'Test response 2']);
         view.submit();
 
         // Expect the submit button to have been re-enabled
@@ -247,7 +253,7 @@ describe("OpenAssessment.ResponseView", function() {
         spyOn(server, 'submit').andCallThrough();
 
         // Start a submission
-        view.response('Test response');
+        view.response(['Test response 1', 'Test response 2']);
         view.submit();
 
         // Expect the submit button to be re-enabled
@@ -264,7 +270,7 @@ describe("OpenAssessment.ResponseView", function() {
         spyOn(view, 'load');
         spyOn(baseView, 'loadAssessmentModules');
 
-        view.response('Test response');
+        view.response(['Test response 1', 'Test response 2']);
         view.submit();
 
         // Expect the current and next step to have been reloaded
@@ -277,7 +283,7 @@ describe("OpenAssessment.ResponseView", function() {
         expect(view.unsavedWarningEnabled()).toBe(false);
 
         // Change the text, then expect the unsaved warning to be enabled.
-        view.response('Lorem ipsum');
+        view.response(['Lorem ipsum 1', 'Lorem ipsum 2']);
         view.handleResponseChanged();
 
         // Expect the unsaved work warning to be enabled
@@ -286,7 +292,7 @@ describe("OpenAssessment.ResponseView", function() {
 
     it("disables the unsaved work warning when the user saves a response", function() {
         // Change the text, then expect the unsaved warning to be enabled.
-        view.response('Lorem ipsum');
+        view.response(['Lorem ipsum 1', 'Lorem ipsum 2']);
         view.handleResponseChanged();
         expect(view.unsavedWarningEnabled()).toBe(true);
 
@@ -297,7 +303,7 @@ describe("OpenAssessment.ResponseView", function() {
 
     it("disables the unsaved work warning when the user submits a response", function() {
         // Change the text, then expect the unsaved warning to be enabled.
-        view.response('Lorem ipsum');
+        view.response(['Lorem ipsum 1', 'Lorem ipsum 2']);
         view.handleResponseChanged();
         expect(view.unsavedWarningEnabled()).toBe(true);
 
@@ -314,7 +320,7 @@ describe("OpenAssessment.ResponseView", function() {
         expect(view.saveStatus()).toContain('not been saved');
 
         // Change the response
-        view.response('Lorem ipsum');
+        view.response(['Lorem ipsum 1', 'Lorem ipsum 2']);
         view.handleResponseChanged();
 
         // Usually autosave would be called by a timer.
@@ -356,7 +362,7 @@ describe("OpenAssessment.ResponseView", function() {
         spyOn(server, 'save').andCallFake(function() { return errorPromise; });
 
         // Change the response and save it
-        view.response('Lorem ipsum');
+        view.response(['Lorem ipsum 1', 'Lorem ipsum 2']);
         view.handleResponseChanged();
         view.save();
 
@@ -377,7 +383,7 @@ describe("OpenAssessment.ResponseView", function() {
         view.AUTO_SAVE_WAIT = 900000;
 
         // Change the response
-        view.response('Lorem ipsum');
+        view.response(['Lorem ipsum 1', 'Lorem ipsum 2']);
         view.handleResponseChanged();
 
         // Autosave
