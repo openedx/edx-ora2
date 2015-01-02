@@ -20,7 +20,7 @@ class TestSelfAssessment(XBlockHandlerTestCase):
 
     maxDiff = None
 
-    SUBMISSION = u'ՇﻉรՇ รપ๒๓ٱรรٱѻก'
+    SUBMISSION = (u'ՇﻉรՇ', u'รપ๒๓ٱรรٱѻก')
 
     ASSESSMENT = {
         'options_selected': {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ﻉซƈﻉɭɭﻉกՇ', u'Form': u'Fair'},
@@ -236,7 +236,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
     def test_open_done_status(self, xblock):
         # Simulate the workflow status being "done"
         xblock.create_submission(
-            xblock.get_student_item_dict(), u"Ⱥɨn'ŧ ɨŧ fᵾnꝁɏ"
+            xblock.get_student_item_dict(), (u"Ⱥɨn'ŧ ɨŧ fᵾnꝁɏ 1", u"Ⱥɨn'ŧ ɨŧ fᵾnꝁɏ 2")
         )
         self._assert_path_and_context(
             xblock, 'openassessmentblock/self/oa_self_complete.html', {'allow_latex': False},
@@ -258,7 +258,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
     def test_open_self_assessing(self, xblock):
         # Simulate the workflow being in the self assessment step
         submission = xblock.create_submission(
-            xblock.get_student_item_dict(), u"Đøɨn' ɨŧ ŧø đɇȺŧħ"
+            xblock.get_student_item_dict(), (u"Đøɨn' ɨŧ ŧø đɇȺŧħ 1", u"Đøɨn' ɨŧ ŧø đɇȺŧħ 2")
         )
         self._assert_path_and_context(
             xblock, 'openassessmentblock/self/oa_self_assessment.html',
@@ -279,7 +279,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
         # Simulate the workflow being in the self assessment step
         # and we've created a self-assessment
         submission = xblock.create_submission(
-            xblock.get_student_item_dict(), u"Đøɨn' ɨŧ ŧø đɇȺŧħ"
+            xblock.get_student_item_dict(), (u"Đøɨn' ɨŧ ŧø đɇȺŧħ 1", u"Đøɨn' ɨŧ ŧø đɇȺŧħ 2")
         )
         self_api.create_assessment(
             submission['uuid'],
@@ -299,7 +299,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
         # Simulate the workflow being in the self assessment step
         # Since we're past the due date, the step should appear closed.
         submission = xblock.create_submission(
-            xblock.get_student_item_dict(), u"Đøɨn' ɨŧ ŧø đɇȺŧħ"
+            xblock.get_student_item_dict(), (u"Đøɨn' ɨŧ ŧø đɇȺŧħ 1", u"Đøɨn' ɨŧ ŧø đɇȺŧħ 2")
         )
         self._assert_path_and_context(
             xblock,
@@ -315,7 +315,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
         # Even though the problem is closed, we should still see
         # that we completed the step.
         submission = xblock.create_submission(
-            xblock.get_student_item_dict(), u"Đøɨn' ɨŧ ŧø đɇȺŧħ"
+            xblock.get_student_item_dict(), (u"Đøɨn' ɨŧ ŧø đɇȺŧħ 1", u"Đøɨn' ɨŧ ŧø đɇȺŧħ 2")
         )
         self_api.create_assessment(
             submission['uuid'],
@@ -341,7 +341,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
         # Simulate the workflow being in the self assessment step
         # and we've created a self-assessment
         submission = xblock.create_submission(
-            xblock.get_student_item_dict(), u"Test submission"
+            xblock.get_student_item_dict(), (u"Test submission 1", u"Test submission 2")
         )
 
         xblock.get_workflow_info = mock.Mock(return_value={
