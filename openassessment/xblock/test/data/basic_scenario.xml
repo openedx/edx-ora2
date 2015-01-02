@@ -4,6 +4,9 @@
         <prompt>
             <description>Given the state of the world today, what do you think should be done to combat poverty? Please answer in a short essay of 200-300 words.</description>
         </prompt>
+        <prompt>
+            <description>Given the state of the world today, what do you think should be done to combat pollution?</description>
+        </prompt>
     </prompts>
     <rubric>
         <criterion>
