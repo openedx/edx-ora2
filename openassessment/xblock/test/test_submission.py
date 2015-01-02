@@ -5,17 +5,23 @@ Test submission to the OpenAssessment XBlock.
 
 import json
 import datetime as dt
-import pytz
 from mock import patch, Mock
-from openassessment.workflow import api as workflow_api
+import pytz
+
 from submissions import api as sub_api
 from submissions.api import SubmissionRequestError, SubmissionInternalError
+
+from openassessment.workflow import api as workflow_api
+from openassessment.xblock.data_conversion import create_submission_dict, prepare_submission_for_serialization
+
 from .base import XBlockHandlerTestCase, scenario
 
 
 class SubmissionTest(XBlockHandlerTestCase):
 
-    SUBMISSION = json.dumps({"submission": "This is my answer to this test question!"})
+    SUBMISSION = json.dumps({
+        "submission": ["This is my answer to the first question!", "This is my answer to the second question!"]
+    })
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_submit_submission(self, xblock):
@@ -26,7 +32,7 @@ class SubmissionTest(XBlockHandlerTestCase):
     def test_submit_answer_too_long(self, xblock):
         # Maximum answer length is 100K, once the answer has been JSON-encoded
         long_submission = json.dumps({
-            'submission': 'longcat is long ' * 100000
+            "submission": ["This is my answer to the first question!" * 100000, "This is my answer to the second question!"]
         })
         resp = self.request(xblock, 'submit', long_submission, response_format='json')
         self.assertFalse(resp[0])
@@ -117,12 +123,12 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         # the submission.
         submission = xblock.create_submission(
             xblock.get_student_item_dict(),
-            'A man must have a code'
+            ('A man must have a code', 'A man must have an umbrella too.')
         )
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_submitted.html',
             {
-                'student_submission': submission,
+                'student_submission': create_submission_dict(submission, xblock.prompts),
                 'allow_file_upload': False,
                 'has_peer': True,
                 'has_self': True,
@@ -136,7 +142,11 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             xblock, 'openassessmentblock/response/oa_response.html',
             {
                 'allow_file_upload': False,
-                'saved_response': '',
+                'saved_response': create_submission_dict({
+                    'answer': prepare_submission_for_serialization(
+                        ("", "")
+                    )
+                }, xblock.prompts),
                 'save_status': 'This response has not been saved.',
                 'submit_enabled': False,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
@@ -152,7 +162,11 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             xblock, 'openassessmentblock/response/oa_response.html',
             {
                 'allow_file_upload': False,
-                'saved_response': '',
+                'saved_response': create_submission_dict({
+                    'answer': prepare_submission_for_serialization(
+                        ("", "")
+                    )
+                }, xblock.prompts),
                 'save_status': 'This response has not been saved.',
                 'submit_enabled': False,
                 'has_peer': True,
@@ -164,7 +178,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
     @scenario('data/submission_open.xml', user_id="Bob")
     def test_open_saved_response(self, xblock):
         # Save a response
-        payload = json.dumps({'submission': 'A man must have a code'})
+        payload = json.dumps({'submission': ('A man must have a code', 'A man must have an umbrella too.')})
         resp = self.request(xblock, 'save_submission', payload, response_format='json')
         self.assertTrue(resp['success'])
 
@@ -172,7 +186,11 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             xblock, 'openassessmentblock/response/oa_response.html',
             {
                 'allow_file_upload': False,
-                'saved_response': 'A man must have a code',
+                'saved_response': create_submission_dict({
+                    'answer': prepare_submission_for_serialization(
+                        ('A man must have a code', 'A man must have an umbrella too.')
+                    )
+                }, xblock.prompts),
                 'save_status': 'This response has been saved but not submitted.',
                 'submit_enabled': True,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
@@ -186,13 +204,13 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
     def test_open_submitted(self, xblock):
         submission = xblock.create_submission(
             xblock.get_student_item_dict(),
-            'A man must have a code'
+            ('A man must have a code', 'A man must have an umbrella too.')
         )
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_submitted.html',
             {
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
-                'student_submission': submission,
+                'student_submission': create_submission_dict(submission, xblock.prompts),
                 'allow_file_upload': False,
                 'has_peer': True,
                 'has_self': True,
@@ -256,13 +274,13 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
     def test_closed_submitted(self, xblock):
         submission = xblock.create_submission(
             xblock.get_student_item_dict(),
-            'A man must have a code'
+            ('A man must have a code', 'A man must have an umbrella too.')
         )
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_submitted.html',
             {
                 'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
-                'student_submission': submission,
+                'student_submission': create_submission_dict(submission, xblock.prompts),
                 'allow_file_upload': False,
                 'has_peer': False,
                 'has_self': True,
@@ -275,7 +293,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         # Create a submission
         submission = xblock.create_submission(
             xblock.get_student_item_dict(),
-            'A man must have a code'
+            ('A man must have a code', 'A man must have an umbrella too.')
         )
 
         # Simulate the user receiving a grade
@@ -288,7 +306,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             xblock, 'openassessmentblock/response/oa_response_graded.html',
             {
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
-                'student_submission': submission,
+                'student_submission': create_submission_dict(submission, xblock.prompts),
                 'allow_file_upload': False,
                 'has_peer': True,
                 'has_self': True,
@@ -301,7 +319,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         # Create a submission
         submission = xblock.create_submission(
             xblock.get_student_item_dict(),
-            'A man must have a code'
+            ('A man must have a code', 'A man must have an umbrella too.')
         )
 
         # Simulate the user receiving a grade
@@ -314,7 +332,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             xblock, 'openassessmentblock/response/oa_response_graded.html',
             {
                 'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
-                'student_submission': submission,
+                'student_submission': create_submission_dict(submission, xblock.prompts),
                 'allow_file_upload': False,
                 'has_peer': False,
                 'has_self': True,
@@ -330,7 +348,10 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         self.assertIn('Monday, May 6, 2999 00:00 UTC', resp)
 
         # Create a submission for the user
-        xblock.create_submission(xblock.get_student_item_dict(), u'Ⱥ mȺn mᵾsŧ ħȺvɇ Ⱥ ȼøđɇ.')
+        xblock.create_submission(
+            xblock.get_student_item_dict(),
+            (u'Ⱥ mȺn mᵾsŧ ħȺvɇ Ⱥ ȼøđɇ.', u'∀ ɯɐu ɯnsʇ ɥɐʌǝ ɐu nɯqɹǝllɐ ʇoo˙'),
+        )
 
         # Expect that the response step is "submitted"
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
