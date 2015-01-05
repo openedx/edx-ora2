@@ -207,9 +207,12 @@ class OpenAssessmentBlock(
 
     def get_anonymous_user_id(self, username, course_id):
         """
+        Get the anonymous user id from Xblock user service.
+
         Args:
-            username: user's name entered by staff to get info.
-            course_id: course id.
+            username(str): user's name entered by staff to get info.
+            course_id(str): course id.
+
         Returns:
             A unique id for (user, course) pair
         """
@@ -220,6 +223,8 @@ class OpenAssessmentBlock(
 
         See also: submissions.api for details.
 
+        Args:
+            anonymous_user_id(str):
         Returns:
             (dict): The student item associated with this XBlock instance. This
                 includes the student id, item id, and course id.

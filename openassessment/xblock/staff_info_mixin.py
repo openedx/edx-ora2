@@ -194,11 +194,11 @@ class StaffInfoMixin(object):
 
     @XBlock.handler
     @require_course_staff("STUDENT_INFO")
-    def render_student_info(self, data, suffix=''): # pylint: disable=W0613
+    def render_student_info(self, data, suffix=''):  # pylint: disable=W0613
         """
         Renders all relative information for a specific student's workflow.
 
-        Given a student's ID, we can render a staff-only section of the page
+        Given a student's username, we can render a staff-only section of the page
         with submissions and assessments specific to the student.
 
         Must be course staff to render this view.
