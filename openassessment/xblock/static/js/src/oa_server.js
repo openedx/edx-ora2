@@ -121,14 +121,14 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
         /**
          Load the Student Info section in Staff Info.
          **/
-        studentInfo: function(student_id) {
+        studentInfo: function(student_username) {
             var url = this.url('render_student_info');
             return $.Deferred(function(defer) {
                 $.ajax({
                     url: url,
                     type: "POST",
                     dataType: "html",
-                    data: {student_id: student_id}
+                    data: {student_username: student_username}
                 }).done(function(data) {
                         defer.resolveWith(this, [data]);
                     }).fail(function(data) {
