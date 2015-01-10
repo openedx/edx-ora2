@@ -34,7 +34,7 @@ RUBRIC_OPTIONS = [
 ]
 
 RUBRIC = {
-    'prompt': u"МоъЎ-ↁіск; оѓ, ГЂэ ЩЂаlэ",
+    'prompts': [{"description": u"МоъЎ-ↁіск; оѓ, ГЂэ ЩЂаlэ"}],
     'criteria': [
         {
             "order_num": 0,

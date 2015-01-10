@@ -122,7 +122,7 @@ class AIGradingWorkflowTest(CacheResetTest):
 
         # Create a rubric with a similar structure, but different prompt
         similar_rubric_dict = copy.deepcopy(RUBRIC)
-        similar_rubric_dict['prompt'] = 'Different prompt!'
+        similar_rubric_dict['prompts'] = [{"description": 'Different prompt!'}]
         self.similar_rubric = rubric_from_dict(similar_rubric_dict)
 
     def test_assign_most_recent_classifier_set(self):
