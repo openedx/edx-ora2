@@ -133,7 +133,7 @@ class SelfAssessmentMixin(object):
                 data['options_selected'],
                 clean_criterion_feedback(self.rubric_criteria, data['criterion_feedback']),
                 data['overall_feedback'],
-                create_rubric_dict(self.prompt, self.rubric_criteria_with_labels)
+                create_rubric_dict(self.prompts, self.rubric_criteria_with_labels)
             )
             self.publish_assessment_event("openassessmentblock.self_assess", assessment)
 

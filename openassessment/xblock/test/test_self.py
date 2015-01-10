@@ -286,7 +286,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             xblock.get_student_item_dict()['student_id'],
             {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ﻉซƈﻉɭɭﻉกՇ', u'Form': u'Fair'},
             {}, "Good job!",
-            create_rubric_dict(xblock.prompt, xblock.rubric_criteria)
+            create_rubric_dict(xblock.prompts, xblock.rubric_criteria)
         )
         self._assert_path_and_context(
             xblock, 'openassessmentblock/self/oa_self_complete.html', {'allow_latex': False},
@@ -322,7 +322,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             xblock.get_student_item_dict()['student_id'],
             {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ﻉซƈﻉɭɭﻉกՇ', u'Form': u'Fair'},
             {}, "Good job!",
-            create_rubric_dict(xblock.prompt, xblock.rubric_criteria)
+            create_rubric_dict(xblock.prompts, xblock.rubric_criteria)
         )
 
         # This case probably isn't possible, because presumably when we create

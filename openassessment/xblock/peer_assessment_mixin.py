@@ -86,7 +86,7 @@ class PeerAssessmentMixin(object):
                     data['options_selected'],
                     clean_criterion_feedback(self.rubric_criteria_with_labels, data['criterion_feedback']),
                     data['overall_feedback'],
-                    create_rubric_dict(self.prompt, self.rubric_criteria_with_labels),
+                    create_rubric_dict(self.prompts, self.rubric_criteria_with_labels),
                     assessment_ui_model['must_be_graded_by']
                 )
 

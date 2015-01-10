@@ -138,7 +138,7 @@ class StaffInfoMixin(object):
         context['display_reschedule_unfinished_tasks'] = display_ai_staff_info
         if display_ai_staff_info:
             context['classifierset'] = ai_api.get_classifier_set_info(
-                create_rubric_dict(self.prompt, self.rubric_criteria_with_labels),
+                create_rubric_dict(self.prompts, self.rubric_criteria_with_labels),
                 example_based_assessment['algorithm_id'],
                 student_item['course_id'],
                 student_item['item_id']
@@ -179,7 +179,7 @@ class StaffInfoMixin(object):
             examples = assessment["examples"]
             try:
                 workflow_uuid = ai_api.train_classifiers(
-                    create_rubric_dict(self.prompt, self.rubric_criteria_with_labels),
+                    create_rubric_dict(self.prompts, self.rubric_criteria_with_labels),
                     convert_training_examples_list_to_dict(examples),
                     student_item_dict.get('course_id'),
                     student_item_dict.get('item_id'),
