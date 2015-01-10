@@ -45,7 +45,7 @@ class Command(BaseCommand):
     ]
 
     RUBRIC = {
-        'prompt': u"Test prompt",
+        'prompts': [{"description": u"Test prompt"}],
         'criteria': [
             {
                 "order_num": 0,

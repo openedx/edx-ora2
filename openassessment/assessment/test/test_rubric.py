@@ -161,7 +161,7 @@ class RubricHashTest(CacheResetTest):
 
         # Same structure, but different text should have the same structure hash
         altered_rubric = copy.deepcopy(RUBRIC)
-        altered_rubric['prompt'] = 'altered!'
+        altered_rubric['prompts'] = [{"description": 'altered!'}]
         for criterion in altered_rubric['criteria']:
             criterion['prompt'] = 'altered!'
             for option in criterion['options']:

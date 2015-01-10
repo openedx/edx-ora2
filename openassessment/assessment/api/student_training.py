@@ -127,7 +127,7 @@ def validate_training_examples(rubric, examples):
         >>> ]
         >>>
         >>> rubric = {
-        >>>     "prompt": "Write an essay!",
+        >>>     "prompts": [{"description": "Write an essay!"}],
         >>>     "criteria": [
         >>>         {
         >>>             "order_num": 0,
@@ -324,7 +324,7 @@ def get_training_example(submission_uuid, rubric, examples):
         {
             'answer': u'Lorem ipsum',
             'rubric': {
-                "prompt": "Write an essay!",
+                "prompts": [{"description": "Write an essay!"}],
                 "criteria": [
                     {
                         "order_num": 0,

@@ -1,7 +1,7 @@
 {
     "valid": {
         "rubric": {
-            "prompt": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽",
+            "prompts": [{"description": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽"}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -78,7 +78,7 @@
 
     "missing_options": {
         "rubric": {
-            "prompt": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽",
+            "prompts": [{"description": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽"}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -148,7 +148,7 @@
 
     "extra_options": {
         "rubric": {
-            "prompt": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽",
+            "prompts": [{"description": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽"}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -225,7 +225,7 @@
 
     "missing_and_extra_options": {
         "rubric": {
-            "prompt": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽",
+            "prompts": [{"description": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽"}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -291,7 +291,7 @@
 
     "invalid_option_name": {
         "rubric": {
-            "prompt": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽",
+            "prompts": [{"description": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽"}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -374,7 +374,7 @@
 
     "rubric_missing_options_list": {
         "rubric": {
-            "prompt": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽",
+            "prompts": [{"description": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽"}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -397,7 +397,7 @@
 
     "rubric_missing_criteria_list": {
         "rubric": {
-            "prompt": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽"
+            "prompts": [{"description": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽"}]
         },
         "examples": [
             {
@@ -413,7 +413,7 @@
 
     "example_missing_keys": {
         "rubric": {
-            "prompt": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽",
+            "prompts": [{"description": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽"}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -478,7 +478,7 @@
 
     "feedback_only_criterion": {
         "rubric": {
-            "prompt": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽",
+            "prompts": [{"description": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽"}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -518,7 +518,7 @@
 
     "feedback_only_criterion_extra_score": {
         "rubric": {
-            "prompt": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽",
+            "prompts": [{"description": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽"}],
             "criteria": [
                 {
                     "order_num": 0,
@@ -561,7 +561,7 @@
 
     "feedback_only_all_criteria": {
         "rubric": {
-            "prompt": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽",
+            "prompts": [{"description": "𝓣𝓮𝓼𝓽 𝓹𝓻𝓸𝓶𝓹𝓽"}],
             "criteria": [
                 {
                     "order_num": 1,

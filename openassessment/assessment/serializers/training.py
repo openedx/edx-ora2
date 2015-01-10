@@ -107,7 +107,7 @@ def deserialize_training_examples(examples, rubric_dict):
         >>> ]
         >>>
         >>> rubric = {
-        >>>     "prompt": "Write an essay!",
+        >>>     "prompts": [{"description": "Write an essay!"}],
         >>>     "criteria": [
         >>>         {
         >>>             "order_num": 0,
