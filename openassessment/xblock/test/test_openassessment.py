@@ -61,7 +61,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         xblock_fragment = self.runtime.render(xblock, "student_view")
         body_html = xblock_fragment.body_html()
         present_prompt_text = "you'll provide a response to the question"
-        missing_article = u'<article class="openassessment__prompt'
+        missing_article = u'<article class="submission__answer__part__prompt'
         self.assertIn(present_prompt_text, body_html)
         self.assertNotIn(missing_article, body_html)
 
