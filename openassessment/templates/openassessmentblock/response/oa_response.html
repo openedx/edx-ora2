@@ -54,10 +54,10 @@
                     <ol class="list list--fields response__submission__content">
                         {% for part in saved_response.answer.parts %}
                             <li class="submission__answer__part">
-                                <article class="openassessment__prompt ui-toggle-visibility">
-                                    <h2 class="openassessment__prompt__title">{% trans "The prompt for this assignment" %}</h2>
+                                <article class="submission__answer__part__prompt ui-toggle-visibility">
+                                    <h2 class="submission__answer__part__prompt__title">{% trans "The prompt for this assignment" %}</h2>
 
-                                    <div class="openassessment__prompt__copy ui-toggle-visibility__content">
+                                    <div class="submission__answer__part__prompt__copy ui-toggle-visibility__content">
                                         {{ part.prompt.description|linebreaks }}
                                     </div>
                                 </article>
