@@ -134,3 +134,24 @@
   }
 
 }
+
+// UI - cancel submission (action)
+.openassessment__staff-info__cancel__submission {
+
+  .staff-info__cancel-submission__content {
+
+    .cancel_submission_comments {
+      width: 100%;
+      min-height: ($baseline-v*5);
+      text-align: left;
+    }
+
+    .list--actions {
+      .action--submit {
+        margin: ($baseline-v/2) 0;
+      }
+    }
+
+  }
+
+}

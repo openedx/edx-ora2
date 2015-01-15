@@ -5,6 +5,7 @@ import logging
 from webob import Response
 from xblock.core import XBlock
 from openassessment.assessment.api import student_training
+from openassessment.workflow import api as workflow_api
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.data_conversion import convert_training_examples_list_to_dict
 from .resolve_dates import DISTANT_FUTURE
@@ -83,7 +84,9 @@ class StudentTrainingMixin(object):
         # shows as complete.
         # We're assuming here that the training step always precedes the other assessment steps
         # (peer/self) -- we may need to make this more flexible later.
-        if workflow_status and workflow_status != "training":
+        if workflow_status == 'cancelled':
+            template = 'openassessmentblock/student_training/student_training_cancelled.html'
+        elif workflow_status and workflow_status != "training":
             template = 'openassessmentblock/student_training/student_training_complete.html'
 
         # If the problem is closed, then do not allow students to access the training step

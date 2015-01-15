@@ -1,0 +1,23 @@
+{% extends "openassessmentblock/self/oa_self_assessment.html" %}
+{% load i18n %}
+{% load tz %}
+
+
+{% block list_item %}
+<li id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment">
+{% endblock %}
+
+{% block title %}
+<span class="step__status">
+  <span class="step__status__label">{% trans "This step's status" %}:</span>
+  <span class="step__status__value">
+    <i class="ico icon-warning-sign"></i>
+    <span class="copy">
+        {% trans "Cancelled" %}
+    </span>
+  </span>
+</span>
+{% endblock %}
+
+{% block body %}
+{% endblock %}

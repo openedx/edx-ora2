@@ -97,7 +97,7 @@
 
   .list--actions {
     list-style: none !important;
-    @include padding-left(0);
+    @include padding-left(0 !important);
     text-indent: 0 !important;
 
     li {
@@ -203,5 +203,9 @@
 
   .ui-staff__title {
     color: $copy-staff-color !important;
+  }
+
+  .openassessment__staff-info__cancel__submission {
+    margin-bottom: ($baseline-v) !important;
   }
 }

@@ -145,6 +145,13 @@ THURSDAY = datetime.datetime(2007, 9, 16, 0, 0, 0, 0, pytz.UTC)
 
 STEPS = ['peer', 'self']
 
+STEP_REQUIREMENTS = {
+    "peer": {
+        "must_grade": 1,
+        "must_be_graded_by": 1
+    }
+}
+
 @ddt
 class TestPeerApi(CacheResetTest):
     """
@@ -882,6 +889,82 @@ class TestPeerApi(CacheResetTest):
         item = buffy_workflow.find_active_assessments()
         self.assertEqual(xander_answer["uuid"], item.submission_uuid)
 
+        # Cancel the Xander's submission.
+        xander_workflow = PeerWorkflow.get_by_submission_uuid(xander_answer['uuid'])
+        workflow_api.cancel_workflow(
+            submission_uuid=xander_answer["uuid"], comments='Cancellation reason', cancelled_by_id=_['student_id'],
+            assessment_requirements=STEP_REQUIREMENTS
+        )
+
+        # Check to see if Buffy is actively reviewing Xander's submission.
+        # She isn't able to get the submission to assess.
+        item = buffy_workflow.find_active_assessments()
+        self.assertIsNone(item)
+
+    def test_submission_cancelled_while_being_assessed(self):
+        # Test that if student pulls the submission for review and the
+        # submission is cancelled their assessment will not be accepted.
+        buffy_sub, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
+        xander_sub, xander = self._create_student_and_submission("Xander", "Xander's answer")
+
+        # Check for a workflow for Buffy.
+        buffy_workflow = PeerWorkflow.get_by_submission_uuid(buffy_sub['uuid'])
+        self.assertIsNotNone(buffy_workflow)
+
+        # Buffy is going to review Xander's submission, so create a workflow
+        # item for Buffy.
+        PeerWorkflow.create_item(buffy_workflow, xander_sub["uuid"])
+
+        # Check to see if Buffy is actively reviewing Xander's submission.
+        submission = peer_api.get_submission_to_assess(buffy_sub['uuid'], 1)
+        self.assertEqual(xander_sub["uuid"], submission['uuid'])
+
+        # Cancel the Xander's submission.
+        workflow_api.cancel_workflow(
+            submission_uuid=xander_sub['uuid'],
+            comments="Inappropriate language",
+            cancelled_by_id=buffy['student_id'],
+            assessment_requirements=STEP_REQUIREMENTS
+        )
+
+        # Check to see if Buffy is actively reviewing Xander's submission.
+        # She isn't able to get the submission to assess.
+        submission = peer_api.get_submission_to_assess(buffy_sub['uuid'], 1)
+        self.assertIsNone(submission)
+
+        # Try to assess the cancelled submission
+        # This will raise PeerAssessmentWorkflowError
+        with self.assertRaises(peer_api.PeerAssessmentWorkflowError):
+            peer_api.create_assessment(
+                buffy_sub['uuid'],
+                buffy["student_id"],
+                ASSESSMENT_DICT['options_selected'],
+                ASSESSMENT_DICT['criterion_feedback'],
+                ASSESSMENT_DICT['overall_feedback'],
+                RUBRIC_DICT,
+                REQUIRED_GRADED_BY,
+            )
+
+    def test_cancelled_submission_peerworkflow_status(self):
+        # Test peerworkflow is cancelled.
+
+        buffy_sub, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
+
+        # Check for a workflow for Buffy.
+        buffy_workflow = PeerWorkflow.get_by_submission_uuid(buffy_sub['uuid'])
+        self.assertIsNotNone(buffy_workflow)
+
+        # Cancel the buffy's submission (peer workflow and assessment workflow).
+        workflow_api.cancel_workflow(
+            submission_uuid=buffy_sub['uuid'],
+            comments="Inappropriate language",
+            cancelled_by_id=buffy['student_id'],
+            assessment_requirements=STEP_REQUIREMENTS
+        )
+
+        workflow = PeerWorkflow.get_by_submission_uuid(buffy_sub["uuid"])
+        self.assertTrue(workflow.is_cancelled)
+
     def test_get_workflow_by_uuid(self):
         buffy_answer, _ = self._create_student_and_submission("Buffy", "Buffy's answer")
         self._create_student_and_submission("Xander", "Xander's answer")
@@ -893,8 +976,8 @@ class TestPeerApi(CacheResetTest):
         self.assertEqual(buffy_answer_two["uuid"], workflow.submission_uuid)
 
     def test_get_submission_for_review(self):
-        buffy_answer, _ = self._create_student_and_submission("Buffy", "Buffy's answer")
-        xander_answer, _ = self._create_student_and_submission("Xander", "Xander's answer")
+        buffy_answer, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
+        xander_answer, xander = self._create_student_and_submission("Xander", "Xander's answer")
         self._create_student_and_submission("Willow", "Willow's answer")
 
         buffy_workflow = PeerWorkflow.get_by_submission_uuid(buffy_answer['uuid'])
@@ -902,6 +985,19 @@ class TestPeerApi(CacheResetTest):
         # Get the next submission for review
         submission_uuid = buffy_workflow.get_submission_for_review(3)
         self.assertEqual(xander_answer["uuid"], submission_uuid)
+
+        # Cancel the Xander's submission.
+        workflow_api.cancel_workflow(
+            submission_uuid=xander_answer['uuid'],
+            comments="Inappropriate language",
+            cancelled_by_id=buffy['student_id'],
+            assessment_requirements=STEP_REQUIREMENTS
+        )
+
+        # Check to see if Buffy is actively reviewing Xander's submission.
+        # She isn't able to get the submission uuid to assess.
+        submission_uuid = buffy_workflow.get_submission_for_review(3)
+        self.assertNotEqual(xander_answer["uuid"], submission_uuid)
 
     def test_get_submission_for_over_grading(self):
         buffy_answer, _ = self._create_student_and_submission("Buffy", "Buffy's answer")
@@ -1274,13 +1370,68 @@ class TestPeerApi(CacheResetTest):
         jane_assessments = peer_api.get_assessments(jane_sub['uuid'], scored_only=False)
         self.assertEqual(0, len(jane_assessments))
 
-
-
     def test_get_submission_to_assess_no_workflow(self):
         # Try to retrieve a submission to assess when the student
         # doing the assessment hasn't yet submitted.
         with self.assertRaises(peer_api.PeerAssessmentWorkflowError):
             peer_api.get_submission_to_assess("no_such_submission", "scorer ID")
+
+    def test_get_submission_to_assess_for_cancelled_submission(self):
+        # Test that student will not be able to pull the cancelled
+        # submission for review.
+        buffy_sub, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
+        xander_sub, xander = self._create_student_and_submission("Xander", "Xander's answer")
+
+        # Check for a workflow for Buffy.
+        buffy_workflow = PeerWorkflow.get_by_submission_uuid(buffy_sub['uuid'])
+        self.assertIsNotNone(buffy_workflow)
+
+        # Buffy is going to review Xander's submission, so create a workflow
+        # item for Buffy.
+        PeerWorkflow.create_item(buffy_workflow, xander_sub["uuid"])
+
+        # Cancel the Xander's submission.
+        workflow_api.cancel_workflow(
+            submission_uuid=xander_sub['uuid'],
+            comments="Inappropriate language",
+            cancelled_by_id=buffy['student_id'],
+            assessment_requirements=STEP_REQUIREMENTS
+        )
+
+        # Check to see if Buffy is able to review Xander's submission.
+        # She isn't able to get the submission to assess because xander's
+        # submission is cancelled.
+        item = peer_api.get_submission_to_assess(buffy_sub['uuid'], 1)
+        self.assertIsNone(item)
+
+    def test_get_submission_to_assess_for_student_with_cancelled_submission(self):
+        # Test that student with cancelled submission will not be able to
+        # review submissions by others.
+        buffy_sub, buffy = self._create_student_and_submission("Buffy", "Buffy's answer")
+        xander_sub, xander = self._create_student_and_submission("Xander", "Xander's answer")
+
+        # Check for a workflow for Buffy.
+        buffy_workflow = PeerWorkflow.get_by_submission_uuid(buffy_sub['uuid'])
+        self.assertIsNotNone(buffy_workflow)
+
+        # Buffy is going to review Xander's submission, so create a workflow
+        # item for Buffy.
+        PeerWorkflow.create_item(buffy_workflow, xander_sub["uuid"])
+
+        # Cancel the Buffy's submission.
+        workflow_api.cancel_workflow(
+            submission_uuid=buffy_sub['uuid'],
+            comments="Inappropriate language",
+            cancelled_by_id=xander['student_id'],
+            assessment_requirements=STEP_REQUIREMENTS
+        )
+        self.assertTrue(peer_api.is_workflow_cancelled(submission_uuid=buffy_sub['uuid']))
+
+        # Check to see if Buffy is able to review Xander's submission.
+        # She isn't able to get the submission to assess because it's own
+        # submission is cancelled.
+        item = peer_api.get_submission_to_assess(buffy_sub['uuid'], 1)
+        self.assertIsNone(item)
 
     def test_too_many_assessments_counted_in_score_bug(self):
         # This bug allowed a score to be calculated using more

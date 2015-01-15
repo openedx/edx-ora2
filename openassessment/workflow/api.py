@@ -10,14 +10,14 @@ from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import ai as ai_api
 from openassessment.assessment.api import student_training as training_api
 from openassessment.assessment.errors import (
-    PeerAssessmentError, StudentTrainingInternalError, AIError
-)
+    PeerAssessmentError, StudentTrainingInternalError, AIError,
+    PeerAssessmentInternalError)
 from submissions import api as sub_api
-from .models import AssessmentWorkflow, AssessmentWorkflowStep
-from .serializers import AssessmentWorkflowSerializer
+from .models import AssessmentWorkflow, AssessmentWorkflowCancellation, AssessmentWorkflowStep
+from .serializers import AssessmentWorkflowSerializer, AssessmentWorkflowCancellationSerializer
 from .errors import (
-    AssessmentWorkflowInternalError, AssessmentWorkflowRequestError,
-    AssessmentWorkflowNotFoundError
+    AssessmentWorkflowError, AssessmentWorkflowInternalError,
+    AssessmentWorkflowRequestError, AssessmentWorkflowNotFoundError
 )
 
 logger = logging.getLogger(__name__)
@@ -372,3 +372,58 @@ def _serialized_with_details(workflow, assessment_requirements):
     data_dict["status_details"] = workflow.status_details(assessment_requirements)
     return data_dict
 
+
+def cancel_workflow(submission_uuid, comments, cancelled_by_id, assessment_requirements):
+    """
+    Add an entry in AssessmentWorkflowCancellation table for a AssessmentWorkflow.
+
+    AssessmentWorkflow which has been cancelled is no longer included in the
+    peer grading pool.
+
+    Args:
+        submission_uuid (str): The UUID of the workflow's submission.
+        comments (str): The reason for cancellation.
+        cancelled_by_id (str): The ID of the user who cancelled the peer workflow.
+        assessment_requirements (dict): Dictionary that currently looks like:
+            `{"peer": {"must_grade": <int>, "must_be_graded_by": <int>}}`
+            `must_grade` is the number of assessments a student must complete.
+            `must_be_graded_by` is the number of assessments a submission must
+            receive to be scored. `must_grade` should be greater than
+            `must_be_graded_by` to ensure that everyone will get scored.
+            The intention is to eventually pass in more assessment sequence
+            specific requirements in this dict.
+    """
+    AssessmentWorkflow.cancel_workflow(submission_uuid, comments, cancelled_by_id, assessment_requirements)
+
+
+def get_assessment_workflow_cancellation(submission_uuid):
+    """
+    Get cancellation information for a assessment workflow.
+
+    Args:
+        submission_uuid (str): The UUID of assessment workflow.
+    """
+    try:
+        workflow_cancellation = AssessmentWorkflowCancellation.get_latest_workflow_cancellation(submission_uuid)
+        return AssessmentWorkflowCancellationSerializer(workflow_cancellation).data if workflow_cancellation else None
+    except DatabaseError:
+        error_message = u"Error finding assessment workflow cancellation for submission UUID {}.".format(submission_uuid)
+        logger.exception(error_message)
+        raise PeerAssessmentInternalError(error_message)
+
+
+def is_workflow_cancelled(submission_uuid):
+    """
+    Check if assessment workflow is cancelled?
+
+    Args:
+        submission_uuid (str): The UUID of the assessment workflow.
+
+    Returns:
+        True/False
+    """
+    try:
+        workflow = AssessmentWorkflow.get_by_submission_uuid(submission_uuid)
+        return workflow.is_cancelled if workflow else False
+    except AssessmentWorkflowError:
+        return False

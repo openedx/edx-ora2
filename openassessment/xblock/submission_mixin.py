@@ -5,6 +5,7 @@ from xblock.core import XBlock
 from submissions import api
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.api import FileUploadError
+from openassessment.workflow import api as workflow_api
 from openassessment.workflow.errors import AssessmentWorkflowError
 from .resolve_dates import DISTANT_FUTURE
 
@@ -355,6 +356,18 @@ class SubmissionMixin(object):
             context['save_status'] = self.save_status
             context['submit_enabled'] = self.saved_response != ''
             path = "openassessmentblock/response/oa_response.html"
+
+        elif workflow["status"] == "cancelled":
+            workflow_cancellation = workflow_api.get_assessment_workflow_cancellation(self.submission_uuid)
+            if workflow_cancellation:
+                workflow_cancellation['cancelled_by'] = self.get_username(workflow_cancellation['cancelled_by_id'])
+
+            context['workflow_cancellation'] = workflow_cancellation
+            context["student_submission"] = self.get_user_submission(
+                workflow["submission_uuid"]
+            )
+            path = 'openassessmentblock/response/oa_response_cancelled.html'
+
         elif workflow["status"] == "done":
             student_submission = self.get_user_submission(
                 workflow["submission_uuid"]

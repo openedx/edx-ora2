@@ -24,7 +24,7 @@ class Command(BaseCommand):
     """
 
     help = 'Create dummy submissions and assessments'
-    args = '<COURSE_ID> <ITEM_ID> <NUM_SUBMISSIONS>'
+    args = '<COURSE_ID> <ITEM_ID> <NUM_SUBMISSIONS> <PERCENTAGE>'
 
     # Number of peer assessments to create per submission
     NUM_PEER_ASSESSMENTS = 3
@@ -34,8 +34,11 @@ class Command(BaseCommand):
     NUM_OPTIONS = 5
 
     def __init__(self, *args, **kwargs):
+        self.self_assessment_required = kwargs.get('self_assessment_required', False)
+        kwargs = {}
         super(Command, self).__init__(*args, **kwargs)
         self._student_items = list()
+
 
     def handle(self, *args, **options):
         """
@@ -45,9 +48,10 @@ class Command(BaseCommand):
             course_id (unicode): The ID of the course to create submissions for.
             item_id (unicode): The ID of the item in the course to create submissions for.
             num_submissions (int): Number of submissions to create.
+            percentage (int or float): Percentage for assessments to be made against submissions.
         """
-        if len(args) < 3:
-            raise CommandError('Usage: create_oa_submissions <COURSE_ID> <ITEM_ID> <NUM_SUBMISSIONS>')
+        if len(args) < 4:
+            raise CommandError('Usage: create_oa_submissions <COURSE_ID> <ITEM_ID> <NUM_SUBMISSIONS> <PERCENTAGE>')
 
         course_id = unicode(args[0])
         item_id = unicode(args[1])
@@ -57,9 +61,17 @@ class Command(BaseCommand):
         except ValueError:
             raise CommandError('Number of submissions must be an integer')
 
+        try:
+            percentage = float(args[3])
+            assessments_to_create = (percentage / 100) * num_submissions
+        except ValueError:
+            raise CommandError('Percentage for completed submissions must be an integer or float')
+
         print u"Creating {num} submissions for {item} in {course}".format(
             num=num_submissions, item=item_id, course=course_id
         )
+
+        assessments_created = 0
 
         for sub_num in range(num_submissions):
 
@@ -80,7 +92,7 @@ class Command(BaseCommand):
 
             # Create peer assessments
             for num in range(self.NUM_PEER_ASSESSMENTS):
-                print "-- Creating peer-assessment {num}".format(num=num)
+                print "-- Creating peer-workflow {num}".format(num=num)
 
                 scorer_id = 'test_{num}'.format(num=num)
 
@@ -93,22 +105,26 @@ class Command(BaseCommand):
                 # Note that we are NOT using the priority queue here, since we know
                 # exactly which submission we want to score.
                 peer_api.create_peer_workflow_item(scorer_submission_uuid, submission_uuid)
+                if assessments_created < assessments_to_create:
+                    print "-- Creating peer-assessment {num}".format(num=num)
+                    # Create the peer assessment
+                    peer_api.create_assessment(
+                        scorer_submission_uuid,
+                        scorer_id,
+                        options_selected, {}, "  ".join(loremipsum.get_paragraphs(2)),
+                        rubric,
+                        self.NUM_PEER_ASSESSMENTS
+                    )
+            assessments_created += 1
 
-                # Create the peer assessment
-                peer_api.create_assessment(
-                    scorer_submission_uuid,
-                    scorer_id,
-                    options_selected, {}, "  ".join(loremipsum.get_paragraphs(2)),
-                    rubric,
-                    self.NUM_PEER_ASSESSMENTS
+            if self.self_assessment_required:
+                # Create a self-assessment
+                print "-- Creating self assessment"
+                self_api.create_assessment(
+                    submission_uuid, student_item['student_id'],
+                    options_selected, {}, "  ".join(loremipsum.get_paragraphs(2)), rubric
                 )
-
-            # Create a self-assessment
-            print "-- Creating self assessment"
-            self_api.create_assessment(
-                submission_uuid, student_item['student_id'],
-                options_selected, {}, "  ".join(loremipsum.get_paragraphs(2)), rubric
-            )
+        print "%s assessments being completed for %s submissions" % (assessments_created, num_submissions)
 
     @property
     def student_items(self):

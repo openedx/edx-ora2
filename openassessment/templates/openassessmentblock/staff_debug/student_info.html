@@ -11,7 +11,18 @@
             <div class="step__content">
                 <h3 class="title">{% trans "Student Response" %}</h3>
                 <div class="student__answer__display__content">
-                    {{ submission.answer.text|linebreaks }}
+                    {% if workflow_cancellation %}
+                        {% blocktrans with removed_by_username=workflow_cancellation.cancelled_by removed_datetime=workflow_cancellation.created_at|utc|date:"N j, Y H:i e" %}
+                            Student submission removed by {{ removed_by_username }} on {{ removed_datetime }}
+                        {% endblocktrans %}
+                        <br>
+                        <!-- Comments: Reason for Cancellation-->
+                        {% blocktrans with comments=workflow_cancellation.comments %}
+                            Comments: {{ comments }}
+                        {% endblocktrans %}
+                    {% else %}
+                        {{ submission.answer.text|linebreaks }}
+                    {% endif %}
                 </div>
 
                 {% if submission.image_url %}
@@ -23,6 +34,60 @@
                 {% endif %}
             </div>
         </div>
+
+        {% if not workflow_cancellation %}
+        <div id="openassessment__staff-info__cancel__submission"
+             class="openassessment__staff-info__cancel__submission wrapper--ui-staff wrapper--ui--collapse">
+            <div class="ui-staff ui-toggle-visibility is--collapsed">
+                <h2 class="staff-info__title ui-staff__title ui-toggle-visibility__control">
+                    <i class="ico icon-caret-right"></i>
+                    <span class="staff-info__title__copy">{% trans "Remove submission from peer grading" %}</span>
+                </h2>
+
+                <div class="staff-info__cancel-submission__content ui-toggle-visibility__content">
+                    <div class="ui-staff__content__section">
+                        <div class="wrapper--input">
+
+                            <form id="openassessment_staff_cancel_submission_form"
+                                  data-submission-uuid="{{ submission.uuid }}">
+
+                                <ul class="list list--actions">
+                                    <li>
+                                        <div class="has--warnings">
+                                            <div class="warning">
+                                                {% trans "Caution: Removing a student's submission is irreversible. It should only be used in cases where the student's submission was inappropriate." %}
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <label for="staff-info__cancel-submission__comments"
+                                               class="label">{% trans "Comments:" %}</label>
+                                    </li>
+                                    <li>
+                                        <textarea
+                                                id="staff-info__cancel-submission__comments"
+                                                class="cancel_submission_comments"
+                                                value=""
+                                                maxlength="10000"></textarea>
+                                    </li>
+                                </ul>
+                                <ul class="list list--actions">
+                                    <li class="list--actions__item">
+                                        <a data-submission-uuid="{{ submission.uuid }}" aria-role="button" href=""
+                                           id="submit_cancel_submission" class="action--submit is--disabled">
+                                            <span class="copy">{% trans "Remove submission" %}</span>
+                                        </a>
+
+                                        <div class="cancel-submission-error"></div>
+                                    </li>
+                                </ul>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
 
         {% if peer_assessments %}
         <div class="staff-info__status ui-staff__content__section">
@@ -64,7 +129,7 @@
                 {% endwith %}
             {%  endfor %}
         </div>
-            {% endif %}
+        {% endif %}
 
         {% if submitted_assessments %}
         <div class="staff-info__status ui-staff__content__section">

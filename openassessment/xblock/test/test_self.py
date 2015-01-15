@@ -239,8 +239,19 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             xblock.get_student_item_dict(), u"Ⱥɨn'ŧ ɨŧ fᵾnꝁɏ"
         )
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/self/oa_self_complete.html', {'allow_latex':False},
+            xblock, 'openassessmentblock/self/oa_self_complete.html', {'allow_latex': False},
             workflow_status='done'
+        )
+
+    @scenario('data/self_assessment_open.xml', user_id='James Brown')
+    def test_open_cancelled_status(self, xblock):
+        # Simulate the workflow status being "done"
+        xblock.create_submission(
+            xblock.get_student_item_dict(), u"Ⱥɨn'ŧ ɨŧ fᵾnꝁɏ"
+        )
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/self/oa_self_cancelled.html', {'allow_latex': False},
+            workflow_status='cancelled'
         )
 
     @scenario('data/self_assessment_open.xml', user_id='James Brown')
