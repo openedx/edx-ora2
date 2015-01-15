@@ -7,7 +7,9 @@
                 {{ part.prompt.description|linebreaks }}
             </article>
             <div class="submission__answer__part__text">
-                {{ part.text|linebreaks }}
+                <div class="submission__answer__part__text__value">
+                    {{ part.text|linebreaks }}
+                </div>
             </div>
         </li>
     {% endfor %}
