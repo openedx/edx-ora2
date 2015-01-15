@@ -69,6 +69,34 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         self._assert_leaderboard_visible(xblock, True)
 
     @scenario('data/leaderboard_show.xml')
+    def test_show_submissions_that_have_greater_than_0_score(self, xblock):
+
+        # Create some submissions (but fewer than the max that can be shown)
+        self._create_submissions_and_scores(xblock, [
+            ("test answer 0", 0),
+            ("test answer 1", 1),
+        ])
+        self._assert_scores(xblock, [
+            {"content": "test answer 1", "score": 1}
+        ])
+        self._assert_leaderboard_visible(xblock, True)
+
+        # Since leaderboard results are cached, we need to clear
+        # the cache in order to see the new scores.
+        cache.clear()
+
+        # Create more submissions than the max
+        self._create_submissions_and_scores(xblock, [
+            ("test answer 2", 10),
+            ("test answer 3", 0)
+        ])
+        self._assert_scores(xblock, [
+            {"content": "test answer 2", "score": 10},
+            {"content": "test answer 1", "score": 1}
+        ])
+        self._assert_leaderboard_visible(xblock, True)
+
+    @scenario('data/leaderboard_show.xml')
     def test_no_text_key_submission(self, xblock):
         # Instead of using the default submission as a dict with "text",
         # make the submission a string.
