@@ -66,6 +66,12 @@ UI_MODELS = {
         "navigation_text": "Your assessment of your response",
         "title": "Assess Your Response"
     },
+    "self-assessment": {
+        "name": "staff-assessment",
+        "class_id": "openassessment__staff-assessment",
+        "navigation_text": "Staff assessment of your response",
+        "title": "Staff Assessment"
+    },
     "grade": {
         "name": "grade",
         "class_id": "openassessment__grade",
@@ -390,6 +396,10 @@ class OpenAssessmentBlock(
         """
         ui_models = [UI_MODELS["submission"]]
         for assessment in self.valid_assessments:
+            if assessment["name"] == "staff-assessment" and assessment["required"] == False:
+                # Check if staff have graded the assessment
+                # else
+                continue
             ui_model = UI_MODELS.get(assessment["name"])
             if ui_model:
                 ui_models.append(dict(assessment, **ui_model))
