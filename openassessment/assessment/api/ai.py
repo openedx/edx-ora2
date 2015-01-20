@@ -67,7 +67,8 @@ def get_score(submission_uuid, requirements):
         requirements (dict): Not used.
 
     Returns:
-        A dictionary with the points earned and points possible.
+        A dictionary with the points earned, points possible, and
+        contributing_assessments information.
 
     """
     assessment = get_latest_assessment(submission_uuid)
@@ -76,7 +77,9 @@ def get_score(submission_uuid, requirements):
 
     return {
         "points_earned": assessment["points_earned"],
-        "points_possible": assessment["points_possible"]
+        "points_possible": assessment["points_possible"],
+        "contributing_assessments": [assessment["id"]],
+        "staff_id": None,
     }
 
 
