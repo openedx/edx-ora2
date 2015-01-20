@@ -34,6 +34,7 @@ logger = logging.getLogger('openassessment.workflow.models')
 DEFAULT_ASSESSMENT_API_DICT = {
     'peer': 'openassessment.assessment.api.peer',
     'self': 'openassessment.assessment.api.self',
+    'staff': 'openassessment.assessment.api.staff',
     'training': 'openassessment.assessment.api.student_training',
     'ai': 'openassessment.assessment.api.ai',
 }
@@ -49,7 +50,7 @@ ASSESSMENT_API_DICT = getattr(
 # We then use that score as the student's overall score.
 # This Django setting is a list of assessment steps (defined in `settings.ORA2_ASSESSMENTS`)
 # in descending priority order.
-DEFAULT_ASSESSMENT_SCORE_PRIORITY = ['peer', 'self', 'ai']
+DEFAULT_ASSESSMENT_SCORE_PRIORITY = ['staff', 'peer', 'self', 'ai']
 ASSESSMENT_SCORE_PRIORITY = getattr(
     settings, 'ORA2_ASSESSMENT_SCORE_PRIORITY',
     DEFAULT_ASSESSMENT_SCORE_PRIORITY
@@ -239,11 +240,12 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                     else:
                         requirements = assessment_requirements.get(assessment_step_name, {})
                     score = get_score_func(self.submission_uuid, requirements)
-                    break
+                    if score:
+                        break
 
         return score
 
-    def update_from_assessments(self, assessment_requirements):
+    def update_from_assessments(self, assessment_requirements, force_update_score=False):
         """Query assessment APIs and change our status if appropriate.
 
         If the status is done, we do nothing. Once something is done, we never
@@ -277,15 +279,24 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 updates the problem definition.
 
         """
-        # If the status is done or cancelled, we're done -- it doesn't matter if requirements have
-        # changed because we've already written a score.
-        if self.status in (self.STATUS.done, self.STATUS.cancelled):
+        if self.status == self.STATUS.cancelled:
             return
 
         # Update our AssessmentWorkflowStep models with the latest from our APIs
         steps = self._get_steps()
 
         step_for_name = {step.name: step for step in steps}
+
+        # If the status is done or cancelled, check if score has changed.
+        if self.status == self.STATUS.done:
+            if force_update_score:
+                new_score = self.get_score(assessment_requirements, step_for_name)
+                self.set_score(new_score)
+                self.save()
+                logger.info((
+                    u"Workflow for submission UUID {uuid} has updated score."
+                ).format(uuid=self.submission_uuid))
+            return
 
         # Go through each step and update its status.
         for step in steps:
@@ -557,6 +568,8 @@ class AssessmentWorkflowStep(models.Model):
             step_changed = True
 
         # Has the step received a score?
+        # If staff assessment is optional we will mark assessment as complete immediately.
+        # But if staff comes and assesses later, this date will not be updated.
         if (not self.is_assessment_complete() and assessment_finished(submission_uuid, step_reqs)):
             self.assessment_completed_at = now()
             step_changed = True
