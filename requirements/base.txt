@@ -22,9 +22,9 @@ lazy==1.1
 loremipsum==1.0.5
 python-dateutil==2.1
 python-memcached==1.48
-pytz==2012h
+pytz==2015.2
 South==1.0.1
 voluptuous==0.8.5
 
 # AI grading
-git+https://github.com/edx/ease.git@bcb36e84b5ffa4ac00813577079dd6eef4fff566#egg=ease
+git+https://github.com/edx/ease.git@c6dee053eae6b3ac4fdf6be11fa7a9f8265540aa#egg=ease
