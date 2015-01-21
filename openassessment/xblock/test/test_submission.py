@@ -12,6 +12,7 @@ from submissions import api as sub_api
 from submissions.api import SubmissionRequestError, SubmissionInternalError
 
 from openassessment.workflow import api as workflow_api
+from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from openassessment.xblock.data_conversion import create_submission_dict, prepare_submission_for_serialization
 
 from .base import XBlockHandlerTestCase, scenario
@@ -208,6 +209,30 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         )
 
     @scenario('data/submission_open.xml', user_id="Bob")
+    def test_open_saved_response_old_format(self, xblock):
+        # Save a response
+        xblock.prompts = [{'description': 'One prompt.'}]
+        xblock.saved_response = "An old format response."
+        xblock.has_saved = True
+
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/response/oa_response.html',
+            {
+                'allow_file_upload': False,
+                'saved_response': create_submission_dict({
+                    'answer': prepare_submission_for_serialization(
+                        ('An old format response.',)
+                    )
+                }, xblock.prompts),
+                'save_status': 'This response has been saved but not submitted.',
+                'submit_enabled': True,
+                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+                'has_peer': True,
+                'has_self': True,
+                'allow_latex': False,
+            }
+        )
+    @scenario('data/submission_open.xml', user_id="Bob")
     def test_open_submitted(self, xblock):
         submission = xblock.create_submission(
             xblock.get_student_item_dict(),
@@ -230,7 +255,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         student_item = xblock.get_student_item_dict()
         submission = xblock.create_submission(
             student_item,
-            'A man must have a code'
+            ('A man must have a code', 'A man must have an umbrella too.')
         )
         xblock.get_workflow_info = Mock(return_value={
             'status': 'cancelled',
@@ -249,18 +274,43 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_cancelled.html',
             {
-                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
-                'student_submission': submission,
                 'allow_file_upload': False,
+                'allow_latex': False,
                 'has_peer': True,
                 'has_self': True,
-                'allow_latex': False,
+                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+                'student_submission': submission,
                 'workflow_cancellation': {
                     'comments': 'Inappropriate language',
                     'cancelled_by_id': 'Bob',
                     'created_at': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                     'cancelled_by': 'Bob'
                 }
+            }
+        )
+
+    @patch.object(OpenAssessmentBlock, 'get_user_submission')
+    @scenario('data/submission_open.xml', user_id="Bob")
+    def test_open_submitted_old_format(self, xblock, mock_get_user_submission):
+        submission = xblock.create_submission(
+            xblock.get_student_item_dict(),
+            ('A man must have a code', 'A man must have an umbrella too.')
+        )
+
+        mock_get_user_submission.return_value = {"answer": {"text": "An old format response."}}
+        xblock.prompts = [{'description': 'One prompt.'}]
+
+        self._assert_path_and_context(
+            xblock, 'openassessmentblock/response/oa_response_submitted.html',
+            {
+                'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
+                'student_submission': {"answer": {"parts": [
+                    {"prompt": {'description': 'One prompt.'}, "text": "An old format response."}
+                ]}},
+                'allow_file_upload': False,
+                'has_peer': True,
+                'has_self': True,
+                'allow_latex': False,
             }
         )
 

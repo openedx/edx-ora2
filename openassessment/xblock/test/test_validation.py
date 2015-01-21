@@ -12,7 +12,7 @@ from django.test import TestCase
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from openassessment.xblock.validation import (
     validator, validate_assessments, validate_rubric,
-    validate_dates, validate_assessment_examples
+    validate_dates, validate_assessment_examples, validate_submission
 )
 
 STUB_I18N = lambda x: x
@@ -365,3 +365,33 @@ class ValidationIntegrationTest(TestCase):
         else:
             self.assertFalse(is_valid, msg="Leaderboard num {num} should be invalid".format(num=num))
             self.assertEqual(msg, 'Leaderboard number is invalid.')
+
+
+class ValidationSubmissionTest(TestCase):
+    """
+    Test validate_submission function.
+    """
+
+    PROMPT = [{"description": "A prompt."}, {"description": "Another prompt."}]
+
+    def test_valid_submissions(self):
+        success, msg = validate_submission([u"A response."], [{"description": "A prompt."}], STUB_I18N)
+        self.assertTrue(success)
+
+        success, msg = validate_submission(
+            [u"Response 1.", u"Response 2" ], self.PROMPT, STUB_I18N
+        )
+        self.assertTrue(success)
+
+    def test_invalid_submissions(self):
+        # Submission is not list.
+        success, msg = validate_submission(u"A response.", self.PROMPT, STUB_I18N)
+        self.assertFalse(success)
+
+        # Submission count does not match prompt count.
+        success, msg = validate_submission([u"A response."], self.PROMPT, STUB_I18N)
+        self.assertFalse(success)
+
+        # Submission is not unicode.
+        success, msg = validate_submission([u"A response.", "Another response"], self.PROMPT, STUB_I18N)
+        self.assertFalse(success)
