@@ -14,6 +14,8 @@ from openassessment.workflow import api as workflow_api
 from openassessment.assessment.errors.ai import AIError, AIGradingInternalError
 from openassessment.fileupload.api import FileUploadInternalError
 from submissions import api as sub_api
+
+from openassessment.xblock.data_conversion import prepare_submission_for_serialization
 from openassessment.xblock.test.base import scenario, XBlockHandlerTestCase
 from xblock.core import XBlock
 
@@ -180,7 +182,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
         # Create a submission for Bob, and corresponding workflow.
-        submission = sub_api.create_submission(bob_item, {'text': "Bob Answer"})
+        submission = sub_api.create_submission(
+            bob_item, prepare_submission_for_serialization(("Bob Answer 1", "Bob Answer 2"))
+        )
         peer_api.on_start(submission["uuid"])
         workflow_api.create_workflow(submission["uuid"], ['peer'])
 
@@ -203,7 +207,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         # Now Bob should be fully populated in the student info view.
         path, context = xblock.get_student_info_path_and_context("Bob")
-        self.assertEquals("Bob Answer", context['submission']['answer']['text'])
+        self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
         self.assertIsNone(context['self_assessment'])
         self.assertEquals("openassessmentblock/staff_debug/student_info.html", path)
 
@@ -217,7 +221,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
         # Create a submission for Bob, and corresponding workflow.
-        submission = sub_api.create_submission(bob_item, {'text': "Bob Answer"})
+        submission = sub_api.create_submission(
+            bob_item, prepare_submission_for_serialization(("Bob Answer 1", "Bob Answer 2"))
+        )
         peer_api.on_start(submission["uuid"])
         workflow_api.create_workflow(submission["uuid"], ['self'])
 
@@ -232,7 +238,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         )
 
         path, context = xblock.get_student_info_path_and_context("Bob")
-        self.assertEquals("Bob Answer", context['submission']['answer']['text'])
+        self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
         self.assertEquals([], context['peer_assessments'])
         self.assertEquals("openassessmentblock/staff_debug/student_info.html", path)
 
@@ -254,7 +260,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
         # Create a submission for Bob, and corresponding workflow.
-        submission = sub_api.create_submission(bob_item, {'text': "Bob Answer"})
+        submission = sub_api.create_submission(
+            bob_item, prepare_submission_for_serialization(("Bob Answer 1", "Bob Answer 2"))
+        )
         peer_api.on_start(submission["uuid"])
         workflow_api.create_workflow(submission["uuid"], ['peer'])
 
@@ -266,7 +274,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         )
 
         path, context = xblock.get_student_info_path_and_context("Bob")
-        self.assertEquals("Bob Answer", context['submission']['answer']['text'])
+        self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
         self.assertIsNotNone(context['workflow_cancellation'])
         self.assertEquals("openassessmentblock/staff_debug/student_info.html", path)
 
