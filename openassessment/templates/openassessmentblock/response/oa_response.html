@@ -55,18 +55,18 @@
                         {% for part in saved_response.answer.parts %}
                             <li class="submission__answer__part">
                                 <article class="submission__answer__part__prompt ui-toggle-visibility">
-                                    <h2 class="submission__answer__part__prompt__title">{% trans "The prompt for this assignment" %}</h2>
+                                    <h2 class="submission__answer__part__prompt__title">{% trans "The prompt for this section." %}</h2>
 
                                     <div class="submission__answer__part__prompt__copy ui-toggle-visibility__content">
                                         {{ part.prompt.description|linebreaks }}
                                     </div>
                                 </article>
                                 <div class="field field--textarea submission__answer__part__text">
-                                    <label class="sr" for="submission__answer__part__text__{{ forloop.counter }}">{% trans "Enter your response to the question." %}</label>
+                                    <label class="sr" for="submission__answer__part__text__{{ forloop.counter }}">{% trans "Your response to the question above." %}</label>
                                     <textarea
                                         id="submission__answer__part__text__{{ forloop.counter }}"
                                         class="submission__answer__part__text__value"
-                                        placeholder=""
+                                        placeholder="Enter your response to the question above."
                                         maxlength="100000"
                                     >{{ part.text }}</textarea>
                                 </div>
