@@ -20,7 +20,7 @@
                                 {% if topscore.file %}
                                 <img class="leaderboard__score__image" alt="{% trans "The image associated with your peer's submission." %}" src="{{ topscore.file }}" />
                                 {% endif %}
-                                {{ topscore.content|linebreaks }}
+                                {% include "openassessmentblock/oa_submission_answer.html" with answer=topscore.submission.answer answer_text_label="Your peer's response to the question above:" %}
                             </div>
                         </li>
                     {% endfor %}
