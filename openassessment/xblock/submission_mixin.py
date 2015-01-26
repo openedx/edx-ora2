@@ -172,7 +172,7 @@ class SubmissionMixin(object):
         # so that later we can add additional response fields.
         student_sub_dict = prepare_submission_for_serialization(student_sub_data)
 
-        if self.allow_file_upload:
+        if self.allow_file_upload and len(self.prompts) == 1:
             student_sub_dict['file_key'] = self._get_student_item_key()
         submission = api.create_submission(student_item_dict, student_sub_dict)
         self.create_workflow(submission["uuid"])
@@ -354,12 +354,12 @@ class SubmissionMixin(object):
         if due_date < DISTANT_FUTURE:
             context["submission_due"] = due_date
 
-        context['allow_file_upload'] = self.allow_file_upload
+        context['allow_file_upload'] = self.allow_file_upload and len(self.prompts) == 1
         context['allow_latex'] = self.allow_latex
         context['has_peer'] = 'peer-assessment' in self.assessment_steps
         context['has_self'] = 'self-assessment' in self.assessment_steps
 
-        if self.allow_file_upload:
+        if context['allow_file_upload']:
             context['file_url'] = self._get_download_url()
 
         if not workflow and problem_closed:
