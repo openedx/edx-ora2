@@ -45,7 +45,7 @@ class Command(BaseCommand):
     ]
 
     RUBRIC = {
-        'prompt': u"Test prompt",
+        'prompts': [{"description": u"Test prompt"}],
         'criteria': [
             {
                 "order_num": 0,
@@ -91,7 +91,7 @@ class Command(BaseCommand):
     }
 
     STUDENT_ID = u'test_student'
-    ANSWER = {'answer': 'test answer'}
+    ANSWER = {"text": 'test answer'}
 
     def handle(self, *args, **options):
         """

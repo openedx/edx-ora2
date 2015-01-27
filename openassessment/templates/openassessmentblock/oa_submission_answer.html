@@ -1,0 +1,21 @@
+{% spaceless %}
+{% load i18n %}
+<ol class="submission__answer__display__content">
+    {% for part in answer.parts %}
+        <li class="submission__answer__part">
+            <article class="submission__answer__part__prompt">
+                <h2 class="submission__answer__part__prompt__title">{% trans "The question for this section." %}</h2>
+                <div class="submission__answer__part__prompt__value">
+                    {{ part.prompt.description|linebreaks }}
+                </div>
+            </article>
+            <div class="submission__answer__part__text">
+                <h2 class="submission__answer__part__text__title">{% trans answer_text_label %}</h2>
+                <div class="submission__answer__part__text__value">
+                    {{ part.text|linebreaks }}
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+</ol>
+{% endspaceless %}

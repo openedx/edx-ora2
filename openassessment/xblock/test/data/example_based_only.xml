@@ -1,8 +1,14 @@
 <openassessment>
     <title>Open Assessment Test</title>
-    <prompt>Example-based assessment</prompt>
+    <prompts>
+        <prompt>
+            <description>Given the state of the world today, what do you think should be done to combat poverty?</description>
+        </prompt>
+        <prompt>
+            <description>Given the state of the world today, what do you think should be done to combat pollution?</description>
+        </prompt>
+    </prompts>
     <rubric>
-        <prompt>Read for conciseness, clarity of thought, and form.</prompt>
         <criterion>
             <name>Ideas</name>
             <prompt>How good are the ideas?</prompt>

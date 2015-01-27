@@ -2,7 +2,6 @@
     "simple": {
         "xml": [
             "<rubric>",
-            "<prompt>Test prompt</prompt>",
             "<criterion>",
             "<name>Test criterion</name>",
             "<prompt>Test criterion prompt</prompt>",
@@ -11,7 +10,6 @@
             "</criterion>",
             "</rubric>"
         ],
-        "prompt": "Test prompt",
         "feedbackprompt": null,
         "criteria": [
             {
@@ -43,7 +41,6 @@
     "feedback_prompt": {
         "xml": [
             "<rubric>",
-            "<prompt>Test prompt</prompt>",
             "<criterion>",
             "<name>Test criterion</name>",
             "<prompt>Test criterion prompt</prompt>",
@@ -53,7 +50,6 @@
             "<feedbackprompt>This is the feedback prompt</feedbackprompt>",
             "</rubric>"
         ],
-        "prompt": "Test prompt",
         "feedbackprompt": "This is the feedback prompt",
         "criteria": [
             {
@@ -93,7 +89,6 @@
             "</criterion>",
             "</rubric>"
         ],
-        "prompt": null,
         "feedbackprompt": null,
         "criteria": [
             {
@@ -125,7 +120,6 @@
     "empty_prompt": {
         "xml": [
             "<rubric>",
-            "<prompt></prompt>",
             "<criterion>",
             "<name>Test criterion</name>",
             "<prompt>Test criterion prompt</prompt>",
@@ -134,7 +128,6 @@
             "</criterion>",
             "</rubric>"
         ],
-        "prompt": "",
         "feedbackprompt": null,
         "criteria": [
             {
@@ -166,7 +159,6 @@
     "unicode": {
         "xml": [
             "<rubric>",
-            "<prompt>ՇєรՇ קг๏๓קՇ</prompt>",
             "<criterion>",
             "<name>𝓣𝓮𝓼𝓽 𝓬𝓻𝓲𝓽𝓮𝓻𝓲𝓸𝓷</name>",
             "<prompt>Ŧɇsŧ ȼɍɨŧɇɍɨøn ꝑɍømꝑŧ</prompt>",
@@ -175,7 +167,6 @@
             "</criterion>",
             "</rubric>"
         ],
-        "prompt": "ՇєรՇ קг๏๓קՇ",
         "feedbackprompt": null,
         "criteria": [
             {
@@ -207,7 +198,6 @@
     "multiple_criteria": {
         "xml": [
             "<rubric>",
-            "<prompt>Test prompt</prompt>",
             "<criterion>",
             "<name>Test criterion</name>",
             "<prompt>Test criterion prompt</prompt>",
@@ -221,7 +211,6 @@
             "</criterion>",
             "</rubric>"
         ],
-        "prompt": "Test prompt",
         "feedbackprompt": null,
         "criteria": [
             {
@@ -269,7 +258,6 @@
     "criterion_feedback_optional": {
         "xml": [
             "<rubric>",
-            "<prompt>Test prompt</prompt>",
             "<criterion>",
             "<name>Test criterion</name>",
             "<prompt>Test criterion prompt</prompt>",
@@ -283,7 +271,6 @@
             "</criterion>",
             "</rubric>"
         ],
-        "prompt": "Test prompt",
         "feedbackprompt": null,
         "criteria": [
             {

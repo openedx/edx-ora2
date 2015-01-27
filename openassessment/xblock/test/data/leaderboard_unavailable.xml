@@ -1,11 +1,14 @@
 <openassessment leaderboard_show="10">
     <title>Open Assessment Test</title>
-    <prompt>
-        Given the state of the world today, what do you think should be done to
-        combat poverty? Please answer in a short essay of 200-300 words.
-    </prompt>
+    <prompts>
+        <prompt>
+            <description>Given the state of the world today, what do you think should be done to combat poverty?</description>
+        </prompt>
+        <prompt>
+            <description>Given the state of the world today, what do you think should be done to combat pollution?</description>
+        </prompt>
+    </prompts>
     <rubric>
-        <prompt>Read for conciseness, clarity of thought, and form.</prompt>
         <criterion>
             <name>𝓒𝓸𝓷𝓬𝓲𝓼𝓮</name>
             <prompt>How concise is it?</prompt>

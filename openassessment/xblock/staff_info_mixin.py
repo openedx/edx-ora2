@@ -16,7 +16,7 @@ from openassessment.workflow.errors import (
 from openassessment.assessment.errors.ai import AIError
 from openassessment.xblock.resolve_dates import DISTANT_PAST, DISTANT_FUTURE
 from openassessment.xblock.data_conversion import (
-    create_rubric_dict, convert_training_examples_list_to_dict
+    create_rubric_dict, convert_training_examples_list_to_dict, create_submission_dict
 )
 from submissions import api as submission_api
 from openassessment.assessment.api import peer as peer_api
@@ -138,7 +138,7 @@ class StaffInfoMixin(object):
         context['display_reschedule_unfinished_tasks'] = display_ai_staff_info
         if display_ai_staff_info:
             context['classifierset'] = ai_api.get_classifier_set_info(
-                create_rubric_dict(self.prompt, self.rubric_criteria_with_labels),
+                create_rubric_dict(self.prompts, self.rubric_criteria_with_labels),
                 example_based_assessment['algorithm_id'],
                 student_item['course_id'],
                 student_item['item_id']
@@ -179,7 +179,7 @@ class StaffInfoMixin(object):
             examples = assessment["examples"]
             try:
                 workflow_uuid = ai_api.train_classifiers(
-                    create_rubric_dict(self.prompt, self.rubric_criteria_with_labels),
+                    create_rubric_dict(self.prompts, self.rubric_criteria_with_labels),
                     convert_training_examples_list_to_dict(examples),
                     student_item_dict.get('course_id'),
                     student_item_dict.get('item_id'),
@@ -281,7 +281,7 @@ class StaffInfoMixin(object):
             workflow_cancellation['cancelled_by'] = self.get_username(workflow_cancellation['cancelled_by_id'])
 
         context = {
-            'submission': submission,
+            'submission': create_submission_dict(submission, self.prompts) if submission else None,
             'workflow_cancellation': workflow_cancellation,
             'peer_assessments': peer_assessments,
             'submitted_assessments': submitted_assessments,

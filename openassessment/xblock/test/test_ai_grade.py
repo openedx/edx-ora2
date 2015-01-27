@@ -13,7 +13,7 @@ class AIAssessmentIntegrationTest(XBlockHandlerTestCase):
     """
     Integration test for example-based assessment (AI).
     """
-    SUBMISSION = json.dumps({'submission': 'This is a submission!'})
+    SUBMISSION = json.dumps({'submission': ('This is submission part 1!', 'This is submission part 2!')})
     AI_ALGORITHMS = {
         'fake': 'openassessment.assessment.worker.algorithm.FakeAIAlgorithm'
     }

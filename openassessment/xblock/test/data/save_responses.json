@@ -1,8 +1,9 @@
 {
-   "empty": [""],
-   "unicode": ["Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!"],
+   "empty": [[""], [""]],
+   "unicode": [["Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!"], ["Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!"]],
    "long": [
-        "Lorem ipsum dolor sit amet,",
+       [ "Lorem ipsum dolor sit amet,"],
+       [
         "consectetur adipiscing elit. Etiam luctus dapibus ante, vel luctus nibh bibendum et.",
         "Praesent in commodo quam. Morbi lobortis at felis ac mollis.",
         "Maecenas placerat nisl sed imperdiet posuere.",
@@ -50,5 +51,6 @@
         "nascetur ridiculus mus. Mauris at dapibus mauris, sed pharetra tortor.",
         "Pellentesque purus sem, congue sed elementum non, pretium in mi. Cras cursus gravida commodo.",
         "Aenean eu massa rhoncus, faucibus tortor id, sollicitudin tortor."
+       ]
    ]
 }

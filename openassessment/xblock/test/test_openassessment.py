@@ -48,20 +48,13 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         self.assertIsNotNone(grade_response)
         self.assertTrue(grade_response.body.find("openassessment__grade"))
 
-    @scenario('data/line_breaks.xml')
-    def test_prompt_line_breaks(self, xblock):
-        # Verify that prompts with multiple lines retain line breaks.
-        xblock_fragment = self.runtime.render(xblock, "student_view")
-        expected_prompt = u"<p><br />Line 1</p><p>Line 2</p><p>Line 3<br /></p>"
-        self.assertIn(expected_prompt, xblock_fragment.body_html())
-
     @scenario('data/empty_prompt.xml')
     def test_prompt_intentionally_empty(self, xblock):
         # Verify that prompts intentionally left empty don't create DOM elements
         xblock_fragment = self.runtime.render(xblock, "student_view")
         body_html = xblock_fragment.body_html()
         present_prompt_text = "you'll provide a response to the question"
-        missing_article = u'<article class="openassessment__prompt'
+        missing_article = u'<article class="submission__answer__part__prompt'
         self.assertIn(present_prompt_text, body_html)
         self.assertNotIn(missing_article, body_html)
 
@@ -170,6 +163,39 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # Check that we can render the student view without error
         self.runtime.render(xblock, 'student_view')
 
+    @scenario('data/basic_scenario.xml', user_id='Bob')
+    def test_prompts_fields(self, xblock):
+
+        self.assertEqual(xblock.prompts, [
+            {
+                'description': (u'Given the state of the world today, what do you think should be done to '
+                                u'combat poverty? Please answer in a short essay of 200-300 words.')
+            },
+            {
+                'description': (u'Given the state of the world today, what do you think should be done to '
+                                u'combat pollution?')
+            }
+        ])
+
+        xblock.prompt = None
+        self.assertEqual(xblock.prompts, [{'description': ''}])
+
+        xblock.prompt = 'Prompt.'
+        self.assertEqual(xblock.prompts, [{'description': 'Prompt.'}])
+
+        xblock.prompt = '[{"description": "Prompt 1."}, {"description": "Prompt 2."}, {"description": "Prompt 3."}]'
+        self.assertEqual(xblock.prompts, [
+            {'description': 'Prompt 1.'}, {'description': 'Prompt 2.'}, {'description': 'Prompt 3.'}
+        ])
+
+        xblock.prompts = None
+        self.assertEqual(xblock.prompt, None)
+
+        xblock.prompts = [{'description': 'Prompt.'}]
+        self.assertEqual(xblock.prompt, 'Prompt.')
+
+        xblock.prompts = [{'description': 'Prompt 4.'}, {'description': 'Prompt 5.'}]
+        self.assertEqual(xblock.prompt, '[{"description": "Prompt 4."}, {"description": "Prompt 5."}]')
 
 class TestDates(XBlockHandlerTestCase):
 

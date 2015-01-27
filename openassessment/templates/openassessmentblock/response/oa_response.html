@@ -52,15 +52,26 @@
             <div class="step__content">
                 <form id="response__submission" class="response__submission">
                     <ol class="list list--fields response__submission__content">
-                        <li class="field field--textarea submission__answer" id="submission__answer">
-                            <label class="sr" for="submission__answer__value">{% trans "Enter your response to the question." %}</label>
-                            <textarea
-                                id="submission__answer__value"
-                                placeholder=""
-                                maxlength="100000"
-                            >{{ saved_response }}</textarea>
-                            <span class="tip">{% trans "You may continue to work on your response until you submit it." %}</span>
-                        </li>
+                        {% for part in saved_response.answer.parts %}
+                            <li class="submission__answer__part">
+                                <article class="submission__answer__part__prompt ui-toggle-visibility">
+                                    <h2 class="submission__answer__part__prompt__title">{% trans "The prompt for this section." %}</h2>
+
+                                    <div class="submission__answer__part__prompt__copy ui-toggle-visibility__content">
+                                        {{ part.prompt.description|linebreaks }}
+                                    </div>
+                                </article>
+                                <div class="field field--textarea submission__answer__part__text">
+                                    <label class="sr" for="submission__answer__part__text__{{ forloop.counter }}">{% trans "Your response to the question above." %}</label>
+                                    <textarea
+                                        id="submission__answer__part__text__{{ forloop.counter }}"
+                                        class="submission__answer__part__text__value"
+                                        placeholder="Enter your response to the question above."
+                                        maxlength="100000"
+                                    >{{ part.text }}</textarea>
+                                </div>
+                            </li>
+                        {% endfor %}
                         {% if allow_file_upload %}
                         <li class="field">
                             <div id="upload__error">
@@ -85,6 +96,8 @@
                         </li>
                         {% endif %}
                     </ol>
+
+                    <span class="tip">{% trans "You may continue to work on your response until you submit it." %}</span>
 
                     <div class="response__submission__actions">
                         <div class="message message--inline message--error message--error-server">

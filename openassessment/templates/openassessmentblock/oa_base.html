@@ -30,18 +30,6 @@
                 {% endblock %}
             </div>
 
-            <div class="wrapper--openassessment__prompt">
-                {% if question %}
-                <article class="openassessment__prompt ui-toggle-visibility">
-                    <h2 class="openassessment__prompt__title">{% trans "The prompt for this assignment" %}</h2>
-
-                    <div class="openassessment__prompt__copy ui-toggle-visibility__content">
-                        {{ question|linebreaks }}
-                    </div>
-                </article>
-                {% endif %}
-            </div>
-
             <ol class="openassessment__steps" id="openassessment__steps">
                 {% for assessment in rubric_assessments %}
                     <li id="{{ assessment.class_id }}" class="openassessment__steps__step is--loading">

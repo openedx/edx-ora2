@@ -458,26 +458,26 @@
 
 
   // --------------------
-  // problem
+  // submission
   // --------------------
   .wrapper--openassessment__prompt {
 
   }
 
-  .openassessment__prompt {
+  .submission__answer__part__prompt {
     @extend %ui-well;
     position: relative;
-    margin-bottom: $baseline-v;
+    margin: ($baseline-v/2) 0;
     border: 1px solid $color-decorative-tertiary;
     @include border-left(($baseline-h/4) solid $color-decorative-secondary);
     @include padding-left(($baseline-h*0.75));
   }
 
-  .openassessment__prompt__title {
+  .submission__answer__part__prompt__title {
     @extend %text-sr;
   }
 
-  .openassessment__prompt__copy {
+  .submission__answer__part__prompt__copy {
     @extend %copy-2;
     color: $copy-color;
 
@@ -494,6 +494,11 @@
     }
   }
 
+  div.submission__answer__part__text__value {
+    border: 1px solid $color-decorative-secondary;
+    background-color: $white-t;
+    padding: $baseline-v;
+  }
 
   // --------------------
   // response
@@ -815,9 +820,20 @@
 
   .submission__answer__display__content {
     @extend %copy-3;
-    @extend %ui-content-longanswer;
     @extend %ui-subsection-content;
-    @extend %ui-well;
+
+    padding: ($baseline-v/2) ($baseline-h/4) $baseline-v ($baseline-h/4);
+    background: $color-decorative-quaternary;
+    border-radius: ($baseline-v/10);
+    list-style: none;
+
+    .submission__answer__part {
+      margin: ($baseline-v*1.5) 0px 0px;
+
+      &:first-child {
+        margin-top: 0px;
+      }
+    }
   }
 
 
