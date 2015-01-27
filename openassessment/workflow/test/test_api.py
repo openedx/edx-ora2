@@ -32,6 +32,9 @@ RUBRIC_DICT = {
     ]
 }
 
+ANSWER_1 = {"text": "Shoot Hot Rod"}
+ANSWER_2 = {"text": "Ultra Magnus fumble"}
+
 ALGORITHM_ID = "Ease"
 
 ON_INIT_PARAMS = {
@@ -64,7 +67,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         first_step = data["steps"][0] if data["steps"] else "peer"
         if "ai" in data["steps"]:
             first_step = data["steps"][1] if len(data["steps"]) > 1 else "waiting"
-        submission = sub_api.create_submission(ITEM_1, "Shoot Hot Rod")
+        submission = sub_api.create_submission(ITEM_1, ANSWER_1)
         workflow = workflow_api.create_workflow(submission["uuid"], data["steps"], ON_INIT_PARAMS)
 
         workflow_keys = set(workflow.keys())
@@ -147,7 +150,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         self.assertEquals("waiting", workflow['status'])
 
     def test_update_peer_workflow(self):
-        submission = sub_api.create_submission(ITEM_1, "Shoot Hot Rod")
+        submission = sub_api.create_submission(ITEM_1, ANSWER_1)
         workflow = workflow_api.create_workflow(submission["uuid"], ["training", "peer"], ON_INIT_PARAMS)
         StudentTrainingWorkflow.create_workflow(submission_uuid=submission["uuid"])
         requirements = {
@@ -200,7 +203,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
     @patch.object(ai_api, 'assessment_is_finished')
     @patch.object(ai_api, 'get_score')
     def test_ai_score_set(self, mock_score, mock_is_finished):
-        submission = sub_api.create_submission(ITEM_1, "Ultra Magnus fumble")
+        submission = sub_api.create_submission(ITEM_1, ANSWER_2)
         mock_is_finished.return_value = True
         score = {"points_earned": 7, "points_possible": 10}
         mock_score.return_value = score
@@ -213,7 +216,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
     @ddt.unpack
     @raises(workflow_api.AssessmentWorkflowInternalError)
     def test_create_ai_workflow_no_rubric(self, rubric, algorithm_id):
-        submission = sub_api.create_submission(ITEM_1, "Shoot Hot Rod")
+        submission = sub_api.create_submission(ITEM_1, ANSWER_1)
         on_init_params = {
             'ai': {
                 'rubric': rubric,
@@ -226,7 +229,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
     @raises(workflow_api.AssessmentWorkflowInternalError)
     def test_ai_on_init_failures(self, mock_on_init):
         mock_on_init.side_effect = AIError("Kaboom!")
-        submission = sub_api.create_submission(ITEM_1, "Ultra Magnus fumble")
+        submission = sub_api.create_submission(ITEM_1, ANSWER_2)
         workflow_api.create_workflow(submission["uuid"], ["ai"], ON_INIT_PARAMS)
 
     @patch.object(Submission.objects, 'get')
@@ -241,14 +244,14 @@ class TestAssessmentWorkflowApi(CacheResetTest):
     @raises(workflow_api.AssessmentWorkflowInternalError)
     def test_unexpected_workflow_errors_wrapped(self, data, mock_create):
         mock_create.side_effect = DatabaseError("Kaboom!")
-        submission = sub_api.create_submission(ITEM_1, "Ultra Magnus fumble")
+        submission = sub_api.create_submission(ITEM_1, ANSWER_2)
         workflow_api.create_workflow(submission["uuid"], data["steps"], ON_INIT_PARAMS)
 
     @patch.object(PeerWorkflow.objects, 'get_or_create')
     @raises(workflow_api.AssessmentWorkflowInternalError)
     def test_unexpected_peer_workflow_errors_wrapped(self, mock_create):
         mock_create.side_effect = DatabaseError("Kaboom!")
-        submission = sub_api.create_submission(ITEM_1, "Ultra Magnus fumble")
+        submission = sub_api.create_submission(ITEM_1, ANSWER_2)
         workflow_api.create_workflow(submission["uuid"], ["peer", "self"], ON_INIT_PARAMS)
 
     @patch.object(AssessmentWorkflow.objects, 'get')
@@ -256,7 +259,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
     @raises(workflow_api.AssessmentWorkflowInternalError)
     def test_unexpected_exception_wrapped(self, data, mock_create):
         mock_create.side_effect = Exception("Kaboom!")
-        submission = sub_api.create_submission(ITEM_1, "Ultra Magnus fumble")
+        submission = sub_api.create_submission(ITEM_1, ANSWER_2)
         workflow_api.update_from_assessments(submission["uuid"], data["steps"])
 
     @ddt.file_data('data/assessments.json')
@@ -363,7 +366,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
 
     def test_cancel_the_assessment_workflow(self):
         # Create the submission and assessment workflow.
-        submission = sub_api.create_submission(ITEM_1, "Shoot Hot Rod")
+        submission = sub_api.create_submission(ITEM_1, ANSWER_1)
         workflow = workflow_api.create_workflow(submission["uuid"], ["peer"])
 
         requirements = {
@@ -403,7 +406,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
 
     def test_cancel_the_assessment_workflow_does_not_exist(self):
         # Create the submission and assessment workflow.
-        submission = sub_api.create_submission(ITEM_1, "Shoot Hot Rod")
+        submission = sub_api.create_submission(ITEM_1, ANSWER_1)
         workflow = workflow_api.create_workflow(submission["uuid"], ["peer"])
 
         requirements = {
@@ -432,7 +435,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
 
     def test_get_the_cancelled_workflow(self):
         # Create the submission and assessment workflow.
-        submission = sub_api.create_submission(ITEM_1, "Shoot Hot Rod")
+        submission = sub_api.create_submission(ITEM_1, ANSWER_1)
         workflow = workflow_api.create_workflow(submission["uuid"], ["peer"])
 
         requirements = {
