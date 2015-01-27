@@ -150,7 +150,7 @@ class TestGrade(XBlockHandlerTestCase):
         resp = self.request(xblock, 'render_grade', json.dumps(dict()))
         # Verify that feedback from each scorer appears in the view
         self.assertNotIn(u'єאςєɭɭєภՇ', resp.decode('utf-8'))
-        self.assertIn(u'Good', resp.decode('utf-8'))
+        self.assertIn(u'Fair', resp.decode('utf-8'))
 
         # Verify that the submission and peer steps show that we're graded
         # This isn't strictly speaking part of the grade step rendering,
