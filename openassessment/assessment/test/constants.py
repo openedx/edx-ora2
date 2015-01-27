@@ -10,7 +10,7 @@ STUDENT_ITEM = {
     'item_type': u'openassessment'
 }
 
-ANSWER = u'ẗëṡẗ äṅṡẅëṛ'
+ANSWER = {'text': u'ẗëṡẗ äṅṡẅëṛ'}
 
 RUBRIC_OPTIONS = [
     {
