@@ -51,17 +51,21 @@ def essay_text_from_submission(submission):
     directly (convenient for testing).
     """
     if isinstance(submission, dict):
-        # Initially there was one prompt and submission had the structure
-        # {'answer': {'text': 'The text.'}}
-        if 'text' in submission['answer']:
-            essay_text = submission['answer']['text']
-        # When multiple prompts were introduced the structure of submission become:
-        # {'answer': {'parts': [{'text': 'The text part 1.'}, {'text': 'The text part 2.'}]}}
-        # We concatenate these parts and let AI grader evaluate the total text.
-        else:
-            essay_text = u''
-            for part in submission['answer']['parts']:
-                essay_text += '\n' + part['text']
+        if 'answer' in submission:
+            # Format used for answer in examples.
+            if isinstance(submission['answer'], unicode):
+                return submission['answer']
+            # Initially there was one prompt and submission had the structure
+            # {'answer': {'text': 'The text.'}}
+            elif 'text' in submission['answer']:
+                essay_text = submission['answer']['text']
+            # When multiple prompts were introduced the structure of submission become:
+            # {'answer': {'parts': [{'text': 'The text part 1.'}, {'text': 'The text part 2.'}]}}
+            # We concatenate these parts and let AI grader evaluate the total text.
+            else:
+                essay_text = u''
+                for part in submission['answer']['parts']:
+                    essay_text += '\n' + part['text']
     else:
         essay_text = unicode(submission)
     return essay_text
