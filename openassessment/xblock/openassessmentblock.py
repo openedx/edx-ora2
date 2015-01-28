@@ -224,7 +224,7 @@ class OpenAssessmentBlock(
         See also: submissions.api for details.
 
         Args:
-            anonymous_user_id(str):
+            anonymous_user_id(str): A unique anonymous_user_id for (user, course) pair.
         Returns:
             (dict): The student item associated with this XBlock instance. This
                 includes the student id, item id, and course id.
