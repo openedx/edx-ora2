@@ -126,7 +126,15 @@ def deserialize_training_examples(examples, rubric_dict):
         >>>
         >>> examples = [
         >>>     {
-        >>>         'answer': u'Lorem ipsum',
+        >>>         'answer': {
+        >>>             'parts': {
+        >>>                 [
+        >>>                     {'text:' 'Answer part 1'},
+        >>>                     {'text:' 'Answer part 2'},
+        >>>                     {'text:' 'Answer part 3'}
+        >>>                 ]
+        >>>             }
+        >>>         },
         >>>         'options_selected': {
         >>>             'vocabulary': 'good',
         >>>             'grammar': 'excellent'
