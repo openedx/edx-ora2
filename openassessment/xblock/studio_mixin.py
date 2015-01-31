@@ -14,7 +14,7 @@ from xblock.fields import List, Scope
 from xblock.fragment import Fragment
 from openassessment.xblock.defaults import DEFAULT_EDITOR_ASSESSMENTS_ORDER, DEFAULT_RUBRIC_FEEDBACK_TEXT
 from openassessment.xblock.validation import validator
-from openassessment.xblock.data_conversion import create_rubric_dict, make_django_template_key
+from openassessment.xblock.data_conversion import create_rubric_dict, make_django_template_key, update_assessments_format
 from openassessment.xblock.schema import EDITOR_UPDATE_SCHEMA
 from openassessment.xblock.resolve_dates import resolve_dates
 from openassessment.xblock.xml import serialize_examples_to_xml_str, parse_examples_from_xml_str
@@ -191,6 +191,10 @@ class StudioMixin(object):
                     )}
                     # This is where we default to EASE for problems which are edited in the GUI
                 assessment['algorithm_id'] = 'ease'
+            if assessment['name'] == 'student-training':
+                for example in assessment['examples']:
+                    example['answer'] = {'parts': [{'text': text} for text in example['answer']]}
+
 
         xblock_validator = validator(self, self._)
         success, msg = xblock_validator(
@@ -269,13 +273,20 @@ class StudioMixin(object):
         # could be accomplished within the template, we are opting to remove logic from the template.
         student_training_module = self.get_assessment_module('student-training')
 
-        student_training_template = {'answer': ""}
+        student_training_template = {
+            'answer': {
+                'parts': [
+                    {'text': ''} for prompt in self.prompts
+                ]
+            }
+        }
         criteria_list = copy.deepcopy(self.rubric_criteria_with_labels)
         for criterion in criteria_list:
             criterion['option_selected'] = ""
         student_training_template['criteria'] = criteria_list
 
         if student_training_module:
+            student_training_module = update_assessments_format([student_training_module])[0]
             example_list = []
             # Adds each example to a modified version of the student training module dictionary.
             for example in student_training_module['examples']:
