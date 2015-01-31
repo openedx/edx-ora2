@@ -25,9 +25,14 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     // Initialize the validation alert
     this.alert = new OpenAssessment.ValidationAlert().install();
 
+    var studentTrainingListener = new OpenAssessment.StudentTrainingListener();
+
     // Initialize the prompt tab view
     this.promptsView = new OpenAssessment.EditPromptsView(
-        $("#oa_prompts_editor_wrapper", this.element).get(0)
+        $("#oa_prompts_editor_wrapper", this.element).get(0),
+        new OpenAssessment.Notifier([
+            studentTrainingListener
+        ])
     );
 
     // Initialize the settings tab view
@@ -57,7 +62,7 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     this.rubricView = new OpenAssessment.EditRubricView(
         $("#oa_rubric_editor_wrapper", this.element).get(0),
          new OpenAssessment.Notifier([
-            new OpenAssessment.StudentTrainingListener()
+            studentTrainingListener
         ])
     );
 

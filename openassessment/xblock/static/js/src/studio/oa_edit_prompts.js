@@ -8,7 +8,7 @@ Returns:
     OpenAssessment.EditPromptsView
 
 **/
-OpenAssessment.EditPromptsView = function(element) {
+OpenAssessment.EditPromptsView = function(element, notifier) {
     this.element = element;
 
     this.promptsContainer = new OpenAssessment.Container(
@@ -17,7 +17,8 @@ OpenAssessment.EditPromptsView = function(element) {
             templateElement: $("#openassessment_prompt_template", this.element).get(0),
             addButtonElement: $("#openassessment_prompts_add_prompt", this.element).get(0),
             removeButtonClass: "openassessment_prompt_remove_button",
-            containerItemClass: "openassessment_prompt"
+            containerItemClass: "openassessment_prompt",
+            notifier: notifier
         }
     );
     this.promptsContainer.addEventListeners();
