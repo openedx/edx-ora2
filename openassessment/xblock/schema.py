@@ -88,7 +88,7 @@ EDITOR_UPDATE_SCHEMA = Schema({
             'must_be_graded_by': All(int, Range(min=0)),
             'examples': [
                 Schema({
-                    Required('answer'): utf8_validator,
+                    Required('answer'): [utf8_validator],
                     Required('options_selected'): [
                         Schema({
                             Required('criterion'): utf8_validator,
