@@ -934,7 +934,7 @@
     .openassessment_training_example_body {
       @include padding(0, 15px, 15px, 15px);
       position: relative;
-      overflow: hidden;
+      overflow: scroll;
       .openassessment_training_example_essay_wrapper {
         width: 58%;
         display: inline-block;
