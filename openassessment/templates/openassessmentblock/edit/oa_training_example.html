@@ -28,7 +28,13 @@
 
         <div class="openassessment_training_example_essay_wrapper">
             <h2>{% trans "Response" %}</h2>
-            <textarea class="openassessment_training_example_essay" maxlength="100000">{{ example.answer }}</textarea>
+            <ol class="openassessment_training_example_essay">
+                {% for part in example.answer.parts %}
+                    <li class="openassessment_training_example_essay_part">
+                        <textarea maxlength="100000">{{ part.text }}</textarea>
+                    </li>
+                {% endfor %}
+            </ol>
         </div>
     </div>
 </li>

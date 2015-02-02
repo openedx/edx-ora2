@@ -30,7 +30,7 @@ describe("OpenAssessment.Server", function() {
         );
     };
 
-    var PROMPT = "Hello this is the prompt yes.";
+    var PROMPTS = [{"description": "Hello this is the prompt yes."}];
     var FEEDBACK_PROMPT = "Prompt for feedback";
     var FEEDBACK_DEFAULT_TEXT = "Default feedback response text";
 
@@ -253,7 +253,7 @@ describe("OpenAssessment.Server", function() {
     it("updates the XBlock's editor context definition", function() {
         stubAjax(true, { success: true });
         server.updateEditorContext({
-            prompt: PROMPT,
+            prompts: PROMPTS,
             feedbackPrompt: FEEDBACK_PROMPT,
             feedback_default_text: FEEDBACK_DEFAULT_TEXT,
             title: TITLE,
@@ -268,7 +268,7 @@ describe("OpenAssessment.Server", function() {
         expect($.ajax).toHaveBeenCalledWith({
             type: "POST", url: '/update_editor_context',
             data: JSON.stringify({
-                prompt: PROMPT,
+                prompts: PROMPTS,
                 feedback_prompt: FEEDBACK_PROMPT,
                 feedback_default_text: FEEDBACK_DEFAULT_TEXT,
                 title: TITLE,

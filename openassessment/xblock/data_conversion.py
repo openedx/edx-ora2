@@ -85,7 +85,7 @@ def update_assessments_format(assessments):
     for assessment in assessments:
         if 'examples' in assessment:
             for example in assessment['examples']:
-                if isinstance(example['answer'], unicode):
+                if isinstance(example['answer'], unicode) or isinstance(example['answer'], str):
                     example['answer'] = {
                         'parts': [
                             {'text': example['answer']}
