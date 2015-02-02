@@ -32,7 +32,7 @@ from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.student_training_mixin import StudentTrainingMixin
 from openassessment.xblock.validation import validator
 from openassessment.xblock.resolve_dates import resolve_dates, DISTANT_PAST, DISTANT_FUTURE
-from openassessment.xblock.data_conversion import create_prompts_list, create_rubric_dict
+from openassessment.xblock.data_conversion import create_prompts_list, create_rubric_dict, update_assessments_format
 
 
 logger = logging.getLogger(__name__)
@@ -491,10 +491,11 @@ class OpenAssessmentBlock(
             list
 
         """
-        return [
+        _valid_assessments = [
             asmnt for asmnt in self.rubric_assessments
             if asmnt.get('name') in VALID_ASSESSMENT_TYPES
         ]
+        return update_assessments_format(copy.deepcopy(_valid_assessments))
 
     @property
     def assessment_steps(self):
