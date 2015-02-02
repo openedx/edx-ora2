@@ -38,7 +38,7 @@ OpenAssessment.BaseView.prototype = {
      */
     scrollToTop: function() {
         if ($.scrollTo instanceof Function) {
-            $(window).scrollTo($("#openassessment__steps"), 800, {offset:-50});
+            $(window).scrollTo($("#openassessment__steps", this.element), 800, {offset:-50});
         }
     },
 
