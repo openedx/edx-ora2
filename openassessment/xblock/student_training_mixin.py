@@ -7,7 +7,7 @@ from xblock.core import XBlock
 from openassessment.assessment.api import student_training
 from openassessment.workflow import api as workflow_api
 from openassessment.workflow.errors import AssessmentWorkflowError
-from openassessment.xblock.data_conversion import convert_training_examples_list_to_dict
+from openassessment.xblock.data_conversion import convert_training_examples_list_to_dict, create_submission_dict
 from .resolve_dates import DISTANT_FUTURE
 
 
@@ -124,7 +124,7 @@ class StudentTrainingMixin(object):
                 examples
             )
             if example:
-                context['training_essay'] = example['answer']
+                context['training_essay'] = create_submission_dict({'answer': example['answer']}, self.prompts)
                 context['training_rubric'] = {
                     'criteria': example['rubric']['criteria'],
                     'points_possible': example['rubric']['points_possible']

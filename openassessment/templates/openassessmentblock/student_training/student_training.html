@@ -72,9 +72,8 @@
                         {% endwith %}
                     </header>
 
-                    <div class="student-training__display__response">
-                        {{ training_essay|linebreaks }}
-                    </div>
+                    {% include "openassessmentblock/oa_submission_answer.html" with answer=training_essay.answer answer_text_label="The response to the question above:" %}
+
                 </article>
 
                 <form id="student-training--001__assessment" class="student-training__assessment" method="post">
