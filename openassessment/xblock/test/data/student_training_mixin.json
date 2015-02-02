@@ -8,7 +8,9 @@
             "training_essay": { "answer": {
                 "parts": [
                     {
-                        "prompt": "Given the state of the world today, what do you think should be done to combat poverty?",
+                        "prompt": {
+                            "description": "Given the state of the world today, what do you think should be done to combat poverty?"
+                        },
                         "text": "This is my answer."
                     }
                 ]}
