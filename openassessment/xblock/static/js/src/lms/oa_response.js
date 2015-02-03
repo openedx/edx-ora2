@@ -246,6 +246,7 @@ OpenAssessment.ResponseView.prototype = {
         else {
             if (enabled) {
                 window.onbeforeunload = function() {
+                    // Keep this on one big line to avoid gettext bug: http://stackoverflow.com/a/24579117
                     return gettext("If you leave this page without saving or submitting your response, you'll lose any work you've done on the response.");
                 };
             }
@@ -433,10 +434,8 @@ OpenAssessment.ResponseView.prototype = {
         * rejected if the user cancels the submission
     **/
     confirmSubmission: function() {
-        var msg = (
-            "You're about to submit your response for this assignment. " +
-            "After you submit this response, you can't change it or submit a new response."
-        );
+        // Keep this on one big line to avoid gettext bug: http://stackoverflow.com/a/24579117
+        var msg = gettext("You're about to submit your response for this assignment. After you submit this response, you can't change it or submit a new response.");
         // TODO -- UI for confirmation dialog instead of JS confirm
         return $.Deferred(function(defer) {
             if (confirm(msg)) { defer.resolve(); }
