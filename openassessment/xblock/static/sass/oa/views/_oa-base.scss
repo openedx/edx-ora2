@@ -9,6 +9,7 @@
 }
 
 .openassessment {
+  @include direction();
 
   // --------------------
   // general: chrome
