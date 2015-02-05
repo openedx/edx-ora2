@@ -1059,7 +1059,9 @@
             "<assessments>",
                 "<assessment name=\"student-training\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\">",
                     "<example>",
-                        "<answer>ẗëṡẗ äṅṡẅëṛ</answer>",
+                        "<answer>",
+                            "<part>ẗëṡẗ äṅṡẅëṛ</part>",
+                        "</answer>",
                         "<select criterion=\"Test criterion\" option=\"No\" />",
                         "<select criterion=\"Another test criterion\" option=\"Yes\" />",
                     "</example>",
@@ -1147,7 +1149,12 @@
                 "due": "2014-03-01T00:00:00",
                 "examples": [
                     {
-                        "answer": "ẗëṡẗ äṅṡẅëṛ",
+                        "answer": {
+                            "parts": [
+                                {"text": "ẗëṡẗ äṅṡẅëṛ 1"},
+                                {"text": "ẗëṡẗ äṅṡẅëṛ 2"}
+                            ]
+                        },
                         "options_selected": [
                             {
                                 "criterion": "Test criterion",
@@ -1160,7 +1167,12 @@
                         ]
                     },
                     {
-                        "answer": "śéćőńd téśt áńśẃéŕ",
+                        "answer": {
+                            "parts": [
+                                {"text": "śéćőńd téśt áńśẃéŕ 1"},
+                                {"text": "śéćőńd téśt áńśẃéŕ 2"}
+                            ]
+                        },
                         "options_selected": [
                             {
                                 "criterion": "Test criterion",
@@ -1181,12 +1193,18 @@
             "<assessments>",
                 "<assessment name=\"student-training\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\">",
                     "<example>",
-                        "<answer>ẗëṡẗ äṅṡẅëṛ</answer>",
+                        "<answer>",
+                            "<part>ẗëṡẗ äṅṡẅëṛ 1</part>",
+                            "<part>ẗëṡẗ äṅṡẅëṛ 2</part>",
+                        "</answer>",
                         "<select criterion=\"Test criterion\" option=\"No\" />",
                         "<select criterion=\"Another test criterion\" option=\"Yes\" />",
                     "</example>",
                     "<example>",
-                        "<answer>śéćőńd téśt áńśẃéŕ</answer>",
+                        "<answer>",
+                            "<part>śéćőńd téśt áńśẃéŕ 1</part>",
+                            "<part>śéćőńd téśt áńśẃéŕ 2</part>",
+                        "</answer>",
                         "<select criterion=\"Test criterion\" option=\"Yes\" />",
                         "<select criterion=\"Another test criterion\" option=\"No\" />",
                     "</example>",
@@ -1292,11 +1310,15 @@
             "<assessments>",
                 "<assessment name=\"example-based-assessment\" algorithm_id=\"sample-algorithm-id\">",
                     "<example>",
-                        "<answer>тєѕт αηѕωєя</answer>",
+                        "<answer>",
+                            "<part>тєѕт αηѕωєя</part>",
+                        "</answer>",
                         "<select criterion=\"Test criterion\" option=\"No\" />",
                     "</example>",
                     "<example>",
-                        "<answer>тєѕт αηѕωєя TWO</answer>",
+                        "<answer>",
+                            "<part>тєѕт αηѕωєя TWO</part>",
+                        "</answer>",
                         "<select criterion=\"Test criterion\" option=\"Yes\" />",
                     "</example>",
                 "</assessment>",

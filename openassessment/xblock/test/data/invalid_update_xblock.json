@@ -1002,7 +1002,7 @@
                 "name": "student-training",
                 "examples": [
                     {
-                        "answer": "Ṫḧïṡ ïṡ äṅ äṅṡẅëṛ",
+                        "answer": ["Ṫḧïṡ ïṡ äṅ äṅṡẅëṛ 1", "Ṫḧïṡ ïṡ äṅ äṅṡẅëṛ 2"],
                         "options_selected": [
                             { "criterion": "Not a criterion!", "option": "Ṅö" }
                         ]

@@ -464,11 +464,21 @@ def parse_examples_xml(examples):
     for example_el in examples:
         example_dict = dict()
 
-        # Retrieve the answer from the training example
+        # Retrieve the answers from the training example
+        answers_list = list()
         answer_elements = example_el.findall('answer')
         if len(answer_elements) != 1:
             raise UpdateFromXmlError(u'Each "example" element must contain exactly one "answer" element')
-        example_dict['answer'] = _safe_get_text(answer_elements[0])
+
+        answer_part_elements = answer_elements[0].findall('part')
+        if len(answer_part_elements) > 0:
+            for answer_part_element in answer_part_elements:
+                answers_list.append(_safe_get_text(answer_part_element))
+        else:
+            # Initially example answers had only one part.
+            answers_list.append(_safe_get_text(answer_elements[0]))
+
+        example_dict['answer'] = {"parts": [{"text": text} for text in answers_list]}
 
         # Retrieve the options selected from the training example
         example_dict['options_selected'] = []
@@ -595,7 +605,9 @@ def serialize_training_examples(examples, assessment_el):
 
         # Answer provided in the example (default to empty string)
         answer_el = etree.SubElement(example_el, 'answer')
-        answer_el.text = unicode(example_dict.get('answer', ''))
+        for part in example_dict.get('answer', {}).get('parts', []):
+            part_el = etree.SubElement(answer_el, 'part')
+            part_el.text = unicode(part.get('text', u''))
 
         # Options selected from the rubric
         options_selected = example_dict.get('options_selected', [])
