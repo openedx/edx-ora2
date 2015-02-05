@@ -90,7 +90,11 @@
                 "due": "2014-06-01T00:00:00",
                 "examples": [
                     {
-                        "answer": "ẗëṡẗ äṅṡẅëṛ",
+                        "answer": {
+                            "parts": [
+                                {"text": "ẗëṡẗ äṅṡẅëṛ"}
+                            ]
+                        },
                         "options_selected": [
                             {
                                 "criterion": "Test criterion",
@@ -127,7 +131,11 @@
                 "due": "2014-06-01T00:00:00",
                 "examples": [
                     {
-                        "answer": "ẗëṡẗ äṅṡẅëṛ",
+                        "answer": {
+                            "parts": [
+                                {"text": "ẗëṡẗ äṅṡẅëṛ"}
+                            ]
+                        },
                         "options_selected": [
                             {
                                 "criterion": "Test criterion",
@@ -140,7 +148,11 @@
                         ]
                     },
                     {
-                        "answer": "äṅöẗḧëṛ ẗëṡẗ äṅṡẅëṛ",
+                        "answer": {
+                            "parts": [
+                                {"text": "äṅöẗḧëṛ ẗëṡẗ äṅṡẅëṛ"}
+                            ]
+                        },
                         "options_selected": [
                             {
                                 "criterion": "Another test criterion",

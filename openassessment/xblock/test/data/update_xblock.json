@@ -143,13 +143,13 @@
                 "name": "student-training",
                 "examples": [
                     {
-                        "answer": "Ṫḧïṡ ïṡ äṅ äṅṡẅëṛ",
+                        "answer": ["Ṫḧïṡ ïṡ äṅ äṅṡẅëṛ 1", "Ṫḧïṡ ïṡ äṅ äṅṡẅëṛ 2"],
                         "options_selected": [
                             { "criterion": "тєѕт ¢яιтєяιση", "option": "Ṅö" }
                         ]
                     },
                     {
-                        "answer": "This is another answer",
+                        "answer": ["This is another answer 1", "This is another answer 2"],
                         "options_selected": [
                             { "criterion": "тєѕт ¢яιтєяιση", "option": "sǝʎ" }
                         ]
