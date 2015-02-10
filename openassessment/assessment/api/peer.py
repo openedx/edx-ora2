@@ -985,8 +985,9 @@ def on_cancel(submission_uuid):
     """
     try:
         workflow = PeerWorkflow.get_by_submission_uuid(submission_uuid)
-        workflow.cancelled_at = timezone.now()
-        workflow.save()
+        if workflow:
+            workflow.cancelled_at = timezone.now()
+            workflow.save()
     except (PeerAssessmentWorkflowError, DatabaseError):
         error_message = (
             u"An internal error occurred while cancelling the peer"

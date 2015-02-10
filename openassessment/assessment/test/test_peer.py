@@ -965,6 +965,18 @@ class TestPeerApi(CacheResetTest):
         workflow = PeerWorkflow.get_by_submission_uuid(buffy_sub["uuid"])
         self.assertTrue(workflow.is_cancelled)
 
+    def test_cancel_submission_when_peerworkflow_does_not_exist(self):
+        new_student_item = STUDENT_ITEM.copy()
+        new_student_item["student_id"] = "Buffy"
+
+        submission = sub_api.create_submission(new_student_item, "Buffy Answer")
+
+        peer_api.on_cancel(submission['uuid'])
+        # Check for a workflow for Buffy.
+        # It should be None
+        buffy_workflow = PeerWorkflow.get_by_submission_uuid(submission['uuid'])
+        self.assertIsNone(buffy_workflow)
+
     def test_get_workflow_by_uuid(self):
         buffy_answer, _ = self._create_student_and_submission("Buffy", "Buffy's answer")
         self._create_student_and_submission("Xander", "Xander's answer")
