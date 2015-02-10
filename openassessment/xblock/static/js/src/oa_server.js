@@ -78,11 +78,15 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
             element: The element to modify.
         **/
         renderLatex: function(element) {
-            $('.allow--latex', element).each(
-                function() {
-                    MathJax.Hub.Queue(['Typeset', MathJax.Hub, this]);
+            MathJax.Hub.Startup.signal.Interest(function (message) {
+                if (message === "End") {
+                    $('.allow--latex', element).each(
+                        function() {
+                            MathJax.Hub.Queue(['Typeset', MathJax.Hub, this]);
+                        }
+                    );
                 }
-            );
+            });
         },
 
         /**
