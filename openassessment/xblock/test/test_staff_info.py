@@ -615,7 +615,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # Verify that we can render without error
         params = {"submission_uuid": submission["uuid"], "comments": "Inappropriate language."}
         resp = self.request(xblock, 'cancel_submission', json.dumps(params), response_format='json')
-        self.assertIn("Student submission was removed from the ", resp['msg'])
+        self.assertIn("The student submission has been removed from peer", resp['msg'])
         self.assertEqual(True, resp['success'])
 
     def _create_mock_runtime(self, item_id, is_staff, is_admin, anonymous_user_id):
