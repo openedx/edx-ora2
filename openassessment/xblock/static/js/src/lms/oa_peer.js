@@ -28,6 +28,7 @@ OpenAssessment.PeerView.prototype = {
             function(html) {
                 // Load the HTML and install event handlers
                 $('#openassessment__peer-assessment', view.element).replaceWith(html);
+                view.server.renderLatex($('#openassessment__peer-assessment', view.element));
                 view.installHandlers(false);
             }
         ).fail(function(errMsg) {
@@ -51,6 +52,7 @@ OpenAssessment.PeerView.prototype = {
             function(html) {
                 // Load the HTML and install event handlers
                 $('#openassessment__peer-assessment', view.element).replaceWith(html);
+                view.server.renderLatex($('#openassessment__peer-assessment', view.element));
                 view.installHandlers(true);
             }
         ).fail(function(errMsg) {

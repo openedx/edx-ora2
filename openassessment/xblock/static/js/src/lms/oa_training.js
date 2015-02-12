@@ -28,6 +28,7 @@ OpenAssessment.StudentTrainingView.prototype = {
             function(html) {
                 // Load the HTML and install event handlers
                 $('#openassessment__student-training', view.element).replaceWith(html);
+                view.server.renderLatex($('#openassessment__student-training', view.element));
                 view.installHandlers();
             }
         ).fail(function(errMsg) {

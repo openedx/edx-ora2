@@ -28,6 +28,7 @@ OpenAssessment.SelfView.prototype = {
             function(html) {
                 // Load the HTML and install event handlers
                 $('#openassessment__self-assessment', view.element).replaceWith(html);
+                view.server.renderLatex($('#openassessment__self-assessment', view.element));
                 view.installHandlers();
             }
         ).fail(function(errMsg) {

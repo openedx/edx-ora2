@@ -32,6 +32,7 @@ OpenAssessment.StaffInfoView.prototype = {
                 function(html) {
                     // Load the HTML and install event handlers
                     $('#openassessment__staff-info', view.element).replaceWith(html);
+                    view.server.renderLatex($('#openassessment__staff-info', view.element));
                     view.installHandlers();
                 }
             ).fail(function(errMsg) {

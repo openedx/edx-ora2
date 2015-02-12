@@ -49,7 +49,7 @@ describe("OpenAssessment.StudentTrainingView", function() {
 
         // Create a new stub server
         server = new StubServer();
-
+        server.renderLatex = jasmine.createSpy('renderLatex')
         // Create the stub base view
         baseView = new StubBaseView();
 
