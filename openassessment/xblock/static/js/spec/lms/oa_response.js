@@ -100,6 +100,7 @@ describe("OpenAssessment.ResponseView", function() {
 
         // Create stub objects
         server = new StubServer();
+        server.renderLatex = jasmine.createSpy('renderLatex')
         fileUploader = new StubFileUploader();
         baseView = new StubBaseView();
 

@@ -79,7 +79,7 @@ describe("OpenAssessment.StaffInfoView", function() {
     beforeEach(function() {
         // Create a new stub server
         server = new StubServer();
-
+        server.renderLatex = jasmine.createSpy('renderLatex')
         // Create the stub base view
         baseView = new StubBaseView();
     });
@@ -112,7 +112,6 @@ describe("OpenAssessment.StaffInfoView", function() {
         // Load the fixture for the container page that DOES include a course staff section
         loadFixtures('oa_base_course_staff.html');
         assertStaffInfoAjaxCall(true);
-
     });
 
     it("Does NOT load staff info if the page does NOT contain a course staff section", function() {

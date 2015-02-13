@@ -27,6 +27,7 @@ OpenAssessment.GradeView.prototype = {
             function(html) {
                 // Load the HTML and install event handlers
                 $('#openassessment__grade', view.element).replaceWith(html);
+                view.server.renderLatex($('#openassessment__grade', view.element));
                 view.installHandlers();
             }
         ).fail(function(errMsg) {

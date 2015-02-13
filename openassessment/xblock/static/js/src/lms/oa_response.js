@@ -44,6 +44,7 @@ OpenAssessment.ResponseView.prototype = {
             function(html) {
                 // Load the HTML and install event handlers
                 $('#openassessment__response', view.element).replaceWith(html);
+                view.server.renderLatex($('#openassessment__response', view.element));
                 view.installHandlers();
                 view.setAutoSaveEnabled(true);
             }
