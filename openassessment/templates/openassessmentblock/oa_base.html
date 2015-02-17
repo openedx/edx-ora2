@@ -30,9 +30,9 @@
                 {% endblock %}
             </div>
 
-            <ol class="openassessment__steps" id="openassessment__steps">
+            <div class="openassessment__steps" id="openassessment__steps">
                 {% for assessment in rubric_assessments %}
-                    <li id="{{ assessment.class_id }}" class="openassessment__steps__step is--loading">
+                    <div id="{{ assessment.class_id }}" class="openassessment__steps__step is--loading">
                         <header class="step__header">
                             <h2 class="step__title">
                                 <span class="step__counter"></span>
@@ -50,9 +50,9 @@
                                 </span>
                             </span>
                         </header>
-                    </li>
+                    </div>
                 {% endfor %}
-            </ol>
+            </div>
 
             {% if show_staff_debug_info %}
                 <div id="openassessment__staff-info"></div>

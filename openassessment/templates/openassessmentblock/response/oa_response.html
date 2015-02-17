@@ -2,7 +2,7 @@
 {% load i18n %}
 {% spaceless %}
 {% block list_item %}
-<li id="openassessment__response" class="openassessment__steps__step step--response ui-toggle-visibility">
+<div id="openassessment__response" aria-expanded="true" class="openassessment__steps__step step--response ui-toggle-visibility">
 {% endblock %}
 
     <header class="step__header ui-toggle-visibility__control">
@@ -51,9 +51,9 @@
 
             <div class="step__content">
                 <form id="response__submission" class="response__submission">
-                    <ol class="list list--fields response__submission__content">
+                    <div class="list list--fields response__submission__content">
                         {% for part in saved_response.answer.parts %}
-                            <li class="submission__answer__part">
+                            <div class="submission__answer__part">
                                 <article class="submission__answer__part__prompt ui-toggle-visibility">
                                     <h2 class="submission__answer__part__prompt__title">{% trans "The prompt for this section." %}</h2>
 
@@ -70,10 +70,10 @@
                                         maxlength="100000"
                                     >{{ part.text }}</textarea>
                                 </div>
-                            </li>
+                            </div>
                         {% endfor %}
                         {% if allow_file_upload %}
-                        <li class="field">
+                        <div class="field">
                             <div id="upload__error">
                                 <div class="message message--inline message--error message--error-server">
                                     <h3 class="message__title">{% trans "We could not upload this image" %}</h3>
@@ -83,8 +83,8 @@
                             <label class="sr" for="submission__answer__upload">{% trans "Select an image to upload for this submission." %}</label>
                             <input type="file" id="submission__answer__upload" class="file--upload">
                             <button type="submit" id="file__upload" class="action action--upload is--disabled">{% trans "Upload your image" %}</button>
-                        </li>
-                        <li>
+                        </div>
+                        <div>
                             <div class="submission__answer__display__image is--hidden">
                                 <img id="submission__answer__image"
                                      class="submission--image"
@@ -93,9 +93,9 @@
                                      {% endif %}
                                      src="{{ file_url }}"/>
                             </div>
-                        </li>
+                        </div>
                         {% endif %}
-                    </ol>
+                    </div>
 
                     <span class="tip">{% trans "You may continue to work on your response until you submit it." %}</span>
 
@@ -105,8 +105,8 @@
                             <div class="message__content"></div>
                         </div>
 
-                        <ul class="list list--actions">
-                            <li class="list--actions__item">
+                        <div class="list list--actions">
+                            <div class="list--actions__item">
                                 <button type="submit" id="submission__save" class="action action--save submission__save is--disabled">{% trans "Save Your Progress" %}</button>
 
                                 <div id="response__save_status" class="response__submission__status">
@@ -115,26 +115,26 @@
                                         {{ save_status }}
                                     </h3>
                                 </div>
-                            </li>
+                            </div>
                             {% if allow_latex %}
-                            <li class="list--actions__item">
+                            <div class="list--actions__item">
                                 <button type="submit" id="submission__preview" class="action action--save submission__save is--disabled">{% trans "Preview in Latex"%}</button>
                                 <div id="response__preview_explanation" class="response__submission__status">
                                     <h3 class="response__submission__status__title">
                                         {% trans "Click to preview your submission in Latex"%}
                                     </h3>
                                 </div>
-                            </li>
-                            <li id = "submission__preview__item" class="list--actions__item">
+                            </div>
+                            <div id = "submission__preview__item" class="list--actions__item">
                                 <article class="submission__answer__display">
                                     <h3 class="submission__answer__display__title">Preview Response</h3>
                                     <div class="submission__answer__display__content">
                                         <p id="preview_content"></p>
                                     </div>
                                 </article>
-                            </li>
+                            </div>
                             {% endif %}
-                        </ul>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -145,18 +145,18 @@
                     <div class="message__content"></div>
                 </div>
 
-                <ul class="list list--actions">
-                    <li class="list--actions__item">
+                <div class="list list--actions">
+                    <div class="list--actions__item">
                         <a aria-role="button" href="#" id="step--response__submit"
                             class="action action--submit step--response__submit {{ submit_enabled|yesno:",is--disabled" }}">
                             <span class="copy">{% trans "Submit your response and move to the next step" %}</span>
                             <i class="ico icon-caret-right"></i>
                         </a>
-                    </li>
-                </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     {% endblock %}
-</li>
+</div>
 {% endspaceless %}
