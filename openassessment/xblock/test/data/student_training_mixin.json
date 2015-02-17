@@ -8,9 +8,13 @@
             "training_essay": { "answer": {
                 "parts": [
                     {
+<<<<<<< HEAD
                         "prompt": {
                             "description": "Given the state of the world today, what do you think should be done to combat poverty?"
                         },
+=======
+                        "prompt": "Given the state of the world today, what do you think should be done to combat poverty?",
+>>>>>>> usman/tnl708-multiple-prompts-training
                         "text": "This is my answer."
                     }
                 ]}

@@ -1,6 +1,6 @@
 /**
 Dynamically update student training examples based on
-changes to the rubric.
+changes to the prompts or the rubric.
 **/
 OpenAssessment.StudentTrainingListener = function() {
     this.element = $('#oa_student_training_editor');
@@ -8,6 +8,28 @@ OpenAssessment.StudentTrainingListener = function() {
 };
 
 OpenAssessment.StudentTrainingListener.prototype = {
+
+    /**
+    Add a answer part in the training examples when a prompt is added.
+     */
+    promptAdd: function(data) {
+        var view = this.element;
+        var essay_part = $("#openassessment_training_example_part_template")
+            .children().first()
+            .clone()
+            .removeAttr('id')
+            .toggleClass('is--hidden', false)
+            .appendTo(".openassessment_training_example_essay", view);
+    },
+
+    /**
+    Remove the answer part in the training examples when a prompt is removed.
+     */
+    promptRemove: function(data) {
+        var view = this.element;
+        $(".openassessment_training_example_essay li:nth-child(" + (data.index + 1) + ")", view).remove();
+    },
+
     /**
      Event handler for updating training examples when a criterion option has
      been updated.

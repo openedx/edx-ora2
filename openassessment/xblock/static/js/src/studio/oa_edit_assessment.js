@@ -421,7 +421,7 @@ OpenAssessment.EditStudentTrainingView.prototype = {
     {
         examples: [
             {
-                answer: "I love pokemon",
+                answer: ("I love pokemon 1", "I love pokemon 2"),
                 options_selected: [
                     {
                         criterion: "brevity",
