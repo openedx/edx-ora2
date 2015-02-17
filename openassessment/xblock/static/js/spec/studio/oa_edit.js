@@ -43,7 +43,7 @@ describe("OpenAssessment.StudioView", function() {
 
     var EXPECTED_SERVER_DATA = {
         title: "The most important of all questions.",
-        prompt: "How much do you like waffles?",
+        prompts: [{"description": "How much do you like waffles?"}, {description : 'How much do you like waffles 2?'}],
         feedbackPrompt: "",
         submissionStart: "2014-01-02T12:15",
         submissionDue: "2014-10-01T04:53",
@@ -145,7 +145,7 @@ describe("OpenAssessment.StudioView", function() {
 
         // Top-level attributes
         expect(server.receivedData.title).toEqual(EXPECTED_SERVER_DATA.title);
-        expect(server.receivedData.prompt).toEqual(EXPECTED_SERVER_DATA.prompt);
+        expect(server.receivedData.prompts).toEqual(EXPECTED_SERVER_DATA.prompts);
         expect(server.receivedData.feedbackPrompt).toEqual(EXPECTED_SERVER_DATA.feedbackPrompt);
         expect(server.receivedData.submissionStart).toEqual(EXPECTED_SERVER_DATA.submissionStart);
         expect(server.receivedData.submissionDue).toEqual(EXPECTED_SERVER_DATA.submissionDue);
