@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block list_item %}
-<li
+<div
     id="openassessment__peer-assessment"
     class="openassessment__steps__step step--peer-assessment ui-toggle-visibility is--complete"
     data-submission-uuid="{{ peer_submission.uuid }}"
@@ -40,7 +40,7 @@
 
         <div class="step__content">
             <ul class="list--peer-assessments">
-                <li class="list--peer-assessments__item">
+                <div class="list--peer-assessments__item">
                     <article class="peer-assessment" id="peer-assessment--001">
                         <div class="peer-assessment__display">
                             <header class="peer-assessment__display__header">
@@ -67,10 +67,10 @@
 
                         <form id="peer-assessment--001__assessment" class="peer-assessment__assessment" method="post">
                             <fieldset class="assessment__fields">
-                                <ol class="list list--fields assessment__rubric">
+                                <div class="list list--fields assessment__rubric">
 
                                     {% for criterion in rubric_criteria %}
-                                    <li
+                                    <div
                                         class="field field--radio is--required assessment__rubric__question ui-toggle-visibility {% if criterion.options %}has--options{% endif %}"
                                         id="assessment__rubric__question--{{ criterion.order_num }}"
                                     >
@@ -81,9 +81,9 @@
                                         </h4>
 
                                         <div class="ui-toggle-visibility__content">
-                                            <ol class="question__answers">
+                                            <div class="question__answers">
                                                 {% for option in criterion.options %}
-                                                <li class="answer">
+                                                <div class="answer">
                                                     <div class="wrapper--input">
                                                         <input type="radio"
                                                                name="{{ criterion.name }}"
@@ -98,11 +98,11 @@
                                                         <span class="answer__tip">{{ option.explanation }}</span>
                                                         <span class="answer__points">{{option.points}} <span class="answer__points__label">{% trans "points" %}</span></span>
                                                     </div>
-                                                </li>
+                                                </div>
                                                 {% endfor %}
 
                                                 {% if criterion.feedback == 'optional' or criterion.feedback == 'required' %}
-                                                <li class="answer--feedback">
+                                                <div class="answer--feedback">
                                                     <div class="wrapper--input">
                                                         <label for="assessment__rubric__question--{{ criterion.order_num }}__feedback" class="answer__label">{% trans "Comments" %}</label>
                                                         <textarea
@@ -115,14 +115,14 @@
                                                             >
                                                         </textarea>
                                                     </div>
-                                                </li>
+                                                </div>
                                                 {% endif %}
-                                        </ol>
                                         </div>
-                                    </li>
+                                        </div>
+                                    </div>
                                     {% endfor %}
 
-                                    <li class="wrapper--input field field--textarea assessment__rubric__question assessment__rubric__question--feedback" id="assessment__rubric__question--feedback">
+                                    <div class="wrapper--input field field--textarea assessment__rubric__question assessment__rubric__question--feedback" id="assessment__rubric__question--feedback">
                                         <label class="question__title" for="assessment__rubric__question--feedback__value">
                                             <span class="question__title__copy">{{ rubric_feedback_prompt }}</span>
                                         </label>
@@ -134,13 +134,13 @@
                                                 >
                                                 </textarea>
                                         </div>
-                                    </li>
-                                </ol>
+                                    </div>
+                                </div>
                             </fieldset>
                         </form>
                     </article>
-                </li>
-            </ul>
+                </div>
+            </div>
         </div>
 
         <div class="step__actions">
@@ -148,14 +148,14 @@
                 <h3 class="message__title">{% trans "We could not submit your assessment" %}</h3>
             </div>
 
-            <ul class="list list--actions">
-                <li class="list--actions__item">
+            <div class="list list--actions">
+                <div class="list--actions__item">
                     <button type="submit" id="peer-assessment--001__assessment__submit" class="action action--submit is--disabled">
                         <span class="copy">{{ submit_button_text }}</span>
                         <i class="ico icon-caret-right"></i>
                     </button>
-                </li>
-            </ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>
