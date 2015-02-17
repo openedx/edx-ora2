@@ -107,7 +107,7 @@ class TestSerializeContent(TestCase):
         self.oa_block.submission_due = data.get('submission_due')
         self.oa_block.rubric_criteria = data.get('criteria', copy.deepcopy(self.BASIC_CRITERIA))
         self.oa_block.rubric_assessments = data.get('assessments', copy.deepcopy(self.BASIC_ASSESSMENTS))
-        self.oa_block.allow_file_upload = data.get('allow_file_upload')
+        self.oa_block.file_upload_type = data.get('file_upload_type')
         self.oa_block.allow_latex = data.get('allow_latex')
         self.oa_block.leaderboard_show = data.get('leaderboard_show', 0)
 
@@ -408,7 +408,7 @@ class TestParseFromXml(TestCase):
             'submission_due',
             'criteria',
             'assessments',
-            'allow_file_upload',
+            'file_upload_type',
             'allow_latex',
             'leaderboard_show'
         ]

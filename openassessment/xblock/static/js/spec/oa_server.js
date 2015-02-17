@@ -262,7 +262,7 @@ describe("OpenAssessment.Server", function() {
             criteria: CRITERIA,
             assessments: ASSESSMENTS,
             editorAssessmentsOrder: EDITOR_ASSESSMENTS_ORDER,
-            imageSubmissionEnabled: true,
+            fileSubmissionEnabled: "image",
             leaderboardNum: 15
         });
         expect($.ajax).toHaveBeenCalledWith({
@@ -277,7 +277,7 @@ describe("OpenAssessment.Server", function() {
                 criteria: CRITERIA,
                 assessments: ASSESSMENTS,
                 editor_assessments_order: EDITOR_ASSESSMENTS_ORDER,
-                allow_file_upload: true,
+                file_upload_type: "image",
                 leaderboard_show: 15
             })
         });

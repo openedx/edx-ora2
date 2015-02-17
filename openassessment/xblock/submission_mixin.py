@@ -25,6 +25,21 @@ class SubmissionMixin(object):
     work outside the scope of OpenAssessmentBlock.
 
     """
+    
+    UPLOADABLE_IMAGE_MIME_TYPES = set([
+        'image/gif',
+        'image/jpeg',
+        'image/pjpeg',
+        'image/png',
+    ])
+    
+    UPLOADABLE_FILE_MIME_TYPES = set([
+        'application/pdf',
+        'image/gif',
+        'image/jpeg',
+        'image/pjpeg',
+        'image/png',
+    ])
 
     @XBlock.json_handler
     def submit(self, data, suffix=''):
@@ -155,7 +170,7 @@ class SubmissionMixin(object):
         # so that later we can add additional response fields.
         student_sub_dict = {'text': student_sub}
 
-        if self.allow_file_upload:
+        if self.file_upload_type:
             student_sub_dict['file_key'] = self._get_student_item_key()
         submission = api.create_submission(student_item_dict, student_sub_dict)
         self.create_workflow(submission["uuid"])
@@ -186,15 +201,18 @@ class SubmissionMixin(object):
             A URL to be used to upload content associated with this submission.
 
         """
-        if "contentType" not in data:
-            return {'success': False, 'msg': self._(u"Must specify contentType.")}
+        if "uploadType" not in data or "contentType" not in data:
+            return {'success': False, 'msg': self._(u"There was an error uploading your file.")}
+        upload_type = data['uploadType']
         content_type = data['contentType']
 
-        if not content_type.startswith('image/'):
-            return {'success': False, 'msg': self._(u"contentType must be an image.")}
+        if upload_type == 'image' and not content_type in self.UPLOADABLE_IMAGE_MIME_TYPES:
+            return {'success': False, 'msg': self._(u"Content type must be of an allowed image type.")}
 
+        if upload_type == 'file' and not content_type in self.UPLOADABLE_FILE_MIME_TYPES:
+            return {'success': False, 'msg': self._(u"Content type must be of an allowed file type.")}
         try:
-            key = self._get_student_item_key()
+            key = self._get_student_item_key(content_type)
             url = file_upload_api.get_upload_url(key, content_type)
             return {'success': True, 'url': url}
         except FileUploadError:
@@ -223,7 +241,7 @@ class SubmissionMixin(object):
             logger.exception("Error retrieving download URL.")
             return ''
 
-    def _get_student_item_key(self):
+    def _get_student_item_key(self, content_type=None):
         """
         Simple utility method to generate a common file upload key based on
         the student item.
@@ -232,8 +250,9 @@ class SubmissionMixin(object):
             A string representation of the key.
 
         """
+        student_item_dict = self.get_student_item_dict(content_type=content_type)
         return u"{student_id}/{course_id}/{item_id}".format(
-            **self.get_student_item_dict()
+            **student_item_dict
         )
 
     def get_download_url_from_submission(self, submission):
@@ -337,12 +356,12 @@ class SubmissionMixin(object):
         if due_date < DISTANT_FUTURE:
             context["submission_due"] = due_date
 
-        context['allow_file_upload'] = self.allow_file_upload
+        context['file_upload_type'] = self.file_upload_type
         context['allow_latex'] = self.allow_latex
         context['has_peer'] = 'peer-assessment' in self.assessment_steps
         context['has_self'] = 'self-assessment' in self.assessment_steps
 
-        if self.allow_file_upload:
+        if self.file_upload_type:
             context['file_url'] = self._get_download_url()
 
         if not workflow and problem_closed:

@@ -139,7 +139,7 @@ class GradeMixin(object):
             'example_based_assessment': example_based_assessment,
             'rubric_criteria': self._rubric_criteria_grade_context(peer_assessments, self_assessment),
             'has_submitted_feedback': has_submitted_feedback,
-            'allow_file_upload': self.allow_file_upload,
+            'file_upload_type': self.file_upload_type,
             'allow_latex': self.allow_latex,
             'file_url': self.get_download_url_from_submission(student_submission)
         }

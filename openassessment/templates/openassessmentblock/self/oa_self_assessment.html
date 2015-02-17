@@ -47,15 +47,23 @@
                         {{ self_submission.answer.text|linebreaks }}
                     </div>
 
-                    {% if allow_file_upload and self_file_url %}
+                    {% if file_upload_type and file_url %}
                     <header class="self-assessment__display__header">
                         <h3 class="self-assessment__display__title">
                             {% trans "Associated Image" %}
                         </h3>
                     </header>
 
-                    <div class="self-assessment__display__image">
-                        <img class="submission--image" alt="{% trans "The image associated with your submission." %}" src="{{ self_file_url }}"/>
+                    <div class="submission__answer__display__file">
+                        {% if file_upload_type == "image" %}
+                        <img class="submission--image"
+                            alt="{% trans "The image associated with your submission." %}"
+                            src="{{ file_url }}" />
+                        {% elif file_upload_type == "file" %}
+                        <a href="{{ file_url }}" class="submission--file">
+                            {% trans "The file associated with your submission." %}
+                        </a>
+                        {% endif %}
                     </div>
                     {% endif %}
                 </article>

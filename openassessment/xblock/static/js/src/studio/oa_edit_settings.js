@@ -122,22 +122,21 @@ OpenAssessment.EditSettingsView.prototype = {
     },
 
     /**
-    Enable / disable image submission.
+    Enable / disable file submission.
 
     Args:
-        isEnabled (boolean, optional): If provided, enable/disable image submission.
+        uploadType (string, optional): If provided, enable specified upload type submission.
 
     Returns:
         boolean
 
     **/
-    imageSubmissionEnabled: function(isEnabled) {
-        var sel = $("#openassessment_submission_image_editor", this.settingsElement);
-        if (isEnabled !== undefined) {
-            if (isEnabled) { sel.val(1); }
-            else { sel.val(0); }
+    fileSubmissionEnabled: function(uploadType) {
+        var sel = $("#openassessment_submission_upload_selector", this.settingsElement);
+        if (uploadType !== undefined) {
+            sel.val(uploadType);
         }
-        return (sel.val() == 1);
+        return sel.val();
     },
 
     /**
