@@ -1,43 +1,19 @@
 # -*- coding: utf-8 -*-
-from contextlib import contextmanager
 from south.db import db
 from south.v2 import SchemaMigration
 
 
 class Migration(SchemaMigration):
 
-    @contextmanager
-    def lock_table(self, table_name):
-        """ Context manager for locking a table (MySQL only) """
-        # Lock tables only under MySQL (it isn't supported for SQLLite)
-        is_mysql = (db.backend_name == 'mysql')
-
-        # Before the block executes, lock the specified table
-        if is_mysql:
-            db.execute("LOCK TABLE {table} WRITE".format(table=table_name))
-
-        # Execute the block
-        yield
-
-        # Add a deferred statement to unlock tables
-        # This will ensure that tables stay locked until
-        # all deferred SQL executes
-        # (for example, creating foreign key constraints and adding indices)
-        if is_mysql:
-            db.add_deferred_sql("UNLOCK TABLES")
-
     def forwards(self, orm):
         # Adding field 'PeerWorkflow.cancelled_at'
-        # We need to lock the table to avoid a potential deadlock with the application queries.
-        with self.lock_table('assessment_peerworkflow'):
-            db.add_column('assessment_peerworkflow', 'cancelled_at',
-                          self.gf('django.db.models.fields.DateTimeField')(null=True, db_index=True),
-                          keep_default=False)
+        db.add_column('assessment_peerworkflow', 'cancelled_at',
+                      self.gf('django.db.models.fields.DateTimeField')(null=True, db_index=True),
+                      keep_default=False)
 
     def backwards(self, orm):
         # Deleting field 'PeerWorkflow.cancelled_at'
-        with self.lock_table('assessment_peerworkflow'):
-            db.delete_column('assessment_peerworkflow', 'cancelled_at')
+        db.delete_column('assessment_peerworkflow', 'cancelled_at')
 
     models = {
         'assessment.aiclassifier': {
