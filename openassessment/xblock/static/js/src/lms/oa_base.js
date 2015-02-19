@@ -52,6 +52,9 @@ OpenAssessment.BaseView.prototype = {
         parentSel.on('click', '.ui-toggle-visibility__control', function (eventData) {
                 var sel = $(eventData.target).closest('.ui-toggle-visibility');
                 sel.toggleClass('is--collapsed');
+                sel.attr('aria-expanded', function (i, attr) {
+                    return attr == 'true' ? 'false' : 'true'
+                });
             }
         );
     },

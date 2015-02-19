@@ -2,7 +2,7 @@
 {% load tz %}
 {% spaceless %}
 {% block list_item %}
-<div id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment ui-toggle-visibility {% if allow_latex %}allow--latex{%endif%}">
+<div id="openassessment__self-assessment" aria-expanded="true" class="openassessment__steps__step step--self-assessment ui-toggle-visibility {% if allow_latex %}allow--latex{%endif%}">
 {% endblock %}
 
     <header class="step__header ui-toggle-visibility__control">
