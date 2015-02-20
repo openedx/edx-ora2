@@ -3,6 +3,7 @@
 {% block list_item %}
 <div
     id="openassessment__peer-assessment"
+    tabindex="0"
     class="openassessment__steps__step step--peer-assessment ui-toggle-visibility {% if allow_latex %} allow--latex {%endif%}"
     data-submission-uuid="{{ peer_submission.uuid }}"
     aria-expanded="true"
