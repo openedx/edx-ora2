@@ -15,7 +15,7 @@ defusedxml==0.4.1
 django>=1.4,<1.5
 django-celery==3.0.17
 django-extensions==1.2.5
-django-model-utils==1.4.0
+django-model-utils==2.2
 djangorestframework<2.4
 dogapi==1.2.1
 lazy==1.1
