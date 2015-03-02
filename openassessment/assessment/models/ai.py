@@ -40,6 +40,35 @@ CLASSIFIERS_CACHE_IN_FILE = getattr(
 )
 
 
+def essay_text_from_submission(submission):
+    """
+    Retrieve the submission text.
+
+    Submissions are arbitrary JSON-blobs, which *should*
+    contain a single key, "answer", containing the essay
+    submission text.
+    If not, though, assume we've been given the essay text
+    directly (convenient for testing).
+    """
+    if isinstance(submission, dict):
+        if 'answer' in submission:
+            # Format used for answer in examples.
+            if isinstance(submission['answer'], unicode):
+                return submission['answer']
+            # Initially there was one prompt and submission had the structure
+            # {'answer': {'text': 'The text.'}}
+            elif 'text' in submission['answer']:
+                essay_text = submission['answer']['text']
+            # When multiple prompts were introduced the structure of submission become:
+            # {'answer': {'parts': [{'text': 'The text part 1.'}, {'text': 'The text part 2.'}]}}
+            # We concatenate these parts and let AI grader evaluate the total text.
+            else:
+                essay_text = u'\n'.join([part['text'] for part in submission['answer']['parts']])
+    else:
+        essay_text = unicode(submission)
+    return essay_text
+
+
 class IncompleteClassifierSet(Exception):
     """
     The classifier set is missing a classifier for a criterion in the rubric.
@@ -792,20 +821,10 @@ class AIGradingWorkflow(AIWorkflow):
         from openassessment.assessment.serializers import rubric_from_dict
         rubric = rubric_from_dict(rubric_dict)
 
-        # Retrieve the submission text
-        # Submissions are arbitrary JSON-blobs, which *should*
-        # contain a single key, "answer", containing the essay
-        # submission text.  If not, though, assume we've been
-        # given the essay text directly (convenient for testing).
-        if isinstance(submission, dict):
-            essay_text = submission.get('answer')
-        else:
-            essay_text = unicode(submission)
-
         # Create the workflow
         workflow = cls.objects.create(
             submission_uuid=submission_uuid,
-            essay_text=essay_text,
+            essay_text=essay_text_from_submission(submission),
             algorithm_id=algorithm_id,
             student_id=submission['student_item']['student_id'],
             item_id=submission['student_item']['item_id'],

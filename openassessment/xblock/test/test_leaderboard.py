@@ -13,6 +13,8 @@ import boto
 from boto.s3.key import Key
 from openassessment.fileupload import api
 
+from openassessment.xblock.data_conversion import create_submission_dict, prepare_submission_for_serialization
+
 class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
 
     @scenario('data/basic_scenario.xml')
@@ -39,15 +41,20 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
 
     @scenario('data/leaderboard_show.xml')
     def test_show_submissions(self, xblock):
-
         # Create some submissions (but fewer than the max that can be shown)
         self._create_submissions_and_scores(xblock, [
-            ("test answer 1", 1),
-            ("test answer 2", 2)
+            (prepare_submission_for_serialization(("test answer 1 part 1", "test answer 1 part 2")), 1),
+            (prepare_submission_for_serialization(("test answer 2 part 1", "test answer 2 part 2")), 2)
         ])
         self._assert_scores(xblock, [
-            {"content": "test answer 2", "score": 2},
-            {"content": "test answer 1", "score": 1}
+            {"score": 2, "submission": create_submission_dict(
+                {"answer": prepare_submission_for_serialization((u"test answer 2 part 1", u"test answer 2 part 2"))},
+                xblock.prompts
+            )},
+            {"score": 1, "submission": create_submission_dict(
+                {"answer": prepare_submission_for_serialization((u"test answer 1 part 1", u"test answer 1 part 2"))},
+                xblock.prompts
+            )}
         ])
         self._assert_leaderboard_visible(xblock, True)
 
@@ -57,27 +64,38 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
 
         # Create more submissions than the max
         self._create_submissions_and_scores(xblock, [
-            ("test answer 3", 0),
-            ("test answer 4", 10),
-            ("test answer 5", 3)
+            (prepare_submission_for_serialization(("test answer 3 part 1", "test answer 3 part 2")), 0),
+            (prepare_submission_for_serialization(("test answer 4 part 1", "test answer 4 part 2")), 10),
+            (prepare_submission_for_serialization(("test answer 5 part 1", "test answer 5 part 2")), 3),
         ])
         self._assert_scores(xblock, [
-            {"content": "test answer 4", "score": 10},
-            {"content": "test answer 5", "score": 3},
-            {"content": "test answer 2", "score": 2}
+            {"score": 10, "submission": create_submission_dict(
+                {"answer": prepare_submission_for_serialization((u"test answer 4 part 1", u"test answer 4 part 2"))},
+                xblock.prompts
+            )},
+            {"score": 3, "submission": create_submission_dict(
+                {"answer": prepare_submission_for_serialization((u"test answer 5 part 1", u"test answer 5 part 2"))},
+                xblock.prompts
+            )},
+            {"score": 2, "submission": create_submission_dict(
+                {"answer": prepare_submission_for_serialization((u"test answer 2 part 1", u"test answer 2 part 2"))},
+                xblock.prompts
+            )}
         ])
         self._assert_leaderboard_visible(xblock, True)
 
     @scenario('data/leaderboard_show.xml')
     def test_show_submissions_that_have_greater_than_0_score(self, xblock):
-
         # Create some submissions (but fewer than the max that can be shown)
         self._create_submissions_and_scores(xblock, [
-            ("test answer 0", 0),
-            ("test answer 1", 1),
+            (prepare_submission_for_serialization(("test answer 0 part 1", "test answer 0 part 2")), 0),
+            (prepare_submission_for_serialization(("test answer 1 part 1", "test answer 1 part 2")), 1)
         ])
         self._assert_scores(xblock, [
-            {"content": "test answer 1", "score": 1}
+            {"score": 1, "submission": create_submission_dict(
+                {"answer": prepare_submission_for_serialization((u"test answer 1 part 1", u"test answer 1 part 2"))},
+                xblock.prompts
+            )},
         ])
         self._assert_leaderboard_visible(xblock, True)
 
@@ -87,24 +105,31 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
 
         # Create more submissions than the max
         self._create_submissions_and_scores(xblock, [
-            ("test answer 2", 10),
-            ("test answer 3", 0)
+            (prepare_submission_for_serialization(("test answer 2 part 1", "test answer 2 part 2")), 10),
+            (prepare_submission_for_serialization(("test answer 3 part 1", "test answer 3 part 2")), 0)
         ])
         self._assert_scores(xblock, [
-            {"content": "test answer 2", "score": 10},
-            {"content": "test answer 1", "score": 1}
+            {"score": 10, "submission": create_submission_dict(
+                {"answer": prepare_submission_for_serialization((u"test answer 2 part 1", u"test answer 2 part 2"))},
+                xblock.prompts
+            )},
+            {"score": 1, "submission": create_submission_dict(
+                {"answer": prepare_submission_for_serialization((u"test answer 1 part 1", u"test answer 1 part 2"))},
+                xblock.prompts
+            )}
         ])
         self._assert_leaderboard_visible(xblock, True)
 
     @scenario('data/leaderboard_show.xml')
     def test_no_text_key_submission(self, xblock):
+        self.maxDiff = None
         # Instead of using the default submission as a dict with "text",
         # make the submission a string.
         self._create_submissions_and_scores(xblock, [("test answer", 1)], submission_key=None)
 
         # It should still work
         self._assert_scores(xblock, [
-            {"content": "test answer", "score": 1}
+            {"score": 1}
         ])
 
     @mock_s3
@@ -123,7 +148,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
 
         # Expect that we default to an empty string for content
         self._assert_scores(xblock, [
-            {"content": "", "score": 1, "file": ""}
+            {"submission": "", "score": 1, "file": ""}
         ])
 
     @mock_s3
@@ -142,16 +167,23 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         key.set_contents_from_string("How d'ya do?")
         downloadUrl = api.get_download_url("foo")
         # Create a image and text submission
-        self._create_submissions_and_scores(xblock, [({"text": "test answer", "file_key": "foo"}, 1)], submission_key=None)
-
+        submission = prepare_submission_for_serialization(("test answer 1 part 1", "test answer 1 part 2"))
+        submission[u"file_key"] = "foo"
+        self._create_submissions_and_scores(xblock, [
+            (submission, 1)
+        ])
+        self.maxDiff = None
         # Expect that we retrieve both the text and the download URL for the file
         self._assert_scores(xblock, [
-            {"content": "test answer", "score": 1, "file": downloadUrl}
+            {"file": downloadUrl, "score": 1, "submission": create_submission_dict(
+                {"answer": submission},
+                xblock.prompts
+            )}
         ])
 
     def _create_submissions_and_scores(
         self, xblock, submissions_and_scores,
-        submission_key="text", points_possible=10
+        submission_key=None, points_possible=10
     ):
         """
         Create submissions and scores that should be displayed by the leaderboard.

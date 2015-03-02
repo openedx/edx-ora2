@@ -20,7 +20,15 @@ def convert_training_examples_list_to_dict(examples_list):
     Example:
         >>> examples = [
         >>>     {
-        >>>         "answer": "This is my response",
+        >>>         "answer": {
+        >>>             "parts": {
+        >>>                 [
+        >>>                     {"text:" "Answer part 1"},
+        >>>                     {"text:" "Answer part 2"},
+        >>>                     {"text:" "Answer part 3"}
+        >>>                 ]
+        >>>             }
+        >>>         },
         >>>         "options_selected": [
         >>>             {
         >>>                 "criterion": "Ideas",
@@ -36,7 +44,15 @@ def convert_training_examples_list_to_dict(examples_list):
         >>> convert_training_examples_list_to_dict(examples)
         [
             {
-                'answer': 'This is my response',
+                'answer': {
+                    'parts': {
+                        [
+                            {'text:' 'Answer part 1'},
+                            {'text:' 'Answer part 2'},
+                            {'text:' 'Answer part 3'}
+                        ]
+                    }
+                 },
                 'options_selected': {
                     'Ideas': 'Fair',
                     'Content': 'Good'
@@ -55,6 +71,27 @@ def convert_training_examples_list_to_dict(examples_list):
         }
         for ex in examples_list
     ]
+
+
+def update_assessments_format(assessments):
+    """
+    For each example update 'answer' to newer format.
+
+    Args:
+        assessments (list): list of assessments
+    Returns:
+        list of dict
+    """
+    for assessment in assessments:
+        if 'examples' in assessment:
+            for example in assessment['examples']:
+                if isinstance(example['answer'], unicode) or isinstance(example['answer'], str):
+                    example['answer'] = {
+                        'parts': [
+                            {'text': example['answer']}
+                        ]
+                    }
+    return assessments
 
 
 def create_prompts_list(prompt_or_serialized_prompts):

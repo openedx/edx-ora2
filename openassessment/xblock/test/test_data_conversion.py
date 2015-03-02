@@ -9,7 +9,7 @@ import mock
 from django.test import TestCase
 
 from openassessment.xblock.data_conversion import (
-    create_prompts_list, create_submission_dict, prepare_submission_for_serialization
+    create_prompts_list, create_submission_dict, prepare_submission_for_serialization, update_assessments_format
 )
 
 @ddt.ddt
@@ -52,3 +52,14 @@ class DataConversionTest(TestCase):
     @ddt.unpack
     def test_prepare_submission_for_serialization(self, input, output):
         self.assertEqual(prepare_submission_for_serialization(input), output)
+
+    @ddt.data(
+        ([{'answer': 'Ans'}], [{'answer': {'parts': [{'text': 'Ans'}]}}]),
+    )
+    @ddt.unpack
+    def test_update_assessments_format(self, input, output):
+        self.assertEqual(update_assessments_format([{
+            'examples': input,
+            }]), [{
+            'examples': output,
+        }])

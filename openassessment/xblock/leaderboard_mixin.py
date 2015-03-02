@@ -4,9 +4,12 @@ Leaderboard step in the OpenAssessment XBlock.
 from django.utils.translation import ugettext as _
 from xblock.core import XBlock
 
-from openassessment.assessment.errors import SelfAssessmentError, PeerAssessmentError
 from submissions import api as sub_api
+
+from openassessment.assessment.errors import SelfAssessmentError, PeerAssessmentError
 from openassessment.fileupload import api as file_upload_api
+from openassessment.xblock.data_conversion import create_submission_dict
+
 
 class LeaderboardMixin(object):
     """Leaderboard Mixin introduces all handlers for displaying the leaderboard
@@ -72,13 +75,16 @@ class LeaderboardMixin(object):
         for score in scores:
             if 'file_key' in score['content']:
                 score['file'] = file_upload_api.get_download_url(score['content']['file_key'])
-            if 'text' in score['content']:
-                score['content'] = score['content']['text']
+            if 'text' in score['content'] or 'parts' in score['content']:
+                submission = {'answer': score.pop('content')}
+                score['submission'] = create_submission_dict(submission, self.prompts)
             elif isinstance(score['content'], basestring):
                 pass
             # Currently, we do not handle non-text submissions.
             else:
-                score['content'] = ""
+                score['submission'] = ""
+
+            score.pop('content', None)
 
         context = { 'topscores': scores,
                     'allow_latex': self.allow_latex,

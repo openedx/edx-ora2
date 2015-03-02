@@ -155,7 +155,19 @@ class StudentTrainingAssessTest(StudentTrainingTest):
 
         expected_context["training_num_completed"] = 1
         expected_context["training_num_current"] = 2
-        expected_context["training_essay"] = u"тєѕт αηѕωєя"
+        expected_context["training_essay"] = {
+            'answer': {
+                'parts': [
+                    {
+                        'text': u"тєѕт αηѕωєя",
+                        'prompt': {
+                            'description': u'Given the state of the world today, what do you think should be done to combat poverty?'
+                        }
+                    }
+                ]
+            }
+        }
+
         self.assert_path_and_context(xblock, expected_template, expected_context)
         resp = self.request(xblock, 'training_assess', json.dumps(selected_data), response_format='json')
 
