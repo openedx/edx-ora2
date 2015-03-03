@@ -25,7 +25,7 @@
                 "feedback": "required"
             }
         ],
-        "prompt": "My new prompt.",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
@@ -77,7 +77,7 @@
                 "feedback": "required"
             }
         ],
-        "prompt": "Ṁÿ ṅëẅ ṗṛöṁṗẗ.",
+        "prompts": [{"description": "Ṁÿ ṅëẅ ṗṛöṁṗẗ 1."}, {"description": "Ṁÿ ṅëẅ ṗṛöṁṗẗ 2."}],
         "feedback_prompt": "ḟëëḋḅäċḳ ṗṛöṁṗẗ",
         "feedback_default_text": "Ṫëṡẗ ḋëḟäüḷẗ ẗëẍẗ",
         "submission_due": "4014-02-27T09:46",
@@ -129,7 +129,7 @@
                 "feedback": "required"
             }
         ],
-        "prompt": "My new prompt.",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
@@ -143,13 +143,13 @@
                 "name": "student-training",
                 "examples": [
                     {
-                        "answer": "Ṫḧïṡ ïṡ äṅ äṅṡẅëṛ",
+                        "answer": ["Ṫḧïṡ ïṡ äṅ äṅṡẅëṛ 1", "Ṫḧïṡ ïṡ äṅ äṅṡẅëṛ 2"],
                         "options_selected": [
                             { "criterion": "тєѕт ¢яιтєяιση", "option": "Ṅö" }
                         ]
                     },
                     {
-                        "answer": "This is another answer",
+                        "answer": ["This is another answer 1", "This is another answer 2"],
                         "options_selected": [
                             { "criterion": "тєѕт ¢яιтєяιση", "option": "sǝʎ" }
                         ]
@@ -193,7 +193,7 @@
                 "feedback": "required"
             }
         ],
-        "prompt": "My new prompt.",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",

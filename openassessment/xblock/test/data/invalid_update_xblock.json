@@ -1,6 +1,6 @@
 {
     "no_criteria": {
-        "prompt": "My new prompt.",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "title": "My new title.",
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
@@ -78,7 +78,7 @@
     },
 
     "no_feedback_prompt": {
-        "prompt": "Test prompt",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "allow_file_upload": false,
         "allow_latex": false,
         "leaderboard_show": 0,
@@ -130,7 +130,7 @@
     "no_submission_due": {
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "prompt": "Test Prompt",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "allow_file_upload": false,
         "allow_latex": false,
         "leaderboard_show": 0,
@@ -181,7 +181,7 @@
     "invalid_dates": {
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "prompt": "Test Prompt",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "allow_file_upload": false,
         "allow_latex": false,
         "leaderboard_show": 0,
@@ -234,7 +234,7 @@
     "invalid_dates_two": {
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "prompt": "Test Prompt",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "allow_file_upload": false,
         "allow_latex": false,
         "leaderboard_show": 0,
@@ -287,7 +287,7 @@
     "order_num_is_string": {
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "prompt": "Test Prompt",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "allow_file_upload": false,
         "allow_latex": false,
         "leaderboard_show": 0,
@@ -332,7 +332,7 @@
     "feedback_missing": {
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "prompt": "Test Prompt",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "allow_file_upload": false,
         "allow_latex": false,
         "leaderboard_show": 0,
@@ -376,7 +376,7 @@
     "criterion_not_a_dict": {
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "prompt": "prompty",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "allow_file_upload": false,
         "allow_latex": false,
         "leaderboard_show": 0,
@@ -399,7 +399,7 @@
     "criteria_missing_keys": {
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "prompt": "Test Prompt",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "allow_file_upload": false,
         "allow_latex": false,
         "leaderboard_show": 0,
@@ -443,7 +443,7 @@
     "options_not_a_list": {
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "prompt": "Test Prompt",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "allow_file_upload": false,
         "allow_latex": false,
         "leaderboard_show": 0,
@@ -473,7 +473,7 @@
     "option_not_a_dictionary": {
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "prompt": "Test Prompt",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "allow_file_upload": false,
         "allow_latex": false,
         "leaderboard_show": 0,
@@ -512,7 +512,7 @@
     "option_missing_keys": {
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "prompt": "Test Prompt",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "allow_file_upload": false,
         "allow_latex": false,
         "leaderboard_show": 0,
@@ -556,7 +556,7 @@
     "option_points_must_be_int": {
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "prompt": "Test Prompt",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "allow_file_upload": false,
         "allow_latex": false,
         "leaderboard_show": 0,
@@ -599,7 +599,7 @@
     "allow_file_upload_must_be_boolean": {
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "prompt": "Test Prompt",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "allow_file_upload": 6,
         "allow_latex": false,
         "criteria": [
@@ -641,7 +641,7 @@
     "allow_file_upload_null": {
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "prompt": "Test Prompt",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "allow_file_upload": null,
         "allow_latex": false,
         "criteria": [
@@ -708,7 +708,7 @@
                 "feedback": "required"
             }
         ],
-        "prompt": "My new prompt.",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
@@ -765,7 +765,7 @@
                 "feedback": "required"
             }
         ],
-        "prompt": "My new prompt.",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
@@ -820,7 +820,7 @@
                 "feedback": "required"
             }
         ],
-        "prompt": "My new prompt.",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
@@ -878,7 +878,7 @@
                 "feedback": "required"
             }
         ],
-        "prompt": "My new prompt.",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
@@ -936,7 +936,7 @@
                 "feedback": "required"
             }
         ],
-        "prompt": "My new prompt.",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
@@ -988,7 +988,7 @@
                 "feedback": "required"
             }
         ],
-        "prompt": "My new prompt.",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
@@ -1002,7 +1002,7 @@
                 "name": "student-training",
                 "examples": [
                     {
-                        "answer": "Ṫḧïṡ ïṡ äṅ äṅṡẅëṛ",
+                        "answer": ["Ṫḧïṡ ïṡ äṅ äṅṡẅëṛ 1", "Ṫḧïṡ ïṡ äṅ äṅṡẅëṛ 2"],
                         "options_selected": [
                             { "criterion": "Not a criterion!", "option": "Ṅö" }
                         ]
@@ -1047,7 +1047,7 @@
                 "feedback": "required"
             }
         ],
-        "prompt": "My new prompt.",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
@@ -1098,7 +1098,7 @@
                 "feedback": "required"
             }
         ],
-        "prompt": "My new prompt.",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
@@ -1150,7 +1150,7 @@
                 "feedback": "required"
             }
         ],
-        "prompt": "My new prompt.",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "submission_due": "4014-02-27T09:46",
@@ -1181,7 +1181,7 @@
     },
 
     "no_criteria_name": {
-        "prompt": "Test Prompt",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "allow_file_upload": false,
@@ -1232,7 +1232,7 @@
     },
 
     "no_option_name": {
-        "prompt": "Test Prompt",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "allow_file_upload": false,
@@ -1283,7 +1283,7 @@
     },
 
     "criteria_names_not_unique": {
-        "prompt": "Test Prompt",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "allow_file_upload": false,
@@ -1357,7 +1357,7 @@
 
     "option_names_not_unique": {
         "expected_error": "validation error: options",
-        "prompt": "Test Prompt",
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "allow_file_upload": false,
