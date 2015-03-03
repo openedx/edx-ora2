@@ -527,7 +527,7 @@
     h2{
       text-transform: uppercase;
       font-size: 80%;
-      float: right;
+      @include float(right);
       display: inline-block;
       padding: 3px 8px 3px 13px;
     }
@@ -568,6 +568,15 @@
     color: white;
     background-color: #009fe6;
     cursor: pointer;
+  }
+
+  .openassessment_container_remove_button.is--disabled,
+  .openassessment_container_remove_button.is--disabled:hover,
+  .openassessment_container_add_button.is--disabled,
+  .openassessment_container_add_button.is--disabled:hover {
+    color: $edx-gray-l2;
+    background-color: transparent;
+    cursor: auto;
   }
 
   #oa_prompts_editor_wrapper {

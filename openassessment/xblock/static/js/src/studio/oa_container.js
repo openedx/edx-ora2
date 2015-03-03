@@ -65,6 +65,7 @@ OpenAssessment.Container = function(containerItem, kwargs) {
     this.removeButtonClass = kwargs.removeButtonClass;
     this.containerItemClass = kwargs.containerItemClass;
     this.notifier = kwargs.notifier;
+    this.addRemoveEnabled = (typeof kwargs.addRemoveEnabled == 'undefined') || kwargs.addRemoveEnabled;
 
     // Since every container item should be instantiated with
     // the notifier we were given, create a helper method
@@ -83,17 +84,23 @@ OpenAssessment.Container.prototype = {
      */
     addEventListeners: function() {
         var container = this;
-        // Install a click handler for the add button
-        $(this.addButtonElement).click($.proxy(this.add, this));
 
-        // Find items already in the container and install click
-        // handlers for the delete buttons.
-        $("." + this.removeButtonClass, this.containerElement).click(
-            function(eventData) {
-                var item = container.createContainerItem(eventData.target);
-                container.remove(item);
-            }
-        );
+        if (this.addRemoveEnabled) {
+            // Install a click handler for the add button
+            $(this.addButtonElement).click($.proxy(this.add, this));
+
+            // Find items already in the container and install click
+            // handlers for the delete buttons.
+            $("." + this.removeButtonClass, this.containerElement).click(
+                function (eventData) {
+                    var item = container.createContainerItem(eventData.target);
+                    container.remove(item);
+                }
+            );
+        } else {
+            $(this.addButtonElement).addClass('is--disabled');
+            $("." + this.removeButtonClass, this.containerElement).addClass('is--disabled');
+        }
 
         // Initialize existing items, in case they need to install their
         // own event handlers.
@@ -122,16 +129,21 @@ OpenAssessment.Container.prototype = {
             .toggleClass(this.containerItemClass, true)
             .appendTo($(this.containerElement));
 
-        // Install a click handler for the delete button
         // Since we just added the new element to the container,
         // it should be the last one.
         var container = this;
         var containerItem = $("." + this.containerItemClass, this.containerElement).last();
-        containerItem.find('.' + this.removeButtonClass)
-            .click(function(eventData) {
-                var containerItem = container.createContainerItem(eventData.target);
-                container.remove(containerItem);
-            } );
+
+        // Install a click handler for the delete button
+        if (this.addRemoveEnabled) {
+            containerItem.find('.' + this.removeButtonClass)
+                .click(function (eventData) {
+                    var containerItem = container.createContainerItem(eventData.target);
+                    container.remove(containerItem);
+                });
+        } else {
+            containerItem.find('.' + this.removeButtonClass).addClass('is--disabled');
+        }
 
         // Initialize the item, allowing it to install event handlers.
         // Fire event handler for adding a new element

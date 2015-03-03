@@ -129,6 +129,7 @@ class StudioMixin(object):
                 make_django_template_key(asmnt)
                 for asmnt in editor_assessments_order
             ],
+            'is_released': self.is_released(),
         }
 
     @XBlock.json_handler
