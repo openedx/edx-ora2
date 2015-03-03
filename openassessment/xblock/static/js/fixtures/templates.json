@@ -101,7 +101,18 @@
     {
         "template": "openassessmentblock/student_training/student_training.html",
         "context": {
-            "training_essay": "My special essay.",
+            "training_essay": {
+                "answer": {
+                    "parts": [
+                        {
+                            "prompt": {
+                                "description": "Given the state of the world today, what do you think should be done to combat poverty?"
+                            },
+                            "text": "My special essay."
+                        }
+                    ]
+                }
+            },
             "training_rubric": {
                 "criteria": [
                     {
@@ -528,7 +539,12 @@
                 "training": {
                     "examples": [
                         {
-                            "answer": "Test answer",
+                            "answer": {
+                                "parts": [
+                                    { "text": "Test answer 1"},
+                                    { "text": "Test answer 2"}
+                                ]
+                            },
                             "criteria": [
                                 {
                                     "name": "criterion_with_two_options",
@@ -569,7 +585,12 @@
                         }
                     ],
                     "template": {
-                        "answer": "",
+                            "answer": {
+                                "parts": [
+                                    { "text": ""},
+                                    { "text": ""}
+                                ]
+                            },
                         "criteria": [
                             {
                                 "name": "criterion_with_two_options",

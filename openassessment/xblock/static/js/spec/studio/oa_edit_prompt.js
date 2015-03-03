@@ -4,6 +4,19 @@ Tests for OpenAssessment prompt editing view.
 
 describe("OpenAssessment.EditPromptViews", function() {
 
+    // Use a stub notifier implementation that simply stores
+    // the notifications it receives.
+    var notifier = null;
+    var StubNotifier = function() {
+        this.notifications = [];
+        this.notificationFired = function(name, data) {
+            this.notifications.push({
+                name: name,
+                data: data
+            });
+        };
+    };
+
     var view = null;
 
     beforeEach(function() {
@@ -12,7 +25,8 @@ describe("OpenAssessment.EditPromptViews", function() {
 
         // Create the view
         var element = $("#oa_prompt_editor_wrapper").get(0);
-        view = new OpenAssessment.EditPromptsView(element);
+        notifier = new StubNotifier();
+        view = new OpenAssessment.EditPromptsView(element, notifier);
     });
 
     it("reads prompts from the editor", function() {
