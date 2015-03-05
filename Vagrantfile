@@ -53,7 +53,7 @@ ora_mount_dir = "edx-ora2"
 
 if ENV['VAGRANT_MOUNT_BASE']
 
-  ora2_mount_dir = ENV['VAGRANT_MOUNT_BASE'] + "/" + ora2_mount_dir
+  ora_mount_dir = ENV['VAGRANT_MOUNT_BASE'] + "/" + ora_mount_dir
 
 end
 
