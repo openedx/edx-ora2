@@ -24,7 +24,7 @@ describe("OpenAssessment.EditPromptViews", function() {
         loadFixtures('oa_edit.html');
 
         // Create the view
-        var element = $("#oa_prompt_editor_wrapper").get(0);
+        var element = $("#oa_prompts_editor_wrapper").get(0);
         notifier = new StubNotifier();
         view = new OpenAssessment.EditPromptsView(element, notifier);
     });
@@ -59,5 +59,49 @@ describe("OpenAssessment.EditPromptViews", function() {
             description: ""
         });
     });
+});
 
+describe("OpenAssessment.EditPromptViews after release", function() {
+
+    // Use a stub notifier implementation that simply stores
+    // the notifications it receives.
+    var notifier = null;
+    var StubNotifier = function() {
+        this.notifications = [];
+        this.notificationFired = function(name, data) {
+            this.notifications.push({
+                name: name,
+                data: data
+            });
+        };
+    };
+
+    var view = null;
+
+    beforeEach(function() {
+        // Load the DOM fixture
+        loadFixtures('oa_edit.html');
+        $("#openassessment-editor").attr('data-is-released', 'true');
+
+        // Create the view
+        var element = $("#oa_prompts_editor_wrapper").get(0);
+        notifier = new StubNotifier();
+        view = new OpenAssessment.EditPromptsView(element, notifier);
+    });
+
+    it("does not allow adding prompts", function() {
+        view.addPrompt(); // call method
+        $(view.promptsContainer.addButtonElement).click(); // click on button
+
+        var prompts = view.promptsDefinition();
+        expect(prompts.length).toEqual(2);
+    });
+
+    it("does not allow removing prompts", function() {
+        view.removePrompt(view.getAllPrompts()[0]); // call method
+        $("." + view.promptsContainer.removeButtonClass, view.element).click(); // click on buttons
+
+        var prompts = view.promptsDefinition();
+        expect(prompts.length).toEqual(2);
+    });
 });

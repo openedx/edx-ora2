@@ -10,6 +10,8 @@ Returns:
 **/
 OpenAssessment.EditPromptsView = function(element, notifier) {
     this.element = element;
+    this.editorElement = $(this.element).closest("#openassessment-editor");
+    this.addRemoveEnabled = !(this.editorElement.attr('data-is-released') === 'true');
 
     this.promptsContainer = new OpenAssessment.Container(
         OpenAssessment.Prompt, {
@@ -18,7 +20,8 @@ OpenAssessment.EditPromptsView = function(element, notifier) {
             addButtonElement: $("#openassessment_prompts_add_prompt", this.element).get(0),
             removeButtonClass: "openassessment_prompt_remove_button",
             containerItemClass: "openassessment_prompt",
-            notifier: notifier
+            notifier: notifier,
+            addRemoveEnabled: this.addRemoveEnabled
         }
     );
     this.promptsContainer.addEventListeners();
@@ -55,7 +58,9 @@ OpenAssessment.EditPromptsView.prototype = {
     Uses a client-side template to create the new prompt.
     **/
     addPrompt: function() {
-        this.promptsContainer.add();
+        if (this.addRemoveEnabled) {
+            this.promptsContainer.add();
+        }
     },
 
     /**
@@ -65,7 +70,9 @@ OpenAssessment.EditPromptsView.prototype = {
         item (OpenAssessment.RubricCriterion): The criterion item to remove.
     **/
     removePrompt: function(item) {
-        this.promptsContainer.remove(item);
+        if (this.addRemoveEnabled) {
+            this.promptsContainer.remove(item);
+        }
     },
 
     /**
