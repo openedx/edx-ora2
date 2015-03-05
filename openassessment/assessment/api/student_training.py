@@ -127,7 +127,7 @@ def validate_training_examples(rubric, examples):
         >>> ]
         >>>
         >>> rubric = {
-        >>>     "prompt": "Write an essay!",
+        >>>     "prompts": [{"description": "Write an essay!"}],
         >>>     "criteria": [
         >>>         {
         >>>             "order_num": 0,
@@ -146,14 +146,14 @@ def validate_training_examples(rubric, examples):
         >>>
         >>> examples = [
         >>>     {
-        >>>         'answer': u'Lorem ipsum',
+        >>>         'answer': {'parts': [{'text': u'Lorem ipsum'}]},
         >>>         'options_selected': {
         >>>             'vocabulary': 'good',
         >>>             'grammar': 'excellent'
         >>>         }
         >>>     },
         >>>     {
-        >>>         'answer': u'Doler',
+        >>>         'answer': {'parts': [{'text': u'Doler'}]},
         >>>         'options_selected': {
         >>>             'vocabulary': 'good',
         >>>             'grammar': 'poor'
@@ -312,7 +312,15 @@ def get_training_example(submission_uuid, rubric, examples):
 
         >>> examples = [
         >>>     {
-        >>>         'answer': u'Doler',
+        >>>         'answer': {
+        >>>             'parts': {
+        >>>                 [
+        >>>                     {'text:' 'Answer part 1'},
+        >>>                     {'text:' 'Answer part 2'},
+        >>>                     {'text:' 'Answer part 3'}
+        >>>                 ]
+        >>>             }
+        >>>         },
         >>>         'options_selected': {
         >>>             'vocabulary': 'good',
         >>>             'grammar': 'poor'
@@ -322,9 +330,21 @@ def get_training_example(submission_uuid, rubric, examples):
         >>>
         >>> get_training_example("5443ebbbe2297b30f503736e26be84f6c7303c57", rubric, examples)
         {
-            'answer': u'Lorem ipsum',
+             'answer': {
+                 'parts': {
+                     [
+                         {'text:' 'Answer part 1'},
+                         {'text:' 'Answer part 2'},
+                         {'text:' 'Answer part 3'}
+                     ]
+                 }
+             },
             'rubric': {
-                "prompt": "Write an essay!",
+                "prompts": [
+                    {"description": "Prompt 1"},
+                    {"description": "Prompt 2"},
+                    {"description": "Prompt 3"}
+                ],
                 "criteria": [
                     {
                         "order_num": 0,

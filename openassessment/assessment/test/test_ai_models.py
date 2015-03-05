@@ -3,11 +3,14 @@
 Test AI Django models.
 """
 import copy
+import ddt
+from django.test import TestCase
+
 from django.test.utils import override_settings
 from openassessment.test_utils import CacheResetTest
 from openassessment.assessment.models import (
     AIClassifierSet, AIClassifier, AIGradingWorkflow, AI_CLASSIFIER_STORAGE,
-    CLASSIFIERS_CACHE_IN_MEM
+    CLASSIFIERS_CACHE_IN_MEM, essay_text_from_submission
 )
 from openassessment.assessment.serializers import rubric_from_dict
 from .constants import RUBRIC
@@ -19,6 +22,19 @@ CLASSIFIERS_DICT = {
 }
 COURSE_ID = u"†3ß† çøU®ß3"
 ITEM_ID = u"fake_item_id"
+
+
+@ddt.ddt
+class DataConversionTest(TestCase):
+
+    @ddt.data(
+        (u'Answer', u'Answer'),
+        ({'answer': {'text': u'Answer'}}, u'Answer'),
+        ({'answer': {'parts': [{'text': u'Answer 1'}, {'text': u'Answer 2'}]}}, u'Answer 1\nAnswer 2')
+    )
+    @ddt.unpack
+    def test_essay_text_from_submission(self, input, output):
+        self.assertEqual(essay_text_from_submission(input), output)
 
 
 class AIClassifierTest(CacheResetTest):
@@ -122,7 +138,7 @@ class AIGradingWorkflowTest(CacheResetTest):
 
         # Create a rubric with a similar structure, but different prompt
         similar_rubric_dict = copy.deepcopy(RUBRIC)
-        similar_rubric_dict['prompt'] = 'Different prompt!'
+        similar_rubric_dict['prompts'] = [{"description": 'Different prompt!'}]
         self.similar_rubric = rubric_from_dict(similar_rubric_dict)
 
     def test_assign_most_recent_classifier_set(self):

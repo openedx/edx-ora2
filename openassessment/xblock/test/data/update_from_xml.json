@@ -20,7 +20,7 @@
             "</openassessment>"
         ],
         "title": "Foo",
-        "prompt": "Test prompt",
+        "prompts": [{"description": "Test prompt"}],
         "submission_start": null,
         "submission_due": null,
         "leaderboard_show": 0,
@@ -82,7 +82,7 @@
             "</rubric>",
             "</openassessment>"
         ],
-        "prompt": null
+        "prompts": [{"description": ""}]
     },
 
     "empty_prompt": {
@@ -103,7 +103,7 @@
             "</rubric>",
             "</openassessment>"
         ],
-        "prompt": ""
+        "prompt": [{"description": ""}]
     },
 
     "unicode": {
@@ -113,8 +113,10 @@
             "<assessments>",
                 "<assessment name=\"peer-assessment\" start=\"2014-02-27T09:46:28\" due=\"2014-03-01T00:00:00\" must_grade=\"5\" must_be_graded_by=\"3\" />",
             "</assessments>",
+            "<prompts>",
+                "<prompt><description>ՇєรՇ קг๏๓קՇ</description></prompt>",
+            "</prompts>",
             "<rubric>",
-                "<prompt>ՇєรՇ קг๏๓קՇ</prompt>",
                 "<criterion>",
                     "<name>𝓣𝓮𝓼𝓽 𝓬𝓻𝓲𝓽𝓮𝓻𝓲𝓸𝓷</name>",
                     "<label>Ṫëṡẗ ċṛïẗëṛïöṅ ḷäḅëḷ</label>",
@@ -126,7 +128,7 @@
             "</openassessment>"
         ],
         "title": "िѻѻ",
-        "prompt": "ՇєรՇ קг๏๓קՇ",
+        "prompts": [{"description": "ՇєรՇ קг๏๓קՇ"}],
         "rubric_criteria": [
             {
                 "order_num": 0,
@@ -238,7 +240,7 @@
             "</rubric>",
             "</openassessment>"
         ],
-        "prompt": "Test prompt",
+        "prompts": [{"description": "Test prompt"}],
         "submission_start": null,
         "submission_due": null
     },

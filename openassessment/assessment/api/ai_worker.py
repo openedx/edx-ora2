@@ -6,6 +6,7 @@ from httplib import HTTPException
 from django.db import DatabaseError
 from dogapi import dog_stats_api
 from openassessment.assessment.models import (
+    essay_text_from_submission,
     AITrainingWorkflow, AIGradingWorkflow,
     ClassifierUploadError, ClassifierSerializeError,
     IncompleteClassifierSet, NoTrainingExamples,
@@ -197,19 +198,13 @@ def get_training_task_params(training_workflow_uuid):
         returned_examples = []
 
         for example in workflow.training_examples.all():
-            answer = example.answer
-            if isinstance(answer, dict):
-                text = answer.get('answer', '')
-            else:
-                text = answer
-
             scores = {
                 option.criterion.name: option.points
                 for option in example.options_selected.all()
             }
 
             returned_examples.append({
-                'text': text,
+                'text': essay_text_from_submission({'answer': example.answer}),
                 'scores': scores
             })
 

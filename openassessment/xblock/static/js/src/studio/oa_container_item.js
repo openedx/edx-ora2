@@ -65,6 +65,113 @@ OpenAssessment.ItemUtilities = {
 };
 
 /**
+The Prompt Class is used to construct and maintain references to prompts from within a prompts
+container object. Constructs a new Prompt element.
+
+Args:
+    element (OpenAssessment.Container): The container that the prompt is a member of.
+    notifier (OpenAssessment.Notifier): Used to send notifications of updates to prompts.
+
+Returns:
+    OpenAssessment.Prompt
+**/
+OpenAssessment.Prompt = function(element, notifier) {
+    this.element = element;
+    this.notifier = notifier;
+};
+
+OpenAssessment.Prompt.prototype = {
+    /**
+    Finds the values currently entered in the Prompts's fields, and returns them.
+
+    Returns:
+        object literal of the form:
+        {
+            'description': 'Write a nice long essay about anything.'
+        }
+    **/
+    getFieldValues: function () {
+        var fields = {
+            description: this.description()
+        };
+        return fields;
+    },
+
+    /**
+    Get or set the description of the prompt.
+
+    Args:
+        text (string, optional): If provided, set the description of the prompt.
+
+    Returns:
+        string
+
+    **/
+    description: function(text) {
+        var sel = $('.openassessment_prompt_description', this.element);
+        return OpenAssessment.Fields.stringField(sel, text);
+    },
+
+    addEventListeners: function() {},
+
+    /**
+    Hook into the event handler for addition of a prompt.
+
+    */
+    addHandler: function (){
+        this.notifier.notificationFired(
+            "promptAdd",
+            {
+                "index": this.element.index()
+            }
+        );
+    },
+
+    /**
+    Hook into the event handler for removal of a prompt.
+
+    */
+    removeHandler: function (){
+        this.notifier.notificationFired(
+            "promptRemove",
+            {
+                "index": this.element.index()
+            }
+        );
+    },
+
+    updateHandler: function() {},
+
+    /**
+    Mark validation errors.
+
+    Returns:
+        Boolean indicating whether the option is valid.
+
+    **/
+    validate: function() {
+        return true;
+    },
+
+    /**
+    Return a list of validation errors visible in the UI.
+    Mainly useful for testing.
+
+    Returns:
+        list of strings
+
+    **/
+    validationErrors: function() {
+        return [];
+    },
+
+    /**
+    Clear all validation errors from the UI.
+    **/
+    clearValidationErrors: function() {}
+};
+
+/**
 The RubricOption Class used to construct and maintain references to rubric options from within an options
 container object. Constructs a new RubricOption element.
 
@@ -506,7 +613,7 @@ OpenAssessment.RubricCriterion.prototype = {
 OpenAssessment.TrainingExample = function(element){
     this.element = element;
     this.criteria = $(".openassessment_training_example_criterion_option", this.element);
-    this.answer = $('.openassessment_training_example_essay', this.element).first();
+    this.answer = $('.openassessment_training_example_essay_part textarea', this.element)
 };
 
 OpenAssessment.TrainingExample.prototype = {
@@ -527,7 +634,9 @@ OpenAssessment.TrainingExample.prototype = {
         ).get();
 
         return {
-            answer: this.answer.prop('value'),
+            answer: this.answer.map(function() {
+                return $(this).prop('value');
+            }).get(),
             options_selected: optionsSelected
         };
     },

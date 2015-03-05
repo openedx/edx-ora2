@@ -12,7 +12,7 @@ from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.defaults import DEFAULT_RUBRIC_FEEDBACK_TEXT
 from .data_conversion import create_rubric_dict
 from .resolve_dates import DISTANT_FUTURE
-from .data_conversion import clean_criterion_feedback
+from .data_conversion import clean_criterion_feedback, create_submission_dict
 
 logger = logging.getLogger(__name__)
 
@@ -86,7 +86,7 @@ class PeerAssessmentMixin(object):
                     data['options_selected'],
                     clean_criterion_feedback(self.rubric_criteria_with_labels, data['criterion_feedback']),
                     data['overall_feedback'],
-                    create_rubric_dict(self.prompt, self.rubric_criteria_with_labels),
+                    create_rubric_dict(self.prompts, self.rubric_criteria_with_labels),
                     assessment_ui_model['must_be_graded_by']
                 )
 
@@ -231,7 +231,7 @@ class PeerAssessmentMixin(object):
             peer_sub = self.get_peer_submission(student_item, assessment)
             if peer_sub:
                 path = 'openassessmentblock/peer/oa_peer_turbo_mode.html'
-                context_dict["peer_submission"] = peer_sub
+                context_dict["peer_submission"] = create_submission_dict(peer_sub, self.prompts)
 
                 # Determine if file upload is supported for this XBlock.
                 context_dict["allow_file_upload"] = self.allow_file_upload
@@ -247,7 +247,7 @@ class PeerAssessmentMixin(object):
             peer_sub = self.get_peer_submission(student_item, assessment)
             if peer_sub:
                 path = 'openassessmentblock/peer/oa_peer_assessment.html'
-                context_dict["peer_submission"] = peer_sub
+                context_dict["peer_submission"] = create_submission_dict(peer_sub, self.prompts)
                 # Determine if file upload is supported for this XBlock.
                 context_dict["allow_file_upload"] = self.allow_file_upload
                 context_dict["peer_file_url"] = self.get_download_url_from_submission(peer_sub)

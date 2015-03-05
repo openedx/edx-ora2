@@ -1,7 +1,11 @@
 {% load i18n %}
 {% load tz %}
 {% spaceless %}
-<div id="openassessment-editor" class="editor-with-buttons editor-with-tabs">
+<div
+    id="openassessment-editor"
+    class="editor-with-buttons editor-with-tabs"
+    data-is-released="{{ is_released|lower }}"
+>
     <div class="openassessment_editor_content_and_tabs">
 
         <div id="openassessment_editor_header">
@@ -25,9 +29,7 @@
             </a>
         </div>
 
-        <div id="oa_prompt_editor_wrapper" class="oa_editor_content_wrapper">
-            <textarea id="openassessment_prompt_editor" maxlength="10000">{{ prompt }}</textarea>
-        </div>
+        {% include "openassessmentblock/edit/oa_edit_prompts.html"  %}
 
         {% include "openassessmentblock/edit/oa_edit_rubric.html"  %}
 

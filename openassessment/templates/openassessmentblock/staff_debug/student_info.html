@@ -21,7 +21,7 @@
                             Comments: {{ comments }}
                         {% endblocktrans %}
                     {% else %}
-                        {{ submission.answer.text|linebreaks }}
+                        {% include "openassessmentblock/oa_submission_answer.html" with answer=submission.answer answer_text_label="The student's response to the question above:" %}
                     {% endif %}
                 </div>
 

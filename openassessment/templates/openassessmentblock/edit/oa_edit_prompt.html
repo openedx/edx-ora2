@@ -1,0 +1,27 @@
+{% load i18n %}
+{% spaceless %}
+<li class="openassessment_prompt is-collapsible" data-prompt="{{ prompt_uuid }}">
+
+    <div class="openassessment_container_header openassessment_prompt_header view-outline">
+        <a class="action expand-collapse collapse"><i class="icon-caret-down ui-toggle-expansion"></i></a>
+        <div class="openassessment_container_header_title_box openassessment_prompt_header_title_box">
+            <h6 class="openassessment_container_header_title openassessment_prompt_header_title">{% trans "Prompt" %}</h6>
+            <p class="openassessment_container_guide openassessment_prompt_guide">{% trans "You cannot delete a prompt after the assignment has been released." %}</p>
+        </div>
+        <div class="openassessment_container_remove_button openassessment_prompt_remove_button"><h2>{% trans "Remove" %}</h2></div>
+    </div>
+
+    <div class="openassessment_prompt_body wrapper-comp-settings">
+        <input type="hidden" class="openassessment_prompt_uuid" value="{{ prompt_uuid }}" />
+
+        <ul class="list-input settings-list">
+            <li class="field comp-setting-entry openassessment_prompt_description_wrapper">
+                <div class="wrapper-comp-settings">
+                    <textarea class="openassessment_prompt_description setting-input" maxlength="10000">{{ prompt_description }}</textarea>
+                </div>
+            </li>
+        </ul>
+
+    </div>
+</li>
+{% endspaceless %}

@@ -1,8 +1,14 @@
 <openassessment>
     <title>Feedback only criterion</title>
-    <prompt>Test prompt</prompt>
+    <prompts>
+        <prompt>
+            <description>Given the state of the world today, what do you think should be done to combat poverty?</description>
+        </prompt>
+        <prompt>
+            <description>Given the state of the world today, what do you think should be done to combat pollution?</description>
+        </prompt>
+    </prompts>
     <rubric>
-        <prompt>Test rubric prompt</prompt>
         <criterion>
             <name>vocabulary</name>
             <prompt>How good is the vocabulary?</prompt>

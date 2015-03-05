@@ -54,7 +54,7 @@ class WorkflowMixin(object):
         ai_module = self.get_assessment_module('example-based-assessment')
         on_init_params = {
             'ai': {
-                'rubric': create_rubric_dict(self.prompt, self.rubric_criteria_with_labels),
+                'rubric': create_rubric_dict(self.prompts, self.rubric_criteria_with_labels),
                 'algorithm_id': ai_module["algorithm_id"] if ai_module else None
             }
         }

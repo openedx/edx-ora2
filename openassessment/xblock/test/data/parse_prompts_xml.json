@@ -1,0 +1,132 @@
+{
+    "promptless": {
+        "xml": [
+            "<openassessment>",
+                "<rubric>",
+                "</rubric>",
+            "</openassessment>"
+        ],
+        "prompts": [{"description": ""}]
+    },
+
+    "rubric_prompt": {
+        "xml": [
+            "<openassessment>",
+                "<rubric>",
+                    "<prompt>Test prompt</prompt>",
+                "</rubric>",
+            "</openassessment>"
+        ],
+        "prompts": [{"description": "Test prompt"}]
+    },
+
+    "rubric_prompt_empty": {
+        "xml": [
+            "<openassessment>",
+                "<rubric>",
+                    "<prompt></prompt>",
+                "</rubric>",
+            "</openassessment>"
+        ],
+        "prompts": [{"description": ""}]
+    },
+
+    "rubric_prompt_unicode": {
+        "xml": [
+            "<openassessment>",
+                "<prompts>",
+                    "<prompt><description>ՇєรՇ קг๏๓קՇ</description></prompt>",
+                "</prompts>",
+                "<rubric>",
+                    "<prompt>Test prompt</prompt>",
+                "</rubric>",
+            "</openassessment>"
+        ],
+        "prompts": [{"description": "ՇєรՇ קг๏๓קՇ"}]
+    },
+
+    "prompts_one": {
+        "xml": [
+            "<openassessment>",
+                "<prompts>",
+                    "<prompt><description>Test prompt</description></prompt>",
+                "</prompts>",
+                "<rubric>",
+                "</rubric>",
+            "</openassessment>"
+        ],
+        "prompts": [{"description": "Test prompt"}]
+    },
+
+    "prompts_multiple": {
+        "xml": [
+            "<openassessment>",
+                "<prompts>",
+                    "<prompt><description>Test prompt 1</description></prompt>",
+                    "<prompt><description>Test prompt 2</description></prompt>",
+                    "<prompt><description>Test prompt 3</description></prompt>",
+                "</prompts>",
+                "<rubric>",
+                "</rubric>",
+            "</openassessment>"
+        ],
+        "prompts": [{"description": "Test prompt 1"}, {"description": "Test prompt 2"}, {"description": "Test prompt 3"}]
+    },
+
+    "prompts_empty": {
+        "xml": [
+            "<openassessment>",
+                "<prompts>",
+                    "<prompt><description></description></prompt>",
+                "</prompts>",
+                "<rubric>",
+                "</rubric>",
+            "</openassessment>"
+        ],
+        "prompts": [{"description": ""}]
+    },
+
+    "prompts_multiple_empty": {
+        "xml": [
+            "<openassessment>",
+                "<prompts>",
+                    "<prompt><description></description></prompt>",
+                    "<prompt><description></description></prompt>",
+                "</prompts>",
+                "<rubric>",
+                    "<prompt>Test prompt</prompt>",
+                "</rubric>",
+            "</openassessment>"
+        ],
+        "prompts": [{"description": ""}, {"description": ""}]
+    },
+
+    "prompts_unicode": {
+        "xml": [
+            "<openassessment>",
+                "<prompts>",
+                    "<prompt><description>ՇєรՇ קг๏๓קՇ 1</description></prompt>",
+                    "<prompt><description>ՇєรՇ קг๏๓קՇ 2</description></prompt>",
+                "</prompts>",
+                "<rubric>",
+                "</rubric>",
+            "</openassessment>"
+        ],
+        "prompts": [{"description": "ՇєรՇ קг๏๓קՇ 1"}, {"description": "ՇєรՇ קг๏๓קՇ 2"}]
+    },
+
+    "rubric_prompt_and_prompts": {
+        "xml": [
+            "<openassessment>",
+                "<prompts>",
+                    "<prompt><description>Test prompt 1</description></prompt>",
+                    "<prompt><description>Test prompt 2</description></prompt>",
+                "</prompts>",
+                "<rubric>",
+                    "<prompt>Test prompt</prompt>",
+                "</rubric>",
+            "</openassessment>"
+        ],
+        "prompts": [{"description": "Test prompt 1"}, {"description": "Test prompt 2"}]
+    }
+}

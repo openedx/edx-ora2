@@ -18,7 +18,7 @@ class StudioViewTest(XBlockHandlerTestCase):
     """
     UPDATE_EDITOR_DATA = {
         "title": "Test title",
-        "prompt": "Test prompt",
+        "prompts": [{"description": "Test prompt"}],
         "feedback_prompt": "Test feedback prompt",
         "feedback_default_text": "Test feedback default text",
         "submission_start": "4014-02-10T09:46",
@@ -205,9 +205,12 @@ class StudioViewTest(XBlockHandlerTestCase):
 
         # Store old XBlock fields for later verification
         old_title = xblock.title
-        old_prompt = xblock.prompt
+        old_prompts = xblock.prompts
         old_assessments = xblock.rubric_assessments
         old_criteria = xblock.rubric_criteria
+
+        xblock.runtime.modulestore = MagicMock()
+        xblock.runtime.modulestore.has_published_version.return_value = False
 
         # Verify the response fails
         resp = self.request(xblock, 'update_editor_context', request, response_format='json')
@@ -218,7 +221,7 @@ class StudioViewTest(XBlockHandlerTestCase):
         # We don't need to be exhaustive here, because we have other unit tests
         # that verify this extensively.
         self.assertEqual(xblock.title, old_title)
-        self.assertEqual(xblock.prompt, old_prompt)
+        self.assertEqual(xblock.prompts, old_prompts)
         self.assertItemsEqual(xblock.rubric_assessments, old_assessments)
         self.assertItemsEqual(xblock.rubric_criteria, old_criteria)
 

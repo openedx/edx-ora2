@@ -5,7 +5,16 @@
             "training_num_completed": 0,
             "training_num_current": 1,
             "training_num_available": 2,
-            "training_essay": "This is my answer.",
+            "training_essay": { "answer": {
+                "parts": [
+                    {
+                        "prompt": {
+                            "description": "Given the state of the world today, what do you think should be done to combat poverty?"
+                        },
+                        "text": "This is my answer."
+                    }
+                ]}
+            },
             "allow_latex": false,
             "training_rubric": {
                 "criteria": [

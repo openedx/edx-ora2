@@ -66,7 +66,11 @@ VALID_ASSESSMENT_TYPES = [
 
 # Schema definition for an update from the Studio JavaScript editor.
 EDITOR_UPDATE_SCHEMA = Schema({
-    Required('prompt'): utf8_validator,
+    Required('prompts'): [
+        Schema({
+            Required('description'): utf8_validator,
+        })
+    ],
     Required('title'): utf8_validator,
     Required('feedback_prompt'): utf8_validator,
     Required('feedback_default_text'): utf8_validator,
@@ -84,7 +88,7 @@ EDITOR_UPDATE_SCHEMA = Schema({
             'must_be_graded_by': All(int, Range(min=0)),
             'examples': [
                 Schema({
-                    Required('answer'): utf8_validator,
+                    Required('answer'): [utf8_validator],
                     Required('options_selected'): [
                         Schema({
                             Required('criterion'): utf8_validator,

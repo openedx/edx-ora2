@@ -14,7 +14,7 @@ OpenAssessment.ResponseView = function(element, server, fileUploader, baseView) 
     this.server = server;
     this.fileUploader = fileUploader;
     this.baseView = baseView;
-    this.savedResponse = "";
+    this.savedResponse = [];
     this.files = null;
     this.imageType = null;
     this.lastChangeTime = Date.now();
@@ -66,7 +66,7 @@ OpenAssessment.ResponseView.prototype = {
         // Install change handler for textarea (to enable submission button)
         this.savedResponse = this.response();
         var handleChange = function(eventData) { view.handleResponseChanged(); };
-        sel.find('#submission__answer__value').on('change keyup drop paste', handleChange);
+        sel.find('.submission__answer__part__text__value').on('change keyup drop paste', handleChange);
 
         var handlePrepareUpload = function(eventData) { view.prepareUpload(eventData.target.files); };
         sel.find('input[type=file]').on('change', handlePrepareUpload);
@@ -258,33 +258,39 @@ OpenAssessment.ResponseView.prototype = {
     },
 
     /**
-    Set the response text.
-    Retrieve the response text.
+    Set the response texts.
+    Retrieve the response texts.
 
     Args:
-        text (string): If specified, the text to set for the response.
+        texts (array of strings): If specified, the texts to set for the response.
 
     Returns:
-        string: The current response text.
+        array of strings: The current response texts.
     **/
-    response: function(text) {
-        var sel = $('#submission__answer__value', this.element);
-        if (typeof text === 'undefined') {
-            return sel.val();
+    response: function(texts) {
+        var sel = $('.submission__answer__part__text__value', this.element);
+        if (typeof texts === 'undefined') {
+            return sel.map(function() {
+                return $.trim($(this).val());
+            }).get();
         } else {
-            sel.val(text);
+            sel.map(function(index, element) {
+                $(this).val(texts[index]);
+            })
         }
     },
 
     /**
-    Check whether the response text has changed since the last save.
+    Check whether the response texts have changed since the last save.
 
     Returns: boolean
     **/
     responseChanged: function() {
-        var currentResponse = $.trim(this.response());
-        var savedResponse = $.trim(this.savedResponse);
-        return savedResponse !== currentResponse;
+        var savedResponse = this.savedResponse;
+        return this.response().some(function(element, index, array) {
+                return element !== savedResponse[index];
+        });
+
     },
 
     /**
@@ -314,14 +320,16 @@ OpenAssessment.ResponseView.prototype = {
     **/
     handleResponseChanged: function() {
         // Enable the save/submit button only for non-blank responses
-        var isBlank = ($.trim(this.response()) !== '');
-        this.submitEnabled(isBlank);
+        var isNotBlank = !this.response().every(function(element, index, array) {
+                return $.trim(element) == '';
+            });
+        this.submitEnabled(isNotBlank);
 
         // Update the save button, save status, and "unsaved changes" warning
         // only if the response has changed
         if (this.responseChanged()) {
-            this.saveEnabled(isBlank);
-            this.previewEnabled(isBlank);
+            this.saveEnabled(isNotBlank);
+            this.previewEnabled(isNotBlank);
             this.saveStatus(gettext('This response has not been saved.'));
             this.unsavedWarningEnabled(true);
         }
@@ -355,8 +363,15 @@ OpenAssessment.ResponseView.prototype = {
             // ... but update the UI based on what the user may have entered
             // since hitting the save button.
             var currentResponse = view.response();
-            view.submitEnabled(currentResponse !== '');
-            if (currentResponse == savedResponse) {
+            var currentResponseIsEmpty = currentResponse.every(function(element, index, array) {
+                return element == '';
+            });
+            view.submitEnabled(!currentResponseIsEmpty);
+
+            var currentResponseEqualsSaved = currentResponse.every(function(element, index, array) {
+                return element === savedResponse[index];
+            });
+            if (currentResponseEqualsSaved) {
                 view.saveEnabled(false);
                 view.saveStatus(gettext("This response has been saved but not submitted."));
             }
@@ -388,7 +403,7 @@ OpenAssessment.ResponseView.prototype = {
             // NOTE: in JQuery >=1.8, `pipe()` is deprecated in favor of `then()`,
             // but we're using JQuery 1.7 in the LMS, so for now we're stuck with `pipe()`.
             .pipe(function() {
-                var submission = $('#submission__answer__value', view.element).val();
+                var submission = view.response();
                 baseView.toggleActionError('response', null);
 
                 // Send the submission to the server, returning the promise.

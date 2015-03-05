@@ -10,7 +10,7 @@ STUDENT_ITEM = {
     'item_type': u'openassessment'
 }
 
-ANSWER = u'ẗëṡẗ äṅṡẅëṛ'
+ANSWER = {'text': u'ẗëṡẗ äṅṡẅëṛ'}
 
 RUBRIC_OPTIONS = [
     {
@@ -34,7 +34,7 @@ RUBRIC_OPTIONS = [
 ]
 
 RUBRIC = {
-    'prompt': u"МоъЎ-ↁіск; оѓ, ГЂэ ЩЂаlэ",
+    'prompts': [{"description": u"МоъЎ-ↁіск; оѓ, ГЂэ ЩЂаlэ"}],
     'criteria': [
         {
             "order_num": 0,

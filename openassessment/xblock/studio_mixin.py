@@ -1,9 +1,11 @@
 """
 Studio editing view for OpenAssessment XBlock.
 """
-import pkg_resources
 import copy
 import logging
+import pkg_resources
+from uuid import uuid4
+
 from django.template import Context
 from django.template.loader import get_template
 from voluptuous import MultipleInvalid
@@ -12,7 +14,7 @@ from xblock.fields import List, Scope
 from xblock.fragment import Fragment
 from openassessment.xblock.defaults import DEFAULT_EDITOR_ASSESSMENTS_ORDER, DEFAULT_RUBRIC_FEEDBACK_TEXT
 from openassessment.xblock.validation import validator
-from openassessment.xblock.data_conversion import create_rubric_dict, make_django_template_key
+from openassessment.xblock.data_conversion import create_rubric_dict, make_django_template_key, update_assessments_format
 from openassessment.xblock.schema import EDITOR_UPDATE_SCHEMA
 from openassessment.xblock.resolve_dates import resolve_dates
 from openassessment.xblock.xml import serialize_examples_to_xml_str, parse_examples_from_xml_str
@@ -112,7 +114,7 @@ class StudioMixin(object):
             feedback_default_text = DEFAULT_RUBRIC_FEEDBACK_TEXT
 
         return {
-            'prompt': self.prompt,
+            'prompts': self.prompts,
             'title': self.title,
             'submission_due': submission_due,
             'submission_start': submission_start,
@@ -127,6 +129,7 @@ class StudioMixin(object):
                 make_django_template_key(asmnt)
                 for asmnt in editor_assessments_order
             ],
+            'is_released': self.is_released(),
         }
 
     @XBlock.json_handler
@@ -189,10 +192,14 @@ class StudioMixin(object):
                     )}
                     # This is where we default to EASE for problems which are edited in the GUI
                 assessment['algorithm_id'] = 'ease'
+            if assessment['name'] == 'student-training':
+                for example in assessment['examples']:
+                    example['answer'] = {'parts': [{'text': text} for text in example['answer']]}
+
 
         xblock_validator = validator(self, self._)
         success, msg = xblock_validator(
-            create_rubric_dict(data['prompt'], data['criteria']),
+            create_rubric_dict(data['prompts'], data['criteria']),
             data['assessments'],
             submission_start=data['submission_start'],
             submission_due=data['submission_due'],
@@ -205,7 +212,7 @@ class StudioMixin(object):
         # so we can safely modify the XBlock fields.
         self.title = data['title']
         self.display_name = data['title']
-        self.prompt = data['prompt']
+        self.prompts = data['prompts']
         self.rubric_criteria = data['criteria']
         self.rubric_assessments = data['assessments']
         self.editor_assessments_order = data['editor_assessments_order']
@@ -267,13 +274,20 @@ class StudioMixin(object):
         # could be accomplished within the template, we are opting to remove logic from the template.
         student_training_module = self.get_assessment_module('student-training')
 
-        student_training_template = {'answer': ""}
+        student_training_template = {
+            'answer': {
+                'parts': [
+                    {'text': ''} for prompt in self.prompts
+                ]
+            }
+        }
         criteria_list = copy.deepcopy(self.rubric_criteria_with_labels)
         for criterion in criteria_list:
             criterion['option_selected'] = ""
         student_training_template['criteria'] = criteria_list
 
         if student_training_module:
+            student_training_module = update_assessments_format([student_training_module])[0]
             example_list = []
             # Adds each example to a modified version of the student training module dictionary.
             for example in student_training_module['examples']:

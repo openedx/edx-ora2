@@ -1,8 +1,11 @@
 <openassessment>
     <title>Student training test</title>
-    <prompt>Test prompt</prompt>
+    <prompts>
+        <prompt>
+            <description>Given the state of the world today, what do you think should be done to combat poverty?</description>
+        </prompt>
+    </prompts>
     <rubric>
-        <prompt>Test rubric prompt</prompt>
         <criterion>
             <name>Vocabulary</name>
             <prompt>How varied is the vocabulary?</prompt>

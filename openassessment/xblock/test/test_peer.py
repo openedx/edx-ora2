@@ -10,8 +10,11 @@ import mock
 import datetime as dt
 import pytz
 import ddt
+
 from openassessment.assessment.api import peer as peer_api
 from openassessment.workflow import api as workflow_api
+from openassessment.xblock.data_conversion import create_submission_dict
+
 from .base import XBlockHandlerTestCase, scenario
 
 
@@ -34,12 +37,12 @@ class TestPeerAssessment(XBlockHandlerTestCase):
 
         sally_student_item = copy.deepcopy(student_item)
         sally_student_item['student_id'] = "Sally"
-        sally_submission = xblock.create_submission(sally_student_item, u"Sally's answer")
+        sally_submission = xblock.create_submission(sally_student_item, (u"Sally's answer 1", u"Sally's answer 2"))
 
         # Hal comes and submits a response.
         hal_student_item = copy.deepcopy(student_item)
         hal_student_item['student_id'] = "Hal"
-        hal_submission = xblock.create_submission(hal_student_item, u"Hal's answer")
+        hal_submission = xblock.create_submission(hal_student_item, (u"Hal's answer 1", u"Hal's answer 2"))
 
         # Now Hal will assess Sally.
         assessment = copy.deepcopy(self.ASSESSMENT)
@@ -68,7 +71,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         )
 
         # If Over Grading is on, this should now return Sally or Hal's response to Bob.
-        submission = xblock.create_submission(student_item, u"Bob's answer")
+        submission = xblock.create_submission(student_item, (u"Bob's answer 1", u"Bob's answer 2"))
         workflow_info = xblock.get_workflow_info()
         self.assertEqual(workflow_info["status"], u'peer')
 
@@ -77,7 +80,8 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         request.params = {}
         peer_response = xblock.render_peer_assessment(request)
         self.assertIsNotNone(peer_response)
-        self.assertNotIn(submission["answer"]["text"].encode('utf-8'), peer_response.body)
+        self.assertNotIn(submission["answer"]["parts"][0]["text"].encode('utf-8'), peer_response.body)
+        self.assertNotIn(submission["answer"]["parts"][1]["text"].encode('utf-8'), peer_response.body)
 
         # Validate Peer Rendering.
         self.assertTrue("Sally".encode('utf-8') in peer_response.body or
@@ -94,7 +98,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
     def test_peer_assess_without_leasing_submission(self, xblock):
         # Create a submission
         student_item = xblock.get_student_item_dict()
-        submission = xblock.create_submission(student_item, u"Bob's answer")
+        submission = xblock.create_submission(student_item, (u"Bob's answer 1", u"Bob's answer 2"))
 
         # Attempt to assess a peer without first leasing their submission
         # (usually occurs by rendering the peer assessment step)
@@ -149,7 +153,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
     def test_start_dates(self, xblock):
         student_item = xblock.get_student_item_dict()
 
-        submission = xblock.create_submission(student_item, u"Bob's answer")
+        submission = xblock.create_submission(student_item, (u"Bob's answer 1", u"Bob's answer 2"))
         workflow_info = xblock.get_workflow_info()
         self.assertEqual(workflow_info["status"], u'peer')
 
@@ -158,7 +162,8 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         request.params = {}
         peer_response = xblock.render_peer_assessment(request)
         self.assertIsNotNone(peer_response)
-        self.assertNotIn(submission["answer"]["text"].encode('utf-8'), peer_response.body)
+        self.assertNotIn(submission["answer"]["parts"][0]["text"].encode('utf-8'), peer_response.body)
+        self.assertNotIn(submission["answer"]["parts"][1]["text"].encode('utf-8'), peer_response.body)
 
         # Validate Peer Rendering.
         self.assertIn("available".encode('utf-8'), peer_response.body)
@@ -169,12 +174,12 @@ class TestPeerAssessment(XBlockHandlerTestCase):
 
         sally_student_item = copy.deepcopy(student_item)
         sally_student_item['student_id'] = "Sally"
-        sally_submission = xblock.create_submission(sally_student_item, u"Sally's answer")
+        sally_submission = xblock.create_submission(sally_student_item, (u"Sally's answer 1", u"Sally's answer 2"))
 
         # Hal comes and submits a response.
         hal_student_item = copy.deepcopy(student_item)
         hal_student_item['student_id'] = "Hal"
-        hal_submission = xblock.create_submission(hal_student_item, u"Hal's answer")
+        hal_submission = xblock.create_submission(hal_student_item, (u"Hal's answer 1", u"Hal's answer 2"))
 
         # Now Hal will assess Sally.
         assessment = copy.deepcopy(self.ASSESSMENT)
@@ -205,7 +210,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         )
 
         # If Over Grading is on, this should now return Sally's response to Bob.
-        submission = xblock.create_submission(student_item, u"Bob's answer")
+        submission = xblock.create_submission(student_item, (u"Bob's answer 1", u"Bob's answer 2"))
         workflow_info = xblock.get_workflow_info()
         self.assertEqual(workflow_info["status"], u'peer')
 
@@ -214,7 +219,8 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         request.params = {'continue_grading': True}
         peer_response = xblock.render_peer_assessment(request)
         self.assertIsNotNone(peer_response)
-        self.assertNotIn(submission["answer"]["text"].encode('utf-8'), peer_response.body)
+        self.assertNotIn(submission["answer"]["parts"][0]["text"].encode('utf-8'), peer_response.body)
+        self.assertNotIn(submission["answer"]["parts"][1]["text"].encode('utf-8'), peer_response.body)
 
         peer_api.create_assessment(
             submission['uuid'],
@@ -231,7 +237,8 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         request.params = {'continue_grading': True}
         peer_response = xblock.render_peer_assessment(request)
         self.assertIsNotNone(peer_response)
-        self.assertNotIn(submission["answer"]["text"].encode('utf-8'), peer_response.body)
+        self.assertNotIn(submission["answer"]["parts"][0]["text"].encode('utf-8'), peer_response.body)
+        self.assertNotIn(submission["answer"]["parts"][1]["text"].encode('utf-8'), peer_response.body)
 
         peer_api.create_assessment(
             submission['uuid'],
@@ -248,7 +255,8 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         request.params = {'continue_grading': True}
         peer_response = xblock.render_peer_assessment(request)
         self.assertIsNotNone(peer_response)
-        self.assertNotIn(submission["answer"]["text"].encode('utf-8'), peer_response.body)
+        self.assertNotIn(submission["answer"]["parts"][0]["text"].encode('utf-8'), peer_response.body)
+        self.assertNotIn(submission["answer"]["parts"][1]["text"].encode('utf-8'), peer_response.body)
         self.assertIn("Peer Assessments Complete", peer_response.body)
 
 
@@ -338,7 +346,7 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         # Make a submission, so we get to peer assessment
         xblock.create_submission(
             xblock.get_student_item_dict(),
-            u"𝒀𝒆𝒔. 𝑴𝒂𝒌𝒆 𝒕𝒉𝒆𝒔𝒆 𝒚𝒐𝒖𝒓 𝒑𝒓𝒊𝒎𝒂𝒓𝒚 𝒂𝒄𝒕𝒊𝒐𝒏 𝒊𝒕𝒆𝒎𝒔."
+            (u"𝒀?", "?𝒔. 𝑴𝒂𝒌𝒆 𝒕𝒉𝒆𝒔𝒆 𝒚𝒐𝒖𝒓 𝒑𝒓𝒊𝒎𝒂𝒓𝒚 𝒂𝒄𝒕𝒊𝒐𝒏 𝒊𝒕𝒆𝒎𝒔."),
         )
 
         # Create a submission from another user so we have something to assess
@@ -347,7 +355,7 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         submission = xblock.create_submission(
             other_student,
             (
-                u"ησω, αη¢ιєηт ρєσρℓє ƒσυη∂ тнєιя ¢ℓσтнєѕ ﻭσт ¢ℓєαηєя"
+                u"ησω, αη¢ιєηт ρєσρℓє ƒσυη∂ тнєιя ¢ℓσтнєѕ ﻭσт ¢ℓєαηєя",
                 u" ιƒ тнєу ωαѕнє∂ тнєм αт α ¢єятαιη ѕρσт ιη тнє яινєя."
             )
         )
@@ -359,7 +367,7 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             'rubric_criteria': xblock.rubric_criteria,
             'must_grade': 5,
             'review_num': 1,
-            'peer_submission': submission,
+            'peer_submission': create_submission_dict(submission, xblock.prompts),
             'allow_file_upload': False,
             'peer_file_url': '',
             'submit_button_text': 'submit your assessment & move to response #2',
@@ -487,7 +495,10 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
     def test_turbo_grade_past_due(self, xblock, workflow_status):
         xblock.create_submission(
             xblock.get_student_item_dict(),
-            u"ı ƃoʇ ʇɥıs pɹǝss ɐʇ ɐ ʇɥɹıɟʇ sʇoɹǝ ɟoɹ ouǝ poןןɐɹ."
+            (
+                u"ı ƃoʇ ʇɥıs pɹǝss ɐʇ ɐ ʇɥɹıɟʇ sʇoɹǝ ɟoɹ ouǝ poןןɐɹ.",
+                u"∀up ʇɥᴉs ɔɥɐᴉɹ ɟoɹ ʇʍo pollɐɹs˙"
+            )
         )
 
         # Try to continue grading after the due date has passed
@@ -516,14 +527,17 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         # We should now be able to continue grading that submission
         other_student_item = copy.deepcopy(xblock.get_student_item_dict())
         other_student_item['student_id'] = "Tyler"
-        submission = xblock.create_submission(other_student_item, u"Other submission")
+        submission = xblock.create_submission(
+            other_student_item,
+            (u"Other submission 1", u"Other submission 2")
+        )
 
         expected_context = {
             'estimated_time': '20 minutes',
              'graded': 0,
              'must_grade': 5,
              'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
-             'peer_submission': submission,
+             'peer_submission': create_submission_dict(submission, xblock.prompts),
              'allow_file_upload': False,
              'peer_file_url': '',
              'review_num': 1,

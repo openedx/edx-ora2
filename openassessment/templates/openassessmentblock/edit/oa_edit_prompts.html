@@ -1,0 +1,26 @@
+{% load i18n %}
+{% spaceless %}
+<div id="oa_prompts_editor_wrapper" class="oa_editor_content_wrapper">
+    <div id="openassessment_prompt_template" class="is--hidden">
+        {% include "openassessmentblock/edit/oa_edit_prompt.html" with prompt_uuid="" prompt_description="" %}
+    </div>
+
+    <div id="openassessment_prompts_instructions" class="openassessment_tab_instructions">
+        <p class="openassessment_description">
+            {% trans "Prompts. Replace the sample text with your own text. For more information, see the ORA documentation." %}
+        </p>
+    </div>
+
+    <ul id="openassessment_prompts_list">
+        {% for prompt in prompts %}
+            {% include "openassessmentblock/edit/oa_edit_prompt.html" with prompt_uuid=prompt.uuid prompt_description=prompt.description %}
+        {% endfor %}
+    </ul>
+
+    <div id="openassessment_prompts_add_prompt" class="openassessment_container_add_button">
+        <h6>
+            {% trans "Add Prompt" %}
+        </h6>
+    </div>
+</div>
+{% endspaceless %}

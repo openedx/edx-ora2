@@ -9,7 +9,7 @@
         {% include "openassessmentblock/edit/oa_edit_option.html" with option_name="" option_label="" option_points=1 option_explanation="" %}
     </div>
 
-    <div id="openassessment_rubric_instructions">
+    <div id="openassessment_rubric_instructions" class="openassessment_tab_instructions">
         <p class="openassessment_description">
             {% trans "Rubrics are made up of criteria, which usually contain one or more options. Each option has a point value. This template contains two sample criteria and their options. Replace the sample text with your own text. For more information, see the ORA documentation." %}
         </p>
@@ -21,7 +21,7 @@
         {% endfor %}
     </ul>
 
-    <div id="openassessment_rubric_add_criterion">
+    <div id="openassessment_rubric_add_criterion" class="openassessment_container_add_button">
         <h6>
             {% trans "Add Criterion" %}
         </h6>
