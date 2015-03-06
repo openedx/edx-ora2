@@ -1,217 +1,230 @@
 # edX translation file.
 # Copyright (C) 2014 EdX
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
-#
+# 
 # Translators:
 # Hu Tong <buildmindht@outlook.com>, 2014
+# Changyue Wang <peterwang.dut@gmail.com>, 2014
 # louyihua <supermouselyh@hotmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-13 06:34-0500\n"
-"PO-Revision-Date: 2014-06-13 17:10+0000\n"
-"Last-Translator: Hu Tong <buildmindht@outlook.com>\n"
-"Language-Team: Chinese (China) (http://www.transifex.com/projects/p/edx-"
-"platform/language/zh_CN/)\n"
-"Language: zh_CN\n"
+"POT-Creation-Date: 2015-03-06 04:16-0500\n"
+"PO-Revision-Date: 2015-03-06 10:36+0000\n"
+"Last-Translator: Usman Khalid\n"
+"Language-Team: Chinese (China) (http://www.transifex.com/projects/p/edx-platform/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:69
-#: openassessment/xblock/static/js/src/oa_server.js:116
-#: openassessment/xblock/static/js/src/oa_server.js:135
+#: openassessment/xblock/static/js/src/oa_server.js:68
+#: openassessment/xblock/static/js/src/oa_server.js:112
+#: openassessment/xblock/static/js/src/oa_server.js:131
 msgid "This section could not be loaded."
-msgstr ""
+msgstr "这个部分无法加载。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:170
+#: openassessment/xblock/static/js/src/oa_server.js:166
 msgid "This response could not be submitted."
-msgstr ""
+msgstr "回复无法提交。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:196
+#: openassessment/xblock/static/js/src/oa_server.js:192
 msgid "This response could not be saved."
-msgstr ""
+msgstr "回复无法保存。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:233
+#: openassessment/xblock/static/js/src/oa_server.js:229
 msgid "This feedback could not be submitted."
-msgstr ""
+msgstr "这条反馈无法提交。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:280
-#: openassessment/xblock/static/js/src/oa_server.js:324
-#: openassessment/xblock/static/js/src/oa_server.js:365
-#: openassessment/xblock/static/js/src/oa_server.js:399
+#: openassessment/xblock/static/js/src/oa_server.js:276
+#: openassessment/xblock/static/js/src/oa_server.js:320
+#: openassessment/xblock/static/js/src/oa_server.js:361
+#: openassessment/xblock/static/js/src/oa_server.js:395
 msgid "This assessment could not be submitted."
-msgstr ""
+msgstr "这份评测无法提交。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:423
+#: openassessment/xblock/static/js/src/oa_server.js:419
 msgid "One or more rescheduling tasks failed."
-msgstr ""
+msgstr "一项或几项重新编排的任务失败了。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:472
+#: openassessment/xblock/static/js/src/oa_server.js:468
 msgid "This problem could not be saved."
-msgstr ""
+msgstr "该问题无法保存。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:502
+#: openassessment/xblock/static/js/src/oa_server.js:498
 msgid "The server could not be contacted."
-msgstr ""
+msgstr "无法联系服务器。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:528
+#: openassessment/xblock/static/js/src/oa_server.js:524
 msgid "Could not retrieve upload url."
-msgstr ""
+msgstr "不能读取上传链接地址"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/oa_server.js:549
+#: openassessment/xblock/static/js/src/oa_server.js:545
 msgid "Could not retrieve download url."
+msgstr "不能读取下载链接地址"
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:573
+msgid "The submission could not be removed from the grading pool."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_base.js:149
+#: openassessment/xblock/static/js/src/lms/oa_base.js:148
 msgid "Unable to Load"
-msgstr ""
+msgstr "无法加载"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:223
+#: openassessment/xblock/static/js/src/lms/oa_response.js:224
 msgid "Status of Your Response"
-msgstr ""
+msgstr "回复状态"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:249
+#: openassessment/xblock/static/js/src/lms/oa_response.js:251
 msgid ""
 "If you leave this page without saving or submitting your response, you'll "
 "lose any work you've done on the response."
-msgstr ""
+msgstr "如果你不“保存”或者“提交”回复就离开，你可能会丢失掉所有你已完成的回复。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:323
+#: openassessment/xblock/static/js/src/lms/oa_response.js:333
 msgid "This response has not been saved."
-msgstr ""
+msgstr "这一个回复还没有被保存。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:341
+#: openassessment/xblock/static/js/src/lms/oa_response.js:351
 msgid "Saving..."
-msgstr ""
+msgstr "正在保存…"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:359
+#: openassessment/xblock/static/js/src/lms/oa_response.js:376
 msgid "This response has been saved but not submitted."
-msgstr ""
+msgstr "这一份回复已经保存了，但仍未提交。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:362
+#: openassessment/xblock/static/js/src/lms/oa_response.js:379
 msgid "Error"
+msgstr "错误"
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:454
+msgid ""
+"You're about to submit your response for this assignment. After you submit "
+"this response, you can't change it or submit a new response."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:463
+#: openassessment/xblock/static/js/src/lms/oa_response.js:478
 msgid "File size must be 5MB or less."
-msgstr ""
+msgstr "文件大小限制为5MB以下"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:467
+#: openassessment/xblock/static/js/src/lms/oa_response.js:482
 msgid "File must be an image."
-msgstr ""
+msgstr "文件必须为图像。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_container_item.js:39
 msgid "Unnamed Option"
-msgstr ""
+msgstr "未命名选项"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_container_item.js:49
 msgid "Not Selected"
-msgstr ""
+msgstr "未选中"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:138
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:143
 msgid "Couldn't Save This Assignment"
-msgstr ""
+msgstr "保存作业失败"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:139
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:144
 msgid "Please correct the outlined fields."
-msgstr ""
+msgstr "请改正画出区域"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
-#: openassessment/xblock/static/js/src/studio/oa_edit.js:173
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:178
 msgid ""
 "This problem has already been released. Any changes will apply only to "
 "future assessments."
-msgstr ""
+msgstr "问题已经被放出了。任何更改都只会在未来的评测中出现。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:75
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:97
 msgid "Criterion Added"
-msgstr ""
+msgstr "规范已添加"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:76
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:98
 msgid ""
 "You've added a criterion. You'll need to select an option for the criterion "
 "in the Student Training step. To do this, click the Settings tab."
-msgstr ""
+msgstr "您已成功添加一条规范。现在您需要为该规范在学生训练步骤中选择一个选项。请点击设置菜单完成上述步骤。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:122
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:154
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:144
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:176
 msgid "Option Deleted"
-msgstr ""
+msgstr "选项已删除"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:123
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:145
 msgid ""
 "You've deleted an option. The system has removed that option from its "
-"criterion in the sample responses in the Student Training step. You may have "
-"to select a new option for the criterion."
-msgstr ""
+"criterion in the sample responses in the Student Training step. You may have"
+" to select a new option for the criterion."
+msgstr "您已删除一个选项，系统已将该选项从学生训练步骤参考答案的规范中移除。您可能需要为规范选择一个新的选项。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:155
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:177
 msgid ""
 "You've deleted all the options for this criterion. The system has removed "
 "the criterion from the sample responses in the Student Training step."
-msgstr ""
+msgstr "您已删除一个选项，系统已将该选项从学生训练步骤参考答案的规范中移除。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:181
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:203
 msgid "Criterion Deleted"
-msgstr ""
+msgstr "规范已删除"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:182
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:204
 msgid ""
 "You've deleted a criterion. The system has removed the criterion from the "
 "sample responses in the Student Training step."
-msgstr ""
+msgstr "您已删除一条规范。系统已移除学生训练步骤中的参考答案。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:352
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:374
 msgid "Warning"
-msgstr ""
+msgstr "警告"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:353
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:375
 msgid ""
-"Changes to steps that are not selected as part of the assignment will not be "
-"saved."
-msgstr ""
+"Changes to steps that are not selected as part of the assignment will not be"
+" saved."
+msgstr "未作为作业部分的步骤变更将不会被保存。"
