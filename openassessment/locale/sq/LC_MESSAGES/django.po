@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-13 05:12-0500\n"
-"PO-Revision-Date: 2014-12-13 12:38+0000\n"
+"POT-Creation-Date: 2015-03-06 03:39-0500\n"
+"PO-Revision-Date: 2015-03-06 10:35+0000\n"
 "Last-Translator: Usman Khalid\n"
 "Language-Team: Albanian (http://www.transifex.com/projects/p/edx-platform/language/sq/)\n"
 "MIME-Version: 1.0\n"
@@ -17,6 +17,432 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: sq\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/grade_mixin.py:64
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/leaderboard_mixin.py:48
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/self_assessment_mixin.py:38
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/student_training_mixin.py:55
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/student_training_mixin.py:204
+#: openassessment/xblock/grade_mixin.py:64
+#: openassessment/xblock/leaderboard_mixin.py:51
+#: openassessment/xblock/self_assessment_mixin.py:38
+#: openassessment/xblock/student_training_mixin.py:55
+#: openassessment/xblock/student_training_mixin.py:204
+msgid "An unexpected error occurred."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/grade_mixin.py:191
+#: openassessment/xblock/grade_mixin.py:191
+msgid "Peer Assessment"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/grade_mixin.py:193
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:179
+#: openassessment/xblock/grade_mixin.py:193
+msgid "Self Assessment"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/grade_mixin.py:226
+#: openassessment/xblock/grade_mixin.py:226
+msgid "Assessment feedback could not be saved."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/grade_mixin.py:237
+#: openassessment/xblock/grade_mixin.py:237
+msgid "Feedback saved."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/peer_assessment_mixin.py:54
+#: openassessment/xblock/peer_assessment_mixin.py:54
+msgid "Must provide options selected in the assessment"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/peer_assessment_mixin.py:57
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/self_assessment_mixin.py:121
+#: openassessment/xblock/peer_assessment_mixin.py:57
+#: openassessment/xblock/self_assessment_mixin.py:121
+msgid "Must provide overall feedback in the assessment"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/peer_assessment_mixin.py:60
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/self_assessment_mixin.py:124
+#: openassessment/xblock/peer_assessment_mixin.py:60
+#: openassessment/xblock/self_assessment_mixin.py:124
+msgid "Must provide feedback for criteria in the assessment"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/peer_assessment_mixin.py:63
+#: openassessment/xblock/peer_assessment_mixin.py:63
+msgid "You must submit a response before you can peer-assess."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/peer_assessment_mixin.py:76
+#: openassessment/xblock/peer_assessment_mixin.py:76
+msgid ""
+"This feedback has already been submitted or the submission has been "
+"cancelled."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/peer_assessment_mixin.py:101
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/peer_assessment_mixin.py:106
+#: openassessment/xblock/peer_assessment_mixin.py:101
+#: openassessment/xblock/peer_assessment_mixin.py:106
+msgid "Your peer assessment could not be submitted."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/peer_assessment_mixin.py:120
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/student_training_mixin.py:210
+#: openassessment/xblock/peer_assessment_mixin.py:120
+#: openassessment/xblock/student_training_mixin.py:210
+msgid "Could not update workflow status."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/peer_assessment_mixin.py:129
+#: openassessment/xblock/peer_assessment_mixin.py:129
+msgid "Could not load peer assessment."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/peer_assessment_mixin.py:208
+#: openassessment/xblock/peer_assessment_mixin.py:208
+msgid "Submit your assessment & review another response"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/peer_assessment_mixin.py:212
+#: openassessment/xblock/peer_assessment_mixin.py:212
+msgid "Submit your assessment & move onto next step"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/peer_assessment_mixin.py:216
+#: openassessment/xblock/peer_assessment_mixin.py:216
+msgid "Submit your assessment & move to response #{response_number}"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/resolve_dates.py:49
+#: openassessment/xblock/resolve_dates.py:49
+msgid ""
+"'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
+"MM-DDTHH:MM:SS."
+msgstr "'{date}' është një datë jo valide. Sigurohuni që formati i datës është VVVV-MM-DDTHH:MM:SS"
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/resolve_dates.py:52
+#: openassessment/xblock/resolve_dates.py:52
+msgid "'{date}' must be a date string or datetime"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/resolve_dates.py:197
+#: openassessment/xblock/resolve_dates.py:197
+msgid ""
+"This step's start date '{start}' cannot be earlier than the previous step's "
+"start date '{prev}'."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/resolve_dates.py:203
+#: openassessment/xblock/resolve_dates.py:203
+msgid ""
+"This step's due date '{due}' cannot be later than the next step's due date "
+"'{prev}'."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/resolve_dates.py:219
+#: openassessment/xblock/resolve_dates.py:219
+msgid "The start date '{start}' cannot be later than the due date '{due}'"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/self_assessment_mixin.py:118
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/student_training_mixin.py:166
+#: openassessment/xblock/self_assessment_mixin.py:118
+#: openassessment/xblock/student_training_mixin.py:166
+msgid "Missing options_selected key in request"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/self_assessment_mixin.py:127
+#: openassessment/xblock/self_assessment_mixin.py:127
+msgid "You must submit a response before you can perform a self-assessment."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/self_assessment_mixin.py:148
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/self_assessment_mixin.py:155
+#: openassessment/xblock/self_assessment_mixin.py:148
+#: openassessment/xblock/self_assessment_mixin.py:155
+msgid "Your self assessment could not be submitted."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/staff_info_mixin.py:49
+#: openassessment/xblock/staff_info_mixin.py:49
+msgid "You do not have permission to schedule training"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/staff_info_mixin.py:50
+#: openassessment/xblock/staff_info_mixin.py:50
+msgid "You do not have permission to reschedule tasks."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/staff_info_mixin.py:77
+#: openassessment/xblock/staff_info_mixin.py:77
+msgid "You do not have permission to access staff information"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/staff_info_mixin.py:78
+#: openassessment/xblock/staff_info_mixin.py:78
+msgid "You do not have permission to access student information."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/staff_info_mixin.py:191
+#: openassessment/xblock/staff_info_mixin.py:191
+msgid "Training scheduled with new Workflow UUID: {uuid}"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/staff_info_mixin.py:196
+#: openassessment/xblock/staff_info_mixin.py:196
+msgid "An error occurred scheduling classifier training: {error}"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/staff_info_mixin.py:202
+#: openassessment/xblock/staff_info_mixin.py:202
+msgid "Example Based Assessment is not configured for this location."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/staff_info_mixin.py:223
+#: openassessment/xblock/staff_info_mixin.py:223
+msgid "Error finding assessment workflow cancellation."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/staff_info_mixin.py:332
+#: openassessment/xblock/staff_info_mixin.py:336
+msgid ""
+"All AI tasks associated with this item have been rescheduled successfully."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/staff_info_mixin.py:337
+#: openassessment/xblock/staff_info_mixin.py:341
+msgid "An error occurred while rescheduling tasks: {}"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/staff_info_mixin.py:363
+#: openassessment/xblock/staff_info_mixin.py:367
+msgid "Please enter valid reason to remove the submission."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/staff_info_mixin.py:374
+msgid ""
+"Student submission was removed from the peer grading pool. If you'd like to "
+"allow the student to submit a new response, please also reset the student "
+"state of the problem from the Instructor Dashboard."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/student_training_mixin.py:168
+#: openassessment/xblock/student_training_mixin.py:168
+msgid "options_selected must be a dictionary"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/student_training_mixin.py:194
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/student_training_mixin.py:199
+#: openassessment/xblock/student_training_mixin.py:194
+#: openassessment/xblock/student_training_mixin.py:199
+msgid "Your scores could not be checked."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/studio_mixin.py:157
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/studio_mixin.py:162
+#: openassessment/xblock/studio_mixin.py:158
+#: openassessment/xblock/studio_mixin.py:163
+msgid "Error updating XBlock configuration"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/studio_mixin.py:185
+#: openassessment/xblock/studio_mixin.py:186
+msgid ""
+"Validation error: There was an error in the XML definition of the examples "
+"provided by the user. Please correct the XML definition before saving."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/studio_mixin.py:190
+#: openassessment/xblock/studio_mixin.py:191
+msgid ""
+"Validation error: No examples were provided for example based assessment."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/studio_mixin.py:204
+#: openassessment/xblock/studio_mixin.py:209
+msgid "Validation error: {error}"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/studio_mixin.py:222
+#: openassessment/xblock/studio_mixin.py:227
+msgid "Successfully updated OpenAssessment XBlock"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/submission_mixin.py:53
+#: openassessment/xblock/submission_mixin.py:56
+msgid "\"submission\" required to submit answer."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/submission_mixin.py:66
+#: openassessment/xblock/submission_mixin.py:77
+msgid "To submit a response, view this component in Preview or Live mode."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/submission_mixin.py:72
+#: openassessment/xblock/submission_mixin.py:83
+msgid "Multiple submissions are not allowed."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/submission_mixin.py:110
+#: openassessment/xblock/submission_mixin.py:121
+msgid "API returned unclassified exception."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/submission_mixin.py:146
+#: openassessment/xblock/submission_mixin.py:163
+msgid "This response could not be saved."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/submission_mixin.py:150
+#: openassessment/xblock/submission_mixin.py:167
+msgid "This response was not submitted."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/submission_mixin.py:190
+#: openassessment/xblock/submission_mixin.py:207
+msgid "Must specify contentType."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/submission_mixin.py:194
+#: openassessment/xblock/submission_mixin.py:211
+msgid "contentType must be an image."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/submission_mixin.py:202
+#: openassessment/xblock/submission_mixin.py:219
+msgid "Error retrieving upload URL."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/submission_mixin.py:294
+#: openassessment/xblock/submission_mixin.py:311
+msgid "This response has been saved but not submitted."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/submission_mixin.py:294
+#: openassessment/xblock/submission_mixin.py:311
+msgid "This response has not been saved."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/validation.py:108
+#: openassessment/xblock/validation.py:108
+msgid "This problem must include at least one assessment."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/validation.py:112
+#: openassessment/xblock/validation.py:112
+msgid "The assessment order you selected is invalid."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/validation.py:122
+#: openassessment/xblock/validation.py:122
+msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/validation.py:125
+#: openassessment/xblock/validation.py:125
+msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/validation.py:128
+#: openassessment/xblock/validation.py:128
+msgid ""
+"In peer assessment, the \"Must Grade\" value must be greater than or equal "
+"to the \"Graded By\" value."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/validation.py:136
+#: openassessment/xblock/validation.py:136
+msgid "You must provide at least one example response for student training."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/validation.py:139
+#: openassessment/xblock/validation.py:139
+msgid "Each example response for student training must be unique."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/validation.py:146
+#: openassessment/xblock/validation.py:146
+msgid "The \"algorithm_id\" value must be set to \"ease\" or \"fake\""
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/validation.py:150
+#: openassessment/xblock/validation.py:150
+msgid ""
+"The number of assessments cannot be changed after the problem has been "
+"released."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/validation.py:155
+#: openassessment/xblock/validation.py:155
+msgid ""
+"The assessment type cannot be changed after the problem has been released."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/validation.py:179
+#: openassessment/xblock/validation.py:179
+msgid "This rubric definition is not valid."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/validation.py:184
+#: openassessment/xblock/validation.py:184
+msgid "Criteria duplicate name(s): {duplicates}"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/validation.py:193
+#: openassessment/xblock/validation.py:193
+msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/validation.py:201
+#: openassessment/xblock/validation.py:201
+msgid "Criteria with no options must require written feedback."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/validation.py:210
+#: openassessment/xblock/validation.py:210
+msgid "Example-based assessments cannot have duplicate point values."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/validation.py:219
+#: openassessment/xblock/validation.py:219
+msgid "Prompts cannot be created or deleted after a problem is released."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/validation.py:223
+#: openassessment/xblock/validation.py:223
+msgid "The number of criteria cannot be changed after a problem is released."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/validation.py:236
+#: openassessment/xblock/validation.py:236
+msgid "Criteria names cannot be changed after a problem is released"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/validation.py:241
+#: openassessment/xblock/validation.py:241
+msgid "The number of options cannot be changed after a problem is released."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/validation.py:246
+#: openassessment/xblock/validation.py:246
+msgid "Point values cannot be changed after a problem is released."
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/validation.py:296
+#: openassessment/xblock/validation.py:296
+msgid ""
+"Student training and example-based assessments must have at least one "
+"training example"
+msgstr ""
+
+#: build/lib.linux-x86_64-2.7/openassessment/xblock/validation.py:358
+#: openassessment/xblock/validation.py:358
+msgid "Leaderboard number is invalid."
+msgstr ""
 
 #: openassessment/assessment/api/student_training.py:180
 msgid "Could not parse serialized rubric"
@@ -46,159 +472,152 @@ msgstr "Shempull {example_number} ka një opsion shtesë për \"{criterion_name}
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr "Shembull {example_number} është duke munguar një opsion për \"{criterion_name}\""
 
-#: openassessment/templates/openassessmentblock/oa_base.html:9
-msgid "Skip to a specific step"
-msgstr "Kalo tek hapi specifik"
-
-#: openassessment/templates/openassessmentblock/oa_base.html:18
-msgid "Your grade for this problem"
-msgstr ""
-
-#: openassessment/templates/openassessmentblock/oa_base.html:27
+#: openassessment/templates/openassessmentblock/oa_base.html:12
 msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
 "response to the question. The other steps appear below the Your Response "
 "field."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/oa_base.html:36
-msgid "The prompt for this assignment"
-msgstr ""
-
-#: openassessment/templates/openassessmentblock/oa_base.html:58
+#: openassessment/templates/openassessmentblock/oa_base.html:31
 msgid "This step's status:"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/oa_base.html:61
+#: openassessment/templates/openassessmentblock/oa_base.html:34
 msgid "Loading"
 msgstr "Duke u ngarkuar"
 
 #: openassessment/templates/openassessmentblock/oa_rubric.html:14
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:55
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:82
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:92
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:80
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:91
 msgid "Required"
 msgstr "E detyrueshme"
 
 #: openassessment/templates/openassessmentblock/oa_rubric.html:33
 #: openassessment/templates/openassessmentblock/edit/oa_training_example_criterion.html:15
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:97
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:101
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:123
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:99
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:122
 msgid "points"
 msgstr "pikët"
 
 #: openassessment/templates/openassessmentblock/oa_rubric.html:41
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:109
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:107
 msgid "Comments"
 msgstr "Komentet"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:8
-msgid "Open Response Assessment"
-msgstr ""
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:10
-msgid "Settings"
-msgstr ""
-
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:11
-msgid "Rubric"
+#: openassessment/templates/openassessmentblock/oa_submission_answer.html:7
+msgid "The question for this section."
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:12
+msgid "Open Response Assessment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:14
+msgid "Settings"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:15
+msgid "Rubric"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:16
+#: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:8
 msgid "Prompt"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:19
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:23
 msgid "Rubric Change Impacts Settings Section"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:20
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:24
 msgid ""
 "A change that you made to this assessment's rubric has an impact on some "
 "examples laid out in the settings tab. For more information, go to the "
 "Settings section and fix areas highlighted in red."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:24
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:28
 msgid "close alert"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:39
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:41
 msgid "Display Name "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:42
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:44
 msgid ""
 "This name appears when you hover over the unit in the course ribbon at the "
 "top of the page."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:49
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:51
 msgid "Response Start Date"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:62
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:64
 msgid "Response Start Time"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:71
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:73
 msgid "The date and time when students can begin submitting responses."
 msgstr "Data dhe koha kur studentët mund të fillojn të paraqesin përgjigjjet."
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:78
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:80
 msgid "Response Due Date"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:91
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:93
 msgid "Response Due Time"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:100
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:102
 msgid "The date and time when students can no longer submit responses."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:104
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:106
 msgid "Allow Image Responses"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:106
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:116
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:108
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:118
 msgid "False"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:107
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:117
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:109
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:119
 msgid "True"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:110
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:112
 msgid ""
 "Specify whether students can submit an image file along with their text "
 "response."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:114
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:116
 msgid "Allow Latex Responses"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:120
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:122
 msgid "Specify whether students can write Latex formatted strings"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:124
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:126
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:7
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:7
 msgid "Top Responses"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:133
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:135
 msgid ""
 "Specify the number of top-scoring responses to display. If the number is 0, "
 "the Top Responses section won't appear to students."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:140
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:142
 msgid ""
 "In this assignment, you can include steps for student training, peer "
 "assessment, self assessment, and example based assessment. Select the steps "
@@ -208,7 +627,7 @@ msgid ""
 "self assessment steps."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:142
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:144
 msgid ""
 "In this assignment, you can include steps for student training, peer "
 "assessment, and self assessment. Select the steps that you want below, and "
@@ -216,19 +635,19 @@ msgid ""
 "training step, it must precede all other steps."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:159
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:161
 msgid "Save"
 msgstr "Ruaj"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:163
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html:165
 msgid "Cancel"
 msgstr "Anulo"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:7
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:36
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:78
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:117
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:148
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:101
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:143
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:182
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:213
 msgid "Criterion"
 msgstr ""
 
@@ -238,6 +657,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:10
 #: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:7
+#: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:11
 #: openassessment/templates/openassessmentblock/edit/oa_training_example.html:13
 msgid "Remove"
 msgstr ""
@@ -368,6 +788,20 @@ msgstr ""
 msgid "Enter the date and time when all peer assessments must be complete."
 msgstr ""
 
+#: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:9
+msgid "You cannot delete a prompt after the assignment has been released."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_prompts.html:10
+msgid ""
+"Prompts. Replace the sample text with your own text. For more information, "
+"see the ORA documentation."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_prompts.html:22
+msgid "Add Prompt"
+msgstr ""
+
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:14
 msgid ""
 "Rubrics are made up of criteria, which usually contain one or more options. "
@@ -458,6 +892,7 @@ msgstr ""
 msgid "Not Selected"
 msgstr ""
 
+#: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html:7
 #: openassessment/templates/openassessmentblock/grade/oa_grade_closed.html:7
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:8
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:19
@@ -465,6 +900,18 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/grade/oa_grade_not_started.html:7
 #: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:7
 msgid "Your Grade"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html:12
+#, python-format
+msgid ""
+"\n"
+"                                    %(points_earned)s out of %(points_possible)s\n"
+"                                "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html:30
+msgid "Your submission has been cancelled."
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_closed.html:9
@@ -489,6 +936,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:29
 #: openassessment/templates/openassessmentblock/response/oa_response.html:12
+#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:41
 #: openassessment/templates/openassessmentblock/response/oa_response_graded.html:23
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:43
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:43
@@ -497,15 +945,15 @@ msgstr "Përgjigjja juaj"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:37
 #: openassessment/templates/openassessmentblock/response/oa_response_graded.html:30
-#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:50
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:48
 msgid "Your Image"
 msgstr "Imazhi i juaj"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:41
-#: openassessment/templates/openassessmentblock/response/oa_response.html:81
+#: openassessment/templates/openassessmentblock/response/oa_response.html:92
 #: openassessment/templates/openassessmentblock/response/oa_response_graded.html:33
-#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:53
-#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:58
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:51
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:56
 msgid "The image associated with your submission."
 msgstr ""
 
@@ -518,10 +966,10 @@ msgid "Overall Grade"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:63
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:39
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:81
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:119
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:150
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:104
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:146
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:184
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:215
 msgid "Points"
 msgstr "Pikët"
 
@@ -561,7 +1009,7 @@ msgstr "Vlerësimi juaj"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:135
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:138
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:144
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:209
 msgid "Example-Based Assessment"
 msgstr ""
 
@@ -571,7 +1019,7 @@ msgid "Additional Comments"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:170
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:32
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:97
 msgid "Peer"
 msgstr ""
 
@@ -708,8 +1156,8 @@ msgid "%(num_points)s points"
 msgstr "%(num_points)s pikë"
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:21
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:81
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:65
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:79
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:63
 msgid "The image associated with your peer's submission."
 msgstr ""
 
@@ -891,6 +1339,7 @@ msgid "due <span class=\"date\">%(due_date)s (in %(time_until)s)</span>"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:33
+#: openassessment/templates/openassessmentblock/peer/oa_peer_cancelled.html:12
 #: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html:10
 #: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:10
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:14
@@ -898,15 +1347,18 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/peer/oa_peer_unavailable.html:10
 #: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html:10
 #: openassessment/templates/openassessmentblock/response/oa_response.html:29
+#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:11
 #: openassessment/templates/openassessmentblock/response/oa_response_closed.html:9
 #: openassessment/templates/openassessmentblock/response/oa_response_graded.html:10
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:10
 #: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:10
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:29
+#: openassessment/templates/openassessmentblock/self/oa_self_cancelled.html:12
 #: openassessment/templates/openassessmentblock/self/oa_self_closed.html:10
 #: openassessment/templates/openassessmentblock/self/oa_self_complete.html:10
 #: openassessment/templates/openassessmentblock/self/oa_self_unavailable.html:10
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:30
+#: openassessment/templates/openassessmentblock/student_training/student_training_cancelled.html:11
 #: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:10
 #: openassessment/templates/openassessmentblock/student_training/student_training_complete.html:10
 #: openassessment/templates/openassessmentblock/student_training/student_training_unavailable.html:10
@@ -934,16 +1386,23 @@ msgid ""
 "                                        "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:76
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:60
-#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:53
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:74
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:58
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:51
 msgid "Associated Image"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:96
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:150
-#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:70
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:94
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:148
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:68
 msgid "We could not submit your assessment"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_cancelled.html:16
+#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:14
+#: openassessment/templates/openassessmentblock/self/oa_self_cancelled.html:16
+#: openassessment/templates/openassessmentblock/student_training/student_training_cancelled.html:14
+msgid "Cancelled"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html:15
@@ -1055,7 +1514,6 @@ msgid "In Progress"
 msgstr "Në progres"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:42
-#: openassessment/templates/openassessmentblock/response/oa_response.html:56
 msgid "Enter your response to the question."
 msgstr ""
 
@@ -1074,49 +1532,77 @@ msgstr ""
 msgid "After you submit your response, you cannot edit it"
 msgstr "Pasi të e paraqisni përgjgijjen tuaj, ju nuk mund të e ndryshosh atë"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:62
-msgid "You may continue to work on your response until you submit it."
+#: openassessment/templates/openassessmentblock/response/oa_response.html:58
+msgid "The prompt for this section."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:68
+#: openassessment/templates/openassessmentblock/response/oa_response.html:65
+msgid "Your response to the question above."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:79
 msgid "We could not upload this image"
 msgstr "Ne nuk po mundemi të e ngarkojm këtë imazh"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:72
+#: openassessment/templates/openassessmentblock/response/oa_response.html:83
 msgid "Select an image to upload for this submission."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:74
+#: openassessment/templates/openassessmentblock/response/oa_response.html:85
 msgid "Upload your image"
 msgstr "Ngarko imazhin tuaj"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:91
+#: openassessment/templates/openassessmentblock/response/oa_response.html:100
+msgid "You may continue to work on your response until you submit it."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html:104
 msgid "We could not save your progress"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:97
+#: openassessment/templates/openassessmentblock/response/oa_response.html:110
 msgid "Save Your Progress"
 msgstr "Ruaj progresin tuaj"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:101
+#: openassessment/templates/openassessmentblock/response/oa_response.html:114
 msgid "Your Submission Status"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:108
+#: openassessment/templates/openassessmentblock/response/oa_response.html:121
 msgid "Preview in Latex"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:111
+#: openassessment/templates/openassessmentblock/response/oa_response.html:124
 msgid "Click to preview your submission in Latex"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:131
+#: openassessment/templates/openassessmentblock/response/oa_response.html:144
 msgid "We could not submit your response"
 msgstr "Ne nuk po mundemi të e paraqesim përgjigjjen tuaj"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:139
+#: openassessment/templates/openassessmentblock/response/oa_response.html:152
 msgid "Submit your response and move to the next step"
 msgstr "Paraqiteni përgjigjjen tuaj dhe kaloni në hapin tjetër"
+
+#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:24
+msgid "Submission Cancelled"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:28
+#, python-format
+msgid ""
+"\n"
+"                        Your submission has been cancelled by %(removed_by_username)s on %(removed_datetime)s\n"
+"                    "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:33
+#, python-format
+msgid ""
+"\n"
+"                        Comments: %(comments)s\n"
+"                    "
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response_closed.html:25
 msgid ""
@@ -1173,7 +1659,7 @@ msgstr ""
 msgid "due <span class=\"date\">%(due_date)s</span> (in %(time_until)s)"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:77
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:75
 msgid "Submit Your Assessment"
 msgstr ""
 
@@ -1283,62 +1769,89 @@ msgstr ""
 msgid "Student Response"
 msgstr ""
 
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:15
+#, python-format
+msgid ""
+"\n"
+"                            Student submission removed by %(removed_by_username)s on %(removed_datetime)s\n"
+"                        "
+msgstr ""
+
 #: openassessment/templates/openassessmentblock/staff_debug/student_info.html:20
+#, python-format
+msgid ""
+"\n"
+"                            Comments: %(comments)s\n"
+"                        "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:31
 msgid "The image associated with this response"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:29
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:44
+msgid "Remove submission from peer grading"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:58
+msgid "Caution: Removing a student's submission cannot be undone."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:64
+msgid "Comments:"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:78
+msgid "Remove submission"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:94
 msgid "Peer Assessments for This Student"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:33
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:74
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:75
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:98
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:139
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:140
 msgid "Assessment"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:37
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:79
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:118
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:149
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:102
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:144
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:183
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:214
 msgid "Selected Option"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:38
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:80
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:103
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:145
 msgid "Feedback"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:40
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:82
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:120
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:151
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:105
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:147
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:185
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:216
 msgid "Points Possible"
 msgstr "Pikët e mundshme"
 
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:60
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:102
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:125
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:167
 msgid "Overall Feedback"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:71
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:136
 msgid "Peer Assessments Completed by This Student"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:113
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:178
 msgid "Student's Self Assessment"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:114
-#: openassessment/xblock/grade_mixin.py:190
-msgid "Self Assessment"
-msgstr ""
-
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:145
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:210
 msgid "Example Based Assessment"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:174
+#: openassessment/templates/openassessmentblock/staff_debug/student_info.html:239
 msgid "Couldn't find a response for this student."
 msgstr ""
 
@@ -1383,28 +1896,28 @@ msgid ""
 "                            "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:96
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:95
 msgid "Selected Options Agree"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:99
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:98
 msgid "The option you selected is the option that the instructor selected."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:103
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:102
 msgid "Selected Options Differ"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:106
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:105
 msgid ""
 "The option you selected is not the option that the instructor selected."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:139
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:138
 msgid "We could not check your assessment"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:146
+#: openassessment/templates/openassessmentblock/student_training/student_training.html:145
 msgid "Compare your selections with the instructor's selections"
 msgstr ""
 
@@ -1422,315 +1935,13 @@ msgstr ""
 msgid "We couldn't load the student training step of this assignment."
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:61
-#: openassessment/xblock/leaderboard_mixin.py:48
-#: openassessment/xblock/self_assessment_mixin.py:38
-#: openassessment/xblock/student_training_mixin.py:54
-#: openassessment/xblock/student_training_mixin.py:201
-msgid "An unexpected error occurred."
-msgstr ""
-
-#: openassessment/xblock/grade_mixin.py:188
-msgid "Peer Assessment"
-msgstr ""
-
-#: openassessment/xblock/grade_mixin.py:223
-msgid "Assessment feedback could not be saved."
-msgstr ""
-
-#: openassessment/xblock/grade_mixin.py:234
-msgid "Feedback saved."
-msgstr ""
-
-#: openassessment/xblock/peer_assessment_mixin.py:53
-msgid "Must provide options selected in the assessment"
-msgstr ""
-
-#: openassessment/xblock/peer_assessment_mixin.py:56
-#: openassessment/xblock/self_assessment_mixin.py:117
-msgid "Must provide overall feedback in the assessment"
-msgstr ""
-
-#: openassessment/xblock/peer_assessment_mixin.py:59
-#: openassessment/xblock/self_assessment_mixin.py:120
-msgid "Must provide feedback for criteria in the assessment"
-msgstr ""
-
-#: openassessment/xblock/peer_assessment_mixin.py:62
-msgid "You must submit a response before you can peer-assess."
-msgstr ""
-
-#: openassessment/xblock/peer_assessment_mixin.py:75
-msgid "This feedback has already been submitted."
-msgstr ""
-
-#: openassessment/xblock/peer_assessment_mixin.py:100
-#: openassessment/xblock/peer_assessment_mixin.py:105
-msgid "Your peer assessment could not be submitted."
-msgstr ""
-
-#: openassessment/xblock/peer_assessment_mixin.py:119
-#: openassessment/xblock/student_training_mixin.py:207
-msgid "Could not update workflow status."
-msgstr ""
-
-#: openassessment/xblock/peer_assessment_mixin.py:128
-msgid "Could not load peer assessment."
-msgstr ""
-
-#: openassessment/xblock/peer_assessment_mixin.py:206
-msgid "Submit your assessment & review another response"
-msgstr ""
-
-#: openassessment/xblock/peer_assessment_mixin.py:210
-msgid "Submit your assessment & move onto next step"
-msgstr ""
-
-#: openassessment/xblock/peer_assessment_mixin.py:214
-msgid "Submit your assessment & move to response #{response_number}"
-msgstr ""
-
-#: openassessment/xblock/resolve_dates.py:49
+#: openassessment/xblock/staff_info_mixin.py:378
 msgid ""
-"'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
-"MM-DDTHH:MM:SS."
-msgstr "'{date}' është një datë jo valide. Sigurohuni që formati i datës është VVVV-MM-DDTHH:MM:SS"
-
-#: openassessment/xblock/resolve_dates.py:52
-msgid "'{date}' must be a date string or datetime"
+"The student submission has been removed from peer assessment. The student "
+"receives a grade of zero unless you reset the student's attempts for the "
+"problem to allow them to resubmit a response."
 msgstr ""
 
-#: openassessment/xblock/resolve_dates.py:197
-msgid ""
-"This step's start date '{start}' cannot be earlier than the previous step's "
-"start date '{prev}'."
-msgstr ""
-
-#: openassessment/xblock/resolve_dates.py:203
-msgid ""
-"This step's due date '{due}' cannot be later than the next step's due date "
-"'{prev}'."
-msgstr ""
-
-#: openassessment/xblock/resolve_dates.py:219
-msgid "The start date '{start}' cannot be later than the due date '{due}'"
-msgstr ""
-
-#: openassessment/xblock/self_assessment_mixin.py:114
-#: openassessment/xblock/student_training_mixin.py:163
-msgid "Missing options_selected key in request"
-msgstr ""
-
-#: openassessment/xblock/self_assessment_mixin.py:123
-msgid "You must submit a response before you can perform a self-assessment."
-msgstr ""
-
-#: openassessment/xblock/self_assessment_mixin.py:144
-#: openassessment/xblock/self_assessment_mixin.py:151
-msgid "Your self assessment could not be submitted."
-msgstr ""
-
-#: openassessment/xblock/staff_info_mixin.py:42
-msgid "You do not have permission to schedule training"
-msgstr ""
-
-#: openassessment/xblock/staff_info_mixin.py:43
-msgid "You do not have permission to reschedule tasks."
-msgstr ""
-
-#: openassessment/xblock/staff_info_mixin.py:70
-msgid "You do not have permission to access staff information"
-msgstr ""
-
-#: openassessment/xblock/staff_info_mixin.py:71
-msgid "You do not have permission to access student information."
-msgstr ""
-
-#: openassessment/xblock/staff_info_mixin.py:181
-msgid "Training scheduled with new Workflow UUID: {uuid}"
-msgstr ""
-
-#: openassessment/xblock/staff_info_mixin.py:186
-msgid "An error occurred scheduling classifier training: {error}"
-msgstr ""
-
-#: openassessment/xblock/staff_info_mixin.py:192
-msgid "Example Based Assessment is not configured for this location."
-msgstr ""
-
-#: openassessment/xblock/staff_info_mixin.py:313
-msgid ""
-"All AI tasks associated with this item have been rescheduled successfully."
-msgstr ""
-
-#: openassessment/xblock/staff_info_mixin.py:318
-msgid "An error occurred while rescheduling tasks: {}"
-msgstr ""
-
-#: openassessment/xblock/student_training_mixin.py:165
-msgid "options_selected must be a dictionary"
-msgstr ""
-
-#: openassessment/xblock/student_training_mixin.py:191
-#: openassessment/xblock/student_training_mixin.py:196
-msgid "Your scores could not be checked."
-msgstr ""
-
-#: openassessment/xblock/studio_mixin.py:155
-#: openassessment/xblock/studio_mixin.py:160
-msgid "Error updating XBlock configuration"
-msgstr ""
-
-#: openassessment/xblock/studio_mixin.py:183
-msgid ""
-"Validation error: There was an error in the XML definition of the examples "
-"provided by the user. Please correct the XML definition before saving."
-msgstr ""
-
-#: openassessment/xblock/studio_mixin.py:188
-msgid ""
-"Validation error: No examples were provided for example based assessment."
-msgstr ""
-
-#: openassessment/xblock/studio_mixin.py:202
-msgid "Validation error: {error}"
-msgstr ""
-
-#: openassessment/xblock/studio_mixin.py:220
-msgid "Successfully updated OpenAssessment XBlock"
-msgstr ""
-
-#: openassessment/xblock/submission_mixin.py:52
-msgid "\"submission\" required to submit answer."
-msgstr ""
-
-#: openassessment/xblock/submission_mixin.py:65
-msgid "To submit a response, view this component in Preview or Live mode."
-msgstr ""
-
-#: openassessment/xblock/submission_mixin.py:71
-msgid "Multiple submissions are not allowed."
-msgstr ""
-
-#: openassessment/xblock/submission_mixin.py:109
-msgid "API returned unclassified exception."
-msgstr ""
-
-#: openassessment/xblock/submission_mixin.py:145
-msgid "This response could not be saved."
-msgstr ""
-
-#: openassessment/xblock/submission_mixin.py:149
-msgid "This response was not submitted."
-msgstr ""
-
-#: openassessment/xblock/submission_mixin.py:189
-msgid "Must specify contentType."
-msgstr ""
-
-#: openassessment/xblock/submission_mixin.py:193
-msgid "contentType must be an image."
-msgstr ""
-
-#: openassessment/xblock/submission_mixin.py:201
-msgid "Error retrieving upload URL."
-msgstr ""
-
-#: openassessment/xblock/submission_mixin.py:293
-msgid "This response has been saved but not submitted."
-msgstr ""
-
-#: openassessment/xblock/submission_mixin.py:293
-msgid "This response has not been saved."
-msgstr ""
-
-#: openassessment/xblock/validation.py:108
-msgid "This problem must include at least one assessment."
-msgstr ""
-
-#: openassessment/xblock/validation.py:112
-msgid "The assessment order you selected is invalid."
-msgstr ""
-
-#: openassessment/xblock/validation.py:122
-msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
-msgstr ""
-
-#: openassessment/xblock/validation.py:125
-msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
-msgstr ""
-
-#: openassessment/xblock/validation.py:128
-msgid ""
-"In peer assessment, the \"Must Grade\" value must be greater than or equal "
-"to the \"Graded By\" value."
-msgstr ""
-
-#: openassessment/xblock/validation.py:136
-msgid "You must provide at least one example response for student training."
-msgstr ""
-
-#: openassessment/xblock/validation.py:139
-msgid "Each example response for student training must be unique."
-msgstr ""
-
-#: openassessment/xblock/validation.py:146
-msgid "The \"algorithm_id\" value must be set to \"ease\" or \"fake\""
-msgstr ""
-
-#: openassessment/xblock/validation.py:150
-msgid ""
-"The number of assessments cannot be changed after the problem has been "
-"released."
-msgstr ""
-
-#: openassessment/xblock/validation.py:155
-msgid ""
-"The assessment type cannot be changed after the problem has been released."
-msgstr ""
-
-#: openassessment/xblock/validation.py:179
-msgid "This rubric definition is not valid."
-msgstr ""
-
-#: openassessment/xblock/validation.py:184
-msgid "Criteria duplicate name(s): {duplicates}"
-msgstr ""
-
-#: openassessment/xblock/validation.py:193
-msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
-msgstr ""
-
-#: openassessment/xblock/validation.py:201
-msgid "Criteria with no options must require written feedback."
-msgstr ""
-
-#: openassessment/xblock/validation.py:210
-msgid "Example-based assessments cannot have duplicate point values."
-msgstr ""
-
-#: openassessment/xblock/validation.py:219
-msgid "The number of criteria cannot be changed after a problem is released."
-msgstr ""
-
-#: openassessment/xblock/validation.py:232
-msgid "Criteria names cannot be changed after a problem is released"
-msgstr ""
-
-#: openassessment/xblock/validation.py:237
-msgid "The number of options cannot be changed after a problem is released."
-msgstr ""
-
-#: openassessment/xblock/validation.py:242
-msgid "Point values cannot be changed after a problem is released."
-msgstr ""
-
-#: openassessment/xblock/validation.py:292
-msgid ""
-"Student training and example-based assessments must have at least one "
-"training example"
-msgstr ""
-
-#: openassessment/xblock/validation.py:354
-msgid "Leaderboard number is invalid."
+#: openassessment/xblock/validation.py:381
+msgid "The submission format is invalid."
 msgstr ""
