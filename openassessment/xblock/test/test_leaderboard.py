@@ -196,6 +196,11 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
                 is a dictionary of with keys 'content' (the submission text)
                 and 'score' (the integer number of points earned)
         """
+        # We temporarily set the maxDiff attribute to infinite so that we can
+        # have a full diff
+        maxDiff = self.maxDiff
+        self.maxDiff = None
+
         self._assert_path_and_context(
             xblock,
             'openassessmentblock/leaderboard/oa_leaderboard_show.html',
@@ -205,6 +210,8 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
             },
             workflow_status='done'
         )
+
+        self.maxDiff = maxDiff
 
     def _assert_path_and_context(self, xblock, expected_path, expected_context, workflow_status=None):
         """
