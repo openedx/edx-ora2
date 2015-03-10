@@ -12,7 +12,7 @@ from openassessment.assessment.api import self as self_api
 from openassessment.assessment.api import ai as ai_api
 from openassessment.workflow import api as workflow_api
 from openassessment.assessment.errors.ai import AIError, AIGradingInternalError
-from openassessment.fileupload.api import FileUploadInternalError
+from openassessment.fileupload.exceptions import FileUploadInternalError
 from submissions import api as sub_api
 
 from openassessment.xblock.data_conversion import prepare_submission_for_serialization

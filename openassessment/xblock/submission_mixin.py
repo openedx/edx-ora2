@@ -5,7 +5,7 @@ from xblock.core import XBlock
 
 from submissions import api
 from openassessment.fileupload import api as file_upload_api
-from openassessment.fileupload.api import FileUploadError
+from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow import api as workflow_api
 from openassessment.workflow.errors import AssessmentWorkflowError
 from .resolve_dates import DISTANT_FUTURE

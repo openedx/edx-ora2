@@ -24,6 +24,7 @@ from openassessment.assessment.api import self as self_api
 from openassessment.assessment.api import ai as ai_api
 from openassessment.fileupload import api as file_api
 from openassessment.workflow import api as workflow_api
+from openassessment.fileupload import exceptions as file_exceptions
 
 
 logger = logging.getLogger(__name__)
@@ -256,7 +257,7 @@ class StaffInfoMixin(object):
 
                 try:
                     submission['image_url'] = file_api.get_download_url(file_key)
-                except file_api.FileUploadError:
+                except file_exceptions.FileUploadError:
                     # Log the error, but do not prevent the rest of the student info
                     # from being displayed.
                     msg = (
