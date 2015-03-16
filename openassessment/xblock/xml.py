@@ -6,6 +6,7 @@ import lxml.etree as etree
 import pytz
 import dateutil.parser
 import defusedxml.ElementTree as safe_etree
+from data_conversion import update_assessments_format
 from defaults import DEFAULT_RUBRIC_FEEDBACK_TEXT
 
 
@@ -630,7 +631,7 @@ def serialize_assessments(assessments_root, oa_block):
         None
 
     """
-    for assessment_dict in oa_block.rubric_assessments:
+    for assessment_dict in update_assessments_format(oa_block.rubric_assessments):
 
         assessment = etree.SubElement(assessments_root, 'assessment')
 
@@ -760,7 +761,7 @@ def serialize_examples_to_xml_str(assessment):
         A unicode string of the XML serialized examples.
 
     """
-    examples = assessment.get('examples', [])
+    examples = update_assessments_format([assessment])[0].get('examples', [])
     if not isinstance(examples, list):
         examples = []
     examples_root = etree.Element('examples')
