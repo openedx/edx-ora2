@@ -83,9 +83,10 @@ def update_assessments_format(assessments):
         list of dict
     """
     for assessment in assessments:
-        if 'examples' in assessment:
+        if 'examples' in assessment and assessment['examples']:
             for example in assessment['examples']:
-                if isinstance(example['answer'], unicode) or isinstance(example['answer'], str):
+                if (isinstance(example, dict) and
+                    (isinstance(example['answer'], unicode) or isinstance(example['answer'], str))):
                     example['answer'] = {
                         'parts': [
                             {'text': example['answer']}

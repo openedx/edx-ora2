@@ -120,9 +120,8 @@ class TestSerializeContent(TestCase):
         self.oa_block.submission_start = data.get('submission_start')
         self.oa_block.submission_due = data.get('submission_due')
         self.oa_block.rubric_criteria = data.get('criteria', copy.deepcopy(self.BASIC_CRITERIA))
-        self.oa_block.rubric_assessments = update_assessments_format(
-            data.get('assessments', copy.deepcopy(self.BASIC_ASSESSMENTS))
-        )
+        self.oa_block.rubric_assessments = data.get('assessments', copy.deepcopy(self.BASIC_ASSESSMENTS))
+
         self.oa_block.allow_file_upload = data.get('allow_file_upload')
         self.oa_block.allow_latex = data.get('allow_latex')
         self.oa_block.leaderboard_show = data.get('leaderboard_show', 0)
@@ -231,7 +230,7 @@ class TestSerializeContent(TestCase):
     def test_mutated_assessments_dict(self):
         self._configure_xblock({})
 
-        for assessment_dict in update_assessments_format(self.BASIC_ASSESSMENTS):
+        for assessment_dict in self.BASIC_ASSESSMENTS:
             for mutated_dict in self._dict_mutations(assessment_dict):
                 self.oa_block.rubric_assessments = [mutated_dict]
                 xml = serialize_content(self.oa_block)
