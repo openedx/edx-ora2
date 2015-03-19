@@ -4,7 +4,7 @@ Tests the Open Assessment XBlock functionality.
 from collections import namedtuple
 import datetime as dt
 import pytz
-from mock import Mock, patch, MagicMock
+from mock import Mock, patch, MagicMock, PropertyMock
 
 from openassessment.xblock import openassessmentblock
 from openassessment.xblock.resolve_dates import DISTANT_PAST, DISTANT_FUTURE
@@ -117,6 +117,44 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         request.params = {}
         resp = xblock.render_peer_assessment(request)
         self.assertTrue(resp.body.find('Tuesday, April 01, 2014'))
+        self.assertTrue(resp.body.find('Thursday, May 01, 2014'))
+
+    @patch.object(openassessmentblock.OpenAssessmentBlock, 'is_beta_tester', new_callable=PropertyMock)
+    @scenario('data/basic_scenario.xml')
+    def test_formatted_dates_for_beta_tester_with_days_early(self, xblock, mock_is_beta_tester):
+        """Test dates for beta tester with days early"""
+
+        mock_is_beta_tester.return_value = True
+
+        # Set start/due dates
+        xblock.start = dt.datetime(2014, 4, 6, 1, 1, 1)
+        xblock.due = dt.datetime(2014, 5, 1)
+        xblock.xmodule_runtime = Mock(
+            course_id='test_course',
+            anonymous_student_id='test_student',
+            days_early_for_beta=5
+        )
+        self.assertEqual(xblock.xmodule_runtime.days_early_for_beta, 5)
+        request = namedtuple('Request', 'params')
+        request.params = {}
+        resp = xblock.render_peer_assessment(request)
+        self.assertTrue(resp.body.find('Tuesday, April 01, 2014'))
+        self.assertTrue(resp.body.find('Thursday, May 01, 2014'))
+
+    @patch.object(openassessmentblock.OpenAssessmentBlock, 'is_beta_tester', new_callable=PropertyMock)
+    @scenario('data/basic_scenario.xml')
+    def test_formatted_dates_for_beta_tester_without_days_early(self, xblock, mock_is_beta_tester):
+        """Test dates for beta tester without days early"""
+
+        mock_is_beta_tester.return_value = True
+
+        # Set start/due dates
+        xblock.start = dt.datetime(2014, 4, 6, 1, 1, 1)
+        xblock.due = dt.datetime(2014, 5, 1)
+        request = namedtuple('Request', 'params')
+        request.params = {}
+        resp = xblock.render_peer_assessment(request)
+        self.assertTrue(resp.body.find('Tuesday, April 06, 2014'))
         self.assertTrue(resp.body.find('Thursday, May 01, 2014'))
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
