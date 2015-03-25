@@ -3,7 +3,7 @@
 # http://pip.readthedocs.org/en/latest/reference/pip_wheel.html
 
 lxml==3.3.6
-nltk==2.0.4
+nltk==2.0.5
 numpy==1.6.2
 scikit-learn==0.12.1
 scipy==0.14.0
