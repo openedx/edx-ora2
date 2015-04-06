@@ -7,7 +7,7 @@ import mock
 from django.db import IntegrityError
 from openassessment.test_utils import CacheResetTest
 from openassessment.assessment.models import TrainingExample
-from openassessment.assessment.serializers import deserialize_training_examples
+from openassessment.assessment.serializers import deserialize_training_examples, serialize_training_example
 
 
 class TrainingExampleSerializerTest(CacheResetTest):
@@ -171,3 +171,13 @@ class TrainingExampleSerializerTest(CacheResetTest):
         # catching the integrity error)
         examples = deserialize_training_examples(self.EXAMPLES[:1], self.RUBRIC)
         self.assertEqual(examples, [mock_example])
+
+    def test_serialize_training_example_with_legacy_answer(self):
+        """Test that legacy answer format in training example serialized correctly"""
+        training_examples = deserialize_training_examples(self.EXAMPLES, self.RUBRIC)
+        for example in training_examples:
+            self.assertIsInstance(example.answer, unicode)
+            serialized_example = serialize_training_example(example)
+            self.assertIsInstance(serialized_example["answer"], dict)
+            expected_answer_dict = {'parts': [{'text': example.answer}]}
+            self.assertEqual(serialized_example["answer"], expected_answer_dict)
