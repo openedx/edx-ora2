@@ -71,9 +71,35 @@ class SubmissionPage(OpenAssessmentPage):
             BrokenPromise: The response was not submitted successfully.
 
         """
-        self.q(css="textarea#submission__answer__value").fill(response_text)
+        self.wait_for_element_visibility("textarea.submission__answer__part__text__value", "Textarea is present")
+        self.q(css="textarea.submission__answer__part__text__value").fill(response_text)
         self.submit()
         EmptyPromise(lambda: self.has_submitted, 'Response is completed').fulfill()
+
+    def fill_latex(self, latex_query):
+        """
+        Fill the latex expression
+        Args:
+         latex_query (unicode): Latex expression text
+        """
+        self.wait_for_element_visibility("textarea.submission__answer__part__text__value", "Textarea is present")
+        self.q(css="textarea.submission__answer__part__text__value").fill(latex_query)
+
+    def preview_latex(self):
+        # Click 'Preview in Latex' button on the page.
+        self.q(css="button#submission__preview").click()
+        self.wait_for_element_visibility("#preview_content .MathJax", "Verify Preview Latex expression")
+
+    @property
+    def latex_preview_button_is_disabled(self):
+        """
+        Check if 'Preview in Latex' button is disabled
+
+        Returns:
+            bool
+        """
+        preview_latex_button_class = self.q(css="button#submission__preview").attrs('class')
+        return 'is--disabled' in preview_latex_button_class
 
     @property
     def has_submitted(self):

@@ -96,7 +96,7 @@ OpenAssessment.ResponseView.prototype = {
             function(eventObject) {
                 eventObject.preventDefault();
                 // extract typed-in response and replace newline with br
-                var preview_text = sel.find('#submission__answer__value').val();
+                var preview_text = sel.find('.submission__answer__part__text__value').val();
                 var preview_container = sel.find('#preview_content');
                 preview_container.html(preview_text.replace(/\r\n|\r|\n/g,"<br />"));
 
