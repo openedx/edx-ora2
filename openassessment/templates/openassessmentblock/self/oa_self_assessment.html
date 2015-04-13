@@ -18,7 +18,7 @@
                 {% elif self_due %}
                 <span class="step__deadline">
                     {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "due August 13th, 2014 (in 5 days and 45 minutes)" #}
-                    {% blocktrans with due_date=self_due|utc|date:"N j, Y H:i e" time_until=self_due|timeuntil %}due <span class="date">{{ due_date }}</span> (in {{ time_until }}){% endblocktrans %}
+                    {% blocktrans with due_date=self_due|utc|date:"N j, Y H:i e" time_until=self_due|timeuntil %}due <span class="date">{{ due_date }} (in {{ time_until }})</span>{% endblocktrans %}
                 </span>
                 {% endif %}
             </span>
