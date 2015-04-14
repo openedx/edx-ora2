@@ -61,6 +61,9 @@ class TestGrade(XBlockHandlerTestCase):
         self.assertIn(u'єאςєɭɭєภՇ ฬ๏гк!', resp.decode('utf-8'))
         self.assertIn(u'Good job!', resp.decode('utf-8'))
 
+        # Verify that student submission is in the view
+        self.assertIn(self.SUBMISSION[1], resp.decode('utf-8'))
+
         # Verify that the submission and peer steps show that we're graded
         # This isn't strictly speaking part of the grade step rendering,
         # but we've already done all the setup to get to this point in the flow,
@@ -68,6 +71,9 @@ class TestGrade(XBlockHandlerTestCase):
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
         self.assertIn('response', resp.lower())
         self.assertIn('complete', resp.lower())
+
+        # Verify that student submission is in the view
+        self.assertIn(self.SUBMISSION[1], resp.decode('utf-8'))
 
         resp = self.request(xblock, 'render_peer_assessment', json.dumps(dict()))
         self.assertIn('peer', resp.lower())
