@@ -829,9 +829,11 @@ class OpenAssessmentBlock(
 
     def _adjust_start_date_for_beta_testers(self, start):
         if hasattr(self, "xmodule_runtime"):
-            delta = dt.timedelta(getattr(self.xmodule_runtime, 'days_early_for_beta', 0))
-            effective = start - delta
-            return effective
+            days_early_for_beta = getattr(self.xmodule_runtime, 'days_early_for_beta', 0)
+            if days_early_for_beta is not None:
+                delta = dt.timedelta(days_early_for_beta)
+                effective = start - delta
+                return effective
 
         return start
 

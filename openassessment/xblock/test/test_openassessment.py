@@ -119,12 +119,9 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         self.assertTrue(resp.body.find('Tuesday, April 01, 2014'))
         self.assertTrue(resp.body.find('Thursday, May 01, 2014'))
 
-    @patch.object(openassessmentblock.OpenAssessmentBlock, 'is_beta_tester', new_callable=PropertyMock)
     @scenario('data/basic_scenario.xml')
-    def test_formatted_dates_for_beta_tester_with_days_early(self, xblock, mock_is_beta_tester):
+    def test_formatted_dates_for_beta_tester_with_days_early(self, xblock):
         """Test dates for beta tester with days early"""
-
-        mock_is_beta_tester.return_value = True
 
         # Set start/due dates
         xblock.start = dt.datetime(2014, 4, 6, 1, 1, 1)
@@ -132,7 +129,9 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         xblock.xmodule_runtime = Mock(
             course_id='test_course',
             anonymous_student_id='test_student',
-            days_early_for_beta=5
+            days_early_for_beta=5,
+            user_is_staff=False,
+            user_is_beta_tester=True
         )
         self.assertEqual(xblock.xmodule_runtime.days_early_for_beta, 5)
         request = namedtuple('Request', 'params')
@@ -151,6 +150,27 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # Set start/due dates
         xblock.start = dt.datetime(2014, 4, 6, 1, 1, 1)
         xblock.due = dt.datetime(2014, 5, 1)
+        request = namedtuple('Request', 'params')
+        request.params = {}
+        resp = xblock.render_peer_assessment(request)
+        self.assertTrue(resp.body.find('Tuesday, April 06, 2014'))
+        self.assertTrue(resp.body.find('Thursday, May 01, 2014'))
+
+    @scenario('data/basic_scenario.xml')
+    def test_formatted_dates_for_beta_tester_with_nonetype_days_early(self, xblock):
+        """Test dates for beta tester with NoneType days early"""
+
+        # Set start/due dates
+        xblock.start = dt.datetime(2014, 4, 6, 1, 1, 1)
+        xblock.due = dt.datetime(2014, 5, 1)
+        xblock.xmodule_runtime = Mock(
+            course_id='test_course',
+            anonymous_student_id='test_student',
+            days_early_for_beta=None,
+            user_is_staff=False,
+            user_is_beta_tester=True
+        )
+        self.assertEqual(xblock.xmodule_runtime.days_early_for_beta, None)
         request = namedtuple('Request', 'params')
         request.params = {}
         resp = xblock.render_peer_assessment(request)
