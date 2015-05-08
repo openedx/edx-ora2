@@ -27,4 +27,4 @@ South==1.0.1
 voluptuous==0.8.5
 
 # AI grading
-git+https://github.com/edx/ease.git@c6dee053eae6b3ac4fdf6be11fa7a9f8265540aa#egg=ease
+git+https://github.com/edx/ease.git@15ebafb570ae63e8e2c1438ede494e82a5528d17#egg=ease
