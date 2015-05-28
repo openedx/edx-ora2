@@ -10,5 +10,8 @@ before_script:
 script:
   - "make test"
   - "python manage.py makemessages -l eo"
+branches:
+    only:
+      - master
 after_success:
   coveralls
