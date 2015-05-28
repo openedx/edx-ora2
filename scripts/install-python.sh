@@ -3,7 +3,7 @@
 cd `dirname $BASH_SOURCE` && cd ..
 
 echo "Installing Python requirements..."
-pip install -q -r requirements/base.txt
+pip install -q -r requirements/base.txt --exists-action w
 
 echo "Installing the OpenAssessment XBlock..."
 cat <<EOF | python -
