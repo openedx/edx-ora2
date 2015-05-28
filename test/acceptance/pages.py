@@ -144,7 +144,7 @@ class AssessmentPage(OpenAssessmentPage):
 
     @property
     def is_on_top(self):
-        # TODO: fix this. Behavior of being on top, as well as what the means, appear to be against tests
+        # TODO: On top behavior needs to be better defined. It is defined here more accurately as "near-top".
         # pos = self.browser.get_window_position()
         # return pos['y'] < 100
         # self.wait_for_element_visibility(".chapter.is-open", "Chapter heading is on visible", timeout=10)
