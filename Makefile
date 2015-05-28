@@ -3,14 +3,14 @@ all: install test
 .PHONY: install test
 
 install-system:
-	sudo apt-get update -y -qq
-	sudo xargs -a apt-packages.txt apt-get install -y -qq --fix-missing
+	sudo apt-get update -qq
+	sudo xargs -a apt-packages.txt apt-get install -qq --fix-missing
 
 
 install-node:
 	sudo add-apt-repository -y ppa:chris-lea/node.js
-	sudo apt-get update -y -qq
-	sudo apt-get install -y -qq nodejs
+	sudo apt-get update -qq
+	sudo apt-get install -qq nodejs
 
 
 install-wheels:
