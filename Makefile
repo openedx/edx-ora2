@@ -20,9 +20,8 @@ install-wheels:
 install-python:
 	./scripts/install-python.sh
 
-
 install-js:
-	sudo npm config set loglevel warn
+	npm config set loglevel warn
 	npm install
 
 install-nltk-data:
@@ -39,8 +38,10 @@ javascript:
 install-test:
 	pip install -q -r requirements/test.txt
 
+install-sys-requirements: install-system install-node
+
 install-dev:
-	sudo gem install sass
+	gem install sass
 	pip install -q -r requirements/dev.txt
 
 install: install-wheels install-python install-js install-nltk-data install-test install-dev javascript

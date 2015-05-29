@@ -2,6 +2,7 @@ addons:
   apt:
     packages:
     - aspell
+    - aspell-en
     - g++
     - gcc
     - git
@@ -21,6 +22,7 @@ addons:
     - python-pip
     - python-software-properties
 language: python
+sudo: false
 python:
   - "2.7"
 install:
