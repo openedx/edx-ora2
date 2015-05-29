@@ -47,6 +47,7 @@ To install all dependencies:
 
 .. code:: bash
 
+    make install-sys-requirements
     make install
     make install-dev
 
