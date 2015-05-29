@@ -98,7 +98,7 @@ class SubmissionPage(OpenAssessmentPage):
         Returns:
             bool
         """
-        preview_latex_button_class = self.q(css="button#submission__preview").attrs('class')
+        preview_latex_button_class = self.q(css="button#submission__preview").attrs('class')[0]
         return 'is--disabled' in preview_latex_button_class
 
     @property
@@ -144,8 +144,11 @@ class AssessmentPage(OpenAssessmentPage):
 
     @property
     def is_on_top(self):
-	pos = self.browser.get_window_position()
-	return pos['y'] < 100
+        # TODO: On top behavior needs to be better defined. It is defined here more accurately as "near-top".
+        # pos = self.browser.get_window_position()
+        # return pos['y'] < 100
+        # self.wait_for_element_visibility(".chapter.is-open", "Chapter heading is on visible", timeout=10)
+        return self.q(css=".chapter.is-open").visible
 
     def assess(self, options_selected):
         """
@@ -179,7 +182,7 @@ class AssessmentPage(OpenAssessmentPage):
         Returns:
             unicode
         """
-        css_sel = ".{assessment_type}__display__response>p".format(
+        css_sel = ".{assessment_type}__display .submission__answer__part__text__value>p".format(
             assessment_type=self._assessment_type
         )
         return u" ".join(self.q(css=css_sel).text)
