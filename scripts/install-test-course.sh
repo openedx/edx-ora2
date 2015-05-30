@@ -17,11 +17,12 @@
 cd `dirname $BASH_SOURCE` && cd ..
 
 EDX_PLATFORM='/edx/app/edxapp/edx-platform'
-COURSE_DATA='/edx/var/edxapp/data'
 COURSE_TARBALL="scripts/data/test-course.tar.gz"
-COURSE_ORG="ora2"
-COURSE_NUM=1
-COURSE_RUN=1
+COURSE_ORG="edX"
+COURSE_NUM="ORA203"
+COURSE_RUN="course"
+COURSE_DATA="/edx/var/edxapp/data/$COURSE_NUM"
+mkdir -p $COURSE_DATA
 COURSE_ID="$COURSE_ORG/$COURSE_NUM/$COURSE_RUN"
 
 echo "Removing old test course..."
