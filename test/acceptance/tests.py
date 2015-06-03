@@ -46,7 +46,7 @@ class OpenAssessmentTest(WebAppTest):
     """
     UI-level acceptance tests for Open Assessment.
     """
-    TEST_COURSE_ID = "course-v1:edx+ORA203+2015_T3"
+    TEST_COURSE_ID = "course-v1:edx+ORA203+course"
 
     PROBLEM_LOCATIONS = {
         'self_only':
