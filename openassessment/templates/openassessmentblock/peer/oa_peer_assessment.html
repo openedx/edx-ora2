@@ -1,7 +1,7 @@
 {% load tz %}
 {% load i18n %}
 {% block list_item %}
-<li
+<div
     id="openassessment__peer-assessment"
     class="openassessment__steps__step step--peer-assessment ui-toggle-visibility {% if allow_latex %} allow--latex {%endif%}"
     data-submission-uuid="{{ peer_submission.uuid }}"
@@ -52,8 +52,8 @@
             </div>
 
             <div class="step__content">
-                <ul class="list--peer-assessments">
-                    <li class="list--peer-assessments__item">
+                <div class="list--peer-assessments">
+                    <div class="list--peer-assessments__item">
                         <article class="peer-assessment" id="peer-assessment--001">
                             <div class="peer-assessment__display">
                                 <header class="peer-assessment__display__header">
@@ -85,8 +85,8 @@
                                 {% include "openassessmentblock/oa_rubric.html" %}
                             </form>
                         </article>
-                    </li>
-                </ul>
+                    </div>
+                </div>
             </div>
 
             <div class="step__actions">
@@ -95,17 +95,17 @@
                     <div class="message__content"></div>
                 </div>
 
-                <ul class="list list--actions">
-                    <li class="list--actions__item">
+                <div class="list list--actions">
+                    <div class="list--actions__item">
                         <button type="submit" id="peer-assessment--001__assessment__submit" class="action action--submit is--disabled">
                             <span class="copy">{{ submit_button_text }}</span>
                             <i class="ico icon-caret-right"></i>
                         </button>
-                    </li>
-                </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     {% endblock %}
 {% endspaceless %}
-</li>
+</div>

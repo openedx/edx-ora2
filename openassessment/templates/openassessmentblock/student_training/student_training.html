@@ -2,7 +2,7 @@
 {% load tz %}
 {% spaceless %}
 {% block list_item %}
-<li id="openassessment__student-training" class="openassessment__steps__step step--student-training ui-toggle-visibility {% if allow_latex %}allow--latex{%endif%}">
+<div id="openassessment__student-training" class="openassessment__steps__step step--student-training ui-toggle-visibility {% if allow_latex %}allow--latex{%endif%}">
 {% endblock %}
 
 <header class="step__header ui-toggle-visibility__control">
@@ -78,10 +78,10 @@
 
                 <form id="student-training--001__assessment" class="student-training__assessment" method="post">
                     <fieldset class="assessment__fields">
-                        <ol class="list list--fields assessment__rubric">
+                        <div class="list list--fields assessment__rubric">
                             {% for criterion in training_rubric.criteria %}
                                 {% if criterion.options %}
-                                <li
+                                <div
                                     class="field field--radio is--required assessment__rubric__question ui-toggle-visibility has--options"
                                     id="assessment__rubric__question--{{ criterion.order_num }}"
                                 >
@@ -105,9 +105,9 @@
                                                 <p>{% trans "The option you selected is not the option that the instructor selected." %}</p>
                                             </div>
                                         </div>
-                                        <ol class="question__answers">
+                                        <div class="question__answers">
                                             {% for option in criterion.options %}
-                                                <li class="answer">
+                                                <div class="answer">
                                                     <div class="wrapper--input">
                                                         <input type="radio"
                                                                name="{{ criterion.name }}"
@@ -121,14 +121,14 @@
                                                         <span class="answer__tip">{{ option.explanation }}</span>
                                                         <span class="answer__points">{{option.points}} <span class="answer__points__label">{% trans "points" %}</span></span>
                                                     </div>
-                                                </li>
+                                                </div>
                                             {% endfor %}
-                                        </ol>
+                                        </div>
                                     </div>
-                                </li>
+                                </div>
                                 {% endif %}
                             {% endfor %}
-                        </ol>
+                        </div>
                     </fieldset>
                 </form>
             </div>
@@ -139,17 +139,17 @@
                     <div class="message__content"></div>
                 </div>
 
-                <ul class="list list--actions">
-                    <li class="list--actions__item">
+                <div class="list list--actions">
+                    <div class="list--actions__item">
                         <button type="submit" id="student-training--001__assessment__submit" class="action action--submit is--disabled">
                             <span class="copy">{% trans "Compare your selections with the instructor's selections" %}</span>
                             <i class="ico icon-caret-right"></i>
                         </button>
-                    </li>
-                </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 {% endblock %}
-</li>
+</div>
 {% endspaceless %}

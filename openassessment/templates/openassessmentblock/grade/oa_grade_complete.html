@@ -1,6 +1,6 @@
 {% load i18n %}
 {% spaceless %}
-<li id="openassessment__grade" class="openassessment__steps__step step--grade is--complete has--grade {% if allow_latex %}allow--latex{% endif %}">
+<div id="openassessment__grade" class="openassessment__steps__step step--grade is--complete has--grade {% if allow_latex %}allow--latex{% endif %}">
     <header class="step__header ui-toggle-visibility__control">
         <h2 class="step__title">
             <span class="wrapper--copy">
@@ -44,10 +44,10 @@
                 <article class="submission__peer-evaluations step__content__section">
                     <h3 class="submission__peer-evaluations__title">{% trans "Assessments of Your Response" %}</h3>
 
-                    <ol class="list submission__peer-evaluations__questions">
+                    <div class="list submission__peer-evaluations__questions">
                         {% for criterion in rubric_criteria %}
                         {% with criterion_num=forloop.counter %}
-                        <li class="question question--{{ criterion_num }} ui-toggle-visibility">
+                        <div class="question question--{{ criterion_num }} ui-toggle-visibility">
                             <h4 class="question__title ui-toggle-visibility__control">
                                 <i class="ico icon-caret-right"></i>
                                 <span class="question__title__copy">{{ criterion.label }}</span>
@@ -63,12 +63,12 @@
                                 </span>
                             </h4>
 
-                            <ul class="question__answers ui-toggle-visibility__content has--hints">
+                            <div class="question__answers ui-toggle-visibility__content has--hints">
                                 {% for assessment in peer_assessments %}
                                     {% with peer_num=forloop.counter %}
                                         {% for part in assessment.parts %}
                                             {% if part.option.criterion.name == criterion.name %}
-                                            <li class="answer peer-assessment--{{ peer_num }}"
+                                            <div class="answer peer-assessment--{{ peer_num }}"
                                                 id="question--{{ criterion_num }}__answer-{{ peer_num }}">
                                                 <h5 class="answer__title">
                                                     <span class="answer__source">
@@ -94,7 +94,7 @@
                                                     <span class="answer__score__label sr">{% trans "Grade Earned" %}: </span>
                                                     <span class="answer__score__value">{{ part.option.points }} {% trans "points" %}</span>
                                                 </span>
-                                            </li>
+                                            </div>
                                             {% endif %}
                                         {% endfor %}
                                     {% endwith %}
@@ -102,7 +102,7 @@
 
                                 {% for part in self_assessment.parts %}
                                     {% if part.option.criterion.name == criterion.name %}
-                                <li class="answer self-assessment"
+                                <div class="answer self-assessment"
                                     id="question--{{ criterion_num }}__answer--self">
                                     <h5 class="answer__title">
                                         <span class="answer__source">
@@ -120,13 +120,13 @@
                                             </span>
                                         </span>
                                     </h5>
-                                </li>
+                                </div>
                                     {% endif %}
                                 {% endfor %}
 
                                 {% for part in example_based_assessment.parts %}
                                     {% if part.option.criterion.name == criterion.name %}
-                                        <li class="answer example-based-assessment"
+                                        <div class="answer example-based-assessment"
                                             id="question--{{ criterion_num }}__answer--example-based">
                                             <h5 class="answer__title">
                                         <span class="answer__source">
@@ -144,12 +144,12 @@
                                             </span>
                                         </span>
                                             </h5>
-                                        </li>
+                                        </div>
                                     {% endif %}
                                 {% endfor %}
 
                                 {% if criterion.peer_feedback or criterion.self_feedback %}
-                                <li class="answer--feedback ui-toggle-visibility {% if criterion.options %}is--collapsed{% endif %}">
+                                <div class="answer--feedback ui-toggle-visibility {% if criterion.options %}is--collapsed{% endif %}">
                                     {% if criterion.options %}
                                     <h5 class="answer--feedback__title ui-toggle-visibility__control">
                                       <i class="ico icon-caret-right"></i>
@@ -161,9 +161,9 @@
                                     </h5>
                                     {% endif %}
 
-                                    <ul class="answer--feedback__content {% if criterion.options %}ui-toggle-visibility__content{% endif %}">
+                                    <div class="answer--feedback__content {% if criterion.options %}ui-toggle-visibility__content{% endif %}">
                                         {% for feedback in criterion.peer_feedback %}
-                                        <li class="feedback feedback--{{ forloop.counter }}">
+                                        <div class="feedback feedback--{{ forloop.counter }}">
                                             <h6 class="feedback__source">
                                               {% trans "Peer" %} {{ forloop.counter }}
                                             </h6>
@@ -171,10 +171,10 @@
                                             <div class="feedback__value">
                                                 <p class="feedback__value__raw">{{ feedback }}</p>
                                             </div>
-                                        </li>
+                                        </div>
                                         {% endfor %}
                                         {% if criterion.self_feedback %}
-                                        <li class="feedback feedback--{{ forloop.counter }}">
+                                        <div class="feedback feedback--{{ forloop.counter }}">
                                             <h6 class="feedback__source">
                                               {% trans "Your Assessment" %}
                                             </h6>
@@ -182,28 +182,28 @@
                                             <div class="feedback__value">
                                                 <p class="feedback__value__raw">{{ criterion.self_feedback }}</p>
                                             </div>
-                                        </li>
+                                        </div>
                                         {% endif %}
-                                    </ul>
-                                </li>
+                                    </div>
+                                </div>
                                 {% endif %}
 
-                            </ul>
-                        </li>
+                            </div>
+                        </div>
                         {% endwith %}
                         {% endfor %}
                             {% if peer_assessments or self_assessment.feedback %}
-                            <li class="question question--feedback ui-toggle-visibility">
+                            <div class="question question--feedback ui-toggle-visibility">
                                 <h4 class="question__title ui-toggle-visibility__control">
                                     <i class="ico icon-caret-right"></i>
                                     <span class="question__title__copy">{% trans "Additional comments on your response" %}</span>
                                 </h4>
 
-                                <ul class="question__answers ui-toggle-visibility__content">
+                                <div class="question__answers ui-toggle-visibility__content">
                                     {% for assessment in peer_assessments %}
                                     {% with peer_num=forloop.counter %}
                                     {% if assessment.feedback %}
-                                    <li class="answer peer-evaluation--{{ peer_num }}" id="question--feedback__answer-{{ peer_num }}">
+                                    <div class="answer peer-evaluation--{{ peer_num }}" id="question--feedback__answer-{{ peer_num }}">
                                         <h5 class="answer__title">
                                             <span class="answer__source">
                                               <span class="label sr">{% trans "Peer assessor" %}: </span>
@@ -215,12 +215,12 @@
                                             <h6 class="label sr">{% trans "Peer's assessment" %}: </h6>
                                             <p class="answer__value__raw">{{ assessment.feedback }}</p>
                                         </div>
-                                    </li>
+                                    </div>
                                     {% endif %}
                                     {% endwith %}
                                     {% endfor %}
                                     {% if self_assessment.feedback %}
-                                    <li class="answer self-evaluation--0" id="question--feedback__answer-0">
+                                    <div class="answer self-evaluation--0" id="question--feedback__answer-0">
                                         <h5 class="answer__title">
                                             <span class="answer__source">
                                               <span class="label sr">{% trans "Self assessment" %}: </span>
@@ -232,12 +232,12 @@
                                             <h6 class="label sr">{% trans "Your assessment" %}: </h6>
                                             <p class="answer__value__raw">{{ self_assessment.feedback }}</p>
                                         </div>
-                                    </li>
+                                    </div>
                                     {% endif %}
-                                </ul>
-                            </li>
+                                </div>
+                            </div>
                             {% endif %}
-                    </ol>
+                    </div>
                 </article>
 
                 {% if peer_assessments %}
@@ -270,46 +270,46 @@
                                     <p>{% trans "Course staff will be able to see any feedback that you provide here when they review course records." %}</p>
                                 </div>
 
-                                <ol class="list list--fields submission__feedback__fields {{ has_submitted_feedback|yesno:"is--hidden," }}"
+                                <div class="list list--fields submission__feedback__fields {{ has_submitted_feedback|yesno:"is--hidden," }}"
                                     {{ has_submitted_feedback|yesno:'aria-hidden=true,aria-hidden=false' }}>
-                                    <li class="field field-group field--radio feedback__overall" id="feedback__overall">
+                                    <div class="field field-group field--radio feedback__overall" id="feedback__overall">
                                         <h4 class="field-group__label">{% trans "Select the statements below that best reflect your experience with peer assessments" %}:</h4>
-                                        <ol class="list--options">
-                                            <li class="option option--useful">
+                                        <div class="list--options">
+                                            <div class="option option--useful">
                                                 <input type="checkbox"
                                                     name="feedback__overall__value"
                                                     id="feedback__overall__value--useful"
                                                     class="option__input feedback__overall__value"
                                                     value="These assessments were useful." />
                                                 <label class="option__label" for="feedback__overall__value--useful">{% trans "These assessments were useful." %}</label>
-                                            </li>
-                                            <li class="option option--notuseful">
+                                            </div>
+                                            <div class="option option--notuseful">
                                                 <input type="checkbox"
                                                     name="feedback__overall__value"
                                                     id="feedback__overall__value--notuseful"
                                                     class="option__input feedback__overall__value"
                                                     value="These assessments were not useful." />
                                                 <label class="option__label" for="feedback__overall__value--notuseful">{% trans "These assessments were not useful." %}</label>
-                                            </li>
-                                            <li class="option option--disagree">
+                                            </div>
+                                            <div class="option option--disagree">
                                                 <input type="checkbox"
                                                     name="feedback__overall__value"
                                                     id="feedback__overall__value--disagree"
                                                     class="option__input feedback__overall__value"
                                                     value="I disagree with one or more of the peer assessments of my response." />
                                                 <label class="option__label" for="feedback__overall__value--disagree">{% trans "I disagree with one or more of the peer assessments of my response." %}</label>
-                                            </li>
-                                            <li class="option option--inappropriate">
+                                            </div>
+                                            <div class="option option--inappropriate">
                                                 <input type="checkbox"
                                                     name="feedback__overall__value"
                                                     id="feedback__overall__value--inappropriate"
                                                     class="option__input feedback__overall__value"
                                                     value="Some comments I received were inappropriate." />
                                                 <label class="option__label" for="feedback__overall__value--inappropriate">{% trans "Some comments I received were inappropriate." %}</label>
-                                            </li>
-                                        </ol>
-                                    </li>
-                                    <li class="field field--textarea feedback__remarks" id="feedback__remarks">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="field field--textarea feedback__remarks" id="feedback__remarks">
                                         <label for="feedback__remarks__value">{% trans "Please provide any feedback on the grade or comments that you received from your peers." %}</label>
                                         <textarea
                                             id="feedback__remarks__value"
@@ -318,8 +318,8 @@
                                         >
                                             {{ feedback_text }}
                                         </textarea>
-                                    </li>
-                                </ol>
+                                    </div>
+                                </div>
 
                                 <div class="submission__feedback__actions {{ has_submitted_feedback|yesno:"is--hidden," }}"
                                     {{ has_submitted_feedback|yesno:'aria-hidden=true,aria-hidden=false' }}>
@@ -328,11 +328,11 @@
                                         <div class="message__content"></div>
                                     </div>
 
-                                    <ul class="list list--actions submission__feedback__actions">
-                                        <li class="list--actions__item">
+                                    <div class="list list--actions submission__feedback__actions">
+                                        <div class="list--actions__item">
                                             <button type="submit" id="feedback__submit" class="action action--submit feedback__submit">{% trans "Submit Feedback on Peer Assessments" %}</button>
-                                        </li>
-                                    </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -341,5 +341,5 @@
             </div>
         </div>
     </div>
-</li>
+</div>
 {% endspaceless %}
