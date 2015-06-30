@@ -24,7 +24,6 @@
     @extend %t-strong;
     border: 1px solid $color-decorative-secondary;
     padding: ($baseline-v/2);
-    outline: 0;
     color: $copy-color;
 
     @include placeholder {
@@ -36,7 +35,6 @@
     &:focus {
       box-shadow: 0 0 6px 0 rgba(29,157,217,0.4),inset 0 0 4px 0 rgba(0,0,0,0.15);
       border-color: $selected-color;
-      outline: 0;
     }
   }
 

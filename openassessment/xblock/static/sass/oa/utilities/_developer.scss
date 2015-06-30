@@ -595,7 +595,6 @@
       font-family: $f-sans-serif;
       font-size: 14px;
       overflow: auto;
-      outline: none;
       -webkit-box-shadow: none;
       -moz-box-shadow: none;
       box-shadow: none;
@@ -824,7 +823,6 @@
       font-family: 'Open Sans', sans-serif;
       font-size: 11px;
       color: #4c4c4c;
-      outline: 0;
     }
 
     #openassessment_rubric_feedback_wrapper{
@@ -963,7 +961,6 @@
           font-family: 'Open Sans', sans-serif;
           font-size: 11px;
           color: #4c4c4c;
-          outline: 0;
           @include margin(5px, 15px, 0, 10px);
           width: Calc(100% - 25px);
         }
