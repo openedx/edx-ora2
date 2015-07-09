@@ -52,8 +52,6 @@
   // STATE: hover and focus
   &:hover, &:focus {
     @include transform(scale(1.0));
-    border-color: $color-decorative-tertiary;
-    @include single-box-shadow(0, 1px, 1px, 0, $shadow-l2);
   }
 
   // STATE: is collapsed
