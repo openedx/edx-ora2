@@ -37,3 +37,10 @@ pip install -r requirements/test-acceptance.txt
 
 cd test/acceptance
 python tests.py
+
+# Unset SELENIUM_HOST so that bok-choy doesn't try to use saucelabs
+unset SELENIUM_HOST
+# AutoAuthPage times out in PhantomJS when using https, switch to use http
+export BASE_URL="http://${BASIC_AUTH_USER}:${BASIC_AUTH_PASSWORD}@${TEST_HOST}"
+export SELENIUM_BROWSER=phantomjs
+python accessibility.py
