@@ -91,7 +91,7 @@ Make sure you commit the combined/minified files to the git repository!
 Running Tests
 =============
 
-To run all tests:
+To run all unit tests:
 
 .. code:: bash
 
@@ -114,6 +114,8 @@ To run the JavaScript tests in Chrome so you can use the debugger:
 .. code:: bash
 
     ./scripts/js-debugger.sh
+
+There are also acceptance and accessibility tests that run can be run against a sandbox.  For more information, about how to run these from your machine, check out `test/acceptance/README.rst <https://github.com/edx/edx-ora2/blob/master/test/acceptance/README.rst/>`__.
 
 
 i18n
