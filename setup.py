@@ -10,6 +10,7 @@ PACKAGES = [
     'openassessment.xblock'
 ]
 
+
 def is_requirement(line):
     """
     Return True if the requirement line is a package requirement;
@@ -27,6 +28,7 @@ def is_requirement(line):
         line.startswith('git+')
     )
 
+
 def load_requirements(*requirements_paths):
     """
     Load all requirements from the specified requirements files.
@@ -40,9 +42,10 @@ def load_requirements(*requirements_paths):
         )
     return list(requirements)
 
+
 setup(
     name='ora2',
-    version='0.0.1',
+    version='0.1.0',
     author='edX',
     url='http://github.com/edx/edx-ora2',
     description='edx-ora2',
