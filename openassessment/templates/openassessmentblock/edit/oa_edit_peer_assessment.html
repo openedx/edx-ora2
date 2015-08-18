@@ -22,14 +22,14 @@
                         <label for="peer_assessment_must_grade" class="setting-label">{% trans "Must Grade" %}</label>
                         <input id="peer_assessment_must_grade" class="input setting-input" type="number" value="{{ assessments.peer_assessment.must_grade }}" min="0" max="99">
                     </div>
-                    <p class="setting-help">{% trans "Specify the number of peer assessments that each student must complete."%}</p>
+                    <p class="setting-help">{% trans "Specify the number of peer assessments that each learner must complete. Valid numbers are 0 to 99."%}</p>
                 </li>
                 <li class="field comp-setting-entry">
                     <div class="wrapper-comp-setting">
                         <label for="peer_assessment_graded_by" class="setting-label"> {% trans "Graded By" %}</label>
                         <input id="peer_assessment_graded_by" class="input setting-input" type="number" value="{{ assessments.peer_assessment.must_be_graded_by }}" min="0" max="99">
                     </div>
-                    <p class="setting-help">{% trans "Specify the number of students who must assess each response."%}</p>
+                    <p class="setting-help">{% trans "Specify the number of learners that each response must be assessed by. Valid numbers are 0 to 99."%}</p>
                 </li>
                 <li class="field comp-setting-entry">
                     <div class="wrapper-comp-setting">
