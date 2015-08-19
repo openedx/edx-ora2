@@ -1,7 +1,7 @@
 # edX translation file.
 # Copyright (C) 2014 EdX
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
-# 
+#
 # Translators:
 # Juan Camilo Montoya Franco <juan.montoya@edunext.co>, 2014
 # Morphyne <cirrosis60@gmail.com>, 2014
@@ -9,14 +9,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-06 04:16-0500\n"
+"POT-Creation-Date: 2015-08-19 10:04-0400\n"
 "PO-Revision-Date: 2015-03-06 10:36+0000\n"
 "Last-Translator: Usman Khalid\n"
-"Language-Team: Spanish (Latin America) (http://www.transifex.com/projects/p/edx-platform/language/es_419/)\n"
+"Language-Team: Spanish (Latin America) (http://www.transifex.com/projects/p/"
+"edx-platform/language/es_419/)\n"
+"Language: es_419\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es_419\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
@@ -105,7 +106,9 @@ msgstr "Estado de su respuesta"
 msgid ""
 "If you leave this page without saving or submitting your response, you'll "
 "lose any work you've done on the response."
-msgstr "Si abandona esta página sin guardar o enviar su respuesta, perderá todo el trabajo realizado en su respuesta."
+msgstr ""
+"Si abandona esta página sin guardar o enviar su respuesta, perderá todo el "
+"trabajo realizado en su respuesta."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:333
@@ -169,7 +172,9 @@ msgstr "Por favor corrija los campos resaltados."
 msgid ""
 "This problem has already been released. Any changes will apply only to "
 "future assessments."
-msgstr "Este problema ya ha sido liberado. Cualquier cambio en el mismo se aplicará solo a los envío futuros."
+msgstr ""
+"Este problema ya ha sido liberado. Cualquier cambio en el mismo se aplicará "
+"solo a los envío futuros."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:97
@@ -181,7 +186,10 @@ msgstr "Criterio añadido."
 msgid ""
 "You've added a criterion. You'll need to select an option for the criterion "
 "in the Student Training step. To do this, click the Settings tab."
-msgstr "Ha añadido un nuevo criterio. Deberá seleccionar una opción para el criterio que se usará en el paso de entrenamiento de estudiantes.  Para hacer esto, haga clic en la pestaña de Configuración. "
+msgstr ""
+"Ha añadido un nuevo criterio. Deberá seleccionar una opción para el criterio "
+"que se usará en el paso de entrenamiento de estudiantes.  Para hacer esto, "
+"haga clic en la pestaña de Configuración. "
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:144
@@ -193,16 +201,23 @@ msgstr "Opción borrada."
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:145
 msgid ""
 "You've deleted an option. The system has removed that option from its "
-"criterion in the sample responses in the Student Training step. You may have"
-" to select a new option for the criterion."
-msgstr "Usted ha borrado una opción. El sistema ha eliminado esa opción del criterio correspondiente en las respuestas de muestra para el proceso de entrenamiento de estudiantes. Debe seleccionar una nueva opción para dicho criterio."
+"criterion in the sample responses in the Student Training step. You may have "
+"to select a new option for the criterion."
+msgstr ""
+"Usted ha borrado una opción. El sistema ha eliminado esa opción del criterio "
+"correspondiente en las respuestas de muestra para el proceso de "
+"entrenamiento de estudiantes. Debe seleccionar una nueva opción para dicho "
+"criterio."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:177
 msgid ""
 "You've deleted all the options for this criterion. The system has removed "
 "the criterion from the sample responses in the Student Training step."
-msgstr "Ha borrado todas las opciones para este criterio. El sistema ha borrado el criterio de las respuestas de muestra para el paso de entrenamiento de estudiantes. "
+msgstr ""
+"Ha borrado todas las opciones para este criterio. El sistema ha borrado el "
+"criterio de las respuestas de muestra para el paso de entrenamiento de "
+"estudiantes. "
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:203
@@ -214,7 +229,9 @@ msgstr "Criterio borrado."
 msgid ""
 "You've deleted a criterion. The system has removed the criterion from the "
 "sample responses in the Student Training step."
-msgstr "Usted ha borrado un criterio. El sistema eliminó el criterio de las repuestas de muestra para el paso de entrenamiento de estudiantes."
+msgstr ""
+"Usted ha borrado un criterio. El sistema eliminó el criterio de las "
+"repuestas de muestra para el paso de entrenamiento de estudiantes."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:374
@@ -224,6 +241,8 @@ msgstr "Atención:"
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:375
 msgid ""
-"Changes to steps that are not selected as part of the assignment will not be"
-" saved."
-msgstr "Los cambios en los pasos que no están seleccionados como parte de la tarea no serán guardados."
+"Changes to steps that are not selected as part of the assignment will not be "
+"saved."
+msgstr ""
+"Los cambios en los pasos que no están seleccionados como parte de la tarea "
+"no serán guardados."
