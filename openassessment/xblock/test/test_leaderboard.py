@@ -3,18 +3,21 @@
 Tests for leaderboard handlers in Open Assessment XBlock.
 """
 import json
-import mock
-from django.core.cache import cache
 from random import randint
-from submissions import api as sub_api
-from .base import XBlockHandlerTransactionTestCase, scenario
-from django.test.utils import override_settings
-from moto import mock_s3
+from urlparse import urlparse
+
 import boto
 from boto.s3.key import Key
-from openassessment.fileupload import api
+from django.test.utils import override_settings
+from django.core.cache import cache
+import mock
+from moto import mock_s3
 
+from submissions import api as sub_api
+from .base import XBlockHandlerTransactionTestCase, scenario
+from openassessment.fileupload import api
 from openassessment.xblock.data_conversion import create_submission_dict, prepare_submission_for_serialization
+
 
 class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
 
@@ -264,12 +267,18 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
 
         """
         if workflow_status is not None:
-            xblock.get_workflow_info = mock.Mock(return_value={ 'status': workflow_status })
+            xblock.get_workflow_info = mock.Mock(return_value={'status': workflow_status})
 
         if workflow_status == 'done':
             path, context = xblock.render_leaderboard_complete(xblock.get_student_item_dict())
         else:
             path, context = xblock.render_leaderboard_incomplete()
+
+        # Strip query string parameters from the file URLs, since these are time-dependent
+        # (expiration and signature)
+        if "topscores" in expected_context:
+            context["topscores"] = self._clean_score_filenames(context["topscores"])
+            expected_context["topscores"] = self._clean_score_filenames(context["topscores"])
 
         self.assertEqual(path, expected_path)
         self.assertEqual(context, expected_context)
@@ -285,3 +294,14 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         fragment = self.runtime.render(xblock, "student_view")
         has_leaderboard = 'openassessment__leaderboard' in fragment.body_html()
         self.assertEqual(has_leaderboard, is_visible)
+
+    def _clean_score_filenames(self, scores):
+        """
+        Remove querystring parameters from the file name of the score.
+        """
+        for score in scores:
+            if score.get("file"):
+                url = urlparse(score["file"])
+                score["file"] = url.scheme + "://" + url.netloc + url.path
+
+        return scores
