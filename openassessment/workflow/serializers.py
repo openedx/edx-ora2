@@ -1,13 +1,13 @@
 """
 Serializers are created to ensure models do not have to be accessed outside the
-scope of the Tim APIs.
+scope of the ORA2 APIs.
 """
 from rest_framework import serializers
 from openassessment.workflow.models import AssessmentWorkflow, AssessmentWorkflowCancellation
 
 
 class AssessmentWorkflowSerializer(serializers.ModelSerializer):
-    score = serializers.Field(source='score')
+    score = serializers.ReadOnlyField(required=False)
 
     class Meta:
         model = AssessmentWorkflow
@@ -21,20 +21,6 @@ class AssessmentWorkflowSerializer(serializers.ModelSerializer):
             # Computed
             'score'
         )
-
-# Not implemented yet:
-#
-# class AssessmentWorkflowHistorySerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = AssessmentWorkflowHistory
-#         fields = (
-#             'workflow',
-#             'app',
-#             'event_type',
-#             'event_data',
-#             'description',
-#             'created_at'
-#         )
 
 
 class AssessmentWorkflowCancellationSerializer(serializers.ModelSerializer):
