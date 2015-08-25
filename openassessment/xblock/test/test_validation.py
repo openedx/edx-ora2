@@ -86,7 +86,11 @@ class RubricValidationTest(TestCase):
         is_released = data.get('is_released', False)
         is_example_based = data.get('is_example_based', False)
         success, msg = validate_rubric(
-            data['rubric'], current_rubric,is_released, is_example_based, STUB_I18N
+            data['rubric'],
+            current_rubric,
+            is_released,
+            is_example_based,
+            STUB_I18N
         )
         self.assertTrue(success)
         self.assertEqual(msg, u'')

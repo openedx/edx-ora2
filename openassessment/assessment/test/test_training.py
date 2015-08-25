@@ -32,8 +32,8 @@ class TrainingExampleSerializerTest(CacheResetTest):
         },
         {
             "order_num": 2,
-            "name": "єχ¢єℓℓєηт",
-            "explanation": "乇ﾒc乇ﾚﾚ乇刀ｲ ﾌo乃!",
+            "name": u"єχ¢єℓℓєηт",
+            "explanation": u"乇ﾒc乇ﾚﾚ乇刀ｲ ﾌo乃!",
             "points": 2,
         },
     ]
@@ -88,7 +88,6 @@ class TrainingExampleSerializerTest(CacheResetTest):
             }
         },
     ]
-
 
     def test_duplicate_training_example(self):
         # Deserialize some examples for a rubric
