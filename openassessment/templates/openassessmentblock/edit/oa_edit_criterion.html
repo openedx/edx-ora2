@@ -34,9 +34,11 @@
             </li>
         </ul>
         <ul class="openassessment_criterion_option_list">
-            {% for option in criterion_options %}
-                {% include "openassessmentblock/edit/oa_edit_option.html" with criterion_name=criterion_name option_name=option.name option_label=option.label option_points=option.points option_explanation=option.explanation %}
-            {% endfor %}
+            {% if criterion_options %}
+                {% for option in criterion_options %}
+                    {% include "openassessmentblock/edit/oa_edit_option.html" with criterion_name=criterion_name option_name=option.name option_label=option.label option_points=option.points option_explanation=option.explanation %}
+                {% endfor %}
+            {% endif %}
         </ul>
 
         <div class="openassessment_criterion_add_option openassessment_option_header">

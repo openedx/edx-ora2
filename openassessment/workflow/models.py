@@ -98,7 +98,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         # TODO: In migration, need a non-unique index on (course_id, item_id, status)
 
     @classmethod
-    @transaction.commit_on_success
+    @transaction.atomic
     def start_workflow(cls, submission_uuid, step_names, on_init_params):
         """
         Start a new workflow.
