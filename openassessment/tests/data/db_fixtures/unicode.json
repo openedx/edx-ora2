@@ -503,23 +503,5 @@
       "student_item": 1,
       "points_possible": 6
     }
-  },
-  {
-    "pk": 1,
-    "model": "submissions.scoresummary",
-    "fields": {
-      "highest": 1,
-      "student_item": 2,
-      "latest": 1
-    }
-  },
-  {
-    "pk": 2,
-    "model": "submissions.scoresummary",
-    "fields": {
-      "highest": 2,
-      "student_item": 1,
-      "latest": 2
-    }
   }
 ]
