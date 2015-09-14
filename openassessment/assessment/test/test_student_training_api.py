@@ -103,13 +103,13 @@ class StudentTrainingAssessmentTest(CacheResetTest):
         # This will need to create the student training workflow and the first item
         # NOTE: we *could* cache the rubric model to reduce the number of queries here,
         # but we're selecting it by content hash, which is indexed and should be plenty fast.
-        with self.assertNumQueries(4):
+        with self.assertNumQueries(6):
             training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
 
         # Without assessing the first training example, try to retrieve a training example.
         # This should return the same example as before, so we won't need to create
         # any workflows or workflow items.
-        with self.assertNumQueries(3):
+        with self.assertNumQueries(5):
             training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
 
         # Assess the current training example
@@ -117,7 +117,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
 
         # Retrieve the next training example, which requires us to create
         # a new workflow item (but not a new workflow).
-        with self.assertNumQueries(4):
+        with self.assertNumQueries(6):
             training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
 
     def test_submitter_is_finished_num_queries(self):
@@ -144,7 +144,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
         # Populate the cache with training examples and rubrics
         self._warm_cache(RUBRIC, EXAMPLES)
         training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
-        with self.assertNumQueries(4):
+        with self.assertNumQueries(3):
             training_api.assess_training_example(self.submission_uuid, EXAMPLES[0]['options_selected'])
 
     @ddt.file_data('data/validate_training_examples.json')
@@ -222,12 +222,12 @@ class StudentTrainingAssessmentTest(CacheResetTest):
         with self.assertRaises(StudentTrainingInternalError):
             training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
 
-    @patch.object(StudentTrainingWorkflow.objects, 'get')
-    def test_assess_training_example_database_error(self, mock_db):
+    def test_assess_training_example_database_error(self):
         training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
-        mock_db.side_effect = DatabaseError("Kaboom!")
-        with self.assertRaises(StudentTrainingInternalError):
-            training_api.assess_training_example(self.submission_uuid, EXAMPLES[0]['options_selected'])
+        with patch.object(StudentTrainingWorkflow.objects, 'get') as mock_db:
+            mock_db.side_effect = DatabaseError("Kaboom!")
+            with self.assertRaises(StudentTrainingInternalError):
+                training_api.assess_training_example(self.submission_uuid, EXAMPLES[0]['options_selected'])
 
     @ddt.data({}, {'num_required': 'not an integer!'})
     def test_submitter_is_finished_invalid_requirements(self, requirements):
