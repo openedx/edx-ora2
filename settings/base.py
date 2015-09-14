@@ -122,7 +122,6 @@ INSTALLED_APPS = (
     # Third party
     'django_extensions',
     'djcelery',
-    'south',
 
     # XBlock
     'workbench',

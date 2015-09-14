@@ -7,8 +7,6 @@ import openassessment.assessment.urls
 import openassessment.fileupload.urls
 import workbench.urls
 
-admin.autodiscover()
-
 # Packages to include in the JavaScript i18n strings
 JS_INFO_DICT = {
     'packages': ('openassessment.xblock',),

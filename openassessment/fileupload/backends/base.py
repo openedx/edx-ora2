@@ -123,7 +123,7 @@ class BaseBackend(object):
         Returns:
             A key name (str) to use constructing URLs.
         """
-        return "{prefix}/{key}".format(
+        return u"{prefix}/{key}".format(
             prefix=Settings.get_prefix(),
             key=key
         )

@@ -143,7 +143,7 @@ class AIClassifierSet(models.Model):
     item_id = models.CharField(max_length=128, db_index=True)
 
     @classmethod
-    @transaction.commit_on_success
+    @transaction.atomic
     def create_classifier_set(cls, classifiers_dict, rubric, algorithm_id, course_id, item_id):
         """
         Create a set of classifiers.
@@ -664,7 +664,7 @@ class AITrainingWorkflow(AIWorkflow):
     training_examples = models.ManyToManyField(TrainingExample, related_name="+")
 
     @classmethod
-    @transaction.commit_on_success
+    @transaction.atomic
     def start_workflow(cls, examples, course_id, item_id, algorithm_id):
         """
         Start a workflow to track a training task.
@@ -793,7 +793,7 @@ class AIGradingWorkflow(AIWorkflow):
         return classifier_set is not None
 
     @classmethod
-    @transaction.commit_on_success
+    @transaction.atomic
     def start_workflow(cls, submission_uuid, rubric_dict, algorithm_id):
         """
         Start a grading workflow.
@@ -839,7 +839,7 @@ class AIGradingWorkflow(AIWorkflow):
 
         return workflow
 
-    @transaction.commit_on_success
+    @transaction.atomic
     def complete(self, criterion_scores):
         """
         Create an assessment with scores from the AI classifiers

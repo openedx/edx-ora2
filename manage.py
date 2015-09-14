@@ -4,9 +4,8 @@ import os
 
 if __name__ == "__main__":
 
-    # Default to dev settings for convenience
     if os.environ.get('DJANGO_SETTINGS_MODULE') is None:
-        os.environ['DJANGO_SETTINGS_MODULE'] = 'settings.dev'
+        os.environ['DJANGO_SETTINGS_MODULE'] = 'settings.base'
 
     # When using an on-disk database for the test suite,
     # Django asks us if we want to delete the database.
