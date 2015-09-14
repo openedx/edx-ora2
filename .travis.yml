@@ -37,5 +37,6 @@ script:
 branches:
     only:
       - master
+      - will/upgrade-django-rest-framework
 after_success:
   coveralls
