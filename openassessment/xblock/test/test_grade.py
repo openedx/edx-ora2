@@ -327,7 +327,7 @@ class TestGrade(XBlockHandlerTestCase):
             'feedback_text': u'I disliked my assessment',
             'feedback_options': u'should be a list!',
         })
-        resp = self.request(xblock, 'submit_feedback', payload, response_format='json')
+        resp = self.request(xblock, 'submit_feedback', payload, response_format='json', use_runtime=False)
         self.assertFalse(resp['success'])
         self.assertGreater(len(resp['msg']), 0)
 
