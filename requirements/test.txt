@@ -1,7 +1,7 @@
 -r base.txt
 -r test-acceptance.txt
 
-coverage==3.7.1
+coverage==4.0b3
 ddt==0.8.0
 django-nose==1.4.1
 mock==1.0.1
