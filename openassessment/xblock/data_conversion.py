@@ -182,7 +182,7 @@ def prepare_submission_for_serialization(submission_data):
 def create_submission_dict(submission, prompts):
     """
     1. Convert from legacy format.
-    3. Add prompts to submission['answer']['parts'] to simplify iteration in the template.
+    2. Add prompts to submission['answer']['parts'] to simplify iteration in the template.
 
     Args:
         submission (dict): Submission dictionary.
@@ -191,7 +191,7 @@ def create_submission_dict(submission, prompts):
     Returns:
         dict
     """
-    parts = [{ 'prompt': prompt, 'text': ''} for prompt in prompts]
+    parts = [{'prompt': prompt, 'text': ''} for prompt in prompts]
 
     if 'text' in submission['answer']:
         parts[0]['text'] = submission['answer'].pop('text')

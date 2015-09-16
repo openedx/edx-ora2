@@ -7,6 +7,7 @@ import logging
 
 from django.core.cache import cache
 from rest_framework import serializers
+from rest_framework.fields import IntegerField, DateTimeField
 from openassessment.assessment.models import (
     Assessment, AssessmentPart, Criterion, CriterionOption, Rubric,
 )
@@ -22,75 +23,41 @@ class InvalidRubric(Exception):
         self.errors = deepcopy(errors)
 
 
-class NestedModelSerializer(serializers.ModelSerializer):
-    """Model Serializer that supports deserialization with arbitrary nesting.
-
-    The Django REST Framework does not currently support deserialization more
-    than one level deep (so a parent and children). We want to be able to
-    create a :class:`Rubric` → :class:`Criterion` → :class:`CriterionOption`
-    hierarchy.
-
-    Much of the base logic already "just works" and serialization of arbritrary
-    depth is supported. So we just override the save_object method to
-    recursively link foreign key relations instead of doing it one level deep.
-
-    We don't touch many-to-many relationships because we don't need to for our
-    purposes, so those still only work one level deep.
-    """
-    def recursively_link_related(self, obj, **kwargs):
-        if getattr(obj, '_related_data', None):
-            for accessor_name, related in obj._related_data.items():
-                setattr(obj, accessor_name, related)
-                for related_obj in related:
-                    self.recursively_link_related(related_obj, **kwargs)
-            del(obj._related_data)
-
-    def save_object(self, obj, **kwargs):
-        obj.save(**kwargs)
-
-        # The code for many-to-many relationships is just copy-pasted from the
-        # Django REST Framework ModelSerializer
-        if getattr(obj, '_m2m_data', None):
-            for accessor_name, object_list in obj._m2m_data.items():
-                setattr(obj, accessor_name, object_list)
-            del(obj._m2m_data)
-
-        # This is our only real change from ModelSerializer
-        self.recursively_link_related(obj, **kwargs)
-
-
-class CriterionOptionSerializer(NestedModelSerializer):
+class CriterionOptionSerializer(serializers.ModelSerializer):
     """Serializer for :class:`CriterionOption`"""
+
+    # Django Rest Framework v3 no longer requires `PositiveIntegerField`s
+    # to be positive by default, so we need to explicitly set the `min_value`
+    # on the serializer field.
+    points = IntegerField(min_value=0)
+
     class Meta:
         model = CriterionOption
         fields = ('order_num', 'points', 'name', 'label', 'explanation')
 
 
-class CriterionSerializer(NestedModelSerializer):
+class CriterionSerializer(serializers.ModelSerializer):
     """Serializer for :class:`Criterion`"""
     options = CriterionOptionSerializer(required=True, many=True)
-    points_possible = serializers.Field(source='points_possible')
 
     class Meta:
         model = Criterion
         fields = ('order_num', 'name', 'label', 'prompt', 'options', 'points_possible')
 
 
-class RubricSerializer(NestedModelSerializer):
+class RubricSerializer(serializers.ModelSerializer):
     """Serializer for :class:`Rubric`."""
     criteria = CriterionSerializer(required=True, many=True)
-    points_possible = serializers.Field(source='points_possible')
 
     class Meta:
         model = Rubric
         fields = ('id', 'content_hash', 'structure_hash', 'criteria', 'points_possible')
 
-    def validate_criteria(self, attrs, source):
+    def validate_criteria(self, value):
         """Make sure we have at least one Criterion in the Rubric."""
-        criteria = attrs[source]
-        if not criteria:
+        if not value:
             raise serializers.ValidationError("Must have at least one criterion")
-        return attrs
+        return value
 
     @classmethod
     def serialized_from_cache(cls, rubric, local_cache=None):
@@ -135,6 +102,33 @@ class RubricSerializer(NestedModelSerializer):
 
         return rubric_dict
 
+    def create(self, validated_data):
+        """
+        Create the rubric model, including its nested models.
+
+        Args:
+            validated_data (dict): Dictionary of validated data for the rubric,
+                including nested Criterion and CriterionOption data.
+
+        Returns:
+            Rubric
+        """
+        criteria_data = validated_data.pop("criteria")
+        rubric = Rubric.objects.create(**validated_data)
+
+        # Create each nested criterion in the rubric, linking it to the rubric
+        for criterion_dict in criteria_data:
+            options_data = criterion_dict.pop("options")
+            criterion = Criterion.objects.create(rubric=rubric, **criterion_dict)
+
+            # Create each option in the criterion, linking it to the criterion
+            CriterionOption.objects.bulk_create(
+                CriterionOption(criterion=criterion, **option_dict)
+                for option_dict in options_data
+            )
+
+        return rubric
+
 
 class AssessmentPartSerializer(serializers.ModelSerializer):
     """Serializer for :class:`AssessmentPart`."""
@@ -146,6 +140,13 @@ class AssessmentPartSerializer(serializers.ModelSerializer):
 
 class AssessmentSerializer(serializers.ModelSerializer):
     """Simplified serializer for :class:`Assessment` that's lighter on the DB."""
+
+    # Django Rest Framework v3 uses the Django setting `DATETIME_FORMAT`
+    # when serializing datetimes.  This differs from v2, which always
+    # returned a datetime.  To preserve the old behavior, we explicitly
+    # set `format` to None.
+    # http://www.django-rest-framework.org/api-guide/fields/#datetimefield
+    scored_at = DateTimeField(format=None, required=False)
 
     class Meta:
         model = Assessment

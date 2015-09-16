@@ -780,7 +780,7 @@
       "uuid": "387d840a-d0ae-11e3-bb0e-14109fd8dc43",
       "student_item": 2,
       "created_at": "2014-04-30T21:27:24.181Z",
-      "raw_answer": "{\"text\": \"E\\u00e3 \\u00e9um quis d\\u00ed\\u00e7o \\u00e9l\\u00e2b\\u00f3r\\u00e3ret. N\\u00e1m in \\u00e7\\u00f4mmune p\\u00f3nder\\u00fam apeirian, te \\u00e2lii m\\u00e1zim \\u00ednt\\u00e9ll\\u00eagat nec, ex \\u00e9leif\\u00e9nd el\\u00f3quenti\\u00e2m usu. His no n\\u00f3vum lu\\u00e7ilius, \\u00e0utem \\u00e3\\u00e9que vix \\u00e0d.\"}",
+      "answer": "{\"text\": \"E\\u00e3 \\u00e9um quis d\\u00ed\\u00e7o \\u00e9l\\u00e2b\\u00f3r\\u00e3ret. N\\u00e1m in \\u00e7\\u00f4mmune p\\u00f3nder\\u00fam apeirian, te \\u00e2lii m\\u00e1zim \\u00ednt\\u00e9ll\\u00eagat nec, ex \\u00e9leif\\u00e9nd el\\u00f3quenti\\u00e2m usu. His no n\\u00f3vum lu\\u00e7ilius, \\u00e0utem \\u00e3\\u00e9que vix \\u00e0d.\"}",
       "attempt_number": 1,
       "submitted_at": "2014-04-30T21:27:24.173Z"
     }
@@ -792,7 +792,7 @@
       "uuid": "1783758f-d0ae-11e3-b495-14109fd8dc43",
       "student_item": 1,
       "created_at": "2014-04-30T21:26:28.855Z",
-      "raw_answer": "{\"text\": \"L\\u00f5r\\u00eam \\u00edpsum d\\u00f4lor sit amet, in d\\u00fao p\\u00f5pul\\u00f3 m\\u00e0nd\\u00e1mus, alienum cons\\u00e9q\\u00faat pers\\u00e9cuti mel \\u00e0n. R\\u00eabum de\\u00e7or\\u00ea \\u00e9\\u00fam an, s\\u00e0ep\\u00e9 p\\u00f5pulo splendid\\u00e9 te p\\u00e9r.\"}",
+      "answer": "{\"text\": \"L\\u00f5r\\u00eam \\u00edpsum d\\u00f4lor sit amet, in d\\u00fao p\\u00f5pul\\u00f3 m\\u00e0nd\\u00e1mus, alienum cons\\u00e9q\\u00faat pers\\u00e9cuti mel \\u00e0n. R\\u00eabum de\\u00e7or\\u00ea \\u00e9\\u00fam an, s\\u00e0ep\\u00e9 p\\u00f5pulo splendid\\u00e9 te p\\u00e9r.\"}",
       "attempt_number": 1,
       "submitted_at": "2014-04-30T21:26:28.847Z"
     }
