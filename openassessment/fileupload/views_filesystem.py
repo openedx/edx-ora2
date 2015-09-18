@@ -17,6 +17,8 @@ def filesystem_storage(request, key):
     """
     Uploading and download files to the local filesystem backend.
     """
+    if isinstance(key, unicode):
+        key = key.encode("utf-8")
     if request.method == "PUT":
         if not is_upload_url_available(key):
             raise Http404()
