@@ -32,6 +32,7 @@ import pytz
 # This is a bit of a hack to ensure that the root repo directory
 # is in the Python path, so Django can find the settings module.
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+import django
 from django.template.context import Context
 from django.template.loader import get_template
 
@@ -40,6 +41,8 @@ USAGE = u"{prog} TEMPLATE_DESC"
 
 
 DATETIME_REGEX = re.compile("^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$")
+
+django.setup()
 
 def parse_dates(context):
     """

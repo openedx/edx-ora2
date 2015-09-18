@@ -214,7 +214,7 @@ class StudentTrainingWorkflowItem(models.Model):
         self.completed_at = timezone.now()
         self.save()
 
-    def check(self, options_selected):
+    def check_options(self, options_selected):
         """
         Compare the options that the student selected to
         the options set by the instructor in the training example.
@@ -226,9 +226,9 @@ class StudentTrainingWorkflowItem(models.Model):
             dict
 
         Example usage:
-            >>> item.check({'vocabulary': 'good', 'grammar': 'poor'})
+            >>> item.check_options({'vocabulary': 'good', 'grammar': 'poor'})
             {'vocabulary': 'excellent'}
-            >>> item.check({'vocabulary': 'excellent', 'grammar': 'poor'})
+            >>> item.check_options({'vocabulary': 'excellent', 'grammar': 'poor'})
             {}
 
         """

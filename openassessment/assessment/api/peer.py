@@ -295,7 +295,7 @@ def create_assessment(
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
 
-@transaction.commit_on_success
+@transaction.atomic
 def _complete_assessment(
         rubric_dict,
         scorer_id,

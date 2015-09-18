@@ -93,13 +93,19 @@ def is_upload_url_available(url_key_name):
     """
     Return True if the corresponding upload URL is available.
     """
-    return get_cache().get(get_upload_cache_key(url_key_name)) is not None
+    cache_key = get_upload_cache_key(url_key_name)
+    if not isinstance(cache_key, unicode):
+        cache_key = cache_key.decode('utf-8')
+    return get_cache().get(cache_key) is not None
 
 def is_download_url_available(url_key_name):
     """
     Return True if the corresponding download URL is available.
     """
-    return get_cache().get(get_download_cache_key(url_key_name)) is not None
+    cache_key = get_download_cache_key(url_key_name)
+    if not isinstance(cache_key, unicode):
+        cache_key = cache_key.decode('utf-8')
+    return get_cache().get(cache_key) is not None
 
 def get_upload_cache_key(url_key_name):
     return "upload/" + url_key_name

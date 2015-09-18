@@ -6,13 +6,13 @@
 git+https://github.com/edx/XBlock.git@9c634481dfc85a17dcb3351ca232d7098a38e10e#egg=XBlock
 
 # edx-submissions
-git+https://github.com/edx/edx-submissions.git@14aeaa9e30f9a408b34ffaf6d78409dedaad015a#egg=edx-submissions==0.1.0
+git+https://github.com/edx/edx-submissions.git@muzaffar/upgrage-django-1.8#egg=edx-submissions==0.1.1
 
 # Third Party Requirements
 boto>=2.32.1,<3.0.0
 celery==3.1.18
 defusedxml==0.4.1
-django>=1.4,<1.5
+django>=1.8,<1.9
 django-celery==3.1.16
 django-extensions==1.5.5
 django-model-utils==2.3.1
@@ -24,7 +24,6 @@ loremipsum==1.0.5
 python-dateutil==2.1
 python-memcached==1.48
 pytz==2015.2
-South==1.0.1
 voluptuous==0.8.5
 
 # AI grading
