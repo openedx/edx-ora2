@@ -24,7 +24,7 @@ class OpenAssessmentAxsTest(OpenAssessmentTest):
         self.assertEqual(0, len(result.errors))
 
         # Verify that this page currently has 2 accessibility warnings.
-        self.assertEqual(3, len(result.warnings))
+        self.assertEqual(2, len(result.warnings))
 
         # And that these are the warnings that the page currently gives.
         for warning in result.warnings:
@@ -32,7 +32,6 @@ class OpenAssessmentAxsTest(OpenAssessmentTest):
                 warning.startswith((
                     'Warning: AX_FOCUS_01',
                     'Warning: AX_COLOR_01',
-                    'Warning: AX_IMAGE_01',
                 )),
                 msg="Unexpected warning: {}".format(warning))
 
