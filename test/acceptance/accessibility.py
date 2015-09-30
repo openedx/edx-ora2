@@ -14,26 +14,15 @@ class OpenAssessmentAxsTest(OpenAssessmentTest):
     def _check_axs(self):
         self.auto_auth_page.visit()
         self.submission_page.visit()
-        report = self.submission_page.do_axs_audit()
-
-        # There was one page in this session
-        self.assertEqual(1, len(report))
-
-        result = report[0]
-        # Verify that this page has no accessibility errors.
-        self.assertEqual(0, len(result.errors))
-
-        # Verify that this page currently has 2 accessibility warnings.
-        self.assertEqual(2, len(result.warnings))
-
-        # And that these are the warnings that the page currently gives.
-        for warning in result.warnings:
-            self.assertTrue(
-                warning.startswith((
-                    'Warning: AX_FOCUS_01',
-                    'Warning: AX_COLOR_01',
-                )),
-                msg="Unexpected warning: {}".format(warning))
+        self.submission_page.a11y_audit.config.set_rules({
+            "ignore": [
+                "aria-valid-attr",  # TODO: AC-199
+                "color-contrast",  # TODO: AC-198
+                "empty-heading",  # TODO: AC-197
+                "link-name",  # TODO: AC-196
+            ]
+        })
+        report = self.submission_page.a11y_audit.check_for_accessibility_errors()
 
 
 class SelfAssessmentAxsTest(OpenAssessmentAxsTest):
