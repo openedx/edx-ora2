@@ -815,7 +815,6 @@
       box-sizing: border-box;
       border: 1px solid #b2b2b2;
       border-radius: 2px;
-      @include padding(6px, 8px, 8px, 0px);
       background-image: -webkit-linear-gradient(#F2F2F2,#FFF);
       background-image: -moz-linear-gradient(#F2F2F2,#FFF);
       background-image: linear-gradient(#F2F2F2,#FFF);
