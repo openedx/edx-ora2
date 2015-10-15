@@ -21,6 +21,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
         this.element = element;
     };
 
+    var jsonContentType = "application/json; charset=utf-8";
 
     OpenAssessment.Server.prototype = {
 
@@ -149,7 +150,8 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
                 $.ajax({
                     type: "POST",
                     url: url,
-                    data: JSON.stringify({submission: submission})
+                    data: JSON.stringify({submission: submission}),
+                    contentType: jsonContentType
                 }).done(function(data) {
                     var success = data[0];
                     if (success) {
@@ -184,7 +186,8 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
                 $.ajax({
                     type: "POST",
                     url: url,
-                    data: JSON.stringify({submission: submission})
+                    data: JSON.stringify({submission: submission}),
+                    contentType: jsonContentType
                 }).done(function(data) {
                     if (data.success) { defer.resolve(); }
                     else { defer.rejectWith(this, [data.msg]); }
@@ -220,7 +223,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
                 'feedback_options': options
             });
             return $.Deferred(function(defer) {
-                $.ajax({ type: "POST", url: url, data: payload }).done(
+                $.ajax({ type: "POST", url: url, data: payload, contentType: jsonContentType }).done(
                     function(data) {
                         if (data.success) { defer.resolve(); }
                         else { defer.rejectWith(this, [data.msg]); }
@@ -263,7 +266,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
                 submission_uuid: uuid
             });
             return $.Deferred(function(defer) {
-                $.ajax({ type: "POST", url: url, data: payload }).done(
+                $.ajax({ type: "POST", url: url, data: payload, contentType: jsonContentType }).done(
                     function(data) {
                         if (data.success) {
                             defer.resolve();
@@ -307,7 +310,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
                 overall_feedback: overallFeedback
             });
             return $.Deferred(function(defer) {
-                $.ajax({ type: "POST", url: url, data: payload }).done(
+                $.ajax({ type: "POST", url: url, data: payload, contentType: jsonContentType }).done(
                     function(data) {
                         if (data.success) {
                             defer.resolve();
@@ -348,7 +351,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
                 options_selected: optionsSelected
             });
             return $.Deferred(function(defer) {
-                $.ajax({ type: "POST", url: url, data: payload }).done(
+                $.ajax({ type: "POST", url: url, data: payload, contentType: jsonContentType }).done(
                     function(data) {
                         if (data.success) {
                             defer.resolveWith(this, [data.corrections]);
@@ -382,7 +385,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
         scheduleTraining: function() {
             var url = this.url('schedule_training');
             return $.Deferred(function(defer) {
-                $.ajax({ type: "POST", url: url, data: "\"\""}).done(
+                $.ajax({ type: "POST", url: url, data: "\"\"", contentType: jsonContentType}).done(
                     function(data) {
                         if (data.success) {
                             defer.resolveWith(this, [data.msg]);
@@ -406,7 +409,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
         rescheduleUnfinishedTasks: function() {
             var url = this.url('reschedule_unfinished_tasks');
             return $.Deferred(function(defer) {
-                $.ajax({ type: "POST", url: url, data: "\"\""}).done(
+                $.ajax({ type: "POST", url: url, data: "\"\"", contentType: jsonContentType}).done(
                     function(data) {
                         if (data.success) {
                             defer.resolveWith(this, [data.msg]);
@@ -460,7 +463,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
             });
             return $.Deferred(function(defer) {
                 $.ajax({
-                    type: "POST", url: url, data: payload
+                    type: "POST", url: url, data: payload, contentType: jsonContentType
                 }).done(function(data) {
                     if (data.success) { defer.resolve(); }
                     else { defer.rejectWith(this, [data.msg]); }
@@ -490,7 +493,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
             var payload = "\"\"";
             return $.Deferred(function(defer) {
                 $.ajax({
-                    type: "POST", url: url, data: payload
+                    type: "POST", url: url, data: payload, contentType: jsonContentType
                 }).done(function(data) {
                     if (data.success) { defer.resolveWith(this, [data.is_released]); }
                     else { defer.rejectWith(this, [data.msg]); }
@@ -516,7 +519,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
             var url = this.url('upload_url');
             return $.Deferred(function(defer) {
                 $.ajax({
-                    type: "POST", url: url, data: JSON.stringify({contentType: contentType})
+                    type: "POST", url: url, data: JSON.stringify({contentType: contentType}), contentType: jsonContentType
                 }).done(function(data) {
                         if (data.success) { defer.resolve(data.url); }
                         else { defer.rejectWith(this, [data.msg]); }
@@ -537,7 +540,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
             var url = this.url('download_url');
             return $.Deferred(function(defer) {
                 $.ajax({
-                    type: "POST", url: url, data: JSON.stringify({})
+                    type: "POST", url: url, data: JSON.stringify({}), contentType: jsonContentType
                 }).done(function(data) {
                         if (data.success) { defer.resolve(data.url); }
                         else { defer.rejectWith(this, [data.msg]); }
@@ -560,7 +563,7 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
                 comments: comments
             });
             return $.Deferred(function (defer) {
-                $.ajax({ type: "POST", url: url, data: payload }).done(
+                $.ajax({ type: "POST", url: url, data: payload, contentType: jsonContentType }).done(
                     function(data) {
                         if (data.success) {
                             defer.resolveWith(this, [data.msg]);

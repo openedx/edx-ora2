@@ -11,6 +11,8 @@ describe("OpenAssessment.Server", function() {
 
     var server = null;
 
+    var jsonContentType = "application/json; charset=utf-8";
+
     /**
     Stub AJAX requests.
 
@@ -126,7 +128,8 @@ describe("OpenAssessment.Server", function() {
         expect($.ajax).toHaveBeenCalledWith({
             url: '/submit',
             type: "POST",
-            data: JSON.stringify({submission: "This is only a test"})
+            data: JSON.stringify({submission: "This is only a test"}),
+            contentType : jsonContentType
         });
     });
 
@@ -146,7 +149,8 @@ describe("OpenAssessment.Server", function() {
         expect($.ajax).toHaveBeenCalledWith({
             url: '/cancel_submission',
             type: "POST",
-            data: JSON.stringify({submission_uuid: submissionUUID, comments: comments})
+            data: JSON.stringify({submission_uuid: submissionUUID, comments: comments}),
+            contentType : jsonContentType
         });
     });
 
@@ -158,7 +162,8 @@ describe("OpenAssessment.Server", function() {
         expect($.ajax).toHaveBeenCalledWith({
             url: "/save_submission",
             type: "POST",
-            data: JSON.stringify({submission: "Test"})
+            data: JSON.stringify({submission: "Test"}),
+            contentType : jsonContentType
         });
     });
 
@@ -180,7 +185,8 @@ describe("OpenAssessment.Server", function() {
                 options_selected: options,
                 criterion_feedback: criterionFeedback,
                 overall_feedback: "Excellent job!"
-            })
+            }),
+            contentType : jsonContentType
         });
     });
 
@@ -202,7 +208,8 @@ describe("OpenAssessment.Server", function() {
                 options_selected: options,
                 criterion_feedback: criterionFeedback,
                 overall_feedback: "Excellent job!"
-            })
+            }),
+            contentType : jsonContentType
         });
 
     });
@@ -226,7 +233,8 @@ describe("OpenAssessment.Server", function() {
             type: "POST",
             data: JSON.stringify({
                 options_selected: options
-            })
+            }),
+            contentType : jsonContentType
         });
     });
 
@@ -246,7 +254,8 @@ describe("OpenAssessment.Server", function() {
             data: JSON.stringify({
                 feedback_text: "test feedback",
                 feedback_options: options,
-            })
+            }),
+            contentType : jsonContentType
         });
     });
 
@@ -279,7 +288,8 @@ describe("OpenAssessment.Server", function() {
                 editor_assessments_order: EDITOR_ASSESSMENTS_ORDER,
                 allow_file_upload: true,
                 leaderboard_show: 15
-            })
+            }),
+            contentType : jsonContentType
         });
     });
 
@@ -293,7 +303,8 @@ describe("OpenAssessment.Server", function() {
 
         expect(receivedIsReleased).toBe(true);
         expect($.ajax).toHaveBeenCalledWith({
-            url: '/check_released', type: "POST", data: "\"\""
+            url: '/check_released', type: "POST", data: "\"\"",
+            contentType : jsonContentType
         });
     });
 
