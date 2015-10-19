@@ -96,8 +96,8 @@ class StaffInfoMixin(object):
     """
 
     @XBlock.handler
-    @require_course_staff("STAFF_INFO")
-    def render_staff_info(self, data, suffix=''):  # pylint: disable=W0613
+    @require_course_staff("STAFF_DEBUG")
+    def render_staff_debug(self, data, suffix=''):  # pylint: disable=W0613
         """
         Template context dictionary for course staff debug panel.
 
@@ -145,14 +145,12 @@ class StaffInfoMixin(object):
                 student_item['item_id']
             )
 
-        # Include release/due dates for each step in the problem
-        context['step_dates'] = list()
-
         # Include Latex setting
         context['allow_latex'] = self.allow_latex
 
-        steps = ['submission'] + self.assessment_steps
-        for step in steps:
+        # Include release/due dates for each step in the problem
+        context['step_dates'] = list()
+        for step in ['submission'] + self.assessment_steps:
 
             if step == 'example-based-assessment':
                 continue
@@ -376,10 +374,15 @@ class StaffInfoMixin(object):
                 cancelled_by_id=student_item_dict['student_id'],
                 assessment_requirements=assessment_requirements
             )
-            return {"success": True, 'msg': self._(u"The student submission has been removed from peer assessment. "
-                                                   u"The student receives a grade of zero unless you reset "
-                                                   u"the student's attempts for the problem to allow them to "
-                                                   u"resubmit a response.")}
+            return {
+                "success": True,
+                'msg': self._(
+                    u"The student submission has been removed from peer assessment. "
+                    u"The student receives a grade of zero unless you reset "
+                    u"the student's attempts for the problem to allow them to "
+                    u"resubmit a response."
+                )
+            }
         except (
                 AssessmentWorkflowError,
                 AssessmentWorkflowInternalError
