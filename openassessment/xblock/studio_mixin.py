@@ -5,20 +5,22 @@ import copy
 import logging
 import pkg_resources
 from uuid import uuid4
+from xml import UpdateFromXmlError
 
+from django.conf import settings
 from django.template import Context
 from django.template.loader import get_template
 from voluptuous import MultipleInvalid
 from xblock.core import XBlock
 from xblock.fields import List, Scope
 from xblock.fragment import Fragment
+
 from openassessment.xblock.defaults import DEFAULT_EDITOR_ASSESSMENTS_ORDER, DEFAULT_RUBRIC_FEEDBACK_TEXT
 from openassessment.xblock.validation import validator
 from openassessment.xblock.data_conversion import create_rubric_dict, make_django_template_key, update_assessments_format
 from openassessment.xblock.schema import EDITOR_UPDATE_SCHEMA
 from openassessment.xblock.resolve_dates import resolve_dates
 from openassessment.xblock.xml import serialize_examples_to_xml_str, parse_examples_from_xml_str
-from xml import UpdateFromXmlError
 
 logger = logging.getLogger(__name__)
 
@@ -63,10 +65,16 @@ class StudioMixin(object):
         rendered_template = get_template(
             'openassessmentblock/edit/oa_edit.html'
         ).render(Context(self.editor_context()))
-        frag = Fragment(rendered_template)
-        frag.add_javascript(pkg_resources.resource_string(__name__, "static/js/openassessment-studio.min.js"))
-        frag.initialize_js('OpenAssessmentEditor')
-        return frag
+        fragment = Fragment(rendered_template)
+        if settings.DEBUG:
+            self.add_javascript_files(fragment, "static/js/src/oa_shared.js")
+            self.add_javascript_files(fragment, "static/js/src/oa_server.js")
+            self.add_javascript_files(fragment, "static/js/src/studio")
+        else:
+            # TODO: switch to add_javascript_url once XBlock resources are loaded from the CDN
+            fragment.add_javascript(pkg_resources.resource_string(__name__, "static/js/openassessment-studio.min.js"))
+        fragment.initialize_js('OpenAssessmentEditor')
+        return fragment
 
     def editor_context(self):
         """

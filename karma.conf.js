@@ -11,7 +11,7 @@ module.exports = function(config) {
       'karma-coverage',
       'karma-jasmine',
       'karma-chrome-launcher',
-      'karma-phantomjs-launcher',
+      'karma-phantomjs-launcher'
     ],
 
     // frameworks to use
@@ -36,7 +36,7 @@ module.exports = function(config) {
       {
         pattern: 'fixtures/*.html',
         served: true, included: false
-      },
+      }
     ],
 
 
