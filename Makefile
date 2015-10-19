@@ -48,3 +48,6 @@ install: install-wheels install-python install-js install-nltk-data install-test
 
 test:
 	./scripts/test.sh
+
+test-js:
+	./scripts/test-js.sh
