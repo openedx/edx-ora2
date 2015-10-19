@@ -2,7 +2,7 @@
     {
         "template": "openassessmentblock/oa_base.html",
         "context": {
-            "show_staff_debug_info": false,
+            "show_staff_area": false,
             "title": "Test title",
             "question": "Test prompt",
             "rubric_criteria": [],
@@ -44,7 +44,7 @@
     {
         "template": "openassessmentblock/oa_base.html",
         "context": {
-            "show_staff_debug_info": true,
+            "show_staff_area": true,
             "title": "Test title",
             "question": "Test prompt",
             "rubric_criteria": [],
@@ -651,7 +651,7 @@
         "output": "oa_edit_student_training.html"
     },
     {
-        "template": "openassessmentblock/staff_debug/staff_debug.html",
+        "template": "openassessmentblock/staff_area/staff_area.html",
         "context": {
             "status_counts": {
                 "self": 1,
@@ -679,10 +679,10 @@
                 }
             ]
         },
-        "output": "oa_staff_info.html"
+        "output": "oa_staff_area.html"
     },
     {
-        "template": "openassessmentblock/staff_debug/student_info.html",
+        "template": "openassessmentblock/staff_area/student_info.html",
         "context": {
             "submission": {
                 "image_url": "/test-url",

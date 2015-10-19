@@ -296,3 +296,43 @@ class GradePage(OpenAssessmentPage):
         """
         score_candidates = [int(x) for x in self.q(css=".grade__value__earned").text]
         return score_candidates[0] if len(score_candidates) > 0 else None
+
+
+class StaffAreaPage(OpenAssessmentPage):
+    """
+    Page object representing the "submission" step in an ORA problem.
+    """
+
+    def is_browser_on_page(self):
+        return self.q(css="#openassessment__staff-area").is_present()
+
+    @property
+    def selected_button_names(self):
+        """
+        Returns the names of the selected toolbar buttons.
+        """
+        buttons = self.q(css=".ui-staff__button")
+        return [button.text for button in buttons if u'is--active' in button.get_attribute('class')]
+
+    @property
+    def visible_staff_panels(self):
+        """
+        Returns the ids of the visible staff panels
+        """
+        panels = self.q(css=".wrapper--ui-staff")
+        return [panel.get_attribute('id') for panel in panels if u'is--hidden' not in panel.get_attribute('class')]
+
+    def click_staff_toolbar_button(self, button_name):
+        """
+        Presses the button to show the panel with the specified name.
+        :return:
+        """
+        buttons = self.q(css=".button-{button_name}".format(button_name=button_name))
+        buttons.first.click()
+
+    def click_staff_panel_close_button(self, panel_name):
+        """
+        Presses the close button on the staff panel with the specified name.
+        :return:
+        """
+        self.q(css=".wrapper--{panel_name} .ui-staff_close_button".format(panel_name=panel_name)).click()

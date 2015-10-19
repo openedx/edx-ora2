@@ -77,18 +77,18 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertTrue(xblock.is_course_staff)
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
-    def test_course_staff_debug_info(self, xblock):
-        # If we're not course staff, we shouldn't see the debug info
+    def test_course_staff_area(self, xblock):
+        # If we're not course staff, we shouldn't see the staff area
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, False, False, "Bob"
         )
-        resp = self.request(xblock, 'render_staff_info', json.dumps({}))
-        self.assertNotIn("course staff information", resp.decode('utf-8').lower())
+        resp = self.request(xblock, 'render_staff_area', json.dumps({}))
+        self.assertNotIn("Staff Info", resp.decode('utf-8').lower())
 
         # If we ARE course staff, then we should see the debug info
         xblock.xmodule_runtime.user_is_staff = True
-        resp = self.request(xblock, 'render_staff_info', json.dumps({}))
-        self.assertIn("course staff information", resp.decode('utf-8').lower())
+        resp = self.request(xblock, 'render_staff_area', json.dumps({}))
+        self.assertIn("staff info", resp.decode('utf-8').lower())
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_course_student_debug_info(self, xblock):
@@ -105,8 +105,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIn("a response was not found for this learner.", resp.decode('utf-8').lower())
 
     @scenario('data/basic_scenario.xml')
-    def test_hide_course_staff_debug_info_in_studio_preview(self, xblock):
-        # If we are in Studio preview mode, don't show the staff debug info
+    def test_hide_course_staff_area_in_studio_preview(self, xblock):
+        # If we are in Studio preview mode, don't show the staff area.
         # In this case, the runtime will tell us that we're staff,
         # but no user ID will be set.
         xblock.xmodule_runtime = self._create_mock_runtime(
@@ -114,7 +114,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         )
 
         # If the client requests the staff info directly, they should get an error
-        resp = self.request(xblock, 'render_staff_info', json.dumps({}))
+        resp = self.request(xblock, 'render_staff_area', json.dumps({}))
         self.assertNotIn("course staff information", resp.decode('utf-8').lower())
         self.assertIn("do not have permission", resp.decode('utf-8').lower())
 
@@ -123,14 +123,14 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertNotIn(u'staff-info', xblock_fragment.body_html())
 
     @scenario('data/staff_dates_scenario.xml', user_id='Bob')
-    def test_staff_debug_dates_table(self, xblock):
+    def test_staff_area_dates_table(self, xblock):
         # Simulate that we are course staff
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
 
         # Verify that we can render without error
-        resp = self.request(xblock, 'render_staff_info', json.dumps({}))
+        resp = self.request(xblock, 'render_staff_area', json.dumps({}))
         decoded_response = resp.decode('utf-8').lower()
         self.assertIn("course staff information", decoded_response)
 
@@ -148,19 +148,19 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIn("april 1, 2016", decoded_response)
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
-    def test_staff_debug_dates_distant_past_and_future(self, xblock):
+    def test_staff_area_dates_distant_past_and_future(self, xblock):
         # Simulate that we are course staff
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
 
         # Verify that we can render without error
-        resp = self.request(xblock, 'render_staff_info', json.dumps({}))
+        resp = self.request(xblock, 'render_staff_area', json.dumps({}))
         self.assertIn("course staff information", resp.decode('utf-8').lower())
         self.assertIn("n/a", resp.decode('utf-8').lower())
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
-    def test_staff_debug_student_info_no_submission(self, xblock):
+    def test_staff_area_student_info_no_submission(self, xblock):
         # Simulate that we are course staff
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
@@ -172,7 +172,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIn("a response was not found for this learner.", resp.body.lower())
 
     @scenario('data/peer_only_scenario.xml', user_id='Bob')
-    def test_staff_debug_student_info_peer_only(self, xblock):
+    def test_staff_area_student_info_peer_only(self, xblock):
         # Simulate that we are course staff
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
@@ -209,10 +209,10 @@ class TestCourseStaff(XBlockHandlerTestCase):
         path, context = xblock.get_student_info_path_and_context("Bob")
         self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
         self.assertIsNone(context['self_assessment'])
-        self.assertEquals("openassessmentblock/staff_debug/student_info.html", path)
+        self.assertEquals("openassessmentblock/staff_area/student_info.html", path)
 
     @scenario('data/self_only_scenario.xml', user_id='Bob')
-    def test_staff_debug_student_info_self_only(self, xblock):
+    def test_staff_area_student_info_self_only(self, xblock):
         # Simulate that we are course staff
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
@@ -240,10 +240,10 @@ class TestCourseStaff(XBlockHandlerTestCase):
         path, context = xblock.get_student_info_path_and_context("Bob")
         self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
         self.assertEquals([], context['peer_assessments'])
-        self.assertEquals("openassessmentblock/staff_debug/student_info.html", path)
+        self.assertEquals("openassessmentblock/staff_area/student_info.html", path)
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
-    def test_staff_debug_student_info_with_cancelled_submission(self, xblock):
+    def test_staff_area_student_info_with_cancelled_submission(self, xblock):
         requirements = {
             "peer": {
                 "must_grade": 1,
@@ -276,7 +276,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         path, context = xblock.get_student_info_path_and_context("Bob")
         self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
         self.assertIsNotNone(context['workflow_cancellation'])
-        self.assertEquals("openassessmentblock/staff_debug/student_info.html", path)
+        self.assertEquals("openassessmentblock/staff_area/student_info.html", path)
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_cancelled_submission_peer_assessment_render_path(self, xblock):
@@ -312,7 +312,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertEquals("openassessmentblock/peer/oa_peer_cancelled.html", path)
 
     @scenario('data/self_only_scenario.xml', user_id='Bob')
-    def test_staff_debug_student_info_image_submission(self, xblock):
+    def test_staff_area_student_info_image_submission(self, xblock):
         # Simulate that we are course staff
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
@@ -329,7 +329,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         })
 
         # Mock the file upload API to avoid hitting S3
-        with patch("openassessment.xblock.staff_info_mixin.file_api") as file_api:
+        with patch("openassessment.xblock.staff_area_mixin.file_api") as file_api:
             file_api.get_download_url.return_value = "http://www.example.com/image.jpeg"
             __, context = xblock.get_student_info_path_and_context("Bob")
 
@@ -345,7 +345,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             self.assertIn("http://www.example.com/image.jpeg", resp)
 
     @scenario('data/self_only_scenario.xml', user_id='Bob')
-    def test_staff_debug_student_info_file_download_url_error(self, xblock):
+    def test_staff_area_student_info_file_download_url_error(self, xblock):
         # Simulate that we are course staff
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
@@ -362,7 +362,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         })
 
         # Mock the file upload API to simulate an error
-        with patch("openassessment.xblock.staff_info_mixin.file_api.get_download_url") as file_api_call:
+        with patch("openassessment.xblock.staff_area_mixin.file_api.get_download_url") as file_api_call:
             file_api_call.side_effect = FileUploadInternalError("Error!")
             __, context = xblock.get_student_info_path_and_context("Bob")
 
@@ -377,7 +377,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @scenario('data/example_based_assessment.xml', user_id='Bob')
-    def test_staff_debug_student_info_full_workflow(self, xblock):
+    def test_staff_area_student_info_full_workflow(self, xblock):
         # Simulate that we are course staff
         xblock.xmodule_runtime = self._create_mock_runtime(
             xblock.scope_ids.usage_id, True, False, "Bob"
@@ -445,7 +445,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             xblock.scope_ids.usage_id, True, True, "Bob"
         )
         path, context = xblock.get_staff_path_and_context()
-        self.assertEquals('openassessmentblock/staff_debug/staff_debug.html', path)
+        self.assertEquals('openassessmentblock/staff_area/staff_area.html', path)
         self.assertTrue(context['display_schedule_training'])
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
@@ -466,7 +466,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
         path, context = xblock.get_staff_path_and_context()
-        self.assertEquals('openassessmentblock/staff_debug/staff_debug.html', path)
+        self.assertEquals('openassessmentblock/staff_area/staff_area.html', path)
         self.assertFalse(context['display_schedule_training'])
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
@@ -495,7 +495,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             xblock.scope_ids.usage_id, True, True, "Bob"
         )
         path, context = xblock.get_staff_path_and_context()
-        self.assertEquals('openassessmentblock/staff_debug/staff_debug.html', path)
+        self.assertEquals('openassessmentblock/staff_area/staff_area.html', path)
         self.assertTrue(context['display_reschedule_unfinished_tasks'])
 
     @scenario('data/example_based_assessment.xml', user_id='Bob')
@@ -568,7 +568,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertEqual(context['classifierset']['item_id'], xblock.get_student_item_dict()['item_id'])
 
         # Verify that the classifier set appears in the rendered template
-        resp = self.request(xblock, 'render_staff_info', json.dumps({}))
+        resp = self.request(xblock, 'render_staff_area', json.dumps({}))
         self.assertIn("classifier set", resp.decode('utf-8').lower())
         self.assertIn(ALGORITHM_ID, resp.decode('utf-8'))
 
