@@ -4,10 +4,12 @@ import copy
 import datetime as dt
 import json
 import logging
+import os
 import pkg_resources
 
 import pytz
 
+from django.conf import settings
 from django.template.context import Context
 from django.template.loader import get_template
 from webob import Response
@@ -16,6 +18,7 @@ from lazy import lazy
 from xblock.core import XBlock
 from xblock.fields import List, Scope, String, Boolean, Integer
 from xblock.fragment import Fragment
+
 from openassessment.xblock.grade_mixin import GradeMixin
 from openassessment.xblock.leaderboard_mixin import LeaderboardMixin
 from openassessment.xblock.defaults import * # pylint: disable=wildcard-import, unused-wildcard-import
@@ -256,6 +259,18 @@ class OpenAssessmentBlock(
         )
         return student_item_dict
 
+    def add_javascript_files(self, fragment, item):
+        """
+        Add all the JavaScript files from a directory to the specified fragment
+        """
+        if pkg_resources.resource_isdir(__name__, item):
+            for child_item in pkg_resources.resource_listdir(__name__, item):
+                path = os.path.join(item, child_item)
+                if not pkg_resources.resource_isdir(__name__, path):
+                    fragment.add_javascript_url(self.runtime.local_resource_url(self, path))
+        else:
+            fragment.add_javascript_url(self.runtime.local_resource_url(self, item))
+
     def student_view(self, context=None):
         """The main view of OpenAssessmentBlock, displayed when viewing courses.
 
@@ -290,17 +305,25 @@ class OpenAssessmentBlock(
         }
         template = get_template("openassessmentblock/oa_base.html")
         context = Context(context_dict)
-        frag = Fragment(template.render(context))
+        fragment = Fragment(template.render(context))
 
         i18n_service = self.runtime.service(self, 'i18n')
         if hasattr(i18n_service, 'get_language_bidi') and i18n_service.get_language_bidi():
-            frag.add_css(load("static/css/openassessment-rtl.css"))
+            css_url = "static/css/openassessment-rtl.css"
         else:
-            frag.add_css(load("static/css/openassessment-ltr.css"))
+            css_url = "static/css/openassessment-ltr.css"
 
-        frag.add_javascript(load("static/js/openassessment-lms.min.js"))
-        frag.initialize_js('OpenAssessmentBlock')
-        return frag
+        if settings.DEBUG:
+            fragment.add_css_url(self.runtime.local_resource_url(self, css_url))
+            self.add_javascript_files(fragment, "static/js/src/oa_shared.js")
+            self.add_javascript_files(fragment, "static/js/src/oa_server.js")
+            self.add_javascript_files(fragment, "static/js/src/lms")
+        else:
+            # TODO: load CSS and JavaScript as URLs once they can be served by the CDN
+            fragment.add_css(load(css_url))
+            fragment.add_javascript(load("static/js/openassessment-lms.min.js"))
+        fragment.initialize_js('OpenAssessmentBlock')
+        return fragment
 
 
     @property

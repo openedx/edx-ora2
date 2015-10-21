@@ -9,7 +9,7 @@ make install-js
 make javascript
 
 # Configure Django settings
-export DJANGO_SETTINGS_MODULE="settings.dev"
+export DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-"settings.dev"}
 
 # Create the database
 echo "Updating the database..."
