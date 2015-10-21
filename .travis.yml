@@ -38,5 +38,6 @@ branches:
     only:
       - master
       - ora-staff-grading
+      - ned/django-upgrade-1.8
 after_success:
   coveralls
