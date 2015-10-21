@@ -5,8 +5,9 @@ from uuid import uuid4
 import json
 import logging
 from django.conf import settings
+from django.core import signals
 from django.core.files.base import ContentFile
-from django.core.cache import cache, get_cache
+from django.core.cache import cache, _create_cache
 from django.db import models, transaction, DatabaseError
 from django.utils.timezone import now
 from django_extensions.db.fields import UUIDField
@@ -21,11 +22,23 @@ AI_ASSESSMENT_TYPE = "AI"
 logger = logging.getLogger(__name__)
 
 
+def create_cache(backend, **kwargs):
+    """
+    Create cache backend. Using this custom function to avoid deprecation warnings.
+    """
+    cache = _create_cache(backend, **kwargs)
+    # Some caches -- python-memcached in particular -- need to do a cleanup at the
+    # end of a request cycle. If not implemented in a particular backend
+    # cache.close is a no-op
+    signals.request_finished.connect(cache.close)
+    return cache
+
+
 # Use an in-memory cache to hold classifier data, but allow settings to override this.
 # The classifier data will generally be larger than memcached's default max size
 CLASSIFIERS_CACHE_IN_MEM = getattr(
     settings, 'ORA2_CLASSIFIERS_CACHE_IN_MEM',
-    get_cache(
+    create_cache(
         'django.core.cache.backends.locmem.LocMemCache',
         LOCATION='openassessment.ai.classifiers_dict'
     )
@@ -33,7 +46,7 @@ CLASSIFIERS_CACHE_IN_MEM = getattr(
 
 CLASSIFIERS_CACHE_IN_FILE = getattr(
     settings, 'ORA2_CLASSIFIERS_CACHE_IN_FILE',
-    get_cache(
+    create_cache(
         'django.core.cache.backends.filebased.FileBasedCache',
         LOCATION='/tmp/ora2_classifier_cache'
     )
