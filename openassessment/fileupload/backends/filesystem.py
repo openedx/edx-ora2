@@ -61,7 +61,7 @@ def get_cache():
     cache_name = getattr(settings, "ORA2_FILEUPLOAD_CACHE_NAME", None)
     if cache_name is None:
         raise exceptions.FileUploadInternalError("Undefined cache backend for file upload")
-    return django.core.cache.get_cache(cache_name)
+    return django.core.cache.caches[cache_name]
 
 
 def make_upload_url_available(url_key_name, timeout):
