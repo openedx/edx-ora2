@@ -1,131 +1,136 @@
 /**
-Editing interface for the prompts.
+ Editing interface for the prompts.
 
-Args:
-    element (DOM element): The DOM element representing this view.
+ Args:
+ element (DOM element): The DOM element representing this view.
 
-Returns:
-    OpenAssessment.EditPromptsView
+ Returns:
+ OpenAssessment.EditPromptsView
 
-**/
-OpenAssessment.EditPromptsView = function(element, notifier) {
-    this.element = element;
-    this.editorElement = $(this.element).closest("#openassessment-editor");
-    this.addRemoveEnabled = !(this.editorElement.attr('data-is-released') === 'true');
+ **/
 
-    this.promptsContainer = new OpenAssessment.Container(
-        OpenAssessment.Prompt, {
-            containerElement: $("#openassessment_prompts_list", this.element).get(0),
-            templateElement: $("#openassessment_prompt_template", this.element).get(0),
-            addButtonElement: $("#openassessment_prompts_add_prompt", this.element).get(0),
-            removeButtonClass: "openassessment_prompt_remove_button",
-            containerItemClass: "openassessment_prompt",
-            notifier: notifier,
-            addRemoveEnabled: this.addRemoveEnabled
-        }
-    );
-    this.promptsContainer.addEventListeners();
-};
+(function() {
+    'use strict';
+
+    OpenAssessment.EditPromptsView = function(element, notifier) {
+        this.element = element;
+        this.editorElement = $(this.element).closest('#openassessment-editor');
+        this.addRemoveEnabled = this.editorElement.attr('data-is-released') !== 'true';
+
+        this.promptsContainer = new OpenAssessment.Container(
+            OpenAssessment.Prompt, {
+                containerElement: $('#openassessment_prompts_list', this.element).get(0),
+                templateElement: $('#openassessment_prompt_template', this.element).get(0),
+                addButtonElement: $('#openassessment_prompts_add_prompt', this.element).get(0),
+                removeButtonClass: 'openassessment_prompt_remove_button',
+                containerItemClass: 'openassessment_prompt',
+                notifier: notifier,
+                addRemoveEnabled: this.addRemoveEnabled
+            }
+        );
+        this.promptsContainer.addEventListeners();
+    };
 
 
-OpenAssessment.EditPromptsView.prototype = {
+    OpenAssessment.EditPromptsView.prototype = {
 
-    /**
-    Construct a list of prompts definitions from the editor UI.
+        /**
+         Construct a list of prompts definitions from the editor UI.
 
-    Returns:
-        list of prompt objects
+         Returns:
+         list of prompt objects
 
-    Example usage:
-    >>> editPromptsView.promptsDefinition();
-    [
-        {
-            uuid: "cfvgbh657",
-            description: "Description",
-            order_num: 0,
+         Example usage:
+         >>> editPromptsView.promptsDefinition();
+         [
+         {
+             uuid: 'cfvgbh657',
+             description: 'Description',
+             order_num: 0,
+         },
+         ...
+         ]
+
+         **/
+        promptsDefinition: function() {
+            var prompts = this.promptsContainer.getItemValues();
+            return prompts;
         },
-        ...
-    ]
 
-    **/
-    promptsDefinition: function() {
-        var prompts = this.promptsContainer.getItemValues();
-        return prompts;
-    },
+        /**
+         Add a new prompt.
+         Uses a client-side template to create the new prompt.
+         **/
+        addPrompt: function() {
+            if (this.addRemoveEnabled) {
+                this.promptsContainer.add();
+            }
+        },
 
-    /**
-    Add a new prompt.
-    Uses a client-side template to create the new prompt.
-    **/
-    addPrompt: function() {
-        if (this.addRemoveEnabled) {
-            this.promptsContainer.add();
-        }
-    },
+        /**
+         Remove a prompt.
 
-    /**
-    Remove a prompt.
+         Args:
+         item (OpenAssessment.RubricCriterion): The criterion item to remove.
+         **/
+        removePrompt: function(item) {
+            if (this.addRemoveEnabled) {
+                this.promptsContainer.remove(item);
+            }
+        },
 
-    Args:
-        item (OpenAssessment.RubricCriterion): The criterion item to remove.
-    **/
-    removePrompt: function(item) {
-        if (this.addRemoveEnabled) {
-            this.promptsContainer.remove(item);
-        }
-    },
+        /**
+         Retrieve all prompts.
 
-    /**
-    Retrieve all prompts.
+         Returns:
+         Array of OpenAssessment.Prompt objects.
 
-    Returns:
-        Array of OpenAssessment.Prompt objects.
+         **/
+        getAllPrompts: function() {
+            return this.promptsContainer.getAllItems();
+        },
 
-    **/
-    getAllPrompts: function() {
-        return this.promptsContainer.getAllItems();
-    },
+        /**
+         Retrieve a prompt item from the prompts.
 
-    /**
-    Retrieve a prompt item from the prompts.
+         Args:
+         index (int): The index of the prompt, starting from 0.
 
-    Args:
-        index (int): The index of the prompt, starting from 0.
+         Returns:
+         OpenAssessment.Prompt or null
 
-    Returns:
-        OpenAssessment.Prompt or null
+         **/
+        getPromptItem: function(index) {
+            return this.promptsContainer.getItem(index);
+        },
 
-    **/
-    getPromptItem: function(index) {
-        return this.promptsContainer.getItem(index);
-    },
+        /**
+         Mark validation errors.
 
-    /**
-    Mark validation errors.
+         Returns:
+         Boolean indicating whether the view is valid.
 
-    Returns:
-        Boolean indicating whether the view is valid.
+         **/
+        validate: function() {
+            return true;
+        },
 
-    **/
-    validate: function() {
-        return true;
-    },
+        /**
+         Return a list of validation errors visible in the UI.
+         Mainly useful for testing.
 
-   /**
-    Return a list of validation errors visible in the UI.
-    Mainly useful for testing.
+         Returns:
+         list of string
 
-    Returns:
-        list of string
+         **/
+        validationErrors: function() {
+            var errors = [];
+            return errors;
+        },
 
-    **/
-    validationErrors: function() {
-        var errors = [];
-        return errors;
-    },
-
-    /**
-    Clear all validation errors from the UI.
-    **/
-    clearValidationErrors: function() {}
-};
+        /**
+         Clear all validation errors from the UI.
+         **/
+        clearValidationErrors: function() {}
+    };
+})();
