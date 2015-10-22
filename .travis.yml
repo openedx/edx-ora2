@@ -38,5 +38,6 @@ branches:
     only:
       - master
       - will/upgrade-django-rest-framework
+      - django1.8-upgrade
 after_success:
   coveralls
