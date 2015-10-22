@@ -76,7 +76,7 @@ def require_course_staff(error_key, with_json_handler=False):
         def _wrapped(xblock, *args, **kwargs):  # pylint: disable=C0111
             permission_errors = {
                 "STAFF_INFO": xblock._(u"You do not have permission to access staff information"),
-                "STUDENT_INFO": xblock._(u"You do not have permission to access student information."),
+                "STUDENT_INFO": xblock._(u"You do not have permission to access learner information."),
 
             }
 
@@ -262,7 +262,7 @@ class StaffInfoMixin(object):
                     # from being displayed.
                     msg = (
                         u"Could not retrieve image URL for staff debug page.  "
-                        u"The student username is '{student_username}', and the file key is {file_key}"
+                        u"The learner username is '{student_username}', and the file key is {file_key}"
                     ).format(student_username=student_username, file_key=file_key)
                     logger.exception(msg)
 
@@ -376,9 +376,9 @@ class StaffInfoMixin(object):
                 cancelled_by_id=student_item_dict['student_id'],
                 assessment_requirements=assessment_requirements
             )
-            return {"success": True, 'msg': self._(u"The student submission has been removed from peer assessment. "
-                                                   u"The student receives a grade of zero unless you reset "
-                                                   u"the student's attempts for the problem to allow them to "
+            return {"success": True, 'msg': self._(u"The learner submission has been removed from peer assessment. "
+                                                   u"The learner receives a grade of zero unless you reset "
+                                                   u"the learner's attempts for the problem to allow them to "
                                                    u"resubmit a response.")}
         except (
                 AssessmentWorkflowError,

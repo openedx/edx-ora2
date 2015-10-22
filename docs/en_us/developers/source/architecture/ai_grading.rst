@@ -11,7 +11,7 @@ Overview
 In this document, we describe the architecture for:
 
 * Training a classifier using a supervised machine learning algorithm.
-* Grading student essays using a trained classifier.
+* Grading learner essays using a trained classifier.
 
 Both training and grading require more time than is acceptable within the
 request-response cycle of a web application.  Therefore, both
@@ -31,11 +31,11 @@ Requirements
 ------------
 
 * Grading tasks *must* be completed within hours after being scheduled.
-  Ideally, the delay would be within several minutes, but students could
+  Ideally, the delay would be within several minutes, but learners could
   tolerate longer delays during periods of high usage or failure recovery.
   The AI Grading API does not implement deadlines, so if a submission
   is submitted for grading (allowed when the problem is open),
-  the student will receive a grade for the AI assessment step.
+  the learner will receive a grade for the AI assessment step.
 
 * Grading task queues must tolerate periods of high usage,
   as the number of submissions will likely increase when
@@ -63,7 +63,7 @@ Entities
 
 * **AI Grading API**: An API that encapsulates all interactions with AI-grading database models and the task queue.  All inputs and outputs are JSON-serializable, so the API calls can be made in-process (likely the initial implementation) or through the network.
 
-* **Submission**: An essay submitted by a student to a problem in a course.
+* **Submission**: An essay submitted by a learner to a problem in a course.
 
 * **Assessment**: Specifies the scores a submission received for each criterion in a rubric.
 
@@ -129,9 +129,9 @@ Parameter: AI Grading Workflow ID
 
 Procedure:
 
-1. A student submits an essay, creating a **submission** in the database.
+1. A learner submits an essay, creating a **submission** in the database.
 
-2. The student updates the workflow, and the **Workflow API** uses the **AI Grading API** to:
+2. The learner updates the workflow, and the **Workflow API** uses the **AI Grading API** to:
 
     a. Retrieve the most recent **ClassifierSet** for the current rubric definition (possibly none if training hasn't yet finished).
     b. Create an **AI Grading Workflow** record in the database, associated with a Submission ID and **ClassifierSet**.
@@ -141,8 +141,8 @@ Procedure:
 
     a. Retrieve the submission and classifiers from persistent storage or a cache.
 
-        i. If the **ClassifierSet** is null, then the classifier wasn't available when the student created the submission.
-        ii. Since we cannot grade the student without a classifier, we create the **AI Grading Workflow** record but do not schedule the **Grading Task**.  This means that the workflow will not be marked complete.
+        i. If the **ClassifierSet** is null, then the classifier wasn't available when the learner created the submission.
+        ii. Since we cannot grade the learner without a classifier, we create the **AI Grading Workflow** record but do not schedule the **Grading Task**.  This means that the workflow will not be marked complete.
         iii. When a **Training Task** completes, update incomplete **Grading Tasks** with null **ClassifierSets** with the newly created **ClassifierSet**, then schedule the **GradingTasks**.
 
     b. **Optimization**: Check whether a completed **AI Grading Workflow** exists for this submission using the same **ClassifierSet**.
@@ -156,7 +156,7 @@ Procedure:
     e. Create an **AssessmentPart** for each rubric criterion, containing the score assigned by the classifier for that criterion.
     f. Mark the **AI Grading Workflow** as complete by associating the **Assessment** with the workflow.
 
-4. When a student checks the status of the submission, the **AI Grading API**:
+4. When a learner checks the status of the submission, the **AI Grading API**:
 
     a. Queries the database for the latest **AI Grading Workflow** matching the submission.
     b. Reports whether the workflow is started or complete.

@@ -4,7 +4,7 @@
 Migrating AI Problems
 ---------------------
 
-ORA2 supports AI assessment for student responses, but currently does not support authoring of AI problems.  In order to migrate an existing AI assessment problem into ORA2, you will need to:
+ORA2 supports AI assessment for learner responses, but currently does not support authoring of AI problems.  In order to migrate an existing AI assessment problem into ORA2, you will need to:
 
 1. Create a problem with example-based assessment enabled.
 
@@ -53,4 +53,4 @@ ORA2 supports AI assessment for student responses, but currently does not suppor
 
 .. image:: course_staff_ai.png
 
-3. At this point, students can submit essays and receive grades.
+3. At this point, learners can submit essays and receive grades.

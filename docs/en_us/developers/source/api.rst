@@ -33,7 +33,7 @@ Example-Based Assessment (AI)
 .. automodule:: openassessment.assessment.api.ai
    :members:
 
-Student Training
+Learner Training
 ****************
 
 .. automodule:: openassessment.assessment.api.student_training

@@ -1,16 +1,16 @@
-.. _PA for Students:
+.. _PA for Learners:
 
 ###########################################
-Open Response Assessments for Students
+Open Response Assessments for Learners
 ###########################################
 
-You may want to let your students know what to expect when they complete open response assessments. This guide walks students through each step of the process. 
+You may want to let your learners know what to expect when they complete open response assessments. This guide walks learners through each step of the process. 
 
 **************************************************
-Student Introduction to Open Response Asssessments
+Learner Introduction to Open Response Asssessments
 **************************************************
 
-In an open response assessment, you'll provide a response to a question that may not have a simple or definitive answer. Some open response assessments have asked students to submit written responses, videos of speeches, and computer code. 
+In an open response assessment, you'll provide a response to a question that may not have a simple or definitive answer. Some open response assessments have asked learners to submit written responses, videos of speeches, and computer code. 
 
 Open response assessments may include a peer assessment, a self assessment, or both. With a peer assessment, you'll assess, or grade, responses that several of your peers have submitted, and several of your peers will assess your response. With a self assessment, you'll assess your own response. To assess a response, you'll compare the response to a rubric that the instructor provides. 
 
@@ -25,7 +25,7 @@ When you assess a response, you'll select the option that best describes the res
 Some instructors create a **Top Responses** section that shows the top-scoring responses for the assignment and the scores that these responses received. If an instructor creates this section, you can see it below your score after you've completed each step of the assignment. 
 
 ************************
-Student Instructions
+Learner Instructions
 ************************
 
 When you come to an open response assessment in the course, you'll see the question and a response field. After you submit your response, you'll assess some of your peers' responses, your own response, or both, depending on the assignment. You can see the steps that your assignment includes below the response field.
@@ -34,11 +34,11 @@ When you come to an open response assessment in the course, you'll see the quest
    :alt: Open response assessment example with question, response field, and assessment types and status labeled
    :width: 550
 
-Here, we'll walk you through the process of completing an open response assessment that includes a student training step, a peer assessment, and a self assessment:
+Here, we'll walk you through the process of completing an open response assessment that includes a learner training step, a peer assessment, and a self assessment:
 
 #. Submit your response to a question.
 #. Learn to assess responses.
-#. Assess responses that other students have submitted.
+#. Assess responses that other learners have submitted.
 #. Assess your own response to the question.
 #. Receive your score and provide feedback on the peer assessment.
 
@@ -59,14 +59,14 @@ Read the question carefully. Some instructors include important information in t
 
 After you compose a response, type it into the response field under **Your Response**, and then click **Submit your response and move to the next step**. If you can't finish your response all at once, you can click **Save Your Progress** to save a draft of your response, and then come back and submit it later.
 
-After you submit your response, if other students have already submitted responses, the peer assessment step starts immediately. However, you don't have to start grading right away. If you want to stop working and come back later, just refresh or reopen your browser when you come back. New peer responses will be available for you to grade.
+After you submit your response, if other learners have already submitted responses, the peer assessment step starts immediately. However, you don't have to start grading right away. If you want to stop working and come back later, just refresh or reopen your browser when you come back. New peer responses will be available for you to grade.
 
-If no other students have submitted responses yet, you'll see the following message:
+If no other learners have submitted responses yet, you'll see the following message:
 
 .. code-block:: xml
 
   Waiting for Peer Responses
-  All submitted peer responses have been assessed. Check back later to see if more students
+  All submitted peer responses have been assessed. Check back later to see if more learners
   have submitted responses. You'll receive your grade after you complete the peer assessment
   and self assessment steps, and after your peers have assessed your response.
 
@@ -134,7 +134,7 @@ For each of the criteria, you'll see one of the following two messages, dependin
   Selected Options Agree
   The option you selected is the option that the instructor selected.
 
-In the following example, the student chose one correct option and one incorrect option.
+In the following example, the learner chose one correct option and one incorrect option.
 
 .. image:: /Images/PA_TrainingAssessment_Scored.png
    :alt: Sample training response, scored
@@ -148,13 +148,13 @@ When you've successfully assessed all of the sample responses, you'll move to th
 Assess Peer Responses
 =====================
 
-When peer assessment starts, you'll see the original question, another student's response, and the rubric for the assignment. Above the response you can see how many responses you'll assess and how many you've already assessed. 
+When peer assessment starts, you'll see the original question, another learner's response, and the rubric for the assignment. Above the response you can see how many responses you'll assess and how many you've already assessed. 
 
 .. image:: /Images/PA_S_PeerAssmt.png
    :alt: In-progress peer assessment
    :width: 500
 
-You'll assess these responses by selecting options in the rubric, the same way you assessed the sample responses in the "learn to assess responses" step. Additionally, this step has a field below the rubric where you can provide comments about the student's response. 
+You'll assess these responses by selecting options in the rubric, the same way you assessed the sample responses in the "learn to assess responses" step. Additionally, this step has a field below the rubric where you can provide comments about the learner's response. 
 
 .. note:: Some assessments may have an additional **Comments** field for one or more of the assessment's individual criteria. You can enter up to 300 characters in these fields. In the following image, both criteria have a **Comments** field. There is also a field for overall comments on the response.
 
@@ -164,7 +164,7 @@ You'll assess these responses by selecting options in the rubric, the same way y
 
 After you've selected options in the rubric and provided additional comments about the response in this field, click **Submit your assessment and move to response #<number>**.
 
-When you submit your assessment of the first student's response, another response opens for you. Assess this response in the same way that you assessed the first response, and then submit your assessment. You'll repeat these steps until you've assessed the required number of responses. The number in the upper-right corner of the step is updated as you assess each response.
+When you submit your assessment of the first learner's response, another response opens for you. Assess this response in the same way that you assessed the first response, and then submit your assessment. You'll repeat these steps until you've assessed the required number of responses. The number in the upper-right corner of the step is updated as you assess each response.
 
 Assess Additional Peer Responses
 ********************************
@@ -192,7 +192,7 @@ When you've completed enough peer assessments, your self assessment opens. You'l
 Receive Your Score and Provide Feedback
 ==========================================
 
-After you submit your self assessment, if other students are still assessing your response, you'll see the following message under the **Assess Your Response** step.
+After you submit your self assessment, if other learners are still assessing your response, you'll see the following message under the **Assess Your Response** step.
 
 .. code-block:: xml
 
@@ -206,7 +206,7 @@ If you see this message, keep checking back periodically until peer assessment i
 When peer assessment is complete, you can see the scores you received from all of your peers, as well as your self assessment. You can also see any additional comments that your peers have provided.
 
 .. image:: /Images/PA_AllScores.png
-   :alt: A student's response with peer and self assessment scores
+   :alt: A learner's response with peer and self assessment scores
    :width: 550
 
 If you want to, you can provide feedback on the scores that you received under **Provide Feedback on Peer Assessments**.
@@ -221,7 +221,7 @@ If you've assessed the required number of peer responses and completed your self
 Peer Assessment Scoring
 ***********************
 
-Peer assessments are scored by criteria. An individual criterion's score is the *median*, not average, of the scores that each peer assessor gave that criterion. For example, if the Ideas criterion in a peer assessment receives a 10 from one student, a 7 from a second student, and an 8 from a third student, the Ideas criterion's score is 8.
+Peer assessments are scored by criteria. An individual criterion's score is the *median*, not average, of the scores that each peer assessor gave that criterion. For example, if the Ideas criterion in a peer assessment receives a 10 from one learner, a 7 from a second learner, and an 8 from a third learner, the Ideas criterion's score is 8.
 
 Your final score for a peer assessment is the sum of the median scores for each individual criterion. 
 

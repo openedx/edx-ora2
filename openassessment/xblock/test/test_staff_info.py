@@ -102,7 +102,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # If we ARE course staff, then we should see the debug info
         xblock.xmodule_runtime.user_is_staff = True
         resp = self.request(xblock, 'render_student_info', json.dumps({}))
-        self.assertIn("couldn\'t find a response for this student.", resp.decode('utf-8').lower())
+        self.assertIn("couldn\'t find a response for this learner.", resp.decode('utf-8').lower())
 
     @scenario('data/basic_scenario.xml')
     def test_hide_course_staff_debug_info_in_studio_preview(self, xblock):
@@ -169,7 +169,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         request.params = {"student_id": "test_student"}
         # Verify that we can render without error
         resp = xblock.render_student_info(request)
-        self.assertIn("couldn\'t find a response for this student.", resp.body.lower())
+        self.assertIn("couldn\'t find a response for this learner.", resp.body.lower())
 
     @scenario('data/peer_only_scenario.xml', user_id='Bob')
     def test_staff_debug_student_info_peer_only(self, xblock):
@@ -623,7 +623,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # Verify that we can render without error
         params = {"submission_uuid": submission["uuid"], "comments": "Inappropriate language."}
         resp = self.request(xblock, 'cancel_submission', json.dumps(params), response_format='json')
-        self.assertIn("The student submission has been removed from peer", resp['msg'])
+        self.assertIn("The learner submission has been removed from peer", resp['msg'])
         self.assertEqual(True, resp['success'])
 
     def _create_mock_runtime(

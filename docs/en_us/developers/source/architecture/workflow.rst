@@ -6,9 +6,9 @@ Understanding the Workflow
 
 
 The `openassessment.workflow` application is tasked with managing the overall
-life-cycle of a student's submission as it goes through various evaluation steps
+life-cycle of a learner's submission as it goes through various evaluation steps
 (e.g. peer assessment, self assessment). A new workflow entry is created as soon
-as the student submits their response to a question, and it is initialized with
+as the learner submits their response to a question, and it is initialized with
 the steps (and step order) are initialized at that time.
 
 Canonical Status
@@ -16,7 +16,7 @@ Canonical Status
    `AssessmentWorkflow` model is not the canonical status. This is because the
    determination of what we need to do in order to be "done" is specified by the
    OpenAssessmentBlock problem definition and can change. So every time we are
-   asked where the student is, we have to query the assessment APIs (peer, self,
+   asked where the learner is, we have to query the assessment APIs (peer, self,
    AI, etc.) with the latest requirements(e.g. "number of submissions you have
    to assess = 5"). The "status" field on this model is an after the fact
    recording of the last known state of that information so we can search
@@ -48,9 +48,9 @@ Isolation of Assessment types
       `submission_uuid`, repeated calls to this function should return the same
       thing.
    `on_init(submission_uuid)`
-      Notification to the API that the student has submitted a response.
+      Notification to the API that the learner has submitted a response.
    `on_start(submission_uuid)`
-      Notification to the API that the student has started the assessment step.
+      Notification to the API that the learner has started the assessment step.
 
    In the long run, it could be that `OpenAssessmentBlock` becomes a wrapper
    that talks to child XBlocks via this kind of API, and that each child would
@@ -80,7 +80,7 @@ Simple Order/Dependency Assumptions
    for the next six months or so.
 
 Steps Stay Completed
-   In the interests of not surprising/enraging students, once a step is complete,
+   In the interests of not surprising/enraging learners, once a step is complete,
    it stays complete. So if peer grading requires two assessors and a particular
    submission meets that threshold, it will be considered complete at that point
    in time. Raising the threshold to three required assessors in the future will
@@ -108,5 +108,5 @@ Django settings
    * `ORA2_ASSESSMENTS`: a `dict` mapping assessment names to the Python module path
      of the corresponding assessment API.
    * `ORA2_ASSESSMENT_SCORE_PRIORITY`: a `list` of assessment names that determine
-     which assessment type is used to generate a student's score.
+     which assessment type is used to generate a learner's score.
 

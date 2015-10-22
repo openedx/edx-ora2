@@ -959,7 +959,7 @@
             }
         ],
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"],
-        "expected_error": "you must provide at least one example response for student training"
+        "expected_error": "you must provide at least one example response for learner training"
     },
 
     "student_training_example_does_not_match_rubric": {

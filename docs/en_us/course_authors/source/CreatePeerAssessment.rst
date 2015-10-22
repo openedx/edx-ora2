@@ -58,10 +58,10 @@ Currently, you cannot add text formatting or images inside the Peer Assessment c
 .. _PA Allow Images:
 
 ============================================
-Allow Students to Submit Images (optional)
+Allow Learners to Submit Images (optional)
 ============================================
 
-To allow students to submit an image with a response:
+To allow learners to submit an image with a response:
 
 #. In the component editor, click the **Settings** tab.
 #. Next to **Allow Image Responses**, select **True**.
@@ -69,10 +69,10 @@ To allow students to submit an image with a response:
 .. note:: 
  
    * The image file must be a .jpg or .png file, and it must be smaller than 5 MB in size.
-   * Currently, course teams cannot see any of the images that students submit. Images are not visible in the body of the assignment in the courseware, and they are not included in the course data package.
-   * You can allow students to upload an image, but you cannot require it.
-   * Students can only submit one image with a response.
-   * All responses must contain text. Students cannot submit a response that contains only an image.
+   * Currently, course teams cannot see any of the images that learners submit. Images are not visible in the body of the assignment in the courseware, and they are not included in the course data package.
+   * You can allow learners to upload an image, but you cannot require it.
+   * Learners can only submit one image with a response.
+   * All responses must contain text. Learners cannot submit a response that contains only an image.
 
 .. _PA Add Rubric:
 
@@ -80,11 +80,11 @@ To allow students to submit an image with a response:
 Step 3. Add the Rubric
 ******************************
 
-In this step, you'll add your rubric and provide your students with feedback options. 
+In this step, you'll add your rubric and provide your learners with feedback options. 
 
 For each step below, replace any default text with your own text.
 
-.. note:: All open response assessments include a feedback field below the rubric so that students can provide written feedback on a peer's overall response. You can also allow or require students to provide feedback for individual criteria. See step 2.4 below for instructions. For more information, see :ref:`Feedback Options`.
+.. note:: All open response assessments include a feedback field below the rubric so that learners can provide written feedback on a peer's overall response. You can also allow or require learners to provide feedback for individual criteria. See step 2.4 below for instructions. For more information, see :ref:`Feedback Options`.
 
 To add the rubric:
 
@@ -95,12 +95,12 @@ To add the rubric:
 #. Repeat step 4 for each option. If you need to add more options, click **Add Option**.
 #. Next to **Feedback for This Criterion**, select a value in the drop-down list.
 
-      * If you don't want students to provide feedback for this individual criterion, select **None**.
-      * If you want to require students to provide feedback, select **Required**.
-      * If you want to allow students to provide feedback, but not require it, select **Optional**.
+      * If you don't want learners to provide feedback for this individual criterion, select **None**.
+      * If you want to require learners to provide feedback, select **Required**.
+      * If you want to allow learners to provide feedback, but not require it, select **Optional**.
 
 7. Follow the instructions in steps 2-6 to add your remaining criteria. If you need to add more criteria, click **Add Criterion** at the end of the list of criteria.
-#. Include instructions for students to provide overall written feedback on their peers' responses. You can leave the default text in the **Feedback Instructions** field or replace it with your own text.
+#. Include instructions for learners to provide overall written feedback on their peers' responses. You can leave the default text in the **Feedback Instructions** field or replace it with your own text.
 
 .. _PA Criteria Comment Field Only:
 
@@ -125,14 +125,14 @@ To provide a comment field without options:
 Step 4. Specify the Assignment Name and Response Dates
 ************************************************************
 
-To specify a name for the assignment as well as start and due dates for all student responses:
+To specify a name for the assignment as well as start and due dates for all learner responses:
 
 #. In the component editor, click the **Settings** tab.
 #. Next to **Display Name**, type the name you want to give the assignment.
-#. Next to **Response Start Date** and **Response Start Time**, enter the date and time when you want students to be able to begin submitting responses. Note that all times are in Universal Coordinated Time (UTC).
-#. Next to **Response Due Date** and **Response Due Time**, enter the date and time by which all student responses must be submitted. Note that all times are in Universal Coordinated Time (UTC).
+#. Next to **Response Start Date** and **Response Start Time**, enter the date and time when you want learners to be able to begin submitting responses. Note that all times are in Universal Coordinated Time (UTC).
+#. Next to **Response Due Date** and **Response Due Time**, enter the date and time by which all learner responses must be submitted. Note that all times are in Universal Coordinated Time (UTC).
 
-.. note:: We recommend that you set the response due date and time at least two days before the peer assessment due date and time. If the response due time and peer assessment due time are close together, and a student submits a response just before responses are due, other students may not have time to perform peer assessments before peer assessments are due.
+.. note:: We recommend that you set the response due date and time at least two days before the peer assessment due date and time. If the response due time and peer assessment due time are close together, and a learner submits a response just before responses are due, other learners may not have time to perform peer assessments before peer assessments are due.
 
 .. _PA Select Assignment Steps:
 
@@ -140,9 +140,9 @@ To specify a name for the assignment as well as start and due dates for all stud
 Step 5. Select Assignment Steps
 ****************************************
 
-Open response assessment assignments can include student training, peer assessment, and self assessment steps. You can include a peer assessment step before a self assessment step and vice versa. 
+Open response assessment assignments can include learner training, peer assessment, and self assessment steps. You can include a peer assessment step before a self assessment step and vice versa. 
 
-If you include a student training step, you **must** include a peer assessment step. You can also include a self assessment step. The student training step must come before both the peer assessment and the self assessment step.
+If you include a learner training step, you **must** include a peer assessment step. You can also include a self assessment step. The learner training step must come before both the peer assessment and the self assessment step.
 
 To add steps to the assignment:
 
@@ -150,13 +150,13 @@ To add steps to the assignment:
 #. Scroll down past the **Allow Image Responses** field.
 #. Locate the following headings:
 
-   * **Step: Student Training**
+   * **Step: Learner Training**
    * **Step: Peer Assessment**
    * **Step: Self Assessment**
 
    Select the check boxes for the steps that you want the assignment to include. 
 
-#. (optional) If you want to change the order of the steps, drag the steps into the order that you want. If you include a student training step, make sure it is the first step in the assignment.
+#. (optional) If you want to change the order of the steps, drag the steps into the order that you want. If you include a learner training step, make sure it is the first step in the assignment.
 
 .. _PA Specify Step Settings:
 
@@ -168,36 +168,36 @@ After you select the steps that you want, you'll specify settings for those step
 
 .. note:: If you make changes to a step, but then you clear the check box for that step, the step will no longer be part of the assignment and your changes will not be saved. 
 
-.. _PA Student Training Step:
+.. _PA Learner Training Step:
 
 ========================
-Student Training
+Learner Training
 ========================
 
-For the student training step, you'll enter one or more responses that you have created, then select an option for each criterion in your rubric.
+For the learner training step, you'll enter one or more responses that you have created, then select an option for each criterion in your rubric.
 
-.. note:: You must enter your complete rubric on the **Rubric** tab before you can select options for the student training responses. If you later change one of your criteria or any of its options, you'll also have to update the student training step.
+.. note:: You must enter your complete rubric on the **Rubric** tab before you can select options for the learner training responses. If you later change one of your criteria or any of its options, you'll also have to update the learner training step.
 
-To add and score student training responses:
+To add and score learner training responses:
 
-#. Under **Step: Student Training**, locate the first **Scored Response** section.
+#. Under **Step: Learner Training**, locate the first **Scored Response** section.
 #. In the **Response** field, enter the text of your example response.
 #. Under **Response Score**, select the option that you want for each criterion.
 
-For more information, see :ref:`PA Student Training Assessments`.
+For more information, see :ref:`PA Learner Training Assessments`.
 
 ============================
 Peer Assessment
 ============================
 
-For the peer assessment step, you'll specify the number of responses that each student must grade, the number of students that must grade each response, and start and due dates. All fields are required.
+For the peer assessment step, you'll specify the number of responses that each learner must grade, the number of learners that must grade each response, and start and due dates. All fields are required.
 
 To specify peer assessment settings:
 
 #. Locate the **Step: Peer Assessment** heading.
-#. Next to **Must Grade**, enter the number of responses that each student must grade.
-#. Next to **Graded By**, enter the number of students that must grade each response.
-#. Next to **Start Date** and **Start Time**, enter the date and time when students can begin assessing their peers' responses. All times are in Universal Coordinated Time (UTC).
+#. Next to **Must Grade**, enter the number of responses that each learner must grade.
+#. Next to **Graded By**, enter the number of learners that must grade each response.
+#. Next to **Start Date** and **Start Time**, enter the date and time when learners can begin assessing their peers' responses. All times are in Universal Coordinated Time (UTC).
 #. Next to **Due Date** and **Due Time**, enter the date and time by which all peer assessments must be complete. All times are in UTC.
 
 ============================
@@ -207,7 +207,7 @@ Self Assessment
 For the self assessment step, you'll specify when the step starts and ends.
 
 #. Locate the **Step: Self Assessment** heading.
-#. Next to **Start Date** and **Start Time**, enter the date and time when students can begin assessing their peers' responses. All times are in Universal Coordinated Time (UTC).
+#. Next to **Start Date** and **Start Time**, enter the date and time when learners can begin assessing their peers' responses. All times are in Universal Coordinated Time (UTC).
 #. Next to **Due Date** and **Due Time**, enter the date and time by which all peer assessments must be complete. All times are in UTC.
 
 .. _PA Show Top Responses:
@@ -216,10 +216,10 @@ For the self assessment step, you'll specify when the step starts and ends.
 Step 7. Show Top Responses
 ******************************
 
-To allow students to see the top-scoring responses for the assignment, you'll specify a number on the **Settings** tab.
+To allow learners to see the top-scoring responses for the assignment, you'll specify a number on the **Settings** tab.
 
 #. In the component editor, click the **Settings** tab.
-#. In the **Top Responses** field, specify the number of responses that you want to appear in the **Top Responses** section below the student's final score. If you don't want this section to appear, set the number to 0. The maximum number is 100.
+#. In the **Top Responses** field, specify the number of responses that you want to appear in the **Top Responses** section below the learner's final score. If you don't want this section to appear, set the number to 0. The maximum number is 100.
 
 .. note:: Because each response can be up to 300 pixels in height, we recommend that you set this number to 20 or lower to prevent the page from becoming too long.
 
