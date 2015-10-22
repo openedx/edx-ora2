@@ -8,16 +8,19 @@ module.exports = function(config) {
 
 
     plugins: [
-      'karma-coverage',
       'karma-jasmine',
+      'karma-jasmine-jquery',
       'karma-chrome-launcher',
       'karma-phantomjs-launcher',
+      'karma-coverage',
+      'karma-sinon',
+      'karma-jasmine-html-reporter',
       'karma-spec-reporter'
     ],
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine-jquery', 'jasmine', 'sinon'],
 
 
     // list of files / patterns to load in the browser
@@ -60,7 +63,7 @@ module.exports = function(config) {
     reporters: ['spec', 'coverage'],
 
     coverageReporter: {
-        type : 'text'
+      type : 'text'
     },
 
     // web server port

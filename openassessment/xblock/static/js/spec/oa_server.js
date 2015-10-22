@@ -24,7 +24,7 @@ describe("OpenAssessment.Server", function() {
             call completes successfully.
     **/
     var stubAjax = function(success, responseData) {
-        spyOn($, 'ajax').andReturn(
+        spyOn($, 'ajax').and.returnValue(
             $.Deferred(function(defer) {
                 if (success) { defer.resolveWith(this, [responseData]); }
                 else { defer.reject(); }

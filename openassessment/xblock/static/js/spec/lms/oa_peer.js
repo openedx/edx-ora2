@@ -59,7 +59,7 @@ describe("OpenAssessment.PeerView", function() {
     });
 
     it("Sends a peer assessment to the server", function() {
-        spyOn(server, 'peerAssess').andCallThrough();
+        spyOn(server, 'peerAssess').and.callThrough();
 
         // Select options in the rubric
         var optionsSelected = {};
@@ -90,7 +90,7 @@ describe("OpenAssessment.PeerView", function() {
 
     it("Re-enables the peer assess button on error", function() {
         // Simulate a server error
-        spyOn(server, 'peerAssess').andCallFake(function() {
+        spyOn(server, 'peerAssess').and.callFake(function() {
             expect(view.peerSubmitEnabled()).toBe(false);
             return $.Deferred(function(defer) {
                 defer.rejectWith(this, ['ENOUNKNOWN', 'Error occurred!']);
@@ -106,7 +106,7 @@ describe("OpenAssessment.PeerView", function() {
         jasmine.getFixtures().fixturesPath = 'base/fixtures';
         loadFixtures('oa_peer_complete.html');
         // Simulate a server error
-        spyOn(server, 'renderContinuedPeer').andCallFake(function() {
+        spyOn(server, 'renderContinuedPeer').and.callFake(function() {
             expect(view.continueAssessmentEnabled()).toBe(false);
             return $.Deferred(function(defer) {
                 defer.rejectWith(this, ['Error occurred!']);

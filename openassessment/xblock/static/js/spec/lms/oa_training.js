@@ -65,7 +65,7 @@ describe("OpenAssessment.StudentTrainingView", function() {
             "Criterion 2": "Poor",
             "Criterion 3": "Fair"
         };
-        spyOn(server, 'trainingAssess').andCallThrough();
+        spyOn(server, 'trainingAssess').and.callThrough();
 
         // Select rubric options
         var optionsSelected = {};
@@ -111,8 +111,8 @@ describe("OpenAssessment.StudentTrainingView", function() {
     it("reloads the assessment steps when the user submits an assessment", function() {
         // Simulate that the user answered the problem correctly, so there are no corrections
         server.corrections = {};
-        spyOn(server, 'trainingAssess').andCallThrough();
-        spyOn(baseView, 'loadAssessmentModules').andCallThrough();
+        spyOn(server, 'trainingAssess').and.callThrough();
+        spyOn(baseView, 'loadAssessmentModules').and.callThrough();
 
         // Select rubric options
         var optionsSelected = {};
