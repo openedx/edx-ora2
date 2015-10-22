@@ -11,7 +11,8 @@ module.exports = function(config) {
       'karma-coverage',
       'karma-jasmine',
       'karma-chrome-launcher',
-      'karma-phantomjs-launcher'
+      'karma-phantomjs-launcher',
+      'karma-spec-reporter'
     ],
 
     // frameworks to use
@@ -56,9 +57,7 @@ module.exports = function(config) {
 
 
     // test results reporter to use
-    // possible values: 'dots', 'progress'
-    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['spec', 'coverage'],
 
     coverageReporter: {
         type : 'text'
