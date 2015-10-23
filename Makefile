@@ -46,7 +46,10 @@ install-dev:
 
 install: install-wheels install-python install-js install-nltk-data install-test install-dev javascript
 
-test:
+quality:
+	jshint openassessment/xblock/static/js/src -c .jshintrc --verbose
+
+test: quality
 	./scripts/test.sh
 
 test-js:

@@ -141,6 +141,17 @@
         "readFixtures",
         "setFixtures",
         "appendSetFixtures",
-        "spyOnEvent"
+        "spyOnEvent",
+
+        // MathJax
+        "MathJax",
+
+        // Miscellaneous
+        "Logger",
+        "gettext",
+        "ngettext",
+
+        // ORA-specific globals
+        "OpenAssessment"
     ]
 }
