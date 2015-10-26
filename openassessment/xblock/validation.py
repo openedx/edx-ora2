@@ -293,7 +293,7 @@ def validate_assessment_examples(rubric_dict, assessments, _):
 
             # Must have at least one training example
             if len(examples) == 0:
-                return False, _(u"Learner training and example-based assessments must have at least one training example")
+                return False, _(u"Learner training and example-based assessments must have at least one training example.")
 
             # Delegate to the student training API to validate the
             # examples against the rubric.

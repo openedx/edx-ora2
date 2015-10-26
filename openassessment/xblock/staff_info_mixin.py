@@ -376,10 +376,12 @@ class StaffInfoMixin(object):
                 cancelled_by_id=student_item_dict['student_id'],
                 assessment_requirements=assessment_requirements
             )
-            return {"success": True, 'msg': self._(u"The learner submission has been removed from peer assessment. "
-                                                   u"The learner receives a grade of zero unless you reset "
-                                                   u"the learner's attempts for the problem to allow them to "
-                                                   u"resubmit a response.")}
+            return {"success": True, 'msg': self._(
+                u"The learner submission has been removed from peer assessment. "
+                u"The learner receives a grade of zero unless you reset "
+                u"the learner's attempts for the problem to allow them to "
+                u"resubmit a response."
+            )}
         except (
                 AssessmentWorkflowError,
                 AssessmentWorkflowInternalError

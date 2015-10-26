@@ -113,13 +113,13 @@
                 </li>
                 <li id="openassessment_submission_latex_wrapper" class="field comp-setting-entry">
                     <div class="wrapper-comp-setting">
-                        <label for="openassessment_submission_latex_editor" class="setting-label">{% trans "Allow Latex Responses"%}</label>
+                        <label for="openassessment_submission_latex_editor" class="setting-label">{% trans "Allow LaTeX Responses"%}</label>
                         <select id="openassessment_submission_latex_editor" class="input setting-input" name="latex submission">
                             <option value="0">{% trans "False"%}</option>
                             <option value="1" {% if allow_latex %} selected="true" {% endif %}>{% trans "True"%}</option>
                         </select>
                     </div>
-                    <p class="setting-help">{% trans "Specify whether learners can write Latex formatted strings"%}</p>
+                    <p class="setting-help">{% trans "Specify whether learners can write LaTeX formatted strings"%}</p>
                 </li>
                 <li id="openassessment_leaderboard_wrapper" class="field comp-setting-entry">
                     <div class="wrapper-comp-setting">
@@ -139,7 +139,7 @@
 
             <p class="openassessment_description" id="openassessment_step_select_description">
                 {% if 'example_based_assessment' in editor_assessments_order %}
-                    {% trans "In this assignment, you can include steps for learner training, peer assessment, self assessment, and example based assessment. Select the steps that you want below, and then drag them into the order that you want. If you include an example based assessment step, it must precede all other steps. If you include a learner training training step, it must precede peer and self assessment steps." %}
+                    {% trans "In this assignment, you can include steps for learner training, peer assessment, self assessment, and example based assessment. Select the steps that you want below, and then drag them into the order that you want. If you include an example based assessment step, it must precede all other steps. If you include a learner training step, it must precede peer and self assessment steps." %}
                 {% else %}
                     {% trans "In this assignment, you can include steps for learner training, peer assessment, and self assessment. Select the steps that you want below, and then drag them into the order that you want. If you include a learner training step, it must precede all other steps." %}
                 {% endif %}
