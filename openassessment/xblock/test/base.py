@@ -101,7 +101,7 @@ class XBlockHandlerTestCaseMixin(object):
         )
         return self.runtime.get_block(block_id)
 
-    def request(self, xblock, handler_name, content, request_method="POST", response_format=None):
+    def request(self, xblock, handler_name, content, request_method="POST", response_format=None, use_runtime=True):
         """
         Make a request to an XBlock handler.
 
@@ -128,7 +128,10 @@ class XBlockHandlerTestCaseMixin(object):
         request.body = content
 
         # Send the request to the XBlock handler
-        response = self.runtime.handle(xblock, handler_name, request)
+        if use_runtime:
+            response = self.runtime.handle(xblock, handler_name, request)
+        else:
+            response = getattr(xblock, handler_name)(request)
 
         # Parse the response (if a format is specified)
         if response_format is None:

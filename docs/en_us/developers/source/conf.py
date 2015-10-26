@@ -43,6 +43,9 @@ sys.path.append(root / "openassessment/xblock")
 sys.path.append(root / "openassessment/templates")
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.base")
 
+import django
+django.setup()
+
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.

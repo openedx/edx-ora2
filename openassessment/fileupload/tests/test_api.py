@@ -268,7 +268,7 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
         self.assertEqual(404, download_response.status_code)
 
     def test_upload_download_with_accented_key(self):
-        self.set_key("noël.jpg")
+        self.set_key(u"noël.jpg")
         upload_url = self.backend.get_upload_url(self.key, self.content_type)
         download_url = self.backend.get_download_url(self.key)
 

@@ -67,7 +67,7 @@ def serialize_training_example(example):
     return example_dict
 
 
-@transaction.commit_on_success
+@transaction.atomic
 def deserialize_training_examples(examples, rubric_dict):
     """
     Deserialize training examples to Django models.
