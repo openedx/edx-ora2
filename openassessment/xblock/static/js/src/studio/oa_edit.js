@@ -6,15 +6,17 @@
     runtime (Runtime): an XBlock runtime instance.
     element (DOM element): The DOM element representing this XBlock.
     server (OpenAssessment.Server): The interface to the XBlock server.
+    data (Object literal): The data object passed from XBlock backend.
 
  Returns:
     OpenAssessment.StudioView
 **/
 
-OpenAssessment.StudioView = function(runtime, element, server) {
+OpenAssessment.StudioView = function(runtime, element, server, data) {
     this.element = element;
     this.runtime = runtime;
     this.server = server;
+    this.data = data;
 
     // Resize the editing modal
     this.fixModalHeight();
@@ -55,7 +57,7 @@ OpenAssessment.StudioView = function(runtime, element, server) {
     assessmentLookupDictionary[exampleBasedAssessmentView.getID()] = exampleBasedAssessmentView;
 
     this.settingsView = new OpenAssessment.EditSettingsView(
-        $("#oa_basic_settings_editor", this.element).get(0), assessmentLookupDictionary
+        $("#oa_basic_settings_editor", this.element).get(0), assessmentLookupDictionary, data
     );
 
     // Initialize the rubric tab view
@@ -198,7 +200,8 @@ OpenAssessment.StudioView.prototype = {
             submissionStart: view.settingsView.submissionStart(),
             submissionDue: view.settingsView.submissionDue(),
             assessments: view.settingsView.assessmentsDescription(),
-            imageSubmissionEnabled: view.settingsView.imageSubmissionEnabled(),
+            fileUploadType: view.settingsView.fileUploadType(),
+            fileTypeWhiteList: view.settingsView.fileTypeWhiteList(),
             latexEnabled: view.settingsView.latexEnabled(),
             leaderboardNum: view.settingsView.leaderboardNum(),
             editorAssessmentsOrder: view.settingsView.editorAssessmentsOrder()
@@ -273,11 +276,11 @@ OpenAssessment.StudioView.prototype = {
 
 
 /* XBlock entry point for Studio view */
-function OpenAssessmentEditor(runtime, element) {
+function OpenAssessmentEditor(runtime, element, data) {
 
     /**
     Initialize the editing interface on page load.
     **/
     var server = new OpenAssessment.Server(runtime, element);
-    var view = new OpenAssessment.StudioView(runtime, element, server);
+    var view = new OpenAssessment.StudioView(runtime, element, server, data);
 }

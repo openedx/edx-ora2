@@ -25,12 +25,11 @@
                     {% endif %}
                 </div>
 
-                {% if submission.image_url %}
-                <img
-                    class="submission--image"
-                    alt="{% trans "The image associated with this response" %}"
-                    src="{{ submission.image_url }}"
-                />
+                {% if submission.file_url %}
+                    <a href="{{ submission.file_url }}" class="submission--file">
+                        {% trans "The file associated with this response." %}
+                    </a>
+                    <span>{%  trans "Caution: This file was uploaded by another course learner and has not been verified, screened, approved, reviewed or endorsed by edX. If you decide to access it, you do so at your own risk." %}</span>
                 {% endif %}
             </div>
         </div>

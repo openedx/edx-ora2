@@ -58,6 +58,9 @@ class OpenAssessmentTest(WebAppTest):
         'student_training':
             u'courses/{test_course_id}/courseware/'
             u'676026889c884ac1827688750871c825/5663e9b038434636977a4226d668fe02/'.format(test_course_id=TEST_COURSE_ID),
+        'file_upload':
+            u'courses/{test_course_id}/courseware/'
+            u'57a3f9d51d424f6cb922f0d69cba868d/bb563abc989340d8806920902f267ca3/'.format(test_course_id=TEST_COURSE_ID),
     }
 
     SUBMISSION = u"This is a test submission."
@@ -204,6 +207,33 @@ class StudentTrainingTest(OpenAssessmentTest):
             self.student_training_page.wait_for_complete()
         except BrokenPromise:
             self.fail("Student training was not marked complete.")
+
+
+class FileUploadTest(OpenAssessmentTest):
+    """
+    Test file upload
+    """
+
+    def setUp(self):
+        super(FileUploadTest, self).setUp('file_upload')
+
+    @retry()
+    @attr('acceptance')
+    def test_file_upload(self):
+        self.auto_auth_page.visit()
+        # trying to upload a unacceptable file
+        self.submission_page.visit()
+        # hide django debug tool, otherwise, it will cover the button on the right side,
+        # which will cause the button non-clickable and tests to fail
+        self.submission_page.hide_django_debug_tool()
+        self.submission_page.select_file(os.path.dirname(os.path.realpath(__file__)) + '/__init__.py')
+        self.assertTrue(self.submission_page.has_file_error)
+
+        # trying to upload a acceptable file
+        self.submission_page.visit().select_file(os.path.dirname(os.path.realpath(__file__)) + '/README.rst')
+        self.assertFalse(self.submission_page.has_file_error)
+        self.submission_page.upload_file()
+        self.assertTrue(self.submission_page.has_file_uploaded)
 
 
 if __name__ == "__main__":

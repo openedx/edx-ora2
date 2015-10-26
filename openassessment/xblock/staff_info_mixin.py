@@ -256,7 +256,7 @@ class StaffInfoMixin(object):
                 file_key = submission['answer']['file_key']
 
                 try:
-                    submission['image_url'] = file_api.get_download_url(file_key)
+                    submission['file_url'] = file_api.get_download_url(file_key)
                 except file_exceptions.FileUploadError:
                     # Log the error, but do not prevent the rest of the student info
                     # from being displayed.

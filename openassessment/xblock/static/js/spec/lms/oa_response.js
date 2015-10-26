@@ -5,6 +5,23 @@ Tests for OpenAssessment response (submission) view.
 describe("OpenAssessment.ResponseView", function() {
 
     var FAKE_URL = "http://www.example.com";
+    var ALLOWED_IMAGE_MIME_TYPES = [
+        'image/gif',
+        'image/jpeg',
+        'image/pjpeg',
+        'image/png',
+    ];
+
+    var ALLOWED_FILE_MIME_TYPES = [
+        'application/pdf',
+        'image/gif',
+        'image/jpeg',
+        'image/pjpeg',
+        'image/png',
+    ];
+
+    var FILE_TYPE_WHITE_LIST = ['pdf', 'doc', 'docx', 'html'];
+    var FILE_EXT_BLACK_LIST = ['exe', 'msi', 'app', 'dmg'];
 
     var StubServer = function() {
 
@@ -75,6 +92,7 @@ describe("OpenAssessment.ResponseView", function() {
     var baseView = null;
     var server = null;
     var fileUploader = null;
+    var data = null;
 
     // View under test
     var view = null;
@@ -100,13 +118,19 @@ describe("OpenAssessment.ResponseView", function() {
 
         // Create stub objects
         server = new StubServer();
-        server.renderLatex = jasmine.createSpy('renderLatex')
+        server.renderLatex = jasmine.createSpy('renderLatex');
         fileUploader = new StubFileUploader();
         baseView = new StubBaseView();
+        data = {
+            "ALLOWED_IMAGE_MIME_TYPES": ALLOWED_IMAGE_MIME_TYPES,
+            "ALLOWED_FILE_MIME_TYPES": ALLOWED_FILE_MIME_TYPES,
+            "FILE_TYPE_WHITE_LIST": FILE_TYPE_WHITE_LIST,
+            "FILE_EXT_BLACK_LIST": FILE_EXT_BLACK_LIST
+        };
 
         // Create and install the view
         var el = $('#openassessment-base').get(0);
-        view = new OpenAssessment.ResponseView(el, server, fileUploader, baseView);
+        view = new OpenAssessment.ResponseView(el, server, fileUploader, baseView, data);
         view.installHandlers();
 
         // Stub the confirmation step
@@ -408,21 +432,59 @@ describe("OpenAssessment.ResponseView", function() {
 
     it("selects too large of a file", function() {
         spyOn(baseView, 'toggleActionError').andCallThrough();
-        var files = [{type: 'image/jpg', size: 6000000, name: 'huge-picture.jpg', data: ''}];
-        view.prepareUpload(files);
+        var files = [{type: 'image/jpeg', size: 6000000, name: 'huge-picture.jpg', data: ''}];
+        view.prepareUpload(files, 'image');
         expect(baseView.toggleActionError).toHaveBeenCalledWith('upload', 'File size must be 5MB or less.');
     });
 
-    it("selects the wrong file type", function() {
+    it("selects the wrong image file type", function() {
         spyOn(baseView, 'toggleActionError').andCallThrough();
-        var files = [{type: 'bogus/jpg', size: 1024, name: 'picture.exe', data: ''}];
-        view.prepareUpload(files);
-        expect(baseView.toggleActionError).toHaveBeenCalledWith('upload', 'File must be an image.');
+        var files = [{type: 'image/jpg', size: 1024, name: 'picture.exe', data: ''}];
+        view.prepareUpload(files, 'image');
+        expect(baseView.toggleActionError).toHaveBeenCalledWith('upload', 'You can upload files with these file types: JPG, PNG or GIF');
     });
 
-    it("uploads a file using a one-time URL", function() {
-        var files = [{type: 'image/jpg', size: 1024, name: 'picture.jpg', data: ''}];
-        view.prepareUpload(files);
+    it("selects the wrong pdf or image file type", function() {
+        spyOn(baseView, 'toggleActionError').andCallThrough();
+        var files = [{type: 'application/exe', size: 1024, name: 'application.exe', data: ''}];
+        view.prepareUpload(files, 'pdf-and-image');
+        expect(baseView.toggleActionError).toHaveBeenCalledWith('upload', 'You can upload files with these file types: JPG, PNG, GIF or PDF');
+    });
+
+    it("selects the wrong file extension", function() {
+        spyOn(baseView, 'toggleActionError').andCallThrough();
+        var files = [{type: 'application/exe', size: 1024, name: 'application.exe', data: ''}];
+        view.prepareUpload(files, 'custom');
+        expect(baseView.toggleActionError).toHaveBeenCalledWith('upload', 'You can upload files with these file types: pdf, doc, docx, html');
+    });
+
+    it("submits a file with extension in the black list", function() {
+        spyOn(baseView, 'toggleActionError').andCallThrough();
+        view.data.FILE_TYPE_WHITE_LIST = ['exe'];
+        var files = [{type: 'application/exe', size: 1024, name: 'application.exe', data: ''}];
+        view.prepareUpload(files, 'custom');
+        expect(baseView.toggleActionError).toHaveBeenCalledWith('upload', 'File type is not allowed.');
+    });
+
+    it("uploads an image using a one-time URL", function() {
+        var files = [{type: 'image/jpeg', size: 1024, name: 'picture.jpg', data: ''}];
+        view.prepareUpload(files, 'image');
+        view.fileUpload();
+        expect(fileUploader.uploadArgs.url).toEqual(FAKE_URL);
+        expect(fileUploader.uploadArgs.data).toEqual(files[0]);
+    });
+
+    it("uploads a PDF using a one-time URL", function() {
+        var files = [{type: 'application/pdf', size: 1024, name: 'application.pdf', data: ''}];
+        view.prepareUpload(files, 'pdf-and-image');
+        view.fileUpload();
+        expect(fileUploader.uploadArgs.url).toEqual(FAKE_URL);
+        expect(fileUploader.uploadArgs.data).toEqual(files[0]);
+    });
+
+    it("uploads a arbitrary type file using a one-time URL", function() {
+        var files = [{type: 'text/html', size: 1024, name: 'index.html', data: ''}];
+        view.prepareUpload(files, 'custom');
         view.fileUpload();
         expect(fileUploader.uploadArgs.url).toEqual(FAKE_URL);
         expect(fileUploader.uploadArgs.data).toEqual(files[0]);
@@ -434,8 +496,8 @@ describe("OpenAssessment.ResponseView", function() {
         spyOn(baseView, 'toggleActionError').andCallThrough();
 
         // Attempt to upload a file
-        var files = [{type: 'image/jpg', size: 1024, name: 'picture.jpg', data: ''}];
-        view.prepareUpload(files);
+        var files = [{type: 'image/jpeg', size: 1024, name: 'picture.jpg', data: ''}];
+        view.prepareUpload(files, 'image');
         view.fileUpload();
 
         // Expect an error to be displayed
@@ -448,8 +510,8 @@ describe("OpenAssessment.ResponseView", function() {
         spyOn(baseView, 'toggleActionError').andCallThrough();
 
         // Attempt to upload a file
-        var files = [{type: 'image/jpg', size: 1024, name: 'picture.jpg', data: ''}];
-        view.prepareUpload(files);
+        var files = [{type: 'image/jpeg', size: 1024, name: 'picture.jpg', data: ''}];
+        view.prepareUpload(files, 'image');
         view.fileUpload();
 
         // Expect an error to be displayed

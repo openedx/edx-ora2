@@ -436,7 +436,9 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
             submissionDue (ISO-formatted datetime string or null): The date the submission is due.
             criteria (list of object literals): The rubric criteria.
             assessments (list of object literals): The assessments the student will be evaluated on.
-            imageSubmissionEnabled (boolean): TRUE if image attachments are allowed.
+            fileUploadType (string): 'image' if image attachments are allowed, 'pdf-and-image' if pdf and
+                image attachments are allowed, 'custom' if file type is restricted by a white list.
+            fileTypeWhiteList (string): Comma separated file type white list
             latexEnabled: TRUE if latex rendering is enabled.
             leaderboardNum (int): The number of scores to show in the leaderboard.
 
@@ -457,7 +459,8 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
                 criteria: kwargs.criteria,
                 assessments: kwargs.assessments,
                 editor_assessments_order: kwargs.editorAssessmentsOrder,
-                allow_file_upload: kwargs.imageSubmissionEnabled,
+                file_upload_type: kwargs.fileUploadType,
+                white_listed_file_types: kwargs.fileTypeWhiteList,
                 allow_latex: kwargs.latexEnabled,
                 leaderboard_show: kwargs.leaderboardNum
             });
@@ -509,17 +512,19 @@ if (typeof OpenAssessment.Server == "undefined" || !OpenAssessment.Server) {
 
          Args:
             contentType (str): The Content Type for the file being uploaded.
+            filename (str): The name of the file to be uploaded.
 
          Returns:
             A presigned upload URL from the specified service used for uploading
             files.
 
          **/
-        getUploadUrl: function(contentType) {
+        getUploadUrl: function(contentType, filename) {
             var url = this.url('upload_url');
             return $.Deferred(function(defer) {
                 $.ajax({
-                    type: "POST", url: url, data: JSON.stringify({contentType: contentType}), contentType: jsonContentType
+                    type: "POST", url: url, data: JSON.stringify({contentType: contentType, filename: filename}),
+                    contentType: jsonContentType
                 }).done(function(data) {
                         if (data.success) { defer.resolve(data.url); }
                         else { defer.rejectWith(this, [data.msg]); }

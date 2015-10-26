@@ -337,7 +337,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             file_api.get_download_url.assert_called_with("test_key")
 
             # Check the context passed to the template
-            self.assertEquals('http://www.example.com/image.jpeg', context['submission']['image_url'])
+            self.assertEquals('http://www.example.com/image.jpeg', context['submission']['file_url'])
 
             # Check the fully rendered template
             payload = urllib.urlencode({"student_username": "Bob"})
@@ -368,7 +368,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
             # Expect that the page still renders, but without the image url
             self.assertIn('submission', context)
-            self.assertNotIn('image_url', context['submission'])
+            self.assertNotIn('file_url', context['submission'])
 
             # Check the fully rendered template
             payload = urllib.urlencode({"student_username": "Bob"})
