@@ -613,7 +613,7 @@ OpenAssessment.RubricCriterion.prototype = {
 OpenAssessment.TrainingExample = function(element){
     this.element = element;
     this.criteria = $(".openassessment_training_example_criterion_option", this.element);
-    this.answer = $('.openassessment_training_example_essay_part textarea', this.element)
+    this.answer = $('.openassessment_training_example_essay_part textarea', this.element);
 };
 
 OpenAssessment.TrainingExample.prototype = {

@@ -108,16 +108,16 @@ OpenAssessment.BaseView.prototype = {
     toggleActionError: function(type, msg) {
         var element = this.element;
         var container = null;
-        if (type == 'save') {
+        if (type === 'save') {
             container = '.response__submission__actions';
         }
-        else if (type == 'submit' || type == 'peer' || type == 'self' || type == 'student-training') {
+        else if (type === 'submit' || type === 'peer' || type === 'self' || type === 'student-training') {
             container = '.step__actions';
         }
-        else if (type == 'feedback_assess') {
+        else if (type === 'feedback_assess') {
             container = '.submission__feedback__actions';
         }
-        else if (type == 'upload') {
+        else if (type === 'upload') {
             container = '#upload__error';
         }
 
@@ -150,6 +150,7 @@ OpenAssessment.BaseView.prototype = {
 };
 
 /* XBlock JavaScript entry point for OpenAssessmentXBlock. */
+/* jshint unused:false */
 function OpenAssessmentBlock(runtime, element) {
     /**
     Render views within the base view on page load.

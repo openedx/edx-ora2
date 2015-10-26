@@ -105,7 +105,7 @@ OpenAssessment.Rubric.prototype = {
             // Check the selected options
             $(selector, this.element).each(function(index, sel) {
                 if (optionsSelected.hasOwnProperty(sel.name)) {
-                    if (sel.value == optionsSelected[sel.name]) {
+                    if (sel.value === optionsSelected[sel.name]) {
                         $(sel).prop('checked', true);
                     }
                 }
@@ -153,7 +153,7 @@ OpenAssessment.Rubric.prototype = {
             }
         });
 
-        return (numChecked == numAvailable && completedRequiredComments);
+        return (numChecked === numAvailable && completedRequiredComments);
     },
 
     /**

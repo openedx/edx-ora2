@@ -22,10 +22,10 @@
     "nonbsp"          : true,      // Warns about "non-breaking whitespace" characters.
     "nonew"           : false,     // Prohibits the use of constructor functions for side-effects.
     "plusplus"        : false,     // Prohibits the use of unary increment and decrement operators.
-    "quotmark"        : "single",  // Enforces the consistency of quotation marks used throughout your code. It accepts three values: true, "single", and "double".
+    "quotmark"        : false,     // Enforces the consistency of quotation marks used throughout your code. It accepts three values: true, "single", and "double".
     "undef"           : true,      // Prohibits the use of explicitly undeclared variables.
     "unused"          : true,      // Warns when you define and never use your variables.
-    "strict"          : true,      // Requires all functions to run in ECMAScript 5's strict mode.
+    "strict"          : false,     // Requires all functions to run in ECMAScript 5's strict mode.
     "trailing"        : true,      // Makes it an error to leave a trailing whitespace in your code.
     "maxlen"          : 120,       // Lets you set the maximum length of a line.
     //"maxparams"     : 4,         // Lets you set the max number of formal parameters allowed per function.
@@ -141,6 +141,17 @@
         "readFixtures",
         "setFixtures",
         "appendSetFixtures",
-        "spyOnEvent"
+        "spyOnEvent",
+
+        // MathJax
+        "MathJax",
+
+        // Miscellaneous
+        "Logger",
+        "gettext",
+        "ngettext",
+
+        // ORA-specific globals
+        "OpenAssessment"
     ]
 }

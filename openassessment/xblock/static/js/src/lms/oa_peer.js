@@ -31,7 +31,7 @@ OpenAssessment.PeerView.prototype = {
                 view.server.renderLatex($('#openassessment__peer-assessment', view.element));
                 view.installHandlers(false);
             }
-        ).fail(function(errMsg) {
+        ).fail(function() {
             view.baseView.showLoadError('peer-assessment');
         });
         // Called to update Messagview with info on whether or not it was able to grab a submission
@@ -55,7 +55,7 @@ OpenAssessment.PeerView.prototype = {
                 view.server.renderLatex($('#openassessment__peer-assessment', view.element));
                 view.installHandlers(true);
             }
-        ).fail(function(errMsg) {
+        ).fail(function() {
             view.baseView.showLoadError('peer-assessment');
             view.continueAssessmentEnabled(true);
         });
@@ -208,7 +208,5 @@ OpenAssessment.PeerView.prototype = {
             view.baseView.toggleActionError('peer', errMsg);
             view.peerSubmitEnabled(true);
         });
-    },
-
-
+    }
 };

@@ -136,7 +136,7 @@ OpenAssessment.ToggleControl.prototype = {
     Returns:
         OpenAssessment.ToggleControl
     **/
-    install: function(checkboxSelector) {
+    install: function() {
         this.checkbox.change(
             this, function(event) {
                 var control = event.data;

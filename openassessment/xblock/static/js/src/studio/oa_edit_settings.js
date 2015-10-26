@@ -65,7 +65,7 @@ OpenAssessment.EditSettingsView.prototype = {
                     .sortable('refresh').sortable('refreshPositions');
             },
             // On stop, we redisplay the divs to their original state
-            stop: function(event, ui){
+            stop: function() {
                 $('.openassessment_assessment_module_editor', view.element).show();
             },
             snap: true,
@@ -134,10 +134,10 @@ OpenAssessment.EditSettingsView.prototype = {
     imageSubmissionEnabled: function(isEnabled) {
         var sel = $("#openassessment_submission_image_editor", this.settingsElement);
         if (isEnabled !== undefined) {
-            if (isEnabled) { sel.val(1); }
-            else { sel.val(0); }
+            if (isEnabled) { sel.val("1"); }
+            else { sel.val("0"); }
         }
-        return (sel.val() == 1);
+        return sel.val() === "1";
     },
 
     /**
@@ -154,10 +154,10 @@ OpenAssessment.EditSettingsView.prototype = {
             if (isEnabled) {
                 sel.val(1);
             } else {
-                sel.val(0)
+                sel.val(0);
             }
         }
-        return (sel.val() == 1);
+        return sel.val() === 1;
     },
     /**
     Get or set the number of scores to show in the leaderboard.
@@ -212,7 +212,7 @@ OpenAssessment.EditSettingsView.prototype = {
                 var asmntView = view.assessmentViews[$(this).attr('id')];
                 if (asmntView.isEnabled()) {
                     var description = asmntView.description();
-                    description["name"] = asmntView.name;
+                    description.name = asmntView.name;
                     assessmentDescList.push(description);
                 }
             }

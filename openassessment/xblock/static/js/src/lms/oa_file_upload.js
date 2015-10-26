@@ -26,7 +26,7 @@ OpenAssessment.FileUploader = function() {
                     processData: false,
                     contentType: file.type,
                 }).done(
-                    function(data, textStatus, jqXHR) {
+                    function() {
                         // Log an analytics event
                         Logger.log(
                             "openassessment.upload_file",
@@ -41,7 +41,7 @@ OpenAssessment.FileUploader = function() {
                         defer.resolve();
                     }
                 ).fail(
-                    function(data, textStatus, jqXHR) {
+                    function(data, textStatus) {
                         defer.rejectWith(this, [textStatus]);
                     }
                 );
