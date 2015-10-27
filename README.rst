@@ -1,7 +1,7 @@
 Open Response Assessment |build-status| |coverage-status|
 =========================================================
 
-User docs: |user-docs| Developer docs: |dev-docs|
+`User docs <http://edx.readthedocs.org/projects/edx-partner-course-staff/en/latest/exercises_tools/open_response_assessments/index.html>`_
 
 
 Installation
@@ -171,9 +171,3 @@ in the `edx-code` IRC channel on Freenode.
 .. |coverage-status| image:: https://coveralls.io/repos/edx/edx-ora2/badge.png?branch=master
    :target: https://coveralls.io/r/edx/edx-ora2?branch=master
    :alt: Coverage badge
-.. |user-docs| image:: https://readthedocs.org/projects/edx-open-response-assessments/badge/?version=latest
-   :target: http://edx.readthedocs.org/projects/edx-open-response-assessments
-   :alt: User documentation
-.. |dev-docs| image:: https://readthedocs.org/projects/edx-ora-2/badge/?version=latest
-   :target: http://edx.readthedocs.org/projects/edx-ora-2
-   :alt: Developer documentation
