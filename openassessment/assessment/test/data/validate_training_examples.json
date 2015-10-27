@@ -577,7 +577,7 @@
                 "options_selected": {}
             }
         ],
-        "errors": ["If your assignment includes a student training step, the rubric must have at least one criterion, and that criterion must have at least one option."]
+        "errors": ["If your assignment includes a learner training step, the rubric must have at least one criterion, and that criterion must have at least one option."]
     }
 
 }

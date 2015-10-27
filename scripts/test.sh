@@ -8,4 +8,3 @@ export DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-"settings.test_with_cove
 ./scripts/test-python.sh $1
 ./scripts/render-templates.sh
 ./scripts/test-js.sh
-./scripts/build-docs.sh

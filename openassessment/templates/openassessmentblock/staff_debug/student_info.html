@@ -3,17 +3,17 @@
 <div id="openassessment__student-info" class="staff-info__student__report">
     {% if submission %}
     <h2 class="title">
-        <span class="label">{% trans "Student Information" %}</span>
+        <span class="label">{% trans "Learner Information" %}</span>
     </h2>
 
     <div class="staff-info__content ui-staff__content">
         <div class="wrapper--step__content">
             <div class="step__content">
-                <h3 class="title">{% trans "Student Response" %}</h3>
+                <h3 class="title">{% trans "Learner Response" %}</h3>
                 <div class="student__answer__display__content">
                     {% if workflow_cancellation %}
                         {% blocktrans with removed_by_username=workflow_cancellation.cancelled_by removed_datetime=workflow_cancellation.created_at|utc|date:"N j, Y H:i e" %}
-                            Student submission removed by {{ removed_by_username }} on {{ removed_datetime }}
+                            Learner submission removed by {{ removed_by_username }} on {{ removed_datetime }}
                         {% endblocktrans %}
                         <br>
                         <!-- Comments: Reason for Cancellation-->
@@ -21,7 +21,7 @@
                             Comments: {{ comments }}
                         {% endblocktrans %}
                     {% else %}
-                        {% include "openassessmentblock/oa_submission_answer.html" with answer=submission.answer answer_text_label="The student's response to the question above:" %}
+                        {% include "openassessmentblock/oa_submission_answer.html" with answer=submission.answer answer_text_label="The learner's response to the question above:" %}
                     {% endif %}
                 </div>
 
@@ -55,7 +55,7 @@
                                     <li>
                                         <div class="has--warnings">
                                             <div class="warning">
-                                                {% trans "Caution: Removing a student's submission cannot be undone." %}
+                                                {% trans "Caution: Removing a learner's submission cannot be undone." %}
                                             </div>
                                         </div>
                                     </li>
@@ -91,7 +91,7 @@
 
         {% if peer_assessments %}
         <div class="staff-info__status ui-staff__content__section">
-            <h3 class="title">{% trans "Peer Assessments for This Student" %}</h3>
+            <h3 class="title">{% trans "Peer Assessments for This Learner" %}</h3>
             {% for assessment in peer_assessments %}
                 {% with peer_num=forloop.counter %}
                 <h4 class="title--sub"> {% trans "Peer" %} {{ peer_num }}: </h4>
@@ -133,7 +133,7 @@
 
         {% if submitted_assessments %}
         <div class="staff-info__status ui-staff__content__section">
-            <h3 class="title">{% trans "Peer Assessments Completed by This Student" %}</h3>
+            <h3 class="title">{% trans "Peer Assessments Completed by This Learner" %}</h3>
             {% for assessment in submitted_assessments %}
                 {% with peer_num=forloop.counter %}
                     <h4 class="title--sub">{% trans "Assessment" %} {{ peer_num }}:</h4>
@@ -175,7 +175,7 @@
 
         {% if self_assessment %}
         <div class="staff-info__status ui-staff__content__section">
-            <h3 class="title">{% trans "Student's Self Assessment" %}</h3>
+            <h3 class="title">{% trans "Learner's Self Assessment" %}</h3>
             <table class="staff-info__status__table" summary="{% trans "Self Assessment" %}">
                 <thead>
                 <tr>
@@ -236,6 +236,6 @@
         {% endif %}
     </div>
     {% else %}
-        {% trans "Couldn't find a response for this student." %}
+        {% trans "A response was not found for this learner." %}
     {% endif %}
 </div>

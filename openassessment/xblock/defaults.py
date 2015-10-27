@@ -75,7 +75,7 @@ I noticed that this response...
 DEFAULT_EXAMPLE_ANSWER = (
     "Replace this text with your own sample response for this assignment. "
     "Then, under Response Score to the right, select an option for each criterion. "
-    "Students learn to assess responses by assessing this response and comparing "
+    "Learners practice performing peer assessments by assessing this response and comparing "
     "the options that they select in the rubric with the options that you specified."
 )
 

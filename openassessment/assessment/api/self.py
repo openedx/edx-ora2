@@ -135,9 +135,9 @@ def create_assessment(
         if submission['student_item']['student_id'] != user_id:
             msg = (
                 u"Cannot submit a self-assessment for the submission {uuid} "
-                u"because it was created by another student "
-                u"(submission student ID {student_id} does not match your "
-                u"student id {other_id})"
+                u"because it was created by another learner "
+                u"(submission learner ID {student_id} does not match your "
+                u"learner id {other_id})"
             ).format(
                 uuid=submission_uuid,
                 student_id=submission['student_item']['student_id'],
@@ -267,7 +267,6 @@ def get_assessment(submission_uuid):
     return serialized_assessment
 
 
-
 def get_assessment_scores_by_criteria(submission_uuid):
     """Get the median score for each rubric criterion
 
@@ -313,7 +312,7 @@ def _log_assessment(assessment, submission):
 
     """
     logger.info(
-        u"Created self-assessment {assessment_id} for student {user} on "
+        u"Created self-assessment {assessment_id} for learner {user} on "
         u"submission {submission_uuid}, course {course_id}, item {item_id} "
         u"with rubric {rubric_content_hash}"
         .format(

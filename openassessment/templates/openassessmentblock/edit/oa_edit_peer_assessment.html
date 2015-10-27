@@ -10,7 +10,7 @@
     </div>
     <div class="openassessment_assessment_module_editor">
         <p id="peer_assessment_description_closed" class="openassessment_description_closed {% if assessments.peer_assessment %} is--hidden {% endif %}">
-            {% trans "Students assess a specified number of other students' responses using the rubric for the assignment." %}
+            {% trans "Learners assess a specified number of other learners' responses using the rubric for the assignment." %}
         </p>
         <div id="peer_assessment_settings_editor" class="assessment_settings_wrapper {% if not assessments.peer_assessment %} is--hidden {% endif %}">
             <p class="openassessment_description">
@@ -50,7 +50,7 @@
                             value="{{ assessments.peer_assessment.start|utc|date:"H:i" }}"
                         >
                     </div>
-                    <p class="setting-help">{% trans "Enter the date and time when students can begin assessing peer responses." %}</p>
+                    <p class="setting-help">{% trans "Enter the date and time when learners can begin assessing peer responses." %}</p>
                 </li>
                 <li class="field comp-setting-entry">
                     <div class="wrapper-comp-setting">

@@ -133,10 +133,10 @@ def validate_assessments(assessments, current_assessments, is_released, _):
             answers = []
             examples = assessment_dict.get('examples')
             if not examples:
-                return False, _('You must provide at least one example response for student training.')
+                return False, _('You must provide at least one example response for learner training.')
             for example in examples:
                 if example.get('answer') in answers:
-                    return False, _('Each example response for student training must be unique.')
+                    return False, _('Each example response for learner training must be unique.')
                 answers.append(example.get('answer'))
 
         # Example-based assessment MUST specify 'ease' or 'fake' as the algorithm ID,
@@ -293,7 +293,7 @@ def validate_assessment_examples(rubric_dict, assessments, _):
 
             # Must have at least one training example
             if len(examples) == 0:
-                return False, _(u"Student training and example-based assessments must have at least one training example")
+                return False, _(u"Learner training and example-based assessments must have at least one training example.")
 
             # Delegate to the student training API to validate the
             # examples against the rubric.

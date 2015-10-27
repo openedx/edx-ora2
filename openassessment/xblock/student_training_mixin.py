@@ -49,8 +49,8 @@ class StudentTrainingMixin(object):
 
         try:
             path, context = self.training_path_and_context()
-        except: # pylint:disable=W0702
-            msg = u"Could not render student training step for submission {}".format(self.submission_uuid)
+        except:  # pylint:disable=W0702
+            msg = u"Could not render Learner Training step for submission {}.".format(self.submission_uuid)
             logger.exception(msg)
             return self.render_error(self._(u"An unexpected error occurred."))
         else:
@@ -140,7 +140,7 @@ class StudentTrainingMixin(object):
         return template, context
 
     @XBlock.json_handler
-    def training_assess(self, data, suffix=''): # pylint:disable=W0613
+    def training_assess(self, data, suffix=''):  # pylint:disable=W0613
         """
         Compare the scores given by the student with those given by the course author.
         If they match, update the training workflow.  The client can then reload this
@@ -185,8 +185,7 @@ class StudentTrainingMixin(object):
             )
         except student_training.StudentTrainingRequestError:
             msg = (
-                u"Could not check student training scores for "
-                u"the student with submission UUID {uuid}"
+                u"Could not check learner training scores for the learner with submission UUID {uuid}"
             ).format(uuid=self.submission_uuid)
             logger.warning(msg, exc_info=True)
             return {

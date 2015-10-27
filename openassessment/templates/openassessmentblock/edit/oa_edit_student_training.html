@@ -6,12 +6,12 @@
     <div class="openassessment_inclusion_wrapper">
         <input type="checkbox" id="include_student_training"
                 {% if assessments.student_training %} checked="true" {% endif %}>
-        <label for="include_student_training">{% trans "Step: Student Training" %}</label>
+        <label for="include_student_training">{% trans "Step: Learner Training" %}</label>
     </div>
 
     <div class="openassessment_assessment_module_editor">
         <p id="student_training_description_closed" class="openassessment_description_closed {% if assessments.student_training %} is--hidden {% endif %}">
-            {% trans "Students learn to assess responses by scoring pre-assessed sample responses that you provide. Students move to the next step when the scores they give match your scores. Note that if you add this step, you must also add a peer assessment step. This step must come before the peer assessment step." %}
+            {% trans "Learners learn to assess responses by scoring pre-assessed sample responses that you provide. Learners move to the next step when the scores they give match your scores. Note that if you add this step, you must also add a peer assessment step. This step must come before the peer assessment step." %}
         </p>
         <div id="student_training_settings_editor" class="assessment_settings_wrapper {% if not assessments.student_training %} is--hidden {% endif %}">
             <p class="openassessment_description">
