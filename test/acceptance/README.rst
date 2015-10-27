@@ -37,4 +37,5 @@ To run the accessibility tests, which must be run with phantomjs as the browser:
     
 .. code:: bash
 
-    SELENIUM_BROWSER=phantomjs python accessibility.py
+    export SELENIUM_BROWSER=phantomjs
+    python accessibility.py
