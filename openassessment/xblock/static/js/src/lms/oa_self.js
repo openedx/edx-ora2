@@ -31,7 +31,7 @@ OpenAssessment.SelfView.prototype = {
                 view.server.renderLatex($('#openassessment__self-assessment', view.element));
                 view.installHandlers();
             }
-        ).fail(function(errMsg) {
+        ).fail(function() {
             view.showLoadError('self-assessment');
         });
     },

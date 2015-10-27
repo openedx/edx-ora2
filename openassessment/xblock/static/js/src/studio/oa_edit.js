@@ -273,11 +273,12 @@ OpenAssessment.StudioView.prototype = {
 
 
 /* XBlock entry point for Studio view */
+/* jshint unused:false */
 function OpenAssessmentEditor(runtime, element) {
 
     /**
     Initialize the editing interface on page load.
     **/
     var server = new OpenAssessment.Server(runtime, element);
-    var view = new OpenAssessment.StudioView(runtime, element, server);
+    new OpenAssessment.StudioView(runtime, element, server);
 }

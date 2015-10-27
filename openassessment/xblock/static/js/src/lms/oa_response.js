@@ -48,7 +48,7 @@ OpenAssessment.ResponseView.prototype = {
                 view.installHandlers();
                 view.setAutoSaveEnabled(true);
             }
-        ).fail(function(errMsg) {
+        ).fail(function() {
             view.baseView.showLoadError('response');
         });
     },
@@ -65,7 +65,7 @@ OpenAssessment.ResponseView.prototype = {
 
         // Install change handler for textarea (to enable submission button)
         this.savedResponse = this.response();
-        var handleChange = function(eventData) { view.handleResponseChanged(); };
+        var handleChange = function() { view.handleResponseChanged(); };
         sel.find('.submission__answer__part__text__value').on('change keyup drop paste', handleChange);
 
         var handlePrepareUpload = function(eventData) { view.prepareUpload(eventData.target.files); };
@@ -248,6 +248,7 @@ OpenAssessment.ResponseView.prototype = {
             if (enabled) {
                 window.onbeforeunload = function() {
                     // Keep this on one big line to avoid gettext bug: http://stackoverflow.com/a/24579117
+                    /* jshint maxlen:300 */
                     return gettext("If you leave this page without saving or submitting your response, you'll lose any work you've done on the response.");
                 };
             }
@@ -274,9 +275,9 @@ OpenAssessment.ResponseView.prototype = {
                 return $.trim($(this).val());
             }).get();
         } else {
-            sel.map(function(index, element) {
+            sel.map(function(index) {
                 $(this).val(texts[index]);
-            })
+            });
         }
     },
 
@@ -287,7 +288,7 @@ OpenAssessment.ResponseView.prototype = {
     **/
     responseChanged: function() {
         var savedResponse = this.savedResponse;
-        return this.response().some(function(element, index, array) {
+        return this.response().some(function(element, index) {
                 return element !== savedResponse[index];
         });
 
@@ -320,8 +321,8 @@ OpenAssessment.ResponseView.prototype = {
     **/
     handleResponseChanged: function() {
         // Enable the save/submit button only for non-blank responses
-        var isNotBlank = !this.response().every(function(element, index, array) {
-                return $.trim(element) == '';
+        var isNotBlank = !this.response().every(function(element) {
+                return $.trim(element) === '';
             });
         this.submitEnabled(isNotBlank);
 
@@ -363,12 +364,12 @@ OpenAssessment.ResponseView.prototype = {
             // ... but update the UI based on what the user may have entered
             // since hitting the save button.
             var currentResponse = view.response();
-            var currentResponseIsEmpty = currentResponse.every(function(element, index, array) {
-                return element == '';
+            var currentResponseIsEmpty = currentResponse.every(function(element) {
+                return element === '';
             });
             view.submitEnabled(!currentResponseIsEmpty);
 
-            var currentResponseEqualsSaved = currentResponse.every(function(element, index, array) {
+            var currentResponseEqualsSaved = currentResponse.every(function(element, index) {
                 return element === savedResponse[index];
             });
             if (currentResponseEqualsSaved) {
@@ -418,7 +419,7 @@ OpenAssessment.ResponseView.prototype = {
                 // If the error is "multiple submissions", then we should move to the next
                 // step.  Otherwise, the user will be stuck on the current step with no
                 // way to continue.
-                if (errCode == 'ENOMULTI') { view.moveToNextStep(); }
+                if (errCode === 'ENOMULTI') { view.moveToNextStep(); }
                 else {
                     // If there is an error message, display it
                     if (errMsg) { baseView.toggleActionError('submit', errMsg); }
@@ -451,6 +452,7 @@ OpenAssessment.ResponseView.prototype = {
     **/
     confirmSubmission: function() {
         // Keep this on one big line to avoid gettext bug: http://stackoverflow.com/a/24579117
+        /* jshint maxlen:300 */
         var msg = gettext("You're about to submit your response for this assignment. After you submit this response, you can't change it or submit a new response.");
         // TODO -- UI for confirmation dialog instead of JS confirm
         return $.Deferred(function(defer) {
@@ -477,7 +479,7 @@ OpenAssessment.ResponseView.prototype = {
             this.baseView.toggleActionError(
                 'upload', gettext("File size must be 5MB or less.")
             );
-        } else if (this.imageType.substring(0,6) != 'image/') {
+        } else if (this.imageType.substring(0,6) !== 'image/') {
             this.baseView.toggleActionError(
                 'upload', gettext("File must be an image.")
             );

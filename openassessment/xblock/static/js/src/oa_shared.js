@@ -8,9 +8,11 @@ an object!
 
 
 /* Namespace for open assessment */
+/* jshint ignore:start */
 if (typeof OpenAssessment == "undefined" || !OpenAssessment) {
     OpenAssessment = {};
 }
+/* jshint ignore:end */
 
 
 // Stub gettext if the runtime doesn't provide it
@@ -27,14 +29,14 @@ if (typeof window.ngetgext === 'undefined') {
         } else {
             return singular_text;
         }
-    }
+    };
 }
 
 
 // Stub event logging if the runtime doesn't provide it
 if (typeof window.Logger === 'undefined') {
     window.Logger = {
-        log: function(event_type, data, kwargs) {}
+        log: function() {}
     };
 }
 
@@ -43,8 +45,8 @@ if (typeof window.Logger === 'undefined') {
 if (typeof window.MathJax === 'undefined') {
     window.MathJax = {
         Hub: {
-            Typeset: function(data){},
-            Queue: function(list){}
+            Typeset: function() {},
+            Queue: function() {}
         }
     };
 }

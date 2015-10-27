@@ -35,7 +35,7 @@ OpenAssessment.StaffInfoView.prototype = {
                     view.server.renderLatex($('#openassessment__staff-info', view.element));
                     view.installHandlers();
                 }
-            ).fail(function(errMsg) {
+            ).fail(function() {
                     view.baseView.showLoadError('staff_info');
                 });
         }
@@ -56,7 +56,7 @@ OpenAssessment.StaffInfoView.prototype = {
                 $('#openassessment__student-info', view.element).replaceWith(html);
 
                 // Install key handler for new staff grade Save button.
-                var selCancelSub = $('#openassessment__staff-info__cancel__submission', this.element);
+                var selCancelSub = $('#openassessment__staff-info__cancel__submission', view.element);
                 selCancelSub.on('click', '#submit_cancel_submission', function (eventObject) {
                         eventObject.preventDefault();
                         view.cancelSubmission($(this).data('submission-uuid'));
@@ -64,11 +64,12 @@ OpenAssessment.StaffInfoView.prototype = {
                 );
 
                 // Install change handler for textarea (to enable cancel submission button)
-                var handleChange = function(eventData) { view.handleCommentChanged(); };
-                selCancelSub.find('#staff-info__cancel-submission__comments').on('change keyup drop paste', handleChange);
+                var handleChange = function() { view.handleCommentChanged(); };
+                selCancelSub.find('#staff-info__cancel-submission__comments')
+                    .on('change keyup drop paste', handleChange);
 
             }
-        ).fail(function(errMsg) {
+        ).fail(function() {
                 view.showLoadError('student_info');
         });
     },
@@ -130,10 +131,10 @@ OpenAssessment.StaffInfoView.prototype = {
         var view = this;
         this.server.scheduleTraining().done(
                 function(msg) {
-                    $('#schedule_training_message', this.element).text(msg)
+                    $('#schedule_training_message', view.element).text(msg);
                 }
             ).fail(function(errMsg) {
-                $('#schedule_training_message', this.element).text(errMsg)
+                $('#schedule_training_message', view.element).text(errMsg);
             });
     },
 
@@ -147,10 +148,10 @@ OpenAssessment.StaffInfoView.prototype = {
         var view = this;
         this.server.rescheduleUnfinishedTasks().done(
                 function(msg) {
-                    $('#reschedule_unfinished_tasks_message', this.element).text(msg)
+                    $('#reschedule_unfinished_tasks_message', view.element).text(msg);
                 }
             ).fail(function(errMsg) {
-                $('#reschedule_unfinished_tasks_message', this.element).text(errMsg)
+                $('#reschedule_unfinished_tasks_message', view.element).text(errMsg);
             });
     },
 

@@ -9,7 +9,8 @@
     "karma-jasmine": "0.1.5",
     "karma-phantomjs-launcher": "^0.1.4",
     "karma-spec-reporter": "^0.0.20",
-    "uglify-js": "2.3.6"
+    "uglify-js": "2.3.6",
+    "jshint": "2.8.0"
   },
   "scripts": {
     "test": "./node_modules/karma/bin/karma start --reporters spec,coverage"

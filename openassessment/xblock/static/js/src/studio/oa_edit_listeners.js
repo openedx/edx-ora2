@@ -12,9 +12,9 @@ OpenAssessment.StudentTrainingListener.prototype = {
     /**
     Add a answer part in the training examples when a prompt is added.
      */
-    promptAdd: function(data) {
+    promptAdd: function() {
         var view = this.element;
-        var essay_part = $("#openassessment_training_example_part_template")
+        $("#openassessment_training_example_part_template")
             .children().first()
             .clone()
             .removeAttr('id')
@@ -93,6 +93,7 @@ OpenAssessment.StudentTrainingListener.prototype = {
         });
 
         if (criterionAdded) {
+            /* jshint maxlen:300 */
             this.displayAlertMsg(
                 gettext("Criterion Added"),
                 gettext("You've added a criterion. You'll need to select an option for the criterion in the Student Training step. To do this, click the Settings tab.")
@@ -133,13 +134,14 @@ OpenAssessment.StudentTrainingListener.prototype = {
 
             // If all options have been removed from the Criterion, remove
             // the criterion entirely.
-            if ($("option", criterionOption).length == 1) {
+            if ($("option", criterionOption).length === 1) {
                 handler.removeAllOptions(data);
                 invalidated = false;
             }
         });
 
         if (invalidated) {
+            /* jshint maxlen:300 */
             this.displayAlertMsg(
                 gettext("Option Deleted"),
                 gettext("You've deleted an option. The system has removed that option from its criterion in the sample responses in the Student Training step. You may have to select a new option for the criterion.")
@@ -148,7 +150,10 @@ OpenAssessment.StudentTrainingListener.prototype = {
     },
 
     _optionSel: function(criterionName) {
-        return $('.openassessment_training_example_criterion_option[data-criterion="' + criterionName + '"]', this.element);
+        return $(
+            '.openassessment_training_example_criterion_option[data-criterion="' + criterionName + '"]',
+            this.element
+        );
     },
 
     /**
@@ -165,13 +170,14 @@ OpenAssessment.StudentTrainingListener.prototype = {
         var changed = false;
         $('.openassessment_training_example_criterion', this.element).each(function() {
             var criterion = this;
-            if ($(criterion).data('criterion') == data.criterionName) {
+            if ($(criterion).data('criterion') === data.criterionName) {
                 $(criterion).remove();
                 changed = true;
             }
         });
 
         if (changed) {
+            /* jshint maxlen:300 */
             this.displayAlertMsg(
                 gettext("Option Deleted"),
                 gettext("You've deleted all the options for this criterion. The system has removed the criterion from the sample responses in the Student Training step.")
@@ -199,6 +205,7 @@ OpenAssessment.StudentTrainingListener.prototype = {
         );
 
         if (changed) {
+            /* jshint maxlen:300 */
             this.displayAlertMsg(
                 gettext("Criterion Deleted"),
                 gettext("You've deleted a criterion. The system has removed the criterion from the sample responses in the Student Training step.")
@@ -369,14 +376,14 @@ OpenAssessment.AssessmentToggleListener = function() {
 };
 
 OpenAssessment.AssessmentToggleListener.prototype = {
-    toggleOff: function(data) {
+    toggleOff: function() {
         this.alert.setMessage(
             gettext("Warning"),
             gettext("Changes to steps that are not selected as part of the assignment will not be saved.")
         ).show();
     },
 
-    toggleOn: function(data) {
+    toggleOn: function() {
         this.alert.hide();
     }
 };
