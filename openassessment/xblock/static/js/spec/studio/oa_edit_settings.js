@@ -210,7 +210,7 @@ describe("OpenAssessment.EditSettingsView", function() {
 
         // Spy on the assessment view's validate() method so we can
         // verify that it doesn't get called (thus marking the DOM)
-        spyOn(assessmentViews[PEER], 'validate').andCallThrough();
+        spyOn(assessmentViews[PEER], 'validate').and.callThrough();
 
         // Expect that the parent view is still valid
         expect(view.validate()).toBe(true);

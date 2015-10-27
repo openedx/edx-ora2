@@ -90,7 +90,7 @@ describe("OpenAssessment.StaffInfoView", function() {
             "workflow_uuid": "abc123",
             "msg": "Great success."
         };
-        spyOn(server, 'scheduleTraining').andCallThrough();
+        spyOn(server, 'scheduleTraining').and.callThrough();
 
         // Load the fixture
         loadFixtures('oa_base.html');
@@ -131,7 +131,7 @@ describe("OpenAssessment.StaffInfoView", function() {
         var view = new OpenAssessment.StaffInfoView(el, server, baseView);
         view.load();
 
-        spyOn(server, 'rescheduleUnfinishedTasks').andCallThrough();
+        spyOn(server, 'rescheduleUnfinishedTasks').and.callThrough();
 
         // Test the Rescheduling
         view.rescheduleUnfinishedTasks();
@@ -151,7 +151,7 @@ describe("OpenAssessment.StaffInfoView", function() {
         var view = new OpenAssessment.StaffInfoView(el, server, baseView);
         view.load();
 
-        spyOn(server, 'rescheduleUnfinishedTasks').andCallThrough();
+        spyOn(server, 'rescheduleUnfinishedTasks').and.callThrough();
 
         // Test the Rescheduling
         view.rescheduleUnfinishedTasks();
@@ -163,7 +163,7 @@ describe("OpenAssessment.StaffInfoView", function() {
     it("updates submission cancellation button when comments changes", function() {
         // Prevent the server's response from resolving,
         // so we can see what happens before view gets re-rendered.
-        spyOn(server, 'cancelSubmission').andCallFake(function() {
+        spyOn(server, 'cancelSubmission').and.callFake(function() {
             return $.Deferred(function(defer) {}).promise();
         });
 
@@ -190,7 +190,7 @@ describe("OpenAssessment.StaffInfoView", function() {
     });
 
     it("submits the cancel submission comments to the server", function() {
-        spyOn(server, 'cancelSubmission').andCallThrough();
+        spyOn(server, 'cancelSubmission').and.callThrough();
 
         // Load the fixture
         loadFixtures('oa_student_info.html');

@@ -175,7 +175,7 @@ describe("OpenAssessment.StudioView", function() {
         server.isReleased = true;
 
         // Stub the confirmation step (avoid showing the dialog)
-        spyOn(view, 'confirmPostReleaseUpdate').andCallFake(
+        spyOn(view, 'confirmPostReleaseUpdate').and.callFake(
             function(onConfirm) { onConfirm(); }
         );
 
