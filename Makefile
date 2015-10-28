@@ -64,3 +64,9 @@ test-js: render-templates
 
 test-js-debug: render-templates
 	./scripts/js-debugger.sh
+
+test-acceptance:
+	./scripts/test-acceptance.sh tests
+
+test-a11y:
+	./scripts/test-acceptance.sh accessibility
