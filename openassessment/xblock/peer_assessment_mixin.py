@@ -42,7 +42,8 @@ class PeerAssessmentMixin(object):
                 a new peer assessment.  This dict should have the following attributes:
                 `submission_uuid` (string): The unique identifier for the submission being assessed.
                 `options_selected` (dict): Dictionary mapping criterion names to option values.
-                `feedback` (unicode): Written feedback for the submission.
+                `overall_feedback` (unicode): Written feedback for the submission as a whole.
+                `criterion_feedback` (unicode): Written feedback per the criteria for the submission.
 
         Returns:
             Dict with keys "success" (bool) indicating success/failure.
