@@ -21,7 +21,6 @@ install-python:
 	./scripts/install-python.sh
 
 install-js:
-	npm config set loglevel warn
 	npm install
 
 install-nltk-data:

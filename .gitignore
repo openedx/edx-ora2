@@ -62,3 +62,6 @@ test/selenium/screenshots/*
 
 # logging
 logs/*.log*
+
+# efischer, part of dual-devstacking with edx-platform I suppose?
+edx-ora2/
