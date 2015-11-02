@@ -29,7 +29,7 @@ from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.studio_mixin import StudioMixin
 from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
-from openassessment.xblock.staff_info_mixin import StaffInfoMixin
+from openassessment.xblock.staff_area_mixin import StaffAreaMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.student_training_mixin import StudentTrainingMixin
@@ -103,7 +103,7 @@ class OpenAssessmentBlock(
     StudioMixin,
     GradeMixin,
     LeaderboardMixin,
-    StaffInfoMixin,
+    StaffAreaMixin,
     WorkflowMixin,
     StudentTrainingMixin,
     LmsCompatibilityMixin,
@@ -301,7 +301,7 @@ class OpenAssessmentBlock(
             "title": self.title,
             "prompts": self.prompts,
             "rubric_assessments": ui_models,
-            "show_staff_debug_info": self.is_course_staff and not self.in_studio_preview,
+            "show_staff_area": self.is_course_staff and not self.in_studio_preview,
         }
         template = get_template("openassessmentblock/oa_base.html")
         context = Context(context_dict)
