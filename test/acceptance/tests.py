@@ -1,16 +1,18 @@
 """
 UI-level acceptance tests for OpenAssessment.
 """
+import ddt
 import os
 import unittest
 import time
 from functools import wraps
+
 from nose.plugins.attrib import attr
 from bok_choy.web_app_test import WebAppTest
 from bok_choy.promise import BrokenPromise
 from auto_auth import AutoAuthPage
 from pages import (
-    SubmissionPage, AssessmentPage, GradePage
+    SubmissionPage, AssessmentPage, GradePage, StaffAreaPage
 )
 
 
@@ -65,24 +67,25 @@ class OpenAssessmentTest(WebAppTest):
     OPTIONS_SELECTED = [1, 2]
     EXPECTED_SCORE = 6
 
-    def setUp(self, problem_type):
+    def setUp(self, problem_type, staff=False):
         """
         Configure page objects to test Open Assessment.
 
         Args:
             problem_type (str): The type of problem being tested,
               used to choose which part of the course to load.
+            staff (bool): If True, runs the test with a staff user (defaults to False).
 
         """
         super(OpenAssessmentTest, self).setUp()
 
-        problem_loc = self.PROBLEM_LOCATIONS[problem_type]
-        self.auto_auth_page = AutoAuthPage(self.browser, course_id=self.TEST_COURSE_ID)
-        self.submission_page = SubmissionPage(self.browser, problem_loc)
-        self.self_asmnt_page = AssessmentPage('self-assessment', self.browser, problem_loc)
-        self.peer_asmnt_page = AssessmentPage('peer-assessment', self.browser, problem_loc)
-        self.student_training_page = AssessmentPage('student-training', self.browser, problem_loc)
-        self.grade_page = GradePage(self.browser, problem_loc)
+        self.problem_loc = self.PROBLEM_LOCATIONS[problem_type]
+        self.auto_auth_page = AutoAuthPage(self.browser, course_id=self.TEST_COURSE_ID, staff=staff)
+        self.submission_page = SubmissionPage(self.browser, self.problem_loc)
+        self.self_asmnt_page = AssessmentPage('self-assessment', self.browser, self.problem_loc)
+        self.peer_asmnt_page = AssessmentPage('peer-assessment', self.browser, self.problem_loc)
+        self.student_training_page = AssessmentPage('student-training', self.browser, self.problem_loc)
+        self.grade_page = GradePage(self.browser, self.problem_loc)
 
 
 class SelfAssessmentTest(OpenAssessmentTest):
@@ -204,6 +207,79 @@ class StudentTrainingTest(OpenAssessmentTest):
             self.student_training_page.wait_for_complete()
         except BrokenPromise:
             self.fail("Student training was not marked complete.")
+
+
+class StaffAreaTest(OpenAssessmentTest):
+    """
+    Test the staff area.
+    """
+
+    def setUp(self):
+        super(StaffAreaTest, self).setUp('peer_only', staff=True)
+        self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
+
+    @retry()
+    @attr('acceptance')
+    def test_staff_area_buttons(self):
+        """
+        Scenario: the staff area buttons should behave correctly
+
+        Given I am viewing the staff area of an ORA problem
+        Then none of the buttons should be active
+        When I click the "Staff Tools" button
+        Then only the "Staff Tools" button should be active
+        When I click the "Staff Info" button
+        Then only the "Staff Info" button should be active
+        When I click the "Staff Info" button again
+        Then none of the buttons should be active
+        """
+        self.auto_auth_page.visit()
+        self.staff_area_page.visit()
+        self.assertEqual(self.staff_area_page.selected_button_names, [])
+        self.staff_area_page.click_staff_toolbar_button("staff-tools")
+        self.assertEqual(self.staff_area_page.selected_button_names, ["STAFF TOOLS"])
+        self.staff_area_page.click_staff_toolbar_button("staff-info")
+        self.assertEqual(self.staff_area_page.selected_button_names, ["STAFF INFO"])
+        self.staff_area_page.click_staff_toolbar_button("staff-info")
+        self.assertEqual(self.staff_area_page.selected_button_names, [])
+
+    @retry()
+    @attr('acceptance')
+    @ddt.data(
+        ("staff-tools", "STAFF TOOLS"),
+        ("staff-info", "STAFF INFO"),
+    )
+    @ddt.unpack
+    def test_staff_tools_panel(self, button_name, button_label):
+        """
+        Scenario: the staff tools panel should be shown correctly
+
+        Given I am viewing the staff area of an ORA problem
+        Then none of the panels should be shown
+        When I click the staff button
+        Then only the related panel should be shown
+        When I click the close button in the panel
+        Then none of the panels should be shown
+        """
+        self.auto_auth_page.visit()
+        self.staff_area_page.visit()
+
+        # Verify that there is no selected panel initially
+        self.assertEqual(self.staff_area_page.selected_button_names, [])
+        self.assertEqual(self.staff_area_page.visible_staff_panels, [])
+
+        # Click on the button and verify that the panel has opened
+        self.staff_area_page.click_staff_toolbar_button(button_name)
+        self.assertEqual(self.staff_area_page.selected_button_names, [button_label])
+        self.assertEqual(
+            self.staff_area_page.visible_staff_panels,
+            [u'openassessment__{button_name}'.format(button_name=button_name)]
+        )
+
+        # Click 'Close' and verify that the panel has been closed
+        self.staff_area_page.click_staff_panel_close_button("staff-tools")
+        self.assertEqual(self.staff_area_page.selected_button_names, [])
+        self.assertEqual(self.staff_area_page.visible_staff_panels, [])
 
 
 if __name__ == "__main__":
