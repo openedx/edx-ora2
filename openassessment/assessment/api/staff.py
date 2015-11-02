@@ -19,7 +19,7 @@ from openassessment.assessment.errors import (
 )
 from submissions import api as sub_api
 
-logger = logging.getLogger("openassessment.assessment.api.peer")
+logger = logging.getLogger("openassessment.assessment.api.staff")
 
 
 STAFF_TYPE = "ST"
@@ -172,6 +172,8 @@ def create_assessment(
     Assessments are created based on feedback associated with a particular
     rubric.
 
+    Assumes that the user creating the assessment has the permissions to do so.
+
     Args:
         scorer_id (str): The user ID for the user giving this assessment. This
             is required to create an assessment on a submission.
@@ -205,7 +207,6 @@ def create_assessment(
         >>> create_assessment("Tim", options_selected, criterion_feedback, feedback, rubric_dict)
     """
     try:
-        # TODO: check if staff has access etc.
         assessment = _complete_assessment(
             submission_uuid,
             scorer_id,
