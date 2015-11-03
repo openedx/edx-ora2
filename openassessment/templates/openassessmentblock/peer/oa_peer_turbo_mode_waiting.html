@@ -9,7 +9,7 @@
 <span class="step__status">
   <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
-    <i class="ico icon-ok"></i>
+    <i class="icon fa fa-check"></i>
     <span class="copy">
       {% with graded_string=graded|stringformat:"s" %}
       {% blocktrans with num_graded='<span class="step__status__value--completed">'|safe|add:graded_string|add:'</span>'|safe %}

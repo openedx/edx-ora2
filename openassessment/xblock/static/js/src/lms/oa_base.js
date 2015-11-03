@@ -145,7 +145,7 @@ OpenAssessment.BaseView.prototype = {
     showLoadError: function(step) {
         var container = '#openassessment__' + step;
         $(container).toggleClass('has--error', true);
-        $(container + ' .step__status__value i').removeClass().addClass('ico icon-warning-sign');
+        $(container + ' .step__status__value i').removeClass().addClass('icon fa fa-exclamation-triangle');
         $(container + ' .step__status__value .copy').html(gettext('Unable to Load'));
     }
 };

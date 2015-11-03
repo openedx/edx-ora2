@@ -150,7 +150,7 @@
         }
       }
 
-      .ico {
+      .icon {
         @extend %icon-3;
         display: inline-block;
         vertical-align: baseline;
@@ -257,15 +257,15 @@
         @extend %btn--primary;
         @extend %action-2;
 
-        .copy, .ico {
+        .copy, .icon {
           display: inline;
         }
 
-        .ico {
+        .icon {
           @extend %icon-2;
         }
 
-        .icon-caret-right:before {
+        .fa-caret-right:before {
           @include transform(rotate(bidi-rotate-angle(0deg)));
         }
 
@@ -301,7 +301,7 @@
           @include animation(pulse $tmg-s3 ease-in-out infinite);
         }
 
-        .ico {
+        .icon {
           display: inline-block;
           color: $copy-secondary-color;
         }
@@ -333,7 +333,7 @@
       .step__status__value {
         background: $color-incomplete;
 
-        .copy, .ico {
+        .copy, .icon {
           color: $white-t;
         }
       }
@@ -353,7 +353,7 @@
       .step__status__value {
         background: $color-unavailable;
 
-        .ico {
+        .icon {
           display: inline-block;
           color: $copy-secondary-color;
         }
@@ -374,7 +374,7 @@
       .step__status__value {
         background: $color-unavailable;
 
-        .ico {
+        .icon {
           display: inline-block;
           color: $copy-secondary-color;
         }
@@ -403,11 +403,11 @@
       .step__status__value {
         background: $color-complete;
 
-        .ico {
+        .icon {
           display: inline-block;
         }
 
-        .copy, .ico {
+        .copy, .icon {
           color: $white-t;
         }
       }
@@ -424,7 +424,7 @@
       .step__status__value {
         background: $color-error;
 
-        .copy, .ico {
+        .copy, .icon {
           color: $white-t;
         }
       }
@@ -1063,7 +1063,7 @@
     margin-bottom: ($baseline-v/2);
     color: $heading-color;
 
-    .ico {
+    .icon {
       @extend %icon-1;
       display: inline-block;
       vertical-align: middle;
