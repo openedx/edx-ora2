@@ -18,8 +18,13 @@
 
 cd `dirname $BASH_SOURCE` && cd ..
 
-if [ -z "$BASE_URL" ]; then
-    echo "Error: BASE_URL must be set to point to your sandbox"
+# Note: support BASE_URL as a synonym for ORA_SANDBOX_URL for backward compatibility
+if [[ $BASE_URL ]]; then
+    export ORA_SANDBOX_URL="$BASE_URL"
+fi
+
+if [[ -z $ORA_SANDBOX_URL ]]; then
+    echo "Error: ORA_SANDBOX_URL must be set to point to your sandbox"
     exit 1
 fi
 

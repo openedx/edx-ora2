@@ -22,7 +22,7 @@ To use the tests:
 
 .. code:: bash
 
-    export BASE_URL=https://{USER}:{PASSWORD}@{SANDBOX}
+    export ORA_SANDBOX_URL=https://{USER}:{PASSWORD}@{SANDBOX}
 
 3. Run the tests
 
