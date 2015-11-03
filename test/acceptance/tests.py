@@ -209,6 +209,7 @@ class StudentTrainingTest(OpenAssessmentTest):
             self.fail("Student training was not marked complete.")
 
 
+@ddt.ddt
 class StaffAreaTest(OpenAssessmentTest):
     """
     Test the staff area.
@@ -250,13 +251,13 @@ class StaffAreaTest(OpenAssessmentTest):
         ("staff-info", "STAFF INFO"),
     )
     @ddt.unpack
-    def test_staff_tools_panel(self, button_name, button_label):
+    def test_staff_area_panel(self, panel_name, button_label):
         """
-        Scenario: the staff tools panel should be shown correctly
+        Scenario: the staff area panels should be shown correctly
 
         Given I am viewing the staff area of an ORA problem
         Then none of the panels should be shown
-        When I click the staff button
+        When I click a staff button
         Then only the related panel should be shown
         When I click the close button in the panel
         Then none of the panels should be shown
@@ -269,15 +270,15 @@ class StaffAreaTest(OpenAssessmentTest):
         self.assertEqual(self.staff_area_page.visible_staff_panels, [])
 
         # Click on the button and verify that the panel has opened
-        self.staff_area_page.click_staff_toolbar_button(button_name)
+        self.staff_area_page.click_staff_toolbar_button(panel_name)
         self.assertEqual(self.staff_area_page.selected_button_names, [button_label])
         self.assertEqual(
             self.staff_area_page.visible_staff_panels,
-            [u'openassessment__{button_name}'.format(button_name=button_name)]
+            [u'openassessment__{button_name}'.format(button_name=panel_name)]
         )
 
         # Click 'Close' and verify that the panel has been closed
-        self.staff_area_page.click_staff_panel_close_button("staff-tools")
+        self.staff_area_page.click_staff_panel_close_button(panel_name)
         self.assertEqual(self.staff_area_page.selected_button_names, [])
         self.assertEqual(self.staff_area_page.visible_staff_panels, [])
 

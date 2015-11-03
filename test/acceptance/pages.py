@@ -1,11 +1,13 @@
 """
 Page objects for UI-level acceptance tests.
 """
+
+import os
+
 from bok_choy.page_object import PageObject
 from bok_choy.promise import EmptyPromise
 
-import os
-BASE_URL = os.environ.get('BASE_URL')
+ORA_SANDBOX_URL = os.environ.get('ORA_SANDBOX_URL')
 
 
 class PageConfigurationError(Exception):
@@ -33,7 +35,7 @@ class OpenAssessmentPage(PageObject):
     @property
     def url(self):
         return "{base}/{loc}".format(
-            base=BASE_URL,
+            base=ORA_SANDBOX_URL,
             loc=self._problem_location
         )
 

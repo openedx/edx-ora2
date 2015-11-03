@@ -75,8 +75,8 @@ def require_course_staff(error_key, with_json_handler=False):
         @wraps(func)
         def _wrapped(xblock, *args, **kwargs):  # pylint: disable=C0111
             permission_errors = {
-                "STAFF_AREA": xblock._(u"You do not have permission to access the staff area"),
-                "STUDENT_INFO": xblock._(u"You do not have permission to access learner information."),
+                "STAFF_AREA": xblock._(u"You do not have permission to access the ORA staff area"),
+                "STUDENT_INFO": xblock._(u"You do not have permission to access ORA learner information."),
             }
 
             if not xblock.is_course_staff and with_json_handler:

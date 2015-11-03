@@ -29,7 +29,7 @@ if [ -z "$TEST_HOST" ]; then
     exit 1;
 fi
 
-export BASE_URL="https://${BASIC_AUTH_USER}:${BASIC_AUTH_PASSWORD}@${TEST_HOST}"
+export ORA_SANDBOX_URL="https://${BASIC_AUTH_USER}:${BASIC_AUTH_PASSWORD}@${TEST_HOST}"
 
 virtualenv venv
 source venv/bin/activate
@@ -46,6 +46,6 @@ make test-acceptance
 unset SELENIUM_HOST
 
 # AutoAuthPage times out in PhantomJS when using https, so switch to use http
-export BASE_URL="http://${BASIC_AUTH_USER}:${BASIC_AUTH_PASSWORD}@${TEST_HOST}"
+export ORA_SANDBOX_URL="http://${BASIC_AUTH_USER}:${BASIC_AUTH_PASSWORD}@${TEST_HOST}"
 
 make test-a11y

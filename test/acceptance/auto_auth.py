@@ -2,12 +2,13 @@
 Auto-auth page (used to automatically log in during testing).
 """
 
+import os
 import re
 import urllib
+
 from bok_choy.page_object import PageObject
 
-import os
-BASE_URL = os.environ.get('BASE_URL')
+ORA_SANDBOX_URL = os.environ.get('ORA_SANDBOX_URL')
 
 
 class AutoAuthPage(PageObject):
@@ -58,7 +59,7 @@ class AutoAuthPage(PageObject):
         """
         Construct the URL.
         """
-        url = BASE_URL + "/auto_auth"
+        url = ORA_SANDBOX_URL + "/auto_auth"
         query_str = urllib.urlencode(self._params)
 
         if query_str:
