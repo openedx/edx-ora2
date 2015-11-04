@@ -46,5 +46,5 @@ SECRET_KEY = ')68&amp;-c!+og)cy$o9pju_$c707+fett&amp;ph%t%gqgu-@5)!cl$cr'
 # Silence cache key warnings
 # https://docs.djangoproject.com/en/1.4/topics/cache/#cache-key-warnings
 import warnings
-from django.core.cache import CacheKeyWarning
-warnings.simplefilter("ignore", CacheKeyWarning)
+# from django.core.cache import CacheKeyWarning
+# warnings.simplefilter("ignore", CacheKeyWarning)
