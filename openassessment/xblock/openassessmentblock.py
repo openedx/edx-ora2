@@ -31,6 +31,7 @@ from openassessment.xblock.studio_mixin import StudioMixin
 from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
 from openassessment.xblock.staff_area_mixin import StaffAreaMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
+from openassessment.xblock.staff_assessment_mixin import StaffAssessmentMixin
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.student_training_mixin import StudentTrainingMixin
 from openassessment.xblock.validation import validator
@@ -106,6 +107,7 @@ class OpenAssessmentBlock(
     SubmissionMixin,
     PeerAssessmentMixin,
     SelfAssessmentMixin,
+    StaffAssessmentMixin,
     StudioMixin,
     GradeMixin,
     LeaderboardMixin,
