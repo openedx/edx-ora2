@@ -4,12 +4,13 @@ Editing interface for OpenAssessment settings (including assessments).
 Args:
     element (DOM element): The DOM element representing this view.
     assessmentViews (object literal): Mapping of CSS IDs to view objects.
+    data (Object literal): The data object passed from XBlock backend.
 
 Returns:
     OpenAssessment.EditSettingsView
 
 **/
-OpenAssessment.EditSettingsView = function(element, assessmentViews) {
+OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
     this.settingsElement = element;
     this.assessmentsElement = $(element).siblings('#openassessment_assessment_module_settings_editors').get(0);
     this.assessmentViews = assessmentViews;
@@ -27,9 +28,40 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews) {
         "#openassessment_submission_due_time"
     ).install();
 
+    new OpenAssessment.SelectControl(
+        $("#openassessment_submission_upload_selector", this.element),
+        {'custom': $("#openassessment_submission_white_listed_file_types_wrapper", this.element)},
+        new OpenAssessment.Notifier([
+            new OpenAssessment.AssessmentToggleListener()
+        ])
+    ).install();
+
     this.leaderboardIntField = new OpenAssessment.IntField(
         $("#openassessment_leaderboard_editor", this.element),
         { min: 0, max: 100 }
+    );
+
+    this.fileTypeWhiteListInputField = new OpenAssessment.InputControl(
+        $("#openassessment_submission_white_listed_file_types", this.element),
+        function(value) {
+            var badExts = [];
+            var errors = [];
+            if (!value) {
+                errors.push(gettext('File types can not be empty.'));
+                return errors;
+            }
+            var whiteList = $.map(value.replace(/\./g, '').toLowerCase().split(','), $.trim);
+            $.each(whiteList, function(index, ext) {
+                if (data.FILE_EXT_BLACK_LIST.indexOf(ext) !== -1) {
+                    badExts.push(ext);
+                }
+            });
+            if (badExts.length) {
+                errors.push(gettext('The following file types are not allowed: ') + badExts.join(','));
+            }
+
+            return errors;
+        }
     );
 
     this.initializeSortableAssessments();
@@ -122,28 +154,43 @@ OpenAssessment.EditSettingsView.prototype = {
     },
 
     /**
-    Enable / disable image submission.
+    Get or set upload file type.
 
     Args:
-        isEnabled (boolean, optional): If provided, enable/disable image submission.
+        uploadType (string, optional): If provided, enable specified upload type submission.
 
     Returns:
-        boolean
+        string (image, file or custom)
 
     **/
-    imageSubmissionEnabled: function(isEnabled) {
-        var sel = $("#openassessment_submission_image_editor", this.settingsElement);
-        if (isEnabled !== undefined) {
-            if (isEnabled) { sel.val("1"); }
-            else { sel.val("0"); }
+    fileUploadType: function(uploadType) {
+        var sel = $("#openassessment_submission_upload_selector", this.settingsElement);
+        if (uploadType !== undefined) {
+            sel.val(uploadType);
         }
-        return sel.val() === "1";
+        return sel.val();
+    },
+
+    /**
+    Get or set upload file extension white list.
+
+    Args:
+        exts (string, optional): If provided, set the file extension white list
+
+    Returns:
+        string: comma separated file extension white list string
+    **/
+    fileTypeWhiteList: function(exts) {
+        if (exts !== undefined) {
+            this.fileTypeWhiteListInputField.set(exts);
+        }
+        return this.fileTypeWhiteListInputField.get();
     },
 
     /**
     Enable / disable latex rendering.
 
-    Args: 
+    Args:
         isEnabled(boolean, optional): if provided enable/disable latex rendering
     Returns:
         boolean
@@ -255,6 +302,15 @@ OpenAssessment.EditSettingsView.prototype = {
         isValid = (this.startDatetimeControl.validate() && isValid);
         isValid = (this.dueDatetimeControl.validate() && isValid);
         isValid = (this.leaderboardIntField.validate() && isValid);
+        if (this.fileUploadType() === 'custom') {
+            isValid = (this.fileTypeWhiteListInputField.validate() && isValid);
+        } else {
+            // we want to keep the valid white list in case author changes upload type back to custom
+            if (this.fileTypeWhiteListInputField.get() && !this.fileTypeWhiteListInputField.validate()) {
+                // but will clear the field in case it is invalid
+                this.fileTypeWhiteListInputField.set('');
+            }
+        }
 
         // Validate each of the *enabled* assessment views
         $.each(this.assessmentViews, function() {
@@ -286,6 +342,9 @@ OpenAssessment.EditSettingsView.prototype = {
         if (this.leaderboardIntField.validationErrors().length > 0) {
             errors.push("Leaderboard number is invalid");
         }
+        if (this.fileTypeWhiteListInputField.validationErrors().length > 0) {
+            errors = errors.concat(this.fileTypeWhiteListInputField.validationErrors());
+        }
 
         $.each(this.assessmentViews, function() {
             errors = errors.concat(this.validationErrors());
@@ -301,6 +360,7 @@ OpenAssessment.EditSettingsView.prototype = {
         this.startDatetimeControl.clearValidationErrors();
         this.dueDatetimeControl.clearValidationErrors();
         this.leaderboardIntField.clearValidationErrors();
+        this.fileTypeWhiteListInputField.clearValidationErrors();
         $.each(this.assessmentViews, function() {
             this.clearValidationErrors();
         });

@@ -281,3 +281,136 @@ OpenAssessment.DatetimeControl.prototype = {
         return errors;
     },
 };
+
+
+/**
+ Show and hide elements based on select options.
+
+ Args:
+    selectSel (JQuery selector): The select used to toggle whether sections
+        are shown or hidden.
+    mapping (Object): A mapping object that is used to specify the relationship
+        between option and section.  e.g.
+        {
+            option1: selector1,
+            option2: selector2,
+        }
+        When an option is selected, the section is shown and all other sections will be hidden.
+    notifier (OpenAssessment.Notifier): Receives notifications when the select state changes.
+
+ Sends the following notifications:
+ * selectionChanged
+ **/
+OpenAssessment.SelectControl = function(selectSel, mapping, notifier) {
+    this.select = selectSel;
+    this.mapping = mapping;
+    this.notifier = notifier;
+};
+
+OpenAssessment.SelectControl.prototype = {
+    /**
+     Install the event handler for the select,
+     passing in the toggle control object as the event data.
+
+     Returns:
+     OpenAssessment.ToggleControl
+     **/
+    install: function() {
+        this.select.change(
+            this, function(event) {
+                var control = event.data;
+                control.notifier.notificationFired('selectionChanged', {selected: this.value});
+                control.change(this.value);
+            }
+        );
+        return this;
+    },
+
+    change: function(selected) {
+        $.each(this.mapping, function(option, sel) {
+            if (option === selected) {
+                sel.removeClass('is--hidden');
+            } else {
+                sel.addClass('is--hidden');
+            }
+        });
+    }
+};
+
+/**
+ Input field that support custom validation.
+
+ This is similar to string field but allow you to pass in a custom validation function to validate the input field.
+
+ Args:
+    inputSel (JQuery selector or DOM element): The input field.
+    validator (callable): The callback for custom validation function. The function should accept
+        one parameter for the value of the input and returns an array of errors strings. If not error, return [].
+ */
+OpenAssessment.InputControl = function(inputSel, validator) {
+    this.input = $(inputSel);
+    this.validator = validator;
+    this.errors = [];
+};
+
+OpenAssessment.InputControl.prototype = {
+
+    /**
+     Retrieve the string value from the input.
+
+     Returns:
+        string
+     **/
+    get: function() {
+        return this.input.val();
+    },
+
+    /**
+     Set the input value.
+
+     Args:
+        val (string)
+
+     **/
+    set: function(val) {
+        this.input.val(val);
+    },
+
+    /**
+     Mark validation errors if the field does not pass the validation callback function.
+
+     Returns:
+         Boolean indicating whether the field's value is valid.
+
+     **/
+    validate: function() {
+        this.errors = this.validator(this.get());
+
+        if (this.errors.length) {
+            this.input.addClass("openassessment_highlighted_field");
+            this.input.parent().nextAll('.message-status').text(this.errors.join(";"));
+            this.input.parent().nextAll('.message-status').addClass("is-shown");
+        }
+        return this.errors.length === 0;
+    },
+
+    /**
+     Clear any validation errors from the UI.
+     **/
+    clearValidationErrors: function() {
+        this.input.removeClass("openassessment_highlighted_field");
+        this.input.parent().nextAll('.message-status').removeClass("is-shown");
+    },
+
+    /**
+     Return a list of validation errors currently displayed
+     in the UI.
+
+     Returns:
+        list of strings that contain error messages
+
+     **/
+    validationErrors: function() {
+        return this.errors;
+    }
+};
