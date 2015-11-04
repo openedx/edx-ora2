@@ -41,6 +41,7 @@ INSTALLED_APPS += ('django_nose',)
 # Store uploaded files in a test-specific directory
 MEDIA_ROOT = os.path.join(BASE_DIR, 'storage/test')
 
+SECRET_KEY = ')68&amp;-c!+og)cy$o9pju_$c707+fett&amp;ph%t%gqgu-@5)!cl$cr'
 
 # Silence cache key warnings
 # https://docs.djangoproject.com/en/1.4/topics/cache/#cache-key-warnings
