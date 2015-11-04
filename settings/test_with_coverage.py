@@ -13,3 +13,5 @@ NOSE_ARGS = [
     '--cover-branches',
     '--cover-erase',
     ]
+
+SECRET_KEY = ')68&amp;-c!+og)cy$o9pju_$c707+fett&amp;ph%t%gqgu-@5)!cl$cr'
