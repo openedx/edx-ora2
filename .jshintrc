@@ -150,6 +150,7 @@
         "Logger",
         "gettext",
         "ngettext",
+        "interpolate_text",
 
         // ORA-specific globals
         "OpenAssessment"
