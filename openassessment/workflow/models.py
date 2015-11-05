@@ -32,6 +32,7 @@ logger = logging.getLogger('openassessment.workflow.models')
 # that implements the corresponding assessment API.
 # For backwards compatibility, we provide a default configuration as well
 DEFAULT_ASSESSMENT_API_DICT = {
+    'staff': 'openassessment.assessment.api.staff',
     'peer': 'openassessment.assessment.api.peer',
     'self': 'openassessment.assessment.api.self',
     'training': 'openassessment.assessment.api.student_training',
@@ -49,7 +50,7 @@ ASSESSMENT_API_DICT = getattr(
 # We then use that score as the student's overall score.
 # This Django setting is a list of assessment steps (defined in `settings.ORA2_ASSESSMENTS`)
 # in descending priority order.
-DEFAULT_ASSESSMENT_SCORE_PRIORITY = ['peer', 'self', 'ai']
+DEFAULT_ASSESSMENT_SCORE_PRIORITY = ['staff', 'peer', 'self', 'ai']
 ASSESSMENT_SCORE_PRIORITY = getattr(
     settings, 'ORA2_ASSESSMENT_SCORE_PRIORITY',
     DEFAULT_ASSESSMENT_SCORE_PRIORITY
@@ -92,6 +93,14 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
     # here without violating data integrity.
     course_id = models.CharField(max_length=255, blank=False, db_index=True)
     item_id = models.CharField(max_length=255, blank=False, db_index=True)
+
+    """
+    This value is:
+        -None if a staff assesment is neither needed nor recorded
+        -False if a staff assessment is needed and not yet recorded
+        -True if a staff assesment has been recorded
+    """
+    has_been_staff_graded = models.NullBooleanField(default=None)
 
     class Meta:
         ordering = ["-created"]
@@ -239,6 +248,8 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                     else:
                         requirements = assessment_requirements.get(assessment_step_name, {})
                     score = get_score_func(self.submission_uuid, requirements)
+                    if assessment_step_name == 'staff' and score == None and has_been_staff_graded = None
+                        continue # A staff score was not found, but it is not required, so try the next type of score
                     break
 
         return score
@@ -341,7 +352,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             steps = list(self.steps.all())
         return steps
 
-    def set_score(self, score):
+    def set_score(self, score, is_staff=False):
         """
         Set a score for the workflow.
 
@@ -353,11 +364,31 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 'points_possible'.
 
         """
-        sub_api.set_score(
-            self.submission_uuid,
-            score["points_earned"],
-            score["points_possible"]
-        )
+        if is_staff:
+            # The more I think about it, the more I think we need more info here:
+                # Who is overriding the score?
+                # Is this required staff grading, or just overriding a previous score?
+            sub_api.reset_score( # TODO: make sure these parameters are a) available, and b) match up properly
+                self.student_id,
+                self.course_id,
+                self.item_id
+            )
+            sub_api.set_score(
+                self.submission_uuid,
+                score["points_earned"],
+                score["points_possible"],
+                "Staff", # This should probably be staff name, yeah?
+                "staff_override", # override vs staff-required
+                "staff said so", # human-readable version of ^
+            )
+            self.has_been_staff_graded = True
+            self.save() # Is this needed, to persist has_been_staff_graded in the database?
+        elif not self.has_been_staff_graded:
+            sub_api.set_score(
+                self.submission_uuid,
+                score["points_earned"],
+                score["points_possible"]
+            )
 
     def cancel(self, assessment_requirements):
         """
