@@ -1,8 +1,10 @@
 """
 Errors for self-assessment
 """
+from .base import AssessmentError
 
-class SelfAssessmentError(Exception):
+
+class SelfAssessmentError(AssessmentError):
     """Generic Self Assessment Error
 
     Raised when an error occurs while processing a request related to the
