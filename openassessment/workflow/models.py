@@ -56,6 +56,8 @@ ASSESSMENT_SCORE_PRIORITY = getattr(
     DEFAULT_ASSESSMENT_SCORE_PRIORITY
 )
 
+STAFF_OVERRIDE_ANNOTATION_TYPE = "overriden_staff_score"
+STAFF_REQUIRED_ANNOTATION_TYPE = "required_staff_score"
 
 class AssessmentWorkflow(TimeStampedModel, StatusModel):
     """Tracks the open-ended assessment status of a student submission.
@@ -240,8 +242,11 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                     else:
                         requirements = assessment_requirements.get(assessment_step_name, {})
                     score = get_score_func(self.submission_uuid, requirements)
-                    if score:
-                        break
+                    if assessment_step_name == self.STATUS.staff and score == None:
+                        if requirements and requirements.get(assessment_step_name, {}).get('required', False):
+                            break # A staff score was not found, and one is required. Return None
+                        continue # A staff score was not found, but it is not required, so try the next type of score
+                    break
 
         return score
 
@@ -287,15 +292,16 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
 
         step_for_name = {step.name: step for step in steps}
 
-        # If the status is done or cancelled, check if score has changed.
+        if force_update_score:
+            new_score = self.get_score(assessment_requirements, {'staff': step_for_name.get('staff', None)})
+            self.set_staff_score(new_score, is_override=True)
+            self.save()
+            logger.info((
+                u"Workflow for submission UUID {uuid} has updated score."
+            ).format(uuid=self.submission_uuid))
+            return
+
         if self.status == self.STATUS.done:
-            if force_update_score:
-                new_score = self.get_score(assessment_requirements, step_for_name)
-                self.set_score(new_score)
-                self.save()
-                logger.info((
-                    u"Workflow for submission UUID {uuid} has updated score."
-                ).format(uuid=self.submission_uuid))
             return
 
         # Go through each step and update its status.
@@ -324,7 +330,10 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             score = self.get_score(assessment_requirements, step_for_name)
             # If we found a score, then we're done
             if score is not None:
-                self.set_score(score)
+                if score.get("staff_id", None) is not None:
+                    self.set_staff_score(score)
+                else:
+                    self.set_score(score)
                 new_status = self.STATUS.done
 
         # Finally save our changes if the status has changed
@@ -346,11 +355,60 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             # If no steps exist for this AssessmentWorkflow, assume
             # peer -> self for backwards compatibility
             self.steps.add(
-                AssessmentWorkflowStep(name=self.STATUS.peer, order_num=0),
-                AssessmentWorkflowStep(name=self.STATUS.self, order_num=1)
+                AssessmentWorkflowStep(name=self.STATUS.peer, order_num=1),
+                AssessmentWorkflowStep(name=self.STATUS.self, order_num=2)
             )
             steps = list(self.steps.all())
+
+        # A staff step will always be available, to allow for staff overrides
+        try:
+            self.steps.get(name=self.STATUS.staff)
+        except AssessmentWorkflowStep.DoesNotExist:
+            self.steps.add(
+                AssessmentWorkflowStep(
+                    name=self.STATUS.staff,
+                    order_num=0,
+                    assessment_completed_at=now(),
+                )
+            )
         return steps
+
+    def set_staff_score(self, score, is_override=False, reason=None):
+        """
+        Set a staff score for the workflow.
+
+        Allows for staff scores to bet set on a submission, with annotations to provide an audit trail if needed.
+        This method can be used for both required staff grading, and staff overrides.
+
+        Args:
+            score (dict): A dict containing 'points_earned', 'points_possible', and 'staff_id'.
+            is_override (bool): Optionally True if staff is overriding a previous score.
+            reason (string): An optional parameter specifying the reason for the staff grade. A default value
+                will be used in the event that this parameter is not provided.
+
+        """
+        annotation_type = STAFF_REQUIRED_ANNOTATION_TYPE
+        if is_override:
+            annotation_type = STAFF_OVERRIDE_ANNOTATION_TYPE
+            if reason is None:
+                reason = "A staff member has overridden a previous score for this submission"
+            sub_dict = sub_api.get_submission_and_student(self.submission_uuid)
+            sub_api.reset_score(
+                sub_dict['student_item']['student_id'],
+                self.course_id,
+                self.item_id
+            )
+        else:
+            if reason is None:
+                reason = "A staff score was required for this submission"
+        sub_api.set_score(
+            self.submission_uuid,
+            score["points_earned"],
+            score["points_possible"],
+            annotation_creator = score["staff_id"],
+            annotation_type = annotation_type,
+            annotation_reason = reason
+        )
 
     def set_score(self, score):
         """
@@ -364,11 +422,27 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 'points_possible'.
 
         """
-        sub_api.set_score(
-            self.submission_uuid,
-            score["points_earned"],
-            score["points_possible"]
-        )
+        if not self.staff_score_exists():
+            sub_api.set_score(
+                self.submission_uuid,
+                score["points_earned"],
+                score["points_possible"]
+            )
+
+    def staff_score_exists(self):
+        """
+        Check if a staff score exists for this submission.
+        """
+        steps = self._get_steps()
+        step_for_name = {step.name: step for step in steps}
+        staff_step = step_for_name.get("staff")
+        if staff_step is not None:
+            get_latest_func = getattr(staff_step.api(), 'get_latest_assessment', None)
+            if get_latest_func is not None:
+                staff_assessment = get_latest_func(self.submission_uuid)
+                if staff_assessment is not None:
+                    return True
+        return False
 
     def cancel(self, assessment_requirements):
         """
