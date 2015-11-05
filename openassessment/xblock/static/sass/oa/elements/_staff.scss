@@ -35,6 +35,16 @@
         .ui-staff__content {
           margin-top: 0;
         }
+
+        .staff-info__cancel-submission__content,
+        .staff-info__staff-override__content {
+          padding: 0;
+        }
+      }
+
+      .ui-toggle-visibility__content {
+        @include margin-left(($baseline-h/4));
+        margin-bottom: ($baseline-v/2);
       }
     }
   }
@@ -42,6 +52,21 @@
   .ui-staff__title {
     @extend %t-heading;
     color: $copy-staff-color;
+  }
+
+  .ui-staff__subtitle {
+    @extend %t-subheading;
+    @extend %t-strong;
+    @include fontSize($f-size-medium);
+    // We want to keep the collapsible headers within the staff assessment block blue
+    // (because they are being displayed in the LMS color scheme). Unfortunately because of
+    // that we need to add an override just for ui-staff_subtitle collapsible items.
+    color: $heading-staff-color !important;
+    margin-bottom: ($baseline-v/2);
+
+    span {
+      font-weight: inherit;
+    }
   }
 
   .staff-info__title__copy {
@@ -54,10 +79,7 @@
   }
 
   .ui-staff__content__section {
-    padding-bottom: $baseline-v;
-    border-bottom: 1px solid rgba($color-decorative-staff, 0.25);
-    margin-bottom: $baseline-v;
-
+    padding-bottom: ($baseline-v/2);
     @extend %wipe-last-child;
   }
 
@@ -110,7 +132,7 @@
     }
 
     th, td {
-      border: 1px solid rgba($color-decorative-staff, 0.25);
+      border: 1px solid rgba($copy-staff-color, 0.25);
       padding: ($baseline-v/2) ($baseline-h/4);
     }
 
@@ -136,7 +158,7 @@
 }
 
 // UI - cancel submission (action)
-.openassessment__staff-info__cancel__submission {
+.staff-info__workflow-cancellation {
 
   .staff-info__cancel-submission__content {
 
