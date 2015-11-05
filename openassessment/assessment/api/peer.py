@@ -45,7 +45,7 @@ def submitter_is_finished(submission_uuid, requirements):
         bool
 
     """
-    if requirements is None:
+    if not requirements:
         return False
 
     try:
@@ -80,7 +80,7 @@ def assessment_is_finished(submission_uuid, requirements):
 
         bool
     """
-    if requirements is None:
+    if not requirements:
         return False
 
     workflow = PeerWorkflow.get_by_submission_uuid(submission_uuid)
@@ -146,7 +146,8 @@ def get_score(submission_uuid, requirements):
             must receive to get a score.
 
     Returns:
-        dict with keys "points_earned" and "points_possible".
+        A dictionary with the points earned, points possible, and
+        contributing_assessments information, along with a None staff_id.
 
     """
     if requirements is None:
@@ -183,12 +184,15 @@ def get_score(submission_uuid, requirements):
     for scored_item in items[:requirements["must_be_graded_by"]]:
         scored_item.scored = True
         scored_item.save()
+    assessments = [item.assessment for item in items]
 
     return {
         "points_earned": sum(
             get_assessment_median_scores(submission_uuid).values()
         ),
-        "points_possible": items[0].assessment.points_possible,
+        "points_possible": assessments[0].points_possible,
+        "contributing_assessments": [assessment.id for assessment in assessments],
+        "staff_id": None,
     }
 
 
