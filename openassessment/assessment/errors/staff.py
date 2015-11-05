@@ -2,8 +2,10 @@
 Errors for the staff assessment api.
 """
 
+from .base import AssessmentError
 
-class StaffAssessmentError(Exception):
+
+class StaffAssessmentError(AssessmentError):
     """Generic Staff Assessment Error
 
     Raised when an error occurs while processing a request related to
