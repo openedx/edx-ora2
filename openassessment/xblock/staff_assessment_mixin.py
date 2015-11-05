@@ -7,6 +7,7 @@ from staff_area_mixin import require_course_staff
 from xblock.core import XBlock
 
 from openassessment.assessment.api import staff as staff_api
+from openassessment.workflow import api as workflow_api
 from openassessment.assessment.errors import (
     StaffAssessmentRequestError, StaffAssessmentInternalError
 )
@@ -51,6 +52,7 @@ class StaffAssessmentMixin(object):
                 create_rubric_dict(self.prompts, self.rubric_criteria_with_labels)
             )
             self.publish_assessment_event("openassessmentblock.staff_assessment", assessment)
+            workflow_api.update_from_assessments(assessment["submission_uuid"], {}, force_update_score=True)
 
         except StaffAssessmentRequestError:
             logger.warning(
