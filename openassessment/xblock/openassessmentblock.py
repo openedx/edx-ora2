@@ -29,8 +29,9 @@ from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.studio_mixin import StudioMixin
 from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
-from openassessment.xblock.staff_info_mixin import StaffInfoMixin
+from openassessment.xblock.staff_area_mixin import StaffAreaMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
+from openassessment.xblock.staff_assessment_mixin import StaffAssessmentMixin
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.student_training_mixin import StudentTrainingMixin
 from openassessment.xblock.validation import validator
@@ -66,6 +67,12 @@ UI_MODELS = {
         "navigation_text": "Your assessment of your response",
         "title": "Assess Your Response"
     },
+    "self-assessment": {
+        "name": "staff-assessment",
+        "class_id": "openassessment__staff-assessment",
+        "navigation_text": "Staff assessment of your response",
+        "title": "Staff Assessment"
+    },
     "grade": {
         "name": "grade",
         "class_id": "openassessment__grade",
@@ -100,10 +107,11 @@ class OpenAssessmentBlock(
     SubmissionMixin,
     PeerAssessmentMixin,
     SelfAssessmentMixin,
+    StaffAssessmentMixin,
     StudioMixin,
     GradeMixin,
     LeaderboardMixin,
-    StaffInfoMixin,
+    StaffAreaMixin,
     WorkflowMixin,
     StudentTrainingMixin,
     LmsCompatibilityMixin,
@@ -301,7 +309,7 @@ class OpenAssessmentBlock(
             "title": self.title,
             "prompts": self.prompts,
             "rubric_assessments": ui_models,
-            "show_staff_debug_info": self.is_course_staff and not self.in_studio_preview,
+            "show_staff_area": self.is_course_staff and not self.in_studio_preview,
         }
         template = get_template("openassessmentblock/oa_base.html")
         context = Context(context_dict)
@@ -390,6 +398,10 @@ class OpenAssessmentBlock(
         """
         ui_models = [UI_MODELS["submission"]]
         for assessment in self.valid_assessments:
+            if assessment["name"] == "staff-assessment" and assessment["required"] == False:
+                # Check if staff have graded the assessment
+                # else
+                continue
             ui_model = UI_MODELS.get(assessment["name"])
             if ui_model:
                 ui_models.append(dict(assessment, **ui_model))

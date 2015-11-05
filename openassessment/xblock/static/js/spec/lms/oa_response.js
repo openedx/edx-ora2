@@ -20,20 +20,20 @@ describe("OpenAssessment.ResponseView", function() {
             function(defer) { defer.rejectWith(this, ["ERROR"]); }
         ).promise();
 
-        this.save = function(submission) {
+        this.save = function() {
             return successPromise;
         };
 
-        this.submit = function(submission) {
+        this.submit = function() {
             return successPromise;
         };
 
-        this.render = function(step) {
+        this.render = function() {
             return successPromise;
         };
 
         this.uploadUrlError = false;
-        this.getUploadUrl = function(contentType) {
+        this.getUploadUrl = function() {
             return this.uploadUrlError ? errorPromise : successPromiseWithUrl;
         };
 
@@ -66,9 +66,9 @@ describe("OpenAssessment.ResponseView", function() {
         this.loadAssessmentModules = function() {};
         this.peerView = { load: function() {} };
         this.gradeView = { load: function() {} };
-        this.showLoadError = function(msg) {};
-        this.toggleActionError = function(msg, step) {};
-        this.setUpCollapseExpand = function(sel) {};
+        this.showLoadError = function() {};
+        this.toggleActionError = function() {};
+        this.setUpCollapseExpand = function() {};
     };
 
     // Stubs
@@ -100,7 +100,7 @@ describe("OpenAssessment.ResponseView", function() {
 
         // Create stub objects
         server = new StubServer();
-        server.renderLatex = jasmine.createSpy('renderLatex')
+        server.renderLatex = jasmine.createSpy('renderLatex');
         fileUploader = new StubFileUploader();
         baseView = new StubBaseView();
 
@@ -228,7 +228,7 @@ describe("OpenAssessment.ResponseView", function() {
         // Prevent the server's response from resolving,
         // so we can see what happens before view gets re-rendered.
         spyOn(server, 'submit').and.callFake(function() {
-            return $.Deferred(function(defer) {}).promise();
+            return $.Deferred(function() {}).promise();
         });
 
         view.response(['Test response 1', 'Test response 2']);

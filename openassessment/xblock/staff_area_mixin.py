@@ -1,5 +1,5 @@
 """
-The Staff Info View mixin renders all the staff-specific information used to
+The Staff Area View mixin renders all the staff-specific information used to
 determine the flow of the problem.
 """
 import copy
@@ -75,9 +75,8 @@ def require_course_staff(error_key, with_json_handler=False):
         @wraps(func)
         def _wrapped(xblock, *args, **kwargs):  # pylint: disable=C0111
             permission_errors = {
-                "STAFF_INFO": xblock._(u"You do not have permission to access staff information"),
+                "STAFF_AREA": xblock._(u"You do not have permission to access the staff area"),
                 "STUDENT_INFO": xblock._(u"You do not have permission to access learner information."),
-
             }
 
             if not xblock.is_course_staff and with_json_handler:
@@ -90,14 +89,14 @@ def require_course_staff(error_key, with_json_handler=False):
     return _decorator
 
 
-class StaffInfoMixin(object):
+class StaffAreaMixin(object):
     """
     Display debug information to course and global staff.
     """
 
     @XBlock.handler
-    @require_course_staff("STAFF_INFO")
-    def render_staff_info(self, data, suffix=''):  # pylint: disable=W0613
+    @require_course_staff("STAFF_AREA")
+    def render_staff_area(self, data, suffix=''):  # pylint: disable=W0613
         """
         Template context dictionary for course staff debug panel.
 
@@ -113,7 +112,7 @@ class StaffInfoMixin(object):
         Gets the path and context for the staff section of the ORA XBlock.
         """
         context = {}
-        path = 'openassessmentblock/staff_debug/staff_debug.html'
+        path = 'openassessmentblock/staff_area/staff_area.html'
 
         student_item = self.get_student_item_dict()
 
@@ -145,14 +144,12 @@ class StaffInfoMixin(object):
                 student_item['item_id']
             )
 
-        # Include release/due dates for each step in the problem
-        context['step_dates'] = list()
-
         # Include Latex setting
         context['allow_latex'] = self.allow_latex
 
-        steps = ['submission'] + self.assessment_steps
-        for step in steps:
+        # Include release/due dates for each step in the problem
+        context['step_dates'] = list()
+        for step in ['submission'] + self.assessment_steps:
 
             if step == 'example-based-assessment':
                 continue
@@ -300,7 +297,7 @@ class StaffInfoMixin(object):
             for criterion in context["rubric_criteria"]:
                 criterion["total_value"] = max_scores[criterion["name"]]
 
-        path = 'openassessmentblock/staff_debug/student_info.html'
+        path = 'openassessmentblock/staff_area/student_info.html'
         return path, context
 
     @XBlock.json_handler
@@ -376,12 +373,15 @@ class StaffInfoMixin(object):
                 cancelled_by_id=student_item_dict['student_id'],
                 assessment_requirements=assessment_requirements
             )
-            return {"success": True, 'msg': self._(
-                u"The learner submission has been removed from peer assessment. "
-                u"The learner receives a grade of zero unless you reset "
-                u"the learner's attempts for the problem to allow them to "
-                u"resubmit a response."
-            )}
+            return {
+                "success": True,
+                'msg': self._(
+                    u"The learner submission has been removed from peer assessment. "
+                    u"The learner receives a grade of zero unless you reset "
+                    u"the learner's attempts for the problem to allow them to "
+                    u"resubmit a response."
+                )
+            }
         except (
                 AssessmentWorkflowError,
                 AssessmentWorkflowInternalError
