@@ -51,6 +51,34 @@ RUBRIC = {
     ]
 }
 
+RUBRIC_POSSIBLE_POINTS = sum(
+    max(
+        option["points"] for option in criterion["options"]
+    ) for criterion in RUBRIC["criteria"]
+)
+
+# Used to generate OPTIONS_SELECTED_DICT. Indices refer to RUBRIC_OPTIONS.
+OPTIONS_SELECTED_CHOICES = {
+    "none": [0, 0],
+    "few": [0, 1],
+    "most": [1, 2],
+    "all": [2, 2],
+}
+
+OPTIONS_SELECTED_DICT = {
+    # This dict is constructed from OPTIONS_SELECTED_CHOICES.
+    # 'key' is expected to be a string, such as 'none', 'all', etc.
+    # 'value' is a list, indicating the indices of the RUBRIC_OPTIONS selections that pertain to that key
+    key: {
+        "options": {
+            RUBRIC["criteria"][i]["name"]: RUBRIC_OPTIONS[j]["name"] for i, j in enumerate(value)
+        },
+        "expected_points": sum(
+            RUBRIC_OPTIONS[i]["points"] for i in value
+        )
+    } for key, value in OPTIONS_SELECTED_CHOICES.iteritems()
+}
+
 EXAMPLES = [
     {
         'answer': (
