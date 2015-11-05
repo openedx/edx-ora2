@@ -21,17 +21,8 @@ describe("OpenAssessment.SelfView", function() {
         };
     };
 
-    // Stub base view
-    var StubBaseView = function() {
-        this.showLoadError = function(msg) {};
-        this.toggleActionError = function(msg, step) {};
-        this.setUpCollapseExpand = function(sel) {};
-        this.loadAssessmentModules = function() {};
-        this.scrollToTop = function() {};
-    };
-
     // Stubs
-    var baseView = null;
+    var runtime = {};
     var server = null;
 
     // View under test
@@ -43,13 +34,12 @@ describe("OpenAssessment.SelfView", function() {
 
         // Create a new stub server
         server = new StubServer();
-
-        // Create the stub base view
-        baseView = new StubBaseView();
+        server.renderLatex = jasmine.createSpy('renderLatex');
 
         // Create the object under test
-        var el = $("#openassessment").get(0);
-        view = new OpenAssessment.SelfView(el, server, baseView);
+        var assessmentElement = $("#openassessment__self-assessment").get(0);
+        var baseView = new OpenAssessment.BaseView(runtime, assessmentElement, server, {});
+        view = new OpenAssessment.SelfView(assessmentElement, server, baseView);
         view.installHandlers();
     });
 
