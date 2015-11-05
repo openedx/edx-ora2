@@ -3,10 +3,14 @@
 <div id="openassessment__student-info" class="staff-info__student__report">
     {% if submission %}
     <h2 class="title">
-        <span class="label">{% trans "Learner Information" %}</span>
+        <span class="label">
+            {% blocktrans with learner=student_username %}
+                Viewing learner: {{ learner }}
+            {% endblocktrans %}
+        </span>
     </h2>
 
-    <div class="staff-info__status ui-staff__content__section wrapper--ui-staff wrapper--ui--collapse">
+    <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse">
             <div class="ui-staff ui-toggle-visibility is--collapsed">
                 <h2 class="staff-info__title ui-staff__title ui-toggle-visibility__control">
                     <i class="icon fa fa-caret-right"></i>
@@ -40,7 +44,7 @@
         </div>
 
         {% if peer_assessments %}
-        <div class="staff-info__status ui-staff__content__section wrapper--ui-staff wrapper--ui--collapse">
+        <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse">
             <div class="ui-staff ui-toggle-visibility is--collapsed">
                 <h2 class="staff-info__title ui-staff__title ui-toggle-visibility__control">
                     <i class="icon fa fa-caret-right"></i>
@@ -89,7 +93,7 @@
         {% endif %}
 
         {% if submitted_assessments %}
-        <div class="staff-info__status ui-staff__content__section wrapper--ui-staff wrapper--ui--collapse">
+        <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse">
             <div class="ui-staff ui-toggle-visibility is--collapsed">
                 <h2 class="staff-info__title ui-staff__title ui-toggle-visibility__control">
                     <i class="icon fa fa-caret-right"></i>
@@ -138,7 +142,7 @@
         {% endif %}
 
         {% if self_assessment %}
-        <div class="staff-info__status ui-staff__content__section wrapper--ui-staff wrapper--ui--collapse">
+        <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse">
             <div class="ui-staff ui-toggle-visibility is--collapsed">
                 <h2 class="staff-info__title ui-staff__title ui-toggle-visibility__control">
                     <i class="icon fa fa-caret-right"></i>
@@ -175,41 +179,47 @@
         </div>
         {% endif %}
 
-        <!--TODO make sure example_based_assessment syncs up-->
         {% if example_based_assessment %}
-            <div class="staff-info__status ui-staff__content__section">
-                <h3 class="title">{% trans "Example-Based Assessment" %}</h3>
-                <table class="staff-info__status__table" summary="{% trans "Example Based Assessment" %}">
-                    <thead>
-                    <tr>
-                        <th abbr="Criterion" scope="col">{% trans "Criterion" %}</th>
-                        <th abbr="Selected Option" scope="col">{% trans "Selected Option" %}</th>
-                        <th abbr="Points" scope="col">{% trans "Points" %}</th>
-                        <th abbr="Points Possible" scope="col">{% trans "Points Possible" %}</th>
-                    </tr>
-                    </thead>
+            <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse">
+                <div class="ui-staff ui-toggle-visibility is--collapsed">
+                    <h2 class="staff-info__title ui-staff__title ui-toggle-visibility__control">
+                        <i class="icon fa fa-caret-right"></i>
+                        <span>{% trans "Example-Based Assessment" %}</span>
+                    </h2>
+                    <div class="ui-toggle-visibility__content">
+                        <table class="staff-info__status__table" summary="{% trans "Example Based Assessment" %}">
+                            <thead>
+                            <tr>
+                                <th abbr="Criterion" scope="col">{% trans "Criterion" %}</th>
+                                <th abbr="Selected Option" scope="col">{% trans "Selected Option" %}</th>
+                                <th abbr="Points" scope="col">{% trans "Points" %}</th>
+                                <th abbr="Points Possible" scope="col">{% trans "Points Possible" %}</th>
+                            </tr>
+                            </thead>
 
-                    <tbody>
-                    {% for criterion in rubric_criteria %}
-                        {% for part in example_based_assessment.parts %}
-                            {% if part.option.criterion.name == criterion.name %}
-                                <tr>
-                                    <td class="label">{{ criterion.label }}</td>
-                                    <td class="value">{{ part.option.label }}</td>
-                                    <td class="value">{{ part.option.points }}</td>
-                                    <td class="value">{{ criterion.total_value }}</td>
-                                </tr>
-                            {% endif %}
-                        {% endfor %}
-                    {% endfor %}
-                    </tbody>
-                </table>
+                            <tbody>
+                            {% for criterion in rubric_criteria %}
+                                {% for part in example_based_assessment.parts %}
+                                    {% if part.option.criterion.name == criterion.name %}
+                                        <tr>
+                                            <td class="label">{{ criterion.label }}</td>
+                                            <td class="value">{{ part.option.label }}</td>
+                                            <td class="value">{{ part.option.points }}</td>
+                                            <td class="value">{{ criterion.total_value }}</td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         {% endif %}
 
         {% if not workflow_cancellation %}
         <div id="openassessment__staff-info__cancel__submission"
-             class="openassessment__staff-info__cancel__submission wrapper--ui-staff wrapper--ui--collapse">
+             class="openassessment__staff-info__cancel__submission wrapper--ui--collapse">
             <div class="ui-staff ui-toggle-visibility is--collapsed">
                 <h2 class="staff-info__title ui-staff__title ui-toggle-visibility__control">
                     <i class="icon fa fa-caret-right"></i>
