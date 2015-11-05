@@ -70,8 +70,8 @@ def get_score(submission_uuid, requirements):
         submission_uuid (str): The unique identifier for the submission
         requirements (dict): Not used.
     Returns:
-        A dict of points earned and points possible for the given submission.
-        Returns None if no score can be determined yet.
+        A dictionary with the points earned, points possible, and
+        contributing_assessments information, along with a None staff_id.
     Examples:
         >>> get_score('222bdf3d-a88e-11e3-859e-040ccee02800', {})
         {
@@ -85,7 +85,9 @@ def get_score(submission_uuid, requirements):
 
     return {
         "points_earned": assessment["points_earned"],
-        "points_possible": assessment["points_possible"]
+        "points_possible": assessment["points_possible"],
+        "contributing_assessments": [assessment["id"]],
+        "staff_id": None,
     }
 
 
@@ -284,12 +286,15 @@ def get_assessment_scores_by_criteria(submission_uuid):
             information to form the median scores, an error is raised.
     """
     try:
+        # This will always create a list of length 1
         assessments = list(
             Assessment.objects.filter(
                 score_type=SELF_TYPE, submission_uuid=submission_uuid
             ).order_by('-scored_at')[:1]
         )
         scores = Assessment.scores_by_criterion(assessments)
+        # Since this is only being sent one score, the median score will be the
+        # same as the only score.
         return Assessment.get_median_score_dict(scores)
     except DatabaseError:
         error_message = (
