@@ -10,7 +10,7 @@
   <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
     <span class="copy">
-    <i class="ico icon-warning-sign"></i>
+    <i class="icon fa fa-exclamation-triangle"></i>
         {% with graded_string=graded|stringformat:"s" must_grade_string=must_grade|stringformat:"s" %}
         {% blocktrans with num_graded='<span class="step__status__value--completed">'|safe|add:graded_string|add:"</span>"|safe num_must_grade='<span class="step__status__value--required">'|safe|add:must_grade_string|add:"</span>"|safe %}
             Incomplete ({{ num_graded }} of {{ num_must_grade }})
