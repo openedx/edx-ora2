@@ -290,6 +290,7 @@ class StaffAreaMixin(object):
             'self_assessment': self_assessment,
             'example_based_assessment': example_based_assessment,
             'rubric_criteria': copy.deepcopy(self.rubric_criteria_with_labels),
+            'student_username': student_username
         }
 
         if peer_assessments or self_assessment or example_based_assessment:
