@@ -13,15 +13,10 @@
   .wrapper--ui-staff {
     @include single-box-shadow(0, 1px, -2px, 1px, $shadow-d1, inset);
     margin-top: ($baseline-v*2);
-   // @include border-radius(($baseline-v/10));
-   // border: 1px solid shade($color-decorative-staff, 25%);
-   // border-top: ($baseline-v/4) solid $color-decorative-staff;
-   // padding: $baseline-v ($baseline-h/2);
-    padding: ($baseline-v/2) ($baseline-h/2);
-    background: $staff-bg;
-  }
-
-  .wrapper--staff-tools.wrapper--ui-staff {
+    @include border-radius(($baseline-v/10));
+    border: 1px solid shade($color-decorative-staff, 25%);
+    border-top: ($baseline-v/4) solid $color-decorative-staff;
+    padding: $baseline-v ($baseline-h/2);
     background: $staff-bg;
   }
 
@@ -34,30 +29,19 @@
         @include margin-left(($baseline-h/4));
       }
 
-      padding: ($baseline-v/2) ($baseline-h/4);
-
       // STATE: is collapsed
       &.is--collapsed {
-        background: $staff-bg;
 
         .ui-staff__content {
           margin-top: 0;
         }
       }
-
-
-
-      background-color: #fff;
     }
   }
 
   .ui-staff__title {
-    @extend %t-subheading;
+    @extend %t-heading;
     color: $copy-staff-color;
-
-    &:active, &.is--current {
-        color: $action-primary-color-active;
-      }
   }
 
   .staff-info__title__copy {
@@ -70,9 +54,9 @@
   }
 
   .ui-staff__content__section {
-    //padding-bottom: $baseline-v;
-    //border-bottom: 1px solid rgba($color-decorative-staff, 0.25);
-    //margin-bottom: $baseline-v;
+    padding-bottom: $baseline-v;
+    border-bottom: 1px solid rgba($color-decorative-staff, 0.25);
+    margin-bottom: $baseline-v;
 
     @extend %wipe-last-child;
   }
