@@ -24,6 +24,7 @@ from openassessment.assessment.api import self as self_api
 from openassessment.assessment.api import ai as ai_api
 from openassessment.fileupload import api as file_api
 from openassessment.workflow import api as workflow_api
+from openassessment.workflow.models import AssessmentWorkflowCancellation
 from openassessment.fileupload import exceptions as file_exceptions
 
 
@@ -112,7 +113,7 @@ class StaffAreaMixin(object):
         Gets the path and context for the staff section of the ORA XBlock.
         """
         context = {}
-        path = 'openassessmentblock/staff_area/staff_area.html'
+        path = 'openassessmentblock/staff_area/oa_staff_area.html'
 
         student_item = self.get_student_item_dict()
 
@@ -214,16 +215,20 @@ class StaffAreaMixin(object):
         """
         try:
             student_username = data.params.get('student_username', '')
-            path, context = self.get_student_info_path_and_context(student_username)
+            expanded_view = data.params.get('expanded_view', [])
+            path, context = self.get_student_info_path_and_context(
+                student_username,
+                expanded_view=expanded_view
+            )
             return self.render_assessment(path, context)
 
         except PeerAssessmentInternalError:
             return self.render_error(self._(u"Error finding assessment workflow cancellation."))
 
-    def get_student_info_path_and_context(self, student_username):
+    def get_student_info_path_and_context(self, student_username, expanded_view=None):
         """
-        Get the proper path and context for rendering the the student info
-        section of the staff debug panel.
+        Get the proper path and context for rendering the student info
+        section of the staff area.
 
         Args:
             student_username (unicode): The username of the student to report.
@@ -278,19 +283,31 @@ class StaffAreaMixin(object):
         if "example-based-assessment" in assessment_steps:
             example_based_assessment = ai_api.get_latest_assessment(submission_uuid)
 
+        workflow = self.get_workflow_info(submission_uuid=submission_uuid)
+
         workflow_cancellation = workflow_api.get_assessment_workflow_cancellation(submission_uuid)
         if workflow_cancellation:
             workflow_cancellation['cancelled_by'] = self.get_username(workflow_cancellation['cancelled_by_id'])
 
+            # Get the date that the workflow was cancelled to use in preference to the serialized date string
+            cancellation_model = AssessmentWorkflowCancellation.get_latest_workflow_cancellation(submission_uuid)
+            workflow_cancelled_at = cancellation_model.created_at
+        else:
+            workflow_cancelled_at = None
+
         context = {
             'submission': create_submission_dict(submission, self.prompts) if submission else None,
+            'score': workflow.get('score'),
+            'workflow_status': workflow.get('status'),
             'workflow_cancellation': workflow_cancellation,
+            'workflow_cancelled_at': workflow_cancelled_at,
             'peer_assessments': peer_assessments,
             'submitted_assessments': submitted_assessments,
             'self_assessment': self_assessment,
             'example_based_assessment': example_based_assessment,
             'rubric_criteria': copy.deepcopy(self.rubric_criteria_with_labels),
-            'student_username': student_username
+            'student_username': student_username,
+            'expanded_view': expanded_view,
         }
 
         if peer_assessments or self_assessment or example_based_assessment:
@@ -298,7 +315,7 @@ class StaffAreaMixin(object):
             for criterion in context["rubric_criteria"]:
                 criterion["total_value"] = max_scores[criterion["name"]]
 
-        path = 'openassessmentblock/staff_area/student_info.html'
+        path = 'openassessmentblock/staff_area/oa_student_info.html'
         return path, context
 
     @XBlock.json_handler
