@@ -112,7 +112,7 @@ class StaffAreaMixin(object):
         Gets the path and context for the staff section of the ORA XBlock.
         """
         context = {}
-        path = 'openassessmentblock/staff_area/staff_area.html'
+        path = 'openassessmentblock/staff_area/oa_staff_area.html'
 
         student_item = self.get_student_item_dict()
 
@@ -222,8 +222,8 @@ class StaffAreaMixin(object):
 
     def get_student_info_path_and_context(self, student_username):
         """
-        Get the proper path and context for rendering the the student info
-        section of the staff debug panel.
+        Get the proper path and context for rendering the student info
+        section of the staff area.
 
         Args:
             student_username (unicode): The username of the student to report.
@@ -278,19 +278,23 @@ class StaffAreaMixin(object):
         if "example-based-assessment" in assessment_steps:
             example_based_assessment = ai_api.get_latest_assessment(submission_uuid)
 
+        workflow = self.get_workflow_info(submission_uuid=submission_uuid)
+
         workflow_cancellation = workflow_api.get_assessment_workflow_cancellation(submission_uuid)
         if workflow_cancellation:
             workflow_cancellation['cancelled_by'] = self.get_username(workflow_cancellation['cancelled_by_id'])
 
         context = {
             'submission': create_submission_dict(submission, self.prompts) if submission else None,
+            'score': workflow.get('score'),
+            'workflow_status': workflow.get('status'),
             'workflow_cancellation': workflow_cancellation,
             'peer_assessments': peer_assessments,
             'submitted_assessments': submitted_assessments,
             'self_assessment': self_assessment,
             'example_based_assessment': example_based_assessment,
             'rubric_criteria': copy.deepcopy(self.rubric_criteria_with_labels),
-            'student_username': student_username
+            'student_username': student_username,
         }
 
         if peer_assessments or self_assessment or example_based_assessment:
@@ -298,7 +302,7 @@ class StaffAreaMixin(object):
             for criterion in context["rubric_criteria"]:
                 criterion["total_value"] = max_scores[criterion["name"]]
 
-        path = 'openassessmentblock/staff_area/student_info.html'
+        path = 'openassessmentblock/staff_area/oa_student_info.html'
         return path, context
 
     @XBlock.json_handler

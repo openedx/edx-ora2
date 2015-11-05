@@ -110,6 +110,7 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
     @include margin(($baseline-v/2), ($baseline-v/2), ($baseline-v/2), ($baseline-v/2));
   }
 }
+
 .staff-info__student {
   .label {
     color: $heading-staff-color;
@@ -134,13 +135,13 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
     margin-bottom: ($baseline-v/2);
   }
 
-  .student__answer__display__content {
-    border: 1px solid rgba($color-decorative-staff, 0.25);
+  .ui-staff__content___collapsible_section {
+    border: 1px solid rgba($copy-staff-color, 0.25);
     @include padding(($baseline-v/2), ($baseline-h/2), ($baseline-v/2), ($baseline-h/2));
     margin-bottom: ($baseline-v/2);
   }
 
-  .openassessment__student-info_list {
+  .staff-info__student__report {
     list-style-type: none;
   }
 
@@ -148,14 +149,104 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
     width: $max-width/2;
   }
 
-  /**
-   * The follow styles are bound for the "shame" file. This is done to override
-   * LMS specific styles on HTML elements.
-   */
+  .ui-staff__action__section {
+    padding: $baseline-v ($baseline-h/2);
+    background-color: white;
+    margin-bottom: ($baseline-v/2);
 
-  // 'p' elements in LMS have a color set on them.
-  .student__answer__display__content p {
-    color: inherit;
+    .ui-staff__title {
+      text-transform: none;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 27px;
+    }
+
+    .label {
+      color: $edx-gray-d4;
+    }
+
+    .title {
+      color: $edx-gray-d4;
+    }
+
+    .title--sub {
+      font-size: 18px;
+      color: $edx-gray-d4;
+    }
+  }
+
+  // staff assessments
+  .wrapper--staff-assessment {
+    margin-top: ($baseline-v/2);
+    padding-top: ($baseline-v/2);
+    border-top: 1px solid $color-decorative-tertiary;
+
+    .action--submit {
+      @extend .action--submit;
+    }
+  }
+
+  .staff-assessment__display {
+    @extend %ui-subsection;
+  }
+
+  .staff-assessment__display__header {
+    @include clearfix();
+
+    span {
+      @extend %t-strong; // FIX: needed due to DOM structure
+    }
+
+    .staff-assessment__display__title {
+      @extend %t-heading;
+      margin-bottom: ($baseline-v/2);
+      color: $heading-secondary-color;
+    }
+  }
+
+  .staff-assessment__display__response {
+    @extend %ui-subsection-content;
+    @extend %copy-3;
+    @extend %ui-content-longanswer;
+    @extend %ui-well;
+    color: $copy-color;
+  }
+
+  // assessment form
+  .staff-assessment__assessment {
+
+    // fields
+    .assessment__fields {
+      margin-bottom: $baseline-v;
+    }
+
+    // rubric question
+    .assessment__rubric__question {
+      @extend %ui-rubric-question;
+    }
+
+    // rubric options
+    .question__answers {
+      @extend %ui-rubric-answers;
+    }
+
+    // genereal feedback question
+    .assessment__rubric__question--feedback {
+
+      .wrapper--input {
+        margin-top: $baseline-v;
+      }
+
+      .question__title__copy {
+        @include margin-left(0);
+        white-space: pre-wrap;
+      }
+
+      textarea {
+        @extend %ui-content-longanswer;
+        min-height: ($baseline-v*5);
+      }
+    }
   }
 }
 
@@ -1144,6 +1235,8 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
 .self-assessment__display__title,
 .peer-assessment__display__header
 .peer-assessment__display__title,
+.staff-assessment__display__header
+.staff-assessment__display__title,
 .submission__answer__display
 .submission__answer__display__title{
   margin: 10px 0;
@@ -1152,6 +1245,7 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
 
 .self-assessment__display__image,
 .peer-assessment__display__image,
+.staff-assessment__display__image,
 .submission__answer__display__image{
   @extend .submission__answer__display__content;
   max-height: 400px;
