@@ -54,8 +54,7 @@ def assessment_is_finished(submission_uuid, requirements):
         True if the assessment has been completed for this submission.
 
     """
-    required = requirements.get('staff', {}).get('required', False)
-    if required:
+    if requirements and requirements.get('staff', {}).get('required', False):
         return bool(get_latest_assessment(submission_uuid))
     return True
 
@@ -71,7 +70,8 @@ def get_score(submission_uuid, requirements):
         requirements (dict): Not used.
 
     Returns:
-        A dictionary with the points earned and points possible.
+        A dictionary with the points earned, points possible,
+        contributing_assessments, and staff_id information.
 
     """
     assessment = get_latest_assessment(submission_uuid)
@@ -80,7 +80,9 @@ def get_score(submission_uuid, requirements):
 
     return {
         "points_earned": assessment["points_earned"],
-        "points_possible": assessment["points_possible"]
+        "points_possible": assessment["points_possible"],
+        "contributing_assessments": [assessment["id"]],
+        "staff_id": assessment["scorer_id"],
     }
 
 

@@ -70,8 +70,8 @@ def get_score(submission_uuid, requirements):
         submission_uuid (str): The unique identifier for the submission
         requirements (dict): Not used.
     Returns:
-        A dict of points earned and points possible for the given submission.
-        Returns None if no score can be determined yet.
+        A dictionary with the points earned, points possible, and
+        contributing_assessments information.
     Examples:
         >>> get_score('222bdf3d-a88e-11e3-859e-040ccee02800', {})
         {
@@ -85,7 +85,9 @@ def get_score(submission_uuid, requirements):
 
     return {
         "points_earned": assessment["points_earned"],
-        "points_possible": assessment["points_possible"]
+        "points_possible": assessment["points_possible"],
+        "contributing_assessments": [assessment["id"]],
+        "staff_id": None,
     }
 
 

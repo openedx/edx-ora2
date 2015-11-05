@@ -182,8 +182,10 @@ def get_workflow_for_submission(submission_uuid, assessment_requirements):
     return update_from_assessments(submission_uuid, assessment_requirements)
 
 
-def update_from_assessments(submission_uuid, assessment_requirements):
-    """Update our workflow status based on the status of peer and self assessments.
+def update_from_assessments(submission_uuid, assessment_requirements, force_update_score=False):
+    """
+    Update our workflow status based on the status of peer and self assessments,
+    or staff assessments if using the force_update_score parameter.
 
     We pass in the `assessment_requirements` each time we make the request
     because the canonical requirements are stored in the `OpenAssessmentBlock`
@@ -208,6 +210,9 @@ def update_from_assessments(submission_uuid, assessment_requirements):
             `must_be_graded_by` to ensure that everyone will get scored.
             The intention is to eventually pass in more assessment sequence
             specific requirements in this dict.
+        force_update_score (bool): If true, will find the latest staff assessment,
+            and use that score as the submission's final grade, overriding
+            any other scores that may be present.
 
     Returns:
         dict: Assessment workflow information with the following
@@ -263,7 +268,7 @@ def update_from_assessments(submission_uuid, assessment_requirements):
     workflow = _get_workflow_model(submission_uuid)
 
     try:
-        workflow.update_from_assessments(assessment_requirements)
+        workflow.update_from_assessments(assessment_requirements, force_update_score=force_update_score)
         logger.info((
             u"Updated workflow for submission UUID {uuid} "
             u"with requirements {reqs}"
