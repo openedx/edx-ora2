@@ -44,6 +44,11 @@
     color: $copy-staff-color;
   }
 
+  .ui-staff__subtitle {
+    @extend %t-subheading;
+    color: $copy-staff-color;
+  }
+
   .staff-info__title__copy {
     @extend %t-strong;
   }
@@ -55,9 +60,6 @@
 
   .ui-staff__content__section {
     padding-bottom: $baseline-v;
-    border-bottom: 1px solid rgba($color-decorative-staff, 0.25);
-    margin-bottom: $baseline-v;
-
     @extend %wipe-last-child;
   }
 
@@ -110,7 +112,7 @@
     }
 
     th, td {
-      border: 1px solid rgba($color-decorative-staff, 0.25);
+      border: 1px solid rgba($copy-staff-color, 0.25);
       padding: ($baseline-v/2) ($baseline-h/4);
     }
 
