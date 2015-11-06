@@ -215,6 +215,58 @@
             </div>
         {% endif %}
 
+        <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse">
+            <div class="ui-staff ui-toggle-visibility is--collapsed">
+                <h2 class="staff-info__title ui-staff__title ui-toggle-visibility__control">
+                    <i class="icon fa fa-caret-right"></i>
+                    <span>{% trans "Learner's Final Grade" %}</span>
+                </h2>
+                <div class="ui-toggle-visibility__content">
+                    {% if workflow_status == "done" %}
+                        {% with points_earned_string=score.points_earned|stringformat:"s" points_possible_string=score.points_possible|stringformat:"s" %}
+                        {% blocktrans with points_earned='<span class="grade__value__earned">'|safe|add:points_earned_string|add:'</span>'|safe points_possible='<span class="grade__value__potential">'|safe|add:points_possible_string|add:'</span>'|safe %}
+                            Final grade: {{ points_earned }} out of {{ points_possible }}
+                        {% endblocktrans %}
+                        {% endwith %}
+                    {% elif workflow_status == "waiting" %}
+                        <p>{% trans "The submission is waiting for assessments." %}</p>
+                    {% elif workflow_status == "cancelled" %}
+                        <p>{% trans "The submission has been cancelled." %}</p>
+                    {% elif workflow_status == None %}
+                        <p>{% trans "The problem has not been started." %}</p>
+                    {% else %}
+                        <p>{% trans "The problem has not been completed." %}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse">
+            <div class="ui-staff ui-toggle-visibility is--collapsed">
+                <h2 class="staff-info__title ui-staff__title ui-toggle-visibility__control">
+                    <i class="icon fa fa-caret-right"></i>
+                    <span>{% trans "Learner's Final Grade" %}</span>
+                </h2>
+                <div class="ui-toggle-visibility__content">
+                    {% if workflow_status == "done" %}
+                        {% with points_earned_string=score.points_earned|stringformat:"s" points_possible_string=score.points_possible|stringformat:"s" %}
+                        {% blocktrans with points_earned='<span class="grade__value__earned">'|safe|add:points_earned_string|add:'</span>'|safe points_possible='<span class="grade__value__potential">'|safe|add:points_possible_string|add:'</span>'|safe %}
+                            Final grade: {{ points_earned }} out of {{ points_possible }}
+                        {% endblocktrans %}
+                        {% endwith %}
+                    {% elif workflow_status == "waiting" %}
+                        <p>{% trans "The submission is waiting for assessments." %}</p>
+                    {% elif workflow_status == "cancelled" %}
+                        <p>{% trans "The submission has been cancelled." %}</p>
+                    {% elif workflow_status == None %}
+                        <p>{% trans "The problem has not been started." %}</p>
+                    {% else %}
+                        <p>{% trans "The problem has not been completed." %}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
         {% if not workflow_cancellation %}
             <div id="openassessment__staff-info__cancel__submission"
                  class="openassessment__staff-info__cancel__submission ui-staff__action__section wrapper--ui--collapse">
