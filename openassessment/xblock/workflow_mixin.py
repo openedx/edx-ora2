@@ -109,10 +109,14 @@ class WorkflowMixin(object):
             requirements = self.workflow_requirements()
             workflow_api.update_from_assessments(submission_uuid, requirements)
 
-    def get_workflow_info(self):
+    def get_workflow_info(self, submission_uuid=None):
         """
         Retrieve a description of the student's progress in a workflow.
         Note that this *may* update the workflow status if it's changed.
+
+        Keyword Arguments:
+            submission_uuid (str): The submission associated with the workflow to return.
+                Defaults to the submission created by the current student.
 
         Returns:
             dict
@@ -120,10 +124,12 @@ class WorkflowMixin(object):
         Raises:
             AssessmentWorkflowError
         """
-        if not self.submission_uuid:
-            return {}
+        if not submission_uuid:
+            submission_uuid = self.submission_uuid
+            if not submission_uuid:
+                return {}
         return workflow_api.get_workflow_for_submission(
-            self.submission_uuid, self.workflow_requirements()
+            submission_uuid, self.workflow_requirements()
         )
 
     def get_workflow_status_counts(self):

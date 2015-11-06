@@ -110,6 +110,7 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
     @include margin(($baseline-v/2), ($baseline-v/2), ($baseline-v/2), ($baseline-v/2));
   }
 }
+
 .staff-info__student {
   .label {
     color: $heading-staff-color;
@@ -134,8 +135,8 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
     margin-bottom: ($baseline-v/2);
   }
 
-  .student__answer__display__content {
-    border: 1px solid rgba($color-decorative-staff, 0.25);
+  .ui-staff__content___collapsible_section {
+    border: 1px solid rgba($copy-staff-color, 0.25);
     @include padding(($baseline-v/2), ($baseline-h/2), ($baseline-v/2), ($baseline-h/2));
     margin-bottom: ($baseline-v/2);
   }
@@ -148,14 +149,29 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
     width: $max-width/2;
   }
 
-  /**
-   * The follow styles are bound for the "shame" file. This is done to override
-   * LMS specific styles on HTML elements.
-   */
+  .ui-staff__action__section {
+    padding: $baseline-v ($baseline-h/2);
+    background-color: white;
 
-  // 'p' elements in LMS have a color set on them.
-  .student__answer__display__content p {
-    color: inherit;
+    .ui-staff__title {
+      text-transform: none;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 27px;
+    }
+
+    .label {
+      color: $edx-gray-d4;
+    }
+
+    .title {
+      color: $edx-gray-d4;
+    }
+
+    .title--sub {
+      font-size: 18px;
+      color: $edx-gray-d4;
+    }
   }
 }
 
