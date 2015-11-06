@@ -651,7 +651,7 @@
         "output": "oa_edit_student_training.html"
     },
     {
-        "template": "openassessmentblock/staff_area/staff_area.html",
+        "template": "openassessmentblock/staff_area/oa_staff_area.html",
         "context": {
             "status_counts": {
                 "self": 1,
@@ -682,7 +682,7 @@
         "output": "oa_staff_area.html"
     },
     {
-        "template": "openassessmentblock/staff_area/student_info.html",
+        "template": "openassessmentblock/staff_area/oa_student_info.html",
         "context": {
             "submission": {
                 "image_url": "/test-url",

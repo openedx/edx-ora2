@@ -203,7 +203,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         path, context = xblock.get_student_info_path_and_context("Bob")
         self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
         self.assertIsNone(context['self_assessment'])
-        self.assertEquals("openassessmentblock/staff_area/student_info.html", path)
+        self.assertEquals("openassessmentblock/staff_area/oa_student_info.html", path)
 
     @scenario('data/self_only_scenario.xml', user_id='Bob')
     def test_staff_area_student_info_self_only(self, xblock):
@@ -232,7 +232,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         path, context = xblock.get_student_info_path_and_context("Bob")
         self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
         self.assertEquals([], context['peer_assessments'])
-        self.assertEquals("openassessmentblock/staff_area/student_info.html", path)
+        self.assertEquals("openassessmentblock/staff_area/oa_student_info.html", path)
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_staff_area_student_info_with_cancelled_submission(self, xblock):
@@ -266,7 +266,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         path, context = xblock.get_student_info_path_and_context("Bob")
         self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
         self.assertIsNotNone(context['workflow_cancellation'])
-        self.assertEquals("openassessmentblock/staff_area/student_info.html", path)
+        self.assertEquals("openassessmentblock/staff_area/oa_student_info.html", path)
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_cancelled_submission_peer_assessment_render_path(self, xblock):
@@ -429,7 +429,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             xblock.scope_ids.usage_id, True, True, "Bob"
         )
         path, context = xblock.get_staff_path_and_context()
-        self.assertEquals('openassessmentblock/staff_area/staff_area.html', path)
+        self.assertEquals('openassessmentblock/staff_area/oa_staff_area.html', path)
         self.assertTrue(context['display_schedule_training'])
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
@@ -450,7 +450,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
         path, context = xblock.get_staff_path_and_context()
-        self.assertEquals('openassessmentblock/staff_area/staff_area.html', path)
+        self.assertEquals('openassessmentblock/staff_area/oa_staff_area.html', path)
         self.assertFalse(context['display_schedule_training'])
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
@@ -479,7 +479,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             xblock.scope_ids.usage_id, True, True, "Bob"
         )
         path, context = xblock.get_staff_path_and_context()
-        self.assertEquals('openassessmentblock/staff_area/staff_area.html', path)
+        self.assertEquals('openassessmentblock/staff_area/oa_staff_area.html', path)
         self.assertTrue(context['display_reschedule_unfinished_tasks'])
 
     @scenario('data/example_based_assessment.xml', user_id='Bob')

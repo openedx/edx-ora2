@@ -347,7 +347,7 @@ class StaffAreaPage(OpenAssessmentPage):
     """
 
     def is_browser_on_page(self):
-        return self.q(css="#openassessment__staff-area").is_present()
+        return self.q(css=".openassessment__staff-area").is_present()
 
     @property
     def selected_button_names(self):
