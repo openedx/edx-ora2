@@ -85,6 +85,7 @@ VALID_ASSESSMENT_TYPES = [
     "example-based-assessment",
     "peer-assessment",
     "self-assessment",
+    "staff-assessment",
 ]
 
 
@@ -766,21 +767,22 @@ class OpenAssessmentBlock(
     def get_waiting_details(self, status_details):
         """
         Returns the specific waiting status based on the given status_details.
-        This status can currently be peer, example-based, or both. This is
-        determined by checking that status details to see if all assessment
-        modules have been graded.
+        This status can currently be peer, example-based, staff, or some
+        combination thereof. This is determined by checking that status details
+        to see if all assessment modules have been graded.
 
         Args:
             status_details (dict): A dictionary containing the details of each
                 assessment module status. This will contain keys such as
-                "peer" and "ai", referring to dictionaries, which in turn will
-                have the key "graded". If this key has a value set, these
-                assessment modules have been graded.
+                "peer", "ai", and "staff", referring to dictionaries, which in
+                turn will have the key "graded". If this key has a value set,
+                these assessment modules have been graded.
 
         Returns:
-            A string of "peer", "exampled-based", or "all" to indicate which
-            assessment modules in the workflow are waiting on assessments.
-            Returns None if no module is waiting on an assessment.
+            A comma-separated string of "peer", "exampled-based", or "staff" to
+            indicate which assessment modules in the workflow are waiting on
+            assessments. Returns None if no module is waiting on an assessment,
+            or a single string "all" if all modules are waiting.
 
         Examples:
             >>> now = dt.datetime.utcnow().replace(tzinfo=pytz.utc)
@@ -797,16 +799,17 @@ class OpenAssessmentBlock(
             >>> self.get_waiting_details(status_details)
             "peer"
         """
-        waiting = None
-        peer_waiting = "peer" in status_details and not status_details["peer"]["graded"]
-        ai_waiting = "ai" in status_details and not status_details["ai"]["graded"]
-        if peer_waiting and ai_waiting:
-            waiting = "all"
-        elif peer_waiting:
-            waiting = "peer"
-        elif ai_waiting:
-            waiting = "example-based"
-        return waiting
+        waiting = []
+        modules = [('peer', 'peer'), ('ai', 'example-based'), ('staff', 'staff')]
+        for module in modules:
+            if module[0] in status_details and not status_details[module[0]]['graded']:
+                waiting.append(module[1])
+        num_details = len(waiting)
+        if num_details == 0:
+            return None
+        elif num_details == len(modules):
+            return "all"
+        return ','.join(waiting)
 
     def is_released(self, step=None):
         """
