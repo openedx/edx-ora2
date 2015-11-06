@@ -193,15 +193,16 @@
     color: $copy-staff-color !important;
   }
 
-  .openassessment__staff-info__cancel__submission {
+  .staff-info__workflow-cancellation {
     margin-bottom: ($baseline-v) !important;
   }
 }
 
 .staff-info__student {
   .ui-staff__action__section {
-    .ui-staff__title {
+    .ui-staff__title span {
       color: $edx-blue !important;
+      font-weight: 600 !important;
     }
   }
 
