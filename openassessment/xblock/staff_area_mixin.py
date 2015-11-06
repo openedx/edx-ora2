@@ -112,7 +112,7 @@ class StaffAreaMixin(object):
         Gets the path and context for the staff section of the ORA XBlock.
         """
         context = {}
-        path = 'openassessmentblock/staff_area/staff_area.html'
+        path = 'openassessmentblock/staff_area/oa_staff_area.html'
 
         student_item = self.get_student_item_dict()
 
@@ -302,7 +302,7 @@ class StaffAreaMixin(object):
             for criterion in context["rubric_criteria"]:
                 criterion["total_value"] = max_scores[criterion["name"]]
 
-        path = 'openassessmentblock/staff_area/student_info.html'
+        path = 'openassessmentblock/staff_area/oa_student_info.html'
         return path, context
 
     @XBlock.json_handler

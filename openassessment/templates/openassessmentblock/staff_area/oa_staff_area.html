@@ -1,13 +1,13 @@
 {% load i18n %}
 {% load tz %}
-<div id="openassessment__staff-area" class="wrapper--staff-area">
+<div class="openassessment__staff-area wrapper--staff-area">
 
-    <div id="openassessment__staff-toolbar" class="wrapper--staff-toolbar">
+    <div class="wrapper--staff-toolbar">
         <button class="ui-staff__button button-staff-tools" data-panel="openassessment__staff-tools">{% trans "Staff Tools" %}</button>
         <button class="ui-staff__button button-staff-info" data-panel="openassessment__staff-info">{% trans "Staff Info" %}</button>
     </div>
 
-    <div id="openassessment__staff-tools" class="wrapper--staff-tools wrapper--ui-staff is--hidden">
+    <div class="openassessment__staff-tools wrapper--staff-tools wrapper--ui-staff is--hidden">
         <div class="staff-info ui-staff">
             <h2 class="staff-info__title ui-staff__title">
                 <span class="staff-info__title__copy">{% trans "Course Staff Tools" %}</span>
@@ -18,17 +18,18 @@
 
                 <div class="staff-info__student ui-staff__content__section">
                     <div class="wrapper--input" class="staff-info__student__form">
-                        <form id="openassessment_student_info_form">
-                            <label for="openassessment__student_username" class="label">{% trans "Enter an individual learner's username or email" %}</label>
-                            <input id="openassessment__student_username" type="text" class="value" maxlength="255">
+                        <form class="openassessment_student_info_form">
+                            <label class="label">{% trans "Enter an individual learner's username or email" %}
+                                <input type="text" class="openassessment__student_username value" maxlength="255">
+                            </label>
                             <ul class="list list--actions">
                                 <li class="list--actions__item">
-                                    <a aria-role="button" href="" id="submit_student_username" class="action--submit"><span class="copy">{% trans "Submit" %}</span></a>
+                                    <button class="action--submit action--submit-username"><span class="copy">{% trans "Submit" %}</span></button>
                                 </li>
                             </ul>
                         </form>
                     </div>
-                    <div id="openassessment__student-info" class="staff-info__student__report"></div>
+                    <div class="openassessment__student-info staff-info__student__report"></div>
                 </div>
 
                 {% if display_schedule_training %}
@@ -65,22 +66,22 @@
                     </div>
 
                     <div class="staff-info__status ui-staff__content__section">
-                        <a aria-role="button" href="" id="schedule_training" class="action--submit"><span class="copy">{% trans "Schedule Example-Based Assessment Training" %}</span></a>
-                        <div id="schedule_training_message"></div>
+                        <button class="action--submit action--submit-training"><span class="copy">{% trans "Schedule Example-Based Assessment Training" %}</span></button>
+                        <div class="schedule_training_message"></div>
                     </div>
                 {% endif %}
 
                 {% if display_reschedule_unfinished_tasks %}
                     <div class="staff-info__status ui-staff__content__section">
-                        <a aria-role="button" href="" id="reschedule_unfinished_tasks" class="action--submit"><span class="copy">{% trans "Reschedule All Unfinished Example-Based Assessment Grading Tasks" %}</span></a>
-                        <div id="reschedule_unfinished_tasks_message"></div>
+                        <button class="action--submit action--submit-unfinished-tasks"><span class="copy">{% trans "Reschedule All Unfinished Example-Based Assessment Grading Tasks" %}</span></button>
+                        <div class="reschedule_unfinished_tasks_message"></div>
                     </div>
                 {% endif %}
             </div>
         </div>
     </div>
 
-    <div id="openassessment__staff-info" class="wrapper--staff-info wrapper--ui-staff is--hidden">
+    <div class="openassessment__staff-info wrapper--staff-info wrapper--ui-staff is--hidden">
         <div class="staff-info ui-staff">
             <h2 class="staff-info__title ui-staff__title">
                 <span class="staff-info__title__copy">{% trans "Course Staff Information" %}</span>
