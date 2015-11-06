@@ -3,7 +3,7 @@
 -r wheels.txt
 
 # edX Internal Requirements
-git+https://github.com/edx/XBlock.git@django1.8-upgrade#egg=XBlock
+git+https://github.com/edx/XBlock.git@9c634481dfc85a17dcb3351ca232d7098a38e10e#egg=XBlock
 
 # edx-submissions
 git+https://github.com/edx/edx-submissions.git@muzaffar/upgrage-django-1.8#egg=edx-submissions==1.0
