@@ -152,6 +152,7 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
   .ui-staff__action__section {
     padding: $baseline-v ($baseline-h/2);
     background-color: white;
+    margin-bottom: ($baseline-v/2);
 
     .ui-staff__title {
       text-transform: none;
