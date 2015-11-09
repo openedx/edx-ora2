@@ -18,7 +18,6 @@ class OpenAssessmentA11yTest(OpenAssessmentTest):
     def _check_a11y(self, page):
         page.a11y_audit.config.set_rules({
             "ignore": [
-                "aria-valid-attr",  # TODO: AC-199
                 "color-contrast",  # TODO: AC-198
                 "empty-heading",  # TODO: AC-197
                 "link-name",  # TODO: AC-196
@@ -68,12 +67,14 @@ class StudentTrainingA11yTest(OpenAssessmentA11yTest):
 class StaffAreaA11yTest(OpenAssessmentA11yTest):
     """
     Test the accessibility of the staff area.
+
+    This is testing a problem with "self assessment only".
     """
     def setUp(self):
-        super(StaffAreaA11yTest, self).setUp('peer_only', staff=True)
+        super(StaffAreaA11yTest, self).setUp('self_only', staff=True)
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
-    def test_staff_tools_panel_a11y(self):
+    def test_staff_tools_panel(self):
         """
         Check the accessibility of the "Staff Tools" panel
         """
@@ -81,12 +82,26 @@ class StaffAreaA11yTest(OpenAssessmentA11yTest):
         self.staff_area_page.click_staff_toolbar_button("staff-tools")
         self._check_a11y(self.staff_area_page)
 
-    def test_staff_info_panel_a11y(self):
+    def test_staff_info_panel(self):
         """
         Check the accessibility of the "Staff Info" panel
         """
         self.staff_area_page.visit()
         self.staff_area_page.click_staff_toolbar_button("staff-info")
+        self._check_a11y(self.staff_area_page)
+
+    def test_learner_info(self):
+        """
+        Check the accessibility of the learner information sections of the "Staff Tools" panel.
+        """
+        # Create an assessment for a user.
+        username = self.do_self_assessment()
+
+        self.staff_area_page.visit()
+
+        # Click on staff tools and search for the user.
+        self.staff_area_page.show_learner(username)
+
         self._check_a11y(self.staff_area_page)
 
 
