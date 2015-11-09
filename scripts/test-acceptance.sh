@@ -30,10 +30,8 @@ fi
 
 mkdir -p test/logs
 cd test/logs
-export SELENIUM_BROWSER=phantomjs
 
 test_name="${1:-acceptance}"
 
 echo "Running acceptance tests from ${test_name}.py against the sandbox..."
-
 python ../acceptance/${test_name}.py

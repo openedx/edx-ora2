@@ -30,22 +30,18 @@ if [ -z "$TEST_HOST" ]; then
 fi
 
 export ORA_SANDBOX_URL="https://${BASIC_AUTH_USER}:${BASIC_AUTH_PASSWORD}@${TEST_HOST}"
+EXIT=0
 
+########## Install python requirements #########
 virtualenv venv
 source venv/bin/activate
 pip install -r requirements/test-acceptance.txt
 
-
 ######### Run acceptance tests #########
-make test-acceptance
-
+make test-acceptance || EXIT=1
 
 ######### Run accessibility tests #########
+make test-a11y || EXIT=1
 
-# Unset SELENIUM_HOST so that bok-choy doesn't try to use saucelabs
-unset SELENIUM_HOST
-
-# AutoAuthPage times out in PhantomJS when using https, so switch to use http
-export ORA_SANDBOX_URL="http://${BASIC_AUTH_USER}:${BASIC_AUTH_PASSWORD}@${TEST_HOST}"
-
-make test-a11y
+######### exit with correct code #########
+exit $EXIT
