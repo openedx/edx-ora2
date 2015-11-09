@@ -36,6 +36,11 @@
           margin-top: 0;
         }
       }
+
+      .ui-toggle-visibility__content {
+        @include margin-left(($baseline-h/4));
+        margin-bottom: ($baseline-v/2);
+      }
     }
   }
 
@@ -46,7 +51,17 @@
 
   .ui-staff__subtitle {
     @extend %t-subheading;
-    color: $copy-staff-color;
+    @extend %t-strong;
+    @include fontSize($f-size-medium);
+    // We want to keep the collapsible headers within the staff assessment block blue
+    // (because they are being displayed in the LMS color scheme). Unfortunately because of
+    // that we need to add an override just for ui-staff_subtitle collapsible items.
+    color: $heading-staff-color !important;
+    margin-bottom: ($baseline-v/2);
+
+    span {
+      font-weight: inherit;
+    }
   }
 
   .staff-info__title__copy {
@@ -59,7 +74,7 @@
   }
 
   .ui-staff__content__section {
-    padding-bottom: $baseline-v;
+    padding-bottom: ($baseline-v/2);
     @extend %wipe-last-child;
   }
 
