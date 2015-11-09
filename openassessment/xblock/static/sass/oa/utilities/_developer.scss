@@ -130,19 +130,31 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
   }
 
   .title--sub {
+    @extend %hd-4;
     color: $heading-staff-color;
     margin-top: ($baseline-v/2);
     margin-bottom: ($baseline-v/2);
   }
 
-  .ui-staff__content___collapsible_section {
+  .student__answer__display__content {
     border: 1px solid rgba($copy-staff-color, 0.25);
-    @include padding(($baseline-v/2), ($baseline-h/2), ($baseline-v/2), ($baseline-h/2));
+    padding: ($baseline-v/2) ($baseline-h/4);
     margin-bottom: ($baseline-v/2);
   }
 
   .staff-info__student__report {
     list-style-type: none;
+
+    .title {
+      @extend %t-strong;
+      margin-top: ($baseline-v/2);
+      border-top: 1px solid $heading-staff-color;
+      padding: ($baseline-v/2) ($baseline-h/2) ($baseline-v/2) 0;
+
+      span {
+        font-weight: inherit;
+      }
+    }
   }
 
   .value {
