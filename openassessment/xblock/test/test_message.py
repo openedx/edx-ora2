@@ -38,6 +38,10 @@ class TestMessageRender(XBlockHandlerTestCase):
             'completed': TODAY,
             'graded': TODAY,
         },
+        'staff': {
+            'completed': TODAY,
+            'graded': TODAY,
+        },
     }
 
     def _assert_path_and_context(
@@ -786,6 +790,7 @@ class TestMessageRender(XBlockHandlerTestCase):
         status_details = copy.deepcopy(self.DEFAULT_STATUS_DETAILS)
         status_details["ai"]["graded"] = None
         status_details["peer"]["graded"] = None
+        status_details["staff"]["graded"] = None
 
         deadline_information = {
             'submission': (True, 'due', self.FAR_PAST, self.YESTERDAY),
