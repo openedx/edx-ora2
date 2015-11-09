@@ -343,7 +343,7 @@ class GradePage(OpenAssessmentPage):
 
 class StaffAreaPage(OpenAssessmentPage):
     """
-    Page object representing the "submission" step in an ORA problem.
+    Page object representing the tabbed staff area.
     """
 
     def is_browser_on_page(self):
@@ -360,10 +360,10 @@ class StaffAreaPage(OpenAssessmentPage):
     @property
     def visible_staff_panels(self):
         """
-        Returns the ids of the visible staff panels
+        Returns the classes of the visible staff panels
         """
         panels = self.q(css=".wrapper--ui-staff")
-        return [panel.get_attribute('id') for panel in panels if u'is--hidden' not in panel.get_attribute('class')]
+        return [panel.get_attribute('class') for panel in panels if u'is--hidden' not in panel.get_attribute('class')]
 
     def click_staff_toolbar_button(self, button_name):
         """
@@ -379,3 +379,29 @@ class StaffAreaPage(OpenAssessmentPage):
         :return:
         """
         self.q(css=".wrapper--{panel_name} .ui-staff_close_button".format(panel_name=panel_name)).click()
+
+    def show_learner(self, username):
+        """
+        Clicks the staff tools panel and and searches for learner information about the given username.
+        """
+        self.click_staff_toolbar_button("staff-tools")
+        self.wait_for_element_visibility("input.openassessment__student_username", "Input is present")
+        self.q(css="input.openassessment__student_username").fill(username)
+        submit_button = self.q(css=".action--submit-username")
+        submit_button.first.click()
+        self.wait_for_element_visibility(".staff-info__student__report", "Student report is present")
+
+    @property
+    def learner_report_text(self):
+        """
+        Returns the text present in the learner report (useful for case where there is no response).
+        """
+        return self.q(css=".staff-info__student__report").text[0]
+
+    @property
+    def learner_report_sections(self):
+        """
+        Returns the titles of the collapsible learner report sections present on the page.
+        """
+        sections = self.q(css=".ui-staff__subtitle")
+        return [section.text for section in sections]

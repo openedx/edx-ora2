@@ -90,6 +90,27 @@ class OpenAssessmentTest(WebAppTest):
         self.student_training_page = AssessmentPage('student-training', self.browser, self.problem_loc)
         self.grade_page = GradePage(self.browser, self.problem_loc)
 
+    def do_self_assessment(self):
+        """
+        Submits a self assessment, verifies the grade, and returns the username of the student
+        for which the self assessment was submitted.
+        """
+        self.auto_auth_page.visit()
+        username = self.auto_auth_page.get_username()
+        self.submission_page.visit().submit_response(self.SUBMISSION)
+        self.assertTrue(self.submission_page.has_submitted)
+
+        # Submit a self-assessment
+        self.self_asmnt_page.wait_for_page().wait_for_response()
+        self.assertIn(self.SUBMISSION, self.self_asmnt_page.response_text)
+        self.self_asmnt_page.assess(self.OPTIONS_SELECTED).wait_for_complete()
+        self.assertTrue(self.self_asmnt_page.is_complete)
+
+        # Verify the grade
+        self.assertEqual(self.grade_page.wait_for_page().score, self.EXPECTED_SCORE)
+
+        return username
+
 
 class SelfAssessmentTest(OpenAssessmentTest):
     """
@@ -103,18 +124,7 @@ class SelfAssessmentTest(OpenAssessmentTest):
     @attr('acceptance')
     def test_self_assessment(self):
         # Submit a response
-        self.auto_auth_page.visit()
-        self.submission_page.visit().submit_response(self.SUBMISSION)
-        self.assertTrue(self.submission_page.has_submitted)
-
-        # Submit a self-assessment
-        self.self_asmnt_page.wait_for_page().wait_for_response()
-        self.assertIn(self.SUBMISSION, self.self_asmnt_page.response_text)
-        self.self_asmnt_page.assess(self.OPTIONS_SELECTED).wait_for_complete()
-        self.assertTrue(self.self_asmnt_page.is_complete)
-
-        # Verify the grade
-        self.assertEqual(self.grade_page.wait_for_page().score, self.EXPECTED_SCORE)
+        self.do_self_assessment()
 
         # Check browser scrolled back to top of assessment
         self.assertTrue(self.self_asmnt_page.is_on_top)
@@ -216,10 +226,12 @@ class StudentTrainingTest(OpenAssessmentTest):
 class StaffAreaTest(OpenAssessmentTest):
     """
     Test the staff area.
+
+    This is testing a problem with "self assessment only".
     """
 
     def setUp(self):
-        super(StaffAreaTest, self).setUp('peer_only', staff=True)
+        super(StaffAreaTest, self).setUp('self_only', staff=True)
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
     @retry()
@@ -275,15 +287,60 @@ class StaffAreaTest(OpenAssessmentTest):
         # Click on the button and verify that the panel has opened
         self.staff_area_page.click_staff_toolbar_button(panel_name)
         self.assertEqual(self.staff_area_page.selected_button_names, [button_label])
-        self.assertEqual(
-            self.staff_area_page.visible_staff_panels,
-            [u'openassessment__{button_name}'.format(button_name=panel_name)]
+        self.assertIn(
+            u'openassessment__{button_name}'.format(button_name=panel_name),
+            self.staff_area_page.visible_staff_panels[0]
         )
 
         # Click 'Close' and verify that the panel has been closed
         self.staff_area_page.click_staff_panel_close_button(panel_name)
         self.assertEqual(self.staff_area_page.selected_button_names, [])
         self.assertEqual(self.staff_area_page.visible_staff_panels, [])
+
+    @retry()
+    @attr('acceptance')
+    def test_student_info(self):
+        """
+        Scenario: staff tools shows learner response information
+
+        Given I am viewing the staff area of an ORA problem
+        When I search for a learner in staff tools
+        And the learner has submitted a response to an ORA problem with self-assessment
+        Then I see the correct learner information sections
+        """
+        username = self.do_self_assessment()
+
+        self.staff_area_page.visit()
+
+        # Click on staff tools and search for user
+        self.staff_area_page.show_learner(username)
+
+        self.assertNotIn('A response was not found for this learner', self.staff_area_page.learner_report_text)
+        self.assertEqual(
+            [u'Learner Response', u"Learner's Self Assessment", u"Learner's Final Grade"],
+            self.staff_area_page.learner_report_sections
+        )
+
+    @retry()
+    @attr('acceptance')
+    def test_student_info_no_submission(self):
+        """
+        Scenario: staff tools indicates if no submission has been received for a given learner
+
+        Given I am viewing the staff area of an ORA problem
+        When I search for a learner in staff tools
+        And the learner has not submitted a response to the ORA problem
+        Then I see a message indicating that the learner has not submitted a response
+        And there are no student information sections displayed
+        """
+        self.auto_auth_page.visit()
+        self.staff_area_page.visit()
+
+        # Click on staff tools and search for user
+        self.staff_area_page.show_learner('no-submission-learner')
+
+        self.assertIn('A response was not found for this learner', self.staff_area_page.learner_report_text)
+        self.assertEqual([], self.staff_area_page.learner_report_sections)
 
 
 class FileUploadTest(OpenAssessmentTest):

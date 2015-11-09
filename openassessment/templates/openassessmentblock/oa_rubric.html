@@ -10,7 +10,7 @@
         >
             <h4 class="question__title ui-toggle-visibility__control">
                 <i class="icon fa fa-caret-right"></i>
-                <span class="ui-toggle-visibility__control__copy question__title__copy">{{ criterion.prompt }}</span>
+                <span id="assessment__rubric__prompt--{{ criterion.order_num }}" class="ui-toggle-visibility__control__copy question__title__copy">{{ criterion.prompt }}</span>
                 <span class="label--required sr">* ({% trans "Required" %})</span>
             </h4>
 
@@ -23,7 +23,8 @@
                                    name="{{ criterion.name }}"
                                    id="assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
                                    class="answer__value"
-                                   value="{{ option.name }}" />
+                                   value="{{ option.name }}"
+                                   aria-labelledby="assessment__rubric__prompt--{{ criterion.order_num }}"/>
                             <label for="assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
                                    class="answer__label"
                                    >{{ option.label }}</label>
