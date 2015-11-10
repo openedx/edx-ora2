@@ -35,6 +35,11 @@
         .ui-staff__content {
           margin-top: 0;
         }
+
+        .staff-info__cancel-submission__content,
+        .staff-info__staff-override__content {
+          padding: 0;
+        }
       }
 
       .ui-toggle-visibility__content {
