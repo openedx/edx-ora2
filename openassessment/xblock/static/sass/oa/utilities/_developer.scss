@@ -115,6 +115,10 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
   .label {
     color: $heading-staff-color;
     margin-bottom: ($baseline-v/2);
+
+    input {
+      display: block;
+    }
   }
 
   .action--submit {
@@ -157,34 +161,14 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
     }
   }
 
-  .value {
-    width: $max-width/2;
-  }
-
-  .ui-staff__action__section {
+  .staff-info__cancel-submission__content,
+  .staff-info__staff-override__content {
     padding: $baseline-v ($baseline-h/2);
     background-color: white;
-    margin-bottom: ($baseline-v/2);
+  }
 
-    .ui-staff__title {
-      text-transform: none;
-      font-size: 18px;
-      font-weight: 600;
-      line-height: 27px;
-    }
-
-    .label {
-      color: $edx-gray-d4;
-    }
-
-    .title {
-      color: $edx-gray-d4;
-    }
-
-    .title--sub {
-      font-size: 18px;
-      color: $edx-gray-d4;
-    }
+  .value {
+    width: $max-width/2;
   }
 
   // staff assessments
@@ -242,7 +226,7 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
       @extend %ui-rubric-answers;
     }
 
-    // genereal feedback question
+    // general feedback question
     .assessment__rubric__question--feedback {
 
       .wrapper--input {
