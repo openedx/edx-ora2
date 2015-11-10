@@ -1,7 +1,8 @@
 {% load i18n %}
 {% load tz %}
 
-<div class="openassessment__student-info staff-info__student__report">
+<div class="openassessment__student-info staff-info__student__report"
+     data-submission-uuid="{{ submission.uuid }}">
 {% if submission %}
     <h2 class="title">
         <span class="label">
@@ -11,7 +12,7 @@
         </span>
     </h2>
 
-    <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse">
+    <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse staff-info__student__response">
         <div class="ui-staff ui-toggle-visibility is--collapsed">
             <h2 class="staff-info__title ui-staff__subtitle ui-toggle-visibility__control">
                 <i class="icon fa fa-caret-right"></i>
@@ -19,14 +20,17 @@
             </h2>
             <div class="ui-toggle-visibility__content">
                 {% if workflow_cancellation %}
-                    {% blocktrans with removed_by_username=workflow_cancellation.cancelled_by removed_datetime=workflow_cancellation.created_at|utc|date:"N j, Y H:i e" %}
-                        Learner submission removed by {{ removed_by_username }} on {{ removed_datetime }}
-                    {% endblocktrans %}
-                    <br>
+                    <p>
+                        {% blocktrans with removed_by_username=workflow_cancellation.cancelled_by removed_datetime=workflow_cancelled_at|utc|date:"F j, Y H:i e" %}
+                            Learner submission removed by {{ removed_by_username }} on {{ removed_datetime }}
+                        {% endblocktrans %}
+                    </p>
                     <!-- Comments: Reason for Cancellation-->
-                    {% blocktrans with comments=workflow_cancellation.comments %}
-                        Comments: {{ comments }}
-                    {% endblocktrans %}
+                    <p>
+                        {% blocktrans with comments=workflow_cancellation.comments %}
+                            Comments: {{ comments }}
+                        {% endblocktrans %}
+                    </p>
                 {% else %}
                     {% include "openassessmentblock/oa_submission_answer.html" with answer=submission.answer answer_text_label="The learner's response to the question above:" %}
                 {% endif %}
@@ -213,8 +217,8 @@
         </div>
     {% endif %}
 
-    <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse">
-        <div class="ui-staff ui-toggle-visibility is--collapsed">
+    <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse staff-info__student__grade">
+        <div class="ui-staff ui-toggle-visibility {% if expanded_view != 'final-grade' %}is--collapsed {% endif %}">
             <h2 class="staff-info__title ui-staff__subtitle ui-toggle-visibility__control">
                 <i class="icon fa fa-caret-right"></i>
                 <span>{% trans "Learner's Final Grade" %}</span>
@@ -229,7 +233,7 @@
                 {% elif workflow_status == "waiting" %}
                     <p>{% trans "The submission is waiting for assessments." %}</p>
                 {% elif workflow_status == "cancelled" %}
-                    <p>{% trans "The submission has been cancelled." %}</p>
+                    <p>{% trans "The learner's submission has been removed from peer assessment. The learner receives a grade of zero unless you reset the learner's attempts for the problem to allow them to resubmit a response." %}</p>
                 {% elif workflow_status == None %}
                     <p>{% trans "The problem has not been started." %}</p>
                 {% else %}
@@ -239,27 +243,27 @@
         </div>
     </div>
 
-    <div class="staff-info__staff-override ui-staff__action__section wrapper--ui--collapse">
-        <div class="ui-staff ui-toggle-visibility is--collapsed">
-            <h2 class="staff-info__title ui-staff__title ui-toggle-visibility__control">
-                <i class="icon fa fa-caret-right"></i>
-                <span>{% trans "Assessment Override" %}</span>
-            </h2>
+    {% if not workflow_cancellation %}
+        <div class="staff-info__staff-override ui-staff__content__section wrapper--ui--collapse">
+            <div class="ui-staff ui-toggle-visibility {% if expanded_view != 'staff-override' %}is--collapsed {% endif %}">
+                <h2 class="staff-info__title ui-staff__subtitle ui-toggle-visibility__control">
+                    <i class="icon fa fa-caret-right"></i>
+                    <span>{% trans "Submit Assessment Grade Override" %}</span>
+                </h2>
 
-            <div class="staff-info__staff-override__content ui-toggle-visibility__content">
-                <div class="wrapper--input">
-                    {% include "openassessmentblock/staff_area/oa_staff_assessment.html" %}
+                <div class="staff-info__staff-override__content ui-toggle-visibility__content">
+                    <div class="wrapper--input">
+                        {% include "openassessmentblock/staff_area/oa_staff_assessment.html" %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    {% if not workflow_cancellation %}
-        <div class="staff-info__workflow-cancellation ui-staff__action__section wrapper--ui--collapse">
+        <div class="staff-info__workflow-cancellation ui-staff__content__section wrapper--ui--collapse">
             <div class="ui-staff ui-toggle-visibility is--collapsed">
-                <h2 class="staff-info__title ui-staff__title ui-toggle-visibility__control">
+                <h2 class="staff-info__title ui-staff__subtitle ui-toggle-visibility__control">
                     <i class="icon fa fa-caret-right"></i>
-                    <span>{% trans "Remove submission from peer grading" %}</span>
+                    <span>{% trans "Remove Submission From Peer Grading" %}</span>
                 </h2>
 
                 <div class="staff-info__cancel-submission__content ui-toggle-visibility__content">
