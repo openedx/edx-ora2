@@ -104,7 +104,7 @@ class SubmissionPage(OpenAssessmentPage):
           file_path_name (string): full path and name of the file
         """
         self.wait_for_element_visibility("#submission__answer__upload", "File select button is present")
-        self.q(css="#submission__answer__upload").fill(file_path_name)
+        self.q(css="#submission__answer__upload").results[0].send_keys(file_path_name)
 
     def upload_file(self):
         """
@@ -142,7 +142,7 @@ class SubmissionPage(OpenAssessmentPage):
         Returns:
             bool
         """
-        return self.q(css="#upload__error > div").visible
+        return self.q(css="div#upload__error > div.message--error").visible
 
     @property
     def has_file_uploaded(self):
