@@ -342,6 +342,37 @@ class StaffAreaTest(OpenAssessmentTest):
         self.assertIn('A response was not found for this learner', self.staff_area_page.learner_report_text)
         self.assertEqual([], self.staff_area_page.learner_report_sections)
 
+    @retry()
+    @attr('acceptance')
+    def test_staff_override(self):
+        """
+        Scenario: staff can override a learner's grade
+
+        Given I am viewing the staff area of an ORA problem
+        When I search for a learner in staff tools
+        And the learner has submitted a response to an ORA problem with self-assessment
+        Then I can submit a staff override of the self-assessment
+        And I see the updated final score
+        """
+        username = self.do_self_assessment()
+
+        self.staff_area_page.visit()
+
+        # Click on staff tools and search for user
+        self.staff_area_page.show_learner(username)
+        self.staff_area_page.expand_learner_report_sections()
+
+        # Check the learner's current score.
+        self.assertEqual(self.staff_area_page.learner_final_score, self.EXPECTED_SCORE)
+
+        # Do staff override and wait for final score to change.
+        self.staff_area_page.assess([0, 1])
+
+        # Verify that the new student score is different from the original one.
+        self.assertNotEqual(1, self.EXPECTED_SCORE)
+        # TODO: this is expected to fail until the regrading API is hooked up.
+        self.staff_area_page.verify_learner_final_score(1)
+
 
 class FileUploadTest(OpenAssessmentTest):
     """
