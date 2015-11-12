@@ -314,12 +314,13 @@ class StaffAreaTest(OpenAssessmentTest):
 
         # Click on staff tools and search for user
         self.staff_area_page.show_learner(username)
-
-        self.assertNotIn('A response was not found for this learner', self.staff_area_page.learner_report_text)
         self.assertEqual(
-            [u'Learner Response', u"Learner's Self Assessment", u"Learner's Final Grade"],
+            [u'Learner Response', u"Learner's Self Assessment", u"Learner's Final Grade",
+             u"Submit Assessment Grade Override", u"Remove Submission From Peer Grading"],
             self.staff_area_page.learner_report_sections
         )
+
+        self.assertNotIn('A response was not found for this learner', self.staff_area_page.learner_report_text)
 
     @retry()
     @attr('acceptance')
@@ -338,9 +339,79 @@ class StaffAreaTest(OpenAssessmentTest):
 
         # Click on staff tools and search for user
         self.staff_area_page.show_learner('no-submission-learner')
+        self.staff_area_page.verify_learner_report_text('A response was not found for this learner.')
 
-        self.assertIn('A response was not found for this learner', self.staff_area_page.learner_report_text)
-        self.assertEqual([], self.staff_area_page.learner_report_sections)
+    @retry()
+    @attr('acceptance')
+    def test_staff_override(self):
+        """
+        Scenario: staff can override a learner's grade
+
+        Given I am viewing the staff area of an ORA problem
+        When I search for a learner in staff tools
+        And the learner has submitted a response to an ORA problem with self-assessment
+        Then I can submit a staff override of the self-assessment
+        And I see the updated final score
+        """
+        username = self.do_self_assessment()
+
+        self.staff_area_page.visit()
+
+        # Click on staff tools and search for user
+        self.staff_area_page.show_learner(username)
+
+        # Check the learner's current score.
+        self.staff_area_page.expand_learner_report_sections()
+        self.staff_area_page.verify_learner_final_score("Final grade: 6 out of 8")
+
+        # Do staff override and wait for final score to change.
+        self.staff_area_page.assess([0, 1])
+
+        # Verify that the new student score is different from the original one.
+        # TODO: uncomment this after hooked up to the API. Also verify other state if appropriate.
+        # self.staff_area_page.verify_learner_final_score("Final grade: 1 out of 8")
+
+    @retry()
+    @attr('acceptance')
+    def test_cancel_submission(self):
+        """
+        Scenario: staff can cancel a learner's submission
+
+        Given I am viewing the staff area of an ORA problem
+        When I search for a learner in staff tools
+        And the learner has submitted a response to an ORA problem with self-assessment
+        Then I can cancel the learner's submission
+        And I see an updated message indicating that the submission has been canceled.
+        """
+        username = self.do_self_assessment()
+
+        self.staff_area_page.visit()
+
+        # Click on staff tools and search for user
+        self.staff_area_page.show_learner(username)
+
+        # Check the learner's current score.
+        self.staff_area_page.expand_learner_report_sections()
+        self.staff_area_page.verify_learner_final_score("Final grade: 6 out of 8")
+
+        # Cancel the student submission
+        self.staff_area_page.cancel_submission()
+
+        self.staff_area_page.verify_learner_final_score(
+            "The learner's submission has been removed from peer assessment. "
+            "The learner receives a grade of zero unless you reset the learner's attempts for the "
+            "problem to allow them to resubmit a response."
+        )
+
+        # Verify that the staff override and submission removal sections are now gone.
+        self.assertEqual(
+            [u'Learner Response', u"Learner's Self Assessment", u"Learner's Final Grade"],
+            self.staff_area_page.learner_report_sections
+        )
+
+        # Verify that the Learner Response has been replaced with a message about the removal
+        self.staff_area_page.expand_learner_report_sections()
+        self.assertIn("Learner submission removed", self.staff_area_page.learner_response)
 
 
 class FileUploadTest(OpenAssessmentTest):
