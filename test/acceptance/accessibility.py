@@ -16,12 +16,21 @@ class OpenAssessmentA11yTest(OpenAssessmentTest):
         self.auto_auth_page.visit()
 
     def _check_a11y(self, page):
+        page.a11y_audit.config.set_scope(
+            exclude=[
+                ".container-footer",
+                ".nav-skip",
+                "#global-navigation",
+            ],
+        )
         page.a11y_audit.config.set_rules({
             "ignore": [
                 "aria-valid-attr",  # TODO: AC-199
                 "color-contrast",  # TODO: AC-198
                 "empty-heading",  # TODO: AC-197
+                "link-href",  # TODO: AC-199
                 "link-name",  # TODO: AC-196
+                "skip-link",  # TODO: AC-179
             ]
         })
         page.a11y_audit.check_for_accessibility_errors()

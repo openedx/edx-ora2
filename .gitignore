@@ -34,6 +34,11 @@ coverage.xml
 test_ora2db
 test_ora2db-journal
 
+# Bok choy
+test/custom_a11y_rules.js
+test/acceptance/screenshots/*.png
+test/logs/*
+
 # Mr Developer
 .mr.developer.cfg
 .project
