@@ -512,17 +512,26 @@ OpenAssessment.ResponseView.prototype = {
         } else if (uploadType === "image" && this.data.ALLOWED_IMAGE_MIME_TYPES.indexOf(this.fileType) === -1) {
             this.baseView.toggleActionError(
                 'upload',
-                gettext("You can upload files with these file types: ") + "JPG, PNG or GIF"
+                interpolate_text(
+                    gettext("You can upload files with these file types: {fileTypes}"),
+                    {fileTypes: "JPG, PNG or GIF"}
+                )
             );
         } else if (uploadType === "pdf-and-image" && this.data.ALLOWED_FILE_MIME_TYPES.indexOf(this.fileType) === -1) {
             this.baseView.toggleActionError(
                 'upload',
-                gettext("You can upload files with these file types: ") + "JPG, PNG, GIF or PDF"
+                interpolate_text(
+                    gettext("You can upload files with these file types: "),
+                    {fileTypes: "JPG, PNG, GIF or PDF"}
+                )
             );
         } else if (uploadType === "custom" && this.data.FILE_TYPE_WHITE_LIST.indexOf(ext) === -1) {
             this.baseView.toggleActionError(
                 'upload',
-                gettext("You can upload files with these file types: ") + this.data.FILE_TYPE_WHITE_LIST.join(", ")
+                interpolate_text(
+                    gettext("You can upload files with these file types: ") ,
+                    {fileTypes: this.data.FILE_TYPE_WHITE_LIST.join(", ")}
+                )
             );
         } else if (this.data.FILE_EXT_BLACK_LIST.indexOf(ext) !== -1) {
             this.baseView.toggleActionError(

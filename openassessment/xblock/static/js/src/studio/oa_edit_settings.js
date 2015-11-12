@@ -47,7 +47,9 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
             var badExts = [];
             var errors = [];
             if (!value) {
-                errors.push(gettext('File types can not be empty.'));
+                errors.push(
+                    gettext('File types can not be empty.')
+                );
                 return errors;
             }
             var whiteList = $.map(value.replace(/\./g, '').toLowerCase().split(','), $.trim);
@@ -57,7 +59,12 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
                 }
             });
             if (badExts.length) {
-                errors.push(gettext('The following file types are not allowed: ') + badExts.join(','));
+                errors.push(
+                    interpolate_text(
+                        gettext('The following file types are not allowed: {badExtensions}'),
+                        {badExtensions: badExts.join(',')}
+                    )
+                );
             }
 
             return errors;
