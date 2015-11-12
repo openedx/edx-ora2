@@ -51,10 +51,21 @@
         loadStudentInfo: function() {
             var view = this;
             var $staffTools = $('.openassessment__staff-tools', this.element);
+            var $form = $staffTools.find('.openassessment_student_info_form');
             var student_username = $staffTools.find('.openassessment__student_username').val();
+            var showFormError = function(errorMessage) {
+                $form.find('.form--error').text(errorMessage);
+            };
+
+            // Clear any previous student information
+            $('.openassessment__student-info', view.element).text('');
+
             if (student_username.trim()) {
                 this.server.studentInfo(student_username)
                     .done(function(html) {
+                        // Clear any error message
+                        showFormError('');
+
                         // Load the HTML and install event handlers
                         $('.openassessment__student-info', view.element).replaceWith(html);
 
@@ -89,11 +100,11 @@
                             );
                         }
                     }).fail(function() {
-                        view.baseView.showLoadError('student_info');
+                        showFormError(gettext('Unexpected server error.'));
                     }
                 );
             } else {
-                view.baseView.showLoadError('student_info', gettext('A student name must be provided.'));
+                showFormError(gettext('A learner name must be provided.'));
             }
         },
 

@@ -175,10 +175,11 @@ describe('OpenAssessment.StaffAreaView', function() {
             appendLoadFixtures('oa_student_info.html');
         });
 
-        xit('shows an error when clicking "Submit" with no student name chosen', function() {
+        it('shows an error when clicking "Submit" with no student name chosen', function() {
             var staffArea = createStaffArea();
             chooseStudent(staffArea, '');
-            expect($('', staffArea.element).text().trim()).toBe('A student name must be provided.');
+            expect($('.openassessment_student_info_form .form--error', staffArea.element).text().trim())
+                .toBe('A learner name must be provided.');
         });
 
         describe('Submission Management', function() {
