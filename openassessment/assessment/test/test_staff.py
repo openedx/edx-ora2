@@ -2,11 +2,11 @@
 import datetime
 import pytz
 import copy
+import mock
 
 from django.db import DatabaseError, IntegrityError
 from django.utils import timezone
 from ddt import ddt, file_data
-from mock import patch
 from nose.tools import raises
 
 from openassessment.test_utils import CacheResetTest
@@ -16,6 +16,7 @@ from openassessment.assessment.models import (
     Assessment, AssessmentPart, AssessmentFeedback, AssessmentFeedbackOption,
     PeerWorkflow, PeerWorkflowItem
 )
+from openassessment.assessment.errors import StaffAssessmentRequestError, StaffAssessmentInternalError
 from openassessment.workflow import api as workflow_api
 from submissions import api as sub_api
 
@@ -146,66 +147,81 @@ class TestStaffOverwrite(CacheResetTest):
 
     STEPS = ['self']
     STEP_REQUIREMENTS = {}
+    STEP_REQUIREMENTS_WITH_STAFF = {'staff': {'required': True}}
 
     def test_create_assessment_points(self):
+        # Create assessment
         tim_sub, tim = self.create_student_and_submission("Tim", "Tim's answer")
 
+        # Staff assess it
         assessment = staff_api.create_assessment(
             tim_sub["uuid"],
             "Dumbledore",
             ASSESSMENT_DICT['options_selected'], dict(), "",
             RUBRIC_DICT,
         )
+
+        # Ensure points are calculated properly
         self.assertEqual(assessment["points_earned"], 6)
         self.assertEqual(assessment["points_possible"], 14)
 
-        #ensure submission is marked as finished now
+        #ensure submission is marked as finished
+        self.assertTrue(staff_api.assessment_is_finished(tim_sub["uuid"], self.STEP_REQUIREMENTS))
 
     def test_create_assessment_overrides(self):
+        # Create assessment
         tim_sub, tim = self.create_student_and_submission("Tim", "Tim's answer")
 
+        # Self assess it
         self_assessment = self_assess(
             tim_sub["uuid"],
             tim["student_id"],
             ASSESSMENT_DICT['options_selected'], dict(), "",
             RUBRIC_DICT,
         )
+        # and update workflow with new scores
         workflow_api.update_from_assessments(tim_sub["uuid"], self.STEP_REQUIREMENTS)
 
+        # Verify both assessment and workflow report correct score
         self.assertEqual(self_assessment["points_earned"], 6)
         workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], self.STEP_REQUIREMENTS)
         self.assertEqual(workflow["score"]["points_earned"], 6)
 
+        # Now override with a staff assessment
         staff_assessment = staff_api.create_assessment(
             tim_sub["uuid"],
             "Dumbledore",
             ASSESSMENT_DICT_PASS['options_selected'], dict(), "",
             RUBRIC_DICT,
         )
+        # Be sure to update the workflow!
         workflow_api.update_from_assessments(tim_sub["uuid"], self.STEP_REQUIREMENTS, force_update_score=True)
+
+        # Verify both assessment and workflow report correct score
         self.assertEqual(staff_assessment["points_earned"], 14)
         workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], self.STEP_REQUIREMENTS)
         self.assertEqual(workflow["score"]["points_earned"], 14)
 
     def test_create_assessment_does_not_block(self):
-        #create a submission
+        # Create assessment
         tim_sub, tim = self.create_student_and_submission("Tim", "Tim's answer")
 
-        #staff assess it
+        # Staff assess it
         staff_assessment = staff_api.create_assessment(
             tim_sub["uuid"],
             "Dumbledore",
             ASSESSMENT_DICT_PASS['options_selected'], dict(), "",
             RUBRIC_DICT,
         )
+        # Keep the workflow updated
         workflow_api.update_from_assessments(tim_sub["uuid"], self.STEP_REQUIREMENTS, force_update_score=True)
 
-        #ensure points are what we expect
+        # Ensure points are what we expect
         self.assertEqual(staff_assessment["points_earned"], 14)
         workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], self.STEP_REQUIREMENTS)
         self.assertEqual(workflow["score"]["points_earned"], 14)
 
-        #self assess it, ensure assessment is recorded
+        # Now self assess, and ensure assessment is recorded
         self_assessment = self_assess(
             tim_sub["uuid"],
             tim["student_id"],
@@ -214,13 +230,119 @@ class TestStaffOverwrite(CacheResetTest):
         )
         self.assertEqual(self_assessment["points_earned"], 6)
 
-        #ensure points are not updated
+        # Ensure points are not updated
         workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], self.STEP_REQUIREMENTS)
         self.assertEqual(workflow["score"]["points_earned"], 14)
 
-    def create_student_and_submission(self, student, answer, date=None):
+    def test_staff_assessment_required(self):
+        # Set up submission, with staff as a required step on the workflow
+        tim_sub, tim = self.create_student_and_submission("Tim", "Tim's answer", require_staff=True)
+
+        # Verify that we're still waiting on a staff assessment
+        self.assertFalse(staff_api.assessment_is_finished(tim_sub["uuid"], self.STEP_REQUIREMENTS_WITH_STAFF))
+
+        # Staff assess, without using force_update parameter
+        staff_assessment = staff_api.create_assessment(
+            tim_sub["uuid"],
+            "Dumbledore",
+            ASSESSMENT_DICT_PASS['options_selected'], dict(), "",
+            RUBRIC_DICT,
+        )
+        workflow_api.update_from_assessments(tim_sub["uuid"], self.STEP_REQUIREMENTS_WITH_STAFF)
+
+        # Verify assesment made, score updated, and no longer wating
+        self.assertEqual(staff_assessment["points_earned"], 14)
+        self.assertTrue(staff_api.assessment_is_finished(tim_sub["uuid"], self.STEP_REQUIREMENTS_WITH_STAFF))
+
+    def test_invalid_rubric_exceptions(self):
+        # Create a submission
+        tim_sub, tim = self.create_student_and_submission("Tim", "Tim's answer")
+
+        # Define invalid rubric and options_selected
+        invalid_rubric = copy.deepcopy(RUBRIC_DICT)
+        for criterion in invalid_rubric["criteria"]:
+            for option in criterion["options"]:
+                option["points"] = -1
+
+        invalid_options_selected = {
+            "secret": "meow",
+            u"ⓢⓐⓕⓔ": "bark",
+            "giveup": "moo",
+            "singing": "oink",
+        }
+
+        # Try to staff assess with invalid rubric
+        with self.assertRaises(StaffAssessmentRequestError) as context_manager:
+            staff_assessment = staff_api.create_assessment(
+                tim_sub["uuid"],
+                "Dumbledore",
+                ASSESSMENT_DICT_PASS['options_selected'], dict(), "",
+                invalid_rubric,
+            )
+        self.assertEqual(str(context_manager.exception), u"Rubric definition was not valid")
+
+        # Try to staff assess with invalid options selected
+        with self.assertRaises(StaffAssessmentRequestError) as context_manager:
+            staff_assessment = staff_api.create_assessment(
+                tim_sub["uuid"],
+                "Dumbledore",
+                invalid_options_selected, dict(), "",
+                RUBRIC_DICT,
+            )
+        self.assertEqual(str(context_manager.exception), u"Invalid options selected in the rubric")
+
+    @mock.patch.object(Assessment.objects, 'filter')
+    def test_database_filter_error_handling(self, mock_filter):
+        # Create a submission
+        tim_sub, tim = self.create_student_and_submission("Tim", "Tim's answer")
+
+        # Note that we have to define this side effect *after* creating the submission
+        mock_filter.side_effect = DatabaseError("KABOOM!")
+
+        # Try to get the latest staff assessment, handle database errors
+        with self.assertRaises(StaffAssessmentInternalError) as context_manager:
+            staff_api.get_latest_assessment(tim_sub["uuid"])
+        self.assertEqual(
+            str(context_manager.exception),
+            (
+                u"An error occurred while retrieving staff assessments for the submission with UUID {uuid}: {ex}"
+            ).format(uuid=tim_sub["uuid"], ex="KABOOM!")
+        )
+
+        # Try to get staff assessment scores by criteria, handle database errors
+        with self.assertRaises(StaffAssessmentInternalError) as context_manager:
+            staff_api.get_assessment_scores_by_criteria(tim_sub["uuid"])
+        self.assertEqual(
+            str(context_manager.exception),
+            u"Error getting staff assessment scores for {}".format(tim_sub["uuid"])
+        )
+
+    @mock.patch.object(Assessment, 'create')
+    def test_database_create_error_handling(self, mock_create):
+        mock_create.side_effect = DatabaseError("KABOOM!")
+
+        # Try to create a staff assessment, handle database errors
+        with self.assertRaises(StaffAssessmentInternalError) as context_manager:
+            staff_assessment = staff_api.create_assessment(
+                "000000",
+                "Dumbledore",
+                ASSESSMENT_DICT_PASS['options_selected'], dict(), "",
+                RUBRIC_DICT,
+            )
+        self.assertEqual(
+            str(context_manager.exception),
+            u"An error occurred while creating assessment by scorer with ID: {}".format("Dumbledore")
+        )
+
+    def create_student_and_submission(self, student, answer, date=None, require_staff=False):
+        """
+        Helper method to create a student and submission for use in tests.
+        """
         new_student_item = STUDENT_ITEM.copy()
         new_student_item["student_id"] = student
         submission = sub_api.create_submission(new_student_item, answer, date)
-        workflow_api.create_workflow(submission["uuid"], self.STEPS)
+        steps = self.STEPS
+        if require_staff:
+            steps.append('staff')
+        workflow_api.create_workflow(submission["uuid"], steps)
         return submission, new_student_item
