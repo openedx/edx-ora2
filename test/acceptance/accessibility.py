@@ -110,6 +110,7 @@ class StaffAreaA11yTest(OpenAssessmentA11yTest):
 
         # Click on staff tools and search for the user.
         self.staff_area_page.show_learner(username)
+        self.staff_area_page.expand_learner_report_sections()
 
         self._check_a11y(self.staff_area_page)
 
