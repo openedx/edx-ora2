@@ -239,11 +239,11 @@
         </div>
     </div>
 
-    <div class="staff-info__staff-override ui-staff__action__section wrapper--ui--collapse">
+    <div class="staff-info__staff-override ui-staff__content__section wrapper--ui--collapse">
         <div class="ui-staff ui-toggle-visibility is--collapsed">
-            <h2 class="staff-info__title ui-staff__title ui-toggle-visibility__control">
+            <h2 class="staff-info__title ui-staff__subtitle ui-toggle-visibility__control">
                 <i class="icon fa fa-caret-right"></i>
-                <span>{% trans "Assessment Override" %}</span>
+                <span>{% trans "Submit Assessment Grade Override" %}</span>
             </h2>
 
             <div class="staff-info__staff-override__content ui-toggle-visibility__content">
@@ -255,9 +255,9 @@
     </div>
 
     {% if not workflow_cancellation %}
-        <div class="staff-info__workflow-cancellation ui-staff__action__section wrapper--ui--collapse">
+        <div class="staff-info__workflow-cancellation ui-staff__content__section wrapper--ui--collapse">
             <div class="ui-staff ui-toggle-visibility is--collapsed">
-                <h2 class="staff-info__title ui-staff__title ui-toggle-visibility__control">
+                <h2 class="staff-info__title ui-staff__subtitle ui-toggle-visibility__control">
                     <i class="icon fa fa-caret-right"></i>
                     <span>{% trans "Remove submission from peer grading" %}</span>
                 </h2>
