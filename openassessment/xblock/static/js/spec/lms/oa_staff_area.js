@@ -20,6 +20,14 @@ describe('OpenAssessment.StaffAreaView', function() {
             });
         };
 
+        this.studentInfo = function() {
+            var server = this;
+            return $.Deferred(function(defer) {
+                var fragment = readFixtures('oa_student_info.html');
+                defer.resolveWith(server, [fragment]);
+            });
+        };
+
         this.scheduleTraining = function() {
             var server = this;
             return $.Deferred(function(defer) {
@@ -46,19 +54,9 @@ describe('OpenAssessment.StaffAreaView', function() {
 
     };
 
-    // Stub base view
-    var StubBaseView = function() {
-        this.showLoadError = function() {};
-        this.toggleActionError = function() {};
-        this.setUpCollapseExpand = function() {};
-        this.scrollToTop = function() {};
-        this.loadAssessmentModules = function() {};
-        this.loadMessageView = function() {};
-    };
-
     // Stubs
-    var baseView = null;
     var server = null;
+    var runtime = {};
 
     /**
      * Create a staff area view.
@@ -69,8 +67,9 @@ describe('OpenAssessment.StaffAreaView', function() {
         if (serverResponse) {
             server.data = serverResponse;
         }
-        var el = $('#openassessment').get(0);
-        var view = new OpenAssessment.StaffAreaView(el, server, baseView);
+        var $assessment = $('#openassessment').first();
+        var baseView = new OpenAssessment.BaseView(runtime, $assessment, server, {});
+        var view = new OpenAssessment.StaffAreaView($assessment, server, baseView);
         view.load();
         return view;
     };
@@ -93,8 +92,6 @@ describe('OpenAssessment.StaffAreaView', function() {
         // Create a new stub server
         server = new StubServer();
         server.renderLatex = jasmine.createSpy('renderLatex');
-        // Create the stub base view
-        baseView = new StubBaseView();
     });
 
     describe('Initial rendering', function() {
@@ -165,46 +162,63 @@ describe('OpenAssessment.StaffAreaView', function() {
         });
     });
 
-    describe('Submission Management', function() {
-        it('updates submission cancellation button when comments changes', function() {
-            // Prevent the server's response from resolving,
-            // so we can see what happens before view gets re-rendered.
-            spyOn(server, 'cancelSubmission').and.callFake(function() {
-                return $.Deferred(function() {}).promise();
-            });
+    describe('Student Info', function() {
+        var chooseStudent = function(view, studentName) {
+            var studentNameField = $('.openassessment__student_username', view.element),
+                submitButton = $('.action--submit-username', view.element);
+            studentNameField.val(studentName);
+            submitButton.click();
+        };
 
-            // Load the fixture
-            loadFixtures('oa_student_info.html');
-
-            var view = createStaffArea();
-
-            // comments is blank --> cancel submission button disabled
-            view.comment('');
-            view.handleCommentChanged();
-            expect(view.cancelSubmissionEnabled()).toBe(false);
-
-            // Response is whitespace --> cancel submission button disabled
-            view.comment('               \n      \n      ');
-            view.handleCommentChanged();
-            expect(view.cancelSubmissionEnabled()).toBe(false);
-
-            // Response is not blank --> cancel submission button enabled
-            view.comment('Cancellation reason.');
-            view.handleCommentChanged();
-            expect(view.cancelSubmissionEnabled()).toBe(true);
+        beforeEach(function() {
+            loadFixtures('oa_base_course_staff.html');
+            appendLoadFixtures('oa_student_info.html');
         });
 
-        it('submits the cancel submission comments to the server', function() {
-            spyOn(server, 'cancelSubmission').and.callThrough();
+        xit('shows an error when clicking "Submit" with no student name chosen', function() {
+            var staffArea = createStaffArea();
+            chooseStudent(staffArea, '');
+            expect($('', staffArea.element).text().trim()).toBe('A student name must be provided.');
+        });
 
-            // Load the fixture
-            loadFixtures('oa_student_info.html');
-            var view = createStaffArea();
+        describe('Submission Management', function() {
+            it('updates submission cancellation button when comments changes', function() {
+                // Prevent the server's response from resolving,
+                // so we can see what happens before view gets re-rendered.
+                spyOn(server, 'cancelSubmission').and.callFake(function() {
+                    return $.Deferred(function() {}).promise();
+                });
 
-            view.comment('Cancellation reason.');
-            view.cancelSubmission('Bob');
+                var staffArea = createStaffArea();
+                chooseStudent(staffArea, 'testStudent');
 
-            expect(server.cancelSubmission).toHaveBeenCalledWith('Bob', 'Cancellation reason.');
+                // comments is blank --> cancel submission button disabled
+                staffArea.comment('');
+                staffArea.handleCommentChanged();
+                expect(staffArea.cancelSubmissionEnabled()).toBe(false);
+
+                // Response is whitespace --> cancel submission button disabled
+                staffArea.comment('               \n      \n      ');
+                staffArea.handleCommentChanged();
+                expect(staffArea.cancelSubmissionEnabled()).toBe(false);
+
+                // Response is not blank --> cancel submission button enabled
+                staffArea.comment('Cancellation reason.');
+                staffArea.handleCommentChanged();
+                expect(staffArea.cancelSubmissionEnabled()).toBe(true);
+            });
+
+            it('submits the cancel submission comments to the server', function() {
+                spyOn(server, 'cancelSubmission').and.callThrough();
+
+                var staffArea = createStaffArea();
+                chooseStudent(staffArea, 'testStudent');
+
+                staffArea.comment('Cancellation reason.');
+                staffArea.cancelSubmission('Bob');
+
+                expect(server.cancelSubmission).toHaveBeenCalledWith('Bob', 'Cancellation reason.');
+            });
         });
     });
 

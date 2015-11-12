@@ -52,45 +52,49 @@
             var view = this;
             var $staffTools = $('.openassessment__staff-tools', this.element);
             var student_username = $staffTools.find('.openassessment__student_username').val();
-            this.server.studentInfo(student_username)
-                .done(function(html) {
-                    // Load the HTML and install event handlers
-                    $('.openassessment__student-info', view.element).replaceWith(html);
+            if (student_username.trim()) {
+                this.server.studentInfo(student_username)
+                    .done(function(html) {
+                        // Load the HTML and install event handlers
+                        $('.openassessment__student-info', view.element).replaceWith(html);
 
-                    // Install key handler for cancel submission button.
-                    $staffTools.on('click', '.action--submit-cancel-submission', function (eventObject) {
-                            eventObject.preventDefault();
-                            view.cancelSubmission($(this).data('submission-uuid'));
-                        }
-                    );
-
-                    // Install change handler for textarea (to enable cancel submission button)
-                    var handleChange = function(eventData) { view.handleCommentChanged(eventData); };
-                    $staffTools.find('.cancel_submission_comments')
-                        .on('change keyup drop paste', handleChange);
-
-
-                    // Initialize the rubric
-                    var $rubric = $('.staff-assessment__assessment', view.element);
-                    if ($rubric.size() > 0) {
-                        var rubricElement = $rubric.get(0);
-                        var rubric = new OpenAssessment.Rubric(rubricElement);
-
-                        // Install a change handler for rubric options to enable/disable the submit button
-                        rubric.canSubmitCallback($.proxy(view.staffSubmitEnabled, view));
-
-                        // Install a click handler for the submit button
-                        $('.wrapper--staff-assessment .action--submit', view.element).click(
-                            function(eventObject) {
+                        // Install key handler for cancel submission button.
+                        $staffTools.on('click', '.action--submit-cancel-submission', function (eventObject) {
                                 eventObject.preventDefault();
-                                view.submitStaffAssessment(rubric);
+                                view.cancelSubmission($(this).data('submission-uuid'));
                             }
                         );
+
+                        // Install change handler for textarea (to enable cancel submission button)
+                        var handleChange = function(eventData) { view.handleCommentChanged(eventData); };
+                        $staffTools.find('.cancel_submission_comments')
+                            .on('change keyup drop paste', handleChange);
+
+
+                        // Initialize the rubric
+                        var $rubric = $('.staff-assessment__assessment', view.element);
+                        if ($rubric.size() > 0) {
+                            var rubricElement = $rubric.get(0);
+                            var rubric = new OpenAssessment.Rubric(rubricElement);
+
+                            // Install a change handler for rubric options to enable/disable the submit button
+                            rubric.canSubmitCallback($.proxy(view.staffSubmitEnabled, view));
+
+                            // Install a click handler for the submit button
+                            $('.wrapper--staff-assessment .action--submit', view.element).click(
+                                function(eventObject) {
+                                    eventObject.preventDefault();
+                                    view.submitStaffAssessment(rubric);
+                                }
+                            );
+                        }
+                    }).fail(function() {
+                        view.baseView.showLoadError('student_info');
                     }
-                }).fail(function() {
-                    view.showLoadError('student_info');
-                }
-            );
+                );
+            } else {
+                view.baseView.showLoadError('student_info', gettext('A student name must be provided.'));
+            }
         },
 
         /**

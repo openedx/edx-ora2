@@ -12,11 +12,11 @@ describe("OpenAssessment.PeerView", function() {
             }
         ).promise();
 
-        this.peerAssess = function(optionsSelected, feedback) {
+        this.peerAssess = function() {
             return successPromise;
         };
 
-        this.render = function(step) {
+        this.render = function() {
             return successPromise;
         };
 
@@ -25,40 +25,28 @@ describe("OpenAssessment.PeerView", function() {
         };
     };
 
-    // Stub base view
-    var StubBaseView = function() {
-        this.showLoadError = function(msg) {};
-        this.toggleActionError = function(msg, step) {};
-        this.setUpCollapseExpand = function(sel) {};
-        this.scrollToTop = function() {};
-        this.loadAssessmentModules = function() {};
-        this.loadMessageView = function() {};
+    // Stubs
+    var server = null;
+    var runtime = {};
+
+    var createPeerAssessmentView = function(template) {
+        loadFixtures(template);
+
+        var $assessment = $('#openassessment__peer-assessment').first();
+        var baseView = new OpenAssessment.BaseView(runtime, $assessment, server, {});
+        var view = new OpenAssessment.PeerView($assessment, server, baseView);
+        view.installHandlers();
+        return view;
     };
 
-    // Stubs
-    var baseView = null;
-    var server = null;
-
-    // View under test
-    var view = null;
-
     beforeEach(function() {
-        // Load the DOM fixture
-        loadFixtures('oa_peer_assessment.html');
-
         // Create a new stub server
         server = new StubServer();
-
-        // Create the stub base view
-        baseView = new StubBaseView();
-
-        // Create the object under test
-        var el = $("#openassessment-base").get(0);
-        view = new OpenAssessment.PeerView(el, server, baseView);
-        view.installHandlers();
+        server.renderLatex = jasmine.createSpy('renderLatex');
     });
 
     it("Sends a peer assessment to the server", function() {
+        var view = createPeerAssessmentView('oa_peer_assessment.html');
         spyOn(server, 'peerAssess').and.callThrough();
 
         // Select options in the rubric
@@ -89,6 +77,7 @@ describe("OpenAssessment.PeerView", function() {
     });
 
     it("Re-enables the peer assess button on error", function() {
+        var view = createPeerAssessmentView('oa_peer_assessment.html');
         // Simulate a server error
         spyOn(server, 'peerAssess').and.callFake(function() {
             expect(view.peerSubmitEnabled()).toBe(false);
@@ -103,8 +92,8 @@ describe("OpenAssessment.PeerView", function() {
     });
 
     it("Re-enables the continued grading button on error", function() {
-        jasmine.getFixtures().fixturesPath = 'base/fixtures';
-        loadFixtures('oa_peer_complete.html');
+        var view = createPeerAssessmentView('oa_peer_complete.html');
+
         // Simulate a server error
         spyOn(server, 'renderContinuedPeer').and.callFake(function() {
             expect(view.continueAssessmentEnabled()).toBe(false);
