@@ -47,8 +47,12 @@
          * Upon request, loads the student info section of the staff area.
          * This allows viewing all the submissions and assessments associated
          * to the given student's current workflow.
+         *
+         * @param options An optional set of options to render the section.
+         * @returns {promise} A promise representing the successful oading
+         * of the student info section.
          */
-        loadStudentInfo: function() {
+        loadStudentInfo: function(options) {
             var view = this;
             var $staffTools = $('.openassessment__staff-tools', this.element);
             var $form = $staffTools.find('.openassessment_student_info_form');
@@ -56,12 +60,13 @@
             var showFormError = function(errorMessage) {
                 $form.find('.form--error').text(errorMessage);
             };
+            var deferred = $.Deferred();
 
             // Clear any previous student information
             $('.openassessment__student-info', view.element).text('');
 
             if (student_username.trim()) {
-                this.server.studentInfo(student_username)
+                this.server.studentInfo(student_username, options)
                     .done(function(html) {
                         // Clear any error message
                         showFormError('');
@@ -99,13 +104,17 @@
                                 }
                             );
                         }
-                    }).fail(function() {
+                        deferred.resolve();
+                    })
+                    .fail(function() {
                         showFormError(gettext('Unexpected server error.'));
-                    }
-                );
+                        deferred.reject();
+                    });
             } else {
                 showFormError(gettext('A learner name must be provided.'));
+                deferred.reject();
             }
+            return deferred.promise();
         },
 
         /**
@@ -221,11 +230,14 @@
             // Immediately disable the button to prevent multiple requests.
             this.cancelSubmissionEnabled(false);
             var view = this;
-            var comments = this.element.find('.cancel_submission_comments').val();
+            var comments = $('.cancel_submission_comments', this.element).val();
             this.server.cancelSubmission(submissionUUID, comments)
                 .done(function(msg) {
                     $('.cancel-submission-error').html('');
-                    $('.openassessment__staff-info__cancel__submission', view.element).html(msg);
+                    view.loadStudentInfo({expanded_view: 'final-grade'})
+                        .done(function() {
+                            $('.openassessment__staff-info__cancel__submission', view.element).html(msg);
+                        });
                 })
                 .fail(function(errMsg) {
                     $('.cancel-submission-error').html(errMsg);
@@ -316,12 +328,9 @@
             view.staffSubmitEnabled(false);
 
             this.server.staffAssess(rubric.optionsSelected(), rubric.criterionFeedback(), rubric.overallFeedback())
-                .done(
-                    function() {
-                        baseView.loadAssessmentModules();
-                        baseView.scrollToTop();
-                    }
-                )
+                .done(function() {
+                    view.loadStudentInfo({expanded_view: 'staff-override'});
+                })
                 .fail(function(errorMessage) {
                     baseView.toggleActionError('staff', errorMessage);
                     view.staffSubmitEnabled(true);

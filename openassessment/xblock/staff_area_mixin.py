@@ -214,13 +214,17 @@ class StaffAreaMixin(object):
         """
         try:
             student_username = data.params.get('student_username', '')
-            path, context = self.get_student_info_path_and_context(student_username)
+            expanded_view = data.params.get('expanded_view', [])
+            path, context = self.get_student_info_path_and_context(
+                student_username,
+                expanded_view=expanded_view
+            )
             return self.render_assessment(path, context)
 
         except PeerAssessmentInternalError:
             return self.render_error(self._(u"Error finding assessment workflow cancellation."))
 
-    def get_student_info_path_and_context(self, student_username):
+    def get_student_info_path_and_context(self, student_username, expanded_view=None):
         """
         Get the proper path and context for rendering the student info
         section of the staff area.
@@ -295,6 +299,7 @@ class StaffAreaMixin(object):
             'example_based_assessment': example_based_assessment,
             'rubric_criteria': copy.deepcopy(self.rubric_criteria_with_labels),
             'student_username': student_username,
+            'expanded_view': expanded_view,
         }
 
         if peer_assessments or self_assessment or example_based_assessment:

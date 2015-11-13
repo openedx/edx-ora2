@@ -119,9 +119,9 @@ describe("OpenAssessment.ResponseView", function() {
         };
 
         // Create and install the view
-        var $response = $('#openassessment__response').first();
-        var baseView = new OpenAssessment.BaseView(runtime, $response, server, {});
-        view = new OpenAssessment.ResponseView($response, server, fileUploader, baseView, data);
+        var responseElement = $('#openassessment__response').get(0);
+        var baseView = new OpenAssessment.BaseView(runtime, responseElement, server, {});
+        view = new OpenAssessment.ResponseView(responseElement, server, fileUploader, baseView, data);
         view.installHandlers();
 
         // Stub the confirmation step

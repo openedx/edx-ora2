@@ -43,9 +43,9 @@ describe("OpenAssessment.StudentTrainingView", function() {
         server.renderLatex = jasmine.createSpy('renderLatex')
 
         // Create the object under test
-        var $training = $('#openassessment__student-training').first();
-        var baseView = new OpenAssessment.BaseView(runtime, $training, server, {});
-        view = new OpenAssessment.StudentTrainingView($training, server, baseView);
+        var trainingElement = $('#openassessment__student-training').get(0);
+        var baseView = new OpenAssessment.BaseView(runtime, trainingElement, server, {});
+        view = new OpenAssessment.StudentTrainingView(trainingElement, server, baseView);
         view.installHandlers();
     });
 

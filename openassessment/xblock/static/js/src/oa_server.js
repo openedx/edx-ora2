@@ -100,14 +100,14 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          * @returns {promise} A JQuery promise, which resolves with the HTML of the rendered section
          *     fails with an error message.
          */
-        studentInfo: function(student_username) {
+        studentInfo: function(student_username, options) {
             var url = this.url('render_student_info');
             return $.Deferred(function(defer) {
                 $.ajax({
                         url: url,
                         type: "POST",
                         dataType: "html",
-                        data: {student_username: student_username}
+                        data: _.extend({student_username: student_username}, options)
                     })
                     .done(function(data) {
                         defer.resolveWith(this, [data]);

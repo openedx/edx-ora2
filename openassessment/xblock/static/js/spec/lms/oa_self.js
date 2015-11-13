@@ -37,9 +37,9 @@ describe("OpenAssessment.SelfView", function() {
         server.renderLatex = jasmine.createSpy('renderLatex');
 
         // Create the object under test
-        var $assessment = $("#openassessment__self-assessment").first();
-        var baseView = new OpenAssessment.BaseView(runtime, $assessment, server, {});
-        view = new OpenAssessment.SelfView($assessment, server, baseView);
+        var assessmentElement = $("#openassessment__self-assessment").get(0);
+        var baseView = new OpenAssessment.BaseView(runtime, assessmentElement, server, {});
+        view = new OpenAssessment.SelfView(assessmentElement, server, baseView);
         view.installHandlers();
     });
 

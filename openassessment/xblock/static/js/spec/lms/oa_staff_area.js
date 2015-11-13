@@ -67,9 +67,9 @@ describe('OpenAssessment.StaffAreaView', function() {
         if (serverResponse) {
             server.data = serverResponse;
         }
-        var $assessment = $('#openassessment').first();
-        var baseView = new OpenAssessment.BaseView(runtime, $assessment, server, {});
-        var view = new OpenAssessment.StaffAreaView($assessment, server, baseView);
+        var assessmentElement = $('#openassessment').get(0);
+        var baseView = new OpenAssessment.BaseView(runtime, assessmentElement, server, {});
+        var view = new OpenAssessment.StaffAreaView(assessmentElement, server, baseView);
         view.load();
         return view;
     };

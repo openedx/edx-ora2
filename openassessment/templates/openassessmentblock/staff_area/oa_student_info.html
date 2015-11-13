@@ -214,7 +214,7 @@
     {% endif %}
 
     <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse">
-        <div class="ui-staff ui-toggle-visibility is--collapsed">
+        <div class="ui-staff ui-toggle-visibility {% if expanded_view != 'final-grade' %}is--collapsed {% endif %}">
             <h2 class="staff-info__title ui-staff__subtitle ui-toggle-visibility__control">
                 <i class="icon fa fa-caret-right"></i>
                 <span>{% trans "Learner's Final Grade" %}</span>
@@ -229,7 +229,7 @@
                 {% elif workflow_status == "waiting" %}
                     <p>{% trans "The submission is waiting for assessments." %}</p>
                 {% elif workflow_status == "cancelled" %}
-                    <p>{% trans "The submission has been cancelled." %}</p>
+                    <p>{% trans "The learner's submission has been removed from peer assessment. The learner receives a grade of zero unless you reset the learner's attempts for the problem to allow them to resubmit a response." %}</p>
                 {% elif workflow_status == None %}
                     <p>{% trans "The problem has not been started." %}</p>
                 {% else %}
@@ -240,7 +240,7 @@
     </div>
 
     <div class="staff-info__staff-override ui-staff__content__section wrapper--ui--collapse">
-        <div class="ui-staff ui-toggle-visibility is--collapsed">
+        <div class="ui-staff ui-toggle-visibility {% if expanded_view != 'staff-override' %}is--collapsed {% endif %}">
             <h2 class="staff-info__title ui-staff__subtitle ui-toggle-visibility__control">
                 <i class="icon fa fa-caret-right"></i>
                 <span>{% trans "Submit Assessment Grade Override" %}</span>
