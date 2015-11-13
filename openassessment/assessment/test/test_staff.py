@@ -1,21 +1,15 @@
 # coding=utf-8
-import datetime
-import pytz
 import copy
 import mock
 
-from django.db import DatabaseError, IntegrityError
-from django.utils import timezone
+from django.db import DatabaseError
 from ddt import ddt, file_data
 from nose.tools import raises
 
 from openassessment.test_utils import CacheResetTest
 from openassessment.assessment.api import staff as staff_api
 from openassessment.assessment.api.self import create_assessment as self_assess
-from openassessment.assessment.models import (
-    Assessment, AssessmentPart, AssessmentFeedback, AssessmentFeedbackOption,
-    PeerWorkflow, PeerWorkflowItem
-)
+from openassessment.assessment.models import Assessment
 from openassessment.assessment.errors import StaffAssessmentRequestError, StaffAssessmentInternalError
 from openassessment.workflow import api as workflow_api
 from submissions import api as sub_api
@@ -26,8 +20,6 @@ STUDENT_ITEM = dict(
     item_id="item_one",
     item_type="Peer_Submission",
 )
-
-ANSWER_ONE = u"this is my answer!"
 
 # Possible points: 14
 RUBRIC_DICT = {
@@ -94,18 +86,6 @@ ASSESSMENT_DICT = {
     },
 }
 
-# Answers are against RUBRIC_DICT -- this is worth 0 points
-ASSESSMENT_DICT_FAIL = {
-    'overall_feedback': u"fail",
-    'criterion_feedback': {},
-    'options_selected': {
-        "secret": "no",
-        u"ⓢⓐⓕⓔ": "no",
-        "giveup": "unwilling",
-        "singing": "yes",
-    }
-}
-
 # Answers are against RUBRIC_DICT -- this is worth 14 points
 ASSESSMENT_DICT_PASS = {
     'overall_feedback': u"这是中国",
@@ -117,27 +97,6 @@ ASSESSMENT_DICT_PASS = {
         "singing": "no",
     }
 }
-
-# Answers are against RUBRIC_DICT -- this is worth 14 points
-# Feedback text is one character over the limit.
-LONG_FEEDBACK_TEXT = u"是" * Assessment.MAX_FEEDBACK_SIZE + "."
-ASSESSMENT_DICT_HUGE = {
-    'overall_feedback': LONG_FEEDBACK_TEXT,
-    'criterion_feedback': {
-        "secret": LONG_FEEDBACK_TEXT,
-        u"ⓢⓐⓕⓔ": LONG_FEEDBACK_TEXT,
-        "giveup": LONG_FEEDBACK_TEXT,
-        "singing": LONG_FEEDBACK_TEXT,
-    },
-    'options_selected': {
-        "secret": "yes",
-        u"ⓢⓐⓕⓔ": "yes",
-        "giveup": "eager",
-        "singing": "no",
-    },
-}
-
-
 
 @ddt
 class TestStaffOverwrite(CacheResetTest):
