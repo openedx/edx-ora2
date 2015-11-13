@@ -465,19 +465,36 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         """
         Returns the final score displayed in the learner report.
         """
-        return int(self.q(css=self._bounded_selector(".grade__value__earned")).text[0])
+        score = self.q(css=self._bounded_selector(".staff-info__student__grade .ui-toggle-visibility__content"))
+        if len(score) == 0:
+            return None
+        return score.text[0]
 
     def verify_learner_final_score(self, expected_score):
         """
-        Verifies that the final score in the learner report is equal to the expected_score.
+        Verifies that the final score in the learner report is equal to the expected value.
         """
         EmptyPromise(
             lambda: self.learner_final_score == expected_score,
             "Learner score is updated"
         ).fulfill()
 
+    @property
+    def learner_response(self):
+        return self.q(
+            css=self._bounded_selector(".staff-info__student__response .ui-toggle-visibility__content")
+        ).text[0]
+
     def submit_assessment(self):
         """
         Submit a staff assessment of the problem.
         """
         self.submit(button_css=".wrapper--staff-assessment .action--submit")
+
+    def cancel_submission(self):
+        """
+        Cancel a learner's assessment.
+        """
+        # Must put a comment to enable the submit button.
+        self.q(css=self._bounded_selector("textarea.cancel_submission_comments")).fill("comment")
+        self.submit(button_css=".action--submit-cancel-submission")
