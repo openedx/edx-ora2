@@ -426,20 +426,39 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         """
         return self.q(css=self._bounded_selector(".staff-info__student__report")).text[0]
 
+    def verify_learner_report_text(self, expectedText):
+        """
+        Verifies the learner report text is as expected.
+        """
+        EmptyPromise(
+            lambda: self.learner_report_text == expectedText,
+            "Learner report text correct"
+        ).fulfill()
+
     @property
     def learner_report_sections(self):
         """
         Returns the titles of the collapsible learner report sections present on the page.
         """
+        self.wait_for_section_titles()
         sections = self.q(css=self._bounded_selector(".ui-staff__subtitle"))
         return [section.text for section in sections]
+
+    def wait_for_section_titles(self):
+        """
+        Wait for section titles to appear.
+        """
+        EmptyPromise(
+            lambda: len(self.q(css=self._bounded_selector(".ui-staff__subtitle"))) > 0,
+            "Section titles appeared"
+        ).fulfill()
 
     def expand_learner_report_sections(self):
         """
         Expands all the sections in the learner report.
         """
-        # TODO: change to ui-staff__subtitle after assessment CSS updates
-        self.q(css=self._bounded_selector(".staff-info__title.ui-toggle-visibility__control")).click()
+        self.wait_for_section_titles()
+        self.q(css=self._bounded_selector(".ui-staff__subtitle")).click()
 
     @property
     def learner_final_score(self):
