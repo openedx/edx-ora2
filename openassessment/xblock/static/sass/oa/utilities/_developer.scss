@@ -115,6 +115,10 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
   .label {
     color: $heading-staff-color;
     margin-bottom: ($baseline-v/2);
+
+    input {
+      display: block;
+    }
   }
 
   .action--submit {

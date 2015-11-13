@@ -19,10 +19,11 @@
             </h2>
             <div class="ui-toggle-visibility__content">
                 {% if workflow_cancellation %}
-                    {% blocktrans with removed_by_username=workflow_cancellation.cancelled_by removed_datetime=workflow_cancellation.created_at|utc|date:"N j, Y H:i e" %}
-                        Learner submission removed by {{ removed_by_username }} on {{ removed_datetime }}
-                    {% endblocktrans %}
-                    <br>
+                    <p>
+                        {% blocktrans with removed_by_username=workflow_cancellation.cancelled_by removed_datetime=workflow_cancelled_at|utc|date:"F j, Y H:i e" %}
+                            Learner submission removed by {{ removed_by_username }} on {{ removed_datetime }}
+                        {% endblocktrans %}
+                    </p>
                     <!-- Comments: Reason for Cancellation-->
                     {% blocktrans with comments=workflow_cancellation.comments %}
                         Comments: {{ comments }}
@@ -239,27 +240,27 @@
         </div>
     </div>
 
-    <div class="staff-info__staff-override ui-staff__content__section wrapper--ui--collapse">
-        <div class="ui-staff ui-toggle-visibility {% if expanded_view != 'staff-override' %}is--collapsed {% endif %}">
-            <h2 class="staff-info__title ui-staff__subtitle ui-toggle-visibility__control">
-                <i class="icon fa fa-caret-right"></i>
-                <span>{% trans "Submit Assessment Grade Override" %}</span>
-            </h2>
+    {% if not workflow_cancellation %}
+        <div class="staff-info__staff-override ui-staff__content__section wrapper--ui--collapse">
+            <div class="ui-staff ui-toggle-visibility {% if expanded_view != 'staff-override' %}is--collapsed {% endif %}">
+                <h2 class="staff-info__title ui-staff__subtitle ui-toggle-visibility__control">
+                    <i class="icon fa fa-caret-right"></i>
+                    <span>{% trans "Submit Assessment Grade Override" %}</span>
+                </h2>
 
-            <div class="staff-info__staff-override__content ui-toggle-visibility__content">
-                <div class="wrapper--input">
-                    {% include "openassessmentblock/staff_area/oa_staff_assessment.html" %}
+                <div class="staff-info__staff-override__content ui-toggle-visibility__content">
+                    <div class="wrapper--input">
+                        {% include "openassessmentblock/staff_area/oa_staff_assessment.html" %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    {% if not workflow_cancellation %}
         <div class="staff-info__workflow-cancellation ui-staff__content__section wrapper--ui--collapse">
             <div class="ui-staff ui-toggle-visibility is--collapsed">
                 <h2 class="staff-info__title ui-staff__subtitle ui-toggle-visibility__control">
                     <i class="icon fa fa-caret-right"></i>
-                    <span>{% trans "Remove submission from peer grading" %}</span>
+                    <span>{% trans "Remove Submission From Peer Grading" %}</span>
                 </h2>
 
                 <div class="staff-info__cancel-submission__content ui-toggle-visibility__content">
