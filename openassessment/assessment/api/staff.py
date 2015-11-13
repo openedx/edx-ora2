@@ -21,7 +21,6 @@ from submissions import api as sub_api
 
 logger = logging.getLogger("openassessment.assessment.api.staff")
 
-
 STAFF_TYPE = "ST"
 
 
@@ -55,7 +54,7 @@ def assessment_is_finished(submission_uuid, requirements):
 
     """
     if requirements and requirements.get('staff', {}).get('required', False):
-        return bool(get_latest_assessment(submission_uuid))
+        return bool(get_latest_staff_assessment(submission_uuid))
     return True
 
 
@@ -74,7 +73,7 @@ def get_score(submission_uuid, requirements):
         contributing_assessments, and staff_id information.
 
     """
-    assessment = get_latest_assessment(submission_uuid)
+    assessment = get_latest_staff_assessment(submission_uuid)
     if not assessment:
         return None
 
@@ -86,7 +85,7 @@ def get_score(submission_uuid, requirements):
     }
 
 
-def get_latest_assessment(submission_uuid):
+def get_latest_staff_assessment(submission_uuid):
     """
     Retrieve the latest staff assessment for a submission.
 
@@ -102,7 +101,7 @@ def get_latest_assessment(submission_uuid):
 
     Example usage:
 
-    >>> get_latest_assessment('10df7db776686822e501b05f452dc1e4b9141fe5')
+    >>> get_latest_staff_assessment('10df7db776686822e501b05f452dc1e4b9141fe5')
     {
         'points_earned': 6,
         'points_possible': 12,
@@ -132,7 +131,7 @@ def get_latest_assessment(submission_uuid):
 
 
 def get_assessment_scores_by_criteria(submission_uuid):
-    """Get the score for each rubric criterion
+    """Get the staff score for each rubric criterion
 
     Args:
         submission_uuid (str): The submission uuid is used to get the
@@ -221,13 +220,13 @@ def create_assessment(
         return full_assessment_dict(assessment)
 
     except InvalidRubric:
-        msg = u"Rubric definition was not valid"
-        logger.exception(msg)
-        raise StaffAssessmentRequestError(msg)
+        error_message = u"Rubric definition was not valid"
+        logger.exception(error_message)
+        raise StaffAssessmentRequestError(error_message)
     except InvalidRubricSelection:
-        msg = u"Invalid options selected in the rubric"
-        logger.warning(msg, exc_info=True)
-        raise StaffAssessmentRequestError(msg)
+        error_message = u"Invalid options selected in the rubric"
+        logger.warning(error_message, exc_info=True)
+        raise StaffAssessmentRequestError(error_message)
     except DatabaseError:
         error_message = (
             u"An error occurred while creating assessment by scorer with ID: {}"
@@ -251,11 +250,10 @@ def _complete_assessment(
     in a single transaction.
 
     Args:
-        rubric_dict (dict): The rubric model associated with this assessment
-        scorer_id (str): The user ID for the user giving this assessment. This
-            is required to create an assessment on a submission.
         submission_uuid (str): The submission uuid for the submission being
             assessed.
+        scorer_id (str): The user ID for the user giving this assessment. This
+            is required to create an assessment on a submission.
         options_selected (dict): Dictionary mapping criterion names to the
             option names the user selected for that criterion.
         criterion_feedback (dict): Dictionary mapping criterion names to the
@@ -263,6 +261,7 @@ def _complete_assessment(
             Since criterion feedback is optional, some criteria may not appear
             in the dictionary.
         overall_feedback (unicode): Free-form text feedback on the submission overall.
+        rubric_dict (dict): The rubric model associated with this assessment
         scored_at (datetime): Optional argument to override the time in which
             the assessment took place. If not specified, scored_at is set to
             now.
