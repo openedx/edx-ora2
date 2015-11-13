@@ -260,7 +260,7 @@ class TestStaffOverwrite(CacheResetTest):
 
         # Try to get the latest staff assessment, handle database errors
         with self.assertRaises(StaffAssessmentInternalError) as context_manager:
-            staff_api.get_latest_assessment(tim_sub["uuid"])
+            staff_api.get_latest_staff_assessment(tim_sub["uuid"])
         self.assertEqual(
             str(context_manager.exception),
             (

@@ -42,7 +42,7 @@ class TestStaffAssessment(StaffAssessmentTestBase):
         self.assertTrue(resp['success'])
 
         # Expect that a staff-assessment was created
-        assessment = staff_api.get_latest_assessment(submission['uuid'])
+        assessment = staff_api.get_latest_staff_assessment(submission['uuid'])
         self.assertEqual(assessment['submission_uuid'], submission['uuid'])
         self.assertEqual(assessment['points_earned'], 5)
         self.assertEqual(assessment['points_possible'], 6)
@@ -67,7 +67,7 @@ class TestStaffAssessment(StaffAssessmentTestBase):
         self.assertEqual(assessment['points_possible'], score['points_possible'])
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
-    def test_staff_assess_permission_error(self, xblock):
+    def test_permission_error(self, xblock):
         # Create a submission for the student
         student_item = xblock.get_student_item_dict()
         xblock.create_submission(student_item, self.SUBMISSION)
@@ -75,7 +75,7 @@ class TestStaffAssessment(StaffAssessmentTestBase):
         self.assertIn("You do not have permission", resp)
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
-    def test_staff_assess_invalid_options(self, xblock):
+    def test_invalid_options(self, xblock):
         student_item = xblock.get_student_item_dict()
 
         # Create a submission for the student
@@ -92,7 +92,7 @@ class TestStaffAssessment(StaffAssessmentTestBase):
             self.assertIn('msg', resp)
 
     @scenario('data/self_assessment_scenario.xml', user_id='bob')
-    def test_staff_assess_assessment_error(self, xblock):
+    def test_assessment_error(self, xblock):
         student_item = xblock.get_student_item_dict()
 
         # Create a submission for the student
@@ -115,7 +115,7 @@ class TestStaffAssessment(StaffAssessmentTestBase):
 
 
 class TestStaffAssessmentRender(StaffAssessmentTestBase):
-    #TODO: test success when staff assessment template exists
+    # TODO: test success when staff assessment template exists
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_render_staff_assessment_permission_error(self, xblock):

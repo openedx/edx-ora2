@@ -377,7 +377,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         """
         Set a staff score for the workflow.
 
-        Allows for staff scores to bet set on a submission, with annotations to provide an audit trail if needed.
+        Allows for staff scores to be set on a submission, with annotations to provide an audit trail if needed.
         This method can be used for both required staff grading, and staff overrides.
 
         Args:
