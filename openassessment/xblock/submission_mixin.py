@@ -44,6 +44,7 @@ class SubmissionMixin(object):
         'msh1xml', 'msh2xml', 'action', 'apk', 'app', 'bin', 'command', 'csh',
         'ins', 'inx', 'ipa', 'isu', 'job', 'mst', 'osx', 'out', 'paf', 'prg',
         'rgs', 'run', 'sct', 'shb', 'shs', 'u3p', 'vbscript', 'vbe', 'workflow',
+        'htm', 'html',
     ]
 
     @XBlock.json_handler
