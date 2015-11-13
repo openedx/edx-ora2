@@ -1,7 +1,8 @@
 {% load i18n %}
 {% load tz %}
 
-<div class="openassessment__student-info staff-info__student__report">
+<div class="openassessment__student-info staff-info__student__report"
+     data-submission-uuid="{{ submission.uuid }}">
 {% if submission %}
     <h2 class="title">
         <span class="label">

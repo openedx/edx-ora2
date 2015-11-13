@@ -76,10 +76,9 @@
 
                         // Install key handler for cancel submission button.
                         $staffTools.on('click', '.action--submit-cancel-submission', function (eventObject) {
-                                eventObject.preventDefault();
-                                view.cancelSubmission($(this).data('submission-uuid'));
-                            }
-                        );
+                            eventObject.preventDefault();
+                            view.cancelSubmission($(this).data('submission-uuid'));
+                        });
 
                         // Install change handler for textarea (to enable cancel submission button)
                         var handleChange = function(eventData) { view.handleCommentChanged(eventData); };
@@ -99,8 +98,12 @@
                             // Install a click handler for the submit button
                             $('.wrapper--staff-assessment .action--submit', view.element).click(
                                 function(eventObject) {
+                                    var target = $(eventObject.currentTarget),
+                                        rootElement = target.closest('.openassessment__student-info'),
+                                        submissionID = rootElement.data('submission-uuid');
+
                                     eventObject.preventDefault();
-                                    view.submitStaffAssessment(rubric);
+                                    view.submitStaffAssessment(submissionID, rubric);
                                 }
                             );
                         }
@@ -320,16 +323,18 @@
          *
          * @param rubric The rubric being assessed.
          */
-        submitStaffAssessment: function(rubric) {
+        submitStaffAssessment: function(submissionID, rubric) {
             // Send the assessment to the server
             var view = this;
             var baseView = this.baseView;
             baseView.toggleActionError('staff', null);
             view.staffSubmitEnabled(false);
 
-            this.server.staffAssess(rubric.optionsSelected(), rubric.criterionFeedback(), rubric.overallFeedback())
+            this.server.staffAssess(
+                rubric.optionsSelected(), rubric.criterionFeedback(), rubric.overallFeedback(), submissionID
+                )
                 .done(function() {
-                    view.loadStudentInfo({expanded_view: 'staff-override'});
+                    view.loadStudentInfo({expanded_view:  'final-grade'});
                 })
                 .fail(function(errorMessage) {
                     baseView.toggleActionError('staff', errorMessage);
