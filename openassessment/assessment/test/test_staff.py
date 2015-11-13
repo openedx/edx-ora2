@@ -3,199 +3,91 @@ import copy
 import mock
 
 from django.db import DatabaseError
-from ddt import ddt, file_data
+from django.test.utils import override_settings
+from ddt import ddt, data, file_data, unpack
 from nose.tools import raises
 
+from .constants import OPTIONS_SELECTED_DICT, RUBRIC, RUBRIC_POSSIBLE_POINTS, STUDENT_ITEM
+from openassessment.assessment.test.test_ai import (
+    ALGORITHM_ID,
+    AI_ALGORITHMS,
+    AIGradingTest,
+    train_classifiers
+)
 from openassessment.test_utils import CacheResetTest
-from openassessment.assessment.api import staff as staff_api
+from openassessment.assessment.api import staff as staff_api, ai as ai_api, peer as peer_api
 from openassessment.assessment.api.self import create_assessment as self_assess
-from openassessment.assessment.models import Assessment
+from openassessment.assessment.api.peer import create_assessment as peer_assess
+from openassessment.assessment.models import Assessment, PeerWorkflow
 from openassessment.assessment.errors import StaffAssessmentRequestError, StaffAssessmentInternalError
 from openassessment.workflow import api as workflow_api
 from submissions import api as sub_api
 
-STUDENT_ITEM = dict(
-    student_id="Tim",
-    course_id="Demo_Course",
-    item_id="item_one",
-    item_type="Peer_Submission",
-)
-
-# Possible points: 14
-RUBRIC_DICT = {
-    "criteria": [
-        {
-            "name": "secret",
-            "prompt": "Did the writer keep it secret?",
-            "options": [
-                {"name": "no", "points": "0", "explanation": ""},
-                {"name": "yes", "points": "1", "explanation": ""},
-            ]
-        },
-        {
-            "name": u"ⓢⓐⓕⓔ",
-            "prompt": "Did the writer keep it safe?",
-            "options": [
-                {"name": "no", "points": "0", "explanation": ""},
-                {"name": "yes", "points": "1", "explanation": ""},
-            ]
-        },
-        {
-            "name": "giveup",
-            "prompt": "How willing is the writer to give up the ring?",
-            "options": [
-                {
-                    "name": "unwilling",
-                    "points": "0",
-                    "explanation": "Likely to use force to keep it."
-                },
-                {
-                    "name": "reluctant",
-                    "points": "3",
-                    "explanation": "May argue, but will give it up voluntarily."
-                },
-                {
-                    "name": "eager",
-                    "points": "10",
-                    "explanation": "Happy to give it up."
-                }
-            ]
-        },
-        {
-            "name": "singing",
-            "prompt": "Did the writer break into tedious elvish lyrics?",
-            "options": [
-                {"name": "no", "points": "2", "explanation": ""},
-                {"name": "yes", "points": "0", "explanation": ""}
-            ]
-        },
-    ]
-}
-
-# Answers are against RUBRIC_DICT -- this is worth 6 points
-ASSESSMENT_DICT = {
-    'overall_feedback': u"这是中国",
-    'criterion_feedback': {
-        "giveup": u"𝓨𝓸𝓾 𝓼𝓱𝓸𝓾𝓵𝓭𝓷'𝓽 𝓰𝓲𝓿𝓮 𝓾𝓹!"
-    },
-    'options_selected': {
-        "secret": "yes",
-        u"ⓢⓐⓕⓔ": "no",
-        "giveup": "reluctant",
-        "singing": "no",
-    },
-}
-
-# Answers are against RUBRIC_DICT -- this is worth 14 points
-ASSESSMENT_DICT_PASS = {
-    'overall_feedback': u"这是中国",
-    'criterion_feedback': {},
-    'options_selected': {
-        "secret": "yes",
-        u"ⓢⓐⓕⓔ": "yes",
-        "giveup": "eager",
-        "singing": "no",
-    }
-}
-
 @ddt
-class TestStaffOverwrite(CacheResetTest):
+class TestStaffAssessment(CacheResetTest):
     """
     Tests for staff assessments made as overrides, when none is required to exist.
     """
 
-    STEPS = ['self']
     STEP_REQUIREMENTS = {}
     STEP_REQUIREMENTS_WITH_STAFF = {'staff': {'required': True}}
 
-    def test_create_assessment_points(self):
+    # This is due to ddt not playing nicely with list comprehensions
+    ASSESSMENT_SCORES_DDT = [key for key in OPTIONS_SELECTED_DICT]
+
+    @staticmethod
+    @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
+    def _ai_assess(sub):
+        # Note that CLASSIFIER_SCORE_OVERRIDES matches OPTIONS_SELECTED_DICT['most'] scores
+        train_classifiers(RUBRIC, AIGradingTest.CLASSIFIER_SCORE_OVERRIDES)
+        ai_api.on_init(sub, rubric=RUBRIC, algorithm_id=ALGORITHM_ID)
+        return ai_api.get_latest_assessment(sub)
+
+    @staticmethod
+    def _peer_assess(sub, scorer_id, scores):
+        bob_sub, bob = TestStaffAssessment._create_student_and_submission("Bob", "Bob's answer", override_steps=['peer'])
+        peer_api.get_submission_to_assess(bob_sub["uuid"], 1)
+        return peer_assess(bob_sub["uuid"], bob["student_id"], scores, dict(), "", RUBRIC, 1)
+
+    ASSESSMENT_TYPES_DDT = [
+        ('self', lambda sub, scorer_id, scores: self_assess(sub, scorer_id, scores, dict(), "", RUBRIC)),
+        ('peer', lambda sub, scorer_id, scores: TestStaffAssessment._peer_assess(sub, scorer_id, scores)),
+        ('staff', lambda sub, scorer_id, scores: staff_api.create_assessment(sub, scorer_id, scores, dict(), "", RUBRIC)),
+        ('ai', lambda sub, scorer_id, scores: TestStaffAssessment._ai_assess(sub))
+    ]
+
+    @data(*ASSESSMENT_SCORES_DDT)
+    def test_create_assessment_not_required(self, key):
+        """
+        Simple test to ensure staff assessments are scored properly, for all values of OPTIONS_SELECTED_DICT,
+        when staff scores are not required.
+        """
         # Create assessment
-        tim_sub, tim = self.create_student_and_submission("Tim", "Tim's answer")
+        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
 
         # Staff assess it
         assessment = staff_api.create_assessment(
             tim_sub["uuid"],
             "Dumbledore",
-            ASSESSMENT_DICT['options_selected'], dict(), "",
-            RUBRIC_DICT,
+            OPTIONS_SELECTED_DICT[key]["options"], dict(), "",
+            RUBRIC,
         )
 
         # Ensure points are calculated properly
-        self.assertEqual(assessment["points_earned"], 6)
-        self.assertEqual(assessment["points_possible"], 14)
+        self.assertEqual(assessment["points_earned"], OPTIONS_SELECTED_DICT[key]["expected_points"])
+        self.assertEqual(assessment["points_possible"], RUBRIC_POSSIBLE_POINTS)
 
         #ensure submission is marked as finished
         self.assertTrue(staff_api.assessment_is_finished(tim_sub["uuid"], self.STEP_REQUIREMENTS))
 
-    def test_create_assessment_overrides(self):
+    @data(*ASSESSMENT_SCORES_DDT)
+    def test_create_assessment_required(self, key):
+        """
+        Simple test to ensure staff assessments are scored properly, for all values of OPTIONS_SELECTED_DICT,
+        when staff scores are required.
+        """
         # Create assessment
-        tim_sub, tim = self.create_student_and_submission("Tim", "Tim's answer")
-
-        # Self assess it
-        self_assessment = self_assess(
-            tim_sub["uuid"],
-            tim["student_id"],
-            ASSESSMENT_DICT['options_selected'], dict(), "",
-            RUBRIC_DICT,
-        )
-        # and update workflow with new scores
-        workflow_api.update_from_assessments(tim_sub["uuid"], self.STEP_REQUIREMENTS)
-
-        # Verify both assessment and workflow report correct score
-        self.assertEqual(self_assessment["points_earned"], 6)
-        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], self.STEP_REQUIREMENTS)
-        self.assertEqual(workflow["score"]["points_earned"], 6)
-
-        # Now override with a staff assessment
-        staff_assessment = staff_api.create_assessment(
-            tim_sub["uuid"],
-            "Dumbledore",
-            ASSESSMENT_DICT_PASS['options_selected'], dict(), "",
-            RUBRIC_DICT,
-        )
-        # Be sure to update the workflow!
-        workflow_api.update_from_assessments(tim_sub["uuid"], self.STEP_REQUIREMENTS, force_update_score=True)
-
-        # Verify both assessment and workflow report correct score
-        self.assertEqual(staff_assessment["points_earned"], 14)
-        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], self.STEP_REQUIREMENTS)
-        self.assertEqual(workflow["score"]["points_earned"], 14)
-
-    def test_create_assessment_does_not_block(self):
-        # Create assessment
-        tim_sub, tim = self.create_student_and_submission("Tim", "Tim's answer")
-
-        # Staff assess it
-        staff_assessment = staff_api.create_assessment(
-            tim_sub["uuid"],
-            "Dumbledore",
-            ASSESSMENT_DICT_PASS['options_selected'], dict(), "",
-            RUBRIC_DICT,
-        )
-        # Keep the workflow updated
-        workflow_api.update_from_assessments(tim_sub["uuid"], self.STEP_REQUIREMENTS, force_update_score=True)
-
-        # Ensure points are what we expect
-        self.assertEqual(staff_assessment["points_earned"], 14)
-        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], self.STEP_REQUIREMENTS)
-        self.assertEqual(workflow["score"]["points_earned"], 14)
-
-        # Now self assess, and ensure assessment is recorded
-        self_assessment = self_assess(
-            tim_sub["uuid"],
-            tim["student_id"],
-            ASSESSMENT_DICT['options_selected'], dict(), "",
-            RUBRIC_DICT,
-        )
-        self.assertEqual(self_assessment["points_earned"], 6)
-
-        # Ensure points are not updated
-        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], self.STEP_REQUIREMENTS)
-        self.assertEqual(workflow["score"]["points_earned"], 14)
-
-    def test_staff_assessment_required(self):
-        # Set up submission, with staff as a required step on the workflow
-        tim_sub, tim = self.create_student_and_submission("Tim", "Tim's answer", require_staff=True)
+        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer", override_steps=['staff'])
 
         # Verify that we're still waiting on a staff assessment
         self.assertFalse(staff_api.assessment_is_finished(tim_sub["uuid"], self.STEP_REQUIREMENTS_WITH_STAFF))
@@ -204,25 +96,169 @@ class TestStaffOverwrite(CacheResetTest):
         staff_assessment = staff_api.create_assessment(
             tim_sub["uuid"],
             "Dumbledore",
-            ASSESSMENT_DICT_PASS['options_selected'], dict(), "",
-            RUBRIC_DICT,
+            OPTIONS_SELECTED_DICT[key]["options"], dict(), "",
+            RUBRIC,
         )
         workflow_api.update_from_assessments(tim_sub["uuid"], self.STEP_REQUIREMENTS_WITH_STAFF)
 
         # Verify assesment made, score updated, and no longer wating
-        self.assertEqual(staff_assessment["points_earned"], 14)
+        self.assertEqual(staff_assessment["points_earned"], OPTIONS_SELECTED_DICT[key]["expected_points"])
         self.assertTrue(staff_api.assessment_is_finished(tim_sub["uuid"], self.STEP_REQUIREMENTS_WITH_STAFF))
 
-    def test_invalid_rubric_exceptions(self):
-        # Create a submission
-        tim_sub, tim = self.create_student_and_submission("Tim", "Tim's answer")
+    @data(*ASSESSMENT_SCORES_DDT)
+    def test_create_assessment_score_overrides(self, key):
+        """
+        Test to ensure that scores can be overriden by a staff assessment using any value.
+        """
+        # Initially, self-asses with an all value
+        initial_assessment = OPTIONS_SELECTED_DICT["all"]
 
-        # Define invalid rubric and options_selected
-        invalid_rubric = copy.deepcopy(RUBRIC_DICT)
+        # Unless we're trying to override with an all value, then start with none
+        if key == "all":
+            initial_assessment = OPTIONS_SELECTED_DICT["none"]
+
+        # Create assessment
+        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+
+        # Self assess it
+        self_assessment = self_assess(
+            tim_sub["uuid"],
+            tim["student_id"],
+            initial_assessment["options"], dict(), "",
+            RUBRIC,
+        )
+        # and update workflow with new scores
+        workflow_api.update_from_assessments(tim_sub["uuid"], self.STEP_REQUIREMENTS)
+
+        # Verify both assessment and workflow report correct score
+        self.assertEqual(self_assessment["points_earned"], initial_assessment["expected_points"])
+        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], self.STEP_REQUIREMENTS)
+        self.assertEqual(workflow["score"]["points_earned"], initial_assessment["expected_points"])
+
+        # Now override with a staff assessment
+        staff_assessment = staff_api.create_assessment(
+            tim_sub["uuid"],
+            "Dumbledore",
+            OPTIONS_SELECTED_DICT[key]["options"], dict(), "",
+            RUBRIC,
+        )
+        # Be sure to update the workflow! staff_assessment_mixin usually does this.
+        workflow_api.update_from_assessments(tim_sub["uuid"], self.STEP_REQUIREMENTS, force_update_score=True)
+
+        # Verify both assessment and workflow report correct score
+        self.assertEqual(staff_assessment["points_earned"], OPTIONS_SELECTED_DICT[key]["expected_points"])
+        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], self.STEP_REQUIREMENTS)
+        self.assertEqual(workflow["score"]["points_earned"], OPTIONS_SELECTED_DICT[key]["expected_points"])
+
+    @data(*ASSESSMENT_TYPES_DDT)
+    @unpack
+    def test_create_assessment_type_overrides(self, initial_type, initial_assess):
+        """
+        Test to ensure that any assesment, even a staff assessment, can be overriden by a staff assessment.
+        """
+        # Initially, asses with a 'most' value
+        # This was selected to match the value that the ai test will set
+        initial_assessment = OPTIONS_SELECTED_DICT["most"]
+
+        # Create assessment
+        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer", override_steps=[initial_type])
+
+        # Initially assess it
+        assessment = initial_assess(tim_sub["uuid"], tim["student_id"], initial_assessment["options"])
+        # and update workflow with new scores
+        requirements = self.STEP_REQUIREMENTS
+        if initial_type == 'peer':
+            requirements = {"peer": {"must_grade": 0, "must_be_graded_by": 1}}
+        workflow_api.update_from_assessments(tim_sub["uuid"], requirements)
+
+        # Verify both assessment and workflow report correct score
+        self.assertEqual(assessment["points_earned"], initial_assessment["expected_points"])
+        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], self.STEP_REQUIREMENTS)
+        print workflow
+        self.assertEqual(workflow["score"]["points_earned"], initial_assessment["expected_points"])
+
+        staff_score = "few"
+        # Now override with a staff assessment
+        staff_assessment = staff_api.create_assessment(
+            tim_sub["uuid"],
+            "Dumbledore",
+            OPTIONS_SELECTED_DICT[staff_score]["options"], dict(), "",
+            RUBRIC,
+        )
+        # Be sure to update the workflow! staff_assessment_mixin usually does this.
+        workflow_api.update_from_assessments(tim_sub["uuid"], self.STEP_REQUIREMENTS, force_update_score=True)
+
+        # Verify both assessment and workflow report correct score
+        self.assertEqual(staff_assessment["points_earned"], OPTIONS_SELECTED_DICT[staff_score]["expected_points"])
+        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], self.STEP_REQUIREMENTS)
+        self.assertEqual(workflow["score"]["points_earned"], OPTIONS_SELECTED_DICT[staff_score]["expected_points"])
+
+    @data(*ASSESSMENT_TYPES_DDT)
+    @unpack
+    def test_create_assessment_does_not_block(self, after_type, after_assess):
+        """
+        Test to ensure that the presence of an override staff assessment only prevent new scores from being recorded, not assessments
+        """
+        # Create assessment
+        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer", override_steps=[after_type])
+
+        staff_score = "few"
+        # Staff assess it
+        staff_assessment = staff_api.create_assessment(
+            tim_sub["uuid"],
+            "Dumbledore",
+            OPTIONS_SELECTED_DICT[staff_score]['options'], dict(), "",
+            RUBRIC,
+        )
+        # Keep the workflow updated
+        workflow_api.update_from_assessments(tim_sub["uuid"], self.STEP_REQUIREMENTS, force_update_score=True)
+
+        # Verify both assessment and workflow report correct score
+        self.assertEqual(staff_assessment["points_earned"], OPTIONS_SELECTED_DICT[staff_score]["expected_points"])
+        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], self.STEP_REQUIREMENTS)
+        self.assertEqual(workflow["score"]["points_earned"], OPTIONS_SELECTED_DICT[staff_score]["expected_points"])
+
+        # Now, non-force asses with a 'most' value
+        # This was selected to match the value that the ai test will set
+        unscored_assessment = OPTIONS_SELECTED_DICT["most"]
+        assessment = after_assess(tim_sub["uuid"], tim["student_id"], unscored_assessment["options"])
+        # and update workflow with new scores
+        requirements = self.STEP_REQUIREMENTS
+        if after_type == 'peer':
+            requirements = {"peer": {"must_grade": 0, "must_be_graded_by": 1}}
+        # Note the lack of 'force_update_score', this will prevent even the staff assessment from updating
+        workflow_api.update_from_assessments(tim_sub["uuid"], requirements)
+
+        # Verify both assessment and workflow report correct score (workflow should report previous value)
+        self.assertEqual(assessment["points_earned"], unscored_assessment["expected_points"])
+        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], self.STEP_REQUIREMENTS)
+        self.assertEqual(workflow["score"]["points_earned"], OPTIONS_SELECTED_DICT[staff_score]["expected_points"])
+
+    def test_invalid_rubric_exception(self):
+        # Create a submission
+        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+
+        # Define invalid rubric
+        invalid_rubric = copy.deepcopy(RUBRIC)
         for criterion in invalid_rubric["criteria"]:
             for option in criterion["options"]:
                 option["points"] = -1
 
+        # Try to staff assess with invalid rubric
+        with self.assertRaises(StaffAssessmentRequestError) as context_manager:
+            staff_assessment = staff_api.create_assessment(
+                tim_sub["uuid"],
+                "Dumbledore",
+                OPTIONS_SELECTED_DICT["most"]["options"], dict(), "",
+                invalid_rubric,
+            )
+        self.assertEqual(str(context_manager.exception), u"Rubric definition was not valid")
+
+    def test_invalid_rubric_options_exception(self):
+        # Create a submission
+        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+
+        # Define invalid options_selected
         invalid_options_selected = {
             "secret": "meow",
             u"ⓢⓐⓕⓔ": "bark",
@@ -230,30 +266,20 @@ class TestStaffOverwrite(CacheResetTest):
             "singing": "oink",
         }
 
-        # Try to staff assess with invalid rubric
-        with self.assertRaises(StaffAssessmentRequestError) as context_manager:
-            staff_assessment = staff_api.create_assessment(
-                tim_sub["uuid"],
-                "Dumbledore",
-                ASSESSMENT_DICT_PASS['options_selected'], dict(), "",
-                invalid_rubric,
-            )
-        self.assertEqual(str(context_manager.exception), u"Rubric definition was not valid")
-
         # Try to staff assess with invalid options selected
         with self.assertRaises(StaffAssessmentRequestError) as context_manager:
             staff_assessment = staff_api.create_assessment(
                 tim_sub["uuid"],
                 "Dumbledore",
                 invalid_options_selected, dict(), "",
-                RUBRIC_DICT,
+                RUBRIC,
             )
         self.assertEqual(str(context_manager.exception), u"Invalid options selected in the rubric")
 
     @mock.patch.object(Assessment.objects, 'filter')
     def test_database_filter_error_handling(self, mock_filter):
         # Create a submission
-        tim_sub, tim = self.create_student_and_submission("Tim", "Tim's answer")
+        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
 
         # Note that we have to define this side effect *after* creating the submission
         mock_filter.side_effect = DatabaseError("KABOOM!")
@@ -285,23 +311,29 @@ class TestStaffOverwrite(CacheResetTest):
             staff_assessment = staff_api.create_assessment(
                 "000000",
                 "Dumbledore",
-                ASSESSMENT_DICT_PASS['options_selected'], dict(), "",
-                RUBRIC_DICT,
+                OPTIONS_SELECTED_DICT['most']['options'], dict(), "",
+                RUBRIC,
             )
         self.assertEqual(
             str(context_manager.exception),
             u"An error occurred while creating assessment by scorer with ID: {}".format("Dumbledore")
         )
 
-    def create_student_and_submission(self, student, answer, date=None, require_staff=False):
+    @staticmethod
+    def _create_student_and_submission(student, answer, date=None, override_steps=None):
         """
         Helper method to create a student and submission for use in tests.
         """
         new_student_item = STUDENT_ITEM.copy()
         new_student_item["student_id"] = student
         submission = sub_api.create_submission(new_student_item, answer, date)
-        steps = self.STEPS
-        if require_staff:
-            steps.append('staff')
-        workflow_api.create_workflow(submission["uuid"], steps)
+        steps = ['self']
+        init_params = {}
+        if override_steps:
+            steps = override_steps
+        if 'peer' in steps:
+            peer_api.on_start(submission["uuid"])
+        if 'ai' in steps:
+            init_params['ai'] = {'rubric':RUBRIC, 'algorithm_id':ALGORITHM_ID}
+        workflow_api.create_workflow(submission["uuid"], steps, init_params)
         return submission, new_student_item
