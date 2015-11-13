@@ -454,7 +454,7 @@ def assess_training_example(submission_uuid, options_selected, update_workflow=T
             raise StudentTrainingRequestError(msg)
 
         # Check the student's scores against the staff's scores.
-        corrections = item.check(options_selected)
+        corrections = item.check_options(options_selected)
 
         # Mark the item as complete if the student's selection
         # matches the instructor's selection

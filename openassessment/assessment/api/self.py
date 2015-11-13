@@ -181,7 +181,7 @@ def create_assessment(
     return full_assessment_dict(assessment)
 
 
-@transaction.commit_on_success
+@transaction.atomic
 def _complete_assessment(
         submission_uuid,
         user_id,

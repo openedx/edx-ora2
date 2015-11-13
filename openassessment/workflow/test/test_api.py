@@ -361,6 +361,13 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         with self.assertRaises(AssessmentWorkflowInternalError):
             workflow_api.create_workflow(submission['uuid'], ['self'], ON_INIT_PARAMS)
 
+        AssessmentWorkflow.objects.create(
+            submission_uuid=submission['uuid'],
+            status=AssessmentWorkflow.STATUS.waiting,
+            course_id=ITEM_1['course_id'],
+            item_id=ITEM_1['item_id']
+        )
+
         with self.assertRaises(AssessmentWorkflowInternalError):
             workflow_api.update_from_assessments(submission['uuid'], {})
 
