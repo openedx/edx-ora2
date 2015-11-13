@@ -25,9 +25,11 @@
                         {% endblocktrans %}
                     </p>
                     <!-- Comments: Reason for Cancellation-->
-                    {% blocktrans with comments=workflow_cancellation.comments %}
-                        Comments: {{ comments }}
-                    {% endblocktrans %}
+                    <p>
+                        {% blocktrans with comments=workflow_cancellation.comments %}
+                            Comments: {{ comments }}
+                        {% endblocktrans %}
+                    </p>
                 {% else %}
                     {% include "openassessmentblock/oa_submission_answer.html" with answer=submission.answer answer_text_label="The learner's response to the question above:" %}
                 {% endif %}
