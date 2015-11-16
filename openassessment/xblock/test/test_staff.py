@@ -112,15 +112,3 @@ class TestStaffAssessment(StaffAssessmentTestBase):
             resp = self.request(xblock, 'staff_assess', json.dumps(self.ASSESSMENT), response_format='json')
             self.assertFalse(resp['success'])
             self.assertIn('msg', resp)
-
-
-class TestStaffAssessmentRender(StaffAssessmentTestBase):
-    # TODO: test success when staff assessment template exists
-
-    @scenario('data/self_assessment_scenario.xml', user_id='Bob')
-    def test_render_staff_assessment_permission_error(self, xblock):
-        # Create a submission for the student
-        student_item = xblock.get_student_item_dict()
-        xblock.create_submission(student_item, self.SUBMISSION)
-        resp = self.request(xblock, 'render_staff_assessment', json.dumps(self.ASSESSMENT))
-        self.assertIn("You do not have permission", resp)
