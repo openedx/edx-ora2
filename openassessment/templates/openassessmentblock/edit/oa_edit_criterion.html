@@ -1,8 +1,7 @@
 {% load i18n %}
 {% spaceless %}
-<li class="openassessment_criterion is-collapsible" data-criterion="{{ criterion_name }}">
+<li class="openassessment_criterion" data-criterion="{{ criterion_name }}">
     <div class="openassessment_container_header openassessment_criterion_header view-outline">
-        <a class="action expand-collapse collapse"><i class="icon-caret-down ui-toggle-expansion"></i></a>
         <div class="openassessment_container_header_title_box openassessment_criterion_header_title_box">
             <h6 class="openassessment_container_header_title openassessment_criterion_header_title">{% trans "Criterion" %}</h6>
             <p class="openassessment_container_guide openassessment_criterion_guide">{% trans "You cannot delete a criterion after the assignment has been released." %}</p>
