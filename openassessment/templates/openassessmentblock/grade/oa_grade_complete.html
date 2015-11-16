@@ -41,7 +41,7 @@
                         {% with criterion_num=forloop.counter %}
                         <li class="question question--{{ criterion_num }} ui-toggle-visibility">
                             <h4 class="question__title ui-toggle-visibility__control">
-                                <i class="icon fa fa-caret-right"></i>
+                                <i class="icon fa fa-caret-right" aria-hidden="true"></i>
                                 <span class="question__title__copy">{{ criterion.label }}</span>
 
                                 <span class="question__score">
@@ -75,7 +75,7 @@
                                                             {{ part.option.label }}
 
                                                             <span class="ui-hint hint--top" data-hint="{{ part.option.explanation }}">
-                                                              <i class="icon fa fa-info-circle"
+                                                              <i class="icon fa fa-info-circle" aria-hidden="true"
                                                                  title="{% blocktrans with name=part.option.label %}More information about {{ name }}{% endblocktrans %}"></i>
                                                             </span>
 
@@ -106,7 +106,7 @@
                                                 {{ part.option.label }}
 
                                                 <span class="ui-hint hint--top" data-hint="{{ part.option.explanation }}">
-                                                  <i class="icon fa fa-info-circle"
+                                                  <i class="icon fa fa-info-circle" aria-hidden="true"
                                                      title="{% blocktrans with name=part.option.label %}More information about {{ name }}{% endblocktrans %}"></i>
                                                 </span>
                                             </span>
@@ -130,7 +130,7 @@
                                                 {{ part.option.label }}
 
                                                 <span class="ui-hint hint--top" data-hint="{{ part.option.explanation }}">
-                                                  <i class="icon fa fa-info-circle"
+                                                  <i class="icon fa fa-info-circle" aria-hidden="true"
                                                      title="{% blocktrans with name=part.option.label %}More information about {{ name }}{% endblocktrans %}"></i>
                                                 </span>
                                             </span>
@@ -144,7 +144,7 @@
                                 <li class="answer--feedback ui-toggle-visibility {% if criterion.options %}is--collapsed{% endif %}">
                                     {% if criterion.options %}
                                     <h5 class="answer--feedback__title ui-toggle-visibility__control">
-                                      <i class="icon fa fa-caret-right"></i>
+                                      <i class="icon fa fa-caret-right" aria-hidden="true"></i>
                                       {% if criterion.self_feedback %}
                                         <span class="answer--feedback__title__copy">{% trans "Additional Comments" %} ({{ criterion.peer_feedback|length|add:'1' }})</span>
                                       {% else %}
@@ -187,7 +187,7 @@
                             {% if peer_assessments or self_assessment.feedback %}
                             <li class="question question--feedback ui-toggle-visibility">
                                 <h4 class="question__title ui-toggle-visibility__control">
-                                    <i class="icon fa fa-caret-right"></i>
+                                    <i class="icon fa fa-caret-right" aria-hidden="true"></i>
                                     <span class="question__title__copy">{% trans "Additional comments on your response" %}</span>
                                 </h4>
 
@@ -235,7 +235,7 @@
                 {% if peer_assessments %}
                     <form id="submission__feedback" class="submission__feedback ui-toggle-visibility step__content__section is--collapsed" method="post">
                         <h3 class="submission__feedback__title ui-toggle-visibility__control">
-                            <i class="icon fa fa-caret-right"></i>
+                            <i class="icon fa fa-caret-right" aria-hidden="true"></i>
                             <span class="submission__feedback__title__copy">{% trans "Provide Feedback on Peer Assessments" %}</span>
                         </h3>
 
@@ -244,7 +244,7 @@
                             <div class="submission__feedback__content {{ has_submitted_feedback|yesno:"is--submitted," }}">
                                 <span class="transition__status is--hidden" aria-hidden="true">
                                     <span class="wrapper--anim">
-                                        <i class="icon fa fa-spinner fa-spin"></i>
+                                        <i class="icon fa fa-spinner fa-spin" aria-hidden="true"></i>
                                         <span class="copy">{% trans "Submitting Feedback" %}</span>
                                     </span>
                                 </span>
