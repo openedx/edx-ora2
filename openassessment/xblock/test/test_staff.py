@@ -9,6 +9,7 @@ from openassessment.assessment.api import staff as staff_api
 from openassessment.xblock.data_conversion import create_rubric_dict
 from .base import XBlockHandlerTestCase, scenario
 
+#touch
 
 class StaffAssessmentTestBase(XBlockHandlerTestCase):
     maxDiff = None
