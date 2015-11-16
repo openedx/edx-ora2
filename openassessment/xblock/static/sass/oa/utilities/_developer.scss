@@ -856,22 +856,6 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
       }
     }
 
-    .openassessment_criterion.collapsed {
-      .openassessment_criterion_body{
-        display: none;
-      }
-      .openassessment_criterion_header{
-        .action.expand-collapse {
-          @include float(left);
-          .ui-toggle-expansion {
-            @include transform(rotate(bidi-rotate-angle(-90deg)));
-            @include transform-origin(50% 50%);
-            color: $edx-gray-d3;
-          }
-        }
-      }
-    }
-
     .openassessment_criterion_option{
       @include padding(5px, 5px, 5px, 15px);
 
@@ -1056,16 +1040,7 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
       border-bottom: 1px solid;
       overflow: auto;
       color: $edx-gray-d2;
-      .action.expand-collapse {
-        @include float(left);
-        .ui-toggle-expansion {
-          cursor: pointer;
-          color: $edx-gray-d2;
-        }
-        .ui-toggle-expansion:hover{
-          color: $edx-gray-d1;
-        }
-      }
+
       .openassessment_training_example_header_title {
         text-transform: uppercase;
         width: 50%;
@@ -1177,28 +1152,6 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
     height: auto;
     content: "\f067";
     margin: 0 10px;
-  }
-
-  .openassessment_training_example.collapsed {
-    .openassessment_training_example_body {
-      display: none;
-    }
-    .openassessment_training_example_header {
-      .action.expand-collapse {
-        @include float(left);
-        .ui-toggle-expansion {
-          @include transform(rotate(bidi-rotate-angle(-90deg)));
-          @include transform-origin(50% 50%);
-          .icon-caret-down:before {
-            color: #009fe6;
-          }
-          .icon-caret-down:before:hover {
-            color: $edx-gray-d3;
-            cursor: pointer;
-          }
-        }
-      }
-    }
   }
 }
 
