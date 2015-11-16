@@ -13,7 +13,7 @@
 <span class="step__status">
   <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
-    <i class="icon fa fa-check"></i>
+    <i class="icon fa fa-check" aria-hidden="true"></i>
     <span class="copy">
       {% with graded_string=graded|stringformat:"s" %}
       {% blocktrans with num_graded='<span class="step__status__value--completed">'|safe|add:graded_string|add:'</span>'|safe %}
@@ -65,7 +65,7 @@
                                         id="assessment__rubric__question--{{ criterion.order_num }}"
                                     >
                                         <h4 class="question__title ui-toggle-visibility__control">
-                                            <i class="icon fa fa-caret-right"></i>
+                                            <i class="icon fa fa-caret-right" aria-hidden="true"></i>
                                             <span class="ui-toggle-visibility__control__copy question__title__copy">{{ criterion.prompt }}</span>
                                             <span class="label--required sr">* ({% trans "Required" %})</span>
                                         </h4>
