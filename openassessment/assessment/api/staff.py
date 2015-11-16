@@ -96,7 +96,7 @@ def get_latest_staff_assessment(submission_uuid):
         or None if no assessments are available
 
     Raises:
-        StaffAssessmentInternalError
+        StaffAssessmentInternalError if there are problems connecting to the database.
 
     Example usage:
 
@@ -175,6 +175,8 @@ def create_assessment(
     Assumes that the user creating the assessment has the permissions to do so.
 
     Args:
+        submission_uuid (str): The submission uuid for the submission being
+            assessed.
         scorer_id (str): The user ID for the user giving this assessment. This
             is required to create an assessment on a submission.
         options_selected (dict): Dictionary mapping criterion names to the
@@ -184,6 +186,10 @@ def create_assessment(
             Since criterion feedback is optional, some criteria may not appear
             in the dictionary.
         overall_feedback (unicode): Free-form text feedback on the submission overall.
+        rubric_dict (dict): The rubric model associated with this assessment
+        scored_at (datetime): Optional argument to override the time in which
+            the assessment took place. If not specified, scored_at is set to
+            now.
 
     Keyword Args:
         scored_at (datetime): Optional argument to override the time in which

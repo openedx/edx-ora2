@@ -457,9 +457,10 @@ class OpenAssessmentBlock(
         ui_models = [UI_MODELS["submission"]]
         for assessment in self.valid_assessments:
             if assessment["name"] == "staff-assessment" and assessment["required"] == False:
-                # Check if staff have graded the assessment
-                # else
-                continue
+                # If we don't have a staff grade, and it's not required, hide
+                # this UI model.
+                if not self.staff_assessment_exists(self.submission_uuid):
+                    continue
             ui_model = UI_MODELS.get(assessment["name"])
             if ui_model:
                 ui_models.append(dict(assessment, **ui_model))

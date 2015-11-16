@@ -24,6 +24,13 @@ class StaffAssessmentMixin(object):
     This mixin is for all staff-assessment related endpoints.
     """
 
+    def staff_assessment_exists(self, submission_uuid):
+        """
+        Returns True if there exists a staff assessment for the given uuid. False otherwise.
+        """
+
+        return staff_api.get_latest_staff_assessment(submission_uuid) is not None
+
     @XBlock.json_handler
     @require_course_staff("STUDENT_INFO")
     def staff_assess(self, data, suffix=''):
