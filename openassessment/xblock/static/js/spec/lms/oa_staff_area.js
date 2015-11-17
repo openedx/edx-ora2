@@ -6,6 +6,7 @@ describe('OpenAssessment.StaffAreaView', function() {
 
     // Stub server that returns dummy data for the staff info view
     var StubServer = function() {
+        this.studentTemplate = 'oa_student_info.html';
 
         // Remember which fragments have been loaded
         this.fragmentsLoaded = [];
@@ -23,7 +24,7 @@ describe('OpenAssessment.StaffAreaView', function() {
         this.studentInfo = function() {
             var server = this;
             return $.Deferred(function(defer) {
-                var fragment = readFixtures('oa_student_info.html');
+                var fragment = readFixtures(server.studentTemplate);
                 defer.resolveWith(server, [fragment]);
             });
         };
@@ -47,6 +48,10 @@ describe('OpenAssessment.StaffAreaView', function() {
         ).promise();
 
         this.cancelSubmission = function() {
+            return successPromise;
+        };
+
+        this.staffAssess = function() {
             return successPromise;
         };
 
@@ -162,67 +167,6 @@ describe('OpenAssessment.StaffAreaView', function() {
         });
     });
 
-    describe('Student Info', function() {
-        var chooseStudent = function(view, studentName) {
-            var studentNameField = $('.openassessment__student_username', view.element),
-                submitButton = $('.action--submit-username', view.element);
-            studentNameField.val(studentName);
-            submitButton.click();
-        };
-
-        beforeEach(function() {
-            loadFixtures('oa_base_course_staff.html');
-            appendLoadFixtures('oa_student_info.html');
-        });
-
-        it('shows an error when clicking "Submit" with no student name chosen', function() {
-            var staffArea = createStaffArea();
-            chooseStudent(staffArea, '');
-            expect($('.openassessment_student_info_form .form--error', staffArea.element).text().trim())
-                .toBe('A learner name must be provided.');
-        });
-
-        describe('Submission Management', function() {
-            it('updates submission cancellation button when comments changes', function() {
-                // Prevent the server's response from resolving,
-                // so we can see what happens before view gets re-rendered.
-                spyOn(server, 'cancelSubmission').and.callFake(function() {
-                    return $.Deferred(function() {}).promise();
-                });
-
-                var staffArea = createStaffArea();
-                chooseStudent(staffArea, 'testStudent');
-
-                // comments is blank --> cancel submission button disabled
-                staffArea.comment('');
-                staffArea.handleCommentChanged();
-                expect(staffArea.cancelSubmissionEnabled()).toBe(false);
-
-                // Response is whitespace --> cancel submission button disabled
-                staffArea.comment('               \n      \n      ');
-                staffArea.handleCommentChanged();
-                expect(staffArea.cancelSubmissionEnabled()).toBe(false);
-
-                // Response is not blank --> cancel submission button enabled
-                staffArea.comment('Cancellation reason.');
-                staffArea.handleCommentChanged();
-                expect(staffArea.cancelSubmissionEnabled()).toBe(true);
-            });
-
-            it('submits the cancel submission comments to the server', function() {
-                spyOn(server, 'cancelSubmission').and.callThrough();
-
-                var staffArea = createStaffArea();
-                chooseStudent(staffArea, 'testStudent');
-
-                staffArea.comment('Cancellation reason.');
-                staffArea.cancelSubmission('Bob');
-
-                expect(server.cancelSubmission).toHaveBeenCalledWith('Bob', 'Cancellation reason.');
-            });
-        });
-    });
-
     describe('Staff Toolbar', function() {
         beforeEach(function() {
             loadFixtures('oa_base_course_staff.html');
@@ -281,6 +225,13 @@ describe('OpenAssessment.StaffAreaView', function() {
     });
 
     describe('Staff Tools', function() {
+        var chooseStudent = function(view, studentName) {
+            var studentNameField = $('.openassessment__student_username', view.element),
+                submitButton = $('.action--submit-username', view.element);
+            studentNameField.val(studentName);
+            submitButton.click();
+        };
+
         beforeEach(function() {
             loadFixtures('oa_base_course_staff.html');
         });
@@ -295,6 +246,101 @@ describe('OpenAssessment.StaffAreaView', function() {
             $('.ui-staff_close_button', $staffToolsPanel).first().click();
             expect($staffToolsButton).not.toHaveClass('is--active');
             expect($staffToolsPanel).toHaveClass('is--hidden');
+        });
+
+        it('shows an error when clicking "Submit" with no student name chosen', function() {
+            var staffArea = createStaffArea();
+            chooseStudent(staffArea, '');
+            expect($('.openassessment_student_info_form .form--error', staffArea.element).text().trim())
+                .toBe('A learner name must be provided.');
+        });
+
+        describe('Submission Management', function() {
+            it('updates submission cancellation button when comments changes', function() {
+                // Prevent the server's response from resolving,
+                // so we can see what happens before view gets re-rendered.
+                spyOn(server, 'cancelSubmission').and.callFake(function() {
+                    return $.Deferred(function() {}).promise();
+                });
+
+                var staffArea = createStaffArea();
+                chooseStudent(staffArea, 'testStudent');
+
+                // comments is blank --> cancel submission button disabled
+                staffArea.comment('');
+                staffArea.handleCommentChanged();
+                expect(staffArea.cancelSubmissionEnabled()).toBe(false);
+
+                // Response is whitespace --> cancel submission button disabled
+                staffArea.comment('               \n      \n      ');
+                staffArea.handleCommentChanged();
+                expect(staffArea.cancelSubmissionEnabled()).toBe(false);
+
+                // Response is not blank --> cancel submission button enabled
+                staffArea.comment('Cancellation reason.');
+                staffArea.handleCommentChanged();
+                expect(staffArea.cancelSubmissionEnabled()).toBe(true);
+            });
+
+            it('submits the cancel submission comments to the server', function() {
+                // Show the staff area for the test student
+                var staffArea = createStaffArea();
+                chooseStudent(staffArea, 'testStudent');
+
+                // Cancel the student's submission
+                staffArea.comment('Cancellation reason.');
+                server.studentTemplate = 'oa_staff_cancelled_submission.html';
+                staffArea.cancelSubmission('Bob');
+
+                // Verify that the student view reflects the cancellation
+                expect($($('.staff-info__student__response p', staffArea.element)[0]).text().trim()).toBe(
+                    'Learner submission removed by staff on October 1, 2015 04:53 UTC'
+                );
+                expect($($('.staff-info__student__response p', staffArea.element)[1]).text().trim()).toBe(
+                    'Comments: Cancelled!'
+                );
+            });
+        });
+
+        describe('Staff Grade Override', function() {
+            var fillAssessment = function($assessment) {
+                $('#staff__assessment__rubric__question--2__feedback', $assessment).val('Text response');
+                $('.question__answers', $assessment).each(function(element) {
+                    $('input[type="radio"]', this).first().click();
+                });
+            };
+
+            it('enables the submit button when all required fields are specified', function() {
+                var staffArea = createStaffArea(),
+                    $assessment, $submitButton;
+                chooseStudent(staffArea, 'testStudent');
+                $assessment = $('.wrapper--staff-assessment', staffArea.element)
+                $submitButton = $('.action--submit', $assessment);
+                expect($submitButton).toHaveClass('is--disabled');
+                fillAssessment($assessment);
+                expect($submitButton).not.toHaveClass('is--disabled');
+            });
+
+            it('can submit a staff grade override', function() {
+                var staffArea = createStaffArea(),
+                    $assessment, $submitButton;
+                chooseStudent(staffArea, 'testStudent');
+                $assessment = $('.wrapper--staff-assessment', staffArea.element)
+                $submitButton = $('.action--submit', $assessment);
+                fillAssessment($assessment);
+
+                // Submit the assessment
+                server.studentTemplate = 'oa_staff_cancelled_submission.html';
+                $submitButton.click();
+
+                // Verify that the student info reflects the update
+                expect($($('.staff-info__student__response p', staffArea.element)[0]).text().trim()).toBe(
+                    'Learner submission removed by staff on October 1, 2015 04:53 UTC'
+                );
+                expect($($('.staff-info__student__response p', staffArea.element)[1]).text().trim()).toBe(
+                    'Comments: Cancelled!'
+                );
+            });
         });
     });
 

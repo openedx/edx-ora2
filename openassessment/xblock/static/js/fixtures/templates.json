@@ -86,11 +86,13 @@
     {
         "template": "openassessmentblock/response/oa_response.html",
         "context": {
-            "saved_response": {"answer":
-                {"parts": [
-                    { "text": "", "prompt": { "description": "Prompt 1" }},
-                    { "text": "", "prompt": { "description": "Prompt 2" }}
-                ]}
+            "saved_response": {
+                "answer": {
+                    "parts": [
+                        { "text": "", "prompt": { "description": "Prompt 1" }},
+                        { "text": "", "prompt": { "description": "Prompt 2" }}
+                    ]
+                }
             },
             "save_status": "This response has not been saved.",
             "submit_enabled": false,
@@ -585,12 +587,12 @@
                         }
                     ],
                     "template": {
-                            "answer": {
-                                "parts": [
-                                    { "text": ""},
-                                    { "text": ""}
-                                ]
-                            },
+                        "answer": {
+                            "parts": [
+                                { "text": ""},
+                                { "text": ""}
+                            ]
+                        },
                         "criteria": [
                             {
                                 "name": "criterion_with_two_options",
@@ -684,6 +686,50 @@
     {
         "template": "openassessmentblock/staff_area/oa_student_info.html",
         "context": {
+            "rubric_criteria": [
+                {
+                    "name": "vocabulary",
+                    "prompt": "vocabulary",
+                    "order_num": 0,
+                    "feedback": "optional",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "Bad"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 1,
+                            "name": "Good"
+                        }
+                    ]
+                },
+                {
+                    "name": "grammar",
+                    "prompt": "grammar",
+                    "order_num": 1,
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "Bad"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 1,
+                            "name": "Good"
+                        }
+                    ]
+                },
+                {
+                    "name": "feedback_only",
+                    "prompt": "Feedback only, no options!",
+                    "order_num": 2,
+                    "feedback": "required",
+                    "options": []
+                }
+            ],
             "submission": {
                 "image_url": "/test-url",
                 "answer":{
@@ -693,6 +739,23 @@
             "submission_cancellation": 0
         },
         "output": "oa_student_info.html"
+    },
+    {
+        "template": "openassessmentblock/staff_area/oa_student_info.html",
+        "context": {
+            "submission": {
+                "image_url": "/test-url",
+                "answer": {
+                    "text": "testing response text"
+                }
+            },
+            "workflow_cancellation": {
+                "cancelled_by": "staff",
+                "cancelled_at": "2015-10-01T04:53",
+                "comments": "Cancelled!"
+            }
+        },
+        "output": "oa_staff_cancelled_submission.html"
     },
     {
         "template": "openassessmentblock/peer/oa_peer_assessment.html",

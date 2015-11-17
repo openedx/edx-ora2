@@ -393,10 +393,10 @@ def cancel_workflow(submission_uuid, comments, cancelled_by_id, assessment_requi
 
 def get_assessment_workflow_cancellation(submission_uuid):
     """
-    Get cancellation information for a assessment workflow.
+    Get cancellation information for an assessment workflow.
 
     Args:
-        submission_uuid (str): The UUID of assessment workflow.
+        submission_uuid (str): The UUID of the submission.
     """
     try:
         workflow_cancellation = AssessmentWorkflowCancellation.get_latest_workflow_cancellation(submission_uuid)
