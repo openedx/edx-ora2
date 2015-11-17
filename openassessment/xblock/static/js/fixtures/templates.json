@@ -758,6 +758,68 @@
         "output": "oa_staff_cancelled_submission.html"
     },
     {
+        "template": "openassessmentblock/staff_area/oa_student_info.html",
+        "context": {
+            "rubric_criteria": [
+                {
+                    "name": "vocabulary",
+                    "prompt": "vocabulary",
+                    "order_num": 0,
+                    "feedback": "optional",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "Bad"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 1,
+                            "name": "Good"
+                        }
+                    ]
+                },
+                {
+                    "name": "grammar",
+                    "prompt": "grammar",
+                    "order_num": 1,
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "Bad"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 1,
+                            "name": "Good"
+                        }
+                    ]
+                },
+                {
+                    "name": "feedback_only",
+                    "prompt": "Feedback only, no options!",
+                    "order_num": 2,
+                    "feedback": "required",
+                    "options": []
+                }
+            ],
+            "submission": {
+                "image_url": "/test-url",
+                "answer": {
+                    "text": "testing response text"
+                }
+            },
+            "score": {
+                "points_earned": 1,
+                "points_possible": 2
+            },
+            "workflow_status": "done",
+            "expanded_view": "final-grade"
+        },
+        "output": "oa_staff_graded_submission.html"
+    },
+    {
         "template": "openassessmentblock/peer/oa_peer_assessment.html",
         "context": {
             "rubric_criteria": [

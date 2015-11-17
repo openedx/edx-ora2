@@ -43,16 +43,14 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
             var url = this.url('render_' + component);
             return $.Deferred(function(defer) {
                 $.ajax({
-                        url: url,
-                        type: "POST",
-                        dataType: "html"
-                    })
-                    .done(function(data) {
-                        defer.resolveWith(view, [data]);
-                    })
-                    .fail(function() {
-                        defer.rejectWith(view, [gettext('This section could not be loaded.')]);
-                    });
+                    url: url,
+                    type: "POST",
+                    dataType: "html"
+                }).done(function(data) {
+                    defer.resolveWith(view, [data]);
+                }).fail(function() {
+                    defer.rejectWith(view, [gettext('This section could not be loaded.')]);
+                });
             }).promise();
         },
 
@@ -77,19 +75,18 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         renderContinuedPeer: function() {
             var view = this;
             var url = this.url('render_peer_assessment');
+
             return $.Deferred(function(defer) {
                 $.ajax({
-                        url: url,
-                        type: "POST",
-                        dataType: "html",
-                        data: {continue_grading: true}
-                    })
-                    .done(function(data) {
-                        defer.resolveWith(view, [data]);
-                    })
-                    .fail(function() {
-                        defer.rejectWith(view, [gettext('This section could not be loaded.')]);
-                    });
+                    url: url,
+                    type: "POST",
+                    dataType: "html",
+                    data: {continue_grading: true}
+                }).done(function(data) {
+                    defer.resolveWith(view, [data]);
+                }).fail(function() {
+                    defer.rejectWith(view, [gettext('This section could not be loaded.')]);
+                });
             }).promise();
         },
 
@@ -104,17 +101,15 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
             var url = this.url('render_student_info');
             return $.Deferred(function(defer) {
                 $.ajax({
-                        url: url,
-                        type: "POST",
-                        dataType: "html",
-                        data: _.extend({student_username: student_username}, options)
-                    })
-                    .done(function(data) {
-                        defer.resolveWith(this, [data]);
-                    })
-                    .fail(function() {
-                        defer.rejectWith(this, [gettext('This section could not be loaded.')]);
-                    });
+                    url: url,
+                    type: "POST",
+                    dataType: "html",
+                    data: _.extend({student_username: student_username}, options)
+                }).done(function(data) {
+                    defer.resolveWith(this, [data]);
+                }).fail(function() {
+                    defer.rejectWith(this, [gettext('This section could not be loaded.')]);
+                });
             }).promise();
         },
 
@@ -130,27 +125,25 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
             var url = this.url('submit');
             return $.Deferred(function(defer) {
                 $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: JSON.stringify({submission: submission}),
-                        contentType: jsonContentType
-                    })
-                    .done(function(data) {
-                        var success = data[0];
-                        if (success) {
-                            var studentId = data[1];
-                            var attemptNum = data[2];
-                            defer.resolveWith(this, [studentId, attemptNum]);
-                        }
-                        else {
-                            var errorNum = data[1];
-                            var errorMsg = data[2];
-                            defer.rejectWith(this, [errorNum, errorMsg]);
-                        }
-                    })
-                    .fail(function() {
-                        defer.rejectWith(this, ["AJAX", gettext("This response could not be submitted.")]);
-                    });
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify({submission: submission}),
+                    contentType: jsonContentType
+                }).done(function(data) {
+                    var success = data[0];
+                    if (success) {
+                        var studentId = data[1];
+                        var attemptNum = data[2];
+                        defer.resolveWith(this, [studentId, attemptNum]);
+                    }
+                    else {
+                        var errorNum = data[1];
+                        var errorMsg = data[2];
+                        defer.rejectWith(this, [errorNum, errorMsg]);
+                    }
+                }).fail(function() {
+                    defer.rejectWith(this, ["AJAX", gettext("This response could not be submitted.")]);
+                });
             }).promise();
         },
 
@@ -165,18 +158,16 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
             var url = this.url('save_submission');
             return $.Deferred(function(defer) {
                 $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: JSON.stringify({submission: submission}),
-                        contentType: jsonContentType
-                    })
-                    .done(function(data) {
-                        if (data.success) { defer.resolve(); }
-                        else { defer.rejectWith(this, [data.msg]); }
-                    })
-                    .fail(function() {
-                        defer.rejectWith(this, [gettext("This response could not be saved.")]);
-                    });
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify({submission: submission}),
+                    contentType: jsonContentType
+                }).done(function(data) {
+                    if (data.success) { defer.resolve(); }
+                    else { defer.rejectWith(this, [data.msg]); }
+                }).fail(function() {
+                    defer.rejectWith(this, [gettext("This response could not be saved.")]);
+                });
             }).promise();
         },
 
@@ -195,14 +186,14 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                 'feedback_options': options
             });
             return $.Deferred(function(defer) {
-                $.ajax({ type: "POST", url: url, data: payload, contentType: jsonContentType })
-                    .done(function(data) {
-                        if (data.success) { defer.resolve(); }
-                        else { defer.rejectWith(this, [data.msg]); }
-                    })
-                    .fail(function() {
-                        defer.rejectWith(this, [gettext('This feedback could not be submitted.')]);
-                    });
+                $.ajax({
+                    type: "POST", url: url, data: payload, contentType: jsonContentType
+                }).done(function(data) {
+                    if (data.success) { defer.resolve(); }
+                    else { defer.rejectWith(this, [data.msg]); }
+                }).fail(function() {
+                    defer.rejectWith(this, [gettext('This feedback could not be submitted.')]);
+                });
             }).promise();
         },
 
@@ -217,19 +208,18 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         submitAssessment: function(assessmentType, payload) {
             var url = this.url(assessmentType);
             return $.Deferred(function(defer) {
-                $.ajax({ type: "POST", url: url, data: JSON.stringify(payload), contentType: jsonContentType })
-                    .done(function(data) {
-                            if (data.success) {
-                                defer.resolve();
-                            }
-                            else {
-                                defer.rejectWith(this, [data.msg]);
-                            }
-                        }
-                    )
-                    .fail(function() {
-                        defer.rejectWith(this, [gettext('This assessment could not be submitted.')]);
-                    });
+                $.ajax({
+                    type: "POST", url: url, data: JSON.stringify(payload), contentType: jsonContentType
+                }).done(function(data) {
+                    if (data.success) {
+                        defer.resolve();
+                    }
+                    else {
+                        defer.rejectWith(this, [data.msg]);
+                    }
+                }).fail(function() {
+                    defer.rejectWith(this, [gettext('This assessment could not be submitted.')]);
+                });
             }).promise();
         },
 
@@ -308,18 +298,18 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                 options_selected: optionsSelected
             });
             return $.Deferred(function(defer) {
-                $.ajax({ type: "POST", url: url, data: payload, contentType: jsonContentType })
-                    .done(function(data) {
-                        if (data.success) {
-                            defer.resolveWith(this, [data.corrections]);
-                        }
-                        else {
-                            defer.rejectWith(this, [data.msg]);
-                        }
-                    })
-                    .fail(function() {
-                        defer.rejectWith(this, [gettext('This assessment could not be submitted.')]);
-                    });
+                $.ajax({
+                    type: "POST", url: url, data: payload, contentType: jsonContentType
+                }).done(function(data) {
+                    if (data.success) {
+                        defer.resolveWith(this, [data.corrections]);
+                    }
+                    else {
+                        defer.rejectWith(this, [data.msg]);
+                    }
+                }).fail(function() {
+                    defer.rejectWith(this, [gettext('This assessment could not be submitted.')]);
+                });
             });
         },
 
@@ -333,18 +323,18 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         scheduleTraining: function() {
             var url = this.url('schedule_training');
             return $.Deferred(function(defer) {
-                $.ajax({ type: "POST", url: url, data: "\"\"", contentType: jsonContentType})
-                    .done(function(data) {
-                        if (data.success) {
-                            defer.resolveWith(this, [data.msg]);
-                        }
-                        else {
-                            defer.rejectWith(this, [data.msg]);
-                        }
-                    })
-                    .fail(function() {
-                        defer.rejectWith(this, [gettext('This assessment could not be submitted.')]);
-                    });
+                $.ajax({
+                    type: "POST", url: url, data: "\"\"", contentType: jsonContentType
+                }).done(function(data) {
+                    if (data.success) {
+                        defer.resolveWith(this, [data.msg]);
+                    }
+                    else {
+                        defer.rejectWith(this, [data.msg]);
+                    }
+                }).fail(function() {
+                    defer.rejectWith(this, [gettext('This assessment could not be submitted.')]);
+                });
             });
         },
 
@@ -357,18 +347,18 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         rescheduleUnfinishedTasks: function() {
             var url = this.url('reschedule_unfinished_tasks');
             return $.Deferred(function(defer) {
-                $.ajax({ type: "POST", url: url, data: "\"\"", contentType: jsonContentType})
-                    .done(function(data) {
-                        if (data.success) {
-                            defer.resolveWith(this, [data.msg]);
-                        }
-                        else {
-                            defer.rejectWith(this, [data.msg]);
-                        }
-                    })
-                    .fail(function() {
-                        defer.rejectWith(this, [gettext('One or more rescheduling tasks failed.')]);
-                    });
+                $.ajax({
+                    type: "POST", url: url, data: "\"\"", contentType: jsonContentType
+                }).done(function(data) {
+                    if (data.success) {
+                        defer.resolveWith(this, [data.msg]);
+                    }
+                    else {
+                        defer.rejectWith(this, [data.msg]);
+                    }
+                }).fail(function() {
+                    defer.rejectWith(this, [gettext('One or more rescheduling tasks failed.')]);
+                });
             });
         },
 
@@ -412,15 +402,13 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
             });
             return $.Deferred(function(defer) {
                 $.ajax({
-                        type: "POST", url: url, data: payload, contentType: jsonContentType
-                    })
-                    .done(function(data) {
-                        if (data.success) { defer.resolve(); }
-                        else { defer.rejectWith(this, [data.msg]); }
-                    })
-                    .fail(function() {
-                        defer.rejectWith(this, [gettext('This problem could not be saved.')]);
-                    });
+                    type: "POST", url: url, data: payload, contentType: jsonContentType
+                }).done(function(data) {
+                    if (data.success) { defer.resolve(); }
+                    else { defer.rejectWith(this, [data.msg]); }
+                }).fail(function() {
+                    defer.rejectWith(this, [gettext('This problem could not be saved.')]);
+                });
             }).promise();
         },
 
@@ -436,15 +424,13 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
             var payload = "\"\"";
             return $.Deferred(function(defer) {
                 $.ajax({
-                        type: "POST", url: url, data: payload, contentType: jsonContentType
-                    })
-                    .done(function(data) {
-                        if (data.success) { defer.resolveWith(this, [data.is_released]); }
-                        else { defer.rejectWith(this, [data.msg]); }
-                    })
-                    .fail(function() {
-                        defer.rejectWith(this, [gettext("The server could not be contacted.")]);
-                    });
+                    type: "POST", url: url, data: payload, contentType: jsonContentType
+                }).done(function(data) {
+                    if (data.success) { defer.resolveWith(this, [data.is_released]); }
+                    else { defer.rejectWith(this, [data.msg]); }
+                }).fail(function() {
+                    defer.rejectWith(this, [gettext("The server could not be contacted.")]);
+                });
             }).promise();
         },
 
