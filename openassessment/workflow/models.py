@@ -82,6 +82,9 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         DEFAULT_ASSESSMENT_SCORE_PRIORITY
     )
 
+    # Blocking steps are steps that must be completed by the submitter, even if a staff assesment is present
+    BLOCKING_STEPS = ["peer"]
+
     submission_uuid = models.CharField(max_length=36, db_index=True, unique=True)
     uuid = UUIDField(version=1, db_index=True, unique=True)
 
@@ -202,10 +205,13 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
     def score(self):
         """Latest score for the submission we're tracking.
 
-        Note that while it is usually the case that we're setting the score,
-        that may not always be the case. We may have some course staff override.
+        Returns:
+            score (dict): The latest score for this workflow, or None if the workflow is incomplete.
         """
-        return sub_api.get_latest_score_for_submission(self.submission_uuid)
+        score = None
+        if self.status == self.STATUS.done:
+            score = sub_api.get_latest_score_for_submission(self.submission_uuid)
+        return score
 
     def status_details(self, assessment_requirements):
         status_dict = {}
@@ -318,17 +324,23 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
 
         new_staff_score = self.get_score(assessment_requirements, {'staff': step_for_name.get('staff', None)})
         if new_staff_score:
-            old_score = self.score
+            old_score = sub_api.get_latest_score_for_submission(self.submission_uuid)
             if not old_score or old_score['points_earned'] != new_staff_score['points_earned']:
+                # Set the staff score using submissions api, and log that fact
                 self.set_staff_score(new_staff_score)
                 self.save()
                 logger.info((
                     u"Workflow for submission UUID {uuid} has updated score using staff assessment."
                 ).format(uuid=self.submission_uuid))
-                staff_step = step_for_name.get('staff')
-                staff_step.assessment_completed_at=now()
-                staff_step.save()
-                self.status = self.STATUS.done
+
+                # Update the assessment and submitter_completed_at fields for all steps
+                # All steps are considered "assessment complete", as the staff score will override all
+                # Steps in BLOCKING_STEPS may still require the submitter to fulfill their obligations
+                for step in steps:
+                    step.assessment_completed_at=now()
+                    if step.name not in self.BLOCKING_STEPS:
+                        step.submitter_completed_at=now()
+                    step.save()
 
         if self.status == self.STATUS.done:
             return
@@ -359,7 +371,8 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             score = self.get_score(assessment_requirements, step_for_name)
             # If we found a score, then we're done
             if score is not None:
-                self.set_score(score)
+                if score.get("staff_id") is None:
+                    self.set_score(score)
                 new_status = self.STATUS.done
 
         # Finally save our changes if the status has changed
