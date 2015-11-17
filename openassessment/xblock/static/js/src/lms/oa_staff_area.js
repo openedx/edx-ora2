@@ -30,16 +30,14 @@
             // for us to render the staff area into.  If that doesn't exist,
             // then we're not staff, so we don't need to send the AJAX request.
             if ($('.openassessment__staff-area', view.element).length > 0) {
-                this.server.render('staff_area')
-                    .done(function(html) {
-                        // Load the HTML and install event handlers
-                        $('.openassessment__staff-area', view.element).replaceWith(html);
-                        view.server.renderLatex($('.openassessment__staff-area', view.element));
-                        view.installHandlers();
-                    }).fail(function() {
-                        view.baseView.showLoadError('staff_area');
-                    }
-                );
+                this.server.render('staff_area').done(function(html) {
+                    // Load the HTML and install event handlers
+                    $('.openassessment__staff-area', view.element).replaceWith(html);
+                    view.server.renderLatex($('.openassessment__staff-area', view.element));
+                    view.installHandlers();
+                }).fail(function() {
+                    view.baseView.showLoadError('staff_area');
+                });
             }
         },
 
@@ -66,53 +64,51 @@
             $('.openassessment__student-info', view.element).text('');
 
             if (student_username.trim()) {
-                this.server.studentInfo(student_username, options)
-                    .done(function(html) {
-                        // Clear any error message
-                        showFormError('');
+                this.server.studentInfo(student_username, options).done(function(html) {
+                    // Clear any error message
+                    showFormError('');
 
-                        // Load the HTML and install event handlers
-                        $('.openassessment__student-info', view.element).replaceWith(html);
+                    // Load the HTML and install event handlers
+                    $('.openassessment__student-info', view.element).replaceWith(html);
 
-                        // Install key handler for cancel submission button.
-                        $staffTools.on('click', '.action--submit-cancel-submission', function (eventObject) {
-                            eventObject.preventDefault();
-                            view.cancelSubmission($(this).data('submission-uuid'));
-                        });
-
-                        // Install change handler for textarea (to enable cancel submission button)
-                        var handleChange = function(eventData) { view.handleCommentChanged(eventData); };
-                        $staffTools.find('.cancel_submission_comments')
-                            .on('change keyup drop paste', handleChange);
-
-
-                        // Initialize the rubric
-                        var $rubric = $('.staff-assessment__assessment', view.element);
-                        if ($rubric.size() > 0) {
-                            var rubricElement = $rubric.get(0);
-                            var rubric = new OpenAssessment.Rubric(rubricElement);
-
-                            // Install a change handler for rubric options to enable/disable the submit button
-                            rubric.canSubmitCallback($.proxy(view.staffSubmitEnabled, view));
-
-                            // Install a click handler for the submit button
-                            $('.wrapper--staff-assessment .action--submit', view.element).click(
-                                function(eventObject) {
-                                    var target = $(eventObject.currentTarget),
-                                        rootElement = target.closest('.openassessment__student-info'),
-                                        submissionID = rootElement.data('submission-uuid');
-
-                                    eventObject.preventDefault();
-                                    view.submitStaffAssessment(submissionID, rubric);
-                                }
-                            );
-                        }
-                        deferred.resolve();
-                    })
-                    .fail(function() {
-                        showFormError(gettext('Unexpected server error.'));
-                        deferred.reject();
+                    // Install key handler for cancel submission button.
+                    $staffTools.on('click', '.action--submit-cancel-submission', function (eventObject) {
+                        eventObject.preventDefault();
+                        view.cancelSubmission($(this).data('submission-uuid'));
                     });
+
+                    // Install change handler for textarea (to enable cancel submission button)
+                    var handleChange = function(eventData) { view.handleCommentChanged(eventData); };
+                    $staffTools.find('.cancel_submission_comments')
+                        .on('change keyup drop paste', handleChange);
+
+
+                    // Initialize the rubric
+                    var $rubric = $('.staff-assessment__assessment', view.element);
+                    if ($rubric.size() > 0) {
+                        var rubricElement = $rubric.get(0);
+                        var rubric = new OpenAssessment.Rubric(rubricElement);
+
+                        // Install a change handler for rubric options to enable/disable the submit button
+                        rubric.canSubmitCallback($.proxy(view.staffSubmitEnabled, view));
+
+                        // Install a click handler for the submit button
+                        $('.wrapper--staff-assessment .action--submit', view.element).click(
+                            function(eventObject) {
+                                var target = $(eventObject.currentTarget),
+                                    rootElement = target.closest('.openassessment__student-info'),
+                                    submissionID = rootElement.data('submission-uuid');
+
+                                eventObject.preventDefault();
+                                view.submitStaffAssessment(submissionID, rubric);
+                            }
+                        );
+                    }
+                    deferred.resolve();
+                }).fail(function() {
+                    showFormError(gettext('Unexpected server error.'));
+                    deferred.reject();
+                });
             } else {
                 showFormError(gettext('A learner name must be provided.'));
                 deferred.reject();
@@ -203,10 +199,9 @@
          */
         scheduleTraining: function() {
             var view = this;
-            this.server.scheduleTraining()
-                .done(function(msg) {
-                    $('.schedule_training_message', view.element).text(msg);
-                }).fail(function(errMsg) {
+            this.server.scheduleTraining().done(function(msg) {
+                $('.schedule_training_message', view.element).text(msg);
+            }).fail(function(errMsg) {
                 $('.schedule_training_message', view.element).text(errMsg);
             });
         },
@@ -218,10 +213,9 @@
          */
         rescheduleUnfinishedTasks: function() {
             var view = this;
-            this.server.rescheduleUnfinishedTasks()
-                .done(function(msg) {
-                    $('.reschedule_unfinished_tasks_message', view.element).text(msg);
-                }).fail(function(errMsg) {
+            this.server.rescheduleUnfinishedTasks().done(function(msg) {
+                $('.reschedule_unfinished_tasks_message', view.element).text(msg);
+            }).fail(function(errMsg) {
                 $('.reschedule_unfinished_tasks_message', view.element).text(errMsg);
             });
         },
@@ -234,17 +228,15 @@
             this.cancelSubmissionEnabled(false);
             var view = this;
             var comments = $('.cancel_submission_comments', this.element).val();
-            this.server.cancelSubmission(submissionUUID, comments)
-                .done(function(msg) {
-                    $('.cancel-submission-error').html('');
-                    view.loadStudentInfo({expanded_view: 'final-grade'})
-                        .done(function() {
-                            $('.openassessment__staff-info__cancel__submission', view.element).html(msg);
-                        });
-                })
-                .fail(function(errMsg) {
-                    $('.cancel-submission-error').html(errMsg);
-                });
+            this.server.cancelSubmission(submissionUUID, comments).done(function() {
+                // Note: we ignore any message returned from the server and instead
+                // re-render the student info with the "Learner's Final Grade"
+                // section expanded. This section will show that the learner's
+                // submission was cancelled.
+                view.loadStudentInfo({expanded_view: 'final-grade'});
+            }).fail(function(errorMessage) {
+                $('.cancel-submission-error').html(_.escape(errorMessage));
+            });
         },
 
         /**
@@ -315,6 +307,7 @@
                 return !button.hasClass('is--disabled');
             } else {
                 button.toggleClass('is--disabled', !enabled);
+                return enabled;
             }
         },
 
@@ -332,14 +325,17 @@
 
             this.server.staffAssess(
                 rubric.optionsSelected(), rubric.criterionFeedback(), rubric.overallFeedback(), submissionID
-                )
-                .done(function() {
-                    view.loadStudentInfo({expanded_view:  'final-grade'});
-                })
-                .fail(function(errorMessage) {
-                    baseView.toggleActionError('staff', errorMessage);
-                    view.staffSubmitEnabled(true);
-                });
+            ).done(function() {
+                // Note: we ignore any message returned from the server and instead
+                // re-render the student info with the "Learner's Final Grade"
+                // section expanded. This section will show the learner's
+                // final grade and in the future should include details of
+                // the staff override itself.
+                view.loadStudentInfo({expanded_view: 'final-grade'});
+            }).fail(function(errorMessage) {
+                $('.staff-override-error').html(_.escape(errorMessage));
+                view.staffSubmitEnabled(true);
+            });
         }
     };
 })(OpenAssessment);
