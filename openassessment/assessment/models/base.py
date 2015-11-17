@@ -573,7 +573,7 @@ class Assessment(models.Model):
         """
         assessments = list(assessments)  # Force us to read it all
         if not assessments:
-            return []
+            return {}
 
         # Generate a cache key that represents all the assessments we're being
         # asked to grab scores from (comma separated list of assessment IDs)
