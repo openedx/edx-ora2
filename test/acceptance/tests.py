@@ -103,7 +103,7 @@ class OpenAssessmentTest(WebAppTest):
         # Submit a self-assessment
         self.self_asmnt_page.wait_for_page().wait_for_response()
         self.assertIn(self.SUBMISSION, self.self_asmnt_page.response_text)
-        self.self_asmnt_page.assess(self.OPTIONS_SELECTED).wait_for_complete()
+        self.self_asmnt_page.assess("self", self.OPTIONS_SELECTED).wait_for_complete()
         self.assertTrue(self.self_asmnt_page.is_complete)
 
         # Verify the grade
@@ -170,7 +170,7 @@ class PeerAssessmentTest(OpenAssessmentTest):
         self.submission_page.visit().submit_response(self.SUBMISSION)
 
         # Assess the submission (there should be at least one available)
-        self.peer_asmnt_page.wait_for_page().wait_for_response().assess(self.OPTIONS_SELECTED)
+        self.peer_asmnt_page.wait_for_page().wait_for_response().assess("peer", self.OPTIONS_SELECTED)
 
         # Check that the status indicates we've assessed one submission
         try:
@@ -208,7 +208,7 @@ class StudentTrainingTest(OpenAssessmentTest):
                 msg = "Did not complete at least {num} student training example(s).".format(num=example_num)
                 self.fail(msg)
 
-            self.student_training_page.wait_for_page().wait_for_response().assess(options_selected)
+            self.student_training_page.wait_for_page().wait_for_response().assess("training", options_selected)
 
             # Check browser scrolled back to top only on first example
 
@@ -365,11 +365,11 @@ class StaffAreaTest(OpenAssessmentTest):
         self.staff_area_page.verify_learner_final_score("Final grade: 6 out of 8")
 
         # Do staff override and wait for final score to change.
-        self.staff_area_page.assess([0, 1])
+        self.staff_area_page.assess("staff", [0, 1])
 
         # Verify that the new student score is different from the original one.
-        # TODO: uncomment this after hooked up to the API. Also verify other state if appropriate.
-        # self.staff_area_page.verify_learner_final_score("Final grade: 1 out of 8")
+        # Unfortunately there is no indication presently that this was a staff override.
+        self.staff_area_page.verify_learner_final_score("Final grade: 1 out of 8")
 
     @retry()
     @attr('acceptance')
@@ -399,7 +399,7 @@ class StaffAreaTest(OpenAssessmentTest):
 
         self.staff_area_page.verify_learner_final_score(
             "The learner's submission has been removed from peer assessment. "
-            "The learner receives a grade of zero unless you reset the learner's attempts for the "
+            "The learner receives a grade of zero unless you delete the learner's state for the "
             "problem to allow them to resubmit a response."
         )
 
