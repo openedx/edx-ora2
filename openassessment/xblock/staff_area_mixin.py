@@ -24,7 +24,6 @@ from openassessment.assessment.api import self as self_api
 from openassessment.assessment.api import ai as ai_api
 from openassessment.fileupload import api as file_api
 from openassessment.workflow import api as workflow_api
-from openassessment.workflow.models import AssessmentWorkflowCancellation
 from openassessment.fileupload import exceptions as file_exceptions
 
 
@@ -285,22 +284,13 @@ class StaffAreaMixin(object):
 
         workflow = self.get_workflow_info(submission_uuid=submission_uuid)
 
-        workflow_cancellation = workflow_api.get_assessment_workflow_cancellation(submission_uuid)
-        if workflow_cancellation:
-            workflow_cancellation['cancelled_by'] = self.get_username(workflow_cancellation['cancelled_by_id'])
-
-            # Get the date that the workflow was cancelled to use in preference to the serialized date string
-            cancellation_model = AssessmentWorkflowCancellation.get_latest_workflow_cancellation(submission_uuid)
-            workflow_cancelled_at = cancellation_model.created_at
-        else:
-            workflow_cancelled_at = None
+        workflow_cancellation = self.get_workflow_cancellation_info(submission_uuid)
 
         context = {
             'submission': create_submission_dict(submission, self.prompts) if submission else None,
             'score': workflow.get('score'),
             'workflow_status': workflow.get('status'),
             'workflow_cancellation': workflow_cancellation,
-            'workflow_cancelled_at': workflow_cancelled_at,
             'peer_assessments': peer_assessments,
             'submitted_assessments': submitted_assessments,
             'self_assessment': self_assessment,

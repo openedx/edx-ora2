@@ -21,7 +21,7 @@
             <div class="ui-toggle-visibility__content">
                 {% if workflow_cancellation %}
                     <p>
-                        {% blocktrans with removed_by_username=workflow_cancellation.cancelled_by removed_datetime=workflow_cancelled_at|utc|date:"F j, Y H:i e" %}
+                        {% blocktrans with removed_by_username=workflow_cancellation.cancelled_by removed_datetime=workflow_cancellation.cancelled_at|utc|date:"F j, Y H:i e" %}
                             Learner submission removed by {{ removed_by_username }} on {{ removed_datetime }}
                         {% endblocktrans %}
                     </p>
