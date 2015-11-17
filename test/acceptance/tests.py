@@ -368,8 +368,8 @@ class StaffAreaTest(OpenAssessmentTest):
         self.staff_area_page.assess("staff", [0, 1])
 
         # Verify that the new student score is different from the original one.
-        # TODO: uncomment this after hooked up to the API. Also verify other state if appropriate.
-        # self.staff_area_page.verify_learner_final_score("Final grade: 1 out of 8")
+        # Unfortunately there is no indication presently that this was a staff override.
+        self.staff_area_page.verify_learner_final_score("Final grade: 1 out of 8")
 
     @retry()
     @attr('acceptance')
