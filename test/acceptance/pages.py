@@ -167,7 +167,7 @@ class AssessmentMixin(object):
     """
     Mixin for interacting with the assessment rubric.
     """
-    def assess(self, options_selected):
+    def assess(self, assessment_type, options_selected):
         """
         Create an assessment.
 
@@ -183,7 +183,8 @@ class AssessmentMixin(object):
 
         """
         for criterion_num, option_num in enumerate(options_selected):
-            sel = "#assessment__rubric__question--{criterion_num}__{option_num}".format(
+            sel = "#{assessment_type}__assessment__rubric__question--{criterion_num}__{option_num}".format(
+                assessment_type=assessment_type,
                 criterion_num=criterion_num,
                 option_num=option_num
             )
