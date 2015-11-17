@@ -371,7 +371,22 @@ def _serialized_with_details(workflow, assessment_requirements):
     """
     data_dict = AssessmentWorkflowSerializer(workflow).data
     data_dict["status_details"] = workflow.status_details(assessment_requirements)
+    if _hide_score_if_not_complete(data_dict["status_details"]):
+        data_dict["score"] = None
     return data_dict
+
+def _hide_score_if_not_complete(status_details):
+    """
+    Given a serialized version of a workflow, return True if `score` information should
+    be hidden, due to the submitter not completing their requirements.
+    """
+    print status_details
+    for status in status_details.values():
+        print status["complete"]()
+    return next(
+        (True for status in status_details.values() if status["complete"] is False),
+        False
+    )
 
 
 def cancel_workflow(submission_uuid, comments, cancelled_by_id, assessment_requirements):
