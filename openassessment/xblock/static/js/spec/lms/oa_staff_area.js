@@ -4,6 +4,18 @@
 describe('OpenAssessment.StaffAreaView', function() {
     'use strict';
 
+    var successPromise = $.Deferred(
+        function(defer) { defer.resolve(); }
+    ).promise();
+
+    var failWith = function(owner, result) {
+        return function() {
+            return $.Deferred(function(defer) {
+                defer.rejectWith(owner, [result]);
+            }).promise();
+        };
+    };
+
     // Stub server that returns dummy data for the staff info view
     var StubServer = function() {
         this.studentTemplate = 'oa_student_info.html';
@@ -42,10 +54,6 @@ describe('OpenAssessment.StaffAreaView', function() {
                 defer.resolveWith(server, [server.data]);
             }).promise();
         };
-
-        var successPromise = $.Deferred(
-            function(defer) { defer.resolve(); }
-        ).promise();
 
         this.cancelSubmission = function() {
             return successPromise;
@@ -300,21 +308,42 @@ describe('OpenAssessment.StaffAreaView', function() {
                     'Comments: Cancelled!'
                 );
             });
+
+            it('shows an error message when a cancel submission request fails', function() {
+                // Show the staff area for the test student
+                var staffArea = createStaffArea(),
+                    serverErrorMessage = 'Mock server error';
+                chooseStudent(staffArea, 'testStudent');
+
+                // Cancel the student's submission but return a server error
+                staffArea.comment('Cancellation reason.');
+                server.cancelSubmission = failWith(server, serverErrorMessage);
+                staffArea.cancelSubmission('Bob');
+
+                // Verify that the error message is shown
+                expect($('.cancel-submission-error', staffArea.element).first().text().trim()).toBe(serverErrorMessage);
+            });
         });
 
         describe('Staff Grade Override', function() {
             var fillAssessment = function($assessment) {
                 $('#staff__assessment__rubric__question--2__feedback', $assessment).val('Text response');
-                $('.question__answers', $assessment).each(function(element) {
+                $('.question__answers', $assessment).each(function() {
                     $('input[type="radio"]', this).first().click();
                 });
+            };
+
+            var submitAssessment = function(staffArea) {
+                var $assessment = $('.wrapper--staff-assessment', staffArea.element),
+                    $submitButton = $('.action--submit', $assessment);
+                $submitButton.click();
             };
 
             it('enables the submit button when all required fields are specified', function() {
                 var staffArea = createStaffArea(),
                     $assessment, $submitButton;
                 chooseStudent(staffArea, 'testStudent');
-                $assessment = $('.wrapper--staff-assessment', staffArea.element)
+                $assessment = $('.wrapper--staff-assessment', staffArea.element);
                 $submitButton = $('.action--submit', $assessment);
                 expect($submitButton).toHaveClass('is--disabled');
                 fillAssessment($assessment);
@@ -323,23 +352,38 @@ describe('OpenAssessment.StaffAreaView', function() {
 
             it('can submit a staff grade override', function() {
                 var staffArea = createStaffArea(),
-                    $assessment, $submitButton;
+                    $assessment, $gradeSection;
                 chooseStudent(staffArea, 'testStudent');
-                $assessment = $('.wrapper--staff-assessment', staffArea.element)
-                $submitButton = $('.action--submit', $assessment);
+                $assessment = $('.wrapper--staff-assessment', staffArea.element);
                 fillAssessment($assessment);
 
                 // Submit the assessment
-                server.studentTemplate = 'oa_staff_cancelled_submission.html';
-                $submitButton.click();
+                server.studentTemplate = 'oa_staff_graded_submission.html';
+                submitAssessment(staffArea);
 
-                // Verify that the student info reflects the update
-                expect($($('.staff-info__student__response p', staffArea.element)[0]).text().trim()).toBe(
-                    'Learner submission removed by staff on October 1, 2015 04:53 UTC'
+                // Verify that the student info is visible and shows the correct score
+                $gradeSection = $('.staff-info__student__grade', staffArea.element);
+                expect($('.ui-toggle-visibility', $gradeSection)).not.toHaveClass('is--collapsed');
+                expect($('p', $gradeSection).first().text().trim()).toBe(
+                    'Final grade: 1 out of 2'
                 );
-                expect($($('.staff-info__student__response p', staffArea.element)[1]).text().trim()).toBe(
-                    'Comments: Cancelled!'
-                );
+            });
+
+            it('shows an error message when a grade override request fails', function() {
+                var staffArea = createStaffArea(),
+                    serverErrorMessage = 'Mock server error',
+                    $assessment;
+                chooseStudent(staffArea, 'testStudent');
+                $assessment = $('.wrapper--staff-assessment', staffArea.element);
+                fillAssessment($assessment);
+
+                // Submit the assessment but return a server error message
+                staffArea.comment('Cancellation reason.');
+                server.staffAssess = failWith(server, serverErrorMessage);
+                submitAssessment(staffArea);
+
+                // Verify that the error message is shown
+                expect($('.staff-override-error', staffArea.element).first().text().trim()).toBe(serverErrorMessage);
             });
         });
     });

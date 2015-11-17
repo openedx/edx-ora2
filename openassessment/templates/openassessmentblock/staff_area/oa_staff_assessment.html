@@ -1,4 +1,3 @@
-{% load tz %}
 {% load i18n %}
 {% spaceless %}
 
@@ -6,7 +5,7 @@
     <div class="ui-toggle-visibility__content">
         <div class="wrapper--staff-assessment">
             <div class="step__instruction">
-                <p>{% trans "Allows you to override the current learner's grade using the problem's rubric." %}</p>
+                <p>{% trans "Override this learner's current grade using the problem's rubric." %}</p>
             </div>
 
             <div class="step__content">
@@ -42,6 +41,8 @@
                         <button type="submit" class="action action--submit is--disabled">
                             <span class="copy">{% trans "Submit your assessment" %}</span>
                         </button>
+
+                        <div class="staff-override-error"></div>
                     </li>
                 </ul>
             </div>

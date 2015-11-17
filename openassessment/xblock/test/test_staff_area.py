@@ -231,7 +231,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         path, context = xblock.get_student_info_path_and_context("Bob")
         self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
-        self.assertEquals([], context['peer_assessments'])
+        self.assertEquals(None, context['peer_assessments'])
         self.assertEquals("openassessmentblock/staff_area/oa_student_info.html", path)
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
