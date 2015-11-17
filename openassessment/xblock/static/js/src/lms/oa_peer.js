@@ -149,6 +149,7 @@ OpenAssessment.PeerView.prototype = {
             return !button.hasClass('is--disabled');
         } else {
             button.toggleClass('is--disabled', !enabled);
+            return enabled;
         }
     },
 

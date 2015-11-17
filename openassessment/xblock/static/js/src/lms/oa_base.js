@@ -126,8 +126,7 @@ OpenAssessment.BaseView.prototype = {
 
         else {
             // Insert the error message
-            var msgHtml = (message === null) ? "" : message;
-            $(container + " .message__content", element).html('<p>' + msgHtml + '</p>');
+            $(container + " .message__content", element).html('<p>' + (message ? _.escape(message) : "") + '</p>');
             // Toggle the error class
             $(container, element).toggleClass('has--error', message !== null);
         }
@@ -146,7 +145,7 @@ OpenAssessment.BaseView.prototype = {
         var $container = $('#openassessment__' + stepName);
         $container.toggleClass('has--error', true);
         $container.find('.step__status__value i').removeClass().addClass('icon fa fa-exclamation-triangle');
-        $container.find('.step__status__value .copy').html(errorMessage);
+        $container.find('.step__status__value .copy').html(_.escape(errorMessage));
     }
 };
 
