@@ -399,7 +399,7 @@ class StaffAreaTest(OpenAssessmentTest):
 
         self.staff_area_page.verify_learner_final_score(
             "The learner's submission has been removed from peer assessment. "
-            "The learner receives a grade of zero unless you reset the learner's attempts for the "
+            "The learner receives a grade of zero unless you delete the learner's state for the "
             "problem to allow them to resubmit a response."
         )
 

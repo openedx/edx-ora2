@@ -3,16 +3,16 @@
 {% load tz %}
 
 {% block list_item %}
-<li id="openassessment__response" class="openassessment__steps__step step--response ui-toggle-visibility has--error">
+    <li id="openassessment__response" class="openassessment__steps__step step--response ui-toggle-visibility has--error">
 {% endblock %}
 
 {% block title %}
     <span class="step__status">
-      <span class="step__status__label">{% trans "This step's status" %}:</span>
-      <span class="step__status__value">
-        <i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>
-        <span class="copy">{% trans "Cancelled" %}</span>
-      </span>
+        <span class="step__status__label">{% trans "This step's status" %}:</span>
+        <span class="step__status__value">
+            <i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>
+            <span class="copy">{% trans "Cancelled" %}</span>
+        </span>
     </span>
 {% endblock %}
 
@@ -24,26 +24,17 @@
                 <h3 class="message__title">{% trans "Submission Cancelled" %}</h3>
 
                 <div class="message__content">
-                  <p>
-                    {% blocktrans with removed_datetime=workflow_cancellation.cancelled_at|utc|date:"N j, Y H:i e" removed_by_username=workflow_cancellation.cancelled_by %}
-                        Your submission has been cancelled by {{ removed_by_username }} on {{ removed_datetime }}
-                    {% endblocktrans %}
-                    <br>
-                    <!-- Comments: Reason for Cancellation-->
-                    {% blocktrans with comments=workflow_cancellation.comments %}
-                        Comments: {{ comments }}
-                    {% endblocktrans %}
-                  </p>
-                </div>
-
-                <div class="step__content">
-                    <article class="submission__answer__display">
-                        <h3 class="submission__answer__display__title">{% trans "Your Response" %}</h3>
-
-                        <div class="submission__answer__display__content">
-                            {{ student_submission.answer.text|linebreaks }}
-                        </div>
-                    </article>
+                    <p>
+                        {% blocktrans with removed_datetime=workflow_cancellation.cancelled_at|utc|date:"N j, Y H:i e" removed_by_username=workflow_cancellation.cancelled_by %}
+                            Your submission has been cancelled by {{ removed_by_username }} on {{ removed_datetime }}
+                        {% endblocktrans %}
+                    </p>
+                    <p>
+                        <!-- Comments: Reason for Cancellation-->
+                        {% blocktrans with comments=workflow_cancellation.comments %}
+                            Comments: {{ comments }}
+                        {% endblocktrans %}
+                    </p>
                 </div>
             </div>
         </div>

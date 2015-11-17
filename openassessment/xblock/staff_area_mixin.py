@@ -231,7 +231,8 @@ class StaffAreaMixin(object):
 
         Args:
             student_username (unicode): The username of the student to report.
-
+            expanded_view (str): An optional view to be shown initially expanded.
+                The default is None meaning that all views are shown collapsed.
         """
         submission_uuid = None
         submission = None
@@ -269,8 +270,8 @@ class StaffAreaMixin(object):
 
         example_based_assessment = None
         self_assessment = None
-        peer_assessments = []
-        submitted_assessments = []
+        peer_assessments = None
+        submitted_assessments = None
 
         if "peer-assessment" in assessment_steps:
             peer_assessments = peer_api.get_assessments(submission_uuid)

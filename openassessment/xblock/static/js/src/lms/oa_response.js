@@ -169,6 +169,7 @@ OpenAssessment.ResponseView.prototype = {
             return !sel.hasClass('is--disabled');
         } else {
             sel.toggleClass('is--disabled', !enabled);
+            return enabled;
         }
     },
 
