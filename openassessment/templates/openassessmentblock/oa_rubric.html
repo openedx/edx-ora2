@@ -6,11 +6,11 @@
         {% for criterion in rubric_criteria %}
         <li
             class="field field--radio is--required assessment__rubric__question ui-toggle-visibility {% if criterion.options %}has--options{% endif %}"
-            id="assessment__rubric__question--{{ criterion.order_num }}"
+            id="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}"
         >
             <h4 class="question__title ui-toggle-visibility__control">
                 <i class="icon fa fa-caret-right" aria-hidden="true"></i>
-                <span id="assessment__rubric__prompt--{{ criterion.order_num }}" class="ui-toggle-visibility__control__copy question__title__copy">{{ criterion.prompt }}</span>
+                <span id="{{ rubric_type }}__assessment__rubric__prompt--{{ criterion.order_num }}" class="ui-toggle-visibility__control__copy question__title__copy">{{ criterion.prompt }}</span>
                 <span class="label--required sr">* ({% trans "Required" %})</span>
             </h4>
 
@@ -21,11 +21,11 @@
                         <div class="wrapper--input">
                             <input type="radio"
                                    name="{{ criterion.name }}"
-                                   id="assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
+                                   id="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
                                    class="answer__value"
                                    value="{{ option.name }}"
-                                   aria-labelledby="assessment__rubric__prompt--{{ criterion.order_num }}"/>
-                            <label for="assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
+                                   aria-labelledby="{{ rubric_type }}__assessment__rubric__prompt--{{ criterion.order_num }}"/>
+                            <label for="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
                                    class="answer__label"
                                    >{{ option.label }}</label>
                         </div>
@@ -39,9 +39,9 @@
                     {% if criterion.feedback == 'optional' or criterion.feedback == 'required' %}
                     <li class="answer--feedback">
                         <div class="wrapper--input">
-                            <label for="assessment__rubric__question--{{ criterion.order_num }}__feedback" class="answer__label">{% trans "Comments" %}</label>
+                            <label for="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__feedback" class="answer__label">{% trans "Comments" %}</label>
                             <textarea
-                                id="assessment__rubric__question--{{ criterion.order_num }}__feedback"
+                                id="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__feedback"
                                 class="answer__value"
                                 value="{{ criterion.name }}"
                                 name="{{ criterion.name }}"
@@ -56,14 +56,15 @@
             </div>
         </li>
         {% endfor %}
-        <li class="wrapper--input field field--textarea assessment__rubric__question assessment__rubric__question--feedback" id="assessment__rubric__question--feedback">
-            <label class="question__title" for="assessment__rubric__question--feedback__value">
+        <li class="wrapper--input field field--textarea assessment__rubric__question assessment__rubric__question--feedback">
+            <label class="question__title" for="{{ rubric_type }}__assessment__rubric__question--feedback__value">
                 <span class="question__title__copy">{{ rubric_feedback_prompt }}</span>
             </label>
 
             <div class="wrapper--input">
                 <textarea
-                    id="assessment__rubric__question--feedback__value"
+                    id="{{ rubric_type }}__assessment__rubric__question--feedback__value"
+                    class="assessment__rubric__question--feedback__value"
                     placeholder="{{ rubric_feedback_default_text }}"
                     maxlength="500"
                 >
