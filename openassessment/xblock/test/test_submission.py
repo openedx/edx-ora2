@@ -318,23 +318,17 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
     @scenario('data/submission_open.xml', user_id="Bob")
     def test_cancelled_submission(self, xblock):
         student_item = xblock.get_student_item_dict()
+        mock_staff = Mock(name='Bob')
+        xblock.get_username = Mock(return_value=mock_staff)
         submission = xblock.create_submission(
             student_item,
             ('A man must have a code', 'A man must have an umbrella too.')
         )
-        xblock.get_workflow_info = Mock(return_value={
-            'status': 'cancelled',
-            'submission_uuid': submission['uuid']
-        })
-
-        xblock.get_username = Mock(return_value='Bob')
-
-        workflow_api.get_assessment_workflow_cancellation = Mock(return_value={
-            'comments': 'Inappropriate language',
-            'cancelled_by_id': 'Bob',
-            'created_at': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
-            'cancelled_by': 'Bob'
-        })
+        workflow_api.cancel_workflow(
+            submission_uuid=submission['uuid'], comments='Inappropriate language',
+            cancelled_by_id='Bob',
+            assessment_requirements=xblock.workflow_requirements()
+        )
 
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_cancelled.html',
@@ -347,8 +341,9 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'student_submission': submission,
                 'workflow_cancellation': {
                     'comments': 'Inappropriate language',
+                    'cancelled_at': xblock.get_workflow_cancellation_info(submission['uuid']).get('cancelled_at'),
                     'cancelled_by_id': 'Bob',
-                    'cancelled_by': 'Bob'
+                    'cancelled_by': mock_staff
                 }
             }
         )
