@@ -8,8 +8,9 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
 
     /**
      * Interface for server-side XBlock handlers.
-     * @param runtime (Runtime): An XBlock runtime instance.
-     * @param element (DOM element): The DOM element representing this XBlock.
+     *
+     * @param {runtime} runtime - An XBlock runtime instance.
+     * @param {element} element - The DOM element representing this XBlock.
      * @constructor
      */
     OpenAssessment.Server = function(runtime, element) {
@@ -43,23 +44,21 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
             var url = this.url('render_' + component);
             return $.Deferred(function(defer) {
                 $.ajax({
-                        url: url,
-                        type: "POST",
-                        dataType: "html"
-                    })
-                    .done(function(data) {
-                        defer.resolveWith(view, [data]);
-                    })
-                    .fail(function() {
-                        defer.rejectWith(view, [gettext('This section could not be loaded.')]);
-                    });
+                    url: url,
+                    type: "POST",
+                    dataType: "html"
+                }).done(function(data) {
+                    defer.resolveWith(view, [data]);
+                }).fail(function() {
+                    defer.rejectWith(view, [gettext('This section could not be loaded.')]);
+                });
             }).promise();
         },
 
         /**
          * Render Latex for all new DOM elements with class 'allow--latex'.
          *
-         * @param element The element to modify.
+         * @param {element} element - The element to modify.
          */
         renderLatex: function(element) {
             element.filter(".allow--latex").each(function() {
@@ -77,6 +76,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         renderContinuedPeer: function() {
             var view = this;
             var url = this.url('render_peer_assessment');
+
             return $.Deferred(function(defer) {
                 $.ajax({
                     url: url,
@@ -94,8 +94,8 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         /**
          * Load the student information section inside the Staff Info section.
          *
-         * @param {string} student_username The username for the student.
-         * @param {object} options An optional set of configuration options.
+         * @param {string} studentUsername - The username for the student.
+         * @param {object} options - An optional set of configuration options.
          * @returns {promise} A JQuery promise, which resolves with the HTML of the rendered section
          *     fails with an error message.
          */
@@ -127,27 +127,25 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
             var url = this.url('submit');
             return $.Deferred(function(defer) {
                 $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: JSON.stringify({submission: submission}),
-                        contentType: jsonContentType
-                    })
-                    .done(function(data) {
-                        var success = data[0];
-                        if (success) {
-                            var studentId = data[1];
-                            var attemptNum = data[2];
-                            defer.resolveWith(this, [studentId, attemptNum]);
-                        }
-                        else {
-                            var errorNum = data[1];
-                            var errorMsg = data[2];
-                            defer.rejectWith(this, [errorNum, errorMsg]);
-                        }
-                    })
-                    .fail(function() {
-                        defer.rejectWith(this, ["AJAX", gettext("This response could not be submitted.")]);
-                    });
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify({submission: submission}),
+                    contentType: jsonContentType
+                }).done(function(data) {
+                    var success = data[0];
+                    if (success) {
+                        var studentId = data[1];
+                        var attemptNum = data[2];
+                        defer.resolveWith(this, [studentId, attemptNum]);
+                    }
+                    else {
+                        var errorNum = data[1];
+                        var errorMsg = data[2];
+                        defer.rejectWith(this, [errorNum, errorMsg]);
+                    }
+                }).fail(function() {
+                    defer.rejectWith(this, ["AJAX", gettext("This response could not be submitted.")]);
+                });
             }).promise();
         },
 
@@ -162,18 +160,16 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
             var url = this.url('save_submission');
             return $.Deferred(function(defer) {
                 $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: JSON.stringify({submission: submission}),
-                        contentType: jsonContentType
-                    })
-                    .done(function(data) {
-                        if (data.success) { defer.resolve(); }
-                        else { defer.rejectWith(this, [data.msg]); }
-                    })
-                    .fail(function() {
-                        defer.rejectWith(this, [gettext("This response could not be saved.")]);
-                    });
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify({submission: submission}),
+                    contentType: jsonContentType
+                }).done(function(data) {
+                    if (data.success) { defer.resolve(); }
+                    else { defer.rejectWith(this, [data.msg]); }
+                }).fail(function() {
+                    defer.rejectWith(this, [gettext("This response could not be saved.")]);
+                });
             }).promise();
         },
 
@@ -195,12 +191,8 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                 $.ajax({
                     type: "POST", url: url, data: payload, contentType: jsonContentType
                 }).done(function(data) {
-                    if (data.success) {
-                        defer.resolve();
-                    }
-                    else {
-                        defer.rejectWith(this, [data.msg]);
-                    }
+                    if (data.success) { defer.resolve(); }
+                    else { defer.rejectWith(this, [data.msg]); }
                 }).fail(function() {
                     defer.rejectWith(this, [gettext('This feedback could not be submitted.')]);
                 });
@@ -210,8 +202,8 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         /**
          * Submits an assessment.
          *
-         * @param {string} assessmentType The type of assessment.
-         * @param payload The assessment payload
+         * @param {string} assessmentType - The type of assessment.
+         * @param {object} payload - The assessment payload
          * @returns {promise} A promise which resolves with no arguments if successful,
          *     and which fails with an error message otherwise.
          */
@@ -236,12 +228,12 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         /**
          * Send a peer assessment to the XBlock.
          *
-         * @param optionsSelected The options selected as a dict,
+         * @param {object} optionsSelected - The options selected as a dict,
          *     e.g. { clarity: "Very clear", precision: "Somewhat precise" }
-         * @param criterionFeedback Feedback on the criterion,
+         * @param {object} criterionFeedback - Feedback on the criterion,
          *     e.g. { clarity: "The essay was very clear." }
-         * @param {string} overallFeedback A string with the staff member's overall feedback.
-         * @param {string} submissionID The ID of the submission being assessed.
+         * @param {string} overallFeedback - A string with the staff member's overall feedback.
+         * @param {string} submissionID - The ID of the submission being assessed.
          * @returns {promise} A promise which resolves with no arguments if successful,
          *     and which fails with an error message otherwise.
          */
@@ -257,11 +249,11 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         /**
          * Send a self assessment to the XBlock.
          *
-         * @param optionsSelected The options selected as a dict,
+         * @param {object} optionsSelected - The options selected as a dict,
          *     e.g. { clarity: "Very clear", precision: "Somewhat precise" }
-         * @param criterionFeedback Feedback on the criterion,
+         * @param {object} criterionFeedback - Feedback on the criterion,
          *     e.g. { clarity: "The essay was very clear." }
-         * @param {string} overallFeedback A string with the staff member's overall feedback.
+         * @param {string} overallFeedback - A string with the staff member's overall feedback.
          * @returns {promise} A promise which resolves with no arguments if successful,
          *     and which fails with an error message otherwise.
          */
@@ -276,12 +268,12 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         /**
          * Send a staff assessment to the XBlock.
          *
-         * @param optionsSelected The options selected as a dict,
+         * @param {object} optionsSelected - The options selected as a dict,
          *     e.g. { clarity: "Very clear", precision: "Somewhat precise" }
-         * @param criterionFeedback Feedback on the criterion,
+         * @param {object} criterionFeedback - Feedback on the criterion,
          *     e.g. { clarity: "The essay was very clear." }
-         * @param {string} overallFeedback A string with the staff member's overall feedback.
-         * @param {string} submissionID The ID of the submission being assessed.
+         * @param {string} overallFeedback - A string with the staff member's overall feedback.
+         * @param {string} submissionID - The ID of the submission being assessed.
          * @returns {promise} A promise which resolves with no arguments if successful,
          *     and which fails with an error message otherwise.
          */
@@ -297,7 +289,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         /**
          * Submit an instructor-provided training example.
          *
-         * @param optionsSelected The options selected as a dict,
+         * @param {object} optionsSelected - The options selected as a dict,
          *     e.g. { clarity: "Very clear", precision: "Somewhat precise" }
          * @returns {promise} A promise which resolves with a list of corrections if successful,
          *     and which fails with an error message otherwise.
@@ -308,7 +300,9 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                 options_selected: optionsSelected
             });
             return $.Deferred(function(defer) {
-                $.ajax({type: "POST", url: url, data: payload, contentType: jsonContentType}).done(function(data) {
+                $.ajax({
+                    type: "POST", url: url, data: payload, contentType: jsonContentType
+                }).done(function(data) {
                     if (data.success) {
                         defer.resolveWith(this, [data.corrections]);
                     }
@@ -322,26 +316,17 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         },
 
         /**
-<<<<<<< HEAD
-         Schedules classifier training for Example Based Assessment for this
-         Location.
-
-         Returns:
-         A JQuery promise, which resolves with a message indicating the results
-         of the scheduling request.
-
-         Example:
-         server.scheduleTraining().done(
-         function(msg) { console.log("Success!"); }
-         alert(msg);
-         ).fail(
-         function(errorMsg) { console.log(errorMsg); }
-         );
-         **/
+         * Schedules classifier training for Example Based Assessments.
+         *
+         * @returns {promise} A JQuery promise, which resolves with a
+         * message indicating the results of the scheduling request.
+         */
         scheduleTraining: function() {
             var url = this.url('schedule_training');
             return $.Deferred(function(defer) {
-                $.ajax({type: "POST", url: url, data: "\"\"", contentType: jsonContentType}).done(function(data) {
+                $.ajax({
+                    type: "POST", url: url, data: "\"\"", contentType: jsonContentType
+                }).done(function(data) {
                     if (data.success) {
                         defer.resolveWith(this, [data.msg]);
                     }
@@ -363,9 +348,9 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         rescheduleUnfinishedTasks: function() {
             var url = this.url('reschedule_unfinished_tasks');
             return $.Deferred(function(defer) {
-                $.ajax(
-                    {type: "POST", url: url, data: "\"\"", contentType: jsonContentType}
-                ).done(function(data) {
+                $.ajax({
+                    type: "POST", url: url, data: "\"\"", contentType: jsonContentType
+                }).done(function(data) {
                     if (data.success) {
                         defer.resolveWith(this, [data.msg]);
                     }
@@ -381,7 +366,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         /**
          * Update the XBlock's XML definition on the server.
          *
-         * @param options An object with the following options:
+         * @param {object} options - An object with the following options:
          *     title (string): The title of the problem.
          *     prompt (string): The question prompt.
          *     feedbackPrompt (string): The directions to the student for giving overall feedback on a submission.
@@ -418,15 +403,13 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
             });
             return $.Deferred(function(defer) {
                 $.ajax({
-                        type: "POST", url: url, data: payload, contentType: jsonContentType
-                    })
-                    .done(function(data) {
-                        if (data.success) { defer.resolve(); }
-                        else { defer.rejectWith(this, [data.msg]); }
-                    })
-                    .fail(function() {
-                        defer.rejectWith(this, [gettext('This problem could not be saved.')]);
-                    });
+                    type: "POST", url: url, data: payload, contentType: jsonContentType
+                }).done(function(data) {
+                    if (data.success) { defer.resolve(); }
+                    else { defer.rejectWith(this, [data.msg]); }
+                }).fail(function() {
+                    defer.rejectWith(this, [gettext('This problem could not be saved.')]);
+                });
             }).promise();
         },
 
@@ -442,15 +425,13 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
             var payload = "\"\"";
             return $.Deferred(function(defer) {
                 $.ajax({
-                        type: "POST", url: url, data: payload, contentType: jsonContentType
-                    })
-                    .done(function(data) {
-                        if (data.success) { defer.resolveWith(this, [data.is_released]); }
-                        else { defer.rejectWith(this, [data.msg]); }
-                    })
-                    .fail(function() {
-                        defer.rejectWith(this, [gettext("The server could not be contacted.")]);
-                    });
+                    type: "POST", url: url, data: payload, contentType: jsonContentType
+                }).done(function(data) {
+                    if (data.success) { defer.resolveWith(this, [data.is_released]); }
+                    else { defer.rejectWith(this, [data.msg]); }
+                }).fail(function() {
+                    defer.rejectWith(this, [gettext("The server could not be contacted.")]);
+                });
             }).promise();
         },
 
@@ -503,11 +484,11 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         /**
          * Cancel a submission from the peer grading pool.
          *
-         * @param submissionID The id of the submission to be canceled.
-         * @param comments The reason for canceling the submission.
+         * @param {object} submissionID - The id of the submission to be canceled.
+         * @param {object} comments - The reason for canceling the submission.
          * @returns {*}
          */
-        cancelSubmission: function (submissionID, comments) {
+        cancelSubmission: function(submissionID, comments) {
             var url = this.url('cancel_submission');
             var payload = JSON.stringify({
                 submission_uuid: submissionID,
