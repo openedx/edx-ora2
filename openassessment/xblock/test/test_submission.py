@@ -16,7 +16,7 @@ from submissions import api as sub_api
 from submissions.api import SubmissionRequestError, SubmissionInternalError
 from openassessment.fileupload import api
 
-from openassessment.workflow.models import AssessmentWorkflowCancellation
+from openassessment.workflow import api as workflow_api
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from openassessment.xblock.data_conversion import create_submission_dict, prepare_submission_for_serialization
 
@@ -329,7 +329,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
 
         xblock.get_username = Mock(return_value='Bob')
 
-        AssessmentWorkflowCancellation.get_latest_workflow_cancellation = Mock(return_value={
+        workflow_api.get_assessment_workflow_cancellation = Mock(return_value={
             'comments': 'Inappropriate language',
             'cancelled_by_id': 'Bob',
             'created_at': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
@@ -348,7 +348,6 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'workflow_cancellation': {
                     'comments': 'Inappropriate language',
                     'cancelled_by_id': 'Bob',
-                    'cancelled_at': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                     'cancelled_by': 'Bob'
                 }
             }
