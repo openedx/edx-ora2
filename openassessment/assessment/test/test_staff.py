@@ -122,7 +122,7 @@ class TestStaffAssessment(CacheResetTest):
             initial_assessment = OPTIONS_SELECTED_DICT["none"]
 
         # Create assessment
-        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer", override_steps=['self'])
 
         # Self assess it
         self_assessment = self_assess(
@@ -219,7 +219,9 @@ class TestStaffAssessment(CacheResetTest):
         # Verify both assessment and workflow report correct score
         self.assertEqual(staff_assessment["points_earned"], OPTIONS_SELECTED_DICT[staff_score]["expected_points"])
         workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], requirements)
-        self.assertEqual(workflow["score"]["points_earned"], OPTIONS_SELECTED_DICT[staff_score]["expected_points"])
+        # It's impossible to fake self requirements being complete, so we can't get the score for the self after_type
+        if after_type != 'self':
+            self.assertEqual(workflow["score"]["points_earned"], OPTIONS_SELECTED_DICT[staff_score]["expected_points"])
 
         # Now, non-force asses with a 'most' value
         # This was selected to match the value that the ai test will set
@@ -380,7 +382,7 @@ class TestStaffAssessment(CacheResetTest):
         new_student_item = STUDENT_ITEM.copy()
         new_student_item["student_id"] = student
         submission = sub_api.create_submission(new_student_item, answer, date)
-        steps = ['self']
+        steps = []
         init_params = {}
         if override_steps:
             steps = override_steps
