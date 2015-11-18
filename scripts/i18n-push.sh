@@ -21,14 +21,20 @@
 
 cd `dirname $BASH_SOURCE` && cd ..
 
+# Note we only extract the English language strings so they can be
+# sent to Transifex. All other language strings will be pulled
+# down from Transifex and so don't need to be generated.
+
 echo "Extracting i18n strings..."
-python manage.py makemessages --all
-python manage.py makemessages --all -d djangojs
+django-admin.py makemessages --locale=en --ignore="edx-ora2/*" --ignore="build/*" --ignore="node_modules/*"
+
+echo "Extracting client-side i18n strings..."
+django-admin.py makemessages --locale=en --ignore="edx-ora2/*" --ignore="build/*" --ignore="node_modules/*" -d djangojs
 
 echo "Generating dummy strings..."
 i18n_tool dummy
 
-read -p "Push strings to transifex? [y/n]  " RESP
+read -p "Push strings to Transifex? [y/n]  " RESP
 if [ "$RESP" = "y" ]; then
     i18n_tool transifex push
     echo " == Pushed strings to Transifex"
