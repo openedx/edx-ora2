@@ -31,6 +31,7 @@ from openassessment.xblock.studio_mixin import StudioMixin
 from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
 from openassessment.xblock.staff_area_mixin import StaffAreaMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
+from openassessment.xblock.staff_assessment_mixin import StaffAssessmentMixin
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.student_training_mixin import StudentTrainingMixin
 from openassessment.xblock.validation import validator
@@ -66,6 +67,12 @@ UI_MODELS = {
         "navigation_text": "Your assessment of your response",
         "title": "Assess Your Response"
     },
+    "staff-assessment": {
+        "name": "staff-assessment",
+        "class_id": "openassessment__staff-assessment",
+        "navigation_text": "Staff assessment of your response",
+        "title": "Staff Assessment"
+    },
     "grade": {
         "name": "grade",
         "class_id": "openassessment__grade",
@@ -85,6 +92,7 @@ VALID_ASSESSMENT_TYPES = [
     "example-based-assessment",
     "peer-assessment",
     "self-assessment",
+    "staff-assessment"
 ]
 
 
@@ -100,6 +108,7 @@ class OpenAssessmentBlock(
     SubmissionMixin,
     PeerAssessmentMixin,
     SelfAssessmentMixin,
+    StaffAssessmentMixin,
     StudioMixin,
     GradeMixin,
     LeaderboardMixin,
@@ -447,6 +456,11 @@ class OpenAssessmentBlock(
         """
         ui_models = [UI_MODELS["submission"]]
         for assessment in self.valid_assessments:
+            if assessment["name"] == "staff-assessment" and assessment["required"] == False:
+                # If we don't have a staff grade, and it's not required, hide
+                # this UI model.
+                if not self.staff_assessment_exists(self.submission_uuid):
+                    continue
             ui_model = UI_MODELS.get(assessment["name"])
             if ui_model:
                 ui_models.append(dict(assessment, **ui_model))

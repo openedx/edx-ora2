@@ -1,9 +1,10 @@
 """
 Errors for the peer assessment.
 """
+from .base import AssessmentError
 
 
-class PeerAssessmentError(Exception):
+class PeerAssessmentError(AssessmentError):
     """Generic Peer Assessment Error
 
     Raised when an error occurs while processing a request related to the
