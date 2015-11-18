@@ -78,7 +78,8 @@ class TestStaffAssessment(CacheResetTest):
         self.assertEqual(assessment["points_earned"], OPTIONS_SELECTED_DICT[key]["expected_points"])
         self.assertEqual(assessment["points_possible"], RUBRIC_POSSIBLE_POINTS)
 
-        # ensure submission is marked as finished
+        #ensure submission is marked as finished
+        # TODO: worflow finished?
         self.assertTrue(staff_api.assessment_is_finished(tim_sub["uuid"], self.STEP_REQUIREMENTS))
 
     @data(*ASSESSMENT_SCORES_DDT)
@@ -101,7 +102,8 @@ class TestStaffAssessment(CacheResetTest):
             RUBRIC,
         )
 
-        # Verify assesment made, score updated, and no longer waiting
+        # Verify assesment made, score updated, and no longer wating
+        # TODO: worflow finished?
         self.assertEqual(staff_assessment["points_earned"], OPTIONS_SELECTED_DICT[key]["expected_points"])
         self.assertTrue(staff_api.assessment_is_finished(tim_sub["uuid"], self.STEP_REQUIREMENTS_WITH_STAFF))
 
@@ -182,7 +184,7 @@ class TestStaffAssessment(CacheResetTest):
 
         # Verify both assessment and workflow report correct score
         self.assertEqual(staff_assessment["points_earned"], OPTIONS_SELECTED_DICT[staff_score]["expected_points"])
-        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], self.STEP_REQUIREMENTS)
+        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], requirements)
         self.assertEqual(workflow["score"]["points_earned"], OPTIONS_SELECTED_DICT[staff_score]["expected_points"])
 
     @data(*ASSESSMENT_TYPES_DDT)
@@ -195,6 +197,10 @@ class TestStaffAssessment(CacheResetTest):
         # Staff assessments do not block other staff scores from overriding, so skip that test
         if after_type == 'staff':
             return
+
+        requirements = self.STEP_REQUIREMENTS
+        if after_type == 'peer':
+            requirements = {"peer": {"must_grade": 0, "must_be_graded_by": 1}}
 
         # Create assessment
         tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer", override_steps=[after_type])
@@ -210,22 +216,68 @@ class TestStaffAssessment(CacheResetTest):
 
         # Verify both assessment and workflow report correct score
         self.assertEqual(staff_assessment["points_earned"], OPTIONS_SELECTED_DICT[staff_score]["expected_points"])
-        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], self.STEP_REQUIREMENTS)
+        workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], requirements)
         self.assertEqual(workflow["score"]["points_earned"], OPTIONS_SELECTED_DICT[staff_score]["expected_points"])
 
         # Now, non-force asses with a 'most' value
         # This was selected to match the value that the ai test will set
         unscored_assessment = OPTIONS_SELECTED_DICT["most"]
         assessment = after_assess(tim_sub["uuid"], tim["student_id"], unscored_assessment["options"])
-        # and update workflow with new scores
-        requirements = self.STEP_REQUIREMENTS
-        if after_type == 'peer':
-            requirements = {"peer": {"must_grade": 0, "must_be_graded_by": 1}}
 
         # Verify both assessment and workflow report correct score (workflow should report previous value)
         self.assertEqual(assessment["points_earned"], unscored_assessment["expected_points"])
         workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], requirements)
         self.assertEqual(workflow["score"]["points_earned"], OPTIONS_SELECTED_DICT[staff_score]["expected_points"])
+
+    def test_provisionally_done(self):
+        """
+        The idea behind this test:
+            -the presence of a staff assessment makes a given submission "done"
+            -exception: if this is an optional staff grade on top of a usually-requires-peer-assessment submission:
+                -then the user must still peer grade the required number of responses before seeing their (staff-stermined) grade
+        # TODO: better docstring once this is more thoroughly fleshed out
+        """
+        # Tim(student) makes a submission, for a problem that requires peer assessment
+        tim_sub, tim = TestStaffAssessment._create_student_and_submission("Tim", "Tim's answer", override_steps=['peer'])
+        # Bob(student) also makes a submission for that problem
+        bob_sub, bob = TestStaffAssessment._create_student_and_submission("Bob", "Bob's answer", override_steps=['peer'])
+
+        # Define peer requirements. Note that neither submission will fulfill must_be_graded_by
+        requirements = {"peer": {"must_grade": 1, "must_be_graded_by": 2}}
+
+        staff_score = "none"
+        # Dumbledore(staff) uses override ability to provide a score for both submissions
+        tim_assessment = staff_api.create_assessment(
+            tim_sub["uuid"],
+            "Dumbledore",
+            OPTIONS_SELECTED_DICT[staff_score]["options"], dict(), "",
+            RUBRIC,
+        )
+        bob_assessment = staff_api.create_assessment(
+            bob_sub["uuid"],
+            "Dumbledore",
+            OPTIONS_SELECTED_DICT[staff_score]["options"], dict(), "",
+            RUBRIC,
+        )
+
+        # Bob completes his peer assessment duties, Tim does not
+        peer_api.get_submission_to_assess(bob_sub["uuid"], 1)
+        peer_assess(
+            bob_sub["uuid"],
+            bob["student_id"],
+            OPTIONS_SELECTED_DICT["most"]["options"], dict(), "",
+            RUBRIC,
+            requirements["peer"]["must_be_graded_by"]
+        )
+
+
+        # Verify that Bob's submission is marked done and returns the proper score
+        bob_workflow = workflow_api.get_workflow_for_submission(bob_sub["uuid"], requirements)
+        self.assertEqual(bob_workflow["score"]["points_earned"], OPTIONS_SELECTED_DICT[staff_score]["expected_points"])
+
+        # Verify that Tim's submission is not marked done, and he cannot get his score
+        tim_workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], requirements)
+        self.assertEqual(tim_workflow["score"], None)
 
     def test_invalid_rubric_exception(self):
         # Create a submission
