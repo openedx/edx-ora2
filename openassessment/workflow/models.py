@@ -98,6 +98,27 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
 
     @classmethod
     @transaction.atomic
+    def include_staff_in_class(cls):
+        if 'staff' not in cls.STEPS:
+            new_list = ['staff']
+            new_list.extend(cls.STEPS)
+            cls.STEPS = new_list
+            cls.STATUS_VALUES = cls.STEPS + cls.STATUSES
+            cls.STATUS = Choices(*cls.STATUS_VALUES)
+
+        if 'staff' not in cls.ASSESSMENT_SCORE_PRIORITY:
+            new_list = ['staff']
+            new_list.extend(cls.ASSESSMENT_SCORE_PRIORITY)
+            cls.ASSESSMENT_SCORE_PRIORITY = new_list
+
+    @classmethod
+    def from_db(cls, db, field_names, values):
+        cls.include_staff_in_class()
+        super(AssessmentWorkflow).from_db(db, field_names, values)
+
+    @classmethod
+    @transaction.commit_on_success
+>>>>>>> Include staff in class
     def start_workflow(cls, submission_uuid, step_names, on_init_params):
         """
         Start a new workflow.
@@ -125,17 +146,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             new_list.extend(step_names)
             step_names = new_list
 
-        if 'staff' not in cls.STEPS:
-            new_list = ['staff']
-            new_list.extend(cls.STEPS)
-            cls.STEPS = new_list
-            cls.STATUS_VALUES = cls.STEPS + cls.STATUSES
-            cls.STATUS = Choices(*cls.STATUS_VALUES)
-
-        if 'staff' not in cls.ASSESSMENT_SCORE_PRIORITY:
-            new_list = ['staff']
-            new_list.extend(cls.ASSESSMENT_SCORE_PRIORITY)
-            cls.ASSESSMENT_SCORE_PRIORITY = new_list
+        cls.include_staff_in_class()
 
         # Create the workflow and step models in the database
         # For now, set the status to waiting; we'll modify it later
