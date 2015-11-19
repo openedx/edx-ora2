@@ -114,6 +114,31 @@ class StaffAreaA11yTest(OpenAssessmentA11yTest):
 
         self._check_a11y(self.staff_area_page)
 
+    def test_staff_grade(self):
+        """
+        Check the accessibility of the Staff Grade section, as shown to the learner.
+        """
+        self.auto_auth_page.visit()
+        username = self.auto_auth_page.get_username()
+        self.submission_page.visit().submit_response(self.SUBMISSION)
+        self.assertTrue(self.submission_page.has_submitted)
+
+        # Submit a staff override
+        self.staff_area_page.visit()
+        self.staff_area_page.show_learner(username)
+        self.staff_area_page.expand_learner_report_sections()
+        self.staff_area_page.assess("staff", self.STAFF_OVERRIDE_OPTIONS_SELECTED)
+
+        # Refresh the page, and learner completes a self-assessment.
+        # Then verify accessibility of the Staff Grade section (marked Complete).
+        self.browser.refresh()
+        self.self_asmnt_page.wait_for_page().wait_for_response()
+        self.self_asmnt_page.assess("self", self.OPTIONS_SELECTED).wait_for_complete()
+        self.assertTrue(self.self_asmnt_page.is_complete)
+        self._verify_staff_grade_section("COMPLETE", None)
+
+        self._check_a11y(self.staff_asmnt_page)
+
 
 if __name__ == "__main__":
 

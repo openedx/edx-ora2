@@ -20,6 +20,7 @@ OpenAssessment.BaseView = function(runtime, element, server, data) {
     this.trainingView = new OpenAssessment.StudentTrainingView(this.element, this.server, this);
     this.selfView = new OpenAssessment.SelfView(this.element, this.server, this);
     this.peerView = new OpenAssessment.PeerView(this.element, this.server, this);
+    this.staffView = new OpenAssessment.StaffView(this.element, this.server, this);
     this.gradeView = new OpenAssessment.GradeView(this.element, this.server, this);
     this.leaderboardView = new OpenAssessment.LeaderboardView(this.element, this.server, this);
     this.messageView = new OpenAssessment.MessageView(this.element, this.server, this);
@@ -71,6 +72,7 @@ OpenAssessment.BaseView.prototype = {
     loadAssessmentModules: function() {
         this.trainingView.load();
         this.peerView.load();
+        this.staffView.load();
         this.selfView.load();
         this.gradeView.load();
         this.leaderboardView.load();
