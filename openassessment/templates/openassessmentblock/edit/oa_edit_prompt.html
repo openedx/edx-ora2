@@ -1,9 +1,8 @@
 {% load i18n %}
 {% spaceless %}
-<li class="openassessment_prompt is-collapsible" data-prompt="{{ prompt_uuid }}">
+<li class="openassessment_prompt" data-prompt="{{ prompt_uuid }}">
 
     <div class="openassessment_container_header openassessment_prompt_header view-outline">
-        <a class="action expand-collapse collapse"><i class="icon-caret-down ui-toggle-expansion"></i></a>
         <div class="openassessment_container_header_title_box openassessment_prompt_header_title_box">
             <h6 class="openassessment_container_header_title openassessment_prompt_header_title">{% trans "Prompt" %}</h6>
             <p class="openassessment_container_guide openassessment_prompt_guide">{% trans "You cannot delete a prompt after the assignment has been released." %}</p>

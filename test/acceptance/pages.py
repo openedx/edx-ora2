@@ -32,6 +32,14 @@ class OpenAssessmentPage(PageObject):
         super(OpenAssessmentPage, self).__init__(browser)
         self._problem_location = problem_location
 
+    def _bounded_selector(self, selector):
+        """
+        Allows scoping to a portion of the page.
+
+        The default implementation just returns the selector
+        """
+        return selector
+
     @property
     def url(self):
         return "{base}/{loc}".format(
@@ -39,19 +47,19 @@ class OpenAssessmentPage(PageObject):
             loc=self._problem_location
         )
 
-    def submit(self):
+    def submit(self, button_css=".action--submit"):
         """
         Click the submit button on the page.
         This relies on the fact that we use the same CSS styles for submit buttons
-        in all problem steps.
+        in all problem steps (unless custom value for button_css is passed in).
         """
         EmptyPromise(
-            lambda: 'is--disabled' not in " ".join(self.q(css=".action--submit").attrs('class')),
+            lambda: 'is--disabled' not in " ".join(self.q(css=self._bounded_selector(button_css)).attrs('class')),
             "Submit button is enabled."
         ).fulfill()
 
         with self.handle_alert():
-            self.q(css=".action--submit").first.click()
+            self.q(css=self._bounded_selector(button_css)).first.click()
 
     def hide_django_debug_tool(self):
         if self.q(css='#djDebug').visible:
@@ -155,7 +163,43 @@ class SubmissionPage(OpenAssessmentPage):
         return self.q(css="#submission__custom__upload").visible
 
 
-class AssessmentPage(OpenAssessmentPage):
+class AssessmentMixin(object):
+    """
+    Mixin for interacting with the assessment rubric.
+    """
+    def assess(self, assessment_type, options_selected):
+        """
+        Create an assessment.
+
+        Args:
+            options_selected (list of int): list of the indices (starting from 0)
+            of each option to select in the rubric.
+
+        Returns:
+            AssessmentPage
+
+        Example usage:
+        >>> page.assess([0, 2, 1])
+
+        """
+        for criterion_num, option_num in enumerate(options_selected):
+            sel = "#{assessment_type}__assessment__rubric__question--{criterion_num}__{option_num}".format(
+                assessment_type=assessment_type,
+                criterion_num=criterion_num,
+                option_num=option_num
+            )
+            self.q(css=self._bounded_selector(sel)).first.click()
+        self.submit_assessment()
+        return self
+
+    def submit_assessment(self):
+        """
+        Submit an assessment of the problem.
+        """
+        self.submit()
+
+
+class AssessmentPage(OpenAssessmentPage, AssessmentMixin):
     """
     Page object representing an "assessment" step in an ORA problem.
     """
@@ -192,30 +236,6 @@ class AssessmentPage(OpenAssessmentPage):
         # return pos['y'] < 100
         # self.wait_for_element_visibility(".chapter.is-open", "Chapter heading is on visible", timeout=10)
         return self.q(css=".chapter.is-open").visible
-
-    def assess(self, options_selected):
-        """
-        Create an assessment.
-
-        Args:
-            options_selected (list of int): list of the indices (starting from 0)
-            of each option to select in the rubric.
-
-        Returns:
-            AssessmentPage
-
-        Example usage:
-        >>> page.assess([0, 2, 1])
-
-        """
-        for criterion_num, option_num in enumerate(options_selected):
-            sel = "#assessment__rubric__question--{criterion_num}__{option_num}".format(
-                criterion_num=criterion_num,
-                option_num=option_num
-            )
-            self.q(css=sel).first.click()
-        self.submit()
-        return self
 
     @property
     def response_text(self):
@@ -341,36 +361,42 @@ class GradePage(OpenAssessmentPage):
         return score_candidates[0] if len(score_candidates) > 0 else None
 
 
-class StaffAreaPage(OpenAssessmentPage):
+class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
     """
-    Page object representing the "submission" step in an ORA problem.
+    Page object representing the tabbed staff area.
     """
 
+    def _bounded_selector(self, selector):
+        """
+        Return `selector`, but limited to the staff area management area.
+        """
+        return '.openassessment__staff-area {}'.format(selector)
+
     def is_browser_on_page(self):
-        return self.q(css="#openassessment__staff-area").is_present()
+        return self.q(css=".openassessment__staff-area").is_present()
 
     @property
     def selected_button_names(self):
         """
         Returns the names of the selected toolbar buttons.
         """
-        buttons = self.q(css=".ui-staff__button")
+        buttons = self.q(css=self._bounded_selector(".ui-staff__button"))
         return [button.text for button in buttons if u'is--active' in button.get_attribute('class')]
 
     @property
     def visible_staff_panels(self):
         """
-        Returns the ids of the visible staff panels
+        Returns the classes of the visible staff panels
         """
-        panels = self.q(css=".wrapper--ui-staff")
-        return [panel.get_attribute('id') for panel in panels if u'is--hidden' not in panel.get_attribute('class')]
+        panels = self.q(css=self._bounded_selector(".wrapper--ui-staff"))
+        return [panel.get_attribute('class') for panel in panels if u'is--hidden' not in panel.get_attribute('class')]
 
     def click_staff_toolbar_button(self, button_name):
         """
         Presses the button to show the panel with the specified name.
         :return:
         """
-        buttons = self.q(css=".button-{button_name}".format(button_name=button_name))
+        buttons = self.q(css=self._bounded_selector(".button-{button_name}".format(button_name=button_name)))
         buttons.first.click()
 
     def click_staff_panel_close_button(self, panel_name):
@@ -378,4 +404,98 @@ class StaffAreaPage(OpenAssessmentPage):
         Presses the close button on the staff panel with the specified name.
         :return:
         """
-        self.q(css=".wrapper--{panel_name} .ui-staff_close_button".format(panel_name=panel_name)).click()
+        self.q(
+            css=self._bounded_selector(".wrapper--{panel_name} .ui-staff_close_button".format(panel_name=panel_name))
+        ).click()
+
+    def show_learner(self, username):
+        """
+        Clicks the staff tools panel and and searches for learner information about the given username.
+        """
+        self.click_staff_toolbar_button("staff-tools")
+        student_input_css = self._bounded_selector("input.openassessment__student_username")
+        self.wait_for_element_visibility(student_input_css, "Input is present")
+        self.q(css=student_input_css).fill(username)
+        submit_button = self.q(css=self._bounded_selector(".action--submit-username"))
+        submit_button.first.click()
+        self.wait_for_element_visibility(".staff-info__student__report", "Student report is present")
+
+    @property
+    def learner_report_text(self):
+        """
+        Returns the text present in the learner report (useful for case where there is no response).
+        """
+        return self.q(css=self._bounded_selector(".staff-info__student__report")).text[0]
+
+    def verify_learner_report_text(self, expectedText):
+        """
+        Verifies the learner report text is as expected.
+        """
+        EmptyPromise(
+            lambda: self.learner_report_text == expectedText,
+            "Learner report text correct"
+        ).fulfill()
+
+    @property
+    def learner_report_sections(self):
+        """
+        Returns the titles of the collapsible learner report sections present on the page.
+        """
+        self.wait_for_section_titles()
+        sections = self.q(css=self._bounded_selector(".ui-staff__subtitle"))
+        return [section.text for section in sections]
+
+    def wait_for_section_titles(self):
+        """
+        Wait for section titles to appear.
+        """
+        EmptyPromise(
+            lambda: len(self.q(css=self._bounded_selector(".ui-staff__subtitle"))) > 0,
+            "Section titles appeared"
+        ).fulfill()
+
+    def expand_learner_report_sections(self):
+        """
+        Expands all the sections in the learner report.
+        """
+        self.wait_for_section_titles()
+        self.q(css=self._bounded_selector(".ui-staff__subtitle")).click()
+
+    @property
+    def learner_final_score(self):
+        """
+        Returns the final score displayed in the learner report.
+        """
+        score = self.q(css=self._bounded_selector(".staff-info__student__grade .ui-toggle-visibility__content"))
+        if len(score) == 0:
+            return None
+        return score.text[0]
+
+    def verify_learner_final_score(self, expected_score):
+        """
+        Verifies that the final score in the learner report is equal to the expected value.
+        """
+        EmptyPromise(
+            lambda: self.learner_final_score == expected_score,
+            "Learner score is updated"
+        ).fulfill()
+
+    @property
+    def learner_response(self):
+        return self.q(
+            css=self._bounded_selector(".staff-info__student__response .ui-toggle-visibility__content")
+        ).text[0]
+
+    def submit_assessment(self):
+        """
+        Submit a staff assessment of the problem.
+        """
+        self.submit(button_css=".wrapper--staff-assessment .action--submit")
+
+    def cancel_submission(self):
+        """
+        Cancel a learner's assessment.
+        """
+        # Must put a comment to enable the submit button.
+        self.q(css=self._bounded_selector("textarea.cancel_submission_comments")).fill("comment")
+        self.submit(button_css=".action--submit-cancel-submission")

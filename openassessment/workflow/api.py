@@ -6,14 +6,9 @@ import logging
 
 from django.db import DatabaseError
 
-from openassessment.assessment.api import peer as peer_api
-from openassessment.assessment.api import ai as ai_api
-from openassessment.assessment.api import student_training as training_api
-from openassessment.assessment.errors import (
-    PeerAssessmentError, StudentTrainingInternalError, AIError,
-    PeerAssessmentInternalError)
+from openassessment.assessment.errors import PeerAssessmentError, PeerAssessmentInternalError
 from submissions import api as sub_api
-from .models import AssessmentWorkflow, AssessmentWorkflowCancellation, AssessmentWorkflowStep
+from .models import AssessmentWorkflow, AssessmentWorkflowCancellation
 from .serializers import AssessmentWorkflowSerializer, AssessmentWorkflowCancellationSerializer
 from .errors import (
     AssessmentWorkflowError, AssessmentWorkflowInternalError,
@@ -399,10 +394,10 @@ def cancel_workflow(submission_uuid, comments, cancelled_by_id, assessment_requi
 
 def get_assessment_workflow_cancellation(submission_uuid):
     """
-    Get cancellation information for a assessment workflow.
+    Get cancellation information for an assessment workflow.
 
     Args:
-        submission_uuid (str): The UUID of assessment workflow.
+        submission_uuid (str): The UUID of the submission.
     """
     try:
         workflow_cancellation = AssessmentWorkflowCancellation.get_latest_workflow_cancellation(submission_uuid)

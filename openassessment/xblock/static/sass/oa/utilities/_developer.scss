@@ -110,10 +110,15 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
     @include margin(($baseline-v/2), ($baseline-v/2), ($baseline-v/2), ($baseline-v/2));
   }
 }
+
 .staff-info__student {
   .label {
     color: $heading-staff-color;
     margin-bottom: ($baseline-v/2);
+
+    input {
+      display: block;
+    }
   }
 
   .action--submit {
@@ -129,33 +134,115 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
   }
 
   .title--sub {
+    @extend %hd-4;
     color: $heading-staff-color;
     margin-top: ($baseline-v/2);
     margin-bottom: ($baseline-v/2);
   }
 
   .student__answer__display__content {
-    border: 1px solid rgba($color-decorative-staff, 0.25);
-    @include padding(($baseline-v/2), ($baseline-h/2), ($baseline-v/2), ($baseline-h/2));
+    border: 1px solid rgba($copy-staff-color, 0.25);
+    padding: ($baseline-v/2) ($baseline-h/4);
     margin-bottom: ($baseline-v/2);
   }
 
-  .openassessment__student-info_list {
+  .staff-info__student__report {
     list-style-type: none;
+
+    .title {
+      @extend %t-strong;
+      margin-top: ($baseline-v/2);
+      border-top: 1px solid $heading-staff-color;
+      padding: ($baseline-v/2) ($baseline-h/2) ($baseline-v/2) 0;
+
+      span {
+        font-weight: inherit;
+      }
+    }
+  }
+
+  .staff-info__cancel-submission__content,
+  .staff-info__staff-override__content {
+    padding: $baseline-v ($baseline-h/2);
+    background-color: white;
   }
 
   .value {
     width: $max-width/2;
   }
 
-  /**
-   * The follow styles are bound for the "shame" file. This is done to override
-   * LMS specific styles on HTML elements.
-   */
+  // staff assessments
+  .wrapper--staff-assessment {
+    margin-top: ($baseline-v/2);
+    padding-top: ($baseline-v/2);
+    border-top: 1px solid $color-decorative-tertiary;
 
-  // 'p' elements in LMS have a color set on them.
-  .student__answer__display__content p {
-    color: inherit;
+    .action--submit {
+      @extend .action--submit;
+    }
+  }
+
+  .staff-assessment__display {
+    @extend %ui-subsection;
+  }
+
+  .staff-assessment__display__header {
+    @include clearfix();
+
+    span {
+      @extend %t-strong; // FIX: needed due to DOM structure
+    }
+
+    .staff-assessment__display__title {
+      @extend %t-heading;
+      margin-bottom: ($baseline-v/2);
+      color: $heading-secondary-color;
+    }
+  }
+
+  .staff-assessment__display__response {
+    @extend %ui-subsection-content;
+    @extend %copy-3;
+    @extend %ui-content-longanswer;
+    @extend %ui-well;
+    color: $copy-color;
+  }
+
+  // assessment form
+  .staff-assessment__assessment {
+
+    // fields
+    .assessment__fields {
+      margin-bottom: $baseline-v;
+    }
+
+    // rubric question
+    .assessment__rubric__question {
+      @extend %ui-rubric-question;
+    }
+
+    // rubric options
+    .question__answers {
+      @extend %ui-rubric-answers;
+    }
+
+    // general feedback question
+    .assessment__rubric__question--feedback {
+
+      .wrapper--input {
+        margin-top: $baseline-v;
+      }
+
+      .question__title__copy {
+        @include margin-left(0);
+        white-space: pre-wrap;
+      }
+
+      textarea {
+        @extend %ui-content-longanswer;
+        min-height: ($baseline-v*5);
+      }
+    }
   }
 }
 
@@ -769,22 +856,6 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
       }
     }
 
-    .openassessment_criterion.collapsed {
-      .openassessment_criterion_body{
-        display: none;
-      }
-      .openassessment_criterion_header{
-        .action.expand-collapse {
-          @include float(left);
-          .ui-toggle-expansion {
-            @include transform(rotate(bidi-rotate-angle(-90deg)));
-            @include transform-origin(50% 50%);
-            color: $edx-gray-d3;
-          }
-        }
-      }
-    }
-
     .openassessment_criterion_option{
       @include padding(5px, 5px, 5px, 15px);
 
@@ -969,16 +1040,7 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
       border-bottom: 1px solid;
       overflow: auto;
       color: $edx-gray-d2;
-      .action.expand-collapse {
-        @include float(left);
-        .ui-toggle-expansion {
-          cursor: pointer;
-          color: $edx-gray-d2;
-        }
-        .ui-toggle-expansion:hover{
-          color: $edx-gray-d1;
-        }
-      }
+
       .openassessment_training_example_header_title {
         text-transform: uppercase;
         width: 50%;
@@ -1091,28 +1153,6 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
     content: "\f067";
     margin: 0 10px;
   }
-
-  .openassessment_training_example.collapsed {
-    .openassessment_training_example_body {
-      display: none;
-    }
-    .openassessment_training_example_header {
-      .action.expand-collapse {
-        @include float(left);
-        .ui-toggle-expansion {
-          @include transform(rotate(bidi-rotate-angle(-90deg)));
-          @include transform-origin(50% 50%);
-          .icon-caret-down:before {
-            color: #009fe6;
-          }
-          .icon-caret-down:before:hover {
-            color: $edx-gray-d3;
-            cursor: pointer;
-          }
-        }
-      }
-    }
-  }
 }
 
 #openassessment-editor .wrapper-comp-settings .list-input.settings-list .field.comp-setting-entry select {
@@ -1144,6 +1184,8 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
 .self-assessment__display__title,
 .peer-assessment__display__header
 .peer-assessment__display__title,
+.staff-assessment__display__header
+.staff-assessment__display__title,
 .submission__answer__display
 .submission__answer__display__title{
   margin: 10px 0;
@@ -1152,6 +1194,7 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
 
 .self-assessment__display__image,
 .peer-assessment__display__image,
+.staff-assessment__display__image,
 .submission__answer__display__image{
   @extend .submission__answer__display__content;
   max-height: 400px;

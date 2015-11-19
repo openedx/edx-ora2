@@ -53,8 +53,10 @@ install: install-wheels install-python install-js install-nltk-data install-test
 quality:
 	jshint openassessment/xblock/static/js/src -c .jshintrc --verbose
 
-test: quality
-	./scripts/test.sh
+test: quality test-python test-js
+
+test-python:
+	./scripts/test-python.sh
 
 render-templates:
 	./scripts/render-templates.sh
@@ -64,6 +66,8 @@ test-js: render-templates
 
 test-js-debug: render-templates
 	./scripts/js-debugger.sh
+
+test-sandbox: test-acceptance test-a11y
 
 test-acceptance:
 	./scripts/test-acceptance.sh tests

@@ -30,7 +30,7 @@
                             <span class="step__status">
                                 <span class="step__status__label">{% trans "This step's status:" %}</span>
                                 <span class="step__status__value">
-                                  <i class="icon fa fa-spinner fa-spin"></i>
+                                  <i class="icon fa fa-spinner fa-spin" aria-hidden="true"></i>
                                   <span class="copy">{% trans "Loading" %}</span>
                                 </span>
                             </span>
@@ -40,7 +40,7 @@
             </ol>
 
             {% if show_staff_area %}
-                <div id="openassessment__staff-area"></div>
+                <div class="openassessment__staff-area"></div>
             {% endif %}
         </div>
     </div>
