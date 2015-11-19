@@ -1,0 +1,118 @@
+<openassessment file_upload_type="pdf-and-image" submission_due="2035-03-11T18:20">
+    <title>
+        Global Poverty
+    </title>
+    <rubric>
+        <prompt>
+            Given the state of the world today, what do you think should be done to combat poverty?
+
+            Read for conciseness, clarity of thought, and form.
+        </prompt>
+        <criterion feedback="optional">
+            <name>concise</name>
+            <prompt>How concise is it?</prompt>
+            <option points="0">
+                <name>Neal Stephenson (late)</name>
+                <explanation>
+                    In "Cryptonomicon", Stephenson spent multiple pages talking about breakfast cereal.
+                    While hilarious, in recent years his work has been anything but 'concise'.
+                </explanation>
+            </option>
+            <option points="1">
+                <name>HP Lovecraft</name>
+                <explanation>
+                    If the author wrote something cyclopean that staggers the mind, score it thus.
+                </explanation>
+            </option>
+            <option points="3">
+                <name>Robert Heinlein</name>
+                <explanation>
+                    Tight prose that conveys a wealth of information about the world in relatively
+                    few words. Example, "The door irised open and he stepped inside."
+                </explanation>
+            </option>
+            <option points="4">
+                <name>Neal Stephenson (early)</name>
+                <explanation>
+                    When Stephenson still had an editor, his prose was dense, with anecdotes about
+                    nitrox abuse implying main characters' whole life stories.
+                </explanation>
+            </option>
+            <option points="5">
+                <name>Earnest Hemingway</name>
+                <explanation>
+                    Score the work this way if it makes you weep, and the removal of a single
+                    word would make you sneer.
+                </explanation>
+            </option>
+        </criterion>
+        <criterion>
+            <name>clear-headed</name>
+            <prompt>How clear is the thinking?</prompt>
+            <option points="0">
+                <name>Yogi Berra</name>
+                <explanation></explanation>
+            </option>
+            <option points="1">
+                <name>Hunter S. Thompson</name>
+                <explanation></explanation>
+            </option>
+            <option points="2">
+                <name>Robert Heinlein</name>
+                <explanation></explanation>
+            </option>
+            <option points="3">
+                <name>Isaac Asimov</name>
+                <explanation></explanation>
+            </option>
+            <option points="10">
+                <name>Spock</name>
+                <explanation>
+                    Coolly rational, with a firm grasp of the main topics, a crystal-clear train of thought,
+                    and unemotional examination of the facts.  This is the only item explained in this category,
+                    to show that explained and unexplained items can be mixed.
+                </explanation>
+            </option>
+        </criterion>
+        <criterion feedback="optional">
+            <name>form</name>
+            <prompt>Lastly, how is its form? Punctuation, grammar, and spelling all count.</prompt>
+            <option points="0">
+                <name>lolcats</name>
+                <explanation></explanation>
+            </option>
+            <option points="1">
+                <name>Facebook</name>
+                <explanation></explanation>
+            </option>
+            <option points="2">
+                <name>Reddit</name>
+                <explanation></explanation>
+            </option>
+            <option points="3">
+                <name>metafilter</name>
+                <explanation></explanation>
+            </option>
+            <option points="4">
+                <name>Usenet, 1996</name>
+                <explanation></explanation>
+            </option>
+            <option points="5">
+                <name>The Elements of Style</name>
+                <explanation></explanation>
+            </option>
+        </criterion>
+        <criterion feedback="required">
+            <name>Feedback only</name>
+            <prompt>This criterion has only written feedback, no options</prompt>
+        </criterion>
+    </rubric>
+    <assessments>
+        <assessment name="peer-assessment"
+                    start="2014-03-11T10:00-18:10"
+                    due="2035-12-21T22:22-7:00"
+                    must_grade="1"
+                    must_be_graded_by="1" />
+        <assessment name="self-assessment" />
+    </assessments>
+</openassessment>

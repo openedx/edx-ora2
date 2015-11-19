@@ -81,7 +81,7 @@ def on_start(submission_uuid):
         StudentTrainingWorkflow.create_workflow(submission_uuid)
     except Exception:
         msg = (
-            u"An internal error has occurred while creating the student "
+            u"An internal error has occurred while creating the learner "
             u"training workflow for submission UUID {}".format(submission_uuid)
         )
         logger.exception(msg)
@@ -189,7 +189,7 @@ def validate_training_examples(rubric, examples):
     ]
     if len(set(criteria_options) - set(criteria_without_options)) == 0:
         return [_(
-            "If your assignment includes a student training step, "
+            "If your assignment includes a learner training step, "
             "the rubric must have at least one criterion, "
             "and that criterion must have at least one option."
         )]
@@ -277,7 +277,7 @@ def get_num_completed(submission_uuid):
     except DatabaseError:
         msg = (
             u"An unexpected error occurred while "
-            u"retrieving the student training workflow status for submission UUID {}"
+            u"retrieving the learner training workflow status for submission UUID {}"
         ).format(submission_uuid)
         logger.exception(msg)
         raise StudentTrainingInternalError(msg)
@@ -380,7 +380,7 @@ def get_training_example(submission_uuid, rubric, examples):
         workflow = StudentTrainingWorkflow.get_workflow(submission_uuid=submission_uuid)
         if not workflow:
             raise StudentTrainingRequestError(
-                u"No student training workflow found for submission {}".format(submission_uuid)
+                u"No learner training workflow found for submission {}".format(submission_uuid)
             )
 
         # Get or create the training examples
@@ -402,7 +402,7 @@ def get_training_example(submission_uuid, rubric, examples):
     except DatabaseError:
         msg = (
             u"Could not retrieve a training example "
-            u"for the student with submission UUID {}"
+            u"for the learner with submission UUID {}"
         ).format(submission_uuid)
         logger.exception(msg)
         raise StudentTrainingInternalError(msg)
@@ -448,7 +448,7 @@ def assess_training_example(submission_uuid, options_selected, update_workflow=T
         item = workflow.current_item
         if item is None:
             msg = (
-                u"No items are available in the student training workflow associated with "
+                u"No items are available in the learner training workflow associated with "
                 u"submission UUID {}"
             ).format(submission_uuid)
             raise StudentTrainingRequestError(msg)
@@ -462,12 +462,12 @@ def assess_training_example(submission_uuid, options_selected, update_workflow=T
             item.mark_complete()
         return corrections
     except StudentTrainingWorkflow.DoesNotExist:
-        msg = u"Could not find student training workflow for submission UUID {}".format(submission_uuid)
+        msg = u"Could not find learner training workflow for submission UUID {}".format(submission_uuid)
         raise StudentTrainingRequestError(msg)
     except DatabaseError:
         msg = (
-            u"An error occurred while comparing the student's assessment "
-            u"to the training example.  The submission UUID for the student is {}"
+            u"An error occurred while comparing the learner's assessment "
+            u"to the training example.  The submission UUID for the learner is {}"
         ).format(submission_uuid)
         logger.exception(msg)
         raise StudentTrainingInternalError(msg)

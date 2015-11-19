@@ -9,7 +9,7 @@
 <span class="step__status">
   <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
-    <i class="ico icon-ok"></i>
+    <i class="icon fa fa-check"></i>
     <span class="copy">{% trans "Complete" %}</span>
   </span>
 </span>
@@ -24,13 +24,7 @@
 
                 {% include "openassessmentblock/oa_submission_answer.html" with answer=student_submission.answer answer_text_label="Your response to the question above:" %}
 
-                {% if allow_file_upload and file_url %}
-                <h3 class="submission__answer__display__title">{% trans "Your Image" %}</h3>
-
-                <div class="submission__answer__display__image">
-                    <img class="submission--image" alt="{% trans "The image associated with your submission." %}" src="{{ file_url }}"/>
-                </div>
-                {% endif %}
+                {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=file_url header="Your Uploaded File" class_prefix="submission__answer" %}
             </article>
         </div>
     </div>

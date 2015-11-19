@@ -35,6 +35,10 @@ javascript:
 	node_modules/.bin/uglifyjs $(STATIC_JS)/src/oa_shared.js $(STATIC_JS)/src/*.js $(STATIC_JS)/src/studio/*.js > "$(STATIC_JS)/openassessment-studio.min.js"
 
 
+sass:
+	./scripts/sass.sh
+
+
 install-test:
 	pip install -q -r requirements/test.txt
 
@@ -44,7 +48,25 @@ install-dev:
 	gem install sass
 	pip install -q -r requirements/dev.txt
 
-install: install-wheels install-python install-js install-nltk-data install-test install-dev javascript
+install: install-wheels install-python install-js install-nltk-data install-test install-dev javascript sass
 
-test:
+quality:
+	jshint openassessment/xblock/static/js/src -c .jshintrc --verbose
+
+test: quality
 	./scripts/test.sh
+
+render-templates:
+	./scripts/render-templates.sh
+
+test-js: render-templates
+	./scripts/test-js.sh
+
+test-js-debug: render-templates
+	./scripts/js-debugger.sh
+
+test-acceptance:
+	./scripts/test-acceptance.sh tests
+
+test-a11y:
+	./scripts/test-acceptance.sh accessibility

@@ -44,6 +44,7 @@ describe("OpenAssessment.EditSettingsView", function() {
 
     var view = null;
     var assessmentViews = null;
+    var data = null;
 
     // The Peer and Self Editor ID's
     var PEER = "oa_peer_assessment_editor";
@@ -62,9 +63,14 @@ describe("OpenAssessment.EditSettingsView", function() {
         assessmentViews[AI] = new StubView("ai-assessment", "Example Based assessment description");
         assessmentViews[TRAINING] = new StubView("student-training", "Student Training description");
 
+        // mock data from backend
+        data = {
+            FILE_EXT_BLACK_LIST: ['exe','app']
+        };
+
         // Create the view
         var element = $("#oa_basic_settings_editor").get(0);
-        view = new OpenAssessment.EditSettingsView(element, assessmentViews);
+        view = new OpenAssessment.EditSettingsView(element, assessmentViews, data);
         view.submissionStart("2014-01-01", "00:00");
         view.submissionDue("2014-03-04", "00:00");
     });
@@ -84,11 +90,23 @@ describe("OpenAssessment.EditSettingsView", function() {
         expect(view.submissionDue()).toEqual("2014-05-02T12:34");
     });
 
-    it("sets and loads the image enabled state", function() {
-        view.imageSubmissionEnabled(true);
-        expect(view.imageSubmissionEnabled()).toBe(true);
-        view.imageSubmissionEnabled(false);
-        expect(view.imageSubmissionEnabled()).toBe(false);
+    it("sets and loads the file upload state", function() {
+        view.fileUploadType('image');
+        expect(view.fileUploadType()).toBe('image');
+        view.fileUploadType('pdf-and-image');
+        expect(view.fileUploadType()).toBe('pdf-and-image');
+        view.fileUploadType('custom');
+        expect(view.fileUploadType()).toBe('custom');
+        view.fileUploadType('');
+        expect(view.fileUploadType()).toBe('');
+    });
+
+    it("sets and loads the file type white list", function() {
+        view.fileTypeWhiteList('pdf,gif,png,doc');
+        expect(view.fileTypeWhiteList()).toBe('pdf,gif,png,doc');
+
+        view.fileTypeWhiteList('');
+        expect(view.fileTypeWhiteList()).toBe('');
     });
 
     it("sets and loads the leaderboard number", function() {
@@ -210,7 +228,7 @@ describe("OpenAssessment.EditSettingsView", function() {
 
         // Spy on the assessment view's validate() method so we can
         // verify that it doesn't get called (thus marking the DOM)
-        spyOn(assessmentViews[PEER], 'validate').andCallThrough();
+        spyOn(assessmentViews[PEER], 'validate').and.callThrough();
 
         // Expect that the parent view is still valid
         expect(view.validate()).toBe(true);
@@ -219,4 +237,21 @@ describe("OpenAssessment.EditSettingsView", function() {
         // to mark anything as invalid
         expect(assessmentViews[PEER].validate).not.toHaveBeenCalled();
     });
+
+    it("validates file upload type and white list fields", function() {
+        view.fileUploadType("image");
+        expect(view.validate()).toBe(true);
+        expect(view.validationErrors().length).toBe(0);
+
+        // expect white list field is not empty when upload type is custom
+        view.fileUploadType("custom");
+        expect(view.validate()).toBe(false);
+        expect(view.validationErrors()).toContain('File types can not be empty.');
+
+        // expect white list field doesn't contain black listed exts
+        view.fileUploadType("custom");
+        view.fileTypeWhiteList("pdf, EXE, .app");
+        expect(view.validate()).toBe(false);
+        expect(view.validationErrors()).toContain('The following file types are not allowed: exe,app');
+    })
 });

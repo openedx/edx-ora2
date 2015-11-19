@@ -72,29 +72,21 @@
                                 </div>
                             </li>
                         {% endfor %}
-                        {% if allow_file_upload %}
+                        {% if file_upload_type %}
                         <li class="field">
                             <div id="upload__error">
                                 <div class="message message--inline message--error message--error-server">
-                                    <h3 class="message__title">{% trans "We could not upload this image" %}</h3>
+                                    <h3 class="message__title">{% trans "We could not upload this file" %}</h3>
                                     <div class="message__content"></div>
                                 </div>
                             </div>
-                            <label class="sr" for="submission__answer__upload">{% trans "Select an image to upload for this submission." %}</label>
+                            <label class="sr" for="submission__answer__upload">{% trans "Select a file to upload for this submission." %}</label>
                             <input type="file" id="submission__answer__upload" class="file--upload">
-                            <button type="submit" id="file__upload" class="action action--upload is--disabled">{% trans "Upload your image" %}</button>
-                        </li>
-                        <li>
-                            <div class="submission__answer__display__image is--hidden">
-                                <img id="submission__answer__image"
-                                     class="submission--image"
-                                     {% if file_url %}
-                                     alt="{% trans "The image associated with your submission." %}"
-                                     {% endif %}
-                                     src="{{ file_url }}"/>
-                            </div>
+                            <button type="submit" id="file__upload" class="action action--upload is--disabled">{% trans "Upload your file" %}</button>
                         </li>
                         {% endif %}
+
+                        {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=file_url class_prefix="submission__answer"%}
                     </ol>
 
                     <span class="tip">{% trans "You may continue to work on your response until you submit it." %}</span>
@@ -150,7 +142,6 @@
                         <a aria-role="button" href="#" id="step--response__submit"
                             class="action action--submit step--response__submit {{ submit_enabled|yesno:",is--disabled" }}">
                             <span class="copy">{% trans "Submit your response and move to the next step" %}</span>
-                            <i class="ico icon-caret-right"></i>
                         </a>
                     </li>
                 </ul>

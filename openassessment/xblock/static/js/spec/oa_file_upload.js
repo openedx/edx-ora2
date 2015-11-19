@@ -18,7 +18,7 @@ describe("OpenAssessment.FileUploader", function() {
         var successPromise = $.Deferred(
             function(defer) { defer.resolve(); }
         ).promise();
-        spyOn($, 'ajax').andReturn(successPromise);
+        spyOn($, 'ajax').and.returnValue(successPromise);
 
         // Stub the event logger
         spyOn(Logger, 'log');

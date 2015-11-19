@@ -160,12 +160,12 @@
         @include animation(pulse $tmg-s3 ease-in-out infinite);
       }
 
-      .ico, .copy {
+      .icon, .copy {
         display: block;
         color: $copy-secondary-color;
       }
 
-      .ico {
+      .icon {
         @extend %icon-0;
         margin-bottom: ($baseline-v/2);
       }

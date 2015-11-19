@@ -45,17 +45,7 @@
 
                     {% include "openassessmentblock/oa_submission_answer.html" with answer=self_submission.answer answer_text_label="Your response to the question above:" %}
 
-                    {% if allow_file_upload and self_file_url %}
-                    <header class="self-assessment__display__header">
-                        <h3 class="self-assessment__display__title">
-                            {% trans "Associated Image" %}
-                        </h3>
-                    </header>
-
-                    <div class="self-assessment__display__image">
-                        <img class="submission--image" alt="{% trans "The image associated with your submission." %}" src="{{ self_file_url }}"/>
-                    </div>
-                    {% endif %}
+                    {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=self_file_url header="Associated File" class_prefix="self-assessment" %}
                 </article>
 
                 <form id="self-assessment--001__assessment" class="self-assessment__assessment" method="post">
@@ -73,7 +63,6 @@
                     <li class="list--actions__item">
                         <button type="submit" id="self-assessment--001__assessment__submit" class="action action--submit is--disabled">
                             <span class="copy">{% trans "Submit Your Assessment" %}</span>
-                            <i class="ico icon-caret-right"></i>
                         </button>
                     </li>
                 </ul>

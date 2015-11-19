@@ -4,7 +4,7 @@
         "title": "My new title.",
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -29,7 +29,7 @@
     "no_prompt": {
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -79,7 +79,7 @@
 
     "no_feedback_prompt": {
         "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -131,7 +131,7 @@
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -182,7 +182,7 @@
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -235,7 +235,7 @@
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -288,7 +288,7 @@
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -333,7 +333,7 @@
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -377,7 +377,7 @@
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -400,7 +400,7 @@
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -444,7 +444,7 @@
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -474,7 +474,7 @@
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -513,7 +513,7 @@
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -557,7 +557,7 @@
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -596,11 +596,11 @@
         "expected_error": "error updating xblock configuration"
     },
 
-    "allow_file_upload_must_be_boolean": {
+    "invalid_file_upload_type": {
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
         "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
-        "allow_file_upload": 6,
+        "file_upload_type": "invalid",
         "allow_latex": false,
         "criteria": [
             {
@@ -714,7 +714,7 @@
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -771,7 +771,7 @@
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -826,7 +826,7 @@
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -884,7 +884,7 @@
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -942,7 +942,7 @@
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -959,7 +959,7 @@
             }
         ],
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"],
-        "expected_error": "you must provide at least one example response for student training"
+        "expected_error": "you must provide at least one example response for learner training"
     },
 
     "student_training_example_does_not_match_rubric": {
@@ -994,7 +994,7 @@
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -1053,7 +1053,7 @@
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -1104,7 +1104,7 @@
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -1156,7 +1156,7 @@
         "submission_due": "4014-02-27T09:46",
         "submission_start": "4014-02-10T09:46",
         "title": "My new title.",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "assessments": [
@@ -1184,7 +1184,7 @@
         "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -1235,7 +1235,7 @@
         "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -1286,7 +1286,7 @@
         "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [
@@ -1360,7 +1360,7 @@
         "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
         "feedback_prompt": "Feedback prompt",
         "feedback_default_text": "Feedback default text",
-        "allow_file_upload": false,
+        "file_upload_type": null,
         "allow_latex": false,
         "leaderboard_show": 0,
         "criteria": [

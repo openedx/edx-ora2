@@ -19,7 +19,7 @@
                     <strong> {% trans "Peer evaluation of this assignment will close soon. " %} </strong>
                 {% endif %}
                 {% if waiting %}
-                    {% trans "All submitted peer responses have been assessed. Check back later to see if more students have submitted responses. " %}
+                    {% trans "All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. " %}
                 {% endif %}
                 {% if has_self %}
                     {% blocktrans with peer_start_tag='<a data-behavior="ui-scroll" href="#openassessment__peer-assessment">'|safe self_start_tag='<a data-behavior="ui-scroll" href="#openassessment__self-assessment">'|safe end_tag='</a>'|safe %}

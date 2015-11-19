@@ -41,24 +41,11 @@
   .openassessment__steps__step {
     @extend %ui-section;
 
-    // step header
-    .step__header {
-      @include row();
-    }
-
     // step title
     .step__title {
+      display: block;
       margin-bottom: ($baseline-v/2);
-
-      @include media($bp-ds) {
-        @include bidi-span-columns(4 of 6);
-        margin-bottom: 0;
-      }
-
-      @include media($bp-dm) {
-        @include bidi-span-columns(8 of 12);
-        margin-bottom: 0;
-      }
+      width: 100%;
 
       @include media($bp-dl) {
         @include bidi-span-columns(8 of 12);
@@ -85,25 +72,51 @@
           @include border-left(none);
           @include padding-left(0);
         }
+
+        @include media($bp-ds) {
+          @include margin-left(0);
+          @include border-left(none);
+          @include padding-left(0);
+        }
       }
 
       .step__counter {
+        display: none;
 
         // increment: show numbers using parent list counter
         &:before {
           @extend %hd-2;
           @extend %t-strong;
+          display: none;
           content: counter(item, decimal);
           counter-increment: item;
           color: $color-decorative-tertiary;
         }
 
-        @include media($bp-m) {
-          display: none;
+        @include media($bp-dm) {
+          display: inline-block;
 
 
           &:before {
-            display: none;
+            display: inline;
+          }
+        }
+
+        @include media($bp-dl) {
+          display: inline-block;
+
+
+          &:before {
+            display: inline;
+          }
+        }
+
+        @include media($bp-dx) {
+          display: inline-block;
+
+
+          &:before {
+            display: inline;
           }
         }
       }
@@ -126,6 +139,28 @@
     // step status
     .step__status {
       display: inline-block;
+      margin-top: ($baseline-v/4);
+
+      @include media($bp-dm) {
+        margin-top: 0;
+        @include float(right);
+        position: relative;
+        top: -($baseline-v*2);
+      }
+
+      @include media($bp-dl) {
+        margin-top: 0;
+        @include float(right);
+        position: relative;
+        top: -($baseline-v*2);
+      }
+
+      @include media($bp-dx) {
+        margin-top: 0;
+        @include float(right);
+        position: relative;
+        top: -($baseline-v*2);
+      }
 
       .step__status__value {
         border-radius: ($baseline-v/10);
@@ -150,7 +185,7 @@
         }
       }
 
-      .ico {
+      .icon {
         @extend %icon-3;
         display: inline-block;
         vertical-align: baseline;
@@ -160,38 +195,6 @@
       .copy {
         @extend %t-score;
         color: $heading-color;
-      }
-
-      @include media($bp-m) {
-        position: relative;
-      }
-
-      @include media($bp-ds) {
-        @include bidi-span-columns(2 of 6);
-        @include bidi-omega();
-        position: relative;
-        top: -12px;
-      }
-
-      @include media($bp-dm) {
-        @include bidi-span-columns(4 of 12);
-        @include bidi-omega();
-        position: relative;
-        top:-12px;
-      }
-
-      @include media($bp-dl) {
-        @include bidi-span-columns(4 of 12);
-        @include bidi-omega();
-        position: relative;
-        top: -12px;
-      }
-
-      @include media($bp-dx) {
-        @include bidi-span-columns(3 of 12);
-        @include bidi-omega();
-        position: relative;
-        top: -12px;
       }
     }
 
@@ -257,15 +260,15 @@
         @extend %btn--primary;
         @extend %action-2;
 
-        .copy, .ico {
+        .copy, .icon {
           display: inline;
         }
 
-        .ico {
+        .icon {
           @extend %icon-2;
         }
 
-        .icon-caret-right:before {
+        .fa-caret-right:before {
           @include transform(rotate(bidi-rotate-angle(0deg)));
         }
 
@@ -301,7 +304,7 @@
           @include animation(pulse $tmg-s3 ease-in-out infinite);
         }
 
-        .ico {
+        .icon {
           display: inline-block;
           color: $copy-secondary-color;
         }
@@ -333,7 +336,7 @@
       .step__status__value {
         background: $color-incomplete;
 
-        .copy, .ico {
+        .copy, .icon {
           color: $white-t;
         }
       }
@@ -353,7 +356,7 @@
       .step__status__value {
         background: $color-unavailable;
 
-        .ico {
+        .icon {
           display: inline-block;
           color: $copy-secondary-color;
         }
@@ -374,7 +377,7 @@
       .step__status__value {
         background: $color-unavailable;
 
-        .ico {
+        .icon {
           display: inline-block;
           color: $copy-secondary-color;
         }
@@ -403,11 +406,11 @@
       .step__status__value {
         background: $color-complete;
 
-        .ico {
+        .icon {
           display: inline-block;
         }
 
-        .copy, .ico {
+        .copy, .icon {
           color: $white-t;
         }
       }
@@ -424,7 +427,7 @@
       .step__status__value {
         background: $color-error;
 
-        .copy, .ico {
+        .copy, .icon {
           color: $white-t;
         }
       }
@@ -1060,10 +1063,10 @@
   .submission__feedback__title {
     @extend %ui-subsection-title;
     @extend %t-heading;
-    margin-bottom: ($baseline-v/2);
+    border-bottom-color: solid $heading-color;
     color: $heading-color;
 
-    .ico {
+    .icon {
       @extend %icon-1;
       display: inline-block;
       vertical-align: middle;

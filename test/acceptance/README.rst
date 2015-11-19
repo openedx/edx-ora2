@@ -18,12 +18,11 @@ To use the tests:
     pip install -r requirements/test-acceptance.txt
 
 
-2. Prepare for tests
+2. Specify your sandbox location
 
 .. code:: bash
 
-    cd edx-ora2/test/acceptance
-    export BASE_URL=https://{USER}:{PASSWORD}@example.com
+    export ORA_SANDBOX_URL=https://{USER}:{PASSWORD}@{SANDBOX}
 
 3. Run the tests
 
@@ -31,10 +30,10 @@ To run the acceptance tests:
     
 .. code:: bash
 
-    python tests.py
+    make test-acceptance
 
-To run the accessibility tests, which must be run with phantomjs as the browser:
+To run the accessibility tests:
     
 .. code:: bash
 
-    SELENIUM_BROWSER=phantomjs python accessibility.py
+    make test-a11y

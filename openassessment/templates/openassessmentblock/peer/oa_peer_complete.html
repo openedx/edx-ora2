@@ -9,7 +9,7 @@
 <span class="step__status">
   <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
-    <i class="ico icon-ok"></i>
+    <i class="icon fa fa-check"></i>
     <span class="copy">
       <span class="step__status__value--completed">{{ graded }}</span> {% trans "Completed" %}
     </span>
@@ -35,7 +35,6 @@
                     <li class="list--actions__item">
                         <button type="submit" id="peer-assessment__continue__grading" class="action action--continue--grading">
                             <span class="copy">{%  trans "Continue Assessing Peers" %}</span>
-                            <i class="ico icon-caret-right"></i>
                         </button>
                     </li>
                 </ul>

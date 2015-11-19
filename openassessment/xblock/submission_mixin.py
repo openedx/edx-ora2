@@ -29,6 +29,24 @@ class SubmissionMixin(object):
 
     """
 
+    ALLOWED_IMAGE_MIME_TYPES = ['image/gif', 'image/jpeg', 'image/pjpeg', 'image/png']
+
+    ALLOWED_FILE_MIME_TYPES = ['application/pdf'] + ALLOWED_IMAGE_MIME_TYPES
+
+    # taken from http://www.howtogeek.com/137270/50-file-extensions-that-are-potentially-dangerous-on-windows/
+    # and http://pcsupport.about.com/od/tipstricks/a/execfileext.htm
+    # left out .js and office extensions
+    FILE_EXT_BLACK_LIST = [
+        'exe', 'msi', 'app', 'dmg', 'com', 'pif', 'application', 'gadget',
+        'msp', 'scr', 'hta', 'cpl', 'msc', 'jar', 'bat', 'cmd', 'vb', 'vbs',
+        'jse', 'ws', 'wsf', 'wsc', 'wsh', 'scf', 'lnk', 'inf', 'reg', 'ps1',
+        'ps1xml', 'ps2', 'ps2xml', 'psc1', 'psc2', 'msh', 'msh1', 'msh2', 'mshxml',
+        'msh1xml', 'msh2xml', 'action', 'apk', 'app', 'bin', 'command', 'csh',
+        'ins', 'inx', 'ipa', 'isu', 'job', 'mst', 'osx', 'out', 'paf', 'prg',
+        'rgs', 'run', 'sct', 'shb', 'shs', 'u3p', 'vbscript', 'vbe', 'workflow',
+        'htm', 'html',
+    ]
+
     @XBlock.json_handler
     def submit(self, data, suffix=''):
         """Place the submission text into Openassessment system
@@ -172,7 +190,7 @@ class SubmissionMixin(object):
         # so that later we can add additional response fields.
         student_sub_dict = prepare_submission_for_serialization(student_sub_data)
 
-        if self.allow_file_upload:
+        if self.file_upload_type:
             student_sub_dict['file_key'] = self._get_student_item_key()
         submission = api.create_submission(student_item_dict, student_sub_dict)
         self.create_workflow(submission["uuid"])
@@ -203,13 +221,25 @@ class SubmissionMixin(object):
             A URL to be used to upload content associated with this submission.
 
         """
-        if "contentType" not in data:
-            return {'success': False, 'msg': self._(u"Must specify contentType.")}
+        if 'contentType' not in data or 'filename' not in data:
+            return {'success': False, 'msg': self._(u"There was an error uploading your file.")}
         content_type = data['contentType']
+        file_name = data['filename']
+        file_name_parts = file_name.split('.')
+        file_ext = file_name_parts[-1] if len(file_name_parts) > 1 else None
 
-        if not content_type.startswith('image/'):
-            return {'success': False, 'msg': self._(u"contentType must be an image.")}
+        if self.file_upload_type == 'image' and content_type not in self.ALLOWED_IMAGE_MIME_TYPES:
+            return {'success': False, 'msg': self._(u"Content type must be GIF, PNG or JPG.")}
 
+        if self.file_upload_type == 'pdf-and-image' and content_type not in self.ALLOWED_FILE_MIME_TYPES:
+            return {'success': False, 'msg': self._(u"Content type must be PDF, GIF, PNG or JPG.")}
+
+        if self.file_upload_type == 'custom' and file_ext not in self.white_listed_file_types:
+            return {'success': False, 'msg': self._(u"File type must be one of the following types: {}").format(
+                ', '.join(self.white_listed_file_types))}
+
+        if file_ext in self.FILE_EXT_BLACK_LIST:
+            return {'success': False, 'msg': self._(u"File type is not allowed.")}
         try:
             key = self._get_student_item_key()
             url = file_upload_api.get_upload_url(key, content_type)
@@ -249,8 +279,9 @@ class SubmissionMixin(object):
             A string representation of the key.
 
         """
+        student_item_dict = self.get_student_item_dict()
         return u"{student_id}/{course_id}/{item_id}".format(
-            **self.get_student_item_dict()
+            **student_item_dict
         )
 
     def get_download_url_from_submission(self, submission):
@@ -308,7 +339,8 @@ class SubmissionMixin(object):
         Returns:
             unicode
         """
-        return self._(u'This response has been saved but not submitted.') if self.has_saved else self._(u'This response has not been saved.')
+        return self._(u'This response has been saved but not submitted.') if self.has_saved else self._(
+            u'This response has not been saved.')
 
     @XBlock.handler
     def render_submission(self, data, suffix=''):
@@ -354,13 +386,15 @@ class SubmissionMixin(object):
         if due_date < DISTANT_FUTURE:
             context["submission_due"] = due_date
 
-        context['allow_file_upload'] = self.allow_file_upload
+        context['file_upload_type'] = self.file_upload_type
         context['allow_latex'] = self.allow_latex
         context['has_peer'] = 'peer-assessment' in self.assessment_steps
         context['has_self'] = 'self-assessment' in self.assessment_steps
 
-        if self.allow_file_upload:
+        if self.file_upload_type:
             context['file_url'] = self._get_download_url()
+        if self.file_upload_type == 'custom':
+            context['white_listed_file_types'] = self.white_listed_file_types
 
         if not workflow and problem_closed:
             if reason == 'due':

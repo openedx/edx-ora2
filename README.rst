@@ -1,7 +1,7 @@
 Open Response Assessment |build-status| |coverage-status|
 =========================================================
 
-User docs: |user-docs| Developer docs: |dev-docs|
+`User docs <http://edx.readthedocs.org/projects/edx-partner-course-staff/en/latest/exercises_tools/open_response_assessments/index.html>`_
 
 
 Installation
@@ -83,7 +83,7 @@ files:
     make javascript
 
     # Combine/minify CSS (from Sass)
-    ./scripts/sass.sh
+    make sass
 
 Make sure you commit the combined/minified files to the git repository!
 
@@ -107,13 +107,13 @@ To run just the JavaScript tests:
 
 .. code:: bash
 
-    ./scripts/test-js.sh
+    make test-js
 
 To run the JavaScript tests in Chrome so you can use the debugger:
 
 .. code:: bash
 
-    ./scripts/js-debugger.sh
+    make test-js-debug
 
 There are also acceptance and accessibility tests that run can be run against a sandbox.  For more information, about how to run these from your machine, check out `test/acceptance/README.rst <https://github.com/edx/edx-ora2/blob/master/test/acceptance/README.rst/>`__.
 
@@ -171,9 +171,3 @@ in the `edx-code` IRC channel on Freenode.
 .. |coverage-status| image:: https://coveralls.io/repos/edx/edx-ora2/badge.png?branch=master
    :target: https://coveralls.io/r/edx/edx-ora2?branch=master
    :alt: Coverage badge
-.. |user-docs| image:: https://readthedocs.org/projects/edx-open-response-assessments/badge/?version=latest
-   :target: http://edx.readthedocs.org/projects/edx-open-response-assessments
-   :alt: User documentation
-.. |dev-docs| image:: https://readthedocs.org/projects/edx-ora-2/badge/?version=latest
-   :target: http://edx.readthedocs.org/projects/edx-ora-2
-   :alt: Developer documentation

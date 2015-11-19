@@ -317,7 +317,7 @@ class PeerWorkflow(models.Model):
         except DatabaseError:
             error_message = (
                 u"An internal error occurred while retrieving a peer submission "
-                u"for student {}"
+                u"for learner {}"
             ).format(self)
             logger.exception(error_message)
             raise PeerAssessmentInternalError(error_message)
@@ -357,7 +357,7 @@ class PeerWorkflow(models.Model):
         except DatabaseError:
             error_message = (
                 u"An internal error occurred while retrieving a peer submission "
-                u"for student {}"
+                u"for learner {}"
             ).format(self)
             logger.exception(error_message)
             raise PeerAssessmentInternalError(error_message)
@@ -383,7 +383,7 @@ class PeerWorkflow(models.Model):
             items = list(item_query[:1])
             if not items:
                 msg = (
-                    u"No open assessment was found for student {} while assessing "
+                    u"No open assessment was found for learner {} while assessing "
                     u"submission UUID {}."
                 ).format(self.student_id, submission_uuid)
                 raise PeerAssessmentWorkflowError(msg)
@@ -398,7 +398,7 @@ class PeerWorkflow(models.Model):
         except (DatabaseError, PeerWorkflowItem.DoesNotExist):
             error_message = (
                 u"An internal error occurred while retrieving a workflow item for "
-                u"student {}. Workflow Items are created when submissions are "
+                u"learner {}. Workflow Items are created when submissions are "
                 u"pulled for assessment."
             ).format(self.student_id)
             logger.exception(error_message)

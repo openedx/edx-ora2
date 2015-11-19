@@ -54,7 +54,7 @@ describe("OpenAssessment.SelfView", function() {
     });
 
     it("Sends a self assessment to the server", function() {
-        spyOn(server, 'selfAssess').andCallThrough();
+        spyOn(server, 'selfAssess').and.callThrough();
 
         // Select options in the rubric
         var optionsSelected = {};
@@ -81,7 +81,7 @@ describe("OpenAssessment.SelfView", function() {
 
     it("Re-enables the self assess button on error", function() {
         // Simulate a server error
-        spyOn(server, 'selfAssess').andCallFake(function() {
+        spyOn(server, 'selfAssess').and.callFake(function() {
             expect(view.selfSubmitEnabled()).toBe(false);
             return $.Deferred(function(defer) {
                 defer.rejectWith(this, ['ENOUNKNOWN', 'Error occurred!']);

@@ -4,10 +4,12 @@ import copy
 import datetime as dt
 import json
 import logging
+import os
 import pkg_resources
 
 import pytz
 
+from django.conf import settings
 from django.template.context import Context
 from django.template.loader import get_template
 from webob import Response
@@ -16,6 +18,7 @@ from lazy import lazy
 from xblock.core import XBlock
 from xblock.fields import List, Scope, String, Boolean, Integer
 from xblock.fragment import Fragment
+
 from openassessment.xblock.grade_mixin import GradeMixin
 from openassessment.xblock.leaderboard_mixin import LeaderboardMixin
 from openassessment.xblock.defaults import * # pylint: disable=wildcard-import, unused-wildcard-import
@@ -26,7 +29,7 @@ from openassessment.xblock.self_assessment_mixin import SelfAssessmentMixin
 from openassessment.xblock.submission_mixin import SubmissionMixin
 from openassessment.xblock.studio_mixin import StudioMixin
 from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
-from openassessment.xblock.staff_info_mixin import StaffInfoMixin
+from openassessment.xblock.staff_area_mixin import StaffAreaMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.student_training_mixin import StudentTrainingMixin
@@ -100,7 +103,7 @@ class OpenAssessmentBlock(
     StudioMixin,
     GradeMixin,
     LeaderboardMixin,
-    StaffInfoMixin,
+    StaffAreaMixin,
     WorkflowMixin,
     StudentTrainingMixin,
     LmsCompatibilityMixin,
@@ -119,9 +122,21 @@ class OpenAssessmentBlock(
     )
 
     allow_file_upload = Boolean(
-        default=False,
+        default=None,
         scope=Scope.content,
-        help="File upload allowed with submission."
+        help="Do not use. For backwards compatibility only."
+    )
+
+    file_upload_type_raw = String(
+        default=None,
+        scope=Scope.content,
+        help="File upload to be included with submission (can be 'image', 'pdf-and-image', or 'custom')."
+    )
+
+    white_listed_file_types = List(
+        default=[],
+        scope=Scope.content,
+        help="Custom list of file types allowed with submission."
     )
 
     allow_latex = Boolean(
@@ -206,6 +221,46 @@ class OpenAssessmentBlock(
     def course_id(self):
         return self._serialize_opaque_key(self.xmodule_runtime.course_id)  # pylint:disable=E1101
 
+    @property
+    def file_upload_type(self):
+        """
+        Backward compatibility for existing block before the change from allow_file_upload to file_upload_type_raw.
+
+        This property will use new file_upload_type_raw field when available, otherwise will fall back to
+        allow_file_upload field for old blocks.
+        """
+        if self.file_upload_type_raw is not None:
+            return self.file_upload_type_raw
+        if self.allow_file_upload:
+            return 'image'
+        else:
+            return None
+
+    @file_upload_type.setter
+    def file_upload_type(self, value):
+        """
+        Setter for file_upload_type_raw
+        """
+        self.file_upload_type_raw = value
+
+    @property
+    def white_listed_file_types_string(self):
+        """
+        Join the white listed file types into comma delimited string
+        """
+        if self.white_listed_file_types:
+            return ','.join(self.white_listed_file_types)
+        else:
+            return ''
+
+    @white_listed_file_types_string.setter
+    def white_listed_file_types_string(self, value):
+        """
+        Convert comma delimited white list string into list with some clean up
+        """
+        self.white_listed_file_types = [file_type.strip().strip('.').lower()
+                                        for file_type in value.split(',')] if value else None
+
     def get_anonymous_user_id(self, username, course_id):
         """
         Get the anonymous user id from Xblock user service.
@@ -256,6 +311,18 @@ class OpenAssessmentBlock(
         )
         return student_item_dict
 
+    def add_javascript_files(self, fragment, item):
+        """
+        Add all the JavaScript files from a directory to the specified fragment
+        """
+        if pkg_resources.resource_isdir(__name__, item):
+            for child_item in pkg_resources.resource_listdir(__name__, item):
+                path = os.path.join(item, child_item)
+                if not pkg_resources.resource_isdir(__name__, path):
+                    fragment.add_javascript_url(self.runtime.local_resource_url(self, path))
+        else:
+            fragment.add_javascript_url(self.runtime.local_resource_url(self, item))
+
     def student_view(self, context=None):
         """The main view of OpenAssessmentBlock, displayed when viewing courses.
 
@@ -286,22 +353,35 @@ class OpenAssessmentBlock(
             "title": self.title,
             "prompts": self.prompts,
             "rubric_assessments": ui_models,
-            "show_staff_debug_info": self.is_course_staff and not self.in_studio_preview,
+            "show_staff_area": self.is_course_staff and not self.in_studio_preview,
         }
         template = get_template("openassessmentblock/oa_base.html")
         context = Context(context_dict)
-        frag = Fragment(template.render(context))
+        fragment = Fragment(template.render(context))
 
         i18n_service = self.runtime.service(self, 'i18n')
         if hasattr(i18n_service, 'get_language_bidi') and i18n_service.get_language_bidi():
-            frag.add_css(load("static/css/openassessment-rtl.css"))
+            css_url = "static/css/openassessment-rtl.css"
         else:
-            frag.add_css(load("static/css/openassessment-ltr.css"))
+            css_url = "static/css/openassessment-ltr.css"
 
-        frag.add_javascript(load("static/js/openassessment-lms.min.js"))
-        frag.initialize_js('OpenAssessmentBlock')
-        return frag
-
+        if settings.DEBUG:
+            fragment.add_css_url(self.runtime.local_resource_url(self, css_url))
+            self.add_javascript_files(fragment, "static/js/src/oa_shared.js")
+            self.add_javascript_files(fragment, "static/js/src/oa_server.js")
+            self.add_javascript_files(fragment, "static/js/src/lms")
+        else:
+            # TODO: load CSS and JavaScript as URLs once they can be served by the CDN
+            fragment.add_css(load(css_url))
+            fragment.add_javascript(load("static/js/openassessment-lms.min.js"))
+        js_context_dict = {
+            "ALLOWED_IMAGE_MIME_TYPES": self.ALLOWED_IMAGE_MIME_TYPES,
+            "ALLOWED_FILE_MIME_TYPES": self.ALLOWED_FILE_MIME_TYPES,
+            "FILE_EXT_BLACK_LIST": self.FILE_EXT_BLACK_LIST,
+            "FILE_TYPE_WHITE_LIST": self.white_listed_file_types,
+        }
+        fragment.initialize_js('OpenAssessmentBlock', js_context_dict)
+        return fragment
 
     @property
     def is_admin(self):
@@ -387,6 +467,22 @@ class OpenAssessmentBlock(
         """
         return [
             (
+                "OpenAssessmentBlock File Upload: Images",
+                load('static/xml/file_upload_image_only.xml')
+            ),
+            (
+                "OpenAssessmentBlock File Upload: PDF and Images",
+                load('static/xml/file_upload_pdf_and_image.xml')
+            ),
+            (
+                "OpenAssessmentBlock File Upload: Custom File Types",
+                load('static/xml/file_upload_custom.xml')
+            ),
+            (
+                "OpenAssessmentBlock File Upload: allow_file_upload compatibility",
+                load('static/xml/file_upload_compat.xml')
+            ),
+            (
                 "OpenAssessmentBlock Unicode",
                 load('static/xml/unicode.xml')
             ),
@@ -401,6 +497,10 @@ class OpenAssessmentBlock(
             (
                 "OpenAssessmentBlock Leaderboard",
                 load('static/xml/leaderboard.xml')
+            ),
+            (
+                "OpenAssessmentBlock Leaderboard with Custom File Type",
+                load('static/xml/leaderboard_custom.xml')
             ),
             (
                 "OpenAssessmentBlock (Peer Only) Rubric",
@@ -448,6 +548,8 @@ class OpenAssessmentBlock(
         block.title = config['title']
         block.prompts = config['prompts']
         block.allow_file_upload = config['allow_file_upload']
+        block.file_upload_type = config['file_upload_type']
+        block.white_listed_file_types_string = config['white_listed_file_types']
         block.allow_latex = config['allow_latex']
         block.leaderboard_show = config['leaderboard_show']
 

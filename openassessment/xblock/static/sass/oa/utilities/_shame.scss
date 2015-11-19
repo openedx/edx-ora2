@@ -37,28 +37,10 @@
 
     // step title/name
     h2.step__title {
-      margin-top: 0 !important;
       @include text-align(left);
+      @include float(none);
+      margin-top: 0 !important;
 
-      @include media($bp-m) {
-        margin-bottom: ($baseline-v/2);
-      }
-
-      @include media($bp-ds) {
-        @include bidi-span-columns(4 of 6);
-      }
-
-      @include media($bp-dm) {
-        @include bidi-span-columns(8 of 12);
-      }
-
-      @include media($bp-dl) {
-        @include bidi-span-columns(8 of 12);
-      }
-
-      @include media($bp-dx) {
-        @include bidi-span-columns(9 of 12);
-      }
 
       .step__label {
         text-transform: none;
@@ -83,10 +65,6 @@
         }
       }
     }
-  }
-
-  .step__status {
-
   }
 
   .step__status__value {
@@ -147,6 +125,14 @@
     @include padding-left(0);
   }
 
+  // submission/results collapse and expand targets
+  .question__title.ui-toggle-visibility__control {
+
+    .question__title__copy  {
+      color: inherit !important;
+    }
+  }
+
 
   .step--grade .step__title {
     width: 100% !important;
@@ -172,7 +158,7 @@
   // --------------------
   // rules to overcome any poorly defined, scoped, or architected edX Studio problem preview/rendering CSS.
 
-  .ico {
+  .icon {
     font-style: normal;
   }
 
@@ -184,6 +170,8 @@
   .openassessment__steps__step .step__header .step__title {
     margin-bottom: 0;
   }
+
+  //
 
 
   // --------------------

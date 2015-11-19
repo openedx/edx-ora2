@@ -266,7 +266,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
                 'rubric_criteria': xblock.rubric_criteria,
                 'estimated_time': '20 minutes',
                 'self_submission': submission,
-                'allow_file_upload': False,
+                'file_upload_type': None,
                 'self_file_url': '',
                 'allow_latex': False,
             },

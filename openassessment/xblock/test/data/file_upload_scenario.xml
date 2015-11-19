@@ -1,0 +1,93 @@
+<openassessment file_upload_type="pdf-and-image">
+    <title>Open Assessment Test</title>
+    <prompts>
+        <prompt>
+            <description>Given the state of the world today, what do you think should be done to combat poverty? Please answer in a short essay of 200-300 words.</description>
+        </prompt>
+        <prompt>
+            <description>Given the state of the world today, what do you think should be done to combat pollution?</description>
+        </prompt>
+    </prompts>
+    <rubric>
+        <criterion>
+            <name>Concise</name>
+            <prompt>How concise is it?</prompt>
+            <option points="0">
+                <name>Neal Stephenson (late)</name>
+                <explanation>Neal Stephenson explanation</explanation>
+            </option>
+            <option points="1">
+                <name>HP Lovecraft</name>
+                <explanation>HP Lovecraft explanation</explanation>
+            </option>
+            <option points="3">
+                <name>Robert Heinlein</name>
+                <explanation>Robert Heinlein explanation</explanation>
+            </option>
+            <option points="4">
+                <name>Neal Stephenson (early)</name>
+                <explanation>Neal Stephenson (early) explanation</explanation>
+            </option>
+            <option points="5">
+                <name>Earnest Hemingway</name>
+                <explanation>Earnest Hemingway</explanation>
+            </option>
+        </criterion>
+        <criterion>
+            <name>Clear-headed</name>
+            <prompt>How clear is the thinking?</prompt>
+            <option points="0">
+                <name>Yogi Berra</name>
+                <explanation>Yogi Berra explanation</explanation>
+            </option>
+            <option points="1">
+                <name>Hunter S. Thompson</name>
+                <explanation>Hunter S. Thompson explanation</explanation>
+            </option>
+            <option points="2">
+                <name>Robert Heinlein</name>
+                <explanation>Robert Heinlein explanation</explanation>
+            </option>
+            <option points="3">
+                <name>Isaac Asimov</name>
+                <explanation>Isaac Asimov explanation</explanation>
+            </option>
+            <option points="10">
+                <name>Spock</name>
+                <explanation>Spock explanation</explanation>
+            </option>
+        </criterion>
+        <criterion>
+            <name>Form</name>
+            <prompt>Lastly, how is its form? Punctuation, grammar, and spelling all count.</prompt>
+            <option points="0">
+                <name>lolcats</name>
+                <explanation>lolcats explanation</explanation>
+            </option>
+            <option points="1">
+                <name>Facebook</name>
+                <explanation>Facebook explanation</explanation>
+            </option>
+            <option points="2">
+                <name>Reddit</name>
+                <explanation>Reddit explanation</explanation>
+            </option>
+            <option points="3">
+                <name>metafilter</name>
+                <explanation>metafilter explanation</explanation>
+            </option>
+            <option points="4">
+                <name>Usenet, 1996</name>
+                <explanation>Usenet, 1996 explanation</explanation>
+            </option>
+            <option points="5">
+                <name>The Elements of Style</name>
+                <explanation>The Elements of Style explanation</explanation>
+            </option>
+        </criterion>
+    </rubric>
+    <assessments>
+        <assessment name="peer-assessment" must_grade="5" must_be_graded_by="3" />
+        <assessment name="self-assessment" />
+    </assessments>
+</openassessment>

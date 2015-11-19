@@ -30,15 +30,7 @@
 
                     {% include "openassessmentblock/oa_submission_answer.html" with answer=student_submission.answer answer_text_label="Your response to the question above:" %}
 
-                    {% if allow_file_upload and file_url %}
-                    <h3 class="submission__answer__display__title">
-                        {% trans "Your Image" %}
-                    </h3>
-
-                    <div class="submission__answer__display__image">
-                        <img class="submission--image" alt="{% trans "The image associated with your submission." %}" src="{{ file_url }}"/>
-                    </div>
-                    {% endif %}
+                    {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=file_url header="Your Upload" class_prefix="submission__answer" %}
                 </article>
 
                 <article class="submission__peer-evaluations step__content__section">
@@ -49,7 +41,7 @@
                         {% with criterion_num=forloop.counter %}
                         <li class="question question--{{ criterion_num }} ui-toggle-visibility">
                             <h4 class="question__title ui-toggle-visibility__control">
-                                <i class="ico icon-caret-right"></i>
+                                <i class="icon fa fa-caret-right"></i>
                                 <span class="question__title__copy">{{ criterion.label }}</span>
 
                                 <span class="question__score">
@@ -83,7 +75,7 @@
                                                             {{ part.option.label }}
 
                                                             <span class="ui-hint hint--top" data-hint="{{ part.option.explanation }}">
-                                                              <i class="ico icon-info-sign"
+                                                              <i class="icon fa fa-info-circle"
                                                                  title="{% blocktrans with name=part.option.label %}More information about {{ name }}{% endblocktrans %}"></i>
                                                             </span>
 
@@ -114,7 +106,7 @@
                                                 {{ part.option.label }}
 
                                                 <span class="ui-hint hint--top" data-hint="{{ part.option.explanation }}">
-                                                  <i class="ico icon-info-sign"
+                                                  <i class="icon fa fa-info-circle"
                                                      title="{% blocktrans with name=part.option.label %}More information about {{ name }}{% endblocktrans %}"></i>
                                                 </span>
                                             </span>
@@ -138,7 +130,7 @@
                                                 {{ part.option.label }}
 
                                                 <span class="ui-hint hint--top" data-hint="{{ part.option.explanation }}">
-                                                  <i class="ico icon-info-sign"
+                                                  <i class="icon fa fa-info-circle"
                                                      title="{% blocktrans with name=part.option.label %}More information about {{ name }}{% endblocktrans %}"></i>
                                                 </span>
                                             </span>
@@ -152,7 +144,7 @@
                                 <li class="answer--feedback ui-toggle-visibility {% if criterion.options %}is--collapsed{% endif %}">
                                     {% if criterion.options %}
                                     <h5 class="answer--feedback__title ui-toggle-visibility__control">
-                                      <i class="ico icon-caret-right"></i>
+                                      <i class="icon fa fa-caret-right"></i>
                                       {% if criterion.self_feedback %}
                                         <span class="answer--feedback__title__copy">{% trans "Additional Comments" %} ({{ criterion.peer_feedback|length|add:'1' }})</span>
                                       {% else %}
@@ -195,7 +187,7 @@
                             {% if peer_assessments or self_assessment.feedback %}
                             <li class="question question--feedback ui-toggle-visibility">
                                 <h4 class="question__title ui-toggle-visibility__control">
-                                    <i class="ico icon-caret-right"></i>
+                                    <i class="icon fa fa-caret-right"></i>
                                     <span class="question__title__copy">{% trans "Additional comments on your response" %}</span>
                                 </h4>
 
@@ -243,7 +235,7 @@
                 {% if peer_assessments %}
                     <form id="submission__feedback" class="submission__feedback ui-toggle-visibility step__content__section is--collapsed" method="post">
                         <h3 class="submission__feedback__title ui-toggle-visibility__control">
-                            <i class="ico icon-caret-right"></i>
+                            <i class="icon fa fa-caret-right"></i>
                             <span class="submission__feedback__title__copy">{% trans "Provide Feedback on Peer Assessments" %}</span>
                         </h3>
 
@@ -252,7 +244,7 @@
                             <div class="submission__feedback__content {{ has_submitted_feedback|yesno:"is--submitted," }}">
                                 <span class="transition__status is--hidden" aria-hidden="true">
                                     <span class="wrapper--anim">
-                                        <i class="ico icon-refresh icon-spin"></i>
+                                        <i class="icon fa fa-spinner fa-spin"></i>
                                         <span class="copy">{% trans "Submitting Feedback" %}</span>
                                     </span>
                                 </span>

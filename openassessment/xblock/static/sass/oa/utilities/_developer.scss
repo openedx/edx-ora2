@@ -26,6 +26,83 @@
 // --------------------
 // Developer styles for Staff Section
 // --------------------
+
+// edX constants
+$lighter-base-font-color: rgb(100,100,100);
+$link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.org/elements/colors/
+
+.wrapper--openassessment .wrapper--staff-area {
+  width: 100%;
+  overflow: auto;
+  margin-top: $baseline-v;
+  padding-top: 20px;
+
+  .wrapper--staff-toolbar {
+    position: relative;
+    text-align: right;
+    margin: 0 0 8px;
+    padding: 10px;
+
+    .ui-staff__button {
+      margin-left: ($baseline-v/2);
+      padding: ($baseline-v/4) ($baseline-v/2);
+      border-radius: ($baseline-v/4);
+      text-transform: uppercase;
+      color: $lighter-base-font-color;
+      background-color: $shadow-l2;
+
+      // Remove button styling
+      font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+      font-size: 12px;
+      -webkit-appearance: none;
+      background-image: none;
+      text-shadow: none;
+      box-shadow: none;
+      border: none;
+      border-image: none;
+
+      &.is--active {
+        color: white;
+        background-color: $edx-pink;
+
+        &:hover {
+          background-color: $edx-pink-d1;
+        }
+      }
+
+      &:hover {
+        color: white;
+        background-color: $link-hover;
+      }
+    }
+  }
+
+  .wrapper--ui-staff {
+    margin-top: 0;
+
+    .ui-staff_close_button {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      float: right;
+      background-color: $staff-bg;
+
+      // Remove button styling
+      font-size: 12px;
+      -webkit-appearance: none;
+      background-image: none;
+      text-shadow: none;
+      box-shadow: none;
+      border: none;
+      border-image: none;
+
+      &:hover {
+        color: $white;
+      }
+    }
+  }
+}
+
 .staff-info__status {
   .action--submit {
     @extend %btn--secondary;
@@ -815,7 +892,6 @@
       box-sizing: border-box;
       border: 1px solid #b2b2b2;
       border-radius: 2px;
-      @include padding(6px, 8px, 8px, 0px);
       background-image: -webkit-linear-gradient(#F2F2F2,#FFF);
       background-image: -moz-linear-gradient(#F2F2F2,#FFF);
       background-image: linear-gradient(#F2F2F2,#FFF);

@@ -1,0 +1,75 @@
+<openassessment submission_due="2030-03-11T18:20" leaderboard_show="10" file_upload_type="custom" white_listed_file_types="pdf,doc">
+    <title>
+        My favourite pet
+    </title>
+    <rubric>
+        <prompt>
+            Which animal would you like to have as a pet?
+        </prompt>
+        <criterion feedback='optional'>
+            <name>concise</name>
+            <prompt>How rare is the animal?</prompt>
+            <option points="0">
+                <name>Very common</name>
+                <explanation>
+                    You can pick it up on the street
+                </explanation>
+            </option>
+            <option points="2">
+                <name>Common</name>
+                <explanation>
+                    Can get it at the local pet store
+                </explanation>
+            </option>
+            <option points="4">
+                <name>Somewhat common</name>
+                <explanation>
+                    Easy to see but hard to purchase as a pet
+                </explanation>
+            </option>
+            <option points="8">
+                <name>Rare</name>
+                <explanation>
+                    Need to travel the world to find it
+                </explanation>
+            </option>
+            <option points="10">
+                <name>Extinct</name>
+                <explanation>
+                    Maybe in the ice-age
+                </explanation>
+            </option>
+        </criterion>
+        <criterion feedback='optional'>
+            <name>form</name>
+            <prompt>How hard would it be to care for the animal?</prompt>
+            <option points="0">
+                <name>It feeds itself</name>
+                <explanation></explanation>
+            </option>
+            <option points="2">
+                <name>Any pet food will do</name>
+                <explanation></explanation>
+            </option>
+            <option points="4">
+                <name>Some work required to care for the animal</name>
+                <explanation></explanation>
+            </option>
+            <option points="6">
+                <name>A full time job to care for the animal</name>
+                <explanation></explanation>
+            </option>
+            <option points="8">
+                <name>A team required to care for the animal</name>
+                <explanation></explanation>
+            </option>
+            <option points="10">
+                <name>The pet has special needs</name>
+                <explanation></explanation>
+            </option>
+        </criterion>
+    </rubric>
+    <assessments>
+        <assessment name="self-assessment" />
+    </assessments>
+</openassessment>

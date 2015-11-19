@@ -17,12 +17,12 @@
     text-decoration: none;
 
     // optional icon
-    .ico, .ui-toggle-visibility__control__copy {
+    .icon, .ui-toggle-visibility__control__copy {
       display: inline-block;
       vertical-align: middle;
     }
 
-    > .ico {
+    > .icon {
       @include transition(all $tmg-f2 ease-in-out 0s);
       @include transform(rotate(bidi-rotate-angle(90deg)));
     }
@@ -53,7 +53,7 @@
   // STATE: is collapsed
   &.is--collapsed {
 
-    >.ui-toggle-visibility__control > .ico {
+    >.ui-toggle-visibility__control > .icon {
       @include transform(rotate(bidi-rotate-angle(0deg)));
       @include transform-origin(50% 50%);
     }
@@ -79,7 +79,7 @@
 .ui-hint {
   @extend %fake-link;
 
-  .ico {
+  .icon {
     @include margin-left(($baseline-h/8));
   }
 

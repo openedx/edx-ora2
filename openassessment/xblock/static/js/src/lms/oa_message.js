@@ -32,4 +32,4 @@ OpenAssessment.MessageView.prototype = {
             baseView.showLoadError('message', errMsg);
         });
     } 
-}
+};

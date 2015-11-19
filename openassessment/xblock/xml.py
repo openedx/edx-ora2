@@ -686,9 +686,13 @@ def serialize_content_to_xml(oa_block, root):
     if oa_block.leaderboard_show:
         root.set('leaderboard_show', unicode(oa_block.leaderboard_show))
 
-    # Allow file upload
-    if oa_block.allow_file_upload is not None:
-        root.set('allow_file_upload', unicode(oa_block.allow_file_upload))
+    # Set File upload settings
+    if oa_block.file_upload_type:
+        root.set('file_upload_type', unicode(oa_block.file_upload_type))
+
+    # Set File type white listing
+    if oa_block.white_listed_file_types:
+        root.set('white_listed_file_types', unicode(oa_block.white_listed_file_types_string))
 
     if oa_block.allow_latex is not None:
         root.set('allow_latex', unicode(oa_block.allow_latex))
@@ -815,9 +819,17 @@ def parse_from_xml(root):
     if 'submission_due' in root.attrib:
         submission_due = parse_date(unicode(root.attrib['submission_due']), name="submission due date")
 
-    allow_file_upload = False
+    allow_file_upload = None
     if 'allow_file_upload' in root.attrib:
         allow_file_upload = _parse_boolean(unicode(root.attrib['allow_file_upload']))
+
+    file_upload_type = None
+    if 'file_upload_type' in root.attrib:
+        file_upload_type = unicode(root.attrib['file_upload_type'])
+
+    white_listed_file_types = None
+    if 'white_listed_file_types' in root.attrib:
+        white_listed_file_types = unicode(root.attrib['white_listed_file_types'])
 
     allow_latex = False
     if 'allow_latex' in root.attrib:
@@ -865,6 +877,8 @@ def parse_from_xml(root):
         'submission_start': submission_start,
         'submission_due': submission_due,
         'allow_file_upload': allow_file_upload,
+        'file_upload_type': file_upload_type,
+        'white_listed_file_types': white_listed_file_types,
         'allow_latex': allow_latex,
         'leaderboard_show': leaderboard_show
     }

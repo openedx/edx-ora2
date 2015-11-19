@@ -11,7 +11,7 @@ Returns:
 OpenAssessment.EditPromptsView = function(element, notifier) {
     this.element = element;
     this.editorElement = $(this.element).closest("#openassessment-editor");
-    this.addRemoveEnabled = !(this.editorElement.attr('data-is-released') === 'true');
+    this.addRemoveEnabled = this.editorElement.attr('data-is-released') !== 'true';
 
     this.promptsContainer = new OpenAssessment.Container(
         OpenAssessment.Prompt, {

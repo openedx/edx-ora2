@@ -6,5 +6,5 @@ cd `dirname $BASH_SOURCE` && cd ..
 git clean -xfd "./storage/test/"
 
 echo "Running Python tests..."
-export DJANGO_SETTINGS_MODULE="settings.test"
+export DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-"settings.test"}
 python manage.py test $1
