@@ -235,7 +235,7 @@
                 // submission was cancelled.
                 view.loadStudentInfo({expanded_view: 'final-grade'});
             }).fail(function(errorMessage) {
-                $('.cancel-submission-error').html(errorMessage);
+                $('.cancel-submission-error').html(_.escape(errorMessage));
             });
         },
 
@@ -331,9 +331,9 @@
                 // section expanded. This section will show the learner's
                 // final grade and in the future should include details of
                 // the staff override itself.
-                view.loadStudentInfo({expanded_view:  'final-grade'});
+                view.loadStudentInfo({expanded_view: 'final-grade'});
             }).fail(function(errorMessage) {
-                $('.staff-override-error').html(errorMessage);
+                $('.staff-override-error').html(_.escape(errorMessage));
                 view.staffSubmitEnabled(true);
             });
         }

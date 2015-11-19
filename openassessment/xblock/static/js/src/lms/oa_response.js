@@ -231,7 +231,7 @@ OpenAssessment.ResponseView.prototype = {
             // Setting the HTML will overwrite the screen reader tag,
             // so prepend it to the message.
             var label = gettext("Status of Your Response");
-            sel.html('<span class="sr">' + label + ':' + '</span>\n' + msg);
+            sel.html('<span class="sr">' + _.escape(label) + ':' + '</span>\n' + msg);
         }
     },
 

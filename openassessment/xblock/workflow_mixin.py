@@ -108,7 +108,7 @@ class WorkflowMixin(object):
         if submission_uuid is None:
             submission_uuid = self.submission_uuid
 
-        if submission_uuid:
+        if submission_uuid is not None:
             requirements = self.workflow_requirements()
             workflow_api.update_from_assessments(submission_uuid, requirements)
 
@@ -127,9 +127,9 @@ class WorkflowMixin(object):
         Raises:
             AssessmentWorkflowError
         """
-        if not submission_uuid:
+        if submission_uuid is None:
             submission_uuid = self.submission_uuid
-            if not submission_uuid:
+            if submission_uuid is None:
                 return {}
         return workflow_api.get_workflow_for_submission(
             submission_uuid, self.workflow_requirements()

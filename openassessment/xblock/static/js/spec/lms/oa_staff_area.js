@@ -354,10 +354,17 @@ describe('OpenAssessment.StaffAreaView', function() {
                 var staffArea = createStaffArea(),
                     $assessment, $gradeSection;
                 chooseStudent(staffArea, 'testStudent');
+
+                // Verify that the student info section is hidden but shows the original score
+                $gradeSection = $('.staff-info__student__grade', staffArea.element);
+                expect($('.ui-toggle-visibility', $gradeSection)).toHaveClass('is--collapsed');
+                expect($('p', $gradeSection).first().text().trim()).toBe(
+                    'The problem has not been started.'
+                );
+
+                // Fill in and submit the assessment
                 $assessment = $('.wrapper--staff-assessment', staffArea.element);
                 fillAssessment($assessment);
-
-                // Submit the assessment
                 server.studentTemplate = 'oa_staff_graded_submission.html';
                 submitAssessment(staffArea);
 
