@@ -96,24 +96,19 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         ordering = ["-created"]
         # TODO: In migration, need a non-unique index on (course_id, item_id, status)
 
-    @classmethod
-    def include_staff_in_class(cls):
-        if 'staff' not in cls.STEPS:
+    def __init__(self, *args, **kwargs):
+        super(AssessmentWorkflow, self).__init__(*args, **kwargs)
+        if 'staff' not in AssessmentWorkflow.STEPS:
             new_list = ['staff']
-            new_list.extend(cls.STEPS)
-            cls.STEPS = new_list
-            cls.STATUS_VALUES = cls.STEPS + cls.STATUSES
-            cls.STATUS = Choices(*cls.STATUS_VALUES)
+            new_list.extend(AssessmentWorkflow.STEPS)
+            AssessmentWorkflow.STEPS = new_list
+            AssessmentWorkflow.STATUS_VALUES = AssessmentWorkflow.STEPS + AssessmentWorkflow.STATUSES
+            AssessmentWorkflow.STATUS = Choices(*AssessmentWorkflow.STATUS_VALUES)
 
-        if 'staff' not in cls.ASSESSMENT_SCORE_PRIORITY:
+        if 'staff' not in AssessmentWorkflow.ASSESSMENT_SCORE_PRIORITY:
             new_list = ['staff']
-            new_list.extend(cls.ASSESSMENT_SCORE_PRIORITY)
-            cls.ASSESSMENT_SCORE_PRIORITY = new_list
-
-    @classmethod
-    def from_db(cls, db, field_names, values):
-        cls.include_staff_in_class()
-        super(AssessmentWorkflow).from_db(db, field_names, values)
+            new_list.extend(AssessmentWorkflow.ASSESSMENT_SCORE_PRIORITY)
+            AssessmentWorkflow.ASSESSMENT_SCORE_PRIORITY = new_list
 
     @classmethod
     @transaction.commit_on_success
@@ -143,8 +138,6 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             new_list = ['staff']
             new_list.extend(step_names)
             step_names = new_list
-
-        cls.include_staff_in_class()
 
         # Create the workflow and step models in the database
         # For now, set the status to waiting; we'll modify it later
@@ -200,10 +193,13 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
     def score(self):
         """Latest score for the submission we're tracking.
 
-        Note that while it is usually the case that we're setting the score,
-        that may not always be the case. We may have some course staff override.
+        Returns:
+            score (dict): The latest score for this workflow, or None if the workflow is incomplete.
         """
-        return sub_api.get_latest_score_for_submission(self.submission_uuid)
+        score = None
+        if self.status == self.STATUS.done:
+            score = sub_api.get_latest_score_for_submission(self.submission_uuid)
+        return score
 
     def status_details(self, assessment_requirements):
         status_dict = {}
@@ -316,17 +312,20 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
 
         new_staff_score = self.get_score(assessment_requirements, {'staff': step_for_name.get('staff', None)})
         if new_staff_score:
-            old_score = self.score
-            if not old_score or old_score['points_earned'] != new_staff_score['points_earned']:
+            old_score = sub_api.get_latest_score_for_submission(self.submission_uuid)
+            if not old_score or not old_score.get('staff_id') or old_score['points_earned'] != new_staff_score['points_earned']:
+                # Set the staff score using submissions api, and log that fact
                 self.set_staff_score(new_staff_score)
                 self.save()
                 logger.info((
                     u"Workflow for submission UUID {uuid} has updated score using staff assessment."
                 ).format(uuid=self.submission_uuid))
-                staff_step = step_for_name.get('staff')
-                staff_step.assessment_completed_at=now()
-                staff_step.save()
-                self.status = self.STATUS.done
+
+                # Update the assessment_completed_at field for all steps
+                # All steps are considered "assessment complete", as the staff score will override all
+                for step in steps:
+                    step.assessment_completed_at=now()
+                    step.save()
 
         if self.status == self.STATUS.done:
             return
@@ -357,7 +356,9 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             score = self.get_score(assessment_requirements, step_for_name)
             # If we found a score, then we're done
             if score is not None:
-                self.set_score(score)
+                # Only set the score if it's not a staff score, in which case it will have already been set above
+                if score.get("staff_id") is None:
+                    self.set_score(score)
                 new_status = self.STATUS.done
 
         # Finally save our changes if the status has changed
@@ -376,7 +377,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         # A staff step must always be available, to allow for staff overrides
         try:
             self.steps.get(name=self.STATUS.staff)
-        except AssessmentWorkflowStep.DoesNotExist:
+        except AttributeError:
             for step in list(self.steps.all()):
                 step.order_num += 1
             self.steps.add(

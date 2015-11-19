@@ -83,10 +83,10 @@
                                 {% if criterion.options %}
                                 <li
                                     class="field field--radio is--required assessment__rubric__question ui-toggle-visibility has--options"
-                                    id="assessment__rubric__question--{{ criterion.order_num }}"
+                                    id="training__assessment__rubric__question--{{ criterion.order_num }}"
                                 >
                                     <h4 class="question__title ui-toggle-visibility__control">
-                                        <i class="icon fa fa-caret-right"></i>
+                                        <i class="icon fa fa-caret-right" aria-hidden="true"></i>
                                         <span class="question__title__copy">{{ criterion.prompt }}</span>
                                         <span class="label--required sr">* ({% trans "Required" %})</span>
                                     </h4>
@@ -111,7 +111,7 @@
                                                     <div class="wrapper--input">
                                                         <input type="radio"
                                                                name="{{ criterion.name }}"
-                                                               id="assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
+                                                               id="training__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
                                                                class="answer__value"
                                                                value="{{ option.name }}" />
                                                         <label for="assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"

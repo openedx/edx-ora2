@@ -1,0 +1,326 @@
+{% load i18n %}
+{% load tz %}
+
+<div class="openassessment__student-info staff-info__student__report"
+     data-submission-uuid="{{ submission.uuid }}">
+{% if submission %}
+    <h2 class="title">
+        <span class="label">
+            {% blocktrans with learner=student_username %}
+                Viewing learner: {{ learner }}
+            {% endblocktrans %}
+        </span>
+    </h2>
+
+    <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse staff-info__student__response">
+        <div class="ui-staff ui-toggle-visibility is--collapsed">
+            <h2 class="staff-info__title ui-staff__subtitle ui-toggle-visibility__control">
+                <i class="icon fa fa-caret-right" aria-hidden="true"></i>
+                <span>{% trans "Learner's Response" %}</span>
+            </h2>
+            <div class="ui-toggle-visibility__content">
+                {% if workflow_cancellation %}
+                    <p>
+                        {% blocktrans with removed_by_username=workflow_cancellation.cancelled_by removed_datetime=workflow_cancellation.cancelled_at|utc|date:"F j, Y H:i e" %}
+                            Learner submission removed by {{ removed_by_username }} on {{ removed_datetime }}
+                        {% endblocktrans %}
+                    </p>
+                    <!-- Comments: Reason for Cancellation-->
+                    <p>
+                        {% blocktrans with comments=workflow_cancellation.comments %}
+                            Comments: {{ comments }}
+                        {% endblocktrans %}
+                    </p>
+                {% else %}
+                    {% include "openassessmentblock/oa_submission_answer.html" with answer=submission.answer answer_text_label="The learner's response to the question above:" %}
+
+                    {% if submission.file_url %}
+                        <a href="{{ submission.file_url }}" class="submission--file">
+                            {% trans "The file associated with this response." %}
+                        </a>
+                        <span>{%  trans "Caution: This file was uploaded by another course learner and has not been verified, screened, approved, reviewed, or endorsed by edX. If you decide to access it, you do so at your own risk." %}</span>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% if peer_assessments != None %}
+        <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse">
+            <div class="ui-staff ui-toggle-visibility is--collapsed">
+                <h2 class="staff-info__title ui-staff__subtitle ui-toggle-visibility__control">
+                    <i class="icon fa fa-caret-right" aria-hidden="true"></i>
+                    <span>{% trans "Peer Assessments for This Learner" %}</span>
+                </h2>
+                <div class="ui-toggle-visibility__content">
+                    {% if peer_assessments %}
+                        {% for assessment in peer_assessments %}
+                            {% with peer_num=forloop.counter %}
+                                <h4 class="title--sub">
+                                    {% blocktrans %}
+                                        Peer {{ peer_num }}:
+                                    {% endblocktrans %}
+                                </h4>
+                                <table class="staff-info__status__table" summary="{% trans "Assessment" %}">
+                                    <thead>
+                                    <tr>
+                                        <th abbr="Criterion" scope="col">{% trans "Criterion" %}</th>
+                                        <th abbr="Selected Option" scope="col">{% trans "Selected Option" %}</th>
+                                        <th abbr="Feedback" scope="col">{% trans "Feedback" %}</th>
+                                        <th abbr="Points" scope="col">{% trans "Points" %}</th>
+                                        <th abbr="Points Possible" scope="col">{% trans "Points Possible" %}</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    {% for criterion in rubric_criteria %}
+                                        {% for part in assessment.parts %}
+                                            {% if part.option.criterion.name == criterion.name %}
+                                                <tr>
+                                                    <td class="label">{{ criterion.label }}</td>
+                                                    <td class="value">{{ part.option.label }}</td>
+                                                    <td class="value">{{ part.feedback }}</td>
+                                                    <td class="value">{{ part.option.points }}</td>
+                                                    <td class="value">{{ criterion.total_value }}</td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                <h4 class="title--sub">{% trans "Overall Feedback" %}</h4>
+                                <div class="student__answer__display__content">
+                                    {{ assessment.feedback|linebreaks }}
+                                </div>
+                            {% endwith %}
+                        {%  endfor %}
+                    {% else %}
+                        <p>{% trans "This learner currently has no peer assessments." %}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if submitted_assessments != None %}
+        <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse">
+            <div class="ui-staff ui-toggle-visibility is--collapsed">
+                <h2 class="staff-info__title ui-staff__subtitle ui-toggle-visibility__control">
+                    <i class="icon fa fa-caret-right" aria-hidden="true"></i>
+                    <span>{% trans "Peer Assessments Completed by This Learner" %}</span>
+                </h2>
+                <div class="ui-toggle-visibility__content">
+                    {% if submitted_assessments %}
+                        {% for assessment in submitted_assessments %}
+                            {% with peer_num=forloop.counter %}
+                                <h4 class="title--sub">
+                                    {% blocktrans %}
+                                        Assessment {{ peer_num }}:
+                                    {% endblocktrans %}
+                                </h4>
+                                <table class="staff-info__status__table" summary="{% trans "Assessment" %}">
+                                    <thead>
+                                    <tr>
+                                        <th abbr="Criterion" scope="col">{% trans "Criterion" %}</th>
+                                        <th abbr="Selected Option" scope="col">{% trans "Selected Option" %}</th>
+                                        <th abbr="Feedback" scope="col">{% trans "Feedback" %}</th>
+                                        <th abbr="Points" scope="col">{% trans "Points" %}</th>
+                                        <th abbr="Points Possible" scope="col">{% trans "Points Possible" %}</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    {% for criterion in rubric_criteria %}
+                                        {% for part in assessment.parts %}
+                                            {% if part.option.criterion.name == criterion.name %}
+                                                <tr>
+                                                    <td class="label">{{ criterion.label }}</td>
+                                                    <td class="value">{{ part.option.label }}</td>
+                                                    <td class="value">{{ part.feedback }}</td>
+                                                    <td class="value">{{ part.option.points }}</td>
+                                                    <td class="value">{{ criterion.total_value }}</td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                <h4 class="title--sub">{% trans "Overall Feedback" %}</h4>
+                                <div class="student__answer__display__content">
+                                    {{ assessment.feedback|linebreaks }}
+                                </div>
+                            {% endwith %}
+                        {%  endfor %}
+                    {% else %}
+                        <p>{% trans "This learner has not completed any peer assessments." %}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if self_assessment %}
+        <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse">
+            <div class="ui-staff ui-toggle-visibility is--collapsed">
+                <h2 class="staff-info__title ui-staff__subtitle ui-toggle-visibility__control">
+                    <i class="icon fa fa-caret-right" aria-hidden="true"></i>
+                    <span>{% trans "Learner's Self Assessment" %}</span>
+                </h2>
+                <div class="ui-toggle-visibility__content">
+                    <table class="staff-info__status__table" summary="{% trans "Self Assessment" %}">
+                        <thead>
+                        <tr>
+                            <th abbr="Criterion" scope="col">{% trans "Criterion" %}</th>
+                            <th abbr="Selected Option" scope="col">{% trans "Selected Option" %}</th>
+                            <th abbr="Points" scope="col">{% trans "Points" %}</th>
+                            <th abbr="Points Possible" scope="col">{% trans "Points Possible" %}</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for criterion in rubric_criteria %}
+                            {% for part in self_assessment.parts %}
+                                {% if part.option.criterion.name == criterion.name %}
+                                    <tr>
+                                        <td class="label">{{ criterion.label }}</td>
+                                        <td class="value">{{ part.option.label }}</td>
+                                        <td class="value">{{ part.option.points }}</td>
+                                        <td class="value">{{ criterion.total_value }}</td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if example_based_assessment %}
+        <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse">
+            <div class="ui-staff ui-toggle-visibility is--collapsed">
+                <h2 class="staff-info__title ui-staff__subtitle ui-toggle-visibility__control">
+                    <i class="icon fa fa-caret-right" aria-hidden="true"></i>
+                    <span>{% trans "Example-Based Assessment" %}</span>
+                </h2>
+                <div class="ui-toggle-visibility__content">
+                    <table class="staff-info__status__table" summary="{% trans "Example Based Assessment" %}">
+                        <thead>
+                        <tr>
+                            <th abbr="Criterion" scope="col">{% trans "Criterion" %}</th>
+                            <th abbr="Selected Option" scope="col">{% trans "Selected Option" %}</th>
+                            <th abbr="Points" scope="col">{% trans "Points" %}</th>
+                            <th abbr="Points Possible" scope="col">{% trans "Points Possible" %}</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for criterion in rubric_criteria %}
+                            {% for part in example_based_assessment.parts %}
+                                {% if part.option.criterion.name == criterion.name %}
+                                    <tr>
+                                        <td class="label">{{ criterion.label }}</td>
+                                        <td class="value">{{ part.option.label }}</td>
+                                        <td class="value">{{ part.option.points }}</td>
+                                        <td class="value">{{ criterion.total_value }}</td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse staff-info__student__grade">
+        <div class="ui-staff ui-toggle-visibility {% if expanded_view != 'final-grade' %}is--collapsed {% endif %}">
+            <h2 class="staff-info__title ui-staff__subtitle ui-toggle-visibility__control">
+                <i class="icon fa fa-caret-right" aria-hidden="true"></i>
+                <span>{% trans "Learner's Final Grade" %}</span>
+            </h2>
+            <div class="ui-toggle-visibility__content">
+                {% if workflow_status == "done" %}
+                    <p>
+                    {% with points_earned_string=score.points_earned|stringformat:"s" points_possible_string=score.points_possible|stringformat:"s" %}
+                        {% blocktrans with points_earned='<span class="grade__value__earned">'|safe|add:points_earned_string|add:'</span>'|safe points_possible='<span class="grade__value__potential">'|safe|add:points_possible_string|add:'</span>'|safe %}
+                            Final grade: {{ points_earned }} out of {{ points_possible }}
+                        {% endblocktrans %}
+                    {% endwith %}
+                    </p>
+                {% elif workflow_status == "waiting" %}
+                    <p>{% trans "The submission is waiting for assessments." %}</p>
+                {% elif workflow_status == "cancelled" %}
+                    <p>{% trans "The learner's submission has been removed from peer assessment. The learner receives a grade of zero unless you delete the learner's state for the problem to allow them to resubmit a response." %}</p>
+                {% elif workflow_status == None %}
+                    <p>{% trans "The problem has not been started." %}</p>
+                {% else %}
+                    <p>{% trans "The problem has not been completed." %}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% if not workflow_cancellation %}
+        <div class="staff-info__staff-override ui-staff__content__section wrapper--ui--collapse">
+            <div class="ui-staff ui-toggle-visibility {% if expanded_view != 'staff-override' %}is--collapsed {% endif %}">
+                <h2 class="staff-info__title ui-staff__subtitle ui-toggle-visibility__control">
+                    <i class="icon fa fa-caret-right" aria-hidden="true"></i>
+                    <span>{% trans "Submit Assessment Grade Override" %}</span>
+                </h2>
+
+                <div class="staff-info__staff-override__content ui-toggle-visibility__content">
+                    <div class="wrapper--input">
+                        {% include "openassessmentblock/staff_area/oa_staff_assessment.html" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="staff-info__workflow-cancellation ui-staff__content__section wrapper--ui--collapse">
+            <div class="ui-staff ui-toggle-visibility is--collapsed">
+                <h2 class="staff-info__title ui-staff__subtitle ui-toggle-visibility__control">
+                    <i class="icon fa fa-caret-right" aria-hidden="true"></i>
+                    <span>{% trans "Remove Submission From Peer Grading" %}</span>
+                </h2>
+
+                <div class="staff-info__cancel-submission__content ui-toggle-visibility__content">
+                    <div class="wrapper--input">
+                        <form data-submission-uuid="{{ submission.uuid }}">
+
+                            <div class="step__message message message--warning">
+                                <h3 class="message__title">{% trans "Caution: This Action Cannot Be Undone" %}</h3>
+                                <div class="message__content">{% trans "Removing a learner's submission cannot be undone and should be done with caution." %}</div>
+                            </div>
+
+                            <ul class="list list--actions">
+                                <li>
+                                    <label class="label">{% trans "Comments:" %}
+                                        <textarea class="cancel_submission_comments" value="" maxlength="10000"></textarea>
+                                    </label>
+                                </li>
+                            </ul>
+                            <ul class="list list--actions">
+                                <li class="list--actions__item">
+                                    <button data-submission-uuid="{{ submission.uuid }}"
+                                        class="action--submit action--submit-cancel-submission is--disabled">
+                                        <span class="copy">{% trans "Remove submission" %}</span>
+                                    </button>
+
+                                    <div class="cancel-submission-error"></div>
+                                </li>
+                            </ul>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    </div>
+{% else %}
+    {% trans "A response was not found for this learner." %}
+{% endif %}
+</div>
