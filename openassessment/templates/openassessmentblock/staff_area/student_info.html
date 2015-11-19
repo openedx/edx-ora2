@@ -62,6 +62,7 @@
                                     <tr>
                                         <th abbr="Criterion" scope="col">{% trans "Criterion" %}</th>
                                         <th abbr="Selected Option" scope="col">{% trans "Selected Option" %}</th>
+                        <th abbr="Feedback" scope="col">{% trans "Feedback" %}</th>
                                         <th abbr="Points" scope="col">{% trans "Points" %}</th>
                                         <th abbr="Points Possible" scope="col">{% trans "Points Possible" %}</th>
                                     </tr>
@@ -69,11 +70,12 @@
 
                                     <tbody>
                                     {% for criterion in rubric_criteria %}
-                                        {% for part in self_assessment.parts %}
+                                        {% for part in assessment.parts %}
                                             {% if part.option.criterion.name == criterion.name %}
                                                 <tr>
                                                     <td class="label">{{ criterion.label }}</td>
                                                     <td class="value">{{ part.option.label }}</td>
+                                                    <td class="value">{{ part.feedback }}</td>
                                                     <td class="value">{{ part.option.points }}</td>
                                                     <td class="value">{{ criterion.total_value }}</td>
                                                 </tr>
