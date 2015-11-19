@@ -342,6 +342,8 @@ def _get_workflow_model(submission_uuid):
         raise AssessmentWorkflowRequestError("submission_uuid must be a string type")
 
     try:
+        # TODO: remove this hack!!!
+        AssessmentWorkflow.include_staff_in_class()
         workflow = AssessmentWorkflow.objects.get(submission_uuid=submission_uuid)
     except AssessmentWorkflow.DoesNotExist:
         raise AssessmentWorkflowNotFoundError(
