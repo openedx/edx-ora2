@@ -204,7 +204,7 @@ class AssessmentPage(OpenAssessmentPage, AssessmentMixin):
     Page object representing an "assessment" step in an ORA problem.
     """
 
-    ASSESSMENT_TYPES = ['self-assessment', 'peer-assessment', 'student-training']
+    ASSESSMENT_TYPES = ['self-assessment', 'peer-assessment', 'student-training', 'staff-assessment']
 
     def __init__(self, assessment_type, *args):
         """
@@ -222,6 +222,13 @@ class AssessmentPage(OpenAssessmentPage, AssessmentMixin):
             )
             raise PageConfigurationError(msg)
         self._assessment_type = assessment_type
+
+    def _bounded_selector(self, selector):
+        """
+        Return `selector`, but limited to this Assignment Page.
+        """
+        return '#openassessment__{assessment_type} {selector}'.format(
+            assessment_type=self._assessment_type, selector=selector)
 
     def is_browser_on_page(self):
         css_id = "#openassessment__{assessment_type}".format(
@@ -336,6 +343,48 @@ class AssessmentPage(OpenAssessmentPage, AssessmentMixin):
             raise PageConfigurationError(msg)
         candidates = [int(x) for x in self.q(css=".step__status__value--completed").text]
         return candidates[0] if len(candidates) > 0 else None
+
+    @property
+    def label(self):
+        """
+        Returns the label of this assessment step.
+
+        Returns:
+            string
+        """
+        return self.q(css=self._bounded_selector(".step__label")).text[0]
+
+    @property
+    def status_value(self):
+        """
+        Returns the status value (ie., "COMPLETE", "CANCELLED", etc.) of this assessment step.
+
+        Returns:
+            string
+        """
+        return self.q(css=self._bounded_selector(".step__status__value")).text[0]
+
+    @property
+    def message_title(self):
+        """
+        Returns the message title, if present, of this assesment step.
+
+        Returns:
+            string is message title is present, else None
+        """
+        message_title = self.q(css=self._bounded_selector(".message__title"))
+        if len(message_title) == 0:
+            return None
+        return message_title.text[0]
+
+    def verify_status_value(self, expected_value):
+        """
+        Waits until the expected status value appears. If it does not appear, fails the test.
+        """
+        EmptyPromise(
+            lambda: self.status_value == expected_value,
+            "Expected status value present"
+        ).fulfill()
 
 
 class GradePage(OpenAssessmentPage):

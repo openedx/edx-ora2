@@ -342,11 +342,9 @@ def _get_workflow_model(submission_uuid):
         raise AssessmentWorkflowRequestError("submission_uuid must be a string type")
 
     try:
-        workflow = AssessmentWorkflow.objects.get(submission_uuid=submission_uuid)
-    except AssessmentWorkflow.DoesNotExist:
-        raise AssessmentWorkflowNotFoundError(
-            u"No assessment workflow matching submission_uuid {}".format(submission_uuid)
-        )
+        workflow = AssessmentWorkflow.get_by_submission_uuid(submission_uuid)
+    except AssessmentWorkflowError as exc:
+        raise AssessmentWorkflowInternalError(repr(exc))
     except Exception as exc:
         # Something very unexpected has just happened (like DB misconfig)
         err_msg = (
@@ -355,6 +353,11 @@ def _get_workflow_model(submission_uuid):
         )
         logger.exception(err_msg)
         raise AssessmentWorkflowInternalError(err_msg)
+
+    if workflow is None:
+        raise AssessmentWorkflowNotFoundError(
+            u"No assessment workflow matching submission_uuid {}".format(submission_uuid)
+        )
 
     return workflow
 

@@ -1,0 +1,31 @@
+{% load i18n %}
+
+<li id="openassessment__staff-assessment" class="openassessment__steps__step step--staff-assessment">
+    <header class="step__header">
+        <h2 class="step__title">
+            <span class="step__counter"></span>
+            <span class="wrapper--copy">
+                <span class="step__label">{% trans "Staff Grade" %} </span>
+            </span>
+        </h2>
+
+        <span class="step__status">
+          <span class="step__status__label">{% trans "This step's status" %}:</span>
+            <span class="step__status__value">
+                <span class="copy">{% trans "Not Available" %}</span>
+            </span>
+        </span>
+    </header>
+
+    <div class="wrapper--step__content">
+
+        <div class="step__message message message--incomplete">
+            <h3 class="message__title">{% trans "Waiting for a Staff Grade" %}</h3>
+
+            <div class="message__content">
+              <p>{% trans "Check back later to see if a course staff member has assessed your response. You will receive your grade after the assessment is complete." %}</p>
+            </div>
+        </div>
+    </div>
+</div>
+</li>

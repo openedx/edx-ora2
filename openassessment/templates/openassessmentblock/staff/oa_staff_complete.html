@@ -1,0 +1,22 @@
+{% load i18n %}
+
+<li id="openassessment__staff-assessment" class="openassessment__steps__step step--staff-assessment is--empty is--collapsed is--complete">
+    <header class="step__header">
+        <h2 class="step__title">
+            <span class="step__counter"></span>
+            <span class="wrapper--copy">
+                <span class="step__label">{% trans "Staff Grade" %} </span>
+            </span>
+        </h2>
+
+        <span class="step__status">
+          <span class="step__status__label">{% trans "This step's status" %}:</span>
+          <span class="step__status__value">
+            <i class="icon fa fa-check" aria-hidden="true"></i>
+            <span class="copy">
+                {% trans "Complete" %}
+            </span>
+          </span>
+        </span>
+    </header>
+</li>
