@@ -46,43 +46,36 @@ UI_MODELS = {
     "submission": {
         "name": "submission",
         "class_id": "openassessment__response",
-        "navigation_text": "Your response to this assignment",
         "title": "Your Response"
     },
     "student-training": {
         "name": "student-training",
         "class_id": "openassessment__student-training",
-        "navigation_text": "Learn to assess responses",
         "title": "Learn to Assess"
     },
     "peer-assessment": {
         "name": "peer-assessment",
         "class_id": "openassessment__peer-assessment",
-        "navigation_text": "Your assessment(s) of peer responses",
         "title": "Assess Peers' Responses"
     },
     "self-assessment": {
         "name": "self-assessment",
         "class_id": "openassessment__self-assessment",
-        "navigation_text": "Your assessment of your response",
         "title": "Assess Your Response"
     },
     "staff-assessment": {
         "name": "staff-assessment",
         "class_id": "openassessment__staff-assessment",
-        "navigation_text": "Staff assessment of your response",
-        "title": "Staff Assessment"
+        "title": "Staff Grade"
     },
     "grade": {
         "name": "grade",
         "class_id": "openassessment__grade",
-        "navigation_text": "Your grade for this assignment",
         "title": "Your Grade:"
     },
      "leaderboard": {
         "name": "leaderboard",
         "class_id": "openassessment__leaderboard",
-        "navigation_text": "A leaderboard of the top submissions",
         "title": "Leaderboard"
     }
 }
@@ -455,15 +448,20 @@ class OpenAssessmentBlock(
 
         """
         ui_models = [UI_MODELS["submission"]]
+        staff_assessment_required = False
         for assessment in self.valid_assessments:
-            if assessment["name"] == "staff-assessment" and assessment["required"] == False:
-                # If we don't have a staff grade, and it's not required, hide
-                # this UI model.
-                if not self.staff_assessment_exists(self.submission_uuid):
+            if assessment["name"] == "staff-assessment":
+                if not assessment["required"]:
                     continue
+                else:
+                    staff_assessment_required = True
             ui_model = UI_MODELS.get(assessment["name"])
             if ui_model:
                 ui_models.append(dict(assessment, **ui_model))
+
+        if not staff_assessment_required and self.staff_assessment_exists(self.submission_uuid):
+            ui_models.append(UI_MODELS["staff-assessment"])
+
         ui_models.append(UI_MODELS["grade"])
 
         if self.leaderboard_show > 0:
