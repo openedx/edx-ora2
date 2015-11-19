@@ -69,3 +69,36 @@ class StaffAssessmentMixin(object):
             return {'success': False, 'msg': msg}
         else:
             return {'success': True, 'msg': u""}
+            
+    @XBlock.handler
+    def render_staff_assessment(self, data, suffix=''):
+        """Renders the Staff Assessment HTML section of the XBlock
+        Generates the staff assessment HTML for the Open
+        Assessment XBlock. See OpenAssessmentBlock.render_assessment() for
+        more information on rendering XBlock sections.
+        Args:
+            data (dict):
+        """
+        # if "peer-assessment" not in self.assessment_steps:
+        #     return Response(u"")
+
+        path, context_dict = self.staff_path_and_context()
+
+        return self.render_assessment(path, context_dict)
+        
+    def staff_path_and_context(self):
+        """
+        Retrieve the correct template path and template context for the handler to render.
+        """
+        # TODO: what is actually necessary here?
+        context_dict = {
+            "rubric_criteria": self.rubric_criteria_with_labels,
+            "allow_latex": self.allow_latex,
+        }
+
+        # # Determine if file upload is supported for this XBlock.
+        # context["allow_file_upload"] = self.allow_file_upload
+        # context['self_file_url'] = self.get_download_url_from_submission(submission)
+
+        path = 'openassessmentblock/staff/oa_staff_complete.html'
+        return path, context_dict       

@@ -63,6 +63,9 @@ class WorkflowMixin(object):
         }
         workflow_api.create_workflow(submission_uuid, steps, on_init_params=on_init_params)
 
+    def staff_score_exists(self, submission_uuid):
+        return workflow_api.staff_score_exists(submission_uuid)
+
     def workflow_requirements(self):
         """
         Retrieve the requirements from each assessment module
