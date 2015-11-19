@@ -8,6 +8,5 @@ moto==0.2.22
 pep8==1.5.7
 pylint<1.0
 
-git+https://github.com/edx/django-pyfs.git@ned/update-django-18#egg=django-pyfs==1.0.3
+git+https://github.com/edx/django-pyfs.git@1.0.3#egg=django-pyfs==1.0.3
 git+https://github.com/edx/i18n-tools.git@56f048af9b6868613c14aeae760548834c495011#egg=i18n_tools
-git+https://github.com/edx/xblock-sdk.git@ned/upgrade-django-18#egg=xblock-sdk==0.1.1
