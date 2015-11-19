@@ -5,6 +5,7 @@ from .. import exceptions
 from django.conf import settings
 import django.core.cache
 from django.core.urlresolvers import reverse
+from django.utils.encoding import smart_text
 
 
 class Backend(BaseBackend):
@@ -60,7 +61,7 @@ def get_cache():
     cache_name = getattr(settings, "ORA2_FILEUPLOAD_CACHE_NAME", None)
     if cache_name is None:
         raise exceptions.FileUploadInternalError("Undefined cache backend for file upload")
-    return django.core.cache.get_cache(cache_name)
+    return django.core.cache.caches[cache_name]
 
 
 def make_upload_url_available(url_key_name, timeout):
@@ -71,8 +72,8 @@ def make_upload_url_available(url_key_name, timeout):
         url_key_name (str): key that uniquely identifies the upload url
         timeout (int): time in seconds before the url expires
     """
-    return get_cache().set(
-        get_upload_cache_key(url_key_name),
+    get_cache().set(
+        smart_text(get_upload_cache_key(url_key_name)),
         1, timeout
     )
 
@@ -84,8 +85,8 @@ def make_download_url_available(url_key_name, timeout):
         url_key_name (str): key that uniquely identifies the url
         timeout (int): time in seconds before the url expires
     """
-    return get_cache().set(
-        get_download_cache_key(url_key_name),
+    get_cache().set(
+        smart_text(get_download_cache_key(url_key_name)),
         1, timeout
     )
 
@@ -93,13 +94,13 @@ def is_upload_url_available(url_key_name):
     """
     Return True if the corresponding upload URL is available.
     """
-    return get_cache().get(get_upload_cache_key(url_key_name)) is not None
+    return get_cache().get(smart_text(get_upload_cache_key(url_key_name))) is not None
 
 def is_download_url_available(url_key_name):
     """
     Return True if the corresponding download URL is available.
     """
-    return get_cache().get(get_download_cache_key(url_key_name)) is not None
+    return get_cache().get(smart_text(get_download_cache_key(url_key_name))) is not None
 
 def get_upload_cache_key(url_key_name):
     return "upload/" + url_key_name

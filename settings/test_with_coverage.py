@@ -13,3 +13,10 @@ NOSE_ARGS = [
     '--cover-branches',
     '--cover-erase',
     ]
+
+
+import warnings
+
+from django.core.cache import CacheKeyWarning
+
+warnings.simplefilter("ignore", CacheKeyWarning)
