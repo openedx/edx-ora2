@@ -96,24 +96,19 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         ordering = ["-created"]
         # TODO: In migration, need a non-unique index on (course_id, item_id, status)
 
-    @classmethod
-    def include_staff_in_class(cls):
-        if 'staff' not in cls.STEPS:
+    def __init__(self, *args, **kwargs):
+        super(AssessmentWorkflow, self).__init__(*args, **kwargs)
+        if 'staff' not in AssessmentWorkflow.STEPS:
             new_list = ['staff']
-            new_list.extend(cls.STEPS)
-            cls.STEPS = new_list
-            cls.STATUS_VALUES = cls.STEPS + cls.STATUSES
-            cls.STATUS = Choices(*cls.STATUS_VALUES)
+            new_list.extend(AssessmentWorkflow.STEPS)
+            AssessmentWorkflow.STEPS = new_list
+            AssessmentWorkflow.STATUS_VALUES = AssessmentWorkflow.STEPS + AssessmentWorkflow.STATUSES
+            AssessmentWorkflow.STATUS = Choices(*AssessmentWorkflow.STATUS_VALUES)
 
-        if 'staff' not in cls.ASSESSMENT_SCORE_PRIORITY:
+        if 'staff' not in AssessmentWorkflow.ASSESSMENT_SCORE_PRIORITY:
             new_list = ['staff']
-            new_list.extend(cls.ASSESSMENT_SCORE_PRIORITY)
-            cls.ASSESSMENT_SCORE_PRIORITY = new_list
-
-    @classmethod
-    def from_db(cls, db, field_names, values):
-        cls.include_staff_in_class()
-        super(AssessmentWorkflow).from_db(db, field_names, values)
+            new_list.extend(AssessmentWorkflow.ASSESSMENT_SCORE_PRIORITY)
+            AssessmentWorkflow.ASSESSMENT_SCORE_PRIORITY = new_list
 
     @classmethod
     @transaction.commit_on_success
@@ -143,8 +138,6 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             new_list = ['staff']
             new_list.extend(step_names)
             step_names = new_list
-
-        cls.include_staff_in_class()
 
         # Create the workflow and step models in the database
         # For now, set the status to waiting; we'll modify it later
