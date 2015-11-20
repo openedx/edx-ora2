@@ -21,7 +21,6 @@ install-python:
 	./scripts/install-python.sh
 
 install-js:
-	npm config set loglevel warn
 	npm install
 
 install-nltk-data:
@@ -43,6 +42,7 @@ install-test:
 	pip install -q -r requirements/test.txt
 
 install-sys-requirements: install-system install-node
+	npm config set loglevel warn
 
 install-dev:
 	gem install sass
