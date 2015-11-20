@@ -112,8 +112,6 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
 
     @classmethod
     @transaction.atomic
-    def include_staff_in_class(cls):
-        if 'staff' not in cls.STEPS:
     def start_workflow(cls, submission_uuid, step_names, on_init_params):
         """
         Start a new workflow.

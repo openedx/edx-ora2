@@ -242,7 +242,7 @@ def create_assessment(
         raise StaffAssessmentInternalError(error_message)
 
 
-@transaction.commit_on_success
+@transaction.atomic
 def _complete_assessment(
         submission_uuid,
         scorer_id,

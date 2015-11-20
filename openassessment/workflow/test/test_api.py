@@ -15,7 +15,7 @@ from openassessment.assessment.models import StudentTrainingWorkflow
 import submissions.api as sub_api
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
-from openassessment.workflow.models import AssessmentWorkflow
+from openassessment.workflow.models import AssessmentWorkflow, AssessmentApiLoadError
 from openassessment.workflow.errors import AssessmentWorkflowInternalError
 
 
@@ -368,7 +368,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
             item_id=ITEM_1['item_id']
         )
 
-        with self.assertRaises(AssessmentWorkflowInternalError):
+        with self.assertRaises(AssessmentApiLoadError):
             workflow_api.update_from_assessments(submission['uuid'], {})
 
     def test_cancel_the_assessment_workflow(self):
