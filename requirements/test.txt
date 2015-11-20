@@ -8,6 +8,5 @@ moto==0.2.22
 pep8==1.5.7
 pylint<1.0
 
-git+https://github.com/pmitros/django-pyfs.git@d175715e0fe3367ec0f1ee429c242d603f6e8b10#egg=djpyfs
+git+https://github.com/edx/django-pyfs.git@1.0.3#egg=django-pyfs==1.0.3
 git+https://github.com/edx/i18n-tools.git@56f048af9b6868613c14aeae760548834c495011#egg=i18n_tools
-git+https://github.com/edx/xblock-sdk.git@44d66a1091947fda130cb3e36135f6dfc3b135f0#egg=xblock-sdk

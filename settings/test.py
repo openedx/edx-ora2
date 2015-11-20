@@ -36,10 +36,3 @@ INSTALLED_APPS += ('django_nose',)
 
 # Store uploaded files in a test-specific directory
 MEDIA_ROOT = os.path.join(BASE_DIR, 'storage/test')
-
-
-# Silence cache key warnings
-# https://docs.djangoproject.com/en/1.4/topics/cache/#cache-key-warnings
-import warnings
-from django.core.cache import CacheKeyWarning
-warnings.simplefilter("ignore", CacheKeyWarning)
