@@ -1,11 +1,11 @@
 -r base.txt
 -r test-acceptance.txt
 
-coverage==3.7.1
-django-nose==1.4.1
+coverage==4.0.2
+django-nose==1.4.2
 mock==1.0.1
-moto==0.2.22
-pep8==1.5.7
+moto==0.3.1
+pep8==1.6.2
 pylint<1.0
 
 git+https://github.com/pmitros/django-pyfs.git@d175715e0fe3367ec0f1ee429c242d603f6e8b10#egg=djpyfs
