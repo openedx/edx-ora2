@@ -52,6 +52,7 @@ install: install-wheels install-python install-js install-nltk-data install-test
 
 quality:
 	jshint openassessment/xblock/static/js/src -c .jshintrc --verbose
+	./node_modules/jscs/bin/jscs openassessment/xblock/static/js/src --preset google
 
 test: quality test-python test-js
 

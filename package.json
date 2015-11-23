@@ -17,7 +17,8 @@
     "phantomjs": "^1.9.11",
     "sinon": "^1.10.3",
     "uglify-js": "2.3.6",
-    "jshint": "2.8.0"
+    "jshint": "2.8.0",
+    "jscs": "2.6.0"
   },
   "scripts": {
     "test": "./node_modules/karma/bin/karma start --reporters spec,coverage"
