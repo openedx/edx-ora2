@@ -15,7 +15,6 @@ OpenAssessment.LeaderboardView = function(element, server, baseView) {
     this.baseView = baseView;
 };
 
-
 OpenAssessment.LeaderboardView.prototype = {
     /**
     Load the leaderboard view.
@@ -32,5 +31,5 @@ OpenAssessment.LeaderboardView.prototype = {
         ).fail(function(errMsg) {
             baseView.showLoadError('leaderboard', errMsg);
         });
-    },
+    }
 };

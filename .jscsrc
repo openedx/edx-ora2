@@ -1,0 +1,13 @@
+{
+    "preset": "google",
+
+    // edX specific rules
+    "validateIndentation": 4,
+    "maximumLineLength": 120,
+    "disallowMultipleVarDecl": false,
+    "requireCamelCaseOrUpperCaseIdentifiers": {"ignoreProperties": true},
+
+    // Temporary overrides until we clean up further...
+    "validateQuoteMarks": null,  // We should standardize on single quotes
+    "disallowKeywordsOnNewLine": []  // Other repos disallow lines starting with "else"
+}

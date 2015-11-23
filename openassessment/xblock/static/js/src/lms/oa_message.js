@@ -31,5 +31,5 @@ OpenAssessment.MessageView.prototype = {
         ).fail(function(errMsg) {
             baseView.showLoadError('message', errMsg);
         });
-    } 
+    }
 };

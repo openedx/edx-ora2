@@ -27,7 +27,6 @@ OpenAssessment.BaseView = function(runtime, element, server, data) {
     this.staffAreaView = new OpenAssessment.StaffAreaView(this.element, this.server, this);
 };
 
-
 OpenAssessment.BaseView.prototype = {
 
     /**
@@ -39,7 +38,7 @@ OpenAssessment.BaseView.prototype = {
      */
     scrollToTop: function() {
         if ($.scrollTo instanceof Function) {
-            $(window).scrollTo($("#openassessment__steps", this.element), 800, {offset:-50});
+            $(window).scrollTo($("#openassessment__steps", this.element), 800, {offset: -50});
         }
     },
 
@@ -49,8 +48,8 @@ OpenAssessment.BaseView.prototype = {
     Args:
         parentSel (JQuery selector): CSS selector for the container element.
     **/
-    setUpCollapseExpand: function (parentSel) {
-        parentSel.on('click', '.ui-toggle-visibility__control', function (eventData) {
+    setUpCollapseExpand: function(parentSel) {
+        parentSel.on('click', '.ui-toggle-visibility__control', function(eventData) {
                 var sel = $(eventData.target).closest('.ui-toggle-visibility');
                 sel.toggleClass('is--collapsed');
             }

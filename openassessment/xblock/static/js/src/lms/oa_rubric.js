@@ -11,7 +11,6 @@ OpenAssessment.Rubric = function(element) {
     this.element = element;
 };
 
-
 OpenAssessment.Rubric.prototype = {
     /**
     Get or set per-criterion feedback.

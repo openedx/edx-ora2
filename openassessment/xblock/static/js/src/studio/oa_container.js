@@ -92,7 +92,7 @@ OpenAssessment.Container.prototype = {
             // Find items already in the container and install click
             // handlers for the delete buttons.
             $("." + this.removeButtonClass, this.containerElement).click(
-                function (eventData) {
+                function(eventData) {
                     var item = container.createContainerItem(eventData.target);
                     container.remove(item);
                 }
@@ -137,7 +137,7 @@ OpenAssessment.Container.prototype = {
         // Install a click handler for the delete button
         if (this.addRemoveEnabled) {
             containerItem.find('.' + this.removeButtonClass)
-                .click(function (eventData) {
+                .click(function(eventData) {
                     var containerItem = container.createContainerItem(eventData.target);
                     container.remove(containerItem);
                 });
@@ -176,7 +176,7 @@ OpenAssessment.Container.prototype = {
         array: The values representing each container item.
 
     **/
-    getItemValues: function () {
+    getItemValues: function() {
         var values = [];
         var container = this;
 

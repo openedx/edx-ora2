@@ -1,11 +1,10 @@
 /**
-JavaScript shared between all open assessment modules.
+ JavaScript shared between all open assessment modules.
 
-WARNING: Don't add anything to this file until you're
-absolutely sure there isn't a way to encapsulate it in
-an object!
-**/
-
+ WARNING: Don't add anything to this file until you're
+ absolutely sure there isn't a way to encapsulate it in
+ an object!
+ **/
 
 /* Namespace for open assessment */
 /* jshint ignore:start */
@@ -14,24 +13,21 @@ if (typeof OpenAssessment == "undefined" || !OpenAssessment) {
 }
 /* jshint ignore:end */
 
-
 // Stub gettext if the runtime doesn't provide it
 if (typeof window.gettext === 'undefined') {
     window.gettext = function(text) { return text; };
 }
 
-
 // If ngettext isn't found (workbench, testing, etc.), return the simplistic english version
 if (typeof window.ngetgext === 'undefined') {
-    window.ngettext = function (singular_text, plural_text, n) {
+    window.ngettext = function(singularText, pluralText, n) {
         if (n > 1) {
-            return plural_text;
+            return pluralText;
         } else {
-            return singular_text;
+            return singularText;
         }
     };
 }
-
 
 // Stub event logging if the runtime doesn't provide it
 if (typeof window.Logger === 'undefined') {
@@ -39,7 +35,6 @@ if (typeof window.Logger === 'undefined') {
         log: function() {}
     };
 }
-
 
 // Stub MathJax is the runtime doesn't provide it
 if (typeof window.MathJax === 'undefined') {

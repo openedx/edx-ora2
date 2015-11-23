@@ -38,7 +38,7 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
 
     this.leaderboardIntField = new OpenAssessment.IntField(
         $("#openassessment_leaderboard_editor", this.element),
-        { min: 0, max: 100 }
+        {min: 0, max: 100}
     );
 
     this.fileTypeWhiteListInputField = new OpenAssessment.InputControl(
@@ -67,13 +67,12 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
     this.initializeSortableAssessments();
 };
 
-
 OpenAssessment.EditSettingsView.prototype = {
 
     /**
     Installs click listeners which initialize drag and drop functionality for assessment modules.
     **/
-    initializeSortableAssessments: function () {
+    initializeSortableAssessments: function() {
         var view = this;
         // Initialize Drag and Drop of Assessment Modules
         $('#openassessment_assessment_module_settings_editors', view.element).sortable({
@@ -255,7 +254,7 @@ OpenAssessment.EditSettingsView.prototype = {
         // Find all assessment modules within our element in the DOM,
         // and append their definitions to the description
         $('.openassessment_assessment_module_settings_editor', this.assessmentsElement).each(
-            function () {
+            function() {
                 var asmntView = view.assessmentViews[$(this).attr('id')];
                 if (asmntView.isEnabled()) {
                     var description = asmntView.description();
@@ -280,7 +279,7 @@ OpenAssessment.EditSettingsView.prototype = {
         var editorAssessments = [];
         var view = this;
         $('.openassessment_assessment_module_settings_editor', this.assessmentsElement).each(
-            function () {
+            function() {
                 var asmntView = view.assessmentViews[$(this).attr('id')];
                 editorAssessments.push(asmntView.name);
             }

@@ -208,7 +208,7 @@ describe("OpenAssessment.EditRubricView", function() {
         });
     });
 
-    it("validates option points", function () {
+    it("validates option points", function() {
         // Test that a particular value is marked as valid/invalid
         var testValidateOptionPoints = function(value, isValid) {
             var option = view.getOptionItem(0, 0);

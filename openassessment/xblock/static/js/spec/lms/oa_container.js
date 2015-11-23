@@ -2,7 +2,7 @@
  Tests for the Openassessment Container Object.
  **/
 
-describe("OpenAssessment.Container", function () {
+describe("OpenAssessment.Container", function() {
 
     var counter = 0;
     var StubContainerItem = function(element) {
@@ -38,7 +38,7 @@ describe("OpenAssessment.Container", function () {
         );
     };
 
-    beforeEach(function () {
+    beforeEach(function() {
         // Reset the counter before each test
         counter = 0;
 
