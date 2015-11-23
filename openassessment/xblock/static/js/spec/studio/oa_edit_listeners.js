@@ -429,7 +429,7 @@ describe("OpenAssessment.StudentTrainingListenerWithTrainingExamples", function(
     });
 
 
-    it("adds a criterion and an option, then adds a training example", function (){
+    it("adds a criterion and an option, then adds a training example", function(){
         // Initial state, set by the fixture
         assertExampleLabels(
             listener.examplesOptionsLabels(),

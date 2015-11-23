@@ -15,7 +15,6 @@ OpenAssessment.GradeView = function(element, server, baseView) {
     this.baseView = baseView;
 };
 
-
 OpenAssessment.GradeView.prototype = {
     /**
     Load the grade view.

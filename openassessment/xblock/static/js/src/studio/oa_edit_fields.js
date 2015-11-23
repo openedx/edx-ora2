@@ -1,6 +1,6 @@
 /**
-Utilities for reading / writing fields.
-**/
+ Utilities for reading / writing fields.
+ **/
 OpenAssessment.Fields = {
     stringField: function(sel, value) {
         if (value !== undefined) { sel.val(value); }
@@ -10,21 +10,20 @@ OpenAssessment.Fields = {
     booleanField: function(sel, value) {
         if (value !== undefined) { sel.prop("checked", value); }
         return sel.prop("checked");
-    },
+    }
 };
 
-
 /**
-Integer input.
+ Integer input.
 
-Args:
-    inputSel (JQuery selector or DOM element): The input field.
+ Args:
+ inputSel (JQuery selector or DOM element): The input field.
 
-Keyword args:
-    min (int): The minimum value allowed in the input.
-    max (int): The maximum value allowed in the input.
+ Keyword args:
+ min (int): The minimum value allowed in the input.
+ max (int): The maximum value allowed in the input.
 
-**/
+ **/
 OpenAssessment.IntField = function(inputSel, restrictions) {
     this.max = restrictions.max;
     this.min = restrictions.min;
@@ -34,39 +33,39 @@ OpenAssessment.IntField = function(inputSel, restrictions) {
 OpenAssessment.IntField.prototype = {
 
     /**
-    Retrieve the integer value from the input.
-    Decimal values will be truncated, and non-numeric
-    values will become NaN.
+     Retrieve the integer value from the input.
+     Decimal values will be truncated, and non-numeric
+     values will become NaN.
 
-    Returns:
-        integer or NaN
-    **/
+     Returns:
+     integer or NaN
+     **/
     get: function() {
         return parseInt(this.input.val().trim(), 10);
     },
 
     /**
-    Set the input value.
+     Set the input value.
 
-    Args:
-        val (int or string)
+     Args:
+     val (int or string)
 
-    **/
+     **/
     set: function(val) {
         this.input.val(val);
     },
 
     /**
-    Mark validation errors if the field does not satisfy the restrictions.
-    Fractional values are not considered valid integers.
+     Mark validation errors if the field does not satisfy the restrictions.
+     Fractional values are not considered valid integers.
 
-    This will trim whitespace from the field, so "   34  " would be considered
-    a valid input.
+     This will trim whitespace from the field, so "   34  " would be considered
+     a valid input.
 
-    Returns:
-        Boolean indicating whether the field's value is valid.
+     Returns:
+     Boolean indicating whether the field's value is valid.
 
-    **/
+     **/
     validate: function() {
         var value = this.get();
         var isValid = !isNaN(value) && value >= this.min && value <= this.max;
@@ -83,41 +82,40 @@ OpenAssessment.IntField.prototype = {
     },
 
     /**
-    Clear any validation errors from the UI.
-    **/
+     Clear any validation errors from the UI.
+     **/
     clearValidationErrors: function() {
         this.input.removeClass("openassessment_highlighted_field");
     },
 
     /**
-    Return a list of validation errors currently displayed
-    in the UI.  Mainly useful for testing.
+     Return a list of validation errors currently displayed
+     in the UI.  Mainly useful for testing.
 
-    Returns:
-        list of strings
+     Returns:
+     list of strings
 
-    **/
+     **/
     validationErrors: function() {
         var hasError = this.input.hasClass("openassessment_highlighted_field");
         return hasError ? ["Int field is invalid"] : [];
-    },
+    }
 };
 
-
 /**
-Show and hide elements based on a checkbox.
+ Show and hide elements based on a checkbox.
 
-Args:
-    checkboxSel (JQuery selector): The checkbox used to toggle whether sections
-        are shown or hidden.
-    shownSel (JQuery selector): The section to show when the checkbox is checked.
-    hiddenSel (JQuery selector): The section to show when the checkbox is unchecked.
-    notifier (OpenAssessment.Notifier): Receives notifications when the checkbox state changes.
+ Args:
+ checkboxSel (JQuery selector): The checkbox used to toggle whether sections
+ are shown or hidden.
+ shownSel (JQuery selector): The section to show when the checkbox is checked.
+ hiddenSel (JQuery selector): The section to show when the checkbox is unchecked.
+ notifier (OpenAssessment.Notifier): Receives notifications when the checkbox state changes.
 
-Sends the following notifications:
-    * toggleOn
-    * toggleOff
-**/
+ Sends the following notifications:
+ * toggleOn
+ * toggleOff
+ **/
 OpenAssessment.ToggleControl = function(checkboxSel, shownSel, hiddenSel, notifier) {
     this.checkbox = checkboxSel;
     this.shownSection = shownSel;
@@ -127,15 +125,15 @@ OpenAssessment.ToggleControl = function(checkboxSel, shownSel, hiddenSel, notifi
 
 OpenAssessment.ToggleControl.prototype = {
     /**
-    Install the event handler for the checkbox,
-    passing in the toggle control object as the event data.
+     Install the event handler for the checkbox,
+     passing in the toggle control object as the event data.
 
-    Args:
-        checkboxSelector (string): The CSS selector string for the checkbox.
+     Args:
+     checkboxSelector (string): The CSS selector string for the checkbox.
 
-    Returns:
-        OpenAssessment.ToggleControl
-    **/
+     Returns:
+     OpenAssessment.ToggleControl
+     **/
     install: function() {
         this.checkbox.change(
             this, function(event) {
@@ -164,16 +162,15 @@ OpenAssessment.ToggleControl.prototype = {
     }
 };
 
-
 /**
-Date and time input fields.
+ Date and time input fields.
 
-Args:
-    element (DOM element): The parent element of the control inputs.
-    datePicker (string): The CSS selector for the date input field.
-    timePicker (string): The CSS selector for the time input field.
+ Args:
+ element (DOM element): The parent element of the control inputs.
+ datePicker (string): The CSS selector for the date input field.
+ timePicker (string): The CSS selector for the time input field.
 
-**/
+ **/
 OpenAssessment.DatetimeControl = function(element, datePicker, timePicker) {
     this.element = element;
     this.datePicker = datePicker;
@@ -182,15 +179,15 @@ OpenAssessment.DatetimeControl = function(element, datePicker, timePicker) {
 
 OpenAssessment.DatetimeControl.prototype = {
     /**
-    Configure the date and time picker inputs.
+     Configure the date and time picker inputs.
 
-    Returns:
-        OpenAssessment.DatetimeControl
+     Returns:
+     OpenAssessment.DatetimeControl
 
-    **/
+     **/
     install: function() {
         var dateString = $(this.datePicker, this.element).val();
-        $(this.datePicker, this.element).datepicker({ showButtonPanel: true })
+        $(this.datePicker, this.element).datepicker({showButtonPanel: true})
             .datepicker("option", "dateFormat", "yy-mm-dd")
             .datepicker("setDate", dateString);
         $(this.timePicker, this.element).timepicker({
@@ -201,16 +198,16 @@ OpenAssessment.DatetimeControl.prototype = {
     },
 
     /**
-    Get or set the date and time.
+     Get or set the date and time.
 
-    Args:
-        dateString (string, optional): If provided, set the date (YYYY-MM-DD).
-        timeString (string, optional): If provided, set the time (HH:MM, 24-hour clock).
+     Args:
+     dateString (string, optional): If provided, set the date (YYYY-MM-DD).
+     timeString (string, optional): If provided, set the time (HH:MM, 24-hour clock).
 
-    Returns:
-        ISO-formatted datetime string.
+     Returns:
+     ISO-formatted datetime string.
 
-    **/
+     **/
     datetime: function(dateString, timeString) {
         var datePickerSel = $(this.datePicker, this.element);
         var timePickerSel = $(this.timePicker, this.element);
@@ -220,12 +217,12 @@ OpenAssessment.DatetimeControl.prototype = {
     },
 
     /**
-    Mark validation errors.
+     Mark validation errors.
 
-    Returns:
-        Boolean indicating whether the fields are valid.
+     Returns:
+     Boolean indicating whether the fields are valid.
 
-    **/
+     **/
     validate: function() {
         var dateString = $(this.datePicker, this.element).val();
         var timeString = $(this.timePicker, this.element).val();
@@ -247,7 +244,7 @@ OpenAssessment.DatetimeControl.prototype = {
         //time validation
         var matches = timeString.match(/^\d{2}:\d{2}$/g);
         var isTimeValid = (matches !== null);
-        if(!isTimeValid) {
+        if (!isTimeValid) {
             $(this.timePicker, this.element).addClass("openassessment_highlighted_field");
         }
 
@@ -255,21 +252,21 @@ OpenAssessment.DatetimeControl.prototype = {
     },
 
     /**
-    Clear all validation errors from the UI.
-    **/
+     Clear all validation errors from the UI.
+     **/
     clearValidationErrors: function() {
         $(this.datePicker, this.element).removeClass("openassessment_highlighted_field");
         $(this.timePicker, this.element).removeClass("openassessment_highlighted_field");
     },
 
-   /**
-    Return a list of validation errors visible in the UI.
-    Mainly useful for testing.
+    /**
+     Return a list of validation errors visible in the UI.
+     Mainly useful for testing.
 
-    Returns:
-        list of string
+     Returns:
+     list of string
 
-    **/
+     **/
     validationErrors: function() {
         var errors = [];
         var dateHasError = $(this.datePicker, this.element).hasClass("openassessment_highlighted_field");
@@ -279,24 +276,23 @@ OpenAssessment.DatetimeControl.prototype = {
         if (timeHasError) { errors.push("Time is invalid"); }
 
         return errors;
-    },
+    }
 };
-
 
 /**
  Show and hide elements based on select options.
 
  Args:
-    selectSel (JQuery selector): The select used to toggle whether sections
-        are shown or hidden.
-    mapping (Object): A mapping object that is used to specify the relationship
-        between option and section.  e.g.
-        {
-            option1: selector1,
-            option2: selector2,
-        }
-        When an option is selected, the section is shown and all other sections will be hidden.
-    notifier (OpenAssessment.Notifier): Receives notifications when the select state changes.
+ selectSel (JQuery selector): The select used to toggle whether sections
+ are shown or hidden.
+ mapping (Object): A mapping object that is used to specify the relationship
+ between option and section.  e.g.
+ {
+     option1: selector1,
+     option2: selector2,
+ }
+ When an option is selected, the section is shown and all other sections will be hidden.
+ notifier (OpenAssessment.Notifier): Receives notifications when the select state changes.
 
  Sends the following notifications:
  * selectionChanged
@@ -343,9 +339,9 @@ OpenAssessment.SelectControl.prototype = {
  This is similar to string field but allow you to pass in a custom validation function to validate the input field.
 
  Args:
-    inputSel (JQuery selector or DOM element): The input field.
-    validator (callable): The callback for custom validation function. The function should accept
-        one parameter for the value of the input and returns an array of errors strings. If not error, return [].
+ inputSel (JQuery selector or DOM element): The input field.
+ validator (callable): The callback for custom validation function. The function should accept
+ one parameter for the value of the input and returns an array of errors strings. If not error, return [].
  */
 OpenAssessment.InputControl = function(inputSel, validator) {
     this.input = $(inputSel);
@@ -359,7 +355,7 @@ OpenAssessment.InputControl.prototype = {
      Retrieve the string value from the input.
 
      Returns:
-        string
+     string
      **/
     get: function() {
         return this.input.val();
@@ -369,7 +365,7 @@ OpenAssessment.InputControl.prototype = {
      Set the input value.
 
      Args:
-        val (string)
+     val (string)
 
      **/
     set: function(val) {
@@ -380,7 +376,7 @@ OpenAssessment.InputControl.prototype = {
      Mark validation errors if the field does not pass the validation callback function.
 
      Returns:
-         Boolean indicating whether the field's value is valid.
+     Boolean indicating whether the field's value is valid.
 
      **/
     validate: function() {
@@ -407,7 +403,7 @@ OpenAssessment.InputControl.prototype = {
      in the UI.
 
      Returns:
-        list of strings that contain error messages
+     list of strings that contain error messages
 
      **/
     validationErrors: function() {

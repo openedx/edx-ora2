@@ -1,21 +1,21 @@
 /**
-Encapsulate interactions with OpenAssessment XBlock handlers.
-**/
+ Encapsulate interactions with OpenAssessment XBlock handlers.
+ **/
 
 // Since the server is included by both LMS and Studio views,
 // skip loading it the second time.
 if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
 
     /**
-    Interface for server-side XBlock handlers.
+     Interface for server-side XBlock handlers.
 
-    Args:
-        runtime (Runtime): An XBlock runtime instance.
-        element (DOM element): The DOM element representing this XBlock.
+     Args:
+     runtime (Runtime): An XBlock runtime instance.
+     element (DOM element): The DOM element representing this XBlock.
 
-    Returns:
-        OpenAssessment.Server
-    **/
+     Returns:
+     OpenAssessment.Server
+     **/
     OpenAssessment.Server = function(runtime, element) {
         this.runtime = runtime;
         this.element = element;
@@ -26,35 +26,35 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
     OpenAssessment.Server.prototype = {
 
         /**
-        Construct the URL for the handler, specific to one instance of the XBlock on the page.
+         Construct the URL for the handler, specific to one instance of the XBlock on the page.
 
-        Args:
-            handler (string): The name of the XBlock handler.
+         Args:
+         handler (string): The name of the XBlock handler.
 
-        Returns:
-            URL (string)
-        **/
+         Returns:
+         URL (string)
+         **/
         url: function(handler) {
             return this.runtime.handlerUrl(this.element, handler);
         },
 
         /**
-        Render the XBlock.
+         Render the XBlock.
 
-        Args:
-            component (string): The component to render.
+         Args:
+         component (string): The component to render.
 
-        Returns:
-            A JQuery promise, which resolves with the HTML of the rendered XBlock
-            and fails with an error message.
+         Returns:
+         A JQuery promise, which resolves with the HTML of the rendered XBlock
+         and fails with an error message.
 
-        Example:
-            server.render('submission').done(
-                function(html) { console.log(html); }
-            ).fail(
-                function(err) { console.log(err); }
-            )
-        **/
+         Example:
+         server.render('submission').done(
+         function(html) { console.log(html); }
+         ).fail(
+         function(err) { console.log(err); }
+         )
+         **/
         render: function(component) {
             var view = this;
             var url = this.url('render_' + component);
@@ -72,11 +72,11 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         },
 
         /**
-        Render Latex for all new DOM elements with class 'allow--latex'.
+         Render Latex for all new DOM elements with class 'allow--latex'.
 
-        Args:
-            element: The element to modify.
-        **/
+         Args:
+         element: The element to modify.
+         **/
         renderLatex: function(element) {
             element.filter(".allow--latex").each(function() {
                 MathJax.Hub.Queue(['Typeset', MathJax.Hub, this]);
@@ -88,15 +88,15 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          continue grading peers.
 
          Returns:
-            A JQuery promise, which resolves with the HTML of the rendered peer
-            assessment section or fails with an error message.
+         A JQuery promise, which resolves with the HTML of the rendered peer
+         assessment section or fails with an error message.
 
          Example:
-            server.render_continued_peer().done(
-                function(html) { console.log(html); }
-            ).fail(
-                function(err) { console.log(err); }
-            )
+         server.render_continued_peer().done(
+         function(html) { console.log(html); }
+         ).fail(
+         function(err) { console.log(err); }
+         )
          **/
         renderContinuedPeer: function() {
             var view = this;
@@ -108,42 +108,42 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                     dataType: "html",
                     data: {continue_grading: true}
                 }).done(function(data) {
-                        defer.resolveWith(view, [data]);
-                    }).fail(function() {
-                        defer.rejectWith(view, [gettext('This section could not be loaded.')]);
-                    });
+                    defer.resolveWith(view, [data]);
+                }).fail(function() {
+                    defer.rejectWith(view, [gettext('This section could not be loaded.')]);
+                });
             }).promise();
         },
 
         /**
          Load the Student Info section in Staff Info.
          **/
-        studentInfo: function(student_username) {
+        studentInfo: function(studentUsername) {
             var url = this.url('render_student_info');
             return $.Deferred(function(defer) {
                 $.ajax({
                     url: url,
                     type: "POST",
                     dataType: "html",
-                    data: {student_username: student_username}
+                    data: {student_username: studentUsername}
                 }).done(function(data) {
-                        defer.resolveWith(this, [data]);
-                    }).fail(function() {
-                        defer.rejectWith(this, [gettext('This section could not be loaded.')]);
-                    });
+                    defer.resolveWith(this, [data]);
+                }).fail(function() {
+                    defer.rejectWith(this, [gettext('This section could not be loaded.')]);
+                });
             }).promise();
         },
 
         /**
-        Send a submission to the XBlock.
+         Send a submission to the XBlock.
 
-        Args:
-            submission (string): The text of the student's submission.
+         Args:
+         submission (string): The text of the student's submission.
 
-        Returns:
-            A JQuery promise, which resolves with the student's ID and attempt number
-            if the call was successful and fails with an status code and error message otherwise.
-        **/
+         Returns:
+         A JQuery promise, which resolves with the student's ID and attempt number
+         if the call was successful and fails with an status code and error message otherwise.
+         **/
         submit: function(submission) {
             var url = this.url('submit');
             return $.Deferred(function(defer) {
@@ -171,15 +171,15 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         },
 
         /**
-        Save a response without submitting it.
+         Save a response without submitting it.
 
-        Args:
-            submission (string): The text of the student's response.
+         Args:
+         submission (string): The text of the student's response.
 
-        Returns:
-            A JQuery promise, which resolves with no arguments on success and
-            fails with an error message.
-        **/
+         Returns:
+         A JQuery promise, which resolves with no arguments on success and
+         fails with an error message.
+         **/
         save: function(submission) {
             var url = this.url('save_submission');
             return $.Deferred(function(defer) {
@@ -216,14 +216,14 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          *          console.log("Error: " + errMsg);
          *      });
          */
-         submitFeedbackOnAssessment: function(text, options) {
+        submitFeedbackOnAssessment: function(text, options) {
             var url = this.url('submit_feedback');
             var payload = JSON.stringify({
                 'feedback_text': text,
                 'feedback_options': options
             });
             return $.Deferred(function(defer) {
-                $.ajax({ type: "POST", url: url, data: payload, contentType: jsonContentType }).done(
+                $.ajax({type: "POST", url: url, data: payload, contentType: jsonContentType}).done(
                     function(data) {
                         if (data.success) { defer.resolve(); }
                         else { defer.rejectWith(this, [data.msg]); }
@@ -235,28 +235,28 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         },
 
         /**
-        Send a peer assessment to the XBlock.
-        Args:
-            optionsSelected (object literal): Keys are criteria names,
-                values are the option text the user selected for the criterion.
-            criterionFeedback (object literal): Written feedback on a particular criterion,
-                where keys are criteria names and values are the feedback strings.
-            overallFeedback (string): Written feedback on the submission as a whole.
+         Send a peer assessment to the XBlock.
+         Args:
+         optionsSelected (object literal): Keys are criteria names,
+         values are the option text the user selected for the criterion.
+         criterionFeedback (object literal): Written feedback on a particular criterion,
+         where keys are criteria names and values are the feedback strings.
+         overallFeedback (string): Written feedback on the submission as a whole.
 
-        Returns:
-            A JQuery promise, which resolves with no args if successful
-            and fails with an error message otherise.
+         Returns:
+         A JQuery promise, which resolves with no args if successful
+         and fails with an error message otherise.
 
-        Example:
-            var options = { clarity: "Very clear", precision: "Somewhat precise" };
-            var criterionFeedback = { clarity: "The essay was very clear." };
-            var overallFeedback = "Good job!";
-            server.peerAssess(options, criterionFeedback, overallFeedback).done(
-                function() { console.log("Success!"); }
-            ).fail(
-                function(errorMsg) { console.log(errorMsg); }
-            );
-        **/
+         Example:
+         var options = { clarity: "Very clear", precision: "Somewhat precise" };
+         var criterionFeedback = { clarity: "The essay was very clear." };
+         var overallFeedback = "Good job!";
+         server.peerAssess(options, criterionFeedback, overallFeedback).done(
+         function() { console.log("Success!"); }
+         ).fail(
+         function(errorMsg) { console.log(errorMsg); }
+         );
+         **/
         peerAssess: function(optionsSelected, criterionFeedback, overallFeedback, uuid) {
             var url = this.url('peer_assess');
             var payload = JSON.stringify({
@@ -266,7 +266,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                 submission_uuid: uuid
             });
             return $.Deferred(function(defer) {
-                $.ajax({ type: "POST", url: url, data: payload, contentType: jsonContentType }).done(
+                $.ajax({type: "POST", url: url, data: payload, contentType: jsonContentType}).done(
                     function(data) {
                         if (data.success) {
                             defer.resolve();
@@ -282,26 +282,26 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         },
 
         /**
-        Send a self-assessment to the XBlock.
+         Send a self-assessment to the XBlock.
 
-        Args:
-            optionsSelected (object literal): Keys are criteria names,
-                values are the option text the user selected for the criterion.
-            var criterionFeedback = { clarity: "The essay was very clear." };
-            var overallFeedback = "Good job!";
+         Args:
+         optionsSelected (object literal): Keys are criteria names,
+         values are the option text the user selected for the criterion.
+         var criterionFeedback = { clarity: "The essay was very clear." };
+         var overallFeedback = "Good job!";
 
-        Returns:
-            A JQuery promise, which resolves with no args if successful
-            and fails with an error message otherwise.
+         Returns:
+         A JQuery promise, which resolves with no args if successful
+         and fails with an error message otherwise.
 
-        Example:
-            var options = { clarity: "Very clear", precision: "Somewhat precise" };
-            server.selfAssess(options).done(
-                function() { console.log("Success!"); }
-            ).fail(
-                function(errorMsg) { console.log(errorMsg); }
-            );
-        **/
+         Example:
+         var options = { clarity: "Very clear", precision: "Somewhat precise" };
+         server.selfAssess(options).done(
+         function() { console.log("Success!"); }
+         ).fail(
+         function(errorMsg) { console.log(errorMsg); }
+         );
+         **/
         selfAssess: function(optionsSelected, criterionFeedback, overallFeedback) {
             var url = this.url('self_assess');
             var payload = JSON.stringify({
@@ -310,7 +310,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                 overall_feedback: overallFeedback
             });
             return $.Deferred(function(defer) {
-                $.ajax({ type: "POST", url: url, data: payload, contentType: jsonContentType }).done(
+                $.ajax({type: "POST", url: url, data: payload, contentType: jsonContentType}).done(
                     function(data) {
                         if (data.success) {
                             defer.resolve();
@@ -326,32 +326,32 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         },
 
         /**
-        Assess an instructor-provided training example.
+         Assess an instructor-provided training example.
 
-        Args:
-            optionsSelected (object literal): Keys are criteria names,
-                values are the option text the user selected for the criterion.
+         Args:
+         optionsSelected (object literal): Keys are criteria names,
+         values are the option text the user selected for the criterion.
 
-        Returns:
-            A JQuery promise, which resolves with a list of corrections if
-            successful and fails with an error message otherwise.
+         Returns:
+         A JQuery promise, which resolves with a list of corrections if
+         successful and fails with an error message otherwise.
 
-        Example:
-            var options = { clarity: "Very clear", precision: "Somewhat precise" };
-            server.trainingAssess(options).done(
-                function(corrections) { console.log("Success!"); }
-                alert(corrections);
-            ).fail(
-                function(errorMsg) { console.log(errorMsg); }
-            );
-        **/
+         Example:
+         var options = { clarity: "Very clear", precision: "Somewhat precise" };
+         server.trainingAssess(options).done(
+         function(corrections) { console.log("Success!"); }
+         alert(corrections);
+         ).fail(
+         function(errorMsg) { console.log(errorMsg); }
+         );
+         **/
         trainingAssess: function(optionsSelected) {
             var url = this.url('training_assess');
             var payload = JSON.stringify({
                 options_selected: optionsSelected
             });
             return $.Deferred(function(defer) {
-                $.ajax({ type: "POST", url: url, data: payload, contentType: jsonContentType }).done(
+                $.ajax({type: "POST", url: url, data: payload, contentType: jsonContentType}).done(
                     function(data) {
                         if (data.success) {
                             defer.resolveWith(this, [data.corrections]);
@@ -367,25 +367,25 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         },
 
         /**
-        Schedules classifier training for Example Based Assessment for this
-        Location.
+         Schedules classifier training for Example Based Assessment for this
+         Location.
 
-        Returns:
-            A JQuery promise, which resolves with a message indicating the results
-            of the scheduling request.
+         Returns:
+         A JQuery promise, which resolves with a message indicating the results
+         of the scheduling request.
 
-        Example:
-            server.scheduleTraining().done(
-                function(msg) { console.log("Success!"); }
-                alert(msg);
-            ).fail(
-                function(errorMsg) { console.log(errorMsg); }
-            );
-        **/
+         Example:
+         server.scheduleTraining().done(
+         function(msg) { console.log("Success!"); }
+         alert(msg);
+         ).fail(
+         function(errorMsg) { console.log(errorMsg); }
+         );
+         **/
         scheduleTraining: function() {
             var url = this.url('schedule_training');
             return $.Deferred(function(defer) {
-                $.ajax({ type: "POST", url: url, data: "\"\"", contentType: jsonContentType}).done(
+                $.ajax({type: "POST", url: url, data: "\"\"", contentType: jsonContentType}).done(
                     function(data) {
                         if (data.success) {
                             defer.resolveWith(this, [data.msg]);
@@ -395,58 +395,58 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                         }
                     }
                 ).fail(function() {
-                        defer.rejectWith(this, [gettext('This assessment could not be submitted.')]);
-                    });
-            });
-        },
-
-        /**
-        Reschedules grading tasks for example based assessments
-
-        Returns:
-            JQuery Promise which will resolve with a message indicating success or failure of the scheduling
-        **/
-        rescheduleUnfinishedTasks: function() {
-            var url = this.url('reschedule_unfinished_tasks');
-            return $.Deferred(function(defer) {
-                $.ajax({ type: "POST", url: url, data: "\"\"", contentType: jsonContentType}).done(
-                    function(data) {
-                        if (data.success) {
-                            defer.resolveWith(this, [data.msg]);
-                        }
-                        else {
-                            defer.rejectWith(this, [data.msg]);
-                        }
-                    }
-                ).fail(function() {
-                        defer.rejectWith(this, [gettext('One or more rescheduling tasks failed.')]);
+                    defer.rejectWith(this, [gettext('This assessment could not be submitted.')]);
                 });
             });
         },
 
         /**
-        Update the XBlock's XML definition on the server.
+         Reschedules grading tasks for example based assessments
 
-        Kwargs:
-            title (string): The title of the problem.
-            prompt (string): The question prompt.
-            feedbackPrompt (string): The directions to the student for giving overall feedback on a submission.
-            feedback_default_text (string): The default feedback text used as the student's feedback response
-            submissionStart (ISO-formatted datetime string or null): The start date of the submission.
-            submissionDue (ISO-formatted datetime string or null): The date the submission is due.
-            criteria (list of object literals): The rubric criteria.
-            assessments (list of object literals): The assessments the student will be evaluated on.
-            fileUploadType (string): 'image' if image attachments are allowed, 'pdf-and-image' if pdf and
-                image attachments are allowed, 'custom' if file type is restricted by a white list.
-            fileTypeWhiteList (string): Comma separated file type white list
-            latexEnabled: TRUE if latex rendering is enabled.
-            leaderboardNum (int): The number of scores to show in the leaderboard.
+         Returns:
+         JQuery Promise which will resolve with a message indicating success or failure of the scheduling
+         **/
+        rescheduleUnfinishedTasks: function() {
+            var url = this.url('reschedule_unfinished_tasks');
+            return $.Deferred(function(defer) {
+                $.ajax({type: "POST", url: url, data: "\"\"", contentType: jsonContentType}).done(
+                    function(data) {
+                        if (data.success) {
+                            defer.resolveWith(this, [data.msg]);
+                        }
+                        else {
+                            defer.rejectWith(this, [data.msg]);
+                        }
+                    }
+                ).fail(function() {
+                    defer.rejectWith(this, [gettext('One or more rescheduling tasks failed.')]);
+                });
+            });
+        },
 
-        Returns:
-            A JQuery promise, which resolves with no arguments
-            and fails with an error message.
+        /**
+         Update the XBlock's XML definition on the server.
 
-        **/
+         Kwargs:
+         title (string): The title of the problem.
+         prompt (string): The question prompt.
+         feedbackPrompt (string): The directions to the student for giving overall feedback on a submission.
+         feedback_default_text (string): The default feedback text used as the student's feedback response
+         submissionStart (ISO-formatted datetime string or null): The start date of the submission.
+         submissionDue (ISO-formatted datetime string or null): The date the submission is due.
+         criteria (list of object literals): The rubric criteria.
+         assessments (list of object literals): The assessments the student will be evaluated on.
+         fileUploadType (string): 'image' if image attachments are allowed, 'pdf-and-image' if pdf and
+         image attachments are allowed, 'custom' if file type is restricted by a white list.
+         fileTypeWhiteList (string): Comma separated file type white list
+         latexEnabled: TRUE if latex rendering is enabled.
+         leaderboardNum (int): The number of scores to show in the leaderboard.
+
+         Returns:
+         A JQuery promise, which resolves with no arguments
+         and fails with an error message.
+
+         **/
         updateEditorContext: function(kwargs) {
             var url = this.url('update_editor_context');
             var payload = JSON.stringify({
@@ -477,20 +477,20 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         },
 
         /**
-        Check whether the XBlock has been released.
+         Check whether the XBlock has been released.
 
-        Returns:
-            A JQuery promise, which resolves with a boolean indicating
-            whether the XBlock has been released.  On failure, the promise
-            provides an error message.
+         Returns:
+         A JQuery promise, which resolves with a boolean indicating
+         whether the XBlock has been released.  On failure, the promise
+         provides an error message.
 
-        Example:
-            server.checkReleased().done(
-                function(isReleased) {}
-            ).fail(
-                function(errMsg) {}
-            )
-        **/
+         Example:
+         server.checkReleased().done(
+         function(isReleased) {}
+         ).fail(
+         function(errMsg) {}
+         )
+         **/
         checkReleased: function() {
             var url = this.url('check_released');
             var payload = "\"\"";
@@ -511,12 +511,12 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          submission.
 
          Args:
-            contentType (str): The Content Type for the file being uploaded.
-            filename (str): The name of the file to be uploaded.
+         contentType (str): The Content Type for the file being uploaded.
+         filename (str): The name of the file to be uploaded.
 
          Returns:
-            A presigned upload URL from the specified service used for uploading
-            files.
+         A presigned upload URL from the specified service used for uploading
+         files.
 
          **/
         getUploadUrl: function(contentType, filename) {
@@ -528,11 +528,11 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                     data: JSON.stringify({contentType: contentType, filename: filename}),
                     contentType: jsonContentType
                 }).done(function(data) {
-                        if (data.success) { defer.resolve(data.url); }
-                        else { defer.rejectWith(this, [data.msg]); }
-                    }).fail(function() {
-                        defer.rejectWith(this, [gettext('Could not retrieve upload url.')]);
-                    });
+                    if (data.success) { defer.resolve(data.url); }
+                    else { defer.rejectWith(this, [data.msg]); }
+                }).fail(function() {
+                    defer.rejectWith(this, [gettext('Could not retrieve upload url.')]);
+                });
             }).promise();
         },
 
@@ -540,7 +540,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          Get a download url used to download related files for the submission.
 
          Returns:
-            A temporary download URL for retrieving documents from s3.
+         A temporary download URL for retrieving documents from s3.
 
          **/
         getDownloadUrl: function() {
@@ -549,28 +549,28 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                 $.ajax({
                     type: "POST", url: url, data: JSON.stringify({}), contentType: jsonContentType
                 }).done(function(data) {
-                        if (data.success) { defer.resolve(data.url); }
-                        else { defer.rejectWith(this, [data.msg]); }
-                    }).fail(function() {
-                        defer.rejectWith(this, [gettext('Could not retrieve download url.')]);
-                    });
+                    if (data.success) { defer.resolve(data.url); }
+                    else { defer.rejectWith(this, [data.msg]); }
+                }).fail(function() {
+                    defer.rejectWith(this, [gettext('Could not retrieve download url.')]);
+                });
             }).promise();
         },
 
         /**
-            Cancel the submission from peer grading pool.
-            Args:
-                submissionUUID: ID for submission to be cancelled from pool.
-                comments: reason to cancel the submission
-          **/
-        cancelSubmission: function (submissionUUID, comments) {
+         Cancel the submission from peer grading pool.
+         Args:
+         submissionUUID: ID for submission to be cancelled from pool.
+         comments: reason to cancel the submission
+                  **/
+        cancelSubmission: function(submissionUUID, comments) {
             var url = this.url('cancel_submission');
             var payload = JSON.stringify({
                 submission_uuid: submissionUUID,
                 comments: comments
             });
-            return $.Deferred(function (defer) {
-                $.ajax({ type: "POST", url: url, data: payload, contentType: jsonContentType }).done(
+            return $.Deferred(function(defer) {
+                $.ajax({type: "POST", url: url, data: payload, contentType: jsonContentType}).done(
                     function(data) {
                         if (data.success) {
                             defer.resolveWith(this, [data.msg]);

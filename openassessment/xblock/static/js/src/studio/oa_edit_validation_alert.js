@@ -48,7 +48,7 @@ OpenAssessment.ValidationAlert.prototype = {
             'border-top-left-radius': '3px'
         };
 
-        $('.oa_editor_content_wrapper', this.editorElement).each( function () {
+        $('.oa_editor_content_wrapper', this.editorElement).each(function() {
             $(this).css(styles);
         });
 
@@ -61,12 +61,12 @@ OpenAssessment.ValidationAlert.prototype = {
     Returns:
         OpenAssessment.ValidationAlert
     */
-    show : function() {
+    show: function() {
         var view = this;
 
-        if (this.isVisible()){
+        if (this.isVisible()) {
             $(this.element).animate(
-                {'background-color': view.ALERT_YELLOW}, 300, 'swing', function () {
+                {'background-color': view.ALERT_YELLOW}, 300, 'swing', function() {
                     $(this).animate({'background-color': view.DARK_GREY}, 700, 'swing');
                 }
             );
@@ -84,7 +84,7 @@ OpenAssessment.ValidationAlert.prototype = {
                 'border-top-left-radius': '0px'
             };
 
-            $('.oa_editor_content_wrapper', this.editorElement).each(function () {
+            $('.oa_editor_content_wrapper', this.editorElement).each(function() {
                 $(this).css(styles);
             });
 

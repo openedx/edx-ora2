@@ -16,7 +16,6 @@ OpenAssessment.PeerView = function(element, server, baseView) {
     this.rubric = null;
 };
 
-
 OpenAssessment.PeerView.prototype = {
 
     /**
@@ -184,7 +183,7 @@ OpenAssessment.PeerView.prototype = {
     Common peer assessment request building, used for all types of peer assessments.
 
     Args:
-        successFunction (function): The function called if the request is
+        successfunction(function): The function called if the request is
             successful. This varies based on the type of request to submit
             a peer assessment.
 

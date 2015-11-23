@@ -52,15 +52,15 @@
         loadStudentInfo: function() {
             var view = this;
             var sel = $('#openassessment__staff-tools', this.element);
-            var student_username = sel.find('#openassessment__student_username').val();
-            this.server.studentInfo(student_username).done(
+            var studentUsername = sel.find('#openassessment__student_username').val();
+            this.server.studentInfo(studentUsername).done(
                 function(html) {
                     // Load the HTML and install event handlers
                     $('#openassessment__student-info', view.element).replaceWith(html);
 
                     // Install key handler for new staff grade Save button.
                     var selCancelSub = $('#openassessment__staff-info__cancel__submission', view.element);
-                    selCancelSub.on('click', '#submit_cancel_submission', function (eventObject) {
+                    selCancelSub.on('click', '#submit_cancel_submission', function(eventObject) {
                             eventObject.preventDefault();
                             view.cancelSubmission($(this).data('submission-uuid'));
                         }

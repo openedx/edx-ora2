@@ -21,7 +21,6 @@ install-python:
 	./scripts/install-python.sh
 
 install-js:
-	npm config set loglevel warn
 	npm install
 
 install-nltk-data:
@@ -43,6 +42,7 @@ install-test:
 	pip install -q -r requirements/test.txt
 
 install-sys-requirements: install-system install-node
+	npm config set loglevel warn
 
 install-dev:
 	gem install sass
@@ -52,9 +52,12 @@ install: install-wheels install-python install-js install-nltk-data install-test
 
 quality:
 	jshint openassessment/xblock/static/js/src -c .jshintrc --verbose
+	./node_modules/jscs/bin/jscs openassessment/xblock/static/js/src --verbose
 
-test: quality
-	./scripts/test.sh
+test: quality test-python test-js
+
+test-python:
+	./scripts/test-python.sh
 
 render-templates:
 	./scripts/render-templates.sh
@@ -64,6 +67,8 @@ test-js: render-templates
 
 test-js-debug: render-templates
 	./scripts/js-debugger.sh
+
+test-sandbox: test-acceptance test-a11y
 
 test-acceptance:
 	./scripts/test-acceptance.sh tests

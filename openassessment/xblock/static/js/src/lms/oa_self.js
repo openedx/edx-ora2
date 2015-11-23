@@ -16,7 +16,6 @@ OpenAssessment.SelfView = function(element, server, baseView) {
     this.rubric = null;
 };
 
-
 OpenAssessment.SelfView.prototype = {
 
     /**

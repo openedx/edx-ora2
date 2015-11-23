@@ -16,7 +16,6 @@ OpenAssessment.StudentTrainingView = function(element, server, baseView) {
     this.rubric = null;
 };
 
-
 OpenAssessment.StudentTrainingView.prototype = {
 
     /**
