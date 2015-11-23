@@ -110,6 +110,8 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             new_list.extend(AssessmentWorkflow.ASSESSMENT_SCORE_PRIORITY)
             AssessmentWorkflow.ASSESSMENT_SCORE_PRIORITY = new_list
 
+    @classmethod
+    @transaction.atomic
     def start_workflow(cls, submission_uuid, step_names, on_init_params):
         """
         Start a new workflow.
