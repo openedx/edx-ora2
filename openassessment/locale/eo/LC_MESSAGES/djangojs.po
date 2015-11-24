@@ -2,12 +2,12 @@
 # Copyright (C) 2014 EdX
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
 # EdX Team <info@edx.org>, 2014.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.1a\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-19 09:59-0400\n"
+"POT-Creation-Date: 2015-11-24 04:05+0000\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: \n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -17,270 +17,258 @@ msgstr ""
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/oa_server.js
-#: openassessment/xblock/static/js/src/oa_server.js
-#: openassessment/xblock/static/js/src/oa_server.js
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:69
+#: openassessment/xblock/static/js/src/oa_server.js:113
+#: openassessment/xblock/static/js/src/oa_server.js:132
 msgid "This section could not be loaded."
-msgstr ""
-"Thïs séçtïön çöüld nöt ßé löädéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+msgstr "Thïs séçtïön çöüld nöt ßé löädéd. Ⱡ'σяєм ι#"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/oa_server.js
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:168
 msgid "This response could not be submitted."
-msgstr ""
-"Thïs réspönsé çöüld nöt ßé süßmïttéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυ#"
+msgstr "Thïs réspönsé çöüld nöt ßé süßmïttéd. Ⱡ'σяєм ιρѕ#"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/oa_server.js
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:195
 msgid "This response could not be saved."
-msgstr ""
-"Thïs réspönsé çöüld nöt ßé sävéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+msgstr "Thïs réspönsé çöüld nöt ßé sävéd. Ⱡ'σяєм ι#"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/oa_server.js
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:232
 msgid "This feedback could not be submitted."
-msgstr ""
-"Thïs féédßäçk çöüld nöt ßé süßmïttéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυ#"
+msgstr "Thïs féédßäçk çöüld nöt ßé süßmïttéd. Ⱡ'σяєм ιρѕ#"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/oa_server.js
-#: openassessment/xblock/static/js/src/oa_server.js
-#: openassessment/xblock/static/js/src/oa_server.js
-#: openassessment/xblock/static/js/src/oa_server.js
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:279
+#: openassessment/xblock/static/js/src/oa_server.js:323
+#: openassessment/xblock/static/js/src/oa_server.js:364
+#: openassessment/xblock/static/js/src/oa_server.js:398
 msgid "This assessment could not be submitted."
-msgstr ""
-"Thïs ässéssmént çöüld nöt ßé süßmïttéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя#"
+msgstr "Thïs ässéssmént çöüld nöt ßé süßmïttéd. Ⱡ'σяєм ιρѕ#"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/oa_server.js
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:422
 msgid "One or more rescheduling tasks failed."
-msgstr ""
-"Öné ör möré résçhédülïng täsks fäïléd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя#"
+msgstr "Öné ör möré résçhédülïng täsks fäïléd. Ⱡ'σяєм ιρѕ#"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/oa_server.js
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:474
 msgid "This problem could not be saved."
-msgstr ""
-"Thïs prößlém çöüld nöt ßé sävéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+msgstr "Thïs prößlém çöüld nöt ßé sävéd. Ⱡ'σяєм ι#"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/oa_server.js
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:504
 msgid "The server could not be contacted."
-msgstr ""
-"Thé sérvér çöüld nöt ßé çöntäçtéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+msgstr "Thé sérvér çöüld nöt ßé çöntäçtéd. Ⱡ'σяєм ιρ#"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/oa_server.js
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:534
 msgid "Could not retrieve upload url."
-msgstr "Çöüld nöt rétrïévé üplöäd ürl. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+msgstr "Çöüld nöt rétrïévé üplöäd ürl. Ⱡ'σяєм #"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/oa_server.js
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:555
 msgid "Could not retrieve download url."
-msgstr ""
-"Çöüld nöt rétrïévé döwnlöäd ürl. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+msgstr "Çöüld nöt rétrïévé döwnlöäd ürl. Ⱡ'σяєм ι#"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/oa_server.js
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:583
 msgid "The submission could not be removed from the grading pool."
 msgstr ""
 "Thé süßmïssïön çöüld nöt ßé rémövéd fröm thé grädïng pööl. Ⱡ'σяєм ιρѕυм "
-"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+"∂σłσ#"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js
-#: openassessment/xblock/static/js/src/lms/oa_base.js
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_base.js:148
 msgid "Unable to Load"
-msgstr "Ûnäßlé tö Löäd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+msgstr "Ûnäßlé tö Löäd Ⱡ'#"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js
-#: openassessment/xblock/static/js/src/lms/oa_response.js
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:231
 msgid "Status of Your Response"
-msgstr "Stätüs öf Ýöür Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
+msgstr "Stätüs öf Ýöür Réspönsé Ⱡ'σяє#"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js
-#: openassessment/xblock/static/js/src/lms/oa_response.js
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:258
 msgid ""
 "If you leave this page without saving or submitting your response, you'll "
 "lose any work you've done on the response."
 msgstr ""
 "Ìf ýöü léävé thïs pägé wïthöüt sävïng ör süßmïttïng ýöür réspönsé, ýöü'll "
-"lösé äný wörk ýöü'vé döné ön thé réspönsé. Ⱡ'σяєм ιρѕυм ∂σ#"
+"lösé äný wörk ýöü'vé döné ön thé réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢т#"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js
-#: openassessment/xblock/static/js/src/lms/oa_response.js
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:340
 msgid "This response has not been saved."
-msgstr ""
-"Thïs réspönsé häs nöt ßéén sävéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+msgstr "Thïs réspönsé häs nöt ßéén sävéd. Ⱡ'σяєм ι#"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js
-#: openassessment/xblock/static/js/src/lms/oa_response.js
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:358
 msgid "Saving..."
-msgstr "Sävïng... Ⱡ'σяєм ιρѕυм ∂σł#"
+msgstr "Sävïng... #"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js
-#: openassessment/xblock/static/js/src/lms/oa_response.js
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:383
 msgid "This response has been saved but not submitted."
-msgstr ""
-"Thïs réspönsé häs ßéén sävéd ßüt nöt süßmïttéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,"
-" ¢σηѕє¢тєтυя α#"
+msgstr "Thïs réspönsé häs ßéén sävéd ßüt nöt süßmïttéd. Ⱡ'σяєм ιρѕυм #"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js
-#: openassessment/xblock/static/js/src/lms/oa_response.js
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:386
 msgid "Error"
-msgstr "Érrör Ⱡ'σяєм ιρѕ#"
+msgstr "Érrör Ⱡ'σяєм ι#"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js
-#: openassessment/xblock/static/js/src/lms/oa_response.js
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:409
+msgid "Do you want to upload your file before submitting?"
+msgstr "Dö ýöü wänt tö üplöäd ýöür fïlé ßéföré süßmïttïng? Ⱡ'σяєм ιρѕυм ∂#"
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:478
 msgid ""
 "You're about to submit your response for this assignment. After you submit "
 "this response, you can't change it or submit a new response."
 msgstr ""
 "Ýöü'ré äßöüt tö süßmït ýöür réspönsé för thïs ässïgnmént. Àftér ýöü süßmït "
 "thïs réspönsé, ýöü çän't çhängé ït ör süßmït ä néw réspönsé. Ⱡ'σяєм ιρѕυм "
-"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя "
-"ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ "
-"ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
-"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
-"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
-"ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂ єѕт łαвσяυ#"
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js
-#: openassessment/xblock/static/js/src/lms/oa_response.js
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:507
 msgid "File size must be 5MB or less."
-msgstr "Fïlé sïzé müst ßé 5MB ör léss. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+msgstr "Fïlé sïzé müst ßé 5MB ör léss. Ⱡ'σяєм #"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js
-#: openassessment/xblock/static/js/src/lms/oa_response.js
-msgid "File must be an image."
-msgstr "Fïlé müst ßé än ïmägé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:512
+#: openassessment/xblock/static/js/src/lms/oa_response.js:517
+#: openassessment/xblock/static/js/src/lms/oa_response.js:522
+msgid "You can upload files with these file types: "
+msgstr "Ýöü çän üplöäd fïlés wïth thésé fïlé týpés:  Ⱡ'σяєм ιρѕυм#"
 
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/studio/oa_container_item.js
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:527
+msgid "File type is not allowed."
+msgstr "Fïlé týpé ïs nöt ällöwéd. Ⱡ'σяєм#"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_container_item.js:39
 msgid "Unnamed Option"
-msgstr "Ûnnäméd Öptïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+msgstr "Ûnnäméd Öptïön Ⱡ'#"
 
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/studio/oa_container_item.js
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_container_item.js:49
 msgid "Not Selected"
-msgstr "Nöt Séléçtéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+msgstr "Nöt Séléçtéd Ⱡ#"
 
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/studio/oa_edit.js
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:145
 msgid "Couldn't Save This Assignment"
-msgstr "Çöüldn't Sävé Thïs Àssïgnmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+msgstr "Çöüldn't Sävé Thïs Àssïgnmént Ⱡ'σяєм #"
 
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/studio/oa_edit.js
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:146
 msgid "Please correct the outlined fields."
-msgstr ""
-"Pléäsé çörréçt thé öütlïnéd fïélds. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+msgstr "Pléäsé çörréçt thé öütlïnéd fïélds. Ⱡ'σяєм ιρ#"
 
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/studio/oa_edit.js
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:180
 msgid ""
 "This problem has already been released. Any changes will apply only to "
 "future assessments."
 msgstr ""
 "Thïs prößlém häs älréädý ßéén réléäséd. Àný çhängés wïll äpplý önlý tö "
-"fütüré ässéssménts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+"fütüré ässéssménts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:97
 msgid "Criterion Added"
-msgstr "Çrïtérïön Àddéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+msgstr "Çrïtérïön Àddéd Ⱡ'#"
 
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:98
 msgid ""
-"You've added a criterion. You'll need to select an option for the criterion "
-"in the Student Training step. To do this, click the Settings tab."
+"You have added a criterion. You will need to select an option for the "
+"criterion in the Learner Training step. To do this, click the Settings tab."
 msgstr ""
-"Ýöü'vé äddéd ä çrïtérïön. Ýöü'll nééd tö séléçt än öptïön för thé çrïtérïön "
-"ïn thé Stüdént Träïnïng stép. Tö dö thïs, çlïçk thé Séttïngs täß. Ⱡ'σяєм "
-"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя "
-"ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ "
-"ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
-"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
-"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
-"ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂ єѕт #"
+"Ýöü hävé äddéd ä çrïtérïön. Ýöü wïll nééd tö séléçt än öptïön för thé "
+"çrïtérïön ïn thé Léärnér Träïnïng stép. Tö dö thïs, çlïçk thé Séttïngs täß. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιρ#"
 
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:144
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:179
 msgid "Option Deleted"
-msgstr "Öptïön Délétéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+msgstr "Öptïön Délétéd Ⱡ'#"
 
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:145
 msgid ""
-"You've deleted an option. The system has removed that option from its "
-"criterion in the sample responses in the Student Training step. You may have"
-" to select a new option for the criterion."
+"You have deleted an option. That option has been removed from its criterion "
+"in the sample responses in the Learner Training step. You might have to "
+"select a new option for the criterion."
 msgstr ""
-"Ýöü'vé délétéd än öptïön. Thé sýstém häs rémövéd thät öptïön fröm ïts "
-"çrïtérïön ïn thé sämplé réspönsés ïn thé Stüdént Träïnïng stép. Ýöü mäý hävé"
-" tö séléçt ä néw öptïön för thé çrïtérïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт "
-"∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση "
-"υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє "
-"∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα"
-" ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσ#"
+"Ýöü hävé délétéd än öptïön. Thät öptïön häs ßéén rémövéd fröm ïts çrïtérïön "
+"ïn thé sämplé réspönsés ïn thé Léärnér Träïnïng stép. Ýöü mïght hävé tö "
+"séléçt ä néw öptïön för thé çrïtérïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, #"
 
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:180
 msgid ""
-"You've deleted all the options for this criterion. The system has removed "
-"the criterion from the sample responses in the Student Training step."
+"You have deleted all the options for this criterion. The criterion has been "
+"removed from the sample responses in the Learner Training step."
 msgstr ""
-"Ýöü'vé délétéd äll thé öptïöns för thïs çrïtérïön. Thé sýstém häs rémövéd "
-"thé çrïtérïön fröm thé sämplé réspönsés ïn thé Stüdént Träïnïng stép. Ⱡ'σяєм"
-" ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя "
-"ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ "
-"ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
-"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
-"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
-"ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂ єѕ#"
+"Ýöü hävé délétéd äll thé öptïöns för thïs çrïtérïön. Thé çrïtérïön häs ßéén "
+"rémövéd fröm thé sämplé réspönsés ïn thé Léärnér Träïnïng stép. Ⱡ'σяєм ιρѕυм"
+" ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂#"
 
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:206
 msgid "Criterion Deleted"
-msgstr "Çrïtérïön Délétéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+msgstr "Çrïtérïön Délétéd Ⱡ'σ#"
 
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:207
 msgid ""
-"You've deleted a criterion. The system has removed the criterion from the "
-"sample responses in the Student Training step."
+"You have deleted a criterion. The criterion has been removed from the "
+"example responses in the Learner Training step."
 msgstr ""
-"Ýöü'vé délétéd ä çrïtérïön. Thé sýstém häs rémövéd thé çrïtérïön fröm thé "
-"sämplé réspönsés ïn thé Stüdént Träïnïng stép. Ⱡ'σяєм ιρѕυ#"
+"Ýöü hävé délétéd ä çrïtérïön. Thé çrïtérïön häs ßéén rémövéd fröm thé "
+"éxämplé réspönsés ïn thé Léärnér Träïnïng stép. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,"
+" ¢σηѕє¢т#"
 
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:376
 msgid "Warning"
-msgstr "Wärnïng Ⱡ'σяєм ιρѕυм #"
+msgstr "Wärnïng #"
 
-#: openassessment/xblock/static/js/openassessment-studio.min.js
-#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:377
 msgid ""
 "Changes to steps that are not selected as part of the assignment will not be"
 " saved."
 msgstr ""
 "Çhängés tö stéps thät äré nöt séléçtéd äs pärt öf thé ässïgnmént wïll nöt ßé"
-" sävéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+" sävéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:50
+msgid "File types can not be empty."
+msgstr "Fïlé týpés çän nöt ßé émptý. Ⱡ'σяєм #"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:60
+msgid "The following file types are not allowed: "
+msgstr "Thé föllöwïng fïlé týpés äré nöt ällöwéd:  Ⱡ'σяєм ιρѕυ#"
