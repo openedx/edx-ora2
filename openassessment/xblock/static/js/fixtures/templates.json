@@ -921,5 +921,81 @@
             ]
         },
         "output": "oa_rubric.html"
+    },
+    {
+        "template": "openassessmentblock/peer/oa_peer_turbo_mode.html",
+        "context": {
+            "rubric_criteria": [
+                {
+                    "name": "Criterion 1",
+                    "prompt": "Prompt 1",
+                    "order_num": 0,
+                    "feedback": "optional",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "Poor"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 1,
+                            "name": "Fair"
+                        },
+                        {
+                            "order_num": 2,
+                            "points": 2,
+                            "name": "Good"
+                        }
+                    ]
+                },
+                {
+                    "name": "Criterion 2",
+                    "prompt": "Prompt 2",
+                    "order_num": 1,
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "Poor"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 1,
+                            "name": "Fair"
+                        },
+                        {
+                            "order_num": 2,
+                            "points": 2,
+                            "name": "Good"
+                        }
+                    ]
+                },
+                {
+                    "name": "Criterion 3",
+                    "prompt": "Prompt 3",
+                    "order_num": 2,
+                    "feedback": "optional",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "Poor"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 1,
+                            "name": "Fair"
+                        },
+                        {
+                            "order_num": 2,
+                            "points": 2,
+                            "name": "Good"
+                        }
+                    ]
+                }
+            ]
+        },
+        "output": "oa_turbo_mode.html"
     }
 ]
