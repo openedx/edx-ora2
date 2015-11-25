@@ -39,14 +39,7 @@ describe("OpenAssessment.PeerView", function() {
         return view;
     };
 
-    beforeEach(function() {
-        // Create a new stub server
-        server = new StubServer();
-        server.renderLatex = jasmine.createSpy('renderLatex');
-    });
-
-    it("Sends a peer assessment to the server", function() {
-        var view = createPeerAssessmentView('oa_peer_assessment.html');
+    var submitPeerAssessment = function(view) {
         spyOn(server, 'peerAssess').and.callThrough();
 
         // Select options in the rubric
@@ -74,9 +67,20 @@ describe("OpenAssessment.PeerView", function() {
         expect(server.peerAssess).toHaveBeenCalledWith(
             optionsSelected, criterionFeedback, overallFeedback, ''
         );
+    };
+
+    beforeEach(function() {
+        // Create a new stub server
+        server = new StubServer();
+        server.renderLatex = jasmine.createSpy('renderLatex');
     });
 
-    it("Re-enables the peer assess button on error", function() {
+    it("sends a peer assessment to the server", function() {
+        var view = createPeerAssessmentView('oa_peer_assessment.html');
+        submitPeerAssessment(view);
+    });
+
+    it("re-enables the peer assess button on error", function() {
         var view = createPeerAssessmentView('oa_peer_assessment.html');
         // Simulate a server error
         spyOn(server, 'peerAssess').and.callFake(function() {
@@ -91,7 +95,7 @@ describe("OpenAssessment.PeerView", function() {
         expect(view.peerSubmitEnabled()).toBe(true);
     });
 
-    it("Re-enables the continued grading button on error", function() {
+    it("re-enables the continued grading button on error", function() {
         var view = createPeerAssessmentView('oa_peer_complete.html');
 
         // Simulate a server error
@@ -105,5 +109,10 @@ describe("OpenAssessment.PeerView", function() {
 
         // Expect the submit button to have been re-enabled
         expect(view.continueAssessmentEnabled()).toBe(true);
+    });
+
+    it("can submit assessments in turbo mode", function() {
+        var view = createPeerAssessmentView('oa_turbo_mode.html');
+        submitPeerAssessment(view);
     });
 });
