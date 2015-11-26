@@ -15,12 +15,7 @@ from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from .base import XBlockHandlerTestCase, scenario
 
 
-@ddt.ddt
-class TestGrade(XBlockHandlerTestCase):
-    """
-    View-level tests for the XBlock grade handlers.
-    """
-
+class SubmitAssessmentsMixin(object):
     PEERS = ['McNulty', 'Moreland']
 
     ASSESSMENTS = [
@@ -45,6 +40,88 @@ class TestGrade(XBlockHandlerTestCase):
 
     STEPS = ['peer', 'self']
 
+    def _create_submission_and_assessments(
+        self, xblock, submission_text, peers, peer_assessments, self_assessment,
+        waiting_for_peer=False,
+    ):
+        """
+        Create a submission and peer/self assessments, so that the user can receive a grade.
+
+        Args:
+            xblock (OpenAssessmentBlock): The XBlock, loaded for the user who needs a grade.
+            submission_text (unicode): Text of the submission from the user.
+            peers (list of unicode): List of user IDs of peers who will assess the user.
+            peer_assessments (list of dict): List of assessment dictionaries for peer assessments.
+            self_assessment (dict): Dict of assessment for self-assessment.
+
+        Keyword Arguments:
+            waiting_for_peer (bool): If true, skip creation of peer assessments for the user's submission.
+
+        Returns:
+            the submission
+
+        """
+        # Create a submission from the user
+        student_item = xblock.get_student_item_dict()
+        student_id = student_item['student_id']
+        submission = xblock.create_submission(student_item, submission_text)
+
+        # Create submissions and assessments from other users
+        scorer_submissions = []
+        for scorer_name, assessment in zip(peers, peer_assessments):
+
+            # Create a submission for each scorer for the same problem
+            scorer = copy.deepcopy(student_item)
+            scorer['student_id'] = scorer_name
+
+            scorer_sub = sub_api.create_submission(scorer, {'text': submission_text})
+            workflow_api.create_workflow(scorer_sub['uuid'], self.STEPS)
+
+            submission = peer_api.get_submission_to_assess(scorer_sub['uuid'], len(peers))
+
+            # Store the scorer's submission so our user can assess it later
+            scorer_submissions.append(scorer_sub)
+
+            # Create an assessment of the user's submission
+            if not waiting_for_peer:
+                peer_api.create_assessment(
+                    scorer_sub['uuid'], scorer_name,
+                    assessment['options_selected'],
+                    assessment['criterion_feedback'],
+                    assessment['overall_feedback'],
+                    {'criteria': xblock.rubric_criteria},
+                    xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
+                )
+
+        # Have our user make assessments (so she can get a score)
+        for asmnt in peer_assessments:
+            peer_api.get_submission_to_assess(submission['uuid'], len(peers))
+            peer_api.create_assessment(
+                submission['uuid'],
+                student_id,
+                asmnt['options_selected'],
+                asmnt['criterion_feedback'],
+                asmnt['overall_feedback'],
+                {'criteria': xblock.rubric_criteria},
+                xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
+            )
+
+        # Have the user submit a self-assessment (so she can get a score)
+        if self_assessment is not None:
+            self_api.create_assessment(
+                submission['uuid'], student_id, self_assessment['options_selected'],
+                self_assessment['criterion_feedback'], self_assessment['overall_feedback'],
+                {'criteria': xblock.rubric_criteria}
+            )
+
+        return submission
+
+
+@ddt.ddt
+class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
+    """
+    View-level tests for the XBlock grade handlers.
+    """
     AI_ALGORITHMS = {
         'fake': 'openassessment.assessment.worker.algorithm.FakeAIAlgorithm'
     }
@@ -367,77 +444,3 @@ class TestGrade(XBlockHandlerTestCase):
                 self.assertEqual(part['criterion']['label'], expected_criterion_label)
                 expected_option_label = option_labels[(part['criterion']['name'], part['option']['name'])]
                 self.assertEqual(part['option']['label'], expected_option_label)
-
-    def _create_submission_and_assessments(
-        self, xblock, submission_text, peers, peer_assessments, self_assessment,
-        waiting_for_peer=False,
-    ):
-        """
-        Create a submission and peer/self assessments, so that the user can receive a grade.
-
-        Args:
-            xblock (OpenAssessmentBlock): The XBlock, loaded for the user who needs a grade.
-            submission_text (unicode): Text of the submission from the user.
-            peers (list of unicode): List of user IDs of peers who will assess the user.
-            peer_assessments (list of dict): List of assessment dictionaries for peer assessments.
-            self_assessment (dict): Dict of assessment for self-assessment.
-
-        Keyword Arguments:
-            waiting_for_peer (bool): If true, skip creation of peer assessments for the user's submission.
-
-        Returns:
-            None
-
-        """
-        # Create a submission from the user
-        student_item = xblock.get_student_item_dict()
-        student_id = student_item['student_id']
-        submission = xblock.create_submission(student_item, submission_text)
-
-        # Create submissions and assessments from other users
-        scorer_submissions = []
-        for scorer_name, assessment in zip(peers, peer_assessments):
-
-            # Create a submission for each scorer for the same problem
-            scorer = copy.deepcopy(student_item)
-            scorer['student_id'] = scorer_name
-
-            scorer_sub = sub_api.create_submission(scorer, {'text': submission_text})
-            workflow_api.create_workflow(scorer_sub['uuid'], self.STEPS)
-
-            submission = peer_api.get_submission_to_assess(scorer_sub['uuid'], len(peers))
-
-            # Store the scorer's submission so our user can assess it later
-            scorer_submissions.append(scorer_sub)
-
-            # Create an assessment of the user's submission
-            if not waiting_for_peer:
-                peer_api.create_assessment(
-                    scorer_sub['uuid'], scorer_name,
-                    assessment['options_selected'],
-                    assessment['criterion_feedback'],
-                    assessment['overall_feedback'],
-                    {'criteria': xblock.rubric_criteria},
-                    xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
-                )
-
-        # Have our user make assessments (so she can get a score)
-        for asmnt in peer_assessments:
-            peer_api.get_submission_to_assess(submission['uuid'], len(peers))
-            peer_api.create_assessment(
-                submission['uuid'],
-                student_id,
-                asmnt['options_selected'],
-                asmnt['criterion_feedback'],
-                asmnt['overall_feedback'],
-                {'criteria': xblock.rubric_criteria},
-                xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
-            )
-
-        # Have the user submit a self-assessment (so she can get a score)
-        if self_assessment is not None:
-            self_api.create_assessment(
-                submission['uuid'], student_id, self_assessment['options_selected'],
-                self_assessment['criterion_feedback'], self_assessment['overall_feedback'],
-                {'criteria': xblock.rubric_criteria}
-            )

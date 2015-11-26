@@ -6,9 +6,8 @@ import json
 import mock
 import copy
 from openassessment.assessment.api import staff as staff_api
-from openassessment.xblock.data_conversion import create_rubric_dict
 from .base import XBlockHandlerTestCase, scenario
-
+from .test_grade import SubmitAssessmentsMixin
 
 class StaffAssessmentTestBase(XBlockHandlerTestCase):
     maxDiff = None
@@ -25,6 +24,86 @@ class StaffAssessmentTestBase(XBlockHandlerTestCase):
         xblock.xmodule_runtime = mock.Mock(user_is_staff=True)
         xblock.xmodule_runtime.anonymous_student_id = 'Bob'
 
+    def _assert_path_and_context(self, xblock, expected_path):
+        path, context = xblock.staff_path_and_context()
+
+        self.assertEqual(expected_path, path)
+        self.assertEqual({}, context)
+
+        # Verify that we render without error
+        resp = self.request(xblock, 'render_staff_assessment', json.dumps({}))
+        self.assertGreater(len(resp), 0)
+
+    @staticmethod
+    def _set_mock_workflow_info(xblock, workflow_status, status_details, submission_uuid):
+        xblock.get_workflow_info = mock.Mock(return_value={
+            'status': workflow_status,
+            'status_details': status_details,
+            'submission_uuid': submission_uuid
+        })
+
+    def _submit_staff_assessment(self, xblock, submission):
+        # Submit a staff-assessment
+        self.set_staff_access(xblock)
+        self.ASSESSMENT['submission_uuid'] = submission['uuid']
+        resp = self.request(xblock, 'staff_assess', json.dumps(self.ASSESSMENT), response_format='json')
+        self.assertTrue(resp['success'])
+
+
+class TestStaffAssessmentRender(StaffAssessmentTestBase, SubmitAssessmentsMixin):
+
+    @scenario('data/self_assessment_scenario.xml', user_id='Bob')
+    def test_staff_grade_templates(self, xblock):
+        self._verify_grade_templates_workflow(xblock)
+
+    @scenario('data/self_assessment_closed.xml', user_id='Bob')
+    def test_staff_grade_templates_closed(self, xblock):
+        # Whether or not a problem is closed (past due date) has no impact on Staff Grade section.
+        self._verify_grade_templates_workflow(xblock)
+
+    def _verify_grade_templates_workflow(self, xblock):
+        # Problem not yet started, Staff Grade section is marked "Not Available"
+        self._assert_path_and_context(xblock, 'openassessmentblock/staff/oa_staff_unavailable.html')
+
+        # Create a submission for the student
+        submission = xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
+
+        # Response has been created, waiting for self assessment (no staff assessment exists either)
+        self._assert_path_and_context(xblock, 'openassessmentblock/staff/oa_staff_unavailable.html')
+
+        # Submit a staff-assessment
+        self._submit_staff_assessment(xblock, submission)
+
+        # Staff assessment exists, still waiting for self assessment.
+        self._assert_path_and_context(xblock, 'openassessmentblock/staff/oa_staff_complete_waiting.html')
+
+        # Verify that once the required step (self assessment) is done, the staff grade is shown as complete.
+        status_details = {'peer': {'complete': True}}
+        self._set_mock_workflow_info(
+            xblock, workflow_status='done', status_details=status_details, submission_uuid=submission['uuid']
+        )
+        self._assert_path_and_context(xblock, 'openassessmentblock/staff/oa_staff_complete.html')
+
+        # Verify that if the problem is cancelled, the staff grade reflects this.
+        self._set_mock_workflow_info(
+            xblock, workflow_status='cancelled', status_details=status_details, submission_uuid=submission['uuid']
+        )
+        self._assert_path_and_context(xblock, 'openassessmentblock/staff/oa_staff_cancelled.html')
+
+    @scenario('data/grade_waiting_scenario.xml', user_id='Omar')
+    def test_staff_grade_templates_no_peer(self, xblock):
+        # Waiting to be assessed by a peer
+        submission = self._create_submission_and_assessments(
+            xblock, self.SUBMISSION, self.PEERS, self.ASSESSMENTS, self.ASSESSMENTS[0], waiting_for_peer=True
+        )
+
+        # Waiting for a peer assessment to be ready, no staff grade exists.
+        self._assert_path_and_context(xblock, 'openassessmentblock/staff/oa_staff_incomplete_waiting.html')
+
+        # Submit a staff-assessment. The student can now see the score even though no peer assessments have been done.
+        self._submit_staff_assessment(xblock, submission)
+        self._assert_path_and_context(xblock, 'openassessmentblock/staff/oa_staff_complete.html')
+
 
 class TestStaffAssessment(StaffAssessmentTestBase):
 
@@ -36,10 +115,7 @@ class TestStaffAssessment(StaffAssessmentTestBase):
         submission = xblock.create_submission(student_item, self.SUBMISSION)
 
         # Submit a staff-assessment
-        self.set_staff_access(xblock)
-        self.ASSESSMENT['submission_uuid'] = submission['uuid']
-        resp = self.request(xblock, 'staff_assess', json.dumps(self.ASSESSMENT), response_format='json')
-        self.assertTrue(resp['success'])
+        self._submit_staff_assessment(xblock, submission)
 
         # Expect that a staff-assessment was created
         assessment = staff_api.get_latest_staff_assessment(submission['uuid'])

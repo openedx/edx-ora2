@@ -64,6 +64,7 @@ describe("OpenAssessment.BaseView", function() {
         expect(server.fragmentsLoaded).toContain("student_training");
         expect(server.fragmentsLoaded).toContain("self_assessment");
         expect(server.fragmentsLoaded).toContain("peer_assessment");
+        expect(server.fragmentsLoaded).toContain("staff_assessment");
         expect(server.fragmentsLoaded).toContain("grade");
     });
 
@@ -72,7 +73,7 @@ describe("OpenAssessment.BaseView", function() {
         view.peerView.peerAssess();
         var numPeerLoads = 0;
         for (var i = 0; i < server.fragmentsLoaded.length; i++) {
-            if (server.fragmentsLoaded[i] == 'peer_assessment') {
+            if (server.fragmentsLoaded[i] === 'peer_assessment') {
                 numPeerLoads++;
             }
         }

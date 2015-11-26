@@ -574,10 +574,10 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             return cls.objects.get(submission_uuid=submission_uuid)
         except cls.DoesNotExist:
             return None
-        except DatabaseError:
-            error_message = u"Error finding workflow for submission UUID {}.".format(submission_uuid)
-            logger.exception(error_message)
-            raise AssessmentWorkflowError(error_message)
+        except DatabaseError as exc:
+            message = u"Error finding workflow for submission UUID {} due to error: {}.".format(submission_uuid, exc)
+            logger.exception(message)
+            raise AssessmentWorkflowError(message)
 
     @property
     def is_cancelled(self):

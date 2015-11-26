@@ -69,3 +69,43 @@ class StaffAssessmentMixin(object):
             return {'success': False, 'msg': msg}
         else:
             return {'success': True, 'msg': u""}
+            
+    @XBlock.handler
+    def render_staff_assessment(self, data, suffix=''):
+        """
+        Renders the Staff Assessment HTML section of the XBlock
+        Generates the staff assessment HTML for the Open
+        Assessment XBlock. See OpenAssessmentBlock.render_assessment() for
+        more information on rendering XBlock sections.
+        Args:
+            data (dict):
+        """
+        path, context_dict = self.staff_path_and_context()
+
+        return self.render_assessment(path, context_dict)
+        
+    def staff_path_and_context(self):
+        """
+        Retrieve the correct template path and template context for the handler to render.
+        """
+        workflow = self.get_workflow_info()
+        status = workflow.get('status')
+
+        if status == 'cancelled':
+            path = 'openassessmentblock/staff/oa_staff_cancelled.html'
+        elif status == 'done':  # Staff grade exists and all steps completed.
+            path = 'openassessmentblock/staff/oa_staff_complete.html'
+        elif status == 'waiting':
+            # If we are in the 'waiting' workflow, this means that a staff grade cannot exist
+            # (because if a staff grade did exist, we would be in 'done' regardless of whether other
+            # peers have assessed). Therefore we show that we are waiting on staff to provide a grade.
+            path = 'openassessmentblock/staff/oa_staff_incomplete_waiting.html'
+        elif status is None:  # not started
+            path = 'openassessmentblock/staff/oa_staff_unavailable.html'
+        else:  # status is 'self' or 'peer', indicating that the student still has work to do.
+            if self.staff_assessment_exists(self.submission_uuid):
+                path = 'openassessmentblock/staff/oa_staff_complete_waiting.html'
+            else:  # Both student and staff still have work to do, just show "Not Available".
+                path = 'openassessmentblock/staff/oa_staff_unavailable.html'
+
+        return path, {}
