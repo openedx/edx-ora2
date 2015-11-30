@@ -1,9 +1,11 @@
 # coding=utf-8
 import copy
 import mock
+from datetime import timedelta
 
 from django.db import DatabaseError
 from django.test.utils import override_settings
+from django.utils.timezone import now
 from ddt import ddt, data, file_data, unpack
 from nose.tools import raises
 
@@ -18,7 +20,7 @@ from openassessment.test_utils import CacheResetTest
 from openassessment.assessment.api import staff as staff_api, ai as ai_api, peer as peer_api
 from openassessment.assessment.api.self import create_assessment as self_assess
 from openassessment.assessment.api.peer import create_assessment as peer_assess
-from openassessment.assessment.models import Assessment, PeerWorkflow
+from openassessment.assessment.models import Assessment, PeerWorkflow, StaffWorkflow
 from openassessment.assessment.errors import StaffAssessmentRequestError, StaffAssessmentInternalError
 from openassessment.workflow import api as workflow_api
 from submissions import api as sub_api
@@ -106,6 +108,10 @@ class TestStaffAssessment(CacheResetTest):
         # Verify that we're still waiting on a staff assessment
         self._verify_done_state(tim_sub["uuid"], self.STEP_REQUIREMENTS_WITH_STAFF, expect_done=False)
 
+        # Verify that a StaffWorkflow step has been created and is not complete
+        workflow = StaffWorkflow.objects.get(submission_uuid=tim_sub['uuid'])
+        self.assertIsNone(workflow.grading_completed_at)
+
         # Staff assess
         staff_assessment = staff_api.create_assessment(
             tim_sub["uuid"],
@@ -117,6 +123,9 @@ class TestStaffAssessment(CacheResetTest):
         # Verify assesment made, score updated, and no longer waiting
         self.assertEqual(staff_assessment["points_earned"], OPTIONS_SELECTED_DICT[key]["expected_points"])
         self._verify_done_state(tim_sub["uuid"], self.STEP_REQUIREMENTS_WITH_STAFF)
+        # Verify that a StaffWorkflow step has been marked as complete
+        workflow.refresh_from_db()
+        self.assertIsNotNone(workflow.grading_completed_at)
 
     @data(*ASSESSMENT_SCORES_DDT)
     def test_create_assessment_score_overrides(self, key):
@@ -381,6 +390,62 @@ class TestStaffAssessment(CacheResetTest):
             str(context_manager.exception),
             u"An error occurred while creating an assessment by the scorer with this ID: {}".format("Dumbledore")
         )
+
+    def test_fetch_next_submission(self):
+        bob_sub, bob = self._create_student_and_submission("bob", "bob's answer")
+        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        submission = staff_api.get_submission_to_assess(tim['course_id'], tim['item_id'], tim['student_id'])
+        self.assertIsNotNone(submission)
+        self.assertEqual(bob_sub, submission)
+
+    def test_fetch_same_submission(self):
+        bob_sub, bob = self._create_student_and_submission("bob", "bob's answer")
+        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        tim_to_grade = staff_api.get_submission_to_assess(tim['course_id'], tim['item_id'], tim['student_id'])
+        self.assertEqual(bob_sub, tim_to_grade)
+        # Ensure that Bob doesn't pick up the submission that Tim is grading.
+        bob_to_grade = staff_api.get_submission_to_assess(tim['course_id'], tim['item_id'], bob['student_id'])
+        tim_to_grade = staff_api.get_submission_to_assess(tim['course_id'], tim['item_id'], tim['student_id'])
+        self.assertEqual(bob_sub, tim_to_grade)
+        self.assertEqual(tim_sub, bob_to_grade)
+
+    def test_fetch_submission_delayed(self):
+        bob_sub, bob = self._create_student_and_submission("bob", "bob's answer")
+        # Fetch the submission for Tim to grade
+        tim_to_grade = staff_api.get_submission_to_assess(bob['course_id'], bob['item_id'], "Tim")
+        self.assertEqual(bob_sub, tim_to_grade)
+
+        bob_to_grade = staff_api.get_submission_to_assess(bob['course_id'], bob['item_id'], bob['student_id'])
+        self.assertIsNone(bob_to_grade)
+
+        # Change the grading_started_at timestamp so that the 'lock' on the
+        # problem is released.
+        workflow = StaffWorkflow.objects.get(scorer_id="Tim")
+        timestamp = (now() - (workflow.TIME_LIMIT + timedelta(hours=1))).strftime("%Y-%m-%d %H:%M:%S")
+        workflow.grading_started_at = timestamp
+        workflow.save()
+
+        bob_to_grade = staff_api.get_submission_to_assess(bob['course_id'], bob['item_id'], bob['student_id'])
+        self.assertEqual(tim_to_grade, bob_to_grade)
+
+    def test_next_submission_error(self):
+        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        with mock.patch('openassessment.assessment.api.staff.submissions_api.get_submission') as patched_get_submission:
+            patched_get_submission.side_effect = sub_api.SubmissionNotFoundError('Failed')
+            with self.assertRaises(staff_api.StaffAssessmentInternalError):
+                submission = staff_api.get_submission_to_assess(tim['course_id'], tim['item_id'], tim['student_id'])
+
+    def test_no_available_submissions(self):
+        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        # Use a non-existent course and non-existent item.
+        submission = staff_api.get_submission_to_assess('test_course_id', 'test_item_id', tim['student_id'])
+        self.assertIsNone(submission)
+
+    def test_cancel_staff_workflow(self):
+        tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
+        workflow_api.cancel_workflow(tim_sub['uuid'], "Test Cancel", "Bob", {})
+        workflow = StaffWorkflow.objects.get(submission_uuid=tim_sub['uuid'])
+        self.assertIsNotNone(workflow.cancelled_at)
 
     @staticmethod
     def _create_student_and_submission(student, answer, date=None, problem_steps=None):
