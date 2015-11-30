@@ -91,7 +91,7 @@
   .staff-info__status__table, .staff-info__classifierset__table {
     @extend %copy-3;
     @include border-radius(($baseline-v/10));
-    color: $copy-staff-color;
+    word-break: initial;
 
     .title {
       @extend %hd-2;
