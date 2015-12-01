@@ -52,7 +52,9 @@ class PeerAssessmentMixin(object):
 
         """
         if self.submission_uuid is None:
-            return {'success': False, 'msg': self._('You must submit a response before you can peer-assess.')}
+            return {
+                'success': False, 'msg': self._('You must submit a response before you can perform a peer assessment.')
+            }
 
         uuid_server, uuid_client = self._get_server_and_client_submission_uuids(data)
         if uuid_server != uuid_client:

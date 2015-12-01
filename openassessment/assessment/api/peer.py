@@ -285,16 +285,16 @@ def create_assessment(
         logger.exception(message)
         raise PeerAssessmentWorkflowError(message)
     except InvalidRubric:
-        msg = u"Rubric definition was not valid"
+        msg = u"The rubric definition is not valid."
         logger.exception(msg)
         raise PeerAssessmentRequestError(msg)
     except InvalidRubricSelection:
-        msg = u"Invalid options selected in the rubric"
+        msg = u"Invalid options were selected in the rubric."
         logger.warning(msg, exc_info=True)
         raise PeerAssessmentRequestError(msg)
     except DatabaseError:
         error_message = (
-            u"An error occurred while retrieving the peer workflow item by scorer with ID: {}"
+            u"An error occurred while creating an assessment by the scorer with this ID: {}"
         ).format(scorer_id)
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)

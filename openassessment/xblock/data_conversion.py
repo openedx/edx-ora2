@@ -235,13 +235,13 @@ def verify_assessment_parameters(func):
     def verify_and_call(instance, data, suffix):
         # Validate the request
         if 'options_selected' not in data:
-            return {'success': False, 'msg': instance._('Must provide options selected in the assessment')}
+            return {'success': False, 'msg': instance._('You must provide options selected in the assessment.')}
 
         if 'overall_feedback' not in data:
-            return {'success': False, 'msg': instance._('Must provide overall feedback in the assessment')}
+            return {'success': False, 'msg': instance._('You must provide overall feedback in the assessment.')}
 
         if 'criterion_feedback' not in data:
-            return {'success': False, 'msg': instance._('Must provide feedback for criteria in the assessment')}
+            return {'success': False, 'msg': instance._('You must provide feedback for criteria in the assessment.')}
 
         return func(instance, data, suffix)
     return verify_and_call

@@ -38,7 +38,9 @@ class StaffAssessmentMixin(object):
         Create a staff assessment from a staff submission.
         """
         if 'submission_uuid' not in data:
-            return {'success': False, 'msg': self._(u"Missing the submission id of the submission being assessed.")}
+            return {
+                'success': False, 'msg': self._(u"The submission ID of the submission being assessed was not found.")
+            }
 
         try:
             assessment = staff_api.create_assessment(
@@ -123,7 +125,7 @@ class StaffAssessmentMixin(object):
                 context = {
                     'status_value': self._('Complete'),
                     'icon_class': 'fa-check',
-                    'message_title': self._('You Must Complete the Above Steps to View Your Grade'),
+                    'message_title': self._('You Must Complete the Steps Above to View Your Grade'),
                     'message_content': self._('Although a course staff member has assessed your response, you will receive your grade only after you have completed all the required steps of this problem.'),
                 }
             else:  # Both student and staff still have work to do, just show "Not Available".
