@@ -109,7 +109,7 @@
                     deferred.reject();
                 });
             } else {
-                showFormError(gettext('A learner name must be provided.'));
+                showFormError(gettext('You must provide a learner name.'));
                 deferred.reject();
             }
             return deferred.promise();

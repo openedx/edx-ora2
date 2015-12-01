@@ -227,16 +227,16 @@ def create_assessment(
         return full_assessment_dict(assessment)
 
     except InvalidRubric:
-        error_message = u"Rubric definition was not valid"
+        error_message = u"The rubric definition is not valid."
         logger.exception(error_message)
         raise StaffAssessmentRequestError(error_message)
     except InvalidRubricSelection:
-        error_message = u"Invalid options selected in the rubric"
+        error_message = u"Invalid options were selected in the rubric."
         logger.warning(error_message, exc_info=True)
         raise StaffAssessmentRequestError(error_message)
     except DatabaseError:
         error_message = (
-            u"An error occurred while creating assessment by scorer with ID: {}"
+            u"An error occurred while creating an assessment by the scorer with this ID: {}"
         ).format(scorer_id)
         logger.exception(error_message)
         raise StaffAssessmentInternalError(error_message)

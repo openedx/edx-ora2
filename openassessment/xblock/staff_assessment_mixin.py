@@ -13,7 +13,7 @@ from openassessment.assessment.errors import (
 )
 
 from .data_conversion import create_rubric_dict
-from .data_conversion import clean_criterion_feedback, create_submission_dict, verify_assessment_parameters
+from .data_conversion import clean_criterion_feedback, verify_assessment_parameters
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +38,9 @@ class StaffAssessmentMixin(object):
         Create a staff assessment from a staff submission.
         """
         if 'submission_uuid' not in data:
-            return {'success': False, 'msg': self._(u"Missing the submission id of the submission being assessed.")}
+            return {
+                'success': False, 'msg': self._(u"The submission ID of the submission being assessed was not found.")
+            }
 
         try:
             assessment = staff_api.create_assessment(
@@ -69,3 +71,64 @@ class StaffAssessmentMixin(object):
             return {'success': False, 'msg': msg}
         else:
             return {'success': True, 'msg': u""}
+            
+    @XBlock.handler
+    def render_staff_assessment(self, data, suffix=''):
+        """
+        Renders the Staff Assessment HTML section of the XBlock
+        Generates the staff assessment HTML for the Open
+        Assessment XBlock. See OpenAssessmentBlock.render_assessment() for
+        more information on rendering XBlock sections.
+        Args:
+            data (dict):
+        """
+        path, context_dict = self.staff_path_and_context()
+
+        return self.render_assessment(path, context_dict)
+        
+    def staff_path_and_context(self):
+        """
+        Retrieve the correct template path and template context for the handler to render.
+        """
+        workflow = self.get_workflow_info()
+        status = workflow.get('status')
+        path = 'openassessmentblock/staff/oa_staff_grade.html'
+        not_available_context = {
+            'status_value': self._('Not Available'),
+            'step_classes': 'is--unavailable is--empty is--collapsed',
+        }
+
+        if status == 'cancelled':
+            context = {
+                'status_value': self._('Cancelled'),
+                'icon_class': 'fa-exclamation-triangle',
+            }
+        elif status == 'done':  # Staff grade exists and all steps completed.
+            context = {
+                'status_value': self._('Complete'),
+                'icon_class': 'fa-check',
+                'step_classes': 'is--complete is--empty is--collapsed',
+            }
+        elif status == 'waiting':
+            # If we are in the 'waiting' workflow, this means that a staff grade cannot exist
+            # (because if a staff grade did exist, we would be in 'done' regardless of whether other
+            # peers have assessed). Therefore we show that we are waiting on staff to provide a grade.
+            context = {
+                'status_value': self._('Not Available'),
+                'message_title': self._('Waiting for a Staff Grade'),
+                'message_content': self._('Check back later to see if a course staff member has assessed your response. You will receive your grade after the assessment is complete.'),
+            }
+        elif status is None:  # not started
+            context = not_available_context
+        else:  # status is 'self' or 'peer', indicating that the student still has work to do.
+            if self.staff_assessment_exists(self.submission_uuid):
+                context = {
+                    'status_value': self._('Complete'),
+                    'icon_class': 'fa-check',
+                    'message_title': self._('You Must Complete the Steps Above to View Your Grade'),
+                    'message_content': self._('Although a course staff member has assessed your response, you will receive your grade only after you have completed all the required steps of this problem.'),
+                }
+            else:  # Both student and staff still have work to do, just show "Not Available".
+                context = not_available_context
+
+        return path, context

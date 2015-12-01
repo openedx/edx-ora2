@@ -68,6 +68,7 @@ class OpenAssessmentTest(WebAppTest):
     SUBMISSION = u"This is a test submission."
     LATEX_SUBMISSION = u"[mathjaxinline]( \int_{0}^{1}xdx \)[/mathjaxinline]"
     OPTIONS_SELECTED = [1, 2]
+    STAFF_OVERRIDE_OPTIONS_SELECTED = [0, 1]
     EXPECTED_SCORE = 6
 
     def setUp(self, problem_type, staff=False):
@@ -88,6 +89,7 @@ class OpenAssessmentTest(WebAppTest):
         self.self_asmnt_page = AssessmentPage('self-assessment', self.browser, self.problem_loc)
         self.peer_asmnt_page = AssessmentPage('peer-assessment', self.browser, self.problem_loc)
         self.student_training_page = AssessmentPage('student-training', self.browser, self.problem_loc)
+        self.staff_asmnt_page = AssessmentPage('staff-assessment', self.browser, self.problem_loc)
         self.grade_page = GradePage(self.browser, self.problem_loc)
 
     def do_self_assessment(self):
@@ -110,6 +112,12 @@ class OpenAssessmentTest(WebAppTest):
         self.assertEqual(self.grade_page.wait_for_page().score, self.EXPECTED_SCORE)
 
         return username
+
+    def _verify_staff_grade_section(self, expected_status, expected_message_title):
+        self.staff_asmnt_page.wait_for_page()
+        self.assertEqual("Staff Grade", self.staff_asmnt_page.label)
+        self.staff_asmnt_page.verify_status_value(expected_status)
+        self.assertEqual(expected_message_title, self.staff_asmnt_page.message_title)
 
 
 class SelfAssessmentTest(OpenAssessmentTest):
@@ -177,6 +185,69 @@ class PeerAssessmentTest(OpenAssessmentTest):
             self.peer_asmnt_page.wait_for_num_completed(1)
         except BrokenPromise:
             self.fail("Did not complete at least one peer assessment.")
+
+
+class PeerAssessmentTestStaffOverride(OpenAssessmentTest):
+    """
+    Test setting a staff override on a problem which requires peer assessment.
+    """
+
+    def setUp(self):
+        super(PeerAssessmentTestStaffOverride, self).setUp('peer_only', staff=True)
+        self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
+
+    @retry()
+    @attr('acceptance')
+    def test_staff_override(self):
+        """
+        Scenario: staff can override a learner's grade
+
+        Given I am viewing a new peer assessment problem as a learner
+        And if I create a response to the problem
+        Then there is no Staff Grade section present
+        And if a staff member creates a grade override
+        Then when I refresh the page, I see that a staff override exists
+        And the message says that I must complete my steps to view the grade
+        And if I submit required peer assessments
+        Then the Staff Grade section is marked complete with no message
+        And I can see my final grade, even though no peers have assessed me
+        """
+        # Create two students with a submission each so that there are 2 submissions to assess.
+        for _ in range(0, 2):
+            self.auto_auth_page.visit()
+            self.submission_page.visit().submit_response(self.SUBMISSION)
+
+        # Create a submission for the third student (used for the remainder of the test).
+        self.auto_auth_page.visit()
+        username = self.auto_auth_page.get_username()
+        self.submission_page.visit().submit_response(self.SUBMISSION)
+        # Staff Grade field should not be visible yet.
+        self.assertFalse(self.staff_asmnt_page.is_browser_on_page())
+
+        # Submit a staff override.
+        self.staff_area_page.visit()
+        self.staff_area_page.show_learner(username)
+        self.staff_area_page.expand_learner_report_sections()
+        self.staff_area_page.assess("staff", self.STAFF_OVERRIDE_OPTIONS_SELECTED)
+
+        # Refresh the page so the learner sees the Staff Grade section.
+        self.browser.refresh()
+        self._verify_staff_grade_section("COMPLETE", "YOU MUST COMPLETE THE STEPS ABOVE TO VIEW YOUR GRADE")
+
+        # Verify no final grade yet.
+        self.assertIsNone(self.grade_page.wait_for_page().score)
+
+        # Assess two submissions
+        for count_assessed in range(1, 3):
+            self.peer_asmnt_page.wait_for_page().wait_for_response().assess("peer", self.OPTIONS_SELECTED)
+            self.peer_asmnt_page.wait_for_num_completed(count_assessed)
+
+        # Staff grade section is now marked complete, even though no students have submitted
+        # assessments for this particular student (no longer required since staff grade exists).
+        self._verify_staff_grade_section("COMPLETE", None)
+
+        # Verify the staff override grade
+        self.assertEqual(self.grade_page.wait_for_page().score, 1)
 
 
 class StudentTrainingTest(OpenAssessmentTest):
@@ -315,7 +386,7 @@ class StaffAreaTest(OpenAssessmentTest):
         # Click on staff tools and search for user
         self.staff_area_page.show_learner(username)
         self.assertEqual(
-            [u'Learner Response', u"Learner's Self Assessment", u"Learner's Final Grade",
+            [u"Learner's Response", u"Learner's Self Assessment", u"Learner's Final Grade",
              u"Submit Assessment Grade Override", u"Remove Submission From Peer Grading"],
             self.staff_area_page.learner_report_sections
         )
@@ -365,7 +436,7 @@ class StaffAreaTest(OpenAssessmentTest):
         self.staff_area_page.verify_learner_final_score("Final grade: 6 out of 8")
 
         # Do staff override and wait for final score to change.
-        self.staff_area_page.assess("staff", [0, 1])
+        self.staff_area_page.assess("staff", self.STAFF_OVERRIDE_OPTIONS_SELECTED)
 
         # Verify that the new student score is different from the original one.
         # Unfortunately there is no indication presently that this was a staff override.
@@ -405,13 +476,93 @@ class StaffAreaTest(OpenAssessmentTest):
 
         # Verify that the staff override and submission removal sections are now gone.
         self.assertEqual(
-            [u'Learner Response', u"Learner's Self Assessment", u"Learner's Final Grade"],
+            [u"Learner's Response", u"Learner's Self Assessment", u"Learner's Final Grade"],
             self.staff_area_page.learner_report_sections
         )
 
         # Verify that the Learner Response has been replaced with a message about the removal
         self.staff_area_page.expand_learner_report_sections()
         self.assertIn("Learner submission removed", self.staff_area_page.learner_response)
+
+    @retry()
+    @attr('acceptance')
+    def test_staff_grade_override(self):
+        """
+        Scenario: the staff grade section displays correctly
+
+        Given I am viewing a new self assessment problem as a learner
+        Then there is no Staff Grade section present
+        And if I create a response to the problem
+        Then there is no Staff Grade section present
+        And if a staff member creates a grade override
+        Then when I refresh the page, I see that a staff override exists
+        And the message says that I must complete my steps to view the grade
+        And if I submit my self-assessment
+        Then the Staff Grade section is marked complete with no message
+        And I can see my final grade
+        """
+        # View the problem-- no Staff Grade area.
+        self.auto_auth_page.visit()
+        username = self.auto_auth_page.get_username()
+        self.submission_page.visit()
+        self.assertFalse(self.staff_asmnt_page.is_browser_on_page())
+
+        self.submission_page.submit_response(self.SUBMISSION)
+        self.assertTrue(self.submission_page.has_submitted)
+        self.assertFalse(self.staff_asmnt_page.is_browser_on_page())
+
+        # Submit a staff override
+        self.staff_area_page.visit()
+        self.staff_area_page.show_learner(username)
+        self.staff_area_page.expand_learner_report_sections()
+        self.staff_area_page.assess("staff", self.STAFF_OVERRIDE_OPTIONS_SELECTED)
+
+        # Refresh the page so the learner sees the Staff Grade section.
+        self.browser.refresh()
+        self._verify_staff_grade_section("COMPLETE", "YOU MUST COMPLETE THE STEPS ABOVE TO VIEW YOUR GRADE")
+
+        # Verify no final grade yet.
+        self.assertIsNone(self.grade_page.wait_for_page().score)
+
+        # Learner does required self-assessment
+        self.self_asmnt_page.wait_for_page().wait_for_response()
+        self.assertIn(self.SUBMISSION, self.self_asmnt_page.response_text)
+        self.self_asmnt_page.assess("self", self.OPTIONS_SELECTED).wait_for_complete()
+        self.assertTrue(self.self_asmnt_page.is_complete)
+
+        self._verify_staff_grade_section("COMPLETE", None)
+
+        # Verify the staff override grade
+        self.assertEqual(self.grade_page.wait_for_page().score, 1)
+
+    @retry()
+    @attr('acceptance')
+    def test_staff_grade_override_cancelled(self):
+        """
+        Scenario: the staff grade section displays cancelled when the submission is cancelled
+
+        Given I have created a response and a self-assessment
+        And a staff member creates a grade override and then cancels my submission
+        Then when I refresh the page, the Staff Grade section is marked cancelled
+        And I have no final grade
+        """
+        username = self.do_self_assessment()
+
+        # Submit a staff override
+        self.staff_area_page.visit()
+        self.staff_area_page.show_learner(username)
+        self.staff_area_page.expand_learner_report_sections()
+
+        # Do staff override.
+        self.staff_area_page.assess("staff", self.STAFF_OVERRIDE_OPTIONS_SELECTED)
+        # And cancel the submission
+        self.staff_area_page.expand_learner_report_sections()
+        self.staff_area_page.cancel_submission()
+
+        # Refresh the page so the learner sees the Staff Grade section shows the submission has been cancelled.
+        self.browser.refresh()
+        self._verify_staff_grade_section("CANCELLED", None)
+        self.assertIsNone(self.grade_page.wait_for_page().score)
 
 
 class FileUploadTest(OpenAssessmentTest):

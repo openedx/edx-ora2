@@ -162,6 +162,10 @@
 
   .staff-info__cancel-submission__content {
 
+    .comments__label {
+      color: $copy-secondary-color;
+    }
+
     .cancel_submission_comments {
       width: 100%;
       min-height: ($baseline-v*5);
