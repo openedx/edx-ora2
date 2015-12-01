@@ -84,7 +84,7 @@ class TestStaffAssessmentRender(StaffAssessmentTestBase, SubmitAssessmentsMixin)
             {
                 'status_value': 'Complete',
                 'icon_class': 'fa-check',
-                'message_title': 'You Must Complete the Above Steps to View Your Grade',
+                'message_title': 'You Must Complete the Steps Above to View Your Grade',
                 'message_content': 'Although a course staff member has assessed your response, you will receive your grade only after you have completed all the required steps of this problem.'
             }
         )

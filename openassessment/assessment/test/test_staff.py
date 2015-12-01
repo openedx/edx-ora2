@@ -311,7 +311,7 @@ class TestStaffAssessment(CacheResetTest):
                 OPTIONS_SELECTED_DICT["most"]["options"], dict(), "",
                 invalid_rubric,
             )
-        self.assertEqual(str(context_manager.exception), u"Rubric definition was not valid")
+        self.assertEqual(str(context_manager.exception), u"The rubric definition is not valid.")
 
     @data("criterion_not_found", "option_not_found", "missing_criteria", "some_criteria_not_assessed")
     def test_invalid_rubric_options_exception(self, invalid_reason):
@@ -337,7 +337,7 @@ class TestStaffAssessment(CacheResetTest):
                 dict_to_use, dict(), "",
                 RUBRIC,
             )
-        self.assertEqual(str(context_manager.exception), u"Invalid options selected in the rubric")
+        self.assertEqual(str(context_manager.exception), u"Invalid options were selected in the rubric.")
 
     @mock.patch.object(Assessment.objects, 'filter')
     def test_database_filter_error_handling(self, mock_filter):
@@ -379,7 +379,7 @@ class TestStaffAssessment(CacheResetTest):
             )
         self.assertEqual(
             str(context_manager.exception),
-            u"An error occurred while creating assessment by scorer with ID: {}".format("Dumbledore")
+            u"An error occurred while creating an assessment by the scorer with this ID: {}".format("Dumbledore")
         )
 
     @staticmethod

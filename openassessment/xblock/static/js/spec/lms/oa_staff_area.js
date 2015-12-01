@@ -260,7 +260,7 @@ describe('OpenAssessment.StaffAreaView', function() {
             var staffArea = createStaffArea();
             chooseStudent(staffArea, '');
             expect($('.openassessment_student_info_form .form--error', staffArea.element).text().trim())
-                .toBe('A learner name must be provided.');
+                .toBe('You must provide a learner name.');
         });
 
         describe('Submission Management', function() {

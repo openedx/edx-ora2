@@ -232,7 +232,7 @@ class PeerAssessmentTestStaffOverride(OpenAssessmentTest):
 
         # Refresh the page so the learner sees the Staff Grade section.
         self.browser.refresh()
-        self._verify_staff_grade_section("COMPLETE", "YOU MUST COMPLETE THE ABOVE STEPS TO VIEW YOUR GRADE")
+        self._verify_staff_grade_section("COMPLETE", "YOU MUST COMPLETE THE STEPS ABOVE TO VIEW YOUR GRADE")
 
         # Verify no final grade yet.
         self.assertIsNone(self.grade_page.wait_for_page().score)
@@ -519,7 +519,7 @@ class StaffAreaTest(OpenAssessmentTest):
 
         # Refresh the page so the learner sees the Staff Grade section.
         self.browser.refresh()
-        self._verify_staff_grade_section("COMPLETE", "YOU MUST COMPLETE THE ABOVE STEPS TO VIEW YOUR GRADE")
+        self._verify_staff_grade_section("COMPLETE", "YOU MUST COMPLETE THE STEPS ABOVE TO VIEW YOUR GRADE")
 
         # Verify no final grade yet.
         self.assertIsNone(self.grade_page.wait_for_page().score)
