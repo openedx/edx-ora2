@@ -382,7 +382,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         # A staff step must always be available, to allow for staff overrides
         try:
             self.steps.get(name=self.STATUS.staff)
-        except AttributeError:
+        except AssessmentWorkflowStep.DoesNotExist:
             for step in list(self.steps.all()):
                 step.order_num += 1
             self.steps.add(
