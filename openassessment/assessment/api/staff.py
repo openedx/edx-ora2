@@ -3,11 +3,14 @@ Public interface for staff grading, used by students/course staff.
 """
 import logging
 from django.db import DatabaseError, IntegrityError, transaction
+from django.utils.timezone import now
 from dogapi import dog_stats_api
+
+from submissions import api as submissions_api
 
 from openassessment.assessment.models import (
     Assessment, AssessmentFeedback, AssessmentPart,
-    InvalidRubricSelection
+    InvalidRubricSelection, StaffWorkflow,
 )
 from openassessment.assessment.serializers import (
     AssessmentFeedbackSerializer, RubricSerializer,
@@ -54,6 +57,72 @@ def assessment_is_finished(submission_uuid, requirements):
     if requirements and requirements.get('staff', {}).get('required', False):
         return bool(get_latest_staff_assessment(submission_uuid))
     return True
+
+
+def on_start(submission_uuid):
+    """
+    Create a new staff workflow for a student item and submission.
+
+    Creates a unique staff workflow for a student item, associated with a
+    submission.
+
+    Args:
+        submission_uuid (str): The submission associated with this workflow.
+
+    Returns:
+        None
+
+    Raises:
+        StaffAssessmentInternalError: Raised when there is an internal error
+            creating the Workflow.
+
+    """
+    try:
+        submission = submissions_api.get_submission_and_student(submission_uuid)
+        workflow, __ = StaffWorkflow.objects.get_or_create(
+            course_id=submission['student_item']['course_id'],
+            item_id=submission['student_item']['item_id'],
+            submission_uuid=submission_uuid
+        )
+    except DatabaseError:
+        error_message = (
+            u"An internal error occurred while creating a new staff "
+            u"workflow for submission {}"
+            .format(submission_uuid)
+        )
+        logger.exception(error_message)
+        raise StaffAssessmentInternalError(error_message)
+
+
+def on_cancel(submission_uuid):
+    """
+    Cancel the staff workflow for submission.
+
+    Sets the cancelled_at field in staff workflow.
+
+    Args:
+        submission_uuid (str): The submission UUID associated with this workflow.
+
+    Returns:
+        None
+
+    """
+    try:
+        workflow = StaffWorkflow.objects.get(submission_uuid=submission_uuid)
+        workflow.cancelled_at = now()
+        workflow.save(update_fields=['cancelled_at'])
+    except StaffWorkflow.DoesNotExist:
+        # If we can't find a workflow, then we don't have to do anything to
+        # cancel it.
+        pass
+    except DatabaseError:
+        error_message = (
+            u"An internal error occurred while cancelling the staff"
+            u"workflow for submission {}"
+            .format(submission_uuid)
+        )
+        logger.exception(error_message)
+        raise StaffAssessmentInternalError(error_message)
 
 
 def get_score(submission_uuid, requirements):
@@ -160,6 +229,58 @@ def get_assessment_scores_by_criteria(submission_uuid):
         raise StaffAssessmentInternalError(error_message)
 
 
+def get_submission_to_assess(course_id, item_id, scorer_id):
+    """Get a submission for staff evaluation.
+
+    Retrieves a submission for assessment for the given staff member.
+
+    Args:
+        course_id (str): The course that we would like to fetch submissions from.
+        item_id (str): The student_item (problem) that we would like to retrieve submissions for.
+        scorer_id (str): The user id of the staff member scoring this submission
+
+    Returns:
+        dict: A student submission for assessment. This contains a 'student_item',
+            'attempt_number', 'submitted_at', 'created_at', and 'answer' field to be
+            used for assessment.
+
+    Raises:
+        StaffAssessmentInternalError: Raised when there is an internal error
+            retrieving staff workflow information.
+
+    Examples:
+        >>> get_submission_to_assess("a_course_id", "an_item_id", "a_scorer_id")
+        {
+            'student_item': 2,
+            'attempt_number': 1,
+            'submitted_at': datetime.datetime(2014, 1, 29, 23, 14, 52, 649284, tzinfo=<UTC>),
+            'created_at': datetime.datetime(2014, 1, 29, 17, 14, 52, 668850, tzinfo=<UTC>),
+            'answer': u'The answer is 42.'
+        }
+
+    """
+    student_submission_uuid = StaffWorkflow.get_submission_for_review(course_id, item_id, scorer_id)
+    if student_submission_uuid:
+        try:
+            submission_data = submissions_api.get_submission(student_submission_uuid)
+            return submission_data
+        except submissions_api.SubmissionNotFoundError:
+            error_message = (
+                u"Could not find a submission with the uuid {}"
+            ).format(student_submission_uuid)
+            logger.exception(error_message)
+            raise StaffAssessmentInternalError(error_message)
+    else:
+        logger.info(
+            u"No submission found for staff to assess ({}, {})"
+            .format(
+                course_id,
+                item_id,
+            )
+        )
+        return None
+
+
 def create_assessment(
     submission_uuid,
     scorer_id,
@@ -215,6 +336,11 @@ def create_assessment(
         >>> create_assessment("Tim", options_selected, criterion_feedback, feedback, rubric_dict)
     """
     try:
+        try:
+            scorer_workflow = StaffWorkflow.objects.get(submission_uuid=submission_uuid)
+        except StaffWorkflow.DoesNotExist:
+            scorer_workflow = None
+
         assessment = _complete_assessment(
             submission_uuid,
             scorer_id,
@@ -222,7 +348,8 @@ def create_assessment(
             criterion_feedback,
             overall_feedback,
             rubric_dict,
-            scored_at
+            scored_at,
+            scorer_workflow
         )
         return full_assessment_dict(assessment)
 
@@ -250,7 +377,8 @@ def _complete_assessment(
         criterion_feedback,
         overall_feedback,
         rubric_dict,
-        scored_at
+        scored_at,
+        scorer_workflow
 ):
     """
     Internal function for atomic assessment creation. Creates a staff assessment
@@ -295,4 +423,7 @@ def _complete_assessment(
     # match the rubric.
     AssessmentPart.create_from_option_names(assessment, options_selected, feedback=criterion_feedback)
 
+    # Close the active assessment
+    if scorer_workflow is not None:
+        scorer_workflow.close_active_assessment(assessment, scorer_id)
     return assessment
