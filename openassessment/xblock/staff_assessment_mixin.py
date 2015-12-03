@@ -52,7 +52,8 @@ class StaffAssessmentMixin(object):
                 create_rubric_dict(self.prompts, self.rubric_criteria_with_labels)
             )
             self.publish_assessment_event("openassessmentblock.staff_assessment", assessment)
-            workflow_api.update_from_assessments(assessment["submission_uuid"], {})
+            requirements = {"training":{"num_required":0}}
+            workflow_api.update_from_assessments(assessment["submission_uuid"], requirements)
 
         except StaffAssessmentRequestError:
             logger.warning(
@@ -71,7 +72,7 @@ class StaffAssessmentMixin(object):
             return {'success': False, 'msg': msg}
         else:
             return {'success': True, 'msg': u""}
-            
+
     @XBlock.handler
     def render_staff_assessment(self, data, suffix=''):
         """
@@ -85,7 +86,7 @@ class StaffAssessmentMixin(object):
         path, context_dict = self.staff_path_and_context()
 
         return self.render_assessment(path, context_dict)
-        
+
     def staff_path_and_context(self):
         """
         Retrieve the correct template path and template context for the handler to render.
