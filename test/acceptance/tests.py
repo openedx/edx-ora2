@@ -780,6 +780,11 @@ class FullWorkflowTest(OpenAssessmentTest):
         )
         self.staff_area_page.verify_learner_final_score(self.PEER_ASSESSMENT_STAFF_AREA_SCORE)
 
+        self.verify_grade_entries([
+            [(u"PEER MEDIAN GRADE - 0 POINTS", u"Poor"), (u"PEER MEDIAN GRADE - 0 POINTS", u"Poor")],
+            [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")]
+        ])
+
         # Now do a staff override, changing the score (to 1).
         self.do_staff_override(learner)
 
@@ -790,6 +795,13 @@ class FullWorkflowTest(OpenAssessmentTest):
             learner, self.STAFF_AREA_PEER_ASSESSMENT, self.STAFF_AREA_SUBMITTED, self.STAFF_AREA_SELF_ASSESSMENT
         )
         self.staff_area_page.verify_learner_final_score(self.STAFF_AREA_SCORE.format(self.STAFF_OVERRIDE_SCORE))
+
+        self.verify_grade_entries([
+            [(u"STAFF GRADE - 0 POINTS", u"Poor"), (u"STAFF GRADE - 1 POINT", u"Fair")],
+            [(u"PEER MEDIAN GRADE", u"Poor"), (u"PEER MEDIAN GRADE", u"Poor")],
+            [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")]
+        ])
+
 
     @retry()
     @attr('acceptance')
@@ -847,6 +859,11 @@ class FullWorkflowTest(OpenAssessmentTest):
         self.assertEqual(self.grade_page.wait_for_page().score, self.STAFF_OVERRIDE_SCORE)
         self.verify_staff_area_fields(learner, [], self.STAFF_AREA_SUBMITTED, self.STAFF_AREA_SELF_ASSESSMENT)
         self.staff_area_page.verify_learner_final_score(self.STAFF_AREA_SCORE.format(self.STAFF_OVERRIDE_SCORE))
+
+        self.verify_grade_entries([
+            [(u"STAFF GRADE - 0 POINTS", u"Poor"), (u"STAFF GRADE - 1 POINT", u"Fair")],
+            [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")]
+        ])
 
 
 if __name__ == "__main__":

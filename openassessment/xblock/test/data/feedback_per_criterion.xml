@@ -12,7 +12,7 @@
         <criterion feedback="optional">
             <name>𝓒𝓸𝓷𝓬𝓲𝓼𝓮</name>
             <prompt>How concise is it?</prompt>
-            <option points="3">
+            <option points="4">
                 <name>ﻉซƈﻉɭɭﻉกՇ</name>
                 <explanation>Extremely concise</explanation>
             </option>
@@ -32,7 +32,7 @@
                 <name>Good</name>
                 <explanation>Good</explanation>
             </option>
-            <option points="2">
+            <option points="3">
                 <name>Fair</name>
                 <explanation>Fair</explanation>
             </option>
