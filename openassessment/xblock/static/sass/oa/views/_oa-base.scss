@@ -963,6 +963,11 @@
       @extend %t-titlecase;
       display: block;
       color: $heading-secondary-color;
+
+      .answer__source__value-with-points {
+        @extend %t-score;
+        color: $heading-primary-color;
+      }
     }
 
     .answer__value {

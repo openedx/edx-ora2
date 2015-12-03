@@ -1,14 +1,11 @@
 /**
-Interface for grade view.
-
-Args:
-    element (DOM element): The DOM element representing the XBlock.
-    server (OpenAssessment.Server): The interface to the XBlock server.
-    baseView (OpenAssessment.BaseView): Container view.
-
-Returns:
-    OpenAssessment.ResponseView
-**/
+ * The GradeView class.
+ *
+ * @param {element} element - The DOM element representing the XBlock
+ * @param {OpenAssessment.Server} server - The interface to the XBlock server
+ * @param {OpenAssessment.BaseView} baseView - The container view.
+ * @constructor
+ */
 OpenAssessment.GradeView = function(element, server, baseView) {
     this.element = element;
     this.server = server;
@@ -17,8 +14,8 @@ OpenAssessment.GradeView = function(element, server, baseView) {
 
 OpenAssessment.GradeView.prototype = {
     /**
-    Load the grade view.
-    **/
+     * Load the grade view.
+     */
     load: function() {
         var view = this;
         var baseView = this.baseView;
@@ -35,8 +32,8 @@ OpenAssessment.GradeView.prototype = {
     },
 
     /**
-    Install event handlers for the view.
-    **/
+     * Install event handlers for the view.
+     */
     installHandlers: function() {
         // Install a click handler for collapse/expand
         var sel = $('#openassessment__grade', this.element);
@@ -44,26 +41,18 @@ OpenAssessment.GradeView.prototype = {
 
         // Install a click handler for assessment feedback
         var view = this;
-        sel.find('#feedback__submit').click(function(eventObject) {
+        sel.find('.feedback__submit').click(function(eventObject) {
             eventObject.preventDefault();
             view.submitFeedbackOnAssessment();
         });
     },
 
     /**
-    Get or set the text for feedback on assessments.
-
-    Args:
-        text (string or undefined): The text of the assessment to set (optional).
-
-    Returns:
-        string or undefined: The text of the feedback.
-
-    Example usage:
-        >>> view.feedbackText('I liked my assessment');  // Set the feedback text
-        >>> view.feedbackText();  // Retrieve the feedback text
-        'I liked my assessment'
-    **/
+     * Get or set the text for feedback on assessments.
+     *
+     * @param {string} text - The text of the assessment to set (optional).
+     * @returns {string} The text of the feedback
+     */
     feedbackText: function(text) {
         if (typeof text === 'undefined') {
             return $('#feedback__remarks__value', this.element).val();
@@ -73,25 +62,11 @@ OpenAssessment.GradeView.prototype = {
     },
 
     /**
-    Get or set the options for feedback on assessments.
-
-    Args:
-        options (array of strings or undefined): List of options to check (optional).
-
-    Returns:
-        list of strings or undefined: The values of the options the user selected.
-
-    Example usage:
-        // Set the feedback options; all others will be unchecked
-        >>> view.feedbackOptions('notuseful', 'disagree');
-
-        // Retrieve the feedback options that are checked
-        >>> view.feedbackOptions();
-        [
-            'These assessments were not useful.',
-            'I disagree with the ways that my peers assessed me'
-        ]
-    **/
+     * Get or set the options for feedback on assessments.
+     *
+     * @param {dict} options - List of options to check (optional).
+     * @returns {list} - The values of the options the user selected.
+     */
     feedbackOptions: function(options) {
         var view = this;
         if (typeof options === 'undefined') {
@@ -111,60 +86,40 @@ OpenAssessment.GradeView.prototype = {
     },
 
     /**
-    Hide elements, including setting the aria-hidden attribute for screen readers.
-
-    Args:
-        sel (JQuery selector): The selector matching elements to hide.
-        hidden (boolean): Whether to hide or show the elements.
-
-    Returns:
-        undefined
-    **/
-    setHidden: function(sel, hidden) {
-        sel.toggleClass('is--hidden', hidden);
-        sel.attr('aria-hidden', hidden ? 'true' : 'false');
+     * Hide elements, including setting the aria-hidden attribute for screen readers.
+     *
+     * @param {JQuery.selector} selector - The selector matching the elements to hide.
+     * @param {boolean} hidden - Whether to hide or show the elements.
+     */
+    setHidden: function(selector, hidden) {
+        selector.toggleClass('is--hidden', hidden);
+        selector.attr('aria-hidden', hidden ? 'true' : 'false');
     },
 
     /**
-    Check whether elements are hidden.
-
-    Args:
-        sel (JQuery selector): The selector matching elements to hide.
-
-    Returns:
-        boolean
-    **/
-    isHidden: function(sel) {
-        return sel.hasClass('is--hidden') && sel.attr('aria-hidden') === 'true';
+     * Check whether elements are hidden.
+     *
+     * @param {JQuery.selector} selector - The selector matching the elements to check.
+     * @returns {boolean} - True if all the elements are hidden, else false.
+     */
+    isHidden: function(selector) {
+        return selector.hasClass('is--hidden') && selector.attr('aria-hidden') === 'true';
     },
 
     /**
-        Get or set the state of the feedback on assessment.
-
-        Each state corresponds to a particular configuration of attributes
-        in the DOM, which control what the user sees in the UI.
-
-        Valid states are:
-            'open': The user has not yet submitted feedback on assessments.
-            'submitting': The user has submitted feedback, but the server has not yet responded.
-            'submitted': The feedback was successfully submitted
-
-        Args:
-            newState (string or undefined): One of above states.
-
-        Returns:
-            string or undefined: The current state.
-
-        Throws:
-            'Invalid feedback state' if the DOM is not in one of the valid states.
-
-        Example usage:
-            >>> view.feedbackState();
-            'open'
-            >>> view.feedbackState('submitted');
-            >>> view.feedbackState();
-            'submitted'
-    **/
+     * Get or set the state of the feedback on assessment.
+     *
+     * Each state corresponds to a particular configuration of attributes
+     * in the DOM, which control what the user sees in the UI.
+     *
+     * Valid states are:
+     *     'open': The user has not yet submitted feedback on assessments.
+     *     'submitting': The user has submitted feedback, but the server has not yet responded.
+     *     'submitted': The feedback was successfully submitted.
+     *
+     * @param {string} newState - the new state to set for the feedback (optional).
+     * @returns {*} The current state.
+     */
     feedbackState: function(newState) {
         var containerSel = $('.submission__feedback__content', this.element);
         var instructionsSel = containerSel.find('.submission__feedback__instructions');
@@ -234,15 +189,15 @@ OpenAssessment.GradeView.prototype = {
     },
 
     /**
-    Send assessment feedback to the server and update the view.
-    **/
+     * Send assessment feedback to the server and update the view.
+     */
     submitFeedbackOnAssessment: function() {
         // Send the submission to the server
         var view = this;
         var baseView = this.baseView;
 
         // Disable the submission button to prevent duplicate submissions
-        $("#feedback__submit", this.element).toggleClass('is--disabled', true);
+        $(".feedback__submit", this.element).toggleClass('is--disabled', true);
 
         // Indicate to the user that we're starting to submit
         view.feedbackState('submitting');

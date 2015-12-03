@@ -5,24 +5,17 @@ Tests for staff assessment handlers in Open Assessment XBlock.
 import json
 import mock
 import copy
+
 from openassessment.assessment.api import staff as staff_api
-from .base import XBlockHandlerTestCase, scenario
-from .test_grade import SubmitAssessmentsMixin
 
-class StaffAssessmentTestBase(XBlockHandlerTestCase):
+from .base import (
+    scenario, SubmitAssessmentsMixin, XBlockHandlerTestCase,
+    PEER_ASSESSMENTS, SELF_ASSESSMENT, STAFF_GOOD_ASSESSMENT,
+)
+
+
+class StaffAssessmentTestBase(XBlockHandlerTestCase, SubmitAssessmentsMixin):
     maxDiff = None
-
-    SUBMISSION = (u'ՇﻉรՇ', u'รપ๒๓ٱรรٱѻก')
-
-    ASSESSMENT = {
-        'options_selected': {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ﻉซƈﻉɭɭﻉกՇ', u'Form': u'Fair'},
-        'criterion_feedback': {},
-        'overall_feedback': ""
-    }
-
-    def set_staff_access(self, xblock):
-        xblock.xmodule_runtime = mock.Mock(user_is_staff=True)
-        xblock.xmodule_runtime.anonymous_student_id = 'Bob'
 
     def _assert_path_and_context(self, xblock, expected_context):
         path, context = xblock.staff_path_and_context()
@@ -34,23 +27,8 @@ class StaffAssessmentTestBase(XBlockHandlerTestCase):
         resp = self.request(xblock, 'render_staff_assessment', json.dumps({}))
         self.assertGreater(len(resp), 0)
 
-    @staticmethod
-    def _set_mock_workflow_info(xblock, workflow_status, status_details, submission_uuid):
-        xblock.get_workflow_info = mock.Mock(return_value={
-            'status': workflow_status,
-            'status_details': status_details,
-            'submission_uuid': submission_uuid
-        })
 
-    def _submit_staff_assessment(self, xblock, submission):
-        # Submit a staff-assessment
-        self.set_staff_access(xblock)
-        self.ASSESSMENT['submission_uuid'] = submission['uuid']
-        resp = self.request(xblock, 'staff_assess', json.dumps(self.ASSESSMENT), response_format='json')
-        self.assertTrue(resp['success'])
-
-
-class TestStaffAssessmentRender(StaffAssessmentTestBase, SubmitAssessmentsMixin):
+class TestStaffAssessmentRender(StaffAssessmentTestBase):
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_staff_grade_templates(self, xblock):
@@ -76,7 +54,7 @@ class TestStaffAssessmentRender(StaffAssessmentTestBase, SubmitAssessmentsMixin)
         self._assert_path_and_context(xblock, unavailable_context)
 
         # Submit a staff-assessment
-        self._submit_staff_assessment(xblock, submission)
+        self.submit_staff_assessment(xblock, submission, assessment=STAFF_GOOD_ASSESSMENT)
 
         # Staff assessment exists, still waiting for self assessment.
         self._assert_path_and_context(
@@ -91,7 +69,7 @@ class TestStaffAssessmentRender(StaffAssessmentTestBase, SubmitAssessmentsMixin)
 
         # Verify that once the required step (self assessment) is done, the staff grade is shown as complete.
         status_details = {'peer': {'complete': True}}
-        self._set_mock_workflow_info(
+        self.set_mock_workflow_info(
             xblock, workflow_status='done', status_details=status_details, submission_uuid=submission['uuid']
         )
         self._assert_path_and_context(
@@ -104,7 +82,7 @@ class TestStaffAssessmentRender(StaffAssessmentTestBase, SubmitAssessmentsMixin)
         )
 
         # Verify that if the problem is cancelled, the staff grade reflects this.
-        self._set_mock_workflow_info(
+        self.set_mock_workflow_info(
             xblock, workflow_status='cancelled', status_details=status_details, submission_uuid=submission['uuid']
         )
         self._assert_path_and_context(
@@ -118,8 +96,8 @@ class TestStaffAssessmentRender(StaffAssessmentTestBase, SubmitAssessmentsMixin)
     @scenario('data/grade_waiting_scenario.xml', user_id='Omar')
     def test_staff_grade_templates_no_peer(self, xblock):
         # Waiting to be assessed by a peer
-        submission = self._create_submission_and_assessments(
-            xblock, self.SUBMISSION, self.PEERS, self.ASSESSMENTS, self.ASSESSMENTS[0], waiting_for_peer=True
+        submission = self.create_submission_and_assessments(
+            xblock, self.SUBMISSION, self.PEERS, PEER_ASSESSMENTS, SELF_ASSESSMENT, waiting_for_peer=True
         )
 
         # Waiting for a peer assessment (though it is not used because staff grading is required),
@@ -134,7 +112,7 @@ class TestStaffAssessmentRender(StaffAssessmentTestBase, SubmitAssessmentsMixin)
         )
 
         # Submit a staff-assessment. The student can now see the score even though no peer assessments have been done.
-        self._submit_staff_assessment(xblock, submission)
+        self.submit_staff_assessment(xblock, submission, assessment=STAFF_GOOD_ASSESSMENT)
         self._assert_path_and_context(
             xblock,
             {
@@ -155,7 +133,7 @@ class TestStaffAssessment(StaffAssessmentTestBase):
         submission = xblock.create_submission(student_item, self.SUBMISSION)
 
         # Submit a staff-assessment
-        self._submit_staff_assessment(xblock, submission)
+        self.submit_staff_assessment(xblock, submission, assessment=STAFF_GOOD_ASSESSMENT)
 
         # Expect that a staff-assessment was created
         assessment = staff_api.get_latest_staff_assessment(submission['uuid'])
@@ -164,7 +142,7 @@ class TestStaffAssessment(StaffAssessmentTestBase):
         self.assertEqual(assessment['points_possible'], 6)
         self.assertEqual(assessment['scorer_id'], 'Bob')
         self.assertEqual(assessment['score_type'], 'ST')
-        self.assertEqual(assessment['feedback'], u'')
+        self.assertEqual(assessment['feedback'], u'Staff: good job!')
 
         parts = sorted(assessment['parts'])
         self.assertEqual(len(parts), 2)
@@ -187,7 +165,7 @@ class TestStaffAssessment(StaffAssessmentTestBase):
         # Create a submission for the student
         student_item = xblock.get_student_item_dict()
         xblock.create_submission(student_item, self.SUBMISSION)
-        resp = self.request(xblock, 'staff_assess', json.dumps(self.ASSESSMENT))
+        resp = self.request(xblock, 'staff_assess', json.dumps(STAFF_GOOD_ASSESSMENT))
         self.assertIn("You do not have permission", resp)
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
@@ -198,10 +176,10 @@ class TestStaffAssessment(StaffAssessmentTestBase):
         submission = xblock.create_submission(student_item, self.SUBMISSION)
 
         self.set_staff_access(xblock)
-        self.ASSESSMENT['submission_uuid'] = submission['uuid']
+        STAFF_GOOD_ASSESSMENT['submission_uuid'] = submission['uuid']
 
-        for key in self.ASSESSMENT:
-            assessment_copy = copy.copy(self.ASSESSMENT)
+        for key in STAFF_GOOD_ASSESSMENT:
+            assessment_copy = copy.copy(STAFF_GOOD_ASSESSMENT)
             del assessment_copy[key]
             resp = self.request(xblock, 'staff_assess', json.dumps(assessment_copy), response_format='json')
             self.assertFalse(resp['success'])
@@ -215,16 +193,16 @@ class TestStaffAssessment(StaffAssessmentTestBase):
         submission = xblock.create_submission(student_item, self.SUBMISSION)
 
         self.set_staff_access(xblock)
-        self.ASSESSMENT['submission_uuid'] = submission['uuid']
+        STAFF_GOOD_ASSESSMENT['submission_uuid'] = submission['uuid']
         with mock.patch('openassessment.xblock.staff_assessment_mixin.staff_api') as mock_api:
             #  Simulate a error
             mock_api.create_assessment.side_effect = staff_api.StaffAssessmentRequestError
-            resp = self.request(xblock, 'staff_assess', json.dumps(self.ASSESSMENT), response_format='json')
+            resp = self.request(xblock, 'staff_assess', json.dumps(STAFF_GOOD_ASSESSMENT), response_format='json')
             self.assertFalse(resp['success'])
             self.assertIn('msg', resp)
 
             #  Simulate a different error
             mock_api.create_assessment.side_effect = staff_api.StaffAssessmentInternalError
-            resp = self.request(xblock, 'staff_assess', json.dumps(self.ASSESSMENT), response_format='json')
+            resp = self.request(xblock, 'staff_assess', json.dumps(STAFF_GOOD_ASSESSMENT), response_format='json')
             self.assertFalse(resp['success'])
             self.assertIn('msg', resp)
