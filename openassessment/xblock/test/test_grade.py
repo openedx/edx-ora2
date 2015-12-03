@@ -264,29 +264,53 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
 
         # Verify that the context for the grade complete page contains the feedback
         _, context = xblock.render_grade_complete(xblock.get_workflow_info())
-        criteria = context['rubric_criteria']
+        criteria = context['grade_details']['criteria']
 
-        self.assertEqual(criteria[0]['peer_feedback'], [
-            u'Peer 2: ฝﻉɭɭ ɗѻกﻉ!',
+        # Verify feedback for the first criteria
+        first_criteria_assessments = criteria[0]['assessments']
+        self.assertEqual(
+            [assessment['feedback'] for assessment in first_criteria_assessments[0]['individual_assessments']],
+            [
+                u'Peer 2: ฝﻉɭɭ ɗѻกﻉ!',
+                u'Peer 1: ฝﻉɭɭ ɗѻกﻉ!',
+            ]
+        )
+        self.assertEqual(
+            first_criteria_assessments[1]['feedback'],
+            u'Peer 1: ฝﻉɭɭ ɗѻกﻉ!'
+        )
+
+        # Verify the feedback for the second criteria
+        second_criteria_assessments = criteria[1]['assessments']
+        self.assertEqual(
+            [assessment['feedback'] for assessment in second_criteria_assessments[0]['individual_assessments']],
+            [
+                u'Peer 2: ƒαιя נσв',
+                u'',
+            ]
+        )
+
+        # Verify the additional feedback
+        additional_feedback = context['grade_details']['additional_feedback']
+        self.assertEqual(
+            [assessment['feedback'] for assessment in additional_feedback[0]['individual_assessments']],
+            [
+                u'Good job!',
+                u'єאςєɭɭєภՇ ฬ๏гк!',
+            ]
+        )
+
+
+        # Integration test: verify that all of the feedback makes it to the rendered template
+        html = self.request(xblock, 'render_grade', json.dumps(dict())).decode('utf-8')
+        for expected_text in [
             u'Peer 1: ฝﻉɭɭ ɗѻกﻉ!',
-        ])
-        self.assertEqual(criteria[0]['self_feedback'], u'Peer 1: ฝﻉɭɭ ɗѻกﻉ!')
-        self.assertEqual(criteria[1]['peer_feedback'], [u'Peer 2: ƒαιя נσв'])
-
-        # The order of the peers in the per-criterion feedback needs
-        # to match the order of the peer assessments
-        # We verify this by checking that the first peer assessment
-        # has the criteria feedback matching the first feedback
-        # for each criterion.
-        assessments = context['peer_assessments']
-        first_peer_feedback = [part['feedback'] for part in assessments[0]['parts']]
-        self.assertItemsEqual(first_peer_feedback, [u'Peer 2: ฝﻉɭɭ ɗѻกﻉ!', u'Peer 2: ƒαιя נσв'])
-
-        # Integration test: verify that the context makes it to the rendered template
-        resp = self.request(xblock, 'render_grade', json.dumps(dict()))
-        self.assertIn(u'Peer 1: ฝﻉɭɭ ɗѻกﻉ!', resp.decode('utf-8'))
-        self.assertIn(u'Peer 2: ฝﻉɭɭ ɗѻกﻉ!', resp.decode('utf-8'))
-        self.assertIn(u'Peer 2: ƒαιя נσв', resp.decode('utf-8'))
+            u'Peer 2: ฝﻉɭɭ ɗѻกﻉ!',
+            u'Peer 2: ƒαιя נσв',
+            u'Good job!',
+            u'єאςєɭɭєภՇ ฬ๏гк!',
+        ]:
+            self.assertIn(expected_text, html)
 
     @scenario('data/grade_scenario.xml', user_id='Bob')
     def test_assessment_does_not_match_rubric(self, xblock):
@@ -434,17 +458,16 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         __, context = xblock.render_grade_complete(xblock.get_workflow_info())
         criterion_labels = {}
         option_labels = {}
-        for criterion in context['rubric_criteria']:
+        for criterion in context['grade_details']['criteria']:
             self.assertEqual(criterion['label'], criterion['name'])
             criterion_labels[criterion['name']] = criterion['label']
             for option in criterion['options']:
                 self.assertEqual(option['label'], option['name'])
                 option_labels[(criterion['name'], option['name'])] = option['label']
 
-        # Verify that assessment part options are also assigned labels
-        for asmnt in context['peer_assessments'] + [context['self_assessment']]:
-            for part in asmnt['parts']:
-                expected_criterion_label = criterion_labels[part['criterion']['name']]
-                self.assertEqual(part['criterion']['label'], expected_criterion_label)
-                expected_option_label = option_labels[(part['criterion']['name'], part['option']['name'])]
-                self.assertEqual(part['option']['label'], expected_option_label)
+            # Verify that assessment part options are also assigned labels
+            for assessment in criterion['assessments']:
+                expected_criterion_label = criterion_labels[assessment['criterion']['name']]
+                self.assertEqual(assessment['criterion']['label'], expected_criterion_label)
+                expected_option_label = option_labels[(assessment['criterion']['name'], assessment['option']['name'])]
+                self.assertEqual(assessment['option']['label'], expected_option_label)
