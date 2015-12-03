@@ -41,7 +41,7 @@ def submitter_is_finished(submission_uuid, requirements):   # pylint:disable=W06
         StudentTrainingRequestError
 
     """
-    if requirements is None:
+    if not requirements:
         return False
 
     try:
