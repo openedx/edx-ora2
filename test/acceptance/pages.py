@@ -548,3 +548,24 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         # Must put a comment to enable the submit button.
         self.q(css=self._bounded_selector("textarea.cancel_submission_comments")).fill("comment")
         self.submit(button_css=".action--submit-cancel-submission")
+
+    def status_text(self, section):
+        """
+        Return the status text (as an array of strings) as shown in the staff area section.
+
+        Args:
+            section: the classname of the section for which text should be returned
+                (for example, 'peer__assessments', 'submitted__assessments', or 'self__assessment'
+
+        Returns: array of strings representing the text(for example, ['Good', u'5', u'5', u'Excellent', u'3', u'3'])
+
+        """
+
+        table_elements = self.q(
+            css=self._bounded_selector(".staff-info__{} .staff-info__status__table .value".format(section))
+        )
+        text = []
+        for value in table_elements:
+            text.append(value.text)
+
+        return text
