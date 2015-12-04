@@ -264,7 +264,7 @@ def update_from_assessments(submission_uuid, assessment_requirements):
             u"Updated workflow for submission UUID {uuid} "
             u"with requirements {reqs}"
         ).format(uuid=submission_uuid, reqs=assessment_requirements))
-        return _serialized_with_details(workflow, assessment_requirements)
+        return _serialized_with_details(workflow)
     except PeerAssessmentError as err:
         err_msg = u"Could not update assessment workflow: {}".format(err)
         logger.exception(err_msg)
@@ -362,13 +362,12 @@ def _get_workflow_model(submission_uuid):
     return workflow
 
 
-def _serialized_with_details(workflow, assessment_requirements):
-    """Given a workflow and assessment requirements, return the serialized
-    version of an `AssessmentWorkflow` and add in the status details. See
-    `update_from_assessments()` for details on params and return values.
+def _serialized_with_details(workflow):
+    """
+    Given a workflow, return its serialized version with added status details.
     """
     data_dict = AssessmentWorkflowSerializer(workflow).data
-    data_dict["status_details"] = workflow.status_details(assessment_requirements)
+    data_dict["status_details"] = workflow.status_details()
     return data_dict
 
 
