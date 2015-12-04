@@ -63,13 +63,28 @@ class OpenAssessmentTest(WebAppTest):
         'file_upload':
             u'courses/{test_course_id}/courseware/'
             u'57a3f9d51d424f6cb922f0d69cba868d/bb563abc989340d8806920902f267ca3/'.format(test_course_id=TEST_COURSE_ID),
+        'full_workflow':
+            u'courses/{test_course_id}/courseware/'
+            u'676026889c884ac1827688750871c825/181ea9ff144c4766be44eb8cb360e34f/'.format(test_course_id=TEST_COURSE_ID),
     }
 
     SUBMISSION = u"This is a test submission."
     LATEX_SUBMISSION = u"[mathjaxinline]( \int_{0}^{1}xdx \)[/mathjaxinline]"
     OPTIONS_SELECTED = [1, 2]
     STAFF_OVERRIDE_OPTIONS_SELECTED = [0, 1]
+    STAFF_OVERRIDE_SCORE = 1
+    STAFF_OVERRIDE_EXISTS = "COMPLETE"
+    STAFF_OVERRIDE_LEARNER_STEPS_NOT_COMPLETE = "YOU MUST COMPLETE THE STEPS ABOVE TO VIEW YOUR GRADE"
+    STAFF_AREA_SCORE = "Final grade: {} out of 8"
+    STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE = "The problem has not been completed."
     EXPECTED_SCORE = 6
+    STUDENT_TRAINING_OPTIONS = [
+        [1, 2],
+        [0, 2]
+    ]
+
+    LEARNER_EMAIL = "learner@foo.com"
+    LEARNER_PASSWORD = "learner_password"
 
     def setUp(self, problem_type, staff=False):
         """
@@ -92,10 +107,25 @@ class OpenAssessmentTest(WebAppTest):
         self.staff_asmnt_page = AssessmentPage('staff-assessment', self.browser, self.problem_loc)
         self.grade_page = GradePage(self.browser, self.problem_loc)
 
+    def login_user(self, learner, email=LEARNER_EMAIL, password=LEARNER_PASSWORD):
+        """
+        Logs in an already existing user.
+
+        Args:
+            learner (str): the username of the user.
+            email (str): email (if not specified, LEARNER_EMAIL is used).
+            password (str): password (if not specified, LEARNER_PASSWORD is used).
+        """
+        auto_auth_page = AutoAuthPage(
+            self.browser, email=email, password=password, username=learner,
+            course_id=self.TEST_COURSE_ID, staff=True
+        )
+        auto_auth_page.visit()
+
     def do_self_assessment(self):
         """
-        Submits a self assessment, verifies the grade, and returns the username of the student
-        for which the self assessment was submitted.
+        Creates a user, submits a self assessment, verifies the grade, and returns the username of the
+        learner for which the self assessment was submitted.
         """
         self.auto_auth_page.visit()
         username = self.auto_auth_page.get_username()
@@ -103,21 +133,84 @@ class OpenAssessmentTest(WebAppTest):
         self.assertTrue(self.submission_page.has_submitted)
 
         # Submit a self-assessment
-        self.self_asmnt_page.wait_for_page().wait_for_response()
-        self.assertIn(self.SUBMISSION, self.self_asmnt_page.response_text)
-        self.self_asmnt_page.assess("self", self.OPTIONS_SELECTED).wait_for_complete()
-        self.assertTrue(self.self_asmnt_page.is_complete)
+        self.submit_self_assessment(self.OPTIONS_SELECTED)
 
         # Verify the grade
         self.assertEqual(self.grade_page.wait_for_page().score, self.EXPECTED_SCORE)
 
         return username
 
+    def submit_self_assessment(self, options=OPTIONS_SELECTED):
+        """
+        Submit a self assessment for the currently logged in student. Do not verify grade.
+
+        Args:
+            options: the options to select for the self assessment
+                (will use OPTIONS_SELECTED if not specified)
+        """
+        self.self_asmnt_page.wait_for_page().wait_for_response()
+        self.assertIn(self.SUBMISSION, self.self_asmnt_page.response_text)
+        self.self_asmnt_page.assess("self", options).wait_for_complete()
+        self.assertTrue(self.self_asmnt_page.is_complete)
+
     def _verify_staff_grade_section(self, expected_status, expected_message_title):
+        """
+        Verifies the expected status and message text in the Staff Grade section
+        (as shown to the learner).
+        """
         self.staff_asmnt_page.wait_for_page()
         self.assertEqual("Staff Grade", self.staff_asmnt_page.label)
         self.staff_asmnt_page.verify_status_value(expected_status)
         self.assertEqual(expected_message_title, self.staff_asmnt_page.message_title)
+
+    def do_training(self):
+        """
+        Complete two training examples, satisfying the requirements.
+        """
+        for example_num, options_selected in enumerate(self.STUDENT_TRAINING_OPTIONS):
+            if example_num > 0:
+                try:
+                    self.student_training_page.wait_for_num_completed(example_num)
+                except BrokenPromise:
+                    msg = "Did not complete at least {num} student training example(s).".format(num=example_num)
+                    self.fail(msg)
+
+            self.student_training_page.wait_for_page().wait_for_response().assess("training", options_selected)
+
+        # Check that we've completed student training
+        try:
+            self.student_training_page.wait_for_complete()
+        except BrokenPromise:
+            self.fail("Student training was not marked complete.")
+
+    def do_peer_assessment(self, count=1, options=OPTIONS_SELECTED):
+        """
+        Does the specified number of peer assessments.
+
+        Args:
+            count: the number of assessments that must be completed (defaults to 1)
+            options: the options to use (defaults to OPTIONS_SELECTED)
+        """
+        self.peer_asmnt_page.visit()
+
+        for count_assessed in range(1, count + 1):
+            self.peer_asmnt_page.wait_for_page().wait_for_response().assess("peer", options)
+            self.peer_asmnt_page.wait_for_num_completed(count_assessed)
+
+    def do_staff_override(self, username, final_score=STAFF_AREA_SCORE.format(STAFF_OVERRIDE_SCORE)):
+        """
+        Complete a staff assessment (grade override).
+
+        Args:
+            username: the learner to grade
+            final_score: the expected final score as shown in the staff area
+                (defaults to the staff override score value)
+        """
+        self.staff_area_page.visit()
+        self.staff_area_page.show_learner(username)
+        self.staff_area_page.expand_learner_report_sections()
+        self.staff_area_page.assess("staff", self.STAFF_OVERRIDE_OPTIONS_SELECTED)
+        self.staff_area_page.verify_learner_final_score(final_score)
 
 
 class SelfAssessmentTest(OpenAssessmentTest):
@@ -178,13 +271,7 @@ class PeerAssessmentTest(OpenAssessmentTest):
         self.submission_page.visit().submit_response(self.SUBMISSION)
 
         # Assess the submission (there should be at least one available)
-        self.peer_asmnt_page.wait_for_page().wait_for_response().assess("peer", self.OPTIONS_SELECTED)
-
-        # Check that the status indicates we've assessed one submission
-        try:
-            self.peer_asmnt_page.wait_for_num_completed(1)
-        except BrokenPromise:
-            self.fail("Did not complete at least one peer assessment.")
+        self.do_peer_assessment()
 
 
 class PeerAssessmentTestStaffOverride(OpenAssessmentTest):
@@ -225,42 +312,30 @@ class PeerAssessmentTestStaffOverride(OpenAssessmentTest):
         self.assertFalse(self.staff_asmnt_page.is_browser_on_page())
 
         # Submit a staff override.
-        self.staff_area_page.visit()
-        self.staff_area_page.show_learner(username)
-        self.staff_area_page.expand_learner_report_sections()
-        self.staff_area_page.assess("staff", self.STAFF_OVERRIDE_OPTIONS_SELECTED)
+        self.do_staff_override(username, self.STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE)
 
         # Refresh the page so the learner sees the Staff Grade section.
         self.browser.refresh()
-        self._verify_staff_grade_section("COMPLETE", "YOU MUST COMPLETE THE STEPS ABOVE TO VIEW YOUR GRADE")
+        self._verify_staff_grade_section(self.STAFF_OVERRIDE_EXISTS, self.STAFF_OVERRIDE_LEARNER_STEPS_NOT_COMPLETE)
 
         # Verify no final grade yet.
         self.assertIsNone(self.grade_page.wait_for_page().score)
 
         # Assess two submissions
-        for count_assessed in range(1, 3):
-            self.peer_asmnt_page.wait_for_page().wait_for_response().assess("peer", self.OPTIONS_SELECTED)
-            self.peer_asmnt_page.wait_for_num_completed(count_assessed)
+        self.do_peer_assessment(count=2)
 
         # Staff grade section is now marked complete, even though no students have submitted
         # assessments for this particular student (no longer required since staff grade exists).
-        self._verify_staff_grade_section("COMPLETE", None)
+        self._verify_staff_grade_section(self.STAFF_OVERRIDE_EXISTS, None)
 
         # Verify the staff override grade
-        self.assertEqual(self.grade_page.wait_for_page().score, 1)
+        self.assertEqual(self.grade_page.wait_for_page().score, self.STAFF_OVERRIDE_SCORE)
 
 
 class StudentTrainingTest(OpenAssessmentTest):
     """
     Test student training (the "learning to assess" step).
     """
-
-    # Select options that are correct so we can complete the flow.
-    STUDENT_TRAINING_OPTIONS = [
-        [1, 2],
-        [0, 2]
-    ]
-
     def setUp(self):
         super(StudentTrainingTest, self).setUp('student_training')
 
@@ -271,26 +346,7 @@ class StudentTrainingTest(OpenAssessmentTest):
         self.auto_auth_page.visit()
         self.submission_page.visit().submit_response(self.SUBMISSION)
 
-        # Complete two training examples, satisfying the requirements
-        for example_num, options_selected in enumerate(self.STUDENT_TRAINING_OPTIONS):
-            try:
-                self.student_training_page.wait_for_num_completed(example_num)
-            except BrokenPromise:
-                msg = "Did not complete at least {num} student training example(s).".format(num=example_num)
-                self.fail(msg)
-
-            self.student_training_page.wait_for_page().wait_for_response().assess("training", options_selected)
-
-            # Check browser scrolled back to top only on first example
-
-            # TODO: Disabling assertion. Scrolling is showing inconsistent behavior.
-            # self.assertEqual(self.self_asmnt_page.is_on_top, example_num == 0)
-
-        # Check that we've completed student training
-        try:
-            self.student_training_page.wait_for_complete()
-        except BrokenPromise:
-            self.fail("Student training was not marked complete.")
+        self.do_training()
 
 
 @ddt.ddt
@@ -433,14 +489,14 @@ class StaffAreaTest(OpenAssessmentTest):
 
         # Check the learner's current score.
         self.staff_area_page.expand_learner_report_sections()
-        self.staff_area_page.verify_learner_final_score("Final grade: 6 out of 8")
+        self.staff_area_page.verify_learner_final_score(self.STAFF_AREA_SCORE.format(self.EXPECTED_SCORE))
 
         # Do staff override and wait for final score to change.
         self.staff_area_page.assess("staff", self.STAFF_OVERRIDE_OPTIONS_SELECTED)
 
         # Verify that the new student score is different from the original one.
         # Unfortunately there is no indication presently that this was a staff override.
-        self.staff_area_page.verify_learner_final_score("Final grade: 1 out of 8")
+        self.staff_area_page.verify_learner_final_score(self.STAFF_AREA_SCORE.format(self.STAFF_OVERRIDE_SCORE))
 
     @retry()
     @attr('acceptance')
@@ -463,7 +519,7 @@ class StaffAreaTest(OpenAssessmentTest):
 
         # Check the learner's current score.
         self.staff_area_page.expand_learner_report_sections()
-        self.staff_area_page.verify_learner_final_score("Final grade: 6 out of 8")
+        self.staff_area_page.verify_learner_final_score(self.STAFF_AREA_SCORE.format(self.EXPECTED_SCORE))
 
         # Cancel the student submission
         self.staff_area_page.cancel_submission()
@@ -512,14 +568,11 @@ class StaffAreaTest(OpenAssessmentTest):
         self.assertFalse(self.staff_asmnt_page.is_browser_on_page())
 
         # Submit a staff override
-        self.staff_area_page.visit()
-        self.staff_area_page.show_learner(username)
-        self.staff_area_page.expand_learner_report_sections()
-        self.staff_area_page.assess("staff", self.STAFF_OVERRIDE_OPTIONS_SELECTED)
+        self.do_staff_override(username, self.STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE)
 
         # Refresh the page so the learner sees the Staff Grade section.
         self.browser.refresh()
-        self._verify_staff_grade_section("COMPLETE", "YOU MUST COMPLETE THE STEPS ABOVE TO VIEW YOUR GRADE")
+        self._verify_staff_grade_section(self.STAFF_OVERRIDE_EXISTS, self.STAFF_OVERRIDE_LEARNER_STEPS_NOT_COMPLETE)
 
         # Verify no final grade yet.
         self.assertIsNone(self.grade_page.wait_for_page().score)
@@ -530,7 +583,7 @@ class StaffAreaTest(OpenAssessmentTest):
         self.self_asmnt_page.assess("self", self.OPTIONS_SELECTED).wait_for_complete()
         self.assertTrue(self.self_asmnt_page.is_complete)
 
-        self._verify_staff_grade_section("COMPLETE", None)
+        self._verify_staff_grade_section(self.STAFF_OVERRIDE_EXISTS, None)
 
         # Verify the staff override grade
         self.assertEqual(self.grade_page.wait_for_page().score, 1)
@@ -549,12 +602,8 @@ class StaffAreaTest(OpenAssessmentTest):
         username = self.do_self_assessment()
 
         # Submit a staff override
-        self.staff_area_page.visit()
-        self.staff_area_page.show_learner(username)
-        self.staff_area_page.expand_learner_report_sections()
+        self.do_staff_override(username)
 
-        # Do staff override.
-        self.staff_area_page.assess("staff", self.STAFF_OVERRIDE_OPTIONS_SELECTED)
         # And cancel the submission
         self.staff_area_page.expand_learner_report_sections()
         self.staff_area_page.cancel_submission()
@@ -590,6 +639,211 @@ class FileUploadTest(OpenAssessmentTest):
         self.assertFalse(self.submission_page.has_file_error)
         self.submission_page.upload_file()
         self.assertTrue(self.submission_page.has_file_uploaded)
+
+
+class FullWorkflowTest(OpenAssessmentTest):
+    """
+    Tests of complete workflows, combining multiple required steps together.
+    """
+    PEER_ASSESSMENT = [0, 0]
+    STAFF_AREA_PEER_ASSESSMENT = ['Poor', u'', u'0', u'5', u'Poor', u'', u'0', u'3']
+    PEER_ASSESSMENT_SCORE = 0
+    PEER_ASSESSMENT_STAFF_AREA_SCORE = "Final grade: 0 out of 8"
+
+    SELF_ASSESSMENT = [2, 3]
+    STAFF_AREA_SELF_ASSESSMENT = ['Good', u'5', u'5', u'Excellent', u'3', u'3']
+
+    SUBMITTED_ASSESSMENT = [0, 3]
+    STAFF_AREA_SUBMITTED = ['Poor', u'', u'0', u'5', u'Excellent', u'', u'3', u'3']
+
+    def setUp(self):
+        super(FullWorkflowTest, self).setUp('full_workflow', staff=True)
+        self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
+
+    def do_submission(self, email, password):
+        """
+        Creates a user and submission.
+
+        Args:
+            email (str): email for the new user
+            password (str): password for the new user
+
+        Returns:
+            str: the username of the newly created user
+        """
+        auto_auth_page = AutoAuthPage(
+            self.browser, email=email, password=password, course_id=self.TEST_COURSE_ID, staff=True
+        )
+        auto_auth_page.visit()
+        username = auto_auth_page.get_username()
+        self.submission_page.visit().submit_response(self.SUBMISSION)
+
+        return username
+
+    def do_submission_training_self_assessment(self, email, password):
+        """
+        Creates a user and then does submission, training, and self assessment.
+
+        Args:
+            email (str): email for the new user
+            password (str): password for the new user
+
+        Returns:
+            str: the username of the newly created user
+        """
+        username = self.do_submission(email, password)
+        self.do_training()
+        self.submit_self_assessment(self.SELF_ASSESSMENT)
+
+        return username
+
+    def verify_staff_area_fields(self, username, peer_assessments, submitted_assessments, self_assessment):
+        """
+        Verifies the expected entries in the staff area for peer assessments,
+        submitted assessments, and self assessment.
+
+        Args:
+            username (str): the username of the learner to check
+            peer_assessments: the expected fields in the peer assessment section
+            submitted_assessments: the expected fields in the submitted assessments section
+            self_assessment: the expected fields in the self assessment section
+        """
+        self.staff_area_page.visit()
+        self.staff_area_page.show_learner(username)
+        self.staff_area_page.expand_learner_report_sections()
+        self.assertEqual(peer_assessments, self.staff_area_page.status_text('peer__assessments'))
+        self.assertEqual(submitted_assessments, self.staff_area_page.status_text('submitted__assessments'))
+        self.assertEqual(self_assessment, self.staff_area_page.status_text('self__assessment'))
+
+    def verify_submission_has_peer_grade(self, learner, max_attempts=5):
+        """
+        If learner does not now have a score, it means that "extra" submissions are in the system,
+        and more need to be scored. Create additional learners and have them grade until learner has
+        a grade (stopping after specified max attempts).
+
+        Args:
+            learner: the learner whose grade will be checked
+            max_attempts: the maximum number of times an additional peer grading should be done
+        """
+        count = 0
+        while self.grade_page.wait_for_page().score is None and count < (max_attempts + 1):
+            count += 1
+            self.do_submission_training_self_assessment("extra_{}@looping.com".format(count), None)
+            self.do_peer_assessment(options=self.PEER_ASSESSMENT)
+            self.login_user(learner)
+            self.grade_page.visit()
+
+        self.assertIsNotNone(
+            self.grade_page.wait_for_page().score,
+            "Learner still not graded after {} additional attempts".format(max_attempts)
+        )
+
+    @retry()
+    @attr('acceptance')
+    def test_staff_override_at_end(self):
+        """
+        Scenario: complete workflow with staff override at the very end
+
+        Given that I have created a submission, completed training, and done a self assessment
+        And a second learner has also created a submission, training, and self assessment
+        Then I can assess a learner
+        And when another learner assesses me
+        Then I see my score based on the peer assessment
+        And when a staff member overrides the score
+        Then I see the staff override score
+        And all fields in the staff area tool are correct
+        """
+        # Create a learner with submission, training, and self assessment completed.
+        learner = self.do_submission_training_self_assessment(self.LEARNER_EMAIL, self.LEARNER_PASSWORD)
+
+        # Now create a second learner so that learner 1 has someone to assess.
+        # The second learner does all the steps as well (submission, training, self assessment, peer assessment).
+        self.do_submission_training_self_assessment("learner2@foo.com", None)
+        self.do_peer_assessment(options=self.PEER_ASSESSMENT)
+
+        # Go back to the first learner to complete her workflow.
+        self.login_user(learner)
+
+        # Learner 1 does peer assessment of learner 2 to complete workflow.
+        self.do_peer_assessment(options=self.SUBMITTED_ASSESSMENT)
+
+        # Continue grading by other students if necessary to ensure learner has a peer grade.
+        self.verify_submission_has_peer_grade(learner)
+
+        # At this point, the learner sees the peer assessment score (0).
+        self.assertEqual(self.PEER_ASSESSMENT_SCORE, self.grade_page.wait_for_page().score)
+        self.verify_staff_area_fields(
+            learner, self.STAFF_AREA_PEER_ASSESSMENT, self.STAFF_AREA_SUBMITTED, self.STAFF_AREA_SELF_ASSESSMENT
+        )
+        self.staff_area_page.verify_learner_final_score(self.PEER_ASSESSMENT_STAFF_AREA_SCORE)
+
+        # Now do a staff override, changing the score (to 1).
+        self.do_staff_override(learner)
+
+        self.browser.refresh()
+        self._verify_staff_grade_section(self.STAFF_OVERRIDE_EXISTS, None)
+        self.assertEqual(self.grade_page.wait_for_page().score, self.STAFF_OVERRIDE_SCORE)
+        self.verify_staff_area_fields(
+            learner, self.STAFF_AREA_PEER_ASSESSMENT, self.STAFF_AREA_SUBMITTED, self.STAFF_AREA_SELF_ASSESSMENT
+        )
+        self.staff_area_page.verify_learner_final_score(self.STAFF_AREA_SCORE.format(self.STAFF_OVERRIDE_SCORE))
+
+    @retry()
+    @attr('acceptance')
+    def test_staff_override_at_beginning(self):
+        """
+        Scenario: complete workflow with staff override at the very beginning
+
+        Given that I have created a submission
+        Then I see no score yet
+        And when a staff member creates a grade override
+        Then I see that an override exists, but I cannot see the score
+        And when a second learner creates a submission
+        Then I can complete my required steps (training, self assessment, peer assesssment)
+        And I see my staff override score
+        And all fields in the staff area tool are correct
+        """
+        # Create only the initial submission before doing the staff override.
+        learner = self.do_submission(self.LEARNER_EMAIL, self.LEARNER_PASSWORD)
+
+        # Verify no grade present (and no staff grade section), no assessment information in staff area.
+        self.assertIsNone(self.grade_page.wait_for_page().score)
+        self.assertFalse(self.staff_asmnt_page.is_browser_on_page())
+        self.verify_staff_area_fields(learner, [], [], [])
+        self.staff_area_page.verify_learner_final_score(self.STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE)
+
+        # Do staff override-- score still not shown due to steps not being complete.
+        self.do_staff_override(learner, self.STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE)
+
+        # Refresh the page so the learner sees the Staff Grade section.
+        self.browser.refresh()
+        self._verify_staff_grade_section(self.STAFF_OVERRIDE_EXISTS, self.STAFF_OVERRIDE_LEARNER_STEPS_NOT_COMPLETE)
+
+        # Now create a second learner so that "learner" has someone to assess.
+        self.do_submission("learner2@foo.com", None)
+
+        # Go back to the original learner to complete her workflow and view score.
+        self.login_user(learner)
+
+        # Do training exercise and self assessment
+        self.student_training_page.visit()
+        self.do_training()
+        self.submit_self_assessment(self.SELF_ASSESSMENT)
+
+        # Verify staff grade still not available, as learner has not done peer assessment.
+        self._verify_staff_grade_section(self.STAFF_OVERRIDE_EXISTS, self.STAFF_OVERRIDE_LEARNER_STEPS_NOT_COMPLETE)
+        self.assertIsNone(self.grade_page.wait_for_page().score)
+        self.verify_staff_area_fields(learner, [], [], self.STAFF_AREA_SELF_ASSESSMENT)
+        self.staff_area_page.verify_learner_final_score(self.STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE)
+
+        # Now do the final required step-- peer grading.
+        self.do_peer_assessment(options=self.SUBMITTED_ASSESSMENT)
+
+        # Grade is now visible to the learner (even though no student has graded the learner).
+        self._verify_staff_grade_section(self.STAFF_OVERRIDE_EXISTS, None)
+        self.assertEqual(self.grade_page.wait_for_page().score, self.STAFF_OVERRIDE_SCORE)
+        self.verify_staff_area_fields(learner, [], self.STAFF_AREA_SUBMITTED, self.STAFF_AREA_SELF_ASSESSMENT)
+        self.staff_area_page.verify_learner_final_score(self.STAFF_AREA_SCORE.format(self.STAFF_OVERRIDE_SCORE))
 
 
 if __name__ == "__main__":
