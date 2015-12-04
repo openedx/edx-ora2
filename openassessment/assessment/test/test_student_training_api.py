@@ -229,7 +229,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
             with self.assertRaises(StudentTrainingInternalError):
                 training_api.assess_training_example(self.submission_uuid, EXAMPLES[0]['options_selected'])
 
-    @ddt.data({}, {'num_required': 'not an integer!'})
+    @ddt.data({'some_other_field': 0}, {'num_required': 'not an integer!'})
     def test_submitter_is_finished_invalid_requirements(self, requirements):
         with self.assertRaises(StudentTrainingRequestError):
             training_api.submitter_is_finished(self.submission_uuid, requirements)
