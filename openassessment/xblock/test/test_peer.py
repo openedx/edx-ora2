@@ -33,8 +33,54 @@ class TestPeerAssessment(XBlockHandlerTestCase):
 
     @scenario('data/over_grade_scenario.xml', user_id='Bob')
     def test_load_peer_student_view_with_dates(self, xblock):
+
+        self._sally_and_hal_grade_each_other_helper(xblock)
+
+        # If Over Grading is on, this should now return Sally or Hal's response to Bob.
+        student_item = xblock.get_student_item_dict()
+        submission = xblock.create_submission(student_item, (u"Bob's answer 1", u"Bob's answer 2"))
+        workflow_info = xblock.get_workflow_info()
+        self.assertEqual(workflow_info["status"], u'peer')
+
+        # Validate Submission Rendering.
+        request = namedtuple('Request', 'params')
+        request.params = {}
+        peer_response = xblock.render_peer_assessment(request)
+        self.assertIsNotNone(peer_response)
+        self.assertNotIn(submission["answer"]["parts"][0]["text"].encode('utf-8'), peer_response.body)
+        self.assertNotIn(submission["answer"]["parts"][1]["text"].encode('utf-8'), peer_response.body)
+
+        # Validate Peer Rendering.
+        self.assertTrue("Sally".encode('utf-8') in peer_response.body or
+            "Hal".encode('utf-8') in peer_response.body)
+
+    @mock.patch('openassessment.xblock.workflow_mixin.WorkflowMixin.workflow_requirements')
+    @scenario('data/peer_assessment_scenario.xml', user_id='Sally')
+    def test_requirements_changed(self, xblock, mock_requirements):
+        """
+        Test to verify that if requirements change, student workflows are immediately updated to
+        reflect their done status with regards to the new requirements.
+        """
+        # Setup the peer grading scenario, using the default requirements
+        self._sally_and_hal_grade_each_other_helper(xblock)
+
+        # Verify that Sally's workflow is not marked done, as the requirements are higher than 1.
+        mock_requirements.return_value = {"peer": {"must_grade":2, "must_be_graded_by":2}}
+        workflow_info = xblock.get_workflow_info()
+        self.assertEqual(workflow_info["status"], u'peer')
+
+        # Now, change the requirements and verify that Sally's workflow updates to 'self' status.
+        mock_requirements.return_value = {"peer": {"must_grade":1, "must_be_graded_by":1}}
+        workflow_info = xblock.get_workflow_info()
+        self.assertEqual(workflow_info["status"], u'self')
+
+    def _sally_and_hal_grade_each_other_helper(self, xblock):
+        """
+        A helper method to set up 2 submissions, one for each of Sally and Hal, and then have each assess the other.
+        """
         student_item = xblock.get_student_item_dict()
 
+        # Sally submits a response.
         sally_student_item = copy.deepcopy(student_item)
         sally_student_item['student_id'] = "Sally"
         sally_submission = xblock.create_submission(sally_student_item, (u"Sally's answer 1", u"Sally's answer 2"))
@@ -69,23 +115,6 @@ class TestPeerAssessment(XBlockHandlerTestCase):
             {'criteria': xblock.rubric_criteria},
             1
         )
-
-        # If Over Grading is on, this should now return Sally or Hal's response to Bob.
-        submission = xblock.create_submission(student_item, (u"Bob's answer 1", u"Bob's answer 2"))
-        workflow_info = xblock.get_workflow_info()
-        self.assertEqual(workflow_info["status"], u'peer')
-
-        # Validate Submission Rendering.
-        request = namedtuple('Request', 'params')
-        request.params = {}
-        peer_response = xblock.render_peer_assessment(request)
-        self.assertIsNotNone(peer_response)
-        self.assertNotIn(submission["answer"]["parts"][0]["text"].encode('utf-8'), peer_response.body)
-        self.assertNotIn(submission["answer"]["parts"][1]["text"].encode('utf-8'), peer_response.body)
-
-        # Validate Peer Rendering.
-        self.assertTrue("Sally".encode('utf-8') in peer_response.body or
-            "Hal".encode('utf-8') in peer_response.body)
 
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_peer_assess_before_submission(self, xblock):

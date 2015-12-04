@@ -45,7 +45,7 @@ def submitter_is_finished(submission_uuid, requirements):
         bool
 
     """
-    if not requirements:
+    if requirements is None:
         return False
 
     try:
@@ -59,6 +59,8 @@ def submitter_is_finished(submission_uuid, requirements):
         return False
     except PeerWorkflow.DoesNotExist:
         return False
+    except KeyError:
+        raise PeerAssessmentRequestError(u'Requirements dict must contain "must_grade" key')
 
 
 def assessment_is_finished(submission_uuid, requirements):
