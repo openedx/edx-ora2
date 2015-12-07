@@ -313,10 +313,10 @@ class StaffAreaTest(OpenAssessmentTest):
 
         Given I am viewing the staff area of an ORA problem
         Then none of the buttons should be active
-        When I click the "Staff Tools" button
-        Then only the "Staff Tools" button should be active
-        When I click the "Staff Info" button
-        Then only the "Staff Info" button should be active
+        When I click the "Manage Individual Learners" button
+        Then only the "Manage Individual Learners" button should be active
+        When I click the "View Assignment Statistics" button
+        Then only the "View Assignment Statistics" button should be active
         When I click the "Staff Info" button again
         Then none of the buttons should be active
         """
@@ -324,17 +324,17 @@ class StaffAreaTest(OpenAssessmentTest):
         self.staff_area_page.visit()
         self.assertEqual(self.staff_area_page.selected_button_names, [])
         self.staff_area_page.click_staff_toolbar_button("staff-tools")
-        self.assertEqual(self.staff_area_page.selected_button_names, ["STAFF TOOLS"])
+        self.assertEqual(self.staff_area_page.selected_button_names, ["MANAGE INDIVIDUAL LEARNERS"])
         self.staff_area_page.click_staff_toolbar_button("staff-info")
-        self.assertEqual(self.staff_area_page.selected_button_names, ["STAFF INFO"])
+        self.assertEqual(self.staff_area_page.selected_button_names, ["VIEW ASSIGNMENT STATISTICS"])
         self.staff_area_page.click_staff_toolbar_button("staff-info")
         self.assertEqual(self.staff_area_page.selected_button_names, [])
 
     @retry()
     @attr('acceptance')
     @ddt.data(
-        ("staff-tools", "STAFF TOOLS"),
-        ("staff-info", "STAFF INFO"),
+        ("staff-tools", "MANAGE INDIVIDUAL LEARNERS"),
+        ("staff-info", "VIEW ASSIGNMENT STATISTICS"),
     )
     @ddt.unpack
     def test_staff_area_panel(self, panel_name, button_label):
