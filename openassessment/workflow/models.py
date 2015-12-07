@@ -201,30 +201,14 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             score = sub_api.get_latest_score_for_submission(self.submission_uuid)
         return score
 
-    def status_details(self, assessment_requirements):
+    def status_details(self):
         status_dict = {}
         steps = self._get_steps()
         for step in steps:
-            api = step.api()
-            if api is not None:
-                # If an assessment module does not define these functions,
-                # default to True -- that is, automatically assume that the user has
-                # met the requirements.  This prevents students from getting "stuck"
-                # in the workflow in the event of a rollback that removes a step
-                # from the problem definition.
-                submitter_finished_func = getattr(api, 'submitter_is_finished', lambda submission_uuid, reqs: True)
-                assessment_finished_func = getattr(api, 'assessment_is_finished', lambda submission_uuid, reqs: True)
-
-                status_dict[step.name] = {
-                    "complete": submitter_finished_func(
-                        self.submission_uuid,
-                        assessment_requirements.get(step.name, {})
-                    ),
-                    "graded": assessment_finished_func(
-                        self.submission_uuid,
-                        assessment_requirements.get(step.name, {})
-                    ),
-                }
+            status_dict[step.name] = {
+                "complete": step.is_submitter_complete(),
+                "graded": step.is_assessment_complete(),
+            }
         return status_dict
 
     def get_score(self, assessment_requirements, step_for_name):
