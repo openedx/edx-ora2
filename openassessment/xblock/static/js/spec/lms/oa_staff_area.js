@@ -205,22 +205,22 @@ describe('OpenAssessment.StaffAreaView', function() {
             var view = createStaffArea(),
                 $buttons = $('.ui-staff__button', view.element);
             expect($buttons.length).toBe(2);
-            expect($($buttons[0]).text().trim()).toEqual('Staff Tools');
-            expect($($buttons[1]).text().trim()).toEqual('Staff Info');
+            expect($($buttons[0]).text().trim()).toEqual('Manage Individual Learners');
+            expect($($buttons[1]).text().trim()).toEqual('View Assignment Statistics');
             expect(getVisibleStaffPanels(view).length).toBe(0);
         });
 
-        it('shows the "Staff Tools" panel when the button is clicked', function() {
+        it('shows the "Manage Individual Learners" panel when the button is clicked', function() {
             var view = createStaffArea();
             verifyStaffButtonBehavior(view, 'staff-tools');
         });
 
-        it('shows the "Staff Info" panel when the button is clicked', function() {
+        it('shows the "View Assignment Statistics" panel when the button is clicked', function() {
             var view = createStaffArea();
             verifyStaffButtonBehavior(view, 'staff-info');
         });
 
-        it('hides the "Staff Tools" panel when the button is clicked twice', function() {
+        it('hides the "Manage Individual Learners" panel when the button is clicked twice', function() {
             var view = createStaffArea(),
                 $staffToolsButton = getStaffButton(view, 'staff-tools');
             expect($staffToolsButton).not.toHaveClass('is--active');
@@ -244,7 +244,7 @@ describe('OpenAssessment.StaffAreaView', function() {
             loadFixtures('oa_base_course_staff.html');
         });
 
-        it('hides the "Staff Tools" panel when the close button is clicked', function() {
+        it('hides the "Manage Individual Learners" panel when the close button is clicked', function() {
             var view = createStaffArea(),
                 $staffToolsButton = $('.button-staff-tools', view.element),
                 $staffToolsPanel = $('.wrapper--staff-tools', view.element);
@@ -400,7 +400,7 @@ describe('OpenAssessment.StaffAreaView', function() {
             loadFixtures('oa_base_course_staff.html');
         });
 
-        it('hides the "Staff Info" panel when the close button is clicked', function() {
+        it('hides the "View Assignment Statistics" panel when the close button is clicked', function() {
             var view = createStaffArea(),
                 $staffInfoButton = $('.button-staff-info', view.element),
                 $staffInfoPanel = $('.wrapper--staff-info', view.element);
