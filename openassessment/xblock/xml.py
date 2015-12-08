@@ -653,6 +653,9 @@ def serialize_assessments(assessments_root, oa_block):
         if assessment_dict.get('algorithm_id') is not None:
             assessment.set('algorithm_id', unicode(assessment_dict['algorithm_id']))
 
+        if assessment_dict.get('required') is not None:
+            assessment.set('required', unicode(assessment_dict['required']))
+
         # Training examples
         examples = assessment_dict.get('examples', [])
         if not isinstance(examples, list):
