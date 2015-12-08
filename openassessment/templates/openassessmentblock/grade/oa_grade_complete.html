@@ -122,14 +122,15 @@
                                     <ol class="list list--fields submission__feedback__fields {{ has_submitted_feedback|yesno:"is--hidden," }}"
                                             {{ has_submitted_feedback|yesno:'aria-hidden=true,aria-hidden=false' }}>
                                         <li class="field field-group field--radio feedback__overall">
-                                            <h4 class="field-group__label">{% trans "Select the statements below that best reflect your experience with peer assessments" %}:</h4>
+                                            <h4 id="feedback__overall__prompt" class="field-group__label">{% trans "Select the statements below that best reflect your experience with peer assessments" %}:</h4>
                                             <ol class="list--options">
                                                 <li class="option option--useful">
                                                     <input type="checkbox"
                                                            name="feedback__overall__value"
                                                            id="feedback__overall__value--useful"
                                                            class="option__input feedback__overall__value"
-                                                           value="These assessments were useful." />
+                                                           value="These assessments were useful."
+                                                           aria-labelledby="feedback__overall__prompt"/>
                                                     <label class="option__label" for="feedback__overall__value--useful">{% trans "These assessments were useful." %}</label>
                                                 </li>
                                                 <li class="option option--notuseful">
@@ -137,7 +138,8 @@
                                                            name="feedback__overall__value"
                                                            id="feedback__overall__value--notuseful"
                                                            class="option__input feedback__overall__value"
-                                                           value="These assessments were not useful." />
+                                                           value="These assessments were not useful."
+                                                           aria-labelledby="feedback__overall__prompt"/>
                                                     <label class="option__label" for="feedback__overall__value--notuseful">{% trans "These assessments were not useful." %}</label>
                                                 </li>
                                                 <li class="option option--disagree">
@@ -145,7 +147,8 @@
                                                            name="feedback__overall__value"
                                                            id="feedback__overall__value--disagree"
                                                            class="option__input feedback__overall__value"
-                                                           value="I disagree with one or more of the peer assessments of my response." />
+                                                           value="I disagree with one or more of the peer assessments of my response."
+                                                           aria-labelledby="feedback__overall__prompt"/>
                                                     <label class="option__label" for="feedback__overall__value--disagree">{% trans "I disagree with one or more of the peer assessments of my response." %}</label>
                                                 </li>
                                                 <li class="option option--inappropriate">
@@ -153,7 +156,8 @@
                                                            name="feedback__overall__value"
                                                            id="feedback__overall__value--inappropriate"
                                                            class="option__input feedback__overall__value"
-                                                           value="Some comments I received were inappropriate." />
+                                                           value="Some comments I received were inappropriate."
+                                                           aria-labelledby="feedback__overall__prompt"/>
                                                     <label class="option__label" for="feedback__overall__value--inappropriate">{% trans "Some comments I received were inappropriate." %}</label>
                                                 </li>
                                             </ol>
