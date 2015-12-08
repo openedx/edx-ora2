@@ -7,118 +7,11 @@ import ddt
 import json
 import mock
 from django.test.utils import override_settings
-from submissions import api as sub_api
-from openassessment.workflow import api as workflow_api
+
 from openassessment.assessment.api import peer as peer_api
-from openassessment.assessment.api import self as self_api
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
-from .base import XBlockHandlerTestCase, scenario
 
-
-class SubmitAssessmentsMixin(object):
-    """
-    A mixin for creating a submission and peer/self assessments so that the user can
-    receive a grade. This is useful for getting into the "waiting for peer assessment" state.
-    """
-    PEERS = ['McNulty', 'Moreland']
-
-    ASSESSMENTS = [
-        {
-            'options_selected': {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ﻉซƈﻉɭɭﻉกՇ', u'Form': u'Fair'},
-            'criterion_feedback': {
-                u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'Peer 1: ฝﻉɭɭ ɗѻกﻉ!'
-            },
-            'overall_feedback': u'єאςєɭɭєภՇ ฬ๏гк!',
-        },
-        {
-            'options_selected': {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ﻉซƈﻉɭɭﻉกՇ', u'Form': u'Fair'},
-            'criterion_feedback': {
-                u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'Peer 2: ฝﻉɭɭ ɗѻกﻉ!',
-                u'Form': u'Peer 2: ƒαιя נσв'
-            },
-            'overall_feedback': u'Good job!',
-        },
-    ]
-
-    SUBMISSION = (u'ՇﻉรՇ', u'รપ๒๓ٱรรٱѻก')
-
-    STEPS = ['peer', 'self']
-
-    def _create_submission_and_assessments(
-        self, xblock, submission_text, peers, peer_assessments, self_assessment,
-        waiting_for_peer=False,
-    ):
-        """
-        Create a submission and peer/self assessments, so that the user can receive a grade.
-
-        Args:
-            xblock (OpenAssessmentBlock): The XBlock, loaded for the user who needs a grade.
-            submission_text (unicode): Text of the submission from the user.
-            peers (list of unicode): List of user IDs of peers who will assess the user.
-            peer_assessments (list of dict): List of assessment dictionaries for peer assessments.
-            self_assessment (dict): Dict of assessment for self-assessment.
-
-        Keyword Arguments:
-            waiting_for_peer (bool): If true, skip creation of peer assessments for the user's submission.
-
-        Returns:
-            the submission
-
-        """
-        # Create a submission from the user
-        student_item = xblock.get_student_item_dict()
-        student_id = student_item['student_id']
-        submission = xblock.create_submission(student_item, submission_text)
-
-        # Create submissions and assessments from other users
-        scorer_submissions = []
-        for scorer_name, assessment in zip(peers, peer_assessments):
-
-            # Create a submission for each scorer for the same problem
-            scorer = copy.deepcopy(student_item)
-            scorer['student_id'] = scorer_name
-
-            scorer_sub = sub_api.create_submission(scorer, {'text': submission_text})
-            workflow_api.create_workflow(scorer_sub['uuid'], self.STEPS)
-
-            submission = peer_api.get_submission_to_assess(scorer_sub['uuid'], len(peers))
-
-            # Store the scorer's submission so our user can assess it later
-            scorer_submissions.append(scorer_sub)
-
-            # Create an assessment of the user's submission
-            if not waiting_for_peer:
-                peer_api.create_assessment(
-                    scorer_sub['uuid'], scorer_name,
-                    assessment['options_selected'],
-                    assessment['criterion_feedback'],
-                    assessment['overall_feedback'],
-                    {'criteria': xblock.rubric_criteria},
-                    xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
-                )
-
-        # Have our user make assessments (so she can get a score)
-        for assessment in peer_assessments:
-            peer_api.get_submission_to_assess(submission['uuid'], len(peers))
-            peer_api.create_assessment(
-                submission['uuid'],
-                student_id,
-                assessment['options_selected'],
-                assessment['criterion_feedback'],
-                assessment['overall_feedback'],
-                {'criteria': xblock.rubric_criteria},
-                xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
-            )
-
-        # Have the user submit a self-assessment (so she can get a score)
-        if self_assessment is not None:
-            self_api.create_assessment(
-                submission['uuid'], student_id, self_assessment['options_selected'],
-                self_assessment['criterion_feedback'], self_assessment['overall_feedback'],
-                {'criteria': xblock.rubric_criteria}
-            )
-
-        return submission
+from .base import scenario, SubmitAssessmentsMixin, XBlockHandlerTestCase
 
 
 @ddt.ddt
@@ -258,9 +151,12 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
     @scenario('data/feedback_per_criterion.xml', user_id='Bernard')
     def test_render_grade_feedback_per_criterion(self, xblock):
         # Submit, assess, and render the grade view
-        self._create_submission_and_assessments(
+        submission = self._create_submission_and_assessments(
             xblock, self.SUBMISSION, self.PEERS, self.ASSESSMENTS, self.ASSESSMENTS[0]
         )
+
+        # Submit a staff assessment
+        self._submit_staff_assessment(xblock, submission)
 
         # Verify that the context for the grade complete page contains the feedback
         _, context = xblock.render_grade_complete(xblock.get_workflow_info())
@@ -269,21 +165,29 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         # Verify feedback for the first criteria
         first_criteria_assessments = criteria[0]['assessments']
         self.assertEqual(
-            [assessment['feedback'] for assessment in first_criteria_assessments[0]['individual_assessments']],
+            first_criteria_assessments[0]['feedback'],
+            u'Staff: ฝﻉɭɭ ɗѻกﻉ!'
+        )
+        self.assertEqual(
+            [assessment['feedback'] for assessment in first_criteria_assessments[1]['individual_assessments']],
             [
                 u'Peer 2: ฝﻉɭɭ ɗѻกﻉ!',
                 u'Peer 1: ฝﻉɭɭ ɗѻกﻉ!',
             ]
         )
         self.assertEqual(
-            first_criteria_assessments[1]['feedback'],
+            first_criteria_assessments[2]['feedback'],
             u'Peer 1: ฝﻉɭɭ ɗѻกﻉ!'
         )
 
         # Verify the feedback for the second criteria
         second_criteria_assessments = criteria[1]['assessments']
         self.assertEqual(
-            [assessment['feedback'] for assessment in second_criteria_assessments[0]['individual_assessments']],
+            second_criteria_assessments[0]['feedback'],
+            u'Staff: ƒαιя נσв'
+        )
+        self.assertEqual(
+            [assessment['feedback'] for assessment in second_criteria_assessments[1]['individual_assessments']],
             [
                 u'Peer 2: ƒαιя נσв',
                 u'',
@@ -293,7 +197,11 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         # Verify the additional feedback
         additional_feedback = context['grade_details']['additional_feedback']
         self.assertEqual(
-            [assessment['feedback'] for assessment in additional_feedback[0]['individual_assessments']],
+            second_criteria_assessments[0]['feedback'],
+            u'Staff: good job!'
+        )
+        self.assertEqual(
+            [assessment['feedback'] for assessment in additional_feedback[1]['individual_assessments']],
             [
                 u'Good job!',
                 u'єאςєɭɭєภՇ ฬ๏гк!',
@@ -304,9 +212,12 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
         # Integration test: verify that all of the feedback makes it to the rendered template
         html = self.request(xblock, 'render_grade', json.dumps(dict())).decode('utf-8')
         for expected_text in [
+            u'Staff: ฝﻉɭɭ ɗѻกﻉ!',
             u'Peer 1: ฝﻉɭɭ ɗѻกﻉ!',
             u'Peer 2: ฝﻉɭɭ ɗѻกﻉ!',
+            u'Staff: ƒαιя נσв'
             u'Peer 2: ƒαιя נσв',
+            u'Staff: good job!',
             u'Good job!',
             u'єאςєɭɭєภՇ ฬ๏гк!',
         ]:

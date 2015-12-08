@@ -1,11 +1,20 @@
+# -*- coding: utf-8 -*-
 """
 Base class for handler-level testing of the XBlock.
 """
+import copy
+import mock
 import os.path
 import json
 from functools import wraps
 
+from submissions import api as submissions_api
+
+from openassessment.workflow import api as workflow_api
+from openassessment.assessment.api import peer as peer_api
+from openassessment.assessment.api import self as self_api
 from openassessment.test_utils import CacheResetTest, TransactionCacheResetTest
+
 from workbench.runtime import WorkbenchRuntime
 import webob
 
@@ -172,3 +181,139 @@ class XBlockHandlerTransactionTestCase(XBlockHandlerTestCaseMixin, TransactionCa
     use `XBlockHandlerTestCase` instead.
     """
     pass
+
+
+class SubmitAssessmentsMixin(object):
+    """
+    A mixin for creating a submission and peer/self assessments so that the user can
+    receive a grade. This is useful for getting into the "waiting for peer assessment" state.
+    """
+    maxDiff = None
+
+    PEERS = ['McNulty', 'Moreland']
+
+    ASSESSMENTS = [
+        {
+            'options_selected': {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ﻉซƈﻉɭɭﻉกՇ', u'Form': u'Fair'},
+            'criterion_feedback': {
+                u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'Peer 1: ฝﻉɭɭ ɗѻกﻉ!'
+            },
+            'overall_feedback': u'єאςєɭɭєภՇ ฬ๏гк!',
+        },
+        {
+            'options_selected': {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ﻉซƈﻉɭɭﻉกՇ', u'Form': u'Fair'},
+            'criterion_feedback': {
+                u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'Peer 2: ฝﻉɭɭ ɗѻกﻉ!',
+                u'Form': u'Peer 2: ƒαιя נσв'
+            },
+            'overall_feedback': u'Good job!',
+        },
+    ]
+
+    STAFF_ASSESSMENT = {
+        'options_selected': {u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'ﻉซƈﻉɭɭﻉกՇ', u'Form': u'Fair'},
+        'criterion_feedback': {
+            u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'Staff: ฝﻉɭɭ ɗѻกﻉ!',
+            u'Form': u'Staff: ƒαιя נσв'
+        },
+        'overall_feedback': u'Staff: good job!'
+    }
+
+    SUBMISSION = (u'ՇﻉรՇ', u'รપ๒๓ٱรรٱѻก')
+
+    STEPS = ['peer', 'self']
+
+    def _create_submission_and_assessments(
+            self, xblock, submission_text, peers, peer_assessments, self_assessment,
+            waiting_for_peer=False,
+    ):
+        """
+        Create a submission and peer/self assessments, so that the user can receive a grade.
+
+        Args:
+            xblock (OpenAssessmentBlock): The XBlock, loaded for the user who needs a grade.
+            submission_text (unicode): Text of the submission from the user.
+            peers (list of unicode): List of user IDs of peers who will assess the user.
+            peer_assessments (list of dict): List of assessment dictionaries for peer assessments.
+            self_assessment (dict): Dict of assessment for self-assessment.
+
+        Keyword Arguments:
+            waiting_for_peer (bool): If true, skip creation of peer assessments for the user's submission.
+
+        Returns:
+            the submission
+
+        """
+        # Create a submission from the user
+        student_item = xblock.get_student_item_dict()
+        student_id = student_item['student_id']
+        submission = xblock.create_submission(student_item, submission_text)
+
+        # Create submissions and assessments from other users
+        scorer_submissions = []
+        for scorer_name, assessment in zip(peers, peer_assessments):
+
+            # Create a submission for each scorer for the same problem
+            scorer = copy.deepcopy(student_item)
+            scorer['student_id'] = scorer_name
+
+            scorer_sub = submissions_api.create_submission(scorer, {'text': submission_text})
+            workflow_api.create_workflow(scorer_sub['uuid'], self.STEPS)
+
+            submission = peer_api.get_submission_to_assess(scorer_sub['uuid'], len(peers))
+
+            # Store the scorer's submission so our user can assess it later
+            scorer_submissions.append(scorer_sub)
+
+            # Create an assessment of the user's submission
+            if not waiting_for_peer:
+                peer_api.create_assessment(
+                    scorer_sub['uuid'], scorer_name,
+                    assessment['options_selected'],
+                    assessment['criterion_feedback'],
+                    assessment['overall_feedback'],
+                    {'criteria': xblock.rubric_criteria},
+                    xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
+                )
+
+        # Have our user make assessments (so she can get a score)
+        for assessment in peer_assessments:
+            peer_api.get_submission_to_assess(submission['uuid'], len(peers))
+            peer_api.create_assessment(
+                submission['uuid'],
+                student_id,
+                assessment['options_selected'],
+                assessment['criterion_feedback'],
+                assessment['overall_feedback'],
+                {'criteria': xblock.rubric_criteria},
+                xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
+            )
+
+        # Have the user submit a self-assessment (so she can get a score)
+        if self_assessment is not None:
+            self_api.create_assessment(
+                submission['uuid'], student_id, self_assessment['options_selected'],
+                self_assessment['criterion_feedback'], self_assessment['overall_feedback'],
+                {'criteria': xblock.rubric_criteria}
+            )
+
+        return submission
+
+    def set_staff_access(self, xblock):
+        xblock.xmodule_runtime = mock.Mock(user_is_staff=True)
+        xblock.xmodule_runtime.anonymous_student_id = 'Bob'
+
+    @staticmethod
+    def _set_mock_workflow_info(xblock, workflow_status, status_details, submission_uuid):
+        xblock.get_workflow_info = mock.Mock(return_value={
+            'status': workflow_status,
+            'status_details': status_details,
+            'submission_uuid': submission_uuid
+        })
+
+    def _submit_staff_assessment(self, xblock, submission):
+        # Submit a staff-assessment
+        self.set_staff_access(xblock)
+        self.STAFF_ASSESSMENT['submission_uuid'] = submission['uuid']
+        resp = self.request(xblock, 'staff_assess', json.dumps(self.STAFF_ASSESSMENT), response_format='json')
+        self.assertTrue(resp['success'])
