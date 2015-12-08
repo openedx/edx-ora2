@@ -38,6 +38,9 @@ OpenAssessment.StudioView = function(runtime, element, server, data) {
     );
 
     // Initialize the settings tab view
+    var staffAssessmentView = new OpenAssessment.EditStaffAssessmentView(
+        $("#oa_staff_assessment_editor", this.element).get(0)
+    );
     var studentTrainingView = new OpenAssessment.EditStudentTrainingView(
         $("#oa_student_training_editor", this.element).get(0)
     );
@@ -51,6 +54,7 @@ OpenAssessment.StudioView = function(runtime, element, server, data) {
         $("#oa_ai_assessment_editor", this.element).get(0)
     );
     var assessmentLookupDictionary = {};
+    assessmentLookupDictionary[staffAssessmentView.getID()] = staffAssessmentView;
     assessmentLookupDictionary[studentTrainingView.getID()] = studentTrainingView;
     assessmentLookupDictionary[peerAssessmentView.getID()] = peerAssessmentView;
     assessmentLookupDictionary[selfAssessmentView.getID()] = selfAssessmentView;

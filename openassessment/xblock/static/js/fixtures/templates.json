@@ -489,7 +489,8 @@
                 "student_training",
                 "peer_assessment",
                 "self_assessment",
-                "example_based_assessment"
+                "example_based_assessment",
+                "staff_assessment"
             ]
         },
         "output": "oa_edit.html"
@@ -647,7 +648,8 @@
                 "student_training",
                 "peer_assessment",
                 "self_assessment",
-                "example_based_assessment"
+                "example_based_assessment",
+                "staff_assessment"
             ]
         },
         "output": "oa_edit_student_training.html"

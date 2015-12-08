@@ -134,7 +134,9 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         """
         submission_dict = sub_api.get_submission_and_student(submission_uuid)
 
+        staff_auto_added = False
         if 'staff' not in step_names:
+            staff_auto_added = True
             new_list = ['staff']
             new_list.extend(step_names)
             step_names = new_list
@@ -166,6 +168,11 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 # We do this for every assessment module
                 on_init_func = getattr(api, 'on_init', lambda submission_uuid, **params: None)
                 on_init_func(submission_uuid, **on_init_params.get(step.name, {}))
+
+                # If we auto-added a staff step, it is optional and should be marked complete immediately
+                if step.name == "staff" and staff_auto_added:
+                    step.assessment_completed_at=now()
+                    step.save()
 
                 # For the first valid step, update the workflow status
                 # and notify the assessment module that it's being started
@@ -245,7 +252,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                         requirements = assessment_requirements.get(assessment_step_name, {})
                     score = get_score_func(self.submission_uuid, requirements)
                     if assessment_step_name == self.STATUS.staff and score == None:
-                        if requirements and requirements.get(assessment_step_name, {}).get('required', False):
+                        if requirements and requirements.get('required', False):
                             break # A staff score was not found, and one is required. Return None
                         continue # A staff score was not found, but it is not required, so try the next type of score
                     break

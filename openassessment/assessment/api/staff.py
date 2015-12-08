@@ -54,17 +54,26 @@ def assessment_is_finished(submission_uuid, requirements):
     Returns:
         True if a staff assessment has been completed for this submission or if not required.
     """
-    if requirements and requirements.get('staff', {}).get('required', False):
+    # Requirements of None means we can't make any assumptions about the done-ness of this step
+    if requirements is None:
+        return False
+
+    if requirements.get('required', False):
         return bool(get_latest_staff_assessment(submission_uuid))
+
     return True
 
 
-def on_start(submission_uuid):
+def on_init(submission_uuid):
     """
     Create a new staff workflow for a student item and submission.
 
     Creates a unique staff workflow for a student item, associated with a
     submission.
+
+    Note that the staff workflow begins things in on_init() instead of
+    on_start(), because staff shoud be able to access the submission
+    regardless of which state the workflow is currently in.
 
     Args:
         submission_uuid (str): The submission associated with this workflow.
