@@ -87,6 +87,12 @@ class WorkflowMixin(object):
                 "num_required": len(training_module["examples"])
             }
 
+        staff_assessment_module = self.get_assessment_module('staff-assessment')
+        if staff_assessment_module:
+            requirements["staff"] = {
+                "required": staff_assessment_module["required"]
+            }
+
         return requirements
 
     def update_workflow_status(self, submission_uuid=None):

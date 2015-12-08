@@ -321,6 +321,26 @@
         ]
     },
 
+    "optional_self_assessment": {
+        "xml": [
+            "<openassessment>",
+            "<title>Foo</title>",
+            "<assessments>",
+                "<assessment name=\"self-assessment\" start=\"2014-04-01T00:00:00\" due=\"2014-06-01T00:00:00\" \"required\": \"False\" />",
+            "</assessments>",
+            "<rubric>",
+                "<prompt>Test prompt</prompt>",
+                "<criterion>",
+                    "<name>Test criterion</name>",
+                    "<prompt>Test criterion prompt</prompt>",
+                    "<option points=\"0\"><name>No</name><explanation>No explanation</explanation></option>",
+                    "<option points=\"2\"><name>Yes</name><explanation>Yes explanation</explanation></option>",
+                "</criterion>",
+            "</rubric>",
+            "</openassessment>"
+        ]
+    },
+
     "invalid_criterion_feedback_value": {
         "xml": [
             "<openassessment>",

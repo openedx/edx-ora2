@@ -23,13 +23,13 @@ SELF_TYPE = "SE"
 logger = logging.getLogger("openassessment.assessment.api.self")
 
 
-def submitter_is_finished(submission_uuid, requirements):
+def submitter_is_finished(submission_uuid, self_requirements):
     """
     Check whether a self-assessment has been completed for a submission.
 
     Args:
         submission_uuid (str): The unique identifier of the submission.
-        requirements (dict): Any attributes of the assessment module required
+        self_requirements (dict): Any attributes of the assessment module required
             to determine if this assessment is complete. There are currently
             no requirements for a self-assessment.
     Returns:
@@ -43,14 +43,14 @@ def submitter_is_finished(submission_uuid, requirements):
     ).exists()
 
 
-def assessment_is_finished(submission_uuid, requirements):
+def assessment_is_finished(submission_uuid, self_requirements):
     """
     Check whether a self-assessment has been completed. For self-assessment,
     this function is synonymous with submitter_is_finished.
 
     Args:
         submission_uuid (str): The unique identifier of the submission.
-        requirements (dict): Any attributes of the assessment module required
+        self_requirements (dict): Any attributes of the assessment module required
             to determine if this assessment is complete. There are currently
             no requirements for a self-assessment.
     Returns:
@@ -59,16 +59,16 @@ def assessment_is_finished(submission_uuid, requirements):
         >>> assessment_is_finished('222bdf3d-a88e-11e3-859e-040ccee02800', {})
         True
     """
-    return submitter_is_finished(submission_uuid, requirements)
+    return submitter_is_finished(submission_uuid, self_requirements)
 
 
-def get_score(submission_uuid, requirements):
+def get_score(submission_uuid, self_requirements):
     """
     Get the score for this particular assessment.
 
     Args:
         submission_uuid (str): The unique identifier for the submission
-        requirements (dict): Not used.
+        self_requirements (dict): Not used.
     Returns:
         A dictionary with the points earned, points possible, and
         contributing_assessments information, along with a None staff_id.

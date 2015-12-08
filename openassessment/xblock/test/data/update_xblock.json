@@ -47,6 +47,63 @@
                 "name": "self-assessment",
                 "start": null,
                 "due": null
+            },
+            {
+                "name": "staff-assessment",
+                "required": false
+            }
+        ],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"]
+    },
+
+    "no_staff_backwards_compatible": {
+        "criteria": [
+            {
+                "order_num": 0,
+                "name": "0",
+                "label": "Test criterion",
+                "prompt": "Test criterion prompt",
+                "options": [
+                    {
+                        "order_num": 0,
+                        "points": 0,
+                        "name": "0",
+                        "label": "No",
+                        "explanation": "No explanation"
+                    },
+                    {
+                        "order_num": 1,
+                        "points": 2,
+                        "name": "1",
+                        "label": "Yes",
+                        "explanation": "Yes explanation"
+                    }
+                ],
+                "feedback": "required"
+            }
+        ],
+        "prompts": [{"description": "My new prompt 1."}, {"description": "My new prompt 2."}],
+        "feedback_prompt": "Feedback prompt",
+        "feedback_default_text": "Feedback default text",
+        "submission_due": "4014-02-27T09:46",
+        "submission_start": "4014-02-10T09:46",
+        "title": "My new title.",
+        "file_upload_type": null,
+        "white_listed_file_types": null,
+        "allow_latex": false,
+        "leaderboard_show": 0,
+        "assessments": [
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3,
+                "start": null,
+                "due": "4014-03-10T00:00"
+            },
+            {
+                "name": "self-assessment",
+                "start": null,
+                "due": null
             }
         ],
         "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"]
@@ -102,7 +159,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"]
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"]
     },
 
     "student_training": {
@@ -167,7 +224,7 @@
                 "due": "4014-03-10T00:00"
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"]
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"]
     },
 
     "already_has_criteria_and_options_names_assigned": {
@@ -220,7 +277,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"]
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"]
     },
 
     "file_upload_type_image_treated_as_image_file_upload_type": {
@@ -273,7 +330,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"]
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"]
     },
 
     "file_upload_type_file_treated_as_restricted_file_upload": {
@@ -326,7 +383,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"]
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"]
     },
 
     "file_upload_type_custom_treated_as_restrictive_file_upload": {
@@ -379,6 +436,6 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"]
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"]
     }
 }
