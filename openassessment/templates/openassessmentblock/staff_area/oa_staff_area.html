@@ -5,6 +5,7 @@
     <div class="wrapper--staff-toolbar">
         <button class="ui-staff__button button-staff-tools" data-panel="openassessment__staff-tools">{% trans "Manage Individual Learners" %}</button>
         <button class="ui-staff__button button-staff-info" data-panel="openassessment__staff-info">{% trans "View Assignment Statistics" %}</button>
+        <button class="ui-staff__button button-staff-grading" data-panel="openassessment__staff-grading">{% trans "Grade Available Responses" %}</button>
     </div>
 
     <div class="openassessment__staff-tools wrapper--staff-tools wrapper--ui-staff is--hidden">
@@ -161,6 +162,19 @@
                     </table>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="openassessment__staff-grading wrapper--staff-grading wrapper--ui-staff is--hidden">
+        <div class="staff-grading ui-staff">
+            <h2 class="staff-grading__title ui-staff__title">
+                <span class="staff-info__title__copy">{% trans "Staff Grading" %}</span>
+                <button class="ui-staff_close_button"><span class="sr">{% trans "Close" %}</span> <i class="icon fa fa-close" aria-hidden="true"></i></button>
+            </h2>
+
+            <div class="staff-info__content ui-staff__content">
+            </div>
+
         </div>
     </div>
 </div>
