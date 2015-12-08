@@ -33,7 +33,7 @@ class TestStaffAssessment(CacheResetTest):
     """
 
     STEP_REQUIREMENTS = {}
-    STEP_REQUIREMENTS_WITH_STAFF = {'staff': {'required': True}}
+    STEP_REQUIREMENTS_WITH_STAFF = {'required': True}
 
     # This is due to ddt not playing nicely with list comprehensions
     ASSESSMENT_SCORES_DDT = [key for key in OPTIONS_SELECTED_DICT]

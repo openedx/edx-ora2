@@ -250,4 +250,24 @@ describe("OpenAssessment edit assessment views", function() {
         it("Loads a description", function() { testLoadXMLExamples(view); });
         it("shows an alert when disabled", function() { testAlertOnDisable(view); });
     });
+
+    describe("OpenAssessment.EditStaffAssessmentView", function() {
+        var view = null;
+
+        beforeEach(function() {
+            view = new OpenAssessment.EditStaffAssessmentView();
+            view.isEnabled(true);
+        });
+
+        it("enables and disables", function() { testEnableAndDisable(view); });
+
+        it("loads a description", function() {
+            expect(view.description()).toEqual({
+                required: true
+            });
+        });
+
+        it("shows an alert when disabled", function() { testAlertOnDisable(view); });
+    });
+
 });

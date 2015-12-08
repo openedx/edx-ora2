@@ -21,7 +21,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2014-02-27T09:46",
         "submission_start": "2014-02-10T09:46"
     },
@@ -54,7 +54,7 @@
                         "explanation": "Yes explanation"
                     }
                 ],
-                "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"],
+                "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
                 "feedback": "optional"
             }
         ],
@@ -122,7 +122,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2014-02-27T09:46",
         "submission_start": "2014-02-10T09:46"
     },
@@ -174,7 +174,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_start": "2014-02-10T09:46"
     },
 
@@ -225,7 +225,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2012-02-27T09:46",
         "submission_start": "2015-02-10T09:46",
         "expected_error": "the start date '2015-02-10 09:46:00+00:00' cannot be later than the due date '2012-02-27 09:46:00+00:00'"
@@ -278,7 +278,7 @@
                 "due": "2003-01-02T00:00"
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": "2012-02-27T09:46",
         "submission_start": null,
         "expected_error": "cannot be later"
@@ -324,7 +324,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": null,
         "submission_start": null
     },
@@ -368,7 +368,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": null,
         "submission_start": null
     },
@@ -391,7 +391,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": null,
         "submission_start": null
     },
@@ -435,7 +435,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": null,
         "submission_start": null
     },
@@ -465,7 +465,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": null,
         "submission_start": null
     },
@@ -504,7 +504,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": null,
         "submission_start": null
     },
@@ -548,7 +548,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": null,
         "submission_start": null
     },
@@ -590,7 +590,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": null,
         "submission_start": null,
         "expected_error": "error updating xblock configuration"
@@ -632,7 +632,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": null,
         "submission_start": null,
         "expected_error": "error updating xblock configuration"
@@ -677,7 +677,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "submission_due": null,
         "submission_start": null
     },
@@ -736,7 +736,7 @@
                 "due": "4014-03-10T00:00"
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"]
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"]
     },
 
     "student_training_example_missing_options_selected": {
@@ -791,7 +791,7 @@
                 "due": "4014-03-10T00:00"
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"]
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"]
     },
 
     "student_training_example_missing_criterion": {
@@ -849,7 +849,7 @@
                 "due": "4014-03-10T00:00"
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"]
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"]
     },
 
     "student_training_example_missing_option": {
@@ -907,7 +907,7 @@
                 "due": "4014-03-10T00:00"
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"]
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"]
     },
 
     "student_training_no_examples": {
@@ -958,7 +958,7 @@
                 "due": "4014-03-10T00:00"
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "expected_error": "you must provide at least one example response for learner training"
     },
 
@@ -1017,7 +1017,7 @@
                 "due": "4014-03-10T00:00"
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"],
         "expected_error": "example 1 has an extra option for \"not a criterion!\"; example 1 is missing an option for \"0\""
     },
 
@@ -1121,7 +1121,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "self-assessment"]
+        "editor_assessments_order": ["student-training", "self-assessment", "staff-assessment"]
     },
 
     "unrecognized_assessment_in_editor_assessments_order": {
@@ -1175,7 +1175,7 @@
         ],
         "editor_assessments_order": [
             "student-training", "peer-assessment",
-            "self-assessment", "example-based-assessment",
+            "self-assessment", "example-based-assessment", "staff-assessment",
             "NOT A VALID ASSESSMENT"
         ]
     },
@@ -1226,7 +1226,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment", "staff-assessment"],
         "submission_due": "2014-02-27T09:46",
         "submission_start": "2014-02-10T09:46"
     },
@@ -1277,7 +1277,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment", "staff-assessment"],
         "submission_due": "2014-02-27T09:46",
         "submission_start": "2014-02-10T09:46"
     },
@@ -1350,7 +1350,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment", "staff-assessment"],
         "submission_due": "2014-02-27T09:46",
         "submission_start": "2014-02-10T09:46"
     },
@@ -1403,7 +1403,7 @@
                 "due": null
             }
         ],
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment"],
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "example-based-assessment", "staff-assessment"],
         "submission_due": "2014-02-27T09:46",
         "submission_start": "2014-02-10T09:46"
     }

@@ -118,6 +118,23 @@
         "current_assessments": null,
         "is_released": false
     },
+    "remove_staff_mid_flight": {
+        "assessments": [
+            {
+                "name": "self-assessment"
+            },
+            {
+                "name": "staff-assessment",
+                "required": true
+            }
+        ],
+        "current_assessments": [
+            {
+                "name": "self-assessment"
+            }
+        ],
+        "is_released": true
+    },
     "remove_peer_mid_flight": {
         "assessments": [
             {
@@ -158,6 +175,42 @@
             }
         ],
         "is_released": true
+    },
+
+    "only_optional_staff": {
+        "assessments": [
+            {
+                "name": "staff-assessment",
+                "required": false
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
+    },
+
+    "staff_must_grade": {
+        "assessments": [
+            {
+                "name": "staff-assessment",
+                "must_grade": 2
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
+    },
+
+    "staff_not_last": {
+        "assessments": [
+            {
+                "name": "staff-assessment",
+                "required": true
+            },
+            {
+                "name": "self-assessment"
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
     },
 
     "example_based_algorithm_id_is_not_ease": {
