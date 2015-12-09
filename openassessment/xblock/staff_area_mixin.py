@@ -162,6 +162,10 @@ class StaffAreaMixin(object):
                 'start': start_date if start_date > DISTANT_PAST else None,
                 'due': due_date if due_date < DISTANT_FUTURE else None,
             })
+
+        # Include whether or not staff grading step is enabled.
+        context['staff_assessment_required'] = "staff-assessment" in self.assessment_steps
+
         return path, context
 
     @XBlock.json_handler
