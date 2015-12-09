@@ -81,12 +81,12 @@ class TestCourseStaff(XBlockHandlerTestCase):
             xblock.scope_ids.usage_id, False, False, "Bob"
         )
         resp = self.request(xblock, 'render_staff_area', json.dumps({}))
-        self.assertNotIn("Staff Info", resp.decode('utf-8').lower())
+        self.assertNotIn("view assignment statistics", resp.decode('utf-8').lower())
 
         # If we ARE course staff, then we should see the debug info
         xblock.xmodule_runtime.user_is_staff = True
         resp = self.request(xblock, 'render_staff_area', json.dumps({}))
-        self.assertIn("staff info", resp.decode('utf-8').lower())
+        self.assertIn("view assignment statistics", resp.decode('utf-8').lower())
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_course_student_debug_info(self, xblock):
@@ -113,7 +113,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         # If the client requests the staff info directly, they should get an error
         resp = self.request(xblock, 'render_staff_area', json.dumps({}))
-        self.assertNotIn("course staff information", resp.decode('utf-8').lower())
+        self.assertNotIn("view assignment statistics", resp.decode('utf-8').lower())
         self.assertIn("do not have permission", resp.decode('utf-8').lower())
 
         # The container page should not contain a staff info section at all
@@ -130,7 +130,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # Verify that we can render without error
         resp = self.request(xblock, 'render_staff_area', json.dumps({}))
         decoded_response = resp.decode('utf-8').lower()
-        self.assertIn("course staff information", decoded_response)
+        self.assertIn("view assignment statistics", decoded_response)
 
         # Confirm example-based-assessment does not show up; it is not date
         # driven so its start / due dates are not relevant
@@ -154,7 +154,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         # Verify that we can render without error
         resp = self.request(xblock, 'render_staff_area', json.dumps({}))
-        self.assertIn("course staff information", resp.decode('utf-8').lower())
+        self.assertIn("view assignment statistics", resp.decode('utf-8').lower())
         self.assertIn("n/a", resp.decode('utf-8').lower())
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
