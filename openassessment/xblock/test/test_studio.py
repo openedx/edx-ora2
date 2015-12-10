@@ -145,6 +145,7 @@ class StudioViewTest(XBlockHandlerTestCase):
             "student-training",
             "peer-assessment",
             "self-assessment",
+            "staff-assessment",
         ]
         xblock.runtime.modulestore = MagicMock()
         xblock.runtime.modulestore.has_published_version.return_value = False
@@ -165,6 +166,7 @@ class StudioViewTest(XBlockHandlerTestCase):
             "student-training",
             "peer-assessment",
             "self-assessment",
+            "staff-assessment",
             ]
         xblock.runtime.modulestore = MagicMock()
         xblock.runtime.modulestore.has_published_version.return_value = False

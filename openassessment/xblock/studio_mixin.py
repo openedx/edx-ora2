@@ -171,8 +171,17 @@ class StudioMixin(object):
 
         # Check that the editor assessment order contains all the assessments.  We are more flexible on example-based.
         if set(DEFAULT_EDITOR_ASSESSMENTS_ORDER) != (set(data['editor_assessments_order']) - {'example-based-assessment'}):
-            logger.exception('editor_assessments_order does not contain all expected assessment types')
-            return {'success': False, 'msg': self._('Error updating XBlock configuration')}
+            # Backwards compatibility: "staff-assessment" may not be present.
+            # If that is the only problem with this data, just add it manually and continue.
+            if set(DEFAULT_EDITOR_ASSESSMENTS_ORDER) == (
+                # Check the given set, minus example-based, plus staff
+                (set(data['editor_assessments_order']) - {'example-based-assessment'}) | {'staff-assessment'}
+            ):
+                data['editor_assessments_order'].append('staff-assessment')
+                logger.info('Backwards compatibility: editor_assessments_order now contains staff-assessment')
+            else:
+                logger.exception('editor_assessments_order does not contain all expected assessment types')
+                return {'success': False, 'msg': self._('Error updating XBlock configuration')}
 
         # Backwards compatibility: We used to treat "name" as both a user-facing label
         # and a unique identifier for criteria and options.

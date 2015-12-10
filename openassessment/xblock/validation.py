@@ -63,8 +63,8 @@ def _is_valid_assessment_sequence(assessments):
 
     """
     sequence = [asmnt.get('name') for asmnt in assessments]
-    required = ['staff-assessment', 'peer-assessment', 'self-assessment']
-    optional = ['example-based-assessment', 'student-training']
+    required = ['example-based-assessment', 'staff-assessment', 'peer-assessment', 'self-assessment']
+    optional = ['student-training']
 
     # at least one of required?
     if not any(name in required for name in sequence):
@@ -87,7 +87,7 @@ def _is_valid_assessment_sequence(assessments):
         return False
 
     # if using training, must be followed by peer at some point
-    if 'student_training' in sequence:
+    if 'student-training' in sequence:
         train_index = sequence.index('student-training')
         if 'peer-assessment' not in sequence[train_index:]:
             return False
