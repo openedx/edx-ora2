@@ -409,6 +409,28 @@ class GradePage(OpenAssessmentPage):
         score_candidates = [int(x) for x in self.q(css=".grade__value__earned").text]
         return score_candidates[0] if len(score_candidates) > 0 else None
 
+    def grade_entry(self, question, column):
+        """
+        Returns a tuple of source and value information for a specific grade source.
+
+        Args:
+            question: the 0-based question for which to get grade information.
+            column: the 0-based column of data within a question. Each column corresponds
+                to a source of data (for example, staff, peer, or self).
+
+        Returns: the tuple of source and value information for the requested grade
+
+        """
+        source = self.q(
+            css=self._bounded_selector('.question--{} .answer .answer__source__value'.format(question + 1))
+        )[column]
+
+        value = self.q(
+            css=self._bounded_selector('.question--{} .answer .answer__value__value'.format(question + 1))
+        )[column]
+
+        return source.text.strip(), value.text.strip()
+
 
 class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
     """
