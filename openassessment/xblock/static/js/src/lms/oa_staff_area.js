@@ -23,7 +23,7 @@
         /**
          * Load the staff area.
          */
-        load: function() {
+        load: function(onSuccessCallback) {
             var view = this;
 
             // If we're course staff, the base template should contain a section
@@ -35,6 +35,9 @@
                     $('.openassessment__staff-area', view.element).replaceWith(html);
                     view.server.renderLatex($('.openassessment__staff-area', view.element));
                     view.installHandlers();
+                    if (onSuccessCallback) {
+                        onSuccessCallback();
+                    }
                 }).fail(function() {
                     view.baseView.showLoadError('staff_area');
                 });
@@ -115,6 +118,54 @@
             return deferred.promise();
         },
 
+        loadStaffGradeForm: function(eventObject) {
+            var view = this;
+            var staff_form_element = $(eventObject.currentTarget);
+            var isCollapsed = staff_form_element.hasClass("is--collapsed");
+            var deferred = $.Deferred();
+
+            if (isCollapsed && !this.staffGradeFormLoaded) {
+                eventObject.preventDefault();
+                this.staffGradeFormLoaded = true;
+                this.server.staffGradeForm().done(function(html) {
+                    // TODO: need to create a div to show an error message if this server call fails.
+                    //showFormError('');
+
+                    // Load the HTML and install event handlers
+                    $('.staff__grade__form', view.element).replaceWith(html);
+
+                    // Initialize the rubric : TODO SHARE CODE!
+                    var $rubric = $('.staff-assessment__assessment', view.element);
+                    if ($rubric.size() > 0) {
+                        var rubricElement = $rubric.get(0);
+                        var rubric = new OpenAssessment.Rubric(rubricElement);
+
+                        // Install a change handler for rubric options to enable/disable the submit button
+                        rubric.canSubmitCallback($.proxy(view.staffSubmitEnabled, view));
+
+                        // Install a click handler for the submit buttons
+                        $('.wrapper--staff-assessment .action--submit', view.element).click(
+                            function(eventObject) {
+                                var submissionID = staff_form_element.find('.staff__grade__form').data('submission-uuid');  // This was a change
+
+                                eventObject.preventDefault();
+                                view.submitStaffGradeForm(submissionID, rubric,
+                                    $(eventObject.currentTarget).hasClass('continue_grading--action')
+                                );  // This was a change
+                            }
+                        );
+                    }
+                    deferred.resolve();
+                }).fail(function() {
+                    // showFormError(gettext('Unexpected server error.'));
+                    this.staffGradeFormLoaded = false;
+                    deferred.reject();
+                });
+
+            }
+
+        },
+
         /**
          * Install event handlers for the view.
          */
@@ -123,6 +174,7 @@
             var $staffArea = $('.openassessment__staff-area', this.element);
             var $staffTools = $('.openassessment__staff-tools', $staffArea);
             var $staffInfo =  $('.openassessment__student-info', $staffArea);
+            var $staffGradeTool = $('.openassessment__staff-grading', $staffArea);
 
             if ($staffArea.length <= 0) {
                 return;
@@ -130,6 +182,7 @@
 
             this.baseView.setUpCollapseExpand($staffTools, function() {});
             this.baseView.setUpCollapseExpand($staffInfo, function() {});
+            this.baseView.setUpCollapseExpand($staffGradeTool, function() {});
 
             // Install a click handler for the staff button panel
             $staffArea.find('.ui-staff__button').click(
@@ -188,6 +241,16 @@
                 function(eventObject) {
                     eventObject.preventDefault();
                     view.rescheduleUnfinishedTasks();
+                }
+            );
+
+            // Install a click handler for showing the staff grading form.
+            $staffGradeTool.find('.staff__grade__control').click(
+                function(eventObject) {
+                    // Don't call preventDefault because this click handler will be triggerred by
+                    // things like the radio buttons within the form-- we want them to be able to
+                    // handle the click events (and loadStaffGradeForm will be a no-op).
+                    view.loadStaffGradeForm(eventObject);
                 }
             );
         },
@@ -318,8 +381,6 @@
         submitStaffAssessment: function(submissionID, rubric) {
             // Send the assessment to the server
             var view = this;
-            var baseView = this.baseView;
-            baseView.toggleActionError('staff', null);
             view.staffSubmitEnabled(false);
 
             this.server.staffAssess(
@@ -332,7 +393,32 @@
                 // the staff override itself.
                 view.loadStudentInfo({expanded_view: 'final-grade'});
             }).fail(function(errorMessage) {
-                $('.staff-override-error').html(_.escape(errorMessage));
+                // TODO: check how this renders Andy!
+                $('.staff-override-error', this.element).html(_.escape(errorMessage));
+                view.staffSubmitEnabled(true);
+            });
+        },
+
+        // Can some version of this method be shared with submitStaffAssessment?
+        submitStaffGradeForm: function(submissionID, rubric, continueGrading) {
+            // Send the assessment to the server
+            var view = this;
+            view.staffSubmitEnabled(false);
+
+            this.server.staffAssess(
+                rubric.optionsSelected(), rubric.criterionFeedback(), rubric.overallFeedback(), submissionID
+            ).done(function() {
+                view.staffGradeFormLoaded = false;
+                var onSuccessCallback = function () {
+                    $('.button-staff-grading').click();
+                    if (continueGrading) {
+                        $('.staff__grade__title').click();
+                    }
+                };
+                view.load(onSuccessCallback);
+            }).fail(function(errorMessage) {
+                // TODO: this needs styling help Andy!
+                $('.staff-grade-error', this.element).html(_.escape(errorMessage));
                 view.staffSubmitEnabled(true);
             });
         }

@@ -116,6 +116,29 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         },
 
         /**
+         * Load the student information section inside the Staff Info section. TODO update
+         *
+         * @param {string} studentUsername - The username for the student.
+         * @param {object} options - An optional set of configuration options.
+         * @returns {promise} A JQuery promise, which resolves with the HTML of the rendered section
+         *     fails with an error message.
+         */
+        staffGradeForm: function() {
+            var url = this.url('render_staff_grade_form');
+            return $.Deferred(function(defer) {
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    dataType: "html"
+                }).done(function(data) {
+                    defer.resolveWith(this, [data]);
+                }).fail(function() {
+                    defer.rejectWith(this, [gettext('The staff grade form could not be loaded.')]);
+                });
+            }).promise();
+        },
+
+        /**
          * Send a submission to the XBlock.
          *
          * @param {string} submission The text of the student's submission.
