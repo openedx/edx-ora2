@@ -167,6 +167,8 @@
         </div>
     </div>
 
+    <!-- Conditional not really required because button will be hidden. -->
+    {% if staff_assessment_required %}
     <div class="openassessment__staff-grading wrapper--staff-grading wrapper--ui-staff is--hidden">
         <div class="staff-grading ui-staff">
             <h2 class="staff-grading__title ui-staff__title">
@@ -175,8 +177,10 @@
             </h2>
 
             <div class="staff-info__content ui-staff__content">
+                {% include "openassessmentblock/staff_area/oa_staff_grade_learners.html" with staff_assessment_ungraded=staff_assessment_ungraded %}
             </div>
 
         </div>
     </div>
+    {% endif %}
 </div>

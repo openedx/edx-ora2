@@ -265,7 +265,7 @@ def get_submission_to_assess(course_id, item_id, scorer_id):
             'attempt_number': 1,
             'submitted_at': datetime.datetime(2014, 1, 29, 23, 14, 52, 649284, tzinfo=<UTC>),
             'created_at': datetime.datetime(2014, 1, 29, 17, 14, 52, 668850, tzinfo=<UTC>),
-            'answer': u'The answer is 42.'
+            'answer': { ... }
         }
 
     """
