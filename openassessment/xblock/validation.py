@@ -159,6 +159,12 @@ def validate_assessments(assessments, current_assessments, is_released, _):
             if assessment_dict.get('algorithm_id') not in ['ease', 'fake']:
                 return (False, _('The "algorithm_id" value must be set to "ease" or "fake"'))
 
+        # Staff grading must be required if it is the only step
+        if assessment_dict.get('name') == 'staff-assessment' and len(assessments) == 1:
+            required = assessment_dict.get('required')
+            if not required: # Captures both None and explicit False cases, both are invalid
+                return (False, _('The "required" value must be true if staff assessment is the only step.'))
+
     if is_released:
         if len(assessments) != len(current_assessments):
             return (False, _("The number of assessments cannot be changed after the problem has been released."))
