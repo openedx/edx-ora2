@@ -356,8 +356,7 @@ class OpenAssessmentBlock(
             "show_staff_area": self.is_course_staff and not self.in_studio_preview,
         }
         template = get_template("openassessmentblock/oa_base.html")
-        context = Context(context_dict)
-        fragment = Fragment(template.render(context))
+        fragment = Fragment(template.render(context_dict))
 
         i18n_service = self.runtime.service(self, 'i18n')
         if hasattr(i18n_service, 'get_language_bidi') and i18n_service.get_language_bidi():
