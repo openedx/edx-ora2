@@ -30,8 +30,8 @@ import dateutil.parser
 import pytz
 
 # This is a bit of a hack to ensure that the root repo directory
-# is in the Python path, so Django can find the settings module.
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+# is in the front of the Python path, so Django can find the settings module.
+sys.path.insert(1,os.path.dirname(os.path.dirname(__file__)))
 import django
 from django.template.context import Context
 from django.template.loader import get_template
@@ -99,7 +99,7 @@ def render_templates(root_dir, template_json):
     for template_dict in template_json:
         template = get_template(template_dict['template'])
         context = parse_dates(template_dict['context'])
-        rendered = template.render(Context(context))
+        rendered = template.render(context)
         output_path = os.path.join(root_dir, template_dict['output'])
 
         try:

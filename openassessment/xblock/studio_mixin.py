@@ -64,7 +64,7 @@ class StudioMixin(object):
         """
         rendered_template = get_template(
             'openassessmentblock/edit/oa_edit.html'
-        ).render(Context(self.editor_context()))
+        ).render(self.editor_context())
         fragment = Fragment(rendered_template)
         if settings.DEBUG:
             self.add_javascript_files(fragment, "static/js/src/oa_shared.js")

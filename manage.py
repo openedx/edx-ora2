@@ -16,6 +16,7 @@ if __name__ == "__main__":
         import logging
         logging.captureWarnings(True)
         sys.argv.append('--noinput')
+        sys.argv.append('--logging-clear-handlers')
 
     from django.core.management import execute_from_command_line
     execute_from_command_line(sys.argv)
