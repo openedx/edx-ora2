@@ -120,8 +120,8 @@
 
         loadStaffGradeForm: function(eventObject) {
             var view = this;
-            var staff_form_element = $(eventObject.currentTarget);
-            var isCollapsed = staff_form_element.hasClass("is--collapsed");
+            var $staffForm = $(eventObject.currentTarget);
+            var isCollapsed = $staffForm.hasClass("is--collapsed");
             var deferred = $.Deferred();
 
             if (isCollapsed && !this.staffGradeFormLoaded) {
@@ -146,7 +146,7 @@
                         // Install a click handler for the submit buttons
                         $('.wrapper--staff-assessment .action--submit', view.element).click(
                             function(eventObject) {
-                                var submissionID = staff_form_element.find('.staff__grade__form').data('submission-uuid');  // This was a change
+                                var submissionID = $staffForm.find('.staff__grade__form').data('submission-uuid');  // This was a change
 
                                 eventObject.preventDefault();
                                 view.submitStaffGradeForm(submissionID, rubric,
