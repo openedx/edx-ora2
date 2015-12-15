@@ -20,26 +20,28 @@ describe('OpenAssessment.StaffAreaView', function() {
     var StubServer = function() {
         this.studentTemplate = 'oa_student_info.html';
         this.staffAreaTemplate = 'oa_staff_area.html';
+        this.staffGradeFormTemplate = 'oa_staff_grade_learners_assessment.html';
 
         // Remember which fragments have been loaded
         this.fragmentsLoaded = [];
+
+        this.mockLoadTemplate = function(template) {
+            var server = this;
+            return $.Deferred(function(defer) {
+                var fragment = readFixtures(template);
+                defer.resolveWith(server, [fragment]);
+            });
+        };
 
         // Render the template for the staff info view
         this.render = function(component) {
             var server = this;
             this.fragmentsLoaded.push(component);
-            return $.Deferred(function(defer) {
-                var fragment = readFixtures(server.staffAreaTemplate);
-                defer.resolveWith(server, [fragment]);
-            });
+            return this.mockLoadTemplate(server.staffAreaTemplate);
         };
 
         this.studentInfo = function() {
-            var server = this;
-            return $.Deferred(function(defer) {
-                var fragment = readFixtures(server.studentTemplate);
-                defer.resolveWith(server, [fragment]);
-            });
+            return this.mockLoadTemplate(server.studentTemplate);
         };
 
         this.scheduleTraining = function() {
@@ -64,8 +66,11 @@ describe('OpenAssessment.StaffAreaView', function() {
             return successPromise;
         };
 
-        this.data = {};
+        this.staffGradeForm = function() {
+            return this.mockLoadTemplate(server.staffGradeFormTemplate);
+        };
 
+        this.data = {};
     };
 
     // Stubs
@@ -74,6 +79,7 @@ describe('OpenAssessment.StaffAreaView', function() {
 
     /**
      * Create a staff area view.
+     *
      * @param {dict} serverResponse An optional fake response from the server.
      * @param {string} staffAreaTemplate - An optional template to use.
      * @returns {OpenAssessment.StaffAreaView} The staff area view.
@@ -95,7 +101,8 @@ describe('OpenAssessment.StaffAreaView', function() {
     /**
      * Initialize the staff area view, then check whether it makes
      * an AJAX call to populate itself.
-     * @param shouldCall True if an AJAX call should be made.
+     *
+     * @param {bool} shouldCall - True if an AJAX call should be made.
      */
     var assertStaffAreaAjaxCall = function(shouldCall) {
         createStaffArea();
@@ -247,7 +254,7 @@ describe('OpenAssessment.StaffAreaView', function() {
         });
     });
 
-    describe('Staff Tools', function() {
+    describe('Manage Individual Learners', function() {
         var chooseStudent = function(view, studentName) {
             var studentNameField = $('.openassessment__student_username', view.element),
                 submitButton = $('.action--submit-username', view.element);
@@ -276,6 +283,15 @@ describe('OpenAssessment.StaffAreaView', function() {
             chooseStudent(staffArea, '');
             expect($('.openassessment_student_info_form .form--error', staffArea.element).text().trim())
                 .toBe('You must provide a learner name.');
+        });
+
+        it('shows an error message when failing to load the student info', function() {
+            var staffArea = createStaffArea();
+            server.studentInfo = failWith(server);
+            chooseStudent(staffArea, 'testStudent');
+            expect($('.openassessment_student_info_form .form--error', staffArea.element).first().text().trim()).toBe(
+                'Unexpected server error.'
+            );
         });
 
         describe('Submission Management', function() {
@@ -400,7 +416,6 @@ describe('OpenAssessment.StaffAreaView', function() {
                 fillAssessment($assessment);
 
                 // Submit the assessment but return a server error message
-                staffArea.comment('Cancellation reason.');
                 server.staffAssess = failWith(server, serverErrorMessage);
                 submitAssessment(staffArea);
 
@@ -410,7 +425,7 @@ describe('OpenAssessment.StaffAreaView', function() {
         });
     });
 
-    describe('Staff Info', function() {
+    describe('View Assignment Statistics', function() {
         beforeEach(function() {
             loadFixtures('oa_base_course_staff.html');
         });
@@ -425,6 +440,109 @@ describe('OpenAssessment.StaffAreaView', function() {
             $('.ui-staff_close_button', $staffInfoPanel).first().click();
             expect($staffInfoButton).not.toHaveClass('is--active');
             expect($staffInfoPanel).toHaveClass('is--hidden');
+        });
+    });
+
+    describe('Grade Available Responses', function() {
+        var showInstructorAssessmentForm = function(staffArea) {
+            $('.staff__grade__control', staffArea.element).click();
+        };
+
+        var fillAssessment = function($assessment) {
+            $('#staff__assessment__rubric__question--2__feedback', $assessment).val('Text response');
+            $('.question__answers', $assessment).each(function() {
+                $('input[type="radio"]', this).first().click();
+            });
+        };
+
+        var submitAssessment = function(staffArea) {
+            var $assessment = $('.wrapper--staff-assessment', staffArea.element),
+                $submitButton = $('.action--submit', $assessment);
+            $submitButton.click();
+        };
+
+        beforeEach(function() {
+            loadFixtures('oa_base_course_staff.html');
+        });
+
+        it('enables both submit buttons when all required fields are specified', function() {
+            var staffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
+                $assessment, $submitButtons;
+            showInstructorAssessmentForm(staffArea);
+            $assessment = $('.wrapper--staff-assessment', staffArea.element);
+            $submitButtons = $('.action--submit', $assessment);
+            expect($submitButtons.length).toBe(2);
+            expect($submitButtons).toHaveClass('is--disabled');
+            fillAssessment($assessment);
+            expect($submitButtons).not.toHaveClass('is--disabled');
+        });
+
+        it('can submit a staff grade', function() {
+            var staffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
+                $assessment, $gradeSection;
+            showInstructorAssessmentForm(staffArea);
+            $assessment = $('.wrapper--staff-assessment', staffArea.element);
+
+            // Verify that the submission is shown for the first user
+            expect($('.staff-assessment__display__title', $assessment).text().trim()).toBe(
+                'Response for: mock_user'
+            );
+
+            // Fill in and submit the assessment
+            fillAssessment($assessment);
+            server.staffGradeFormTemplate = 'oa_staff_grade_learners_assessment_2.html';
+            submitAssessment(staffArea);
+
+            // Verify that the assessment form has been removed
+            expect($('.staff__grade__form', staffArea.element).html().trim()).toBe('');
+        });
+
+        it('can submit a staff grade and receive another submission', function() {
+            var staffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
+                $assessment;
+            showInstructorAssessmentForm(staffArea);
+
+            // Verify that the submission is shown for the first user
+            expect($('.staff-assessment__display__title', staffArea.element).text().trim()).toBe(
+                'Response for: mock_user'
+            );
+
+            // Fill in and click the button to submit and request another submission
+            $assessment = $('.wrapper--staff-assessment', staffArea.element);
+            fillAssessment($assessment);
+            server.staffGradeFormTemplate = 'oa_staff_grade_learners_assessment_2.html';
+            $('.continue_grading--action', $assessment).click();
+
+            // Verify that the submission is shown for the second learner
+            expect($('.staff-assessment__display__title', staffArea.element).text().trim()).toBe(
+                'Response for: mock_user_2'
+            );
+        });
+
+        it('shows an error message when failing to load the staff grade form', function() {
+            var staffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
+                $assessment, $submitButtons;
+            server.staffGradeForm = failWith(server);
+            showInstructorAssessmentForm(staffArea);
+            expect($('.staff__grade__form--error', staffArea.element).first().text().trim()).toBe(
+                'Unexpected server error.'
+            );
+        });
+
+        it('shows an error message when a staff grade request fails', function() {
+            var staffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
+                serverErrorMessage = 'Mock server error',
+                $assessment;
+            showInstructorAssessmentForm(staffArea);
+            $assessment = $('.wrapper--staff-assessment', staffArea.element);
+            fillAssessment($assessment);
+
+            // Submit the assessment but return a server error message
+            server.staffAssess = failWith(server, serverErrorMessage);
+            submitAssessment(staffArea);
+
+            // Verify that the error message is shown
+            expect($('.staff-grade-error', staffArea.element).first().text().trim()).toBe(serverErrorMessage);
         });
     });
 });

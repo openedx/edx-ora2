@@ -116,10 +116,8 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         },
 
         /**
-         * Load the student information section inside the Staff Info section. TODO update
+         * Renders the next submission for staff grading.
          *
-         * @param {string} studentUsername - The username for the student.
-         * @param {object} options - An optional set of configuration options.
          * @returns {promise} A JQuery promise, which resolves with the HTML of the rendered section
          *     fails with an error message.
          */
