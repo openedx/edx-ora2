@@ -684,6 +684,38 @@
         "output": "oa_staff_area.html"
     },
     {
+        "template": "openassessmentblock/staff_area/oa_staff_area.html",
+        "context": {
+            "staff_assessment_required": true,
+            "status_counts": {
+                "self": 1,
+                "peer": 2,
+                "waiting": 3,
+                "done": 4
+            },
+            "num_submissions": 10,
+            "item_id": "test_item",
+            "step_dates": [
+                {
+                    "step": "submission",
+                    "start": "2014-01-01",
+                    "due": "N/A"
+                },
+                {
+                    "step": "peer",
+                    "start": "2014-02-02",
+                    "due": "N/A"
+                },
+                {
+                    "step": "self",
+                    "start": "2014-03-03",
+                    "due": "2015-04-05"
+                }
+            ]
+        },
+        "output": "oa_staff_area_full_grading.html"
+    },
+    {
         "template": "openassessmentblock/staff_area/oa_student_info.html",
         "context": {
             "rubric_criteria": [

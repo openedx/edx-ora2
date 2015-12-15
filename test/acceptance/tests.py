@@ -381,8 +381,6 @@ class StaffAreaTest(OpenAssessmentTest):
         self.assertEqual(self.staff_area_page.selected_button_names, [])
         self.staff_area_page.click_staff_toolbar_button("staff-tools")
         self.assertEqual(self.staff_area_page.selected_button_names, ["MANAGE INDIVIDUAL LEARNERS"])
-        self.staff_area_page.click_staff_toolbar_button("staff-grading")
-        self.assertEqual(self.staff_area_page.selected_button_names, ["GRADE AVAILABLE RESPONSES"])
         self.staff_area_page.click_staff_toolbar_button("staff-info")
         self.assertEqual(self.staff_area_page.selected_button_names, ["VIEW ASSIGNMENT STATISTICS"])
         self.staff_area_page.click_staff_toolbar_button("staff-info")
@@ -393,7 +391,6 @@ class StaffAreaTest(OpenAssessmentTest):
     @ddt.data(
         ("staff-tools", "MANAGE INDIVIDUAL LEARNERS"),
         ("staff-info", "VIEW ASSIGNMENT STATISTICS"),
-        ("staff-grading", "GRADE AVAILABLE RESPONSES"),
     )
     @ddt.unpack
     def test_staff_area_panel(self, panel_name, button_label):

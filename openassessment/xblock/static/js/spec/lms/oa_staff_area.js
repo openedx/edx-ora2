@@ -19,6 +19,7 @@ describe('OpenAssessment.StaffAreaView', function() {
     // Stub server that returns dummy data for the staff info view
     var StubServer = function() {
         this.studentTemplate = 'oa_student_info.html';
+        this.staffAreaTemplate = 'oa_staff_area.html';
 
         // Remember which fragments have been loaded
         this.fragmentsLoaded = [];
@@ -28,7 +29,7 @@ describe('OpenAssessment.StaffAreaView', function() {
             var server = this;
             this.fragmentsLoaded.push(component);
             return $.Deferred(function(defer) {
-                var fragment = readFixtures('oa_staff_area.html');
+                var fragment = readFixtures(server.staffAreaTemplate);
                 defer.resolveWith(server, [fragment]);
             });
         };
@@ -73,12 +74,16 @@ describe('OpenAssessment.StaffAreaView', function() {
 
     /**
      * Create a staff area view.
-     * @param serverResponse An optional fake response from the server.
+     * @param {dict} serverResponse An optional fake response from the server.
+     * @param {string} staffAreaTemplate - An optional template to use.
      * @returns {OpenAssessment.StaffAreaView} The staff area view.
      */
-    var createStaffArea = function(serverResponse) {
+    var createStaffArea = function(serverResponse, staffAreaTemplate) {
         if (serverResponse) {
             server.data = serverResponse;
+        }
+        if (staffAreaTemplate) {
+            server.staffAreaTemplate = staffAreaTemplate;
         }
         var assessmentElement = $('#openassessment').get(0);
         var baseView = new OpenAssessment.BaseView(runtime, assessmentElement, server, {});
@@ -203,6 +208,15 @@ describe('OpenAssessment.StaffAreaView', function() {
 
         it('shows the correct buttons with no panels initially', function() {
             var view = createStaffArea(),
+                $buttons = $('.ui-staff__button', view.element);
+            expect($buttons.length).toBe(2);
+            expect($($buttons[0]).text().trim()).toEqual('Manage Individual Learners');
+            expect($($buttons[1]).text().trim()).toEqual('View Assignment Statistics');
+            expect(getVisibleStaffPanels(view).length).toBe(0);
+        });
+
+        it('shows the correct buttons for full grading with no panels initially', function() {
+            var view = createStaffArea({}, 'oa_staff_area_full_grading.html'),
                 $buttons = $('.ui-staff__button', view.element);
             expect($buttons.length).toBe(3);
             expect($($buttons[0]).text().trim()).toEqual('Manage Individual Learners');
