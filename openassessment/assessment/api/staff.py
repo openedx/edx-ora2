@@ -26,14 +26,14 @@ logger = logging.getLogger("openassessment.assessment.api.staff")
 STAFF_TYPE = "ST"
 
 
-def submitter_is_finished(submission_uuid, requirements):
+def submitter_is_finished(submission_uuid, staff_requirements):
     """
     Determine if the submitter has finished their requirements for staff
     assessment. Always returns True.
 
     Args:
         submission_uuid (str): Not used.
-        requirements (dict): Not used.
+        staff_requirements (dict): Not used.
 
     Returns:
         True
@@ -42,29 +42,38 @@ def submitter_is_finished(submission_uuid, requirements):
     return True
 
 
-def assessment_is_finished(submission_uuid, requirements):
+def assessment_is_finished(submission_uuid, staff_requirements):
     """
     Determine if the staff assessment step of the given submission is completed.
     This checks to see if staff have completed the assessment.
 
     Args:
         submission_uuid (str): The UUID of the submission being graded.
-        requirements (dict): Any variables that may effect this state.
+        staff_requirements (dict): Any variables that may effect this state.
 
     Returns:
         True if a staff assessment has been completed for this submission or if not required.
     """
-    if requirements and requirements.get('staff', {}).get('required', False):
+    # Requirements of None means we can't make any assumptions about the done-ness of this step
+    if staff_requirements is None:
+        return False
+
+    if staff_requirements.get('required', False):
         return bool(get_latest_staff_assessment(submission_uuid))
+
     return True
 
 
-def on_start(submission_uuid):
+def on_init(submission_uuid):
     """
     Create a new staff workflow for a student item and submission.
 
     Creates a unique staff workflow for a student item, associated with a
     submission.
+
+    Note that the staff workflow begins things in on_init() instead of
+    on_start(), because staff shoud be able to access the submission
+    regardless of which state the workflow is currently in.
 
     Args:
         submission_uuid (str): The submission associated with this workflow.
@@ -125,7 +134,7 @@ def on_cancel(submission_uuid):
         raise StaffAssessmentInternalError(error_message)
 
 
-def get_score(submission_uuid, requirements):
+def get_score(submission_uuid, staff_requirements):
     """
     Generate a score based on a completed assessment for the given submission.
     If no assessment has been completed for this submission, this will return
@@ -133,7 +142,7 @@ def get_score(submission_uuid, requirements):
 
     Args:
         submission_uuid (str): The UUID for the submission to get a score for.
-        requirements (dict): Not used.
+        staff_requirements (dict): Not used.
 
     Returns:
         A dictionary with the points earned, points possible,

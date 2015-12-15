@@ -100,7 +100,11 @@ class TestSerializeContent(TestCase):
             "name": "self-assessment",
             "start": '2014-04-01T00:00:00.000000',
             "due": "2014-06-01T00:00:00.92926",
-        }
+        },
+        {
+            "name": "staff-assessment",
+            "required": False,
+        },
     ]
 
     def setUp(self):

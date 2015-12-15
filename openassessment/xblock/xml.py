@@ -569,6 +569,14 @@ def parse_assessments_xml(assessments_root):
             except ValueError:
                 raise UpdateFromXmlError('The "must_be_graded_by" value must be a positive integer.')
 
+        # Assessment required
+        if 'required' in assessment.attrib:
+
+            # Staff assessment is the only type to use an explicit required marker
+            if assessment_dict['name'] != 'staff-assessment':
+                raise UpdateFromXmlError('The "required" field is only allowed for staff assessment.')
+            assessment_dict['required'] = _parse_boolean(unicode(assessment.get('required')))
+
         # Training examples
         examples = assessment.findall('example')
 
@@ -652,6 +660,9 @@ def serialize_assessments(assessments_root, oa_block):
 
         if assessment_dict.get('algorithm_id') is not None:
             assessment.set('algorithm_id', unicode(assessment_dict['algorithm_id']))
+
+        if assessment_dict.get('required') is not None:
+            assessment.set('required', unicode(assessment_dict['required']))
 
         # Training examples
         examples = assessment_dict.get('examples', [])

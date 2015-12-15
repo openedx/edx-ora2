@@ -51,6 +51,9 @@ class OpenAssessmentTest(WebAppTest):
     TEST_COURSE_ID = "course-v1:edx+ORA203+course"
 
     PROBLEM_LOCATIONS = {
+        'staff_only':
+            u'courses/{test_course_id}/courseware/'
+            u'61944efb38a349edb140c762c7419b50/415c3ee1b7d04b58a1887a6fe82b31d6/'.format(test_course_id=TEST_COURSE_ID),
         'self_only':
             u'courses/{test_course_id}/courseware/'
             u'a4dfec19cf9b4a6fb5b18be6ccd9cecc/338a4affb58a45459629e0566291381e/'.format(test_course_id=TEST_COURSE_ID),
@@ -244,6 +247,42 @@ class SelfAssessmentTest(OpenAssessmentTest):
 
         # Click 'Preview in Latex' button & Verify if it was rendered
         self.submission_page.preview_latex()
+
+
+class StaffAssessmentTest(OpenAssessmentTest):
+    """
+    Test the staff-assessment flow.
+    """
+
+    def setUp(self):
+        super(StaffAssessmentTest, self).setUp('staff_only', staff=True)
+
+    @retry()
+    @attr('acceptance')
+    def test_staff_assessment(self):
+        # Set up user and navigate to submission page
+        self.auto_auth_page.visit()
+        username = self.auto_auth_page.get_username()
+        self.submission_page.visit()
+
+        # Verify that staff grade step is shown initially
+        self._verify_staff_grade_section("NOT AVAILABLE", None)
+
+        # User submits a response
+        self.submission_page.submit_response(self.SUBMISSION)
+        self.assertTrue(self.submission_page.has_submitted)
+
+        # Verify staff grade section appears as expected
+        self._verify_staff_grade_section("NOT AVAILABLE", "WAITING FOR A STAFF GRADE")
+
+        # TODO: as part of @cahren's work on TNL-3493, change this section to do a proper full staff grade
+        # The override is a temporary hack for acceptance test advancement.
+        self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
+        self.do_staff_override(username)
+
+        # Switch back to original user, verify staff grade section appears as expected
+        self.staff_asmnt_page.visit()
+        self.staff_asmnt_page.verify_status_value("COMPLETE")
 
 
 class PeerAssessmentTest(OpenAssessmentTest):

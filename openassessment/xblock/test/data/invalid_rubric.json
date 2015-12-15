@@ -88,6 +88,6 @@
             }
         ],
 
-        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment"]
+        "editor_assessments_order": ["student-training", "peer-assessment", "self-assessment", "staff-assessment"]
     }
 }
