@@ -123,19 +123,20 @@
             var $staffForm = $(eventObject.currentTarget);
             var isCollapsed = $staffForm.hasClass("is--collapsed");
             var deferred = $.Deferred();
+            var showFormError = function(errorMessage) {
+                $staffForm.find('.staff__grade__form--error').text(errorMessage);
+            };
 
             if (isCollapsed && !this.staffGradeFormLoaded) {
                 eventObject.preventDefault();
                 this.staffGradeFormLoaded = true;
                 this.server.staffGradeForm().done(function(html) {
-                    // TODO: need to create a div to show an error message if this server call fails.
-                    //showFormError('');
+                    showFormError('');
 
                     // Load the HTML and install event handlers
-                    $('.staff__grade__form', view.element).replaceWith(html);
+                    $staffForm.find('.staff__grade__form').replaceWith(html);
 
-                    // Initialize the rubric : TODO SHARE CODE!
-                    var $rubric = $('.staff-assessment__assessment', view.element);
+                    var $rubric = $staffForm.find('.staff-assessment__assessment');
                     if ($rubric.size() > 0) {
                         var rubricElement = $rubric.get(0);
                         var rubric = new OpenAssessment.Rubric(rubricElement);
@@ -144,26 +145,23 @@
                         rubric.canSubmitCallback($.proxy(view.staffSubmitEnabled, view));
 
                         // Install a click handler for the submit buttons
-                        $('.wrapper--staff-assessment .action--submit', view.element).click(
+                        $staffForm.find('.action--submit').click(
                             function(eventObject) {
-                                // This was a change
                                 var submissionID = $staffForm.find('.staff__grade__form').data('submission-uuid');
                                 eventObject.preventDefault();
                                 view.submitStaffGradeForm(submissionID, rubric,
                                     $(eventObject.currentTarget).hasClass('continue_grading--action')
-                                );  // This was a change
+                                );
                             }
                         );
                     }
                     deferred.resolve();
                 }).fail(function() {
-                    // showFormError(gettext('Unexpected server error.'));
-                    this.staffGradeFormLoaded = false;
+                    showFormError(gettext('Unexpected server error.'));
+                    view.staffGradeFormLoaded = false;
                     deferred.reject();
                 });
-
             }
-
         },
 
         /**
@@ -357,7 +355,7 @@
         },
 
         /**
-         * Enable/disable the staff assessment submit button.
+         * Enable/disable submit button(s) for staff grading or staff override.
          *
          * @param {boolean} enabled If specified, sets the state of the button.
          * @returns {boolean} Whether the button is enabled
