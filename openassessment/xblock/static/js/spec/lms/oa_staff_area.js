@@ -407,7 +407,6 @@ describe('OpenAssessment.StaffAreaView', function() {
                 fillAssessment($assessment);
 
                 // Submit the assessment but return a server error message
-                staffArea.comment('Cancellation reason.');
                 server.staffAssess = failWith(server, serverErrorMessage);
                 submitAssessment(staffArea);
 
@@ -511,6 +510,16 @@ describe('OpenAssessment.StaffAreaView', function() {
             );
         });
 
+        it('shows an error message when failing to load the staff grade form', function() {
+            var staffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
+                $assessment, $submitButtons;
+            server.staffGradeForm = failWith(server);
+            showInstructorAssessmentForm(staffArea);
+            expect($('.staff__grade__form--error', staffArea.element).first().text().trim()).toBe(
+                'Unexpected server error.'
+            );
+        });
+
         it('shows an error message when a staff grade request fails', function() {
             var staffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
                 serverErrorMessage = 'Mock server error',
@@ -520,7 +529,6 @@ describe('OpenAssessment.StaffAreaView', function() {
             fillAssessment($assessment);
 
             // Submit the assessment but return a server error message
-            staffArea.comment('Cancellation reason.');
             server.staffAssess = failWith(server, serverErrorMessage);
             submitAssessment(staffArea);
 
