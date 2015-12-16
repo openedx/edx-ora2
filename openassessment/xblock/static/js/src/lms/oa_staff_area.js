@@ -146,8 +146,8 @@
                         // Install a click handler for the submit buttons
                         $('.wrapper--staff-assessment .action--submit', view.element).click(
                             function(eventObject) {
-                                var submissionID = $staffForm.find('.staff__grade__form').data('submission-uuid');  // This was a change
-
+                                // This was a change
+                                var submissionID = $staffForm.find('.staff__grade__form').data('submission-uuid');
                                 eventObject.preventDefault();
                                 view.submitStaffGradeForm(submissionID, rubric,
                                     $(eventObject.currentTarget).hasClass('continue_grading--action')
@@ -409,7 +409,7 @@
                 rubric.optionsSelected(), rubric.criterionFeedback(), rubric.overallFeedback(), submissionID
             ).done(function() {
                 view.staffGradeFormLoaded = false;
-                var onSuccessCallback = function () {
+                var onSuccessCallback = function() {
                     $('.button-staff-grading').click();
                     if (continueGrading) {
                         $('.staff__grade__title').click();
