@@ -285,6 +285,15 @@ describe('OpenAssessment.StaffAreaView', function() {
                 .toBe('You must provide a learner name.');
         });
 
+        it('shows an error message when failing to load the student info', function() {
+            var staffArea = createStaffArea();
+            server.studentInfo = failWith(server);
+            chooseStudent(staffArea, 'testStudent');
+            expect($('.openassessment_student_info_form .form--error', staffArea.element).first().text().trim()).toBe(
+                'Unexpected server error.'
+            );
+        });
+
         describe('Submission Management', function() {
             it('updates submission cancellation button when comments changes', function() {
                 // Prevent the server's response from resolving,
