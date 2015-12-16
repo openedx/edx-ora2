@@ -319,6 +319,7 @@ class StaffAreaMixin(object):
         """
         anonymous_user_id = None
         student_item = None
+        submissions = None
         submission = None
         submission_uuid = None
 

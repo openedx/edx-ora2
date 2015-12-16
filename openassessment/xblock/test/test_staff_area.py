@@ -431,6 +431,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         path, context = xblock.get_staff_path_and_context()
         self.assertEquals('openassessmentblock/staff_area/oa_staff_area.html', path)
         self.assertTrue(context['display_schedule_training'])
+        self._verify_staff_assessment_context(context, False)
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @scenario('data/example_based_assessment.xml', user_id='Bob')
@@ -607,6 +608,39 @@ class TestCourseStaff(XBlockHandlerTestCase):
         resp = self.request(xblock, 'cancel_submission', json.dumps(params), response_format='json')
         self.assertIn("The learner submission has been removed from peer", resp['msg'])
         self.assertEqual(True, resp['success'])
+
+    @scenario('data/staff_grade_scenario.xml', user_id='Bob')
+    def test_staff_grade_counts(self, xblock):
+        _, context = xblock.get_staff_path_and_context()
+        self._verify_staff_assessment_context(context, True, 0, 0)
+
+        # Simulate that we are course staff
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+
+        bob_item = STUDENT_ITEM.copy()
+        bob_item["item_id"] = xblock.scope_ids.usage_id
+        # Create a submission for Bob, and corresponding workflow.
+        self._create_submission(bob_item, {'text': "Bob Answer"}, [])
+
+        # Verify the count as shown in the staff grading tool.
+        _, context = xblock.get_staff_path_and_context()
+        self._verify_staff_assessment_context(context, True, 1, 0)
+
+        # Check out the assessment for grading and ensure that the count changes.
+        self.request(xblock, 'render_staff_grade_form', json.dumps({}))
+        _, context = xblock.get_staff_path_and_context()
+        self._verify_staff_assessment_context(context, True, 0, 1)
+
+    def _verify_staff_assessment_context(self, context, required, ungraded=None, in_progress=None):
+        self.assertEquals(required, context['staff_assessment_required'])
+        if not required:
+            self.assertNotIn('staff_assessment_ungraded', context)
+            self.assertNotIn('staff_assessment_in_progress', context)
+        else:
+            self.assertEqual(ungraded, context['staff_assessment_ungraded'])
+            self.assertEqual(in_progress, context['staff_assessment_in_progress'])
 
     def _create_mock_runtime(
             self,
