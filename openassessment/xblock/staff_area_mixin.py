@@ -78,6 +78,7 @@ def require_course_staff(error_key, with_json_handler=False):
             permission_errors = {
                 "STAFF_AREA": xblock._(u"You do not have permission to access the ORA staff area"),
                 "STUDENT_INFO": xblock._(u"You do not have permission to access ORA learner information."),
+                "STUDENT_GRADE": xblock._(u"You do not have permission to access ORA staff grading."),
             }
 
             if not xblock.is_course_staff and with_json_handler:
@@ -234,19 +235,15 @@ class StaffAreaMixin(object):
             return self.render_assessment(path, context)
 
         except PeerAssessmentInternalError:
-            return self.render_error(self._(u"Error finding assessment workflow cancellation."))  # TODO: this error is too specific
+            return self.render_error(self._(u"Error getting learner information."))
 
     @XBlock.handler
-    @require_course_staff("STUDENT_INFO")   # TODO: should this be a different "permission"?
+    @require_course_staff("STUDENT_GRADE")
     def render_staff_grade_form(self, data, suffix=''):  # pylint: disable=W0613
         """
-        Renders all relative information for a specific student's workflow.  TODO update
-
-        Given a student's username, we can render a staff-only section of the page
-        with submissions and assessments specific to the student.
+        Renders a form to staff-grade the next available learner submission.
 
         Must be course staff to render this view.
-
         """
         try:
             student_item_dict = self.get_student_item_dict()
@@ -254,7 +251,10 @@ class StaffAreaMixin(object):
             item_id = student_item_dict.get('item_id')
             staff_id = student_item_dict['student_id']
 
+            # Note that this will check out a submission for grading by the specified staff member.
+            # If no submissions are available for graidng, will reutrn None.
             submission_to_assess = staff_api.get_submission_to_assess(course_id, item_id, staff_id)
+
             if submission_to_assess is not None:
                 submission = submission_api.get_submission_and_student(submission_to_assess['uuid'])
                 if submission:
@@ -264,36 +264,40 @@ class StaffAreaMixin(object):
                     )
                     path = 'openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html'
                     return self.render_assessment(path, submission_context)
+                else:
+                    return self.render_error(self._(u"Error loading the checked out learner response."))
             else:
-                return self.render_error(self._(u"No more assessments can be graded at this time."))
+                return self.render_error(self._(u"No more learner responses can be graded at this time."))
 
         except PeerAssessmentInternalError:
-            return self.render_error(self._(u"Error finding assessment workflow cancellation."))     # TODO Update!
+            return self.render_error(self._(u"Error getting staff grade information."))
 
     def get_student_submission_context(self, student_username, submission):
         """
-        TODO: update!
-        Get the proper path and context for rendering the student info
-        section of the staff area.
+        Get a context dict for rendering a student submission and associated rubric (for staff grading).
+        Includes submission (populating submitted file information if relevant), rubric_criteria,
+        and student_username.
 
         Args:
             student_username (unicode): The username of the student to report.
+            submission (object): A submission, as returned by the submission_api.
 
+        Returns:
+            A context dict for rendering a student submission and associated rubric (for staff grading).
         """
-        if submission:
-            if 'file_key' in submission.get('answer', {}):
-                file_key = submission['answer']['file_key']
+        if submission and 'file_key' in submission.get('answer', {}):
+            file_key = submission['answer']['file_key']
 
-                try:
-                    submission['file_url'] = file_api.get_download_url(file_key)
-                except file_exceptions.FileUploadError:
-                    # Log the error, but do not prevent the rest of the student info
-                    # from being displayed.
-                    msg = (
-                        u"Could not retrieve image URL for staff debug page.  "
-                        u"The learner username is '{student_username}', and the file key is {file_key}"
-                    ).format(student_username=student_username, file_key=file_key)
-                    logger.exception(msg)
+            try:
+                submission['file_url'] = file_api.get_download_url(file_key)
+            except file_exceptions.FileUploadError:
+                # Log the error, but do not prevent the rest of the student info
+                # from being displayed.
+                msg = (
+                    u"Could not retrieve image URL for staff debug page.  "
+                    u"The learner username is '{student_username}', and the file key is {file_key}"
+                ).format(student_username=student_username, file_key=file_key)
+                logger.exception(msg)
 
         context = {
             'submission': create_submission_dict(submission, self.prompts) if submission else None,
@@ -315,8 +319,8 @@ class StaffAreaMixin(object):
         """
         anonymous_user_id = None
         student_item = None
-        submission_uuid = None
         submission = None
+        submission_uuid = None
 
         if student_username:
             anonymous_user_id = self.get_anonymous_user_id(student_username, self.course_id)
@@ -326,6 +330,8 @@ class StaffAreaMixin(object):
             # If there is a submission available for the requested student, present
             # it. If not, there will be no other information to collect.
             submissions = submission_api.get_submissions(student_item, 1)
+
+        if submissions:
             submission = submissions[0]
             submission_uuid = submission['uuid']
 
