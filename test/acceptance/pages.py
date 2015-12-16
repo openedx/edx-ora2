@@ -462,6 +462,13 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         panels = self.q(css=self._bounded_selector(".wrapper--ui-staff"))
         return [panel.get_attribute('class') for panel in panels if u'is--hidden' not in panel.get_attribute('class')]
 
+    def is_button_visible(self, button_name):
+        """
+        Returns True if button_name is visible, else False
+        """
+        button = self.q(css=self._bounded_selector(".button-{button_name}".format(button_name=button_name)))
+        return button.is_present()
+
     def click_staff_toolbar_button(self, button_name):
         """
         Presses the button to show the panel with the specified name.
@@ -490,6 +497,50 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         submit_button = self.q(css=self._bounded_selector(".action--submit-username"))
         submit_button.first.click()
         self.wait_for_element_visibility(".staff-info__student__report", "Student report is present")
+
+    def expand_staff_grading_section(self):
+        """
+        Clicks the staff grade control to expand staff grading section for use in staff required workflows.
+        """
+        self.click_staff_toolbar_button("staff-grading")
+        self.q(css=self._bounded_selector(".staff__grade__show-form")).first.click()
+        self.wait_for_element_visibility("#staff__assessment__rubric__question--0__0", "staff grading is present")
+
+    @property
+    def available_checked_out_numbers(self):
+        """
+        Gets "N available and M checked out" information from staff grading sections.
+        Returns tuple of (N, M)
+        """
+        if not 'GRADE AVAILABLE RESPONSES' in self.selected_button_names:
+            self.expand_staff_grading_section()
+        raw_string = self.q(css=self._bounded_selector(".staff__grade__value")).text[0]
+        ret = tuple(int(s) for s in raw_string.split() if s.isdigit())
+        if len(ret) != 2:
+            raise PageConfigurationError("Unable to parse available and checked out numbers")
+        return ret
+
+    def verify_available_checked_out_numbers(self, expected_value):
+        """
+        Waits until the expected value for available and checked out numbers appears. If it does not appear, fails the test.
+
+        expected_value should be a tuple as described in the available_checked_out_numbers property above.
+        """
+        EmptyPromise(
+            lambda: self.available_checked_out_numbers == expected_value,
+            "Expected avaiable and checked out values present"
+        ).fulfill()
+
+    def submissions_available(self):
+        """
+        Utility method to check if there are any more learner responses to grade in the staff grading section.
+        """
+        found = self.q(
+            css=self._bounded_selector(".staff__grade__content")
+        )
+        if found.text[0] == "No other learner responses are available for grading at this time.":
+            return False
+        return True
 
     @property
     def learner_report_text(self):
@@ -557,11 +608,24 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
             css=self._bounded_selector(".staff-info__student__response .ui-toggle-visibility__content")
         ).text[0]
 
-    def submit_assessment(self):
+    def staff_assess(self, options_selected, continue_after=False):
+        for criterion_num, option_num in enumerate(options_selected):
+            sel = "#staff__assessment__rubric__question--{criterion_num}__{option_num}".format(
+                assessment_type="staff",
+                criterion_num=criterion_num,
+                option_num=option_num
+            )
+            self.q(css=self._bounded_selector(sel)).first.click()
+        self.submit_assessment(continue_after)
+
+    def submit_assessment(self, continue_after=False):
         """
         Submit a staff assessment of the problem.
         """
-        self.submit(button_css=".wrapper--staff-assessment .action--submit")
+        filter_text = "Submit assessment"
+        if continue_after:
+            filter_text += " and continue grading"
+        self.q(css=self._bounded_selector("button.action--submit")).filter(text=filter_text).first.click()
 
     def cancel_submission(self):
         """

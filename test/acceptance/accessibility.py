@@ -98,10 +98,10 @@ class StaffAreaA11yTest(OpenAssessmentA11yTest):
     """
     Test the accessibility of the staff area.
 
-    This is testing a problem with "self assessment only".
+    This is testing a problem with "staff assessment only".
     """
     def setUp(self):
-        super(StaffAreaA11yTest, self).setUp('self_only', staff=True)
+        super(StaffAreaA11yTest, self).setUp('staff_only', staff=True)
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
     def test_staff_tools_panel(self):
@@ -120,12 +120,26 @@ class StaffAreaA11yTest(OpenAssessmentA11yTest):
         self.staff_area_page.click_staff_toolbar_button("staff-info")
         self._check_a11y(self.staff_area_page)
 
+    def test_staff_grading_panel(self):
+        """
+        Check the accessibility of the "Staff Grading" panel
+        """
+        self.submission_page.visit().submit_response(self.SUBMISSION)
+        self.assertTrue(self.submission_page.has_submitted)
+
+        self.staff_area_page.visit()
+        self.staff_area_page.expand_staff_grading_section()
+        self._check_a11y(self.staff_area_page)
+
     def test_learner_info(self):
         """
         Check the accessibility of the learner information sections of the "Staff Tools" panel.
         """
-        # Create an assessment for a user.
-        username = self.do_self_assessment()
+        self.auto_auth_page.visit()
+        username = self.auto_auth_page.get_username()
+
+        self.submission_page.visit().submit_response(self.SUBMISSION)
+        self.assertTrue(self.submission_page.has_submitted)
 
         self.staff_area_page.visit()
 
@@ -139,24 +153,14 @@ class StaffAreaA11yTest(OpenAssessmentA11yTest):
         """
         Check the accessibility of the Staff Grade section, as shown to the learner.
         """
-        self.auto_auth_page.visit()
-        username = self.auto_auth_page.get_username()
         self.submission_page.visit().submit_response(self.SUBMISSION)
         self.assertTrue(self.submission_page.has_submitted)
 
-        # Submit a staff override
-        self.staff_area_page.visit()
-        self.staff_area_page.show_learner(username)
-        self.staff_area_page.expand_learner_report_sections()
-        self.staff_area_page.assess("staff", self.STAFF_OVERRIDE_OPTIONS_SELECTED)
+        self.do_staff_assessment(options_selected=self.STAFF_OVERRIDE_OPTIONS_SELECTED)
 
-        # Refresh the page, and learner completes a self-assessment.
-        # Then verify accessibility of the Staff Grade section (marked Complete).
+        # Refresh the page, then verify accessibility of the Staff Grade section (marked Complete).
         self.browser.refresh()
-        self.self_asmnt_page.wait_for_page().wait_for_response()
-        self.self_asmnt_page.assess("self", self.OPTIONS_SELECTED).wait_for_complete()
-        self.assertTrue(self.self_asmnt_page.is_complete)
-        self._verify_staff_grade_section(self.STAFF_OVERRIDE_EXISTS, None)
+        self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS, None)
 
         self._check_a11y(self.staff_asmnt_page)
 
@@ -169,7 +173,7 @@ class FullWorkflowA11yTest(OpenAssessmentA11yTest, FullWorkflowMixin):
     """
 
     def setUp(self):
-        super(FullWorkflowA11yTest, self).setUp('full_workflow', staff=True)
+        super(FullWorkflowA11yTest, self).setUp('full_workflow_staff_override', staff=True)
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
     def test_training_peer_self_staff_override(self):
