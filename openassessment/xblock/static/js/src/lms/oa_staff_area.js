@@ -55,9 +55,9 @@
          */
         loadStudentInfo: function(options) {
             var view = this;
-            var $staffTools = $('.openassessment__staff-tools', this.element);
-            var $form = $staffTools.find('.openassessment_student_info_form');
-            var studentUsername = $staffTools.find('.openassessment__student_username').val();
+            var $manageLearnersTab = $('.openassessment__staff-tools', this.element);
+            var $form = $manageLearnersTab.find('.openassessment_student_info_form');
+            var studentUsername = $manageLearnersTab.find('.openassessment__student_username').val();
             var showFormError = function(errorMessage) {
                 $form.find('.form--error').text(errorMessage);
             };
@@ -75,34 +75,33 @@
                     $('.openassessment__student-info', view.element).replaceWith(html);
 
                     // Install key handler for cancel submission button.
-                    $staffTools.on('click', '.action--submit-cancel-submission', function(eventObject) {
+                    $manageLearnersTab.on('click', '.action--submit-cancel-submission', function(eventObject) {
                         eventObject.preventDefault();
                         view.cancelSubmission($(this).data('submission-uuid'));
                     });
 
                     // Install change handler for textarea (to enable cancel submission button)
                     var handleChange = function(eventData) { view.handleCommentChanged(eventData); };
-                    $staffTools.find('.cancel_submission_comments')
-                        .on('change keyup drop paste', handleChange);
+                    $manageLearnersTab.find('.cancel_submission_comments').on('change keyup drop paste', handleChange);
 
                     // Initialize the rubric
-                    var $rubric = $('.staff-assessment__assessment', view.element);
+                    var $rubric = $manageLearnersTab.find('.staff-assessment__assessment');
                     if ($rubric.size() > 0) {
                         var rubricElement = $rubric.get(0);
                         var rubric = new OpenAssessment.Rubric(rubricElement);
 
                         // Install a change handler for rubric options to enable/disable the submit button
-                        rubric.canSubmitCallback($.proxy(view.staffSubmitEnabled, view));
+                        rubric.canSubmitCallback($.proxy(view.staffSubmitEnabled, view, $manageLearnersTab));
 
                         // Install a click handler for the submit button
-                        $('.wrapper--staff-assessment .action--submit', view.element).click(
+                        $manageLearnersTab.find('.wrapper--staff-assessment .action--submit', view.element).click(
                             function(eventObject) {
                                 var target = $(eventObject.currentTarget),
                                     rootElement = target.closest('.openassessment__student-info'),
                                     submissionID = rootElement.data('submission-uuid');
 
                                 eventObject.preventDefault();
-                                view.submitStaffAssessment(submissionID, rubric);
+                                view.submitStaffOverride(submissionID, rubric, $manageLearnersTab);
                             }
                         );
                     }
@@ -120,11 +119,11 @@
 
         loadStaffGradeForm: function(eventObject) {
             var view = this;
-            var $staffForm = $(eventObject.currentTarget);
-            var isCollapsed = $staffForm.hasClass("is--collapsed");
+            var $staffGradeTab = $('.openassessment__staff-grading', this.element);
+            var isCollapsed = $(eventObject.currentTarget).hasClass("is--collapsed");
             var deferred = $.Deferred();
             var showFormError = function(errorMessage) {
-                $staffForm.find('.staff__grade__form--error').text(errorMessage);
+                $staffGradeTab.find('.staff__grade__form--error').text(errorMessage);
             };
 
             if (isCollapsed && !this.staffGradeFormLoaded) {
@@ -134,22 +133,22 @@
                     showFormError('');
 
                     // Load the HTML and install event handlers
-                    $staffForm.find('.staff__grade__form').replaceWith(html);
+                    $staffGradeTab.find('.staff__grade__form').replaceWith(html);
 
-                    var $rubric = $staffForm.find('.staff-assessment__assessment');
+                    var $rubric = $staffGradeTab.find('.staff-assessment__assessment');
                     if ($rubric.size() > 0) {
                         var rubricElement = $rubric.get(0);
                         var rubric = new OpenAssessment.Rubric(rubricElement);
 
                         // Install a change handler for rubric options to enable/disable the submit button
-                        rubric.canSubmitCallback($.proxy(view.staffSubmitEnabled, view));
+                        rubric.canSubmitCallback($.proxy(view.staffSubmitEnabled, view, $staffGradeTab));
 
                         // Install a click handler for the submit buttons
-                        $staffForm.find('.action--submit').click(
+                        $staffGradeTab.find('.wrapper--staff-assessment .action--submit').click(
                             function(eventObject) {
-                                var submissionID = $staffForm.find('.staff__grade__form').data('submission-uuid');
+                                var submissionID = $staffGradeTab.find('.staff__grade__form').data('submission-uuid');
                                 eventObject.preventDefault();
-                                view.submitStaffGradeForm(submissionID, rubric,
+                                view.submitStaffGrade(submissionID, rubric, $staffGradeTab,
                                     $(eventObject.currentTarget).hasClass('continue_grading--action')
                                 );
                             }
@@ -357,11 +356,13 @@
         /**
          * Enable/disable submit button(s) for staff grading or staff override.
          *
+         * @param {element} scope An ancestor element for the submit button (to allow for shared
+         *     classes in different form).
          * @param {boolean} enabled If specified, sets the state of the button.
          * @returns {boolean} Whether the button is enabled
          */
-        staffSubmitEnabled: function(enabled) {
-            var button = $('.wrapper--staff-assessment .action--submit', this.element);
+        staffSubmitEnabled: function(scope, enabled) {
+            var button = scope.find('.wrapper--staff-assessment .action--submit');
             if (typeof enabled === 'undefined') {
                 return !button.hasClass('is--disabled');
             } else {
@@ -371,53 +372,72 @@
         },
 
         /**
-         * Submit the staff assessment.
+         * Submit the staff assessment override.
          *
          * @param {string} submissionID The ID of the submission to be submitted.
          * @param {element} rubric The rubric element to be assessed.
+         * @param {element} scope An ancestor element for the submit button (to allow for shared
+         *     classes in different form).
          */
-        submitStaffAssessment: function(submissionID, rubric) {
-            // Send the assessment to the server
+        submitStaffOverride: function(submissionID, rubric, scope) {
             var view = this;
-            view.staffSubmitEnabled(false);
-
-            this.server.staffAssess(
-                rubric.optionsSelected(), rubric.criterionFeedback(), rubric.overallFeedback(), submissionID
-            ).done(function() {
+            var successCallback = function() {
                 // Note: we ignore any message returned from the server and instead
                 // re-render the student info with the "Learner's Final Grade"
                 // section expanded. This section will show the learner's
                 // final grade and in the future should include details of
                 // the staff override itself.
                 view.loadStudentInfo({expanded_view: 'final-grade'});
-            }).fail(function(errorMessage) {
-                // TODO: check how this renders Andy!
-                $('.staff-override-error', this.element).html(_.escape(errorMessage));
-                view.staffSubmitEnabled(true);
-            });
+            };
+            this.callStaffAssess(submissionID, rubric, scope, successCallback, '.staff-override-error');
         },
 
-        // Can some version of this method be shared with submitStaffAssessment?
-        submitStaffGradeForm: function(submissionID, rubric, continueGrading) {
-            // Send the assessment to the server
+        /**
+         * Submit the staff grade, and check out another learner for grading if continueGrading is true.
+         *
+         * @param {string} submissionID The ID of the submission to be submitted.
+         * @param {element} rubric The rubric element to be assessed.
+         * @param {element} scope An ancestor element for the submit button (to allow for shared
+         *     classes in different form).
+         * @param {boolean} continueGrading If true, another learner will be marked as "In Progress",
+         *     and a new grading form will be rendered with the learner's answer.
+         */
+        submitStaffGrade: function(submissionID, rubric, scope, continueGrading) {
             var view = this;
-            view.staffSubmitEnabled(false);
+            var successCallback = function() {
+                view.staffGradeFormLoaded = false;
+                var showFullGradeTab = function() {
+                    // Need to show the staff grade component again, unfortunately requiring a global selector.
+                    $('.button-staff-grading').click();
+                    if (continueGrading) {
+                        $('.staff__grade__title', view.element).click();
+                    }
+                };
+                view.load(showFullGradeTab);
+            };
+            this.callStaffAssess(submissionID, rubric, scope, successCallback, '.staff-grade-error');
+        },
+
+        /**
+         * Make the server call to submit the staff assessment.
+         *
+         * @param {string} submissionID The ID of the submission to be submitted.
+         * @param {element} rubric The rubric element to be assessed.
+         * @param {element} scope An ancestor element for the submit button (to allow for shared
+         *     classes in different form).
+         * @param {function} successCallback A function to execute on success.
+         * @param {string} errorSelector a CSS class selector for displaying error messages.
+         */
+        callStaffAssess: function(submissionID, rubric, scope, successCallback, errorSelector) {
+            var view = this;
+            view.staffSubmitEnabled(scope, false);
 
             this.server.staffAssess(
                 rubric.optionsSelected(), rubric.criterionFeedback(), rubric.overallFeedback(), submissionID
-            ).done(function() {
-                view.staffGradeFormLoaded = false;
-                var onSuccessCallback = function() {
-                    $('.button-staff-grading').click();
-                    if (continueGrading) {
-                        $('.staff__grade__title').click();
-                    }
-                };
-                view.load(onSuccessCallback);
-            }).fail(function(errorMessage) {
+            ).done(successCallback).fail(function(errorMessage) {
                 // TODO: this needs styling help Andy!
-                $('.staff-grade-error', this.element).html(_.escape(errorMessage));
-                view.staffSubmitEnabled(true);
+                scope.find(errorSelector).html(_.escape(errorMessage));
+                view.staffSubmitEnabled(scope, true);
             });
         }
     };

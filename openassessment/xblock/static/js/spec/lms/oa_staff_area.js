@@ -355,9 +355,12 @@ describe('OpenAssessment.StaffAreaView', function() {
                 });
             };
 
+            var getAssessment = function(staffArea) {
+                return $('.openassessment__staff-tools .wrapper--staff-assessment', staffArea.element);
+            };
+
             var submitAssessment = function(staffArea) {
-                var $assessment = $('.wrapper--staff-assessment', staffArea.element),
-                    $submitButton = $('.action--submit', $assessment);
+                var $submitButton = $('.action--submit', getAssessment(staffArea.element));
                 $submitButton.click();
             };
 
@@ -365,7 +368,7 @@ describe('OpenAssessment.StaffAreaView', function() {
                 var staffArea = createStaffArea(),
                     $assessment, $submitButton;
                 chooseStudent(staffArea, 'testStudent');
-                $assessment = $('.wrapper--staff-assessment', staffArea.element);
+                $assessment = getAssessment(staffArea.element);
                 $submitButton = $('.action--submit', $assessment);
                 expect($submitButton).toHaveClass('is--disabled');
                 fillAssessment($assessment);
@@ -385,7 +388,7 @@ describe('OpenAssessment.StaffAreaView', function() {
                 );
 
                 // Fill in and submit the assessment
-                $assessment = $('.wrapper--staff-assessment', staffArea.element);
+                $assessment = getAssessment(staffArea.element);
                 fillAssessment($assessment);
                 server.studentTemplate = 'oa_staff_graded_submission.html';
                 submitAssessment(staffArea);
@@ -403,7 +406,7 @@ describe('OpenAssessment.StaffAreaView', function() {
                     serverErrorMessage = 'Mock server error',
                     $assessment;
                 chooseStudent(staffArea, 'testStudent');
-                $assessment = $('.wrapper--staff-assessment', staffArea.element);
+                $assessment = getAssessment(staffArea.element);
                 fillAssessment($assessment);
 
                 // Submit the assessment but return a server error message
@@ -446,9 +449,12 @@ describe('OpenAssessment.StaffAreaView', function() {
             });
         };
 
+        var getAssessment = function(staffArea) {
+            return $('.openassessment__staff-grading .wrapper--staff-assessment', staffArea.element);
+        };
+
         var submitAssessment = function(staffArea) {
-            var $assessment = $('.wrapper--staff-assessment', staffArea.element),
-                $submitButton = $('.action--submit', $assessment);
+            var $submitButton = $('.action--submit', getAssessment(staffArea.element));
             $submitButton.click();
         };
 
@@ -460,7 +466,7 @@ describe('OpenAssessment.StaffAreaView', function() {
             var staffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
                 $assessment, $submitButtons;
             showInstructorAssessmentForm(staffArea);
-            $assessment = $('.wrapper--staff-assessment', staffArea.element);
+            $assessment = getAssessment(staffArea.element);
             $submitButtons = $('.action--submit', $assessment);
             expect($submitButtons.length).toBe(2);
             expect($submitButtons).toHaveClass('is--disabled');
@@ -472,7 +478,7 @@ describe('OpenAssessment.StaffAreaView', function() {
             var staffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
                 $assessment, $gradeSection;
             showInstructorAssessmentForm(staffArea);
-            $assessment = $('.wrapper--staff-assessment', staffArea.element);
+            $assessment = getAssessment(staffArea.element);
 
             // Verify that the submission is shown for the first user
             expect($('.staff-assessment__display__title', $assessment).text().trim()).toBe(
@@ -499,7 +505,7 @@ describe('OpenAssessment.StaffAreaView', function() {
             );
 
             // Fill in and click the button to submit and request another submission
-            $assessment = $('.wrapper--staff-assessment', staffArea.element);
+            $assessment = getAssessment(staffArea.element);
             fillAssessment($assessment);
             server.staffGradeFormTemplate = 'oa_staff_grade_learners_assessment_2.html';
             $('.continue_grading--action', $assessment).click();
@@ -525,7 +531,7 @@ describe('OpenAssessment.StaffAreaView', function() {
                 serverErrorMessage = 'Mock server error',
                 $assessment;
             showInstructorAssessmentForm(staffArea);
-            $assessment = $('.wrapper--staff-assessment', staffArea.element);
+            $assessment = getAssessment(staffArea.element);
             fillAssessment($assessment);
 
             // Submit the assessment but return a server error message
