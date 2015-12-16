@@ -157,15 +157,13 @@
 
 }
 
-// staff grade header
-
+// Styling for staff grade tab ("Grade Available Responses").
 .ui-staff {
   .staff__grade__control {
     padding: 0 (3*$baseline-h/4);
     border-top: ($baseline-v/4) solid $color-decorative-tertiary;
     background: $bg-content;
 
-    // step title
     h3.staff__grade__title {
       @include text-align(left);
       @include float(none);
@@ -174,14 +172,13 @@
       display: block;
       width: 100%;
 
-      .staff__grade__label {
+      .staff__grade__show-form {
         @extend %t-superheading;
         text-transform: none;
         letter-spacing: normal;
       }
     }
 
-    // staff grade status
     .staff__grade__status {
       display: inline-block;
       margin-top: ($baseline-v/4);
@@ -241,8 +238,8 @@
     }
   }
 
-   // Override the default color for h3 (for elements that can be toggled).
-  .ui-toggle-visibility .ui-toggle-visibility__control .staff__grade__title{
+  // Override the default color for h3 (for elements that can be toggled).
+  .ui-toggle-visibility .ui-toggle-visibility__control .staff__grade__title {
     color: $action-primary-color;
   }
 }

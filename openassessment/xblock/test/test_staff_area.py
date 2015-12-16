@@ -608,6 +608,88 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIn("The learner submission has been removed from peer", resp['msg'])
         self.assertEqual(True, resp['success'])
 
+    @scenario('data/staff_grade_scenario.xml', user_id='Bob')
+    def test_staff_assessment_counts(self, xblock):
+        """
+        Verify the staff assessment counts (ungraded and checked out)
+        as shown in the staff grading tool when staff assessment is required.
+        """
+        _, context = xblock.get_staff_path_and_context()
+        self._verify_staff_assessment_context(context, True, 0, 0)
+
+        # Simulate that we are course staff
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+
+        bob_item = STUDENT_ITEM.copy()
+        bob_item["item_id"] = xblock.scope_ids.usage_id
+        # Create a submission for Bob, and corresponding workflow.
+        self._create_submission(bob_item, {'text': "Bob Answer"}, [])
+
+        # Verify the count as shown in the staff grading tool.
+        _, context = xblock.get_staff_path_and_context()
+        self._verify_staff_assessment_context(context, True, 1, 0)
+
+        # Check out the assessment for grading and ensure that the count changes.
+        self.request(xblock, 'render_staff_grade_form', json.dumps({}))
+        _, context = xblock.get_staff_path_and_context()
+        self._verify_staff_assessment_context(context, True, 0, 1)
+
+    @scenario('data/example_based_assessment.xml', user_id='Bob')
+    def test_staff_assessment_counts_not_required(self, xblock):
+        """
+        Verify the staff assessment counts (ungraded and checked out) are
+        not present in the context when staff assessment is not required.
+        """
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, True, "Bob"
+        )
+        _, context = xblock.get_staff_path_and_context()
+        self._verify_staff_assessment_context(context, False)
+
+    @scenario('data/staff_grade_scenario.xml', user_id='Bob')
+    def test_staff_assessment_form(self, xblock):
+        """
+        Smoke test that the staff assessment form renders when staff assessment
+        is required.
+        """
+        permission_denied = "You do not have permission to access ORA staff grading."
+        no_submissions_available = "No other learner responses are available for grading at this time."
+        submission_text = "Grade me, please!"
+
+        resp = self.request(xblock, 'render_staff_grade_form', json.dumps({})).decode('utf-8')
+        self.assertIn(permission_denied, resp)
+        self.assertNotIn(no_submissions_available, resp)
+
+        # Simulate that we are course staff
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+
+        resp = self.request(xblock, 'render_staff_grade_form', json.dumps({})).decode('utf-8')
+        self.assertNotIn(permission_denied, resp)
+        self.assertIn(no_submissions_available, resp)
+        self.assertNotIn(submission_text, resp)
+
+        bob_item = STUDENT_ITEM.copy()
+        bob_item["item_id"] = xblock.scope_ids.usage_id
+        # Create a submission for Bob, and corresponding workflow.
+        self._create_submission(bob_item, {'text': submission_text}, [])
+
+        resp = self.request(xblock, 'render_staff_grade_form', json.dumps({})).decode('utf-8')
+        self.assertNotIn(no_submissions_available, resp)
+        self.assertIn(submission_text, resp)
+
+    def _verify_staff_assessment_context(self, context, required, ungraded=None, in_progress=None):
+        self.assertEquals(required, context['staff_assessment_required'])
+        if not required:
+            self.assertNotIn('staff_assessment_ungraded', context)
+            self.assertNotIn('staff_assessment_in_progress', context)
+        else:
+            self.assertEqual(ungraded, context['staff_assessment_ungraded'])
+            self.assertEqual(in_progress, context['staff_assessment_in_progress'])
+
     def _create_mock_runtime(
             self,
             item_id,

@@ -25,7 +25,7 @@
                     </div>
 
                     <form class="staff-assessment__assessment" method="post">
-                        {% include "openassessmentblock/oa_rubric.html" with rubric_type="staff" rubric_feedback_prompt="(Optional) What aspects of this response stood out to you? What did it do well? How could it improve?" rubric_feedback_default_text="I noticed that this response..." %}
+                        {% include "openassessmentblock/oa_rubric.html" with rubric_type="staff" %}
                     </form>
                 </article>
             </div>
@@ -39,7 +39,7 @@
                 <ul class="list list--actions">
                     <li class="list--actions__item">
                         <button type="submit" class="action action--submit is--disabled">
-                            <span class="copy">{% trans "Submit your assessment" %}</span>
+                            <span class="copy">{% trans "Submit assessment" %}</span>
                         </button>
 
                         <div class="staff-override-error"></div>

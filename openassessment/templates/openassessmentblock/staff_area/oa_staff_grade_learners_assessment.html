@@ -4,11 +4,11 @@
     {% block body %}
     <div class="staff__grade__form ui-toggle-visibility__content" data-submission-uuid="{{ submission.uuid }}">
         <div class="wrapper--staff-assessment">
-            <div class="step__instruction">
+            <div>
                 <p>{% trans "Give this learner a grade using the problem's rubric." %}</p>
             </div>
 
-            <div class="step__content">
+            <div>
                 <article class="staff-assessment">
                     <div class="staff-assessment__display">
                         <header class="staff-assessment__display__header">
@@ -25,12 +25,12 @@
                     </div>
 
                     <form class="staff-assessment__assessment" method="post">
-                        {% include "openassessmentblock/oa_rubric.html" with rubric_type="staff" rubric_feedback_prompt="(Optional) What aspects of this response stood out to you? What did it do well? How could it improve?" rubric_feedback_default_text="I noticed that this response..." %}
+                        {% include "openassessmentblock/oa_rubric.html" with rubric_type="staff" %}
                     </form>
                 </article>
             </div>
 
-            <div class="step__actions">
+            <div>
                 <div class="message message--inline message--error message--error-server">
                     <h4 class="message__title">{% trans "We could not submit your assessment" %}</h4>
                     <div class="message__content"></div>
@@ -39,13 +39,13 @@
                 <ul class="list list--actions">
                     <li class="list--actions__item submit_assessment--action">
                         <button type="submit" class="action action--submit is--disabled">
-                            <span class="copy">{% trans "Submit Assessment" %}</span>
+                            <span class="copy">{% trans "Submit assessment" %}</span>
                         </button>
                     </li>
 
                     <li class="list--actions__item submit_assessment--action">
                         <button type="submit" class="action action--submit is--disabled continue_grading--action">
-                            <span class="copy">{% trans "Submit Assessment and Grade Another Learner" %}</span>
+                            <span class="copy">{% trans "Submit assessment and continue grading" %}</span>
                         </button>
                     </li>
                 </ul>
