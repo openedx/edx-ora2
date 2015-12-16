@@ -96,11 +96,9 @@ def _is_valid_assessment_sequence(assessments):
 
 def validate_assessments(assessments, current_assessments, is_released, _):
     """
-    Check that the assessment dict is semantically valid.
-
-    Valid assessment steps are currently:
-    * peer, then self
-    * self only
+    Check that the assessment dict is semantically valid. See _is_valid_assessment_sequence()
+    above for a description of valid assessment sequences. In addition, enforces validation
+    of several assessment-specific settings.
 
     If a question has been released, the type and number of assessment steps
     cannot be changed.
