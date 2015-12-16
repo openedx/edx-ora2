@@ -4,11 +4,11 @@
     {% block body %}
     <div class="staff__grade__form ui-toggle-visibility__content" data-submission-uuid="{{ submission.uuid }}">
         <div class="wrapper--staff-assessment">
-            <div class="step__instruction">
+            <div>
                 <p>{% trans "Give this learner a grade using the problem's rubric." %}</p>
             </div>
 
-            <div class="step__content">
+            <div>
                 <article class="staff-assessment">
                     <div class="staff-assessment__display">
                         <header class="staff-assessment__display__header">
@@ -30,7 +30,7 @@
                 </article>
             </div>
 
-            <div class="step__actions">
+            <div>
                 <div class="message message--inline message--error message--error-server">
                     <h4 class="message__title">{% trans "We could not submit your assessment" %}</h4>
                     <div class="message__content"></div>
