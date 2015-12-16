@@ -633,6 +633,30 @@ class TestCourseStaff(XBlockHandlerTestCase):
         _, context = xblock.get_staff_path_and_context()
         self._verify_staff_assessment_context(context, True, 0, 1)
 
+    @scenario('data/staff_grade_scenario.xml', user_id='Bob')
+    def test_staff_grade_form(self, xblock):
+        resp = self.request(xblock, 'render_staff_grade_form', json.dumps({})).decode('utf-8')
+        self.assertIn("You do not have permission to access ORA staff grading.", resp)
+
+        # Simulate that we are course staff
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+
+        resp = self.request(xblock, 'render_staff_grade_form', json.dumps({})).decode('utf-8')
+        self.assertNotIn("You do not have permission to access ORA staff grading.", resp)
+        self.assertIn("No more learner responses can be graded at this time.", resp)
+        self.assertNotIn("Grade Bob Now", resp)
+
+        bob_item = STUDENT_ITEM.copy()
+        bob_item["item_id"] = xblock.scope_ids.usage_id
+        # Create a submission for Bob, and corresponding workflow.
+        self._create_submission(bob_item, {'text': "Grade Bob Now"}, [])
+
+        resp = self.request(xblock, 'render_staff_grade_form', json.dumps({})).decode('utf-8')
+        self.assertNotIn("No more learner responses can be graded at this time.", resp)
+        self.assertIn("Grade Bob Now", resp)
+
     def _verify_staff_assessment_context(self, context, required, ungraded=None, in_progress=None):
         self.assertEquals(required, context['staff_assessment_required'])
         if not required:
