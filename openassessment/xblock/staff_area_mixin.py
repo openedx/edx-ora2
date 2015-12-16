@@ -24,6 +24,7 @@ from openassessment.assessment.api import self as self_api
 from openassessment.assessment.api import ai as ai_api
 from openassessment.fileupload import api as file_api
 from openassessment.workflow import api as workflow_api
+from openassessment.assessment.api import staff as staff_api
 from openassessment.fileupload import exceptions as file_exceptions
 
 
@@ -164,7 +165,14 @@ class StaffAreaMixin(object):
             })
 
         # Include whether or not staff grading step is enabled.
-        context['staff_assessment_required'] = "staff-assessment" in self.assessment_steps
+        staff_assessment_required = "staff-assessment" in self.assessment_steps
+        context['staff_assessment_required'] = staff_assessment_required
+        if staff_assessment_required:
+            grading_stats = staff_api.get_staff_grading_statistics(
+                student_item["course_id"], student_item["item_id"]
+            )
+            context['staff_assessment_ungraded'] = grading_stats['ungraded']
+            context['staff_assessment_in_progress'] = grading_stats['in-progress']
 
         return path, context
 
@@ -226,38 +234,53 @@ class StaffAreaMixin(object):
             return self.render_assessment(path, context)
 
         except PeerAssessmentInternalError:
-            return self.render_error(self._(u"Error finding assessment workflow cancellation."))
+            return self.render_error(self._(u"Error finding assessment workflow cancellation."))  # TODO: this error is too specific
 
-    def get_student_info_path_and_context(self, student_username, expanded_view=None):
+    @XBlock.handler
+    @require_course_staff("STUDENT_INFO")   # TODO: should this be a different "permission"?
+    def render_staff_grade_form(self, data, suffix=''):  # pylint: disable=W0613
         """
+        Renders all relative information for a specific student's workflow.  TODO update
+
+        Given a student's username, we can render a staff-only section of the page
+        with submissions and assessments specific to the student.
+
+        Must be course staff to render this view.
+
+        """
+        try:
+            student_item_dict = self.get_student_item_dict()
+            course_id = student_item_dict.get('course_id')
+            item_id = student_item_dict.get('item_id')
+            staff_id = student_item_dict['student_id']
+
+            submission_to_assess = staff_api.get_submission_to_assess(course_id, item_id, staff_id)
+            if submission_to_assess is not None:
+                submission = submission_api.get_submission_and_student(submission_to_assess['uuid'])
+                if submission:
+                    anonymous_student_id = submission['student_item']['student_id']
+                    submission_context = self.get_student_submission_context(
+                        self.get_username(anonymous_student_id), submission
+                    )
+                    path = 'openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html'
+                    return self.render_assessment(path, submission_context)
+            else:
+                return self.render_error(self._(u"No more assessments can be graded at this time."))
+
+        except PeerAssessmentInternalError:
+            return self.render_error(self._(u"Error finding assessment workflow cancellation."))     # TODO Update!
+
+    def get_student_submission_context(self, student_username, submission):
+        """
+        TODO: update!
         Get the proper path and context for rendering the student info
         section of the staff area.
 
         Args:
             student_username (unicode): The username of the student to report.
-            expanded_view (str): An optional view to be shown initially expanded.
-                The default is None meaning that all views are shown collapsed.
+
         """
-        submission_uuid = None
-        submission = None
-        assessment_steps = self.assessment_steps
-        anonymous_user_id = None
-        submissions = None
-        student_item = None
-
-        if student_username:
-            anonymous_user_id = self.get_anonymous_user_id(student_username, self.course_id)
-            student_item = self.get_student_item_dict(anonymous_user_id=anonymous_user_id)
-
-        if anonymous_user_id:
-            # If there is a submission available for the requested student, present
-            # it. If not, there will be no other information to collect.
-            submissions = submission_api.get_submissions(student_item, 1)
-
-        if submissions:
-            submission_uuid = submissions[0]['uuid']
-            submission = submissions[0]
-
+        if submission:
             if 'file_key' in submission.get('answer', {}):
                 file_key = submission['answer']['file_key']
 
@@ -271,6 +294,44 @@ class StaffAreaMixin(object):
                         u"The learner username is '{student_username}', and the file key is {file_key}"
                     ).format(student_username=student_username, file_key=file_key)
                     logger.exception(msg)
+
+        context = {
+            'submission': create_submission_dict(submission, self.prompts) if submission else None,
+            'rubric_criteria': copy.deepcopy(self.rubric_criteria_with_labels),
+            'student_username': student_username,
+        }
+
+        return context
+
+    def get_student_info_path_and_context(self, student_username, expanded_view=None):
+        """
+        Get the proper path and context for rendering the student info
+        section of the staff area.
+
+        Args:
+            student_username (unicode): The username of the student to report.
+            expanded_view (str): An optional view to be shown initially expanded.
+                The default is None meaning that all views are shown collapsed.
+        """
+        anonymous_user_id = None
+        student_item = None
+        submission_uuid = None
+        submission = None
+
+        if student_username:
+            anonymous_user_id = self.get_anonymous_user_id(student_username, self.course_id)
+            student_item = self.get_student_item_dict(anonymous_user_id=anonymous_user_id)
+
+        if anonymous_user_id:
+            # If there is a submission available for the requested student, present
+            # it. If not, there will be no other information to collect.
+            submissions = submission_api.get_submissions(student_item, 1)
+            submission = submissions[0]
+            submission_uuid = submission['uuid']
+
+        context = self.get_student_submission_context(student_username, submission)
+
+        assessment_steps = self.assessment_steps
 
         example_based_assessment = None
         self_assessment = None
@@ -291,8 +352,7 @@ class StaffAreaMixin(object):
 
         workflow_cancellation = self.get_workflow_cancellation_info(submission_uuid)
 
-        context = {
-            'submission': create_submission_dict(submission, self.prompts) if submission else None,
+        context.update({
             'score': workflow.get('score'),
             'workflow_status': workflow.get('status'),
             'workflow_cancellation': workflow_cancellation,
@@ -300,10 +360,8 @@ class StaffAreaMixin(object):
             'submitted_assessments': submitted_assessments,
             'self_assessment': self_assessment,
             'example_based_assessment': example_based_assessment,
-            'rubric_criteria': copy.deepcopy(self.rubric_criteria_with_labels),
-            'student_username': student_username,
             'expanded_view': expanded_view,
-        }
+        })
 
         if peer_assessments or self_assessment or example_based_assessment:
             max_scores = peer_api.get_rubric_max_scores(submission_uuid)
