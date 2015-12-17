@@ -44,22 +44,13 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
     padding: 10px;
 
     .ui-staff__button {
-      margin-left: ($baseline-v/2);
+      @extend %btn-reset;
+
       padding: ($baseline-v/4) ($baseline-v/2);
       border-radius: ($baseline-v/4);
       text-transform: uppercase;
       color: $lighter-base-font-color;
       background-color: $shadow-l2;
-
-      // Remove button styling
-      font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
-      font-size: 12px;
-      -webkit-appearance: none;
-      background-image: none;
-      text-shadow: none;
-      box-shadow: none;
-      border: none;
-      border-image: none;
 
       &.is--active {
         color: white;
@@ -103,14 +94,6 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
   }
 }
 
-.staff-info__status {
-  .action--submit {
-    @extend %btn--secondary;
-    @extend %action-2;
-    @include margin(($baseline-v/2), ($baseline-v/2), ($baseline-v/2), ($baseline-v/2));
-  }
-}
-
 .staff-info__student {
   .label {
     color: $heading-staff-color;
@@ -119,12 +102,6 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
     input {
       display: block;
     }
-  }
-
-  .action--submit {
-    @extend %btn--secondary;
-    @extend %action-2;
-    @include margin(($baseline-v/2), ($baseline-v/2), ($baseline-v/2), ($baseline-v/2));
   }
 
   .title {
@@ -161,88 +138,8 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
     }
   }
 
-  .staff-info__cancel-submission__content,
-  .staff-info__staff-override__content {
-    padding: $baseline-v ($baseline-h/2);
-    background-color: white;
-  }
-
   .value {
     width: $max-width/2;
-  }
-
-  // staff assessments
-  .wrapper--staff-assessment {
-    margin-top: ($baseline-v/2);
-    padding-top: ($baseline-v/2);
-    border-top: 1px solid $color-decorative-tertiary;
-
-    .action--submit {
-      @extend .action--submit;
-    }
-  }
-
-  .staff-assessment__display {
-    @extend %ui-subsection;
-  }
-
-  .staff-assessment__display__header {
-    @include clearfix();
-
-    span {
-      @extend %t-strong; // FIX: needed due to DOM structure
-    }
-
-    .staff-assessment__display__title {
-      @extend %t-heading;
-      margin-bottom: ($baseline-v/2);
-      color: $heading-secondary-color;
-    }
-  }
-
-  .staff-assessment__display__response {
-    @extend %ui-subsection-content;
-    @extend %copy-3;
-    @extend %ui-content-longanswer;
-    @extend %ui-well;
-    color: $copy-color;
-  }
-
-  // assessment form
-  .staff-assessment__assessment {
-
-    // fields
-    .assessment__fields {
-      margin-bottom: $baseline-v;
-    }
-
-    // rubric question
-    .assessment__rubric__question {
-      @extend %ui-rubric-question;
-    }
-
-    // rubric options
-    .question__answers {
-      @extend %ui-rubric-answers;
-    }
-
-    // general feedback question
-    .assessment__rubric__question--feedback {
-
-      .wrapper--input {
-        margin-top: $baseline-v;
-      }
-
-      .question__title__copy {
-        @include margin-left(0);
-        white-space: pre-wrap;
-      }
-
-      textarea {
-        @extend %ui-content-longanswer;
-        min-height: ($baseline-v*5);
-      }
-    }
   }
 }
 
@@ -1211,14 +1108,7 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
   max-width: 100%;
 }
 
-// Developer SASS for Continued Grading.
-.openassessment__steps__step {
-    .action--continue--grading {
-      @extend .action--submit;
-    }
-}
-
-#openassessment__leaderboard{
+#openassessment__leaderboard {
   font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
 
   .step__counter, .step__counter:before {

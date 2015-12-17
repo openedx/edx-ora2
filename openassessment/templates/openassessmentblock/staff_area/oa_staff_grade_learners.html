@@ -1,7 +1,6 @@
 {% load i18n %}
 
-<!-- staff-info__student is necessary to get proper styling for the staff assessment form -->
-<div class="staff__grade__control ui-toggle-visibility is--collapsed staff-info__student">
+<div class="staff__grade__control ui-toggle-visibility is--collapsed">
     <header class="staff__grade__header ui-toggle-visibility__control">
         <h3 class="staff__grade__title">
             <span class="wrapper--copy">
@@ -22,7 +21,7 @@
         {% endblock %}
     </header>
 
-    <div class="staff__grade__content ui-toggle-visibility__content">
+    <div class="ui-staff__content__section staff__grade__content ui-toggle-visibility__content">
         <div class="wrapper--input">
             <div class="staff__grade__form--error"></div>
             <div class="staff__grade__form"></div>
