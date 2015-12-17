@@ -443,7 +443,6 @@
             this.server.staffAssess(
                 rubric.optionsSelected(), rubric.criterionFeedback(), rubric.overallFeedback(), submissionID
             ).done(successCallback).fail(function(errorMessage) {
-                // TODO: this needs styling help Andy!
                 scope.find(errorSelector).html(_.escape(errorMessage));
                 view.staffSubmitEnabled(scope, true);
             });

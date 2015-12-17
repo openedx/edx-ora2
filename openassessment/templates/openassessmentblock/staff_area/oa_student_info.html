@@ -32,14 +32,16 @@
                         {% endblocktrans %}
                     </p>
                 {% else %}
-                    {% include "openassessmentblock/oa_submission_answer.html" with answer=submission.answer answer_text_label="The learner's response to the question above:" %}
+                    <div class="wrapper--content">
+                        {% include "openassessmentblock/oa_submission_answer.html" with answer=submission.answer answer_text_label="The learner's response to the question above:" %}
 
-                    {% if submission.file_url %}
-                        <a href="{{ submission.file_url }}" class="submission--file">
-                            {% trans "The file associated with this response." %}
-                        </a>
-                        <span>{%  trans "Caution: This file was uploaded by another course learner and has not been verified, screened, approved, reviewed, or endorsed by edX. If you decide to access it, you do so at your own risk." %}</span>
-                    {% endif %}
+                        {% if submission.file_url %}
+                            <a href="{{ submission.file_url }}" class="submission--file">
+                                {% trans "The file associated with this response." %}
+                            </a>
+                            <span>{%  trans "Caution: This file was uploaded by another course learner and has not been verified, screened, approved, reviewed, or endorsed by edX. If you decide to access it, you do so at your own risk." %}</span>
+                        {% endif %}
+                    </div>
                 {% endif %}
             </div>
         </div>

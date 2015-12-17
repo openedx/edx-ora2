@@ -2,52 +2,49 @@
 {% spaceless %}
 
     {% block body %}
-    <div class="ui-toggle-visibility__content">
-        <div class="wrapper--staff-assessment">
-            <div class="step__instruction">
-                <p>{% trans "Override this learner's current grade using the problem's rubric." %}</p>
-            </div>
+    <div class="wrapper--staff-assessment">
+        <div class="step__instruction">
+            <p>{% trans "Override this learner's current grade using the problem's rubric." %}</p>
+        </div>
 
-            <div class="step__content">
-                <article class="staff-assessment">
-                    <div class="staff-assessment__display">
-                        <header class="staff-assessment__display__header">
-                            <h3 class="staff-assessment__display__title">
-                                {% blocktrans %}
-                                    Response for: {{ student_username }}
-                                {% endblocktrans %}
-                            </h3>
-                        </header>
+        <div class="step__content">
+            <article class="staff-assessment">
+                <div class="staff-assessment__display">
+                    <header class="staff-assessment__display__header">
+                        <h3 class="staff-assessment__display__title">
+                            {% blocktrans %}
+                                Response for: {{ student_username }}
+                            {% endblocktrans %}
+                        </h3>
+                    </header>
 
-                        {% include "openassessmentblock/oa_submission_answer.html" with answer=submission.answer answer_text_label="The learner's response to the question above:" %}
+                    {% include "openassessmentblock/oa_submission_answer.html" with answer=submission.answer answer_text_label="The learner's response to the question above:" %}
 
-                        {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=staff_file_url header="Associated File" class_prefix="staff-assessment" show_warning="true" %}
-                    </div>
-
-                    <form class="staff-assessment__assessment" method="post">
-                        {% include "openassessmentblock/oa_rubric.html" with rubric_type="staff" %}
-                    </form>
-                </article>
-            </div>
-
-            <div class="step__actions">
-                <div class="message message--inline message--error message--error-server">
-                    <h3 class="message__title">{% trans "We could not submit your assessment" %}</h3>
-                    <div class="message__content"></div>
+                    {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=staff_file_url header="Associated File" class_prefix="staff-assessment" show_warning="true" %}
                 </div>
 
-                <ul class="list list--actions">
-                    <li class="list--actions__item">
-                        <button type="submit" class="action action--submit is--disabled">
-                            <span class="copy">{% trans "Submit assessment" %}</span>
-                        </button>
+                <form class="staff-assessment__assessment" method="post">
+                    {% include "openassessmentblock/oa_rubric.html" with rubric_type="staff" %}
+                </form>
+            </article>
+        </div>
 
-                        <div class="staff-override-error"></div>
-                    </li>
-                </ul>
+        <div class="step__actions">
+            <div class="message message--inline message--error message--error-server">
+                <h3 class="message__title">{% trans "We could not submit your assessment" %}</h3>
+                <div class="message__content"></div>
             </div>
+
+            <ul class="list list--actions">
+                <li class="list--actions__item">
+                    <button type="submit" class="action action--submit is--disabled">
+                        <span class="copy">{% trans "Submit assessment" %}</span>
+                    </button>
+
+                    <div class="staff-override-error"></div>
+                </li>
+            </ul>
         </div>
     </div>
     {% endblock %}
 {% endspaceless %}
-

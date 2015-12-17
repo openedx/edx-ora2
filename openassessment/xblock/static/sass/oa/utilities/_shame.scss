@@ -196,11 +196,11 @@
   .staff-info__workflow-cancellation {
     margin-bottom: ($baseline-v) !important;
   }
-}
 
-.staff-info__student {
-  // 'p' elements in LMS have a color set on them.
-  .student__answer__display__content p {
-    color: inherit;
+  .wrapper--staff-assessment {
+    // 'p' elements in LMS have a color set on them.
+    .student__answer__display__content p {
+      color: inherit;
+    }
   }
 }
