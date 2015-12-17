@@ -267,7 +267,7 @@ class StaffAreaMixin(object):
                 else:
                     return self.render_error(self._(u"Error loading the checked out learner response."))
             else:
-                return self.render_error(self._(u"No more learner responses can be graded at this time."))
+                return self.render_error(self._(u"No other learner responses are available for grading at this time."))
 
         except PeerAssessmentInternalError:
             return self.render_error(self._(u"Error getting staff grade information."))

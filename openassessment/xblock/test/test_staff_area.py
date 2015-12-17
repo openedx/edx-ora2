@@ -431,7 +431,6 @@ class TestCourseStaff(XBlockHandlerTestCase):
         path, context = xblock.get_staff_path_and_context()
         self.assertEquals('openassessmentblock/staff_area/oa_staff_area.html', path)
         self.assertTrue(context['display_schedule_training'])
-        self._verify_staff_assessment_context(context, False)
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
     @scenario('data/example_based_assessment.xml', user_id='Bob')
@@ -610,7 +609,11 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertEqual(True, resp['success'])
 
     @scenario('data/staff_grade_scenario.xml', user_id='Bob')
-    def test_staff_grade_counts(self, xblock):
+    def test_staff_assessment_counts(self, xblock):
+        """
+        Verify the staff assessment counts (ungraded and checked out)
+        as shown in the staff grading tool when staff assessment is required.
+        """
         _, context = xblock.get_staff_path_and_context()
         self._verify_staff_assessment_context(context, True, 0, 0)
 
@@ -633,10 +636,31 @@ class TestCourseStaff(XBlockHandlerTestCase):
         _, context = xblock.get_staff_path_and_context()
         self._verify_staff_assessment_context(context, True, 0, 1)
 
+    @scenario('data/example_based_assessment.xml', user_id='Bob')
+    def test_staff_assessment_counts_not_required(self, xblock):
+        """
+        Verify the staff assessment counts (ungraded and checked out) are
+        not present in the context when staff assessment is not required.
+        """
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, True, "Bob"
+        )
+        _, context = xblock.get_staff_path_and_context()
+        self._verify_staff_assessment_context(context, False)
+
     @scenario('data/staff_grade_scenario.xml', user_id='Bob')
-    def test_staff_grade_form(self, xblock):
+    def test_staff_assessment_form(self, xblock):
+        """
+        Smoke test that the staff assessment form renders when staff assessment
+        is required.
+        """
+        permission_denied = "You do not have permission to access ORA staff grading."
+        no_submissions_available = "No other learner responses are available for grading at this time."
+        submission_text = "Grade me, please!"
+
         resp = self.request(xblock, 'render_staff_grade_form', json.dumps({})).decode('utf-8')
-        self.assertIn("You do not have permission to access ORA staff grading.", resp)
+        self.assertIn(permission_denied, resp)
+        self.assertNotIn(no_submissions_available, resp)
 
         # Simulate that we are course staff
         xblock.xmodule_runtime = self._create_mock_runtime(
@@ -644,18 +668,18 @@ class TestCourseStaff(XBlockHandlerTestCase):
         )
 
         resp = self.request(xblock, 'render_staff_grade_form', json.dumps({})).decode('utf-8')
-        self.assertNotIn("You do not have permission to access ORA staff grading.", resp)
-        self.assertIn("No more learner responses can be graded at this time.", resp)
-        self.assertNotIn("Grade Bob Now", resp)
+        self.assertNotIn(permission_denied, resp)
+        self.assertIn(no_submissions_available, resp)
+        self.assertNotIn(submission_text, resp)
 
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
         # Create a submission for Bob, and corresponding workflow.
-        self._create_submission(bob_item, {'text': "Grade Bob Now"}, [])
+        self._create_submission(bob_item, {'text': submission_text}, [])
 
         resp = self.request(xblock, 'render_staff_grade_form', json.dumps({})).decode('utf-8')
-        self.assertNotIn("No more learner responses can be graded at this time.", resp)
-        self.assertIn("Grade Bob Now", resp)
+        self.assertNotIn(no_submissions_available, resp)
+        self.assertIn(submission_text, resp)
 
     def _verify_staff_assessment_context(self, context, required, ungraded=None, in_progress=None):
         self.assertEquals(required, context['staff_assessment_required'])

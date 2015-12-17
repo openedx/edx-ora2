@@ -131,7 +131,7 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                 }).done(function(data) {
                     defer.resolveWith(this, [data]);
                 }).fail(function() {
-                    defer.rejectWith(this, [gettext('The staff grade form could not be loaded.')]);
+                    defer.rejectWith(this, [gettext('The staff assessment form could not be loaded.')]);
                 });
             }).promise();
         },
