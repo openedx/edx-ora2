@@ -22,6 +22,10 @@
 
         /**
          * Load the staff area.
+         *
+         * @param {function} onSuccessCallback an optional callback to be executed when the
+         * server successfully returns the staff area HTML. This callback will be the last thing
+         * executed, after rendering and installing click handlers.
          */
         load: function(onSuccessCallback) {
             var view = this;
@@ -50,7 +54,7 @@
          * to the given student's current workflow.
          *
          * @param {object} options An optional set of options to render the section.
-         * @returns {promise} A promise representing the successful oading
+         * @returns {promise} A promise representing the successful loading
          * of the student info section.
          */
         loadStudentInfo: function(options) {
@@ -117,6 +121,14 @@
             return deferred.promise();
         },
 
+        /**
+         * Upon request, loads the staff grade/assessment section of the staff area.
+         * This allows staff grading when staff assessment is a required step.
+         *
+         * @param {object} eventObject The event object triggering the click event.
+         * @returns {promise} A promise representing the successful loading
+         * of the staff grade (assessment) section.
+         */
         loadStaffGradeForm: function(eventObject) {
             var view = this;
             var $staffGradeTab = $('.openassessment__staff-grading', this.element);
