@@ -125,21 +125,19 @@
          * Upon request, loads the staff grade/assessment section of the staff area.
          * This allows staff grading when staff assessment is a required step.
          *
-         * @param {object} eventObject The event object triggering the click event.
          * @returns {promise} A promise representing the successful loading
          * of the staff grade (assessment) section.
          */
-        loadStaffGradeForm: function(eventObject) {
+        loadStaffGradeForm: function() {
             var view = this;
             var $staffGradeTab = $('.openassessment__staff-grading', this.element);
-            var isCollapsed = $(eventObject.currentTarget).hasClass("is--collapsed");
+            var isCollapsed = $staffGradeTab.find('.staff__grade__control').hasClass("is--collapsed");
             var deferred = $.Deferred();
             var showFormError = function(errorMessage) {
                 $staffGradeTab.find('.staff__grade__form--error').text(errorMessage);
             };
 
             if (isCollapsed && !this.staffGradeFormLoaded) {
-                eventObject.preventDefault();
                 this.staffGradeFormLoaded = true;
                 this.server.staffGradeForm().done(function(html) {
                     showFormError('');
@@ -255,12 +253,9 @@
             );
 
             // Install a click handler for showing the staff grading form.
-            $staffGradeTool.find('.staff__grade__control').click(
+            $staffGradeTool.find('.staff__grade__button').click(
                 function(eventObject) {
-                    // Don't call preventDefault because this click handler will be triggerred by
-                    // things like the radio buttons within the form-- we want them to be able to
-                    // handle the click events (and loadStaffGradeForm will be a no-op).
-                    view.loadStaffGradeForm(eventObject);
+                    view.loadStaffGradeForm();
                 }
             );
         },
