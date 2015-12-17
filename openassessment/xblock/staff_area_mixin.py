@@ -305,6 +305,12 @@ class StaffAreaMixin(object):
             'student_username': student_username,
         }
 
+        if self.rubric_feedback_prompt is not None:
+            context["rubric_feedback_prompt"] = self.rubric_feedback_prompt
+
+        if self.rubric_feedback_default_text is not None:
+            context['rubric_feedback_default_text'] = self.rubric_feedback_default_text
+
         return context
 
     def get_student_info_path_and_context(self, student_username, expanded_view=None):
