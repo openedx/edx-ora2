@@ -254,7 +254,7 @@
 
             // Install a click handler for showing the staff grading form.
             $staffGradeTool.find('.staff__grade__button').click(
-                function(eventObject) {
+                function() {
                     view.loadStaffGradeForm();
                 }
             );

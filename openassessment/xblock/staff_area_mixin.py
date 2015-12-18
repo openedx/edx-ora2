@@ -252,7 +252,7 @@ class StaffAreaMixin(object):
             staff_id = student_item_dict['student_id']
 
             # Note that this will check out a submission for grading by the specified staff member.
-            # If no submissions are available for graidng, will reutrn None.
+            # If no submissions are available for grading, will return None.
             submission_to_assess = staff_api.get_submission_to_assess(course_id, item_id, staff_id)
 
             if submission_to_assess is not None:
