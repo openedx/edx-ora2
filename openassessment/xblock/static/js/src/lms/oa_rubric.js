@@ -156,6 +156,43 @@ OpenAssessment.Rubric.prototype = {
     },
 
     /**
+     * Install a callback handler to be notified when unsaved changes exist in a rubric form.
+     *
+     * @param {function} callback a function that accepts one argument, a boolean indicating
+     *     whether the user has selected options or inserted text.
+     */
+    changesExistCallback: function(callback) {
+        var rubric = this;
+
+        // Set the initial state
+        callback(rubric.changesExist());
+
+        // Install a handler to update on change
+        $(this.element).on('change keyup drop paste',
+            function() { callback(rubric.changesExist()); }
+        );
+    },
+
+    /**
+     * Helper method for determining of unsubmitted changes exist in the rubric.
+     *
+     * @returns {boolean} true if unsubmitted changes exist.
+     */
+    changesExist: function() {
+        var numChecked = $('input[type=radio]:checked', this.element).length;
+        var textExists = false;
+
+        $('textarea', this.element).each(function() {
+            var trimmedText = $.trim($(this).val());
+            if (trimmedText !== "") {
+                textExists = true;
+            }
+        });
+
+        return (numChecked > 0 || textExists);
+    },
+
+    /**
      Updates the rubric to display positive and negative messages on each
      criterion. For each correction provided, the associated criterion will have
      an appropriate message displayed.

@@ -169,13 +169,23 @@ class StaffAreaMixin(object):
         staff_assessment_required = "staff-assessment" in self.assessment_steps
         context['staff_assessment_required'] = staff_assessment_required
         if staff_assessment_required:
-            grading_stats = staff_api.get_staff_grading_statistics(
-                student_item["course_id"], student_item["item_id"]
+            context.update(
+                self.get_staff_assessment_statistics_context(student_item["course_id"], student_item["item_id"])
             )
-            context['staff_assessment_ungraded'] = grading_stats['ungraded']
-            context['staff_assessment_in_progress'] = grading_stats['in-progress']
 
         return path, context
+
+    @staticmethod
+    def get_staff_assessment_statistics_context(course_id, item_id):
+        """
+        Returns a context with staff assessment "ungraded" and "in-progress" counts.
+        """
+        grading_stats = staff_api.get_staff_grading_statistics(course_id, item_id)
+
+        return {
+            'staff_assessment_ungraded': grading_stats['ungraded'],
+            'staff_assessment_in_progress': grading_stats['in-progress']
+        }
 
     @XBlock.json_handler
     @require_global_admin("SCHEDULE_TRAINING")
@@ -271,6 +281,27 @@ class StaffAreaMixin(object):
 
         except PeerAssessmentInternalError:
             return self.render_error(self._(u"Error getting staff grade information."))
+
+    @XBlock.handler
+    @require_course_staff("STUDENT_GRADE")
+    def render_staff_grade_counts(self, data, suffix=''):  # pylint: disable=W0613
+        """
+        Renders a form to show the number of ungraded and checked out assessments.
+
+        Must be course staff to render this view.
+        """
+        try:
+            student_item_dict = self.get_student_item_dict()
+
+            context = self.get_staff_assessment_statistics_context(
+                student_item_dict.get('course_id'), student_item_dict.get('item_id')
+            )
+
+            path = 'openassessmentblock/staff_area/oa_staff_grade_learners_count.html'
+            return self.render_assessment(path, context)
+
+        except PeerAssessmentInternalError:
+            return self.render_error(self._(u"Error getting staff grade ungraded and checked out counts."))
 
     def get_student_submission_context(self, student_username, submission):
         """

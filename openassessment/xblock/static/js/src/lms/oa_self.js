@@ -18,6 +18,8 @@ OpenAssessment.SelfView = function(element, server, baseView) {
 
 OpenAssessment.SelfView.prototype = {
 
+    UNSAVED_WARNING_KEY: "self-assessment",
+
     /**
     Load the self assessment view.
     **/
@@ -51,10 +53,16 @@ OpenAssessment.SelfView.prototype = {
             var rubricElement = rubricSelector.get(0);
             this.rubric = new OpenAssessment.Rubric(rubricElement);
         }
+        else {
+            // If there was previously a rubric visible, clear the reference to it.
+            this.rubric = null;
+        }
 
         // Install a change handler for rubric options to enable/disable the submit button
         if (this.rubric !== null) {
             this.rubric.canSubmitCallback($.proxy(this.selfSubmitEnabled, this));
+
+            this.rubric.changesExistCallback($.proxy(this.assessmentRubricChanges, this));
         }
 
         // Install a click handler for the submit button
@@ -95,6 +103,22 @@ OpenAssessment.SelfView.prototype = {
     },
 
     /**
+     * Called when something is selected or typed in the assessment rubric.
+     * Used to set the unsaved changes warning dialog.
+     *
+     * @param {boolean} changesExist true if unsaved changes exist
+     */
+    assessmentRubricChanges: function(changesExist) {
+        if (changesExist) {
+            this.baseView.unsavedWarningEnabled(
+                true,
+                this.UNSAVED_WARNING_KEY,
+                gettext("If you leave this page without submitting your self assessment, you will lose any work you have done.") // jscs:ignore maximumLineLength
+            );
+        }
+    },
+
+    /**
     Send a self-assessment to the server and update the view.
     **/
     selfAssess: function() {
@@ -110,6 +134,7 @@ OpenAssessment.SelfView.prototype = {
             this.rubric.overallFeedback()
         ).done(
             function() {
+                baseView.unsavedWarningEnabled(false, view.UNSAVED_WARNING_KEY);
                 baseView.loadAssessmentModules();
                 baseView.scrollToTop();
             }

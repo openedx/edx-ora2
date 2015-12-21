@@ -21,6 +21,7 @@ describe('OpenAssessment.StaffAreaView', function() {
         this.studentTemplate = 'oa_student_info.html';
         this.staffAreaTemplate = 'oa_staff_area.html';
         this.staffGradeFormTemplate = 'oa_staff_grade_learners_assessment.html';
+        this.staffGradeCountsTemplate = 'oa_staff_grade_learners_count_1.html';
 
         // Remember which fragments have been loaded
         this.fragmentsLoaded = [];
@@ -70,6 +71,10 @@ describe('OpenAssessment.StaffAreaView', function() {
             return this.mockLoadTemplate(server.staffGradeFormTemplate);
         };
 
+        this.staffGradeCounts = function() {
+            return this.mockLoadTemplate(server.staffGradeCountsTemplate);
+        };
+
         this.data = {};
     };
 
@@ -113,6 +118,33 @@ describe('OpenAssessment.StaffAreaView', function() {
         expect(server.fragmentsLoaded).toEqual(expectedFragments);
     };
 
+    var chooseStudent = function(view, studentName) {
+        var studentNameField = $('.openassessment__student_username', view.element),
+            submitButton = $('.action--submit-username', view.element);
+        studentNameField.val(studentName);
+        submitButton.click();
+    };
+
+    var showInstructorAssessmentForm = function(staffArea) {
+        $('.staff__grade__show-form', staffArea.element).click();
+    };
+
+    var fillAssessment = function($assessment) {
+        $('#staff__assessment__rubric__question--2__feedback', $assessment).val('Text response');
+        $('.question__answers', $assessment).each(function() {
+            $('input[type="radio"]', this).first().click();
+        });
+    };
+
+    var getAssessment = function(staffArea, tab) {
+        return $('.openassessment__' + tab + ' .wrapper--staff-assessment', staffArea.element);
+    };
+
+    var submitAssessment = function(staffArea, tab) {
+        var $submitButton = $('.action--submit', getAssessment(staffArea, tab));
+        $submitButton.click();
+    };
+
     beforeEach(function() {
         // Create a new stub server
         server = new StubServer();
@@ -130,6 +162,57 @@ describe('OpenAssessment.StaffAreaView', function() {
             // Load the fixture for the container page that does NOT include a course staff section
             loadFixtures('oa_base.html');
             assertStaffAreaAjaxCall(false);
+        });
+    });
+
+    describe('Detects unsaved changes', function () {
+
+        beforeEach(function() {
+            loadFixtures('oa_base_course_staff.html');
+        });
+
+        afterEach(function() {
+            // Disable the unsaved page warnings (if set).
+            OpenAssessment.clearUnsavedChanges();
+        });
+
+        it('tracks unsubmitted assessments in multiple views', function() {
+            var fullGradeStaffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
+                staffOverrideStaffArea = createStaffArea(),
+                fullGradeTab = "staff-grading",
+                staffOverrideTab = "staff-tools",
+                $assessment;
+
+            expect(fullGradeStaffArea.baseView.unsavedWarningEnabled()).toBe(false);
+            expect(staffOverrideStaffArea.baseView.unsavedWarningEnabled()).toBe(false);
+
+            // Create unsubmitted changes in the "full grade" form.
+            showInstructorAssessmentForm(fullGradeStaffArea);
+            $assessment = getAssessment(fullGradeStaffArea, fullGradeTab);
+            fillAssessment($assessment);
+
+            expect(fullGradeStaffArea.baseView.unsavedWarningEnabled()).toBe(true);
+            expect(staffOverrideStaffArea.baseView.unsavedWarningEnabled()).toBe(true);
+
+            // Create unsubmitted changes in the "staff grade override" form.
+            chooseStudent(staffOverrideStaffArea, 'testStudent');
+            $assessment = getAssessment(staffOverrideStaffArea, staffOverrideTab);
+            fillAssessment($assessment);
+
+            expect(fullGradeStaffArea.baseView.unsavedWarningEnabled()).toBe(true);
+            expect(staffOverrideStaffArea.baseView.unsavedWarningEnabled()).toBe(true);
+
+            // Submit the full grade form.
+            submitAssessment(fullGradeStaffArea, fullGradeTab);
+
+            expect(fullGradeStaffArea.baseView.unsavedWarningEnabled()).toBe(true);
+            expect(staffOverrideStaffArea.baseView.unsavedWarningEnabled()).toBe(true);
+
+            // Submit the staff grade override form.
+            submitAssessment(staffOverrideStaffArea, staffOverrideTab);
+
+            expect(fullGradeStaffArea.baseView.unsavedWarningEnabled()).toBe(false);
+            expect(staffOverrideStaffArea.baseView.unsavedWarningEnabled()).toBe(false);
         });
     });
 
@@ -255,12 +338,6 @@ describe('OpenAssessment.StaffAreaView', function() {
     });
 
     describe('Manage Individual Learners', function() {
-        var chooseStudent = function(view, studentName) {
-            var studentNameField = $('.openassessment__student_username', view.element),
-                submitButton = $('.action--submit-username', view.element);
-            studentNameField.val(studentName);
-            submitButton.click();
-        };
 
         beforeEach(function() {
             loadFixtures('oa_base_course_staff.html');
@@ -357,27 +434,18 @@ describe('OpenAssessment.StaffAreaView', function() {
         });
 
         describe('Staff Grade Override', function() {
-            var fillAssessment = function($assessment) {
-                $('#staff__assessment__rubric__question--2__feedback', $assessment).val('Text response');
-                $('.question__answers', $assessment).each(function() {
-                    $('input[type="radio"]', this).first().click();
-                });
-            };
+            var staffAreaTab = "staff-tools";
 
-            var getAssessment = function(staffArea) {
-                return $('.openassessment__staff-tools .wrapper--staff-assessment', staffArea.element);
-            };
-
-            var submitAssessment = function(staffArea) {
-                var $submitButton = $('.action--submit', getAssessment(staffArea.element));
-                $submitButton.click();
-            };
+            afterEach(function() {
+                // Disable the unsaved page warning (if set)
+                OpenAssessment.clearUnsavedChanges();
+            });
 
             it('enables the submit button when all required fields are specified', function() {
                 var staffArea = createStaffArea(),
                     $assessment, $submitButton;
                 chooseStudent(staffArea, 'testStudent');
-                $assessment = getAssessment(staffArea.element);
+                $assessment = getAssessment(staffArea, staffAreaTab);
                 $submitButton = $('.action--submit', $assessment);
                 expect($submitButton).toHaveClass('is--disabled');
                 fillAssessment($assessment);
@@ -397,10 +465,10 @@ describe('OpenAssessment.StaffAreaView', function() {
                 );
 
                 // Fill in and submit the assessment
-                $assessment = getAssessment(staffArea.element);
+                $assessment = getAssessment(staffArea, staffAreaTab);
                 fillAssessment($assessment);
                 server.studentTemplate = 'oa_staff_graded_submission.html';
-                submitAssessment(staffArea);
+                submitAssessment(staffArea, staffAreaTab);
 
                 // Verify that the student info is visible and shows the correct score
                 $gradeSection = $('.staff-info__student__grade', staffArea.element);
@@ -415,15 +483,35 @@ describe('OpenAssessment.StaffAreaView', function() {
                     serverErrorMessage = 'Mock server error',
                     $assessment;
                 chooseStudent(staffArea, 'testStudent');
-                $assessment = getAssessment(staffArea.element);
+                $assessment = getAssessment(staffArea, staffAreaTab);
                 fillAssessment($assessment);
 
                 // Submit the assessment but return a server error message
                 server.staffAssess = failWith(server, serverErrorMessage);
-                submitAssessment(staffArea);
+                submitAssessment(staffArea, staffAreaTab);
 
                 // Verify that the error message is shown
                 expect($('.staff-override-error', staffArea.element).first().text().trim()).toBe(serverErrorMessage);
+            });
+
+            it('warns of unsubmitted assessments', function() {
+                var staffArea = createStaffArea(),
+                    $assessment;
+
+                chooseStudent(staffArea, 'testStudent');
+
+                expect(staffArea.baseView.unsavedWarningEnabled()).toBe(false);
+
+                // Fill in and submit the assessment
+                $assessment = getAssessment(staffArea, staffAreaTab);
+                fillAssessment($assessment);
+
+                expect(staffArea.baseView.unsavedWarningEnabled()).toBe(true);
+
+                server.studentTemplate = 'oa_staff_graded_submission.html';
+                submitAssessment(staffArea, staffAreaTab);
+
+                expect(staffArea.baseView.unsavedWarningEnabled()).toBe(false);
             });
         });
     });
@@ -447,35 +535,22 @@ describe('OpenAssessment.StaffAreaView', function() {
     });
 
     describe('Grade Available Responses', function() {
-        var showInstructorAssessmentForm = function(staffArea) {
-            $('.staff__grade__show-form', staffArea.element).click();
-        };
-
-        var fillAssessment = function($assessment) {
-            $('#staff__assessment__rubric__question--2__feedback', $assessment).val('Text response');
-            $('.question__answers', $assessment).each(function() {
-                $('input[type="radio"]', this).first().click();
-            });
-        };
-
-        var getAssessment = function(staffArea) {
-            return $('.openassessment__staff-grading .wrapper--staff-assessment', staffArea.element);
-        };
-
-        var submitAssessment = function(staffArea) {
-            var $submitButton = $('.action--submit', getAssessment(staffArea.element));
-            $submitButton.click();
-        };
+        var staffAreaTab = "staff-grading";
 
         beforeEach(function() {
             loadFixtures('oa_base_course_staff.html');
+        });
+
+        afterEach(function() {
+            // Disable the unsaved page warnings (if set).
+            OpenAssessment.clearUnsavedChanges();
         });
 
         it('enables both submit buttons when all required fields are specified', function() {
             var staffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
                 $assessment, $submitButtons;
             showInstructorAssessmentForm(staffArea);
-            $assessment = getAssessment(staffArea.element);
+            $assessment = getAssessment(staffArea, staffAreaTab);
             $submitButtons = $('.action--submit', $assessment);
             expect($submitButtons.length).toBe(2);
             expect($submitButtons).toHaveClass('is--disabled');
@@ -487,7 +562,7 @@ describe('OpenAssessment.StaffAreaView', function() {
             var staffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
                 $assessment, $gradeSection;
             showInstructorAssessmentForm(staffArea);
-            $assessment = getAssessment(staffArea.element);
+            $assessment = getAssessment(staffArea, staffAreaTab);
 
             // Verify that the submission is shown for the first user
             expect($('.staff-assessment__display__title', $assessment).text().trim()).toBe(
@@ -497,7 +572,7 @@ describe('OpenAssessment.StaffAreaView', function() {
             // Fill in and submit the assessment
             fillAssessment($assessment);
             server.staffGradeFormTemplate = 'oa_staff_grade_learners_assessment_2.html';
-            submitAssessment(staffArea);
+            submitAssessment(staffArea, staffAreaTab);
 
             // Verify that the assessment form has been removed
             expect($('.staff__grade__form', staffArea.element).html().trim()).toBe('');
@@ -514,7 +589,7 @@ describe('OpenAssessment.StaffAreaView', function() {
             );
 
             // Fill in and click the button to submit and request another submission
-            $assessment = getAssessment(staffArea.element);
+            $assessment = getAssessment(staffArea, staffAreaTab);
             fillAssessment($assessment);
             server.staffGradeFormTemplate = 'oa_staff_grade_learners_assessment_2.html';
             $('.continue_grading--action', $assessment).click();
@@ -540,12 +615,12 @@ describe('OpenAssessment.StaffAreaView', function() {
                 serverErrorMessage = 'Mock server error',
                 $assessment;
             showInstructorAssessmentForm(staffArea);
-            $assessment = getAssessment(staffArea.element);
+            $assessment = getAssessment(staffArea, staffAreaTab);
             fillAssessment($assessment);
 
             // Submit the assessment but return a server error message
             server.staffAssess = failWith(server, serverErrorMessage);
-            submitAssessment(staffArea);
+            submitAssessment(staffArea, staffAreaTab);
 
             // Verify that the error message is shown
             expect($('.staff-grade-error', staffArea.element).first().text().trim()).toBe(serverErrorMessage);
@@ -557,18 +632,38 @@ describe('OpenAssessment.StaffAreaView', function() {
 
             expect($('.staff__grade__value').text().trim()).toBe("10 Available and 2 Checked Out");
 
+            // Rendering the staff grading form will cause the counts to re-render as well.
+            // This will use the staffGradeCountsTemplate template, which mimics the count changes.
+            server.staffGradeCountsTemplate = 'oa_staff_grade_learners_count_1.html';
             showInstructorAssessmentForm(staffArea);
 
-            // Render a different staff area teamplate the next time around so counts can update.
-            server.staffAreaTemplate = 'oa_staff_area_full_grading_2.html';
+            expect($('.staff__grade__value').text().trim()).toBe("9 Available and 3 Checked Out");
 
-            // Fill in assessment and make sure the counts re-render.
-            $assessment = getAssessment(staffArea.element);
+            // Fill in assessment and make sure the code re-renders the count form.
+            $assessment = getAssessment(staffArea, staffAreaTab);
             fillAssessment($assessment);
-            server.staffGradeFormTemplate = 'oa_staff_grade_learners_assessment_2.html';
-            submitAssessment(staffArea);
+            // Return a different counts template to mimic the counts changing again.
+            server.staffGradeCountsTemplate = 'oa_staff_grade_learners_count_2.html';
+            submitAssessment(staffArea, staffAreaTab);
 
-            expect($('.staff__grade__value').text().trim()).toBe("9 Available and 0 Checked Out");
+            expect($('.staff__grade__value').text().trim()).toBe("9 Available and 2 Checked Out");
+        });
+
+        it('warns of unsubmitted assessments', function() {
+            var staffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
+                $assessment;
+
+            showInstructorAssessmentForm(staffArea);
+
+            expect(staffArea.baseView.unsavedWarningEnabled()).toBe(false);
+
+            // Fill in assessment and make sure the code re-renders the count form.
+            $assessment = getAssessment(staffArea, staffAreaTab);
+            fillAssessment($assessment);
+            expect(staffArea.baseView.unsavedWarningEnabled()).toBe(true);
+
+            submitAssessment(staffArea, staffAreaTab);
+            expect(staffArea.baseView.unsavedWarningEnabled()).toBe(false);
         });
     });
 });

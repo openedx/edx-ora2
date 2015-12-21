@@ -723,8 +723,8 @@
         "template": "openassessmentblock/staff_area/oa_staff_area.html",
         "context": {
             "staff_assessment_required": true,
-            "staff_assessment_ungraded": 9,
-            "staff_assessment_in_progress": 0,
+            "staff_assessment_ungraded": 5,
+            "staff_assessment_in_progress": 2,
             "status_counts": {
                 "self": 1,
                 "peer": 2,
@@ -752,6 +752,22 @@
             ]
         },
         "output": "oa_staff_area_full_grading_2.html"
+    },
+    {
+        "template": "openassessmentblock/staff_area/oa_staff_grade_learners_count.html",
+        "context": {
+            "staff_assessment_ungraded": 9,
+            "staff_assessment_in_progress": 3
+        },
+        "output": "oa_staff_grade_learners_count_1.html"
+    },
+    {
+        "template": "openassessmentblock/staff_area/oa_staff_grade_learners_count.html",
+        "context": {
+            "staff_assessment_ungraded": 9,
+            "staff_assessment_in_progress": 2
+        },
+        "output": "oa_staff_grade_learners_count_2.html"
     },
     {
         "template": "openassessmentblock/staff_area/oa_student_info.html",

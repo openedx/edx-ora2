@@ -18,6 +18,8 @@ OpenAssessment.PeerView = function(element, server, baseView) {
 
 OpenAssessment.PeerView.prototype = {
 
+    UNSAVED_WARNING_KEY: "peer-assessment",
+
     /**
     Load the peer assessment view.
     **/
@@ -101,10 +103,16 @@ OpenAssessment.PeerView.prototype = {
             var rubricElement = rubricSelector.get(0);
             this.rubric = new OpenAssessment.Rubric(rubricElement);
         }
+        else {
+            // If there was previously a rubric visible, clear the reference to it.
+            this.rubric = null;
+        }
 
         // Install a change handler for rubric options to enable/disable the submit button
         if (this.rubric !== null) {
             this.rubric.canSubmitCallback($.proxy(view.peerSubmitEnabled, view));
+
+            this.rubric.changesExistCallback($.proxy(view.assessmentRubricChanges, view));
         }
 
         // Install a click handler for assessment
@@ -154,12 +162,29 @@ OpenAssessment.PeerView.prototype = {
     },
 
     /**
+     * Called when something is selected or typed in the assessment rubric.
+     * Used to set the unsaved changes warning dialog.
+     *
+     * @param {boolean} changesExist true if unsaved changes exist
+     */
+    assessmentRubricChanges: function(changesExist) {
+        if (changesExist) {
+            this.baseView.unsavedWarningEnabled(
+                true,
+                this.UNSAVED_WARNING_KEY,
+                gettext("If you leave this page without submitting your peer assessment, you will lose any work you have done.") // jscs:ignore maximumLineLength
+            );
+        }
+    },
+
+    /**
     Send an assessment to the server and update the view.
     **/
     peerAssess: function() {
         var view = this;
         var baseView = view.baseView;
         this.peerAssessRequest(function() {
+            baseView.unsavedWarningEnabled(false, view.UNSAVED_WARNING_KEY);
             baseView.loadAssessmentModules();
             baseView.scrollToTop();
         });
@@ -174,6 +199,7 @@ OpenAssessment.PeerView.prototype = {
         var gradeView = this.baseView.gradeView;
         var baseView = view.baseView;
         view.peerAssessRequest(function() {
+            baseView.unsavedWarningEnabled(false, view.UNSAVED_WARNING_KEY);
             view.loadContinuedAssessment();
             gradeView.load();
             baseView.scrollToTop();
