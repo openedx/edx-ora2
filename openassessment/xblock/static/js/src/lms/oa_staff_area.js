@@ -20,14 +20,13 @@
 
     OpenAssessment.StaffAreaView.prototype = {
 
+        FULL_GRADE_UNSAVED_WARNING_KEY: "staff-grade",
+        OVERRIDE_UNSAVED_WARNING_KEY: "staff-override",
+
         /**
          * Load the staff area.
-         *
-         * @param {function} onSuccessCallback an optional callback to be executed when the
-         * server successfully returns the staff area HTML. This callback will be the last thing
-         * executed, after rendering and installing click handlers.
          */
-        load: function(onSuccessCallback) {
+        load: function() {
             var view = this;
 
             // If we're course staff, the base template should contain a section
@@ -39,9 +38,6 @@
                     $('.openassessment__staff-area', view.element).replaceWith(html);
                     view.server.renderLatex($('.openassessment__staff-area', view.element));
                     view.installHandlers();
-                    if (onSuccessCallback) {
-                        onSuccessCallback();
-                    }
                 }).fail(function() {
                     view.baseView.showLoadError('staff_area');
                 });
@@ -97,6 +93,10 @@
                         // Install a change handler for rubric options to enable/disable the submit button
                         rubric.canSubmitCallback($.proxy(view.staffSubmitEnabled, view, $manageLearnersTab));
 
+                        rubric.changesExistCallback(
+                            $.proxy(view.assessmentRubricChanges, view, view.OVERRIDE_UNSAVED_WARNING_KEY)
+                        );
+
                         // Install a click handler for the submit button
                         $manageLearnersTab.find('.wrapper--staff-assessment .action--submit', view.element).click(
                             function(eventObject) {
@@ -125,25 +125,36 @@
          * Upon request, loads the staff grade/assessment section of the staff area.
          * This allows staff grading when staff assessment is a required step.
          *
+         * @param {boolean} clearAndCollapse if true, clear the staff grade form and collapse it. Otherwise
+         *     render the staff grade form if is not already loaded.
          * @returns {promise} A promise representing the successful loading
          * of the staff grade (assessment) section.
          */
-        loadStaffGradeForm: function() {
+        loadStaffGradeForm: function(clearAndCollapse) {
             var view = this;
             var $staffGradeTab = $('.openassessment__staff-grading', this.element);
-            var isCollapsed = $staffGradeTab.find('.staff__grade__control').hasClass("is--collapsed");
             var deferred = $.Deferred();
             var showFormError = function(errorMessage) {
                 $staffGradeTab.find('.staff__grade__form--error').text(errorMessage);
             };
 
-            if (isCollapsed && !this.staffGradeFormLoaded) {
+            if (clearAndCollapse) {
+                // Collapse the editor and update the counts.
+                $staffGradeTab.find('.staff__grade__control').toggleClass('is--collapsed', true);
+                $staffGradeTab.find('.staff__grade__form').replaceWith('<div class="staff__grade__form"></div>');
+                view.updateStaffGradeCounts();
+                deferred.resolve();
+            }
+            else if (!this.staffGradeFormLoaded) {
                 this.staffGradeFormLoaded = true;
                 this.server.staffGradeForm().done(function(html) {
                     showFormError('');
 
                     // Load the HTML and install event handlers
                     $staffGradeTab.find('.staff__grade__form').replaceWith(html);
+
+                    // Update the number of ungraded and checked out assigments.
+                    view.updateStaffGradeCounts();
 
                     var $rubric = $staffGradeTab.find('.staff-assessment__assessment');
                     if ($rubric.size() > 0) {
@@ -152,6 +163,10 @@
 
                         // Install a change handler for rubric options to enable/disable the submit button
                         rubric.canSubmitCallback($.proxy(view.staffSubmitEnabled, view, $staffGradeTab));
+
+                        rubric.changesExistCallback(
+                            $.proxy(view.assessmentRubricChanges, view, view.FULL_GRADE_UNSAVED_WARNING_KEY)
+                        );
 
                         // Install a click handler for the submit buttons
                         $staffGradeTab.find('.wrapper--staff-assessment .action--submit').click(
@@ -171,7 +186,24 @@
                     deferred.reject();
                 });
             }
+
             return deferred.promise();
+        },
+
+        /**
+         * Update the counts of ungraded and checked out assessments.
+         */
+        updateStaffGradeCounts: function() {
+            var view = this;
+            var $staffGradeTab = $('.openassessment__staff-grading', this.element);
+
+            view.server.staffGradeCounts().done(function(html) {
+                $staffGradeTab.find('.staff__grade__status').replaceWith(html);
+            }).fail(function() {
+                $staffGradeTab.find('.staff__grade__status').replaceWith(
+                    '<span class="staff__grade__status">gettext("Error getting number of ungraded assessments")</span>'
+                );
+            });
         },
 
         /**
@@ -255,7 +287,10 @@
             // Install a click handler for showing the staff grading form.
             $staffGradeTool.find('.staff__grade__show-form').click(
                 function() {
-                    view.loadStaffGradeForm();
+                    var wasCollapsed = $staffGradeTool.find('.staff__grade__control').hasClass("is--collapsed");
+                    if (wasCollapsed) {
+                        view.loadStaffGradeForm();
+                    }
                 }
             );
         },
@@ -380,6 +415,23 @@
         },
 
         /**
+         * Called when something is selected or typed in the assessment rubric.
+         * Used to set the unsaved changes warning dialog.
+         *
+         * @param {string} key the unsaved changes key
+         * @param {boolean} changesExist true if unsaved changes exist
+         */
+        assessmentRubricChanges: function(key, changesExist) {
+            if (changesExist) {
+                this.baseView.unsavedWarningEnabled(
+                    true,
+                    key,
+                    gettext("If you leave this page without submitting your staff assessment, you'll lose any work you've done.") // jscs:ignore maximumLineLength
+                );
+            }
+        },
+
+        /**
          * Submit the staff assessment override.
          *
          * @param {string} submissionID The ID of the submission to be submitted.
@@ -390,6 +442,7 @@
         submitStaffOverride: function(submissionID, rubric, scope) {
             var view = this;
             var successCallback = function() {
+                view.baseView.unsavedWarningEnabled(false, view.OVERRIDE_UNSAVED_WARNING_KEY);
                 // Note: we ignore any message returned from the server and instead
                 // re-render the student info with the "Learner's Final Grade"
                 // section expanded. This section will show the learner's
@@ -413,15 +466,9 @@
         submitStaffGrade: function(submissionID, rubric, scope, continueGrading) {
             var view = this;
             var successCallback = function() {
+                view.baseView.unsavedWarningEnabled(false, view.FULL_GRADE_UNSAVED_WARNING_KEY);
                 view.staffGradeFormLoaded = false;
-                var showFullGradeTab = function() {
-                    // Need to show the staff grade component again, unfortunately requiring a global selector.
-                    $('.button-staff-grading').click();
-                    if (continueGrading) {
-                        $('.staff__grade__show-form', view.element).click();
-                    }
-                };
-                view.load(showFullGradeTab);
+                view.loadStaffGradeForm(!continueGrading);
             };
             this.callStaffAssess(submissionID, rubric, scope, successCallback, '.staff-grade-error');
         },

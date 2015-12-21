@@ -75,6 +75,10 @@ describe("OpenAssessment.PeerView", function() {
         server.renderLatex = jasmine.createSpy('renderLatex');
     });
 
+    afterEach(function() {
+        OpenAssessment.clearUnsavedChanges();
+    });
+
     it("sends a peer assessment to the server", function() {
         var view = createPeerAssessmentView('oa_peer_assessment.html');
         submitPeerAssessment(view);
@@ -114,5 +118,35 @@ describe("OpenAssessment.PeerView", function() {
     it("can submit assessments in turbo mode", function() {
         var view = createPeerAssessmentView('oa_turbo_mode.html');
         submitPeerAssessment(view);
+    });
+
+    it("warns of unsubmitted assessments", function() {
+        var view = createPeerAssessmentView('oa_peer_assessment.html');
+
+        expect(view.baseView.unsavedWarningEnabled()).toBe(false);
+
+        // Click on radio buttons, to create unsubmitted changes.
+        $('.question__answers', view.el).each(function() {
+            $('input[type="radio"]', this).first().click();
+        });
+
+        expect(view.baseView.unsavedWarningEnabled()).toBe(true);
+
+        // When submitPeerAssessment is exected, the views will all re-render. However,
+        // as the test does not mock out the surrounding elements, the re-render
+        // of the peer assessment module will keep the original HTML intact (with selected
+        // options), causing the unsavedWarnings callback to be triggered again (after it is properly
+        // cleared during the submit operation). To avoid this, have the view re-render fail.
+        server.render = function() {
+            return $.Deferred(
+                function(defer) {
+                    defer.fail();
+                }
+            ).promise();
+        };
+
+        submitPeerAssessment(view);
+
+        expect(view.baseView.unsavedWarningEnabled()).toBe(false);
     });
 });

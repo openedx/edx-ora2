@@ -28,6 +28,16 @@ OpenAssessment.BaseView = function(runtime, element, server, data) {
     this.staffAreaView = new OpenAssessment.StaffAreaView(this.element, this.server, this);
 };
 
+if (typeof OpenAssessment.unsavedChanges === 'undefined' || !OpenAssessment.unsavedChanges) {
+    OpenAssessment.unsavedChanges = {};
+}
+
+// This is used by unit tests to reset state.
+OpenAssessment.clearUnsavedChanges = function() {
+    OpenAssessment.unsavedChanges = {};
+    window.onbeforeunload = null;
+};
+
 OpenAssessment.BaseView.prototype = {
 
     /**
@@ -148,6 +158,40 @@ OpenAssessment.BaseView.prototype = {
         $container.toggleClass('has--error', true);
         $container.find('.step__status__value i').removeClass().addClass('icon fa fa-exclamation-triangle');
         $container.find('.step__status__value .copy').html(_.escape(errorMessage));
+    },
+
+    /**
+     * Enable/disable the "navigate away" warning to alert the user of unsaved changes.
+     *
+     * @param {boolean} enabled If specified, set whether the warning is enabled.
+     * @param {string} key A unique key related to the type of unsaved changes. Must be supplied
+     * if "enabled" is also supplied.
+     * @param {string} message The message to show if navigating away with unsaved changes. Only needed
+     * if "enabled" is true.
+     * @returns {boolean} Whether the warning is enabled (only if "enabled" argument is not supplied).
+     */
+    unsavedWarningEnabled: function(enabled, key, message) {
+        if (typeof enabled === 'undefined') {
+            return (window.onbeforeunload !== null);
+        }
+        else {
+            if (enabled) {
+                OpenAssessment.unsavedChanges[key] = message;
+                window.onbeforeunload = function() {
+                    for (var key in OpenAssessment.unsavedChanges) {
+                        if (OpenAssessment.unsavedChanges.hasOwnProperty(key)) {
+                            return OpenAssessment.unsavedChanges[key];
+                        }
+                    }
+                };
+            }
+            else {
+                delete OpenAssessment.unsavedChanges[key];
+                if ($.isEmptyObject(OpenAssessment.unsavedChanges)) {
+                    window.onbeforeunload = null;
+                }
+            }
+        }
     }
 };
 
