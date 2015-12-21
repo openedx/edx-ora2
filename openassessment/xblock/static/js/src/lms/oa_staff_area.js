@@ -253,7 +253,7 @@
             );
 
             // Install a click handler for showing the staff grading form.
-            $staffGradeTool.find('.staff__grade__button').click(
+            $staffGradeTool.find('.staff__grade__show-form').click(
                 function() {
                     view.loadStaffGradeForm();
                 }
@@ -418,7 +418,7 @@
                     // Need to show the staff grade component again, unfortunately requiring a global selector.
                     $('.button-staff-grading').click();
                     if (continueGrading) {
-                        $('.staff__grade__title', view.element).click();
+                        $('.staff__grade__show-form', view.element).click();
                     }
                 };
                 view.load(showFullGradeTab);

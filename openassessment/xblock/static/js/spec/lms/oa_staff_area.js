@@ -448,7 +448,7 @@ describe('OpenAssessment.StaffAreaView', function() {
 
     describe('Grade Available Responses', function() {
         var showInstructorAssessmentForm = function(staffArea) {
-            $('.staff__grade__control', staffArea.element).click();
+            $('.staff__grade__show-form', staffArea.element).click();
         };
 
         var fillAssessment = function($assessment) {
@@ -549,6 +549,26 @@ describe('OpenAssessment.StaffAreaView', function() {
 
             // Verify that the error message is shown
             expect($('.staff-grade-error', staffArea.element).first().text().trim()).toBe(serverErrorMessage);
+        });
+
+        it('shows the number of ungraded and checked out submissions', function() {
+            var staffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
+                $assessment;
+
+            expect($('.staff__grade__value').text().trim()).toBe("10 Available and 2 Checked Out");
+
+            showInstructorAssessmentForm(staffArea);
+
+            // Render a different staff area teamplate the next time around so counts can update.
+            server.staffAreaTemplate = 'oa_staff_area_full_grading_2.html';
+
+            // Fill in assessment and make sure the counts re-render.
+            $assessment = getAssessment(staffArea.element);
+            fillAssessment($assessment);
+            server.staffGradeFormTemplate = 'oa_staff_grade_learners_assessment_2.html';
+            submitAssessment(staffArea);
+
+            expect($('.staff__grade__value').text().trim()).toBe("9 Available and 0 Checked Out");
         });
     });
 });
