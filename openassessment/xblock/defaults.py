@@ -138,14 +138,23 @@ DEFAULT_SELF_ASSESSMENT = {
     "due": DEFAULT_DUE,
 }
 
+DEFAULT_STAFF_ASSESSMENT = {
+    "name": "staff-assessment",
+    "start": DEFAULT_START,
+    "due": DEFAULT_DUE,
+    "required": False,
+}
+
 DEFAULT_ASSESSMENT_MODULES = [
     DEFAULT_STUDENT_TRAINING,
     DEFAULT_PEER_ASSESSMENT,
     DEFAULT_SELF_ASSESSMENT,
+    DEFAULT_STAFF_ASSESSMENT,
 ]
 
 DEFAULT_EDITOR_ASSESSMENTS_ORDER = [
     "student-training",
     "peer-assessment",
     "self-assessment",
+    "staff-assessment",
 ]

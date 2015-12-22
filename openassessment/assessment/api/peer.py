@@ -28,7 +28,7 @@ logger = logging.getLogger("openassessment.assessment.api.peer")
 PEER_TYPE = "PE"
 
 
-def submitter_is_finished(submission_uuid, requirements):
+def submitter_is_finished(submission_uuid, peer_requirements):
     """
     Check whether the submitter has made the required number of assessments.
 
@@ -38,30 +38,32 @@ def submitter_is_finished(submission_uuid, requirements):
 
     Args:
         submission_uuid (str): The UUID of the submission being tracked.
-        requirements (dict): Dictionary with the key "must_grade" indicating
+        peer_requirements (dict): Dictionary with the key "must_grade" indicating
             the required number of submissions the student must grade.
 
     Returns:
         bool
 
     """
-    if requirements is None:
+    if peer_requirements is None:
         return False
 
     try:
         workflow = PeerWorkflow.objects.get(submission_uuid=submission_uuid)
         if workflow.completed_at is not None:
             return True
-        elif workflow.num_peers_graded() >= requirements["must_grade"]:
+        elif workflow.num_peers_graded() >= peer_requirements["must_grade"]:
             workflow.completed_at = timezone.now()
             workflow.save()
             return True
         return False
     except PeerWorkflow.DoesNotExist:
         return False
+    except KeyError:
+        raise PeerAssessmentRequestError(u'Requirements dict must contain "must_grade" key')
 
 
-def assessment_is_finished(submission_uuid, requirements):
+def assessment_is_finished(submission_uuid, peer_requirements):
     """
     Check whether the submitter has received enough assessments
     to get a score.
@@ -72,7 +74,7 @@ def assessment_is_finished(submission_uuid, requirements):
 
     Args:
         submission_uuid (str): The UUID of the submission being tracked.
-        requirements (dict): Dictionary with the key "must_be_graded_by"
+        peer_requirements (dict): Dictionary with the key "must_be_graded_by"
             indicating the required number of assessments the student
             must receive to get a score.
 
@@ -80,7 +82,7 @@ def assessment_is_finished(submission_uuid, requirements):
 
         bool
     """
-    if requirements is None:
+    if not peer_requirements:
         return False
 
     workflow = PeerWorkflow.get_by_submission_uuid(submission_uuid)
@@ -91,7 +93,7 @@ def assessment_is_finished(submission_uuid, requirements):
         assessment__submission_uuid=submission_uuid,
         assessment__score_type=PEER_TYPE
     )
-    return scored_items.count() >= requirements["must_be_graded_by"]
+    return scored_items.count() >= peer_requirements["must_be_graded_by"]
 
 
 def on_start(submission_uuid):
@@ -135,7 +137,7 @@ def on_start(submission_uuid):
         raise PeerAssessmentInternalError(error_message)
 
 
-def get_score(submission_uuid, requirements):
+def get_score(submission_uuid, peer_requirements):
     """
     Retrieve a score for a submission if requirements have been satisfied.
 
@@ -146,14 +148,15 @@ def get_score(submission_uuid, requirements):
             must receive to get a score.
 
     Returns:
-        dict with keys "points_earned" and "points_possible".
+        A dictionary with the points earned, points possible, and
+        contributing_assessments information, along with a None staff_id.
 
     """
-    if requirements is None:
+    if peer_requirements is None:
         return None
 
     # User hasn't completed their own submission yet
-    if not submitter_is_finished(submission_uuid, requirements):
+    if not submitter_is_finished(submission_uuid, peer_requirements):
         return None
 
     workflow = PeerWorkflow.get_by_submission_uuid(submission_uuid)
@@ -168,7 +171,7 @@ def get_score(submission_uuid, requirements):
         assessment__score_type=PEER_TYPE
     ).order_by('-assessment')
 
-    submission_finished = items.count() >= requirements["must_be_graded_by"]
+    submission_finished = items.count() >= peer_requirements["must_be_graded_by"]
     if not submission_finished:
         return None
 
@@ -180,15 +183,18 @@ def get_score(submission_uuid, requirements):
     # which is not supported by some versions of MySQL.
     # Although this approach generates more database queries, the number is likely to
     # be relatively small (at least 1 and very likely less than 5).
-    for scored_item in items[:requirements["must_be_graded_by"]]:
+    for scored_item in items[:peer_requirements["must_be_graded_by"]]:
         scored_item.scored = True
         scored_item.save()
+    assessments = [item.assessment for item in items]
 
     return {
         "points_earned": sum(
             get_assessment_median_scores(submission_uuid).values()
         ),
-        "points_possible": items[0].assessment.points_possible,
+        "points_possible": assessments[0].points_possible,
+        "contributing_assessments": [assessment.id for assessment in assessments],
+        "staff_id": None,
     }
 
 
@@ -281,16 +287,16 @@ def create_assessment(
         logger.exception(message)
         raise PeerAssessmentWorkflowError(message)
     except InvalidRubric:
-        msg = u"Rubric definition was not valid"
+        msg = u"The rubric definition is not valid."
         logger.exception(msg)
         raise PeerAssessmentRequestError(msg)
     except InvalidRubricSelection:
-        msg = u"Invalid options selected in the rubric"
+        msg = u"Invalid options were selected in the rubric."
         logger.warning(msg, exc_info=True)
         raise PeerAssessmentRequestError(msg)
     except DatabaseError:
         error_message = (
-            u"An error occurred while retrieving the peer workflow item by scorer with ID: {}"
+            u"An error occurred while creating an assessment by the scorer with this ID: {}"
         ).format(scorer_id)
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)

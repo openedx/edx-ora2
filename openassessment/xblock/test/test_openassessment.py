@@ -43,6 +43,11 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         self.assertIsNotNone(self_response)
         self.assertTrue(self_response.body.find("openassessment__peer-assessment"))
 
+        # Validate Staff Grade.
+        staff_response = xblock.render_staff_assessment(request)
+        self.assertIsNotNone(self_response)
+        self.assertTrue(staff_response.body.find("openassessment__staff-assessment"))
+
         # Validate Grading.
         grade_response = xblock.render_grade({})
         self.assertIsNotNone(grade_response)

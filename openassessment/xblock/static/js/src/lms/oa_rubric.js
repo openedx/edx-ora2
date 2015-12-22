@@ -61,7 +61,7 @@ OpenAssessment.Rubric.prototype = {
 
     **/
     overallFeedback: function(overallFeedback) {
-        var selector = '#assessment__rubric__question--feedback__value';
+        var selector = '.assessment__rubric__question--feedback__value';
         if (typeof overallFeedback === 'undefined') {
             return $(selector, this.element).val();
         }

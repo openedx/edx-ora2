@@ -24,14 +24,14 @@ from openassessment.assessment.errors import (
 logger = logging.getLogger(__name__)
 
 
-def submitter_is_finished(submission_uuid, requirements):   # pylint:disable=W0613
+def submitter_is_finished(submission_uuid, training_requirements):   # pylint:disable=W0613
     """
     Check whether the student has correctly assessed
     all the training example responses.
 
     Args:
         submission_uuid (str): The UUID of the student's submission.
-        requirements (dict): Must contain "num_required" indicating
+        training_requirements (dict): Must contain "num_required" indicating
             the number of examples the student must assess.
 
     Returns:
@@ -41,11 +41,11 @@ def submitter_is_finished(submission_uuid, requirements):   # pylint:disable=W06
         StudentTrainingRequestError
 
     """
-    if requirements is None:
+    if training_requirements is None:
         return False
 
     try:
-        num_required = int(requirements['num_required'])
+        num_required = int(training_requirements['num_required'])
     except KeyError:
         raise StudentTrainingRequestError(u'Requirements dict must contain "num_required" key')
     except ValueError:

@@ -4,8 +4,7 @@
 // NOTES:
 // * staff-centric UI used for reporting/debugging
 
-.wrapper--xblock {
-
+.openassessment {
 
   // --------------------
   // general: staff UI
@@ -35,6 +34,16 @@
         .ui-staff__content {
           margin-top: 0;
         }
+
+        .staff-info__cancel-submission__content,
+        .staff-info__staff-override__content {
+          padding: 0;
+        }
+      }
+
+      .ui-toggle-visibility__content {
+        @include margin-left(($baseline-h/4));
+        margin-bottom: ($baseline-v/2);
       }
     }
   }
@@ -42,6 +51,21 @@
   .ui-staff__title {
     @extend %t-heading;
     color: $copy-staff-color;
+  }
+
+  .ui-staff__subtitle {
+    @extend %t-subheading;
+    @extend %t-strong;
+    @include fontSize($f-size-medium);
+    // We want to keep the collapsible headers within the staff assessment block blue
+    // (because they are being displayed in the LMS color scheme). Unfortunately because of
+    // that we need to add an override just for ui-staff_subtitle collapsible items.
+    color: $heading-staff-color !important;
+    margin-bottom: ($baseline-v/2);
+
+    span {
+      font-weight: inherit;
+    }
   }
 
   .staff-info__title__copy {
@@ -54,11 +78,14 @@
   }
 
   .ui-staff__content__section {
-    padding-bottom: $baseline-v;
-    border-bottom: 1px solid rgba($color-decorative-staff, 0.25);
-    margin-bottom: $baseline-v;
-
+    padding-bottom: ($baseline-v/2);
     @extend %wipe-last-child;
+
+    .wrapper--input,
+    .wrapper--content {
+      padding: $baseline-v ($baseline-h/2);
+      background-color: $bg-content;
+    }
   }
 
   // --------------------
@@ -83,9 +110,18 @@
     }
   }
 
-  // UI - status (table)
-  .staff-info__status, .staff-info__classifierset {
+  .openassessment_student_info_form {
+    margin-bottom: ($baseline-v/2);
 
+    .list--actions__item {
+      @include text-align(left);
+
+      .action--submit-username {
+        @extend %btn--secondary;
+
+        margin-left: 0;
+      }
+    }
   }
 
   .staff-info__status__table, .staff-info__classifierset__table {
@@ -110,7 +146,7 @@
     }
 
     th, td {
-      border: 1px solid rgba($color-decorative-staff, 0.25);
+      border: 1px solid rgba($copy-staff-color, 0.25);
       padding: ($baseline-v/2) ($baseline-h/4);
     }
 
@@ -133,25 +169,186 @@
     }
   }
 
-}
+  // staff assessments
+  .wrapper--staff-assessment {
+    margin-top: ($baseline-v/2);
+    padding-top: ($baseline-v/2);
+    border-top: 1px solid $color-decorative-tertiary;
+  }
 
-// UI - cancel submission (action)
-.openassessment__staff-info__cancel__submission {
+  .staff-assessment__display {
+    @extend %ui-subsection;
+  }
 
-  .staff-info__cancel-submission__content {
+  .staff-assessment__display__header {
+    @include clearfix();
 
-    .cancel_submission_comments {
-      width: 100%;
-      min-height: ($baseline-v*5);
-      text-align: left;
+    span {
+      @extend %t-strong; // FIX: needed due to DOM structure
     }
 
-    .list--actions {
-      .action--submit {
-        margin: ($baseline-v/2) 0;
+    .staff-assessment__display__title {
+      @extend %t-heading;
+      margin-bottom: ($baseline-v/2);
+      color: $heading-secondary-color;
+    }
+  }
+
+  .staff-assessment__display__response {
+    @extend %ui-subsection-content;
+    @extend %copy-3;
+    @extend %ui-content-longanswer;
+    @extend %ui-well;
+    color: $copy-color;
+  }
+
+  // assessment form
+  .staff-assessment__assessment {
+
+    // fields
+    .assessment__fields {
+      margin-bottom: $baseline-v;
+    }
+
+    // rubric question
+    .assessment__rubric__question {
+      @extend %ui-rubric-question;
+    }
+
+    // rubric options
+    .question__answers {
+      @extend %ui-rubric-answers;
+    }
+
+    // general feedback question
+    .assessment__rubric__question--feedback {
+
+      .wrapper--input {
+        margin-top: $baseline-v;
+      }
+
+      .question__title__copy {
+        @include margin-left(0);
+        white-space: pre-wrap;
+      }
+
+      textarea {
+        @extend %ui-content-longanswer;
+        min-height: ($baseline-v*5);
+      }
+    }
+  }
+
+  // Styling for staff grade tab ("Grade Available Responses").
+  .ui-staff {
+    .staff__grade__control {
+      border-top: ($baseline-v/4) solid $color-decorative-tertiary;
+      background: $bg-content;
+      background-color: $bg-content;
+
+      .staff__grade__title {
+        @include text-align(left);
+        @include float(none);
+
+        padding: 0 $baseline-v;
+        display: block;
+        width: 100%;
+
+        .staff__grade__show-form {
+          @extend %btn-reset;
+          @extend %t-superheading;
+          @include fontSize($f-size-medium);
+
+          background-color: $bg-content;
+          text-transform: none;
+          letter-spacing: normal;
+          padding: 0;
+        }
+      }
+
+      .staff__grade__status {
+        display: inline-block;
+        padding: 0 $baseline-v;
+
+        @include media($bp-dm) {
+          margin-top: 0;
+          @include float(right);
+          position: relative;
+          top: -($baseline-v*2);
+        }
+
+        @include media($bp-dl) {
+          margin-top: 0;
+          @include float(right);
+          position: relative;
+          top: -($baseline-v*2);
+        }
+
+        @include media($bp-dx) {
+          margin-top: 0;
+          @include float(right);
+          position: relative;
+          top: -($baseline-v*2);
+        }
+
+        .staff__grade__value {
+          border-radius: ($baseline-v/10);
+          padding: ($baseline-v/4) ($baseline-h/4);
+          background: $color-decorative-tertiary;
+          line-height: 0;
+
+          @include media($bp-ds) {
+            display: block;
+          }
+
+          @include media($bp-dm) {
+            display: block;
+          }
+
+          @include media($bp-dl) {
+            display: block;
+          }
+
+          @include media($bp-dx) {
+            display: block;
+          }
+        }
+
+        .copy {
+          @extend %t-score;
+          color: $heading-color;
+        }
+      }
+
+      .submit_assessment--action {
+        display: inline;
+      }
+
+      .wrapper--input {
+        padding-top: 0;
       }
     }
 
+    // Override the default color for h3 (for elements that can be toggled).
+    .ui-toggle-visibility .ui-toggle-visibility__control .staff__grade__title {
+      color: $action-primary-color;
+    }
   }
 
+  // UI - cancel submission (action)
+  .staff-info__workflow-cancellation {
+
+    .staff-info__cancel-submission__content {
+
+      .comments__label {
+        color: $copy-secondary-color;
+      }
+
+      .cancel_submission_comments {
+        width: 100%;
+        min-height: ($baseline-v*5);
+        text-align: left;
+      }
+    }
+  }
 }

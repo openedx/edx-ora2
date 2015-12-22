@@ -60,7 +60,8 @@ VALID_ASSESSMENT_TYPES = [
     u'peer-assessment',
     u'self-assessment',
     u'example-based-assessment',
-    u'student-training'
+    u'student-training',
+    u'staff-assessment',
 ]
 
 VALID_UPLOAD_FILE_TYPES = [
@@ -95,6 +96,7 @@ EDITOR_UPDATE_SCHEMA = Schema({
             Required('name'): All(utf8_validator, In(VALID_ASSESSMENT_TYPES)),
             Required('start', default=None): Any(datetime_validator, None),
             Required('due', default=None): Any(datetime_validator, None),
+            'required': bool,
             'must_grade': All(int, Range(min=0)),
             'must_be_graded_by': All(int, Range(min=0)),
             'examples': [

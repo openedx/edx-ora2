@@ -47,9 +47,13 @@ def _duplicates(items):
 
 def _is_valid_assessment_sequence(assessments):
     """
-    Check whether the sequence of assessments is valid.
-    For example, we currently allow self-assessment after peer-assessment,
-    but do not allow peer-assessment before self-assessment.
+    Check whether the sequence of assessments is valid. The rules enforced are:
+        -must have one of staff-, peer-, self-, or example-based-assessment listed
+        -in addition to those, only student-training is a valid entry
+        -no duplicate entries
+        -if staff-assessment is present, it must come last
+        -if example-based-assessment is present, it must come first
+        -if student-training is present, it must be followed at some point by peer-assessment
 
     Args:
         assessments (list of dict): List of assessment dictionaries.
@@ -58,27 +62,37 @@ def _is_valid_assessment_sequence(assessments):
         bool
 
     """
-    valid_sequences = [
-        ['self-assessment'],
-        ['peer-assessment'],
-        ['peer-assessment', 'self-assessment'],
-        ['self-assessment', 'peer-assessment'],
-        ['student-training', 'peer-assessment'],
-        ['student-training', 'peer-assessment', 'self-assessment'],
-        ['student-training', 'self-assessment', 'peer-assessment'],
-        ['example-based-assessment'],
-        ['example-based-assessment', 'self-assessment'],
-        ['example-based-assessment', 'peer-assessment'],
-        ['example-based-assessment', 'peer-assessment', 'self-assessment'],
-        ['example-based-assessment', 'self-assessment', 'peer-assessment'],
-        ['example-based-assessment', 'student-training', 'peer-assessment'],
-        ['example-based-assessment', 'student-training', 'peer-assessment', 'self-assessment'],
-        ['example-based-assessment', 'student-training', 'self-assessment', 'peer-assessment'],
-    ]
-
     sequence = [asmnt.get('name') for asmnt in assessments]
-    return sequence in valid_sequences
+    required = ['example-based-assessment', 'staff-assessment', 'peer-assessment', 'self-assessment']
+    optional = ['student-training']
 
+    # at least one of required?
+    if not any(name in required for name in sequence):
+        return False
+
+    # nothing except what appears in required or optional
+    if any(name not in required + optional for name in sequence):
+        return False
+
+    # no duplicates
+    if any(sequence.count(name) > 1 for name in sequence):
+        return False
+
+    # if using staff-assessment, it must come last
+    if 'staff-assessment' in sequence and 'staff-assessment' != sequence[-1]:
+        return False
+
+    # if using example-based, it must be first
+    if 'example-based-assessment' in sequence and 'example-based-assessment' != sequence[0]:
+        return False
+
+    # if using training, must be followed by peer at some point
+    if 'student-training' in sequence:
+        train_index = sequence.index('student-training')
+        if 'peer-assessment' not in sequence[train_index:]:
+            return False
+
+    return True
 
 def validate_assessments(assessments, current_assessments, is_released, _):
     """
@@ -144,6 +158,12 @@ def validate_assessments(assessments, current_assessments, is_released, _):
         if assessment_dict.get('name') == 'example-based-assessment':
             if assessment_dict.get('algorithm_id') not in ['ease', 'fake']:
                 return (False, _('The "algorithm_id" value must be set to "ease" or "fake"'))
+
+        # Staff grading must be required if it is the only step
+        if assessment_dict.get('name') == 'staff-assessment' and len(assessments) == 1:
+            required = assessment_dict.get('required')
+            if not required: # Captures both None and explicit False cases, both are invalid
+                return (False, _('The "required" value must be true if staff assessment is the only step.'))
 
     if is_released:
         if len(assessments) != len(current_assessments):

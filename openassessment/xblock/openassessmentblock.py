@@ -31,6 +31,7 @@ from openassessment.xblock.studio_mixin import StudioMixin
 from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
 from openassessment.xblock.staff_area_mixin import StaffAreaMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
+from openassessment.xblock.staff_assessment_mixin import StaffAssessmentMixin
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.student_training_mixin import StudentTrainingMixin
 from openassessment.xblock.validation import validator
@@ -45,37 +46,36 @@ UI_MODELS = {
     "submission": {
         "name": "submission",
         "class_id": "openassessment__response",
-        "navigation_text": "Your response to this assignment",
         "title": "Your Response"
     },
     "student-training": {
         "name": "student-training",
         "class_id": "openassessment__student-training",
-        "navigation_text": "Learn to assess responses",
         "title": "Learn to Assess"
     },
     "peer-assessment": {
         "name": "peer-assessment",
         "class_id": "openassessment__peer-assessment",
-        "navigation_text": "Your assessment(s) of peer responses",
         "title": "Assess Peers' Responses"
     },
     "self-assessment": {
         "name": "self-assessment",
         "class_id": "openassessment__self-assessment",
-        "navigation_text": "Your assessment of your response",
         "title": "Assess Your Response"
+    },
+    "staff-assessment": {
+        "name": "staff-assessment",
+        "class_id": "openassessment__staff-assessment",
+        "title": "Staff Grade"
     },
     "grade": {
         "name": "grade",
         "class_id": "openassessment__grade",
-        "navigation_text": "Your grade for this assignment",
         "title": "Your Grade:"
     },
      "leaderboard": {
         "name": "leaderboard",
         "class_id": "openassessment__leaderboard",
-        "navigation_text": "A leaderboard of the top submissions",
         "title": "Leaderboard"
     }
 }
@@ -85,6 +85,7 @@ VALID_ASSESSMENT_TYPES = [
     "example-based-assessment",
     "peer-assessment",
     "self-assessment",
+    "staff-assessment"
 ]
 
 
@@ -100,6 +101,7 @@ class OpenAssessmentBlock(
     SubmissionMixin,
     PeerAssessmentMixin,
     SelfAssessmentMixin,
+    StaffAssessmentMixin,
     StudioMixin,
     GradeMixin,
     LeaderboardMixin,
@@ -446,10 +448,20 @@ class OpenAssessmentBlock(
 
         """
         ui_models = [UI_MODELS["submission"]]
+        staff_assessment_required = False
         for assessment in self.valid_assessments:
+            if assessment["name"] == "staff-assessment":
+                if not assessment["required"]:
+                    continue
+                else:
+                    staff_assessment_required = True
             ui_model = UI_MODELS.get(assessment["name"])
             if ui_model:
                 ui_models.append(dict(assessment, **ui_model))
+
+        if not staff_assessment_required and self.staff_assessment_exists(self.submission_uuid):
+            ui_models.append(UI_MODELS["staff-assessment"])
+
         ui_models.append(UI_MODELS["grade"])
 
         if self.leaderboard_show > 0:
