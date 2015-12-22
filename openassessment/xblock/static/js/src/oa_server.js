@@ -137,6 +137,29 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         },
 
         /**
+         * Renders the count of ungraded and checked out assessemtns.
+         *
+         * @returns {promise} A JQuery promise, which resolves with the HTML of the rendered section
+         *     fails with an error message.
+         */
+        staffGradeCounts: function() {
+            var url = this.url('render_staff_grade_counts');
+            return $.Deferred(function(defer) {
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    dataType: "html"
+                }).done(function(data) {
+                    defer.resolveWith(this, [data]);
+                }).fail(function() {
+                    defer.rejectWith(
+                        this, [gettext('The display of ungraded and checked out assessments could not be loaded.')]
+                    );
+                });
+            }).promise();
+        },
+
+        /**
          * Send a submission to the XBlock.
          *
          * @param {string} submission The text of the student's submission.

@@ -142,7 +142,7 @@ describe("OpenAssessment.ResponseView", function() {
         view.setAutoSaveEnabled(false);
 
         // Disable the unsaved page warning (if set)
-        view.unsavedWarningEnabled(false);
+        OpenAssessment.clearUnsavedChanges();
     });
 
     it("updates and retrieves response text correctly", function() {
@@ -299,36 +299,36 @@ describe("OpenAssessment.ResponseView", function() {
 
     it("enables the unsaved work warning when the user changes the response text", function() {
         // Initially, the unsaved work warning should be disabled
-        expect(view.unsavedWarningEnabled()).toBe(false);
+        expect(view.baseView.unsavedWarningEnabled()).toBe(false);
 
         // Change the text, then expect the unsaved warning to be enabled.
         view.response(['Lorem ipsum 1', 'Lorem ipsum 2']);
         view.handleResponseChanged();
 
         // Expect the unsaved work warning to be enabled
-        expect(view.unsavedWarningEnabled()).toBe(true);
+        expect(view.baseView.unsavedWarningEnabled()).toBe(true);
     });
 
     it("disables the unsaved work warning when the user saves a response", function() {
         // Change the text, then expect the unsaved warning to be enabled.
         view.response(['Lorem ipsum 1', 'Lorem ipsum 2']);
         view.handleResponseChanged();
-        expect(view.unsavedWarningEnabled()).toBe(true);
+        expect(view.baseView.unsavedWarningEnabled()).toBe(true);
 
         // Save the response and expect the unsaved warning to be disabled
         view.save();
-        expect(view.unsavedWarningEnabled()).toBe(false);
+        expect(view.baseView.unsavedWarningEnabled()).toBe(false);
     });
 
     it("disables the unsaved work warning when the user submits a response", function() {
         // Change the text, then expect the unsaved warning to be enabled.
         view.response(['Lorem ipsum 1', 'Lorem ipsum 2']);
         view.handleResponseChanged();
-        expect(view.unsavedWarningEnabled()).toBe(true);
+        expect(view.baseView.unsavedWarningEnabled()).toBe(true);
 
         // Submit the response and expect the unsaved warning to be disabled
         view.submit();
-        expect(view.unsavedWarningEnabled()).toBe(false);
+        expect(view.baseView.unsavedWarningEnabled()).toBe(false);
     });
 
     describe("auto save", function() {
@@ -360,7 +360,7 @@ describe("OpenAssessment.ResponseView", function() {
             expect(view.saveStatus()).toContain('saved but not submitted');
 
             // Expect that the unsaved warning is disabled
-            expect(view.unsavedWarningEnabled()).toBe(false);
+            expect(view.baseView.unsavedWarningEnabled()).toBe(false);
         });
 
         it("schedules autosave polling", function() {

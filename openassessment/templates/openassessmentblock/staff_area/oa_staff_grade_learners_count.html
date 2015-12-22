@@ -1,0 +1,11 @@
+{% load i18n %}
+
+<span class="staff__grade__status">
+    <span class="staff__grade__value">
+        <span class="copy">
+            {% blocktrans with ungraded=staff_assessment_ungraded|stringformat:"s" in_progress=staff_assessment_in_progress|stringformat:"s" %}
+                {{ ungraded }} Available and {{ in_progress }} Checked Out
+            {% endblocktrans %}
+        </span>
+    </span>
+</span>
