@@ -866,7 +866,7 @@ class OpenAssessmentBlock(
             if assessment["name"] == mixin_name:
                 return assessment
 
-    def publish_assessment_event(self, event_name, assessment):
+    def publish_assessment_event(self, event_name, assessment, **kwargs):
         """
         Emit an analytics event for the peer assessment.
 
@@ -902,19 +902,24 @@ class OpenAssessmentBlock(
                 "feedback": part["feedback"]
             })
 
+        event_data = {
+            "feedback": assessment["feedback"],
+            "rubric": {
+                "content_hash": assessment["rubric"]["content_hash"],
+            },
+            "scorer_id": assessment["scorer_id"],
+            "score_type": assessment["score_type"],
+            "scored_at": assessment["scored_at"],
+            "submission_uuid": assessment["submission_uuid"],
+            "parts": parts_list
+        }
+
+        for key in kwargs:
+            event_data[key] = kwargs[key]
+
         self.runtime.publish(
             self, event_name,
-            {
-                "feedback": assessment["feedback"],
-                "rubric": {
-                    "content_hash": assessment["rubric"]["content_hash"],
-                },
-                "scorer_id": assessment["scorer_id"],
-                "score_type": assessment["score_type"],
-                "scored_at": assessment["scored_at"],
-                "submission_uuid": assessment["submission_uuid"],
-                "parts": parts_list
-            }
+            event_data
         )
 
     def _serialize_opaque_key(self, key):
