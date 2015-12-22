@@ -689,6 +689,8 @@
         "template": "openassessmentblock/staff_area/oa_staff_area.html",
         "context": {
             "staff_assessment_required": true,
+            "staff_assessment_ungraded": 10,
+            "staff_assessment_in_progress": 2,
             "status_counts": {
                 "self": 1,
                 "peer": 2,
@@ -716,6 +718,40 @@
             ]
         },
         "output": "oa_staff_area_full_grading.html"
+    },
+    {
+        "template": "openassessmentblock/staff_area/oa_staff_area.html",
+        "context": {
+            "staff_assessment_required": true,
+            "staff_assessment_ungraded": 9,
+            "staff_assessment_in_progress": 0,
+            "status_counts": {
+                "self": 1,
+                "peer": 2,
+                "waiting": 3,
+                "done": 4
+            },
+            "num_submissions": 10,
+            "item_id": "test_item",
+            "step_dates": [
+                {
+                    "step": "submission",
+                    "start": "2014-01-01",
+                    "due": "N/A"
+                },
+                {
+                    "step": "peer",
+                    "start": "2014-02-02",
+                    "due": "N/A"
+                },
+                {
+                    "step": "self",
+                    "start": "2014-03-03",
+                    "due": "2015-04-05"
+                }
+            ]
+        },
+        "output": "oa_staff_area_full_grading_2.html"
     },
     {
         "template": "openassessmentblock/staff_area/oa_student_info.html",
@@ -1031,5 +1067,117 @@
             ]
         },
         "output": "oa_turbo_mode.html"
+    },
+    {
+        "template": "openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html",
+        "context": {
+            "rubric_criteria": [
+                {
+                    "name": "vocabulary",
+                    "prompt": "vocabulary",
+                    "order_num": 0,
+                    "feedback": "optional",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "Bad"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 1,
+                            "name": "Good"
+                        }
+                    ]
+                },
+                {
+                    "name": "grammar",
+                    "prompt": "grammar",
+                    "order_num": 1,
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "Bad"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 1,
+                            "name": "Good"
+                        }
+                    ]
+                },
+                {
+                    "name": "feedback_only",
+                    "prompt": "Feedback only, no options!",
+                    "order_num": 2,
+                    "feedback": "required",
+                    "options": []
+                }
+            ],
+            "submission": {
+                "answer": {
+                    "text": "testing response text"
+                }
+            },
+            "student_username": "mock_user"
+        },
+        "output": "oa_staff_grade_learners_assessment.html"
+    },
+    {
+        "template": "openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html",
+        "context": {
+            "rubric_criteria": [
+                {
+                    "name": "vocabulary",
+                    "prompt": "vocabulary",
+                    "order_num": 0,
+                    "feedback": "optional",
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "Bad"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 1,
+                            "name": "Good"
+                        }
+                    ]
+                },
+                {
+                    "name": "grammar",
+                    "prompt": "grammar",
+                    "order_num": 1,
+                    "options": [
+                        {
+                            "order_num": 0,
+                            "points": 0,
+                            "name": "Bad"
+                        },
+                        {
+                            "order_num": 1,
+                            "points": 1,
+                            "name": "Good"
+                        }
+                    ]
+                },
+                {
+                    "name": "feedback_only",
+                    "prompt": "Feedback only, no options!",
+                    "order_num": 2,
+                    "feedback": "required",
+                    "options": []
+                }
+            ],
+            "submission": {
+                "answer": {
+                    "text": "testing response text"
+                }
+            },
+            "student_username": "mock_user_2"
+        },
+        "output": "oa_staff_grade_learners_assessment_2.html"
     }
 ]

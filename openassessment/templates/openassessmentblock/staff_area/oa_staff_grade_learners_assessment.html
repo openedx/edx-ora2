@@ -2,21 +2,21 @@
 {% spaceless %}
 
     {% block body %}
-    <div class="ui-toggle-visibility__content">
+    <div class="staff__grade__form ui-toggle-visibility__content" data-submission-uuid="{{ submission.uuid }}">
         <div class="wrapper--staff-assessment">
-            <div class="step__instruction">
-                <p>{% trans "Override this learner's current grade using the problem's rubric." %}</p>
+            <div>
+                <p>{% trans "Give this learner a grade using the problem's rubric." %}</p>
             </div>
 
-            <div class="step__content">
+            <div>
                 <article class="staff-assessment">
                     <div class="staff-assessment__display">
                         <header class="staff-assessment__display__header">
-                            <h3 class="staff-assessment__display__title">
+                            <h4 class="staff-assessment__display__title">
                                 {% blocktrans %}
                                     Response for: {{ student_username }}
                                 {% endblocktrans %}
-                            </h3>
+                            </h4>
                         </header>
 
                         {% include "openassessmentblock/oa_submission_answer.html" with answer=submission.answer answer_text_label="The learner's response to the question above:" %}
@@ -25,26 +25,31 @@
                     </div>
 
                     <form class="staff-assessment__assessment" method="post">
-                        {% include "openassessmentblock/oa_rubric.html" with rubric_type="staff" rubric_feedback_prompt="(Optional) What aspects of this response stood out to you? What did it do well? How could it improve?" rubric_feedback_default_text="I noticed that this response..." %}
+                        {% include "openassessmentblock/oa_rubric.html" with rubric_type="staff" %}
                     </form>
                 </article>
             </div>
 
-            <div class="step__actions">
+            <div>
                 <div class="message message--inline message--error message--error-server">
-                    <h3 class="message__title">{% trans "We could not submit your assessment" %}</h3>
+                    <h4 class="message__title">{% trans "We could not submit your assessment" %}</h4>
                     <div class="message__content"></div>
                 </div>
 
                 <ul class="list list--actions">
-                    <li class="list--actions__item">
+                    <li class="list--actions__item submit_assessment--action">
                         <button type="submit" class="action action--submit is--disabled">
-                            <span class="copy">{% trans "Submit your assessment" %}</span>
+                            <span class="copy">{% trans "Submit assessment" %}</span>
                         </button>
+                    </li>
 
-                        <div class="staff-override-error"></div>
+                    <li class="list--actions__item submit_assessment--action">
+                        <button type="submit" class="action action--submit is--disabled continue_grading--action">
+                            <span class="copy">{% trans "Submit assessment and continue grading" %}</span>
+                        </button>
                     </li>
                 </ul>
+                <div class="staff-grade-error"></div>
             </div>
         </div>
     </div>

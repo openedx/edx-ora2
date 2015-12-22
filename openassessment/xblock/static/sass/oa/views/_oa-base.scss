@@ -29,6 +29,56 @@
     padding: 0;
   }
 
+  // --------------------
+  // overall actions
+  // --------------------
+  .list--actions {
+    margin-bottom: ($baseline-v/2);
+    @include text-align(center);
+
+    @include media($bp-ds) {
+      @include text-align(right);
+    }
+
+    @include media($bp-dm) {
+      @include text-align(right);
+    }
+
+    @include media($bp-dl) {
+      @include text-align(right);
+    }
+
+    @include media($bp-dx) {
+      @include text-align(right);
+    }
+
+    // STATE: actions has an error
+    &.has--error {
+
+      .message {
+        margin-bottom: $baseline-v;
+        @include text-align(left);
+      }
+    }
+
+    .action--submit {
+      @extend %btn--primary;
+      @extend %action-2;
+      margin-left: ($baseline-v/2);
+
+      .copy, .icon {
+        display: inline;
+      }
+
+      .icon {
+        @extend %icon-2;
+      }
+
+      .fa-caret-right:before {
+        @include transform(rotate(bidi-rotate-angle(0deg)));
+      }
+    }
+  }
 
   // --------------------
   // steps
@@ -232,55 +282,6 @@
 
       &:last-child {
         @extend %wipe-last-child;
-      }
-    }
-
-    // step actions
-    .step__actions {
-      margin-bottom: ($baseline-v/2);
-      @include text-align(center);
-
-      @include media($bp-ds) {
-        @include text-align(right);
-      }
-
-      @include media($bp-dm) {
-       @include text-align(right);
-      }
-
-      @include media($bp-dl) {
-        @include text-align(right);
-      }
-
-      @include media($bp-dx) {
-        @include text-align(right);
-      }
-
-      .action--submit {
-        @extend %btn--primary;
-        @extend %action-2;
-
-        .copy, .icon {
-          display: inline;
-        }
-
-        .icon {
-          @extend %icon-2;
-        }
-
-        .fa-caret-right:before {
-          @include transform(rotate(bidi-rotate-angle(0deg)));
-        }
-
-      }
-
-      // STATE: actions has an error
-      &.has--error {
-
-        .message {
-          margin-bottom: $baseline-v;
-          @include text-align(left);
-        }
       }
     }
 
@@ -540,6 +541,10 @@
       display: inline-block;
       vertical-align: middle;
       @include margin-left(($baseline-h/4));
+
+      .list--actions {
+        @include text-align(left);
+      }
     }
 
     .response__submission__status__title {
@@ -549,11 +554,14 @@
 
     .response__submission__actions {
 
+      .list--actions__item {
+        @include text-align(left);
+      }
+
       .action--save {
         @extend %btn--secondary;
         @extend %action-2;
         display: block;
-        @include text-align(center);
         margin-bottom: ($baseline-v/2);
         min-width: 215px;
 
@@ -1125,7 +1133,7 @@
     @extend %ui-subsection-content;
     padding-top: 0;
 
-   .list--actions {
+    .list--actions {
       padding: 0;
     }
 

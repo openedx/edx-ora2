@@ -116,6 +116,27 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
         },
 
         /**
+         * Renders the next submission for staff grading.
+         *
+         * @returns {promise} A JQuery promise, which resolves with the HTML of the rendered section
+         *     fails with an error message.
+         */
+        staffGradeForm: function() {
+            var url = this.url('render_staff_grade_form');
+            return $.Deferred(function(defer) {
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    dataType: "html"
+                }).done(function(data) {
+                    defer.resolveWith(this, [data]);
+                }).fail(function() {
+                    defer.rejectWith(this, [gettext('The staff assessment form could not be loaded.')]);
+                });
+            }).promise();
+        },
+
+        /**
          * Send a submission to the XBlock.
          *
          * @param {string} submission The text of the student's submission.
