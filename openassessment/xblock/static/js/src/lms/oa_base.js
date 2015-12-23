@@ -42,14 +42,20 @@ OpenAssessment.BaseView.prototype = {
 
     /**
      * Checks to see if the scrollTo function is available, then scrolls to the
-     * top of the list of steps for this display.
+     * top of the list of steps (or the specified selector) for this display.
      *
      * Ideally, we would not need to check if the function exists, and could
      * import scrollTo, or other dependencies, into workbench.
+     *
+     * @param {string} selector optional CSS selector to scroll to. If not supplied,
+     *     the default value of "#openassessment__steps" is used.
      */
-    scrollToTop: function() {
+    scrollToTop: function(selector) {
+        if (!selector) {
+            selector = "#openassessment__steps";
+        }
         if ($.scrollTo instanceof Function) {
-            $(window).scrollTo($("#openassessment__steps", this.element), 800, {offset: -50});
+            $(window).scrollTo($(selector, this.element), 800, {offset: -50});
         }
     },
 

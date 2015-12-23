@@ -391,6 +391,11 @@ class GradePage(OpenAssessmentPage):
     """
     Page object representing the "grade" step in an ORA problem.
     """
+    def _bounded_selector(self, selector):
+        """
+        Return `selector`, but limited to the student grade view.
+        """
+        return '#openassessment__grade {}'.format(selector)
 
     def is_browser_on_page(self):
         return self.q(css="#openassessment__grade").is_present()
@@ -406,7 +411,7 @@ class GradePage(OpenAssessmentPage):
         Raises:
             ValueError if the score is not an integer.
         """
-        score_candidates = [int(x) for x in self.q(css=".grade__value__earned").text]
+        score_candidates = [int(x) for x in self.q(css=self._bounded_selector(".grade__value__earned")).text]
         return score_candidates[0] if len(score_candidates) > 0 else None
 
     def grade_entry(self, question, column):
@@ -502,7 +507,6 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         """
         Clicks the staff grade control to expand staff grading section for use in staff required workflows.
         """
-        self.click_staff_toolbar_button("staff-grading")
         self.q(css=self._bounded_selector(".staff__grade__show-form")).first.click()
         self.wait_for_element_visibility("#staff__assessment__rubric__question--0__0", "staff grading is present")
 
@@ -512,8 +516,6 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         Gets "N available and M checked out" information from staff grading sections.
         Returns tuple of (N, M)
         """
-        if not 'GRADE AVAILABLE RESPONSES' in self.selected_button_names:
-            self.expand_staff_grading_section()
         raw_string = self.q(css=self._bounded_selector(".staff__grade__value")).text[0]
         ret = tuple(int(s) for s in raw_string.split() if s.isdigit())
         if len(ret) != 2:
@@ -530,17 +532,6 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
             lambda: self.available_checked_out_numbers == expected_value,
             "Expected avaiable and checked out values present"
         ).fulfill()
-
-    def submissions_available(self):
-        """
-        Utility method to check if there are any more learner responses to grade in the staff grading section.
-        """
-        found = self.q(
-            css=self._bounded_selector(".staff__grade__content")
-        )
-        if found.text[0] == "No other learner responses are available for grading at this time.":
-            return False
-        return True
 
     @property
     def learner_report_text(self):
