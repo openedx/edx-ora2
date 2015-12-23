@@ -8,17 +8,7 @@
             </span>
         </h3>
 
-        {% block title %}
-        <span class="staff__grade__status">
-          <span class="staff__grade__value">
-            <span class="copy">
-                {% blocktrans with ungraded=staff_assessment_ungraded|stringformat:"s" in_progress=staff_assessment_in_progress|stringformat:"s" %}
-                    {{ ungraded }} Available and {{ in_progress }} Checked Out
-                {% endblocktrans %}
-            </span>
-          </span>
-        </span>
-        {% endblock %}
+        {% include "openassessmentblock/staff_area/oa_staff_grade_learners_count.html" with staff_assessment_ungraded=staff_assessment_ungraded staff_assessment_in_progress=staff_assessment_in_progress %}
     </header>
 
     <div class="ui-staff__content__section staff__grade__content ui-toggle-visibility__content">
