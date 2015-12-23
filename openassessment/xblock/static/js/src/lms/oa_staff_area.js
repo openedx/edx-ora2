@@ -471,6 +471,9 @@
                 view.baseView.unsavedWarningEnabled(false, view.FULL_GRADE_UNSAVED_WARNING_KEY);
                 view.staffGradeFormLoaded = false;
                 view.loadStaffGradeForm(!continueGrading);
+                if (continueGrading) {
+                    view.baseView.scrollToTop(".openassessment__staff-area");
+                }
             };
             this.callStaffAssess(submissionID, rubric, scope, successCallback, '.staff-grade-error');
         },

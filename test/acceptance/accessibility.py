@@ -128,6 +128,7 @@ class StaffAreaA11yTest(OpenAssessmentA11yTest):
         self.assertTrue(self.submission_page.has_submitted)
 
         self.staff_area_page.visit()
+        self.staff_area_page.click_staff_toolbar_button("staff-grading")
         self.staff_area_page.expand_staff_grading_section()
         self._check_a11y(self.staff_area_page)
 
