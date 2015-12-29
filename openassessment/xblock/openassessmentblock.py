@@ -922,6 +922,26 @@ class OpenAssessmentBlock(
             event_data
         )
 
+    @XBlock.json_handler
+    def publish_event(self, data, suffix=''):
+        """
+        Publish the given data to an event.
+
+        Expects key 'event_name' to be present in the data dictionary.
+        """
+
+        try:
+            event_name = data['event_name']
+        except KeyError:
+            logger.exception("Could not find the name of the event to be triggered.")
+            return {'success': False}
+
+        # Remove the name so we don't publish as part of the data.
+        del data['event_name']
+
+        self.runtime.publish(self, event_name, data)
+        return {'success': True}
+
     def _serialize_opaque_key(self, key):
         """
         Gracefully handle opaque keys, both before and after the transition.
@@ -955,4 +975,3 @@ class OpenAssessmentBlock(
                 return effective
 
         return start
-

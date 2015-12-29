@@ -549,6 +549,21 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                     defer.rejectWith(this, [gettext('The submission could not be removed from the grading pool.')]);
                 });
             }).promise();
+        },
+
+        /**
+         * Submit an event to the runtime for publishing.
+         *
+         * @param {object} eventName - the name of the event
+         * @param {object} eventData - additional context data for the event
+         */
+        publishEvent: function(eventName, eventData) {
+            eventData.event_name = eventName;
+            var url = this.url('publish_event');
+            var payload = JSON.stringify(eventData);
+            $.ajax({
+                type: "POST", url: url, data: payload, contentType: jsonContentType
+            });
         }
     };
 }
