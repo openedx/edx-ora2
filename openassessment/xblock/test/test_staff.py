@@ -160,6 +160,8 @@ class TestStaffAssessment(StaffAssessmentTestBase):
         self.assertEqual(assessment['points_earned'], score['points_earned'])
         self.assertEqual(assessment['points_possible'], score['points_possible'])
 
+        self.assert_assessment_event_published(xblock, 'openassessmentblock.staff_assess', assessment, type='full-grade')
+
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_permission_error(self, xblock):
         # Create a submission for the student
