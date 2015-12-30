@@ -695,6 +695,8 @@ class TestPeerAssessHandler(XBlockHandlerTestCase):
         self.assertEqual(parts[1]['option']['criterion']['name'], u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮')
         self.assertEqual(parts[1]['option']['name'], u'ﻉซƈﻉɭɭﻉกՇ')
 
+        self.assert_assessment_event_published(xblock, 'openassessmentblock.peer_assess', assessment)
+
     @scenario('data/feedback_per_criterion.xml', user_id='Bob')
     def test_peer_assess_feedback(self, xblock):
         # Submit a peer assessment
