@@ -391,7 +391,7 @@ class StaffAreaMixin(object):
 
         if "peer-assessment" in assessment_steps:
             peer_assessments = peer_api.get_assessments(submission_uuid)
-            submitted_assessments = peer_api.get_submitted_assessments(submission_uuid, scored_only=False)
+            submitted_assessments = peer_api.get_submitted_assessments(submission_uuid)
 
         if "self-assessment" in assessment_steps:
             self_assessment = self_api.get_assessment(submission_uuid)

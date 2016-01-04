@@ -1001,8 +1001,8 @@ class FullWorkflowRequiredTest(OpenAssessmentTest, FullWorkflowMixin):
 
     @retry()
     @attr('acceptance')
-    @ddt.data(False)
-    def test_train_self_peer_staff(self, peer_grades_me):  # TODO: can't run with "True" due to TNL-3957
+    @ddt.data(True, False)
+    def test_train_self_peer_staff(self, peer_grades_me):
         """
         Scenario: complete workflow that included staff required step.
 
@@ -1032,12 +1032,17 @@ class FullWorkflowRequiredTest(OpenAssessmentTest, FullWorkflowMixin):
         self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS, None)
         self.assertEqual(self.STAFF_OVERRIDE_SCORE, self.grade_page.wait_for_page().score)
 
-        # Note that PEER ASSESSMENT isn't shown here - it gets cut off the page in this case
-        # See TNL-3930 for details and possible fix.
-        self.verify_grade_entries([
-            [(u"STAFF GRADE - 0 POINTS", u"Poor"), (u"STAFF GRADE - 1 POINT", u"Fair")],
-            [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")],
-        ])
+        if peer_grades_me:
+            self.verify_grade_entries([
+                [(u"STAFF GRADE - 0 POINTS", u"Poor"), (u"STAFF GRADE - 1 POINT", u"Fair")],
+                [(u"PEER MEDIAN GRADE", u"Poor"), (u"PEER MEDIAN GRADE", u"Poor")],
+                [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")],
+            ])
+        else:
+            self.verify_grade_entries([
+                [(u"STAFF GRADE - 0 POINTS", u"Poor"), (u"STAFF GRADE - 1 POINT", u"Fair")],
+                [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")],
+            ])
 
 
 if __name__ == "__main__":
