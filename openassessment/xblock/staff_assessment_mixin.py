@@ -51,7 +51,8 @@ class StaffAssessmentMixin(object):
                 data['overall_feedback'],
                 create_rubric_dict(self.prompts, self.rubric_criteria_with_labels)
             )
-            self.publish_assessment_event("openassessmentblock.staff_assess", assessment, type='full-grade')
+            assess_type = data.get('assess_type', 'regrade')
+            self.publish_assessment_event("openassessmentblock.staff_assess", assessment, type=assess_type)
             workflow_api.update_from_assessments(assessment["submission_uuid"], None)
 
         except StaffAssessmentRequestError:

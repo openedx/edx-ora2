@@ -141,8 +141,15 @@ describe('OpenAssessment.StaffAreaView', function() {
     };
 
     var submitAssessment = function(staffArea, tab) {
+        spyOn(staffArea, 'callStaffAssess').and.callThrough();
         var $submitButton = $('.action--submit', getAssessment(staffArea, tab));
         $submitButton.click();
+    };
+
+    var verifyAssessType = function(staffArea, assessType) {
+        expect(staffArea.callStaffAssess).toHaveBeenCalledWith(
+                jasmine.any(String), jasmine.any(Object), jasmine.any(Object), jasmine.any(Function), jasmine.any(String), assessType
+        );
     };
 
     beforeEach(function() {
@@ -470,6 +477,8 @@ describe('OpenAssessment.StaffAreaView', function() {
                 server.studentTemplate = 'oa_staff_graded_submission.html';
                 submitAssessment(staffArea, staffAreaTab);
 
+                verifyAssessType(staffArea, 'regrade');
+
                 // Verify that the student info is visible and shows the correct score
                 $gradeSection = $('.staff-info__student__grade', staffArea.element);
                 expect($('.ui-toggle-visibility', $gradeSection)).not.toHaveClass('is--collapsed');
@@ -573,6 +582,7 @@ describe('OpenAssessment.StaffAreaView', function() {
             fillAssessment($assessment);
             server.staffGradeFormTemplate = 'oa_staff_grade_learners_assessment_2.html';
             submitAssessment(staffArea, staffAreaTab);
+            verifyAssessType(staffArea, 'full-grade');
 
             // Verify that the assessment form has been removed
             expect($('.staff__grade__form', staffArea.element).html().trim()).toBe('');

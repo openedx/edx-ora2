@@ -53,7 +53,8 @@ STAFF_GOOD_ASSESSMENT = {
         u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'Staff: ฝﻉɭɭ ɗѻกﻉ!',
         u'Form': u'Staff: ƒαιя נσв'
     },
-    'overall_feedback': u'Staff: good job!'
+    'overall_feedback': u'Staff: good job!',
+    'assess_type': 'full-grade'
 }
 
 # A sample bad staff assessment
@@ -63,7 +64,8 @@ STAFF_BAD_ASSESSMENT = {
         u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'Staff: ק๏๏г נσв',
         u'Form': u'Staff: ק๏๏г נσв'
     },
-    'overall_feedback': u'Staff: very poor'
+    'overall_feedback': u'Staff: very poor',
+    'assess_type': 'full-grade'
 }
 
 
