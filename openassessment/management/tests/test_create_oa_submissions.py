@@ -32,7 +32,7 @@ class CreateSubmissionsTest(TestCase):
             self.assertGreater(len(answer_dict['text']), 0)
 
             # Check that peer and self assessments were created
-            assessments = peer_api.get_assessments(submissions[0]['uuid'], scored_only=False)
+            assessments = peer_api.get_assessments(submissions[0]['uuid'])
 
             # Verify that the assessments exist and have content
             self.assertEqual(len(assessments), cmd.NUM_PEER_ASSESSMENTS)

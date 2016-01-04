@@ -2,17 +2,17 @@
     "waiting_for_peer": {
         "waiting_for_peer": true,
         "waiting_for_ai": false,
-        "expected_response": "peer assessment"
+        "expected_response": "not all assessment steps have been completed"
     },
     "waiting_for_ai": {
         "waiting_for_peer": false,
         "waiting_for_ai": true,
-        "expected_response": "example-based assessment"
+        "expected_response": "not all assessment steps have been completed"
     },
     "waiting_for_both": {
         "waiting_for_peer": true,
         "waiting_for_ai": true,
-        "expected_response": "peer assessment and example-based assessment"
+        "expected_response": "not all assessment steps have been completed"
     },
     "not_waiting": {
         "waiting_for_peer": false,

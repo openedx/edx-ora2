@@ -823,5 +823,5 @@ class TestPeerAssessHandler(XBlockHandlerTestCase):
             self.assertTrue(resp['success'])
 
             # Retrieve the peer assessment
-            retrieved_assessment = peer_api.get_assessments(submission['uuid'], scored_only=False)[0]
+            retrieved_assessment = peer_api.get_assessments(submission['uuid'])[0]
             return submission['uuid'], retrieved_assessment

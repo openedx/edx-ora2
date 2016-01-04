@@ -483,7 +483,7 @@ def has_finished_required_evaluating(submission_uuid, required_assessments):
     return done, peers_graded
 
 
-def get_assessments(submission_uuid, scored_only=True, limit=None):
+def get_assessments(submission_uuid, limit=None):
     """Retrieve the assessments for a submission.
 
     Retrieves all the assessments for a submissions. This API returns related
@@ -495,9 +495,6 @@ def get_assessments(submission_uuid, scored_only=True, limit=None):
             associated with. Required.
 
     Keyword Arguments:
-        scored (boolean): Only retrieve the assessments used to generate a score
-            for this submission.
-
         limit (int): Limit the returned assessments. If None, returns all.
 
 
@@ -513,7 +510,7 @@ def get_assessments(submission_uuid, scored_only=True, limit=None):
             while retrieving the assessments associated with this submission.
 
     Examples:
-        >>> get_assessments("1", scored_only=True, limit=2)
+        >>> get_assessments("1", limit=2)
         [
             {
                 'points_earned': 6,
@@ -533,15 +530,10 @@ def get_assessments(submission_uuid, scored_only=True, limit=None):
 
     """
     try:
-        if scored_only:
-            assessments = PeerWorkflowItem.get_scored_assessments(
-                submission_uuid
-            )[:limit]
-        else:
-            assessments = Assessment.objects.filter(
-                submission_uuid=submission_uuid,
-                score_type=PEER_TYPE
-            )[:limit]
+        assessments = Assessment.objects.filter(
+            submission_uuid=submission_uuid,
+            score_type=PEER_TYPE
+        )[:limit]
         return serialize_assessments(assessments)
     except DatabaseError:
         error_message = (
@@ -551,7 +543,7 @@ def get_assessments(submission_uuid, scored_only=True, limit=None):
         raise PeerAssessmentInternalError(error_message)
 
 
-def get_submitted_assessments(submission_uuid, scored_only=True, limit=None):
+def get_submitted_assessments(submission_uuid, limit=None):
     """Retrieve the assessments created by the given submission's author.
 
     Retrieves all the assessments created by the given submission's author. This
@@ -564,8 +556,6 @@ def get_submitted_assessments(submission_uuid, scored_only=True, limit=None):
         we are requesting. Required.
 
     Keyword Arguments:
-        scored (boolean): Only retrieve the assessments used to generate a score
-            for this submission.
         limit (int): Limit the returned assessments. If None, returns all.
 
     Returns:
@@ -581,7 +571,7 @@ def get_submitted_assessments(submission_uuid, scored_only=True, limit=None):
             while retrieving the assessments associated with this submission.
 
     Examples:
-        >>> get_submitted_assessments("1", scored_only=True, limit=2)
+        >>> get_submitted_assessments("1", limit=2)
         [
             {
                 'points_earned': 6,
@@ -608,8 +598,6 @@ def get_submitted_assessments(submission_uuid, scored_only=True, limit=None):
             scorer=workflow,
             assessment__isnull=False
         )
-        if scored_only:
-            items = items.exclude(scored=False)
         assessments = Assessment.objects.filter(
             pk__in=[item.assessment.pk for item in items])[:limit]
         return serialize_assessments(assessments)
