@@ -9,7 +9,7 @@ from functools import wraps
 
 from nose.plugins.attrib import attr
 from bok_choy.web_app_test import WebAppTest
-from bok_choy.promise import BrokenPromise
+from bok_choy.promise import BrokenPromise, EmptyPromise
 from auto_auth import AutoAuthPage
 from pages import (
     SubmissionPage, AssessmentPage, GradePage, StaffAreaPage
@@ -218,7 +218,6 @@ class OpenAssessmentTest(WebAppTest):
         self.staff_area_page.staff_assess(self.STAFF_OVERRIDE_OPTIONS_SELECTED)
         self.staff_area_page.verify_learner_final_score(final_score)
 
-
     def do_staff_assessment(self, number_to_assess=0, options_selected=OPTIONS_SELECTED):
         """
         Use staff tools to assess available responses.
@@ -228,17 +227,36 @@ class OpenAssessmentTest(WebAppTest):
                 will grade all available submissions.
         """
         self.staff_area_page.visit()
-        self.staff_area_page.expand_staff_grading_section()
+        self.staff_area_page.click_staff_toolbar_button("staff-grading")
+        # Get the counts before checking out a submission for assessment.
         start_numbers = self.staff_area_page.available_checked_out_numbers
+        # Check out a submission.
+        self.staff_area_page.expand_staff_grading_section()
+        # Checked out number should increase, ungraded decrease.
+        ungraded = start_numbers[0]-1
+        checked_out = start_numbers[1]+1
+        self.staff_area_page.verify_available_checked_out_numbers((ungraded, checked_out))
         assessed = 0
         while number_to_assess == 0 or assessed < number_to_assess:
-            continue_after = False if number_to_assess-1 == assessed else True
+            continue_after = False if number_to_assess-1 == assessed else ungraded > 0
             self.staff_area_page.staff_assess(options_selected, continue_after)
             assessed += 1
-            new_numbers = (start_numbers[0]-assessed, start_numbers[1])
-            self.staff_area_page.verify_available_checked_out_numbers(new_numbers)
-            if not continue_after or not self.staff_area_page.submissions_available():
+            if not continue_after:
+                self.staff_area_page.verify_available_checked_out_numbers((ungraded, checked_out-1))
                 break
+            else:
+                ungraded -=1
+                self.staff_area_page.verify_available_checked_out_numbers((ungraded, checked_out))
+
+    def refresh_page(self):
+        """
+        Helper method that waits for "unsaved changes" warnings to clear before refreshing the page.
+        """
+        EmptyPromise(
+            lambda: self.browser.execute_script("return window.onbeforeunload === null"),
+            "Unsubmitted changes exist on page."
+        ).fulfill()
+        self.browser.refresh()
 
 
 class SelfAssessmentTest(OpenAssessmentTest):
@@ -311,7 +329,7 @@ class StaffAssessmentTest(OpenAssessmentTest):
 
         # Verify that staff scores can be overriden
         self.do_staff_override(username)
-        self.browser.refresh()
+        self.refresh_page()
         self.assertEqual(self.STAFF_OVERRIDE_SCORE, self.grade_page.wait_for_page().score)
 
 class PeerAssessmentTest(OpenAssessmentTest):
@@ -383,7 +401,7 @@ class PeerAssessmentTestStaffOverride(OpenAssessmentTest):
         self.do_staff_override(username, self.STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE)
 
         # Refresh the page so the learner sees the Staff Grade section.
-        self.browser.refresh()
+        self.refresh_page()
         self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS, self.STAFF_OVERRIDE_LEARNER_STEPS_NOT_COMPLETE)
 
         # Verify no final grade yet.
@@ -639,7 +657,7 @@ class StaffAreaTest(OpenAssessmentTest):
         self.do_staff_override(username, self.STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE)
 
         # Refresh the page so the learner sees the Staff Grade section.
-        self.browser.refresh()
+        self.refresh_page()
         self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS, self.STAFF_OVERRIDE_LEARNER_STEPS_NOT_COMPLETE)
 
         # Verify no final grade yet.
@@ -681,7 +699,7 @@ class StaffAreaTest(OpenAssessmentTest):
         self.staff_area_page.cancel_submission()
 
         # Refresh the page so the learner sees the Staff Grade section shows the submission has been cancelled.
-        self.browser.refresh()
+        self.refresh_page()
         self._verify_staff_grade_section("CANCELLED", None)
         self.assertIsNone(self.grade_page.wait_for_page().score)
 
@@ -794,16 +812,20 @@ class FullWorkflowMixin(object):
             learner: the learner whose grade will be checked
             max_attempts: the maximum number of times an additional peer grading should be done
         """
+        def peer_grade_exists():
+            self.staff_area_page.visit()
+            self.staff_area_page.show_learner(learner)
+            return "Peer Assessments for This Learner" in self.staff_area_page.learner_report_sections
+
         count = 0
-        while not self.peer_asmnt_page.is_complete and count < (max_attempts + 1):
+        while not peer_grade_exists() and count < max_attempts:
             count += 1
             self.do_submission_training_self_assessment("extra_{}@looping.com".format(count), None)
             self.do_peer_assessment(options=self.PEER_ASSESSMENT)
             self.login_user(learner)
-            self.grade_page.visit()
 
         self.assertTrue(
-            self.peer_asmnt_page.is_complete,
+            peer_grade_exists(),
             "Learner still not graded after {} additional attempts".format(max_attempts)
         )
 
@@ -860,6 +882,7 @@ class FullWorkflowBaseTest(OpenAssessmentTest, FullWorkflowMixin):
 
         return learner
 
+
 class FullWorkflowOverrideTest(FullWorkflowBaseTest):
     """
     Tests of complete workflows, combining multiple required steps together.
@@ -899,7 +922,7 @@ class FullWorkflowOverrideTest(FullWorkflowBaseTest):
         # Now do a staff override, changing the score (to 1).
         self.do_staff_override(learner)
 
-        self.browser.refresh()
+        self.refresh_page()
         self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS, None)
         self.assertEqual(self.STAFF_OVERRIDE_SCORE, self.grade_page.wait_for_page().score)
         self.verify_staff_area_fields(
@@ -942,7 +965,7 @@ class FullWorkflowOverrideTest(FullWorkflowBaseTest):
         self.do_staff_override(learner, self.STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE)
 
         # Refresh the page so the learner sees the Staff Grade section.
-        self.browser.refresh()
+        self.refresh_page()
         self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS, self.STAFF_OVERRIDE_LEARNER_STEPS_NOT_COMPLETE)
 
         # Now create a second learner so that "learner" has someone to assess.
@@ -987,8 +1010,8 @@ class FullWorkflowRequiredTest(FullWorkflowBaseTest):
 
     @retry()
     @attr('acceptance')
-    @ddt.data(True, False)
-    def test_train_self_peer_staff(self, peer_grades_me):
+    @ddt.data(False)
+    def test_train_self_peer_staff(self, peer_grades_me):  # TODO: can't run with "True" due to TNL-3957
         """
         Scenario: complete workflow that included staff required step.
 
@@ -1001,7 +1024,7 @@ class FullWorkflowRequiredTest(FullWorkflowBaseTest):
         And all fields in the staff area tool are correct
         """
         # Using ddt booleans to confirm behavior independent of whether I receive a peer score or not
-        learner = self.do_train_self_peer(peer_grades_me)
+        self.do_train_self_peer(peer_grades_me)
 
         # Ensure grade is not present, since staff assessment has not been made
         self.assertIsNone(self.grade_page.wait_for_page().score)
@@ -1011,10 +1034,10 @@ class FullWorkflowRequiredTest(FullWorkflowBaseTest):
 
         # As an add-on, let's make sure that both submissions (the learner's, and the additional one created
         # in do_train_self_peer() above) were assessed using staff-grading's "submit and keep going"
-        self.assertFalse(self.staff_area_page.submissions_available())
+        self.assertEqual(0, self.staff_area_page.available_checked_out_numbers[0])
 
         # At this point, the learner sees the score (1).
-        self.browser.refresh()
+        self.refresh_page()
         self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS, None)
         self.assertEqual(self.STAFF_OVERRIDE_SCORE, self.grade_page.wait_for_page().score)
 
