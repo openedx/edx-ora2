@@ -675,11 +675,19 @@ class TestCourseStaff(XBlockHandlerTestCase):
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
         # Create a submission for Bob, and corresponding workflow.
-        self._create_submission(bob_item, {'text': submission_text}, [])
+        submission = self._create_submission(bob_item, {'text': submission_text}, [])
 
         resp = self.request(xblock, 'render_staff_grade_form', json.dumps({})).decode('utf-8')
         self.assertNotIn(no_submissions_available, resp)
         self.assertIn(submission_text, resp)
+
+        self.assert_event_published(xblock, 'openassessmentblock.get_submission_for_staff_grading', {
+            'type': 'full-grade',
+            'requesting_staff_id': 'Bob',
+            'item_id': bob_item['item_id'],
+            'submission_returned_uuid': submission['uuid']
+        })
+
 
     def _verify_staff_assessment_context(self, context, required, ungraded=None, in_progress=None):
         self.assertEquals(required, context['staff_assessment_required'])

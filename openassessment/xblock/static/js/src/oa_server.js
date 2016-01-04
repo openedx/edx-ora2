@@ -318,15 +318,17 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          *     e.g. { clarity: "The essay was very clear." }
          * @param {string} overallFeedback - A string with the staff member's overall feedback.
          * @param {string} submissionID - The ID of the submission being assessed.
+         * @param {string} assessType a string indicating whether this was a 'full-grade' or 'regrade'
          * @returns {promise} A promise which resolves with no arguments if successful,
          *     and which fails with an error message otherwise.
          */
-        staffAssess: function(optionsSelected, criterionFeedback, overallFeedback, submissionID) {
+        staffAssess: function(optionsSelected, criterionFeedback, overallFeedback, submissionID, assessType) {
             return this.submitAssessment("staff_assess", {
                 options_selected: optionsSelected,
                 criterion_feedback: criterionFeedback,
                 overall_feedback: overallFeedback,
-                submission_uuid: submissionID
+                submission_uuid: submissionID,
+                assess_type: assessType
             });
         },
 

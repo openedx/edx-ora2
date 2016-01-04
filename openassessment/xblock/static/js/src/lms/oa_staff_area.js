@@ -452,7 +452,7 @@
                 // the staff override itself.
                 view.loadStudentInfo({expanded_view: 'final-grade'});
             };
-            this.callStaffAssess(submissionID, rubric, scope, successCallback, '.staff-override-error');
+            this.callStaffAssess(submissionID, rubric, scope, successCallback, '.staff-override-error', 'regrade');
         },
 
         /**
@@ -475,7 +475,7 @@
                     view.baseView.scrollToTop(".openassessment__staff-area");
                 }
             };
-            this.callStaffAssess(submissionID, rubric, scope, successCallback, '.staff-grade-error');
+            this.callStaffAssess(submissionID, rubric, scope, successCallback, '.staff-grade-error', 'full-grade');
         },
 
         /**
@@ -487,13 +487,14 @@
          *     classes in different form).
          * @param {function} successCallback A function to execute on success.
          * @param {string} errorSelector a CSS class selector for displaying error messages.
+         * @param {string} assessType a string indicating whether this was a 'full-grade' or 'regrade'
          */
-        callStaffAssess: function(submissionID, rubric, scope, successCallback, errorSelector) {
+        callStaffAssess: function(submissionID, rubric, scope, successCallback, errorSelector, assessType) {
             var view = this;
             view.staffSubmitEnabled(scope, false);
 
             this.server.staffAssess(
-                rubric.optionsSelected(), rubric.criterionFeedback(), rubric.overallFeedback(), submissionID
+                rubric.optionsSelected(), rubric.criterionFeedback(), rubric.overallFeedback(), submissionID, assessType
             ).done(successCallback).fail(function(errorMessage) {
                 scope.find(errorSelector).html(_.escape(errorMessage));
                 view.staffSubmitEnabled(scope, true);
