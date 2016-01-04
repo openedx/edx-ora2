@@ -129,8 +129,8 @@ describe('OpenAssessment.StaffAreaView', function() {
         $('.staff__grade__show-form', staffArea.element).click();
     };
 
-    var fillAssessment = function($assessment) {
-        $('#staff__assessment__rubric__question--2__feedback', $assessment).val('Text response');
+    var fillAssessment = function($assessment, type) {
+        $('#staff-'+ type+ '__assessment__rubric__question--2__feedback', $assessment).val('Text response');
         $('.question__answers', $assessment).each(function() {
             $('input[type="radio"]', this).first().click();
         });
@@ -196,7 +196,7 @@ describe('OpenAssessment.StaffAreaView', function() {
             // Create unsubmitted changes in the "full grade" form.
             showInstructorAssessmentForm(fullGradeStaffArea);
             $assessment = getAssessment(fullGradeStaffArea, fullGradeTab);
-            fillAssessment($assessment);
+            fillAssessment($assessment, 'full-grade');
 
             expect(fullGradeStaffArea.baseView.unsavedWarningEnabled()).toBe(true);
             expect(staffOverrideStaffArea.baseView.unsavedWarningEnabled()).toBe(true);
@@ -204,7 +204,7 @@ describe('OpenAssessment.StaffAreaView', function() {
             // Create unsubmitted changes in the "staff grade override" form.
             chooseStudent(staffOverrideStaffArea, 'testStudent');
             $assessment = getAssessment(staffOverrideStaffArea, staffOverrideTab);
-            fillAssessment($assessment);
+            fillAssessment($assessment, 'override');
 
             expect(fullGradeStaffArea.baseView.unsavedWarningEnabled()).toBe(true);
             expect(staffOverrideStaffArea.baseView.unsavedWarningEnabled()).toBe(true);
@@ -442,6 +442,7 @@ describe('OpenAssessment.StaffAreaView', function() {
 
         describe('Staff Grade Override', function() {
             var staffAreaTab = "staff-tools";
+            var gradingType = "override";
 
             afterEach(function() {
                 // Disable the unsaved page warning (if set)
@@ -455,7 +456,7 @@ describe('OpenAssessment.StaffAreaView', function() {
                 $assessment = getAssessment(staffArea, staffAreaTab);
                 $submitButton = $('.action--submit', $assessment);
                 expect($submitButton).toHaveClass('is--disabled');
-                fillAssessment($assessment);
+                fillAssessment($assessment, gradingType);
                 expect($submitButton).not.toHaveClass('is--disabled');
             });
 
@@ -473,7 +474,7 @@ describe('OpenAssessment.StaffAreaView', function() {
 
                 // Fill in and submit the assessment
                 $assessment = getAssessment(staffArea, staffAreaTab);
-                fillAssessment($assessment);
+                fillAssessment($assessment, gradingType);
                 server.studentTemplate = 'oa_staff_graded_submission.html';
                 submitAssessment(staffArea, staffAreaTab);
 
@@ -493,7 +494,7 @@ describe('OpenAssessment.StaffAreaView', function() {
                     $assessment;
                 chooseStudent(staffArea, 'testStudent');
                 $assessment = getAssessment(staffArea, staffAreaTab);
-                fillAssessment($assessment);
+                fillAssessment($assessment, gradingType);
 
                 // Submit the assessment but return a server error message
                 server.staffAssess = failWith(server, serverErrorMessage);
@@ -513,7 +514,7 @@ describe('OpenAssessment.StaffAreaView', function() {
 
                 // Fill in and submit the assessment
                 $assessment = getAssessment(staffArea, staffAreaTab);
-                fillAssessment($assessment);
+                fillAssessment($assessment, gradingType);
 
                 expect(staffArea.baseView.unsavedWarningEnabled()).toBe(true);
 
@@ -545,6 +546,7 @@ describe('OpenAssessment.StaffAreaView', function() {
 
     describe('Grade Available Responses', function() {
         var staffAreaTab = "staff-grading";
+        var gradingType = "full-grade";
 
         beforeEach(function() {
             loadFixtures('oa_base_course_staff.html');
@@ -563,7 +565,7 @@ describe('OpenAssessment.StaffAreaView', function() {
             $submitButtons = $('.action--submit', $assessment);
             expect($submitButtons.length).toBe(2);
             expect($submitButtons).toHaveClass('is--disabled');
-            fillAssessment($assessment);
+            fillAssessment($assessment, gradingType);
             expect($submitButtons).not.toHaveClass('is--disabled');
         });
 
@@ -579,7 +581,7 @@ describe('OpenAssessment.StaffAreaView', function() {
             );
 
             // Fill in and submit the assessment
-            fillAssessment($assessment);
+            fillAssessment($assessment, gradingType);
             server.staffGradeFormTemplate = 'oa_staff_grade_learners_assessment_2.html';
             submitAssessment(staffArea, staffAreaTab);
             verifyAssessType(staffArea, 'full-grade');
@@ -600,7 +602,7 @@ describe('OpenAssessment.StaffAreaView', function() {
 
             // Fill in and click the button to submit and request another submission
             $assessment = getAssessment(staffArea, staffAreaTab);
-            fillAssessment($assessment);
+            fillAssessment($assessment, gradingType);
             server.staffGradeFormTemplate = 'oa_staff_grade_learners_assessment_2.html';
             $('.continue_grading--action', $assessment).click();
 
@@ -626,7 +628,7 @@ describe('OpenAssessment.StaffAreaView', function() {
                 $assessment;
             showInstructorAssessmentForm(staffArea);
             $assessment = getAssessment(staffArea, staffAreaTab);
-            fillAssessment($assessment);
+            fillAssessment($assessment, gradingType);
 
             // Submit the assessment but return a server error message
             server.staffAssess = failWith(server, serverErrorMessage);
@@ -651,7 +653,7 @@ describe('OpenAssessment.StaffAreaView', function() {
 
             // Fill in assessment and make sure the code re-renders the count form.
             $assessment = getAssessment(staffArea, staffAreaTab);
-            fillAssessment($assessment);
+            fillAssessment($assessment, gradingType);
             // Return a different counts template to mimic the counts changing again.
             server.staffGradeCountsTemplate = 'oa_staff_grade_learners_count_2.html';
             submitAssessment(staffArea, staffAreaTab);
@@ -669,7 +671,7 @@ describe('OpenAssessment.StaffAreaView', function() {
 
             // Fill in assessment and make sure the code re-renders the count form.
             $assessment = getAssessment(staffArea, staffAreaTab);
-            fillAssessment($assessment);
+            fillAssessment($assessment, gradingType);
             expect(staffArea.baseView.unsavedWarningEnabled()).toBe(true);
 
             submitAssessment(staffArea, staffAreaTab);

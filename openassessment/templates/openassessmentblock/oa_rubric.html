@@ -1,6 +1,6 @@
 {% spaceless %}
 {% load i18n %}
-<fieldset class="assessment__fields">
+<div class="assessment__fields">
     <ol class="list list--fields assessment__rubric">
 
         {% for criterion in rubric_criteria %}
@@ -15,44 +15,47 @@
             </h4>
 
             <div class="ui-toggle-visibility__content">
-                <ol class="question__answers">
-                    {% for option in criterion.options %}
-                    <li class="answer">
-                        <div class="wrapper--input">
-                            <input type="radio"
-                                   name="{{ criterion.name }}"
-                                   id="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
-                                   class="answer__value"
-                                   value="{{ option.name }}"
-                                   aria-labelledby="{{ rubric_type }}__assessment__rubric__prompt--{{ criterion.order_num }}"/>
-                            <label for="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
-                                   class="answer__label"
-                                   >{{ option.label }}</label>
+                <div class="question__answers">
+                    <div role="group" aria-labelledby="{{ rubric_type }}__assessment__rubric__prompt--{{ criterion.order_num }}">
+                        {% for option in criterion.options %}
+                        <div class="answer">
+                            <div class="wrapper--input">
+                                <input type="radio"
+                                       data-criterion-name="{{ criterion.name }}"
+                                       id="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
+                                       class="answer__value"
+                                       value="{{ option.name }}"
+                                       name="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}"/>
+                                <label for="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
+                                       class="answer__label"
+                                       >{{ option.label }}</label>
+                            </div>
+                            <div class="wrapper--metadata">
+                                <span class="answer__tip">{{ option.explanation }}</span>
+                                <span class="answer__points">{{ option.points }} <span class="answer__points__label">{% trans "points" %}</span></span>
+                            </div>
                         </div>
-                        <div class="wrapper--metadata">
-                            <span class="answer__tip">{{ option.explanation }}</span>
-                            <span class="answer__points">{{ option.points }} <span class="answer__points__label">{% trans "points" %}</span></span>
-                        </div>
-                    </li>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
 
                     {% if criterion.feedback == 'optional' or criterion.feedback == 'required' %}
-                    <li class="answer--feedback">
+                    <div class="answer--feedback">
                         <div class="wrapper--input">
                             <label for="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__feedback" class="answer__label">{% trans "Comments" %}</label>
                             <textarea
                                 id="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__feedback"
                                 class="answer__value"
                                 value="{{ criterion.name }}"
-                                name="{{ criterion.name }}"
+                                data-criterion-name="{{ criterion.name }}"
+                                aria-describedby="{{ rubric_type }}__assessment__rubric__prompt--{{ criterion.order_num }}"
                                 maxlength="1000"
                                 {% if criterion.feedback == 'required' %}required{% endif %}
                                 >
                             </textarea>
                         </div>
-                    </li>
-                    {% endif %}
-                </ol>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </li>
         {% endfor %}
@@ -72,5 +75,5 @@
             </div>
         </li>
     </ol>
-</fieldset>
+</div>
 {% endspaceless %}
