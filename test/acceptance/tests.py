@@ -215,7 +215,7 @@ class OpenAssessmentTest(WebAppTest):
         self.staff_area_page.visit()
         self.staff_area_page.show_learner(username)
         self.staff_area_page.expand_learner_report_sections()
-        self.staff_area_page.staff_assess(self.STAFF_OVERRIDE_OPTIONS_SELECTED)
+        self.staff_area_page.staff_assess(self.STAFF_OVERRIDE_OPTIONS_SELECTED, "override")
         self.staff_area_page.verify_learner_final_score(final_score)
 
     def do_staff_assessment(self, number_to_assess=0, options_selected=OPTIONS_SELECTED):
@@ -239,7 +239,7 @@ class OpenAssessmentTest(WebAppTest):
         assessed = 0
         while number_to_assess == 0 or assessed < number_to_assess:
             continue_after = False if number_to_assess-1 == assessed else ungraded > 0
-            self.staff_area_page.staff_assess(options_selected, continue_after)
+            self.staff_area_page.staff_assess(options_selected, "full-grade", continue_after)
             assessed += 1
             if not continue_after:
                 self.staff_area_page.verify_available_checked_out_numbers((ungraded, checked_out-1))
@@ -578,7 +578,7 @@ class StaffAreaTest(OpenAssessmentTest):
         self.staff_area_page.verify_learner_final_score(self.STAFF_AREA_SCORE.format(self.EXPECTED_SCORE))
 
         # Do staff override and wait for final score to change.
-        self.staff_area_page.assess("staff", self.STAFF_OVERRIDE_OPTIONS_SELECTED)
+        self.staff_area_page.assess("staff-override", self.STAFF_OVERRIDE_OPTIONS_SELECTED)
 
         # Verify that the new student score is different from the original one.
         # Unfortunately there is no indication presently that this was a staff override.
@@ -784,6 +784,35 @@ class FullWorkflowMixin(object):
 
         return username
 
+    def do_train_self_peer(self, peer_to_grade=True):
+        """
+        Common functionality for executing training, self, and peer assessment steps.
+
+        Args:
+            peer_to_grade: boolean, defaults to True. Set to False to have learner complete their required steps,
+                but no peers to submit a grade for learner in return.
+        """
+        # Create a learner with submission, training, and self assessment completed.
+        learner = self.do_submission_training_self_assessment(self.LEARNER_EMAIL, self.LEARNER_PASSWORD)
+
+        # Now create a second learner so that learner 1 has someone to assess.
+        # The second learner does all the steps as well (submission, training, self assessment, peer assessment).
+        self.do_submission_training_self_assessment("learner2@foo.com", None)
+        if peer_to_grade:
+            self.do_peer_assessment(options=self.PEER_ASSESSMENT)
+
+        # Go back to the first learner to complete her workflow.
+        self.login_user(learner)
+
+        # Learner 1 does peer assessment of learner 2 to complete workflow.
+        self.do_peer_assessment(options=self.SUBMITTED_ASSESSMENT)
+
+        # Continue grading by other students if necessary to ensure learner has a peer grade.
+        if peer_to_grade:
+            self.verify_submission_has_peer_grade(learner)
+
+        return learner
+
     def verify_staff_area_fields(self, username, peer_assessments, submitted_assessments, self_assessment):
         """
         Verifies the expected entries in the staff area for peer assessments,
@@ -829,16 +858,6 @@ class FullWorkflowMixin(object):
             "Learner still not graded after {} additional attempts".format(max_attempts)
         )
 
-
-class FullWorkflowBaseTest(OpenAssessmentTest, FullWorkflowMixin):
-    """
-    Base class for common functionality in full workflow tests.
-    """
-
-    def setUp(self, problem_type):
-        super(FullWorkflowBaseTest, self).setUp(problem_type, staff=True)
-        self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
-
     def verify_grade_entries(self, expected_entries):
         """
         Verify the grade entries (sources and values) as shown in the
@@ -853,42 +872,14 @@ class FullWorkflowBaseTest(OpenAssessmentTest, FullWorkflowMixin):
             self.assertEqual(expected_entry[0], self.grade_page.grade_entry(0, index))
             self.assertEqual(expected_entry[1], self.grade_page.grade_entry(1, index))
 
-    def do_train_self_peer(self, peer_to_grade=True):
-        """
-        Common functionality for executing training, self, and peer assessment steps.
 
-        Args:
-            peer_to_grade: boolean, defaults to True. Set to False to have learner complete their required steps,
-                but no peers to submit a grade for learner in return.
-        """
-        # Create a learner with submission, training, and self assessment completed.
-        learner = self.do_submission_training_self_assessment(self.LEARNER_EMAIL, self.LEARNER_PASSWORD)
-
-        # Now create a second learner so that learner 1 has someone to assess.
-        # The second learner does all the steps as well (submission, training, self assessment, peer assessment).
-        self.do_submission_training_self_assessment("learner2@foo.com", None)
-        if peer_to_grade:
-            self.do_peer_assessment(options=self.PEER_ASSESSMENT)
-
-        # Go back to the first learner to complete her workflow.
-        self.login_user(learner)
-
-        # Learner 1 does peer assessment of learner 2 to complete workflow.
-        self.do_peer_assessment(options=self.SUBMITTED_ASSESSMENT)
-
-        # Continue grading by other students if necessary to ensure learner has a peer grade.
-        if peer_to_grade:
-            self.verify_submission_has_peer_grade(learner)
-
-        return learner
-
-
-class FullWorkflowOverrideTest(FullWorkflowBaseTest):
+class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
     """
     Tests of complete workflows, combining multiple required steps together.
     """
     def setUp(self):
-        super(FullWorkflowOverrideTest, self).setUp("full_workflow_staff_override")
+        super(FullWorkflowOverrideTest, self).setUp("full_workflow_staff_override", staff=True)
+        self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
     @retry()
     @attr('acceptance')
@@ -935,7 +926,6 @@ class FullWorkflowOverrideTest(FullWorkflowBaseTest):
             [(u"PEER MEDIAN GRADE", u"Poor"), (u"PEER MEDIAN GRADE", u"Poor")],
             [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")]
         ])
-
 
     @retry()
     @attr('acceptance')
@@ -1001,12 +991,13 @@ class FullWorkflowOverrideTest(FullWorkflowBaseTest):
 
 
 @ddt.ddt
-class FullWorkflowRequiredTest(FullWorkflowBaseTest):
+class FullWorkflowRequiredTest(OpenAssessmentTest, FullWorkflowMixin):
     """
     Tests of complete workflows, combining multiple required steps together.
     """
     def setUp(self):
-        super(FullWorkflowRequiredTest, self).setUp("full_workflow_staff_required")
+        super(FullWorkflowRequiredTest, self).setUp("full_workflow_staff_required", staff=True)
+        self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
     @retry()
     @attr('acceptance')

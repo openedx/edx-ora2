@@ -216,6 +216,35 @@ class FullWorkflowA11yTest(OpenAssessmentA11yTest, FullWorkflowMixin):
         self._check_a11y(self.staff_area_page)
 
 
+class FullWorkflowRequiredA11yTest(OpenAssessmentA11yTest, FullWorkflowMixin):
+    """
+    Test accessibility when both staff override and full staff grading rubrics have rendered.
+    """
+
+    def setUp(self):
+        super(FullWorkflowRequiredA11yTest, self).setUp('full_workflow_staff_required', staff=True)
+        self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
+
+    def test_multiple_rubrics(self):
+        """
+        Test accessibility when both the staff override and the full staff grading
+        rubric forms have been opened.
+        """
+        # Create a learner with submission, training, and self assessment completed.
+        learner = self.do_train_self_peer(False)
+
+        # Open up the full staff grading form
+        self.staff_area_page.visit()
+        self.staff_area_page.click_staff_toolbar_button("staff-grading")
+        self.staff_area_page.expand_staff_grading_section()
+
+        # Open up the override form
+        self.staff_area_page.show_learner(learner)
+        self.staff_area_page.expand_learner_report_sections()
+
+        self._check_a11y(self.staff_area_page)
+
+
 if __name__ == "__main__":
 
     # Configure the screenshot directory
