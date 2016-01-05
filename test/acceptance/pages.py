@@ -100,9 +100,9 @@ class SubmissionPage(OpenAssessmentPage):
         self.q(css="textarea.submission__answer__part__text__value").fill(latex_query)
 
     def preview_latex(self):
-        # Click 'Preview in Latex' button on the page.
+        # Click 'Preview in LaTeX' button on the page.
         self.q(css="button#submission__preview").click()
-        self.wait_for_element_visibility("#preview_content .MathJax", "Verify Preview Latex expression")
+        self.wait_for_element_visibility("#preview_content .MathJax", "Verify Preview LaTeX expression")
 
     def select_file(self, file_path_name):
         """
