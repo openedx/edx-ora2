@@ -318,15 +318,17 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
          *     e.g. { clarity: "The essay was very clear." }
          * @param {string} overallFeedback - A string with the staff member's overall feedback.
          * @param {string} submissionID - The ID of the submission being assessed.
+         * @param {string} assessType a string indicating whether this was a 'full-grade' or 'regrade'
          * @returns {promise} A promise which resolves with no arguments if successful,
          *     and which fails with an error message otherwise.
          */
-        staffAssess: function(optionsSelected, criterionFeedback, overallFeedback, submissionID) {
+        staffAssess: function(optionsSelected, criterionFeedback, overallFeedback, submissionID, assessType) {
             return this.submitAssessment("staff_assess", {
                 options_selected: optionsSelected,
                 criterion_feedback: criterionFeedback,
                 overall_feedback: overallFeedback,
-                submission_uuid: submissionID
+                submission_uuid: submissionID,
+                assess_type: assessType
             });
         },
 
@@ -549,6 +551,21 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                     defer.rejectWith(this, [gettext('The submission could not be removed from the grading pool.')]);
                 });
             }).promise();
+        },
+
+        /**
+         * Submit an event to the runtime for publishing.
+         *
+         * @param {object} eventName - the name of the event
+         * @param {object} eventData - additional context data for the event
+         */
+        publishEvent: function(eventName, eventData) {
+            eventData.event_name = eventName;
+            var url = this.url('publish_event');
+            var payload = JSON.stringify(eventData);
+            $.ajax({
+                type: "POST", url: url, data: payload, contentType: jsonContentType
+            });
         }
     };
 }

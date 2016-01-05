@@ -266,6 +266,13 @@ class StaffAreaMixin(object):
             submission_to_assess = staff_api.get_submission_to_assess(course_id, item_id, staff_id)
 
             if submission_to_assess is not None:
+                # This is posting a tracking event to the runtime.
+                self.runtime.publish(self, 'openassessmentblock.get_submission_for_staff_grading', {
+                    'type': 'full-grade',
+                    'requesting_staff_id': staff_id,
+                    'item_id': item_id,
+                    'submission_returned_uuid': submission_to_assess['uuid']
+                })
                 submission = submission_api.get_submission_and_student(submission_to_assess['uuid'])
                 if submission:
                     anonymous_student_id = submission['student_item']['student_id']

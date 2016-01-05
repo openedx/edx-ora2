@@ -160,6 +160,22 @@ class TestStaffAssessment(StaffAssessmentTestBase):
         self.assertEqual(assessment['points_earned'], score['points_earned'])
         self.assertEqual(assessment['points_possible'], score['points_possible'])
 
+        self.assert_assessment_event_published(xblock, 'openassessmentblock.staff_assess', assessment, type='full-grade')
+
+    @scenario('data/self_assessment_scenario.xml', user_id='Bob')
+    def test_staff_assess_handler_regrade(self, xblock):
+        student_item = xblock.get_student_item_dict()
+
+        # Create a submission for the student
+        submission = xblock.create_submission(student_item, self.SUBMISSION)
+
+        assessment_copy = copy.copy(STAFF_GOOD_ASSESSMENT)
+        assessment_copy['assess_type'] = 'regrade'
+        # Submit a staff-assessment
+        self.submit_staff_assessment(xblock, submission, assessment=assessment_copy)
+        assessment = staff_api.get_latest_staff_assessment(submission['uuid'])
+        self.assert_assessment_event_published(xblock, 'openassessmentblock.staff_assess', assessment, type='regrade')
+
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_permission_error(self, xblock):
         # Create a submission for the student
@@ -179,11 +195,14 @@ class TestStaffAssessment(StaffAssessmentTestBase):
         STAFF_GOOD_ASSESSMENT['submission_uuid'] = submission['uuid']
 
         for key in STAFF_GOOD_ASSESSMENT:
-            assessment_copy = copy.copy(STAFF_GOOD_ASSESSMENT)
-            del assessment_copy[key]
-            resp = self.request(xblock, 'staff_assess', json.dumps(assessment_copy), response_format='json')
-            self.assertFalse(resp['success'])
-            self.assertIn('msg', resp)
+            # We don't want to fail if the assess_type is not submitted to the
+            # backend, since it's only used for eventing right now.
+            if key != 'assess_type':
+                assessment_copy = copy.copy(STAFF_GOOD_ASSESSMENT)
+                del assessment_copy[key]
+                resp = self.request(xblock, 'staff_assess', json.dumps(assessment_copy), response_format='json')
+                self.assertFalse(resp['success'])
+                self.assertIn('msg', resp)
 
     @scenario('data/self_assessment_scenario.xml', user_id='bob')
     def test_assessment_error(self, xblock):

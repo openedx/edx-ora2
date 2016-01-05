@@ -53,7 +53,8 @@ STAFF_GOOD_ASSESSMENT = {
         u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'Staff: ฝﻉɭɭ ɗѻกﻉ!',
         u'Form': u'Staff: ƒαιя נσв'
     },
-    'overall_feedback': u'Staff: good job!'
+    'overall_feedback': u'Staff: good job!',
+    'assess_type': 'full-grade'
 }
 
 # A sample bad staff assessment
@@ -63,7 +64,8 @@ STAFF_BAD_ASSESSMENT = {
         u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮': u'Staff: ק๏๏г נσв',
         u'Form': u'Staff: ק๏๏г נσв'
     },
-    'overall_feedback': u'Staff: very poor'
+    'overall_feedback': u'Staff: very poor',
+    'assess_type': 'full-grade'
 }
 
 
@@ -129,6 +131,8 @@ class XBlockHandlerTestCaseMixin(object):
         """
         super(XBlockHandlerTestCaseMixin, self).setUp()
         self.runtime = WorkbenchRuntime()
+        mock_publish = mock.MagicMock(side_effect=self.runtime.publish)
+        self.runtime.publish=mock_publish
 
     def set_user(self, user_id):
         """
@@ -197,6 +201,61 @@ class XBlockHandlerTestCaseMixin(object):
             return json.loads(response.body)
         else:
             raise NotImplementedError("Response format '{format}' not supported".format(response_format))
+
+    def assert_assessment_event_published(self, xblock, event_name, assessment, **kwargs):
+        parts_list = []
+        for part in assessment["parts"]:
+            # Some assessment parts do not include point values,
+            # only written feedback.  In this case, the assessment
+            # part won't have an associated option.
+            option_dict = None
+            if part["option"] is not None:
+                option_dict = {
+                    "name": part["option"]["name"],
+                    "points": part["option"]["points"],
+                }
+
+            # All assessment parts are associated with criteria
+            criterion_dict = {
+                "name": part["criterion"]["name"],
+                "points_possible": part["criterion"]["points_possible"]
+            }
+
+            parts_list.append({
+                "option": option_dict,
+                "criterion": criterion_dict,
+                "feedback": part["feedback"]
+            })
+
+        event_data = {
+            "feedback": assessment["feedback"],
+            "rubric": {
+                "content_hash": assessment["rubric"]["content_hash"],
+            },
+            "scorer_id": assessment["scorer_id"],
+            "score_type": assessment["score_type"],
+            "scored_at": assessment["scored_at"],
+            "submission_uuid": assessment["submission_uuid"],
+            "parts": parts_list
+        }
+
+        for key in kwargs:
+            event_data[key] = kwargs[key]
+
+        self.assert_event_published(
+            xblock, event_name, event_data
+        )
+
+    def assert_event_published(self, xblock, event_name, event_data):
+        """
+        Assert that an event was emitted with the given parameters.
+        Args:
+            event_name(str): The name of the event emitted
+            event_data(dict): A dictionary containing the data we expect to have publish
+        """
+        self.runtime.publish.assert_any_call(
+            xblock, event_name, event_data
+        )
 
     @staticmethod
     def load_fixture_str(path):

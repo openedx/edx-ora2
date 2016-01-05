@@ -866,7 +866,7 @@ class OpenAssessmentBlock(
             if assessment["name"] == mixin_name:
                 return assessment
 
-    def publish_assessment_event(self, event_name, assessment):
+    def publish_assessment_event(self, event_name, assessment, **kwargs):
         """
         Emit an analytics event for the peer assessment.
 
@@ -902,20 +902,45 @@ class OpenAssessmentBlock(
                 "feedback": part["feedback"]
             })
 
+        event_data = {
+            "feedback": assessment["feedback"],
+            "rubric": {
+                "content_hash": assessment["rubric"]["content_hash"],
+            },
+            "scorer_id": assessment["scorer_id"],
+            "score_type": assessment["score_type"],
+            "scored_at": assessment["scored_at"],
+            "submission_uuid": assessment["submission_uuid"],
+            "parts": parts_list
+        }
+
+        for key in kwargs:
+            event_data[key] = kwargs[key]
+
         self.runtime.publish(
             self, event_name,
-            {
-                "feedback": assessment["feedback"],
-                "rubric": {
-                    "content_hash": assessment["rubric"]["content_hash"],
-                },
-                "scorer_id": assessment["scorer_id"],
-                "score_type": assessment["score_type"],
-                "scored_at": assessment["scored_at"],
-                "submission_uuid": assessment["submission_uuid"],
-                "parts": parts_list
-            }
+            event_data
         )
+
+    @XBlock.json_handler
+    def publish_event(self, data, suffix=''):
+        """
+        Publish the given data to an event.
+
+        Expects key 'event_name' to be present in the data dictionary.
+        """
+
+        try:
+            event_name = data['event_name']
+        except KeyError:
+            logger.exception("Could not find the name of the event to be triggered.")
+            return {'success': False}
+
+        # Remove the name so we don't publish as part of the data.
+        del data['event_name']
+
+        self.runtime.publish(self, event_name, data)
+        return {'success': True}
 
     def _serialize_opaque_key(self, key):
         """
@@ -950,4 +975,3 @@ class OpenAssessmentBlock(
                 return effective
 
         return start
-
