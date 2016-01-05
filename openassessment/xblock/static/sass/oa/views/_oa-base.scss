@@ -65,6 +65,7 @@
       @extend %btn--primary;
       @extend %action-2;
       margin-left: ($baseline-v/2);
+      margin-top: ($baseline-v/2);
 
       .copy, .icon {
         display: inline;
@@ -1136,12 +1137,12 @@
     .list--actions {
       padding: 0;
     }
+  }
 
-    .action--submit {
-      @extend %btn--secondary;
-      @extend %action-2;
-      @include margin-right(($baseline-v/2));
-    }
+  .action--submit {
+    @extend %btn--secondary;
+    @extend %action-2;
+    @include margin-right(($baseline-v/2));
   }
 
   // --------------------

@@ -74,7 +74,7 @@ OpenAssessment.PeerView.prototype = {
 
     **/
     continueAssessmentEnabled: function(enabled) {
-        var button = $('#peer-assessment__continue__grading', this.element);
+        var button = $('.action--continue--grading', this.element);
         if (typeof enabled === 'undefined') {
             return !button.hasClass('is--disabled');
         } else {
@@ -128,7 +128,7 @@ OpenAssessment.PeerView.prototype = {
         );
 
         // Install a click handler for continued assessment
-        sel.find('#peer-assessment__continue__grading').click(
+        sel.find('.action--continue--grading').click(
             function(eventObject) {
                 eventObject.preventDefault();
                 view.loadContinuedAssessment();
