@@ -12,6 +12,14 @@ describe("OpenAssessment.PeerView", function() {
             }
         ).promise();
 
+        this.mockLoadTemplate = function(template) {
+            var server = this;
+            return $.Deferred(function(defer) {
+                var fragment = readFixtures(template);
+                defer.resolveWith(server, [fragment]);
+            });
+        };
+
         this.peerAssess = function() {
             return successPromise;
         };
@@ -21,7 +29,7 @@ describe("OpenAssessment.PeerView", function() {
         };
 
         this.renderContinuedPeer = function() {
-            return successPromise;
+            return this.mockLoadTemplate('oa_peer_assessment.html');
         };
     };
 
@@ -32,9 +40,9 @@ describe("OpenAssessment.PeerView", function() {
     var createPeerAssessmentView = function(template) {
         loadFixtures(template);
 
-        var assessmentElement = $('#openassessment__peer-assessment').get(0);
-        var baseView = new OpenAssessment.BaseView(runtime, assessmentElement, server, {});
-        var view = new OpenAssessment.PeerView(assessmentElement, server, baseView);
+        var rootElement = $('#openassessment__peer-assessment').parent().get(0);
+        var baseView = new OpenAssessment.BaseView(runtime, rootElement, server, {});
+        var view = new OpenAssessment.PeerView(rootElement, server, baseView);
         view.installHandlers();
         return view;
     };
@@ -115,18 +123,13 @@ describe("OpenAssessment.PeerView", function() {
         expect(view.continueAssessmentEnabled()).toBe(true);
     });
 
-    it("can submit assessments in turbo mode", function() {
-        var view = createPeerAssessmentView('oa_turbo_mode.html');
-        submitPeerAssessment(view);
-    });
-
     it("warns of unsubmitted assessments", function() {
         var view = createPeerAssessmentView('oa_peer_assessment.html');
 
         expect(view.baseView.unsavedWarningEnabled()).toBe(false);
 
         // Click on radio buttons, to create unsubmitted changes.
-        $('.question__answers', view.el).each(function() {
+        $('.question__answers', view.element).each(function() {
             $('input[type="radio"]', this).first().click();
         });
 
@@ -148,5 +151,20 @@ describe("OpenAssessment.PeerView", function() {
         submitPeerAssessment(view);
 
         expect(view.baseView.unsavedWarningEnabled()).toBe(false);
+    });
+
+    describe("Turbo Mode", function() {
+        it("can submit assessments in turbo mode", function() {
+            var view = createPeerAssessmentView('oa_turbo_mode.html');
+            submitPeerAssessment(view);
+        });
+
+        it("can continue assessing upon completion of required assessments", function() {
+            var view = createPeerAssessmentView('oa_peer_complete.html');
+            $(".action--continue--grading", view.element).click();
+
+            // Verify that a peer assessment can now be submitted
+            submitPeerAssessment(view);
+        });
     });
 });
