@@ -77,7 +77,7 @@
                 </article>
 
                 <form id="student-training--001__assessment" class="student-training__assessment" method="post">
-                    <fieldset class="assessment__fields">
+                    <div class="assessment__fields">
                         <ol class="list list--fields assessment__rubric">
                             {% for criterion in training_rubric.criteria %}
                                 {% if criterion.options %}
@@ -105,16 +105,17 @@
                                                 <p>{% trans "The option you selected is not the option that the instructor selected." %}</p>
                                             </div>
                                         </div>
-                                        <ol class="question__answers">
+                                        <div class="question__answers">
+                                            <div role="group" aria-labelledby="training__assessment__rubric__prompt--{{ criterion.order_num }}">
                                             {% for option in criterion.options %}
-                                                <li class="answer">
+                                                <div class="answer">
                                                     <div class="wrapper--input">
                                                         <input type="radio"
-                                                               name="{{ criterion.name }}"
+                                                               data-criterion-name="{{ criterion.name }}"
                                                                id="training__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
                                                                class="answer__value"
                                                                value="{{ option.name }}"
-                                                               aria-labelledby="training__assessment__rubric__prompt--{{ criterion.order_num }}"/>
+                                                               name="training__assessment__rubric__question--{{ criterion.order_num }}"/>
                                                         <label for="training__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
                                                                class="answer__label">{{ option.label }}</label>
                                                     </div>
@@ -122,15 +123,16 @@
                                                         <span class="answer__tip">{{ option.explanation }}</span>
                                                         <span class="answer__points">{{option.points}} <span class="answer__points__label">{% trans "points" %}</span></span>
                                                     </div>
-                                                </li>
+                                                </div>
                                             {% endfor %}
-                                        </ol>
+                                            </div>
+                                        </div>
                                     </div>
                                 </li>
                                 {% endif %}
                             {% endfor %}
                         </ol>
-                    </fieldset>
+                    </div>
                 </form>
             </div>
 

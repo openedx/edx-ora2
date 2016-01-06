@@ -508,7 +508,7 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         Clicks the staff grade control to expand staff grading section for use in staff required workflows.
         """
         self.q(css=self._bounded_selector(".staff__grade__show-form")).first.click()
-        self.wait_for_element_visibility("#staff__assessment__rubric__question--0__0", "staff grading is present")
+        self.wait_for_element_visibility("#staff-full-grade__assessment__rubric__question--0__0", "staff grading is present")
 
     @property
     def available_checked_out_numbers(self):
@@ -599,10 +599,10 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
             css=self._bounded_selector(".staff-info__student__response .ui-toggle-visibility__content")
         ).text[0]
 
-    def staff_assess(self, options_selected, continue_after=False):
+    def staff_assess(self, options_selected, grading_type, continue_after=False):
         for criterion_num, option_num in enumerate(options_selected):
-            sel = "#staff__assessment__rubric__question--{criterion_num}__{option_num}".format(
-                assessment_type="staff",
+            sel = "#staff-{type}__assessment__rubric__question--{criterion_num}__{option_num}".format(
+                type=grading_type,
                 criterion_num=criterion_num,
                 option_num=option_num
             )
