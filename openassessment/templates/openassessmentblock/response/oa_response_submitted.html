@@ -22,19 +22,7 @@
         <div class="step__message message message--complete">
             <h3 class="message__title">{% trans "Your Response Has Been Submitted" %}</h3>
             <div class="message__content">
-                {% if has_peer and has_self %}
-                    {% blocktrans with peer_start_tag='<a data-behavior="ui-scroll" href="#openassessment__peer-assessment">'|safe self_start_tag='<a data-behavior="ui-scroll" href="#openassessment__self-assessment">'|safe end_tag='</a>'|safe %}
-                        You'll receive your grade after some of your peers have assessed your response and you complete the {{ peer_start_tag }}peer assessment{{ end_tag }} and {{ self_start_tag }}self assessment{{ end_tag }} steps.
-                    {% endblocktrans %}
-                {% elif has_peer %}
-                    {% blocktrans with start_tag='<a data-behavior="ui-scroll" href="#openassessment__peer-assessment">'|safe end_tag='</a>'|safe %}
-                        You'll receive your grade after some of your peers have assessed your response and you complete the {{ start_tag }}peer assessment{{ end_tag }} step.
-                    {% endblocktrans %}
-                {% elif has_self %}
-                    {% blocktrans with start_tag='<a data-behavior="ui-scroll" href="#openassessment__self-assessment">'|safe end_tag='</a>'|safe %}
-                        You'll receive your grade after you complete the {{ start_tag }}self assessment{{ end_tag }} step.
-                    {% endblocktrans %}
-                {% endif %}
+                {%trans You'll receive your grade after all assessment steps have been completed. %}
             </div>
         </div>
 
