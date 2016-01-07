@@ -17,9 +17,11 @@
                         </h3>
                     </header>
 
-                    {% include "openassessmentblock/oa_submission_answer.html" with answer=submission.answer answer_text_label="The learner's response to the question above:" %}
+                    {% trans "The learner's response to the question above" as transated_label %}
+                    {% include "openassessmentblock/oa_submission_answer.html" with answer=submission.answer answer_text_label=translated_label %}
 
-                    {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=staff_file_url header="Associated File" class_prefix="staff-assessment" show_warning="true" %}
+                    {% trans "Associated File" as translated_header %}
+                    {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=staff_file_url header=translated_header class_prefix="staff-assessment" show_warning="true" %}
                 </div>
 
                 <form class="staff-assessment__assessment" method="post">
