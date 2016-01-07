@@ -323,25 +323,15 @@ class StaffAreaMixin(object):
         Returns:
             A context dict for rendering a student submission and associated rubric (for staff grading).
         """
-        if submission and 'file_key' in submission.get('answer', {}):
-            file_key = submission['answer']['file_key']
-
-            try:
-                submission['file_url'] = file_api.get_download_url(file_key)
-            except file_exceptions.FileUploadError:
-                # Log the error, but do not prevent the rest of the student info
-                # from being displayed.
-                msg = (
-                    u"Could not retrieve image URL for staff debug page.  "
-                    u"The learner username is '{student_username}', and the file key is {file_key}"
-                ).format(student_username=student_username, file_key=file_key)
-                logger.exception(msg)
-
         context = {
             'submission': create_submission_dict(submission, self.prompts) if submission else None,
             'rubric_criteria': copy.deepcopy(self.rubric_criteria_with_labels),
             'student_username': student_username,
         }
+
+        if submission:
+            context["file_upload_type"] = self.file_upload_type
+            context["staff_file_url"] = self.get_download_url_from_submission(submission)
 
         if self.rubric_feedback_prompt is not None:
             context["rubric_feedback_prompt"] = self.rubric_feedback_prompt
