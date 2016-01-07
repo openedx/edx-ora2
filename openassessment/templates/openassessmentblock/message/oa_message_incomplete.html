@@ -1,0 +1,63 @@
+{% load i18n %}
+{% spaceless %}
+<div id="openassessment__message" class="openassessment__message message">
+    <h3 class="message__title">
+        {% trans "Assignment in progress" %}
+    </h3>
+    <div class="message__content">
+        <p>
+            {% if training %}
+                {% if training_deadline_approaching %}
+                    {% trans "Learner training will close soon. Complete the learner training step to move on." %}
+                {% else %}
+                    {% trans "Complete the learner training step to move on." %}
+                {% endif %}
+            {% elif self %}
+                {% if self_not_released %}
+                    {% trans "Check back later when the assessment period has started." %}
+                {% else %}
+                    {% with start_link='<a data-behavior="ui-scroll" href="#openassessment__self-assessment">'|safe %}
+                        {% with start_strong='<strong>'|safe end_strong='</strong>'|safe end_link='</a>'|safe %}
+                            {% if self_approaching %}
+                                {% blocktrans %}
+                                    {{ start_strong }}The self assessment step will close soon.{{ end_strong }} You still need to complete the {{ start_link }}self assessment{{ end_link }} step.
+                                {% endblocktrans %}
+                            {% else %}
+                                {% blocktrans %}
+                                    You still need to complete the {{ start_link }}self assessment{{ end_link }} step.
+                                {% endblocktrans %}
+                            {% endif %}
+                        {% endwith %}
+                    {% endwith %}
+                {% endif %}
+            {% elif peer %}
+                {% if peer_not_released %}
+                    {% trans "Check back later when the assessment period has started." %}
+                {% else %}
+                    {% with start_link='<a data-behavior="ui-scroll" href="#openassessment__peer-assessment">'|safe %}
+                        {% with start_strong='<strong>'|safe end_strong='</strong>'|safe end_link='</a>'|safe %}
+                            {% if peer_approaching and peer_not_available %}
+                                {% blocktrans %}
+                                    {{ start_strong }}The peer assessment step will close soon.{{ end_strong }} All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the {{ start_link }}peer assessment{{ end_link }} step.
+                                {% endblocktrans %}
+                            {% elif not peer_approaching and peer_not_available %}
+                                {% blocktrans %}
+                                    All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the {{ start_link }}peer assessment{{ end_link }} step.
+                                {% endblocktrans %}
+                            {% elif peer_approaching and not peer_not_available %}
+                                {% blocktrans %}
+                                    {{ start_strong }}The peer assessment step will close soon.{{ end_strong }} You still need to complete the {{ start_link }}peer assessment{{ end_link }} step.
+                                {% endblocktrans %}
+                            {% else %}
+                                {% blocktrans %}
+                                    You still need to complete the {{ start_link }}peer assessment{{ end_link }} step.
+                                {% endblocktrans %}
+                            {% endif %}
+                        {% endwith %}
+                    {% endwith %}
+                {% endif %}
+            {% endif %}
+        </p>
+    </div>
+</div>
+{% endspaceless %}

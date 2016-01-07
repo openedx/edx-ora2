@@ -266,10 +266,13 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = True
 
-        expected_path = 'openassessmentblock/message/oa_message_training.html'
+        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
 
         expected_context = {
-            "approaching": False
+            "training": True,
+            "training_approaching": False,
+            "training_not_released": False,
+            "peer_not_available": False,
         }
 
         self._assert_path_and_context(
@@ -292,10 +295,13 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_training.html'
+        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
 
         expected_context = {
-            "approaching": True
+            "training": True,
+            "training_approaching": True,
+            "training_not_released": False,
+            "peer_not_available": True,
         }
 
         self._assert_path_and_context(
@@ -369,13 +375,12 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = True
 
-        expected_path = 'openassessmentblock/message/oa_message_peer.html'
+        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
 
         expected_context = {
-            "has_self": True,
-            "waiting": False,
+            "peer": True,
             "peer_approaching": False,
-            "peer_closed": False,
+            "peer_not_available": False,
             "peer_not_released": False
         }
 
@@ -397,13 +402,12 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = True
 
-        expected_path = 'openassessmentblock/message/oa_message_peer.html'
+        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
 
         expected_context = {
-            "has_self": False,
-            "waiting": False,
+            "peer": True,
+            "peer_not_available": False,
             "peer_approaching": False,
-            "peer_closed": False,
             "peer_not_released": False
         }
 
@@ -425,13 +429,12 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = True
 
-        expected_path = 'openassessmentblock/message/oa_message_peer.html'
+        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
 
         expected_context = {
-            "has_self": False,
-            "waiting": False,
+            "peer": True,
+            "peer_not_available": False,
             "peer_approaching": True,
-            "peer_closed": False,
             "peer_not_released": False
         }
 
@@ -504,13 +507,12 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_peer.html'
+        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
 
         expected_context = {
-            "has_self": True,
-            "waiting": True,
+            "peer": True,
+            "peer_not_available": True,
             "peer_approaching": False,
-            "peer_closed": False,
             "peer_not_released": False
         }
 
@@ -533,13 +535,12 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_peer.html'
+        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
 
         expected_context = {
-            "has_self": True,
-            "waiting": True,
+            "peer": True,
+            "peer_not_available": True,
             "peer_approaching": True,
-            "peer_closed": False,
             "peer_not_released": False
         }
 
@@ -587,13 +588,13 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_self.html'
+        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
 
         expected_context = {
-            "has_peer": True,
+            "self": True,
             "self_approaching": False,
-            "self_closed": False,
-            "self_not_released": False
+            "self_not_released": False,
+            "peer_not_available": True,
         }
 
         self._assert_path_and_context(
@@ -614,13 +615,13 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_self.html'
+        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
 
         expected_context = {
-            "has_peer": False,
+            "self": True,
             "self_approaching": False,
-            "self_closed": False,
-            "self_not_released": False
+            "self_not_released": False,
+            "peer_not_available": True,
         }
 
         self._assert_path_and_context(
@@ -641,13 +642,13 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_self.html'
+        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
 
         expected_context = {
-            "has_peer": False,
+            "self": True,
             "self_approaching": True,
-            "self_closed": False,
-            "self_not_released": False
+            "self_not_released": False,
+            "peer_not_available": True,
         }
 
         self._assert_path_and_context(
