@@ -317,15 +317,19 @@ class TestCourseStaff(XBlockHandlerTestCase):
         }, ['self'])
 
         # Mock the file upload API to avoid hitting S3
-        with patch("openassessment.xblock.staff_area_mixin.file_api") as file_api:
+        with patch("openassessment.xblock.submission_mixin.file_upload_api") as file_api:
             file_api.get_download_url.return_value = "http://www.example.com/image.jpeg"
+            # also fake a file_upload_type so our patched url gets rendered
+            xblock.file_upload_type_raw = 'image'
+
             __, context = xblock.get_student_info_path_and_context("Bob")
 
             # Check that the right file key was passed to generate the download url
             file_api.get_download_url.assert_called_with("test_key")
 
             # Check the context passed to the template
-            self.assertEquals('http://www.example.com/image.jpeg', context['submission']['file_url'])
+            self.assertEquals('http://www.example.com/image.jpeg', context['staff_file_url'])
+            self.assertEquals('image', context['file_upload_type'])
 
             # Check the fully rendered template
             payload = urllib.urlencode({"student_username": "Bob"})

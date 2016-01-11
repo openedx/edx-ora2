@@ -36,12 +36,8 @@
                         {% trans "The learner's response to the question above:" as translated_label %}
                         {% include "openassessmentblock/oa_submission_answer.html" with answer=submission.answer answer_text_label=translated_label %}
 
-                        {% if submission.file_url %}
-                            <a href="{{ submission.file_url }}" class="submission--file">
-                                {% trans "The file associated with this response." %}
-                            </a>
-                            <span>{%  trans "Caution: This file was uploaded by another course learner and has not been verified, screened, approved, reviewed, or endorsed by edX. If you decide to access it, you do so at your own risk." %}</span>
-                        {% endif %}
+                        {% trans "Associated File" as translated_header %}
+                        {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=staff_file_url header=translated_header class_prefix="staff-assessment" show_warning="true" %}
                     </div>
                 {% endif %}
             </div>
