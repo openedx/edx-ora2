@@ -2,12 +2,12 @@
 # Copyright (C) 2014 EdX
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
 # EdX Team <info@edx.org>, 2014.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.1a\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-24 04:05+0000\n"
+"POT-Creation-Date: 2016-01-11 20:33+0000\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: \n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -17,141 +17,155 @@ msgstr ""
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: openassessment/assessment/api/student_training.py:180
+#: openassessment/assessment/api/student_training.py
 msgid "Could not parse serialized rubric"
-msgstr "Çöüld nöt pärsé sérïälïzéd rüßrïç Ⱡ'σяєм ι#"
+msgstr ""
+"Çöüld nöt pärsé sérïälïzéd rüßrïç Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: openassessment/assessment/api/student_training.py:192
+#: openassessment/assessment/api/student_training.py
 msgid ""
 "If your assignment includes a learner training step, the rubric must have at"
 " least one criterion, and that criterion must have at least one option."
 msgstr ""
 "Ìf ýöür ässïgnmént ïnçlüdés ä léärnér träïnïng stép, thé rüßrïç müst hävé ät"
 " léäst öné çrïtérïön, änd thät çrïtérïön müst hävé ät léäst öné öptïön. "
-"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιρι#"
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ "
+"тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм,"
+" qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
+"ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм #"
 
-#: openassessment/assessment/api/student_training.py:204
+#: openassessment/assessment/api/student_training.py
 msgid "Example {example_number} has a validation error: {error}"
-msgstr "Éxämplé {example_number} häs ä välïdätïön érrör: {error} Ⱡ'σяєм ιρѕ#"
+msgstr ""
+"Éxämplé {example_number} häs ä välïdätïön érrör: {error} Ⱡ'σяєм ιρѕυм ∂σłσя "
+"ѕιт αмєт, ¢σηѕє¢тєтυя#"
 
-#: openassessment/assessment/api/student_training.py:218
+#: openassessment/assessment/api/student_training.py
 msgid ""
 "Example {example_number} has an invalid option for \"{criterion_name}\": "
 "\"{option_name}\""
 msgstr ""
 "Éxämplé {example_number} häs än ïnvälïd öptïön för \"{criterion_name}\": "
-"\"{option_name}\" Ⱡ'σяєм ιρѕυм ∂#"
+"\"{option_name}\" Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/assessment/api/student_training.py:228
+#: openassessment/assessment/api/student_training.py
 msgid "Example {example_number} has an extra option for \"{criterion_name}\""
 msgstr ""
 "Éxämplé {example_number} häs än éxträ öptïön för \"{criterion_name}\" Ⱡ'σяєм"
-" ιρѕυ#"
+" ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: openassessment/assessment/api/student_training.py:241
+#: openassessment/assessment/api/student_training.py
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr ""
 "Éxämplé {example_number} ïs mïssïng än öptïön för \"{criterion_name}\" "
-"Ⱡ'σяєм ιρѕυ#"
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:12
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "Open Response Assessment"
-msgstr "Öpén Réspönsé Àsséssmént Ⱡ'σяє#"
+msgstr "Öpén Réspönsé Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:14
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "Settings"
-msgstr "Séttïngs #"
+msgstr "Séttïngs Ⱡ'σяєм ιρѕυм ∂#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:15
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "Rubric"
-msgstr "Rüßrïç Ⱡ'σяєм ιρѕ#"
+msgstr "Rüßrïç Ⱡ'σяєм ιρѕυ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:16
-#: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:8
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html
 msgid "Prompt"
-msgstr "Prömpt Ⱡ'σяєм ιρѕ#"
+msgstr "Prömpt Ⱡ'σяєм ιρѕυ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:23
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "Rubric Change Impacts Settings Section"
-msgstr "Rüßrïç Çhängé Ìmpäçts Séttïngs Séçtïön Ⱡ'σяєм ιρѕ#"
+msgstr ""
+"Rüßrïç Çhängé Ìmpäçts Séttïngs Séçtïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:24
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid ""
 "A change that you made to this assessment's rubric has an impact on some "
 "examples laid out in the settings tab. For more information, go to the "
-"Settings section and fix areas highlighted in red."
+"Settings section and fix the areas highlighted in red."
 msgstr ""
 "À çhängé thät ýöü mädé tö thïs ässéssmént's rüßrïç häs än ïmpäçt ön sömé "
 "éxämplés läïd öüt ïn thé séttïngs täß. För möré ïnförmätïön, gö tö thé "
-"Séttïngs séçtïön änd fïx äréäs hïghlïghtéd ïn réd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
-"αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂#"
+"Séttïngs séçtïön änd fïx thé äréäs hïghlïghtéd ïn réd. Ⱡ'σяєм ιρѕυм ∂σłσя "
+"ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт "
+"łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ "
+"єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ "
+"αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ "
+"ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:28
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "close alert"
-msgstr "çlösé älért Ⱡ#"
+msgstr "çlösé älért Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:41
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "Display Name "
-msgstr "Dïspläý Nämé  Ⱡ'#"
+msgstr "Dïspläý Nämé  Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:44
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid ""
 "This name appears when you hover over the unit in the course ribbon at the "
 "top of the page."
 msgstr ""
 "Thïs nämé äppéärs whén ýöü hövér övér thé ünït ïn thé çöürsé rïßßön ät thé "
-"töp öf thé pägé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
+"töp öf thé pägé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:51
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "Response Start Date"
-msgstr "Réspönsé Stärt Däté Ⱡ'σя#"
+msgstr "Réspönsé Stärt Däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:64
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "Response Start Time"
-msgstr "Réspönsé Stärt Tïmé Ⱡ'σя#"
+msgstr "Réspönsé Stärt Tïmé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:73
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "The date and time when learners can begin submitting responses."
 msgstr ""
 "Thé däté änd tïmé whén léärnérs çän ßégïn süßmïttïng réspönsés. Ⱡ'σяєм ιρѕυм"
-" ∂σłσя#"
+" ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:80
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "Response Due Date"
-msgstr "Réspönsé Düé Däté Ⱡ'σ#"
+msgstr "Réspönsé Düé Däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:93
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "Response Due Time"
-msgstr "Réspönsé Düé Tïmé Ⱡ'σ#"
+msgstr "Réspönsé Düé Tïmé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:102
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "The date and time when learners can no longer submit responses."
 msgstr ""
 "Thé däté änd tïmé whén léärnérs çän nö löngér süßmït réspönsés. Ⱡ'σяєм ιρѕυм"
-" ∂σłσя#"
+" ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:106
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "Allow File Upload"
-msgstr "Àllöw Fïlé Ûplöäd Ⱡ'σ#"
+msgstr "Àllöw Fïlé Ûplöäd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:108
-#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:55
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html
 msgid "None"
-msgstr "Nöné Ⱡ'σяєм#"
+msgstr "Nöné Ⱡ'σяєм ι#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:109
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "Image File"
-msgstr "Ìmägé Fïlé Ⱡ#"
+msgstr "Ìmägé Fïlé Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:110
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "PDF or Image File"
-msgstr "PDF ör Ìmägé Fïlé Ⱡ'σ#"
+msgstr "PDF ör Ìmägé Fïlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:111
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "Custom File Types"
-msgstr "Çüstöm Fïlé Týpés Ⱡ'σ#"
+msgstr "Çüstöm Fïlé Týpés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:115
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid ""
 "Specify whether learners can submit a file along with their text response. "
 "Select Image to allow JPG, GIF, or PNG files. Select PDF or Image to allow "
@@ -163,46 +177,46 @@ msgstr ""
 "PDF fïlés änd ïmägés. Séléçt Çüstöm Fïlé Týpés tö ällöw fïlés wïth "
 "éxténsïöns thät ýöü spéçïfý ßélöw. (Ûsé thïs öptïön wïth çäütïön.) Ⱡ'σяєм "
 "ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя "
-"ιη¢ι∂ι∂υηт#"
+"ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ "
+"ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:119
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "File Types"
-msgstr "Fïlé Týpés Ⱡ#"
+msgstr "Fïlé Týpés Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:127
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid ""
 "Enter the file extensions, separated by commas, that you want learners to be"
 " able to upload. For example: pdf,doc,docx."
 msgstr ""
 "Éntér thé fïlé éxténsïöns, sépärätéd ßý çömmäs, thät ýöü wänt léärnérs tö ßé"
-" äßlé tö üplöäd. För éxämplé: pdf,döç,döçx. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тє#"
+" äßlé tö üplöäd. För éxämplé: pdf,döç,döçx. Ⱡ'σяєм ιρѕυм#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:134
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "Allow LaTeX Responses"
-msgstr "Àllöw LäTéX Réspönsés Ⱡ'σя#"
+msgstr "Àllöw LäTéX Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:136
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "False"
-msgstr "Fälsé Ⱡ'σяєм ι#"
+msgstr "Fälsé Ⱡ'σяєм ιρѕ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:137
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "True"
-msgstr "Trüé Ⱡ'σяєм#"
+msgstr "Trüé Ⱡ'σяєм ι#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:140
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "Specify whether learners can write LaTeX formatted strings"
 msgstr ""
 "Spéçïfý whéthér léärnérs çän wrïté LäTéX förmättéd strïngs Ⱡ'σяєм ιρѕυм "
-"∂σłσ#"
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:144
-#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:7
-#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:7
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html
 msgid "Top Responses"
-msgstr "Töp Réspönsés Ⱡ'#"
+msgstr "Töp Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:153
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid ""
 "Specify the number of top scoring responses to display. Valid numbers are 0 "
 "to 99. If the number is 0, the Top Responses section does not appear to "
@@ -210,118 +224,126 @@ msgid ""
 msgstr ""
 "Spéçïfý thé nümßér öf töp sçörïng réspönsés tö dïspläý. Välïd nümßérs äré 0 "
 "tö 99. Ìf thé nümßér ïs 0, thé Töp Réspönsés séçtïön döés nöt äppéär tö "
-"léärnérs. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢#"
+"léärnérs. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ "
+"єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм"
+" νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα "
+"¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт"
+" єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт "
+"¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт #"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:160
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid ""
-"In this assignment, you can include steps for learner training, peer "
-"assessment, self assessment, and example based assessment. Select the steps "
-"that you want below, and then drag them into the order that you want. If you"
-" include an example based assessment step, it must precede all other steps. "
-"If you include a learner training step, it must precede peer and self "
-"assessment steps."
+"In this assignment, you can include learner training, peer assessment, self "
+"assessment, example based assessment, and staff assessment steps. Select the"
+" steps that you want below, and then drag them into the order you want. If "
+"you include an example based assessment step, it must precede all other "
+"steps. If you include a learner training step, it must precede peer and self"
+" assessment steps. If you include a staff assessment step, it must be the "
+"final step. After you release an ORA assignment, you cannot change the type "
+"and number of assessment steps."
 msgstr ""
-"Ìn thïs ässïgnmént, ýöü çän ïnçlüdé stéps för léärnér träïnïng, péér "
-"ässéssmént, sélf ässéssmént, änd éxämplé ßäséd ässéssmént. Séléçt thé stéps "
-"thät ýöü wänt ßélöw, änd thén dräg thém ïntö thé ördér thät ýöü wänt. Ìf ýöü"
-" ïnçlüdé än éxämplé ßäséd ässéssmént stép, ït müst préçédé äll öthér stéps. "
-"Ìf ýöü ïnçlüdé ä léärnér träïnïng stép, ït müst préçédé péér änd sélf "
-"ässéssmént stéps. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт,"
-" ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα#"
+"Ìn thïs ässïgnmént, ýöü çän ïnçlüdé léärnér träïnïng, péér ässéssmént, sélf "
+"ässéssmént, éxämplé ßäséd ässéssmént, änd stäff ässéssmént stéps. Séléçt thé"
+" stéps thät ýöü wänt ßélöw, änd thén dräg thém ïntö thé ördér ýöü wänt. Ìf "
+"ýöü ïnçlüdé än éxämplé ßäséd ässéssmént stép, ït müst préçédé äll öthér "
+"stéps. Ìf ýöü ïnçlüdé ä léärnér träïnïng stép, ït müst préçédé péér änd sélf"
+" ässéssmént stéps. Ìf ýöü ïnçlüdé ä stäff ässéssmént stép, ït müst ßé thé "
+"fïnäl stép. Àftér ýöü réléäsé än ÖRÀ ässïgnmént, ýöü çännöt çhängé thé týpé "
+"änd nümßér öf ässéssmént stéps.#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:162
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid ""
-"In this assignment, you can include steps for learner training, peer "
-"assessment, and self assessment. Select the steps that you want below, and "
-"then drag them into the order that you want. If you include a learner "
-"training step, it must precede all other steps."
+"In this assignment, you can include learner training, peer assessment, self "
+"assessment, and staff assessment steps. Select the steps that you want "
+"below, and then drag them into the order you want. If you include a learner "
+"training step, it must precede all other steps. If you include a staff "
+"assessment step, it must be the final step. After you release an ORA "
+"assignment, you cannot change the type and number of assessment steps."
 msgstr ""
-"Ìn thïs ässïgnmént, ýöü çän ïnçlüdé stéps för léärnér träïnïng, péér "
-"ässéssmént, änd sélf ässéssmént. Séléçt thé stéps thät ýöü wänt ßélöw, änd "
-"thén dräg thém ïntö thé ördér thät ýöü wänt. Ìf ýöü ïnçlüdé ä léärnér "
-"träïnïng stép, ït müst préçédé äll öthér stéps. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,"
-" ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢#"
+"Ìn thïs ässïgnmént, ýöü çän ïnçlüdé léärnér träïnïng, péér ässéssmént, sélf "
+"ässéssmént, änd stäff ässéssmént stéps. Séléçt thé stéps thät ýöü wänt "
+"ßélöw, änd thén dräg thém ïntö thé ördér ýöü wänt. Ìf ýöü ïnçlüdé ä léärnér "
+"träïnïng stép, ït müst préçédé äll öthér stéps. Ìf ýöü ïnçlüdé ä stäff "
+"ässéssmént stép, ït müst ßé thé fïnäl stép. Àftér ýöü réléäsé än ÖRÀ "
+"ässïgnmént, ýöü çännöt çhängé thé týpé änd nümßér öf ässéssmént stéps.#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:179
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "Save"
-msgstr "Sävé Ⱡ'σяєм#"
+msgstr "Sävé Ⱡ'σяєм ι#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit.html:183
+#: openassessment/templates/openassessmentblock/edit/oa_edit.html
 msgid "Cancel"
-msgstr "Çänçél Ⱡ'σяєм ιρѕ#"
+msgstr "Çänçél Ⱡ'σяєм ιρѕυ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:7
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:100
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:142
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:181
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:212
+#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "Criterion"
-msgstr "Çrïtérïön #"
+msgstr "Çrïtérïön Ⱡ'σяєм ιρѕυм ∂σł#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:8
+#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html
 msgid "You cannot delete a criterion after the assignment has been released."
 msgstr ""
 "Ýöü çännöt délété ä çrïtérïön äftér thé ässïgnmént häs ßéén réléäséd. Ⱡ'σяєм"
-" ιρѕυм ∂σłσя ѕ#"
+" ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:10
-#: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:7
-#: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:11
-#: openassessment/templates/openassessmentblock/edit/oa_training_example.html:13
+#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_option.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html
+#: openassessment/templates/openassessmentblock/edit/oa_training_example.html
 msgid "Remove"
-msgstr "Rémövé Ⱡ'σяєм ιρѕ#"
+msgstr "Rémövé Ⱡ'σяєм ιρѕυ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:18
+#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html
 msgid "Criterion Name"
-msgstr "Çrïtérïön Nämé Ⱡ'#"
+msgstr "Çrïtérïön Nämé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:30
+#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html
 msgid "Criterion Prompt"
-msgstr "Çrïtérïön Prömpt Ⱡ'σ#"
+msgstr "Çrïtérïön Prömpt Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:45
+#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html
 msgid "Add Option"
-msgstr "Àdd Öptïön Ⱡ#"
+msgstr "Àdd Öptïön Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:53
+#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html
 msgid "Feedback for This Criterion"
-msgstr "Féédßäçk för Thïs Çrïtérïön Ⱡ'σяєм#"
+msgstr "Féédßäçk för Thïs Çrïtérïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:56
+#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html
 msgid "Optional"
-msgstr "Öptïönäl #"
+msgstr "Öptïönäl Ⱡ'σяєм ιρѕυм ∂#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:57
-#: openassessment/templates/openassessmentblock/oa_rubric.html:14
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:70
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:91
+#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html
+#: openassessment/templates/openassessmentblock/oa_rubric.html
+#: openassessment/templates/openassessmentblock/student_training/student_training.html
 msgid "Required"
-msgstr "Réqüïréd #"
+msgstr "Réqüïréd Ⱡ'σяєм ιρѕυм ∂#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:62
+#: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html
 msgid ""
 "Select one of the options above. This describes whether or not the learner "
 "will have to provide criterion feedback."
 msgstr ""
 "Séléçt öné öf thé öptïöns äßövé. Thïs désçrïßés whéthér ör nöt thé léärnér "
-"wïll hävé tö prövïdé çrïtérïön féédßäçk. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢#"
+"wïll hävé tö prövïdé çrïtérïön féédßäçk. Ⱡ'σяєм ιρѕυм ∂σł#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_example_based_assessment.html:8
+#: openassessment/templates/openassessmentblock/edit/oa_edit_example_based_assessment.html
 msgid "Step: Example-Based Assessment"
-msgstr "Stép: Éxämplé-Bäséd Àsséssmént Ⱡ'σяєм #"
+msgstr "Stép: Éxämplé-Bäséd Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_example_based_assessment.html:12
+#: openassessment/templates/openassessmentblock/edit/oa_edit_example_based_assessment.html
 msgid ""
 "An algorithm assesses learners' responses by comparing the responses to pre-"
 "assessed sample responses that the instructor provides."
 msgstr ""
 "Àn älgörïthm ässéssés léärnérs' réspönsés ßý çömpärïng thé réspönsés tö pré-"
-"ässésséd sämplé réspönsés thät thé ïnstrüçtör prövïdés. Ⱡ'σяєм ιρѕυм ∂σłσя "
-"ѕιт αмєт, ¢σηѕє¢тєтυя #"
+"ässésséd sämplé réspönsés thät thé ïnstrüçtör prövïdés. Ⱡ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_example_based_assessment.html:16
-#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:18
+#: openassessment/templates/openassessmentblock/edit/oa_edit_example_based_assessment.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html
 msgid ""
 "Enter one or more sample responses that you've created, and then specify the"
 " options that you would choose for each criterion in your rubric. Note that "
@@ -332,119 +354,122 @@ msgstr ""
 " öptïöns thät ýöü wöüld çhöösé för éäçh çrïtérïön ïn ýöür rüßrïç. Nöté thät "
 "ýöü müst ädd ýöür rüßrïç tö thé Rüßrïç täß ßéföré ýöü çän çömplété thïs "
 "stép. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ "
-"єιυѕмσ∂#"
+"єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм"
+" νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα "
+"¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт"
+" єѕѕє ¢ιłłυм ∂σłσяє є#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:5
+#: openassessment/templates/openassessmentblock/edit/oa_edit_option.html
 msgid "Option"
-msgstr "Öptïön Ⱡ'σяєм ιρѕ#"
+msgstr "Öptïön Ⱡ'σяєм ιρѕυ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:16
+#: openassessment/templates/openassessmentblock/edit/oa_edit_option.html
 msgid "Option Name"
-msgstr "Öptïön Nämé Ⱡ#"
+msgstr "Öptïön Nämé Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:29
+#: openassessment/templates/openassessmentblock/edit/oa_edit_option.html
 msgid "Option Points"
-msgstr "Öptïön Pöïnts Ⱡ'#"
+msgstr "Öptïön Pöïnts Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_option.html:42
+#: openassessment/templates/openassessmentblock/edit/oa_edit_option.html
 msgid "Option Explanation"
-msgstr "Öptïön Éxplänätïön Ⱡ'σ#"
+msgstr "Öptïön Éxplänätïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:9
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html
 msgid "Step: Peer Assessment"
-msgstr "Stép: Péér Àsséssmént Ⱡ'σя#"
+msgstr "Stép: Péér Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:13
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html
 msgid ""
 "Learners assess a specified number of other learners' responses using the "
 "rubric for the assignment."
 msgstr ""
 "Léärnérs ässéss ä spéçïfïéd nümßér öf öthér léärnérs' réspönsés üsïng thé "
-"rüßrïç för thé ässïgnmént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
+"rüßrïç för thé ässïgnmént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:17
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html
 msgid "Specify the following values for the peer assessment step."
 msgstr ""
 "Spéçïfý thé föllöwïng välüés för thé péér ässéssmént stép. Ⱡ'σяєм ιρѕυм "
-"∂σłσ#"
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:22
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html
 msgid "Must Grade"
-msgstr "Müst Grädé Ⱡ#"
+msgstr "Müst Grädé Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:25
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html
 msgid ""
 "Specify the number of peer assessments that each learner must complete. "
 "Valid numbers are 0 to 99."
 msgstr ""
 "Spéçïfý thé nümßér öf péér ässéssménts thät éäçh léärnér müst çömplété. "
-"Välïd nümßérs äré 0 tö 99. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+"Välïd nümßérs äré 0 tö 99. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:29
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html
 msgid "Graded By"
-msgstr "Grädéd Bý #"
+msgstr "Grädéd Bý Ⱡ'σяєм ιρѕυм ∂σł#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:32
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html
 msgid ""
 "Specify the number of learners that each response must be assessed by. Valid"
 " numbers are 0 to 99."
 msgstr ""
 "Spéçïfý thé nümßér öf léärnérs thät éäçh réspönsé müst ßé ässésséd ßý. Välïd"
-" nümßérs äré 0 tö 99. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+" nümßérs äré 0 tö 99. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:36
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:22
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html
 msgid "Start Date"
-msgstr "Stärt Däté Ⱡ#"
+msgstr "Stärt Däté Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:45
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:31
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html
 msgid "Start Time"
-msgstr "Stärt Tïmé Ⱡ#"
+msgstr "Stärt Tïmé Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:53
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html
 msgid ""
 "Enter the date and time when learners can begin assessing peer responses."
 msgstr ""
 "Éntér thé däté änd tïmé whén léärnérs çän ßégïn ässéssïng péér réspönsés. "
-"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:57
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:43
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:135
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
 msgid "Due Date"
-msgstr "Düé Däté #"
+msgstr "Düé Däté Ⱡ'σяєм ιρѕυм ∂#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:66
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:52
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html
 msgid "Due Time"
-msgstr "Düé Tïmé #"
+msgstr "Düé Tïmé Ⱡ'σяєм ιρѕυм ∂#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:74
+#: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html
 msgid "Enter the date and time when all peer assessments must be complete."
 msgstr ""
 "Éntér thé däté änd tïmé whén äll péér ässéssménts müst ßé çömplété. Ⱡ'σяєм "
-"ιρѕυм ∂σłσя ѕ#"
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:9
+#: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html
 msgid "You cannot delete a prompt after the assignment has been released."
 msgstr ""
 "Ýöü çännöt délété ä prömpt äftér thé ässïgnmént häs ßéén réléäséd. Ⱡ'σяєм "
-"ιρѕυм ∂σłσя #"
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_prompts.html:10
+#: openassessment/templates/openassessmentblock/edit/oa_edit_prompts.html
 msgid ""
 "Prompts. Replace the sample text with your own text. For more information, "
 "see the ORA documentation."
 msgstr ""
 "Prömpts. Répläçé thé sämplé téxt wïth ýöür öwn téxt. För möré ïnförmätïön, "
-"séé thé ÖRÀ döçüméntätïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
+"séé thé ÖRÀ döçüméntätïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_prompts.html:22
+#: openassessment/templates/openassessmentblock/edit/oa_edit_prompts.html
 msgid "Add Prompt"
-msgstr "Àdd Prömpt Ⱡ#"
+msgstr "Àdd Prömpt Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:14
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html
 msgid ""
 "Rubrics are made up of criteria, which usually contain one or more options. "
 "Each option has a point value. This template contains two sample criteria "
@@ -455,76 +480,96 @@ msgstr ""
 "Éäçh öptïön häs ä pöïnt välüé. Thïs témpläté çöntäïns twö sämplé çrïtérïä "
 "änd théïr öptïöns. Répläçé thé sämplé téxt wïth ýöür öwn téxt. För möré "
 "ïnförmätïön, séé thé ÖRÀ döçüméntätïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢#"
+"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт "
+"∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση "
+"υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє "
+"∂σł#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:26
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html
 msgid "Add Criterion"
-msgstr "Àdd Çrïtérïön Ⱡ'#"
+msgstr "Àdd Çrïtérïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:32
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html
 msgid "Feedback for This Response"
-msgstr "Féédßäçk för Thïs Réspönsé Ⱡ'σяєм#"
+msgstr "Féédßäçk för Thïs Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:37
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html
 msgid "Feedback Instructions"
-msgstr "Féédßäçk Ìnstrüçtïöns Ⱡ'σя#"
+msgstr "Féédßäçk Ìnstrüçtïöns Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:41
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html
 msgid ""
 "Encourage learners to provide feedback on the response they have graded. You"
 " can replace the sample text with your own."
 msgstr ""
 "Énçöürägé léärnérs tö prövïdé féédßäçk ön thé réspönsé théý hävé grädéd. Ýöü"
-" çän répläçé thé sämplé téxt wïth ýöür öwn. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тє#"
+" çän répläçé thé sämplé téxt wïth ýöür öwn. Ⱡ'σяєм ιρѕυм#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:46
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html
 msgid "Default Feedback Text"
-msgstr "Défäült Féédßäçk Téxt Ⱡ'σя#"
+msgstr "Défäült Féédßäçk Téxt Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:50
+#: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html
 msgid ""
 "Enter feedback text that learners will see before they enter their own "
 "feedback. Use this text to show learners a good example peer assessment."
 msgstr ""
 "Éntér féédßäçk téxt thät léärnérs wïll séé ßéföré théý éntér théïr öwn "
 "féédßäçk. Ûsé thïs téxt tö shöw léärnérs ä gööd éxämplé péér ässéssmént. "
-"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιρ#"
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ "
+"тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм,"
+" qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
+"ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂ єѕ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:9
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html
 msgid "Step: Self Assessment"
-msgstr "Stép: Sélf Àsséssmént Ⱡ'σя#"
+msgstr "Stép: Sélf Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:13
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html
 msgid ""
 "Learners assess their own responses using the rubric for the assignment."
 msgstr ""
 "Léärnérs ässéss théïr öwn réspönsés üsïng thé rüßrïç för thé ässïgnmént. "
-"Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:17
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html
 msgid "Specify start and due dates for the self assessment step."
 msgstr ""
-"Spéçïfý stärt änd düé dätés för thé sélf ässéssmént stép. Ⱡ'σяєм ιρѕυм ∂σł#"
+"Spéçïfý stärt änd düé dätés för thé sélf ässéssmént stép. Ⱡ'σяєм ιρѕυм ∂σłσя"
+" ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:39
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html
 msgid ""
 "Enter the date and time when learners can begin assessing their responses."
 msgstr ""
 "Éntér thé däté änd tïmé whén léärnérs çän ßégïn ässéssïng théïr réspönsés. "
-"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:60
+#: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html
 msgid "Enter the date and time when all self assessments must be complete."
 msgstr ""
 "Éntér thé däté änd tïmé whén äll sélf ässéssménts müst ßé çömplété. Ⱡ'σяєм "
-"ιρѕυм ∂σłσя ѕ#"
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:9
+#: openassessment/templates/openassessmentblock/edit/oa_edit_staff_assessment.html
+msgid "Step: Staff Assessment"
+msgstr "Stép: Stäff Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_staff_assessment.html
+msgid ""
+"Staff members assess learners' responses using the rubric for the "
+"assignment."
+msgstr ""
+"Stäff mémßérs ässéss léärnérs' réspönsés üsïng thé rüßrïç för thé "
+"ässïgnmént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html
 msgid "Step: Learner Training"
-msgstr "Stép: Léärnér Träïnïng Ⱡ'σяє#"
+msgstr "Stép: Léärnér Träïnïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:14
+#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html
 msgid ""
 "Learners learn to assess responses by scoring pre-assessed sample responses "
 "that you provide. Learners move to the next step when the scores they give "
@@ -536,47 +581,80 @@ msgstr ""
 "mätçh ýöür sçörés. Nöté thät ïf ýöü ädd thïs stép, ýöü müst älsö ädd ä péér "
 "ässéssmént stép. Thïs stép müst çömé ßéföré thé péér ässéssmént stép. Ⱡ'σяєм"
 " ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя "
-"ιη¢ι∂ι∂υηт υт #"
+"ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ "
+"ησѕтяυ∂ єχєя¢ιтαтιση υłłα#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html:26
+#: openassessment/templates/openassessmentblock/edit/oa_edit_student_training.html
 msgid "Add Sample Response"
-msgstr "Àdd Sämplé Réspönsé Ⱡ'σя#"
+msgstr "Àdd Sämplé Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_training_example.html:10
+#: openassessment/templates/openassessmentblock/edit/oa_training_example.html
 msgid "Scored Response"
-msgstr "Sçöréd Réspönsé Ⱡ'#"
+msgstr "Sçöréd Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_training_example.html:19
+#: openassessment/templates/openassessmentblock/edit/oa_training_example.html
 msgid "Response Score"
-msgstr "Réspönsé Sçöré Ⱡ'#"
+msgstr "Réspönsé Sçöré Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_training_example.html:30
+#: openassessment/templates/openassessmentblock/edit/oa_training_example.html
 msgid "Response"
-msgstr "Réspönsé #"
+msgstr "Réspönsé Ⱡ'σяєм ιρѕυм ∂#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_training_example_criterion.html:10
+#: openassessment/templates/openassessmentblock/edit/oa_training_example_criterion.html
 msgid "Not Selected"
-msgstr "Nöt Séléçtéd Ⱡ#"
+msgstr "Nöt Séléçtéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
-#: openassessment/templates/openassessmentblock/edit/oa_training_example_criterion.html:15
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:87
-#: openassessment/templates/openassessmentblock/oa_rubric.html:33
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:89
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:122
+#: openassessment/templates/openassessmentblock/edit/oa_training_example_criterion.html
+#: openassessment/templates/openassessmentblock/oa_rubric.html
+#: openassessment/templates/openassessmentblock/student_training/student_training.html
 msgid "points"
-msgstr "pöïnts Ⱡ'σяєм ιρѕ#"
+msgstr "pöïnts Ⱡ'σяєм ιρѕυ#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html:7
-#: openassessment/templates/openassessmentblock/grade/oa_grade_closed.html:7
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:8
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:19
-#: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:7
-#: openassessment/templates/openassessmentblock/grade/oa_grade_not_started.html:7
-#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:7
+#: openassessment/templates/openassessmentblock/grade/oa_assessment_feedback.html
+#, python-format
+msgid ""
+"\n"
+"                                        %(start_tag)s%(title)s%(end_tag)s - %(grade)s\n"
+"                                    "
+msgstr ""
+"\n"
+"                                        %(start_tag)s%(title)s%(end_tag)s - %(grade)s\n"
+"                                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
+
+#: openassessment/templates/openassessmentblock/grade/oa_assessment_title.html
+#, python-format
+msgid ""
+"\n"
+"                            %(assessment_title)s - %(points)s point\n"
+"                        "
+msgid_plural ""
+"\n"
+"                            %(assessment_title)s - %(points)s points\n"
+"                        "
+msgstr[0] ""
+"\n"
+"                            %(assessment_title)s - %(points)s pöïnt\n"
+"                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+msgstr[1] ""
+"\n"
+"                            %(assessment_title)s - %(points)s pöïnts\n"
+"                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: openassessment/templates/openassessmentblock/grade/oa_assessment_title.html
+#, python-format
+msgid "More information about %(name)s"
+msgstr "Möré ïnförmätïön äßöüt %(name)s Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
+#: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html
+#: openassessment/templates/openassessmentblock/grade/oa_grade_not_started.html
+#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html
 msgid "Your Grade"
-msgstr "Ýöür Grädé Ⱡ#"
+msgstr "Ýöür Grädé Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html:12
+#: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html
 #, python-format
 msgid ""
 "\n"
@@ -585,334 +663,360 @@ msgid ""
 msgstr ""
 "\n"
 "                                    %(points_earned)s öüt öf %(points_possible)s\n"
-"                                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+"                                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html:30
+#: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html
 msgid "Your submission has been cancelled."
-msgstr "Ýöür süßmïssïön häs ßéén çänçélléd. Ⱡ'σяєм ιρ#"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_closed.html:9
-#: openassessment/templates/openassessmentblock/response/oa_response_closed.html:12
-#: openassessment/templates/openassessmentblock/self/oa_self_closed.html:13
-#: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:13
-msgid "Incomplete"
-msgstr "Ìnçömplété Ⱡ#"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_closed.html:10
-#: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:19
-msgid "You have not completed all the steps of this problem."
 msgstr ""
-"Ýöü hävé nöt çömplétéd äll thé stéps öf thïs prößlém. Ⱡ'σяєм ιρѕυм ∂σ#"
+"Ýöür süßmïssïön häs ßéén çänçélléd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:12
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
 #, python-format
 msgid ""
 "\n"
-"                            %(points_earned)s out of %(points_possible)s\n"
-"                        "
+"                                %(points_earned)s out of %(points_possible)s\n"
+"                            "
 msgstr ""
 "\n"
-"                            %(points_earned)s öüt öf %(points_possible)s\n"
-"                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+"                                %(points_earned)s öüt öf %(points_possible)s\n"
+"                             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:29
-#: openassessment/templates/openassessmentblock/response/oa_response.html:12
-#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:41
-#: openassessment/templates/openassessmentblock/response/oa_response_graded.html:23
-#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:43
-#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:43
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
+#: openassessment/templates/openassessmentblock/response/oa_response.html
+#: openassessment/templates/openassessmentblock/response/oa_response_graded.html
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html
 msgid "Your Response"
-msgstr "Ýöür Réspönsé Ⱡ'#"
+msgstr "Ýöür Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:37
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
+#: openassessment/templates/openassessmentblock/response/oa_response_graded.html
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html
+msgid "Your response to the question above:"
+msgstr ""
+"Ýöür réspönsé tö thé qüéstïön äßövé: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
+msgid "Your Upload"
+msgstr "Ýöür Ûplöäd Ⱡ'σяєм ιρѕυм ∂σłσя #"
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
 msgid "Assessments of Your Response"
-msgstr "Àsséssménts öf Ýöür Réspönsé Ⱡ'σяєм #"
+msgstr "Àsséssménts öf Ýöür Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:48
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
 msgid "Overall Grade"
-msgstr "Övéräll Grädé Ⱡ'#"
+msgstr "Övéräll Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:53
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:103
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:145
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:183
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:214
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "Points"
-msgstr "Pöïnts Ⱡ'σяєм ιρѕ#"
+msgstr "Pöïnts Ⱡ'σяєм ιρѕυ#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:67
-msgid "Assessor"
-msgstr "Àsséssör #"
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
+#: openassessment/templates/openassessmentblock/oa_rubric.html
+msgid "Comments"
+msgstr "Çömménts Ⱡ'σяєм ιρѕυм ∂#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:69
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:202
-#, python-format
-msgid "Peer %(peer_num)s"
-msgstr "Péér %(peer_num)s #"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:73
-msgid "Peer's Assessment"
-msgstr "Péér's Àsséssmént Ⱡ'σ#"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:79
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:110
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:134
-#, python-format
-msgid "More information about %(name)s"
-msgstr "Möré ïnförmätïön äßöüt %(name)s Ⱡ'σяєм#"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:86
-msgid "Grade Earned"
-msgstr "Grädé Éärnéd Ⱡ#"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:101
-msgid "Your Self Assessment"
-msgstr "Ýöür Sélf Àsséssmént Ⱡ'σя#"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:104
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:171
-msgid "Your Assessment"
-msgstr "Ýöür Àsséssmént Ⱡ'#"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:125
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:128
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:208
-msgid "Example-Based Assessment"
-msgstr "Éxämplé-Bäséd Àsséssmént Ⱡ'σяє#"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:149
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:151
-msgid "Additional Comments"
-msgstr "Àddïtïönäl Çömménts Ⱡ'σя#"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:160
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:96
-msgid "Peer"
-msgstr "Péér Ⱡ'σяєм#"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:191
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
 msgid "Additional comments on your response"
-msgstr "Àddïtïönäl çömménts ön ýöür réspönsé Ⱡ'σяєм ιρ#"
+msgstr ""
+"Àddïtïönäl çömménts ön ýöür réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:201
-msgid "Peer assessor"
-msgstr "Péér ässéssör Ⱡ'#"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:207
-msgid "Peer's assessment"
-msgstr "Péér's ässéssmént Ⱡ'σ#"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:218
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:219
-msgid "Self assessment"
-msgstr "Sélf ässéssmént Ⱡ'#"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:224
-msgid "Your assessment"
-msgstr "Ýöür ässéssmént Ⱡ'#"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:239
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
 msgid "Provide Feedback on Peer Assessments"
-msgstr "Prövïdé Féédßäçk ön Péér Àsséssménts Ⱡ'σяєм ιρ#"
+msgstr ""
+"Prövïdé Féédßäçk ön Péér Àsséssménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:248
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
 msgid "Submitting Feedback"
-msgstr "Süßmïttïng Féédßäçk Ⱡ'σя#"
+msgstr "Süßmïttïng Féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:254
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
 msgid "Your Feedback Has Been Submitted"
-msgstr "Ýöür Féédßäçk Häs Béén Süßmïttéd Ⱡ'σяєм ι#"
+msgstr ""
+"Ýöür Féédßäçk Häs Béén Süßmïttéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:256
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
 msgid ""
 "Your feedback has been submitted. Course staff will be able to see this "
 "feedback when they review course records."
 msgstr ""
 "Ýöür féédßäçk häs ßéén süßmïttéd. Çöürsé stäff wïll ßé äßlé tö séé thïs "
-"féédßäçk whén théý révïéw çöürsé réçörds. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢#"
+"féédßäçk whén théý révïéw çöürsé réçörds. Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:262
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
 msgid ""
 "Course staff will be able to see any feedback that you provide here when "
 "they review course records."
 msgstr ""
 "Çöürsé stäff wïll ßé äßlé tö séé äný féédßäçk thät ýöü prövïdé héré whén "
-"théý révïéw çöürsé réçörds. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
+"théý révïéw çöürsé réçörds. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:268
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
 msgid ""
 "Select the statements below that best reflect your experience with peer "
 "assessments"
 msgstr ""
 "Séléçt thé stätéménts ßélöw thät ßést réfléçt ýöür éxpérïénçé wïth péér "
-"ässéssménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+"ässéssménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:276
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
 msgid "These assessments were useful."
-msgstr "Thésé ässéssménts wéré üséfül. Ⱡ'σяєм #"
+msgstr "Thésé ässéssménts wéré üséfül. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:284
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
 msgid "These assessments were not useful."
-msgstr "Thésé ässéssménts wéré nöt üséfül. Ⱡ'σяєм ιρ#"
+msgstr ""
+"Thésé ässéssménts wéré nöt üséfül. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:292
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
 msgid "I disagree with one or more of the peer assessments of my response."
 msgstr ""
 "Ì dïsägréé wïth öné ör möré öf thé péér ässéssménts öf mý réspönsé. Ⱡ'σяєм "
-"ιρѕυм ∂σłσя ѕ#"
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:300
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
 msgid "Some comments I received were inappropriate."
-msgstr "Sömé çömménts Ì réçéïvéd wéré ïnäppröprïäté. Ⱡ'σяєм ιρѕυм#"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:305
-msgid ""
-"Please provide any feedback on the grade or comments that you received from "
-"your peers."
 msgstr ""
-"Pléäsé prövïdé äný féédßäçk ön thé grädé ör çömménts thät ýöü réçéïvéd fröm "
-"ýöür péérs. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+"Sömé çömménts Ì réçéïvéd wéré ïnäppröprïäté. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:308
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
+msgid ""
+"Provide feedback on the grade or comments that you received from your peers."
+msgstr ""
+"Prövïdé féédßäçk ön thé grädé ör çömménts thät ýöü réçéïvéd fröm ýöür péérs."
+" Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
 msgid "I feel the feedback I received was..."
-msgstr "Ì féél thé féédßäçk Ì réçéïvéd wäs... Ⱡ'σяєм ιρѕ#"
+msgstr ""
+"Ì féél thé féédßäçk Ì réçéïvéd wäs... Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:319
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
 msgid "We could not submit your feedback"
-msgstr "Wé çöüld nöt süßmït ýöür féédßäçk Ⱡ'σяєм ι#"
+msgstr ""
+"Wé çöüld nöt süßmït ýöür féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:325
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
 msgid "Submit Feedback on Peer Assessments"
-msgstr "Süßmït Féédßäçk ön Péér Àsséssménts Ⱡ'σяєм ιρ#"
+msgstr ""
+"Süßmït Féédßäçk ön Péér Àsséssménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:9
+#: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html
 msgid "Not Completed"
-msgstr "Nöt Çömplétéd Ⱡ'#"
+msgstr "Nöt Çömplétéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_not_started.html:9
+#: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html
+msgid "You have not completed all the steps of this problem."
+msgstr ""
+"Ýöü hävé nöt çömplétéd äll thé stéps öf thïs prößlém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт"
+" αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/templates/openassessmentblock/grade/oa_grade_not_started.html
 msgid "Not Started"
-msgstr "Nöt Stärtéd Ⱡ#"
+msgstr "Nöt Stärtéd Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_not_started.html:19
+#: openassessment/templates/openassessmentblock/grade/oa_grade_not_started.html
 msgid "You have not started this problem yet."
-msgstr "Ýöü hävé nöt stärtéd thïs prößlém ýét. Ⱡ'σяєм ιρѕ#"
+msgstr ""
+"Ýöü hävé nöt stärtéd thïs prößlém ýét. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:9
+#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html
 msgid "Waiting for Assessments"
-msgstr "Wäïtïng för Àsséssménts Ⱡ'σяє#"
+msgstr "Wäïtïng för Àsséssménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:20
+#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html
 msgid ""
-"Your response is still undergoing peer assessment. After your peers have "
-"assessed your response, you'll see their comments and receive your final "
-"grade."
+"Not all assessment steps have been completed for your response. After all "
+"assessment steps are complete, you will see feedback from everyone who "
+"assessed your response, and you will receive your final grade."
 msgstr ""
-"Ýöür réspönsé ïs stïll ündérgöïng péér ässéssmént. Àftér ýöür péérs hävé "
-"ässésséd ýöür réspönsé, ýöü'll séé théïr çömménts änd réçéïvé ýöür fïnäl "
-"grädé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι#"
+"Nöt äll ässéssmént stéps hävé ßéén çömplétéd för ýöür réspönsé. Àftér äll "
+"ässéssmént stéps äré çömplété, ýöü wïll séé féédßäçk fröm évérýöné whö "
+"ässésséd ýöür réspönsé, änd ýöü wïll réçéïvé ýöür fïnäl grädé. Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя "
+"ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ "
+"ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕι#"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:22
-msgid ""
-"Your response is still undergoing example-based assessment. After your "
-"response has been assessed, you'll see the comments and receive your final "
-"grade."
-msgstr ""
-"Ýöür réspönsé ïs stïll ündérgöïng éxämplé-ßäséd ässéssmént. Àftér ýöür "
-"réspönsé häs ßéén ässésséd, ýöü'll séé thé çömménts änd réçéïvé ýöür fïnäl "
-"grädé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι#"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:24
-msgid ""
-"Your response is still undergoing peer assessment and example-based "
-"assessment. After your peers have assessed your response and example-based "
-"assessment is complete, you'll see your peers' comments and receive your "
-"final grade."
-msgstr ""
-"Ýöür réspönsé ïs stïll ündérgöïng péér ässéssmént änd éxämplé-ßäséd "
-"ässéssmént. Àftér ýöür péérs hävé ässésséd ýöür réspönsé änd éxämplé-ßäséd "
-"ässéssmént ïs çömplété, ýöü'll séé ýöür péérs' çömménts änd réçéïvé ýöür "
-"fïnäl grädé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ "
-"∂σ єιυѕмσ∂#"
-
-#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:9
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html
 msgid "Top-Scoring Responses for This Assignment"
-msgstr "Töp-Sçörïng Réspönsés för Thïs Àssïgnmént Ⱡ'σяєм ιρѕυ#"
+msgstr ""
+"Töp-Sçörïng Réspönsés för Thïs Àssïgnmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
 
-#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:16
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html
 #, python-format
 msgid "%(num_points)s points"
-msgstr "%(num_points)s pöïnts Ⱡ#"
+msgstr "%(num_points)s pöïnts Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:21
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html
 msgid "The image associated with your peer's submission."
-msgstr "Thé ïmägé ässöçïätéd wïth ýöür péér's süßmïssïön. Ⱡ'σяєм ιρѕυм ∂#"
+msgstr ""
+"Thé ïmägé ässöçïätéd wïth ýöür péér's süßmïssïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:15
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html
+msgid "Your peer's response to the question above:"
+msgstr ""
+"Ýöür péér's réspönsé tö thé qüéstïön äßövé: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html
 msgid ""
 "After you complete all the steps of this assignment, you can see the top-"
 "scoring responses from your peers."
 msgstr ""
 "Àftér ýöü çömplété äll thé stéps öf thïs ässïgnmént, ýöü çän séé thé töp-"
-"sçörïng réspönsés fröm ýöür péérs. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+"sçörïng réspönsés fröm ýöür péérs. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_closed.html:6
+#: openassessment/templates/openassessmentblock/message/oa_message_closed.html
 msgid "This Task Is Not Yet Available"
-msgstr "Thïs Täsk Ìs Nöt Ýét Àväïläßlé Ⱡ'σяєм #"
+msgstr "Thïs Täsk Ìs Nöt Ýét Àväïläßlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_closed.html:8
+#: openassessment/templates/openassessmentblock/message/oa_message_closed.html
 msgid "This Assignment Has Closed"
-msgstr "Thïs Àssïgnmént Häs Çlöséd Ⱡ'σяєм#"
+msgstr "Thïs Àssïgnmént Häs Çlöséd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_closed.html:14
+#: openassessment/templates/openassessmentblock/message/oa_message_closed.html
 msgid "Check back to complete the assignment once this section has opened."
 msgstr ""
 "Çhéçk ßäçk tö çömplété thé ässïgnmént önçé thïs séçtïön häs öpénéd. Ⱡ'σяєм "
-"ιρѕυм ∂σłσя ѕ#"
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_closed.html:16
+#: openassessment/templates/openassessmentblock/message/oa_message_closed.html
 msgid ""
 "One or more deadlines for this assignment have passed. You will receive an "
 "incomplete grade for this assignment."
 msgstr ""
 "Öné ör möré déädlïnés för thïs ässïgnmént hävé pässéd. Ýöü wïll réçéïvé än "
-"ïnçömplété grädé för thïs ässïgnmént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
+"ïnçömplété grädé för thïs ässïgnmént. Ⱡ'σяєм ιρѕυм ∂σłσя#"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_complete.html:4
+#: openassessment/templates/openassessmentblock/message/oa_message_complete.html
 msgid "You Have Completed This Assignment"
-msgstr "Ýöü Hävé Çömplétéd Thïs Àssïgnmént Ⱡ'σяєм ιρ#"
-
-#: openassessment/templates/openassessmentblock/message/oa_message_complete.html:8
-msgid ""
-"Your grade will be available when your peers have completed their "
-"assessments of your response."
 msgstr ""
-"Ýöür grädé wïll ßé äväïläßlé whén ýöür péérs hävé çömplétéd théïr "
-"ässéssménts öf ýöür réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+"Ýöü Hävé Çömplétéd Thïs Àssïgnmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_complete.html:10
+#: openassessment/templates/openassessmentblock/message/oa_message_complete.html
 msgid ""
-"Your grade will be available when the example-based assessment of your "
-"response is complete."
+"Your final grade will be available when all assessment steps for your "
+"response have been completed."
 msgstr ""
-"Ýöür grädé wïll ßé äväïläßlé whén thé éxämplé-ßäséd ässéssmént öf ýöür "
-"réspönsé ïs çömplété. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
+"Ýöür fïnäl grädé wïll ßé äväïläßlé whén äll ässéssmént stéps för ýöür "
+"réspönsé hävé ßéén çömplétéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_complete.html:12
-msgid ""
-"Your grade will be available when your peers have completed their "
-"assessments of your response and the example-based assessment of your "
-"response is complete."
-msgstr ""
-"Ýöür grädé wïll ßé äväïläßlé whén ýöür péérs hävé çömplétéd théïr "
-"ässéssménts öf ýöür réspönsé änd thé éxämplé-ßäséd ässéssmént öf ýöür "
-"réspönsé ïs çömplété. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢#"
-
-#: openassessment/templates/openassessmentblock/message/oa_message_complete.html:14
+#: openassessment/templates/openassessmentblock/message/oa_message_complete.html
 msgid "Review your grade and your assessment details."
-msgstr "Révïéw ýöür grädé änd ýöür ässéssmént détäïls. Ⱡ'σяєм ιρѕυм #"
+msgstr ""
+"Révïéw ýöür grädé änd ýöür ässéssmént détäïls. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя α#"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_open.html:7
+#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html
+msgid "Assignment in progress"
+msgstr "Àssïgnmént ïn prögréss Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html
+msgid ""
+"Learner training will close soon. Complete the learner training step to move"
+" on."
+msgstr ""
+"Léärnér träïnïng wïll çlösé söön. Çömplété thé léärnér träïnïng stép tö mövé"
+" ön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html
+msgid "Complete the learner training step to move on."
+msgstr ""
+"Çömplété thé léärnér träïnïng stép tö mövé ön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя α#"
+
+#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html
+#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html
+msgid "Check back later when the assessment period has started."
+msgstr ""
+"Çhéçk ßäçk lätér whén thé ässéssmént pérïöd häs stärtéd. Ⱡ'σяєм ιρѕυм ∂σłσя "
+"ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html
+#, python-format
+msgid ""
+"\n"
+"                                    %(start_strong)sThe self assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
+"                                "
+msgstr ""
+"\n"
+"                                    %(start_strong)sThé sélf ässéssmént stép wïll çlösé söön.%(end_strong)s Ýöü stïll nééd tö çömplété thé %(start_link)ssélf ässéssmént%(end_link)s stép.\n"
+"                                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υł#"
+
+#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html
+#, python-format
+msgid ""
+"\n"
+"                                    You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
+"                                "
+msgstr ""
+"\n"
+"                                    Ýöü stïll nééd tö çömplété thé %(start_link)ssélf ässéssmént%(end_link)s stép.\n"
+"                                 Ⱡ'σя#"
+
+#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html
+#, python-format
+msgid ""
+"\n"
+"                                    %(start_strong)sThe peer assessment step will close soon.%(end_strong)s All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
+"                                "
+msgstr ""
+"\n"
+"                                    %(start_strong)sThé péér ässéssmént stép wïll çlösé söön.%(end_strong)s Àll süßmïttéd péér réspönsés hävé ßéén ässésséd. Çhéçk ßäçk lätér tö séé ïf möré léärnérs hävé süßmïttéd réspönsés. Ýöü stïll nééd tö çömplété thé %(start_link)spéér ässéssmént%(end_link)s stép.\n"
+"                                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσ#"
+
+#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html
+#, python-format
+msgid ""
+"\n"
+"                                    All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
+"                                "
+msgstr ""
+"\n"
+"                                    Àll süßmïttéd péér réspönsés hävé ßéén ässésséd. Çhéçk ßäçk lätér tö séé ïf möré léärnérs hävé süßmïttéd réspönsés. Ýöü stïll nééd tö çömplété thé %(start_link)spéér ässéssmént%(end_link)s stép.\n"
+"                                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє#"
+
+#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html
+#, python-format
+msgid ""
+"\n"
+"                                    %(start_strong)sThe peer assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
+"                                "
+msgstr ""
+"\n"
+"                                    %(start_strong)sThé péér ässéssmént stép wïll çlösé söön.%(end_strong)s Ýöü stïll nééd tö çömplété thé %(start_link)spéér ässéssmént%(end_link)s stép.\n"
+"                                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υł#"
+
+#: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html
+#, python-format
+msgid ""
+"\n"
+"                                    You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
+"                                "
+msgstr ""
+"\n"
+"                                    Ýöü stïll nééd tö çömplété thé %(start_link)spéér ässéssmént%(end_link)s stép.\n"
+"                                 Ⱡ'σя#"
+
+#: openassessment/templates/openassessmentblock/message/oa_message_open.html
 #, python-format
 msgid ""
 "\n"
@@ -921,9 +1025,9 @@ msgid ""
 msgstr ""
 "\n"
 "                    Àssïgnmént süßmïssïöns wïll çlösé söön. Tö réçéïvé ä grädé, fïrst prövïdé ä réspönsé tö thé qüéstïön, thén çömplété thé stéps ßélöw thé %(start_tag)sÝöür Réspönsé%(end_tag)s fïéld.\n"
-"                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂#"
+"                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт#"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_open.html:11
+#: openassessment/templates/openassessmentblock/message/oa_message_open.html
 #, python-format
 msgid ""
 "\n"
@@ -932,116 +1036,19 @@ msgid ""
 msgstr ""
 "\n"
 "                    Thïs ässïgnmént häs sévéräl stéps. Ìn thé fïrst stép, ýöü'll prövïdé ä réspönsé tö thé qüéstïön. Thé öthér stéps äppéär ßélöw thé %(start_tag)sÝöür Réspönsé%(end_tag)s fïéld.\n"
-"                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂#"
+"                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт#"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_peer.html:6
-msgid "Waiting for Peer Submissions"
-msgstr "Wäïtïng för Péér Süßmïssïöns Ⱡ'σяєм #"
-
-#: openassessment/templates/openassessmentblock/message/oa_message_peer.html:8
-msgid "The Period For Peer Evaluation Has Not Started"
-msgstr "Thé Pérïöd För Péér Évälüätïön Häs Nöt Stärtéd Ⱡ'σяєм ιρѕυм #"
-
-#: openassessment/templates/openassessmentblock/message/oa_message_peer.html:10
-#: openassessment/templates/openassessmentblock/message/oa_message_self.html:8
-msgid "Your Response Has Been Submitted For Peer Assessment"
-msgstr "Ýöür Réspönsé Häs Béén Süßmïttéd För Péér Àsséssmént Ⱡ'σяєм ιρѕυм ∂σ#"
-
-#: openassessment/templates/openassessmentblock/message/oa_message_peer.html:16
-#: openassessment/templates/openassessmentblock/message/oa_message_self.html:16
-msgid "Check back later when the assessment period has opened."
-msgstr ""
-"Çhéçk ßäçk lätér whén thé ässéssmént pérïöd häs öpénéd. Ⱡ'σяєм ιρѕυм ∂σł#"
-
-#: openassessment/templates/openassessmentblock/message/oa_message_peer.html:19
-msgid "Peer evaluation of this assignment will close soon. "
-msgstr "Péér évälüätïön öf thïs ässïgnmént wïll çlösé söön.  Ⱡ'σяєм ιρѕυм ∂σ#"
-
-#: openassessment/templates/openassessmentblock/message/oa_message_peer.html:22
-msgid ""
-"All submitted peer responses have been assessed. Check back later to see if "
-"more learners have submitted responses. "
-msgstr ""
-"Àll süßmïttéd péér réspönsés hävé ßéén ässésséd. Çhéçk ßäçk lätér tö séé ïf "
-"möré léärnérs hävé süßmïttéd réspönsés.  Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢т#"
-
-#: openassessment/templates/openassessmentblock/message/oa_message_peer.html:25
-#, python-format
-msgid ""
-"\n"
-"                          You'll receive your grade after you complete the %(peer_start_tag)speer assessment%(end_tag)s and %(self_start_tag)sself assessment%(end_tag)s steps, and after your peers have assessed your response.\n"
-"                    "
-msgstr ""
-"\n"
-"                          Ýöü'll réçéïvé ýöür grädé äftér ýöü çömplété thé %(peer_start_tag)spéér ässéssmént%(end_tag)s änd %(self_start_tag)ssélf ässéssmént%(end_tag)s stéps, änd äftér ýöür péérs hävé ässésséd ýöür réspönsé.\n"
-"                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂#"
-
-#: openassessment/templates/openassessmentblock/message/oa_message_peer.html:29
-#, python-format
-msgid ""
-"\n"
-"                        You'll receive your grade after you complete the %(start_tag)speer assessment%(end_tag)s step.\n"
-"                    "
-msgstr ""
-"\n"
-"                        Ýöü'll réçéïvé ýöür grädé äftér ýöü çömplété thé %(start_tag)spéér ässéssmént%(end_tag)s stép.\n"
-"                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
-
-#: openassessment/templates/openassessmentblock/message/oa_message_self.html:6
-msgid "The Period For Self Evaluation Has Not Started"
-msgstr "Thé Pérïöd För Sélf Évälüätïön Häs Nöt Stärtéd Ⱡ'σяєм ιρѕυм #"
-
-#: openassessment/templates/openassessmentblock/message/oa_message_self.html:10
-msgid "Your Response Is Ready For Self Assessment"
-msgstr "Ýöür Réspönsé Ìs Réädý För Sélf Àsséssmént Ⱡ'σяєм ιρѕυ#"
-
-#: openassessment/templates/openassessmentblock/message/oa_message_self.html:19
-msgid "Self evaluation of this assignment will close soon. "
-msgstr "Sélf évälüätïön öf thïs ässïgnmént wïll çlösé söön.  Ⱡ'σяєм ιρѕυм ∂σ#"
-
-#: openassessment/templates/openassessmentblock/message/oa_message_self.html:22
-#, python-format
-msgid ""
-"\n"
-"                          You'll receive your grade after the required number of your peers have assessed your response and you complete the %(start_tag)sself assessment%(end_tag)s step.\n"
-"                    "
-msgstr ""
-"\n"
-"                          Ýöü'll réçéïvé ýöür grädé äftér thé réqüïréd nümßér öf ýöür péérs hävé ässésséd ýöür réspönsé änd ýöü çömplété thé %(start_tag)ssélf ässéssmént%(end_tag)s stép.\n"
-"                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕ#"
-
-#: openassessment/templates/openassessmentblock/message/oa_message_self.html:26
-#, python-format
-msgid ""
-"\n"
-"                          You'll receive your grade after you complete the %(start_tag)sself assessment%(end_tag)s step.\n"
-"                    "
-msgstr ""
-"\n"
-"                          Ýöü'll réçéïvé ýöür grädé äftér ýöü çömplété thé %(start_tag)ssélf ässéssmént%(end_tag)s stép.\n"
-"                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
-
-#: openassessment/templates/openassessmentblock/message/oa_message_training.html:7
-msgid "Learner training for peer assessment will close soon. "
-msgstr ""
-"Léärnér träïnïng för péér ässéssmént wïll çlösé söön.  Ⱡ'σяєм ιρѕυм ∂σ#"
-
-#: openassessment/templates/openassessmentblock/message/oa_message_training.html:9
-msgid "Complete the learner training section to move on to peer assessment."
-msgstr ""
-"Çömplété thé léärnér träïnïng séçtïön tö mövé ön tö péér ässéssmént. Ⱡ'σяєм "
-"ιρѕυм ∂σłσя ѕ#"
-
-#: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html:4
+#: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html
 msgid "Instructions Unavailable"
-msgstr "Ìnstrüçtïöns Ûnäväïläßlé Ⱡ'σяє#"
+msgstr "Ìnstrüçtïöns Ûnäväïläßlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
 
-#: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html:6
+#: openassessment/templates/openassessmentblock/message/oa_message_unavailable.html
 msgid "The instructions for this step could not be loaded."
-msgstr "Thé ïnstrüçtïöns för thïs stép çöüld nöt ßé löädéd. Ⱡ'σяєм ιρѕυм ∂#"
+msgstr ""
+"Thé ïnstrüçtïöns för thïs stép çöüld nöt ßé löädéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/templates/openassessmentblock/oa_base.html:12
+#: openassessment/templates/openassessmentblock/oa_base.html
 msgid ""
 "This assignment has several steps. In the first step, you'll provide a "
 "response to the question. The other steps appear below the Your Response "
@@ -1049,100 +1056,111 @@ msgid ""
 msgstr ""
 "Thïs ässïgnmént häs sévéräl stéps. Ìn thé fïrst stép, ýöü'll prövïdé ä "
 "réspönsé tö thé qüéstïön. Thé öthér stéps äppéär ßélöw thé Ýöür Réspönsé "
-"fïéld. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕ#"
+"fïéld. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ "
+"єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм"
+" νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα "
+"¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт"
+" єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт "
+"¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αη#"
 
-#: openassessment/templates/openassessmentblock/oa_base.html:31
+#: openassessment/templates/openassessmentblock/oa_base.html
 msgid "This step's status:"
-msgstr "Thïs stép's stätüs: Ⱡ'σя#"
+msgstr "Thïs stép's stätüs: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
 
-#: openassessment/templates/openassessmentblock/oa_base.html:34
+#: openassessment/templates/openassessmentblock/oa_base.html
 msgid "Loading"
-msgstr "Löädïng #"
+msgstr "Löädïng Ⱡ'σяєм ιρѕυм #"
 
-#: openassessment/templates/openassessmentblock/oa_rubric.html:41
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:97
-msgid "Comments"
-msgstr "Çömménts #"
-
-#: openassessment/templates/openassessmentblock/oa_submission_answer.html:7
+#: openassessment/templates/openassessmentblock/oa_submission_answer.html
 msgid "The question for this section."
-msgstr "Thé qüéstïön för thïs séçtïön. Ⱡ'σяєм #"
+msgstr "Thé qüéstïön för thïs séçtïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
-#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:17
+#: openassessment/templates/openassessmentblock/oa_uploaded_file.html
 msgid "The image associated with this submission."
-msgstr "Thé ïmägé ässöçïätéd wïth thïs süßmïssïön. Ⱡ'σяєм ιρѕυ#"
+msgstr ""
+"Thé ïmägé ässöçïätéd wïth thïs süßmïssïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
 
-#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:21
+#: openassessment/templates/openassessmentblock/oa_uploaded_file.html
 msgid "View the file associated with this submission."
-msgstr "Vïéw thé fïlé ässöçïätéd wïth thïs süßmïssïön. Ⱡ'σяєм ιρѕυм #"
+msgstr ""
+"Vïéw thé fïlé ässöçïätéd wïth thïs süßmïssïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя α#"
 
-#: openassessment/templates/openassessmentblock/oa_uploaded_file.html:24
+#: openassessment/templates/openassessmentblock/oa_uploaded_file.html
 msgid ""
 "(Caution: This file was uploaded by another course learner and has not been "
-"verified, screened, approved, reviewed or endorsed by edX. If you decide to "
-"access it, you do so at your own risk.)"
+"verified, screened, approved, reviewed, or endorsed by edX. If you decide to"
+" access it, you do so at your own risk.)"
 msgstr ""
 "(Çäütïön: Thïs fïlé wäs üplöädéd ßý änöthér çöürsé léärnér änd häs nöt ßéén "
-"vérïfïéd, sçréénéd, äpprövéd, révïéwéd ör éndörséd ßý édX. Ìf ýöü déçïdé tö "
-"äççéss ït, ýöü dö sö ät ýöür öwn rïsk.) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє#"
+"vérïfïéd, sçréénéd, äpprövéd, révïéwéd, ör éndörséd ßý édX. Ìf ýöü déçïdé tö"
+" äççéss ït, ýöü dö sö ät ýöür öwn rïsk.) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт "
+"∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση "
+"υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє "
+"∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα"
+" ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ησ#"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:16
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html
 msgid "Assess Peers"
-msgstr "Àsséss Péérs Ⱡ#"
+msgstr "Àsséss Péérs Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
 #. 45 minutes)"
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:20
-#: openassessment/templates/openassessmentblock/response/oa_response.html:16
-#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:16
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:16
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html
+#: openassessment/templates/openassessmentblock/response/oa_response.html
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html
+#: openassessment/templates/openassessmentblock/student_training/student_training.html
 #, python-format
 msgid "available <span class=\"date\">%(start_date)s (in %(time_until)s)</span>"
 msgstr ""
 "äväïläßlé <span class=\"date\">%(start_date)s (ïn %(time_until)s)</span> "
-"Ⱡ'σяєм #"
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
 #. minutes)"
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:25
-#: openassessment/templates/openassessmentblock/response/oa_response.html:21
-#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:21
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:21
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html
+#: openassessment/templates/openassessmentblock/response/oa_response.html
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html
+#: openassessment/templates/openassessmentblock/student_training/student_training.html
 #, python-format
 msgid "due <span class=\"date\">%(due_date)s (in %(time_until)s)</span>"
-msgstr "düé <span class=\"date\">%(due_date)s (ïn %(time_until)s)</span> Ⱡ'σяє#"
+msgstr ""
+"düé <span class=\"date\">%(due_date)s (ïn %(time_until)s)</span> Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:33
-#: openassessment/templates/openassessmentblock/peer/oa_peer_cancelled.html:12
-#: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html:10
-#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:10
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:14
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:10
-#: openassessment/templates/openassessmentblock/peer/oa_peer_unavailable.html:10
-#: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html:10
-#: openassessment/templates/openassessmentblock/response/oa_response.html:29
-#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:11
-#: openassessment/templates/openassessmentblock/response/oa_response_closed.html:9
-#: openassessment/templates/openassessmentblock/response/oa_response_graded.html:10
-#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:10
-#: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:10
-#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:29
-#: openassessment/templates/openassessmentblock/self/oa_self_cancelled.html:12
-#: openassessment/templates/openassessmentblock/self/oa_self_closed.html:10
-#: openassessment/templates/openassessmentblock/self/oa_self_complete.html:10
-#: openassessment/templates/openassessmentblock/self/oa_self_unavailable.html:10
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:30
-#: openassessment/templates/openassessmentblock/student_training/student_training_cancelled.html:11
-#: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:10
-#: openassessment/templates/openassessmentblock/student_training/student_training_complete.html:10
-#: openassessment/templates/openassessmentblock/student_training/student_training_unavailable.html:10
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html
+#: openassessment/templates/openassessmentblock/peer/oa_peer_cancelled.html
+#: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html
+#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html
+#: openassessment/templates/openassessmentblock/peer/oa_peer_unavailable.html
+#: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html
+#: openassessment/templates/openassessmentblock/response/oa_response.html
+#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html
+#: openassessment/templates/openassessmentblock/response/oa_response_closed.html
+#: openassessment/templates/openassessmentblock/response/oa_response_graded.html
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html
+#: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html
+#: openassessment/templates/openassessmentblock/self/oa_self_cancelled.html
+#: openassessment/templates/openassessmentblock/self/oa_self_closed.html
+#: openassessment/templates/openassessmentblock/self/oa_self_complete.html
+#: openassessment/templates/openassessmentblock/self/oa_self_unavailable.html
+#: openassessment/templates/openassessmentblock/staff/oa_staff_grade.html
+#: openassessment/templates/openassessmentblock/student_training/student_training.html
+#: openassessment/templates/openassessmentblock/student_training/student_training_cancelled.html
+#: openassessment/templates/openassessmentblock/student_training/student_training_closed.html
+#: openassessment/templates/openassessmentblock/student_training/student_training_complete.html
+#: openassessment/templates/openassessmentblock/student_training/student_training_unavailable.html
 msgid "This step's status"
-msgstr "Thïs stép's stätüs Ⱡ'σ#"
+msgstr "Thïs stép's stätüs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:37
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html
 #, python-format
 msgid ""
 "\n"
@@ -1151,16 +1169,16 @@ msgid ""
 msgstr ""
 "\n"
 "                    Ìn Prögréss (%(num_graded)s öf %(num_must_grade)s)\n"
-"                 Ⱡ'σяєм ιρѕυм ∂σłσя#"
+"                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:51
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:38
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html
 msgid "Read and assess the following response from one of your peers."
 msgstr ""
 "Réäd änd ässéss thé föllöwïng réspönsé fröm öné öf ýöür péérs. Ⱡ'σяєм ιρѕυм "
-"∂σłσя#"
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:62
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html
 #, python-format
 msgid ""
 "\n"
@@ -1169,22 +1187,35 @@ msgid ""
 msgstr ""
 "\n"
 "                                            Àsséssmént # %(review_number)s öf %(num_must_grade)s\n"
-"                                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+"                                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:84
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:138
-#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:58
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid "Associated File"
+msgstr "Àssöçïätéd Fïlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html
 msgid "We could not submit your assessment"
-msgstr "Wé çöüld nöt süßmït ýöür ässéssmént Ⱡ'σяєм ιρ#"
+msgstr ""
+"Wé çöüld nöt süßmït ýöür ässéssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_cancelled.html:16
-#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:14
-#: openassessment/templates/openassessmentblock/self/oa_self_cancelled.html:16
-#: openassessment/templates/openassessmentblock/student_training/student_training_cancelled.html:14
+#: openassessment/templates/openassessmentblock/peer/oa_peer_cancelled.html
+#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html
+#: openassessment/templates/openassessmentblock/self/oa_self_cancelled.html
+#: openassessment/templates/openassessmentblock/student_training/student_training_cancelled.html
+#: openassessment/xblock/staff_assessment_mixin.py
 msgid "Cancelled"
-msgstr "Çänçélléd #"
+msgstr "Çänçélléd Ⱡ'σяєм ιρѕυм ∂σł#"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html:15
+#: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html
 #, python-format
 msgid ""
 "\n"
@@ -1193,37 +1224,44 @@ msgid ""
 msgstr ""
 "\n"
 "            Ìnçömplété (%(num_graded)s öf %(num_must_grade)s)\n"
-"         Ⱡ'σяєм ιρѕυм#"
+"         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html:28
-#: openassessment/templates/openassessmentblock/response/oa_response_closed.html:22
-#: openassessment/templates/openassessmentblock/self/oa_self_closed.html:23
-#: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:23
+#: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html
+#: openassessment/templates/openassessmentblock/response/oa_response_closed.html
+#: openassessment/templates/openassessmentblock/self/oa_self_closed.html
+#: openassessment/templates/openassessmentblock/student_training/student_training_closed.html
 msgid "The Due Date for This Step Has Passed"
-msgstr "Thé Düé Däté för Thïs Stép Häs Pässéd Ⱡ'σяєм ιρѕ#"
+msgstr ""
+"Thé Düé Däté för Thïs Stép Häs Pässéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html:30
+#: openassessment/templates/openassessmentblock/peer/oa_peer_closed.html
 msgid ""
 "This step is now closed. You can no longer complete peer assessments or "
 "continue with this assignment, and you'll receive a grade of Incomplete."
 msgstr ""
 "Thïs stép ïs nöw çlöséd. Ýöü çän nö löngér çömplété péér ässéssménts ör "
 "çöntïnüé wïth thïs ässïgnmént, änd ýöü'll réçéïvé ä grädé öf Ìnçömplété. "
-"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιρ#"
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ "
+"тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм,"
+" qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
+"ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂ є#"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:14
+#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html
 msgid "Completed"
-msgstr "Çömplétéd #"
+msgstr "Çömplétéd Ⱡ'σяєм ιρѕυм ∂σł#"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:25
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:33
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:29
+#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html
 msgid "Peer Assessments Complete"
-msgstr "Péér Àsséssménts Çömplété Ⱡ'σяєм#"
+msgstr "Péér Àsséssménts Çömplété Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:26
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:34
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:31
+#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html
 msgid ""
 "You have successfully completed all of the required peer assessments for "
 "this assignment. You may assess additional peer responses if you want to. "
@@ -1232,20 +1270,24 @@ msgstr ""
 "Ýöü hävé süççéssfüllý çömplétéd äll öf thé réqüïréd péér ässéssménts för "
 "thïs ässïgnmént. Ýöü mäý ässéss äddïtïönäl péér réspönsés ïf ýöü wänt tö. "
 "Çömplétïng äddïtïönäl ässéssménts wïll nöt äfféçt ýöür fïnäl grädé. Ⱡ'σяєм "
-"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єι#"
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя "
+"ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ "
+"ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. є#"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:31
+#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html
 msgid "We could not retrieve additional submissions for assessment"
 msgstr ""
 "Wé çöüld nöt rétrïévé äddïtïönäl süßmïssïöns för ässéssmént Ⱡ'σяєм ιρѕυм "
-"∂σłσ#"
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:37
+#: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html
 msgid "Continue Assessing Peers"
-msgstr "Çöntïnüé Àsséssïng Péérs Ⱡ'σяє#"
+msgstr "Çöntïnüé Àsséssïng Péérs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:19
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:15
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html
 #, python-format
 msgid ""
 "\n"
@@ -1254,28 +1296,30 @@ msgid ""
 msgstr ""
 "\n"
 "        Çömplété (%(num_graded)s)\n"
-"       Ⱡ'σяєм #"
+"       Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:47
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html
 msgid "Assessment #"
-msgstr "Àsséssmént # Ⱡ#"
+msgstr "Àsséssmént # Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html:33
+#: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode_waiting.html
 msgid ""
 "All submitted peer responses have been assessed. Check back later to see if "
 "more students have submitted responses."
 msgstr ""
 "Àll süßmïttéd péér réspönsés hävé ßéén ässésséd. Çhéçk ßäçk lätér tö séé ïf "
-"möré stüdénts hävé süßmïttéd réspönsés. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+"möré stüdénts hävé süßmïttéd réspönsés. Ⱡ'σяєм ιρѕυм ∂σł#"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_unavailable.html:12
-#: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:12
-#: openassessment/templates/openassessmentblock/self/oa_self_unavailable.html:12
-#: openassessment/templates/openassessmentblock/student_training/student_training_unavailable.html:12
+#: openassessment/templates/openassessmentblock/peer/oa_peer_unavailable.html
+#: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html
+#: openassessment/templates/openassessmentblock/self/oa_self_unavailable.html
+#: openassessment/templates/openassessmentblock/student_training/student_training_unavailable.html
+#: openassessment/xblock/staff_assessment_mixin.py
+#: openassessment/xblock/staff_assessment_mixin.py
 msgid "Not Available"
-msgstr "Nöt Àväïläßlé Ⱡ'#"
+msgstr "Nöt Àväïläßlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html:14
+#: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html
 #, python-format
 msgid ""
 "\n"
@@ -1284,13 +1328,13 @@ msgid ""
 msgstr ""
 "\n"
 "          Ìn Prögréss (%(num_graded)s öf %(num_must_grade)s)\n"
-"         Ⱡ'σяєм ιρѕυм#"
+"         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html:28
+#: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html
 msgid "Waiting for Peer Responses"
-msgstr "Wäïtïng för Péér Réspönsés Ⱡ'σяєм#"
+msgstr "Wäïtïng för Péér Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html:31
+#: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html
 msgid ""
 "All submitted peer responses have been assessed. Check back later to see if "
 "more students have submitted responses. You'll receive your grade after "
@@ -1301,318 +1345,134 @@ msgstr ""
 "möré stüdénts hävé süßmïttéd réspönsés. Ýöü'll réçéïvé ýöür grädé äftér "
 "ýöü'vé çömplétéd äll thé stéps för thïs prößlém änd ýöür péérs hävé ässésséd"
 " ýöür réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, "
-"ѕє∂ ∂σ єιυѕмσ∂ тє#"
+"ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм "
+"α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ "
+"єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє"
+" νєłιт єѕ#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:31
-#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:31
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:32
+#: openassessment/templates/openassessmentblock/response/oa_response.html
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html
+#: openassessment/templates/openassessmentblock/student_training/student_training.html
 msgid "In Progress"
-msgstr "Ìn Prögréss Ⱡ#"
+msgstr "Ìn Prögréss Ⱡ'σяєм ιρѕυм ∂σłσя #"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:42
+#: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "Enter your response to the question."
-msgstr "Éntér ýöür réspönsé tö thé qüéstïön. Ⱡ'σяєм ιρ#"
+msgstr ""
+"Éntér ýöür réspönsé tö thé qüéstïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:44
+#: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid ""
 "You can save your progress and return to complete your response at any time "
 "before the due date"
 msgstr ""
 "Ýöü çän sävé ýöür prögréss änd rétürn tö çömplété ýöür réspönsé ät äný tïmé "
-"ßéföré thé düé däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+"ßéföré thé düé däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:46
+#: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid ""
 "You can save your progress and return to complete your response at any time."
 msgstr ""
 "Ýöü çän sävé ýöür prögréss änd rétürn tö çömplété ýöür réspönsé ät äný tïmé."
-" Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт #"
+" Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:48
+#: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "After you submit your response, you cannot edit it"
-msgstr "Àftér ýöü süßmït ýöür réspönsé, ýöü çännöt édït ït Ⱡ'σяєм ιρѕυм ∂#"
+msgstr ""
+"Àftér ýöü süßmït ýöür réspönsé, ýöü çännöt édït ït Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:58
+#: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "The prompt for this section."
-msgstr "Thé prömpt för thïs séçtïön. Ⱡ'σяєм #"
+msgstr "Thé prömpt för thïs séçtïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:65
+#: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "Your response to the question above."
-msgstr "Ýöür réspönsé tö thé qüéstïön äßövé. Ⱡ'σяєм ιρ#"
+msgstr ""
+"Ýöür réspönsé tö thé qüéstïön äßövé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:69
+#: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "Enter your response to the question above."
-msgstr "Éntér ýöür réspönsé tö thé qüéstïön äßövé. Ⱡ'σяєм ιρѕυ#"
+msgstr ""
+"Éntér ýöür réspönsé tö thé qüéstïön äßövé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:79
+#: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "We could not upload this file"
-msgstr "Wé çöüld nöt üplöäd thïs fïlé Ⱡ'σяєм #"
+msgstr "Wé çöüld nöt üplöäd thïs fïlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:83
+#: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "Select a file to upload for this submission."
-msgstr "Séléçt ä fïlé tö üplöäd för thïs süßmïssïön. Ⱡ'σяєм ιρѕυм#"
+msgstr ""
+"Séléçt ä fïlé tö üplöäd för thïs süßmïssïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:85
+#: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "Upload your file"
-msgstr "Ûplöäd ýöür fïlé Ⱡ'σ#"
+msgstr "Ûplöäd ýöür fïlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:92
+#: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "You may continue to work on your response until you submit it."
 msgstr ""
 "Ýöü mäý çöntïnüé tö wörk ön ýöür réspönsé üntïl ýöü süßmït ït. Ⱡ'σяєм ιρѕυм "
-"∂σłσя#"
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:96
+#: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "We could not save your progress"
-msgstr "Wé çöüld nöt sävé ýöür prögréss Ⱡ'σяєм ι#"
+msgstr "Wé çöüld nöt sävé ýöür prögréss Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:102
+#: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "Save Your Progress"
-msgstr "Sävé Ýöür Prögréss Ⱡ'σ#"
+msgstr "Sävé Ýöür Prögréss Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:106
+#: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "Your Submission Status"
-msgstr "Ýöür Süßmïssïön Stätüs Ⱡ'σяє#"
+msgstr "Ýöür Süßmïssïön Stätüs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:113
-msgid "Preview in Latex"
-msgstr "Prévïéw ïn Lätéx Ⱡ'σ#"
+#: openassessment/templates/openassessmentblock/response/oa_response.html
+msgid "Preview in LaTeX"
+msgstr "Prévïéw ïn LäTéX Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:116
-msgid "Click to preview your submission in Latex"
-msgstr "Çlïçk tö prévïéw ýöür süßmïssïön ïn Lätéx Ⱡ'σяєм ιρѕυ#"
+#: openassessment/templates/openassessmentblock/response/oa_response.html
+msgid "Click to preview your submission in LaTeX"
+msgstr ""
+"Çlïçk tö prévïéw ýöür süßmïssïön ïn LäTéX Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:136
+#: openassessment/templates/openassessmentblock/response/oa_response.html
+msgid "Preview Response"
+msgstr "Prévïéw Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "We could not submit your response"
-msgstr "Wé çöüld nöt süßmït ýöür réspönsé Ⱡ'σяєм ι#"
+msgstr ""
+"Wé çöüld nöt süßmït ýöür réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:144
+#: openassessment/templates/openassessmentblock/response/oa_response.html
 msgid "Submit your response and move to the next step"
-msgstr "Süßmït ýöür réspönsé änd mövé tö thé néxt stép Ⱡ'σяєм ιρѕυм #"
+msgstr ""
+"Süßmït ýöür réspönsé änd mövé tö thé néxt stép Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя α#"
 
-#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:24
+#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html
 msgid "Submission Cancelled"
-msgstr "Süßmïssïön Çänçélléd Ⱡ'σя#"
+msgstr "Süßmïssïön Çänçélléd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:28
+#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html
 #, python-format
 msgid ""
 "\n"
-"                        Your submission has been cancelled by %(removed_by_username)s on %(removed_datetime)s\n"
-"                    "
-msgstr ""
-"\n"
-"                        Ýöür süßmïssïön häs ßéén çänçélléd ßý %(removed_by_username)s ön %(removed_datetime)s\n"
-"                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
-
-#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:33
-#, python-format
-msgid ""
-"\n"
-"                        Comments: %(comments)s\n"
-"                    "
-msgstr ""
-"\n"
-"                        Çömménts: %(comments)s\n"
-"                     Ⱡ'σяєм ιρѕυм ∂σłσ#"
-
-#: openassessment/templates/openassessmentblock/response/oa_response_closed.html:25
-msgid ""
-"This step is now closed. You can no longer submit a response or continue "
-"with this problem, and you'll receive a grade of Incomplete. If you saved "
-"but did not submit a response, the response appears in the course records."
-msgstr ""
-"Thïs stép ïs nöw çlöséd. Ýöü çän nö löngér süßmït ä réspönsé ör çöntïnüé "
-"wïth thïs prößlém, änd ýöü'll réçéïvé ä grädé öf Ìnçömplété. Ìf ýöü sävéd "
-"ßüt dïd nöt süßmït ä réspönsé, thé réspönsé äppéärs ïn thé çöürsé réçörds. "
-"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕ#"
-
-#: openassessment/templates/openassessmentblock/response/oa_response_graded.html:13
-#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:13
-#: openassessment/templates/openassessmentblock/self/oa_self_complete.html:13
-#: openassessment/templates/openassessmentblock/student_training/student_training_complete.html:13
-msgid "Complete"
-msgstr "Çömplété #"
-
-#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:23
-msgid "Your Response Has Been Submitted"
-msgstr "Ýöür Réspönsé Häs Béén Süßmïttéd Ⱡ'σяєм ι#"
-
-#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:26
-#, python-format
-msgid ""
-"\n"
-"                        You'll receive your grade after some of your peers have assessed your response and you complete the %(peer_start_tag)speer assessment%(end_tag)s and %(self_start_tag)sself assessment%(end_tag)s steps.\n"
-"                    "
-msgstr ""
-"\n"
-"                        Ýöü'll réçéïvé ýöür grädé äftér sömé öf ýöür péérs hävé ässésséd ýöür réspönsé änd ýöü çömplété thé %(peer_start_tag)spéér ässéssmént%(end_tag)s änd %(self_start_tag)ssélf ässéssmént%(end_tag)s stéps.\n"
-"                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂#"
-
-#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:30
-#, python-format
-msgid ""
-"\n"
-"                        You'll receive your grade after some of your peers have assessed your response and you complete the %(start_tag)speer assessment%(end_tag)s step.\n"
-"                    "
-msgstr ""
-"\n"
-"                        Ýöü'll réçéïvé ýöür grädé äftér sömé öf ýöür péérs hävé ässésséd ýöür réspönsé änd ýöü çömplété thé %(start_tag)spéér ässéssmént%(end_tag)s stép.\n"
-"                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єł#"
-
-#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:34
-#, python-format
-msgid ""
-"\n"
-"                        You'll receive your grade after you complete the %(start_tag)sself assessment%(end_tag)s step.\n"
-"                    "
-msgstr ""
-"\n"
-"                        Ýöü'll réçéïvé ýöür grädé äftér ýöü çömplété thé %(start_tag)ssélf ässéssmént%(end_tag)s stép.\n"
-"                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
-
-#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:12
-msgid "Assess Your Response"
-msgstr "Àsséss Ýöür Réspönsé Ⱡ'σя#"
-
-#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:65
-msgid "Submit Your Assessment"
-msgstr "Süßmït Ýöür Àsséssmént Ⱡ'σяє#"
-
-#: openassessment/templates/openassessmentblock/self/oa_self_closed.html:25
-msgid ""
-"This step is now closed. You can no longer complete a self assessment or "
-"continue with this assignment, and you'll receive a grade of Incomplete."
-msgstr ""
-"Thïs stép ïs nöw çlöséd. Ýöü çän nö löngér çömplété ä sélf ässéssmént ör "
-"çöntïnüé wïth thïs ässïgnmént, änd ýöü'll réçéïvé ä grädé öf Ìnçömplété. "
-"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιρ#"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:6
-msgid "Staff Tools"
-msgstr "Stäff Tööls Ⱡ#"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:7
-msgid "Staff Info"
-msgstr "Stäff Ìnfö Ⱡ#"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:13
-msgid "Course Staff Tools"
-msgstr "Çöürsé Stäff Tööls Ⱡ'σ#"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:14
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:87
-msgid "Close"
-msgstr "Çlösé Ⱡ'σяєм ι#"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:22
-msgid "Enter an individual learner's username or email"
-msgstr "Éntér än ïndïvïdüäl léärnér's üsérnämé ör émäïl Ⱡ'σяєм ιρѕυм #"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:26
-msgid "Submit"
-msgstr "Süßmït Ⱡ'σяєм ιρѕ#"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:38
-msgid "Classifier set"
-msgstr "Çlässïfïér sét Ⱡ'#"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:40
-msgid "Field"
-msgstr "Fïéld Ⱡ'σяєм ι#"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:41
-msgid "Value"
-msgstr "Välüé Ⱡ'σяєм ι#"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:45
-msgid "Created at"
-msgstr "Çréätéd ät Ⱡ#"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:49
-msgid "Algorithm ID"
-msgstr "Àlgörïthm ÌD Ⱡ#"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:53
-msgid "Course ID"
-msgstr "Çöürsé ÌD #"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:57
-msgid "Item ID"
-msgstr "Ìtém ÌD #"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:63
-msgid "No classifiers are available for this problem"
-msgstr "Nö çlässïfïérs äré äväïläßlé för thïs prößlém Ⱡ'σяєм ιρѕυм#"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:68
-msgid "Schedule Example-Based Assessment Training"
-msgstr "Sçhédülé Éxämplé-Bäséd Àsséssmént Träïnïng Ⱡ'σяєм ιρѕυ#"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:75
-msgid "Reschedule All Unfinished Example-Based Assessment Grading Tasks"
-msgstr ""
-"Résçhédülé Àll Ûnfïnïshéd Éxämplé-Bäséd Àsséssmént Grädïng Täsks Ⱡ'σяєм "
-"ιρѕυм ∂σłσя #"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:86
-msgid "Course Staff Information"
-msgstr "Çöürsé Stäff Ìnförmätïön Ⱡ'σяє#"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:94
-msgid "Response total"
-msgstr "Réspönsé tötäl Ⱡ'#"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:100
-msgid "Location"
-msgstr "Löçätïön #"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:106
-msgid "Learner Progress"
-msgstr "Léärnér Prögréss Ⱡ'σ#"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:110
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:133
-msgid "Problem Step"
-msgstr "Prößlém Stép Ⱡ#"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:111
-msgid "Active Learners in Step"
-msgstr "Àçtïvé Léärnérs ïn Stép Ⱡ'σяє#"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:129
-msgid "Dates"
-msgstr "Dätés Ⱡ'σяєм ι#"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:134
-msgid "Release Date"
-msgstr "Réléäsé Däté Ⱡ#"
-
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:147
-#: openassessment/templates/openassessmentblock/staff_area/staff_area.html:153
-msgid "N/A"
-msgstr "N/À Ⱡ'σя#"
-
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:6
-msgid "Learner Information"
-msgstr "Léärnér Ìnförmätïön Ⱡ'σя#"
-
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:12
-msgid "Learner Response"
-msgstr "Léärnér Réspönsé Ⱡ'σ#"
-
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:15
-#, python-format
-msgid ""
-"\n"
-"                            Learner submission removed by %(removed_by_username)s on %(removed_datetime)s\n"
+"                            Your submission has been cancelled by %(removed_by_username)s on %(removed_datetime)s\n"
 "                        "
 msgstr ""
 "\n"
-"                            Léärnér süßmïssïön rémövéd ßý %(removed_by_username)s ön %(removed_datetime)s\n"
-"                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+"                            Ýöür süßmïssïön häs ßéén çänçélléd ßý %(removed_by_username)s ön %(removed_datetime)s\n"
+"                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:20
+#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 #, python-format
 msgid ""
 "\n"
@@ -1621,106 +1481,494 @@ msgid ""
 msgstr ""
 "\n"
 "                            Çömménts: %(comments)s\n"
-"                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+"                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:30
-msgid "The file associated with this response."
-msgstr "Thé fïlé ässöçïätéd wïth thïs réspönsé. Ⱡ'σяєм ιρѕ#"
+#: openassessment/templates/openassessmentblock/response/oa_response_closed.html
+#: openassessment/templates/openassessmentblock/self/oa_self_closed.html
+#: openassessment/templates/openassessmentblock/student_training/student_training_closed.html
+msgid "Incomplete"
+msgstr "Ìnçömplété Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:32
+#: openassessment/templates/openassessmentblock/response/oa_response_closed.html
 msgid ""
-"Caution: This file was uploaded by another course learner and has not been "
-"verified, screened, approved, reviewed or endorsed by edX. If you decide to "
-"access it, you do so at your own risk."
+"This step is now closed. You can no longer submit a response or continue "
+"with this problem, and you'll receive a grade of Incomplete. If you saved "
+"but did not submit a response, the response appears in the course records."
 msgstr ""
-"Çäütïön: Thïs fïlé wäs üplöädéd ßý änöthér çöürsé léärnér änd häs nöt ßéén "
-"vérïfïéd, sçréénéd, äpprövéd, révïéwéd ör éndörséd ßý édX. Ìf ýöü déçïdé tö "
-"äççéss ït, ýöü dö sö ät ýöür öwn rïsk. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕ#"
+"Thïs stép ïs nöw çlöséd. Ýöü çän nö löngér süßmït ä réspönsé ör çöntïnüé "
+"wïth thïs prößlém, änd ýöü'll réçéïvé ä grädé öf Ìnçömplété. Ìf ýöü sävéd "
+"ßüt dïd nöt süßmït ä réspönsé, thé réspönsé äppéärs ïn thé çöürsé réçörds. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ "
+"тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм,"
+" qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα#"
 
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:43
-msgid "Remove submission from peer grading"
-msgstr "Rémövé süßmïssïön fröm péér grädïng Ⱡ'σяєм ιρ#"
+#: openassessment/templates/openassessmentblock/response/oa_response_graded.html
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html
+#: openassessment/templates/openassessmentblock/self/oa_self_complete.html
+#: openassessment/templates/openassessmentblock/student_training/student_training_complete.html
+#: openassessment/xblock/staff_assessment_mixin.py
+#: openassessment/xblock/staff_assessment_mixin.py
+msgid "Complete"
+msgstr "Çömplété Ⱡ'σяєм ιρѕυм ∂#"
 
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:57
-msgid "Caution: Removing a learner's submission cannot be undone."
+#: openassessment/templates/openassessmentblock/response/oa_response_graded.html
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html
+msgid "Your Uploaded File"
+msgstr "Ýöür Ûplöädéd Fïlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html
+msgid "Your Response Has Been Submitted"
 msgstr ""
-"Çäütïön: Rémövïng ä léärnér's süßmïssïön çännöt ßé ündöné. Ⱡ'σяєм ιρѕυм "
-"∂σłσ#"
+"Ýöür Réspönsé Häs Béén Süßmïttéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:63
-msgid "Comments:"
-msgstr "Çömménts: #"
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html
+msgid ""
+"You will receive your grade after all steps are complete and your response "
+"is fully assessed."
+msgstr ""
+"Ýöü wïll réçéïvé ýöür grädé äftér äll stéps äré çömplété änd ýöür réspönsé "
+"ïs füllý ässésséd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
 
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:77
-msgid "Remove submission"
-msgstr "Rémövé süßmïssïön Ⱡ'σ#"
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html
+#, python-format
+msgid ""
+"\n"
+"                        You still need to complete the %(peer_start_tag)speer assessment%(end_tag)s and %(self_start_tag)sself assessment%(end_tag)s steps.\n"
+"                    "
+msgstr ""
+"\n"
+"                        Ýöü stïll nééd tö çömplété thé %(peer_start_tag)spéér ässéssmént%(end_tag)s änd %(self_start_tag)ssélf ässéssmént%(end_tag)s stéps.\n"
+"                     Ⱡ#"
 
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:93
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html
+#, python-format
+msgid ""
+"\n"
+"                        You still need to complete the %(start_tag)speer assessment%(end_tag)s step.\n"
+"                    "
+msgstr ""
+"\n"
+"                        Ýöü stïll nééd tö çömplété thé %(start_tag)spéér ässéssmént%(end_tag)s stép.\n"
+"                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: openassessment/templates/openassessmentblock/response/oa_response_submitted.html
+#, python-format
+msgid ""
+"\n"
+"                        You still need to complete the %(start_tag)sself assessment%(end_tag)s step.\n"
+"                    "
+msgstr ""
+"\n"
+"                        Ýöü stïll nééd tö çömplété thé %(start_tag)ssélf ässéssmént%(end_tag)s stép.\n"
+"                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html
+msgid "Assess Your Response"
+msgstr "Àsséss Ýöür Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: openassessment/templates/openassessmentblock/self/oa_self_assessment.html
+msgid "Submit Your Assessment"
+msgstr "Süßmït Ýöür Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: openassessment/templates/openassessmentblock/self/oa_self_closed.html
+msgid ""
+"This step is now closed. You can no longer complete a self assessment or "
+"continue with this assignment, and you'll receive a grade of Incomplete."
+msgstr ""
+"Thïs stép ïs nöw çlöséd. Ýöü çän nö löngér çömplété ä sélf ässéssmént ör "
+"çöntïnüé wïth thïs ässïgnmént, änd ýöü'll réçéïvé ä grädé öf Ìnçömplété. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ "
+"тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм,"
+" qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
+"ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂#"
+
+#: openassessment/templates/openassessmentblock/staff/oa_staff_grade.html
+#: openassessment/xblock/grade_mixin.py
+msgid "Staff Grade"
+msgstr "Stäff Grädé Ⱡ'σяєм ιρѕυм ∂σłσя #"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Manage Individual Learners"
+msgstr "Mänägé Ìndïvïdüäl Léärnérs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "View Assignment Statistics"
+msgstr "Vïéw Àssïgnmént Stätïstïçs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Grade Available Responses"
+msgstr "Grädé Àväïläßlé Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Close"
+msgstr "Çlösé Ⱡ'σяєм ιρѕ#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Enter an individual learner's username or email"
+msgstr ""
+"Éntér än ïndïvïdüäl léärnér's üsérnämé ör émäïl Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,"
+" ¢σηѕє¢тєтυя α#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Submit"
+msgstr "Süßmït Ⱡ'σяєм ιρѕυ#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Classifier set"
+msgstr "Çlässïfïér sét Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Field"
+msgstr "Fïéld Ⱡ'σяєм ιρѕ#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Value"
+msgstr "Välüé Ⱡ'σяєм ιρѕ#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Created at"
+msgstr "Çréätéd ät Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Algorithm ID"
+msgstr "Àlgörïthm ÌD Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Course ID"
+msgstr "Çöürsé ÌD Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Item ID"
+msgstr "Ìtém ÌD Ⱡ'σяєм ιρѕυм #"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "No classifiers are available for this problem"
+msgstr ""
+"Nö çlässïfïérs äré äväïläßlé för thïs prößlém Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Schedule Example-Based Assessment Training"
+msgstr ""
+"Sçhédülé Éxämplé-Bäséd Àsséssmént Träïnïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Reschedule All Unfinished Example-Based Assessment Grading Tasks"
+msgstr ""
+"Résçhédülé Àll Ûnfïnïshéd Éxämplé-Bäséd Àsséssmént Grädïng Täsks Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Response total"
+msgstr "Réspönsé tötäl Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Location"
+msgstr "Löçätïön Ⱡ'σяєм ιρѕυм ∂#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Learner Progress"
+msgstr "Léärnér Prögréss Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Problem Step"
+msgstr "Prößlém Stép Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Active Learners in Step"
+msgstr "Àçtïvé Léärnérs ïn Stép Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Dates"
+msgstr "Dätés Ⱡ'σяєм ιρѕ#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "Release Date"
+msgstr "Réléäsé Däté Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html
+msgid "N/A"
+msgstr "N/À Ⱡ'σяєм#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners.html
+msgid "Staff Assessment"
+msgstr "Stäff Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html
+msgid "Give this learner a grade using the problem's rubric."
+msgstr ""
+"Gïvé thïs léärnér ä grädé üsïng thé prößlém's rüßrïç. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт"
+" αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html
+#, python-format
+msgid ""
+"\n"
+"                                    Response for: %(student_username)s\n"
+"                                "
+msgstr ""
+"\n"
+"                                    Réspönsé för: %(student_username)s\n"
+"                                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid "The learner's response to the question above:"
+msgstr ""
+"Thé léärnér's réspönsé tö thé qüéstïön äßövé: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html
+msgid "Submit assessment"
+msgstr "Süßmït ässéssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html
+msgid "Submit assessment and continue grading"
+msgstr ""
+"Süßmït ässéssmént änd çöntïnüé grädïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_count.html
+#, python-format
+msgid ""
+"\n"
+"                %(ungraded)s Available and %(in_progress)s Checked Out\n"
+"            "
+msgstr ""
+"\n"
+"                %(ungraded)s Àväïläßlé änd %(in_progress)s Çhéçkéd Öüt\n"
+"             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html
+msgid "Override this learner's current grade using the problem's rubric."
+msgstr ""
+"Övérrïdé thïs léärnér's çürrént grädé üsïng thé prößlém's rüßrïç. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html
+#, python-format
+msgid ""
+"\n"
+"                                Response for: %(student_username)s\n"
+"                            "
+msgstr ""
+"\n"
+"                                Réspönsé för: %(student_username)s\n"
+"                             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+#, python-format
+msgid ""
+"\n"
+"                Viewing learner: %(learner)s\n"
+"            "
+msgstr ""
+"\n"
+"                Vïéwïng léärnér: %(learner)s\n"
+"             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid "Learner's Response"
+msgstr "Léärnér's Réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+#, python-format
+msgid ""
+"\n"
+"                            Learner submission removed by %(removed_by_username)s on %(removed_datetime)s\n"
+"                        "
+msgstr ""
+"\n"
+"                            Léärnér süßmïssïön rémövéd ßý %(removed_by_username)s ön %(removed_datetime)s\n"
+"                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "Peer Assessments for This Learner"
-msgstr "Péér Àsséssménts för Thïs Léärnér Ⱡ'σяєм ι#"
+msgstr ""
+"Péér Àsséssménts för Thïs Léärnér Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:97
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:138
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:139
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+#, python-format
+msgid ""
+"\n"
+"                                    Peer %(peer_num)s:\n"
+"                                "
+msgstr ""
+"\n"
+"                                    Péér %(peer_num)s:\n"
+"                                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "Assessment"
-msgstr "Àsséssmént Ⱡ#"
+msgstr "Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσ#"
 
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:101
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:143
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:182
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:213
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "Selected Option"
-msgstr "Séléçtéd Öptïön Ⱡ'#"
+msgstr "Séléçtéd Öptïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:102
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:144
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "Feedback"
-msgstr "Féédßäçk #"
+msgstr "Féédßäçk Ⱡ'σяєм ιρѕυм ∂#"
 
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:104
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:146
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:184
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:215
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "Points Possible"
-msgstr "Pöïnts Pössïßlé Ⱡ'#"
+msgstr "Pöïnts Pössïßlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:124
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:166
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "Overall Feedback"
-msgstr "Övéräll Féédßäçk Ⱡ'σ#"
+msgstr "Övéräll Féédßäçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
 
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:135
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "Peer Assessments Completed by This Learner"
-msgstr "Péér Àsséssménts Çömplétéd ßý Thïs Léärnér Ⱡ'σяєм ιρѕυ#"
+msgstr ""
+"Péér Àsséssménts Çömplétéd ßý Thïs Léärnér Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
 
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:177
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+#, python-format
+msgid ""
+"\n"
+"                                    Assessment %(peer_num)s:\n"
+"                                "
+msgstr ""
+"\n"
+"                                    Àsséssmént %(peer_num)s:\n"
+"                                 Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "Learner's Self Assessment"
-msgstr "Léärnér's Sélf Àsséssmént Ⱡ'σяєм#"
+msgstr "Léärnér's Sélf Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:178
-#: openassessment/xblock/grade_mixin.py:195
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+#: openassessment/xblock/grade_mixin.py
 msgid "Self Assessment"
-msgstr "Sélf Àsséssmént Ⱡ'#"
+msgstr "Sélf Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:209
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid "Example-Based Assessment"
+msgstr "Éxämplé-Bäséd Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "Example Based Assessment"
-msgstr "Éxämplé Bäséd Àsséssmént Ⱡ'σяє#"
+msgstr "Éxämplé Bäséd Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
 
-#: openassessment/templates/openassessmentblock/staff_area/student_info.html:238
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid "Learner's Final Grade"
+msgstr "Léärnér's Fïnäl Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+#, python-format
+msgid ""
+"\n"
+"                            Final grade: %(points_earned)s out of %(points_possible)s\n"
+"                        "
+msgstr ""
+"\n"
+"                            Fïnäl grädé: %(points_earned)s öüt öf %(points_possible)s\n"
+"                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid "The submission is waiting for assessments."
+msgstr ""
+"Thé süßmïssïön ïs wäïtïng för ässéssménts. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid ""
+"The learner's submission has been removed from peer assessment. The learner "
+"receives a grade of zero unless you delete the learner's state for the "
+"problem to allow them to resubmit a response."
+msgstr ""
+"Thé léärnér's süßmïssïön häs ßéén rémövéd fröm péér ässéssmént. Thé léärnér "
+"réçéïvés ä grädé öf zérö ünléss ýöü délété thé léärnér's stäté för thé "
+"prößlém tö ällöw thém tö résüßmït ä réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт "
+"∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση "
+"υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє "
+"∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα"
+" ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ησ#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid "The problem has not been started."
+msgstr ""
+"Thé prößlém häs nöt ßéén stärtéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid "The problem has not been completed."
+msgstr ""
+"Thé prößlém häs nöt ßéén çömplétéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid "Submit Assessment Grade Override"
+msgstr ""
+"Süßmït Àsséssmént Grädé Övérrïdé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid "Remove Submission From Peer Grading"
+msgstr ""
+"Rémövé Süßmïssïön Fröm Péér Grädïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid "Caution: This Action Cannot Be Undone"
+msgstr ""
+"Çäütïön: Thïs Àçtïön Çännöt Bé Ûndöné Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid ""
+"Removing a learner's submission cannot be undone and should be done with "
+"caution."
+msgstr ""
+"Rémövïng ä léärnér's süßmïssïön çännöt ßé ündöné änd shöüld ßé döné wïth "
+"çäütïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid "Comments:"
+msgstr "Çömménts: Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid "Remove submission"
+msgstr "Rémövé süßmïssïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "A response was not found for this learner."
-msgstr "À réspönsé wäs nöt föünd för thïs léärnér. Ⱡ'σяєм ιρѕυ#"
+msgstr ""
+"À réspönsé wäs nöt föünd för thïs léärnér. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:12
+#: openassessment/templates/openassessmentblock/student_training/student_training.html
 msgid "Learn to Assess Responses"
-msgstr "Léärn tö Àsséss Réspönsés Ⱡ'σяєм#"
+msgstr "Léärn tö Àsséss Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:46
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:54
+#: openassessment/templates/openassessmentblock/student_training/student_training.html
+#: openassessment/templates/openassessmentblock/student_training/student_training.html
 msgid "Learning to Assess Responses"
-msgstr "Léärnïng tö Àsséss Réspönsés Ⱡ'σяєм #"
+msgstr "Léärnïng tö Àsséss Réspönsés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:49
+#: openassessment/templates/openassessmentblock/student_training/student_training.html
 msgid ""
 "Before you begin to assess your peers' responses, you'll learn how to "
 "complete peer assessments by reviewing responses that instructors have "
@@ -1733,10 +1981,9 @@ msgstr ""
 "älréädý ässésséd. Ìf ýöü séléçt thé sämé öptïöns för thé réspönsé thät thé "
 "ïnstrüçtör séléçtéd, ýöü'll mövé tö thé néxt stép. Ìf ýöü dön't séléçt thé "
 "sämé öptïöns, ýöü'll révïéw thé réspönsé änd trý ägäïn. Ⱡ'σяєм ιρѕυм ∂σłσя "
-"ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт "
-"łαвσяє єт ∂σłσяє #"
+"ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єι#"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:57
+#: openassessment/templates/openassessmentblock/student_training/student_training.html
 msgid ""
 "Your assessment differs from the instructor's assessment of this response. "
 "Review the response and consider why the instructor may have assessed it "
@@ -1745,9 +1992,13 @@ msgstr ""
 "Ýöür ässéssmént dïfférs fröm thé ïnstrüçtör's ässéssmént öf thïs réspönsé. "
 "Révïéw thé réspönsé änd çönsïdér whý thé ïnstrüçtör mäý hävé ässésséd ït "
 "dïfféréntlý. Thén, trý thé ässéssmént ägäïn. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє#"
+"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт "
+"∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση "
+"υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє "
+"∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα"
+" ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ησ#"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:67
+#: openassessment/templates/openassessmentblock/student_training/student_training.html
 #, python-format
 msgid ""
 "\n"
@@ -1756,234 +2007,328 @@ msgid ""
 msgstr ""
 "\n"
 "                                Träïnïng Àsséssmént # %(current_progress_num)s öf %(num_to_complete)s\n"
-"                             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+"                             Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:95
+#: openassessment/templates/openassessmentblock/student_training/student_training.html
+msgid "The response to the question above:"
+msgstr ""
+"Thé réspönsé tö thé qüéstïön äßövé: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: openassessment/templates/openassessmentblock/student_training/student_training.html
 msgid "Selected Options Agree"
-msgstr "Séléçtéd Öptïöns Àgréé Ⱡ'σяє#"
+msgstr "Séléçtéd Öptïöns Àgréé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:98
+#: openassessment/templates/openassessmentblock/student_training/student_training.html
 msgid "The option you selected is the option that the instructor selected."
 msgstr ""
 "Thé öptïön ýöü séléçtéd ïs thé öptïön thät thé ïnstrüçtör séléçtéd. Ⱡ'σяєм "
-"ιρѕυм ∂σłσя ѕ#"
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:102
+#: openassessment/templates/openassessmentblock/student_training/student_training.html
 msgid "Selected Options Differ"
-msgstr "Séléçtéd Öptïöns Dïffér Ⱡ'σяє#"
+msgstr "Séléçtéd Öptïöns Dïffér Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:105
+#: openassessment/templates/openassessmentblock/student_training/student_training.html
 msgid ""
 "The option you selected is not the option that the instructor selected."
 msgstr ""
 "Thé öptïön ýöü séléçtéd ïs nöt thé öptïön thät thé ïnstrüçtör séléçtéd. "
-"Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:138
+#: openassessment/templates/openassessmentblock/student_training/student_training.html
 msgid "We could not check your assessment"
-msgstr "Wé çöüld nöt çhéçk ýöür ässéssmént Ⱡ'σяєм ιρ#"
+msgstr ""
+"Wé çöüld nöt çhéçk ýöür ässéssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training.html:145
+#: openassessment/templates/openassessmentblock/student_training/student_training.html
 msgid "Compare your selections with the instructor's selections"
 msgstr ""
-"Çömpäré ýöür séléçtïöns wïth thé ïnstrüçtör's séléçtïöns Ⱡ'σяєм ιρѕυм ∂σł#"
+"Çömpäré ýöür séléçtïöns wïth thé ïnstrüçtör's séléçtïöns Ⱡ'σяєм ιρѕυм ∂σłσя "
+"ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:25
+#: openassessment/templates/openassessmentblock/student_training/student_training_closed.html
 msgid ""
 "This step is now closed.You can no longer continue with this assignment, and"
 " you'll receive a grade of Incomplete."
 msgstr ""
 "Thïs stép ïs nöw çlöséd.Ýöü çän nö löngér çöntïnüé wïth thïs ässïgnmént, änd"
-" ýöü'll réçéïvé ä grädé öf Ìnçömplété. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+" ýöü'll réçéïvé ä grädé öf Ìnçömplété. Ⱡ'σяєм ιρѕυм ∂σł#"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training_error.html:9
+#: openassessment/templates/openassessmentblock/student_training/student_training_error.html
 msgid "Error Loading Learner Training Examples"
-msgstr "Érrör Löädïng Léärnér Träïnïng Éxämplés Ⱡ'σяєм ιρѕ#"
+msgstr ""
+"Érrör Löädïng Léärnér Träïnïng Éxämplés Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
 
-#: openassessment/templates/openassessmentblock/student_training/student_training_error.html:12
+#: openassessment/templates/openassessmentblock/student_training/student_training_error.html
 msgid "The Learner Training Step of this assignment could not be loaded."
 msgstr ""
 "Thé Léärnér Träïnïng Stép öf thïs ässïgnmént çöüld nöt ßé löädéd. Ⱡ'σяєм "
-"ιρѕυм ∂σłσя #"
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/grade_mixin.py:66
-#: openassessment/xblock/leaderboard_mixin.py:51
-#: openassessment/xblock/self_assessment_mixin.py:38
-#: openassessment/xblock/student_training_mixin.py:55
-#: openassessment/xblock/student_training_mixin.py:203
-msgid "An unexpected error occurred."
-msgstr "Àn ünéxpéçtéd érrör öççürréd. Ⱡ'σяєм #"
-
-#: openassessment/xblock/grade_mixin.py:193
-msgid "Peer Assessment"
-msgstr "Péér Àsséssmént Ⱡ'#"
-
-#: openassessment/xblock/grade_mixin.py:228
-msgid "Assessment feedback could not be saved."
-msgstr "Àsséssmént féédßäçk çöüld nöt ßé sävéd. Ⱡ'σяєм ιρѕ#"
-
-#: openassessment/xblock/grade_mixin.py:239
-msgid "Feedback saved."
-msgstr "Féédßäçk sävéd. Ⱡ'#"
-
-#: openassessment/xblock/peer_assessment_mixin.py:55
-msgid "Must provide options selected in the assessment"
-msgstr "Müst prövïdé öptïöns séléçtéd ïn thé ässéssmént Ⱡ'σяєм ιρѕυм #"
-
-#: openassessment/xblock/peer_assessment_mixin.py:58
-#: openassessment/xblock/self_assessment_mixin.py:121
-msgid "Must provide overall feedback in the assessment"
-msgstr "Müst prövïdé övéräll féédßäçk ïn thé ässéssmént Ⱡ'σяєм ιρѕυм #"
-
-#: openassessment/xblock/peer_assessment_mixin.py:61
-#: openassessment/xblock/self_assessment_mixin.py:124
-msgid "Must provide feedback for criteria in the assessment"
-msgstr "Müst prövïdé féédßäçk för çrïtérïä ïn thé ässéssmént Ⱡ'σяєм ιρѕυм ∂σ#"
-
-#: openassessment/xblock/peer_assessment_mixin.py:64
-msgid "You must submit a response before you can peer-assess."
+#: openassessment/xblock/data_conversion.py
+msgid "You must provide options selected in the assessment."
 msgstr ""
-"Ýöü müst süßmït ä réspönsé ßéföré ýöü çän péér-ässéss. Ⱡ'σяєм ιρѕυм ∂σ#"
+"Ýöü müst prövïdé öptïöns séléçtéd ïn thé ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/peer_assessment_mixin.py:77
+#: openassessment/xblock/data_conversion.py
+msgid "You must provide overall feedback in the assessment."
+msgstr ""
+"Ýöü müst prövïdé övéräll féédßäçk ïn thé ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/xblock/data_conversion.py
+msgid "You must provide feedback for criteria in the assessment."
+msgstr ""
+"Ýöü müst prövïdé féédßäçk för çrïtérïä ïn thé ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя"
+" ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/xblock/grade_mixin.py
+#: openassessment/xblock/leaderboard_mixin.py
+#: openassessment/xblock/self_assessment_mixin.py
+#: openassessment/xblock/student_training_mixin.py
+#: openassessment/xblock/student_training_mixin.py
+msgid "An unexpected error occurred."
+msgstr "Àn ünéxpéçtéd érrör öççürréd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+
+#: openassessment/xblock/grade_mixin.py
+msgid "Peer Assessment"
+msgstr "Péér Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: openassessment/xblock/grade_mixin.py
+msgid "Assessment feedback could not be saved."
+msgstr ""
+"Àsséssmént féédßäçk çöüld nöt ßé sävéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: openassessment/xblock/grade_mixin.py
+msgid "Feedback saved."
+msgstr "Féédßäçk sävéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: openassessment/xblock/grade_mixin.py
+msgid "Peer Median Grade"
+msgstr "Péér Médïän Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+
+#: openassessment/xblock/grade_mixin.py openassessment/xblock/grade_mixin.py
+msgid "Peer {peer_index}"
+msgstr "Péér {peer_index} Ⱡ'σяєм ιρѕυм ∂#"
+
+#: openassessment/xblock/grade_mixin.py
+msgid "Example-Based Grade"
+msgstr "Éxämplé-Bäséd Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
+
+#: openassessment/xblock/grade_mixin.py
+msgid "Your Self Assessment"
+msgstr "Ýöür Sélf Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: openassessment/xblock/grade_mixin.py
+msgid "Staff Comments"
+msgstr "Stäff Çömménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
+#: openassessment/xblock/grade_mixin.py
+msgid "Peer"
+msgstr "Péér Ⱡ'σяєм ι#"
+
+#: openassessment/xblock/grade_mixin.py
+msgid "Your Comments"
+msgstr "Ýöür Çömménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: openassessment/xblock/peer_assessment_mixin.py
+msgid "You must submit a response before you can perform a peer assessment."
+msgstr ""
+"Ýöü müst süßmït ä réspönsé ßéföré ýöü çän pérförm ä péér ässéssmént. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: openassessment/xblock/peer_assessment_mixin.py
 msgid ""
 "This feedback has already been submitted or the submission has been "
 "cancelled."
 msgstr ""
 "Thïs féédßäçk häs älréädý ßéén süßmïttéd ör thé süßmïssïön häs ßéén "
-"çänçélléd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт #"
+"çänçélléd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: openassessment/xblock/peer_assessment_mixin.py:102
-#: openassessment/xblock/peer_assessment_mixin.py:107
+#: openassessment/xblock/peer_assessment_mixin.py
+#: openassessment/xblock/peer_assessment_mixin.py
 msgid "Your peer assessment could not be submitted."
-msgstr "Ýöür péér ässéssmént çöüld nöt ßé süßmïttéd. Ⱡ'σяєм ιρѕυм#"
+msgstr ""
+"Ýöür péér ässéssmént çöüld nöt ßé süßmïttéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
 
-#: openassessment/xblock/peer_assessment_mixin.py:121
-#: openassessment/xblock/student_training_mixin.py:209
+#: openassessment/xblock/peer_assessment_mixin.py
+#: openassessment/xblock/student_training_mixin.py
 msgid "Could not update workflow status."
-msgstr "Çöüld nöt üpdäté wörkflöw stätüs. Ⱡ'σяєм ι#"
+msgstr ""
+"Çöüld nöt üpdäté wörkflöw stätüs. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: openassessment/xblock/peer_assessment_mixin.py:130
+#: openassessment/xblock/peer_assessment_mixin.py
 msgid "Could not load peer assessment."
-msgstr "Çöüld nöt löäd péér ässéssmént. Ⱡ'σяєм ι#"
+msgstr "Çöüld nöt löäd péér ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
-#: openassessment/xblock/peer_assessment_mixin.py:209
+#: openassessment/xblock/peer_assessment_mixin.py
 msgid "Submit your assessment & review another response"
-msgstr "Süßmït ýöür ässéssmént & révïéw änöthér réspönsé Ⱡ'σяєм ιρѕυм #"
+msgstr ""
+"Süßmït ýöür ässéssmént & révïéw änöthér réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/peer_assessment_mixin.py:213
+#: openassessment/xblock/peer_assessment_mixin.py
 msgid "Submit your assessment & move onto next step"
-msgstr "Süßmït ýöür ässéssmént & mövé öntö néxt stép Ⱡ'σяєм ιρѕυм#"
+msgstr ""
+"Süßmït ýöür ässéssmént & mövé öntö néxt stép Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
 
-#: openassessment/xblock/peer_assessment_mixin.py:217
+#: openassessment/xblock/peer_assessment_mixin.py
 msgid "Submit your assessment & move to response #{response_number}"
 msgstr ""
-"Süßmït ýöür ässéssmént & mövé tö réspönsé #{response_number} Ⱡ'σяєм ιρѕυм #"
+"Süßmït ýöür ässéssmént & mövé tö réspönsé #{response_number} Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/resolve_dates.py:49
+#: openassessment/xblock/resolve_dates.py
 msgid ""
 "'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
 "MM-DDTHH:MM:SS."
 msgstr ""
 "'{date}' ïs än ïnvälïd däté förmät. Mäké süré thé däté ïs förmättéd äs ÝÝÝÝ-"
-"MM-DDTHH:MM:SS. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+"MM-DDTHH:MM:SS. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
 
-#: openassessment/xblock/resolve_dates.py:52
+#: openassessment/xblock/resolve_dates.py
 msgid "'{date}' must be a date string or datetime"
-msgstr "'{date}' müst ßé ä däté strïng ör dätétïmé Ⱡ'σяєм ιρѕ#"
+msgstr ""
+"'{date}' müst ßé ä däté strïng ör dätétïmé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
 
-#: openassessment/xblock/resolve_dates.py:197
+#: openassessment/xblock/resolve_dates.py
 msgid ""
 "This step's start date '{start}' cannot be earlier than the previous step's "
 "start date '{prev}'."
 msgstr ""
 "Thïs stép's stärt däté '{start}' çännöt ßé éärlïér thän thé prévïöüs stép's "
-"stärt däté '{prev}'. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт#"
+"stärt däté '{prev}'. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: openassessment/xblock/resolve_dates.py:203
+#: openassessment/xblock/resolve_dates.py
 msgid ""
 "This step's due date '{due}' cannot be later than the next step's due date "
 "'{prev}'."
 msgstr ""
 "Thïs stép's düé däté '{due}' çännöt ßé lätér thän thé néxt stép's düé däté "
-"'{prev}'. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+"'{prev}'. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: openassessment/xblock/resolve_dates.py:219
+#: openassessment/xblock/resolve_dates.py
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
 msgstr ""
 "Thé stärt däté '{start}' çännöt ßé lätér thän thé düé däté '{due}' Ⱡ'σяєм "
-"ιρѕυм ∂σłσ#"
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/self_assessment_mixin.py:118
-#: openassessment/xblock/student_training_mixin.py:166
-msgid "Missing options_selected key in request"
-msgstr "Mïssïng öptïöns_séléçtéd kéý ïn réqüést Ⱡ'σяєм ιρѕ#"
-
-#: openassessment/xblock/self_assessment_mixin.py:127
+#: openassessment/xblock/self_assessment_mixin.py
 msgid "You must submit a response before you can perform a self-assessment."
 msgstr ""
 "Ýöü müst süßmït ä réspönsé ßéföré ýöü çän pérförm ä sélf-ässéssmént. Ⱡ'σяєм "
-"ιρѕυм ∂σłσя ѕ#"
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: openassessment/xblock/self_assessment_mixin.py:148
-#: openassessment/xblock/self_assessment_mixin.py:155
+#: openassessment/xblock/self_assessment_mixin.py
+#: openassessment/xblock/self_assessment_mixin.py
 msgid "Your self assessment could not be submitted."
-msgstr "Ýöür sélf ässéssmént çöüld nöt ßé süßmïttéd. Ⱡ'σяєм ιρѕυм#"
+msgstr ""
+"Ýöür sélf ässéssmént çöüld nöt ßé süßmïttéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
 
-#: openassessment/xblock/staff_area_mixin.py:50
+#: openassessment/xblock/staff_area_mixin.py
 msgid "You do not have permission to schedule training"
-msgstr "Ýöü dö nöt hävé pérmïssïön tö sçhédülé träïnïng Ⱡ'σяєм ιρѕυм #"
+msgstr ""
+"Ýöü dö nöt hävé pérmïssïön tö sçhédülé träïnïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,"
+" ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/staff_area_mixin.py:51
+#: openassessment/xblock/staff_area_mixin.py
 msgid "You do not have permission to reschedule tasks."
-msgstr "Ýöü dö nöt hävé pérmïssïön tö résçhédülé täsks. Ⱡ'σяєм ιρѕυм #"
+msgstr ""
+"Ýöü dö nöt hävé pérmïssïön tö résçhédülé täsks. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,"
+" ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/staff_area_mixin.py:78
+#: openassessment/xblock/staff_area_mixin.py
 msgid "You do not have permission to access the ORA staff area"
 msgstr ""
-"Ýöü dö nöt hävé pérmïssïön tö äççéss thé ÖRÀ stäff äréä Ⱡ'σяєм ιρѕυм ∂σł#"
+"Ýöü dö nöt hävé pérmïssïön tö äççéss thé ÖRÀ stäff äréä Ⱡ'σяєм ιρѕυм ∂σłσя "
+"ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/staff_area_mixin.py:79
+#: openassessment/xblock/staff_area_mixin.py
 msgid "You do not have permission to access ORA learner information."
 msgstr ""
 "Ýöü dö nöt hävé pérmïssïön tö äççéss ÖRÀ léärnér ïnförmätïön. Ⱡ'σяєм ιρѕυм "
-"∂σłσя#"
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/staff_area_mixin.py:189
+#: openassessment/xblock/staff_area_mixin.py
+msgid "You do not have permission to access ORA staff grading."
+msgstr ""
+"Ýöü dö nöt hävé pérmïssïön tö äççéss ÖRÀ stäff grädïng. Ⱡ'σяєм ιρѕυм ∂σłσя "
+"ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/xblock/staff_area_mixin.py
 msgid "Training scheduled with new Workflow UUID: {uuid}"
-msgstr "Träïnïng sçhédüléd wïth néw Wörkflöw ÛÛÌD: {uuid} Ⱡ'σяєм ιρѕυм #"
+msgstr ""
+"Träïnïng sçhédüléd wïth néw Wörkflöw ÛÛÌD: {uuid} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/staff_area_mixin.py:194
+#: openassessment/xblock/staff_area_mixin.py
 msgid "An error occurred scheduling classifier training: {error}"
 msgstr ""
-"Àn érrör öççürréd sçhédülïng çlässïfïér träïnïng: {error} Ⱡ'σяєм ιρѕυм ∂σ#"
+"Àn érrör öççürréd sçhédülïng çlässïfïér träïnïng: {error} Ⱡ'σяєм ιρѕυм ∂σłσя"
+" ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/staff_area_mixin.py:200
+#: openassessment/xblock/staff_area_mixin.py
 msgid "Example Based Assessment is not configured for this location."
 msgstr ""
 "Éxämplé Bäséd Àsséssmént ïs nöt çönfïgüréd för thïs löçätïön. Ⱡ'σяєм ιρѕυм "
-"∂σłσя#"
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/staff_area_mixin.py:221
-msgid "Error finding assessment workflow cancellation."
-msgstr "Érrör fïndïng ässéssmént wörkflöw çänçéllätïön. Ⱡ'σяєм ιρѕυм #"
+#: openassessment/xblock/staff_area_mixin.py
+msgid "Error getting learner information."
+msgstr ""
+"Érrör géttïng léärnér ïnförmätïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: openassessment/xblock/staff_area_mixin.py:334
+#: openassessment/xblock/staff_area_mixin.py
+msgid "Error loading the checked out learner response."
+msgstr ""
+"Érrör löädïng thé çhéçkéd öüt léärnér réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,"
+" ¢σηѕє¢тєтυя α#"
+
+#: openassessment/xblock/staff_area_mixin.py
+msgid "No other learner responses are available for grading at this time."
+msgstr ""
+"Nö öthér léärnér réspönsés äré äväïläßlé för grädïng ät thïs tïmé. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: openassessment/xblock/staff_area_mixin.py
+msgid "Error getting staff grade information."
+msgstr ""
+"Érrör géttïng stäff grädé ïnförmätïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: openassessment/xblock/staff_area_mixin.py
+msgid "Error getting staff grade ungraded and checked out counts."
+msgstr ""
+"Érrör géttïng stäff grädé üngrädéd änd çhéçkéd öüt çöünts. Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/xblock/staff_area_mixin.py
 msgid ""
 "All AI tasks associated with this item have been rescheduled successfully."
 msgstr ""
 "Àll ÀÌ täsks ässöçïätéd wïth thïs ïtém hävé ßéén résçhédüléd süççéssfüllý. "
-"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
 
-#: openassessment/xblock/staff_area_mixin.py:339
+#: openassessment/xblock/staff_area_mixin.py
 msgid "An error occurred while rescheduling tasks: {}"
-msgstr "Àn érrör öççürréd whïlé résçhédülïng täsks: {} Ⱡ'σяєм ιρѕυм #"
+msgstr ""
+"Àn érrör öççürréd whïlé résçhédülïng täsks: {} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/staff_area_mixin.py:365
+#: openassessment/xblock/staff_area_mixin.py
 msgid "Please enter valid reason to remove the submission."
-msgstr "Pléäsé éntér välïd réäsön tö rémövé thé süßmïssïön. Ⱡ'σяєм ιρѕυм ∂#"
+msgstr ""
+"Pléäsé éntér välïd réäsön tö rémövé thé süßmïssïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/staff_area_mixin.py:379
+#: openassessment/xblock/staff_area_mixin.py
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
@@ -1992,229 +2337,339 @@ msgstr ""
 "Thé léärnér süßmïssïön häs ßéén rémövéd fröm péér ässéssmént. Thé léärnér "
 "réçéïvés ä grädé öf zérö ünléss ýöü délété thé léärnér's stäté för thé "
 "prößlém tö ällöw thém tö résüßmït ä réspönsé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
-"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕ#"
+"¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт "
+"∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση "
+"υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє "
+"∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα"
+" ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρ#"
 
-#: openassessment/xblock/student_training_mixin.py:168
+#: openassessment/xblock/staff_assessment_mixin.py
+msgid "The submission ID of the submission being assessed was not found."
+msgstr ""
+"Thé süßmïssïön ÌD öf thé süßmïssïön ßéïng ässésséd wäs nöt föünd. Ⱡ'σяєм "
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/xblock/staff_assessment_mixin.py
+#: openassessment/xblock/staff_assessment_mixin.py
+msgid "Your staff assessment could not be submitted."
+msgstr ""
+"Ýöür stäff ässéssmént çöüld nöt ßé süßmïttéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: openassessment/xblock/staff_assessment_mixin.py
+msgid "Waiting for a Staff Grade"
+msgstr "Wäïtïng för ä Stäff Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: openassessment/xblock/staff_assessment_mixin.py
+msgid ""
+"Check back later to see if a course staff member has assessed your response."
+" You will receive your grade after the assessment is complete."
+msgstr ""
+"Çhéçk ßäçk lätér tö séé ïf ä çöürsé stäff mémßér häs ässésséd ýöür réspönsé."
+" Ýöü wïll réçéïvé ýöür grädé äftér thé ässéssmént ïs çömplété. Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя "
+"ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ "
+"ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
+"ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂ єѕт łαв#"
+
+#: openassessment/xblock/staff_assessment_mixin.py
+msgid "You Must Complete the Steps Above to View Your Grade"
+msgstr ""
+"Ýöü Müst Çömplété thé Stéps Àßövé tö Vïéw Ýöür Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
+
+#: openassessment/xblock/staff_assessment_mixin.py
+msgid ""
+"Although a course staff member has assessed your response, you will receive "
+"your grade only after you have completed all the required steps of this "
+"problem."
+msgstr ""
+"Àlthöügh ä çöürsé stäff mémßér häs ässésséd ýöür réspönsé, ýöü wïll réçéïvé "
+"ýöür grädé önlý äftér ýöü hävé çömplétéd äll thé réqüïréd stéps öf thïs "
+"prößlém. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ "
+"єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм"
+" νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα "
+"¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт"
+" єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт "
+"¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσ#"
+
+#: openassessment/xblock/student_training_mixin.py
+msgid "Missing options_selected key in request"
+msgstr ""
+"Mïssïng öptïöns_séléçtéd kéý ïn réqüést Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
+
+#: openassessment/xblock/student_training_mixin.py
 msgid "options_selected must be a dictionary"
-msgstr "öptïöns_séléçtéd müst ßé ä dïçtïönärý Ⱡ'σяєм ιρѕ#"
+msgstr ""
+"öptïöns_séléçtéd müst ßé ä dïçtïönärý Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
 
-#: openassessment/xblock/student_training_mixin.py:193
-#: openassessment/xblock/student_training_mixin.py:198
+#: openassessment/xblock/student_training_mixin.py
+#: openassessment/xblock/student_training_mixin.py
 msgid "Your scores could not be checked."
-msgstr "Ýöür sçörés çöüld nöt ßé çhéçkéd. Ⱡ'σяєм ι#"
+msgstr ""
+"Ýöür sçörés çöüld nöt ßé çhéçkéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: openassessment/xblock/studio_mixin.py:170
-#: openassessment/xblock/studio_mixin.py:175
+#: openassessment/xblock/studio_mixin.py openassessment/xblock/studio_mixin.py
 msgid "Error updating XBlock configuration"
-msgstr "Érrör üpdätïng XBlöçk çönfïgürätïön Ⱡ'σяєм ιρ#"
+msgstr ""
+"Érrör üpdätïng XBlöçk çönfïgürätïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
 
-#: openassessment/xblock/studio_mixin.py:198
+#: openassessment/xblock/studio_mixin.py
 msgid ""
 "Validation error: There was an error in the XML definition of the examples "
 "provided by the user. Please correct the XML definition before saving."
 msgstr ""
 "Välïdätïön érrör: Théré wäs än érrör ïn thé XML défïnïtïön öf thé éxämplés "
 "prövïdéd ßý thé üsér. Pléäsé çörréçt thé XML défïnïtïön ßéföré sävïng. "
-"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιρ#"
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ "
+"тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм,"
+" qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт "
+"ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια ∂єѕєяυηт мσłłιт αηιм ι∂#"
 
-#: openassessment/xblock/studio_mixin.py:203
+#: openassessment/xblock/studio_mixin.py
 msgid ""
 "Validation error: No examples were provided for example based assessment."
 msgstr ""
 "Välïdätïön érrör: Nö éxämplés wéré prövïdéd för éxämplé ßäséd ässéssmént. "
-"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
 
-#: openassessment/xblock/studio_mixin.py:221
+#: openassessment/xblock/studio_mixin.py
 msgid "Validation error: {error}"
-msgstr "Välïdätïön érrör: {error} Ⱡ'σя#"
+msgstr "Välïdätïön érrör: {error} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
-#: openassessment/xblock/studio_mixin.py:240
+#: openassessment/xblock/studio_mixin.py
 msgid "Successfully updated OpenAssessment XBlock"
-msgstr "Süççéssfüllý üpdätéd ÖpénÀsséssmént XBlöçk Ⱡ'σяєм ιρѕυ#"
+msgstr ""
+"Süççéssfüllý üpdätéd ÖpénÀsséssmént XBlöçk Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
 
-#: openassessment/xblock/submission_mixin.py:74
+#: openassessment/xblock/submission_mixin.py
 msgid "\"submission\" required to submit answer."
-msgstr "\"süßmïssïön\" réqüïréd tö süßmït änswér. Ⱡ'σяєм ιρѕ#"
+msgstr ""
+"\"süßmïssïön\" réqüïréd tö süßmït änswér. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
 
-#: openassessment/xblock/submission_mixin.py:95
+#: openassessment/xblock/submission_mixin.py
 msgid "To submit a response, view this component in Preview or Live mode."
 msgstr ""
 "Tö süßmït ä réspönsé, vïéw thïs çömpönént ïn Prévïéw ör Lïvé mödé. Ⱡ'σяєм "
-"ιρѕυм ∂σłσя #"
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: openassessment/xblock/submission_mixin.py:101
+#: openassessment/xblock/submission_mixin.py
 msgid "Multiple submissions are not allowed."
-msgstr "Mültïplé süßmïssïöns äré nöt ällöwéd. Ⱡ'σяєм ιρѕ#"
+msgstr ""
+"Mültïplé süßmïssïöns äré nöt ällöwéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
 
-#: openassessment/xblock/submission_mixin.py:139
+#: openassessment/xblock/submission_mixin.py
 msgid "API returned unclassified exception."
-msgstr "ÀPÌ rétürnéd ünçlässïfïéd éxçéptïön. Ⱡ'σяєм ιρ#"
+msgstr ""
+"ÀPÌ rétürnéd ünçlässïfïéd éxçéptïön. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
 
-#: openassessment/xblock/submission_mixin.py:181
+#: openassessment/xblock/submission_mixin.py
 msgid "This response could not be saved."
-msgstr "Thïs réspönsé çöüld nöt ßé sävéd. Ⱡ'σяєм ι#"
+msgstr ""
+"Thïs réspönsé çöüld nöt ßé sävéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: openassessment/xblock/submission_mixin.py:185
+#: openassessment/xblock/submission_mixin.py
 msgid "This response was not submitted."
-msgstr "Thïs réspönsé wäs nöt süßmïttéd. Ⱡ'σяєм ι#"
+msgstr ""
+"Thïs réspönsé wäs nöt süßmïttéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: openassessment/xblock/submission_mixin.py:225
+#: openassessment/xblock/submission_mixin.py
 msgid "There was an error uploading your file."
-msgstr "Théré wäs än érrör üplöädïng ýöür fïlé. Ⱡ'σяєм ιρѕ#"
+msgstr ""
+"Théré wäs än érrör üplöädïng ýöür fïlé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя#"
 
-#: openassessment/xblock/submission_mixin.py:232
+#: openassessment/xblock/submission_mixin.py
 msgid "Content type must be GIF, PNG or JPG."
-msgstr "Çöntént týpé müst ßé GÌF, PNG ör JPG. Ⱡ'σяєм ιρѕ#"
+msgstr ""
+"Çöntént týpé müst ßé GÌF, PNG ör JPG. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
 
-#: openassessment/xblock/submission_mixin.py:235
+#: openassessment/xblock/submission_mixin.py
 msgid "Content type must be PDF, GIF, PNG or JPG."
-msgstr "Çöntént týpé müst ßé PDF, GÌF, PNG ör JPG. Ⱡ'σяєм ιρѕυ#"
+msgstr ""
+"Çöntént týpé müst ßé PDF, GÌF, PNG ör JPG. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
 
-#: openassessment/xblock/submission_mixin.py:238
+#: openassessment/xblock/submission_mixin.py
 msgid "File type must be one of the following types: {}"
-msgstr "Fïlé týpé müst ßé öné öf thé föllöwïng týpés: {} Ⱡ'σяєм ιρѕυм #"
+msgstr ""
+"Fïlé týpé müst ßé öné öf thé föllöwïng týpés: {} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/submission_mixin.py:242
+#: openassessment/xblock/submission_mixin.py
 msgid "File type is not allowed."
-msgstr "Fïlé týpé ïs nöt ällöwéd. Ⱡ'σяєм#"
+msgstr "Fïlé týpé ïs nöt ällöwéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
 
-#: openassessment/xblock/submission_mixin.py:249
+#: openassessment/xblock/submission_mixin.py
 msgid "Error retrieving upload URL."
-msgstr "Érrör rétrïévïng üplöäd ÛRL. Ⱡ'σяєм #"
+msgstr "Érrör rétrïévïng üplöäd ÛRL. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
 
-#: openassessment/xblock/submission_mixin.py:342
+#: openassessment/xblock/submission_mixin.py
 msgid "This response has been saved but not submitted."
-msgstr "Thïs réspönsé häs ßéén sävéd ßüt nöt süßmïttéd. Ⱡ'σяєм ιρѕυм #"
+msgstr ""
+"Thïs réspönsé häs ßéén sävéd ßüt nöt süßmïttéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,"
+" ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/submission_mixin.py:343
+#: openassessment/xblock/submission_mixin.py
 msgid "This response has not been saved."
-msgstr "Thïs réspönsé häs nöt ßéén sävéd. Ⱡ'σяєм ι#"
+msgstr ""
+"Thïs réspönsé häs nöt ßéén sävéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: openassessment/xblock/validation.py:108
+#: openassessment/xblock/validation.py
 msgid "This problem must include at least one assessment."
-msgstr "Thïs prößlém müst ïnçlüdé ät léäst öné ässéssmént. Ⱡ'σяєм ιρѕυм ∂#"
+msgstr ""
+"Thïs prößlém müst ïnçlüdé ät léäst öné ässéssmént. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт "
+"αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/validation.py:112
+#: openassessment/xblock/validation.py
 msgid "The assessment order you selected is invalid."
-msgstr "Thé ässéssmént ördér ýöü séléçtéd ïs ïnvälïd. Ⱡ'σяєм ιρѕυм#"
+msgstr ""
+"Thé ässéssmént ördér ýöü séléçtéd ïs ïnvälïd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
 
-#: openassessment/xblock/validation.py:122
+#: openassessment/xblock/validation.py
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
 msgstr ""
 "Ìn péér ässéssmént, thé \"Müst Grädé\" välüé müst ßé ä pösïtïvé ïntégér. "
-"Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: openassessment/xblock/validation.py:125
+#: openassessment/xblock/validation.py
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
 msgstr ""
 "Ìn péér ässéssmént, thé \"Grädéd Bý\" välüé müst ßé ä pösïtïvé ïntégér. "
-"Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: openassessment/xblock/validation.py:128
+#: openassessment/xblock/validation.py
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
 msgstr ""
 "Ìn péér ässéssmént, thé \"Müst Grädé\" välüé müst ßé gréätér thän ör éqüäl "
-"tö thé \"Grädéd Bý\" välüé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+"tö thé \"Grädéd Bý\" välüé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
 
-#: openassessment/xblock/validation.py:136
+#: openassessment/xblock/validation.py
 msgid "You must provide at least one example response for learner training."
 msgstr ""
 "Ýöü müst prövïdé ät léäst öné éxämplé réspönsé för léärnér träïnïng. Ⱡ'σяєм "
-"ιρѕυм ∂σłσя ѕ#"
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: openassessment/xblock/validation.py:139
+#: openassessment/xblock/validation.py
 msgid "Each example response for learner training must be unique."
 msgstr ""
 "Éäçh éxämplé réspönsé för léärnér träïnïng müst ßé ünïqüé. Ⱡ'σяєм ιρѕυм "
-"∂σłσ#"
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/validation.py:146
+#: openassessment/xblock/validation.py
 msgid "The \"algorithm_id\" value must be set to \"ease\" or \"fake\""
-msgstr "Thé \"älgörïthm_ïd\" välüé müst ßé sét tö \"éäsé\" ör \"fäké\" Ⱡ'σяєм ιρѕυм ∂σł#"
+msgstr ""
+"Thé \"älgörïthm_ïd\" välüé müst ßé sét tö \"éäsé\" ör \"fäké\" Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/validation.py:150
+#: openassessment/xblock/validation.py
+msgid "The \"required\" value must be true if staff assessment is the only step."
+msgstr ""
+"Thé \"réqüïréd\" välüé müst ßé trüé ïf stäff ässéssmént ïs thé önlý stép. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
+
+#: openassessment/xblock/validation.py
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
 msgstr ""
 "Thé nümßér öf ässéssménts çännöt ßé çhängéd äftér thé prößlém häs ßéén "
-"réléäséd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+"réléäséd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
-#: openassessment/xblock/validation.py:155
+#: openassessment/xblock/validation.py
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
 msgstr ""
 "Thé ässéssmént týpé çännöt ßé çhängéd äftér thé prößlém häs ßéén réléäséd. "
-"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
 
-#: openassessment/xblock/validation.py:179
+#: openassessment/xblock/validation.py
 msgid "This rubric definition is not valid."
-msgstr "Thïs rüßrïç défïnïtïön ïs nöt välïd. Ⱡ'σяєм ιρ#"
+msgstr ""
+"Thïs rüßrïç défïnïtïön ïs nöt välïd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυ#"
 
-#: openassessment/xblock/validation.py:184
+#: openassessment/xblock/validation.py
 msgid "Criteria duplicate name(s): {duplicates}"
-msgstr "Çrïtérïä düplïçäté nämé(s): {duplicates} Ⱡ'σяєм ι#"
+msgstr ""
+"Çrïtérïä düplïçäté nämé(s): {duplicates} Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢т#"
 
-#: openassessment/xblock/validation.py:193
+#: openassessment/xblock/validation.py
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr ""
-"Öptïöns ïn '{criterion}' hävé düplïçäté nämé(s): {duplicates} Ⱡ'σяєм ιρѕυм#"
+"Öptïöns ïn '{criterion}' hävé düplïçäté nämé(s): {duplicates} Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: openassessment/xblock/validation.py:201
+#: openassessment/xblock/validation.py
 msgid "Criteria with no options must require written feedback."
 msgstr ""
-"Çrïtérïä wïth nö öptïöns müst réqüïré wrïttén féédßäçk. Ⱡ'σяєм ιρѕυм ∂σł#"
+"Çrïtérïä wïth nö öptïöns müst réqüïré wrïttén féédßäçk. Ⱡ'σяєм ιρѕυм ∂σłσя "
+"ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/validation.py:210
+#: openassessment/xblock/validation.py
 msgid "Example-based assessments cannot have duplicate point values."
 msgstr ""
 "Éxämplé-ßäséd ässéssménts çännöt hävé düplïçäté pöïnt välüés. Ⱡ'σяєм ιρѕυм "
-"∂σłσя#"
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/validation.py:219
+#: openassessment/xblock/validation.py
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr ""
 "Prömpts çännöt ßé çréätéd ör délétéd äftér ä prößlém ïs réléäséd. Ⱡ'σяєм "
-"ιρѕυм ∂σłσя #"
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/validation.py:223
+#: openassessment/xblock/validation.py
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr ""
 "Thé nümßér öf çrïtérïä çännöt ßé çhängéd äftér ä prößlém ïs réléäséd. Ⱡ'σяєм"
-" ιρѕυм ∂σłσя ѕ#"
+" ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: openassessment/xblock/validation.py:236
+#: openassessment/xblock/validation.py
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr ""
 "Çrïtérïä nämés çännöt ßé çhängéd äftér ä prößlém ïs réléäséd Ⱡ'σяєм ιρѕυм "
-"∂σłσ#"
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/validation.py:241
+#: openassessment/xblock/validation.py
 msgid "The number of options cannot be changed after a problem is released."
 msgstr ""
 "Thé nümßér öf öptïöns çännöt ßé çhängéd äftér ä prößlém ïs réléäséd. Ⱡ'σяєм "
-"ιρѕυм ∂σłσя ѕ#"
+"ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
 
-#: openassessment/xblock/validation.py:246
+#: openassessment/xblock/validation.py
 msgid "Point values cannot be changed after a problem is released."
 msgstr ""
 "Pöïnt välüés çännöt ßé çhängéd äftér ä prößlém ïs réléäséd. Ⱡ'σяєм ιρѕυм "
-"∂σłσ#"
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
 
-#: openassessment/xblock/validation.py:296
+#: openassessment/xblock/validation.py
 msgid ""
 "Learner training and example-based assessments must have at least one "
 "training example."
 msgstr ""
 "Léärnér träïnïng änd éxämplé-ßäséd ässéssménts müst hävé ät léäst öné "
-"träïnïng éxämplé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+"träïnïng éxämplé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє#"
 
-#: openassessment/xblock/validation.py:358
+#: openassessment/xblock/validation.py
 msgid "Leaderboard number is invalid."
-msgstr "Léädérßöärd nümßér ïs ïnvälïd. Ⱡ'σяєм #"
+msgstr "Léädérßöärd nümßér ïs ïnvälïd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
 
-#: openassessment/xblock/validation.py:381
+#: openassessment/xblock/validation.py
 msgid "The submission format is invalid."
-msgstr "Thé süßmïssïön förmät ïs ïnvälïd. Ⱡ'σяєм ι#"
+msgstr ""
+"Thé süßmïssïön förmät ïs ïnvälïd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
