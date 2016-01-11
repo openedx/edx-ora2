@@ -33,11 +33,4 @@ django-admin.py makemessages --locale=en --ignore="edx-ora2/*" --ignore="build/*
 
 echo "Generating dummy strings..."
 i18n_tool dummy
-
-read -p "Push strings to Transifex? [y/n]  " RESP
-if [ "$RESP" = "y" ]; then
-    i18n_tool transifex push
-    echo " == Pushed strings to Transifex"
-else
-    echo "Cancelled"
-fi
+i18n_tool generate
