@@ -495,32 +495,12 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
 
     label{
       cursor: pointer;
-    }
-
-    input[type="checkbox"]{
-      display: none;
-    }
-
-    input[type="checkbox"] + label:before {
-      font-family: "FontAwesome";
-      display: inline-block;
-      @include margin-right(($baseline-h/4));
-      width: auto;
-      height: auto;
-      content: "\f096";
-    }
-
-    input[type="checkbox"]:checked + label:before{
-      content: "\f046";
-      color: #009fe6;
+      @include margin-left(($baseline-h/4));
     }
   }
 
   .openassessment_inclusion_wrapper:hover{
     background-color: $edx-gray-t2;
-    input[type="checkbox"] + label:before {
-      color: #009fe6;
-    }
   }
 
   label{
