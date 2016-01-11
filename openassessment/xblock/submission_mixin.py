@@ -388,8 +388,6 @@ class SubmissionMixin(object):
 
         context['file_upload_type'] = self.file_upload_type
         context['allow_latex'] = self.allow_latex
-        context['has_peer'] = 'peer-assessment' in self.assessment_steps
-        context['has_self'] = 'self-assessment' in self.assessment_steps
 
         if self.file_upload_type:
             context['file_url'] = self._get_download_url()
@@ -437,6 +435,8 @@ class SubmissionMixin(object):
             student_submission = self.get_user_submission(
                 workflow["submission_uuid"]
             )
+            context["peer_incomplete"] = "peer" in workflow["status_details"] and not workflow["status_details"]["peer"]["complete"]
+            context["self_incomplete"] = "self" in workflow["status_details"] and not workflow["status_details"]["self"]["complete"]
             context["student_submission"] = create_submission_dict(student_submission, self.prompts)
             path = 'openassessmentblock/response/oa_response_submitted.html'
 

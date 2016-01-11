@@ -322,25 +322,38 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
 
     @scenario('data/grade_incomplete_scenario.xml', user_id='Bunk')
     def test_grade_incomplete_missing_self(self, xblock):
-        # Graded peers, but haven't completed self assessment
-        self.create_submission_and_assessments(
-            xblock, self.SUBMISSION, [self.PEERS[0]], [PEER_ASSESSMENTS[0]], None
-        )
-        resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+        resp = self._test_incomplete_helper(xblock, [self.PEERS[0]], None)
+        self.assertNotIn('peer assessment', resp)
+        self.assertIn('self assessment', resp)
 
-        # Verify that we're on the right template
-        self.assertIn(u'not completed', resp.decode('utf-8').lower())
-
-    @scenario('data/grade_incomplete_scenario.xml', user_id='Daniels')
+    @scenario('data/grade_incomplete_scenario.xml', user_id='Bunk')
     def test_grade_incomplete_missing_peer(self, xblock):
-        # Have not yet completed peer assessment
-        self.create_submission_and_assessments(
-            xblock, self.SUBMISSION, [], [], None
-        )
-        resp = self.request(xblock, 'render_grade', json.dumps(dict()))
+        resp = self._test_incomplete_helper(xblock, [], SELF_ASSESSMENT)
+        self.assertNotIn('self assessment', resp)
+        self.assertIn('peer assessment', resp)
 
-        # Verify that we're on the right template
+    @scenario('data/grade_incomplete_scenario.xml', user_id='Bunk')
+    def test_grade_incomplete_missing_both(self, xblock):
+        resp = self._test_incomplete_helper(xblock, [], None)
+        self.assertIn('self assessment', resp)
+        self.assertIn('peer assessment', resp)
+
+    def _test_incomplete_helper(self, xblock, peers, self_assessment):
+        self.create_submission_and_assessments(
+            xblock, self.SUBMISSION, peers, [PEER_ASSESSMENTS[0]] if peers else [], self_assessment
+        )
+
+        # Verify grading page is rendered properly
+        resp = self.request(xblock, 'render_grade', json.dumps(dict()))
         self.assertIn(u'not completed', resp.decode('utf-8').lower())
+
+        # Verify that response_submitted page is rendered properly. This isn't super tightly connnected
+        # to grade rendering, but it seems a shame to do the same setup in 2 different places.
+        submitted_resp = self.request(xblock, 'render_submission', json.dumps(dict()))
+        decoded_response = submitted_resp.decode('utf-8').lower()
+        self.assertIn(u'steps are complete and your response is fully assessed', decoded_response)
+        self.assertIn(u'you still need to complete', decoded_response)
+        return decoded_response
 
     @scenario('data/grade_scenario.xml', user_id='Greggs')
     def test_submit_feedback(self, xblock):
