@@ -61,14 +61,14 @@
         {% endfor %}
         <li class="wrapper--input field field--textarea assessment__rubric__question assessment__rubric__question--feedback">
             <label class="question__title" for="{{ rubric_type }}__assessment__rubric__question--feedback__value">
-                <span class="question__title__copy">{% trans rubric_feedback_prompt %}</span>
+                <span class="question__title__copy">{{ rubric_feedback_prompt }}</span>
             </label>
 
             <div class="wrapper--input">
                 <textarea
                     id="{{ rubric_type }}__assessment__rubric__question--feedback__value"
                     class="assessment__rubric__question--feedback__value"
-                    placeholder="{% trans rubric_feedback_default_text %}"
+                    placeholder="{{ rubric_feedback_default_text }}"
                     maxlength="500"
                 >
                 </textarea>
