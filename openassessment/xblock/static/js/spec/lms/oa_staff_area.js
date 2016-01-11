@@ -152,6 +152,10 @@ describe('OpenAssessment.StaffAreaView', function() {
         );
     };
 
+    var verifyFocused = function (element) {
+        expect(element).toEqual(element.ownerDocument.activeElement);
+    };
+
     beforeEach(function() {
         // Create a new stub server
         server = new StubServer();
@@ -301,6 +305,9 @@ describe('OpenAssessment.StaffAreaView', function() {
             $visiblePanels = getVisibleStaffPanels(view);
             expect($visiblePanels.length).toBe(1);
             expect($visiblePanels.first()).toHaveClass('wrapper--' + buttonName);
+
+            var closeButton = $('.ui-staff_close_button', $visiblePanels.first())[0];
+            verifyFocused(closeButton);
         };
 
         it('shows the correct buttons with no panels initially', function() {
@@ -353,13 +360,19 @@ describe('OpenAssessment.StaffAreaView', function() {
         it('hides the "Manage Individual Learners" panel when the close button is clicked', function() {
             var view = createStaffArea(),
                 $staffToolsButton = $('.button-staff-tools', view.element),
-                $staffToolsPanel = $('.wrapper--staff-tools', view.element);
+                $staffToolsPanel = $('.wrapper--staff-tools', view.element),
+                closeButton;
             expect($staffToolsButton.length).toBe(1);
             $staffToolsButton[0].click();
             expect($staffToolsButton).toHaveClass('is--active');
-            $('.ui-staff_close_button', $staffToolsPanel).first().click();
+            closeButton = $('.ui-staff_close_button', $staffToolsPanel)[0];
+            verifyFocused(closeButton);
+
+            // Now click the close button.
+            closeButton.click();
             expect($staffToolsButton).not.toHaveClass('is--active');
             expect($staffToolsPanel).toHaveClass('is--hidden');
+            verifyFocused($staffToolsButton[0]);
         });
 
         it('shows an error when clicking "Submit" with no student name chosen', function() {
@@ -534,13 +547,19 @@ describe('OpenAssessment.StaffAreaView', function() {
         it('hides the "View Assignment Statistics" panel when the close button is clicked', function() {
             var view = createStaffArea(),
                 $staffInfoButton = $('.button-staff-info', view.element),
-                $staffInfoPanel = $('.wrapper--staff-info', view.element);
+                $staffInfoPanel = $('.wrapper--staff-info', view.element),
+                closeButton;
             expect($staffInfoButton.length).toBe(1);
             $staffInfoButton[0].click();
             expect($staffInfoButton).toHaveClass('is--active');
-            $('.ui-staff_close_button', $staffInfoPanel).first().click();
+            closeButton = $('.ui-staff_close_button', $staffInfoPanel)[0];
+            verifyFocused(closeButton);
+
+            // Now click the close button.
+            closeButton.click();
             expect($staffInfoButton).not.toHaveClass('is--active');
             expect($staffInfoPanel).toHaveClass('is--hidden');
+            verifyFocused($staffInfoButton[0]);
         });
     });
 
@@ -555,6 +574,24 @@ describe('OpenAssessment.StaffAreaView', function() {
         afterEach(function() {
             // Disable the unsaved page warnings (if set).
             OpenAssessment.clearUnsavedChanges();
+        });
+
+        it('hides the "Grade Available Responses" panel when the close button is clicked', function() {
+            var view = createStaffArea({}, 'oa_staff_area_full_grading.html'),
+                $staffGradingButton = $('.button-staff-grading', view.element),
+                $staffGradingPanel = $('.wrapper--staff-grading', view.element),
+                closeButton;
+            expect($staffGradingButton.length).toBe(1);
+            $staffGradingButton[0].click();
+            expect($staffGradingButton).toHaveClass('is--active');
+            closeButton = $('.ui-staff_close_button', $staffGradingPanel)[0];
+            verifyFocused(closeButton);
+
+            // Now click the close button.
+            closeButton.click();
+            expect($staffGradingButton).not.toHaveClass('is--active');
+            expect($staffGradingPanel).toHaveClass('is--hidden');
+            verifyFocused($staffGradingButton[0]);
         });
 
         it('enables both submit buttons when all required fields are specified', function() {

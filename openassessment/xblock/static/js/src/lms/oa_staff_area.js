@@ -241,6 +241,8 @@
                         $staffArea.find('.wrapper--ui-staff').addClass('is--hidden');
                         $panel.removeClass('is--hidden');
                     }
+                    // For accessibility, move focus to the first focusable component.
+                    $panel.find('.ui-staff_close_button').focus();
                 }
             );
 
@@ -251,6 +253,15 @@
                         $panel = $button.closest('.wrapper--ui-staff');
                     $staffArea.find('.ui-staff__button').removeClass('is--active');
                     $panel.addClass('is--hidden');
+
+                    // For accessibility, move focus back to the tab associated with the closed panel.
+                    $staffArea.find('.ui-staff__button').each(function(index, button) {
+                        var $staffPanel = $staffArea.find('.' + $(button).data('panel')).first();
+                        if ($staffPanel[0] === $panel[0]) {
+                            $(button).focus();
+                        }
+                    });
+
                 }
             );
 
