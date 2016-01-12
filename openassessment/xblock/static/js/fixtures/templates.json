@@ -953,8 +953,7 @@
                 "points_earned": 1,
                 "points_possible": 2
             },
-            "workflow_status": "done",
-            "expanded_view": "final-grade"
+            "workflow_status": "done"
         },
         "output": "oa_staff_graded_submission.html"
     },

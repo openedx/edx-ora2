@@ -500,10 +500,9 @@ class StaffAreaTest(OpenAssessmentTest):
         # Click on the button and verify that the panel has opened
         self.staff_area_page.click_staff_toolbar_button(panel_name)
         self.assertEqual(self.staff_area_page.selected_button_names, [button_label])
-        self.assertIn(
-            u'openassessment__{button_name}'.format(button_name=panel_name),
-            self.staff_area_page.visible_staff_panels[0]
-        )
+        visible_panels = self.staff_area_page.visible_staff_panels
+        self.assertEqual(1, len(visible_panels))
+        self.assertIn(u'openassessment__{button_name}'.format(button_name=panel_name), visible_panels[0])
 
         # Click 'Close' and verify that the panel has been closed
         self.staff_area_page.click_staff_panel_close_button(panel_name)

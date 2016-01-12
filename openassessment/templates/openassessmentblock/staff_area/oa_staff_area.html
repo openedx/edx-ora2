@@ -3,14 +3,14 @@
 <div class="openassessment__staff-area wrapper--staff-area">
 
     <div class="wrapper--staff-toolbar">
-        <button class="ui-staff__button button-staff-tools" data-panel="openassessment__staff-tools">{% trans "Manage Individual Learners" %}</button>
-        <button class="ui-staff__button button-staff-info" data-panel="openassessment__staff-info">{% trans "View Assignment Statistics" %}</button>
+        <button class="ui-staff__button button-staff-tools" aria-expanded="false" data-panel="openassessment__staff-tools">{% trans "Manage Individual Learners" %}</button>
+        <button class="ui-staff__button button-staff-info" aria-expanded="false" data-panel="openassessment__staff-info">{% trans "View Assignment Statistics" %}</button>
         {% if staff_assessment_required %}
-            <button class="ui-staff__button button-staff-grading" data-panel="openassessment__staff-grading">{% trans "Grade Available Responses" %}</button>
+            <button class="ui-staff__button button-staff-grading" aria-expanded="false" data-panel="openassessment__staff-grading">{% trans "Grade Available Responses" %}</button>
         {% endif %}
     </div>
 
-    <div class="openassessment__staff-tools wrapper--staff-tools wrapper--ui-staff is--hidden">
+    <div class="openassessment__staff-tools wrapper--staff-tools wrapper--ui-staff">
         <div class="staff-info ui-staff">
             <h2 class="staff-info__title ui-staff__title">
                 <span class="staff-info__title__copy">{% trans "Manage Individual Learners" %}</span>
@@ -22,7 +22,7 @@
                 <div class="staff-info__student">
                     <div class="wrapper--input" class="staff-info__student__form">
                         <form class="openassessment_student_info_form">
-                            <div class="form--error"></div>
+                            <div class="form--error" tabindex="-1"></div>
                             <label class="label">{% trans "Enter an individual learner's username or email" %}
                                 <input type="text" class="openassessment__student_username value" maxlength="255">
                             </label>
@@ -82,7 +82,7 @@
         </div>
     </div>
 
-    <div class="openassessment__staff-info wrapper--staff-info wrapper--ui-staff is--hidden">
+    <div class="openassessment__staff-info wrapper--staff-info wrapper--ui-staff">
         <div class="staff-info ui-staff">
             <h2 class="staff-info__title ui-staff__title">
                 <span class="staff-info__title__copy">{% trans "View Assignment Statistics" %}</span>
@@ -164,7 +164,7 @@
     </div>
 
     {% if staff_assessment_required %}
-    <div class="openassessment__staff-grading wrapper--staff-grading wrapper--ui-staff is--hidden">
+    <div class="openassessment__staff-grading wrapper--staff-grading wrapper--ui-staff">
         <div class="staff-grading ui-staff">
             <h2 class="staff-grading__title ui-staff__title">
                 <span class="staff-info__title__copy">{% trans "Grade Available Responses" %}</span>

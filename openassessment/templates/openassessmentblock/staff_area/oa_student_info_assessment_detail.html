@@ -1,55 +1,56 @@
 {% load i18n %}
 <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse staff-info__{{ class_type }}__assessments">
-    <div class="ui-staff ui-toggle-visibility is--collapsed">
-        <h2 class="staff-info__title ui-staff__subtitle ui-toggle-visibility__control">
+    <button class="ui-staff ui-slidable" aria-expanded="false" id="{{ class_type }}_{{ submission.uuid }}">
+        <h2 class="staff-info__title ui-staff__subtitle">
             <i class="icon fa fa-caret-right" aria-hidden="true"></i>
             <span>{{ translated_title }}</span>
         </h2>
-        <div class="ui-toggle-visibility__content">
-            {% for assessment in assessments %}
-                {% with assessment_num=forloop.counter %}
-                    {% if assessments|length > 1 %}
-                        <h4 class="title--sub">
-                            {% blocktrans %}
-                                Assessment {{ assessment_num }}:
-                            {% endblocktrans %}
-                        </h4>
-                    {% endif %}
-                    <table class="staff-info__status__table" summary="{% trans "Assessment" %}">
-                        <thead>
-                        <tr>
-                            <th abbr="{% trans "Criterion" %}" scope="col">{% trans "Criterion" %}</th>
-                            <th abbr="{% trans "Selected Option" %}" scope="col">{% trans "Selected Option" %}</th>
-                            <th abbr="{% trans "Feedback" %}" scope="col">{% trans "Feedback" %}</th>
-                            <th abbr="{% trans "Points" %}" scope="col">{% trans "Points" %}</th>
-                            <th abbr="{% trans "Points Possible" %}" scope="col">{% trans "Points Possible" %}</th>
-                        </tr>
-                        </thead>
+    </button>
+    <div class="ui-slidable__content" aria-labelledby="{{ class_type }}_{{ submission.uuid }}">
+        {% for assessment in assessments %}
+            {% with assessment_num=forloop.counter %}
+                {% if assessments|length > 1 %}
+                    <h4 class="title--sub">
+                        {% blocktrans %}
+                            Assessment {{ assessment_num }}:
+                        {% endblocktrans %}
+                    </h4>
+                {% endif %}
+                <table class="staff-info__status__table">
+                    <caption class="sr">{% trans "Assessment Details" %}</caption>
+                    <thead>
+                    <tr>
+                        <th abbr="{% trans "Criterion" %}" scope="col">{% trans "Criterion" %}</th>
+                        <th abbr="{% trans "Selected Option" %}" scope="col">{% trans "Selected Option" %}</th>
+                        <th abbr="{% trans "Feedback" %}" scope="col">{% trans "Feedback" %}</th>
+                        <th abbr="{% trans "Points" %}" scope="col">{% trans "Points" %}</th>
+                        <th abbr="{% trans "Points Possible" %}" scope="col">{% trans "Points Possible" %}</th>
+                    </tr>
+                    </thead>
 
-                        <tbody>
-                        {% for criterion in rubric_criteria %}
-                            {% for part in assessment.parts %}
-                                {% if part.option.criterion.name == criterion.name %}
-                                    <tr>
-                                        <td class="label">{{ criterion.label }}</td>
-                                        <td class="value">{{ part.option.label }}</td>
-                                        <td class="value">{{ part.feedback }}</td>
-                                        <td class="value">{{ part.option.points }}</td>
-                                        <td class="value">{{ criterion.total_value }}</td>
-                                    </tr>
-                                {% endif %}
-                            {% endfor %}
+                    <tbody>
+                    {% for criterion in rubric_criteria %}
+                        {% for part in assessment.parts %}
+                            {% if part.option.criterion.name == criterion.name %}
+                                <tr>
+                                    <td class="label">{{ criterion.label }}</td>
+                                    <td class="value">{{ part.option.label }}</td>
+                                    <td class="value">{{ part.feedback }}</td>
+                                    <td class="value">{{ part.option.points }}</td>
+                                    <td class="value">{{ criterion.total_value }}</td>
+                                </tr>
+                            {% endif %}
                         {% endfor %}
-                        </tbody>
-                    </table>
-                    {% if assessment.feedback %}
-                        <h4 class="title--sub">{% trans "Overall Feedback" %}</h4>
-                        <div class="student__answer__display__content">
-                            {{ assessment.feedback|linebreaks }}
-                        </div>
-                    {% endif %}
-                {% endwith %}
-            {% endfor %}
-        </div>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% if assessment.feedback %}
+                    <h4 class="title--sub">{% trans "Overall Feedback" %}</h4>
+                    <div class="student__answer__display__content">
+                        {{ assessment.feedback|linebreaks }}
+                    </div>
+                {% endif %}
+            {% endwith %}
+        {% endfor %}
     </div>
 </div>

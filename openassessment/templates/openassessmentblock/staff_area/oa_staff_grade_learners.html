@@ -1,19 +1,19 @@
 {% load i18n %}
 
-<div class="staff__grade__control ui-toggle-visibility is--collapsed">
-    <header class="staff__grade__header ui-toggle-visibility__control">
+<div class="staff__grade__control">
+    <header class="staff__grade__header ui-slidable__control">
         <h3 class="staff__grade__title">
             <span class="wrapper--copy">
-                <button class="staff__grade__show-form">{% trans "Staff Assessment" %}</button>
+                <button class="staff__grade__show-form ui-slidable" aria-expanded="false">{% trans "Staff Assessment" %}</button>
             </span>
         </h3>
 
         {% include "openassessmentblock/staff_area/oa_staff_grade_learners_count.html" with staff_assessment_ungraded=staff_assessment_ungraded staff_assessment_in_progress=staff_assessment_in_progress %}
     </header>
 
-    <div class="ui-staff__content__section staff__grade__content ui-toggle-visibility__content">
+    <div class="ui-staff__content__section staff__grade__content ui-slidable__content">
         <div class="wrapper--input">
-            <div class="staff__grade__form--error"></div>
+            <div class="staff__grade__form--error" tabindex="-1"></div>
             <div class="staff__grade__form"></div>
         </div>
     </div>

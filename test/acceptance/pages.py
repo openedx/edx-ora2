@@ -465,7 +465,7 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         Returns the classes of the visible staff panels
         """
         panels = self.q(css=self._bounded_selector(".wrapper--ui-staff"))
-        return [panel.get_attribute('class') for panel in panels if u'is--hidden' not in panel.get_attribute('class')]
+        return [panel.get_attribute('class') for panel in panels if panel.is_displayed()]
 
     def is_button_visible(self, button_name):
         """
@@ -479,6 +479,8 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         Presses the button to show the panel with the specified name.
         :return:
         """
+        # Disable JQuery animations (for slideUp/slideDown).
+        self.browser.execute_script("jQuery.fx.off = true;")
         buttons = self.q(css=self._bounded_selector(".button-{button_name}".format(button_name=button_name)))
         buttons.first.click()
 
@@ -617,7 +619,7 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
     @property
     def learner_response(self):
         return self.q(
-            css=self._bounded_selector(".staff-info__student__response .ui-toggle-visibility__content")
+            css=self._bounded_selector(".staff-info__student__response .ui-slidable__content")
         ).text[0]
 
     def staff_assess(self, options_selected, grading_type, continue_after=False):

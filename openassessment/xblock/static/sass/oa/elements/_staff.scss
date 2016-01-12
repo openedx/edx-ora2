@@ -17,34 +17,31 @@
     border-top: ($baseline-v/4) solid $color-decorative-staff;
     padding: $baseline-v ($baseline-h/2);
     background: $staff-bg;
+    display: none;
   }
 
   .ui-staff {
 
-    // CASE: area is collapse/expand friendly
-    &.ui-toggle-visibility {
+    .ui-slidable {
 
-      .staff-info__title__copy {
-        @include margin-left(($baseline-h/4));
+      .icon {
+        @include transition(all $tmg-f2 ease-in-out 0s);
+        @include transform(rotate(bidi-rotate-angle(0deg)));
       }
 
-      // STATE: is collapsed
-      &.is--collapsed {
-
-        .ui-staff__content {
-          margin-top: 0;
-        }
-
-        .staff-info__cancel-submission__content,
-        .staff-info__staff-override__content {
-          padding: 0;
+      &.is--showing {
+        .icon {
+          @include transform(rotate(bidi-rotate-angle(90deg)));
+          @include transform-origin(50% 50%);
         }
       }
+    }
 
-      .ui-toggle-visibility__content {
-        @include margin-left(($baseline-h/4));
-        margin-bottom: ($baseline-v/2);
-      }
+    .ui-slidable__content {
+      padding: ($baseline-v/2) ($baseline-h/4);
+
+      // Display as initially collapsed.
+      display: none;
     }
   }
 
@@ -241,10 +238,15 @@
 
   // Styling for staff grade tab ("Grade Available Responses").
   .ui-staff {
+
     .staff__grade__control {
       border-top: ($baseline-v/4) solid $color-decorative-tertiary;
       background: $bg-content;
       background-color: $bg-content;
+
+      .staff__grade__header {
+        margin-bottom: 0;
+      }
 
       .staff__grade__title {
         @include text-align(left);
@@ -324,13 +326,13 @@
         display: inline;
       }
 
-      .wrapper--input {
-        padding-top: 0;
+      .staff__grade__content {
+        padding: 0;
       }
     }
 
     // Override the default color for h3 (for elements that can be toggled).
-    .ui-toggle-visibility .ui-toggle-visibility__control .staff__grade__title {
+    .ui-slidable__control .staff__grade__title {
       color: $action-primary-color;
     }
   }
@@ -349,6 +351,21 @@
         min-height: ($baseline-v*5);
         text-align: left;
       }
+    }
+  }
+
+  // Learner info section
+  .staff-info__student__report {
+
+     // Override default button styling.
+    .ui-slidable {
+      @extend %btn-reset;
+      background-color: $staff-bg;
+      padding: 0;
+    }
+
+    .staff-info__final__grade__table {
+      margin-top: ($baseline-v/2);
     }
   }
 }
