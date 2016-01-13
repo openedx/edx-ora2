@@ -199,15 +199,15 @@ class PeerAssessmentMixin(object):
 
             if continue_grading:
                 context_dict["submit_button_text"] = self._(
-                    "Submit your assessment & review another response"
+                    "Submit your assessment and review another response"
                 )
             elif assessment["must_grade"] - count == 1:
                 context_dict["submit_button_text"] = self._(
-                    "Submit your assessment & move onto next step"
+                    "Submit your assessment and move to next step"
                 )
             else:
                 context_dict["submit_button_text"] = self._(
-                    "Submit your assessment & move to response #{response_number}"
+                    "Submit your assessment and move to response #{response_number}"
                 ).format(response_number=(count + 2))
 
         if workflow_status == "cancelled":
