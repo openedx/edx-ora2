@@ -21,9 +21,15 @@
             <div class="ui-toggle-visibility__content">
                 {% if workflow_cancellation %}
                     <p>
-                        {% blocktrans with removed_by_username=workflow_cancellation.cancelled_by removed_datetime=workflow_cancellation.cancelled_at|utc|date:"F j, Y H:i e" %}
-                            Learner submission removed by {{ removed_by_username }} on {{ removed_datetime }}
-                        {% endblocktrans %}
+                        {% if workflow_cancellation.cancelled_by %}
+                            {% blocktrans with removed_by_username=workflow_cancellation.cancelled_by removed_datetime=workflow_cancellation.cancelled_at|utc|date:"F j, Y H:i e" %}
+                                Learner submission removed by {{ removed_by_username }} on {{ removed_datetime }}
+                            {% endblocktrans %}
+                        {% else %}
+                            {% blocktrans with removed_datetime=workflow_cancellation.cancelled_at|utc|date:"F j, Y H:i e" %}
+                                Learner submission removed on {{ removed_datetime }}
+                            {% endblocktrans %}
+                        {% endif %}
                     </p>
                     <!-- Comments: Reason for Cancellation-->
                     <p>

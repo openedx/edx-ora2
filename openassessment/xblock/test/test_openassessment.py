@@ -8,7 +8,6 @@ from mock import Mock, patch, MagicMock, PropertyMock
 
 from openassessment.xblock import openassessmentblock
 from openassessment.xblock.resolve_dates import DISTANT_PAST, DISTANT_FUTURE
-from openassessment.workflow import api as workflow_api
 from openassessment.workflow.errors import AssessmentWorkflowError
 from .base import XBlockHandlerTestCase, scenario
 
@@ -659,3 +658,20 @@ class TestDates(XBlockHandlerTestCase):
 
         if released is not None:
             self.assertEqual(xblock.is_released(step=step), released)
+
+    @scenario('data/basic_scenario.xml')
+    def test_get_username(self, xblock):
+        user = MagicMock()
+        user.username = "Bob"
+
+        xblock.xmodule_runtime = MagicMock()
+        xblock.xmodule_runtime.get_real_user.return_value = user
+
+        self.assertEqual('Bob', xblock.get_username('anon_id'))
+
+    @scenario('data/basic_scenario.xml')
+    def test_get_username_unknown_id(self, xblock):
+        xblock.xmodule_runtime = MagicMock()
+        xblock.xmodule_runtime.get_real_user.return_value = None
+
+        self.assertIsNone(xblock.get_username('unknown_id'))

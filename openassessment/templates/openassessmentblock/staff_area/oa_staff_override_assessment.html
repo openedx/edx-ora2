@@ -11,9 +11,13 @@
                 <div class="staff-assessment__display">
                     <header class="staff-assessment__display__header">
                         <h3 class="staff-assessment__display__title">
-                            {% blocktrans %}
-                                Response for: {{ student_username }}
-                            {% endblocktrans %}
+                            {% if student_username %}
+                                {% blocktrans %}
+                                    Response for: {{ student_username }}
+                                {% endblocktrans %}
+                            {% else %}
+                                {% trans "Learner Response" %}
+                            {% endif %}
                         </h3>
                     </header>
 
