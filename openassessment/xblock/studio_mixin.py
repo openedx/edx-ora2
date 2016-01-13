@@ -109,7 +109,7 @@ class StudioMixin(object):
 
         submission_start, submission_due = date_ranges[0]
         assessments = self._assessments_editor_context(date_ranges[1:])
-        editor_assessments_order = self._editor_assessments_order_context()
+        self.editor_assessments_order = self._editor_assessments_order_context()
 
         # Every rubric requires one criterion. If there is no criteria
         # configured for the XBlock, return one empty default criterion, with
@@ -139,7 +139,7 @@ class StudioMixin(object):
             'leaderboard_show': self.leaderboard_show,
             'editor_assessments_order': [
                 make_django_template_key(asmnt)
-                for asmnt in editor_assessments_order
+                for asmnt in self.editor_assessments_order
             ],
             'is_released': self.is_released(),
         }
@@ -349,30 +349,38 @@ class StudioMixin(object):
             list of assessment names
 
         """
-        order = copy.deepcopy(self.editor_assessments_order)
-        used_assessments = [asmnt['name'] for asmnt in self.valid_assessments]
-        default_editor_order = copy.deepcopy(DEFAULT_EDITOR_ASSESSMENTS_ORDER)
+        # Start with the default order, to pick up any assessment types that have been added
+        # since the user last saved their ordering.
+        effective_order = copy.deepcopy(DEFAULT_EDITOR_ASSESSMENTS_ORDER)
 
-        # Backwards compatibility:
         # If the problem already contains example-based assessment
-        # then allow the editor to display example-based assessments.
-        if 'example-based-assessment' in used_assessments:
-            default_editor_order.insert(0, 'example-based-assessment')
+        # then allow the editor to display example-based assessments,
+        # which is not included in the default
+        enabled_assessments = [asmnt['name'] for asmnt in self.valid_assessments]
+        if 'example-based-assessment' in enabled_assessments:
+            effective_order.insert(0, 'example-based-assessment')
 
-        # Backwards compatibility:
-        # If the editor assessments order doesn't match the problem order,
-        # fall back to the problem order.
-        # This handles the migration of problems created pre-authoring,
-        # which will have the default editor order.
-        problem_order_indices = [
-            order.index(asmnt_name) for asmnt_name in used_assessments
-            if asmnt_name in order
+        # Account for changes the user has made to the default order
+        user_order = copy.deepcopy(self.editor_assessments_order)
+        effective_order = self._subset_in_relative_order(effective_order, user_order)
+
+        # Account for inconsistencies between the user's order and the problems
+        # that are currently enabled in the problem (These cannot be changed)
+        enabled_ordered_assessments = [
+            assessment for assessment in enabled_assessments if assessment in user_order
         ]
-        if problem_order_indices != sorted(problem_order_indices):
-            unused_assessments = list(set(default_editor_order) - set(used_assessments))
-            return sorted(unused_assessments) + used_assessments
+        effective_order = self._subset_in_relative_order(effective_order, enabled_ordered_assessments)
 
-        # Forwards compatibility:
-        # Include any additional assessments that may have been added since the problem was created.
-        else:
-            return order + list(set(default_editor_order) - set(order))
+        return effective_order
+
+    def _subset_in_relative_order(self, superset, subset):
+        """
+        Returns a copy of superset, with entries that appear in subset being reordered to match
+        their relative ordering in subset.
+        """
+        superset_indices = [superset.index(item) for item in subset]
+        sorted_superset_indices = sorted(superset_indices)
+        if superset_indices != sorted_superset_indices:
+            for i in range(len(sorted_superset_indices)):
+                superset[sorted_superset_indices[i]] = subset[i]
+        return superset
