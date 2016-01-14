@@ -9,7 +9,7 @@
 <span class="step__status">
   <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
-    <i class="icon fa fa-check"></i>
+    <i class="icon fa fa-check" aria-hidden="true"></i>
     <span class="copy">{% trans "Complete" %}</span>
   </span>
 </span>
@@ -22,17 +22,18 @@
         <div class="step__message message message--complete">
             <h3 class="message__title">{% trans "Your Response Has Been Submitted" %}</h3>
             <div class="message__content">
-                {% if has_peer and has_self %}
+                {% trans "You will receive your grade after all steps are complete and your response is fully assessed." %}
+                {% if peer_incomplete and self_incomplete %}
                     {% blocktrans with peer_start_tag='<a data-behavior="ui-scroll" href="#openassessment__peer-assessment">'|safe self_start_tag='<a data-behavior="ui-scroll" href="#openassessment__self-assessment">'|safe end_tag='</a>'|safe %}
-                        You'll receive your grade after some of your peers have assessed your response and you complete the {{ peer_start_tag }}peer assessment{{ end_tag }} and {{ self_start_tag }}self assessment{{ end_tag }} steps.
+                        You still need to complete the {{ peer_start_tag }}peer assessment{{ end_tag }} and {{ self_start_tag }}self assessment{{ end_tag }} steps.
                     {% endblocktrans %}
-                {% elif has_peer %}
+                {% elif peer_incomplete %}
                     {% blocktrans with start_tag='<a data-behavior="ui-scroll" href="#openassessment__peer-assessment">'|safe end_tag='</a>'|safe %}
-                        You'll receive your grade after some of your peers have assessed your response and you complete the {{ start_tag }}peer assessment{{ end_tag }} step.
+                        You still need to complete the {{ start_tag }}peer assessment{{ end_tag }} step.
                     {% endblocktrans %}
-                {% elif has_self %}
+                {% elif self_incomplete %}
                     {% blocktrans with start_tag='<a data-behavior="ui-scroll" href="#openassessment__self-assessment">'|safe end_tag='</a>'|safe %}
-                        You'll receive your grade after you complete the {{ start_tag }}self assessment{{ end_tag }} step.
+                        You still need to complete the {{ start_tag }}self assessment{{ end_tag }} step.
                     {% endblocktrans %}
                 {% endif %}
             </div>
@@ -42,9 +43,11 @@
             <article class="submission__answer__display">
                 <h3 class="submission__answer__display__title">{% trans "Your Response" %}</h3>
 
-                {% include "openassessmentblock/oa_submission_answer.html" with answer=student_submission.answer answer_text_label="Your response to the question above:" %}
+                {% trans "Your response to the question above:" as translated_label %}
+                {% include "openassessmentblock/oa_submission_answer.html" with answer=student_submission.answer answer_text_label=translated_label %}
 
-                {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=file_url  header="Your Uploaded File" class_prefix="submission__answer" %}
+                {% trans "Your Uploaded File"  as translated_header %}
+                {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=file_url header=translated_header class_prefix="submission__answer" %}
             </article>
         </div>
     </div>

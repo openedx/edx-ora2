@@ -12,53 +12,42 @@ describe("OpenAssessment.PeerView", function() {
             }
         ).promise();
 
-        this.peerAssess = function(optionsSelected, feedback) {
+        this.mockLoadTemplate = function(template) {
+            var server = this;
+            return $.Deferred(function(defer) {
+                var fragment = readFixtures(template);
+                defer.resolveWith(server, [fragment]);
+            });
+        };
+
+        this.peerAssess = function() {
             return successPromise;
         };
 
-        this.render = function(step) {
+        this.render = function() {
             return successPromise;
         };
 
         this.renderContinuedPeer = function() {
-            return successPromise;
+            return this.mockLoadTemplate('oa_peer_assessment.html');
         };
     };
 
-    // Stub base view
-    var StubBaseView = function() {
-        this.showLoadError = function(msg) {};
-        this.toggleActionError = function(msg, step) {};
-        this.setUpCollapseExpand = function(sel) {};
-        this.scrollToTop = function() {};
-        this.loadAssessmentModules = function() {};
-        this.loadMessageView = function() {};
+    // Stubs
+    var server = null;
+    var runtime = {};
+
+    var createPeerAssessmentView = function(template) {
+        loadFixtures(template);
+
+        var rootElement = $('#openassessment__peer-assessment').parent().get(0);
+        var baseView = new OpenAssessment.BaseView(runtime, rootElement, server, {});
+        var view = new OpenAssessment.PeerView(rootElement, server, baseView);
+        view.installHandlers();
+        return view;
     };
 
-    // Stubs
-    var baseView = null;
-    var server = null;
-
-    // View under test
-    var view = null;
-
-    beforeEach(function() {
-        // Load the DOM fixture
-        loadFixtures('oa_peer_assessment.html');
-
-        // Create a new stub server
-        server = new StubServer();
-
-        // Create the stub base view
-        baseView = new StubBaseView();
-
-        // Create the object under test
-        var el = $("#openassessment-base").get(0);
-        view = new OpenAssessment.PeerView(el, server, baseView);
-        view.installHandlers();
-    });
-
-    it("Sends a peer assessment to the server", function() {
+    var submitPeerAssessment = function(view) {
         spyOn(server, 'peerAssess').and.callThrough();
 
         // Select options in the rubric
@@ -86,9 +75,25 @@ describe("OpenAssessment.PeerView", function() {
         expect(server.peerAssess).toHaveBeenCalledWith(
             optionsSelected, criterionFeedback, overallFeedback, ''
         );
+    };
+
+    beforeEach(function() {
+        // Create a new stub server
+        server = new StubServer();
+        server.renderLatex = jasmine.createSpy('renderLatex');
     });
 
-    it("Re-enables the peer assess button on error", function() {
+    afterEach(function() {
+        OpenAssessment.clearUnsavedChanges();
+    });
+
+    it("sends a peer assessment to the server", function() {
+        var view = createPeerAssessmentView('oa_peer_assessment.html');
+        submitPeerAssessment(view);
+    });
+
+    it("re-enables the peer assess button on error", function() {
+        var view = createPeerAssessmentView('oa_peer_assessment.html');
         // Simulate a server error
         spyOn(server, 'peerAssess').and.callFake(function() {
             expect(view.peerSubmitEnabled()).toBe(false);
@@ -102,9 +107,9 @@ describe("OpenAssessment.PeerView", function() {
         expect(view.peerSubmitEnabled()).toBe(true);
     });
 
-    it("Re-enables the continued grading button on error", function() {
-        jasmine.getFixtures().fixturesPath = 'base/fixtures';
-        loadFixtures('oa_peer_complete.html');
+    it("re-enables the continued grading button on error", function() {
+        var view = createPeerAssessmentView('oa_peer_complete.html');
+
         // Simulate a server error
         spyOn(server, 'renderContinuedPeer').and.callFake(function() {
             expect(view.continueAssessmentEnabled()).toBe(false);
@@ -116,5 +121,50 @@ describe("OpenAssessment.PeerView", function() {
 
         // Expect the submit button to have been re-enabled
         expect(view.continueAssessmentEnabled()).toBe(true);
+    });
+
+    it("warns of unsubmitted assessments", function() {
+        var view = createPeerAssessmentView('oa_peer_assessment.html');
+
+        expect(view.baseView.unsavedWarningEnabled()).toBe(false);
+
+        // Click on radio buttons, to create unsubmitted changes.
+        $('.question__answers', view.element).each(function() {
+            $('input[type="radio"]', this).first().click();
+        });
+
+        expect(view.baseView.unsavedWarningEnabled()).toBe(true);
+
+        // When submitPeerAssessment is executed, the views will all re-render. However,
+        // as the test does not mock out the surrounding elements, the re-render
+        // of the peer assessment module will keep the original HTML intact (with selected
+        // options), causing the unsavedWarnings callback to be triggered again (after it is properly
+        // cleared during the submit operation). To avoid this, have the view re-render fail.
+        server.render = function() {
+            return $.Deferred(
+                function(defer) {
+                    defer.fail();
+                }
+            ).promise();
+        };
+
+        submitPeerAssessment(view);
+
+        expect(view.baseView.unsavedWarningEnabled()).toBe(false);
+    });
+
+    describe("Turbo Mode", function() {
+        it("can submit assessments in turbo mode", function() {
+            var view = createPeerAssessmentView('oa_turbo_mode.html');
+            submitPeerAssessment(view);
+        });
+
+        it("can continue assessing upon completion of required assessments", function() {
+            var view = createPeerAssessmentView('oa_peer_complete.html');
+            $(".action--continue--grading", view.element).click();
+
+            // Verify that a peer assessment can now be submitted
+            submitPeerAssessment(view);
+        });
     });
 });

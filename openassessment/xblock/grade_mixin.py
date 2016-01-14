@@ -5,11 +5,14 @@ import copy
 from collections import defaultdict
 from lazy import lazy
 
+from django.utils.translation import ugettext as _
+
 from xblock.core import XBlock
 
+from openassessment.assessment.api import ai as ai_api
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
-from openassessment.assessment.api import ai as ai_api
+from openassessment.assessment.api import staff as staff_api
 from openassessment.assessment.errors import SelfAssessmentError, PeerAssessmentError
 from submissions import api as sub_api
 
@@ -57,7 +60,7 @@ class GradeMixin(object):
             elif status == "done":
                 path, context = self.render_grade_complete(workflow)
             elif status == "waiting":
-                path, context = self.render_grade_waiting(workflow)
+                path, context = 'openassessmentblock/grade/oa_grade_waiting.html', {}
             elif status is None:
                 path = 'openassessmentblock/grade/oa_grade_not_started.html'
             else:  # status is 'self' or 'peer', which implies that the workflow is incomplete
@@ -66,22 +69,6 @@ class GradeMixin(object):
             return self.render_error(self._(u"An unexpected error occurred."))
         else:
             return self.render_assessment(path, context)
-
-    def render_grade_waiting(self, workflow):
-        """
-        Render the grade waiting state.
-
-        Args:
-            workflow (dict): The serialized Workflow model.
-
-        Returns:
-            tuple of context (dict) and template_path (string)
-
-        """
-        context = {
-            "waiting": self.get_waiting_details(workflow["status_details"])
-        }
-        return 'openassessmentblock/grade/oa_grade_waiting.html', context
 
     def render_grade_complete(self, workflow):
         """
@@ -97,6 +84,7 @@ class GradeMixin(object):
         assessment_steps = self.assessment_steps
         submission_uuid = workflow['submission_uuid']
 
+        staff_assessment = None
         example_based_assessment = None
         self_assessment = None
         feedback = None
@@ -104,10 +92,11 @@ class GradeMixin(object):
         has_submitted_feedback = False
 
         if "peer-assessment" in assessment_steps:
+            peer_api.get_score(submission_uuid, self.workflow_requirements()["peer"])
             feedback = peer_api.get_assessment_feedback(submission_uuid)
             peer_assessments = [
-                self._assessment_grade_context(asmnt)
-                for asmnt in peer_api.get_assessments(submission_uuid)
+                self._assessment_grade_context(peer_assessment)
+                for peer_assessment in peer_api.get_assessments(submission_uuid)
             ]
             has_submitted_feedback = feedback is not None
 
@@ -120,6 +109,10 @@ class GradeMixin(object):
             example_based_assessment = self._assessment_grade_context(
                 ai_api.get_latest_assessment(submission_uuid)
             )
+
+        raw_staff_assessment = staff_api.get_latest_staff_assessment(submission_uuid)
+        if raw_staff_assessment:
+            staff_assessment = self._assessment_grade_context(raw_staff_assessment)
 
         feedback_text = feedback.get('feedback', '') if feedback else ''
         student_submission = sub_api.get_submission(submission_uuid)
@@ -135,40 +128,20 @@ class GradeMixin(object):
         context = {
             'score': score,
             'feedback_text': feedback_text,
+            'has_submitted_feedback': has_submitted_feedback,
             'student_submission': create_submission_dict(student_submission, self.prompts),
             'peer_assessments': peer_assessments,
-            'self_assessment': self_assessment,
-            'example_based_assessment': example_based_assessment,
-            'rubric_criteria': self._rubric_criteria_grade_context(peer_assessments, self_assessment),
-            'has_submitted_feedback': has_submitted_feedback,
+            'grade_details': self.grade_details(
+                submission_uuid,
+                peer_assessments=peer_assessments,
+                self_assessment=self_assessment,
+                example_based_assessment=example_based_assessment,
+                staff_assessment=staff_assessment,
+            ),
             'file_upload_type': self.file_upload_type,
             'allow_latex': self.allow_latex,
             'file_url': self.get_download_url_from_submission(student_submission)
         }
-
-        # Update the scores we will display to the user
-        # Note that we are updating a *copy* of the rubric criteria stored in
-        # the XBlock field
-        max_scores = peer_api.get_rubric_max_scores(submission_uuid)
-        median_scores = None
-        if "peer-assessment" in assessment_steps:
-            median_scores = peer_api.get_assessment_median_scores(submission_uuid)
-        elif "self-assessment" in assessment_steps:
-            median_scores = self_api.get_assessment_scores_by_criteria(submission_uuid)
-        elif "example-based-assessment" in assessment_steps:
-            median_scores = ai_api.get_assessment_scores_by_criteria(submission_uuid)
-
-        if median_scores is not None and max_scores is not None:
-            for criterion in context["rubric_criteria"]:
-                # Although we prevent course authors from modifying criteria post-release,
-                # it's still possible for assessments created by course staff to
-                # have criteria that differ from the current problem definition.
-                # It's also possible to circumvent the post-release restriction
-                # if course authors directly import a course into Studio.
-                # If this happens, we simply leave the score blank so that the grade
-                # section can render without error.
-                criterion["median_score"] = median_scores.get(criterion["name"], '')
-                criterion["total_value"] = max_scores.get(criterion["name"], '')
 
         return ('openassessmentblock/grade/oa_grade_complete.html', context)
 
@@ -238,25 +211,25 @@ class GradeMixin(object):
             )
             return {'success': True, 'msg': self._(u"Feedback saved.")}
 
-    def _rubric_criteria_grade_context(self, peer_assessments, self_assessment):
+    def grade_details(
+            self, submission_uuid, peer_assessments, self_assessment, example_based_assessment, staff_assessment
+    ):
         """
-        Sanitize the rubric criteria into a format that can be passed
-        into the grade complete Django template.
-
-            * Add per-criterion feedback from peer assessments to the rubric criteria.
-            * Filters out empty feedback.
-            * Assign a "label" for criteria/options if none is defined (backwards compatibility).
+        Returns details about the grade assigned to the submission.
 
         Args:
+            submission_uuid (str): The id of the submission being graded.
             peer_assessments (list of dict): Serialized assessment models from the peer API.
             self_assessment (dict): Serialized assessment model from the self API
+            example_based_assessment (dict): Serialized assessment model from the example-based API
+            staff_assessment (dict): Serialized assessment model from the staff API
 
         Returns:
-            list of criterion dictionaries
+            A dictionary with full details about the submission's grade.
 
         Example:
-            [
-                {
+            {
+                criteria: [{
                     'label': 'Test name',
                     'name': 'f78ac7d4ca1e4134b0ba4b40ca212e72',
                     'prompt': 'Test prompt',
@@ -266,32 +239,253 @@ class GradeMixin(object):
                         'Good job!',
                         'Excellent work!',
                     ]
-                },
+                }],
+                additional_feedback: [{
+                }]
                 ...
-            ]
+            }
         """
         criteria = copy.deepcopy(self.rubric_criteria_with_labels)
-        peer_criteria_feedback = defaultdict(list)
-        self_criteria_feedback = {}
 
-        for assessment in peer_assessments:
-            for part in assessment['parts']:
-                if part['feedback']:
-                    part_criterion_name = part['criterion']['name']
-                    peer_criteria_feedback[part_criterion_name].append(part['feedback'])
+        def has_feedback(assessments):
+            """
+            Returns True if at least one assessment has feedback.
 
-        if self_assessment:
-            for part in self_assessment['parts']:
-                if part['feedback']:
-                    part_criterion_name = part['criterion']['name']
-                    self_criteria_feedback[part_criterion_name] = part['feedback']
+            Args:
+                assessments: A list of assessments
+
+            Returns:
+                Returns True if at least one assessment has feedback.
+            """
+            return any(
+                assessment.get('feedback', None) or has_feedback(assessment.get('individual_assessments', []))
+                for assessment in assessments
+            )
+
+        max_scores = peer_api.get_rubric_max_scores(submission_uuid)
+        median_scores = None
+        assessment_steps = self.assessment_steps
+        if staff_assessment:
+            median_scores = staff_api.get_assessment_scores_by_criteria(submission_uuid)
+        elif "peer-assessment" in assessment_steps:
+            median_scores = peer_api.get_assessment_median_scores(submission_uuid)
+        elif "example-based-assessment" in assessment_steps:
+            median_scores = ai_api.get_assessment_scores_by_criteria(submission_uuid)
+        elif "self-assessment" in assessment_steps:
+            median_scores = self_api.get_assessment_scores_by_criteria(submission_uuid)
 
         for criterion in criteria:
             criterion_name = criterion['name']
-            criterion['peer_feedback'] = peer_criteria_feedback[criterion_name]
-            criterion['self_feedback'] = self_criteria_feedback.get(criterion_name)
 
-        return criteria
+            # Record assessment info for the current criterion
+            criterion['assessments'] = self._graded_assessments(
+                submission_uuid, criterion,
+                staff_assessment=staff_assessment,
+                peer_assessments=peer_assessments,
+                example_based_assessment=example_based_assessment,
+                self_assessment=self_assessment,
+            )
+
+            # Record whether there is any feedback provided in the assessments
+            criterion['has_feedback'] = has_feedback(criterion['assessments'])
+
+            # Although we prevent course authors from modifying criteria post-release,
+            # it's still possible for assessments created by course staff to
+            # have criteria that differ from the current problem definition.
+            # It's also possible to circumvent the post-release restriction
+            # if course authors directly import a course into Studio.
+            # If this happens, we simply leave the score blank so that the grade
+            # section can render without error.
+            criterion['median_score'] = median_scores.get(criterion_name, '')
+            criterion['total_value'] = max_scores.get(criterion_name, '')
+
+        return {
+            'criteria': criteria,
+            'additional_feedback': self._additional_feedback(
+                staff_assessment=staff_assessment,
+                peer_assessments=peer_assessments,
+                self_assessment= self_assessment,
+            ),
+        }
+
+    def _graded_assessments(
+            self, submission_uuid, criterion, staff_assessment, peer_assessments,
+            example_based_assessment, self_assessment
+    ):
+        """
+        Returns an array of assessments with their associated grades.
+        """
+        def _get_assessment_part(title, part_criterion_name, assessment):
+            """
+            Returns the assessment part for the given criterion name.
+            """
+            if assessment:
+                for part in assessment['parts']:
+                    if part['criterion']['name'] == part_criterion_name:
+                        part['title'] = title
+                        return part
+            return None
+
+        # Fetch all the unique assessment parts
+        criterion_name = criterion['name']
+        staff_assessment_part = _get_assessment_part(_('Staff Grade'), criterion_name, staff_assessment)
+        if len(peer_assessments) > 0:
+            peer_assessment_part = {
+                'title': _('Peer Median Grade'),
+                'criterion': criterion,
+                'option': self._peer_median_option(submission_uuid, criterion),
+                'individual_assessments': [
+                    _get_assessment_part(
+                        _('Peer {peer_index}').format(peer_index=index + 1),
+                        criterion_name,
+                        peer_assessment
+                    )
+                    for index, peer_assessment in enumerate(peer_assessments)
+                ],
+            }
+        else:
+            peer_assessment_part = None
+        example_based_assessment_part = _get_assessment_part(
+            _('Example-Based Grade'), criterion_name, example_based_assessment
+        )
+        self_assessment_part = _get_assessment_part(_('Your Self Assessment'), criterion_name, self_assessment)
+
+        # Now collect together all the assessments
+        assessments = []
+        if staff_assessment_part:
+            assessments.append(staff_assessment_part)
+        if peer_assessment_part:
+            assessments.append(peer_assessment_part)
+        if example_based_assessment_part:
+            assessments.append(example_based_assessment_part)
+        if self_assessment_part:
+            assessments.append(self_assessment_part)
+
+        # Include points only for the first assessment
+        if len(assessments) > 0:
+            first_assessment = assessments[0]
+            option = first_assessment['option']
+            if option:
+                first_assessment['points'] = option['points']
+
+        return assessments
+
+    def _peer_median_option(self, submission_uuid, criterion):
+        """
+        Returns the option for the median peer grade.
+
+        Args:
+            submission_uuid (str): The id for the submission.
+            criterion (dict): The criterion in question.
+
+        Returns:
+            The option for the median peer grade.
+
+        """
+        median_scores = peer_api.get_assessment_median_scores(submission_uuid)
+        median_score = median_scores.get(criterion['name'], None)
+        def median_options():
+            """
+            Returns a list of options that should be shown to represent the median.
+
+            Some examples:
+              1. Options A=1, B=3, and C=5, a median score of 3 returns [B].
+              2. Options A=1, B=3, and C=5, a median score of 4 returns [B, C].
+              3. Options A=1, B=1, and C=3, a median score of 1 returns [A, B]
+              4. Options A=1, B=1, C=3, and D=3, a median score of 2 return [A, B, C, D]
+              5. Options A=1, B=3 and C=5, a median score of 6 returns [C]
+                 Note: 5 should not happen as a median should never be out of range.
+            """
+            last_score = None
+            median_options = []
+
+            # Sort the options first by name and then by points, so that if there
+            # are options with identical points they will sort alphabetically rather
+            # than randomly. Note that this depends upon sorted being a stable sort.
+            alphabetical_options = sorted(criterion['options'], key=lambda option: option['label'])
+            ordered_options = sorted(alphabetical_options, key=lambda option: option['points'])
+
+            for option in ordered_options:
+                current_score = option['points']
+
+                # If we have reached a new score, then decide what to do next
+                if current_score is not last_score:
+
+                    # If the last score we saw was already larger than the median
+                    # score, then we must have collected enough so return all
+                    # the median options.
+                    if last_score >= median_score:
+                        return median_options
+
+                    # If the current score is exactly the median or is less,
+                    # then we don't need any previously collected scores.
+                    if current_score <= median_score:
+                        median_options = []
+
+                    # Update the last score to be the current one
+                    last_score = current_score
+
+                # Collect the current option in case it is applicable
+                median_options.append(option)
+            return median_options
+
+        # Calculate the full list of matching options for the median, and then:
+        #  - If zero or one matches are found, then just return None or the single item.
+        #  - If more than one match is found, return a dict with an aggregate label,
+        #  - the median score, and no explanation (it is too verbose to show an aggregate).
+        options = median_options()
+        if len(options) == 0:
+            return None
+        if len(options) == 1:
+            return options[0]
+        return {
+            'label': u' / '.join([option['label'] for option in options]),
+            'points': median_score,
+            'explanation': None,
+        }
+
+
+    def _additional_feedback(self, staff_assessment, peer_assessments, self_assessment):
+        """
+        Returns an array of additional feedback for the specified assessments.
+
+        Args:
+            staff_assessment: The staff assessment
+            peer_assessments: An array of peer assessments
+            self_assessment: The self assessment
+
+        Returns:
+            Returns an array of additional feedback per assessment.
+        """
+        additional_feedback = []
+        if staff_assessment:
+            feedback = staff_assessment.get('feedback')
+            if feedback:
+                additional_feedback.append({
+                    'title': _('Staff Comments'),
+                    'feedback': feedback
+                })
+        if peer_assessments:
+            individual_feedback = []
+            for peer_index, peer_assessment in enumerate(peer_assessments):
+                individual_feedback.append({
+                    'title': _('Peer {peer_index}').format(peer_index=peer_index + 1),
+                    'feedback': peer_assessment.get('feedback')
+                })
+            if any(assessment_feedback['feedback'] for assessment_feedback in individual_feedback):
+                additional_feedback.append({
+                    'title': _('Peer'),
+                    'individual_assessments': individual_feedback
+                })
+        if self_assessment:
+            feedback = self_assessment.get('feedback')
+            if feedback:
+                additional_feedback.append({
+                    'title': _('Your Comments'),
+                    'feedback': feedback
+                })
+
+        return additional_feedback if additional_feedback else None
 
     @lazy
     def _criterion_and_option_labels(self):

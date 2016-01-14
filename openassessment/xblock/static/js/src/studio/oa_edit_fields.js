@@ -152,8 +152,8 @@ OpenAssessment.ToggleControl.prototype = {
     },
 
     show: function() {
-        this.shownSection.removeClass('is--hidden');
         this.hiddenSection.addClass('is--hidden');
+        this.shownSection.removeClass('is--hidden');
     },
 
     hide: function() {

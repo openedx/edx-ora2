@@ -5,7 +5,7 @@
     {% if header %}
         <header class="{{ class_prefix }}__display__header">
             <h3 class="{{ class_prefix }}__display__title">
-                {% trans header %}
+                {{ header }}
             </h3>
         </header>
     {% endif %}
@@ -21,7 +21,7 @@
                 {% trans "View the file associated with this submission." %}
             </a>
             {% if show_warning %}
-                <p class="submission_file_warning">{% trans "(Caution: This file was uploaded by another course learner and has not been verified, screened, approved, reviewed or endorsed by edX. If you decide to access it, you do so at your own risk.)" %}</p>
+                <p class="submission_file_warning">{% trans "(Caution: This file was uploaded by another course learner and has not been verified, screened, approved, reviewed, or endorsed by edX. If you decide to access it, you do so at your own risk.)" %}</p>
             {% endif %}
         {% endif %}
     </div>

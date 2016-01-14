@@ -232,6 +232,7 @@ def full_assessment_dict(assessment, rubric_dict=None):
         for part_dict in parts
     )
     assessment_dict["points_possible"] = rubric_dict["points_possible"]
+    assessment_dict["id"] = assessment.id
 
     cache.set(assessment_cache_key, assessment_dict)
 

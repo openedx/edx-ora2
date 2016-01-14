@@ -104,7 +104,7 @@ ASSESSMENT_DICT_FAIL = {
     }
 }
 
-# Answers are against RUBRIC_DICT -- this is worth 12 points
+# Answers are against RUBRIC_DICT -- this is worth 14 points
 ASSESSMENT_DICT_PASS = {
     'overall_feedback': u"这是中国",
     'criterion_feedback': {},
@@ -116,7 +116,7 @@ ASSESSMENT_DICT_PASS = {
     }
 }
 
-# Answers are against RUBRIC_DICT -- this is worth 12 points
+# Answers are against RUBRIC_DICT -- this is worth 14 points
 # Feedback text is one character over the limit.
 LONG_FEEDBACK_TEXT = u"是" * Assessment.MAX_FEEDBACK_SIZE + "."
 ASSESSMENT_DICT_HUGE = {
@@ -322,7 +322,7 @@ class TestPeerApi(CacheResetTest):
             RUBRIC_DICT,
             REQUIRED_GRADED_BY,
         )
-        assessments = peer_api.get_assessments(sub["uuid"], scored_only=False)
+        assessments = peer_api.get_assessments(sub["uuid"])
         self.assertEqual(1, len(assessments))
 
     @file_data('data/valid_assessments.json')
@@ -340,7 +340,7 @@ class TestPeerApi(CacheResetTest):
             REQUIRED_GRADED_BY,
             MONDAY,
         )
-        assessments = peer_api.get_assessments(sub["uuid"], scored_only=False)
+        assessments = peer_api.get_assessments(sub["uuid"])
         self.assertEqual(1, len(assessments))
         self.assertEqual(assessments[0]["scored_at"], MONDAY)
 
@@ -859,14 +859,12 @@ class TestPeerApi(CacheResetTest):
         )
         self.assertEqual(assessment["points_earned"], 6)
         self.assertEqual(assessment["points_possible"], 14)
-        submitted_assessments = peer_api.get_submitted_assessments(bob_sub["uuid"], scored_only=True)
-        self.assertEqual(0, len(submitted_assessments))
 
-        submitted_assessments = peer_api.get_submitted_assessments(bob_sub["uuid"], scored_only=False)
+        submitted_assessments = peer_api.get_submitted_assessments(bob_sub["uuid"])
         self.assertEqual(1, len(submitted_assessments))
 
     def test_get_submitted_assessments_with_bad_submission(self):
-        submitted_assessments = peer_api.get_submitted_assessments("bad-uuid", scored_only=True)
+        submitted_assessments = peer_api.get_submitted_assessments("bad-uuid")
         self.assertEqual(0, len(submitted_assessments))
 
     def test_find_active_assessments(self):
@@ -1122,7 +1120,7 @@ class TestPeerApi(CacheResetTest):
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
         peer_api.get_submission_to_assess(bob_sub['uuid'], REQUIRED_GRADED_BY)
         mock_filter.side_effect = DatabaseError("Oh no.")
-        submitted_assessments = peer_api.get_submitted_assessments(bob_sub["uuid"], scored_only=False)
+        submitted_assessments = peer_api.get_submitted_assessments(bob_sub["uuid"])
         self.assertEqual(1, len(submitted_assessments))
 
     @patch.object(PeerWorkflow.objects, 'raw')
@@ -1253,11 +1251,11 @@ class TestPeerApi(CacheResetTest):
         tim, _ = self._create_student_and_submission("Tim", "Tim's answer")
         peer_api.get_assessment_median_scores(tim["uuid"])
 
-    @patch.object(PeerWorkflowItem, 'get_scored_assessments')
+    @patch.object(Assessment.objects, 'filter')
     @raises(peer_api.PeerAssessmentInternalError)
     def test_get_assessments_db_error(self, mock_filter):
-        mock_filter.side_effect = DatabaseError("Bad things happened")
         tim, _ = self._create_student_and_submission("Tim", "Tim's answer")
+        mock_filter.side_effect = DatabaseError("Bad things happened")
         peer_api.get_assessments(tim["uuid"])
 
     @patch.object(PeerWorkflow.objects, 'get_or_create')
@@ -1276,7 +1274,7 @@ class TestPeerApi(CacheResetTest):
             MONDAY,
         )
 
-    @patch.object(PeerWorkflowItem, 'get_scored_assessments')
+    @patch.object(Assessment.objects, 'filter')
     @raises(peer_api.PeerAssessmentInternalError)
     def test_error_on_get_assessment(self, mock_filter):
         self._create_student_and_submission("Tim", "Tim's answer")
@@ -1372,15 +1370,15 @@ class TestPeerApi(CacheResetTest):
         )
 
         # Make sure Tim has one assessment.
-        tim_assessments = peer_api.get_assessments(tim_sub['uuid'], scored_only=False)
+        tim_assessments = peer_api.get_assessments(tim_sub['uuid'])
         self.assertEqual(1, len(tim_assessments))
 
         # Make sure Sally has one assessment.
-        sally_assessments = peer_api.get_assessments(sally_sub['uuid'], scored_only=False)
+        sally_assessments = peer_api.get_assessments(sally_sub['uuid'])
         self.assertEqual(1, len(sally_assessments))
 
         # Make sure Jane has no assessment.
-        jane_assessments = peer_api.get_assessments(jane_sub['uuid'], scored_only=False)
+        jane_assessments = peer_api.get_assessments(jane_sub['uuid'])
         self.assertEqual(0, len(jane_assessments))
 
     def test_get_submission_to_assess_no_workflow(self):
@@ -1472,14 +1470,14 @@ class TestPeerApi(CacheResetTest):
             required_graded_by
         )
 
-        # Tim grades Bob, so now Bob has one assessment
+        # Tim grades Bob, so now Bob has one assessment with a good grade
         peer_api.get_submission_to_assess(tim_sub['uuid'], tim['student_id'])
         peer_api.create_assessment(
             tim_sub['uuid'],
             tim['student_id'],
-            ASSESSMENT_DICT['options_selected'],
-            ASSESSMENT_DICT['criterion_feedback'],
-            ASSESSMENT_DICT['overall_feedback'],
+            ASSESSMENT_DICT_PASS['options_selected'],
+            ASSESSMENT_DICT_PASS['criterion_feedback'],
+            ASSESSMENT_DICT_PASS['overall_feedback'],
             RUBRIC_DICT,
             required_graded_by
         )
@@ -1506,27 +1504,24 @@ class TestPeerApi(CacheResetTest):
             required_graded_by
         )
 
-        # Sue grades the only person she hasn't graded yet (Bob)
+        # Sue grades the only person she hasn't graded yet (Bob), with a failing grade
         peer_api.get_submission_to_assess(sue_sub['uuid'], sue['student_id'])
         peer_api.create_assessment(
             sue_sub['uuid'],
             sue['student_id'],
-            ASSESSMENT_DICT['options_selected'],
-            ASSESSMENT_DICT['criterion_feedback'],
-            ASSESSMENT_DICT['overall_feedback'],
+            ASSESSMENT_DICT_FAIL['options_selected'],
+            ASSESSMENT_DICT_FAIL['criterion_feedback'],
+            ASSESSMENT_DICT_FAIL['overall_feedback'],
             RUBRIC_DICT,
             required_graded_by
         )
 
         # This used to create a second assessment,
         # which was the bug.
-        peer_api.get_score(bob_sub['uuid'], requirements)
+        score = peer_api.get_score(bob_sub['uuid'], requirements)
 
-        # Get the assessments used to generate the score
-        # Only the first assessment should be used
-        scored_assessments = peer_api.get_assessments(bob_sub['uuid'], scored_only=True)
-        self.assertEqual(len(scored_assessments), 1)
-        self.assertEqual(scored_assessments[0]['scorer_id'], tim['student_id'])
+        # Verify that only the first assessment was used to generate the score
+        self.assertEqual(score['points_earned'], 14)
 
     @raises(peer_api.PeerAssessmentInternalError)
     def test_create_assessment_database_error(self):

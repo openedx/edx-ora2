@@ -86,6 +86,7 @@ OpenAssessment.ValidationAlert.prototype = {
 
             $('.oa_editor_content_wrapper', this.editorElement).each(function() {
                 $(this).css(styles);
+                $(this).scrollTop($(this).scrollTop() + alertHeight); //keep our relative scroll position the same
             });
 
         }

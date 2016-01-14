@@ -16,13 +16,7 @@
         <div class="wrapper--step__content">
             <div class="step__content">
                 <div class="grade__value__description">
-                    {% if waiting == 'peer' %}
-                        <p>{% trans "Your response is still undergoing peer assessment. After your peers have assessed your response, you'll see their comments and receive your final grade." %}</p>
-                    {% elif waiting == 'example-based' %}
-                        <p>{% trans "Your response is still undergoing example-based assessment. After your response has been assessed, you'll see the comments and receive your final grade." %}</p>
-                    {% elif waiting == 'all' %}
-                        <p>{% trans "Your response is still undergoing peer assessment and example-based assessment. After your peers have assessed your response and example-based assessment is complete, you'll see your peers' comments and receive your final grade." %}</p>
-                    {% endif %}
+                    <p>{% trans "You have completed your steps in the assignment, but some assessments still need to be done on your response. When the assessments of your response are complete, you will see feedback from everyone who assessed your response, and you will receive your final grade." %}</p>
                 </div>
             </div>
         </div>

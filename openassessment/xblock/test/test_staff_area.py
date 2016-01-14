@@ -6,7 +6,6 @@ import urllib
 from mock import Mock, patch
 from django.test.utils import override_settings
 
-import ddt
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 from openassessment.assessment.api import ai as ai_api
@@ -17,7 +16,6 @@ from submissions import api as sub_api
 
 from openassessment.xblock.data_conversion import prepare_submission_for_serialization
 from openassessment.xblock.test.base import scenario, XBlockHandlerTestCase
-from xblock.core import XBlock
 
 ALGORITHM_ID = 'fake'
 
@@ -83,12 +81,12 @@ class TestCourseStaff(XBlockHandlerTestCase):
             xblock.scope_ids.usage_id, False, False, "Bob"
         )
         resp = self.request(xblock, 'render_staff_area', json.dumps({}))
-        self.assertNotIn("Staff Info", resp.decode('utf-8').lower())
+        self.assertNotIn("view assignment statistics", resp.decode('utf-8').lower())
 
         # If we ARE course staff, then we should see the debug info
         xblock.xmodule_runtime.user_is_staff = True
         resp = self.request(xblock, 'render_staff_area', json.dumps({}))
-        self.assertIn("staff info", resp.decode('utf-8').lower())
+        self.assertIn("view assignment statistics", resp.decode('utf-8').lower())
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_course_student_debug_info(self, xblock):
@@ -115,7 +113,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         # If the client requests the staff info directly, they should get an error
         resp = self.request(xblock, 'render_staff_area', json.dumps({}))
-        self.assertNotIn("course staff information", resp.decode('utf-8').lower())
+        self.assertNotIn("view assignment statistics", resp.decode('utf-8').lower())
         self.assertIn("do not have permission", resp.decode('utf-8').lower())
 
         # The container page should not contain a staff info section at all
@@ -132,7 +130,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # Verify that we can render without error
         resp = self.request(xblock, 'render_staff_area', json.dumps({}))
         decoded_response = resp.decode('utf-8').lower()
-        self.assertIn("course staff information", decoded_response)
+        self.assertIn("view assignment statistics", decoded_response)
 
         # Confirm example-based-assessment does not show up; it is not date
         # driven so its start / due dates are not relevant
@@ -156,7 +154,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         # Verify that we can render without error
         resp = self.request(xblock, 'render_staff_area', json.dumps({}))
-        self.assertIn("course staff information", resp.decode('utf-8').lower())
+        self.assertIn("view assignment statistics", resp.decode('utf-8').lower())
         self.assertIn("n/a", resp.decode('utf-8').lower())
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
@@ -182,18 +180,14 @@ class TestCourseStaff(XBlockHandlerTestCase):
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
         # Create a submission for Bob, and corresponding workflow.
-        submission = sub_api.create_submission(
-            bob_item, prepare_submission_for_serialization(("Bob Answer 1", "Bob Answer 2"))
+        submission = self._create_submission(
+            bob_item, prepare_submission_for_serialization(("Bob Answer 1", "Bob Answer 2")), ['peer']
         )
-        peer_api.on_start(submission["uuid"])
-        workflow_api.create_workflow(submission["uuid"], ['peer'])
 
         # Create a submission for Tim, and corresponding workflow.
         tim_item = bob_item.copy()
         tim_item["student_id"] = "Tim"
-        tim_sub = sub_api.create_submission(tim_item, "Tim Answer")
-        peer_api.on_start(tim_sub["uuid"])
-        workflow_api.create_workflow(tim_sub["uuid"], ['peer', 'self'])
+        self._create_submission(tim_item, "Tim Answer", ['peer', 'self'])
 
         # Bob assesses Tim.
         peer_api.get_submission_to_assess(submission['uuid'], 1)
@@ -209,7 +203,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         path, context = xblock.get_student_info_path_and_context("Bob")
         self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
         self.assertIsNone(context['self_assessment'])
-        self.assertEquals("openassessmentblock/staff_area/student_info.html", path)
+        self.assertEquals("openassessmentblock/staff_area/oa_student_info.html", path)
 
     @scenario('data/self_only_scenario.xml', user_id='Bob')
     def test_staff_area_student_info_self_only(self, xblock):
@@ -221,11 +215,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
         # Create a submission for Bob, and corresponding workflow.
-        submission = sub_api.create_submission(
-            bob_item, prepare_submission_for_serialization(("Bob Answer 1", "Bob Answer 2"))
+        submission = self._create_submission(
+            bob_item, prepare_submission_for_serialization(("Bob Answer 1", "Bob Answer 2")), ['self']
         )
-        peer_api.on_start(submission["uuid"])
-        workflow_api.create_workflow(submission["uuid"], ['self'])
 
         # Bob assesses himself.
         self_api.create_assessment(
@@ -239,8 +231,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         path, context = xblock.get_student_info_path_and_context("Bob")
         self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
-        self.assertEquals([], context['peer_assessments'])
-        self.assertEquals("openassessmentblock/staff_area/student_info.html", path)
+        self.assertEquals(None, context['peer_assessments'])
+        self.assertEquals("openassessmentblock/staff_area/oa_student_info.html", path)
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_staff_area_student_info_with_cancelled_submission(self, xblock):
@@ -260,11 +252,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
         # Create a submission for Bob, and corresponding workflow.
-        submission = sub_api.create_submission(
-            bob_item, prepare_submission_for_serialization(("Bob Answer 1", "Bob Answer 2"))
+        submission = self._create_submission(
+            bob_item, prepare_submission_for_serialization(("Bob Answer 1", "Bob Answer 2")), ['peer']
         )
-        peer_api.on_start(submission["uuid"])
-        workflow_api.create_workflow(submission["uuid"], ['peer'])
 
         workflow_api.cancel_workflow(
             submission_uuid=submission["uuid"],
@@ -276,7 +266,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         path, context = xblock.get_student_info_path_and_context("Bob")
         self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
         self.assertIsNotNone(context['workflow_cancellation'])
-        self.assertEquals("openassessmentblock/staff_area/student_info.html", path)
+        self.assertEquals("openassessmentblock/staff_area/oa_student_info.html", path)
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_cancelled_submission_peer_assessment_render_path(self, xblock):
@@ -289,9 +279,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
         # Create a submission for Bob, and corresponding workflow.
-        submission = sub_api.create_submission(bob_item, {'text': "Bob Answer"})
-        peer_api.on_start(submission["uuid"])
-        workflow_api.create_workflow(submission["uuid"], ['peer'])
+        submission = self._create_submission(bob_item, {'text': "Bob Answer"}, ['peer'])
 
         requirements = {
             "peer": {
@@ -322,22 +310,26 @@ class TestCourseStaff(XBlockHandlerTestCase):
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
 
-        # Create an image submission for Bob
-        sub_api.create_submission(bob_item, {
+        # Create an image submission for Bob, and corresponding workflow.
+        self._create_submission(bob_item, {
             'text': "Bob Answer",
             'file_key': "test_key"
-        })
+        }, ['self'])
 
         # Mock the file upload API to avoid hitting S3
-        with patch("openassessment.xblock.staff_area_mixin.file_api") as file_api:
+        with patch("openassessment.xblock.submission_mixin.file_upload_api") as file_api:
             file_api.get_download_url.return_value = "http://www.example.com/image.jpeg"
+            # also fake a file_upload_type so our patched url gets rendered
+            xblock.file_upload_type_raw = 'image'
+
             __, context = xblock.get_student_info_path_and_context("Bob")
 
             # Check that the right file key was passed to generate the download url
             file_api.get_download_url.assert_called_with("test_key")
 
             # Check the context passed to the template
-            self.assertEquals('http://www.example.com/image.jpeg', context['submission']['file_url'])
+            self.assertEquals('http://www.example.com/image.jpeg', context['staff_file_url'])
+            self.assertEquals('image', context['file_upload_type'])
 
             # Check the fully rendered template
             payload = urllib.urlencode({"student_username": "Bob"})
@@ -355,11 +347,11 @@ class TestCourseStaff(XBlockHandlerTestCase):
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
 
-        # Create an image submission for Bob
-        sub_api.create_submission(bob_item, {
+        # Create an image submission for Bob, and corresponding workflow.
+        self._create_submission(bob_item, {
             'text': "Bob Answer",
             'file_key': "test_key"
-        })
+        }, ['self'])
 
         # Mock the file upload API to simulate an error
         with patch("openassessment.xblock.staff_area_mixin.file_api.get_download_url") as file_api_call:
@@ -401,16 +393,12 @@ class TestCourseStaff(XBlockHandlerTestCase):
         bob_item["item_id"] = xblock.scope_ids.usage_id
 
         # Create a submission for Bob, and corresponding workflow.
-        submission = sub_api.create_submission(bob_item, {'text': "Bob Answer"})
-        peer_api.on_start(submission["uuid"])
-        workflow_api.create_workflow(submission["uuid"], ['peer', 'self'])
+        submission = self._create_submission(bob_item, {'text': "Bob Answer"}, ['peer', 'self'])
 
         # Create a submission for Tim, and corresponding workflow.
         tim_item = bob_item.copy()
         tim_item["student_id"] = "Tim"
-        tim_sub = sub_api.create_submission(tim_item, "Tim Answer")
-        peer_api.on_start(tim_sub["uuid"])
-        workflow_api.create_workflow(tim_sub["uuid"], ['peer', 'self'])
+        self._create_submission(tim_item, "Tim Answer", ['peer', 'self'])
 
         # Bob assesses Tim.
         peer_api.get_submission_to_assess(submission['uuid'], 1)
@@ -445,7 +433,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             xblock.scope_ids.usage_id, True, True, "Bob"
         )
         path, context = xblock.get_staff_path_and_context()
-        self.assertEquals('openassessmentblock/staff_area/staff_area.html', path)
+        self.assertEquals('openassessmentblock/staff_area/oa_staff_area.html', path)
         self.assertTrue(context['display_schedule_training'])
 
     @override_settings(ORA2_AI_ALGORITHMS=AI_ALGORITHMS)
@@ -466,7 +454,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             xblock.scope_ids.usage_id, True, False, "Bob"
         )
         path, context = xblock.get_staff_path_and_context()
-        self.assertEquals('openassessmentblock/staff_area/staff_area.html', path)
+        self.assertEquals('openassessmentblock/staff_area/oa_staff_area.html', path)
         self.assertFalse(context['display_schedule_training'])
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
@@ -495,7 +483,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
             xblock.scope_ids.usage_id, True, True, "Bob"
         )
         path, context = xblock.get_staff_path_and_context()
-        self.assertEquals('openassessmentblock/staff_area/staff_area.html', path)
+        self.assertEquals('openassessmentblock/staff_area/oa_staff_area.html', path)
         self.assertTrue(context['display_reschedule_unfinished_tasks'])
 
     @scenario('data/example_based_assessment.xml', user_id='Bob')
@@ -609,9 +597,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         bob_item = STUDENT_ITEM.copy()
         bob_item["item_id"] = xblock.scope_ids.usage_id
         # Create a submission for Bob, and corresponding workflow.
-        submission = sub_api.create_submission(bob_item, {'text': "Bob Answer"})
-        peer_api.on_start(submission["uuid"])
-        workflow_api.create_workflow(submission["uuid"], ['peer'])
+        submission = self._create_submission(bob_item, {'text': "Bob Answer"}, ['peer'])
 
         incorrect_submission_uuid = 'abc'
         params = {"submission_uuid": incorrect_submission_uuid, "comments": "Inappropriate language."}
@@ -625,6 +611,96 @@ class TestCourseStaff(XBlockHandlerTestCase):
         resp = self.request(xblock, 'cancel_submission', json.dumps(params), response_format='json')
         self.assertIn("The learner submission has been removed from peer", resp['msg'])
         self.assertEqual(True, resp['success'])
+
+    @scenario('data/staff_grade_scenario.xml', user_id='Bob')
+    def test_staff_assessment_counts(self, xblock):
+        """
+        Verify the staff assessment counts (ungraded and checked out)
+        as shown in the staff grading tool when staff assessment is required.
+        """
+        _, context = xblock.get_staff_path_and_context()
+        self._verify_staff_assessment_context(context, True, 0, 0)
+
+        # Simulate that we are course staff
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+
+        bob_item = STUDENT_ITEM.copy()
+        bob_item["item_id"] = xblock.scope_ids.usage_id
+        # Create a submission for Bob, and corresponding workflow.
+        self._create_submission(bob_item, {'text': "Bob Answer"}, [])
+
+        # Verify the count as shown in the staff grading tool.
+        _, context = xblock.get_staff_path_and_context()
+        self._verify_staff_assessment_context(context, True, 1, 0)
+
+        # Check out the assessment for grading and ensure that the count changes.
+        self.request(xblock, 'render_staff_grade_form', json.dumps({}))
+        _, context = xblock.get_staff_path_and_context()
+        self._verify_staff_assessment_context(context, True, 0, 1)
+
+    @scenario('data/example_based_assessment.xml', user_id='Bob')
+    def test_staff_assessment_counts_not_required(self, xblock):
+        """
+        Verify the staff assessment counts (ungraded and checked out) are
+        not present in the context when staff assessment is not required.
+        """
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, True, "Bob"
+        )
+        _, context = xblock.get_staff_path_and_context()
+        self._verify_staff_assessment_context(context, False)
+
+    @scenario('data/staff_grade_scenario.xml', user_id='Bob')
+    def test_staff_assessment_form(self, xblock):
+        """
+        Smoke test that the staff assessment form renders when staff assessment
+        is required.
+        """
+        permission_denied = "You do not have permission to access ORA staff grading."
+        no_submissions_available = "No other learner responses are available for grading at this time."
+        submission_text = "Grade me, please!"
+
+        resp = self.request(xblock, 'render_staff_grade_form', json.dumps({})).decode('utf-8')
+        self.assertIn(permission_denied, resp)
+        self.assertNotIn(no_submissions_available, resp)
+
+        # Simulate that we are course staff
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+
+        resp = self.request(xblock, 'render_staff_grade_form', json.dumps({})).decode('utf-8')
+        self.assertNotIn(permission_denied, resp)
+        self.assertIn(no_submissions_available, resp)
+        self.assertNotIn(submission_text, resp)
+
+        bob_item = STUDENT_ITEM.copy()
+        bob_item["item_id"] = xblock.scope_ids.usage_id
+        # Create a submission for Bob, and corresponding workflow.
+        submission = self._create_submission(bob_item, {'text': submission_text}, [])
+
+        resp = self.request(xblock, 'render_staff_grade_form', json.dumps({})).decode('utf-8')
+        self.assertNotIn(no_submissions_available, resp)
+        self.assertIn(submission_text, resp)
+
+        self.assert_event_published(xblock, 'openassessmentblock.get_submission_for_staff_grading', {
+            'type': 'full-grade',
+            'requesting_staff_id': 'Bob',
+            'item_id': bob_item['item_id'],
+            'submission_returned_uuid': submission['uuid']
+        })
+
+
+    def _verify_staff_assessment_context(self, context, required, ungraded=None, in_progress=None):
+        self.assertEquals(required, context['staff_assessment_required'])
+        if not required:
+            self.assertNotIn('staff_assessment_ungraded', context)
+            self.assertNotIn('staff_assessment_in_progress', context)
+        else:
+            self.assertEqual(ungraded, context['staff_assessment_ungraded'])
+            self.assertEqual(in_progress, context['staff_assessment_in_progress'])
 
     def _create_mock_runtime(
             self,
@@ -648,3 +724,11 @@ class TestCourseStaff(XBlockHandlerTestCase):
             )
         )
         return mock_runtime
+
+    def _create_submission(self, item, values, types):
+        """ Create a submission and corresponding workflow. """
+        submission = sub_api.create_submission(item, values)
+
+        peer_api.on_start(submission["uuid"])
+        workflow_api.create_workflow(submission["uuid"], types)
+        return submission

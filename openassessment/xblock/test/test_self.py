@@ -55,6 +55,8 @@ class TestSelfAssessment(XBlockHandlerTestCase):
         self.assertEqual(parts[1]['option']['criterion']['name'], u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮')
         self.assertEqual(parts[1]['option']['name'], u'ﻉซƈﻉɭɭﻉกՇ')
 
+        self.assert_assessment_event_published(xblock, 'openassessmentblock.self_assess', assessment)
+
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_self_assess_no_submission(self, xblock):
         # Submit a self-assessment without first creating a submission
@@ -134,7 +136,7 @@ class TestSelfAssessment(XBlockHandlerTestCase):
         del assessment['options_selected']
         resp = self.request(xblock, 'self_assess', json.dumps(assessment), response_format='json')
         self.assertFalse(resp['success'])
-        self.assertIn('options_selected', resp['msg'])
+        self.assertIn('options', resp['msg'])
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_self_assess_api_error(self, xblock):

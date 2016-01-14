@@ -31,6 +31,7 @@ from openassessment.xblock.studio_mixin import StudioMixin
 from openassessment.xblock.xml import parse_from_xml, serialize_content_to_xml
 from openassessment.xblock.staff_area_mixin import StaffAreaMixin
 from openassessment.xblock.workflow_mixin import WorkflowMixin
+from openassessment.xblock.staff_assessment_mixin import StaffAssessmentMixin
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.student_training_mixin import StudentTrainingMixin
 from openassessment.xblock.validation import validator
@@ -45,37 +46,36 @@ UI_MODELS = {
     "submission": {
         "name": "submission",
         "class_id": "openassessment__response",
-        "navigation_text": "Your response to this assignment",
         "title": "Your Response"
     },
     "student-training": {
         "name": "student-training",
         "class_id": "openassessment__student-training",
-        "navigation_text": "Learn to assess responses",
         "title": "Learn to Assess"
     },
     "peer-assessment": {
         "name": "peer-assessment",
         "class_id": "openassessment__peer-assessment",
-        "navigation_text": "Your assessment(s) of peer responses",
         "title": "Assess Peers' Responses"
     },
     "self-assessment": {
         "name": "self-assessment",
         "class_id": "openassessment__self-assessment",
-        "navigation_text": "Your assessment of your response",
         "title": "Assess Your Response"
+    },
+    "staff-assessment": {
+        "name": "staff-assessment",
+        "class_id": "openassessment__staff-assessment",
+        "title": "Staff Grade"
     },
     "grade": {
         "name": "grade",
         "class_id": "openassessment__grade",
-        "navigation_text": "Your grade for this assignment",
         "title": "Your Grade:"
     },
      "leaderboard": {
         "name": "leaderboard",
         "class_id": "openassessment__leaderboard",
-        "navigation_text": "A leaderboard of the top submissions",
         "title": "Leaderboard"
     }
 }
@@ -85,6 +85,7 @@ VALID_ASSESSMENT_TYPES = [
     "example-based-assessment",
     "peer-assessment",
     "self-assessment",
+    "staff-assessment"
 ]
 
 
@@ -100,6 +101,7 @@ class OpenAssessmentBlock(
     SubmissionMixin,
     PeerAssessmentMixin,
     SelfAssessmentMixin,
+    StaffAssessmentMixin,
     StudioMixin,
     GradeMixin,
     LeaderboardMixin,
@@ -446,10 +448,20 @@ class OpenAssessmentBlock(
 
         """
         ui_models = [UI_MODELS["submission"]]
+        staff_assessment_required = False
         for assessment in self.valid_assessments:
+            if assessment["name"] == "staff-assessment":
+                if not assessment["required"]:
+                    continue
+                else:
+                    staff_assessment_required = True
             ui_model = UI_MODELS.get(assessment["name"])
             if ui_model:
                 ui_models.append(dict(assessment, **ui_model))
+
+        if not staff_assessment_required and self.staff_assessment_exists(self.submission_uuid):
+            ui_models.append(UI_MODELS["staff-assessment"])
+
         ui_models.append(UI_MODELS["grade"])
 
         if self.leaderboard_show > 0:
@@ -765,22 +777,17 @@ class OpenAssessmentBlock(
 
     def get_waiting_details(self, status_details):
         """
-        Returns the specific waiting status based on the given status_details.
-        This status can currently be peer, example-based, or both. This is
-        determined by checking that status details to see if all assessment
-        modules have been graded.
+        Returns waiting status (boolean value) based on the given status_details.
 
         Args:
             status_details (dict): A dictionary containing the details of each
                 assessment module status. This will contain keys such as
-                "peer" and "ai", referring to dictionaries, which in turn will
-                have the key "graded". If this key has a value set, these
-                assessment modules have been graded.
+                "peer", "ai", and "staff", referring to dictionaries, which in
+                turn will have the key "graded". If this key has a value set,
+                these assessment modules have been graded.
 
         Returns:
-            A string of "peer", "exampled-based", or "all" to indicate which
-            assessment modules in the workflow are waiting on assessments.
-            Returns None if no module is waiting on an assessment.
+            True if waiting for a grade from peer, ai, or staff assessment, else False.
 
         Examples:
             >>> now = dt.datetime.utcnow().replace(tzinfo=pytz.utc)
@@ -795,18 +802,13 @@ class OpenAssessmentBlock(
             >>>     }
             >>> }
             >>> self.get_waiting_details(status_details)
-            "peer"
+            True
         """
-        waiting = None
-        peer_waiting = "peer" in status_details and not status_details["peer"]["graded"]
-        ai_waiting = "ai" in status_details and not status_details["ai"]["graded"]
-        if peer_waiting and ai_waiting:
-            waiting = "all"
-        elif peer_waiting:
-            waiting = "peer"
-        elif ai_waiting:
-            waiting = "example-based"
-        return waiting
+        steps = ["peer", "ai", "staff"]  # These are the steps that can be submitter-complete, but lack a grade
+        for step in steps:
+            if step in status_details and not status_details[step]["graded"]:
+                return True
+        return False
 
     def is_released(self, step=None):
         """
@@ -854,7 +856,7 @@ class OpenAssessmentBlock(
             if assessment["name"] == mixin_name:
                 return assessment
 
-    def publish_assessment_event(self, event_name, assessment):
+    def publish_assessment_event(self, event_name, assessment, **kwargs):
         """
         Emit an analytics event for the peer assessment.
 
@@ -890,20 +892,45 @@ class OpenAssessmentBlock(
                 "feedback": part["feedback"]
             })
 
+        event_data = {
+            "feedback": assessment["feedback"],
+            "rubric": {
+                "content_hash": assessment["rubric"]["content_hash"],
+            },
+            "scorer_id": assessment["scorer_id"],
+            "score_type": assessment["score_type"],
+            "scored_at": assessment["scored_at"],
+            "submission_uuid": assessment["submission_uuid"],
+            "parts": parts_list
+        }
+
+        for key in kwargs:
+            event_data[key] = kwargs[key]
+
         self.runtime.publish(
             self, event_name,
-            {
-                "feedback": assessment["feedback"],
-                "rubric": {
-                    "content_hash": assessment["rubric"]["content_hash"],
-                },
-                "scorer_id": assessment["scorer_id"],
-                "score_type": assessment["score_type"],
-                "scored_at": assessment["scored_at"],
-                "submission_uuid": assessment["submission_uuid"],
-                "parts": parts_list
-            }
+            event_data
         )
+
+    @XBlock.json_handler
+    def publish_event(self, data, suffix=''):
+        """
+        Publish the given data to an event.
+
+        Expects key 'event_name' to be present in the data dictionary.
+        """
+
+        try:
+            event_name = data['event_name']
+        except KeyError:
+            logger.exception("Could not find the name of the event to be triggered.")
+            return {'success': False}
+
+        # Remove the name so we don't publish as part of the data.
+        del data['event_name']
+
+        self.runtime.publish(self, event_name, data)
+        return {'success': True}
 
     def _serialize_opaque_key(self, key):
         """
@@ -926,8 +953,24 @@ class OpenAssessmentBlock(
             return unicode(key)
 
     def get_username(self, anonymous_user_id):
+        """
+        Return the username of the user associated with anonymous_user_id
+        Args:
+            anonymous_user_id (str): the anonymous user id of the user
+
+        Returns: the username if it can be identified. If the xblock service to converts to a real user
+            fails, returns None and logs the error.
+
+        """
         if hasattr(self, "xmodule_runtime"):
-            return self.xmodule_runtime.get_real_user(anonymous_user_id).username
+            user = self.xmodule_runtime.get_real_user(anonymous_user_id)
+            if user:
+                return user.username
+            else:
+                logger.exception(
+                    "XBlock service could not find user for anonymous_user_id '{}'".format(anonymous_user_id)
+                )
+                return None
 
     def _adjust_start_date_for_beta_testers(self, start):
         if hasattr(self, "xmodule_runtime"):
@@ -938,4 +981,3 @@ class OpenAssessmentBlock(
                 return effective
 
         return start
-

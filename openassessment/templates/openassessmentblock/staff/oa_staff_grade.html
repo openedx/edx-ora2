@@ -1,0 +1,35 @@
+{% load i18n %}
+
+<li id="openassessment__staff-assessment" class="openassessment__steps__step step--staff-assessment {{ step_classes }}">
+    <header class="step__header">
+        <h2 class="step__title">
+            <span class="step__counter"></span>
+            <span class="wrapper--copy">
+                <span class="step__label">{% trans "Staff Grade" %} </span>
+            </span>
+        </h2>
+
+        <span class="step__status">
+          <span class="step__status__label">{% trans "This step's status" %}:</span>
+          <span class="step__status__value">
+              {% if icon_class %}
+              <i class="icon fa {{ icon_class }}" aria-hidden="true"></i>
+              {% endif %}
+              <span class="copy">{{ status_value }}</span>
+          </span>
+        </span>
+    </header>
+
+    {% if message_title %}
+    <div class="wrapper--step__content">
+        <div class="step__message message message--incomplete">
+            <h3 class="message__title">{{ message_title }}</h3>
+
+            <div class="message__content">
+              <p>{{ message_content }}</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+</li>

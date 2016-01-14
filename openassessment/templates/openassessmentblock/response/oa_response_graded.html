@@ -9,7 +9,7 @@
 <span class="step__status">
   <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
-    <i class="icon fa fa-check"></i>
+    <i class="icon fa fa-check" aria-hidden="true"></i>
     <span class="copy">{% trans "Complete" %}</span>
   </span>
 </span>
@@ -22,9 +22,11 @@
             <article class="submission__answer__display">
                 <h3 class="submission__answer__display__title">{% trans "Your Response" %}</h3>
 
-                {% include "openassessmentblock/oa_submission_answer.html" with answer=student_submission.answer answer_text_label="Your response to the question above:" %}
+                {% trans "Your response to the question above:" as translated_label %}
+                {% include "openassessmentblock/oa_submission_answer.html" with answer=student_submission.answer answer_text_label=translated_label %}
 
-                {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=file_url header="Your Uploaded File" class_prefix="submission__answer" %}
+                {% trans "Your Uploaded File"  as translated_header %}
+                {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=file_url header=translated_header class_prefix="submission__answer" %}
             </article>
         </div>
     </div>

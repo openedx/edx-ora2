@@ -6,8 +6,8 @@ from xblock.core import XBlock
 from submissions import api
 from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
-from openassessment.workflow import api as workflow_api
 from openassessment.workflow.errors import AssessmentWorkflowError
+
 from .resolve_dates import DISTANT_FUTURE
 
 from data_conversion import create_submission_dict, prepare_submission_for_serialization
@@ -388,8 +388,6 @@ class SubmissionMixin(object):
 
         context['file_upload_type'] = self.file_upload_type
         context['allow_latex'] = self.allow_latex
-        context['has_peer'] = 'peer-assessment' in self.assessment_steps
-        context['has_self'] = 'self-assessment' in self.assessment_steps
 
         if self.file_upload_type:
             context['file_url'] = self._get_download_url()
@@ -421,18 +419,12 @@ class SubmissionMixin(object):
             context['save_status'] = self.save_status
             context['submit_enabled'] = self.saved_response != ''
             path = "openassessmentblock/response/oa_response.html"
-
         elif workflow["status"] == "cancelled":
-            workflow_cancellation = workflow_api.get_assessment_workflow_cancellation(self.submission_uuid)
-            if workflow_cancellation:
-                workflow_cancellation['cancelled_by'] = self.get_username(workflow_cancellation['cancelled_by_id'])
-
-            context['workflow_cancellation'] = workflow_cancellation
+            context["workflow_cancellation"] = self.get_workflow_cancellation_info(self.submission_uuid)
             context["student_submission"] = self.get_user_submission(
                 workflow["submission_uuid"]
             )
             path = 'openassessmentblock/response/oa_response_cancelled.html'
-
         elif workflow["status"] == "done":
             student_submission = self.get_user_submission(
                 workflow["submission_uuid"]
@@ -443,6 +435,8 @@ class SubmissionMixin(object):
             student_submission = self.get_user_submission(
                 workflow["submission_uuid"]
             )
+            context["peer_incomplete"] = "peer" in workflow["status_details"] and not workflow["status_details"]["peer"]["complete"]
+            context["self_incomplete"] = "self" in workflow["status_details"] and not workflow["status_details"]["self"]["complete"]
             context["student_submission"] = create_submission_dict(student_submission, self.prompts)
             path = 'openassessmentblock/response/oa_response_submitted.html'
 

@@ -31,14 +31,16 @@ OpenAssessment.Rubric.prototype = {
     criterionFeedback: function(criterionFeedback) {
         var selector = 'textarea.answer__value';
         var feedback = {};
+        var rubric = this;
         $(selector, this.element).each(
             function(index, sel) {
+                var criterionName = rubric.getCriterionName(sel);
                 if (typeof criterionFeedback !== 'undefined') {
-                    $(sel).val(criterionFeedback[sel.name]);
-                    feedback[sel.name] = criterionFeedback[sel.name];
+                    $(sel).val(criterionFeedback[criterionName]);
+                    feedback[criterionName] = criterionFeedback[criterionName];
                 }
                 else {
-                    feedback[sel.name] = $(sel).val();
+                    feedback[criterionName] = $(sel).val();
                 }
             }
         );
@@ -61,7 +63,7 @@ OpenAssessment.Rubric.prototype = {
 
     **/
     overallFeedback: function(overallFeedback) {
-        var selector = '#assessment__rubric__question--feedback__value';
+        var selector = '.assessment__rubric__question--feedback__value';
         if (typeof overallFeedback === 'undefined') {
             return $(selector, this.element).val();
         }
@@ -88,11 +90,12 @@ OpenAssessment.Rubric.prototype = {
     **/
     optionsSelected: function(optionsSelected) {
         var selector = "input[type=radio]";
+        var rubric = this;
         if (typeof optionsSelected === 'undefined') {
             var options = {};
             $(selector + ":checked", this.element).each(
                 function(index, sel) {
-                    options[sel.name] = sel.value;
+                    options[rubric.getCriterionName(sel)] = sel.value;
                 }
             );
             return options;
@@ -103,8 +106,9 @@ OpenAssessment.Rubric.prototype = {
 
             // Check the selected options
             $(selector, this.element).each(function(index, sel) {
-                if (optionsSelected.hasOwnProperty(sel.name)) {
-                    if (sel.value === optionsSelected[sel.name]) {
+                var criterionName = rubric.getCriterionName(sel);
+                if (optionsSelected.hasOwnProperty(criterionName)) {
+                    if (sel.value === optionsSelected[criterionName]) {
                         $(sel).prop('checked', true);
                     }
                 }
@@ -156,6 +160,43 @@ OpenAssessment.Rubric.prototype = {
     },
 
     /**
+     * Install a callback handler to be notified when unsaved changes exist in a rubric form.
+     *
+     * @param {function} callback a function that accepts one argument, a boolean indicating
+     *     whether the user has selected options or inserted text.
+     */
+    changesExistCallback: function(callback) {
+        var rubric = this;
+
+        // Set the initial state
+        callback(rubric.changesExist());
+
+        // Install a handler to update on change
+        $(this.element).on('change keyup drop paste',
+            function() { callback(rubric.changesExist()); }
+        );
+    },
+
+    /**
+     * Helper method for determining of unsubmitted changes exist in the rubric.
+     *
+     * @returns {boolean} true if unsubmitted changes exist.
+     */
+    changesExist: function() {
+        var numChecked = $('input[type=radio]:checked', this.element).length;
+        var textExists = false;
+
+        $('textarea', this.element).each(function() {
+            var trimmedText = $.trim($(this).val());
+            if (trimmedText !== "") {
+                textExists = true;
+            }
+        });
+
+        return (numChecked > 0 || textExists);
+    },
+
+    /**
      Updates the rubric to display positive and negative messages on each
      criterion. For each correction provided, the associated criterion will have
      an appropriate message displayed.
@@ -170,10 +211,11 @@ OpenAssessment.Rubric.prototype = {
     showCorrections: function(corrections) {
         var selector = "input[type=radio]";
         var hasErrors = false;
+        var rubric = this;
         // Display appropriate messages for each selection
         $(selector, this.element).each(function(index, sel) {
             var listItem = $(sel).parents(".assessment__rubric__question");
-            if (corrections.hasOwnProperty(sel.name)) {
+            if (corrections.hasOwnProperty(rubric.getCriterionName(sel))) {
                 hasErrors = true;
                 listItem.find('.message--incorrect').removeClass('is--hidden');
                 listItem.find('.message--correct').addClass('is--hidden');
@@ -183,5 +225,15 @@ OpenAssessment.Rubric.prototype = {
             }
         });
         return hasErrors;
+    },
+
+    /**
+     * Gets the criterion name out of the data on the provided DOM element.
+     *
+     * @param {object} element
+     * @returns {String} value stored as data-criterion-name
+     */
+    getCriterionName: function(element) {
+        return $(element).data('criterion-name');
     }
 };

@@ -99,7 +99,7 @@
 
                         <ul class="list list--actions">
                             <li class="list--actions__item">
-                                <button type="submit" id="submission__save" class="action action--save submission__save is--disabled">{% trans "Save Your Progress" %}</button>
+                                <button type="submit" id="submission__save" class="action action--save submission__save is--disabled">{% trans "Save your progress" %}</button>
 
                                 <div id="response__save_status" class="response__submission__status">
                                     <h3 class="response__submission__status__title">
@@ -109,22 +109,22 @@
                                 </div>
                             </li>
                             {% if allow_latex %}
-                            <li class="list--actions__item">
-                                <button type="submit" id="submission__preview" class="action action--save submission__save is--disabled">{% trans "Preview in Latex"%}</button>
-                                <div id="response__preview_explanation" class="response__submission__status">
-                                    <h3 class="response__submission__status__title">
-                                        {% trans "Click to preview your submission in Latex"%}
-                                    </h3>
-                                </div>
-                            </li>
-                            <li id = "submission__preview__item" class="list--actions__item">
-                                <article class="submission__answer__display">
-                                    <h3 class="submission__answer__display__title">Preview Response</h3>
-                                    <div class="submission__answer__display__content">
-                                        <p id="preview_content"></p>
+                                <li class="list--actions__item">
+                                    <button type="submit" id="submission__preview" class="action action--save submission__save is--disabled">{% trans "Preview in LaTeX"%}</button>
+                                    <div id="response__preview_explanation" class="response__submission__status">
+                                        <h3 class="response__submission__status__title">
+                                            {% trans "Click to preview your submission in LaTeX"%}
+                                        </h3>
                                     </div>
-                                </article>
-                            </li>
+                                </li>
+                                <li id = "submission__preview__item" class="list--actions__item">
+                                    <article class="submission__answer__display">
+                                        <h3 class="submission__answer__display__title">{% trans "Preview Response"%}</h3>
+                                        <div class="submission__answer__display__content">
+                                            <p id="preview_content"></p>
+                                        </div>
+                                    </article>
+                                </li>
                             {% endif %}
                         </ul>
                     </div>
@@ -139,10 +139,10 @@
 
                 <ul class="list list--actions">
                     <li class="list--actions__item">
-                        <a aria-role="button" href="#" id="step--response__submit"
-                            class="action action--submit step--response__submit {{ submit_enabled|yesno:",is--disabled" }}">
+                        <button type="submit" id="step--response__submit"
+                                class="action action--submit step--response__submit {{ submit_enabled|yesno:",is--disabled" }}">
                             <span class="copy">{% trans "Submit your response and move to the next step" %}</span>
-                        </a>
+                        </button>
                     </li>
                 </ul>
             </div>
