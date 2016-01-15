@@ -519,17 +519,19 @@ class StaffAreaTest(OpenAssessmentTest):
         Given I am viewing the staff area of an ORA problem
         When I search for a learner in staff tools
         And the learner has submitted a response to an ORA problem with self-assessment
+        And I've made a staff override assessment of the learner
         Then I see the correct learner information sections
         """
         username = self.do_self_assessment()
+        self.do_staff_override(username)
 
         self.staff_area_page.visit()
 
         # Click on staff tools and search for user
         self.staff_area_page.show_learner(username)
         self.assertEqual(
-            [u"Learner's Response", u"Learner's Self Assessment", u"Learner's Final Grade",
-             u"Submit Assessment Grade Override", u"Remove Submission From Peer Grading"],
+            [u"Learner's Response", u"Learner's Self Assessment", u"Staff Assessment for This Learner",
+             u"Learner's Final Grade", u"Submit Assessment Grade Override", u"Remove Submission From Peer Grading"],
             self.staff_area_page.learner_report_sections
         )
 
@@ -742,7 +744,7 @@ class FullWorkflowMixin(object):
     PEER_ASSESSMENT_STAFF_AREA_SCORE = "Final grade: 0 out of 8"
 
     SELF_ASSESSMENT = [2, 3]
-    STAFF_AREA_SELF_ASSESSMENT = ['Good', u'5', u'5', u'Excellent', u'3', u'3']
+    STAFF_AREA_SELF_ASSESSMENT = ['Good', u'', u'5', u'5', u'Excellent', u'', u'3', u'3']
 
     SUBMITTED_ASSESSMENT = [0, 3]
     STAFF_AREA_SUBMITTED = ['Poor', u'', u'0', u'5', u'Excellent', u'', u'3', u'3']
@@ -829,7 +831,7 @@ class FullWorkflowMixin(object):
         self.staff_area_page.expand_learner_report_sections()
         self.assertEqual(peer_assessments, self.staff_area_page.status_text('peer__assessments'))
         self.assertEqual(submitted_assessments, self.staff_area_page.status_text('submitted__assessments'))
-        self.assertEqual(self_assessment, self.staff_area_page.status_text('self__assessment'))
+        self.assertEqual(self_assessment, self.staff_area_page.status_text('self__assessments'))
 
     def verify_submission_has_peer_grade(self, learner, max_attempts=5):
         """

@@ -8,6 +8,7 @@ from django.test.utils import override_settings
 
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
+from openassessment.assessment.api import staff as staff_api
 from openassessment.assessment.api import ai as ai_api
 from openassessment.workflow import api as workflow_api
 from openassessment.assessment.errors.ai import AIError, AIGradingInternalError
@@ -202,7 +203,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # Now Bob should be fully populated in the student info view.
         path, context = xblock.get_student_info_path_and_context("Bob")
         self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
+        self.assertIsNotNone(context['peer_assessments'])
         self.assertIsNone(context['self_assessment'])
+        self.assertIsNone(context['staff_assessment'])
         self.assertEquals("openassessmentblock/staff_area/oa_student_info.html", path)
 
     @scenario('data/self_only_scenario.xml', user_id='Bob')
@@ -231,7 +234,40 @@ class TestCourseStaff(XBlockHandlerTestCase):
 
         path, context = xblock.get_student_info_path_and_context("Bob")
         self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
-        self.assertEquals(None, context['peer_assessments'])
+        self.assertIsNone(context['peer_assessments'])
+        self.assertIsNotNone(context['self_assessment'])
+        self.assertIsNone(context['staff_assessment'])
+        self.assertEquals("openassessmentblock/staff_area/oa_student_info.html", path)
+
+    @scenario('data/staff_grade_scenario.xml', user_id='Bob')
+    def test_staff_area_student_info_staff_only(self, xblock):
+        # Simulate that we are course staff
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+        xblock.runtime._services['user'] = NullUserService()
+        bob_item = STUDENT_ITEM.copy()
+        bob_item["item_id"] = xblock.scope_ids.usage_id
+        # Create a submission for Bob, and corresponding workflow.
+        submission = self._create_submission(
+            bob_item, prepare_submission_for_serialization(("Bob Answer 1", "Bob Answer 2")), ['staff']
+        )
+
+        # Bob assesses himself.
+        staff_api.create_assessment(
+            submission['uuid'],
+            STUDENT_ITEM["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            {'criteria': xblock.rubric_criteria},
+        )
+
+        path, context = xblock.get_student_info_path_and_context("Bob")
+        self.assertEquals("Bob Answer 1", context['submission']['answer']['parts'][0]['text'])
+        self.assertIsNone(context['peer_assessments'])
+        self.assertIsNone(context['self_assessment'])
+        self.assertIsNotNone(context['staff_assessment'])
         self.assertEquals("openassessmentblock/staff_area/oa_student_info.html", path)
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
