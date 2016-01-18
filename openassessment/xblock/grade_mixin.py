@@ -212,7 +212,8 @@ class GradeMixin(object):
             return {'success': True, 'msg': self._(u"Feedback saved.")}
 
     def grade_details(
-            self, submission_uuid, peer_assessments, self_assessment, example_based_assessment, staff_assessment
+            self, submission_uuid, peer_assessments, self_assessment, example_based_assessment, staff_assessment,
+            is_staff=False
     ):
         """
         Returns details about the grade assigned to the submission.
@@ -223,6 +224,8 @@ class GradeMixin(object):
             self_assessment (dict): Serialized assessment model from the self API
             example_based_assessment (dict): Serialized assessment model from the example-based API
             staff_assessment (dict): Serialized assessment model from the staff API
+            is_staff (bool): True if the grade details are being displayed to staff, else False.
+                Default value is False (meaning grade details are being shown to the learner).
 
         Returns:
             A dictionary with full details about the submission's grade.
@@ -280,10 +283,12 @@ class GradeMixin(object):
             # Record assessment info for the current criterion
             criterion['assessments'] = self._graded_assessments(
                 submission_uuid, criterion,
-                staff_assessment=staff_assessment,
-                peer_assessments=peer_assessments,
-                example_based_assessment=example_based_assessment,
-                self_assessment=self_assessment,
+                assessment_steps,
+                staff_assessment,
+                peer_assessments,
+                example_based_assessment,
+                self_assessment,
+                is_staff=is_staff,
             )
 
             # Record whether there is any feedback provided in the assessments
@@ -309,8 +314,8 @@ class GradeMixin(object):
         }
 
     def _graded_assessments(
-            self, submission_uuid, criterion, staff_assessment, peer_assessments,
-            example_based_assessment, self_assessment
+            self, submission_uuid, criterion, assessment_steps, staff_assessment, peer_assessments,
+            example_based_assessment, self_assessment, is_staff=False
     ):
         """
         Returns an array of assessments with their associated grades.
@@ -343,12 +348,21 @@ class GradeMixin(object):
                     for index, peer_assessment in enumerate(peer_assessments)
                 ],
             }
+        elif "peer-assessment" in assessment_steps:
+            peer_assessment_part = {
+                'title': _('Peer Median Grade'),
+                'option': {'label': _('Waiting for peer reviews')}
+            }
         else:
             peer_assessment_part = None
         example_based_assessment_part = _get_assessment_part(
             _('Example-Based Grade'), criterion_name, example_based_assessment
         )
-        self_assessment_part = _get_assessment_part(_('Your Self Assessment'), criterion_name, self_assessment)
+        self_assessment_part = _get_assessment_part(
+            _('Self Assessment Grade') if is_staff else _('Your Self Assessment'),
+            criterion_name,
+            self_assessment
+        )
 
         # Now collect together all the assessments
         assessments = []
