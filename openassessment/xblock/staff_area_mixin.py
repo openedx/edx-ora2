@@ -378,6 +378,7 @@ class StaffAreaMixin(object):
         self_assessment = None
         peer_assessments = None
         submitted_assessments = None
+        staff_assessment = staff_api.get_latest_staff_assessment(submission_uuid)
 
         if "peer-assessment" in assessment_steps:
             peer_assessments = peer_api.get_assessments(submission_uuid)
@@ -394,17 +395,18 @@ class StaffAreaMixin(object):
         workflow_cancellation = self.get_workflow_cancellation_info(submission_uuid)
 
         context.update({
+            'expanded_view': expanded_view,
+            'example_based_assessment': [example_based_assessment] if example_based_assessment else None,
+            'self_assessment': [self_assessment] if self_assessment else None,
+            'peer_assessments': peer_assessments,
+            'submitted_assessments': submitted_assessments,
+            'staff_assessment': [staff_assessment] if staff_assessment else None,
             'score': workflow.get('score'),
             'workflow_status': workflow.get('status'),
             'workflow_cancellation': workflow_cancellation,
-            'peer_assessments': peer_assessments,
-            'submitted_assessments': submitted_assessments,
-            'self_assessment': self_assessment,
-            'example_based_assessment': example_based_assessment,
-            'expanded_view': expanded_view,
         })
 
-        if peer_assessments or self_assessment or example_based_assessment:
+        if peer_assessments or self_assessment or example_based_assessment or staff_assessment:
             max_scores = peer_api.get_rubric_max_scores(submission_uuid)
             for criterion in context["rubric_criteria"]:
                 criterion["total_value"] = max_scores[criterion["name"]]
