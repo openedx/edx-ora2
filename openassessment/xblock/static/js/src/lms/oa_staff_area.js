@@ -229,17 +229,24 @@
             // Install a click handler for the staff button panel
             $staffArea.find('.ui-staff__button').click(
                 function(eventObject) {
+                    // Close all other panels first.
+                    $staffArea.find('.ui-staff__button').each(function(index, button) {
+                        if (button !== eventObject.currentTarget) {
+                            var $panel = $staffArea.find('.' + $(button).data('panel')).first();
+                            $panel.slideUp(0);
+                        }
+                    });
+
                     var $button = $(eventObject.currentTarget),
-                        panelClass = $button.data('panel'),
-                        $panel = $staffArea.find('.' + panelClass).first();
+                        $panel = $staffArea.find('.' + $button.data('panel')).first();
+
                     if ($button.hasClass('is--active')) {
                         $button.removeClass('is--active');
-                        $panel.addClass('is--hidden');
+                        $panel.slideUp();
                     } else {
                         $staffArea.find('.ui-staff__button').removeClass('is--active');
                         $button.addClass('is--active');
-                        $staffArea.find('.wrapper--ui-staff').addClass('is--hidden');
-                        $panel.removeClass('is--hidden');
+                        $panel.slideDown();
                     }
                     // For accessibility, move focus to the first focusable component.
                     $panel.find('.ui-staff_close_button').focus();
@@ -252,7 +259,7 @@
                     var $button = $(eventObject.currentTarget),
                         $panel = $button.closest('.wrapper--ui-staff');
                     $staffArea.find('.ui-staff__button').removeClass('is--active');
-                    $panel.addClass('is--hidden');
+                    $panel.slideUp();
 
                     // For accessibility, move focus back to the tab associated with the closed panel.
                     $staffArea.find('.ui-staff__button').each(function(index, button) {

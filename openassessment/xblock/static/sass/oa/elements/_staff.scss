@@ -17,6 +17,7 @@
     border-top: ($baseline-v/4) solid $color-decorative-staff;
     padding: $baseline-v ($baseline-h/2);
     background: $staff-bg;
+    display: none;
   }
 
   .ui-staff {
