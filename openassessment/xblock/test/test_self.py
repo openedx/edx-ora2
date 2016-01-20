@@ -266,7 +266,6 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             xblock, 'openassessmentblock/self/oa_self_assessment.html',
             {
                 'rubric_criteria': xblock.rubric_criteria,
-                'estimated_time': '20 minutes',
                 'self_submission': submission,
                 'file_upload_type': None,
                 'self_file_url': '',

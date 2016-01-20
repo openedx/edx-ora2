@@ -87,8 +87,12 @@ class SelfAssessmentMixin(object):
             else:
                 submission = submission_api.get_submission(self.submission_uuid)
                 context["rubric_criteria"] = self.rubric_criteria_with_labels
-                context["estimated_time"] = "20 minutes"  # TODO: Need to configure this.
                 context["self_submission"] = create_submission_dict(submission, self.prompts)
+                if self.rubric_feedback_prompt is not None:
+                    context["rubric_feedback_prompt"] = self.rubric_feedback_prompt
+
+                if self.rubric_feedback_default_text is not None:
+                    context['rubric_feedback_default_text'] = self.rubric_feedback_default_text
 
                 # Determine if file upload is supported for this XBlock and what kind of files can be uploaded.
                 context["file_upload_type"] = self.file_upload_type

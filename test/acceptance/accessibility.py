@@ -47,11 +47,9 @@ class SelfAssessmentA11yTest(OpenAssessmentA11yTest):
         self.submission_page.visit()
         self._check_a11y(self.submission_page)
 
-        # TODO: There is an accessibility error on the self-review form due to TNL-3882.
-        # Commenting out test code so the check doesn't have to be disabled for the whole page.
-        # self.submission_page.visit().submit_response(self.SUBMISSION)
-        # self.self_asmnt_page.wait_for_page().wait_for_response()
-        # self._check_a11y(self.self_asmnt_page)
+        self.submission_page.visit().submit_response(self.SUBMISSION)
+        self.self_asmnt_page.wait_for_page().wait_for_response()
+        self._check_a11y(self.self_asmnt_page)
 
 
 class PeerAssessmentA11yTest(OpenAssessmentA11yTest):
