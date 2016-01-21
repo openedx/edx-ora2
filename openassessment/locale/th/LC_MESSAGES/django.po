@@ -6,14 +6,15 @@
 # Andy Armstrong <andya@edx.org>, 2015
 # Jirayu Chamamahattana <mman2x@gmail.com>, 2015
 # Noppachai Eiamwasant <noporo@hotmail.com>, 2015
+# ormbook ohno <ormbook@gmail.com>, 2016
 # Sira Nokyoongtong <gumaraa@gmail.com>, 2014
 # Sorathan Chaturapruek <tummykung@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-14 14:17+0000\n"
-"PO-Revision-Date: 2016-01-11 20:33+0000\n"
+"POT-Creation-Date: 2016-01-21 19:57+0000\n"
+"PO-Revision-Date: 2016-01-21 19:57+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Thai (http://www.transifex.com/open-edx/edx-platform/language/th/)\n"
 "MIME-Version: 1.0\n"
@@ -215,10 +216,8 @@ msgid "Cancel"
 msgstr "ยกเลิก"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:6
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:65
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:118
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:164
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:202
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:96
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:21
 msgid "Criterion"
 msgstr "เกณฑ์"
 
@@ -566,10 +565,7 @@ msgid "Overall Grade"
 msgstr "เกรดรวม"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:55
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:68
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:121
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:166
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:204
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:24
 msgid "Points"
 msgstr "คะแนน"
 
@@ -642,8 +638,8 @@ msgid "We could not submit your feedback"
 msgstr "เราไม่สามารถส่งผลตอบรับของคุณ"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:187
-msgid "Submit Feedback on Peer Assessments"
-msgstr "ส่งผลตอบกลับในการประเมินโดยเพื่อน"
+msgid "Submit feedback on peer assessments"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:9
 msgid "Not Completed"
@@ -667,9 +663,10 @@ msgstr "รอการประเมิน"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:19
 msgid ""
-"Not all assessment steps have been completed for your response. After all "
-"assessment steps are complete, you will see feedback from everyone who "
-"assessed your response, and you will receive your final grade."
+"You have completed your steps in the assignment, but some assessments still "
+"need to be done on your response. When the assessments of your response are "
+"complete, you will see feedback from everyone who assessed your response, "
+"and you will receive your final grade."
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:9
@@ -721,8 +718,8 @@ msgstr "คุณทำงานนี้เสร็จแล้ว"
 
 #: openassessment/templates/openassessmentblock/message/oa_message_complete.html:8
 msgid ""
-"Your final grade will be available when all assessment steps for your "
-"response have been completed."
+"Your final grade will be available when the assessments of your response are"
+" complete."
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/message/oa_message_complete.html:10
@@ -932,17 +929,17 @@ msgstr "\n                                            การประเม�
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:72
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:56
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:49
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:24
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:23
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:39
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:28
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:27
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:45
 msgid "Associated File"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:86
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:70
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:60
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:36
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:35
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:40
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:39
 msgid "We could not submit your assessment"
 msgstr "เราไม่สามารถส่งการประเมินของคุณ"
 
@@ -1108,8 +1105,8 @@ msgid "We could not save your progress"
 msgstr "เราไม่สามารถบันทึกความก้าวหน้าของคุณ"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:102
-msgid "Save Your Progress"
-msgstr "บันทึกความก้าวหน้าของคุณ"
+msgid "Save your progress"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:106
 msgid "Your Submission Status"
@@ -1139,16 +1136,24 @@ msgstr "ส่งคำตอบของคุณและก้าวไปข
 msgid "Submission Cancelled"
 msgstr "การส่งถูกยกเลิก"
 
-#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:28
+#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:29
 #, python-format
 msgid ""
 "\n"
-"                            Your submission has been cancelled by %(removed_by_username)s on %(removed_datetime)s\n"
-"                        "
+"                                Your submission has been cancelled by %(removed_by_username)s on %(removed_datetime)s\n"
+"                            "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:34
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:30
+#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:33
+#, python-format
+msgid ""
+"\n"
+"                                Your submission was cancelled on %(removed_datetime)s\n"
+"                            "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:40
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:36
 #, python-format
 msgid ""
 "\n"
@@ -1222,8 +1227,8 @@ msgid "Assess Your Response"
 msgstr "ประเมินคำตอบของคุณ"
 
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:67
-msgid "Submit Your Assessment"
-msgstr "ส่งคำประเมินของคุณ"
+msgid "Submit your assessment"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/self/oa_self_closed.html:25
 msgid ""
@@ -1232,7 +1237,7 @@ msgid ""
 msgstr "ขั้นตอนนี้ได้ปิดลงแล้ว คุณไม่สามารถเสร็จสิ้นการประเมินตนเองหรือประเมินต่อไปได้ และคุณจะได้รับคะแนนไม่สมบูรณ์"
 
 #: openassessment/templates/openassessmentblock/staff/oa_staff_grade.html:8
-#: openassessment/xblock/grade_mixin.py:331
+#: openassessment/xblock/grade_mixin.py:336
 msgid "Staff Grade"
 msgstr ""
 
@@ -1347,26 +1352,31 @@ msgstr ""
 msgid "Give this learner a grade using the problem's rubric."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:15
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:16
 #, python-format
 msgid ""
 "\n"
-"                                    Response for: %(student_username)s\n"
-"                                "
+"                                        Response for: %(student_username)s\n"
+"                                    "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:21
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:20
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:36
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:20
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:19
+msgid "Learner Response"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:25
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:42
 msgid "The learner's response to the question above:"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:43
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:42
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:47
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:46
 msgid "Submit assessment"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:49
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:53
 msgid "Submit assessment and continue grading"
 msgstr ""
 
@@ -1382,12 +1392,12 @@ msgstr ""
 msgid "Override this learner's current grade using the problem's rubric."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:14
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:15
 #, python-format
 msgid ""
 "\n"
-"                                Response for: %(student_username)s\n"
-"                            "
+"                                    Response for: %(student_username)s\n"
+"                                "
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:9
@@ -1402,89 +1412,47 @@ msgstr ""
 msgid "Learner's Response"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:24
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:25
 #, python-format
 msgid ""
 "\n"
-"                            Learner submission removed by %(removed_by_username)s on %(removed_datetime)s\n"
-"                        "
+"                                Learner submission removed by %(removed_by_username)s on %(removed_datetime)s\n"
+"                            "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:52
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:29
+#, python-format
+msgid ""
+"\n"
+"                                Learner submission removed on %(removed_datetime)s\n"
+"                            "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:54
 msgid "Peer Assessments for This Learner"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:58
-#, python-format
-msgid ""
-"\n"
-"                                    Peer %(peer_num)s:\n"
-"                                "
-msgstr ""
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:62
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:115
-msgid "Assessment"
-msgstr "การประเมิน"
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:66
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:119
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:165
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:203
-msgid "Selected Option"
-msgstr "เลือกตัวเลือก"
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:67
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:120
-msgid "Feedback"
-msgstr "ผลตอบกลับ"
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:69
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:122
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:167
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:205
-msgid "Points Possible"
-msgstr "คะแนนที่เป็นไปได้"
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:89
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:142
-msgid "Overall Feedback"
-msgstr "ผลตอบกลับทั้งหมด"
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:105
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:59
 msgid "Peer Assessments Completed by This Learner"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:111
-#, python-format
-msgid ""
-"\n"
-"                                    Assessment %(peer_num)s:\n"
-"                                "
-msgstr ""
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:158
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:64
 msgid "Learner's Self Assessment"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:161
-#: openassessment/xblock/grade_mixin.py:168
-msgid "Self Assessment"
-msgstr "การประเมินตนเอง"
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:196
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:69
 msgid "Example-Based Assessment"
 msgstr "การประเมินอิงตัวอย่าง"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:199
-msgid "Example Based Assessment"
-msgstr "การประเมินอิงตัวอย่าง"
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:74
+msgid "Staff Assessment for This Learner"
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:233
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:82
 msgid "Learner's Final Grade"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:239
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:88
 #, python-format
 msgid ""
 "\n"
@@ -1492,54 +1460,98 @@ msgid ""
 "                        "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:245
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:93
+msgid "Final Grade Details"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:113
+#, python-format
+msgid ""
+"\n"
+"                                            %(assessment_label)s - %(points)s point\n"
+"                                        "
+msgid_plural ""
+"\n"
+"                                            %(assessment_label)s - %(points)s points\n"
+"                                        "
+msgstr[0] ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:134
 msgid "The submission is waiting for assessments."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:247
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:136
 msgid ""
 "The learner's submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:249
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:138
 msgid "The problem has not been started."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:251
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:140
 msgid "The problem has not been completed."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:262
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:151
 msgid "Submit Assessment Grade Override"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:277
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:166
 msgid "Remove Submission From Peer Grading"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:285
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:174
 msgid "Caution: This Action Cannot Be Undone"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:286
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:175
 msgid ""
 "Removing a learner's submission cannot be undone and should be done with "
 "caution."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:291
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:180
 msgid "Comments:"
 msgstr "ความคิดเห็น"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:300
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:189
 msgid "Remove submission"
 msgstr "ยกเลิกการส่ง"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:315
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:204
 msgid "A response was not found for this learner."
 msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:13
+#, python-format
+msgid ""
+"\n"
+"                                Assessment %(assessment_num)s:\n"
+"                            "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:18
+msgid "Assessment"
+msgstr "การประเมิน"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:22
+msgid "Selected Option"
+msgstr "เลือกตัวเลือก"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:23
+msgid "Feedback"
+msgstr "ผลตอบกลับ"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:25
+msgid "Points Possible"
+msgstr "คะแนนที่เป็นไปได้"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:46
+msgid "Overall Feedback"
+msgstr "ผลตอบกลับทั้งหมด"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:12
 msgid "Learn to Assess Responses"
@@ -1641,6 +1653,10 @@ msgstr "เกิดข้อผิดพลาดที่คาดไม่ถ
 msgid "Peer Assessment"
 msgstr "การประเมินผลโดยเพื่อน"
 
+#: openassessment/xblock/grade_mixin.py:168
+msgid "Self Assessment"
+msgstr "การประเมินตนเอง"
+
 #: openassessment/xblock/grade_mixin.py:201
 msgid "Assessment feedback could not be saved."
 msgstr "ผลตอบกลับการประเมินไม่สามารถบันทึก"
@@ -1649,32 +1665,41 @@ msgstr "ผลตอบกลับการประเมินไม่สา
 msgid "Feedback saved."
 msgstr "ผลตอบกลับบันทึกแล้ว"
 
-#: openassessment/xblock/grade_mixin.py:334
+#: openassessment/xblock/grade_mixin.py:339
+#: openassessment/xblock/grade_mixin.py:353
 msgid "Peer Median Grade"
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:339
-#: openassessment/xblock/grade_mixin.py:472
+#: openassessment/xblock/grade_mixin.py:344
+#: openassessment/xblock/grade_mixin.py:486
 msgid "Peer {peer_index}"
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:349
+#: openassessment/xblock/grade_mixin.py:354
+msgid "Waiting for peer reviews"
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:359
 msgid "Example-Based Grade"
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:351
+#: openassessment/xblock/grade_mixin.py:362
+msgid "Self Assessment Grade"
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:362
 msgid "Your Self Assessment"
 msgstr "การประเมินส่วนตัว"
 
-#: openassessment/xblock/grade_mixin.py:465
+#: openassessment/xblock/grade_mixin.py:479
 msgid "Staff Comments"
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:477
+#: openassessment/xblock/grade_mixin.py:491
 msgid "Peer"
 msgstr "เพื่อน"
 
-#: openassessment/xblock/grade_mixin.py:484
+#: openassessment/xblock/grade_mixin.py:498
 msgid "Your Comments"
 msgstr ""
 
@@ -1702,17 +1727,17 @@ msgstr "ไม่สามารถอัพเดทสถานะการท
 msgid "Could not load peer assessment."
 msgstr "ไม่สามารถโหลดการประเมินโดยเพื่อน"
 
-#: openassessment/xblock/peer_assessment_mixin.py:202
-msgid "Submit your assessment & review another response"
-msgstr "ส่งการประเมินของคุณและตรวจคำตอบอื่นๆ"
+#: openassessment/xblock/peer_assessment_mixin.py:201
+msgid "Submit your assessment and review another response"
+msgstr ""
 
-#: openassessment/xblock/peer_assessment_mixin.py:206
-msgid "Submit your assessment & move onto next step"
-msgstr "ส่งคำตอบของคุณและก้าวไปขั้นต่อไป"
+#: openassessment/xblock/peer_assessment_mixin.py:205
+msgid "Submit your assessment and move to next step"
+msgstr ""
 
-#: openassessment/xblock/peer_assessment_mixin.py:210
-msgid "Submit your assessment & move to response #{response_number}"
-msgstr "ส่งคำตอบของคุณและก้าวไปคำตอบ#{response_number}"
+#: openassessment/xblock/peer_assessment_mixin.py:209
+msgid "Submit your assessment and move to response #{response_number}"
+msgstr ""
 
 #: openassessment/xblock/resolve_dates.py:49
 msgid ""
@@ -1740,12 +1765,12 @@ msgstr "วันเริ่มในขั้นนี้  '{due}'ไม่ส
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
 msgstr "วันเริ่มในขั้นนี้ '{start}'ไม่สามารถจะช้ากว่าวันกำหนดส่ง '{due}'"
 
-#: openassessment/xblock/self_assessment_mixin.py:120
+#: openassessment/xblock/self_assessment_mixin.py:124
 msgid "You must submit a response before you can perform a self-assessment."
 msgstr "คุณต้องส่งคำตอบก่อนคุณถึงจะประเมินตนเองได้"
 
-#: openassessment/xblock/self_assessment_mixin.py:141
-#: openassessment/xblock/self_assessment_mixin.py:148
+#: openassessment/xblock/self_assessment_mixin.py:145
+#: openassessment/xblock/self_assessment_mixin.py:152
 msgid "Your self assessment could not be submitted."
 msgstr "การประเมินตนเองยังไม่ได้ส่ง"
 
@@ -1801,20 +1826,20 @@ msgstr ""
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:446
+#: openassessment/xblock/staff_area_mixin.py:483
 msgid ""
 "All AI tasks associated with this item have been rescheduled successfully."
 msgstr "AI ทั้งหมด ทำงานร่วมกับไอเท็มนี้ได้ทำตารางเวลาใหม่เรียบร้อยแล้ว"
 
-#: openassessment/xblock/staff_area_mixin.py:451
+#: openassessment/xblock/staff_area_mixin.py:488
 msgid "An error occurred while rescheduling tasks: {}"
 msgstr "เกิดความผิดพลาดขณะทำตารางเวลาใหม่: {}"
 
-#: openassessment/xblock/staff_area_mixin.py:477
+#: openassessment/xblock/staff_area_mixin.py:514
 msgid "Please enter valid reason to remove the submission."
 msgstr "โปรดระบุเหตุผลในการยกเลิกการส่ง"
 
-#: openassessment/xblock/staff_area_mixin.py:491
+#: openassessment/xblock/staff_area_mixin.py:528
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
