@@ -119,7 +119,8 @@ class SubmissionTest(XBlockHandlerTestCase):
                                                               "filename": "test.jpg"}), response_format='json')
         self.assertTrue(resp['success'])
         self.assertTrue(resp['url'].startswith(
-            'https://mybucket.s3.amazonaws.com/submissions_attachments/test_student/test_course/' + xblock.scope_ids.usage_id
+            'https://mybucket.s3.amazonaws.com/submissions_attachments/test_student/test_course/' +
+            xblock.scope_ids.usage_id
         ))
 
     @mock_s3
@@ -339,7 +340,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
     @patch.object(OpenAssessmentBlock, 'get_user_submission')
     @scenario('data/submission_open.xml', user_id="Bob")
     def test_open_submitted_old_format(self, xblock, mock_get_user_submission):
-        submission = xblock.create_submission(
+        xblock.create_submission(
             xblock.get_student_item_dict(),
             ('A man must have a code', 'A man must have an umbrella too.')
         )

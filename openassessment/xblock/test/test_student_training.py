@@ -157,14 +157,13 @@ class StudentTrainingAssessTest(StudentTrainingTest):
         expected_context["training_num_current"] = 2
         expected_context["training_essay"] = {
             'answer': {
-                'parts': [
-                    {
-                        'text': u"тєѕт αηѕωєя",
-                        'prompt': {
-                            'description': u'Given the state of the world today, what do you think should be done to combat poverty?'
-                        }
+                'parts': [{
+                    'text': u"тєѕт αηѕωєя",
+                    'prompt': {
+                        'description':
+                            u'Given the state of the world today, what do you think should be done to combat poverty?'
                     }
-                ]
+                }]
             }
         }
 

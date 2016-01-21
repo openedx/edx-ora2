@@ -11,6 +11,7 @@ from openassessment.xblock.resolve_dates import resolve_dates, DISTANT_PAST, DIS
 
 STUB_I18N = lambda x: x
 
+
 @ddt.ddt
 class ResolveDatesTest(TestCase):
 

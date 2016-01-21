@@ -243,7 +243,9 @@ class TestSerializeContent(TestCase):
                 try:
                     etree.fromstring(xml)
                 except Exception as ex:     # pylint:disable=W0703
-                    msg = "Could not parse mutated assessment dict {assessment}\n{ex}".format(assessment=mutated_dict, ex=ex)
+                    msg = "Could not parse mutated assessment dict {assessment}\n{ex}".format(
+                        assessment=mutated_dict, ex=ex
+                    )
                     self.fail(msg)
 
     @ddt.data("title", "prompt", "start", "due", "submission_due", "submission_start", "leaderboard_show")
@@ -316,7 +318,7 @@ class TestSerializeContent(TestCase):
 
             # Mutation #1: Remove the key
             print "== Removing key {}".format(key)
-            yield {k:v for k, v in input_dict.iteritems() if k != key}
+            yield {k: v for k, v in input_dict.iteritems() if k != key}
 
             if isinstance(val, dict):
 
@@ -399,7 +401,8 @@ class TestSerializeContent(TestCase):
         print "== int value {}".format(key)
         yield self._mutate_dict(input_dict, key, 0)
 
-    def _mutate_dict(self, input_dict, key, new_val):
+    @staticmethod
+    def _mutate_dict(input_dict, key, new_val):
         """
         Copy and update a dictionary.
 
@@ -415,7 +418,8 @@ class TestSerializeContent(TestCase):
         mutated[key] = new_val
         return mutated
 
-    def _mutate_list(self, input_list, index, new_val):
+    @staticmethod
+    def _mutate_list(input_list, index, new_val):
         """
         Copy and update a list.
 
@@ -463,6 +467,7 @@ class TestParseExamplesFromXml(TestCase):
         xml = etree.fromstring("".join(data['xml']))
         examples = parse_examples_xml(xml)
         self.assertEqual(examples, data['examples'])
+
 
 @ddt.ddt
 class TestParseAssessmentsFromXml(TestCase):

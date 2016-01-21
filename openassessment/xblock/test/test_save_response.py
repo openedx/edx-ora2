@@ -22,7 +22,7 @@ class SaveResponseTest(XBlockHandlerTestCase):
     def test_save_response(self, xblock, data):
         # Save the response
         submission = ["  ".join(data[0]), "  ".join(data[1])]
-        payload = json.dumps({'submission': submission })
+        payload = json.dumps({'submission': submission})
         resp = self.request(xblock, 'save_submission', payload, response_format="json")
         self.assertTrue(resp['success'])
         self.assertEqual(resp['msg'], u'')
@@ -44,7 +44,7 @@ class SaveResponseTest(XBlockHandlerTestCase):
 
         # Save another response
         submission = [u"ГЂіи lіиэ ъэтшээи", u"Ђэаvэи аиↁ Ђэѓэ."]
-        payload = json.dumps({'submission': submission })
+        payload = json.dumps({'submission': submission})
         resp = self.request(xblock, 'save_submission', payload, response_format="json")
         self.assertTrue(resp['success'])
 

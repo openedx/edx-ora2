@@ -79,7 +79,8 @@ class MessageMixin(object):
                 "{}_approaching".format(status): step_info.get('approaching', False),
                 "{}_not_released".format(status): (step_info.get("reason") == "start"),
 
-                #Uses a static field in the XBlock to determine if the PeerAssessment Block was able to pick up an assessment.
+                # Uses a static field in the XBlock to determine if the PeerAssessment Block
+                # was able to pick up an assessment.
                 "peer_not_available": self.no_peers,
         }
 
@@ -119,7 +120,6 @@ class MessageMixin(object):
         }
 
         return 'openassessmentblock/message/oa_message_closed.html', context
-
 
     def render_message_open(self, deadline_info):
         """

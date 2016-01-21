@@ -132,7 +132,7 @@ class XBlockHandlerTestCaseMixin(object):
         super(XBlockHandlerTestCaseMixin, self).setUp()
         self.runtime = WorkbenchRuntime()
         mock_publish = mock.MagicMock(side_effect=self.runtime.publish)
-        self.runtime.publish=mock_publish
+        self.runtime.publish = mock_publish
 
     def set_user(self, user_id):
         """
@@ -379,7 +379,8 @@ class SubmitAssessmentsMixin(object):
 
         return submission
 
-    def set_staff_access(self, xblock):
+    @staticmethod
+    def set_staff_access(xblock):
         xblock.xmodule_runtime = mock.Mock(user_is_staff=True)
         xblock.xmodule_runtime.anonymous_student_id = 'Bob'
 

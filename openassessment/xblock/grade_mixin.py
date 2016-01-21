@@ -2,7 +2,6 @@
 Grade step in the OpenAssessment XBlock.
 """
 import copy
-from collections import defaultdict
 from lazy import lazy
 
 from django.utils.translation import ugettext as _
@@ -309,7 +308,7 @@ class GradeMixin(object):
             'additional_feedback': self._additional_feedback(
                 staff_assessment=staff_assessment,
                 peer_assessments=peer_assessments,
-                self_assessment= self_assessment,
+                self_assessment=self_assessment,
             ),
         }
 
@@ -398,6 +397,7 @@ class GradeMixin(object):
         """
         median_scores = peer_api.get_assessment_median_scores(submission_uuid)
         median_score = median_scores.get(criterion['name'], None)
+
         def median_options():
             """
             Returns a list of options that should be shown to represent the median.
@@ -457,7 +457,6 @@ class GradeMixin(object):
             'points': median_score,
             'explanation': None,
         }
-
 
     def _additional_feedback(self, staff_assessment, peer_assessments, self_assessment):
         """
