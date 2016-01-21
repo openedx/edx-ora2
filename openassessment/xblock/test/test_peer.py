@@ -304,7 +304,6 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         # No submission, so the peer step should be unavailable
         expected_context = {
             'graded': 0,
-            'estimated_time': '20 minutes',
             'submit_button_text': 'Submit your assessment & move to response #2',
             'rubric_criteria': xblock.rubric_criteria,
             'must_grade': 5,
@@ -320,7 +319,6 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         expected_context = {
             'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
             'graded': 0,
-            'estimated_time': '20 minutes',
             'submit_button_text': 'Submit your assessment & move to response #2',
             'rubric_criteria': xblock.rubric_criteria,
             'must_grade': 5,
@@ -336,7 +334,6 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         expected_context = {
             'peer_start': dt.datetime(2999, 1, 1).replace(tzinfo=pytz.utc),
             'graded': 0,
-            'estimated_time': '20 minutes',
             'submit_button_text': 'Submit your assessment & move to response #2',
             'rubric_criteria': xblock.rubric_criteria,
             'must_grade': 5,
@@ -355,7 +352,6 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         # Expect to be in the waiting for peers state
         expected_context = {
             'graded': 0,
-            'estimated_time': '20 minutes',
             'rubric_criteria': xblock.rubric_criteria,
             'must_grade': 5,
             'review_num': 1,
@@ -392,7 +388,6 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         # We should pull the other student's submission
         expected_context = {
             'graded': 0,
-            'estimated_time': '20 minutes',
             'rubric_criteria': xblock.rubric_criteria,
             'must_grade': 5,
             'review_num': 1,
@@ -415,7 +410,6 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
 
         expected_context = {
             'graded': 0,
-            'estimated_time': '20 minutes',
             'rubric_criteria': xblock.rubric_criteria,
             'must_grade': 5,
             'review_num': 1,
@@ -439,7 +433,6 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         expected_context = {
             'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
             'graded': 0,
-            'estimated_time': '20 minutes',
             'rubric_criteria': xblock.rubric_criteria,
             'must_grade': 5,
             'review_num': 1,
@@ -475,7 +468,6 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         expected_context = {
             'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
             'graded': 0,
-            'estimated_time': '20 minutes',
             'rubric_criteria': xblock.rubric_criteria,
             'must_grade': 5,
             'review_num': 1,
@@ -503,7 +495,6 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         expected_context = {
             'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
             'graded': 0,
-            'estimated_time': '20 minutes',
             'submit_button_text': 'submit your assessment & move to response #2',
             'rubric_criteria': xblock.rubric_criteria,
             'must_grade': 5,
@@ -534,7 +525,6 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         # Continued grading should still be available,
         # but since there are no other submissions, we're in the waiting state.
         expected_context = {
-            'estimated_time': '20 minutes',
              'graded': 0,
              'must_grade': 5,
              'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
@@ -562,7 +552,6 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         )
 
         expected_context = {
-            'estimated_time': '20 minutes',
              'graded': 0,
              'must_grade': 5,
              'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
@@ -588,7 +577,6 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         # Bugfix: This used to cause a KeyError when students would click "Peer Assessment"
         # (indicating "continued grading") before making a submission.
         expected_context = {
-            'estimated_time': '20 minutes',
             'graded': 0,
             'must_grade': 5,
             'review_num': 1,

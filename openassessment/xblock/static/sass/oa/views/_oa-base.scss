@@ -719,6 +719,15 @@
       // genereal feedback question
       .assessment__rubric__question--feedback {
 
+        .wrapper--input {
+          margin-top: $baseline-v;
+        }
+
+        .question__title__copy {
+          @include margin-left(0);
+          white-space: pre-wrap;
+        }
+
         textarea {
           @extend %ui-content-longanswer;
           min-height: ($baseline-v*5);
