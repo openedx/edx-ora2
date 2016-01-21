@@ -579,7 +579,7 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         """
         Returns the final score displayed in the learner report.
         """
-        score = self.q(css=self._bounded_selector(".staff-info__student__grade .ui-toggle-visibility__content"))
+        score = self.q(css=self._bounded_selector(".staff-info__final__grade__score"))
         if len(score) == 0:
             return None
         return score.text[0]
@@ -592,6 +592,27 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
             lambda: self.learner_final_score == expected_score,
             "Learner score is updated"
         ).fulfill()
+
+    @property
+    def learner_final_score_table_headers(self):
+        """
+        Return the final score table headers (as an array of strings) as shown in the staff area section.
+
+        Returns: array of strings representing the headers (for example,
+            ['CRITERION', 'STAFF GRADE', 'PEER MEDIAN GRADE', 'SELF ASSESSMENT GRADE'])
+        """
+        return self._get_table_text(".staff-info__final__grade__table th")
+
+    @property
+    def learner_final_score_table_values(self):
+        """
+        Return the final score table values (as an array of strings) as shown in the staff area section.
+
+        Returns: array of strings representing the text (for example,
+            ['Poor - 0 points', 'Waiting for peer reviews', 'Good',
+             'Fair - 1 point', 'Waiting for peer reviews', 'Excellent'])
+        """
+        return self._get_table_text(".staff-info__final__grade__table .value")
 
     @property
     def learner_response(self):
@@ -637,12 +658,16 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         Returns: array of strings representing the text(for example, ['Good', u'5', u'5', u'Excellent', u'3', u'3'])
 
         """
+        return self._get_table_text(".staff-info__{} .staff-info__status__table .value".format(section))
 
+    def _get_table_text(self, selector):
+        """
+        Helper method for getting text out of a table.
+        """
         table_elements = self.q(
-            css=self._bounded_selector(".staff-info__{} .staff-info__status__table .value".format(section))
+            css=self._bounded_selector(selector)
         )
         text = []
-        for value in table_elements:
-            text.append(value.text)
-
+        for element in table_elements:
+            text.append(element.text)
         return text

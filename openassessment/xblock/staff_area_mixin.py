@@ -375,22 +375,56 @@ class StaffAreaMixin(object):
         assessment_steps = self.assessment_steps
 
         example_based_assessment = None
+        example_based_assessment_grade_context = None
+
         self_assessment = None
+        self_assessment_grade_context = None
+
         peer_assessments = None
-        submitted_assessments = None
+        peer_assessments_grade_context = []
+
         staff_assessment = staff_api.get_latest_staff_assessment(submission_uuid)
+        staff_assessment_grade_context = None
+
+        submitted_assessments = None
+
+        grade_details = None
+
+        workflow = self.get_workflow_info(submission_uuid=submission_uuid)
+        grade_exists = workflow.get('status') == "done"
 
         if "peer-assessment" in assessment_steps:
             peer_assessments = peer_api.get_assessments(submission_uuid)
             submitted_assessments = peer_api.get_submitted_assessments(submission_uuid)
+            if grade_exists:
+                peer_api.get_score(submission_uuid, self.workflow_requirements()["peer"])
+                peer_assessments_grade_context = [
+                    self._assessment_grade_context(peer_assessment)
+                    for peer_assessment in peer_assessments
+                ]
 
         if "self-assessment" in assessment_steps:
             self_assessment = self_api.get_assessment(submission_uuid)
+            if grade_exists:
+                self_assessment_grade_context = self._assessment_grade_context(self_assessment)
 
         if "example-based-assessment" in assessment_steps:
             example_based_assessment = ai_api.get_latest_assessment(submission_uuid)
+            if grade_exists:
+                example_based_assessment_grade_context = self._assessment_grade_context(example_based_assessment)
 
-        workflow = self.get_workflow_info(submission_uuid=submission_uuid)
+        if grade_exists:
+            if staff_assessment:
+                staff_assessment_grade_context = self._assessment_grade_context(staff_assessment)
+
+            grade_details = self.grade_details(
+                submission_uuid,
+                peer_assessments_grade_context,
+                self_assessment_grade_context,
+                example_based_assessment_grade_context,
+                staff_assessment_grade_context,
+                is_staff=True,
+            )
 
         workflow_cancellation = self.get_workflow_cancellation_info(submission_uuid)
 
@@ -399,8 +433,9 @@ class StaffAreaMixin(object):
             'example_based_assessment': [example_based_assessment] if example_based_assessment else None,
             'self_assessment': [self_assessment] if self_assessment else None,
             'peer_assessments': peer_assessments,
-            'submitted_assessments': submitted_assessments,
             'staff_assessment': [staff_assessment] if staff_assessment else None,
+            'submitted_assessments': submitted_assessments,
+            'grade_details': grade_details,
             'score': workflow.get('score'),
             'workflow_status': workflow.get('status'),
             'workflow_cancellation': workflow_cancellation,

@@ -208,6 +208,9 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIsNone(context['staff_assessment'])
         self.assertEquals("openassessmentblock/staff_area/oa_student_info.html", path)
 
+        # Bob still needs to assess other learners
+        self.assertIsNone(context['grade_details'])
+
     @scenario('data/self_only_scenario.xml', user_id='Bob')
     def test_staff_area_student_info_self_only(self, xblock):
         # Simulate that we are course staff
@@ -239,6 +242,10 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIsNone(context['staff_assessment'])
         self.assertEquals("openassessmentblock/staff_area/oa_student_info.html", path)
 
+        grade_details = context['grade_details']
+        self.assertEquals(1, len(grade_details['criteria'][0]['assessments']))
+        self.assertEquals('Self Assessment Grade', grade_details['criteria'][0]['assessments'][0]['title'])
+
     @scenario('data/staff_grade_scenario.xml', user_id='Bob')
     def test_staff_area_student_info_staff_only(self, xblock):
         # Simulate that we are course staff
@@ -269,6 +276,10 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertIsNone(context['self_assessment'])
         self.assertIsNotNone(context['staff_assessment'])
         self.assertEquals("openassessmentblock/staff_area/oa_student_info.html", path)
+
+        grade_details = context['grade_details']
+        self.assertEquals(1, len(grade_details['criteria'][0]['assessments']))
+        self.assertEquals('Staff Grade', grade_details['criteria'][0]['assessments'][0]['title'])
 
     @scenario('data/basic_scenario.xml', user_id='Bob')
     def test_staff_area_student_info_with_cancelled_submission(self, xblock):
