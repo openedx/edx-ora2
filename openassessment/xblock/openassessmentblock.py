@@ -21,7 +21,7 @@ from xblock.fragment import Fragment
 
 from openassessment.xblock.grade_mixin import GradeMixin
 from openassessment.xblock.leaderboard_mixin import LeaderboardMixin
-from openassessment.xblock.defaults import * # pylint: disable=wildcard-import, unused-wildcard-import
+from openassessment.xblock.defaults import *  # pylint: disable=wildcard-import, unused-wildcard-import
 from openassessment.xblock.message_mixin import MessageMixin
 from openassessment.xblock.peer_assessment_mixin import PeerAssessmentMixin
 from openassessment.xblock.lms_mixin import LmsCompatibilityMixin
@@ -73,7 +73,7 @@ UI_MODELS = {
         "class_id": "openassessment__grade",
         "title": "Your Grade:"
     },
-     "leaderboard": {
+    "leaderboard": {
         "name": "leaderboard",
         "class_id": "openassessment__leaderboard",
         "title": "Leaderboard"
@@ -93,6 +93,7 @@ def load(path):
     """Handy helper for getting resources from our kit."""
     data = pkg_resources.resource_string(__name__, path)
     return data.decode("utf8")
+
 
 @XBlock.needs("i18n")
 @XBlock.needs("user")
@@ -729,11 +730,14 @@ class OpenAssessmentBlock(
 
         Examples:
             >>> is_closed()
-            False, None, datetime.datetime(2014, 3, 27, 22, 7, 38, 788861), datetime.datetime(2015, 3, 27, 22, 7, 38, 788861)
+            False, None, datetime.datetime(2014, 3, 27, 22, 7, 38, 788861),
+            datetime.datetime(2015, 3, 27, 22, 7, 38, 788861)
             >>> is_closed(step="submission")
-            True, "due", datetime.datetime(2014, 3, 27, 22, 7, 38, 788861), datetime.datetime(2015, 3, 27, 22, 7, 38, 788861)
+            True, "due", datetime.datetime(2014, 3, 27, 22, 7, 38, 788861),
+            datetime.datetime(2015, 3, 27, 22, 7, 38, 788861)
             >>> is_closed(step="self-assessment")
-            True, "start", datetime.datetime(2014, 3, 27, 22, 7, 38, 788861), datetime.datetime(2015, 3, 27, 22, 7, 38, 788861)
+            True, "start", datetime.datetime(2014, 3, 27, 22, 7, 38, 788861),
+            datetime.datetime(2015, 3, 27, 22, 7, 38, 788861)
 
         """
         submission_range = (self.submission_start, self.submission_due)

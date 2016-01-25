@@ -77,7 +77,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         with patch('openassessment.xblock.workflow_mixin.workflow_api') as mock_api:
             self.runtime.render(xblock, "student_view")
             expected_reqs = {
-                "peer": { "must_grade": 5, "must_be_graded_by": 3 }
+                "peer": {"must_grade": 5, "must_be_graded_by": 3}
             }
             mock_api.update_from_assessments.assert_called_once_with('test_submission', expected_reqs)
 
@@ -258,6 +258,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
 
         xblock.prompts = [{'description': 'Prompt 4.'}, {'description': 'Prompt 5.'}]
         self.assertEqual(xblock.prompt, '[{"description": "Prompt 4."}, {"description": "Prompt 5."}]')
+
 
 class TestDates(XBlockHandlerTestCase):
 

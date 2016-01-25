@@ -46,8 +46,9 @@ class TestMessageRender(XBlockHandlerTestCase):
         },
     }
 
+    @staticmethod
     def _assert_path_and_context(
-        self, xblock, expected_path, expected_context,
+        xblock, expected_path, expected_context,
         workflow_status, deadline_information, has_peers_to_grade,
         workflow_status_details=DEFAULT_STATUS_DETAILS
     ):
@@ -102,8 +103,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             # Asserts that the message_mixin correctly derived the path and context to be rendered
             xblock.render_assessment.assert_called_with(expected_path, expected_context)
 
-
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_submission(self, xblock):
 
         status = None
@@ -128,7 +128,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario_no_peer.xml', user_id = "Linda")
+    @scenario('data/message_scenario_no_peer.xml', user_id="Linda")
     def test_submission_no_peer(self, xblock):
 
         status = None
@@ -152,7 +152,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_submission_approaching(self, xblock):
 
         status = None
@@ -177,7 +177,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario_no_self.xml', user_id = "Linda")
+    @scenario('data/message_scenario_no_self.xml', user_id="Linda")
     def test_submission_no_self_approaching(self, xblock):
 
         status = None
@@ -201,7 +201,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_submission_not_yet_open(self, xblock):
 
         status = None
@@ -226,7 +226,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_submission_incomplete(self, xblock):
 
         status = None
@@ -251,7 +251,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario_student_training.xml', user_id = "Linda")
+    @scenario('data/message_scenario_student_training.xml', user_id="Linda")
     def test_training(self, xblock):
 
         status = 'training'
@@ -280,7 +280,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario_student_training.xml', user_id = "Linda")
+    @scenario('data/message_scenario_student_training.xml', user_id="Linda")
     def test_training_approaching(self, xblock):
 
         status = 'training'
@@ -309,7 +309,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario_student_training.xml', user_id = "Linda")
+    @scenario('data/message_scenario_student_training.xml', user_id="Linda")
     def test_training_not_released(self, xblock):
 
         status = 'training'
@@ -335,7 +335,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario_student_training.xml', user_id = "Linda")
+    @scenario('data/message_scenario_student_training.xml', user_id="Linda")
     def test_training_closed(self, xblock):
 
         status = 'training'
@@ -361,7 +361,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_peer(self, xblock):
 
         status = 'peer'
@@ -389,7 +389,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario_no_self.xml', user_id = "Linda")
+    @scenario('data/message_scenario_no_self.xml', user_id="Linda")
     def test_peer_no_self(self, xblock):
 
         status = 'peer'
@@ -416,7 +416,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario_no_self.xml', user_id = "Linda")
+    @scenario('data/message_scenario_no_self.xml', user_id="Linda")
     def test_peer_no_self_approaching(self, xblock):
 
         status = 'peer'
@@ -443,7 +443,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_peer_not_released(self, xblock):
 
         status = 'peer'
@@ -468,7 +468,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_peer_incomplete(self, xblock):
 
         status = 'peer'
@@ -493,7 +493,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_peer_no_peers_to_assess(self, xblock):
 
         status = 'peer'
@@ -521,7 +521,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_peer_no_peers_to_assess_approaching(self, xblock):
 
         status = 'peer'
@@ -549,7 +549,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_peer_not_open_approaching(self, xblock):
 
         status = 'peer'
@@ -574,7 +574,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_self(self, xblock):
 
         status = 'self'
@@ -602,7 +602,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario_no_peer.xml', user_id = "Linda")
+    @scenario('data/message_scenario_no_peer.xml', user_id="Linda")
     def test_self_no_peer(self, xblock):
 
         status = 'self'
@@ -629,7 +629,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario_no_peer.xml', user_id = "Linda")
+    @scenario('data/message_scenario_no_peer.xml', user_id="Linda")
     def test_self_no_peer_approaching(self, xblock):
 
         status = 'self'
@@ -656,7 +656,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_self_closed(self, xblock):
 
         status = 'self'
@@ -681,7 +681,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario_no_peer.xml', user_id = "Linda")
+    @scenario('data/message_scenario_no_peer.xml', user_id="Linda")
     def test_self_no_peer_incomplete(self, xblock):
 
         status = 'self'
@@ -705,7 +705,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_waiting_due(self, xblock):
 
         status = 'waiting'
@@ -732,7 +732,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade, status_details
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_waiting_not_due(self, xblock):
 
         status = 'waiting'
@@ -792,7 +792,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade, status_details
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_done_due(self, xblock):
 
         status = 'done'
@@ -817,7 +817,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_done_not_due(self, xblock):
 
         status = 'done'

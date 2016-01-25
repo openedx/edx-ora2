@@ -94,6 +94,7 @@ def _is_valid_assessment_sequence(assessments):
 
     return True
 
+
 def validate_assessments(assessments, current_assessments, is_released, _):
     """
     Check that the assessment dict is semantically valid. See _is_valid_assessment_sequence()
@@ -117,7 +118,7 @@ def validate_assessments(assessments, current_assessments, is_released, _):
             and msg describes any validation errors found.
     """
     if len(assessments) == 0:
-        return (False, _("This problem must include at least one assessment."))
+        return False, _("This problem must include at least one assessment.")
 
     # Ensure that we support this sequence of assessments.
     if not _is_valid_assessment_sequence(assessments):
@@ -131,13 +132,15 @@ def validate_assessments(assessments, current_assessments, is_released, _):
             must_be_graded_by = assessment_dict.get('must_be_graded_by')
 
             if must_grade is None or must_grade < 1:
-                return (False, _('In peer assessment, the "Must Grade" value must be a positive integer.'))
+                return False, _('In peer assessment, the "Must Grade" value must be a positive integer.')
 
             if must_be_graded_by is None or must_be_graded_by < 1:
-                return (False, _('In peer assessment, the "Graded By" value must be a positive integer.'))
+                return False, _('In peer assessment, the "Graded By" value must be a positive integer.')
 
             if must_grade < must_be_graded_by:
-                return (False, _('In peer assessment, the "Must Grade" value must be greater than or equal to the "Graded By" value.'))
+                return False, _(
+                    'In peer assessment, the "Must Grade" value must be greater than or equal to the "Graded By" value.'
+                )
 
         # Student Training must have at least one example, and all
         # examples must have unique answers.
@@ -155,24 +158,24 @@ def validate_assessments(assessments, current_assessments, is_released, _):
         # at least for now.  Later, we may make this more flexible.
         if assessment_dict.get('name') == 'example-based-assessment':
             if assessment_dict.get('algorithm_id') not in ['ease', 'fake']:
-                return (False, _('The "algorithm_id" value must be set to "ease" or "fake"'))
+                return False, _('The "algorithm_id" value must be set to "ease" or "fake"')
 
         # Staff grading must be required if it is the only step
         if assessment_dict.get('name') == 'staff-assessment' and len(assessments) == 1:
             required = assessment_dict.get('required')
-            if not required: # Captures both None and explicit False cases, both are invalid
-                return (False, _('The "required" value must be true if staff assessment is the only step.'))
+            if not required:  # Captures both None and explicit False cases, both are invalid
+                return False, _('The "required" value must be true if staff assessment is the only step.')
 
     if is_released:
         if len(assessments) != len(current_assessments):
-            return (False, _("The number of assessments cannot be changed after the problem has been released."))
+            return False, _("The number of assessments cannot be changed after the problem has been released.")
 
         names = [assessment.get('name') for assessment in assessments]
         current_names = [assessment.get('name') for assessment in current_assessments]
         if names != current_names:
-            return (False, _("The assessment type cannot be changed after the problem has been released."))
+            return False, _("The assessment type cannot be changed after the problem has been released.")
 
-    return (True, u'')
+    return True, u''
 
 
 def validate_rubric(rubric_dict, current_rubric, is_released, is_example_based, _):
@@ -194,7 +197,7 @@ def validate_rubric(rubric_dict, current_rubric, is_released, is_example_based, 
     try:
         rubric_from_dict(rubric_dict)
     except InvalidRubric:
-        return (False, _(u'This rubric definition is not valid.'))
+        return False, _(u'This rubric definition is not valid.')
 
     # No duplicate criteria names
     duplicates = _duplicates([criterion['name'] for criterion in rubric_dict['criteria']])
@@ -202,7 +205,7 @@ def validate_rubric(rubric_dict, current_rubric, is_released, is_example_based, 
         msg = _(u"Criteria duplicate name(s): {duplicates}").format(
             duplicates=", ".join(duplicates)
         )
-        return (False, msg)
+        return False, msg
 
     for criterion in rubric_dict['criteria']:
         # No duplicate option names within a criterion
@@ -211,13 +214,13 @@ def validate_rubric(rubric_dict, current_rubric, is_released, is_example_based, 
             msg = _(u"Options in '{criterion}' have duplicate name(s): {duplicates}").format(
                 criterion=criterion['name'], duplicates=", ".join(duplicates)
             )
-            return (False, msg)
+            return False, msg
 
         # Some criteria may have no options, just written feedback.
         # In this case, written feedback must be required (not optional or disabled).
         if len(criterion['options']) == 0 and criterion.get('feedback', 'disabled') != 'required':
             msg = _(u'Criteria with no options must require written feedback.')
-            return (False, msg)
+            return False, msg
 
         # Example-based assessments impose the additional restriction
         # that the point values for options must be unique within
@@ -226,7 +229,7 @@ def validate_rubric(rubric_dict, current_rubric, is_released, is_example_based, 
             duplicates = _duplicates([option['points'] for option in criterion['options']])
             if len(duplicates) > 0:
                 msg = _(u"Example-based assessments cannot have duplicate point values.")
-                return (False, msg)
+                return False, msg
 
     # After a problem is released, authors are allowed to change text,
     # but nothing that would change the point value of a rubric.
@@ -234,11 +237,11 @@ def validate_rubric(rubric_dict, current_rubric, is_released, is_example_based, 
 
         # Number of prompts must be the same
         if len(rubric_dict['prompts']) != len(current_rubric['prompts']):
-            return (False, _(u'Prompts cannot be created or deleted after a problem is released.'))
+            return False, _(u'Prompts cannot be created or deleted after a problem is released.')
 
         # Number of criteria must be the same
         if len(rubric_dict['criteria']) != len(current_rubric['criteria']):
-            return (False, _(u'The number of criteria cannot be changed after a problem is released.'))
+            return False, _(u'The number of criteria cannot be changed after a problem is released.')
 
         # Criteria names must be the same
         # We use criteria names as unique identifiers (unfortunately)
@@ -251,19 +254,19 @@ def validate_rubric(rubric_dict, current_rubric, is_released, is_example_based, 
         current_criterion_names = set(criterion.get('name') for criterion in current_rubric['criteria'])
         new_criterion_names = set(criterion.get('name') for criterion in rubric_dict['criteria'])
         if current_criterion_names != new_criterion_names:
-            return (False, _(u'Criteria names cannot be changed after a problem is released'))
+            return False, _(u'Criteria names cannot be changed after a problem is released')
 
         # Number of options for each criterion must be the same
         for new_criterion, old_criterion in _match_by_order(rubric_dict['criteria'], current_rubric['criteria']):
             if len(new_criterion['options']) != len(old_criterion['options']):
-                return (False, _(u'The number of options cannot be changed after a problem is released.'))
+                return False, _(u'The number of options cannot be changed after a problem is released.')
 
             else:
                 for new_option, old_option in _match_by_order(new_criterion['options'], old_criterion['options']):
                     if new_option['points'] != old_option['points']:
-                        return (False, _(u'Point values cannot be changed after a problem is released.'))
+                        return False, _(u'Point values cannot be changed after a problem is released.')
 
-    return (True, u'')
+    return True, u''
 
 
 def validate_dates(start, end, date_ranges, _):
@@ -284,9 +287,9 @@ def validate_dates(start, end, date_ranges, _):
     try:
         resolve_dates(start, end, date_ranges, _)
     except (DateValidationError, InvalidDateFormat) as ex:
-        return (False, unicode(ex))
+        return False, unicode(ex)
     else:
-        return (True, u'')
+        return True, u''
 
 
 def validate_assessment_examples(rubric_dict, assessments, _):
@@ -311,7 +314,9 @@ def validate_assessment_examples(rubric_dict, assessments, _):
 
             # Must have at least one training example
             if len(examples) == 0:
-                return False, _(u"Learner training and example-based assessments must have at least one training example.")
+                return False, _(
+                    u"Learner training and example-based assessments must have at least one training example."
+                )
 
             # Delegate to the student training API to validate the
             # examples against the rubric.
@@ -347,7 +352,7 @@ def validator(oa_block, _, strict_post_release=True):
         current_assessments = oa_block.rubric_assessments
         success, msg = validate_assessments(assessments, current_assessments, is_released, _)
         if not success:
-            return (False, msg)
+            return False, msg
 
         # Rubric
         is_example_based = 'example-based-assessment' in [asmnt.get('name') for asmnt in assessments]
@@ -357,26 +362,26 @@ def validator(oa_block, _, strict_post_release=True):
         }
         success, msg = validate_rubric(rubric_dict, current_rubric, is_released, is_example_based, _)
         if not success:
-            return (False, msg)
+            return False, msg
 
         # Training examples
         success, msg = validate_assessment_examples(rubric_dict, assessments, _)
         if not success:
-            return (False, msg)
+            return False, msg
 
         # Dates
         submission_dates = [(submission_start, submission_due)]
         assessment_dates = [(asmnt.get('start'), asmnt.get('due')) for asmnt in assessments]
         success, msg = validate_dates(oa_block.start, oa_block.due, submission_dates + assessment_dates, _)
         if not success:
-            return (False, msg)
+            return False, msg
 
         # Leaderboard
         if leaderboard_show < 0 or leaderboard_show > MAX_TOP_SUBMISSIONS:
-            return (False, _("Leaderboard number is invalid."))
+            return False, _("Leaderboard number is invalid.")
 
         # Success!
-        return (True, u'')
+        return True, u''
 
     return _inner
 
@@ -399,13 +404,13 @@ def validate_submission(submission, prompts, _):
     message = _(u"The submission format is invalid.")
 
     if type(submission) != list:
-        return (False, message)
+        return False, message
 
     if len(submission) != len(prompts):
-        return (False, message)
+        return False, message
 
     for submission_part in submission:
         if type(submission_part) != unicode:
-            return (False, message)
+            return False, message
 
-    return (True, u'')
+    return True, u''

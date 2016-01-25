@@ -96,11 +96,11 @@ class StudioViewTest(XBlockHandlerTestCase):
     ]
 
     EXAMPLE_BASED_ASSESSMENT_EXAMPLES = '<examples>' + \
-        '<example>' + \
-            '<answer> TEST ANSWER </answer>' + \
-            '<select criterion="Test criterion" option="Test option" />' + \
-        '</example>' + \
-    '</examples>'
+                                        '<example>' + \
+                                        '<answer> TEST ANSWER </answer>' + \
+                                        '<select criterion="Test criterion" option="Test option" />' + \
+                                        '</example>' + \
+                                        '</examples>'
 
     ASSESSMENT_CSS_IDS = {
         "example-based-assessment": "oa_ai_assessment_editor",

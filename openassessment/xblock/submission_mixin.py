@@ -435,8 +435,10 @@ class SubmissionMixin(object):
             student_submission = self.get_user_submission(
                 workflow["submission_uuid"]
             )
-            context["peer_incomplete"] = "peer" in workflow["status_details"] and not workflow["status_details"]["peer"]["complete"]
-            context["self_incomplete"] = "self" in workflow["status_details"] and not workflow["status_details"]["self"]["complete"]
+            peer_in_workflow = "peer" in workflow["status_details"]
+            self_in_workflow = "self" in workflow["status_details"]
+            context["peer_incomplete"] = peer_in_workflow and not workflow["status_details"]["peer"]["complete"]
+            context["self_incomplete"] = self_in_workflow and not workflow["status_details"]["self"]["complete"]
             context["student_submission"] = create_submission_dict(student_submission, self.prompts)
             path = 'openassessmentblock/response/oa_response_submitted.html'
 

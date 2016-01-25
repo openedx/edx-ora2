@@ -86,10 +86,9 @@ class LeaderboardMixin(object):
 
             score.pop('content', None)
 
-        context = { 'topscores': scores,
-                    'allow_latex': self.allow_latex,
-                  }
-        return ('openassessmentblock/leaderboard/oa_leaderboard_show.html', context)
+        context = {'topscores': scores, 'allow_latex': self.allow_latex,}
+
+        return 'openassessmentblock/leaderboard/oa_leaderboard_show.html', context
 
     def render_leaderboard_incomplete(self):
         """
@@ -98,4 +97,4 @@ class LeaderboardMixin(object):
         Returns:
             template_path (string), tuple of context (dict)
         """
-        return ('openassessmentblock/leaderboard/oa_leaderboard_waiting.html', {})
+        return 'openassessmentblock/leaderboard/oa_leaderboard_waiting.html', {}

@@ -17,18 +17,23 @@ from openassessment.xblock.validation import (
 
 STUB_I18N = lambda x: x
 
+
 @ddt.ddt
 class AssessmentValidationTest(TestCase):
 
     @ddt.file_data('data/valid_assessments.json')
     def test_valid_assessment(self, data):
-        success, msg = validate_assessments(data["assessments"], data["current_assessments"], data["is_released"], STUB_I18N)
+        success, msg = validate_assessments(
+            data["assessments"], data["current_assessments"], data["is_released"], STUB_I18N
+        )
         self.assertTrue(success)
         self.assertEqual(msg, u'')
 
     @ddt.file_data('data/invalid_assessments.json')
     def test_invalid_assessment(self, data):
-        success, msg = validate_assessments(data["assessments"], data["current_assessments"], data["is_released"], STUB_I18N)
+        success, msg = validate_assessments(
+            data["assessments"], data["current_assessments"], data["is_released"], STUB_I18N
+        )
         self.assertFalse(success)
         self.assertGreater(len(msg), 0)
 
@@ -383,7 +388,7 @@ class ValidationSubmissionTest(TestCase):
         self.assertTrue(success)
 
         success, msg = validate_submission(
-            [u"Response 1.", u"Response 2" ], self.PROMPT, STUB_I18N
+            [u"Response 1.", u"Response 2"], self.PROMPT, STUB_I18N
         )
         self.assertTrue(success)
 

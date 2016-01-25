@@ -279,7 +279,7 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
 
     @scenario('data/grade_scenario.xml', user_id='Bob')
     def test_assessment_does_not_match_rubric(self, xblock):
-         # Get to the grade complete section
+        # Get to the grade complete section
         self.create_submission_and_assessments(
             xblock, self.SUBMISSION, self.PEERS, PEER_ASSESSMENTS, SELF_ASSESSMENT
         )

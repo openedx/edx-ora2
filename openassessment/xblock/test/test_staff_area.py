@@ -51,7 +51,8 @@ class NullUserService(object):
     """
     A simple implementation of the runtime "user" service.
     """
-    def get_anonymous_user_id(self, username, course_id):
+    @staticmethod
+    def get_anonymous_user_id(username, _):
         return username
 
 
@@ -739,7 +740,6 @@ class TestCourseStaff(XBlockHandlerTestCase):
             'submission_returned_uuid': submission['uuid']
         })
 
-
     def _verify_staff_assessment_context(self, context, required, ungraded=None, in_progress=None):
         self.assertEquals(required, context['staff_assessment_required'])
         if not required:
@@ -749,8 +749,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
             self.assertEqual(ungraded, context['staff_assessment_ungraded'])
             self.assertEqual(in_progress, context['staff_assessment_in_progress'])
 
+    @staticmethod
     def _create_mock_runtime(
-            self,
             item_id,
             is_staff,
             is_admin,
@@ -772,7 +772,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
         )
         return mock_runtime
 
-    def _create_submission(self, item, values, types):
+    @staticmethod
+    def _create_submission(item, values, types):
         """ Create a submission and corresponding workflow. """
         submission = sub_api.create_submission(item, values)
 

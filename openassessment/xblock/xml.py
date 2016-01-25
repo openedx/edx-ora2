@@ -288,6 +288,7 @@ def _parse_prompts_xml(root):
 
     return prompts_list
 
+
 def _parse_options_xml(options_root):
     """
     Parse <options> element in the OpenAssessment XBlock's content XML.
@@ -402,7 +403,9 @@ def _parse_criteria_xml(criteria_root):
         if criterion_feedback in ['optional', 'disabled', 'required']:
             criterion_dict['feedback'] = criterion_feedback
         else:
-            raise UpdateFromXmlError('Invalid value for "feedback" attribute: if specified, it must be set set to "optional" or "required".')
+            raise UpdateFromXmlError(
+                'Invalid value for "feedback" attribute: if specified, it must be set set to "optional" or "required".'
+            )
 
         # Criterion options
         criterion_dict['options'] = _parse_options_xml(criterion)
@@ -893,6 +896,7 @@ def parse_from_xml(root):
         'allow_latex': allow_latex,
         'leaderboard_show': leaderboard_show
     }
+
 
 def parse_from_xml_str(xml):
     """

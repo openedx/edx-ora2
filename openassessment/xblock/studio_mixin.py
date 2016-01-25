@@ -17,7 +17,9 @@ from xblock.fragment import Fragment
 
 from openassessment.xblock.defaults import DEFAULT_EDITOR_ASSESSMENTS_ORDER, DEFAULT_RUBRIC_FEEDBACK_TEXT
 from openassessment.xblock.validation import validator
-from openassessment.xblock.data_conversion import create_rubric_dict, make_django_template_key, update_assessments_format
+from openassessment.xblock.data_conversion import (
+    create_rubric_dict, make_django_template_key, update_assessments_format
+)
 from openassessment.xblock.schema import EDITOR_UPDATE_SCHEMA
 from openassessment.xblock.resolve_dates import resolve_dates
 from openassessment.xblock.xml import serialize_examples_to_xml_str, parse_examples_from_xml_str
@@ -217,7 +219,6 @@ class StudioMixin(object):
             if assessment['name'] == 'student-training':
                 for example in assessment['examples']:
                     example['answer'] = {'parts': [{'text': text} for text in example['answer']]}
-
 
         xblock_validator = validator(self, self._)
         success, msg = xblock_validator(
