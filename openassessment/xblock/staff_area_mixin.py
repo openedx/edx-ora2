@@ -22,10 +22,8 @@ from submissions import api as submission_api
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
 from openassessment.assessment.api import ai as ai_api
-from openassessment.fileupload import api as file_api
 from openassessment.workflow import api as workflow_api
 from openassessment.assessment.api import staff as staff_api
-from openassessment.fileupload import exceptions as file_exceptions
 
 
 logger = logging.getLogger(__name__)
@@ -237,11 +235,9 @@ class StaffAreaMixin(object):
         """
         try:
             student_username = data.params.get('student_username', '')
+            path, context = self.get_student_info_path_and_context(student_username)
             expanded_view = data.params.get('expanded_view', [])
-            path, context = self.get_student_info_path_and_context(
-                student_username,
-                expanded_view=expanded_view
-            )
+            context.update({'expanded_view': expanded_view})
             return self.render_assessment(path, context)
 
         except PeerAssessmentInternalError:
@@ -341,15 +337,13 @@ class StaffAreaMixin(object):
 
         return context
 
-    def get_student_info_path_and_context(self, student_username, expanded_view=None):
+    def get_student_info_path_and_context(self, student_username):
         """
         Get the proper path and context for rendering the student info
         section of the staff area.
 
         Args:
             student_username (unicode): The username of the student to report.
-            expanded_view (str): An optional view to be shown initially expanded.
-                The default is None meaning that all views are shown collapsed.
         """
         anonymous_user_id = None
         student_item = None
@@ -370,8 +364,24 @@ class StaffAreaMixin(object):
             submission = submissions[0]
             submission_uuid = submission['uuid']
 
+        # This will add submission (which may be None) and username to the context.
         context = self.get_student_submission_context(student_username, submission)
 
+        # Only add the rest of the details to the context if a submission exists.
+        if submission_uuid:
+            self.add_submission_context(submission_uuid, context)
+
+        path = 'openassessmentblock/staff_area/oa_student_info.html'
+        return path, context
+
+    def add_submission_context(self, submission_uuid, context):
+        """
+        Add the submission information (self asssessment, peer assessments, final grade, etc.)
+        to the supplied context for display in the "learner info" portion of staff tools.
+        Args:
+            submission_uuid (unicode): The uuid of the submission, should NOT be None.
+            context: the context to update with additional information
+        """
         assessment_steps = self.assessment_steps
 
         example_based_assessment = None
@@ -429,7 +439,6 @@ class StaffAreaMixin(object):
         workflow_cancellation = self.get_workflow_cancellation_info(submission_uuid)
 
         context.update({
-            'expanded_view': expanded_view,
             'example_based_assessment': [example_based_assessment] if example_based_assessment else None,
             'self_assessment': [self_assessment] if self_assessment else None,
             'peer_assessments': peer_assessments,
@@ -445,9 +454,6 @@ class StaffAreaMixin(object):
             max_scores = peer_api.get_rubric_max_scores(submission_uuid)
             for criterion in context["rubric_criteria"]:
                 criterion["total_value"] = max_scores[criterion["name"]]
-
-        path = 'openassessmentblock/staff_area/oa_student_info.html'
-        return path, context
 
     @XBlock.json_handler
     @require_global_admin("RESCHEDULE_TASKS")

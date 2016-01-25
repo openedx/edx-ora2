@@ -402,7 +402,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         }, ['self'])
 
         # Mock the file upload API to simulate an error
-        with patch("openassessment.xblock.staff_area_mixin.file_api.get_download_url") as file_api_call:
+        with patch("openassessment.fileupload.api.get_download_url") as file_api_call:
             file_api_call.side_effect = FileUploadInternalError("Error!")
             __, context = xblock.get_student_info_path_and_context("Bob")
 

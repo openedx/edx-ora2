@@ -544,12 +544,18 @@ class StaffAreaTest(OpenAssessmentTest):
         Scenario: staff tools indicates if no submission has been received for a given learner
 
         Given I am viewing the staff area of an ORA problem
+        And I myself have submitted a response with self-assessment
         When I search for a learner in staff tools
         And the learner has not submitted a response to the ORA problem
         Then I see a message indicating that the learner has not submitted a response
         And there are no student information sections displayed
         """
         self.auto_auth_page.visit()
+
+        # This is to catch a bug that existed when the user viewing staff tools had submitted an assessment,
+        # and had a grade stored (TNL-4060).
+        self.do_self_assessment()
+
         self.staff_area_page.visit()
 
         # Click on staff tools and search for user
