@@ -8,6 +8,9 @@ import json
 import mock
 from django.test.utils import override_settings
 
+from submissions import api as submissions_api
+from openassessment.workflow import api as workflow_api
+from openassessment.assessment.api import self as self_api
 from openassessment.assessment.api import peer as peer_api
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 
@@ -276,6 +279,108 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                     self.assertEquals(assessment['points'], scores[criterion_index])
                 else:
                     self.assertIsNone(assessment.get('points', None))
+
+    @scenario('data/grade_scenario.xml', user_id='Bernard')
+    def test_peer_update_after_override(self, xblock):
+        # We need to copy most of the logic in self.create_submission_and_assessments here, so
+        # as to delay the subitting of peer assessments to the right point in time for this test.
+
+        # Create a submission from the user
+        student_item = xblock.get_student_item_dict()
+        student_id = student_item['student_id']
+        submission = xblock.create_submission(student_item, self.SUBMISSION)
+
+        # Create submissions and assessments from other users
+        deferred_peer_assessment = None
+        for scorer_name, assessment in zip(self.PEERS, PEER_ASSESSMENTS):
+
+            # Create a submission for each scorer for the same problem
+            scorer = copy.deepcopy(student_item)
+            scorer['student_id'] = scorer_name
+
+            scorer_sub = submissions_api.create_submission(scorer, {'text': self.SUBMISSION})
+            workflow_api.create_workflow(scorer_sub['uuid'], self.STEPS)
+
+            submission = peer_api.get_submission_to_assess(scorer_sub['uuid'], len(self.PEERS))
+
+            # Create assessments of the user's submission, unless it's the last peer
+            # in that case, defer the assessment submission to later
+            if scorer_name != self.PEERS[-1]:
+                peer_api.create_assessment(
+                    scorer_sub['uuid'], scorer_name,
+                    assessment['options_selected'],
+                    assessment['criterion_feedback'],
+                    assessment['overall_feedback'],
+                    {'criteria': xblock.rubric_criteria},
+                    xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
+                )
+            else:
+                deferred_peer_assessment = (lambda:
+                    peer_api.create_assessment(
+                        scorer_sub['uuid'], self.PEERS[-1],
+                        PEER_ASSESSMENTS[-1]['options_selected'],
+                        PEER_ASSESSMENTS[-1]['criterion_feedback'],
+                        PEER_ASSESSMENTS[-1]['overall_feedback'],
+                        {'criteria': xblock.rubric_criteria},
+                        xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
+                    )
+                )
+
+        # Have our user make assessments
+        for assessment in PEER_ASSESSMENTS:
+            peer_api.get_submission_to_assess(submission['uuid'], len(self.PEERS))
+            peer_api.create_assessment(
+                submission['uuid'],
+                student_id,
+                assessment['options_selected'],
+                assessment['criterion_feedback'],
+                assessment['overall_feedback'],
+                {'criteria': xblock.rubric_criteria},
+                xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
+            )
+
+        # Have the user submit a self-assessment
+        self_api.create_assessment(
+            submission['uuid'], student_id, SELF_ASSESSMENT['options_selected'],
+            SELF_ASSESSMENT['criterion_feedback'], SELF_ASSESSMENT['overall_feedback'],
+            {'criteria': xblock.rubric_criteria}
+        )
+
+        # Submit a staff assessment
+        self.submit_staff_assessment(xblock, submission, assessment=STAFF_GOOD_ASSESSMENT)
+
+        # Get the grade details
+        workflow_info = xblock.get_workflow_info()
+        _, context = xblock.render_grade_complete(workflow_info)
+        grade_details = context['grade_details']
+
+        # This list comprehension is a complicated way of saying "Give me the median score from peer assessments for each criterion"
+        peer_scores =   [
+                            [
+                                assessment['option']
+                                for assessment in criterion['assessments']
+                                if assessment['title'] == u'Peer Median Grade'
+                            ]
+                            for criterion in grade_details['criteria']
+                        ]
+        print peer_scores
+
+        # Submit final peer grade
+        deferred_peer_assessment()
+
+        # Verify that peer grade is updated despite problem already having been marked 'done'
+        _, context = xblock.render_grade_complete(workflow_info)
+        grade_details = context['grade_details']
+        updated_peer_scores =   [
+                                    [
+                                        assessment['option']
+                                        for assessment in criterion['assessments']
+                                        if assessment['title'] == u'Peer Median Grade'
+                                    ]
+                                    for criterion in grade_details['criteria']
+                                ]
+        print updated_peer_scores
+        self.assertTrue(False)
 
     @scenario('data/grade_scenario.xml', user_id='Bob')
     def test_assessment_does_not_match_rubric(self, xblock):
