@@ -333,7 +333,7 @@ class GradeMixin(object):
         # Fetch all the unique assessment parts
         criterion_name = criterion['name']
         staff_assessment_part = _get_assessment_part(_('Staff Grade'), criterion_name, staff_assessment)
-        if len(peer_assessments) > 0:
+        if "peer-assessment" in assessment_steps:
             peer_assessment_part = {
                 'title': _('Peer Median Grade'),
                 'criterion': criterion,
@@ -346,11 +346,6 @@ class GradeMixin(object):
                     )
                     for index, peer_assessment in enumerate(peer_assessments)
                 ],
-            }
-        elif "peer-assessment" in assessment_steps:
-            peer_assessment_part = {
-                'title': _('Peer Median Grade'),
-                'option': {'label': _('Waiting for peer reviews')}
             }
         else:
             peer_assessment_part = None
@@ -449,7 +444,12 @@ class GradeMixin(object):
         #  - the median score, and no explanation (it is too verbose to show an aggregate).
         options = median_options()
         if len(options) == 0:
-            return None
+            # If we weren't able to get a median option when there should be one, show the following message
+            # This happens when there are less than must_be_graded_by assessments made for the user
+            if len(criterion['options']) > 0:
+                return {'label': _('Waiting for peer reviews')}
+            else:
+                return None
         if len(options) == 1:
             return options[0]
         return {
@@ -478,7 +478,7 @@ class GradeMixin(object):
                     'title': _('Staff Comments'),
                     'feedback': feedback
                 })
-        if peer_assessments:
+        if peer_assessments and len(peer_assessments) >= self.workflow_requirements()['peer']['must_be_graded_by']:
             individual_feedback = []
             for peer_index, peer_assessment in enumerate(peer_assessments):
                 individual_feedback.append({

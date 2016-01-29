@@ -277,6 +277,86 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
                 else:
                     self.assertIsNone(assessment.get('points', None))
 
+    @scenario('data/grade_scenario.xml', user_id='Bernard')
+    def test_peer_update_after_override(self, xblock):
+        # Note that much of the logic from self.create_submission_and_assessments is duplicated here;
+        # this is necessary to allow us to put off the final peer submission to the right point in time
+
+        # Create a submission from the user
+        student_item = xblock.get_student_item_dict()
+        student_id = student_item['student_id']
+        submission = xblock.create_submission(student_item, self.SUBMISSION)
+
+        # Create submissions from other users
+        scorer_subs = self.create_peer_submissions(student_item, self.PEERS, self.SUBMISSION)
+
+        # Create all but the last peer assessment of the current user; no peer grade will be available
+        graded_by = xblock.get_assessment_module('peer-assessment')['must_be_graded_by']
+        for scorer_sub, scorer_name, assessment in zip(scorer_subs, self.PEERS, PEER_ASSESSMENTS)[:-1]:
+            self.create_peer_assessment(
+                scorer_sub,
+                scorer_name,
+                submission,
+                assessment,
+                xblock.rubric_criteria,
+                graded_by
+            )
+
+        # Have our user make assessments
+        for i, assessment in enumerate(PEER_ASSESSMENTS):
+            self.create_peer_assessment(
+                submission,
+                student_id,
+                scorer_subs[i],
+                assessment,
+                xblock.rubric_criteria,
+                graded_by
+            )
+
+        # Have the user submit a self-assessment
+        self.create_self_assessment(submission, student_id, SELF_ASSESSMENT, xblock.rubric_criteria)
+
+        # Submit a staff assessment
+        self.submit_staff_assessment(xblock, submission, assessment=STAFF_GOOD_ASSESSMENT)
+
+        # Get the grade details
+        def peer_data():
+            """We'll need to do this more than once, so it's defined in a local function for later reference"""
+            workflow_info = xblock.get_workflow_info()
+            _, context = xblock.render_grade_complete(workflow_info)
+            grade_details = context['grade_details']
+            feedback_num = sum(1 for item in grade_details['additional_feedback'] if item['title'].startswith('Peer'))
+            return [
+                next(
+                    assessment['option']
+                    for assessment in criterion['assessments']
+                    if assessment['title'] == u'Peer Median Grade'
+                )
+                for criterion in grade_details['criteria']
+            ], feedback_num
+        peer_scores, peer_feedback_num = peer_data()
+
+        # Verify that no peer score is shown, and comments are being suppressed
+        self.assertTrue(all([option['label'] == u'Waiting for peer reviews' for option in peer_scores]))
+        self.assertEqual(peer_feedback_num, 0)
+
+        # Submit final peer grade
+        self.create_peer_assessment(
+            scorer_subs[-1],
+            self.PEERS[-1],
+            submission,
+            PEER_ASSESSMENTS[-1],
+            xblock.rubric_criteria,
+            graded_by
+        )
+
+        # Get grade information again, it should be updated
+        updated_peer_scores, updated_peer_feedback_num = peer_data()
+
+        # Verify that points and feedback are present now that enough peers have graded
+        self.assertTrue(all([option.get('points', None) is not None for option in updated_peer_scores]))
+        self.assertGreater(updated_peer_feedback_num, 0)
+
     @scenario('data/grade_scenario.xml', user_id='Bob')
     def test_assessment_does_not_match_rubric(self, xblock):
         # Get to the grade complete section
