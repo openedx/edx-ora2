@@ -236,8 +236,6 @@ class StaffAreaMixin(object):
         try:
             student_username = data.params.get('student_username', '')
             path, context = self.get_student_info_path_and_context(student_username)
-            expanded_view = data.params.get('expanded_view', [])
-            context.update({'expanded_view': expanded_view})
             return self.render_assessment(path, context)
 
         except PeerAssessmentInternalError:

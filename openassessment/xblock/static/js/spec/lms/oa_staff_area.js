@@ -160,6 +160,9 @@ describe('OpenAssessment.StaffAreaView', function() {
         // Create a new stub server
         server = new StubServer();
         server.renderLatex = jasmine.createSpy('renderLatex');
+
+        // Disable animations for slideUp and slideDown.
+        jQuery.fx.off = true;
     });
 
     describe('Initial rendering', function() {
@@ -293,15 +296,17 @@ describe('OpenAssessment.StaffAreaView', function() {
         };
 
         var getVisibleStaffPanels = function(view) {
-            return $('.wrapper--ui-staff', view.element).not('.is--hidden');
+            return $('.wrapper--ui-staff:visible, view.element');
         };
 
         var verifyStaffButtonBehavior = function(view, buttonName) {
             var $staffInfoButton = getStaffButton(view, buttonName),
                 $visiblePanels;
             expect($staffInfoButton).not.toHaveClass('is--active');
+            expect($staffInfoButton).toHaveAttr('aria-expanded', 'false');
             $staffInfoButton[0].click();
             expect($staffInfoButton).toHaveClass('is--active');
+            expect($staffInfoButton).toHaveAttr('aria-expanded', 'true');
             $visiblePanels = getVisibleStaffPanels(view);
             expect($visiblePanels.length).toBe(1);
             expect($visiblePanels.first()).toHaveClass('wrapper--' + buttonName);
@@ -310,23 +315,23 @@ describe('OpenAssessment.StaffAreaView', function() {
             verifyFocused(closeButton);
         };
 
-        it('shows the correct buttons with no panels initially', function() {
+        it('shows the correct buttons when full grading is not enabled', function() {
             var view = createStaffArea(),
                 $buttons = $('.ui-staff__button', view.element);
             expect($buttons.length).toBe(2);
+            expect($buttons).toHaveAttr('aria-expanded', 'false');
             expect($($buttons[0]).text().trim()).toEqual('Manage Individual Learners');
             expect($($buttons[1]).text().trim()).toEqual('View Assignment Statistics');
-            expect(getVisibleStaffPanels(view).length).toBe(0);
         });
 
-        it('shows the correct buttons for full grading with no panels initially', function() {
+        it('shows the correct buttons for full grading', function() {
             var view = createStaffArea({}, 'oa_staff_area_full_grading.html'),
                 $buttons = $('.ui-staff__button', view.element);
             expect($buttons.length).toBe(3);
+            expect($buttons).toHaveAttr('aria-expanded', 'false');
             expect($($buttons[0]).text().trim()).toEqual('Manage Individual Learners');
             expect($($buttons[1]).text().trim()).toEqual('View Assignment Statistics');
             expect($($buttons[2]).text().trim()).toEqual('Grade Available Responses');
-            expect(getVisibleStaffPanels(view).length).toBe(0);
         });
 
         it('shows the "Manage Individual Learners" panel when the button is clicked', function() {
@@ -365,30 +370,60 @@ describe('OpenAssessment.StaffAreaView', function() {
             expect($staffToolsButton.length).toBe(1);
             $staffToolsButton[0].click();
             expect($staffToolsButton).toHaveClass('is--active');
+            expect($staffToolsPanel).toBeVisible();
             closeButton = $('.ui-staff_close_button', $staffToolsPanel)[0];
             verifyFocused(closeButton);
 
             // Now click the close button.
             closeButton.click();
             expect($staffToolsButton).not.toHaveClass('is--active');
-            expect($staffToolsPanel).toHaveClass('is--hidden');
+            expect($staffToolsPanel).toBeHidden();
             verifyFocused($staffToolsButton[0]);
         });
 
         it('shows an error when clicking "Submit" with no student name chosen', function() {
-            var staffArea = createStaffArea();
+            var staffArea = createStaffArea(), $error;
             chooseStudent(staffArea, '');
-            expect($('.openassessment_student_info_form .form--error', staffArea.element).text().trim())
-                .toBe('You must provide a learner name.');
+            $error = $('.openassessment_student_info_form .form--error', staffArea.element);
+            expect($error.text().trim()).toBe('You must provide a learner name.');
+            verifyFocused($error[0]);
         });
 
         it('shows an error message when failing to load the student info', function() {
-            var staffArea = createStaffArea();
+            var staffArea = createStaffArea(), $error;
             server.studentInfo = failWith(server);
             chooseStudent(staffArea, 'testStudent');
-            expect($('.openassessment_student_info_form .form--error', staffArea.element).first().text().trim()).toBe(
-                'Unexpected server error.'
-            );
+            $error = $('.openassessment_student_info_form .form--error', staffArea.element);
+            expect($error.text().trim()).toBe('Unexpected server error.');
+            verifyFocused($error[0]);
+        });
+
+        it('moves focus to learner report when successfully loading the student info', function() {
+            var staffArea = createStaffArea(), $reportHeader;
+            chooseStudent(staffArea, 'testStudent');
+            $reportHeader = $('.staff-info__student__report__summary', staffArea.element);
+            expect($reportHeader.text().trim()).toContain('Viewing learner:');
+            verifyFocused($reportHeader[0]);
+        });
+
+        it('updates aria-expanded when toggling slidable sections', function() {
+            var staffArea = createStaffArea(), $slidableControls;
+            chooseStudent(staffArea, 'testStudent');
+            $slidableControls = $('.ui-slidable', staffArea.element);
+            expect($slidableControls.length).toBe(5);
+            expect($slidableControls).toHaveAttr('aria-expanded', 'false');
+            $slidableControls.click();
+            expect($slidableControls).toHaveAttr('aria-expanded', 'true');
+        });
+
+        it('links slidable controls with content', function() {
+            var staffArea = createStaffArea();
+            chooseStudent(staffArea, 'testStudent');
+            $('.ui-slidable', staffArea.element).each(function(index, slidable) {
+                var id = slidable.id;
+                var content = $(slidable).next('.ui-slidable__content');
+                expect(content).toHaveAttr('aria-labelledby', id);
+            });
         });
 
         describe('Submission Management', function() {
@@ -475,13 +510,13 @@ describe('OpenAssessment.StaffAreaView', function() {
 
             it('can submit a staff grade override', function() {
                 var staffArea = createStaffArea(),
-                    $assessment, $gradeSection;
+                    $assessment, $gradeSection, $gradeSectionButton;
                 chooseStudent(staffArea, 'testStudent');
 
                 // Verify that the student info section is hidden but shows the original score
                 $gradeSection = $('.staff-info__student__grade', staffArea.element);
-                expect($('.ui-toggle-visibility', $gradeSection)).toHaveClass('is--collapsed');
-                expect($('p', $gradeSection).first().text().trim()).toBe(
+                expect($('.ui-slidable', $gradeSection)).not.toHaveClass('is--showing');
+                expect($('.staff-info__final__grade__score').text().trim()).toBe(
                     'The problem has not been started.'
                 );
 
@@ -495,8 +530,12 @@ describe('OpenAssessment.StaffAreaView', function() {
 
                 // Verify that the student info is visible and shows the correct score
                 $gradeSection = $('.staff-info__student__grade', staffArea.element);
-                expect($('.ui-toggle-visibility', $gradeSection)).not.toHaveClass('is--collapsed');
-                expect($('p', $gradeSection).first().text().trim()).toBe(
+                $gradeSectionButton = $('.ui-slidable', $gradeSection);
+                expect($gradeSectionButton).toHaveClass('is--showing');
+                expect($gradeSectionButton).toHaveAttr('aria-expanded', 'true');
+                verifyFocused($gradeSectionButton[0]);
+                expect($('.ui-slidable__content', $gradeSection)).toBeVisible();
+                expect($('.staff-info__final__grade__score').text().trim()).toBe(
                     'Final grade: 1 out of 2'
                 );
             });
@@ -552,13 +591,14 @@ describe('OpenAssessment.StaffAreaView', function() {
             expect($staffInfoButton.length).toBe(1);
             $staffInfoButton[0].click();
             expect($staffInfoButton).toHaveClass('is--active');
+            expect($staffInfoPanel).toBeVisible();
             closeButton = $('.ui-staff_close_button', $staffInfoPanel)[0];
             verifyFocused(closeButton);
 
             // Now click the close button.
             closeButton.click();
             expect($staffInfoButton).not.toHaveClass('is--active');
-            expect($staffInfoPanel).toHaveClass('is--hidden');
+            expect($staffInfoPanel).toBeHidden();
             verifyFocused($staffInfoButton[0]);
         });
     });
@@ -584,13 +624,14 @@ describe('OpenAssessment.StaffAreaView', function() {
             expect($staffGradingButton.length).toBe(1);
             $staffGradingButton[0].click();
             expect($staffGradingButton).toHaveClass('is--active');
+            expect($staffGradingPanel).toBeVisible();
             closeButton = $('.ui-staff_close_button', $staffGradingPanel)[0];
             verifyFocused(closeButton);
 
             // Now click the close button.
             closeButton.click();
             expect($staffGradingButton).not.toHaveClass('is--active');
-            expect($staffGradingPanel).toHaveClass('is--hidden');
+            expect($staffGradingPanel).toBeHidden();
             verifyFocused($staffGradingButton[0]);
         });
 
@@ -608,8 +649,11 @@ describe('OpenAssessment.StaffAreaView', function() {
 
         it('can submit a staff grade', function() {
             var staffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
-                $assessment, $gradeSection;
+                $assessment, $staffGradeButton;
+            $staffGradeButton = $('.staff__grade__show-form', staffArea.element);
+            expect($staffGradeButton).toHaveAttr('aria-expanded', 'false');
             showInstructorAssessmentForm(staffArea);
+            expect($staffGradeButton).toHaveAttr('aria-expanded', 'true');
             $assessment = getAssessment(staffArea, staffAreaTab);
 
             // Verify that the submission is shown for the first user
@@ -625,12 +669,15 @@ describe('OpenAssessment.StaffAreaView', function() {
 
             // Verify that the assessment form has been removed
             expect($('.staff__grade__form', staffArea.element).html().trim()).toBe('');
+            expect($staffGradeButton).toHaveAttr('aria-expanded', 'false');
+            verifyFocused($staffGradeButton[0]);
         });
 
         it('can submit a staff grade and receive another submission', function() {
             var staffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
-                $assessment;
+                $assessment, $staffGradeButton;
             showInstructorAssessmentForm(staffArea);
+            $staffGradeButton = $('.staff__grade__show-form', staffArea.element);
 
             // Verify that the submission is shown for the first user
             expect($('.staff-assessment__display__title', staffArea.element).text().trim()).toBe(
@@ -647,16 +694,16 @@ describe('OpenAssessment.StaffAreaView', function() {
             expect($('.staff-assessment__display__title', staffArea.element).text().trim()).toBe(
                 'Response for: mock_user_2'
             );
+            verifyFocused($staffGradeButton[0]);
         });
 
         it('shows an error message when failing to load the staff grade form', function() {
-            var staffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'),
-                $assessment, $submitButtons;
+            var staffArea = createStaffArea({}, 'oa_staff_area_full_grading.html'), $error;
             server.staffGradeForm = failWith(server);
             showInstructorAssessmentForm(staffArea);
-            expect($('.staff__grade__form--error', staffArea.element).first().text().trim()).toBe(
-                'Unexpected server error.'
-            );
+            $error = $('.staff__grade__form--error', staffArea.element);
+            expect($error.text().trim()).toBe('Unexpected server error.');
+            verifyFocused($error[0]);
         });
 
         it('shows an error message when a staff grade request fails', function() {
