@@ -13,7 +13,7 @@ from datetime import timedelta
 from django.db import models, DatabaseError
 from django.utils.timezone import now
 
-from openassessment.assessment.models.base import Assessment
+from openassessment.assessment.models.base import Assessment, SoftDeletedManager
 from openassessment.assessment.errors import PeerAssessmentWorkflowError, PeerAssessmentInternalError
 
 import logging
@@ -56,6 +56,13 @@ class AssessmentFeedback(models.Model):
     assessments = models.ManyToManyField(Assessment, related_name='assessment_feedback', default=None)
     feedback_text = models.TextField(max_length=10000, default="")
     options = models.ManyToManyField(AssessmentFeedbackOption, related_name='assessment_feedback', default=None)
+
+    # Has this feedback been soft-deleted? This allows instructors to reset student
+    # state on an item, while preserving the previous value for potential analytics use.
+    deleted = models.BooleanField(default=False)
+
+    # Override the default Manager with our custom one to filter out soft-deleted items
+    objects = SoftDeletedManager()
 
     class Meta:
         app_label = "assessment"
@@ -115,6 +122,13 @@ class PeerWorkflow(models.Model):
     completed_at = models.DateTimeField(null=True, db_index=True)
     grading_completed_at = models.DateTimeField(null=True, db_index=True)
     cancelled_at = models.DateTimeField(null=True, db_index=True)
+
+    # Has this workflow been soft-deleted? This allows instructors to reset student
+    # state on an item, while preserving the previous value for potential analytics use.
+    deleted = models.BooleanField(default=False)
+
+    # Override the default Manager with our custom one to filter out soft-deleted items
+    objects = SoftDeletedManager()
 
     class Meta:
         ordering = ["created_at", "id"]
@@ -441,6 +455,13 @@ class PeerWorkflowItem(models.Model):
 
     # This WorkflowItem was used to determine the final score for the Workflow.
     scored = models.BooleanField(default=False)
+
+    # Has this workflow item been soft-deleted? This allows instructors to reset student
+    # state on an item, while preserving the previous value for potential analytics use.
+    deleted = models.BooleanField(default=False)
+
+    # Override the default Manager with our custom one to filter out soft-deleted items
+    objects = SoftDeletedManager()
 
     @classmethod
     def get_scored_assessments(cls, submission_uuid):

@@ -220,6 +220,22 @@ class OpenAssessmentBlock(
         help="Indicates whether or not there are peers to grade."
     )
 
+    def clear_state(self, user_id, course_id, item_id, delete=True):
+        """
+        Clear the state of this openassessment problem for the given (anonoymous) user_id.
+
+        For openassessment this operation makes no sense if delete is False, so we return immediately in that case.
+        """
+        if not delete:
+            return
+
+        # passthrough to sub_api.reset_student_item(), and look up all submissions for this user,course,item triplet
+        sub_uuids = self.clear_submission(user_id, course_id, item_id)
+
+        # soft-delete Workflow and any Assessments
+        for uuid in sub_uuids:
+            self.clear_workflow(uuid)
+
     @property
     def course_id(self):
         return self._serialize_opaque_key(self.xmodule_runtime.course_id)  # pylint:disable=E1101

@@ -5,6 +5,7 @@ from django.db import models, IntegrityError
 from django.utils import timezone
 from submissions import api as sub_api
 from .training import TrainingExample
+from openassessment.assessment.models.base import SoftDeletedManager
 
 
 class StudentTrainingWorkflow(models.Model):
@@ -22,6 +23,13 @@ class StudentTrainingWorkflow(models.Model):
     student_id = models.CharField(max_length=40, db_index=True)
     item_id = models.CharField(max_length=128, db_index=True)
     course_id = models.CharField(max_length=40, db_index=True)
+
+    # Has this workflow been soft-deleted? This allows instructors to reset student
+    # state on an item, while preserving the previous value for potential analytics use.
+    deleted = models.BooleanField(default=False)
+
+    # Override the default Manager with our custom one to filter out soft-deleted items
+    objects = SoftDeletedManager()
 
     class Meta:
         app_label = "assessment"
@@ -185,6 +193,13 @@ class StudentTrainingWorkflowItem(models.Model):
     started_at = models.DateTimeField(auto_now_add=True)
     completed_at = models.DateTimeField(default=None, null=True)
     training_example = models.ForeignKey(TrainingExample)
+
+    # Has this workflow item been soft-deleted? This allows instructors to reset student
+    # state on an item, while preserving the previous value for potential analytics use.
+    deleted = models.BooleanField(default=False)
+
+    # Override the default Manager with our custom one to filter out soft-deleted items
+    objects = SoftDeletedManager()
 
     class Meta:
         app_label = "assessment"

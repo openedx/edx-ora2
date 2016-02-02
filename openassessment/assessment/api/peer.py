@@ -12,6 +12,7 @@ from dogapi import dog_stats_api
 from openassessment.assessment.models import (
     Assessment, AssessmentFeedback, AssessmentPart,
     InvalidRubricSelection, PeerWorkflow, PeerWorkflowItem,
+    soft_delete
 )
 from openassessment.assessment.serializers import (
     AssessmentFeedbackSerializer, RubricSerializer,
@@ -990,3 +991,12 @@ def on_cancel(submission_uuid):
         )
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
+
+def reset_state(submission_uuid):
+    """
+    If student state is being reset, soft-delete everything related to the given uuid in peer grading.
+    """
+    soft_delete(submission_uuid, AssessmentFeedback)
+    soft_delete(submission_uuid, PeerWorkflow)
+    soft_delete(submission_uuid, PeerWorkflowItem)
+    soft_delete(submission_uuid, Assessment)

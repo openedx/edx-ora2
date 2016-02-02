@@ -401,6 +401,19 @@ class RubricIndex(object):
         return self._criteria_without_options
 
 
+# In order to allow for effective soft-deletes, we want to override the default Manager for assessments
+class SoftDeletedManager(models.Manager):
+    def get_queryset(self):
+        #By default, filter out any soft-deleted records for classes using this manager
+        return super(SoftDeletedManager, self).get_queryset().exclude(deleted=True)
+
+# Method to allow anything that uses this pattern to delete all items referring to a specific submission
+def soft_delete(submission_uuid, cls):
+    items = cls.objects.filter(submission_uuid=submission_uuid)
+    for item in items.all():
+        item.deleted = True
+        item.save()
+
 class Assessment(models.Model):
     """An evaluation made against a particular Submission and Rubric.
 
@@ -419,6 +432,13 @@ class Assessment(models.Model):
     score_type = models.CharField(max_length=2)
 
     feedback = models.TextField(max_length=10000, default="", blank=True)
+
+    # Has this assessment been soft-deleted? This allows instructors to reset student
+    # state on an item, while preserving the previous value for potential analytics use.
+    deleted = models.BooleanField(default=False)
+
+    # Override the default Manager with our custom one to filter out soft-deleted items
+    objects = SoftDeletedManager()
 
     class Meta:
         ordering = ["-scored_at", "-id"]
