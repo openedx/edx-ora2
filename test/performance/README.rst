@@ -8,11 +8,13 @@ Performance Tests
     cd ora2
     pip install -r requirements/perf.txt
 
-2. Import ``course.tar.gz`` into Studio:
+2. Import ``edx-ora2/scripts/data/course.tar.gz`` into Studio:
 
-    * Course ID: 1
-    * Course Org: ora2
-    * Course Run: 1
+Note that this is the same course that gets installed for acceptance testing
+
+    * Course Id: ORA203
+    * Course Org: edx
+    * Course Run: course
 
 3. Enable ``auto_auth`` in the LMS feature flags:
 
@@ -24,15 +26,13 @@ Performance Tests
         }
     }
 
-4. Log in as a staff user and schedule a training task in the Course Staff Debug of the example based assessment problem.
-
-5. **Optional**: Increase open file limit:
+4. **Optional**: Increase open file limit:
 
 .. code:: bash
 
     ulimit -n 2048
 
-6. Start the Locust server, and point it at the test server.  **NOTE**: You *must* include the trailing slash in the host URL.
+5. Start the Locust server, and point it at the test server.  **NOTE**: You *must* include the trailing slash in the host URL.
 
 .. code:: bash
 
