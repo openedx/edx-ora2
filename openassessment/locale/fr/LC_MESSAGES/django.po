@@ -1,6 +1,6 @@
-# edX translation file.
-# Copyright (C) 2014 EdX
-# This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
 # Aguilar Lucas <destroyeralpha@hotmail.fr>, 2015
@@ -16,7 +16,7 @@
 # Régis Millet <kulgar@ct2c.fr>, 2015
 # laurentFUN <laurent.at.fun@gmail.com>, 2014
 # MP55 <martine.pergent@gmail.com>, 2014
-# moocit-france <contact@moocit.fr>, 2015
+# moocit-france <contact@moocit.fr>, 2015-2016
 # rafcha <raphael.chay@gmail.com>, 2014
 # Richard Moch <richard.moch@gmail.com>, 2015
 # Thomas Fradet <t.fradet8@gmail.com>, 2015
@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-21 19:57+0000\n"
-"PO-Revision-Date: 2016-01-21 19:57+0000\n"
+"POT-Creation-Date: 2016-02-04 20:19+0000\n"
+"PO-Revision-Date: 2016-02-04 20:28+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: French (http://www.transifex.com/open-edx/edx-platform/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -131,7 +131,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:106
 msgid "Allow File Upload"
-msgstr ""
+msgstr "Autoriser le chargement de fichier"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:108
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:54
@@ -144,7 +144,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:110
 msgid "PDF or Image File"
-msgstr ""
+msgstr "Fichier PDF ou image"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:111
 msgid "Custom File Types"
@@ -228,8 +228,8 @@ msgid "Cancel"
 msgstr "Annuler"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:6
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:96
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:21
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:98
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:23
 msgid "Criterion"
 msgstr "Critère"
 
@@ -578,7 +578,7 @@ msgid "Overall Grade"
 msgstr "Note globale"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:55
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:24
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:26
 msgid "Points"
 msgstr "Points"
 
@@ -944,7 +944,7 @@ msgstr "\nÉvaluation # %(review_number)s parmi %(num_must_grade)s"
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:49
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:28
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:27
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:45
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:46
 msgid "Associated File"
 msgstr ""
 
@@ -1166,7 +1166,6 @@ msgid ""
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:40
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:36
 #, python-format
 msgid ""
 "\n"
@@ -1250,7 +1249,7 @@ msgid ""
 msgstr "Cette étape est maintenant achevée. Vous ne pouvez plus effectuer d'auto-évaluation ni continuer ce devoir, vous recevrez la mention incomplet."
 
 #: openassessment/templates/openassessmentblock/staff/oa_staff_grade.html:8
-#: openassessment/xblock/grade_mixin.py:336
+#: openassessment/xblock/grade_mixin.py:335
 msgid "Staff Grade"
 msgstr ""
 
@@ -1380,7 +1379,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:25
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:42
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:43
 msgid "The learner's response to the question above:"
 msgstr ""
 
@@ -1425,20 +1424,28 @@ msgstr ""
 msgid "Learner's Response"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:25
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:26
 #, python-format
 msgid ""
 "\n"
-"                                Learner submission removed by %(removed_by_username)s on %(removed_datetime)s\n"
-"                            "
+"                            Learner submission removed by %(removed_by_username)s on %(removed_datetime)s\n"
+"                        "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:29
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:30
 #, python-format
 msgid ""
 "\n"
-"                                Learner submission removed on %(removed_datetime)s\n"
-"                            "
+"                            Learner submission removed on %(removed_datetime)s\n"
+"                        "
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:37
+#, python-format
+msgid ""
+"\n"
+"                        Comments: %(comments)s\n"
+"                    "
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:54
@@ -1465,51 +1472,51 @@ msgstr ""
 msgid "Learner's Final Grade"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:88
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:89
 #, python-format
 msgid ""
 "\n"
-"                            Final grade: %(points_earned)s out of %(points_possible)s\n"
-"                        "
+"                        Final grade: %(points_earned)s out of %(points_possible)s\n"
+"                    "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:93
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:95
 msgid "Final Grade Details"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:113
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:115
 #, python-format
 msgid ""
 "\n"
-"                                            %(assessment_label)s - %(points)s point\n"
-"                                        "
+"                                        %(assessment_label)s - %(points)s point\n"
+"                                    "
 msgid_plural ""
 "\n"
-"                                            %(assessment_label)s - %(points)s points\n"
-"                                        "
+"                                        %(assessment_label)s - %(points)s points\n"
+"                                    "
 msgstr[0] ""
 msgstr[1] ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:134
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:136
 msgid "The submission is waiting for assessments."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:136
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:138
 msgid ""
 "The learner's submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:138
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:140
 msgid "The problem has not been started."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:140
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:142
 msgid "The problem has not been completed."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:151
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:152
 msgid "Submit Assessment Grade Override"
 msgstr ""
 
@@ -1539,31 +1546,31 @@ msgstr "Supprimer la réponse"
 msgid "A response was not found for this learner."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:13
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:14
 #, python-format
 msgid ""
 "\n"
-"                                Assessment %(assessment_num)s:\n"
-"                            "
+"                            Assessment %(assessment_num)s:\n"
+"                        "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:18
-msgid "Assessment"
-msgstr "Évaluation"
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:20
+msgid "Assessment Details"
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:22
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:24
 msgid "Selected Option"
 msgstr "Option choisie"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:23
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:25
 msgid "Feedback"
 msgstr "Commentaire"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:25
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:27
 msgid "Points Possible"
 msgstr "Points possibles"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:46
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:48
 msgid "Overall Feedback"
 msgstr "Commentaire global"
 
@@ -1655,7 +1662,7 @@ msgstr ""
 msgid "You must provide feedback for criteria in the assessment."
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:69
+#: openassessment/xblock/grade_mixin.py:68
 #: openassessment/xblock/leaderboard_mixin.py:51
 #: openassessment/xblock/self_assessment_mixin.py:38
 #: openassessment/xblock/student_training_mixin.py:55
@@ -1663,57 +1670,56 @@ msgstr ""
 msgid "An unexpected error occurred."
 msgstr "Une erreur inattendue s'est produite."
 
-#: openassessment/xblock/grade_mixin.py:166
+#: openassessment/xblock/grade_mixin.py:165
 msgid "Peer Assessment"
 msgstr "Évaluation par les pairs"
 
-#: openassessment/xblock/grade_mixin.py:168
+#: openassessment/xblock/grade_mixin.py:167
 msgid "Self Assessment"
 msgstr "Auto-évaluation"
 
-#: openassessment/xblock/grade_mixin.py:201
+#: openassessment/xblock/grade_mixin.py:200
 msgid "Assessment feedback could not be saved."
 msgstr "Les commentaires de l'évaluation n'ont pas pu être sauvegardés."
 
-#: openassessment/xblock/grade_mixin.py:212
+#: openassessment/xblock/grade_mixin.py:211
 msgid "Feedback saved."
 msgstr "Commentaires sauvegardés."
 
-#: openassessment/xblock/grade_mixin.py:339
-#: openassessment/xblock/grade_mixin.py:353
+#: openassessment/xblock/grade_mixin.py:338
 msgid "Peer Median Grade"
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:344
-#: openassessment/xblock/grade_mixin.py:486
+#: openassessment/xblock/grade_mixin.py:343
+#: openassessment/xblock/grade_mixin.py:485
 msgid "Peer {peer_index}"
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:354
-msgid "Waiting for peer reviews"
-msgstr ""
-
-#: openassessment/xblock/grade_mixin.py:359
+#: openassessment/xblock/grade_mixin.py:353
 msgid "Example-Based Grade"
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:362
+#: openassessment/xblock/grade_mixin.py:356
 msgid "Self Assessment Grade"
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:362
+#: openassessment/xblock/grade_mixin.py:356
 msgid "Your Self Assessment"
 msgstr "Votre auto-évaluation"
 
-#: openassessment/xblock/grade_mixin.py:479
+#: openassessment/xblock/grade_mixin.py:450
+msgid "Waiting for peer reviews"
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:478
 msgid "Staff Comments"
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:491
+#: openassessment/xblock/grade_mixin.py:490
 msgid "Peer"
 msgstr "Pairs"
 
-#: openassessment/xblock/grade_mixin.py:498
+#: openassessment/xblock/grade_mixin.py:497
 msgid "Your Comments"
 msgstr ""
 
@@ -1763,19 +1769,19 @@ msgstr "'{date}' est un format de date invalide. Vérifiez que le format de la d
 msgid "'{date}' must be a date string or datetime"
 msgstr "'{date}' doit être une chaîne de caractères ou un élément \\\"datetime\\\""
 
-#: openassessment/xblock/resolve_dates.py:197
+#: openassessment/xblock/resolve_dates.py:199
 msgid ""
 "This step's start date '{start}' cannot be earlier than the previous step's "
 "start date '{prev}'."
 msgstr "La date de départ de cette étape '{start}' ne peut être antérieure à la date de départ de l'étape précédente '{prev}'."
 
-#: openassessment/xblock/resolve_dates.py:203
+#: openassessment/xblock/resolve_dates.py:205
 msgid ""
 "This step's due date '{due}' cannot be later than the next step's due date "
 "'{prev}'."
 msgstr "La date de rendu de cette étape '{due}' ne peut pas être postérieure à la date de rendu de l'étape suivante  '{prev}'."
 
-#: openassessment/xblock/resolve_dates.py:219
+#: openassessment/xblock/resolve_dates.py:221
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
 msgstr "La date de début '{start}' ne peut être postérieure à la date de rendu '{due}'"
 
@@ -1788,72 +1794,72 @@ msgstr "Vous devez soumettre une réponse avant de pouvoir effectuer une auto-é
 msgid "Your self assessment could not be submitted."
 msgstr "Votre auto-évaluation n'a pas pu être soumise."
 
-#: openassessment/xblock/staff_area_mixin.py:51
+#: openassessment/xblock/staff_area_mixin.py:49
 msgid "You do not have permission to schedule training"
 msgstr "Vous n'avez pas la permission de planifier la formation"
 
-#: openassessment/xblock/staff_area_mixin.py:52
+#: openassessment/xblock/staff_area_mixin.py:50
 msgid "You do not have permission to reschedule tasks."
 msgstr "Vous n'avez pas la permission de reporter les tâches."
 
-#: openassessment/xblock/staff_area_mixin.py:79
+#: openassessment/xblock/staff_area_mixin.py:77
 msgid "You do not have permission to access the ORA staff area"
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:80
+#: openassessment/xblock/staff_area_mixin.py:78
 msgid "You do not have permission to access ORA learner information."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:81
+#: openassessment/xblock/staff_area_mixin.py:79
 msgid "You do not have permission to access ORA staff grading."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:212
+#: openassessment/xblock/staff_area_mixin.py:210
 msgid "Training scheduled with new Workflow UUID: {uuid}"
 msgstr "Calendrier de l'entrainement redéfini avec un nouvel UUID de workflow : {uuid}"
 
-#: openassessment/xblock/staff_area_mixin.py:217
+#: openassessment/xblock/staff_area_mixin.py:215
 msgid "An error occurred scheduling classifier training: {error}"
 msgstr "Une erreur est survenue lors de la planification de l'entrainent pour la classification : {error}"
 
-#: openassessment/xblock/staff_area_mixin.py:223
+#: openassessment/xblock/staff_area_mixin.py:221
 msgid "Example Based Assessment is not configured for this location."
 msgstr "L'évaluation basée sur des exemples n'est pas configurée pour cet unité."
 
-#: openassessment/xblock/staff_area_mixin.py:248
+#: openassessment/xblock/staff_area_mixin.py:242
 msgid "Error getting learner information."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:285
+#: openassessment/xblock/staff_area_mixin.py:279
 msgid "Error loading the checked out learner response."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:287
+#: openassessment/xblock/staff_area_mixin.py:281
 msgid "No other learner responses are available for grading at this time."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:290
+#: openassessment/xblock/staff_area_mixin.py:284
 msgid "Error getting staff grade information."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:311
+#: openassessment/xblock/staff_area_mixin.py:305
 msgid "Error getting staff grade ungraded and checked out counts."
 msgstr ""
 
-#: openassessment/xblock/staff_area_mixin.py:483
+#: openassessment/xblock/staff_area_mixin.py:487
 msgid ""
 "All AI tasks associated with this item have been rescheduled successfully."
 msgstr "Toutes les tâches d'intelligence artificielle associées à cet élément ont été re-planifiées avec succès."
 
-#: openassessment/xblock/staff_area_mixin.py:488
+#: openassessment/xblock/staff_area_mixin.py:492
 msgid "An error occurred while rescheduling tasks: {}"
 msgstr "Une erreur s'est produite lors de la replanification des tâches : {}"
 
-#: openassessment/xblock/staff_area_mixin.py:514
+#: openassessment/xblock/staff_area_mixin.py:518
 msgid "Please enter valid reason to remove the submission."
 msgstr "Veuillez saisir une raison valide pour supprimer la réponse."
 
-#: openassessment/xblock/staff_area_mixin.py:528
+#: openassessment/xblock/staff_area_mixin.py:532
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
@@ -1903,27 +1909,27 @@ msgstr "options_selected doit être un disctionnaire"
 msgid "Your scores could not be checked."
 msgstr "Vos notes n'ont pu être vérifiés."
 
-#: openassessment/xblock/studio_mixin.py:170
-#: openassessment/xblock/studio_mixin.py:185
+#: openassessment/xblock/studio_mixin.py:172
+#: openassessment/xblock/studio_mixin.py:187
 msgid "Error updating XBlock configuration"
 msgstr "Erreur lors de la mise à jour de la configuration du XBlock"
 
-#: openassessment/xblock/studio_mixin.py:208
+#: openassessment/xblock/studio_mixin.py:210
 msgid ""
 "Validation error: There was an error in the XML definition of the examples "
 "provided by the user. Please correct the XML definition before saving."
 msgstr "Erreur de validation: Il y avait une erreur dans la définition du XML des exemples fournis par l'utilisateur. Veuillez corriger la définition du XML avant d'enregistrer."
 
-#: openassessment/xblock/studio_mixin.py:213
+#: openassessment/xblock/studio_mixin.py:215
 msgid ""
 "Validation error: No examples were provided for example based assessment."
 msgstr "Erreur de validation: Aucun exemple n'était fourni pour les évaluations basées sur les exemples."
 
-#: openassessment/xblock/studio_mixin.py:231
+#: openassessment/xblock/studio_mixin.py:232
 msgid "Validation error: {error}"
 msgstr "Erreur de validation : {error}"
 
-#: openassessment/xblock/studio_mixin.py:250
+#: openassessment/xblock/studio_mixin.py:251
 msgid "Successfully updated OpenAssessment XBlock"
 msgstr "OpenAssessment XBlock a été correctement mis à jour"
 
@@ -1983,105 +1989,105 @@ msgstr "Cette réponse a été enregistrée mais n'a pas été soumise."
 msgid "This response has not been saved."
 msgstr "Cette réponse n'a pas été enregistrée."
 
-#: openassessment/xblock/validation.py:120
+#: openassessment/xblock/validation.py:121
 msgid "This problem must include at least one assessment."
 msgstr "Ce problème doit inclure au moins une évaluation."
 
-#: openassessment/xblock/validation.py:124
+#: openassessment/xblock/validation.py:125
 msgid "The assessment order you selected is invalid."
 msgstr "L'ordre de l'évaluation que vous avez sélectionné est invalide."
 
-#: openassessment/xblock/validation.py:134
+#: openassessment/xblock/validation.py:135
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
 msgstr "Dans l'évaluation par les pair, la valeur \"Doit Noter\" doit être une valeur entière et positive."
 
-#: openassessment/xblock/validation.py:137
+#: openassessment/xblock/validation.py:138
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
 msgstr "Dans l'évaluation par les pair, la valeur \"Noté Par\" doit être une valeur entière et positive."
 
-#: openassessment/xblock/validation.py:140
+#: openassessment/xblock/validation.py:142
 msgid ""
 "In peer assessment, the \"Must Grade\" value must be greater than or equal "
 "to the \"Graded By\" value."
 msgstr "Dans l'évaluation par les pair, la valeur \"Doit Noter\" doit être une valeur plus grande ou égale à celle de la valeur \"Noté Par\"."
 
-#: openassessment/xblock/validation.py:148
+#: openassessment/xblock/validation.py:151
 msgid "You must provide at least one example response for learner training."
 msgstr ""
 
-#: openassessment/xblock/validation.py:151
+#: openassessment/xblock/validation.py:154
 msgid "Each example response for learner training must be unique."
 msgstr ""
 
-#: openassessment/xblock/validation.py:158
+#: openassessment/xblock/validation.py:161
 msgid "The \"algorithm_id\" value must be set to \"ease\" or \"fake\""
 msgstr "La valeur \"algorithm_id\" doit être positionnée sur «lâche» ou «simulation»"
 
-#: openassessment/xblock/validation.py:164
+#: openassessment/xblock/validation.py:167
 msgid "The \"required\" value must be true if staff assessment is the only step."
 msgstr ""
 
-#: openassessment/xblock/validation.py:168
+#: openassessment/xblock/validation.py:171
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
 msgstr "Le nombre d'évaluations ne peut pas être modifié une fois le problème publié."
 
-#: openassessment/xblock/validation.py:173
+#: openassessment/xblock/validation.py:176
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
 msgstr "Le type de l'évaluation ne peut pas être modifié une fois le problème publié."
 
-#: openassessment/xblock/validation.py:197
+#: openassessment/xblock/validation.py:200
 msgid "This rubric definition is not valid."
 msgstr "L'identifiant de la rubrique est invalide."
 
-#: openassessment/xblock/validation.py:202
+#: openassessment/xblock/validation.py:205
 msgid "Criteria duplicate name(s): {duplicates}"
 msgstr "valeur(s) alternatives du critère: {duplicates}"
 
-#: openassessment/xblock/validation.py:211
+#: openassessment/xblock/validation.py:214
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr "Les options de '{criterion}' ont des nom(s) en double: {duplicates}"
 
-#: openassessment/xblock/validation.py:219
+#: openassessment/xblock/validation.py:222
 msgid "Criteria with no options must require written feedback."
 msgstr "Les critères sans option doivent demander une réponse écrite."
 
-#: openassessment/xblock/validation.py:228
+#: openassessment/xblock/validation.py:231
 msgid "Example-based assessments cannot have duplicate point values."
 msgstr "Les évaluations fondées sur des exemples ne peuvent pas avoir des valeurs de points en doublons."
 
-#: openassessment/xblock/validation.py:237
+#: openassessment/xblock/validation.py:240
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr "Les critères ne peuvent pas être modifiés ou supprimés après la publication d'un exercice."
 
-#: openassessment/xblock/validation.py:241
+#: openassessment/xblock/validation.py:244
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr "Le nombre de critères ne peut pas être modifié une fois le problème publié."
 
-#: openassessment/xblock/validation.py:254
+#: openassessment/xblock/validation.py:257
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr "Les noms des critères ne peuvent pas être changés après que le problème ait été publié."
 
-#: openassessment/xblock/validation.py:259
+#: openassessment/xblock/validation.py:262
 msgid "The number of options cannot be changed after a problem is released."
 msgstr "Le nombre d'options ne peut pas être modifié une fois le problème publié."
 
-#: openassessment/xblock/validation.py:264
+#: openassessment/xblock/validation.py:267
 msgid "Point values cannot be changed after a problem is released."
 msgstr "Le nombre de points ne peut pas être modifié une fois le problème publié."
 
-#: openassessment/xblock/validation.py:314
+#: openassessment/xblock/validation.py:318
 msgid ""
 "Learner training and example-based assessments must have at least one "
 "training example."
 msgstr ""
 
-#: openassessment/xblock/validation.py:376
+#: openassessment/xblock/validation.py:381
 msgid "Leaderboard number is invalid."
 msgstr "Le numéro associé au tableau de classement des étudiants est invalide."
 
-#: openassessment/xblock/validation.py:399
+#: openassessment/xblock/validation.py:404
 msgid "The submission format is invalid."
 msgstr "Le format de la réponse est invalide."
