@@ -179,21 +179,21 @@ class FullWorkflowA11yTest(OpenAssessmentA11yTest, FullWorkflowMixin):
         """
         """
         # Create a learner with submission, training, and self assessment completed.
-        learner = self.do_submission_training_self_assessment(self.LEARNER_EMAIL, self.LEARNER_PASSWORD)
+        learner, learner_email = self.do_submission_training_self_assessment()
 
         # Now create a second learner so that learner 1 has someone to assess.
         # The second learner does all the steps as well (submission, training, self assessment, peer assessment).
-        self.do_submission_training_self_assessment("learner2@foo.com", None)
+        self.do_submission_training_self_assessment()
         self.do_peer_assessment(options=self.PEER_ASSESSMENT)
 
         # Go back to the first learner to complete her workflow.
-        self.login_user(learner)
+        self.login_user(learner, learner_email)
 
         # Learner 1 does peer assessment of learner 2 to complete workflow.
         self.do_peer_assessment(options=self.SUBMITTED_ASSESSMENT)
 
         # Continue grading by other students if necessary to ensure learner has a peer grade.
-        self.verify_submission_has_peer_grade(learner)
+        self.verify_submission_has_peer_grade(learner, learner_email)
 
         # At this point, the learner sees the peer assessment score (0). Verify the accessibility
         # of the "your grade" section.

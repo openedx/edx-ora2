@@ -89,8 +89,7 @@ class OpenAssessmentTest(WebAppTest):
         [0, 2]
     ]
 
-    LEARNER_EMAIL = "learner@foo.com"
-    LEARNER_PASSWORD = "learner_password"
+    TEST_PASSWORD = "test_password"
 
     def setUp(self, problem_type, staff=False):
         """
@@ -113,17 +112,16 @@ class OpenAssessmentTest(WebAppTest):
         self.staff_asmnt_page = AssessmentPage('staff-assessment', self.browser, self.problem_loc)
         self.grade_page = GradePage(self.browser, self.problem_loc)
 
-    def login_user(self, learner, email=LEARNER_EMAIL, password=LEARNER_PASSWORD):
+    def login_user(self, learner, email):
         """
         Logs in an already existing user.
 
         Args:
             learner (str): the username of the user.
-            email (str): email (if not specified, LEARNER_EMAIL is used).
-            password (str): password (if not specified, LEARNER_PASSWORD is used).
+            email (str): email address of the user.
         """
         auto_auth_page = AutoAuthPage(
-            self.browser, email=email, password=password, username=learner,
+            self.browser, email=email, password=self.TEST_PASSWORD, username=learner,
             course_id=self.TEST_COURSE_ID, staff=True
         )
         auto_auth_page.visit()
@@ -769,42 +767,35 @@ class FullWorkflowMixin(object):
     SUBMITTED_ASSESSMENT = [0, 3]
     STAFF_AREA_SUBMITTED = ['Poor', u'', u'0', u'5', u'Excellent', u'', u'3', u'3']
 
-    def do_submission(self, email, password):
+    def do_submission(self):
         """
         Creates a user and submission.
 
-        Args:
-            email (str): email for the new user
-            password (str): password for the new user
-
         Returns:
-            str: the username of the newly created user
+            (str, str): the username and email of the newly created user
         """
         auto_auth_page = AutoAuthPage(
-            self.browser, email=email, password=password, course_id=self.TEST_COURSE_ID, staff=True
+            self.browser, password=self.TEST_PASSWORD, course_id=self.TEST_COURSE_ID, staff=True
         )
         auto_auth_page.visit()
         username = auto_auth_page.get_username()
+        email = auto_auth_page.get_email()
         self.submission_page.visit().submit_response(self.SUBMISSION)
 
-        return username
+        return username, email
 
-    def do_submission_training_self_assessment(self, email, password):
+    def do_submission_training_self_assessment(self):
         """
         Creates a user and then does submission, training, and self assessment.
 
-        Args:
-            email (str): email for the new user
-            password (str): password for the new user
-
         Returns:
-            str: the username of the newly created user
+            (str, str): the username and password of the newly created user
         """
-        username = self.do_submission(email, password)
+        username, email = self.do_submission()
         self.do_training()
         self.submit_self_assessment(self.SELF_ASSESSMENT)
 
-        return username
+        return username, email
 
     def do_train_self_peer(self, peer_to_grade=True):
         """
@@ -815,23 +806,23 @@ class FullWorkflowMixin(object):
                 but no peers to submit a grade for learner in return.
         """
         # Create a learner with submission, training, and self assessment completed.
-        learner = self.do_submission_training_self_assessment(self.LEARNER_EMAIL, self.LEARNER_PASSWORD)
+        learner, learner_email = self.do_submission_training_self_assessment()
 
         # Now create a second learner so that learner 1 has someone to assess.
         # The second learner does all the steps as well (submission, training, self assessment, peer assessment).
-        self.do_submission_training_self_assessment("learner2@foo.com", None)
+        self.do_submission_training_self_assessment()
         if peer_to_grade:
             self.do_peer_assessment(options=self.PEER_ASSESSMENT)
 
         # Go back to the first learner to complete her workflow.
-        self.login_user(learner)
+        self.login_user(learner, learner_email)
 
         # Learner 1 does peer assessment of learner 2 to complete workflow.
         self.do_peer_assessment(options=self.SUBMITTED_ASSESSMENT)
 
         # Continue grading by other students if necessary to ensure learner has a peer grade.
         if peer_to_grade:
-            self.verify_submission_has_peer_grade(learner)
+            self.verify_submission_has_peer_grade(learner, learner_email)
 
         return learner
 
@@ -853,7 +844,7 @@ class FullWorkflowMixin(object):
         self.assertEqual(submitted_assessments, self.staff_area_page.status_text('submitted__assessments'))
         self.assertEqual(self_assessment, self.staff_area_page.status_text('self__assessments'))
 
-    def verify_submission_has_peer_grade(self, learner, max_attempts=5):
+    def verify_submission_has_peer_grade(self, learner, learner_email, max_attempts=5):
         """
         If learner does not now have a score, it means that "extra" submissions are in the system,
         and more need to be scored. Create additional learners and have them grade until learner has
@@ -871,9 +862,9 @@ class FullWorkflowMixin(object):
         count = 0
         while not peer_grade_exists() and count < max_attempts:
             count += 1
-            self.do_submission_training_self_assessment("extra_{}@looping.com".format(count), None)
+            self.do_submission_training_self_assessment()
             self.do_peer_assessment(options=self.PEER_ASSESSMENT)
-            self.login_user(learner)
+            self.login_user(learner, learner_email)
 
         self.assertTrue(
             peer_grade_exists(),
@@ -983,7 +974,7 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
         And all fields in the staff area tool are correct
         """
         # Create only the initial submission before doing the staff override.
-        learner = self.do_submission(self.LEARNER_EMAIL, self.LEARNER_PASSWORD)
+        learner, learner_email = self.do_submission()
 
         # Verify no grade present (and no staff grade section), no assessment information in staff area.
         self.assertIsNone(self.grade_page.wait_for_page().score)
@@ -999,10 +990,10 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
         self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS, self.STAFF_OVERRIDE_LEARNER_STEPS_NOT_COMPLETE)
 
         # Now create a second learner so that "learner" has someone to assess.
-        self.do_submission("learner2@foo.com", None)
+        self.do_submission()
 
         # Go back to the original learner to complete her workflow and view score.
-        self.login_user(learner)
+        self.login_user(learner, learner_email)
 
         # Do training exercise and self assessment
         self.student_training_page.visit()
