@@ -420,9 +420,9 @@ describe('OpenAssessment.StaffAreaView', function() {
             var staffArea = createStaffArea();
             chooseStudent(staffArea, 'testStudent');
             $('.ui-slidable', staffArea.element).each(function(index, slidable) {
-                var id = slidable.id;
                 var content = $(slidable).next('.ui-slidable__content');
-                expect(content).toHaveAttr('aria-labelledby', id);
+                expect(content).toHaveAttr('aria-labelledby', slidable.id);
+                expect(slidable).toHaveAttr('aria-controls', content.id);
             });
         });
 
