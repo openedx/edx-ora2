@@ -13,13 +13,13 @@
     </h2>
 
     <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse staff-info__student__response">
-        <button class="ui-staff ui-slidable" aria-expanded="false" id="learner_response_{{ submission.uuid }}">
+        <button class="ui-staff ui-slidable" aria-controls="learner_response_content_{{ submission.uuid }}" aria-expanded="false" id="learner_response_{{ submission.uuid }}">
             <h2 class="staff-info__title ui-staff__subtitle">
                 <i class="icon fa fa-caret-right" aria-hidden="true"></i>
                 <span>{% trans "Learner's Response" %}</span>
             </h2>
         </button>
-        <div class="ui-slidable__content" aria-labelledby="learner_response_{{ submission.uuid }}">
+        <div class="ui-slidable__content" role="group" id="learner_response_content_{{ submission.uuid }}" aria-labelledby="learner_response_{{ submission.uuid }}">
             {% if workflow_cancellation %}
                 <p>
                     {% if workflow_cancellation.cancelled_by %}
@@ -76,13 +76,13 @@
     {% endif %}
 
     <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse staff-info__student__grade">
-        <button class="ui-staff ui-slidable" aria-expanded="false" id="final_grade_{{ submission.uuid }}">
+        <button class="ui-staff ui-slidable" aria-controls="final_grade_content_{{ submission.uuid }}" aria-expanded="false" id="final_grade_{{ submission.uuid }}">
             <h2 class="staff-info__title ui-staff__subtitle">
                 <i class="icon fa fa-caret-right" aria-hidden="true"></i>
                 <span>{% trans "Learner's Final Grade" %}</span>
             </h2>
         </button>
-        <div class="ui-slidable__content" aria-labelledby="final_grade_{{ submission.uuid }}">
+        <div class="ui-slidable__content" role="group" id="final_grade_content_{{ submission.uuid }}" aria-labelledby="final_grade_{{ submission.uuid }}">
             {% if workflow_status == "done" %}
                 <div class="staff-info__final__grade__score">
                 {% with points_earned_string=score.points_earned|stringformat:"s" points_possible_string=score.points_possible|stringformat:"s" %}
@@ -146,13 +146,13 @@
 
     {% if not workflow_cancellation %}
         <div class="staff-info__staff-override ui-staff__content__section wrapper--ui--collapse">
-            <button class="ui-staff ui-slidable" aria-expanded="false" id="grade_override_{{ submission.uuid }}">
+            <button class="ui-staff ui-slidable" aria-controls="grade_override_content_{{ submission.uuid }}" aria-expanded="false" id="grade_override_{{ submission.uuid }}">
                 <h2 class="staff-info__title ui-staff__subtitle">
                     <i class="icon fa fa-caret-right" aria-hidden="true"></i>
                     <span>{% trans "Submit Assessment Grade Override" %}</span>
                 </h2>
             </button>
-            <div class="staff-info__staff-override__content ui-slidable__content" aria-labelledby="grade_override_{{ submission.uuid }}">
+            <div class="staff-info__staff-override__content ui-slidable__content" role="group" id="grade_override_content_{{ submission.uuid }}" aria-labelledby="grade_override_{{ submission.uuid }}">
                 <div class="wrapper--input">
                     {% include "openassessmentblock/staff_area/oa_staff_override_assessment.html" %}
                 </div>
@@ -160,13 +160,13 @@
         </div>
 
         <div class="staff-info__workflow-cancellation ui-staff__content__section wrapper--ui--collapse">
-            <button class="ui-staff ui-slidable" aria-expanded="false" id="remove_submission_{{ submission.uuid }}">
+            <button class="ui-staff ui-slidable" aria-controls="remove_submission_content_{{ submission.uuid }}" aria-expanded="false" id="remove_submission_{{ submission.uuid }}">
                 <h2 class="staff-info__title ui-staff__subtitle">
                     <i class="icon fa fa-caret-right" aria-hidden="true"></i>
                     <span>{% trans "Remove Submission From Peer Grading" %}</span>
                 </h2>
             </button>
-            <div class="staff-info__cancel-submission__content ui-slidable__content" aria-labelledby="remove_submission_{{ submission.uuid }}">
+            <div class="staff-info__cancel-submission__content ui-slidable__content" role="group" id="remove_submission_content_{{ submission.uuid }}" aria-labelledby="remove_submission_{{ submission.uuid }}">
                 <div class="wrapper--input">
                     <form data-submission-uuid="{{ submission.uuid }}">
 
