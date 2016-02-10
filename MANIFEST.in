@@ -1,8 +1,11 @@
-include requirements/*.txt
-recursive-include apps/openassessment/templates *.html
-recursive-include apps/openassessment/xblock/static *
-recursive-include apps/openassessment/locale *.po
-recursive-include apps/openassessment/locale *.mo
 include LICENSE
 include AUTHORS
 include README.rst
+include openassessment/xblock/static/css/*.css
+include openassessment/xblock/static/js/openassessment*.min.js
+recursive-include openassessment/xblock/static/js/src *.js
+recursive-include openassessment/templates *.html
+recursive-include openassessment/locale *.po
+recursive-include openassessment/locale *.mo
+global-exclude */test*
+global-exclude */test?/*

@@ -1,20 +1,5 @@
 #!/usr/bin/env python
-from setuptools import setup
-
-PACKAGES = [
-    'openassessment',
-    'openassessment.assessment',
-    'openassessment.assessment.api',
-    'openassessment.assessment.errors',
-    'openassessment.assessment.models',
-    'openassessment.assessment.serializers',
-    'openassessment.assessment.worker',
-    'openassessment.fileupload',
-    'openassessment.fileupload.backends',
-    'openassessment.workflow',
-    'openassessment.management',
-    'openassessment.xblock'
-]
+from setuptools import setup, find_packages
 
 def is_requirement(line):
     """
@@ -47,7 +32,7 @@ def load_requirements(*requirements_paths):
     return list(requirements)
 
 setup(
-    name='ora2',
+    name='edx-ora2',
     version='0.2.8',
     author='edX',
     url='http://github.com/edx/edx-ora2',
@@ -60,7 +45,8 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
     ],
-    packages=PACKAGES,
+    packages=find_packages(exclude=['*.test', '*.tests']),
+    include_package_data=True,
     install_requires=load_requirements('requirements/base.txt', 'requirements/wheels.txt'),
     tests_require=load_requirements('requirements/test.txt'),
     entry_points={
