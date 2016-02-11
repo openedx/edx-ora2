@@ -53,4 +53,4 @@ if [[ "${test_name}" = "accessibility" ]]; then
 fi
 
 echo "Running acceptance tests from ${test_name}.py against the sandbox..."
-python ../acceptance/${test_name}.py
+nosetests ../acceptance/${test_name}.py --with-xunit --xunit-file=../acceptance/xunit-${test_name}.xml
