@@ -164,83 +164,83 @@ class StaffAreaA11yTest(OpenAssessmentA11yTest):
         self._check_a11y(self.staff_asmnt_page)
 
 
-class FullWorkflowA11yTest(OpenAssessmentA11yTest, FullWorkflowMixin):
-    """
-    Test accessibility at the end of a "full workflow" problem. In particular,
-    this verifies the accessibility of the "Your Grade" section and the related
-    sections in staff tools when all assessment steps have been completed.
-    """
+# class FullWorkflowA11yTest(OpenAssessmentA11yTest, FullWorkflowMixin):
+#     """
+#     Test accessibility at the end of a "full workflow" problem. In particular,
+#     this verifies the accessibility of the "Your Grade" section and the related
+#     sections in staff tools when all assessment steps have been completed.
+#     """
+#
+#     def setUp(self):
+#         super(FullWorkflowA11yTest, self).setUp('full_workflow_staff_override', staff=True)
+#         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
-    def setUp(self):
-        super(FullWorkflowA11yTest, self).setUp('full_workflow_staff_override', staff=True)
-        self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
-
-    def test_training_peer_self_staff_override(self):
-        """
-        """
-        # Create a learner with submission, training, and self assessment completed.
-        learner, learner_email = self.do_submission_training_self_assessment()
-
-        # Now create a second learner so that learner 1 has someone to assess.
-        # The second learner does all the steps as well (submission, training, self assessment, peer assessment).
-        self.do_submission_training_self_assessment()
-        self.do_peer_assessment(options=self.PEER_ASSESSMENT)
-
-        # Go back to the first learner to complete her workflow.
-        self.login_user(learner, learner_email)
-
-        # Learner 1 does peer assessment of learner 2 to complete workflow.
-        self.do_peer_assessment(options=self.SUBMITTED_ASSESSMENT)
-
-        # Continue grading by other students if necessary to ensure learner has a peer grade.
-        self.verify_submission_has_peer_grade(learner, learner_email)
-
-        # At this point, the learner sees the peer assessment score (0). Verify the accessibility
-        # of the "your grade" section.
-        self.assertEqual(self.PEER_ASSESSMENT_SCORE, self.grade_page.wait_for_page().score)
-        self._check_a11y(self.grade_page)
-
-        # Now do a staff override, changing the score (to 1).
-        self.do_staff_override(learner)
-
-        # Refresh and check the accessibility of "your grade" section again.
-        self.browser.refresh()
-        self.assertEqual(self.STAFF_OVERRIDE_SCORE, self.grade_page.wait_for_page().score)
-        self._check_a11y(self.grade_page)
-
-        # Also verify the accessibility of the complete staff area information.
-        self.staff_area_page.visit().show_learner(learner)
-        self.staff_area_page.expand_learner_report_sections()
-        self._check_a11y(self.staff_area_page)
+    # def test_training_peer_self_staff_override(self):
+    #     """
+    #     """
+    #     # Create a learner with submission, training, and self assessment completed.
+    #     learner, learner_email = self.do_submission_training_self_assessment()
+    #
+    #     # Now create a second learner so that learner 1 has someone to assess.
+    #     # The second learner does all the steps as well (submission, training, self assessment, peer assessment).
+    #     self.do_submission_training_self_assessment()
+    #     self.do_peer_assessment(options=self.PEER_ASSESSMENT)
+    #
+    #     # Go back to the first learner to complete her workflow.
+    #     self.login_user(learner, learner_email)
+    #
+    #     # Learner 1 does peer assessment of learner 2 to complete workflow.
+    #     self.do_peer_assessment(options=self.SUBMITTED_ASSESSMENT)
+    #
+    #     # Continue grading by other students if necessary to ensure learner has a peer grade.
+    #     self.verify_submission_has_peer_grade(learner, learner_email)
+    #
+    #     # At this point, the learner sees the peer assessment score (0). Verify the accessibility
+    #     # of the "your grade" section.
+    #     self.assertEqual(self.PEER_ASSESSMENT_SCORE, self.grade_page.wait_for_page().score)
+    #     self._check_a11y(self.grade_page)
+    #
+    #     # Now do a staff override, changing the score (to 1).
+    #     self.do_staff_override(learner)
+    #
+    #     # Refresh and check the accessibility of "your grade" section again.
+    #     self.browser.refresh()
+    #     self.assertEqual(self.STAFF_OVERRIDE_SCORE, self.grade_page.wait_for_page().score)
+    #     self._check_a11y(self.grade_page)
+    #
+    #     # Also verify the accessibility of the complete staff area information.
+    #     self.staff_area_page.visit().show_learner(learner)
+    #     self.staff_area_page.expand_learner_report_sections()
+    #     self._check_a11y(self.staff_area_page)
 
 
-class FullWorkflowRequiredA11yTest(OpenAssessmentA11yTest, FullWorkflowMixin):
-    """
-    Test accessibility when both staff override and full staff grading rubrics have rendered.
-    """
-
-    def setUp(self):
-        super(FullWorkflowRequiredA11yTest, self).setUp('full_workflow_staff_required', staff=True)
-        self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
-
-    def test_multiple_rubrics(self):
-        """
-        Test accessibility when both the staff override and the full staff grading
-        rubric forms have been opened.
-        """
-        # Create a learner with submission, training, and self assessment completed.
-        learner = self.do_train_self_peer(False)
-
-        # Open up the full staff grading form
-        self.staff_area_page.visit()
-        self.staff_area_page.click_staff_toolbar_button("staff-grading")
-        self.staff_area_page.expand_staff_grading_section()
-
-        # Open up the override form
-        self.staff_area_page.show_learner(learner)
-        self.staff_area_page.expand_learner_report_sections()
-
-        self._check_a11y(self.staff_area_page)
+# class FullWorkflowRequiredA11yTest(OpenAssessmentA11yTest, FullWorkflowMixin):
+#     """
+#     Test accessibility when both staff override and full staff grading rubrics have rendered.
+#     """
+#
+#     def setUp(self):
+#         super(FullWorkflowRequiredA11yTest, self).setUp('full_workflow_staff_required', staff=True)
+#         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
+#
+#     def test_multiple_rubrics(self):
+#         """
+#         Test accessibility when both the staff override and the full staff grading
+#         rubric forms have been opened.
+#         """
+#         # Create a learner with submission, training, and self assessment completed.
+#         learner = self.do_train_self_peer(False)
+#
+#         # Open up the full staff grading form
+#         self.staff_area_page.visit()
+#         self.staff_area_page.click_staff_toolbar_button("staff-grading")
+#         self.staff_area_page.expand_staff_grading_section()
+#
+#         # Open up the override form
+#         self.staff_area_page.show_learner(learner)
+#         self.staff_area_page.expand_learner_report_sections()
+#
+#         self._check_a11y(self.staff_area_page)
 
 
 if __name__ == "__main__":

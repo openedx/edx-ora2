@@ -87,12 +87,12 @@ class AutoAuthPage(PageObject):
         username, _ = self._get_username_and_email()
         return username
 
-    def get_email(self):
-        """
-        Finds and returns the email address of the current user.
-        """
-        _, email = self._get_username_and_email()
-        return email
+    # def get_email(self):
+    #     """
+    #     Finds and returns the email address of the current user.
+    #     """
+    #     _, email = self._get_username_and_email()
+    #     return email
 
     def _get_username_and_email(self):
         """

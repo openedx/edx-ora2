@@ -779,10 +779,10 @@ class FullWorkflowMixin(object):
         )
         auto_auth_page.visit()
         username = auto_auth_page.get_username()
-        email = auto_auth_page.get_email()
+        # email = auto_auth_page.get_email()
         self.submission_page.visit().submit_response(self.SUBMISSION)
 
-        return username, email
+        return username, None
 
     def do_submission_training_self_assessment(self):
         """
@@ -797,34 +797,34 @@ class FullWorkflowMixin(object):
 
         return username, email
 
-    def do_train_self_peer(self, peer_to_grade=True):
-        """
-        Common functionality for executing training, self, and peer assessment steps.
-
-        Args:
-            peer_to_grade: boolean, defaults to True. Set to False to have learner complete their required steps,
-                but no peers to submit a grade for learner in return.
-        """
-        # Create a learner with submission, training, and self assessment completed.
-        learner, learner_email = self.do_submission_training_self_assessment()
-
-        # Now create a second learner so that learner 1 has someone to assess.
-        # The second learner does all the steps as well (submission, training, self assessment, peer assessment).
-        self.do_submission_training_self_assessment()
-        if peer_to_grade:
-            self.do_peer_assessment(options=self.PEER_ASSESSMENT)
-
-        # Go back to the first learner to complete her workflow.
-        self.login_user(learner, learner_email)
-
-        # Learner 1 does peer assessment of learner 2 to complete workflow.
-        self.do_peer_assessment(options=self.SUBMITTED_ASSESSMENT)
-
-        # Continue grading by other students if necessary to ensure learner has a peer grade.
-        if peer_to_grade:
-            self.verify_submission_has_peer_grade(learner, learner_email)
-
-        return learner
+    # def do_train_self_peer(self, peer_to_grade=True):
+    #     """
+    #     Common functionality for executing training, self, and peer assessment steps.
+    #
+    #     Args:
+    #         peer_to_grade: boolean, defaults to True. Set to False to have learner complete their required steps,
+    #             but no peers to submit a grade for learner in return.
+    #     """
+    #     # Create a learner with submission, training, and self assessment completed.
+    #     learner, learner_email = self.do_submission_training_self_assessment()
+    #
+    #     # Now create a second learner so that learner 1 has someone to assess.
+    #     # The second learner does all the steps as well (submission, training, self assessment, peer assessment).
+    #     self.do_submission_training_self_assessment()
+    #     if peer_to_grade:
+    #         self.do_peer_assessment(options=self.PEER_ASSESSMENT)
+    #
+    #     # Go back to the first learner to complete her workflow.
+    #     self.login_user(learner, learner_email)
+    #
+    #     # Learner 1 does peer assessment of learner 2 to complete workflow.
+    #     self.do_peer_assessment(options=self.SUBMITTED_ASSESSMENT)
+    #
+    #     # Continue grading by other students if necessary to ensure learner has a peer grade.
+    #     if peer_to_grade:
+    #         self.verify_submission_has_peer_grade(learner, learner_email)
+    #
+    #     return learner
 
     def verify_staff_area_fields(self, username, peer_assessments, submitted_assessments, self_assessment):
         """
@@ -844,32 +844,32 @@ class FullWorkflowMixin(object):
         self.assertEqual(submitted_assessments, self.staff_area_page.status_text('submitted__assessments'))
         self.assertEqual(self_assessment, self.staff_area_page.status_text('self__assessments'))
 
-    def verify_submission_has_peer_grade(self, learner, learner_email, max_attempts=5):
-        """
-        If learner does not now have a score, it means that "extra" submissions are in the system,
-        and more need to be scored. Create additional learners and have them grade until learner has
-        a grade (stopping after specified max attempts).
-
-        Args:
-            learner: the learner whose grade will be checked
-            max_attempts: the maximum number of times an additional peer grading should be done
-        """
-        def peer_grade_exists():
-            self.staff_area_page.visit()
-            self.staff_area_page.show_learner(learner)
-            return "Peer Assessments for This Learner" in self.staff_area_page.learner_report_sections
-
-        count = 0
-        while not peer_grade_exists() and count < max_attempts:
-            count += 1
-            self.do_submission_training_self_assessment()
-            self.do_peer_assessment(options=self.PEER_ASSESSMENT)
-            self.login_user(learner, learner_email)
-
-        self.assertTrue(
-            peer_grade_exists(),
-            "Learner still not graded after {} additional attempts".format(max_attempts)
-        )
+    # def verify_submission_has_peer_grade(self, learner, learner_email, max_attempts=5):
+    #     """
+    #     If learner does not now have a score, it means that "extra" submissions are in the system,
+    #     and more need to be scored. Create additional learners and have them grade until learner has
+    #     a grade (stopping after specified max attempts).
+    #
+    #     Args:
+    #         learner: the learner whose grade will be checked
+    #         max_attempts: the maximum number of times an additional peer grading should be done
+    #     """
+    #     def peer_grade_exists():
+    #         self.staff_area_page.visit()
+    #         self.staff_area_page.show_learner(learner)
+    #         return "Peer Assessments for This Learner" in self.staff_area_page.learner_report_sections
+    #
+    #     count = 0
+    #     while not peer_grade_exists() and count < max_attempts:
+    #         count += 1
+    #         self.do_submission_training_self_assessment()
+    #         self.do_peer_assessment(options=self.PEER_ASSESSMENT)
+    #         self.login_user(learner, learner_email)
+    #
+    #     self.assertTrue(
+    #         peer_grade_exists(),
+    #         "Learner still not graded after {} additional attempts".format(max_attempts)
+    #     )
 
     def verify_grade_entries(self, expected_entries):
         """
@@ -894,141 +894,141 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
         super(FullWorkflowOverrideTest, self).setUp("full_workflow_staff_override", staff=True)
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
-    @retry()
-    @attr('acceptance')
-    def test_staff_override_at_end(self):
-        """
-        Scenario: complete workflow with staff override at the very end
+    # @retry()
+    # @attr('acceptance')
+    # def test_staff_override_at_end(self):
+    #     """
+    #     Scenario: complete workflow with staff override at the very end
+    #
+    #     Given that I have created a submission, completed training, and done a self assessment
+    #     And a second learner has also created a submission, training, and self assessment
+    #     Then I can assess a learner
+    #     And when another learner assesses me
+    #     Then I see my score based on the peer assessment
+    #     And when a staff member overrides the score
+    #     Then I see the staff override score
+    #     And all fields in the staff area tool are correct
+    #     """
+    #     learner = self.do_train_self_peer()
+    #
+    #     # At this point, the learner sees the peer assessment score (0).
+    #     self.assertEqual(self.PEER_ASSESSMENT_SCORE, self.grade_page.wait_for_page().score)
+    #     self.verify_staff_area_fields(
+    #         learner, self.STAFF_AREA_PEER_ASSESSMENT, self.STAFF_AREA_SUBMITTED, self.STAFF_AREA_SELF_ASSESSMENT
+    #     )
+    #     self.staff_area_page.verify_learner_final_score(self.PEER_ASSESSMENT_STAFF_AREA_SCORE)
+    #     self.assertEquals(
+    #         ['CRITERION', 'PEER MEDIAN GRADE', 'SELF ASSESSMENT GRADE'],
+    #         self.staff_area_page.learner_final_score_table_headers
+    #     )
+    #     self.assertEquals(
+    #         ['Poor - 0 points\nPeer 1 - Poor', 'Good',
+    #          'Poor - 0 points\nPeer 1 - Poor', 'Excellent'],
+    #         self.staff_area_page.learner_final_score_table_values
+    #     )
+    #
+    #     self.verify_grade_entries([
+    #         [(u"PEER MEDIAN GRADE - 0 POINTS", u"Poor"), (u"PEER MEDIAN GRADE - 0 POINTS", u"Poor")],
+    #         [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")]
+    #     ])
+    #
+    #     # Now do a staff override, changing the score (to 1).
+    #     self.do_staff_override(learner)
+    #
+    #     self.refresh_page()
+    #     self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS, None)
+    #     self.assertEqual(self.STAFF_OVERRIDE_SCORE, self.grade_page.wait_for_page().score)
+    #     self.verify_staff_area_fields(
+    #         learner, self.STAFF_AREA_PEER_ASSESSMENT, self.STAFF_AREA_SUBMITTED, self.STAFF_AREA_SELF_ASSESSMENT
+    #     )
+    #     self.staff_area_page.verify_learner_final_score(self.STAFF_AREA_SCORE.format(self.STAFF_OVERRIDE_SCORE))
+    #     self.assertEquals(
+    #         ['CRITERION', 'STAFF GRADE', 'PEER MEDIAN GRADE', 'SELF ASSESSMENT GRADE'],
+    #         self.staff_area_page.learner_final_score_table_headers
+    #     )
+    #     self.assertEquals(
+    #         ['Poor - 0 points', 'Peer 1 - Poor', 'Good',
+    #          'Fair - 1 point', 'Peer 1 - Poor', 'Excellent'],
+    #         self.staff_area_page.learner_final_score_table_values
+    #     )
+    #
+    #     self.verify_grade_entries([
+    #         [(u"STAFF GRADE - 0 POINTS", u"Poor"), (u"STAFF GRADE - 1 POINT", u"Fair")],
+    #         [(u"PEER MEDIAN GRADE", u"Poor"), (u"PEER MEDIAN GRADE", u"Poor")],
+    #         [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")]
+    #     ])
 
-        Given that I have created a submission, completed training, and done a self assessment
-        And a second learner has also created a submission, training, and self assessment
-        Then I can assess a learner
-        And when another learner assesses me
-        Then I see my score based on the peer assessment
-        And when a staff member overrides the score
-        Then I see the staff override score
-        And all fields in the staff area tool are correct
-        """
-        learner = self.do_train_self_peer()
-
-        # At this point, the learner sees the peer assessment score (0).
-        self.assertEqual(self.PEER_ASSESSMENT_SCORE, self.grade_page.wait_for_page().score)
-        self.verify_staff_area_fields(
-            learner, self.STAFF_AREA_PEER_ASSESSMENT, self.STAFF_AREA_SUBMITTED, self.STAFF_AREA_SELF_ASSESSMENT
-        )
-        self.staff_area_page.verify_learner_final_score(self.PEER_ASSESSMENT_STAFF_AREA_SCORE)
-        self.assertEquals(
-            ['CRITERION', 'PEER MEDIAN GRADE', 'SELF ASSESSMENT GRADE'],
-            self.staff_area_page.learner_final_score_table_headers
-        )
-        self.assertEquals(
-            ['Poor - 0 points\nPeer 1 - Poor', 'Good',
-             'Poor - 0 points\nPeer 1 - Poor', 'Excellent'],
-            self.staff_area_page.learner_final_score_table_values
-        )
-
-        self.verify_grade_entries([
-            [(u"PEER MEDIAN GRADE - 0 POINTS", u"Poor"), (u"PEER MEDIAN GRADE - 0 POINTS", u"Poor")],
-            [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")]
-        ])
-
-        # Now do a staff override, changing the score (to 1).
-        self.do_staff_override(learner)
-
-        self.refresh_page()
-        self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS, None)
-        self.assertEqual(self.STAFF_OVERRIDE_SCORE, self.grade_page.wait_for_page().score)
-        self.verify_staff_area_fields(
-            learner, self.STAFF_AREA_PEER_ASSESSMENT, self.STAFF_AREA_SUBMITTED, self.STAFF_AREA_SELF_ASSESSMENT
-        )
-        self.staff_area_page.verify_learner_final_score(self.STAFF_AREA_SCORE.format(self.STAFF_OVERRIDE_SCORE))
-        self.assertEquals(
-            ['CRITERION', 'STAFF GRADE', 'PEER MEDIAN GRADE', 'SELF ASSESSMENT GRADE'],
-            self.staff_area_page.learner_final_score_table_headers
-        )
-        self.assertEquals(
-            ['Poor - 0 points', 'Peer 1 - Poor', 'Good',
-             'Fair - 1 point', 'Peer 1 - Poor', 'Excellent'],
-            self.staff_area_page.learner_final_score_table_values
-        )
-
-        self.verify_grade_entries([
-            [(u"STAFF GRADE - 0 POINTS", u"Poor"), (u"STAFF GRADE - 1 POINT", u"Fair")],
-            [(u"PEER MEDIAN GRADE", u"Poor"), (u"PEER MEDIAN GRADE", u"Poor")],
-            [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")]
-        ])
-
-    @retry()
-    @attr('acceptance')
-    def test_staff_override_at_beginning(self):
-        """
-        Scenario: complete workflow with staff override at the very beginning
-
-        Given that I have created a submission
-        Then I see no score yet
-        And when a staff member creates a grade override
-        Then I see that an override exists, but I cannot see the score
-        And when a second learner creates a submission
-        Then I can complete my required steps (training, self assessment, peer assesssment)
-        And I see my staff override score
-        And all fields in the staff area tool are correct
-        """
-        # Create only the initial submission before doing the staff override.
-        learner, learner_email = self.do_submission()
-
-        # Verify no grade present (and no staff grade section), no assessment information in staff area.
-        self.assertIsNone(self.grade_page.wait_for_page().score)
-        self.assertFalse(self.staff_asmnt_page.is_browser_on_page())
-        self.verify_staff_area_fields(learner, [], [], [])
-        self.staff_area_page.verify_learner_final_score(self.STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE)
-
-        # Do staff override-- score still not shown due to steps not being complete.
-        self.do_staff_override(learner, self.STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE)
-
-        # Refresh the page so the learner sees the Staff Grade section.
-        self.refresh_page()
-        self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS, self.STAFF_OVERRIDE_LEARNER_STEPS_NOT_COMPLETE)
-
-        # Now create a second learner so that "learner" has someone to assess.
-        self.do_submission()
-
-        # Go back to the original learner to complete her workflow and view score.
-        self.login_user(learner, learner_email)
-
-        # Do training exercise and self assessment
-        self.student_training_page.visit()
-        self.do_training()
-        self.submit_self_assessment(self.SELF_ASSESSMENT)
-
-        # Verify staff grade still not available, as learner has not done peer assessment.
-        self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS, self.STAFF_OVERRIDE_LEARNER_STEPS_NOT_COMPLETE)
-        self.assertIsNone(self.grade_page.wait_for_page().score)
-        self.verify_staff_area_fields(learner, [], [], self.STAFF_AREA_SELF_ASSESSMENT)
-        self.staff_area_page.verify_learner_final_score(self.STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE)
-
-        # Now do the final required step-- peer grading.
-        self.do_peer_assessment(options=self.SUBMITTED_ASSESSMENT)
-
-        # Grade is now visible to the learner (even though no student has graded the learner).
-        self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS, None)
-        self.assertEqual(self.STAFF_OVERRIDE_SCORE, self.grade_page.wait_for_page().score)
-        self.verify_staff_area_fields(learner, [], self.STAFF_AREA_SUBMITTED, self.STAFF_AREA_SELF_ASSESSMENT)
-        self.staff_area_page.verify_learner_final_score(self.STAFF_AREA_SCORE.format(self.STAFF_OVERRIDE_SCORE))
-        self.assertEquals(
-            ['CRITERION', 'STAFF GRADE', 'PEER MEDIAN GRADE', 'SELF ASSESSMENT GRADE'],
-            self.staff_area_page.learner_final_score_table_headers
-        )
-        self.assertEquals(
-            ['Poor - 0 points', 'Waiting for peer reviews', 'Good',
-             'Fair - 1 point', 'Waiting for peer reviews', 'Excellent'],
-            self.staff_area_page.learner_final_score_table_values
-        )
-
-        self.verify_grade_entries([
-            [(u"STAFF GRADE - 0 POINTS", u"Poor"), (u"STAFF GRADE - 1 POINT", u"Fair")],
-            [(u'PEER MEDIAN GRADE', u'Waiting for peer reviews'), (u'PEER MEDIAN GRADE', u'Waiting for peer reviews')],
-            [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")]
-        ])
+    # @retry()
+    # @attr('acceptance')
+    # def test_staff_override_at_beginning(self):
+    #     """
+    #     Scenario: complete workflow with staff override at the very beginning
+    #
+    #     Given that I have created a submission
+    #     Then I see no score yet
+    #     And when a staff member creates a grade override
+    #     Then I see that an override exists, but I cannot see the score
+    #     And when a second learner creates a submission
+    #     Then I can complete my required steps (training, self assessment, peer assesssment)
+    #     And I see my staff override score
+    #     And all fields in the staff area tool are correct
+    #     """
+    #     # Create only the initial submission before doing the staff override.
+    #     learner, learner_email = self.do_submission()
+    #
+    #     # Verify no grade present (and no staff grade section), no assessment information in staff area.
+    #     self.assertIsNone(self.grade_page.wait_for_page().score)
+    #     self.assertFalse(self.staff_asmnt_page.is_browser_on_page())
+    #     self.verify_staff_area_fields(learner, [], [], [])
+    #     self.staff_area_page.verify_learner_final_score(self.STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE)
+    #
+    #     # Do staff override-- score still not shown due to steps not being complete.
+    #     self.do_staff_override(learner, self.STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE)
+    #
+    #     # Refresh the page so the learner sees the Staff Grade section.
+    #     self.refresh_page()
+    #     self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS, self.STAFF_OVERRIDE_LEARNER_STEPS_NOT_COMPLETE)
+    #
+    #     # Now create a second learner so that "learner" has someone to assess.
+    #     self.do_submission()
+    #
+    #     # Go back to the original learner to complete her workflow and view score.
+    #     self.login_user(learner, learner_email)
+    #
+    #     # Do training exercise and self assessment
+    #     self.student_training_page.visit()
+    #     self.do_training()
+    #     self.submit_self_assessment(self.SELF_ASSESSMENT)
+    #
+    #     # Verify staff grade still not available, as learner has not done peer assessment.
+    #     self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS, self.STAFF_OVERRIDE_LEARNER_STEPS_NOT_COMPLETE)
+    #     self.assertIsNone(self.grade_page.wait_for_page().score)
+    #     self.verify_staff_area_fields(learner, [], [], self.STAFF_AREA_SELF_ASSESSMENT)
+    #     self.staff_area_page.verify_learner_final_score(self.STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE)
+    #
+    #     # Now do the final required step-- peer grading.
+    #     self.do_peer_assessment(options=self.SUBMITTED_ASSESSMENT)
+    #
+    #     # Grade is now visible to the learner (even though no student has graded the learner).
+    #     self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS, None)
+    #     self.assertEqual(self.STAFF_OVERRIDE_SCORE, self.grade_page.wait_for_page().score)
+    #     self.verify_staff_area_fields(learner, [], self.STAFF_AREA_SUBMITTED, self.STAFF_AREA_SELF_ASSESSMENT)
+    #     self.staff_area_page.verify_learner_final_score(self.STAFF_AREA_SCORE.format(self.STAFF_OVERRIDE_SCORE))
+    #     self.assertEquals(
+    #         ['CRITERION', 'STAFF GRADE', 'PEER MEDIAN GRADE', 'SELF ASSESSMENT GRADE'],
+    #         self.staff_area_page.learner_final_score_table_headers
+    #     )
+    #     self.assertEquals(
+    #         ['Poor - 0 points', 'Waiting for peer reviews', 'Good',
+    #          'Fair - 1 point', 'Waiting for peer reviews', 'Excellent'],
+    #         self.staff_area_page.learner_final_score_table_values
+    #     )
+    #
+    #     self.verify_grade_entries([
+    #         [(u"STAFF GRADE - 0 POINTS", u"Poor"), (u"STAFF GRADE - 1 POINT", u"Fair")],
+    #         [(u'PEER MEDIAN GRADE', u'Waiting for peer reviews'), (u'PEER MEDIAN GRADE', u'Waiting for peer reviews')],
+    #         [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")]
+    #     ])
 
 
 @ddt.ddt
@@ -1040,52 +1040,52 @@ class FullWorkflowRequiredTest(OpenAssessmentTest, FullWorkflowMixin):
         super(FullWorkflowRequiredTest, self).setUp("full_workflow_staff_required", staff=True)
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
-    @retry()
-    @attr('acceptance')
-    @ddt.data(True, False)
-    def test_train_self_peer_staff(self, peer_grades_me):
-        """
-        Scenario: complete workflow that included staff required step.
-
-        Given that I have created a submission, completed training, and done a self assessment
-        And a second learner has also created a submission, training, and self assessment
-        Then I can assess a learner
-        And when another learner assesses me
-        And a staff member submits a score
-        Then I see the staff score
-        And all fields in the staff area tool are correct
-        """
-        # Using ddt booleans to confirm behavior independent of whether I receive a peer score or not
-        self.do_train_self_peer(peer_grades_me)
-
-        # Ensure grade is not present, since staff assessment has not been made
-        self.assertIsNone(self.grade_page.wait_for_page().score)
-
-        # Now do a staff assessment.
-        self.do_staff_assessment(options_selected=self.STAFF_OVERRIDE_OPTIONS_SELECTED)
-
-        # As an add-on, let's make sure that both submissions (the learner's, and the additional one created
-        # in do_train_self_peer() above) were assessed using staff-grading's "submit and keep going"
-        self.assertEqual(0, self.staff_area_page.available_checked_out_numbers[0])
-
-        # At this point, the learner sees the score (1).
-        self.refresh_page()
-        self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS, None)
-        self.assertEqual(self.STAFF_OVERRIDE_SCORE, self.grade_page.wait_for_page().score)
-
-        if peer_grades_me:
-            self.verify_grade_entries([
-                [(u"STAFF GRADE - 0 POINTS", u"Poor"), (u"STAFF GRADE - 1 POINT", u"Fair")],
-                [(u"PEER MEDIAN GRADE", u"Poor"), (u"PEER MEDIAN GRADE", u"Poor")],
-                [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")],
-            ])
-        else:
-            self.verify_grade_entries([
-                [(u"STAFF GRADE - 0 POINTS", u"Poor"), (u"STAFF GRADE - 1 POINT", u"Fair")],
-                [(u'PEER MEDIAN GRADE', u'Waiting for peer reviews'),
-                 (u'PEER MEDIAN GRADE', u'Waiting for peer reviews')],
-                [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")],
-            ])
+    # @retry()
+    # @attr('acceptance')
+    # @ddt.data(True, False)
+    # def test_train_self_peer_staff(self, peer_grades_me):
+    #     """
+    #     Scenario: complete workflow that included staff required step.
+    #
+    #     Given that I have created a submission, completed training, and done a self assessment
+    #     And a second learner has also created a submission, training, and self assessment
+    #     Then I can assess a learner
+    #     And when another learner assesses me
+    #     And a staff member submits a score
+    #     Then I see the staff score
+    #     And all fields in the staff area tool are correct
+    #     """
+    #     # Using ddt booleans to confirm behavior independent of whether I receive a peer score or not
+    #     self.do_train_self_peer(peer_grades_me)
+    #
+    #     # Ensure grade is not present, since staff assessment has not been made
+    #     self.assertIsNone(self.grade_page.wait_for_page().score)
+    #
+    #     # Now do a staff assessment.
+    #     self.do_staff_assessment(options_selected=self.STAFF_OVERRIDE_OPTIONS_SELECTED)
+    #
+    #     # As an add-on, let's make sure that both submissions (the learner's, and the additional one created
+    #     # in do_train_self_peer() above) were assessed using staff-grading's "submit and keep going"
+    #     self.assertEqual(0, self.staff_area_page.available_checked_out_numbers[0])
+    #
+    #     # At this point, the learner sees the score (1).
+    #     self.refresh_page()
+    #     self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS, None)
+    #     self.assertEqual(self.STAFF_OVERRIDE_SCORE, self.grade_page.wait_for_page().score)
+    #
+    #     if peer_grades_me:
+    #         self.verify_grade_entries([
+    #             [(u"STAFF GRADE - 0 POINTS", u"Poor"), (u"STAFF GRADE - 1 POINT", u"Fair")],
+    #             [(u"PEER MEDIAN GRADE", u"Poor"), (u"PEER MEDIAN GRADE", u"Poor")],
+    #             [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")],
+    #         ])
+    #     else:
+    #         self.verify_grade_entries([
+    #             [(u"STAFF GRADE - 0 POINTS", u"Poor"), (u"STAFF GRADE - 1 POINT", u"Fair")],
+    #             [(u'PEER MEDIAN GRADE', u'Waiting for peer reviews'),
+    #              (u'PEER MEDIAN GRADE', u'Waiting for peer reviews')],
+    #             [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")],
+    #         ])
 
 
 if __name__ == "__main__":
