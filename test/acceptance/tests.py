@@ -265,7 +265,7 @@ class SelfAssessmentTest(OpenAssessmentTest):
     def setUp(self):
         super(SelfAssessmentTest, self).setUp('self_only')
 
-    @retry()
+    # @retry()
     @attr('acceptance')
     def test_self_assessment(self):
         # Submit a response
@@ -274,7 +274,7 @@ class SelfAssessmentTest(OpenAssessmentTest):
         # Check browser scrolled back to top of assessment
         self.assertTrue(self.self_asmnt_page.is_on_top)
 
-    @retry()
+    # @retry()
     @attr('acceptance')
     def test_latex(self):
         self.auto_auth_page.visit()
@@ -298,7 +298,7 @@ class StaffAssessmentTest(OpenAssessmentTest):
     def setUp(self):
         super(StaffAssessmentTest, self).setUp('staff_only', staff=True)
 
-    @retry()
+    # @retry()
     @attr('acceptance')
     def test_staff_assessment(self):
         # Set up user and navigate to submission page
@@ -342,7 +342,7 @@ class PeerAssessmentTest(OpenAssessmentTest):
     def setUp(self):
         super(PeerAssessmentTest, self).setUp('peer_only')
 
-    @retry()
+    # @retry()
     @attr('acceptance')
     def test_peer_assessment(self):
         # Create a submission for the first student, so there's
@@ -367,7 +367,7 @@ class PeerAssessmentTestStaffOverride(OpenAssessmentTest):
         super(PeerAssessmentTestStaffOverride, self).setUp('peer_only', staff=True)
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
-    @retry()
+    # @retry()
     @attr('acceptance')
     def test_staff_override(self):
         """
@@ -423,7 +423,7 @@ class StudentTrainingTest(OpenAssessmentTest):
     def setUp(self):
         super(StudentTrainingTest, self).setUp('student_training')
 
-    @retry()
+    # @retry()
     @attr('acceptance')
     def test_student_training(self):
         # Create a submission so we can get to student training
@@ -470,7 +470,7 @@ class StaffAreaTest(OpenAssessmentTest):
         self.staff_area_page.click_staff_toolbar_button("staff-info")
         self.assertEqual(self.staff_area_page.selected_button_names, [])
 
-    @retry()
+    # @retry()
     @attr('acceptance')
     @ddt.data(
         ("staff-tools", "MANAGE INDIVIDUAL LEARNERS"),
@@ -507,7 +507,7 @@ class StaffAreaTest(OpenAssessmentTest):
         self.assertEqual(self.staff_area_page.selected_button_names, [])
         self.assertEqual(self.staff_area_page.visible_staff_panels, [])
 
-    @retry()
+    # @retry()
     @attr('acceptance')
     def test_student_info(self):
         """
@@ -534,7 +534,7 @@ class StaffAreaTest(OpenAssessmentTest):
 
         self.assertNotIn('A response was not found for this learner', self.staff_area_page.learner_report_text)
 
-    @retry()
+    # @retry()
     @attr('acceptance')
     def test_student_info_no_submission(self):
         """
@@ -559,7 +559,7 @@ class StaffAreaTest(OpenAssessmentTest):
         self.staff_area_page.show_learner('no-submission-learner')
         self.staff_area_page.verify_learner_report_text('A response was not found for this learner.')
 
-    @retry()
+    # @retry()
     @attr('acceptance')
     def test_staff_override(self):
         """
@@ -604,7 +604,7 @@ class StaffAreaTest(OpenAssessmentTest):
             self.staff_area_page.learner_final_score_table_values
         )
 
-    @retry()
+    # @retry()
     @attr('acceptance')
     def test_cancel_submission(self):
         """
@@ -646,7 +646,7 @@ class StaffAreaTest(OpenAssessmentTest):
         self.staff_area_page.expand_learner_report_sections()
         self.assertIn("Learner submission removed", self.staff_area_page.learner_response)
 
-    @retry()
+    # @retry()
     @attr('acceptance')
     def test_staff_grade_override(self):
         """
@@ -698,7 +698,7 @@ class StaffAreaTest(OpenAssessmentTest):
         # Verify the staff override grade
         self.assertEqual(self.STAFF_OVERRIDE_SCORE, self.grade_page.wait_for_page().score)
 
-    @retry()
+    # @retry()
     @attr('acceptance')
     def test_staff_grade_override_cancelled(self):
         """
@@ -732,7 +732,7 @@ class FileUploadTest(OpenAssessmentTest):
     def setUp(self):
         super(FileUploadTest, self).setUp('file_upload')
 
-    @retry()
+    # @retry()
     @attr('acceptance')
     def test_file_upload(self):
         self.auto_auth_page.visit()
@@ -894,7 +894,7 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
         super(FullWorkflowOverrideTest, self).setUp("full_workflow_staff_override", staff=True)
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
-    @retry()
+    # @retry()
     @attr('acceptance')
     def test_staff_override_at_end(self):
         """
@@ -958,7 +958,7 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
             [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")]
         ])
 
-    @retry()
+    # @retry()
     @attr('acceptance')
     def test_staff_override_at_beginning(self):
         """
@@ -1040,7 +1040,7 @@ class FullWorkflowRequiredTest(OpenAssessmentTest, FullWorkflowMixin):
         super(FullWorkflowRequiredTest, self).setUp("full_workflow_staff_required", staff=True)
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
-    @retry()
+    # @retry()
     @attr('acceptance')
     @ddt.data(True, False)
     def test_train_self_peer_staff(self, peer_grades_me):
