@@ -382,6 +382,8 @@ class OpenAssessmentBlock(
             "ALLOWED_FILE_MIME_TYPES": self.ALLOWED_FILE_MIME_TYPES,
             "FILE_EXT_BLACK_LIST": self.FILE_EXT_BLACK_LIST,
             "FILE_TYPE_WHITE_LIST": self.white_listed_file_types,
+            "LEADERBOARD_ENABLED": True if self.leaderboard_show else False,
+            "STAFF_ENABLED": True if self.is_course_staff else False,
         }
         fragment.initialize_js('OpenAssessmentBlock', js_context_dict)
         return fragment

@@ -22,10 +22,10 @@ OpenAssessment.BaseView = function(runtime, element, server, data) {
     this.peerView = new OpenAssessment.PeerView(this.element, this.server, this);
     this.staffView = new OpenAssessment.StaffView(this.element, this.server, this);
     this.gradeView = new OpenAssessment.GradeView(this.element, this.server, this);
-    this.leaderboardView = new OpenAssessment.LeaderboardView(this.element, this.server, this);
+    this.leaderboardView = new OpenAssessment.LeaderboardView(this.element, this.server, data, this);
     this.messageView = new OpenAssessment.MessageView(this.element, this.server, this);
     // Staff-only area with information and tools for managing student submissions
-    this.staffAreaView = new OpenAssessment.StaffAreaView(this.element, this.server, this);
+    this.staffAreaView = new OpenAssessment.StaffAreaView(this.element, this.server, data, this);
 };
 
 if (typeof OpenAssessment.unsavedChanges === 'undefined' || !OpenAssessment.unsavedChanges) {
