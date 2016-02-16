@@ -12,7 +12,7 @@ Returns:
 OpenAssessment.LeaderboardView = function(element, server, data, baseView) {
     this.element = element;
     this.server = server;
-    this.enabled = data["LEADERBOARD_ENABLED"]
+    this.enabled = ((data) && "LEADERBOARD_ENABLED" in data && data.LEADERBOARD_ENABLED);
     this.baseView = baseView;
 };
 

@@ -54,7 +54,7 @@ describe("OpenAssessment.BaseView", function() {
 
         // Create the object under test
         var el = $("#openassessment").get(0);
-        view = new OpenAssessment.BaseView(runtime, el, server);
+        view = new OpenAssessment.BaseView(runtime, el, server, {"LEADERBOARD_ENABLED": true});
         view.load();
         expect($(".openassessment__steps__step").hasClass('is--loading')).toBeFalsy();
     });

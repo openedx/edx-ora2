@@ -15,7 +15,7 @@
     OpenAssessment.StaffAreaView = function(element, server, data, baseView) {
         this.element = element;
         this.server = server;
-        this.enabled = data["STAFF_ENABLED"]
+        this.enabled = ((data) && "STAFF_ENABLED" in data && data.STAFF_ENABLED);
         this.baseView = baseView;
     };
 

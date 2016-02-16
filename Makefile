@@ -41,11 +41,13 @@ sass:
 install-test:
 	pip install -q -r requirements/test.txt
 
-install-sys-requirements: install-system install-node
+install-sys-requirements: install-system install-node install-sass
 	npm config set loglevel warn
 
+install-sass:
+	sudo gem install sass
+
 install-dev:
-	gem install sass
 	pip install -q -r requirements/dev.txt
 
 install: install-wheels install-python install-js install-nltk-data install-test install-dev javascript sass

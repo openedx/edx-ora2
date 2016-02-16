@@ -397,7 +397,7 @@ class OpenAssessmentBlock(
             bool
         """
         if hasattr(self, 'xmodule_runtime'):
-            return getattr(self.xmodule_runtime, 'user_is_admin', False)
+            return getattr(self.xmodule_runtime, 'user_is_admin', False)  # pylint:disable=E1101
         else:
             return False
 
