@@ -135,7 +135,7 @@ class StaffAreaA11yTest(OpenAssessmentA11yTest):
         Check the accessibility of the learner information sections of the "Staff Tools" panel.
         """
         self.auto_auth_page.visit()
-        username = self.auto_auth_page.get_username()
+        username, _ = self.auto_auth_page.get_username_and_email()
 
         self.submission_page.visit().submit_response(self.SUBMISSION)
         self.assertTrue(self.submission_page.has_submitted)

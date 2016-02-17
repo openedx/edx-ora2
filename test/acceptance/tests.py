@@ -6,6 +6,7 @@ import os
 import unittest
 import time
 from functools import wraps
+from pyinstrument import Profiler
 
 from nose.plugins.attrib import attr
 from bok_choy.web_app_test import WebAppTest
@@ -15,8 +16,10 @@ from pages import (
     SubmissionPage, AssessmentPage, GradePage, StaffAreaPage
 )
 
+# This value is generally used in jenkins, but not locally
+PROFILING_ENABLED = os.environ.get('ORA_PROFILING_ENABLED', False)
 
-def retry(tries=4, delay=3, backoff=2):
+def retry(tries=2, delay=4, backoff=2):
     """
     Retry decorator with exponential backoff.
 
@@ -103,6 +106,10 @@ class OpenAssessmentTest(WebAppTest):
         """
         super(OpenAssessmentTest, self).setUp()
 
+        if PROFILING_ENABLED:
+            self.profiler = Profiler(use_signal=False)
+            self.profiler.start()
+
         self.problem_loc = self.PROBLEM_LOCATIONS[problem_type]
         self.auto_auth_page = AutoAuthPage(self.browser, course_id=self.TEST_COURSE_ID, staff=staff)
         self.submission_page = SubmissionPage(self.browser, self.problem_loc)
@@ -111,6 +118,15 @@ class OpenAssessmentTest(WebAppTest):
         self.student_training_page = AssessmentPage('student-training', self.browser, self.problem_loc)
         self.staff_asmnt_page = AssessmentPage('staff-assessment', self.browser, self.problem_loc)
         self.grade_page = GradePage(self.browser, self.problem_loc)
+
+    def log_to_file(self):
+        with open('{}-profile.log'.format(self.id()), 'w') as f:
+            f.write(self.profiler.output_text())
+
+    def tearDown(self):
+        if PROFILING_ENABLED:
+            self.profiler.stop()
+            self.log_to_file()
 
     def login_user(self, learner, email):
         """
@@ -132,7 +148,7 @@ class OpenAssessmentTest(WebAppTest):
         learner for which the self assessment was submitted.
         """
         self.auto_auth_page.visit()
-        username = self.auto_auth_page.get_username()
+        username, _ = self.auto_auth_page.get_username_and_email()
         self.submission_page.visit().submit_response(self.SUBMISSION)
         self.assertTrue(self.submission_page.has_submitted)
 
@@ -303,7 +319,7 @@ class StaffAssessmentTest(OpenAssessmentTest):
     def test_staff_assessment(self):
         # Set up user and navigate to submission page
         self.auto_auth_page.visit()
-        username = self.auto_auth_page.get_username()
+        username, _ = self.auto_auth_page.get_username_and_email()
         self.submission_page.visit()
 
         # Verify that staff grade step is shown initially
@@ -390,7 +406,7 @@ class PeerAssessmentTestStaffOverride(OpenAssessmentTest):
 
         # Create a submission for the third student (used for the remainder of the test).
         self.auto_auth_page.visit()
-        username = self.auto_auth_page.get_username()
+        username, _ = self.auto_auth_page.get_username_and_email()
         self.submission_page.visit().submit_response(self.SUBMISSION)
         # Staff Grade field should not be visible yet.
         self.assertFalse(self.staff_asmnt_page.is_browser_on_page())
@@ -472,12 +488,7 @@ class StaffAreaTest(OpenAssessmentTest):
 
     @retry()
     @attr('acceptance')
-    @ddt.data(
-        ("staff-tools", "MANAGE INDIVIDUAL LEARNERS"),
-        ("staff-info", "VIEW ASSIGNMENT STATISTICS"),
-    )
-    @ddt.unpack
-    def test_staff_area_panel(self, panel_name, button_label):
+    def test_staff_area_panel(self):
         """
         Scenario: the staff area panels should be shown correctly
 
@@ -495,17 +506,21 @@ class StaffAreaTest(OpenAssessmentTest):
         self.assertEqual(self.staff_area_page.selected_button_names, [])
         self.assertEqual(self.staff_area_page.visible_staff_panels, [])
 
-        # Click on the button and verify that the panel has opened
-        self.staff_area_page.click_staff_toolbar_button(panel_name)
-        self.assertEqual(self.staff_area_page.selected_button_names, [button_label])
-        visible_panels = self.staff_area_page.visible_staff_panels
-        self.assertEqual(1, len(visible_panels))
-        self.assertIn(u'openassessment__{button_name}'.format(button_name=panel_name), visible_panels[0])
+        for panel_name, button_label in [
+            ("staff-tools", "MANAGE INDIVIDUAL LEARNERS"),
+            ("staff-info", "VIEW ASSIGNMENT STATISTICS"),
+        ]:
+            # Click on the button and verify that the panel has opened
+            self.staff_area_page.click_staff_toolbar_button(panel_name)
+            self.assertEqual(self.staff_area_page.selected_button_names, [button_label])
+            visible_panels = self.staff_area_page.visible_staff_panels
+            self.assertEqual(1, len(visible_panels))
+            self.assertIn(u'openassessment__{button_name}'.format(button_name=panel_name), visible_panels[0])
 
-        # Click 'Close' and verify that the panel has been closed
-        self.staff_area_page.click_staff_panel_close_button(panel_name)
-        self.assertEqual(self.staff_area_page.selected_button_names, [])
-        self.assertEqual(self.staff_area_page.visible_staff_panels, [])
+            # Click 'Close' and verify that the panel has been closed
+            self.staff_area_page.click_staff_panel_close_button(panel_name)
+            self.assertEqual(self.staff_area_page.selected_button_names, [])
+            self.assertEqual(self.staff_area_page.visible_staff_panels, [])
 
     @retry()
     @attr('acceptance')
@@ -665,7 +680,7 @@ class StaffAreaTest(OpenAssessmentTest):
         """
         # View the problem-- no Staff Grade area.
         self.auto_auth_page.visit()
-        username = self.auto_auth_page.get_username()
+        username, _ = self.auto_auth_page.get_username_and_email()
         self.submission_page.visit()
         self.assertFalse(self.staff_asmnt_page.is_browser_on_page())
 
@@ -778,11 +793,10 @@ class FullWorkflowMixin(object):
             self.browser, password=self.TEST_PASSWORD, course_id=self.TEST_COURSE_ID, staff=True
         )
         auto_auth_page.visit()
-        username = auto_auth_page.get_username()
-        email = auto_auth_page.get_email()
+        username_email = auto_auth_page.get_username_and_email()
         self.submission_page.visit().submit_response(self.SUBMISSION)
 
-        return username, email
+        return username_email
 
     def do_submission_training_self_assessment(self):
         """

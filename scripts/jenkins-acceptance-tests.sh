@@ -29,6 +29,7 @@ if [ -z "$TEST_HOST" ]; then
     exit 1;
 fi
 
+# export ORA_PROFILING_ENABLED=True # uncomment this line to get profiling on jenkins runs
 export ORA_SANDBOX_URL="https://${BASIC_AUTH_USER}:${BASIC_AUTH_PASSWORD}@${TEST_HOST}"
 EXIT=0
 
