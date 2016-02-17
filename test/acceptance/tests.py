@@ -897,7 +897,7 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
         # pr = cProfile.Profile()
         # pr.enable()
         from pyinstrument import Profiler
-        self.profiler = Profiler()
+        self.profiler = Profiler(use_signal=False)
         self.profiler.start()
 
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
