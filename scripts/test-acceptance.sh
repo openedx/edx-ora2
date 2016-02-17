@@ -32,6 +32,7 @@ mkdir -p test/logs
 cd test/logs
 
 test_name="${1:-acceptance}"
+specific_test="${2}"
 
 
 # The machines that these tests run on in jenkins have an old
@@ -53,4 +54,4 @@ if [[ "${test_name}" = "accessibility" ]]; then
 fi
 
 echo "Running acceptance tests from ${test_name}.py against the sandbox..."
-nosetests ../acceptance/${test_name}.py --with-xunit --xunit-file=../acceptance/xunit-${test_name}.xml
+nosetests ../acceptance/${test_name}.py:${specific_test} --with-xunit --xunit-file=../acceptance/xunit-${test_name}.xml

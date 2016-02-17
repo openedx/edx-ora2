@@ -892,7 +892,22 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
     """
     def setUp(self):
         super(FullWorkflowOverrideTest, self).setUp("full_workflow_staff_override", staff=True)
+        import cProfile, pstats, StringIO
+        pr = cProfile.Profile()
+        pr.enable()
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
+        self.addCleanup(pr.disable)
+        # self.addCleanup(self.break_fix, pr)
+
+        self.addCleanup(pr.dump_stats, 'ben.log')
+
+    def log_to_file(pr):
+        with open('w', 'profile.log') as f:
+            f.write(pr.print_stats())
+
+    # def break_fix(self, pr):
+    #     from nose.tools import set_trace
+    #     set_trace()
 
     @retry()
     @attr('acceptance')

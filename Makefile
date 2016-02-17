@@ -73,7 +73,7 @@ test-js-debug: render-templates
 test-sandbox: test-acceptance test-a11y
 
 test-acceptance:
-	./scripts/test-acceptance.sh tests
+	./scripts/test-acceptance.sh tests FullWorkflowOverrideTest.test_staff_override_at_end
 
 test-a11y:
 	./scripts/test-acceptance.sh accessibility
