@@ -97,8 +97,8 @@ describe('OpenAssessment.StaffAreaView', function() {
             server.staffAreaTemplate = staffAreaTemplate;
         }
         var assessmentElement = $('#openassessment').get(0);
-        var baseView = new OpenAssessment.BaseView(runtime, assessmentElement, server, {});
-        var view = new OpenAssessment.StaffAreaView(assessmentElement, server, baseView);
+        var baseView = new OpenAssessment.BaseView(runtime, assessmentElement, server, {"STAFF_ENABLED": true});
+        var view = baseView.staffAreaView;
         view.load();
         return view;
     };

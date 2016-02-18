@@ -12,9 +12,10 @@
      * Returns:
      *   OpenAssessment.StaffAreaView
      */
-    OpenAssessment.StaffAreaView = function(element, server, baseView) {
+    OpenAssessment.StaffAreaView = function(element, server, data, baseView) {
         this.element = element;
         this.server = server;
+        this.enabled = ((data) && "STAFF_ENABLED" in data && data.STAFF_ENABLED);
         this.baseView = baseView;
     };
 
@@ -30,20 +31,22 @@
          * Load the staff area.
          */
         load: function() {
-            var view = this;
+            if (this.enabled) {
+                var view = this;
 
-            // If we're course staff, the base template should contain a section
-            // for us to render the staff area into.  If that doesn't exist,
-            // then we're not staff, so we don't need to send the AJAX request.
-            if ($('.openassessment__staff-area', view.element).length > 0) {
-                this.server.render('staff_area').done(function(html) {
-                    // Load the HTML and install event handlers
-                    $('.openassessment__staff-area', view.element).replaceWith(html);
-                    view.server.renderLatex($('.openassessment__staff-area', view.element));
-                    view.installHandlers();
-                }).fail(function() {
-                    view.baseView.showLoadError('staff_area');
-                });
+                // If we're course staff, the base template should contain a section
+                // for us to render the staff area into.  If that doesn't exist,
+                // then we're not staff, so we don't need to send the AJAX request.
+                if ($('.openassessment__staff-area', view.element).length > 0) {
+                    this.server.render('staff_area').done(function(html) {
+                        // Load the HTML and install event handlers
+                        $('.openassessment__staff-area', view.element).replaceWith(html);
+                        view.server.renderLatex($('.openassessment__staff-area', view.element));
+                        view.installHandlers();
+                    }).fail(function() {
+                        view.baseView.showLoadError('staff_area');
+                    });
+                }
             }
         },
 
