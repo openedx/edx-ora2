@@ -10,7 +10,7 @@ import logging
 from django.utils.translation import ugettext as _
 from django.db import DatabaseError
 from submissions import api as sub_api
-from openassessment.assessment.models import StudentTrainingWorkflow, InvalidRubricSelection
+from openassessment.assessment.models import StudentTrainingWorkflow, InvalidRubricSelection, soft_delete
 from openassessment.assessment.serializers import (
     deserialize_training_examples, serialize_training_example,
     validate_training_example_format,
@@ -471,3 +471,13 @@ def assess_training_example(submission_uuid, options_selected, update_workflow=T
         ).format(submission_uuid)
         logger.exception(msg)
         raise StudentTrainingInternalError(msg)
+
+def reset_state(submission_uuid):
+    """
+    If student state is being reset, soft-delete everything related to the given uuid in student training.
+    """
+    workflow = StudentTrainingWorkflow.objects.get(submission_uuid=submission_uuid)
+    for item in workflow.items.all():
+        item.deleted = True
+        item.save()
+    soft_delete(submission_uuid, StudentTrainingWorkflow)

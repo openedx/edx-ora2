@@ -15,7 +15,7 @@ from openassessment.assessment.errors import (
 from openassessment.assessment.models import (
     Assessment, AITrainingWorkflow, AIGradingWorkflow,
     InvalidRubricSelection, NoTrainingExamples,
-    AI_ASSESSMENT_TYPE, AIClassifierSet
+    AI_ASSESSMENT_TYPE, AIClassifierSet, soft_delete
 )
 from openassessment.assessment.worker import training as training_tasks
 from openassessment.assessment.worker import grading as grading_tasks
@@ -394,3 +394,10 @@ def get_classifier_set_info(rubric_dict, algorithm_id, course_id, item_id):
         msg = u"An unexpected error occurred while retrieving classifier set info: {ex}".format(ex=ex)
         logger.exception(msg)
         raise AIGradingInternalError(msg)
+
+def reset_state(submission_uuid):
+    """
+    If student state is being reset, soft-delete everything related to the given uuid in ai grading.
+    """
+    soft_delete(submission_uuid, AIGradingWorkflow)
+    soft_delete(submission_uuid, Assessment)

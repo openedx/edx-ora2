@@ -211,6 +211,9 @@ class SubmissionMixin(object):
 
         return submission
 
+    def clear_submission(self, user_id, course_id, item_id):
+        return api.reset_student_item(user_id, course_id, item_id)
+
     @XBlock.json_handler
     def upload_url(self, data, suffix=''):
         """

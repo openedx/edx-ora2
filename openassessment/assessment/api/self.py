@@ -10,7 +10,7 @@ from openassessment.assessment.serializers import (
     InvalidRubric, full_assessment_dict, rubric_from_dict, serialize_assessments
 )
 from openassessment.assessment.models import (
-    Assessment, AssessmentPart, InvalidRubricSelection
+    Assessment, AssessmentPart, InvalidRubricSelection, soft_delete
 )
 from openassessment.assessment.errors import (
     SelfAssessmentRequestError, SelfAssessmentInternalError
@@ -341,3 +341,9 @@ def _log_assessment(assessment, submission):
         dog_stats_api.histogram('openassessment.assessment.score_percentage', score_percentage, tags=tags)
 
     dog_stats_api.increment('openassessment.assessment.count', tags=tags)
+
+def reset_state(submission_uuid):
+    """
+    If student state is being reset, soft-delete everything related to the given uuid in self grading.
+    """
+    soft_delete(submission_uuid, Assessment)

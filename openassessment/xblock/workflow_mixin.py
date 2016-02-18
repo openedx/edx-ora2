@@ -210,3 +210,7 @@ class WorkflowMixin(object):
             cancellation_info['cancelled_at'] = cancellation_model.created_at
 
         return cancellation_info
+
+
+    def clear_workflow(self, submission_uuid):
+        workflow_api.soft_delete(submission_uuid)

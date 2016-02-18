@@ -425,3 +425,6 @@ def is_workflow_cancelled(submission_uuid):
         return workflow.is_cancelled if workflow else False
     except AssessmentWorkflowError:
         return False
+
+def soft_delete(submission_uuid):
+    AssessmentWorkflow.delete_workflow_and_assessments(submission_uuid)

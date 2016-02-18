@@ -10,7 +10,7 @@ from submissions import api as submissions_api
 
 from openassessment.assessment.models import (
     Assessment, AssessmentFeedback, AssessmentPart,
-    InvalidRubricSelection, StaffWorkflow,
+    InvalidRubricSelection, StaffWorkflow, soft_delete
 )
 from openassessment.assessment.serializers import (
     AssessmentFeedbackSerializer, RubricSerializer,
@@ -451,3 +451,10 @@ def _complete_assessment(
     if scorer_workflow is not None:
         scorer_workflow.close_active_assessment(assessment, scorer_id)
     return assessment
+
+def reset_state(submission_uuid):
+    """
+    If student state is being reset, soft-delete everything related to the given uuid in staff grading.
+    """
+    soft_delete(submission_uuid, StaffWorkflow)
+    soft_delete(submission_uuid, Assessment)

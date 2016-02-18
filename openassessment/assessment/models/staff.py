@@ -6,7 +6,7 @@ from datetime import timedelta
 from django.db import models, DatabaseError
 from django.utils.timezone import now
 
-from openassessment.assessment.models.base import Assessment
+from openassessment.assessment.models.base import Assessment, SoftDeletedManager
 from openassessment.assessment.errors import StaffAssessmentInternalError
 
 
@@ -35,6 +35,13 @@ class StaffWorkflow(models.Model):
     grading_started_at = models.DateTimeField(null=True, db_index=True)
     cancelled_at = models.DateTimeField(null=True, db_index=True)
     assessment = models.CharField(max_length=128, db_index=True, null=True)
+
+    # Has this workflow been soft-deleted? This allows instructors to reset student
+    # state on an item, while preserving the previous value for potential analytics use.
+    deleted = models.BooleanField(default=False)
+
+    # Override the default Manager with our custom one to filter out soft-deleted items
+    objects = SoftDeletedManager()
 
     class Meta:
         ordering = ["created_at", "id"]

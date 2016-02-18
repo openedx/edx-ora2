@@ -13,7 +13,7 @@ from django.utils.timezone import now
 from django_extensions.db.fields import UUIDField
 from dogapi import dog_stats_api
 from submissions import api as sub_api
-from .base import Rubric, Criterion, Assessment, AssessmentPart
+from .base import Rubric, Criterion, Assessment, AssessmentPart, SoftDeletedManager
 from .training import TrainingExample
 
 
@@ -201,7 +201,7 @@ class AIClassifierSet(models.Model):
         # we can't assign them a score.
         all_criteria = set(classifiers_dict.keys())
         all_criteria |= set(
-            criterion.name for criterion in 
+            criterion.name for criterion in
             rubric_index.find_criteria_without_options()
         )
         missing_criteria = rubric_index.find_missing_criteria(all_criteria)
@@ -786,6 +786,14 @@ class AIGradingWorkflow(AIWorkflow):
     # associated with one submission, it's safe to duplicate
     # this information here from the submissions models.
     student_id = models.CharField(max_length=40, db_index=True)
+
+    # Has this workflow been soft-deleted? This allows instructors to reset student
+    # state on an item, while preserving the previous value for potential analytics use.
+    deleted = models.BooleanField(default=False)
+
+    # Override the default Manager with our custom one to filter out soft-deleted items
+    objects = SoftDeletedManager()
+
 
     def assign_most_recent_classifier_set(self):
         """

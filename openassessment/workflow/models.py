@@ -42,6 +42,12 @@ ASSESSMENT_API_DICT = getattr(
     DEFAULT_ASSESSMENT_API_DICT
 )
 
+# In order to allow for effective soft-deletes, we want to override the default Manager for workflows
+class SoftDeletedManager(models.Manager):
+    def get_queryset(self):
+        #By default, filter out any soft-deleted records for classes using this manager
+        return super(SoftDeletedManager, self).get_queryset().exclude(deleted=True)
+
 class AssessmentWorkflow(TimeStampedModel, StatusModel):
     """Tracks the open-ended assessment status of a student submission.
 
@@ -91,6 +97,13 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
     # here without violating data integrity.
     course_id = models.CharField(max_length=255, blank=False, db_index=True)
     item_id = models.CharField(max_length=255, blank=False, db_index=True)
+
+    # Has this workflow been soft-deleted? This allows instructors to reset student
+    # state on an item, while preserving the previous value for potential analytics use.
+    deleted = models.BooleanField(default=False)
+
+    # Override the default Manager with our custom one to filter out soft-deleted items
+    objects = SoftDeletedManager()
 
     class Meta:
         ordering = ["-created"]
@@ -541,6 +554,29 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 submission_uuid)
             logger.exception(error_message)
             raise AssessmentWorkflowInternalError(error_message)
+
+    def delete_assessments(self, submission_uuid):
+        steps = self._get_steps()
+        step_for_name = {step.name: step for step in steps}
+
+        # Delete each step.
+        for step in steps:
+            delete_func = getattr(step.api(), 'reset_state', None)
+            if delete_func is not None:
+                delete_func(submission_uuid)
+
+
+    @classmethod
+    def delete_workflow_and_assessments(cls, submission_uuid):
+        try:
+            workflow = cls.objects.get(submission_uuid=submission_uuid)
+            workflow.delete_assessments(submission_uuid)
+            workflow.deleted = True
+            workflow.save()
+        except (cls.DoesNotExist, cls.MultipleObjectsReturned):
+            error_message = u"Error finding workflow for submission UUID {}.".format(submission_uuid)
+            logger.exception(error_message)
+            raise AssessmentWorkflowError(error_message)
 
     @classmethod
     def get_by_submission_uuid(cls, submission_uuid):
