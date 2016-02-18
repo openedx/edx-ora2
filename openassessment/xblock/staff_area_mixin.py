@@ -492,24 +492,52 @@ class StaffAreaMixin(object):
                 'msg': self._(u"An error occurred while rescheduling tasks: {}".format(ex))
             }
 
+    def clear_student_state(self, user_id, course_id, item_id):
+        """
+        This xblock method is called (from our LMS runtime, which defines this method signature) to clear student state
+        for a given problem. It will cancel the workflow using traditional methods to remove it from the grading pools,
+        and pass through to the submissions API to orphan the submission so that the user can create a new one.
+        """
+        # Note that student_item cannot be constructed using get_student_item_dict, since we're in a staff context
+        student_item = {
+            'course_id': course_id,
+            'student_id': user_id,
+            'item_id': item_id,
+            'item_type': 'openassessment',
+        }
+        # There *should* only be one submission, but the logic is easy to extend for multiples so we may as well do it
+        submissions = submission_api.get_submissions(student_item)
+        for sub in submissions:
+            # Remove the submission from grading pools
+            self._cancel_workflow(sub['uuid'], "Student state cleared")
+
+            # Tell the submissions API to orphan the submission to prevent it from being accessed
+            submission_api.reset_score(
+                user_id,
+                course_id,
+                item_id,
+                clear_state=True  # pylint: disable=unexpected-keyword-arg
+            )
+            # TODO: try to remove the above pylint disable once edx-submissions release is done
+
     @XBlock.json_handler
     @require_course_staff("STUDENT_INFO", with_json_handler=True)
-    def cancel_submission(self, data, suffix=''):
+    def cancel_submission(self, data, suffix=''):  # pylint: disable=W0613
         """
-            This will cancel the assessment + peer workflow for the particular submission.
+        This will cancel the assessment + peer workflow for the particular submission.
 
-            Args:
-                data (dict): Data contain two attributes: submission_uuid and
-                    comments. submission_uuid is id of submission which is to be
-                    removed from the grading pool. Comments is the reason given
-                    by the user.
+        Args:
+            data (dict): Data contain two attributes: submission_uuid and
+                comments. submission_uuid is id of submission which is to be
+                removed from the grading pool. Comments is the reason given
+                by the user.
 
-                suffix (not used)
+            suffix (not used)
 
-            Return:
-                Json serializable dict with the following elements:
-                    'success': (bool) Indicates whether or not the workflow cancelled successfully.
-                    'msg': The response (could be error message or success message).
+        Return:
+            Json serializable dict with the following elements:
+                'success': (bool) Indicates whether or not the workflow cancelled successfully.
+                'msg': The response (could be error message or success message).
         """
         submission_uuid = data.get('submission_uuid')
         comments = data.get('comments')
@@ -517,9 +545,15 @@ class StaffAreaMixin(object):
         if not comments:
             return {"success": False, "msg": self._(u'Please enter valid reason to remove the submission.')}
 
-        student_item_dict = self.get_student_item_dict()
+        return self._cancel_workflow(submission_uuid, comments)
+
+    def _cancel_workflow(self, submission_uuid, comments):
+        """
+        Internal helper method to cancel a workflow using the workflow API.
+        """
         try:
             assessment_requirements = self.workflow_requirements()
+            student_item_dict = self.get_student_item_dict()
             # Cancel the related workflow.
             workflow_api.cancel_workflow(
                 submission_uuid=submission_uuid, comments=comments,

@@ -740,6 +740,42 @@ class TestCourseStaff(XBlockHandlerTestCase):
             'submission_returned_uuid': submission['uuid']
         })
 
+    @scenario('data/self_only_scenario.xml', user_id='Bob')
+    def test_staff_delete_student_state(self, xblock):
+        # Simulate that we are course staff
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, 'Bob'
+        )
+        xblock.runtime._services['user'] = NullUserService()  # pylint: disable=protected-access
+
+        bob_item = STUDENT_ITEM.copy()
+        bob_item["item_id"] = xblock.scope_ids.usage_id
+        # Create a submission for Bob, and corresponding workflow.
+        submission = self._create_submission(bob_item, {'text': "Bob Answer"}, ['self'])
+
+        # Bob assesses himself.
+        self_api.create_assessment(
+            submission['uuid'],
+            STUDENT_ITEM["student_id"],
+            ASSESSMENT_DICT['options_selected'],
+            ASSESSMENT_DICT['criterion_feedback'],
+            ASSESSMENT_DICT['overall_feedback'],
+            {'criteria': xblock.rubric_criteria},
+        )
+
+        request = namedtuple('Request', 'params')
+        request.params = {"student_username": 'Bob'}
+        # Verify that we can see the student's grade
+        resp = xblock.render_student_info(request)
+        self.assertIn("final grade", resp.body.lower())
+
+        # Clear the submission
+        xblock.clear_student_state('Bob', 'test_course', xblock.scope_ids.usage_id)
+
+        # Verify that the submission was cleared
+        resp = xblock.render_student_info(request)
+        self.assertIn("response was not found", resp.body.lower())
+
     def _verify_staff_assessment_context(self, context, required, ungraded=None, in_progress=None):
         self.assertEquals(required, context['staff_assessment_required'])
         if not required:
