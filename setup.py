@@ -46,6 +46,7 @@ setup(
         'Programming Language :: Python',
     ],
     packages=find_packages(exclude=["test", "tests"]),
+    include_package_data=True,
     install_requires=load_requirements('requirements/base.txt', 'requirements/wheels.txt'),
     tests_require=load_requirements('requirements/test.txt'),
     entry_points={
