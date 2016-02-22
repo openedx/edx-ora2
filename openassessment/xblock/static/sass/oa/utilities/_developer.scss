@@ -247,7 +247,7 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
 
   .openassessment_editor_content_and_tabs {
     width: 100%;
-    height: Calc(100% - 55px);
+    height: calc(100% - 55px);
   }
 
   #oa_editor_window_title{
@@ -379,7 +379,7 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
   }
 
   .oa_editor_content_wrapper {
-    height: Calc(100% - 42px);
+    height: calc(100% - 42px);
     width: 100%;
     @include border-radius(3px);
     border: 1px solid $edx-gray-d1;
@@ -426,7 +426,7 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
   #ai_training_examples{
     @include margin(5px, 20px, 10px, 10px);
     height: 300px;
-    width: Calc(100% - 20px);
+    width: calc(100% - 20px);
     resize: none;
     font: inherit;
     line-height: 110%;
@@ -773,7 +773,7 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
 
         label{
           width: 100%;
-          @include padding-left(Calc((100% - 150px)/2));
+          @include padding-left(calc((100% - 150px)/2));
           margin: 0;
           @include float(right);
 
@@ -967,7 +967,7 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
         height: 100%;
         textarea {
           min-height: 90px;
-          height: Calc(100% - 35px);
+          height: calc(100% - 35px);
           resize: none;
           box-sizing: border-box;
           border: 1px solid #b2b2b2;
@@ -979,7 +979,7 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
           font-size: 11px;
           color: #4c4c4c;
           @include margin(5px, 15px, 0, 10px);
-          width: Calc(100% - 25px);
+          width: calc(100% - 25px);
         }
       }
 
