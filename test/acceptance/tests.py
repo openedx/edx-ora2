@@ -78,7 +78,7 @@ class OpenAssessmentTest(WebAppTest):
     }
 
     SUBMISSION = u"This is a test submission."
-    LATEX_SUBMISSION = u"[mathjaxinline]( \int_{0}^{1}xdx \)[/mathjaxinline]"
+    LATEX_SUBMISSION = u"[mathjaxinline]( \int_{0}^{1}xdx )[/mathjaxinline]"
     OPTIONS_SELECTED = [1, 2]
     STAFF_OVERRIDE_OPTIONS_SELECTED = [0, 1]
     STAFF_OVERRIDE_SCORE = 1
