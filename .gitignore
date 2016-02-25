@@ -49,6 +49,9 @@ test/acceptance/xunit-*
 .sass-cache/
 config.codekit
 
+# Sass maps
+*.map
+
 # some mac thing
 .DS_Store
 

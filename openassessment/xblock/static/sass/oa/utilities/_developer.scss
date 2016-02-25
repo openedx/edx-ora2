@@ -1144,7 +1144,6 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
         max-width:100%;
         @include margin-right(20px);
         margin-bottom: 20px;
-        @include float(left);
       }
 
       .leaderboard__score__title{
