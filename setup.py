@@ -32,7 +32,7 @@ def load_requirements(*requirements_paths):
     return list(requirements)
 
 setup(
-    name='ora2',
+    name='edx-ora2',
     version='0.2.8',
     author='edX',
     url='http://github.com/edx/edx-ora2',
@@ -45,7 +45,7 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
     ],
-    packages=find_packages(exclude=["test", "tests"]),
+    packages=find_packages(exclude=['*.test', '*.tests']),
     include_package_data=True,
     install_requires=load_requirements('requirements/base.txt', 'requirements/wheels.txt'),
     tests_require=load_requirements('requirements/test.txt'),
