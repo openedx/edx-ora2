@@ -5,7 +5,7 @@ Page objects for UI-level acceptance tests.
 import os
 
 from bok_choy.page_object import PageObject
-from bok_choy.promise import EmptyPromise
+from bok_choy.promise import EmptyPromise, BrokenPromise
 
 ORA_SANDBOX_URL = os.environ.get('ORA_SANDBOX_URL')
 
@@ -411,7 +411,14 @@ class GradePage(OpenAssessmentPage):
         Raises:
             ValueError if the score is not an integer.
         """
-        score_candidates = [int(x) for x in self.q(css=self._bounded_selector(".grade__value__earned")).text]
+        earned_selector = self._bounded_selector(".grade__value__earned")
+        score_candidates = []
+        try:
+            self.wait_for_element_visibility(earned_selector, "Earned score was visible", 2)
+            score_candidates = [int(x) for x in self.q(css=earned_selector).text]
+        except BrokenPromise:
+            # Sometimes there is no score, and that's expected.
+            pass
         return score_candidates[0] if len(score_candidates) > 0 else None
 
     def grade_entry(self, question, column):
@@ -481,7 +488,9 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         """
         # Disable JQuery animations (for slideUp/slideDown).
         self.browser.execute_script("jQuery.fx.off = true;")
-        buttons = self.q(css=self._bounded_selector(".button-{button_name}".format(button_name=button_name)))
+        button_selector = self._bounded_selector(".button-{button_name}".format(button_name=button_name))
+        self.wait_for_element_visibility(button_selector, "Button {} is present".format(button_name))
+        buttons = self.q(css=button_selector)
         buttons.first.click()
 
     def click_staff_panel_close_button(self, panel_name):
