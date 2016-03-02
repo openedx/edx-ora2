@@ -501,7 +501,7 @@
   }
 
   .submission__answer__part__text__title {
-    @extend %t-subheading;
+    @extend %t-heading;
   }
 
   div.submission__answer__part__text__value {
@@ -542,7 +542,9 @@
       }
     }
 
-    .response__submission__status {
+    .response__submission__label {
+      @extend %t-score;
+      color: $action-secondary-color;
       display: inline-block;
       vertical-align: middle;
       @include margin-left(($baseline-h/4));
@@ -550,11 +552,6 @@
       .list--actions {
         @include text-align(left);
       }
-    }
-
-    .response__submission__status__title {
-      @extend %t-score;
-      color: $action-secondary-color;
     }
 
     .response__submission__actions {

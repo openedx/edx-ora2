@@ -225,7 +225,7 @@ OpenAssessment.ResponseView.prototype = {
      string: The current status message.
      **/
     saveStatus: function(msg) {
-        var sel = $('#response__save_status h3', this.element);
+        var sel = $('#response__save_status', this.element);
         if (typeof msg === 'undefined') {
             return sel.text();
         } else {

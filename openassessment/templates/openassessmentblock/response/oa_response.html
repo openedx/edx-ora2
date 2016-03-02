@@ -99,22 +99,22 @@
 
                         <ul class="list list--actions">
                             <li class="list--actions__item">
-                                <button type="submit" id="submission__save" class="action action--save submission__save is--disabled">{% trans "Save your progress" %}</button>
+                                <button type="submit" id="submission__save" class="action action--save submission__save is--disabled" aria-describedby="response__save_status">
+                                    {% trans "Save your progress" %}
+                                </button>
 
-                                <div id="response__save_status" class="response__submission__status">
-                                    <h3 class="response__submission__status__title">
-                                        <span class="sr">{% trans "Your Submission Status" %}:</span>
-                                        {{ save_status }}
-                                    </h3>
+                                <div id="response__save_status" class="response__submission__label">
+                                    <span class="sr">{% trans "Your Submission Status" %}:</span>
+                                    {{ save_status }}
                                 </div>
                             </li>
                             {% if allow_latex %}
                                 <li class="list--actions__item">
-                                    <button type="submit" id="submission__preview" class="action action--save submission__save is--disabled">{% trans "Preview in LaTeX"%}</button>
-                                    <div id="response__preview_explanation" class="response__submission__status">
-                                        <h3 class="response__submission__status__title">
-                                            {% trans "Click to preview your submission in LaTeX"%}
-                                        </h3>
+                                    <button type="submit" id="submission__preview" class="action action--save submission__save is--disabled" aria-describedby="response__preview_explanation">
+                                        {% trans "Preview in LaTeX"%}
+                                    </button>
+                                    <div id="response__preview_explanation" class="response__submission__label">
+                                        {% trans "Click to preview your submission in LaTeX"%}
                                     </div>
                                 </li>
                                 <li id = "submission__preview__item" class="list--actions__item">

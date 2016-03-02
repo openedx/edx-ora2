@@ -16,12 +16,6 @@
 %t-heading {
   @extend %hd-4;
   @extend %t-strong;
-  @extend %t-titlecase;
-}
-
-%t-subheading {
-  @extend %hd-4;
-  @extend %t-strong;
 }
 
 %t-score {

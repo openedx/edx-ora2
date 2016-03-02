@@ -51,8 +51,7 @@
   }
 
   .ui-staff__subtitle {
-    @extend %t-subheading;
-    @extend %t-strong;
+    @extend %t-heading;
     @include fontSize($f-size-medium);
     // We want to keep the collapsible headers within the staff assessment block blue
     // (because they are being displayed in the LMS color scheme). Unfortunately because of
