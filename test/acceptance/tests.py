@@ -181,7 +181,7 @@ class OpenAssessmentTest(WebAppTest):
         self.staff_asmnt_page.wait_for_page()
         self.assertEqual("Staff Grade", self.staff_asmnt_page.label)
         self.staff_asmnt_page.verify_status_value(expected_status)
-        self.assertEqual(expected_message_title, self.staff_asmnt_page.message_title)
+        self.assertEqual(expected_message_title.lower(), self.staff_asmnt_page.message_title.lower())
 
     def do_training(self):
         """
