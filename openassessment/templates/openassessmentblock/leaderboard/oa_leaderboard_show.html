@@ -17,11 +17,9 @@
                             </h4>
                             {% endwith %}
                             <div class="leaderboard__answer">
-                                {% if topscore.file %}
-                                <img class="leaderboard__score__image" alt="{% trans "The image associated with your peer's submission." %}" src="{{ topscore.file }}" />
-                                {% endif %}
                                 {% trans "Your peer's response to the question above:" as translated_label %}
                                 {% include "openassessmentblock/oa_submission_answer.html" with answer=topscore.submission.answer answer_text_label=translated_label %}
+                                {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=topscore.file class_prefix="submission__answer"%}
                             </div>
                         </li>
                     {% endfor %}

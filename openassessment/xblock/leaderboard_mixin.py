@@ -86,7 +86,7 @@ class LeaderboardMixin(object):
 
             score.pop('content', None)
 
-        context = {'topscores': scores, 'allow_latex': self.allow_latex,}
+        context = {'topscores': scores, 'allow_latex': self.allow_latex, 'file_upload_type': self.file_upload_type,}
 
         return 'openassessmentblock/leaderboard/oa_leaderboard_show.html', context
 

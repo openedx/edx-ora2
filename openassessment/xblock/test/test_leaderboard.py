@@ -242,6 +242,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
             {
                 'topscores': scores,
                 'allow_latex': xblock.allow_latex,
+                'file_upload_type': xblock.file_upload_type,
             },
             workflow_status='done'
         )
