@@ -217,7 +217,7 @@ OpenAssessment.PeerView.prototype = {
     **/
     peerAssessRequest: function(successFunction) {
         var view = this;
-        var uuid = $('#openassessment__peer-assessment').data('submission-uuid');
+        var uuid = this.getUUID();
 
         view.baseView.toggleActionError('peer', null);
         view.peerSubmitEnabled(false);
@@ -234,5 +234,13 @@ OpenAssessment.PeerView.prototype = {
             view.baseView.toggleActionError('peer', errMsg);
             view.peerSubmitEnabled(true);
         });
+    },
+
+    /**
+    Get uuid of a peer assessment.
+    **/
+    getUUID: function() {
+        var xBlockElement = $("div[data-usage-id='" + this.baseView.getUsageID() + "']");
+        return xBlockElement.find('#openassessment__peer-assessment').data('submission-uuid');
     }
 };

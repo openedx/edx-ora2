@@ -26,6 +26,7 @@ OpenAssessment.BaseView = function(runtime, element, server, data) {
     this.messageView = new OpenAssessment.MessageView(this.element, this.server, this);
     // Staff-only area with information and tools for managing student submissions
     this.staffAreaView = new OpenAssessment.StaffAreaView(this.element, this.server, this);
+    this.usageID = '';
 };
 
 if (typeof OpenAssessment.unsavedChanges === 'undefined' || !OpenAssessment.unsavedChanges) {
@@ -70,6 +71,16 @@ OpenAssessment.BaseView.prototype = {
                 sel.toggleClass('is--collapsed');
             }
         );
+    },
+
+    /**
+     * Get usage key of an XBlock.
+     */
+    getUsageID: function() {
+        if (!this.usageID) {
+            this.usageID = $(this.element).data('usage-id');
+        }
+        return this.usageID;
     },
 
     /**
