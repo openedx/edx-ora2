@@ -82,7 +82,7 @@ class OpenAssessmentTest(WebAppTest):
     OPTIONS_SELECTED = [1, 2]
     STAFF_OVERRIDE_OPTIONS_SELECTED = [0, 1]
     STAFF_OVERRIDE_SCORE = 1
-    STAFF_GRADE_EXISTS = "Complete"
+    STAFF_GRADE_EXISTS = "COMPLETE"
     STAFF_OVERRIDE_LEARNER_STEPS_NOT_COMPLETE = "You Must Complete the Steps Above to View Your Grade"
     STAFF_AREA_SCORE = "Final grade: {} out of 8"
     STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE = "The problem has not been completed."
@@ -323,14 +323,14 @@ class StaffAssessmentTest(OpenAssessmentTest):
         self.submission_page.visit()
 
         # Verify that staff grade step is shown initially
-        self._verify_staff_grade_section("Not Available", None)
+        self._verify_staff_grade_section("NOT AVAILABLE", None)
 
         # User submits a response
         self.submission_page.submit_response(self.SUBMISSION)
         self.assertTrue(self.submission_page.has_submitted)
 
         # Verify staff grade section appears as expected
-        self._verify_staff_grade_section("Not Available", "Waiting for a Staff Grade")
+        self._verify_staff_grade_section("NOT AVAILABLE", "Waiting for a Staff Grade")
 
         # Perform staff assessment
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
