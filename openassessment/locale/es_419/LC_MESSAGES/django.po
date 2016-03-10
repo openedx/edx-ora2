@@ -5,12 +5,14 @@
 # Translators:
 # Andy Armstrong <andya@edx.org>, 2014
 # Morphyne <cirrosis60@gmail.com>, 2014
+# Cristian Guerra <cristian.guerra.maya@gmail.com>, 2016
 # Cristian Salamea <ovnicraft@gmail.com>, 2014-2015
 # dzepeda <davitzepeda@hotmail.com>, 2014
 # Etna Pretelín Ricárdez, 2014
 # Juan Camilo Montoya Franco <juan.montoya@edunext.co>, 2015-2016
 # Juan Camilo Montoya Franco <juan.montoya@edunext.co>, 2014
 # Juan Rendon <contact@lifesynergyretreat.com>, 2014
+# Laura Silva <lingison@edx.org>, 2016
 # Leidy Lorena Arango Pérez <lorena_arango_p@hotmail.com>, 2014
 # Leidy Lorena Arango Pérez <lorena_arango_p@hotmail.com>, 2014
 # luisarincon <luisaura_rincon@hotmail.com>, 2014
@@ -22,8 +24,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-04 20:19+0000\n"
-"PO-Revision-Date: 2016-02-04 20:28+0000\n"
+"POT-Creation-Date: 2016-03-10 14:28+0000\n"
+"PO-Revision-Date: 2016-03-10 14:28+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/open-edx/edx-platform/language/es_419/)\n"
 "MIME-Version: 1.0\n"
@@ -688,11 +690,7 @@ msgstr "Respuestas con mayor calificación para esta tarea"
 msgid "%(num_points)s points"
 msgstr "%(num_points)s puntos"
 
-#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:21
-msgid "The image associated with your peer's submission."
-msgstr "La imagen asociada con su presentación de pares."
-
-#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:23
+#: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:20
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:69
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:53
 msgid "Your peer's response to the question above:"
@@ -1114,19 +1112,19 @@ msgstr "Puede continuar trabajando en su respuesta hasta que la publique."
 msgid "We could not save your progress"
 msgstr "No pudimos guardar su progreso."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:102
+#: openassessment/templates/openassessmentblock/response/oa_response.html:103
 msgid "Save your progress"
 msgstr "Guarde su progreso"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:106
+#: openassessment/templates/openassessmentblock/response/oa_response.html:107
 msgid "Your Submission Status"
 msgstr "El estado de su entrega"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:113
+#: openassessment/templates/openassessmentblock/response/oa_response.html:114
 msgid "Preview in LaTeX"
 msgstr "Vista previa en LaTeX"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:116
+#: openassessment/templates/openassessmentblock/response/oa_response.html:117
 msgid "Click to preview your submission in LaTeX"
 msgstr "Haga clic para obtener la vista previa de su respuesta en LaTeX"
 
@@ -1251,23 +1249,23 @@ msgid "Staff Grade"
 msgstr "Calificación del Personal de soporte"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:6
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:16
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:17
 msgid "Manage Individual Learners"
 msgstr "Gestionar estudiantes individuales"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:7
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:88
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:89
 msgid "View Assignment Statistics"
 msgstr "Ver estadísticas de la tarea"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:9
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:170
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:171
 msgid "Grade Available Responses"
 msgstr "Calificar respuestas disponibles"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:17
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:89
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:171
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:15
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:87
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:169
 msgid "Close"
 msgstr "Cerrar"
 
@@ -1427,7 +1425,7 @@ msgid ""
 "\n"
 "                            Learner submission removed by %(removed_by_username)s on %(removed_datetime)s\n"
 "                        "
-msgstr ""
+msgstr "\n                            Envío del estudiante eliminado por %(removed_by_username)s el %(removed_datetime)s\n                        "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:30
 #, python-format
@@ -1435,7 +1433,7 @@ msgid ""
 "\n"
 "                            Learner submission removed on %(removed_datetime)s\n"
 "                        "
-msgstr ""
+msgstr "\n                            Envío del estudiante eliminado el %(removed_datetime)s\n                        "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:37
 #, python-format
@@ -1443,7 +1441,7 @@ msgid ""
 "\n"
 "                        Comments: %(comments)s\n"
 "                    "
-msgstr ""
+msgstr "\n                        Comentarios: %(comments)s\n                    "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:54
 msgid "Peer Assessments for This Learner"
@@ -1475,7 +1473,7 @@ msgid ""
 "\n"
 "                        Final grade: %(points_earned)s out of %(points_possible)s\n"
 "                    "
-msgstr ""
+msgstr "\n                        Calificación final: %(points_earned)s de %(points_possible)s\n                    "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:95
 msgid "Final Grade Details"
@@ -1491,8 +1489,8 @@ msgid_plural ""
 "\n"
 "                                        %(assessment_label)s - %(points)s points\n"
 "                                    "
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "\n%(assessment_label)s - %(points)s punto\n                                    "
+msgstr[1] "\n%(assessment_label)s - %(points)s puntos\n                                    "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:136
 msgid "The submission is waiting for assessments."
@@ -1549,11 +1547,11 @@ msgid ""
 "\n"
 "                            Assessment %(assessment_num)s:\n"
 "                        "
-msgstr ""
+msgstr "\n                            Evaluación %(assessment_num)s:\n                        "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:20
 msgid "Assessment Details"
-msgstr ""
+msgstr "Detalles de evaluación"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:24
 msgid "Selected Option"
@@ -1852,11 +1850,11 @@ msgstr "Todas las tareas de AI asociados a este elemento se han reprogramado con
 msgid "An error occurred while rescheduling tasks: {}"
 msgstr "Ocurrió un error mientras se reprogramaban tareas: {}"
 
-#: openassessment/xblock/staff_area_mixin.py:518
+#: openassessment/xblock/staff_area_mixin.py:546
 msgid "Please enter valid reason to remove the submission."
 msgstr "Por favor ingrese una razón válida para eliminar este envío."
 
-#: openassessment/xblock/staff_area_mixin.py:532
+#: openassessment/xblock/staff_area_mixin.py:570
 msgid ""
 "The learner submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
