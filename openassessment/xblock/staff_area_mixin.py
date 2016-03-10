@@ -492,7 +492,7 @@ class StaffAreaMixin(object):
                 'msg': self._(u"An error occurred while rescheduling tasks: {}".format(ex))
             }
 
-    def clear_student_state(self, user_id, course_id, item_id):
+    def clear_student_state(self, user_id, course_id, item_id, requesting_user_id):
         """
         This xblock method is called (from our LMS runtime, which defines this method signature) to clear student state
         for a given problem. It will cancel the workflow using traditional methods to remove it from the grading pools,
@@ -509,7 +509,7 @@ class StaffAreaMixin(object):
         submissions = submission_api.get_submissions(student_item)
         for sub in submissions:
             # Remove the submission from grading pools
-            self._cancel_workflow(sub['uuid'], "Student state cleared")
+            self._cancel_workflow(sub['uuid'], "Student state cleared", requesting_user_id=requesting_user_id)
 
             # Tell the submissions API to orphan the submission to prevent it from being accessed
             submission_api.reset_score(
@@ -547,17 +547,21 @@ class StaffAreaMixin(object):
 
         return self._cancel_workflow(submission_uuid, comments)
 
-    def _cancel_workflow(self, submission_uuid, comments):
+    def _cancel_workflow(self, submission_uuid, comments, requesting_user_id=None):
         """
         Internal helper method to cancel a workflow using the workflow API.
+
+        If requesting_user is not provided, we will use the user to which this xblock is currently bound.
         """
         try:
             assessment_requirements = self.workflow_requirements()
-            student_item_dict = self.get_student_item_dict()
+            if requesting_user_id is None:
+                "The student_id is actually the bound user, which is the staff user in this context."
+                requesting_user_id = self.get_student_item_dict()["student_id"]
             # Cancel the related workflow.
             workflow_api.cancel_workflow(
                 submission_uuid=submission_uuid, comments=comments,
-                cancelled_by_id=student_item_dict['student_id'],
+                cancelled_by_id=requesting_user_id,
                 assessment_requirements=assessment_requirements
             )
             return {

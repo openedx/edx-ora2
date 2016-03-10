@@ -769,8 +769,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
         resp = xblock.render_student_info(request)
         self.assertIn("final grade", resp.body.lower())
 
-        # Clear the submission
-        xblock.clear_student_state('Bob', 'test_course', xblock.scope_ids.usage_id)
+        # Staff user Bob can clear his own submission
+        xblock.clear_student_state('Bob', 'test_course', xblock.scope_ids.usage_id, bob_item['student_id'])
 
         # Verify that the submission was cleared
         resp = xblock.render_student_info(request)
