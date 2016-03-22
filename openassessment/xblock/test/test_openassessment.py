@@ -499,6 +499,19 @@ class TestDates(XBlockHandlerTestCase):
         self.assertTrue(xblock.is_released())
 
     @scenario('data/basic_scenario.xml')
+    def test_is_released_published_scheduled(self, xblock):
+        # The scenario doesn't provide a start date, so `is_released()`
+        # should be controlled only by the published state which defaults to True
+        xblock.runtime.modulestore = MagicMock()
+        xblock.runtime.modulestore.has_published_version.return_value = True
+
+        # Set the start date one day ahead in the future (in UTC)
+        xblock.start = dt.datetime.utcnow().replace(tzinfo=pytz.utc) + dt.timedelta(days=1)
+
+        # Check that it is not yet released
+        self.assertFalse(xblock.is_released())
+
+    @scenario('data/basic_scenario.xml')
     def test_is_released_no_ms(self, xblock):
         self.assertTrue(xblock.is_released())
 

@@ -35,7 +35,7 @@ from openassessment.xblock.staff_assessment_mixin import StaffAssessmentMixin
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.student_training_mixin import StudentTrainingMixin
 from openassessment.xblock.validation import validator
-from openassessment.xblock.resolve_dates import resolve_dates, DISTANT_PAST, DISTANT_FUTURE
+from openassessment.xblock.resolve_dates import resolve_dates, parse_date_value, DISTANT_PAST, DISTANT_FUTURE
 from openassessment.xblock.data_conversion import create_prompts_list, create_rubric_dict, update_assessments_format
 
 
@@ -834,7 +834,10 @@ class OpenAssessmentBlock(
         else:
             is_published = True
         is_closed, reason, __, __ = self.is_closed(step=step)
-        return is_published and (not is_closed or reason == 'due')
+        is_released = is_published and (not is_closed or reason == 'due')
+        if self.start:
+            is_released = is_released and dt.datetime.now(pytz.UTC) > parse_date_value(self.start, self._)
+        return is_released
 
     def get_assessment_module(self, mixin_name):
         """

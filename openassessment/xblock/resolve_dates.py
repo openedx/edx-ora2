@@ -52,6 +52,11 @@ def _parse_date(value, _):
         raise InvalidDateFormat(_("'{date}' must be a date string or datetime").format(date=value))
 
 
+def parse_date_value(date, _):
+    """ Public method for _parse_date """
+    return _parse_date(date, _)
+
+
 def resolve_dates(start, end, date_ranges, _):
     """
     Resolve date strings (including "default" dates) to datetimes.
