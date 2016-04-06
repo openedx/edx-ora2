@@ -115,14 +115,15 @@ def on_start(submission_uuid):
 
     """
     try:
-        submission = sub_api.get_submission_and_student(submission_uuid)
-        workflow, __ = PeerWorkflow.objects.get_or_create(
-            student_id=submission['student_item']['student_id'],
-            course_id=submission['student_item']['course_id'],
-            item_id=submission['student_item']['item_id'],
-            submission_uuid=submission_uuid
-        )
-        workflow.save()
+        with transaction.atomic():
+            submission = sub_api.get_submission_and_student(submission_uuid)
+            workflow, __ = PeerWorkflow.objects.get_or_create(
+                student_id=submission['student_item']['student_id'],
+                course_id=submission['student_item']['course_id'],
+                item_id=submission['student_item']['item_id'],
+                submission_uuid=submission_uuid
+            )
+            workflow.save()
     except IntegrityError:
         # If we get an integrity error, it means someone else has already
         # created a workflow for this submission, so we don't need to do anything.
@@ -721,14 +722,15 @@ def create_peer_workflow(submission_uuid):
 
     """
     try:
-        submission = sub_api.get_submission_and_student(submission_uuid)
-        workflow, __ = PeerWorkflow.objects.get_or_create(
-            student_id=submission['student_item']['student_id'],
-            course_id=submission['student_item']['course_id'],
-            item_id=submission['student_item']['item_id'],
-            submission_uuid=submission_uuid
-        )
-        workflow.save()
+        with transaction.atomic():
+            submission = sub_api.get_submission_and_student(submission_uuid)
+            workflow, __ = PeerWorkflow.objects.get_or_create(
+                student_id=submission['student_item']['student_id'],
+                course_id=submission['student_item']['course_id'],
+                item_id=submission['student_item']['item_id'],
+                submission_uuid=submission_uuid
+            )
+            workflow.save()
     except IntegrityError:
         # If we get an integrity error, it means someone else has already
         # created a workflow for this submission, so we don't need to do anything.

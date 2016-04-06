@@ -2,7 +2,7 @@
 Public interface for staff grading, used by students/course staff.
 """
 import logging
-from django.db import DatabaseError, IntegrityError, transaction
+from django.db import DatabaseError, transaction
 from django.utils.timezone import now
 from dogapi import dog_stats_api
 
