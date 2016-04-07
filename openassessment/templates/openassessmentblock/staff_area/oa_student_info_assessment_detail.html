@@ -31,12 +31,20 @@
                     <tbody>
                     {% for criterion in rubric_criteria %}
                         {% for part in assessment.parts %}
-                            {% if part.option.criterion.name == criterion.name %}
+                            {% if part.criterion.name == criterion.name %}
                                 <tr>
                                     <td class="label">{{ criterion.label }}</td>
-                                    <td class="value">{{ part.option.label }}</td>
+                                    {% if part.option != None %}
+                                        <td class="value">{{ part.option.label }}</td>
+                                    {% else %}
+                                        <td class="value"></td>
+                                    {% endif %}
                                     <td class="value">{{ part.feedback }}</td>
-                                    <td class="value">{{ part.option.points }}</td>
+                                    {% if part.option != None %}
+                                        <td class="value">{{ part.option.points }}</td>
+                                    {% else %}
+                                        <td class="value"></td>
+                                    {% endif %}
                                     <td class="value">{{ criterion.total_value }}</td>
                                 </tr>
                             {% endif %}

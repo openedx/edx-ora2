@@ -1,0 +1,20 @@
+<openassessment>
+    <title>Feedback only criterion</title>
+    <prompts>
+        <prompt>
+            <description>Given the state of the world today, what do you think should be done to combat poverty?</description>
+        </prompt>
+        <prompt>
+            <description>Given the state of the world today, what do you think should be done to combat pollution?</description>
+        </prompt>
+    </prompts>
+    <rubric>
+        <criterion feedback="required">
+            <name>vocabulary</name>
+            <prompt>This criterion accepts only written feedback, so it has no options</prompt>
+        </criterion>
+    </rubric>
+    <assessments>
+        <assessment name="staff-assessment" required="true"/>
+    </assessments>
+</openassessment>
