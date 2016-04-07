@@ -247,6 +247,40 @@ class TestCourseStaff(XBlockHandlerTestCase):
         self.assertEquals(1, len(grade_details['criteria'][0]['assessments']))
         self.assertEquals('Self Assessment Grade', grade_details['criteria'][0]['assessments'][0]['title'])
 
+    @scenario('data/feedback_only_criterion_staff.xml', user_id='Bob')
+    def test_staff_area_student_info_staff_only_no_options(self, xblock):
+        # Simulate that we are course staff
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+        xblock.runtime._services['user'] = NullUserService()
+        bob_item = STUDENT_ITEM.copy()
+        bob_item["item_id"] = xblock.scope_ids.usage_id
+        # Create a submission for Bob, and corresponding workflow.
+        submission = self._create_submission(
+            bob_item, prepare_submission_for_serialization(("Bob Answer 1", "Bob Answer 2")), ['staff']
+        )
+
+        # Bob assesses himself as staff.
+        staff_api.create_assessment(
+            submission['uuid'],
+            STUDENT_ITEM["student_id"],
+            {},  # no options available
+            {"vocabulary": "Good use of vocabulary!"},
+            ASSESSMENT_DICT['overall_feedback'],
+            {'criteria': xblock.rubric_criteria},
+        )
+
+        _, context = xblock.get_student_info_path_and_context("Bob")
+        self.assertIn(
+            "Good use of vocabulary!",
+            self.request(
+                xblock,
+                "render_student_info",
+                urllib.urlencode({"student_username": "Bob"})
+            )
+        )
+
     @scenario('data/staff_grade_scenario.xml', user_id='Bob')
     def test_staff_area_student_info_staff_only(self, xblock):
         # Simulate that we are course staff
@@ -494,7 +528,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # Schedule training
         response = self.request(xblock, 'schedule_training', json.dumps({}), response_format='json')
         self.assertTrue(response['success'], msg=response.get('msg'))
-        self.assertTrue('workflow_uuid' in response)
+        self.assertIn('workflow_uuid', response)
 
     @scenario('data/example_based_assessment.xml', user_id='Bob')
     def test_not_displaying_schedule_training(self, xblock):

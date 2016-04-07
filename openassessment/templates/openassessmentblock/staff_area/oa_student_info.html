@@ -124,7 +124,11 @@
                                         <div>{{ individual_assessment.title }} - {{ individual_assessment.option.label}}</div>
                                     {% endfor %}
                                 {% elif assessment.points == None %}
-                                    <div>{{ assessment.option.label }}</div>
+                                    {% if assessment.option != None %}
+                                        <div>{{ assessment.option.label }}</div>
+                                    {% else %}
+                                        <div>{% trans 'Feedback Recorded' %}</div>
+                                    {% endif %}
                                 {% endif %}
                                 </td>
                             {% endfor %}
