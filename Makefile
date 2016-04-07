@@ -72,7 +72,7 @@ test-js-debug: render-templates
 test-sandbox: test-acceptance test-a11y
 
 test-acceptance:
-	./scripts/test-acceptance.sh tests
+	./scripts/test-acceptance.sh
 
 test-a11y:
 	./scripts/test-acceptance.sh accessibility

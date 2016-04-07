@@ -12,7 +12,7 @@
 #
 #   Usage:
 #
-#       ./test-acceptance.sh {test_file}
+#       ./test-acceptance.sh {test}
 #
 ############################################################
 
@@ -32,6 +32,10 @@ mkdir -p test/logs
 cd test/logs
 
 test_name="${1:-acceptance}"
+
+if [[ -z ${test} ]]; then
+    export test="tests.py"
+fi
 
 
 # The machines that these tests run on in jenkins have an old
@@ -53,4 +57,4 @@ if [[ "${test_name}" = "accessibility" ]]; then
 fi
 
 echo "Running acceptance tests from ${test_name}.py against the sandbox..."
-nosetests ../acceptance/${test_name}.py --with-xunit --xunit-file=../acceptance/xunit-${test_name}.xml
+nosetests ../acceptance/${test} --with-xunit --xunit-file=../acceptance/xunit-${test_name}.xml
