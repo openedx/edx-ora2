@@ -75,6 +75,9 @@ class OpenAssessmentTest(WebAppTest):
         'full_workflow_staff_required':
             u'courses/{test_course_id}/courseware/'
             u'8d9584d242b44343bc270ea5ef04ab03/0b0dcc728abe45138c650732af178afb/'.format(test_course_id=TEST_COURSE_ID),
+        'feedback_only':
+            u'courses/{test_course_id}/courseware/'
+            u'8d9584d242b44343bc270ea5ef04ab03/a2875e0db1454d0b94728b9a7b28000b/'.format(test_course_id=TEST_COURSE_ID),
     }
 
     SUBMISSION = u"This is a test submission."
@@ -232,13 +235,17 @@ class OpenAssessmentTest(WebAppTest):
         self.staff_area_page.staff_assess(self.STAFF_OVERRIDE_OPTIONS_SELECTED, "override")
         self.staff_area_page.verify_learner_final_score(final_score)
 
-    def do_staff_assessment(self, number_to_assess=0, options_selected=OPTIONS_SELECTED):
+    def do_staff_assessment(self, number_to_assess=0, options_selected=OPTIONS_SELECTED, feedback=None):
         """
         Use staff tools to assess available responses.
 
         Args:
             number_to_assess: the number of submissions to assess. If not provided (or 0),
                 will grade all available submissions.
+            options_to_select (dict): the options to choose when grading. Using this parameter precludes leaving
+                feedback.
+            feedback (function(feedback_type)): if feedback is set, it will be used as a function that takes one
+                parameter to generate a feedback string.
         """
         self.staff_area_page.visit()
         self.staff_area_page.click_staff_toolbar_button("staff-grading")
@@ -253,7 +260,11 @@ class OpenAssessmentTest(WebAppTest):
         assessed = 0
         while number_to_assess == 0 or assessed < number_to_assess:
             continue_after = False if number_to_assess-1 == assessed else ungraded > 0
-            self.staff_area_page.staff_assess(options_selected, "full-grade", continue_after)
+            if feedback:
+                self.staff_area_page.provide_criterion_feedback(feedback("criterion"))
+                self.staff_area_page.provide_overall_feedback(feedback("overall"))
+            if options_selected:
+                self.staff_area_page.staff_assess(options_selected, "full-grade", continue_after)
             assessed += 1
             if not continue_after:
                 self.staff_area_page.verify_available_checked_out_numbers((ungraded, checked_out-1))
@@ -1100,6 +1111,94 @@ class FullWorkflowRequiredTest(OpenAssessmentTest, FullWorkflowMixin):
                  (u'PEER MEDIAN GRADE', u'Waiting for peer reviews')],
                 [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")],
             ])
+
+@ddt.ddt
+class FeedbackOnlyTest(OpenAssessmentTest, FullWorkflowMixin):
+    """
+    Test for a problem that only accepts feedback. Will make and verify peer, self, and staff assessments.
+    """
+    def setUp(self):
+        super(FeedbackOnlyTest, self).setUp("feedback_only", staff=True)
+        self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
+
+    def generate_feedback(self, assessment_type, feedback_type):
+        return "{}: {} feedback".format(assessment_type, feedback_type)
+
+    def assess_feedback(self, self_or_peer=""):
+        if self_or_peer != "self" and self_or_peer != "peer":
+            raise AssertionError("assert_feedback only works for self or peer assessments")
+        page = self.self_asmnt_page if self_or_peer == "self" else self.peer_asmnt_page
+        page.wait_for_page()
+        page.submit_assessment()
+
+    @retry()
+    @attr('acceptance')
+    def test_feedback_only(self):
+        # Make submission
+        user, pwd = self.do_submission()
+
+        # Make self assessment
+        self.self_asmnt_page.visit()
+        self.self_asmnt_page.wait_for_page()
+        self.self_asmnt_page.provide_criterion_feedback(self.generate_feedback("self", "criterion"))
+        self.self_asmnt_page.provide_overall_feedback(self.generate_feedback("self", "overall"))
+        self.self_asmnt_page.assess("self", [0])
+        self.self_asmnt_page.wait_for_complete()
+        self.assertTrue(self.self_asmnt_page.is_complete)
+
+        # Staff assess all available submissions
+        self.do_staff_assessment(
+            options_selected = [0],
+            feedback=lambda feedback_type: self.generate_feedback("staff", feedback_type)
+        )
+
+        # Verify feedback appears from all assessments in student-viewable grade report
+        self.refresh_page()
+        self.grade_page.wait_for_page()
+        for i, assessment_type in enumerate(["staff", "self"]):
+            # Criterion feedback first
+            expected = self.generate_feedback(assessment_type, "criterion")
+            actual = self.grade_page.feedback_entry(1, i)
+            self.assertEqual(actual, expected)
+            # Then overall
+            expected = self.generate_feedback(assessment_type, "overall")
+            actual = self.grade_page.feedback_entry("feedback", i)
+            self.assertEqual(actual, expected)
+
+        # Verify that all score-bearing items are hidden
+        # There should be 4 reported answers - criterion and overall feedback for each of staff and self
+        self.assertEqual(self.grade_page.total_reported_answers, 6)
+        self.assertEqual(self.grade_page.number_scored_criteria, 1)
+
+        # Verify feedback appears from all assessments in staff tools
+        self.staff_area_page.show_learner(user)
+        self.staff_area_page.expand_learner_report_sections()
+        self.assertEqual(
+            self.staff_area_page.learner_final_score_table_headers,
+            [u'CRITERION', u'STAFF GRADE', u'SELF ASSESSMENT GRADE']
+        )
+        self.assertEqual(
+            self.staff_area_page.learner_final_score_table_values,
+            [u'Yes - 1 point', u'Yes', u'Feedback Recorded', u'Feedback Recorded']
+        )
+        self.assertEqual(
+            self.staff_area_page.status_text('staff__assessments')[5],
+            self.generate_feedback("staff", "criterion")
+        )
+        self.assertEqual(
+            self.staff_area_page.overall_feedback('staff__assessments'),
+            self.generate_feedback("staff", "overall")
+        )
+        self.assertEqual(
+            self.staff_area_page.status_text('self__assessments')[5],
+            self.generate_feedback("self", "criterion")
+        )
+        self.assertEqual(
+            self.staff_area_page.overall_feedback('self__assessments'),
+            self.generate_feedback("self", "overall")
+        )
+        # No score should be shown
+        self.staff_area_page.verify_learner_final_score("Final grade: 1 out of 1")
 
 
 if __name__ == "__main__":

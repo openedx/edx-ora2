@@ -319,7 +319,7 @@ class GradeMixin(object):
         """
         Returns an array of assessments with their associated grades.
         """
-        def _get_assessment_part(title, part_criterion_name, assessment):
+        def _get_assessment_part(title, feedback_title, part_criterion_name, assessment):
             """
             Returns the assessment part for the given criterion name.
             """
@@ -327,12 +327,18 @@ class GradeMixin(object):
                 for part in assessment['parts']:
                     if part['criterion']['name'] == part_criterion_name:
                         part['title'] = title
+                        part['feedback_title'] = feedback_title
                         return part
             return None
 
         # Fetch all the unique assessment parts
         criterion_name = criterion['name']
-        staff_assessment_part = _get_assessment_part(_('Staff Grade'), criterion_name, staff_assessment)
+        staff_assessment_part = _get_assessment_part(
+            _('Staff Grade'),
+            _('Staff Comments'),
+            criterion_name,
+            staff_assessment
+        )
         if "peer-assessment" in assessment_steps:
             peer_assessment_part = {
                 'title': _('Peer Median Grade'),
@@ -341,6 +347,7 @@ class GradeMixin(object):
                 'individual_assessments': [
                     _get_assessment_part(
                         _('Peer {peer_index}').format(peer_index=index + 1),
+                        _('Peer Comments'),
                         criterion_name,
                         peer_assessment
                     )
@@ -350,10 +357,11 @@ class GradeMixin(object):
         else:
             peer_assessment_part = None
         example_based_assessment_part = _get_assessment_part(
-            _('Example-Based Grade'), criterion_name, example_based_assessment
+            _('Example-Based Grade'), _('Example-Based Comments'), criterion_name, example_based_assessment
         )
         self_assessment_part = _get_assessment_part(
             _('Self Assessment Grade') if is_staff else _('Your Self Assessment'),
+            _('Self Comments'),
             criterion_name,
             self_assessment
         )

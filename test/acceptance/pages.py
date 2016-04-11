@@ -192,6 +192,24 @@ class AssessmentMixin(object):
         self.submit_assessment()
         return self
 
+    def provide_criterion_feedback(self, feedback):
+        """
+        Provides feedback for the first criterion on a given assessment, without submitting the assessment.
+
+        Args:
+            feedback (string): the feedback to be recorded
+        """
+        self.q(css=self._bounded_selector('.answer--feedback .answer__value')).first.fill(feedback)
+
+    def provide_overall_feedback(self, feedback):
+        """
+        Provides overall feedback for a given assessment, without submitting the assessment.
+
+        Args:
+            feedback (string): the feedback to be recorded
+        """
+        self.q(css=self._bounded_selector('.assessment__rubric__question--feedback__value')).first.fill(feedback)
+
     def submit_assessment(self):
         """
         Submit an assessment of the problem.
@@ -443,6 +461,48 @@ class GradePage(OpenAssessmentPage):
 
         return source.text.strip(), value.text.strip()
 
+    def feedback_entry(self, question, column):
+        """
+        Returns the recorded feedback for a specific grade source.
+
+        Args:
+            question: the 0-based question for which to get grade information. Note that overall feedback can
+                be acquired by using 'feedback' for this parameter
+            column: the 0-based column of data within a question. Each column corresponds
+                to a source of data (for example, staff, peer, or self).
+
+        Returns: the recorded feedback for the requested grade source.
+
+        """
+        if isinstance(question, int):
+            question = question + 1
+        self.wait_for_element_visibility(
+            self._bounded_selector('.question--{} .feedback__value'.format(question)),
+            "Feedback is visible",
+        )
+        feedback = self.q(
+            css=self._bounded_selector('.question--{} .feedback__value'.format(question))
+        )
+
+        return feedback[column].text.strip()
+
+    @property
+    def total_reported_answers(self):
+        """
+        Returns the total number of reported answers. A "reported answer" is any option or feedback item for a
+        (criterion, assessment_type) pair. For example, if there are 2 criterion, each with options and feedback,
+        and 2 assessment types, the total number of reported answers will be 8 (2 for each of option/feedback, for
+        2 questions, for 2 assessment types = 2*2*2 = 8)
+        """
+        return len(self.q(css=self._bounded_selector('.answer')))
+
+    @property
+    def number_scored_criteria(self):
+        """
+        Returns the number of criteria with a score on the grade page.
+        """
+        return len(self.q(css=self._bounded_selector('.question__score')))
+
 
 class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
     """
@@ -519,7 +579,7 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         Clicks the staff grade control to expand staff grading section for use in staff required workflows.
         """
         self.q(css=self._bounded_selector(".staff__grade__show-form")).first.click()
-        self.wait_for_element_visibility("#staff-full-grade__assessment__rubric__question--0__0", "staff grading is present")
+        self.wait_for_element_visibility("#staff-full-grade__assessment__rubric__question--0", "staff grading is present")
 
     @property
     def available_checked_out_numbers(self):
@@ -664,12 +724,24 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
 
         Args:
             section: the classname of the section for which text should be returned
-                (for example, 'peer__assessments', 'submitted__assessments', or 'self__assessment'
+                (for example, 'peer__assessments', 'submitted__assessments', or 'self__assessments'
 
         Returns: array of strings representing the text(for example, ['Good', u'5', u'5', u'Excellent', u'3', u'3'])
 
         """
         return self._get_table_text(".staff-info__{} .staff-info__status__table .value".format(section))
+
+    def overall_feedback(self, section):
+        """
+        Return the overall feedback (a string otherwise excluded from status_text) as shown in the staff area section.
+
+        Args:
+            section: the classname of the section for which text should be returned
+                (for example, 'peer__assessments', 'submitted__assessments', or 'self__assessments'
+
+        Returns: the text present in "Overall Feedback"
+        """
+        return self.q(css=self._bounded_selector(".staff-info__{} .student__answer__display__content".format(section))).text[0]
 
     def _get_table_text(self, selector):
         """
