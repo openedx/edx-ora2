@@ -42,10 +42,11 @@
                                     <td class="value">{{ part.feedback }}</td>
                                     {% if part.option != None %}
                                         <td class="value">{{ part.option.points }}</td>
+                                        <td class="value">{{ criterion.total_value }}</td>
                                     {% else %}
                                         <td class="value"></td>
+                                        <td class="value"></td>
                                     {% endif %}
-                                    <td class="value">{{ criterion.total_value }}</td>
                                 </tr>
                             {% endif %}
                         {% endfor %}

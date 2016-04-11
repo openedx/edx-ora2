@@ -84,13 +84,15 @@
         </button>
         <div class="ui-slidable__content" role="group" id="final_grade_content_{{ submission.uuid }}" aria-labelledby="final_grade_{{ submission.uuid }}">
             {% if workflow_status == "done" %}
-                <div class="staff-info__final__grade__score">
-                {% with points_earned_string=score.points_earned|stringformat:"s" points_possible_string=score.points_possible|stringformat:"s" %}
-                    {% blocktrans with points_earned='<span class="grade__value__earned">'|safe|add:points_earned_string|add:'</span>'|safe points_possible='<span class="grade__value__potential">'|safe|add:points_possible_string|add:'</span>'|safe %}
-                        Final grade: {{ points_earned }} out of {{ points_possible }}
-                    {% endblocktrans %}
-                {% endwith %}
-                </div>
+                {% if score != None %}
+                    <div class="staff-info__final__grade__score">
+                    {% with points_earned_string=score.points_earned|stringformat:"s" points_possible_string=score.points_possible|stringformat:"s" %}
+                        {% blocktrans with points_earned='<span class="grade__value__earned">'|safe|add:points_earned_string|add:'</span>'|safe points_possible='<span class="grade__value__potential">'|safe|add:points_possible_string|add:'</span>'|safe %}
+                            Final grade: {{ points_earned }} out of {{ points_possible }}
+                        {% endblocktrans %}
+                    {% endwith %}
+                    </div>
+                {% endif %}
                 <table class="staff-info__status__table staff-info__final__grade__table">
                     <caption class="sr">{% trans "Final Grade Details" %}</caption>
                     <thead>
