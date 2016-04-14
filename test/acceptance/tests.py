@@ -242,7 +242,7 @@ class OpenAssessmentTest(WebAppTest):
         Args:
             number_to_assess: the number of submissions to assess. If not provided (or 0),
                 will grade all available submissions.
-            selected_options (dict): the options to choose when grading. Defaults to OPTIONS_SELECTED.
+            options_selected (dict): the options to choose when grading. Defaults to OPTIONS_SELECTED.
             feedback (function(feedback_type)): if feedback is set, it will be used as a function that takes one
                 parameter to generate a feedback string.
         """
@@ -1147,7 +1147,7 @@ class FeedbackOnlyTest(OpenAssessmentTest, FullWorkflowMixin):
 
         # Staff assess all available submissions
         self.do_staff_assessment(
-            options_selected = [0],
+            options_selected = [0],  # Select the 0-th option (Yes) on the single scored criterion
             feedback=lambda feedback_type: self.generate_feedback("staff", feedback_type)
         )
 

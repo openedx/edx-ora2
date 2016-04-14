@@ -451,6 +451,11 @@ class GradePage(OpenAssessmentPage):
         Returns: the tuple of source and value information for the requested grade
 
         """
+        self.wait_for_element_visibility(
+            self._bounded_selector('.question--{} .answer .answer__source__value'.format(question + 1)),
+            "Grade entry was present",
+            2
+        )
         source = self.q(
             css=self._bounded_selector('.question--{} .answer .answer__source__value'.format(question + 1))
         )[column]
