@@ -361,7 +361,7 @@ class GradeMixin(object):
         )
         self_assessment_part = _get_assessment_part(
             _('Self Assessment Grade') if is_staff else _('Your Self Assessment'),
-            _('Self Comments'),
+            _('Your Comments'),
             criterion_name,
             self_assessment
         )

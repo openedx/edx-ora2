@@ -242,8 +242,7 @@ class OpenAssessmentTest(WebAppTest):
         Args:
             number_to_assess: the number of submissions to assess. If not provided (or 0),
                 will grade all available submissions.
-            options_to_select (dict): the options to choose when grading. Using this parameter precludes leaving
-                feedback.
+            selected_options (dict): the options to choose when grading. Defaults to OPTIONS_SELECTED.
             feedback (function(feedback_type)): if feedback is set, it will be used as a function that takes one
                 parameter to generate a feedback string.
         """
@@ -1115,7 +1114,7 @@ class FullWorkflowRequiredTest(OpenAssessmentTest, FullWorkflowMixin):
 @ddt.ddt
 class FeedbackOnlyTest(OpenAssessmentTest, FullWorkflowMixin):
     """
-    Test for a problem that only accepts feedback. Will make and verify peer, self, and staff assessments.
+    Test for a problem that containing a criterion that only accepts feedback. Will make and verify self and staff assessments.
     """
     def setUp(self):
         super(FeedbackOnlyTest, self).setUp("feedback_only", staff=True)
@@ -1152,22 +1151,23 @@ class FeedbackOnlyTest(OpenAssessmentTest, FullWorkflowMixin):
             feedback=lambda feedback_type: self.generate_feedback("staff", feedback_type)
         )
 
-        # Verify feedback appears from all assessments in student-viewable grade report
+        # Verify student-viewable grade report
         self.refresh_page()
         self.grade_page.wait_for_page()
+        self.assertEqual(self.grade_page.grade_entry(0, 0), (u'STAFF GRADE - 1 POINT', u'Yes'))  # Reported answer 1
+        self.assertEqual(self.grade_page.grade_entry(0, 1), (u'YOUR SELF ASSESSMENT', u'Yes'))  # Reported answer 2
         for i, assessment_type in enumerate(["staff", "self"]):
             # Criterion feedback first
             expected = self.generate_feedback(assessment_type, "criterion")
             actual = self.grade_page.feedback_entry(1, i)
-            self.assertEqual(actual, expected)
+            self.assertEqual(actual, expected)  # Reported answers 3 and 4
             # Then overall
             expected = self.generate_feedback(assessment_type, "overall")
             actual = self.grade_page.feedback_entry("feedback", i)
-            self.assertEqual(actual, expected)
-
-        # Verify that all score-bearing items are hidden
-        # There should be 4 reported answers - criterion and overall feedback for each of staff and self
+            self.assertEqual(actual, expected)  # Reported answers 5 and 6
+        # Verify that no reported answers other than the 6 we already verified are present
         self.assertEqual(self.grade_page.total_reported_answers, 6)
+        # Verify that the feedback-only criterion has no score
         self.assertEqual(self.grade_page.number_scored_criteria, 1)
 
         # Verify feedback appears from all assessments in staff tools
@@ -1197,7 +1197,7 @@ class FeedbackOnlyTest(OpenAssessmentTest, FullWorkflowMixin):
             self.staff_area_page.overall_feedback('self__assessments'),
             self.generate_feedback("self", "overall")
         )
-        # No score should be shown
+        # Verify correct score is shown
         self.staff_area_page.verify_learner_final_score("Final grade: 1 out of 1")
 
 
