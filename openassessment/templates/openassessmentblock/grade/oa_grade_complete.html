@@ -46,31 +46,28 @@
                                             <i class="icon fa fa-caret-right" aria-hidden="true"></i>
                                             <span class="question__title__copy">{{ criterion.label }}</span>
 
-                                            {% if criterion.total_value > 0 %}
-                                                <span class="question__score">
-                                                    <span class="label sr">{% trans "Overall Grade" %}</span>
-                                                    <span class="question__score__value">{{ criterion.median_score }}</span>
-                                                    <span class="label label--divider sr">out of</span>
-                                                    <span class="question__score__potential">
-                                                        {{ criterion.total_value }}
-                                                        <span class="unit">{% trans "Points" %}</span>
-                                                    </span>
+                                            <span class="question__score">
+                                                <span class="label sr">{% trans "Overall Grade" %}</span>
+                                                <span class="question__score__value">{{ criterion.median_score }}</span>
+                                                <span class="label label--divider sr">out of</span>
+                                                <span class="question__score__potential">
+                                                    {{ criterion.total_value }}
+                                                    <span class="unit">{% trans "Points" %}</span>
                                                 </span>
-                                            {% endif %}
+                                            </span>
                                         </h4>
 
-                                        {% if criterion.options %}
-                                            <ul class="question__answers ui-toggle-visibility__content has--hints">
-                                                {% for assessment in criterion.assessments %}
-                                                    {% include "openassessmentblock/grade/oa_assessment_title.html" with assessment=assessment %}
-                                                {% endfor %}
-                                            </ul>
-                                        {% endif %}
+                                        <ul class="question__answers ui-toggle-visibility__content has--hints">
+                                            {% for assessment in criterion.assessments %}
+                                                {% include "openassessmentblock/grade/oa_assessment_title.html" with assessment=assessment %}
+                                            {% endfor %}
+                                        </ul>
 
                                         {% if criterion.has_feedback %}
                                             <ul class="question__answers ui-toggle-visibility__content has--hints">
+                                                {% trans "Comments" as feedback_title %}
                                                 {% for assessment in criterion.assessments %}
-                                                    {% include "openassessmentblock/grade/oa_assessment_feedback.html" with title=assessment.feedback_title assessment=assessment %}
+                                                    {% include "openassessmentblock/grade/oa_assessment_feedback.html" with title=feedback_title assessment=assessment %}
                                                 {% endfor %}
                                             </ul>
                                         {% endif %}
