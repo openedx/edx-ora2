@@ -456,17 +456,17 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
                 scorer=self.assessment['scorer_id'],
                 feedback=self.assessment['feedback']
             ),
-            u"Assessment #{id}\n-- {label}: {option_label} ({points})\n-- feedback: {feedback}\n".format(
+            u"Assessment #{id}\n-- {label}: {option_label} ({points})\n".format(
                 id=self.assessment['id'],
+                label=self.assessment['parts'][1]['criterion']['label'],
+                option_label=self.assessment['parts'][1]['criterion']['options'][0]['label'],
+                points=self.assessment['parts'][1]['criterion']['options'][0]['points'],
+            ) +
+            u"-- {label}: {option_label} ({points})\n-- feedback: {feedback}\n".format(
                 label=self.assessment['parts'][0]['criterion']['label'],
                 option_label=self.assessment['parts'][0]['criterion']['options'][1]['label'],
                 points=self.assessment['parts'][0]['criterion']['options'][1]['points'],
                 feedback=self.assessment['parts'][0]['feedback'],
-            ) +
-            u"-- {label}: {option_label} ({points})\n".format(
-                label=self.assessment['parts'][1]['criterion']['label'],
-                option_label=self.assessment['parts'][1]['criterion']['options'][0]['label'],
-                points=self.assessment['parts'][1]['criterion']['options'][0]['points'],
             ),
             self.score['created_at'],
             self.score['points_earned'],

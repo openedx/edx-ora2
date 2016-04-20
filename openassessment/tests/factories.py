@@ -31,7 +31,7 @@ class CriterionFactory(DjangoModelFactory):
     name = factory.Sequence(lambda n: 'criterion_{}'.format(n))  # pylint: disable=unnecessary-lambda
     label = factory.Sequence(lambda n: 'label_{}'.format(n))  # pylint: disable=unnecessary-lambda
 
-    order_num = 0
+    order_num = factory.Sequence(lambda n: n)
 
     prompt = 'This is a fake prompt.'
 
@@ -43,7 +43,7 @@ class CriterionOptionFactory(DjangoModelFactory):
 
     criterion = factory.SubFactory(CriterionFactory)
 
-    order_num = 0
+    order_num = factory.Sequence(lambda n: n)
 
     points = 4
 
