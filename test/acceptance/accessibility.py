@@ -3,7 +3,7 @@ UI-level acceptance tests for OpenAssessment accessibility.
 """
 import os
 import unittest
-from tests import OpenAssessmentTest, StaffAreaPage, FullWorkflowMixin
+from tests import OpenAssessmentTest, StaffAreaPage, FullWorkflowMixin, MultipleOpenAssessmentMixin
 
 
 class OpenAssessmentA11yTest(OpenAssessmentTest):
@@ -241,6 +241,55 @@ class FullWorkflowRequiredA11yTest(OpenAssessmentA11yTest, FullWorkflowMixin):
         self.staff_area_page.expand_learner_report_sections()
 
         self._check_a11y(self.staff_area_page)
+
+
+class MultipleOpenAssessmentA11yTest(OpenAssessmentA11yTest, MultipleOpenAssessmentMixin):
+    """
+    Test accessibility when we have a unit containing multiple ORA blocks.
+    """
+
+    def setUp(self):
+        super(MultipleOpenAssessmentA11yTest, self).setUp('multiple_ora', staff=True)
+        # Staff area page is not present in OpenAssessmentTest base class, so we are adding it here.
+        self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
+
+    # TODO: remove this method override. See TNL-1593
+    def _check_a11y(self, page):
+        page.a11y_audit.config.set_scope(
+            exclude=[
+                ".container-footer",
+                ".nav-skip",
+                "#global-navigation",
+            ],
+        )
+        page.a11y_audit.config.set_rules({
+            "ignore": [
+                "color-contrast",  # TODO: AC-198
+                "empty-heading",  # TODO: AC-197
+                "link-href",  # TODO: AC-199
+                "link-name",  # TODO: AC-196
+                "skip-link",  # TODO: AC-179
+                "duplicate-id",
+            ]
+        })
+        page.a11y_audit.check_for_accessibility_errors()
+
+    def test_multiple_ora_complete_flow(self):
+        """
+        Test accessibility when we have a unit containing multiple ORA blocks.
+        """
+        # Each problem has vertical index assigned and has a `vert-{vertical_index}` top level class.
+        # That also means that all pages are being differentiated by their vertical index number that is assigned to
+        # each problem type. We are passing vertical index number and setting it by `self.setup_vertical_index` method
+        # so as to move to a different problem.
+
+        # Assess first ORA problem, pass the vertical index number
+        self.assess_component(0)
+        self._check_a11y(self.peer_asmnt_page)
+
+        # Assess second ORA problem, pass the vertical index number
+        self.assess_component(1)
+        self._check_a11y(self.peer_asmnt_page)
 
 
 if __name__ == "__main__":

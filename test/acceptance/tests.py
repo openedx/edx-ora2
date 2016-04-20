@@ -78,6 +78,9 @@ class OpenAssessmentTest(WebAppTest):
         'feedback_only':
             u'courses/{test_course_id}/courseware/'
             u'8d9584d242b44343bc270ea5ef04ab03/a2875e0db1454d0b94728b9a7b28000b/'.format(test_course_id=TEST_COURSE_ID),
+        'multiple_ora':
+            u'courses/{test_course_id}/courseware/'
+            u'3b9aa6e06d8f48818ff6f364b5586f38/b79abd43bb11445486cd1874e6c71a64/'.format(test_course_id=TEST_COURSE_ID),
     }
 
     SUBMISSION = u"This is a test submission."
@@ -850,6 +853,38 @@ class FullWorkflowMixin(object):
 
         return learner
 
+    def staff_assessment(self, peer_grades_me=True):
+        """ Do staff assessment workflow """
+
+        # Ensure grade is not present, since staff assessment has not been made
+        self.assertIsNone(self.grade_page.wait_for_page().score)
+
+        # Now do a staff assessment.
+        self.do_staff_assessment(options_selected=self.STAFF_OVERRIDE_OPTIONS_SELECTED)
+
+        # As an add-on, let's make sure that both submissions (the learner's, and the additional one created
+        # in do_train_self_peer() above) were assessed using staff-grading's "submit and keep going"
+        self.assertEqual(0, self.staff_area_page.available_checked_out_numbers[0])
+
+        # At this point, the learner sees the score (1).
+        self.refresh_page()
+        self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS, None)
+        self.assertEqual(self.STAFF_OVERRIDE_SCORE, self.grade_page.wait_for_page().score)
+
+        if peer_grades_me:
+            self.verify_grade_entries([
+                [(u"STAFF GRADE - 0 POINTS", u"Poor"), (u"STAFF GRADE - 1 POINT", u"Fair")],
+                [(u"PEER MEDIAN GRADE", u"Poor"), (u"PEER MEDIAN GRADE", u"Poor")],
+                [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")],
+            ])
+        else:
+            self.verify_grade_entries([
+                [(u"STAFF GRADE - 0 POINTS", u"Poor"), (u"STAFF GRADE - 1 POINT", u"Fair")],
+                [(u'PEER MEDIAN GRADE', u'Waiting for peer reviews'),
+                 (u'PEER MEDIAN GRADE', u'Waiting for peer reviews')],
+                [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")],
+            ])
+
     def verify_staff_area_fields(self, username, peer_assessments, submitted_assessments, self_assessment):
         """
         Verifies the expected entries in the staff area for peer assessments,
@@ -908,6 +943,33 @@ class FullWorkflowMixin(object):
         for index, expected_entry in enumerate(expected_entries):
             self.assertEqual(expected_entry[0], self.grade_page.grade_entry(0, index))
             self.assertEqual(expected_entry[1], self.grade_page.grade_entry(1, index))
+
+
+class MultipleOpenAssessmentMixin(FullWorkflowMixin):
+    """
+    A Multiple ORA assessment mixin with helper methods and constants for testing a full workflow
+    (training, self assessment, peer assessment, staff override).
+    """
+
+    def setup_vertical_index(self, vertical_index):
+        """
+        Set the vertical index on the page.
+        Each problem has vertical index assigned and has a `vert-{vertical_index}` top level class.
+        Set up vertical index on the page so as to move to a different problem.
+        """
+        self.submission_page.vertical_index = vertical_index
+        self.self_asmnt_page.vertical_index = vertical_index
+        self.peer_asmnt_page.vertical_index = vertical_index
+        self.student_training_page.vertical_index = vertical_index
+        self.staff_asmnt_page.vertical_index = vertical_index
+        self.grade_page.vertical_index = vertical_index
+        self.staff_area_page.vertical_index = vertical_index
+
+    def assess_component(self, vertical_index, peer_grades_me=True):
+        """ Assess the complete flow of an open assessment."""
+        self.setup_vertical_index(vertical_index)
+        self.do_train_self_peer(peer_grades_me)
+        self.staff_assessment(peer_grades_me)
 
 
 class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
@@ -1082,34 +1144,8 @@ class FullWorkflowRequiredTest(OpenAssessmentTest, FullWorkflowMixin):
         # Using ddt booleans to confirm behavior independent of whether I receive a peer score or not
         self.do_train_self_peer(peer_grades_me)
 
-        # Ensure grade is not present, since staff assessment has not been made
-        self.assertIsNone(self.grade_page.wait_for_page().score)
-
-        # Now do a staff assessment.
-        self.do_staff_assessment(options_selected=self.STAFF_OVERRIDE_OPTIONS_SELECTED)
-
-        # As an add-on, let's make sure that both submissions (the learner's, and the additional one created
-        # in do_train_self_peer() above) were assessed using staff-grading's "submit and keep going"
-        self.assertEqual(0, self.staff_area_page.available_checked_out_numbers[0])
-
-        # At this point, the learner sees the score (1).
-        self.refresh_page()
-        self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS, None)
-        self.assertEqual(self.STAFF_OVERRIDE_SCORE, self.grade_page.wait_for_page().score)
-
-        if peer_grades_me:
-            self.verify_grade_entries([
-                [(u"STAFF GRADE - 0 POINTS", u"Poor"), (u"STAFF GRADE - 1 POINT", u"Fair")],
-                [(u"PEER MEDIAN GRADE", u"Poor"), (u"PEER MEDIAN GRADE", u"Poor")],
-                [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")],
-            ])
-        else:
-            self.verify_grade_entries([
-                [(u"STAFF GRADE - 0 POINTS", u"Poor"), (u"STAFF GRADE - 1 POINT", u"Fair")],
-                [(u'PEER MEDIAN GRADE', u'Waiting for peer reviews'),
-                 (u'PEER MEDIAN GRADE', u'Waiting for peer reviews')],
-                [(u"YOUR SELF ASSESSMENT", u"Good"), (u"YOUR SELF ASSESSMENT", u"Excellent")],
-            ])
+        # Do staff assessment step
+        self.staff_assessment(peer_grades_me)
 
 @ddt.ddt
 class FeedbackOnlyTest(OpenAssessmentTest, FullWorkflowMixin):
@@ -1199,6 +1235,34 @@ class FeedbackOnlyTest(OpenAssessmentTest, FullWorkflowMixin):
         )
         # Verify correct score is shown
         self.staff_area_page.verify_learner_final_score("Final grade: 1 out of 1")
+
+
+class MultipleOpenAssessmentTest(OpenAssessmentTest, MultipleOpenAssessmentMixin):
+    """
+    Test the multiple peer-assessment flow.
+    """
+
+    def setUp(self):
+        super(MultipleOpenAssessmentTest, self).setUp('multiple_ora')
+        # Staff area page is not present in OpenAssessmentTest base class, so we are adding it here.
+        self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
+
+    @retry()
+    @attr('acceptance')
+    def test_multiple_ora_complete_flow(self):
+        """
+        Scenario: complete workflow on a unit containing multiple ORA blocks.
+        """
+        # Each problem has vertical index assigned and has a `vert-{vertical_index}` top level class.
+        # That also means that all pages are being differentiated by their vertical index number that is assigned to
+        # each problem type. We are passing vertical index number and setting it by `self.setup_vertical_index` method
+        # so as to move to a different problem.
+
+        # Assess first ORA problem, pass the vertical index number
+        self.assess_component(0)
+
+        # Assess second ORA problem, pass the vertical index number
+        self.assess_component(1)
 
 
 if __name__ == "__main__":

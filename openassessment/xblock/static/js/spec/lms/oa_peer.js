@@ -67,13 +67,15 @@ describe("OpenAssessment.PeerView", function() {
         var overallFeedback = "Good job!";
         view.rubric.overallFeedback(overallFeedback);
 
+        var uuid = view.getUUID();
+
         // Submit the peer assessment
         view.peerAssess();
 
         // Expect that the peer assessment was sent to the server
         // with the options and feedback we selected
         expect(server.peerAssess).toHaveBeenCalledWith(
-            optionsSelected, criterionFeedback, overallFeedback, ''
+            optionsSelected, criterionFeedback, overallFeedback, uuid
         );
     };
 

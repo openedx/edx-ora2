@@ -19,6 +19,8 @@ class OpenAssessmentPage(PageObject):
     """
     Base class for ORA page objects.
     """
+    # vertical index is the index identifier of a problem component on a page.
+    vertical_index = 0
 
     def __init__(self, browser, problem_location):
         """
@@ -38,7 +40,15 @@ class OpenAssessmentPage(PageObject):
 
         The default implementation just returns the selector
         """
-        return selector
+        return "{vertical_index_class} {selector}".format(vertical_index_class=self.vertical_index_class, selector=selector)
+
+    @property
+    def vertical_index_class(self):
+        """
+        Every problem has a vertical index assigned to it, which creates a vertical index class like
+        `vert-{vertical_index}. If there is one problem on unit page, problem would have .vert-0 class attached to it.
+        """
+        return ".vert-{vertical_index}".format(vertical_index=self.vertical_index)
 
     @property
     def url(self):
@@ -53,13 +63,14 @@ class OpenAssessmentPage(PageObject):
         This relies on the fact that we use the same CSS styles for submit buttons
         in all problem steps (unless custom value for button_css is passed in).
         """
+        submit_button_selector = self._bounded_selector(button_css)
         EmptyPromise(
-            lambda: 'is--disabled' not in " ".join(self.q(css=self._bounded_selector(button_css)).attrs('class')),
+            lambda: 'is--disabled' not in " ".join(self.q(css=submit_button_selector).attrs('class')),
             "Submit button is enabled."
         ).fulfill()
 
         with self.handle_alert():
-            self.q(css=self._bounded_selector(button_css)).first.click()
+            self.q(css=submit_button_selector).first.click()
 
     def hide_django_debug_tool(self):
         if self.q(css='#djDebug').visible:
@@ -85,8 +96,9 @@ class SubmissionPage(OpenAssessmentPage):
             BrokenPromise: The response was not submitted successfully.
 
         """
-        self.wait_for_element_visibility("textarea.submission__answer__part__text__value", "Textarea is present")
-        self.q(css="textarea.submission__answer__part__text__value").fill(response_text)
+        textarea_element = self._bounded_selector("textarea.submission__answer__part__text__value")
+        self.wait_for_element_visibility(textarea_element, "Textarea is present")
+        self.q(css=textarea_element).fill(response_text)
         self.submit()
         EmptyPromise(lambda: self.has_submitted, 'Response is completed').fulfill()
 
@@ -96,7 +108,8 @@ class SubmissionPage(OpenAssessmentPage):
         Args:
          latex_query (unicode): Latex expression text
         """
-        self.wait_for_element_visibility("textarea.submission__answer__part__text__value", "Textarea is present")
+        textarea_element = self._bounded_selector("textarea.submission__answer__part__text__value")
+        self.wait_for_element_visibility(textarea_element, "Textarea is present")
         self.q(css="textarea.submission__answer__part__text__value").fill(latex_query)
 
     def preview_latex(self):
@@ -245,8 +258,8 @@ class AssessmentPage(OpenAssessmentPage, AssessmentMixin):
         """
         Return `selector`, but limited to this Assignment Page.
         """
-        return '#openassessment__{assessment_type} {selector}'.format(
-            assessment_type=self._assessment_type, selector=selector)
+        return super(AssessmentPage, self)._bounded_selector('#openassessment__{assessment_type} {selector}'.format(
+            assessment_type=self._assessment_type, selector=selector))
 
     def is_browser_on_page(self):
         css_id = "#openassessment__{assessment_type}".format(
@@ -270,10 +283,10 @@ class AssessmentPage(OpenAssessmentPage, AssessmentMixin):
         Returns:
             unicode
         """
-        css_sel = ".{assessment_type}__display .submission__answer__part__text__value>p".format(
+        css_sel = ".{assessment_type}__display .submission__answer__part__text__value".format(
             assessment_type=self._assessment_type
         )
-        return u" ".join(self.q(css=css_sel).text)
+        return u" ".join(self.q(css=self._bounded_selector(css_sel)).text)
 
     def wait_for_complete(self):
         """
@@ -359,7 +372,8 @@ class AssessmentPage(OpenAssessmentPage, AssessmentMixin):
         if self._assessment_type not in ['peer-assessment', 'student-training']:
             msg = "Only peer assessment and student training steps can retrieve the number completed"
             raise PageConfigurationError(msg)
-        candidates = [int(x) for x in self.q(css=".step__status__value--completed").text]
+        status_completed_css = self._bounded_selector(".step__status__value--completed")
+        candidates = [int(x) for x in self.q(css=status_completed_css).text]
         return candidates[0] if len(candidates) > 0 else None
 
     @property
@@ -413,7 +427,7 @@ class GradePage(OpenAssessmentPage):
         """
         Return `selector`, but limited to the student grade view.
         """
-        return '#openassessment__grade {}'.format(selector)
+        return super(GradePage, self)._bounded_selector('#openassessment__grade {selector}'.format(selector=selector))
 
     def is_browser_on_page(self):
         return self.q(css="#openassessment__grade").is_present()
@@ -518,7 +532,7 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         """
         Return `selector`, but limited to the staff area management area.
         """
-        return '.openassessment__staff-area {}'.format(selector)
+        return super(StaffAreaPage, self)._bounded_selector('.openassessment__staff-area {}'.format(selector))
 
     def is_browser_on_page(self):
         return self.q(css=".openassessment__staff-area").is_present()
@@ -577,7 +591,7 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         self.q(css=student_input_css).fill(username)
         submit_button = self.q(css=self._bounded_selector(".action--submit-username"))
         submit_button.first.click()
-        self.wait_for_element_visibility(".staff-info__student__report", "Student report is present")
+        self.wait_for_element_visibility(self._bounded_selector(".staff-info__student__report"), "Student report is present")
 
     def expand_staff_grading_section(self):
         """
