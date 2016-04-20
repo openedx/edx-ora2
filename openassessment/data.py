@@ -388,7 +388,7 @@ class OraAggregateData(object):
         returned_string = u""
         for assessment in assessments:
             returned_string += u"Assessment #{}\n".format(assessment.id)
-            for part in assessment.parts.all():
+            for part in assessment.parts.order_by('criterion__order_num'):
                 returned_string += u"-- {}".format(part.criterion.label)
                 if part.option is not None and part.option.label is not None:
                     option_label = part.option.label
