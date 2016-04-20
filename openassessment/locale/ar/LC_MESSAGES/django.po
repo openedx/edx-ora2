@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-10 14:28+0000\n"
-"PO-Revision-Date: 2016-03-10 14:28+0000\n"
+"POT-Creation-Date: 2016-04-20 18:43+0000\n"
+"PO-Revision-Date: 2016-04-20 18:56+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Arabic (http://www.transifex.com/open-edx/edx-platform/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -219,7 +219,7 @@ msgid "Cancel"
 msgstr "إلغاء"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:6
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:98
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:100
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:23
 msgid "Criterion"
 msgstr "المعيار"
@@ -568,84 +568,79 @@ msgstr "الملفات التي حمّلتها"
 msgid "Assessments of Your Response"
 msgstr "تقييمات ردّك"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:50
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:51
 msgid "Overall Grade"
 msgstr "الدرجة الكلّية"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:55
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:56
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:26
 msgid "Points"
 msgstr "النقاط"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:68
-#: openassessment/templates/openassessmentblock/oa_rubric.html:44
-msgid "Comments"
-msgstr "التعليقات"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:81
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:84
 msgid "Additional comments on your response"
 msgstr "تعليقات إضافية على ردّك"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:98
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:101
 msgid "Provide Feedback on Peer Assessments"
 msgstr "تحديد الآراء والملاحظات حول تقييمات الزملاء"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:107
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:110
 msgid "Submitting Feedback"
 msgstr "تقديم الآراء والملاحظات"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:113
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:116
 msgid "Your Feedback Has Been Submitted"
 msgstr "جرى تقديم آرائك وملاحظاتك"
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:115
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:118
 msgid ""
 "Your feedback has been submitted. Course staff will be able to see this "
 "feedback when they review course records."
 msgstr "جرى تقديم آرائك و ملاحظاتك. سيتمكّن طاقم المساق من رؤيتها عندما يراجعون سجلّات المساق."
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:121
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:124
 msgid ""
 "Course staff will be able to see any feedback that you provide here when "
 "they review course records."
 msgstr "سيتمكّن طاقم المساق من رؤية أي آراء وملاحظات تحدّدها هنا عندما يراجعون سجلّات المساق."
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:127
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:130
 msgid ""
 "Select the statements below that best reflect your experience with peer "
 "assessments"
 msgstr "اختر الأفكار أدناه التي تعطي أفضل وصف لتجربتك مع تقييمات الزملاء "
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:136
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:139
 msgid "These assessments were useful."
 msgstr "كانت هذه التقييمات مفيدة."
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:145
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:148
 msgid "These assessments were not useful."
 msgstr "لم تكن هذه التقييمات مفيدة."
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:154
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:157
 msgid "I disagree with one or more of the peer assessments of my response."
 msgstr "أعترض على تقييم واحد أو أكثر من تقييمات الزملاء لردّي."
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:163
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:166
 msgid "Some comments I received were inappropriate."
 msgstr "لم تكن بعض التعليقات التي تلقّيتها لائقة."
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:168
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:171
 msgid ""
 "Provide feedback on the grade or comments that you received from your peers."
 msgstr "قدّم آراء أو ملاحظات بشأن الدرجة أو التعليقات التي تلقّيتها من قبل زملائك."
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:171
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:174
 msgid "I feel the feedback I received was..."
 msgstr "أرى أنّ الآراء والملاحظات التي حصلت عليها كانت..."
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:181
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:184
 msgid "We could not submit your feedback"
 msgstr "عذرًا، لم نستطع تقديم آرائك وملاحظاتك."
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:187
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:190
 msgid "Submit feedback on peer assessments"
 msgstr "يُرجى تقديم آرائك وملاحظاتك بشأن تقييمات الزملاء."
 
@@ -835,6 +830,10 @@ msgstr "حالة هذه الخطوة:"
 #: openassessment/templates/openassessmentblock/oa_base.html:34
 msgid "Loading"
 msgstr "جاري التحميل"
+
+#: openassessment/templates/openassessmentblock/oa_rubric.html:44
+msgid "Comments"
+msgstr "التعليقات"
 
 #: openassessment/templates/openassessmentblock/oa_submission_answer.html:7
 msgid "The question for this section."
@@ -1240,7 +1239,7 @@ msgid ""
 msgstr "أُغلقت الآن صفحة هذه الخطوة. عذرًا، لم يعد بإمكانك استكمال عملية التقييم الذاتي أو مواصلة العمل على هذا الواجب، وستتلقّى درجة غير مكتملة."
 
 #: openassessment/templates/openassessmentblock/staff/oa_staff_grade.html:8
-#: openassessment/xblock/grade_mixin.py:335
+#: openassessment/xblock/grade_mixin.py:337
 msgid "Staff Grade"
 msgstr "تقييم طاقم المساق"
 
@@ -1463,19 +1462,19 @@ msgstr "تقييم طاقم المساق لهذا المتعلّم"
 msgid "Learner's Final Grade"
 msgstr "الدرجة النهائية للمتعلّم"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:89
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:90
 #, python-format
 msgid ""
 "\n"
-"                        Final grade: %(points_earned)s out of %(points_possible)s\n"
-"                    "
-msgstr "\n                        الدرجة النهائية: %(points_earned)s من أصل %(points_possible)s\n                    "
+"                            Final grade: %(points_earned)s out of %(points_possible)s\n"
+"                        "
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:95
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:97
 msgid "Final Grade Details"
 msgstr "تفاصيل الدرجة النهائية"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:115
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:117
 #, python-format
 msgid ""
 "\n"
@@ -1492,52 +1491,56 @@ msgstr[3] "\n                                        %(assessment_label)s - %(po
 msgstr[4] "\n                                        %(assessment_label)s - %(points)s نقاط"
 msgstr[5] "\n                                        %(assessment_label)s - %(points)s نقاط"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:136
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:132
+msgid "Feedback Recorded"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:142
 msgid "The submission is waiting for assessments."
 msgstr "الردود المقدّمة بانتظار التقييم."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:138
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:144
 msgid ""
 "The learner's submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "حُذِفَ تقديم إجابة المتعلّم من قسم ’تقييم الزملاء‘. يحصل الطالب على درجة صفر ما لم يُمحى ’وضع المتعلّم‘ لهذه المشكلة وذلك ليُسمح له بإعادة تقديم ردّ الإجابة من جديد."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:140
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:146
 msgid "The problem has not been started."
 msgstr "لم يبدأ تقديم الإجابات للمسألة بعد."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:142
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:148
 msgid "The problem has not been completed."
 msgstr "لم تُستكمل المسألة بعد."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:152
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:158
 msgid "Submit Assessment Grade Override"
 msgstr "قدّم تجاوز درجة التقييم."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:166
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:172
 msgid "Remove Submission From Peer Grading"
 msgstr "حذف التقديم من قسم ’تقييم الزملاء‘"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:174
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:180
 msgid "Caution: This Action Cannot Be Undone"
 msgstr "تحذير: لا يمكن التراجع عن هذا الإجراء"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:175
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:181
 msgid ""
 "Removing a learner's submission cannot be undone and should be done with "
 "caution."
 msgstr "لا يمكن التراجع عن إجراء حذف تقديم إجابة المتعلّم مما يوجب تنفيذه بحذر."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:180
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:186
 msgid "Comments:"
 msgstr "التعليقات"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:189
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:195
 msgid "Remove submission"
 msgstr "حذف التقديم"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:204
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:210
 msgid "A response was not found for this learner."
 msgstr "لم يُعثر على ردّ من هذا المتعلّم"
 
@@ -1565,7 +1568,7 @@ msgstr "الآراء والملاحظات"
 msgid "Points Possible"
 msgstr "النقاط المحتملة"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:48
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:57
 msgid "Overall Feedback"
 msgstr "الآراء والملاحظات بالإجمال"
 
@@ -1682,41 +1685,51 @@ msgid "Feedback saved."
 msgstr "جرى حفظ الآراء والملاحظات."
 
 #: openassessment/xblock/grade_mixin.py:338
-msgid "Peer Median Grade"
-msgstr "متوسّط درجة الزملاء"
-
-#: openassessment/xblock/grade_mixin.py:343
-#: openassessment/xblock/grade_mixin.py:485
-msgid "Peer {peer_index}"
-msgstr "الزميل {peer_index}"
-
-#: openassessment/xblock/grade_mixin.py:353
-msgid "Example-Based Grade"
-msgstr "الدرجة المُعتمدة على الأمثلة"
-
-#: openassessment/xblock/grade_mixin.py:356
-msgid "Self Assessment Grade"
-msgstr "درجة التقييم الذاتي"
-
-#: openassessment/xblock/grade_mixin.py:356
-msgid "Your Self Assessment"
-msgstr "تقييمك الذاتي"
-
-#: openassessment/xblock/grade_mixin.py:450
-msgid "Waiting for peer reviews"
-msgstr "بانتظار آراء الزملاء"
-
-#: openassessment/xblock/grade_mixin.py:478
+#: openassessment/xblock/grade_mixin.py:486
 msgid "Staff Comments"
 msgstr "تعليق طاقم المساق"
 
-#: openassessment/xblock/grade_mixin.py:490
-msgid "Peer"
-msgstr "زميل"
+#: openassessment/xblock/grade_mixin.py:344
+msgid "Peer Median Grade"
+msgstr "متوسّط درجة الزملاء"
 
-#: openassessment/xblock/grade_mixin.py:497
+#: openassessment/xblock/grade_mixin.py:349
+#: openassessment/xblock/grade_mixin.py:493
+msgid "Peer {peer_index}"
+msgstr "الزميل {peer_index}"
+
+#: openassessment/xblock/grade_mixin.py:350
+msgid "Peer Comments"
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:360
+msgid "Example-Based Grade"
+msgstr "الدرجة المُعتمدة على الأمثلة"
+
+#: openassessment/xblock/grade_mixin.py:360
+msgid "Example-Based Comments"
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:363
+msgid "Self Assessment Grade"
+msgstr "درجة التقييم الذاتي"
+
+#: openassessment/xblock/grade_mixin.py:363
+msgid "Your Self Assessment"
+msgstr "تقييمك الذاتي"
+
+#: openassessment/xblock/grade_mixin.py:364
+#: openassessment/xblock/grade_mixin.py:505
 msgid "Your Comments"
 msgstr "تعليقاتك"
+
+#: openassessment/xblock/grade_mixin.py:458
+msgid "Waiting for peer reviews"
+msgstr "بانتظار آراء الزملاء"
+
+#: openassessment/xblock/grade_mixin.py:498
+msgid "Peer"
+msgstr "زميل"
 
 #: openassessment/xblock/peer_assessment_mixin.py:56
 msgid "You must submit a response before you can perform a peer assessment."
@@ -1764,19 +1777,19 @@ msgstr "تُعدّ '{date}' صيغة غير صحيحة للتاريخ. يُرج�
 msgid "'{date}' must be a date string or datetime"
 msgstr "يجب على '{date}' أن يكون سلسلة من التواريخ أو من التواريخ والوقت"
 
-#: openassessment/xblock/resolve_dates.py:199
+#: openassessment/xblock/resolve_dates.py:204
 msgid ""
 "This step's start date '{start}' cannot be earlier than the previous step's "
 "start date '{prev}'."
 msgstr "لا يمكن لتاريخ البدء بهذه الخطوة '{start}' أن يسبق تاريخ البدء بالخطوة السابقة '{prev}'."
 
-#: openassessment/xblock/resolve_dates.py:205
+#: openassessment/xblock/resolve_dates.py:210
 msgid ""
 "This step's due date '{due}' cannot be later than the next step's due date "
 "'{prev}'."
 msgstr "لا يمكن لتاريخ استحقاق هذه الخطوة '{due}' أن يأتي بعد تاريخ استحقاق الخطوة التالية '{prev}'."
 
-#: openassessment/xblock/resolve_dates.py:221
+#: openassessment/xblock/resolve_dates.py:226
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
 msgstr "لا يمكن لتاريخ البدء '{start}' أن يأتي بعد تاريخ الاستحقاق '{due}'."
 
