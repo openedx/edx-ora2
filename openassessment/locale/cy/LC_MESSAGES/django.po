@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-10 14:28+0000\n"
-"PO-Revision-Date: 2016-03-10 14:28+0000\n"
+"POT-Creation-Date: 2016-04-20 18:43+0000\n"
+"PO-Revision-Date: 2016-04-20 18:56+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Welsh (http://www.transifex.com/open-edx/edx-platform/language/cy/)\n"
 "MIME-Version: 1.0\n"
@@ -210,7 +210,7 @@ msgid "Cancel"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:6
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:98
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:100
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:23
 msgid "Criterion"
 msgstr ""
@@ -557,84 +557,79 @@ msgstr ""
 msgid "Assessments of Your Response"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:50
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:51
 msgid "Overall Grade"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:55
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:56
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:26
 msgid "Points"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:68
-#: openassessment/templates/openassessmentblock/oa_rubric.html:44
-msgid "Comments"
-msgstr ""
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:81
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:84
 msgid "Additional comments on your response"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:98
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:101
 msgid "Provide Feedback on Peer Assessments"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:107
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:110
 msgid "Submitting Feedback"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:113
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:116
 msgid "Your Feedback Has Been Submitted"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:115
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:118
 msgid ""
 "Your feedback has been submitted. Course staff will be able to see this "
 "feedback when they review course records."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:121
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:124
 msgid ""
 "Course staff will be able to see any feedback that you provide here when "
 "they review course records."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:127
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:130
 msgid ""
 "Select the statements below that best reflect your experience with peer "
 "assessments"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:136
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:139
 msgid "These assessments were useful."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:145
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:148
 msgid "These assessments were not useful."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:154
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:157
 msgid "I disagree with one or more of the peer assessments of my response."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:163
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:166
 msgid "Some comments I received were inappropriate."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:168
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:171
 msgid ""
 "Provide feedback on the grade or comments that you received from your peers."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:171
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:174
 msgid "I feel the feedback I received was..."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:181
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:184
 msgid "We could not submit your feedback"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:187
+#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:190
 msgid "Submit feedback on peer assessments"
 msgstr ""
 
@@ -823,6 +818,10 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/oa_base.html:34
 msgid "Loading"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/oa_rubric.html:44
+msgid "Comments"
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/oa_submission_answer.html:7
@@ -1229,7 +1228,7 @@ msgid ""
 msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff/oa_staff_grade.html:8
-#: openassessment/xblock/grade_mixin.py:335
+#: openassessment/xblock/grade_mixin.py:337
 msgid "Staff Grade"
 msgstr ""
 
@@ -1452,19 +1451,19 @@ msgstr ""
 msgid "Learner's Final Grade"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:89
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:90
 #, python-format
 msgid ""
 "\n"
-"                        Final grade: %(points_earned)s out of %(points_possible)s\n"
-"                    "
+"                            Final grade: %(points_earned)s out of %(points_possible)s\n"
+"                        "
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:95
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:97
 msgid "Final Grade Details"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:115
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:117
 #, python-format
 msgid ""
 "\n"
@@ -1479,52 +1478,56 @@ msgstr[1] ""
 msgstr[2] ""
 msgstr[3] ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:136
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:132
+msgid "Feedback Recorded"
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:142
 msgid "The submission is waiting for assessments."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:138
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:144
 msgid ""
 "The learner's submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:140
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:146
 msgid "The problem has not been started."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:142
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:148
 msgid "The problem has not been completed."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:152
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:158
 msgid "Submit Assessment Grade Override"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:166
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:172
 msgid "Remove Submission From Peer Grading"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:174
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:180
 msgid "Caution: This Action Cannot Be Undone"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:175
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:181
 msgid ""
 "Removing a learner's submission cannot be undone and should be done with "
 "caution."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:180
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:186
 msgid "Comments:"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:189
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:195
 msgid "Remove submission"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:204
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:210
 msgid "A response was not found for this learner."
 msgstr ""
 
@@ -1552,7 +1555,7 @@ msgstr ""
 msgid "Points Possible"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:48
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:57
 msgid "Overall Feedback"
 msgstr ""
 
@@ -1669,40 +1672,50 @@ msgid "Feedback saved."
 msgstr ""
 
 #: openassessment/xblock/grade_mixin.py:338
-msgid "Peer Median Grade"
-msgstr ""
-
-#: openassessment/xblock/grade_mixin.py:343
-#: openassessment/xblock/grade_mixin.py:485
-msgid "Peer {peer_index}"
-msgstr ""
-
-#: openassessment/xblock/grade_mixin.py:353
-msgid "Example-Based Grade"
-msgstr ""
-
-#: openassessment/xblock/grade_mixin.py:356
-msgid "Self Assessment Grade"
-msgstr ""
-
-#: openassessment/xblock/grade_mixin.py:356
-msgid "Your Self Assessment"
-msgstr ""
-
-#: openassessment/xblock/grade_mixin.py:450
-msgid "Waiting for peer reviews"
-msgstr ""
-
-#: openassessment/xblock/grade_mixin.py:478
+#: openassessment/xblock/grade_mixin.py:486
 msgid "Staff Comments"
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:490
-msgid "Peer"
+#: openassessment/xblock/grade_mixin.py:344
+msgid "Peer Median Grade"
 msgstr ""
 
-#: openassessment/xblock/grade_mixin.py:497
+#: openassessment/xblock/grade_mixin.py:349
+#: openassessment/xblock/grade_mixin.py:493
+msgid "Peer {peer_index}"
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:350
+msgid "Peer Comments"
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:360
+msgid "Example-Based Grade"
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:360
+msgid "Example-Based Comments"
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:363
+msgid "Self Assessment Grade"
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:363
+msgid "Your Self Assessment"
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:364
+#: openassessment/xblock/grade_mixin.py:505
 msgid "Your Comments"
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:458
+msgid "Waiting for peer reviews"
+msgstr ""
+
+#: openassessment/xblock/grade_mixin.py:498
+msgid "Peer"
 msgstr ""
 
 #: openassessment/xblock/peer_assessment_mixin.py:56
@@ -1751,19 +1764,19 @@ msgstr ""
 msgid "'{date}' must be a date string or datetime"
 msgstr ""
 
-#: openassessment/xblock/resolve_dates.py:199
+#: openassessment/xblock/resolve_dates.py:204
 msgid ""
 "This step's start date '{start}' cannot be earlier than the previous step's "
 "start date '{prev}'."
 msgstr ""
 
-#: openassessment/xblock/resolve_dates.py:205
+#: openassessment/xblock/resolve_dates.py:210
 msgid ""
 "This step's due date '{due}' cannot be later than the next step's due date "
 "'{prev}'."
 msgstr ""
 
-#: openassessment/xblock/resolve_dates.py:221
+#: openassessment/xblock/resolve_dates.py:226
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
 msgstr ""
 

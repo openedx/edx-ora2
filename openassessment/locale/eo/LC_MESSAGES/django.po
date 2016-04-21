@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-10 14:28+0000\n"
+"POT-Creation-Date: 2016-04-20 18:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -714,11 +714,6 @@ msgid "Points"
 msgstr "Pöïnts Ⱡ'σяєм ιρѕυ#"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
-#: openassessment/templates/openassessmentblock/oa_rubric.html
-msgid "Comments"
-msgstr "Çömménts Ⱡ'σяєм ιρѕυм ∂#"
-
-#: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html
 msgid "Additional comments on your response"
 msgstr ""
 "Àddïtïönäl çömménts ön ýöür réspönsé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
@@ -1059,6 +1054,10 @@ msgstr "Thïs stép's stätüs: Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм�
 #: openassessment/templates/openassessmentblock/oa_base.html
 msgid "Loading"
 msgstr "Löädïng Ⱡ'σяєм ιρѕυм #"
+
+#: openassessment/templates/openassessmentblock/oa_rubric.html
+msgid "Comments"
+msgstr "Çömménts Ⱡ'σяєм ιρѕυм ∂#"
 
 #: openassessment/templates/openassessmentblock/oa_submission_answer.html
 msgid "The question for this section."
@@ -1854,12 +1853,12 @@ msgstr "Léärnér's Fïnäl Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт 
 #, python-format
 msgid ""
 "\n"
-"                        Final grade: %(points_earned)s out of %(points_possible)s\n"
-"                    "
+"                            Final grade: %(points_earned)s out of %(points_possible)s\n"
+"                        "
 msgstr ""
 "\n"
-"                        Fïnäl grädé: %(points_earned)s öüt öf %(points_possible)s\n"
-"                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя#"
+"                            Fïnäl grädé: %(points_earned)s öüt öf %(points_possible)s\n"
+"                         Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "Final Grade Details"
@@ -1883,6 +1882,10 @@ msgstr[1] ""
 "\n"
 "                                        %(assessment_label)s - %(points)s pöïnts\n"
 "                                     Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
+
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
+msgid "Feedback Recorded"
+msgstr "Féédßäçk Réçördéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html
 msgid "The submission is waiting for assessments."
@@ -2135,6 +2138,10 @@ msgstr ""
 msgid "Feedback saved."
 msgstr "Féédßäçk sävéd. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
 
+#: openassessment/xblock/grade_mixin.py openassessment/xblock/grade_mixin.py
+msgid "Staff Comments"
+msgstr "Stäff Çömménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
 #: openassessment/xblock/grade_mixin.py
 msgid "Peer Median Grade"
 msgstr "Péér Médïän Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
@@ -2144,8 +2151,16 @@ msgid "Peer {peer_index}"
 msgstr "Péér {peer_index} Ⱡ'σяєм ιρѕυм ∂#"
 
 #: openassessment/xblock/grade_mixin.py
+msgid "Peer Comments"
+msgstr "Péér Çömménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: openassessment/xblock/grade_mixin.py
 msgid "Example-Based Grade"
 msgstr "Éxämplé-Bäséd Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
+
+#: openassessment/xblock/grade_mixin.py
+msgid "Example-Based Comments"
+msgstr "Éxämplé-Bäséd Çömménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢#"
 
 #: openassessment/xblock/grade_mixin.py
 msgid "Self Assessment Grade"
@@ -2155,21 +2170,17 @@ msgstr "Sélf Àsséssmént Grädé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт �
 msgid "Your Self Assessment"
 msgstr "Ýöür Sélf Àsséssmént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
 
+#: openassessment/xblock/grade_mixin.py openassessment/xblock/grade_mixin.py
+msgid "Your Comments"
+msgstr "Ýöür Çömménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
 #: openassessment/xblock/grade_mixin.py
 msgid "Waiting for peer reviews"
 msgstr "Wäïtïng för péér révïéws Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
 
 #: openassessment/xblock/grade_mixin.py
-msgid "Staff Comments"
-msgstr "Stäff Çömménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
-
-#: openassessment/xblock/grade_mixin.py
 msgid "Peer"
 msgstr "Péér Ⱡ'σяєм ι#"
-
-#: openassessment/xblock/grade_mixin.py
-msgid "Your Comments"
-msgstr "Ýöür Çömménts Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
 
 #: openassessment/xblock/peer_assessment_mixin.py
 msgid "You must submit a response before you can perform a peer assessment."
