@@ -14,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-14 14:17+0000\n"
-"PO-Revision-Date: 2016-01-14 11:47+0000\n"
-"Last-Translator: Zeynep Ozdemir <gzeynepozdemir@gmail.com>\n"
+"POT-Creation-Date: 2016-06-06 16:17+0000\n"
+"PO-Revision-Date: 2016-05-09 11:26+0000\n"
+"Last-Translator: Emrah Emirtekin <eemirtekin@gmail.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,7 +36,7 @@ msgstr "Bu bölüm yüklenemedi."
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:134
 msgid "The staff assessment form could not be loaded."
-msgstr ""
+msgstr "Personel değerlendirme formu yüklenemedi."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
@@ -107,9 +107,9 @@ msgid "The submission could not be removed from the grading pool."
 msgstr "Yükleme not havuzundan kaldırılamadı."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_base.js:161
+#: openassessment/xblock/static/js/src/lms/oa_base.js:172
 msgid "Unable to load"
-msgstr ""
+msgstr "Yüklenemedi"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_peer.js:175
@@ -133,7 +133,7 @@ msgstr "Bu cevap kaydedilmedi."
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
-msgstr ""
+msgstr "Eğer sayfadan cevabınızı kaydetmeden ya da göndermeden ayrılırsanız, cevap için yaptığınız işlemleri kaybedeceksiniz."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:334
@@ -187,23 +187,23 @@ msgid ""
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:114
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:184
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:146
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:223
 msgid "Unexpected server error."
-msgstr ""
+msgstr "Beklenmeyen sunucu hatası."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:118
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:150
 msgid "You must provide a learner name."
-msgstr ""
+msgstr "Bir öğrenci ismi belirtmelisiniz."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:205
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:272
 msgid "Error getting the number of ungraded responses"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:442
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:516
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."

@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Henrik J. Mondrup <hmondrup@gmail.com>, 2015
+# Anders Haugaard Iversen <anha@seges.dk>, 2016
+# Henrik Mondrup <hmondrup@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-20 18:43+0000\n"
-"PO-Revision-Date: 2016-04-20 18:56+0000\n"
-"Last-Translator: Eric Fischer <efischer@edx.org>\n"
+"POT-Creation-Date: 2016-06-06 16:17+0000\n"
+"PO-Revision-Date: 2016-05-09 11:28+0000\n"
+"Last-Translator: Anders Haugaard Iversen <anha@seges.dk>\n"
 "Language-Team: Danish (http://www.transifex.com/open-edx/edx-platform/language/da/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

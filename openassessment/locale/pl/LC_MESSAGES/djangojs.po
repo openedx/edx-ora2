@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-20 18:43+0000\n"
-"PO-Revision-Date: 2016-04-20 14:15+0000\n"
+"POT-Creation-Date: 2016-06-06 16:17+0000\n"
+"PO-Revision-Date: 2016-05-09 11:26+0000\n"
 "Last-Translator: Fundacja Eduprojekt.org <maciej@eduprojekt.org>\n"
 "Language-Team: Polish (http://www.transifex.com/open-edx/edx-platform/language/pl/)\n"
 "MIME-Version: 1.0\n"
@@ -243,7 +243,7 @@ msgstr "Dodano kryterium."
 msgid ""
 "You have added a criterion. You will need to select an option for the "
 "criterion in the Learner Training step. To do this, click the Settings tab."
-msgstr ""
+msgstr "Dodałeś kryterium. Musisz teraz wybrać opcję dla kryterium z poziomu Szkolenia Studenta. Aby to zrobić, kliknij na Ustawienia."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:144
@@ -257,14 +257,14 @@ msgid ""
 "You have deleted an option. That option has been removed from its criterion "
 "in the sample responses in the Learner Training step. You might have to "
 "select a new option for the criterion."
-msgstr ""
+msgstr "Usunąłeś opcję. Ta opcja została usunięta z kryterium w przykładowych odpowiedziach w Szkoleniu Studenta. Być może musisz teraz wybrać nową opcję dla tego kryterium."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:180
 msgid ""
 "You have deleted all the options for this criterion. The criterion has been "
 "removed from the sample responses in the Learner Training step."
-msgstr ""
+msgstr "Usunąłeś wszystkie opcje dla tego kryterium. Tak więc kryterium zostało usunięte z przykładowych odpowiedzi w Szkoleniu Studenta."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:206
@@ -276,7 +276,7 @@ msgstr "Kryterium usunięte"
 msgid ""
 "You have deleted a criterion. The criterion has been removed from the "
 "example responses in the Learner Training step."
-msgstr ""
+msgstr "Usunąłeś kryterium. Tak więc kryterium zostało usunięte z przykładowych odpowiedzi w Szkoleniu Studenta."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:376
@@ -293,9 +293,9 @@ msgstr "Zmiany w krokach, które nie zostały wybrane jako części zadania, nie
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:50
 msgid "File types can not be empty."
-msgstr ""
+msgstr "Typy plików nie mogą być puste."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:60
 msgid "The following file types are not allowed: "
-msgstr ""
+msgstr "Następujące typy plików są niedozwolone:"

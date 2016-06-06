@@ -7,19 +7,20 @@
 # Alexander L. <alexander.lohberg@ufo-style.de>, 2014
 # Christian Layr <Christian.Layr@unisg.ch>, 2014
 # dsichau <dsichau@gmail.com>, 2014
-# Ettore Atalan <atalanttore@googlemail.com>, 2014
+# Ettore Atalan <atalanttore@googlemail.com>, 2014,2016
 # mc <marc.mannsfeld@phil.hhu.de>, 2015
 # mc <marc.mannsfeld@phil.hhu.de>, 2015-2016
 # v4rp1ng <remosteiner@msn.com>, 2014
 # Ron Lucke <ronlucke@googlemail.com>, 2014
 # Ron Lucke <ronlucke@googlemail.com>, 2014
+# Rouven Wachhaus <rouvenwachhaus@live.de>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-20 18:43+0000\n"
-"PO-Revision-Date: 2016-04-20 18:56+0000\n"
-"Last-Translator: Eric Fischer <efischer@edx.org>\n"
+"POT-Creation-Date: 2016-06-06 16:17+0000\n"
+"PO-Revision-Date: 2016-06-05 10:52+0000\n"
+"Last-Translator: Rouven Wachhaus <rouvenwachhaus@live.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/open-edx/edx-platform/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
