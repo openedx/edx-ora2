@@ -7,20 +7,21 @@
 # ali selek <aliselek01@gmail.com>, 2015
 # Ayhan Aksoy <aksoyayhan1@gmail.com>, 2015
 # Emrah Emirtekin <eemirtekin@gmail.com>, 2015
-# 300711 <gamzeonem30@gmail.com>, 2014
+# 300711 <inactive+300711@transifex.com>, 2014
 # Gencay <gencayerdem@hotmail.com>, 2015
 # Hakan Şenel <hgsenel@gmail.com>, 2015
 # İlker IŞIK <m.ilkerisik@hotmail.com>, 2015
 # Kubilay <kubilayinceoren10@gmail.com>, 2015
 # msare <mervesareakin@gmail.com>, 2014
 # serd@r <ser.ince@yahoo.com.tr>, 2015
+# Tevfik Bagcivan <tevfik.bagcivan@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-20 18:43+0000\n"
-"PO-Revision-Date: 2016-04-20 18:56+0000\n"
-"Last-Translator: Eric Fischer <efischer@edx.org>\n"
+"POT-Creation-Date: 2016-06-06 16:17+0000\n"
+"PO-Revision-Date: 2016-05-11 08:16+0000\n"
+"Last-Translator: Tevfik Bagcivan <tevfik.bagcivan@gmail.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

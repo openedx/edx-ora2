@@ -5,6 +5,7 @@
 # Translators:
 # Alina Kozoriz <alinakozoriz@gmail.com>, 2015
 # fayçal fatihi <ofaycal.geo.x@gmail.com>, 2014
+# olexiim <olexiim@gmail.com>, 2016
 # Olga Filipova <chudaol@gmail.com>, 2015
 # Tetiana Korshun, 2014
 # Zoriana Zaiats, 2015
@@ -13,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-20 18:43+0000\n"
-"PO-Revision-Date: 2016-04-20 18:56+0000\n"
-"Last-Translator: Eric Fischer <efischer@edx.org>\n"
+"POT-Creation-Date: 2016-06-06 16:17+0000\n"
+"PO-Revision-Date: 2016-05-12 21:56+0000\n"
+"Last-Translator: olexiim <olexiim@gmail.com>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/open-edx/edx-platform/language/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
