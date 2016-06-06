@@ -3,7 +3,7 @@
 -r wheels.txt
 
 # edX Internal Requirements
-git+https://github.com/edx/XBlock.git@xblock-0.4.1#egg=XBlock==0.4.1
+git+https://github.com/edx/XBlock.git@xblock-0.4.10#egg=XBlock==0.4.10
 
 # edx-submissions
 git+https://github.com/edx/edx-submissions.git@1.1.0#egg=edx-submissions==1.1.0
