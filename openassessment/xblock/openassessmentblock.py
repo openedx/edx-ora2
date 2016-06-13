@@ -151,7 +151,7 @@ class OpenAssessmentBlock(
     )
 
     title = String(
-        default="",
+        default="Open Response Assessment",
         scope=Scope.content,
         help="A title to display to a student (plain text)."
     )
