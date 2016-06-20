@@ -111,6 +111,11 @@ class StudioViewTest(XBlockHandlerTestCase):
     }
 
     @scenario('data/basic_scenario.xml')
+    def test_default_fields(self, xblock):
+        # Default value should not be empty
+        self.assertEqual(xblock.fields['title'].default, "Open Response Assessment")
+
+    @scenario('data/basic_scenario.xml')
     def test_render_studio_view(self, xblock):
         frag = self.runtime.render(xblock, 'studio_view')
         self.assertTrue(frag.body_html().find('openassessment-edit'))
