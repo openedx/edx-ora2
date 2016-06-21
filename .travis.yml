@@ -38,5 +38,6 @@ branches:
     only:
       - master
       - ora-staff-grading
+      - upgrade-numpy
 after_success:
   coveralls
