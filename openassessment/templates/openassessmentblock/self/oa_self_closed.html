@@ -2,21 +2,27 @@
 {% load i18n %}
 
 {% block list_item %}
-<li id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment is--incomplete ui-toggle-visibility">
+<li id="openassessment__self-assessment"
+    class="openassessment__steps__step step--self-assessment is--showing is--incomplete ui-slidable__container"
+    tabindex="-1">
+{% endblock %}
+
+{% block button %}
+    <button class="ui-slidable" aria-expanded="true" id="oa_self_{{ xblock_id }}" aria-controls="oa_self_{{ xblock_id }}_content">
 {% endblock %}
 
 {% block title %}
 <span class="step__status">
   <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
-    <i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>
+    <span class="icon fa fa-exclamation-triangle" aria-hidden="true"></span>
     <span class="copy">{% trans "Incomplete" %}</span>
   </span>
 </span>
 {% endblock %}
 
 {% block body %}
-<div class="ui-toggle-visibility__content">
+<div class="ui-slidable__content" aria-labelledby="oa_self_{{ xblock_id }}" id="oa_self_{{ xblock_id }}_content">
     <div class="wrapper--step__content">
 
         <div class="step__message message message--incomplete">

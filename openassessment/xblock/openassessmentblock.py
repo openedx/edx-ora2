@@ -990,3 +990,9 @@ class OpenAssessmentBlock(
                 return effective
 
         return start
+
+    def get_xblock_id(self):
+        """
+        Returns the xblock id
+        """
+        return self._serialize_opaque_key(self.scope_ids.usage_id)

@@ -41,6 +41,12 @@ OpenAssessment.clearUnsavedChanges = function() {
 
 OpenAssessment.BaseView.prototype = {
 
+    IS_SHOWING_CLASS: "is--showing",
+    SLIDABLE_CLASS: "ui-slidable",
+    SLIDABLE_CONTENT_CLASS: "ui-slidable__content",
+    SLIDABLE_CONTROLS_CLASS: "ui-slidable__control",
+    SLIDABLE_CONTAINER_CLASS: "ui-slidable__container",
+
     /**
      * Checks to see if the scrollTo function is available, then scrolls to the
      * top of the list of steps (or the specified selector) for this display.
@@ -57,6 +63,7 @@ OpenAssessment.BaseView.prototype = {
         }
         if ($.scrollTo instanceof Function) {
             $(window).scrollTo($(selector, this.element), 800, {offset: -50});
+            $(selector + " > header ." + this.SLIDABLE_CLASS, this.element).focus();
         }
     },
 
@@ -66,11 +73,31 @@ OpenAssessment.BaseView.prototype = {
      * @param {element} parentElement JQuery selector for the container element.
      */
     setUpCollapseExpand: function(parentElement) {
-        parentElement.on('click', '.ui-toggle-visibility__control', function(eventData) {
-                var sel = $(eventData.target).closest('.ui-toggle-visibility');
-                sel.toggleClass('is--collapsed');
-            }
-        );
+        var view = this;
+
+        $('.' + view.SLIDABLE_CONTROLS_CLASS, parentElement).each(function() {
+            $(this).on("click", function(event) {
+                event.preventDefault();
+
+                var $slidableControl = $(event.target).closest('.' + view.SLIDABLE_CONTROLS_CLASS);
+
+                var $container = $slidableControl.closest('.' + view.SLIDABLE_CONTAINER_CLASS);
+                var $toggleButton = $slidableControl.find('.' + view.SLIDABLE_CLASS);
+                var $panel = $slidableControl.next('.' + view.SLIDABLE_CONTENT_CLASS);
+
+                if ($container.hasClass('is--showing')) {
+                    $panel.slideUp();
+                    $toggleButton.attr('aria-expanded', 'false');
+                    $container.removeClass('is--showing');
+                } else if (!$container.hasClass('has--error') &&
+                    !$container.hasClass('is--empty') &&
+                    !$container.hasClass('is--unavailable')) {
+                    $panel.slideDown();
+                    $toggleButton.attr('aria-expanded', 'true');
+                    $container.addClass('is--showing');
+                }
+            });
+        });
     },
 
     /**
@@ -96,13 +123,13 @@ OpenAssessment.BaseView.prototype = {
      * Refresh the Assessment Modules. This should be called any time an action is
      * performed by the user.
      */
-    loadAssessmentModules: function() {
-        this.trainingView.load();
-        this.peerView.load();
-        this.staffView.load();
-        this.selfView.load();
-        this.gradeView.load();
-        this.leaderboardView.load();
+    loadAssessmentModules: function(usageID) {
+        this.trainingView.load(usageID);
+        this.peerView.load(usageID);
+        this.staffView.load(usageID);
+        this.selfView.load(usageID);
+        this.gradeView.load(usageID);
+        this.leaderboardView.load(usageID);
         /**
         this.messageView.load() is intentionally omitted.
         Because of the asynchronous loading, there is no way to tell (from the perspective of the
@@ -158,6 +185,8 @@ OpenAssessment.BaseView.prototype = {
             $(container + " .message__content", element).html('<p>' + (message ? _.escape(message) : "") + '</p>');
             // Toggle the error class
             $(container, element).toggleClass('has--error', message !== null);
+            // Send focus to the error message
+            $(container + " > .message", element).focus();
         }
     },
 
@@ -173,6 +202,8 @@ OpenAssessment.BaseView.prototype = {
         }
         var $container = $('#openassessment__' + stepName);
         $container.toggleClass('has--error', true);
+        $container.removeClass('is--showing');
+        $container.find('.ui-slidable').attr('aria-expanded', 'false');
         $container.find('.step__status__value i').removeClass().addClass('icon fa fa-exclamation-triangle');
         $container.find('.step__status__value .copy').html(_.escape(errorMessage));
     },

@@ -2,7 +2,12 @@
 {% load i18n %}
 
 {% block list_item %}
-<li id="openassessment__peer-assessment" class="openassessment__steps__step step--peer-assessment is--unavailable is--empty is--collapsed">
+<li id="openassessment__peer-assessment" class="openassessment__steps__step step--peer-assessment is--unavailable is--empty ui-slidable__container" tabindex="-1">
+{% endblock %}
+
+
+{% block button %}
+    <button class="ui-slidable" aria-expanded="false" disabled="disabled">
 {% endblock %}
 
 {% block title %}

@@ -22,9 +22,6 @@
 
         FULL_GRADE_UNSAVED_WARNING_KEY: "staff-grade",
         OVERRIDE_UNSAVED_WARNING_KEY: "staff-override",
-        IS_SHOWING_CLASS: "is--showing",
-        SLIDABLE_CLASS: "ui-slidable",
-        SLIDABLE_CONTENT_CLASS: "ui-slidable__content",
 
         /**
          * Load the staff area.
@@ -114,31 +111,17 @@
                             }
                         );
                     }
-
-                    $manageLearnersTab.find('.' + view.SLIDABLE_CLASS).click(
-                        function(event) {
-                            var $toggle = $(event.currentTarget),
-                                $content = $toggle.next('.' + view.SLIDABLE_CONTENT_CLASS);
-
-                            if ($toggle.hasClass(view.IS_SHOWING_CLASS)) {
-                                $toggle.removeClass(view.IS_SHOWING_CLASS).attr('aria-expanded', 'false');
-                                $content.slideUp();
-                            }
-                            else {
-                                $toggle.addClass(view.IS_SHOWING_CLASS).attr('aria-expanded', 'true');
-                                $content.slideDown();
-                            }
-                        }
-                    );
+                    // Install click handlers for ui-slidable sections
+                    view.baseView.setUpCollapseExpand($manageLearnersTab);
 
                     // By default, focus is put on the summary.
                     $manageLearnersTab.find('.staff-info__student__report__summary').focus();
 
                     if (classToExpand) {
-                        $manageLearnersTab.find('.' + classToExpand + ' .' + view.SLIDABLE_CONTENT_CLASS)
+                        $manageLearnersTab.find('.' + classToExpand + ' .' + view.baseView.SLIDABLE_CONTENT_CLASS)
                             .slideDown();
-                        $manageLearnersTab.find('.' + classToExpand + ' .' + view.SLIDABLE_CLASS)
-                            .addClass(view.IS_SHOWING_CLASS).attr('aria-expanded', 'true').focus();
+                        $manageLearnersTab.find('.' + classToExpand + ' .' + view.baseView.SLIDABLE_CLASS)
+                            .addClass(view.baseView.IS_SHOWING_CLASS).attr('aria-expanded', 'true').focus();
                     }
 
                     deferred.resolve();
@@ -163,16 +146,18 @@
         loadStaffGradeForm: function() {
             var view = this;
             var $staffGradeTab = $('.openassessment__staff-grading', this.element);
-            var $staffGradeControl = $staffGradeTab.find('.' + view.SLIDABLE_CLASS);
-            var $staffGradeContent = $staffGradeTab.find('.' + view.SLIDABLE_CONTENT_CLASS);
+            var $staffGradeControl = $staffGradeTab.find('.' + view.baseView.SLIDABLE_CLASS);
+            var $staffGradeContent = $staffGradeTab.find('.' + view.baseView.SLIDABLE_CONTENT_CLASS);
+            var $staffGradeContainer = $staffGradeTab.find('.' + view.baseView.SLIDABLE_CONTAINER_CLASS);
             var deferred = $.Deferred();
             var showFormError = function(errorMessage) {
                 $staffGradeTab.find('.staff__grade__form--error').text(errorMessage).focus();
             };
 
-            $staffGradeControl.toggleClass(view.IS_SHOWING_CLASS, true).attr('aria-expanded', 'true');
+            $staffGradeControl.attr('aria-expanded', 'true');
             if (this.staffGradeFormLoaded) {
                 $staffGradeContent.slideDown();
+                $staffGradeContainer.addClass(view.baseView.IS_SHOWING_CLASS);
                 deferred.resolve();
             }
             else {
@@ -215,8 +200,11 @@
                             // For accessibility, move focus to the staff grade form control
                             // (since this code may have executed as part of "Submit and Grade Next...").
                             $staffGradeControl.focus();
+                            // Install click handlers for ui-slidable sections
+                            view.baseView.setUpCollapseExpand($('.staff__grade__form', view.element));
                         }
                     );
+                    $staffGradeContainer.addClass(view.baseView.IS_SHOWING_CLASS);
 
                     deferred.resolve();
                 }).fail(function() {
@@ -237,11 +225,13 @@
          *     form will be presented if the user later expands the staff grade section again).
          */
         closeStaffGradeForm: function(clear) {
-            var $staffGradeTab = $('.openassessment__staff-grading', this.element);
-            var $staffGradeControl = $staffGradeTab.find('.' + this.SLIDABLE_CLASS);
-            var $staffGradeContent = $staffGradeTab.find('.' + this.SLIDABLE_CONTENT_CLASS);
+            var view = this;
+            var $staffGradeTab = $('.openassessment__staff-grading', view.element);
+            var $staffGradeControl = $staffGradeTab.find('.' + view.baseView.SLIDABLE_CLASS).first();
+            var $staffGradeContent = $staffGradeTab.find('.' + view.baseView.SLIDABLE_CONTENT_CLASS);
+            var $staffGradeContainer = $staffGradeTab.find('.' + view.baseView.SLIDABLE_CONTAINER_CLASS);
 
-            $staffGradeControl.toggleClass(this.IS_SHOWING_CLASS, false).attr('aria-expanded', 'false');
+            $staffGradeControl.attr('aria-expanded', 'false');
             if (clear) {
                 // Collapse the editor and update the counts.
                 // This is the case of submitting an assessment and NOT continuing with grading.
@@ -253,6 +243,7 @@
                 $staffGradeContent.slideUp();
             }
 
+            $staffGradeContainer.removeClass(view.baseView.IS_SHOWING_CLASS);
             // For accessibility, move focus to the staff grade form control.
             $staffGradeControl.focus();
         },
@@ -371,7 +362,8 @@
             // Install a click handler for showing the staff grading form.
             $staffGradeTool.find('.staff__grade__show-form').click(
                 function(event) {
-                    var wasShowing = $(event.currentTarget).hasClass(view.IS_SHOWING_CLASS);
+                    var $container = $(event.currentTarget).closest('.' + view.baseView.SLIDABLE_CONTAINER_CLASS);
+                    var wasShowing = $container.hasClass(view.baseView.IS_SHOWING_CLASS);
                     if (wasShowing) {
                         view.closeStaffGradeForm(false);
                     }

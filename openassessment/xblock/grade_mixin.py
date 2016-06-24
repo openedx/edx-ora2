@@ -49,17 +49,24 @@ class GradeMixin(object):
         status = workflow.get('status')
 
         # Default context is empty
-        context = {}
+        context = {'xblock_id': self.get_xblock_id()}
 
+        assessment_steps = self.assessment_steps
         # Render the grading section based on the status of the workflow
         try:
             if status == "cancelled":
                 path = 'openassessmentblock/grade/oa_grade_cancelled.html'
-                context = {'score': workflow['score']}
+                context['score'] = workflow['score']
             elif status == "done":
                 path, context = self.render_grade_complete(workflow)
             elif status == "waiting":
-                path, context = 'openassessmentblock/grade/oa_grade_waiting.html', {}
+                # The class "is--waiting--staff" is needed in the grade template for the javascript to
+                # send focus to the correct step.
+                # In the case where the user has completed all steps but is still waiting on a staff grade,
+                # we want focus to go from the assessment steps to the staff grading step.
+                if "staff-assessment" in assessment_steps:
+                    context['is_waiting_staff'] = "is--waiting--staff"
+                path, context = 'openassessmentblock/grade/oa_grade_waiting.html', context
             elif status is None:
                 path = 'openassessmentblock/grade/oa_grade_not_started.html'
             else:  # status is 'self' or 'peer', which implies that the workflow is incomplete
@@ -139,7 +146,8 @@ class GradeMixin(object):
             ),
             'file_upload_type': self.file_upload_type,
             'allow_latex': self.allow_latex,
-            'file_url': self.get_download_url_from_submission(student_submission)
+            'file_url': self.get_download_url_from_submission(student_submission),
+            'xblock_id': self.get_xblock_id()
         }
 
         return ('openassessmentblock/grade/oa_grade_complete.html', context)
@@ -168,7 +176,7 @@ class GradeMixin(object):
 
         return (
             'openassessmentblock/grade/oa_grade_incomplete.html',
-            {'incomplete_steps': incomplete_steps}
+            {'incomplete_steps': incomplete_steps, 'xblock_id': self.get_xblock_id()}
         )
 
     @XBlock.json_handler

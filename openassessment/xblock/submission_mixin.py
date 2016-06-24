@@ -380,8 +380,8 @@ class SubmissionMixin(object):
 
         path = 'openassessmentblock/response/oa_response.html'
         context = {
-            'time_zone': get_current_time_zone(user_service)
-        }
+            'time_zone': get_current_time_zone(user_service),
+            "xblock_id": self.get_xblock_id()}
 
         # Due dates can default to the distant future, in which case
         # there's effectively no due date.

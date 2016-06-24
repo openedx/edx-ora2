@@ -76,6 +76,9 @@ class OpenAssessmentPage(PageObject):
         if self.q(css='#djDebug').visible:
             self.q(css='#djHideToolBarButton').click()
 
+    def button(self, button_css):
+        return self.q(css=button_css + " > .ui-slidable")
+
 
 class SubmissionPage(OpenAssessmentPage):
     """
@@ -407,6 +410,7 @@ class AssessmentPage(OpenAssessmentPage, AssessmentMixin):
         message_title = self.q(css=self._bounded_selector(".message__title"))
         if len(message_title) == 0:
             return None
+
         return message_title.text[0]
 
     def verify_status_value(self, expected_value):
@@ -417,6 +421,25 @@ class AssessmentPage(OpenAssessmentPage, AssessmentMixin):
             lambda: self.status_value == expected_value,
             "Expected status value present"
         ).fulfill()
+
+    def open_step(self):
+        """
+        Opens the current step if it is not already open
+
+        Returns:
+            AssessmentPage
+        """
+        container = self._bounded_selector("")
+
+        if 'is--showing' not in " ".join(self.q(css=container).attrs('class')):
+            self.q(css=self._bounded_selector(".ui-slidable")).click()
+
+        EmptyPromise(
+            lambda: 'is--showing' in " ".join(self.q(css=container).attrs('class')),
+            "Step is showing"
+        )
+
+        return self
 
 
 class GradePage(OpenAssessmentPage):

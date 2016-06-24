@@ -4,16 +4,22 @@
 {% block list_item %}
 <li
     id="openassessment__peer-assessment"
-    class="openassessment__steps__step step--peer-assessment ui-toggle-visibility is--complete"
+    class="openassessment__steps__step step--peer-assessment is--complete ui-slidable__container"
     data-submission-uuid="{{ peer_submission.uuid }}"
+    tabindex="-1"
 >
+{% endblock %}
+
+
+{% block button %}
+    <button class="ui-slidable" aria-expanded="false" id="oa_peer_{{ xblock_id }}" aria-controls="oa_peer_{{ xblock_id }}_content">
 {% endblock %}
 
 {% block title %}
 <span class="step__status">
   <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
-    <i class="icon fa fa-check" aria-hidden="true"></i>
+    <span class="icon fa fa-check" aria-hidden="true"></span>
     <span class="copy">
       {% with graded_string=graded|stringformat:"s" %}
       {% blocktrans with num_graded='<span class="step__status__value--completed">'|safe|add:graded_string|add:'</span>'|safe %}
@@ -26,7 +32,7 @@
 {% endblock %}
 
 {% block body %}
-<div class="ui-toggle-visibility__content">
+<div class="ui-slidable__content" aria-labelledby="oa_peer_{{ xblock_id }}" id="oa_peer_{{ xblock_id }}_content">
     <div class="wrapper--step__content">
 
         <div class="step__message message message--complete">
@@ -66,7 +72,7 @@
         </div>
 
         <div class="step__actions">
-            <div class="message message--inline message--error message--error-server">
+            <div class="message message--inline message--error message--error-server" tabindex="-1">
                 <h3 class="message__title">{% trans "We could not submit your assessment" %}</h3>
             </div>
 

@@ -23,14 +23,18 @@ OpenAssessment.PeerView.prototype = {
     /**
     Load the peer assessment view.
     **/
-    load: function() {
+    load: function(usageID) {
         var view = this;
+        var stepID = "#openassessment__peer-assessment";
         this.server.render('peer_assessment').done(
             function(html) {
                 // Load the HTML and install event handlers
-                $('#openassessment__peer-assessment', view.element).replaceWith(html);
-                view.server.renderLatex($('#openassessment__peer-assessment', view.element));
+                $(stepID, view.element).replaceWith(html);
+                view.server.renderLatex($(stepID, view.element));
                 view.installHandlers(false);
+                if (typeof usageID !== 'undefined' && $(stepID, view.element).hasClass("is--showing")) {
+                    $("[id='oa_peer_" + usageID + "']", view.element).focus();
+                }
             }
         ).fail(function() {
             view.baseView.showLoadError('peer-assessment');
@@ -46,7 +50,7 @@ OpenAssessment.PeerView.prototype = {
     can use to continue assessing peers after they've completed
     their peer assessment requirements.
     **/
-    loadContinuedAssessment: function() {
+    loadContinuedAssessment: function(usageID) {
         var view = this;
         view.continueAssessmentEnabled(false);
         this.server.renderContinuedPeer().done(
@@ -55,6 +59,9 @@ OpenAssessment.PeerView.prototype = {
                 $('#openassessment__peer-assessment', view.element).replaceWith(html);
                 view.server.renderLatex($('#openassessment__peer-assessment', view.element));
                 view.installHandlers(true);
+                if (typeof usageID !== 'undefined') {
+                    $("[id='oa_peer_" + usageID + "']", view.element).focus();
+                }
             }
         ).fail(function() {
             view.baseView.showLoadError('peer-assessment');
@@ -131,7 +138,7 @@ OpenAssessment.PeerView.prototype = {
         sel.find('.action--continue--grading').click(
             function(eventObject) {
                 eventObject.preventDefault();
-                view.loadContinuedAssessment();
+                view.loadContinuedAssessment(view.baseView.getUsageID());
             }
         );
     },
@@ -183,10 +190,11 @@ OpenAssessment.PeerView.prototype = {
     peerAssess: function() {
         var view = this;
         var baseView = view.baseView;
+        var usageID = baseView.getUsageID();
         this.peerAssessRequest(function() {
             baseView.unsavedWarningEnabled(false, view.UNSAVED_WARNING_KEY);
-            baseView.loadAssessmentModules();
-            baseView.scrollToTop();
+            baseView.loadAssessmentModules(usageID);
+            baseView.scrollToTop("#openassessment__peer-assessment");
         });
     },
 
@@ -198,11 +206,12 @@ OpenAssessment.PeerView.prototype = {
         var view = this;
         var gradeView = this.baseView.gradeView;
         var baseView = view.baseView;
+        var usageID = baseView.getUsageID();
         view.peerAssessRequest(function() {
             baseView.unsavedWarningEnabled(false, view.UNSAVED_WARNING_KEY);
-            view.loadContinuedAssessment();
+            view.loadContinuedAssessment(usageID);
             gradeView.load();
-            baseView.scrollToTop();
+            baseView.scrollToTop("#openassessment__peer-assessment");
         });
     },
 

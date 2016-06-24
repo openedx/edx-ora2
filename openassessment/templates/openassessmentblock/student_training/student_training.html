@@ -2,11 +2,16 @@
 {% load tz %}
 {% spaceless %}
 {% block list_item %}
-<li id="openassessment__student-training" class="openassessment__steps__step step--student-training ui-toggle-visibility {% if allow_latex %}allow--latex{%endif%}">
+<li id="openassessment__student-training"
+    class="openassessment__steps__step step--student-training is--showing ui-slidable__container {% if allow_latex %}allow--latex{%endif%}"
+    tabindex="-1">
 {% endblock %}
 
-<header class="step__header ui-toggle-visibility__control">
+<header class="step__header ui-slidable__control">
     <h2 class="step__title">
+        {% block button %}
+        <button class="ui-slidable" aria-expanded="true" id="oa_training_{{ xblock_id }}" aria-controls="oa_training_{{ xblock_id }}_content">
+        {% endblock %}
         <span class="step__counter"></span>
             <span class="wrapper--copy">
                 <span class="step__label">{% trans "Learn to Assess Responses" %}</span>
@@ -23,23 +28,24 @@
                 </span>
                 {% endif %}
             </span>
-    </h2>
+        </button>
 
-    {% block title %}
-        <span class="step__status">
-          <span class="step__status__label">{% trans "This step's status" %}:</span>
-          <span class="step__status__value">
-              <span class="copy">{% trans "In Progress" %}
-              (<span class="step__status__value--completed">{{ training_num_completed }}</span> of
-                <span class="step__status__value--required">{{ training_num_available }}</span>)
+        {% block title %}
+            <span class="step__status">
+              <span class="step__status__label">{% trans "This step's status" %}:</span>
+              <span class="step__status__value">
+                  <span class="copy">{% trans "In Progress" %}
+                  (<span class="step__status__value--completed">{{ training_num_completed }}</span> of
+                    <span class="step__status__value--required">{{ training_num_available }}</span>)
+                  </span>
               </span>
-          </span>
-        </span>
-    {% endblock %}
+            </span>
+        {% endblock %}
+    </h2>
 </header>
 
 {% block body %}
-    <div class="ui-toggle-visibility__content">
+    <div class="ui-slidable__content" aria-labelledby="oa_training_{{ xblock_id }}" id="oa_training_{{ xblock_id }}_content">
         <div class="wrapper--step__content">
 
             <div id="openassessment__student-training--instructions" class="step__message message message--correct">
@@ -83,23 +89,25 @@
                             {% for criterion in training_rubric.criteria %}
                                 {% if criterion.options %}
                                 <li
-                                    class="field field--radio is--required assessment__rubric__question ui-toggle-visibility has--options"
+                                    class="field field--radio is--required assessment__rubric__question has--options is--showing ui-slidable__container"
                                     id="training__assessment__rubric__question--{{ criterion.order_num }}"
                                 >
-                                    <h4 class="question__title ui-toggle-visibility__control">
-                                        <i class="icon fa fa-caret-right" aria-hidden="true"></i>
-                                        <span id="training__assessment__rubric__prompt--{{ criterion.order_num }}" class="question__title__copy">{{ criterion.prompt }}</span>
-                                        <span class="label--required sr">* ({% trans "Required" %})</span>
+                                    <h4 class="question__title ui-slidable__control">
+                                        <button class="ui-slidable" aria-expanded="true" id="oa_training_{{ xblock_id }}_criterion--{{ criterion.order_num }}" aria-controls="oa_training_{{ xblock_id }}_content_criterion--{{  criterion.order_num }}">
+                                            <span class="icon fa fa-caret-right" aria-hidden="true"></span>
+                                            <span id="training__assessment__rubric__prompt--{{ criterion.order_num }}" class="question__title__copy">{{ criterion.prompt }}</span>
+                                            <span class="label--required sr">* ({% trans "Required" %})</span>
+                                        </button>
                                     </h4>
-                                    <div class="ui-toggle-visibility__content">
-                                        <div class="step__message message message--correct ui-toggle-visibility is--hidden">
+                                    <div class="ui-slidable__content" aria-labelledby="oa_training_{{ xblock_id }}_criterion--{{ criterion.order_num }}" id="oa_training_{{ xblock_id }}_content_criterion--{{  criterion.order_num }}">
+                                        <div class="step__message message message--correct is--hidden">
                                             <h3 class="message__title">{% trans "Selected Options Agree" %}</h3>
 
                                             <div class="message__content">
                                                 <p>{% trans "The option you selected is the option that the instructor selected." %}</p>
                                             </div>
                                         </div>
-                                        <div class="step__message message message--incorrect ui-toggle-visibility is--hidden">
+                                        <div class="step__message message message--incorrect is--hidden">
                                             <h3 class="message__title">{% trans "Selected Options Differ" %}</h3>
 
                                             <div class="message__content">
@@ -138,7 +146,7 @@
             </div>
 
             <div class="step__actions">
-                <div class="message message--inline message--error message--error-server">
+                <div class="message message--inline message--error message--error-server" tabindex="-1">
                     <h3 class="message__title">{% trans "We could not check your assessment" %}</h3>
                     <div class="message__content"></div>
                 </div>

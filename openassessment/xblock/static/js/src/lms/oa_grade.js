@@ -16,15 +16,22 @@ OpenAssessment.GradeView.prototype = {
     /**
      * Load the grade view.
      */
-    load: function() {
+    load: function(usageID) {
         var view = this;
         var baseView = this.baseView;
+        var stepID = "#openassessment__grade";
         this.server.render('grade').done(
             function(html) {
                 // Load the HTML and install event handlers
-                $('#openassessment__grade', view.element).replaceWith(html);
-                view.server.renderLatex($('#openassessment__grade', view.element));
+                $(stepID, view.element).replaceWith(html);
+                view.server.renderLatex($(stepID, view.element));
                 view.installHandlers();
+                if (typeof usageID !== 'undefined' &&
+                    !$(stepID, view.element).hasClass("is--unfinished") &&
+                    !$(stepID, view.element).hasClass("is--unstarted") &&
+                    !$(stepID, view.element).hasClass("is--waiting--staff")) {
+                    $("[id='oa_grade_" + usageID + "']", view.element).focus();
+                }
             }
         ).fail(function(errMsg) {
             baseView.showLoadError('grade', errMsg);

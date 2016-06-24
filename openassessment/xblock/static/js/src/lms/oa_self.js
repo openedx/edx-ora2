@@ -23,14 +23,18 @@ OpenAssessment.SelfView.prototype = {
     /**
     Load the self assessment view.
     **/
-    load: function() {
+    load: function(usageID) {
         var view = this;
+        var stepID = '#openassessment__self-assessment';
         this.server.render('self_assessment').done(
             function(html) {
                 // Load the HTML and install event handlers
-                $('#openassessment__self-assessment', view.element).replaceWith(html);
-                view.server.renderLatex($('#openassessment__self-assessment', view.element));
+                $(stepID, view.element).replaceWith(html);
+                view.server.renderLatex($(stepID, view.element));
                 view.installHandlers();
+                if (typeof usageID !== 'undefined' && $(stepID, view.element).hasClass("is--showing")) {
+                    $("[id='oa_self_" + usageID + "']", view.element).focus();
+                }
             }
         ).fail(function() {
             view.showLoadError('self-assessment');
@@ -125,6 +129,7 @@ OpenAssessment.SelfView.prototype = {
         // Send the assessment to the server
         var view = this;
         var baseView = this.baseView;
+        var usageID = baseView.getUsageID();
         baseView.toggleActionError('self', null);
         view.selfSubmitEnabled(false);
 
@@ -135,8 +140,9 @@ OpenAssessment.SelfView.prototype = {
         ).done(
             function() {
                 baseView.unsavedWarningEnabled(false, view.UNSAVED_WARNING_KEY);
-                baseView.loadAssessmentModules();
-                baseView.scrollToTop();
+                baseView.loadAssessmentModules(usageID);
+                view.load(usageID);
+                baseView.scrollToTop("#openassessment__self-assessment");
             }
         ).fail(function(errMsg) {
             baseView.toggleActionError('self', errMsg);

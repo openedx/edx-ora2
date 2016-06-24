@@ -97,16 +97,7 @@
       display: block;
       margin-bottom: ($baseline-v/2);
       width: 100%;
-
-      @include media($bp-dl) {
-        @include bidi-span-columns(8 of 12);
-        margin-bottom: 0;
-      }
-
-      @include media($bp-dx) {
-        @include bidi-span-columns(9 of 12);
-        margin-bottom: 0;
-      }
+      margin-bottom: 0;
 
       .step__counter, .wrapper--copy {
         display: inline-block;
@@ -178,7 +169,6 @@
 
       .step__label {
         @extend %t-superheading;
-        color: $heading-primary-color;
       }
 
       .step__deadline {
@@ -189,33 +179,33 @@
 
     // step status
     .step__status {
-      display: inline-block;
+      display: inline;
       margin-top: ($baseline-v/4);
 
       @include media($bp-dm) {
         margin-top: 0;
         @include float(right);
         position: relative;
-        top: -($baseline-v*2);
+        top: -($baseline-v/2) - 2;
       }
 
       @include media($bp-dl) {
         margin-top: 0;
         @include float(right);
         position: relative;
-        top: -($baseline-v*2);
+        top: -($baseline-v/2) - 2;
       }
 
       @include media($bp-dx) {
         margin-top: 0;
         @include float(right);
         position: relative;
-        top: -($baseline-v*2);
+        top: -($baseline-v/2) - 2;
       }
 
       .step__status__value {
         border-radius: ($baseline-v/10);
-        padding: ($baseline-v/4) ($baseline-h/4);
+        padding: ($baseline-v/4)-1 ($baseline-h/4);
         background: $color-decorative-tertiary;
         position: relative;
 
@@ -317,16 +307,6 @@
       }
     }
 
-    // STATE: step is collapsed (not focused on)
-    &.is--collapsed {
-
-      .step__header {
-        padding-bottom: 0;
-        border-bottom: none;
-        margin-bottom: 0;
-      }
-    }
-
     // STATE: step is incomplete
     &.is--incomplete {
 
@@ -416,6 +396,10 @@
           color: $white-t;
         }
       }
+
+      button {
+        opacity: 1;
+      }
     }
 
     // STATE: has error
@@ -437,38 +421,78 @@
       .step__label {
         color: $color-error;
       }
+    }
+  }
 
-      .message {
 
+  // --------------------
+  // ui-slidable
+  // --------------------
+  .ui-slidable__container {
+    .ui-slidable__content {
+      display: none;
+      width: 100%;
+    }
+
+    // If there is an icon, it should rotate when clicked
+    @include transition(color $tmg-f2 ease-in);
+    .icon {
+      @include transition(all $tmg-f2 ease-in-out 0s);
+      @include transform(rotate(bidi-rotate-angle(0deg)));
+    }
+
+    &.is--showing {
+      .ui-slidable__content {
+        display: block;
+      }
+
+      .ui-slidable .icon {
+        @include transform(rotate(bidi-rotate-angle(90deg)));
+        @include transform-origin(50% 50%);
+      }
+
+      .ui-slidable__container {
+        &:not(.is--showing) {
+          .icon {
+            @include transition(all $tmg-f2 ease-in-out 0s);
+            @include transform(rotate(bidi-rotate-angle(0deg)));
+          }
+        }
+      }
+    }
+
+    .ui-slidable {
+      // Override default button styling.
+      @extend %btn-reset;
+      color: $heading-primary-color;
+      background: none;
+      border-radius: ($baseline-v/4);
+      padding: 0px;
+      text-align: inherit;
+
+      &:active, &:focus:not(:disabled), &:hover:not(:disabled) {
+        background: none;
+        border: none;
+        box-shadow: none;
+      }
+
+      &:hover, &:focus {
+        color: $action-primary-color-focus;
+      }
+
+      &:active, &.is--current {
+        color: $action-primary-color-active;
+      }
+
+      &:not([disabled]) {
+        color: $action-primary-color;
       }
     }
   }
 
-
-  // --------------------
-  // collapse and expand styling for step labels
-  // --------------------
-  // TODO: clean this scope up
-  .ui-toggle-visibility .ui-toggle-visibility__control .step__label {
-    @include transition(color $tmg-f2 ease-in);
-    color: $action-primary-color;
-
-    &:hover, &:focus {
-      color: $action-primary-color-focus;
-    }
-
-    &:active, &.is--current {
-      color: $action-primary-color-active;
-    }
-  }
-
-
   // --------------------
   // submission
   // --------------------
-  .wrapper--openassessment__prompt {
-
-  }
 
   .submission__answer__part__prompt {
     @extend %ui-well;
@@ -789,7 +813,6 @@
 
       .grade__value__title {
         @extend %t-superheading;
-        color: $heading-primary-color;
 
         .grade__value__earned {
           @extend %t-strong;
@@ -1154,14 +1177,4 @@
     @extend %action-2;
     @include margin-right(($baseline-v/2));
   }
-
-  // --------------------
-  // STATE: incomplete
-  // --------------------
-
-
-  // --------------------
-  // STATE: waiting
-  // --------------------
-
 }

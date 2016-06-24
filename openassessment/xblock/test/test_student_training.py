@@ -39,6 +39,9 @@ class StudentTrainingTest(XBlockHandlerTestCase):
 
         """
         path, context = xblock.training_path_and_context()
+
+        expected_context['xblock_id'] = xblock.scope_ids.usage_id
+
         self.assertEqual(path, expected_path)
         self.assertEqual(len(context), len(expected_context))
         for key in expected_context.keys():
@@ -266,6 +269,9 @@ class StudentTrainingAssessTest(StudentTrainingTest):
 
         """
         path, context = xblock.training_path_and_context()
+
+        expected_context['xblock_id'] = xblock.scope_ids.usage_id
+
         self.assertEqual(path, expected_path)
         self.assertEqual(len(context), len(expected_context))
         for key in expected_context.keys():

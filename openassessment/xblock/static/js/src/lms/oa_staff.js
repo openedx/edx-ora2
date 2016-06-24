@@ -16,14 +16,27 @@ OpenAssessment.StaffView.prototype = {
     /**
      * Load the staff assessment view.
      **/
-    load: function() {
+    load: function(usageID) {
         var view = this;
         this.server.render('staff_assessment').done(
             function(html) {
                 $('#openassessment__staff-assessment', view.element).replaceWith(html);
+                view.installHandlers();
+                if (typeof usageID !== 'undefined' &&
+                    $("#openassessment__staff-assessment", view.element).hasClass("is--showing")) {
+                    $("[id='oa_staff_grade_" + usageID + "']", view.element).focus();
+                }
             }
         ).fail(function() {
             view.baseView.showLoadError('staff-assessment');
         });
-    }
+    },
+
+    /**
+    Install event handlers for the view.
+    **/
+    installHandlers: function() {
+        // Install a click handler for collapse/expand
+        this.baseView.setUpCollapseExpand($('#openassessment__staff-assessment', this.element));
+    },
 };

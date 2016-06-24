@@ -23,9 +23,9 @@
 
                     {% if assessment.option.explanation %}
                         <span class="ui-hint hint--top" data-hint="{{ assessment.option.explanation }}">
-                            <i class="icon fa fa-info-circle" aria-hidden="true"
+                            <span class="icon fa fa-info-circle" aria-hidden="true"
                                title="{% blocktrans with name=assessment.option.label %}More information about {{ name }}{% endblocktrans %}">
-                            </i>
+                            </span>
                         </span>
                     {% endif %}
 

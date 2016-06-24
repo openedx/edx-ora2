@@ -39,19 +39,22 @@ OpenAssessment.ResponseView.prototype = {
     MAX_FILE_SIZE: 5242880,
 
     UNSAVED_WARNING_KEY: "learner-response",
-
     /**
      Load the response (submission) view.
      **/
-    load: function() {
+    load: function(usageID) {
         var view = this;
+        var stepID = '#openassessment__response';
         this.server.render('submission').done(
             function(html) {
                 // Load the HTML and install event handlers
-                $('#openassessment__response', view.element).replaceWith(html);
-                view.server.renderLatex($('#openassessment__response', view.element));
+                $(stepID, view.element).replaceWith(html);
+                view.server.renderLatex($(stepID, view.element));
                 view.installHandlers();
                 view.setAutoSaveEnabled(true);
+                if (typeof usageID !== 'undefined' && $(stepID, view.element).hasClass("is--showing")) {
+                    $("[id='oa_response_" + usageID + "']", view.element).focus();
+                }
             }
         ).fail(function() {
             view.baseView.showLoadError('response');
@@ -68,7 +71,6 @@ OpenAssessment.ResponseView.prototype = {
         if (sel.find('.submission__answer__display__file').length) {
             uploadType = sel.find('.submission__answer__display__file').data('upload-type');
         }
-
         // Install a click handler for collapse/expand
         this.baseView.setUpCollapseExpand(sel);
 
@@ -433,12 +435,14 @@ OpenAssessment.ResponseView.prototype = {
      Transition the user to the next step in the workflow.
      **/
     moveToNextStep: function() {
-        this.load();
-        this.baseView.loadAssessmentModules();
+        var baseView = this.baseView;
+        var usageID = baseView.getUsageID();
+        this.load(usageID);
+        baseView.loadAssessmentModules(usageID);
 
         // Disable the "unsaved changes" warning if the user
         // tries to navigate to another page.
-        this.baseView.unsavedWarningEnabled(false, this.UNSAVED_WARNING_KEY);
+        baseView.unsavedWarningEnabled(false, this.UNSAVED_WARNING_KEY);
     },
 
     /**

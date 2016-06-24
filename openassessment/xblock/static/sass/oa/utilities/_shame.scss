@@ -110,18 +110,6 @@
     color: inherit;
   }
 
-  .ui-toggle-visibility .ui-toggle-visibility__control, .ui-toggle-visibility .ui-toggle-visibility__control .step__label {
-    color: $action-primary-color;
-
-    &:hover, &:focus {
-      color: $action-primary-color-focus;
-    }
-
-    &:active, &.is--current {
-      color: $action-primary-color-active;
-    }
-  }
-
   // peer assessment
   .step--peer-assessment .list--peer-assessments {
     list-style: none outside none !important;
@@ -141,7 +129,7 @@
   }
 
   // submission/results collapse and expand targets
-  .question__title.ui-toggle-visibility__control {
+  .question__title.ui-slidable {
 
     .question__title__copy  {
       color: inherit !important;
