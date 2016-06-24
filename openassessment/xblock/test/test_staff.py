@@ -69,6 +69,7 @@ class TestStaffAssessmentRender(StaffAssessmentTestBase):
                                    'you will receive your grade only after you have completed all '
                                    'the required steps of this problem.',
                 'button_active': 'aria-expanded="false"',
+                'step_classes': 'is--initially--collapsed',
                 'xblock_id': xblock.scope_ids.usage_id
             }
         )

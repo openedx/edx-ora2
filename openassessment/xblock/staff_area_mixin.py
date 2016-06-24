@@ -171,6 +171,7 @@ class StaffAreaMixin(object):
                 self.get_staff_assessment_statistics_context(student_item["course_id"], student_item["item_id"])
             )
 
+        context['xblock_id'] = self.get_xblock_id()
         return path, context
 
     @staticmethod
@@ -333,6 +334,7 @@ class StaffAreaMixin(object):
         if self.rubric_feedback_default_text is not None:
             context['rubric_feedback_default_text'] = self.rubric_feedback_default_text
 
+        context['xblock_id'] = self.get_xblock_id()
         return context
 
     def get_student_info_path_and_context(self, student_username):

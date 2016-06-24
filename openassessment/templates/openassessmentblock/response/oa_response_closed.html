@@ -1,8 +1,8 @@
 {%  extends "openassessmentblock/response/oa_response.html" %}
 {% load i18n %}
 {% block list_item %}
-<li id="openassessment__response"
-    class="openassessment__steps__step step--response is--incomplete ui-slidable__container"
+<li id="openassessment__response__{{ xblock_id }}"
+    class="openassessment__steps__step step--response is--incomplete ui-slidable__container is--initially--collapsed"
     tabindex="-1">
 {% endblock %}
 

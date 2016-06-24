@@ -1,5 +1,5 @@
 {% load i18n %}
-<div class="staff-info__status ui-staff__content__section wrapper--ui--collapse staff-info__{{ class_type }}__assessments ui-slidable__container">
+<div class="staff-info__status ui-staff__content__section wrapper--ui--collapse staff-info__{{ class_type }}__assessments ui-slidable__container is--initially--collapsed ">
     <div class="ui-slidable__control">
         <button class="ui-staff ui-slidable" aria-controls="{{ class_type }}_content_{{ submission.uuid }}" aria-expanded="false" id="{{ class_type }}_{{ submission.uuid }}">
             <h2 class="staff-info__title ui-staff__subtitle">

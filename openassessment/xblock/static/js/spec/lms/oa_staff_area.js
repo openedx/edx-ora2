@@ -96,7 +96,7 @@ describe('OpenAssessment.StaffAreaView', function() {
         if (staffAreaTemplate) {
             server.staffAreaTemplate = staffAreaTemplate;
         }
-        var assessmentElement = $('#openassessment').get(0);
+        var assessmentElement = $('.openassessment').get(0);
         var baseView = new OpenAssessment.BaseView(runtime, assessmentElement, server, {});
         var view = new OpenAssessment.StaffAreaView(assessmentElement, server, baseView);
         view.load();
@@ -130,7 +130,7 @@ describe('OpenAssessment.StaffAreaView', function() {
     };
 
     var fillAssessment = function($assessment, type) {
-        $('#staff-'+ type+ '__assessment__rubric__question--2__feedback', $assessment).val('Text response');
+        $('#staff-'+ type+ '__assessment__rubric__question--2__feedback__', $assessment).val('Text response');
         $('.question__answers', $assessment).each(function() {
             $('input[type="radio"]', this).first().click();
         });

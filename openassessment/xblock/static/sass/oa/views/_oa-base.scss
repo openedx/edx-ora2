@@ -322,10 +322,6 @@
           color: $white-t;
         }
       }
-
-      .step__label {
-        color: $color-incomplete;
-      }
     }
 
     // STATE: step is unavailable
@@ -430,7 +426,6 @@
   // --------------------
   .ui-slidable__container {
     .ui-slidable__content {
-      display: none;
       width: 100%;
     }
 
@@ -441,11 +436,13 @@
       @include transform(rotate(bidi-rotate-angle(0deg)));
     }
 
-    &.is--showing {
+    &.is--initially--collapsed  {
       .ui-slidable__content {
-        display: block;
+        display: none;
       }
+    }
 
+    &.is--showing {
       .ui-slidable .icon {
         @include transform(rotate(bidi-rotate-angle(90deg)));
         @include transform-origin(50% 50%);
@@ -464,11 +461,9 @@
     .ui-slidable {
       // Override default button styling.
       @extend %btn-reset;
-      color: $heading-primary-color;
       background: none;
       border-radius: ($baseline-v/4);
       padding: 0px;
-      text-align: inherit;
 
       &:active, &:focus:not(:disabled), &:hover:not(:disabled) {
         background: none;
@@ -476,16 +471,16 @@
         box-shadow: none;
       }
 
-      &:hover, &:focus {
-        color: $action-primary-color-focus;
-      }
-
-      &:active, &.is--current {
-        color: $action-primary-color-active;
-      }
-
       &:not([disabled]) {
         color: $action-primary-color;
+
+        &:hover, &:focus {
+          color: $action-primary-color-focus;
+        }
+      }
+
+      .wrapper--copy {
+        text-align: left;
       }
     }
   }
@@ -766,19 +761,6 @@
   // grade status
   // --------------------
   // TODO: clean this up - need to make sure counter doens't show when loading or in other states
-  #openassessment__grade {
-
-    .step__counter, .step__counter:before {
-      display: none;
-    }
-
-    .wrapper--copy {
-      @include margin-left(0);
-      @include border-left(none);
-      @include padding-left(0);
-    }
-  }
-
   .step--grade {
 
     .step__title {
@@ -800,6 +782,16 @@
 
       @include media($bp-dx) {
         @include bidi-span-columns(12 of 12);
+      }
+
+      .step__counter, .step__counter:before {
+        display: none;
+      }
+
+      .wrapper--copy {
+        @include margin-left(0);
+        @include border-left(none);
+        @include padding-left(0);
       }
 
       .step__label, .grade__value {
@@ -921,13 +913,18 @@
       margin-bottom: $baseline-v;
       border-bottom: ($baseline-v/10) solid $heading-color;
       padding-bottom: ($baseline-v/4);
+
+      .icon {
+        @extend %icon-1;
+        display: inline-block;
+        vertical-align: middle;
+      }
     }
 
     .question__title__copy {
       @extend %t-heading;
       @include margin-left(($baseline-h/4));
       white-space: pre-wrap;
-      color: $heading-color;
     }
 
     .question__score {

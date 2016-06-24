@@ -22,14 +22,16 @@ OpenAssessment.LeaderboardView.prototype = {
     load: function(usageID) {
         var view = this;
         var baseView = this.baseView;
+        var stepID = ".step--leaderboard";
+
         this.server.render('leaderboard').done(
             function(html) {
                 // Load the HTML and install event handlers
-                $('#openassessment__leaderboard', view.element).replaceWith(html);
-                view.server.renderLatex($('#openassessment__leaderboard', view.element));
+                $(stepID, view.element).replaceWith(html);
+                view.server.renderLatex($(stepID, view.element));
                 view.installHandlers();
                 if (typeof usageID !== 'undefined' &&
-                    $("#openassessment__leaderboard", view.element).hasClass("is--showing")) {
+                    $(stepID, view.element).hasClass("is--showing")) {
                     $("[id='oa_leaderboard_" + usageID + "']", view.element).focus();
                 }
             }
@@ -43,6 +45,6 @@ OpenAssessment.LeaderboardView.prototype = {
     **/
     installHandlers: function() {
         // Install a click handler for collapse/expand
-        this.baseView.setUpCollapseExpand($('#openassessment__leaderboard', this.element));
+        this.baseView.setUpCollapseExpand($(".step--leaderboard", this.element));
     },
 };

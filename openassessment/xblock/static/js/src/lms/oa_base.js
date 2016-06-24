@@ -55,11 +55,11 @@ OpenAssessment.BaseView.prototype = {
      * import scrollTo, or other dependencies, into workbench.
      *
      * @param {string} selector optional CSS selector to scroll to. If not supplied,
-     *     the default value of "#openassessment__steps" is used.
+     *     the default value of ".openassessment__steps" is used.
      */
     scrollToTop: function(selector) {
         if (!selector) {
-            selector = "#openassessment__steps";
+            selector = ".openassessment__steps";
         }
         if ($.scrollTo instanceof Function) {
             $(window).scrollTo($(selector, this.element), 800, {offset: -50});
@@ -96,6 +96,8 @@ OpenAssessment.BaseView.prototype = {
                     $toggleButton.attr('aria-expanded', 'true');
                     $container.addClass('is--showing');
                 }
+
+                $container.removeClass('is--initially--collapsed ');
             });
         });
     },
@@ -172,7 +174,7 @@ OpenAssessment.BaseView.prototype = {
             container = '.submission__feedback__actions';
         }
         else if (type === 'upload') {
-            container = '#upload__error';
+            container = '.upload__error';
         }
 
         // If we don't have anywhere to put the message, just log it to the console
@@ -200,7 +202,7 @@ OpenAssessment.BaseView.prototype = {
         if (!errorMessage) {
             errorMessage = gettext('Unable to load');
         }
-        var $container = $('#openassessment__' + stepName);
+        var $container = $('.step--' + stepName);
         $container.toggleClass('has--error', true);
         $container.removeClass('is--showing');
         $container.find('.ui-slidable').attr('aria-expanded', 'false');

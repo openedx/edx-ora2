@@ -25,8 +25,8 @@ OpenAssessment.MessageView.prototype = {
         this.server.render('message').done(
             function(html) {
                 //Load the HTML
-                $('#openassessment__message', view.element).replaceWith(html);
-                view.server.renderLatex($('#openassessment__message', view.element));
+                $('.openassessment__message', view.element).replaceWith(html);
+                view.server.renderLatex($('.openassessment__message', view.element));
             }
         ).fail(function(errMsg) {
             baseView.showLoadError('message', errMsg);

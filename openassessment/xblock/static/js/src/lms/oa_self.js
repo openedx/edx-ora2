@@ -25,7 +25,7 @@ OpenAssessment.SelfView.prototype = {
     **/
     load: function(usageID) {
         var view = this;
-        var stepID = '#openassessment__self-assessment';
+        var stepID = '.step--self-assessment';
         this.server.render('self_assessment').done(
             function(html) {
                 // Load the HTML and install event handlers
@@ -46,13 +46,13 @@ OpenAssessment.SelfView.prototype = {
     **/
     installHandlers: function() {
         var view = this;
-        var sel = $('#openassessment__self-assessment', view.element);
+        var sel = $('.step--self-assessment', view.element);
 
         // Install a click handler for collapse/expand
         this.baseView.setUpCollapseExpand(sel);
 
         // Initialize the rubric
-        var rubricSelector = $("#self-assessment--001__assessment", this.element);
+        var rubricSelector = $(".self-assessment--001__assessment", this.element);
         if (rubricSelector.size() > 0) {
             var rubricElement = rubricSelector.get(0);
             this.rubric = new OpenAssessment.Rubric(rubricElement);
@@ -70,7 +70,7 @@ OpenAssessment.SelfView.prototype = {
         }
 
         // Install a click handler for the submit button
-        sel.find('#self-assessment--001__assessment__submit').click(
+        sel.find('.self-assessment--001__assessment__submit').click(
             function(eventObject) {
                 // Override default form submission
                 eventObject.preventDefault();
@@ -97,7 +97,7 @@ OpenAssessment.SelfView.prototype = {
      >> true
      **/
     selfSubmitEnabled: function(enabled) {
-        var button = $('#self-assessment--001__assessment__submit', this.element);
+        var button = $('.self-assessment--001__assessment__submit', this.element);
         if (typeof enabled === 'undefined') {
             return !button.hasClass('is--disabled');
         } else {
@@ -142,7 +142,7 @@ OpenAssessment.SelfView.prototype = {
                 baseView.unsavedWarningEnabled(false, view.UNSAVED_WARNING_KEY);
                 baseView.loadAssessmentModules(usageID);
                 view.load(usageID);
-                baseView.scrollToTop("#openassessment__self-assessment");
+                baseView.scrollToTop(".step--self-assessment");
             }
         ).fail(function(errMsg) {
             baseView.toggleActionError('self', errMsg);

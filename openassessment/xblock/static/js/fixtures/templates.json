@@ -9,31 +9,31 @@
             "rubric_assessments": [
                 {
                     "name": "submission",
-                    "class_id": "openassessment__response",
+                    "class_id": "step--response",
                     "navigation_text": "Your response to this problem",
                     "title": "Your Response"
                 },
                 {
                     "name": "peer-assessment",
-                    "class_id": "openassessment__peer-assessment",
+                    "class_id": "step--peer-assessment",
                     "navigation_text": "Your assessment(s) of peer responses",
                     "title": "Assess Peers' Responses"
                 },
                 {
                     "name": "self-assessment",
-                    "class_id": "openassessment__self-assessment",
+                    "class_id": "step--self-assessment",
                     "navigation_text": "Your assessment of your response",
                     "title": "Assess Your Response"
                 },
                 {
                     "name": "grade",
-                    "class_id": "openassessment__grade",
+                    "class_id": "step--grade",
                     "navigation_text": "Your grade for this problem",
                     "title": "Your Grade:"
                 },
                 {
                     "name": "leaderboard",
-                    "class_id": "openassessment__leaderboard",
+                    "class_id": "step--leaderboard",
                     "navigation_text": "A leaderboard for the top submissions",
                     "title": "Leaderboard:"
                 }
@@ -51,31 +51,31 @@
             "rubric_assessments": [
                 {
                     "name": "submission",
-                    "class_id": "openassessment__response",
+                    "class_id": "step--response",
                     "navigation_text": "Your response to this problem",
                     "title": "Your Response"
                 },
                 {
                     "name": "peer-assessment",
-                    "class_id": "openassessment__peer-assessment",
+                    "class_id": "step--peer-assessment",
                     "navigation_text": "Your assessment(s) of peer responses",
                     "title": "Assess Peers' Responses"
                 },
                 {
                     "name": "self-assessment",
-                    "class_id": "openassessment__self-assessment",
+                    "class_id": "step--self-assessment",
                     "navigation_text": "Your assessment of your response",
                     "title": "Assess Your Response"
                 },
                 {
                     "name": "grade",
-                    "class_id": "openassessment__grade",
+                    "class_id": "step--grade",
                     "navigation_text": "Your grade for this problem",
                     "title": "Your Grade:"
                 },
                 {
                     "name": "leaderboard",
-                    "class_id": "openassessment__leaderboard",
+                    "class_id": "step--leaderboard",
                     "navigation_text": "A leaderboard for the top submissions",
                     "title": "Leaderboard:"
                 }

@@ -15,13 +15,10 @@ class PageConfigurationError(Exception):
     pass
 
 
-class OpenAssessmentPage(PageObject):
+class BaseAssessmentPage(PageObject):
     """
     Base class for ORA page objects.
     """
-    # vertical index is the index identifier of a problem component on a page.
-    vertical_index = 0
-
     def __init__(self, browser, problem_location):
         """
         Configure a page object for a particular ORA problem.
@@ -31,8 +28,34 @@ class OpenAssessmentPage(PageObject):
             problem_location (unicode): URL path for the problem, appended to the base URL.
 
         """
-        super(OpenAssessmentPage, self).__init__(browser)
+        super(BaseAssessmentPage, self).__init__(browser)
         self._problem_location = problem_location
+
+    @property
+    def url(self):
+        return "{base}/{loc}".format(
+            base=ORA_SANDBOX_URL,
+            loc=self._problem_location
+        )
+
+class MultipleAssessmentPage(BaseAssessmentPage):
+    """
+    Page object for subsection unit containing multiple ORA problems
+    Does not inherit OpenAssessmentPage object
+    Used to test accessibility of multiple ORA problems on one page
+    """
+    def is_browser_on_page(self):
+        # Css is #main to scope the page object to the entire main problem area of a unit
+        # For testing multiple ORA problems on one page, we don't want to scope it to a particular Xblock
+        return self.q(css='#main').is_present()
+
+
+class OpenAssessmentPage(BaseAssessmentPage):
+    """
+    Base class for singular ORA page objects.
+    """
+    # vertical index is the index identifier of a problem component on a page.
+    vertical_index = 0
 
     def _bounded_selector(self, selector):
         """
@@ -50,12 +73,6 @@ class OpenAssessmentPage(PageObject):
         """
         return ".vert-{vertical_index}".format(vertical_index=self.vertical_index)
 
-    @property
-    def url(self):
-        return "{base}/{loc}".format(
-            base=ORA_SANDBOX_URL,
-            loc=self._problem_location
-        )
 
     def submit(self, button_css=".action--submit"):
         """
@@ -86,7 +103,7 @@ class SubmissionPage(OpenAssessmentPage):
     """
 
     def is_browser_on_page(self):
-        return self.q(css='#openassessment__response').is_present()
+        return self.q(css='.step--response').is_present()
 
     def submit_response(self, response_text):
         """
@@ -117,8 +134,8 @@ class SubmissionPage(OpenAssessmentPage):
 
     def preview_latex(self):
         # Click 'Preview in LaTeX' button on the page.
-        self.q(css="button#submission__preview").click()
-        self.wait_for_element_visibility("#preview_content .MathJax_SVG", "Verify Preview LaTeX expression")
+        self.q(css="button.submission__preview").click()
+        self.wait_for_element_visibility(".preview_content .MathJax_SVG", "Verify Preview LaTeX expression")
 
     def select_file(self, file_path_name):
         """
@@ -127,15 +144,15 @@ class SubmissionPage(OpenAssessmentPage):
         Args:
           file_path_name (string): full path and name of the file
         """
-        self.wait_for_element_visibility("#submission__answer__upload", "File select button is present")
-        self.q(css="#submission__answer__upload").results[0].send_keys(file_path_name)
+        self.wait_for_element_visibility(".submission__answer__upload", "File select button is present")
+        self.q(css=".submission__answer__upload").results[0].send_keys(file_path_name)
 
     def upload_file(self):
         """
         Upload the selected file
         """
-        self.wait_for_element_visibility("#file__upload", "Upload button is present")
-        self.q(css="#file__upload").click()
+        self.wait_for_element_visibility(".file__upload", "Upload button is present")
+        self.q(css=".file__upload").click()
 
     @property
     def latex_preview_button_is_disabled(self):
@@ -145,7 +162,7 @@ class SubmissionPage(OpenAssessmentPage):
         Returns:
             bool
         """
-        preview_latex_button_class = self.q(css="button#submission__preview").attrs('class')[0]
+        preview_latex_button_class = self.q(css="button.submission__preview").attrs('class')[0]
         return 'is--disabled' in preview_latex_button_class
 
     @property
@@ -166,7 +183,7 @@ class SubmissionPage(OpenAssessmentPage):
         Returns:
             bool
         """
-        return self.q(css="div#upload__error > div.message--error").visible
+        return self.q(css="div.upload__error > div.message--error").visible
 
     @property
     def has_file_uploaded(self):
@@ -176,14 +193,14 @@ class SubmissionPage(OpenAssessmentPage):
         Returns:
             bool
         """
-        return self.q(css="#submission__custom__upload").visible
+        return self.q(css=".submission__custom__upload").visible
 
 
 class AssessmentMixin(object):
     """
     Mixin for interacting with the assessment rubric.
     """
-    def assess(self, assessment_type, options_selected):
+    def assess(self, options_selected):
         """
         Create an assessment.
 
@@ -199,8 +216,7 @@ class AssessmentMixin(object):
 
         """
         for criterion_num, option_num in enumerate(options_selected):
-            sel = "#{assessment_type}__assessment__rubric__question--{criterion_num}__{option_num}".format(
-                assessment_type=assessment_type,
+            sel = ".rubric_{criterion_num}_{option_num}".format(
                 criterion_num=criterion_num,
                 option_num=option_num
             )
@@ -261,14 +277,14 @@ class AssessmentPage(OpenAssessmentPage, AssessmentMixin):
         """
         Return `selector`, but limited to this Assignment Page.
         """
-        return super(AssessmentPage, self)._bounded_selector('#openassessment__{assessment_type} {selector}'.format(
+        return super(AssessmentPage, self)._bounded_selector('.step--{assessment_type} {selector}'.format(
             assessment_type=self._assessment_type, selector=selector))
 
     def is_browser_on_page(self):
-        css_id = "#openassessment__{assessment_type}".format(
+        css_class = ".step--{assessment_type}".format(
             assessment_type=self._assessment_type
         )
-        return self.q(css=css_id).is_present()
+        return self.q(css=css_class).is_present()
 
     @property
     def is_on_top(self):
@@ -450,10 +466,10 @@ class GradePage(OpenAssessmentPage):
         """
         Return `selector`, but limited to the student grade view.
         """
-        return super(GradePage, self)._bounded_selector('#openassessment__grade {selector}'.format(selector=selector))
+        return super(GradePage, self)._bounded_selector('.step--grade {selector}'.format(selector=selector))
 
     def is_browser_on_page(self):
-        return self.q(css="#openassessment__grade").is_present()
+        return self.q(css=".step--grade").is_present()
 
     @property
     def score(self):
@@ -621,7 +637,7 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
         Clicks the staff grade control to expand staff grading section for use in staff required workflows.
         """
         self.q(css=self._bounded_selector(".staff__grade__show-form")).first.click()
-        self.wait_for_element_visibility("#staff-full-grade__assessment__rubric__question--0", "staff grading is present")
+        self.wait_for_element_visibility(".staff-full-grade__assessment__rubric__question--0", "staff grading is present")
 
     @property
     def available_checked_out_numbers(self):
@@ -733,10 +749,9 @@ class StaffAreaPage(OpenAssessmentPage, AssessmentMixin):
             css=self._bounded_selector(".staff-info__student__response .ui-slidable__content")
         ).text[0]
 
-    def staff_assess(self, options_selected, grading_type, continue_after=False):
+    def staff_assess(self, options_selected, continue_after=False):
         for criterion_num, option_num in enumerate(options_selected):
-            sel = "#staff-{type}__assessment__rubric__question--{criterion_num}__{option_num}".format(
-                type=grading_type,
+            sel = ".rubric_{criterion_num}_{option_num}".format(
                 criterion_num=criterion_num,
                 option_num=option_num
             )

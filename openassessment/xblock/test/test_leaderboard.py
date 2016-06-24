@@ -294,7 +294,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         Check that the leaderboard is displayed in the student view.
         """
         fragment = self.runtime.render(xblock, "student_view")
-        has_leaderboard = 'openassessment__leaderboard' in fragment.body_html()
+        has_leaderboard = 'step--leaderboard' in fragment.body_html()
         self.assertEqual(has_leaderboard, is_visible)
 
     def _clean_score_filenames(self, scores):

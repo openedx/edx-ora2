@@ -59,6 +59,8 @@ class MessageMixin(object):
             # Default path leads to an "instruction-unavailable" block
             # Default context is empty
             path, context = 'openassessmentblock/message/oa_message_unavailable.html', {}
+
+        context['xblock_id'] = self.get_xblock_id()
         return self.render_assessment(path, context)
 
     def render_message_incomplete(self, status, deadline_info):

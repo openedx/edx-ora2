@@ -10,14 +10,13 @@
         </header>
     {% endif %}
 
-    <div class="{{ class_prefix }}__display__file {% if not file_url %}is--hidden{% endif %}" id="submission__{{ file_upload_type }}__upload" data-upload-type="{{ file_upload_type }}">
+    <div class="{{ class_prefix }}__display__file {% if not file_url %}is--hidden{% endif %} submission__{{ file_upload_type }}__upload" data-upload-type="{{ file_upload_type }}">
         {% if file_upload_type == "image" %}
-            <img id="submission__answer__file"
-                 class="submission--image"
+            <img class="submission__answer__file submission--image"
                  alt="{% trans "The image associated with this submission." %}"
                  src="{{ file_url }}" />
         {% elif file_upload_type == "pdf-and-image" or file_upload_type == "custom" %}
-            <a href="{{ file_url }}" id="submission__answer__file" class="submission--file" target="_blank">
+            <a href="{{ file_url }}" class="submission__answer__file submission--file" target="_blank">
                 {% trans "View the file associated with this submission." %}
             </a>
             {% if show_warning %}

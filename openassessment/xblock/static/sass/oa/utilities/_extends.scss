@@ -162,6 +162,7 @@
     padding-bottom: ($baseline-v/4);
 
     .icon {
+      @extend %icon-1;
       display: inline-block;
       vertical-align: middle;
     }

@@ -1,6 +1,6 @@
 {% load i18n %}
 {% spaceless %}
-    <li id="openassessment__grade" class="openassessment__steps__step step--grade is--complete is--showing has--grade ui-slidable__container {% if allow_latex %}allow--latex{% endif %}" tabindex="-1">
+    <li id="openassessment__grade__{{ xblock_id }}" class="openassessment__steps__step step--grade is--complete is--showing has--grade ui-slidable__container {% if allow_latex %}allow--latex{% endif %}" tabindex="-1">
         <header class="step__header ui-slidable__control">
             <h2 class="step__title">
                 <button class="ui-slidable" aria-expanded="true" id="oa_grade_{{ xblock_id }}" aria-controls="oa_grade_{{ xblock_id }}_content">
@@ -45,7 +45,7 @@
                                 {% with criterion_num=forloop.counter %}
                                     <li class="question question--{{ criterion_num }} ui-slidable__container is--showing">
                                         <h4 class="question__title ui-slidable__control">
-                                            <button class="ui-slidable" aria-expanded="true" id="oa_grade_{{ xblock_id }}_criteria_{{ criterion_num }}" aria-controls="oa_grade_{{ xblock_id }}_criteria_{{ criterion_num }}_content">
+                                            <button class="ui-slidable" id="oa_grade_{{ xblock_id }}_criteria_{{ criterion_num }}" aria-expanded="true" aria-controls="oa_grade_{{ xblock_id }}_criteria_{{ criterion_num }}_content">
                                                 <span class="icon fa fa-caret-right" aria-hidden="true"></span>
                                                 <span class="question__title__copy">{{ criterion.label }}</span>
                                             </button>
@@ -62,21 +62,23 @@
                                             {% endif %}
                                         </h4>
 
-                                        {% if criterion.options %}
-                                            <ul class="question__answers ui-slidable__content has--hints" aria-labelledby="oa_grade_{{ xblock_id }}_criteria_{{ criterion_num }}" id="oa_grade_{{ xblock_id }}_criteria_{{ criterion_num }}_content">
-                                                {% for assessment in criterion.assessments %}
-                                                    {% include "openassessmentblock/grade/oa_assessment_title.html" with assessment=assessment %}
-                                                {% endfor %}
-                                            </ul>
-                                        {% endif %}
+                                        <div class="ui-slidable__content" aria-labelledby="oa_grade_{{ xblock_id }}_criteria_{{ criterion_num }}" id="oa_grade_{{ xblock_id }}_criteria_{{ criterion_num }}_content">
+                                            {% if criterion.options %}
+                                                <ul class="question__answers has--hints">
+                                                    {% for assessment in criterion.assessments %}
+                                                        {% include "openassessmentblock/grade/oa_assessment_title.html" with assessment=assessment %}
+                                                    {% endfor %}
+                                                </ul>
+                                            {% endif %}
 
-                                        {% if criterion.has_feedback %}
-                                            <ul class="question__answers ui-slidable__content has--hints">
-                                                {% for assessment in criterion.assessments %}
-                                                    {% include "openassessmentblock/grade/oa_assessment_feedback.html" with title=assessment.feedback_title assessment=assessment %}
-                                                {% endfor %}
-                                            </ul>
-                                        {% endif %}
+                                            {% if criterion.has_feedback %}
+                                                <ul class="question__answers has--hints">
+                                                    {% for assessment in criterion.assessments %}
+                                                        {% include "openassessmentblock/grade/oa_assessment_feedback.html" with title=assessment.feedback_title assessment=assessment %}
+                                                    {% endfor %}
+                                                </ul>
+                                            {% endif %}
+                                        </div>
                                     </li>
                                 {% endwith %}
                             {% endfor %}
@@ -89,7 +91,7 @@
                                         </button>
                                     </h4>
 
-                                    <ul class="question__answers ui-slidable__content" id="oa_grade_{{ xblock_id }}_feedback_content" aria-labelledby="oa_grade_{{ xblock_id }}_feedback_content">
+                                    <ul class="question__answers ui-slidable__content" id="oa_grade_{{ xblock_id }}_feedback_content" aria-labelledby="oa_grade_{{ xblock_id }}_feedback">
                                         {% for feedback in grade_details.additional_feedback %}
                                             {% include "openassessmentblock/grade/oa_assessment_feedback.html" with title=feedback.title assessment=feedback %}
                                         {% endfor %}
@@ -100,9 +102,9 @@
                     </article>
 
                     {% if peer_assessments %}
-                        <form id="submission__feedback" class="submission__feedback step__content__section ui-slidable__container" method="post">
+                        <form class="submission__feedback submission__feedback step__content__section ui-slidable__container is--showing" method="post">
                             <h3 class="submission__feedback__title ui-slidable__control">
-                                <button class="ui-slidable" aria-expanded="false" id="oa_grade_feedback_{{ xblock_id }}" aria-controls="oa_grade_feedback_{{ xblock_id }}__content">
+                                <button class="ui-slidable" aria-expanded="true" id="oa_grade_feedback_{{ xblock_id }}" aria-controls="oa_grade_feedback_{{ xblock_id }}__content">
                                     <span class="icon fa fa-caret-right" aria-hidden="true"></span>
                                     <span class="submission__feedback__title__copy">{% trans "Provide Feedback on Peer Assessments" %}</span>
                                 </button>
@@ -133,50 +135,50 @@
                                     <ol class="list list--fields submission__feedback__fields {{ has_submitted_feedback|yesno:"is--hidden," }}"
                                             {{ has_submitted_feedback|yesno:'aria-hidden=true,aria-hidden=false' }}>
                                         <li class="field field-group field--radio feedback__overall">
-                                            <h4 id="feedback__overall__prompt" class="field-group__label">{% trans "Select the statements below that best reflect your experience with peer assessments" %}:</h4>
+                                            <h4 id="feedback__overall__prompt__{{ xblock_id }}" class="field-group__label">{% trans "Select the statements below that best reflect your experience with peer assessments" %}:</h4>
                                             <ol class="list--options">
                                                 <li class="option option--useful">
                                                     <input type="checkbox"
                                                            name="feedback__overall__value"
-                                                           id="feedback__overall__value--useful"
+                                                           id="feedback__overall__value--useful__{{ xblock_id }}"
                                                            class="option__input feedback__overall__value"
                                                            value="These assessments were useful."
-                                                           aria-labelledby="feedback__overall__prompt"/>
+                                                           aria-labelledby="feedback__overall__prompt__{{ xblock_id }}"/>
                                                     <label class="option__label" for="feedback__overall__value--useful">{% trans "These assessments were useful." %}</label>
                                                 </li>
                                                 <li class="option option--notuseful">
                                                     <input type="checkbox"
                                                            name="feedback__overall__value"
-                                                           id="feedback__overall__value--notuseful"
+                                                           id="feedback__overall__value--notuseful__{{ xblock_id }}"
                                                            class="option__input feedback__overall__value"
                                                            value="These assessments were not useful."
-                                                           aria-labelledby="feedback__overall__prompt"/>
+                                                           aria-labelledby="feedback__overall__prompt__{{ xblock_id }}"/>
                                                     <label class="option__label" for="feedback__overall__value--notuseful">{% trans "These assessments were not useful." %}</label>
                                                 </li>
                                                 <li class="option option--disagree">
                                                     <input type="checkbox"
                                                            name="feedback__overall__value"
-                                                           id="feedback__overall__value--disagree"
+                                                           id="feedback__overall__value--disagree__{{ xblock_id }}"
                                                            class="option__input feedback__overall__value"
                                                            value="I disagree with one or more of the peer assessments of my response."
-                                                           aria-labelledby="feedback__overall__prompt"/>
+                                                           aria-labelledby="feedback__overall__prompt__{{ xblock_id }}"/>
                                                     <label class="option__label" for="feedback__overall__value--disagree">{% trans "I disagree with one or more of the peer assessments of my response." %}</label>
                                                 </li>
                                                 <li class="option option--inappropriate">
                                                     <input type="checkbox"
                                                            name="feedback__overall__value"
-                                                           id="feedback__overall__value--inappropriate"
+                                                           id="feedback__overall__value--inappropriate__{{ xblock_id }}"
                                                            class="option__input feedback__overall__value"
                                                            value="Some comments I received were inappropriate."
-                                                           aria-labelledby="feedback__overall__prompt"/>
+                                                           aria-labelledby="feedback__overall__prompt__{{ xblock_id }}"/>
                                                     <label class="option__label" for="feedback__overall__value--inappropriate">{% trans "Some comments I received were inappropriate." %}</label>
                                                 </li>
                                             </ol>
                                         </li>
-                                        <li class="field field--textarea feedback__remarks" id="feedback__remarks">
-                                            <label for="feedback__remarks__value">{% trans "Provide feedback on the grade or comments that you received from your peers." %}</label>
+                                        <li class="field field--textarea feedback__remarks" id="feedback__remarks__{{ xblock_id }}">
+                                            <label for="feedback__remarks__value__{{ xblock_id }}">{% trans "Provide feedback on the grade or comments that you received from your peers." %}</label>
                                                 <textarea
-                                                        id="feedback__remarks__value"
+                                                        id="feedback__remarks__value__{{ xblock_id }}"
                                                         placeholder="{% trans "I feel the feedback I received was..." %}"
                                                         maxlength="100000">
                                                 {{ feedback_text }}

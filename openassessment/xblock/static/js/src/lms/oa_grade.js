@@ -19,7 +19,7 @@ OpenAssessment.GradeView.prototype = {
     load: function(usageID) {
         var view = this;
         var baseView = this.baseView;
-        var stepID = "#openassessment__grade";
+        var stepID = ".step--grade";
         this.server.render('grade').done(
             function(html) {
                 // Load the HTML and install event handlers
@@ -43,7 +43,7 @@ OpenAssessment.GradeView.prototype = {
      */
     installHandlers: function() {
         // Install a click handler for collapse/expand
-        var sel = $('#openassessment__grade', this.element);
+        var sel = $('.step--grade', this.element);
         this.baseView.setUpCollapseExpand(sel);
 
         // Install a click handler for assessment feedback
@@ -61,10 +61,11 @@ OpenAssessment.GradeView.prototype = {
      * @returns {string} The text of the feedback
      */
     feedbackText: function(text) {
+        var usageID = this.baseView.getUsageID() || "";
         if (typeof text === 'undefined') {
-            return $('#feedback__remarks__value', this.element).val();
+            return $("[id='feedback__remarks__value__" + usageID + "']", this.element).val();
         } else {
-            $('#feedback__remarks__value', this.element).val(text);
+            $("[id='feedback__remarks__value__" + usageID + "']", this.element).val(text);
         }
     },
 
@@ -76,6 +77,7 @@ OpenAssessment.GradeView.prototype = {
      */
     feedbackOptions: function(options) {
         var view = this;
+        var usageID = this.baseView.getUsageID() || "";
         if (typeof options === 'undefined') {
             return $.map(
                 $('.feedback__overall__value:checked', view.element),
@@ -87,7 +89,7 @@ OpenAssessment.GradeView.prototype = {
 
             // Check the selected options
             $.each(options, function(index, opt) {
-                $('#feedback__overall__value--' + opt, view.element).prop('checked', true);
+                $("[id='feedback__overall__value--" + opt + "__" + usageID + "']", view.element).prop('checked', true);
             });
         }
     },

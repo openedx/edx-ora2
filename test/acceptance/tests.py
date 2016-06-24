@@ -176,7 +176,7 @@ class OpenAssessmentTest(WebAppTest):
         """
         self.self_asmnt_page.wait_for_page().wait_for_response()
         self.assertIn(self.SUBMISSION, self.self_asmnt_page.response_text)
-        self.self_asmnt_page.assess("self", options).wait_for_complete()
+        self.self_asmnt_page.assess(options).wait_for_complete()
         self.assertTrue(self.self_asmnt_page.is_complete)
 
     def _verify_staff_grade_section(self, expected_status, expected_message_title):
@@ -202,7 +202,7 @@ class OpenAssessmentTest(WebAppTest):
                     msg = "Did not complete at least {num} student training example(s).".format(num=example_num)
                     self.fail(msg)
 
-            self.student_training_page.wait_for_page().wait_for_response().assess("training", options_selected)
+            self.student_training_page.wait_for_page().wait_for_response().assess(options_selected)
 
         # Check that we've completed student training
         try:
@@ -221,7 +221,7 @@ class OpenAssessmentTest(WebAppTest):
         self.peer_asmnt_page.visit()
 
         for count_assessed in range(1, count + 1):
-            self.peer_asmnt_page.wait_for_page().wait_for_response().assess("peer", options)
+            self.peer_asmnt_page.wait_for_page().wait_for_response().assess(options)
             self.peer_asmnt_page.wait_for_num_completed(count_assessed)
 
     def do_staff_override(self, username, final_score=STAFF_AREA_SCORE.format(STAFF_OVERRIDE_SCORE)):
@@ -236,7 +236,7 @@ class OpenAssessmentTest(WebAppTest):
         self.staff_area_page.visit()
         self.staff_area_page.show_learner(username)
         self.staff_area_page.expand_learner_report_sections()
-        self.staff_area_page.staff_assess(self.STAFF_OVERRIDE_OPTIONS_SELECTED, "override")
+        self.staff_area_page.staff_assess(self.STAFF_OVERRIDE_OPTIONS_SELECTED)
         self.staff_area_page.verify_learner_final_score(final_score)
 
     def do_staff_assessment(self, number_to_assess=0, options_selected=OPTIONS_SELECTED, feedback=None):
@@ -267,7 +267,7 @@ class OpenAssessmentTest(WebAppTest):
                 self.staff_area_page.provide_criterion_feedback(feedback("criterion"))
                 self.staff_area_page.provide_overall_feedback(feedback("overall"))
             if options_selected:
-                self.staff_area_page.staff_assess(options_selected, "full-grade", continue_after)
+                self.staff_area_page.staff_assess(options_selected, continue_after)
             assessed += 1
             if not continue_after:
                 self.staff_area_page.verify_available_checked_out_numbers((ungraded, checked_out-1))
@@ -620,7 +620,7 @@ class StaffAreaTest(OpenAssessmentTest):
         )
 
         # Do staff override and wait for final score to change.
-        self.staff_area_page.assess("staff-override", self.STAFF_OVERRIDE_OPTIONS_SELECTED)
+        self.staff_area_page.assess(self.STAFF_OVERRIDE_OPTIONS_SELECTED)
 
         # Verify that the new student score is different from the original one.
         self.staff_area_page.verify_learner_final_score(self.STAFF_AREA_SCORE.format(self.STAFF_OVERRIDE_SCORE))
@@ -720,7 +720,7 @@ class StaffAreaTest(OpenAssessmentTest):
         # Learner does required self-assessment
         self.self_asmnt_page.wait_for_page().wait_for_response()
         self.assertIn(self.SUBMISSION, self.self_asmnt_page.response_text)
-        self.self_asmnt_page.assess("self", self.OPTIONS_SELECTED).wait_for_complete()
+        self.self_asmnt_page.assess(self.OPTIONS_SELECTED).wait_for_complete()
         self.assertTrue(self.self_asmnt_page.is_complete)
 
         self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS, None)
@@ -811,7 +811,7 @@ class FullWorkflowMixin(object):
 
         username_email = auto_auth_page.get_username_and_email()
         self.submission_page.visit().submit_response(self.SUBMISSION)
-        EmptyPromise(self.submission_page.button("#openassessment__student-training").is_focused(),
+        EmptyPromise(self.submission_page.button(".step--student-training").is_focused(),
                      "Student training button should be focused")
 
         return username_email
@@ -824,15 +824,15 @@ class FullWorkflowMixin(object):
             (str, str): the username and password of the newly created user
         """
         username, email = self.do_submission()
-        EmptyPromise(self.submission_page.button("#openassessment__student-training").is_focused(),
+        EmptyPromise(self.submission_page.button(".step--student-training").is_focused(),
                      "Student training button should be focused")
 
         self.do_training()
-        EmptyPromise(self.submission_page.button("#openassessment__self-assessment").is_focused(),
+        EmptyPromise(self.submission_page.button(".step--self-assessment").is_focused(),
                      "Self assessment button should be focused")
 
         self.submit_self_assessment(self.SELF_ASSESSMENT)
-        EmptyPromise(self.submission_page.button("#openassessment__grade").is_focused(),
+        EmptyPromise(self.submission_page.button(".step--grade").is_focused(),
                      "Grade button should be focused")
 
         return username, email
@@ -1190,7 +1190,7 @@ class FeedbackOnlyTest(OpenAssessmentTest, FullWorkflowMixin):
         self.self_asmnt_page.wait_for_page()
         self.self_asmnt_page.provide_criterion_feedback(self.generate_feedback("self", "criterion"))
         self.self_asmnt_page.provide_overall_feedback(self.generate_feedback("self", "overall"))
-        self.self_asmnt_page.assess("self", [0])
+        self.self_asmnt_page.assess([0])
         self.self_asmnt_page.wait_for_complete()
         self.assertTrue(self.self_asmnt_page.is_complete)
 

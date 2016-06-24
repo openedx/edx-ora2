@@ -134,6 +134,7 @@ class StaffAssessmentMixin(object):
                     'icon_class': 'fa-check',
                     'message_title': self._('You Must Complete the Steps Above to View Your Grade'),
                     'message_content': self._('Although a course staff member has assessed your response, you will receive your grade only after you have completed all the required steps of this problem.'),
+                    'step_classes': 'is--initially--collapsed',
                     'button_active': 'aria-expanded=false',
                 }
             else:  # Both student and staff still have work to do, just show "Not Available".

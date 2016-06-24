@@ -41,7 +41,7 @@ describe("OpenAssessment.GradeView", function() {
         server = new StubServer();
 
         // Create and install the view
-        var gradeElement = $('#openassessment__grade').get(0);
+        var gradeElement = $('.step--grade').get(0);
         var baseView = new OpenAssessment.BaseView(runtime, gradeElement, server, {});
         view = new OpenAssessment.GradeView(gradeElement, server, baseView);
         view.installHandlers();

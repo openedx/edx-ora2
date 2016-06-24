@@ -1,13 +1,16 @@
 {% load i18n %}
 {% spaceless %}
 <div class="wrapper wrapper--xblock wrapper--openassessment theme--basic">
-    <div class="openassessment problem" id="openassessment">
+    <div class="openassessment problem">
         <div class="wrapper--grid">
-            <h2 class="openassessment__title problem__header">{% trans title %}</h2>
+            {% if title %}
+                <h2 class="openassessment__title problem__header">{% trans title %}</h2>
+            {% endif %}
 
             <div class="wrapper-openassessment__message">
+
                 {% block message %}
-                <div id="openassessment__message" class="openassessment__message message">
+                <div class="openassessment__message message">
                     <div class="message__content">
                         <p>{% trans "This assignment has several steps. In the first step, you'll provide a response to the question. The other steps appear below the Your Response field." %}</p>
                     </div>
@@ -15,9 +18,9 @@
                 {% endblock %}
             </div>
 
-            <ol class="openassessment__steps" id="openassessment__steps">
+            <ol class="openassessment__steps">
                 {% for assessment in rubric_assessments %}
-                    <li id="{{ assessment.class_id }}" class="openassessment__steps__step is--loading">
+                    <li class="{{ assessment.class_id }} openassessment__steps__step is--loading">
                         <header class="step__header">
                             <h2 class="step__title">
                                 <span class="step__counter"></span>

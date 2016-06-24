@@ -4,6 +4,7 @@ UI-level acceptance tests for OpenAssessment accessibility.
 import os
 import unittest
 from tests import OpenAssessmentTest, StaffAreaPage, FullWorkflowMixin, MultipleOpenAssessmentMixin
+from pages import MultipleAssessmentPage
 
 
 class OpenAssessmentA11yTest(OpenAssessmentTest):
@@ -29,8 +30,7 @@ class OpenAssessmentA11yTest(OpenAssessmentTest):
                 "empty-heading",  # TODO: AC-197
                 "link-href",  # TODO: AC-199
                 "link-name",  # TODO: AC-196
-                "skip-link",  # TODO: AC-179,
-                "duplicate-id",  # TODO: TNL-1593
+                "skip-link",  # TODO: AC-179
             ]
         })
         page.a11y_audit.check_for_accessibility_errors()
@@ -253,32 +253,21 @@ class MultipleOpenAssessmentA11yTest(OpenAssessmentA11yTest, MultipleOpenAssessm
         super(MultipleOpenAssessmentA11yTest, self).setUp('multiple_ora', staff=True)
         # Staff area page is not present in OpenAssessmentTest base class, so we are adding it here.
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
-
-    # TODO: remove this method override. See TNL-1593
-    def _check_a11y(self, page):
-        page.a11y_audit.config.set_scope(
-            exclude=[
-                ".container-footer",
-                ".nav-skip",
-                "#global-navigation",
-            ],
-        )
-        page.a11y_audit.config.set_rules({
-            "ignore": [
-                "color-contrast",  # TODO: AC-198
-                "empty-heading",  # TODO: AC-197
-                "link-href",  # TODO: AC-199
-                "link-name",  # TODO: AC-196
-                "skip-link",  # TODO: AC-179
-                "duplicate-id",
-            ]
-        })
-        page.a11y_audit.check_for_accessibility_errors()
+        self.multiple_assessment_page = MultipleAssessmentPage(self.browser, self.problem_loc)
 
     def test_multiple_ora_complete_flow(self):
         """
         Test accessibility when we have a unit containing multiple ORA blocks.
         """
+        # Assess entire problem page for potential duplicate IDs among ORA xblocks
+        self.multiple_assessment_page.a11y_audit.config.set_scope(['#main'])
+        self.multiple_assessment_page.a11y_audit.config.set_rules({
+            "apply": [
+                "duplicate-id"
+            ]
+        })
+        self.multiple_assessment_page.a11y_audit.check_for_accessibility_errors()
+
         # Each problem has vertical index assigned and has a `vert-{vertical_index}` top level class.
         # That also means that all pages are being differentiated by their vertical index number that is assigned to
         # each problem type. We are passing vertical index number and setting it by `self.setup_vertical_index` method

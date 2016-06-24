@@ -35,29 +35,29 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # Validate Submission Rendering.
         submission_response = xblock.render_submission({})
         self.assertIsNotNone(submission_response)
-        self.assertIn("openassessment__response", submission_response.body)
+        self.assertIn("step--response", submission_response.body)
 
         # Validate Peer Rendering.
         request = namedtuple('Request', 'params')
         request.params = {}
         peer_response = xblock.render_peer_assessment(request)
         self.assertIsNotNone(peer_response)
-        self.assertIn("openassessment__peer-assessment", peer_response.body)
+        self.assertIn("step--peer-assessment", peer_response.body)
 
         # Validate Self Rendering.
         self_response = xblock.render_self_assessment(request)
         self.assertIsNotNone(self_response)
-        self.assertIn("openassessment__self-assessment", self_response.body)
+        self.assertIn("step--self-assessment", self_response.body)
 
         # Validate Staff Grade.
         staff_response = xblock.render_staff_assessment(request)
         self.assertIsNotNone(self_response)
-        self.assertIn("openassessment__staff-assessment", staff_response.body)
+        self.assertIn("step--staff-assessment", staff_response.body)
 
         # Validate Grading.
         grade_response = xblock.render_grade({})
         self.assertIsNotNone(grade_response)
-        self.assertIn("openassessment__grade", grade_response.body)
+        self.assertIn("step--grade", grade_response.body)
 
     @scenario('data/empty_prompt.xml')
     def test_prompt_intentionally_empty(self, xblock):
@@ -120,7 +120,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             # Validate Submission Rendering.
             submission_response = xblock.render_submission({})
             self.assertIsNotNone(submission_response)
-            self.assertIn("openassessment__response", submission_response.body)
+            self.assertIn("step--response", submission_response.body)
             self.assertIn(expected_date, submission_response.body)
 
     def _set_up_start_date(self, start_date):

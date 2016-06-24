@@ -20,7 +20,7 @@
   .staff-assessment__display__header, .submission__answer__display__header, .student-training__display__header {
     margin-bottom: 0 !important;
     border-radius: 0 !important;
-    padding-bottom: 0 !important;
+    padding-bottom: 2px !important;
     font-size: initial !important;
     border-bottom: none !important;
   }
@@ -139,10 +139,6 @@
 
   .step--grade .step__title {
     width: 100% !important;
-
-    .wrapper--copy {
-      display: block !important;
-    }
   }
 
   // actions

@@ -2,8 +2,8 @@
 {% load i18n %}
 
 {% block list_item %}
-<li id="openassessment__response"
-    class="openassessment__steps__step step--response is--complete ui-slidable__container {% if allow_latex %}allow--latex{%endif%}"
+<li id="openassessment__response__{{ xblock_id }}"
+    class="openassessment__steps__step step--response is--complete ui-slidable__container {% if allow_latex %}allow--latex{%endif%} is--initially--collapsed"
     tabindex="-1">
 {% endblock %}
 

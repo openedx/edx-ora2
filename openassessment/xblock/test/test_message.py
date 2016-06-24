@@ -120,7 +120,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_open.html'
 
         expected_context = {
-            "approaching": False
+            "approaching": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -144,7 +145,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_open.html'
 
         expected_context = {
-            "approaching": False
+            "approaching": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -169,7 +171,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_open.html'
 
         expected_context = {
-            "approaching": True
+            "approaching": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -193,7 +196,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_open.html'
 
         expected_context = {
-            "approaching": True
+            "approaching": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -218,7 +222,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_closed.html'
 
         expected_context = {
-            "not_yet_open": True
+            "not_yet_open": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -243,7 +248,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_closed.html'
 
         expected_context = {
-            "not_yet_open": False
+            "not_yet_open": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -273,6 +279,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             "training_approaching": False,
             "training_not_released": False,
             "peer_not_available": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -302,6 +309,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             "training_approaching": True,
             "training_not_released": False,
             "peer_not_available": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -327,7 +335,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_closed.html'
 
         expected_context = {
-            "not_yet_open": True
+            "not_yet_open": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -345,7 +354,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             'student-training': (True, 'due', self.FAR_PAST, self.PAST),
             'peer-assessment': (True, 'due', self.PAST, self.YESTERDAY),
             'self-assessment': (False, None, self.YESTERDAY, self.FAR_FUTURE),
-            'over-all': (False, None, self.FAR_PAST, self.FAR_FUTURE)
+            'over-all': (False, None, self.FAR_PAST, self.FAR_FUTURE),
         }
 
         has_peers_to_grade = False
@@ -353,12 +362,13 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_closed.html'
 
         expected_context = {
-            "not_yet_open": False
+            "not_yet_open": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
             xblock, expected_path, expected_context,
-            status, deadline_information, has_peers_to_grade
+            status, deadline_information, has_peers_to_grade,
         )
 
     @scenario('data/message_scenario.xml', user_id="Linda")
@@ -381,7 +391,8 @@ class TestMessageRender(XBlockHandlerTestCase):
             "peer": True,
             "peer_approaching": False,
             "peer_not_available": False,
-            "peer_not_released": False
+            "peer_not_released": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -408,7 +419,8 @@ class TestMessageRender(XBlockHandlerTestCase):
             "peer": True,
             "peer_not_available": False,
             "peer_approaching": False,
-            "peer_not_released": False
+            "peer_not_released": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -435,7 +447,8 @@ class TestMessageRender(XBlockHandlerTestCase):
             "peer": True,
             "peer_not_available": False,
             "peer_approaching": True,
-            "peer_not_released": False
+            "peer_not_released": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -460,7 +473,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_closed.html'
 
         expected_context = {
-            "not_yet_open": True
+            "not_yet_open": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -485,7 +499,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_closed.html'
 
         expected_context = {
-            "not_yet_open": False
+            "not_yet_open": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -513,7 +528,8 @@ class TestMessageRender(XBlockHandlerTestCase):
             "peer": True,
             "peer_not_available": True,
             "peer_approaching": False,
-            "peer_not_released": False
+            "peer_not_released": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -541,7 +557,8 @@ class TestMessageRender(XBlockHandlerTestCase):
             "peer": True,
             "peer_not_available": True,
             "peer_approaching": True,
-            "peer_not_released": False
+            "peer_not_released": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -566,7 +583,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_closed.html'
 
         expected_context = {
-            "not_yet_open": True
+            "not_yet_open": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -595,6 +613,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             "self_approaching": False,
             "self_not_released": False,
             "peer_not_available": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -622,6 +641,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             "self_approaching": False,
             "self_not_released": False,
             "peer_not_available": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -649,6 +669,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             "self_approaching": True,
             "self_not_released": False,
             "peer_not_available": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -673,7 +694,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_closed.html'
 
         expected_context = {
-            "not_yet_open": True
+            "not_yet_open": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -697,7 +719,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_closed.html'
 
         expected_context = {
-            "not_yet_open": False
+            "not_yet_open": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -724,7 +747,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_complete.html'
 
         expected_context = {
-            "waiting": True
+            "waiting": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -751,7 +775,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_complete.html'
 
         expected_context = {
-            "waiting": True
+            "waiting": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -784,7 +809,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_complete.html'
 
         expected_context = {
-            "waiting": True
+            "waiting": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -809,7 +835,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_complete.html'
 
         expected_context = {
-            "waiting": False
+            "waiting": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -834,7 +861,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_complete.html'
 
         expected_context = {
-            "waiting": False
+            "waiting": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
