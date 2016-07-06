@@ -6,7 +6,7 @@ from webob import Response
 from openassessment.assessment.api import self as self_api
 from openassessment.workflow import api as workflow_api
 from submissions import api as submission_api
-from .resolve_dates import DISTANT_FUTURE
+from .resolve_dates import DISTANT_FUTURE, get_current_time_zone
 from .data_conversion import (clean_criterion_feedback, create_submission_dict,
                               create_rubric_dict, verify_assessment_parameters)
 
@@ -51,9 +51,14 @@ class SelfAssessmentMixin(object):
             SubmissionError: Error occurred while retrieving the current submission.
             SelfAssessmentRequestError: Error occurred while checking if we had a self-assessment.
         """
-        context = {'allow_latex': self.allow_latex}
         path = 'openassessmentblock/self/oa_self_unavailable.html'
         problem_closed, reason, start_date, due_date = self.is_closed(step="self-assessment")
+        user_service = self.runtime.service(self, 'user')
+
+        context = {
+            'allow_latex': self.allow_latex,
+            'time_zone': get_current_time_zone(user_service)
+        }
 
         # We display the due date whether the problem is open or closed.
         # If no date is set, it defaults to the distant future, in which
@@ -121,7 +126,10 @@ class SelfAssessmentMixin(object):
         """
 
         if self.submission_uuid is None:
-            return {'success': False, 'msg': self._(u"You must submit a response before you can perform a self-assessment.")}
+            return {
+                'success': False,
+                'msg': self._(u"You must submit a response before you can perform a self-assessment.")
+            }
 
         try:
             assessment = self_api.create_assessment(
