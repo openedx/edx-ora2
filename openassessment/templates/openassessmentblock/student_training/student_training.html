@@ -34,9 +34,12 @@
             <span class="step__status">
               <span class="step__status__label">{% trans "This step's status" %}:</span>
               <span class="step__status__value">
-                  <span class="copy">{% trans "In Progress" %}
-                  (<span class="step__status__value--completed">{{ training_num_completed }}</span> of
-                    <span class="step__status__value--required">{{ training_num_available }}</span>)
+                  <span class="copy">
+                      {% with training_num_completed_string=training_num_completed|stringformat:"s" training_num_available_string=training_num_available|stringformat:"s" %}
+                      {% blocktrans with training_completed_num='<span class="step__status__value--completed">'|safe|add:training_num_completed_string|add:'</span>'|safe training_available_num='<span class="step__status__value--required">'|safe|add:training_num_available_string|add:'</span>'|safe %}
+                          In Progress ({{ training_completed_num }} of {{ training_available_num }})
+                      {% endblocktrans %}
+                      {% endwith %}
                   </span>
               </span>
             </span>
