@@ -16,13 +16,13 @@
 # Skadelig <vindreise@gmail.com>, 2014
 # Weyedide <weyedide@gmail.com>, 2014-2015
 # Yana Malinovskaya <y.malinovskaya@itransition.com>, 2014
-# YummyTranslations EDX <yummytranslations.edx@gmail.com>, 2015
+# YummyTranslations Edx <yummytranslations.edx@gmail.com>, 2015
 # Pavel Zamyshliaev, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-06 16:17+0000\n"
+"POT-Creation-Date: 2016-07-20 20:57+0000\n"
 "PO-Revision-Date: 2016-05-09 17:47+0000\n"
 "Last-Translator: Natalia Berdnikov <nberdnikov@edx.org>\n"
 "Language-Team: Russian (http://www.transifex.com/open-edx/edx-platform/language/ru/)\n"
@@ -1666,7 +1666,7 @@ msgstr "Вам необходимо оставить отзыв в соотве�
 #: openassessment/xblock/leaderboard_mixin.py:51
 #: openassessment/xblock/self_assessment_mixin.py:38
 #: openassessment/xblock/student_training_mixin.py:55
-#: openassessment/xblock/student_training_mixin.py:203
+#: openassessment/xblock/student_training_mixin.py:205
 msgid "An unexpected error occurred."
 msgstr "Произошла неизвестная ошибка"
 
@@ -1733,74 +1733,74 @@ msgstr "Дождитесь проверки"
 msgid "Peer"
 msgstr "Взаимооценка"
 
-#: openassessment/xblock/peer_assessment_mixin.py:56
+#: openassessment/xblock/peer_assessment_mixin.py:55
 msgid "You must submit a response before you can perform a peer assessment."
 msgstr "Вам необходимо отправить свой ответ прежде чем оценивать ответы однокурсников."
 
-#: openassessment/xblock/peer_assessment_mixin.py:70
+#: openassessment/xblock/peer_assessment_mixin.py:69
 msgid ""
 "This feedback has already been submitted or the submission has been "
 "cancelled."
 msgstr "Отзыв уже отправлен или ответ был удалён."
 
-#: openassessment/xblock/peer_assessment_mixin.py:95
-#: openassessment/xblock/peer_assessment_mixin.py:100
+#: openassessment/xblock/peer_assessment_mixin.py:94
+#: openassessment/xblock/peer_assessment_mixin.py:99
 msgid "Your peer assessment could not be submitted."
 msgstr "Не удалось отправить вашу оценку."
 
-#: openassessment/xblock/peer_assessment_mixin.py:114
-#: openassessment/xblock/student_training_mixin.py:209
+#: openassessment/xblock/peer_assessment_mixin.py:113
+#: openassessment/xblock/student_training_mixin.py:211
 msgid "Could not update workflow status."
 msgstr "Не удалось обновить статус рабочего процесса."
 
-#: openassessment/xblock/peer_assessment_mixin.py:123
+#: openassessment/xblock/peer_assessment_mixin.py:122
 msgid "Could not load peer assessment."
 msgstr "Не удалось загрузить взаимное оценивание."
 
-#: openassessment/xblock/peer_assessment_mixin.py:201
+#: openassessment/xblock/peer_assessment_mixin.py:202
 msgid "Submit your assessment and review another response"
 msgstr "Отправить оценку и проверить ещё один ответ"
 
-#: openassessment/xblock/peer_assessment_mixin.py:205
+#: openassessment/xblock/peer_assessment_mixin.py:206
 msgid "Submit your assessment and move to next step"
 msgstr "Отправить оценку и перейти к следующему шагу"
 
-#: openassessment/xblock/peer_assessment_mixin.py:209
+#: openassessment/xblock/peer_assessment_mixin.py:210
 msgid "Submit your assessment and move to response #{response_number}"
 msgstr "Отправить оценку и перейти к ответу № {response_number}"
 
-#: openassessment/xblock/resolve_dates.py:49
+#: openassessment/xblock/resolve_dates.py:62
 msgid ""
 "'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
 "MM-DDTHH:MM:SS."
 msgstr "'{date}' имеет неверный формат. Убедитесь, что дата представлена в формате ГГГГ-ММ-ДДВЧЧ:ММ:СС."
 
-#: openassessment/xblock/resolve_dates.py:52
+#: openassessment/xblock/resolve_dates.py:68
 msgid "'{date}' must be a date string or datetime"
 msgstr "'{date}' должна быть строкой с датой или в формате  datetime"
 
-#: openassessment/xblock/resolve_dates.py:204
+#: openassessment/xblock/resolve_dates.py:221
 msgid ""
 "This step's start date '{start}' cannot be earlier than the previous step's "
 "start date '{prev}'."
 msgstr "Дата запуска этого шага '{start}' не может предшествовать дате запуска предыдущего шага '{prev}'."
 
-#: openassessment/xblock/resolve_dates.py:210
+#: openassessment/xblock/resolve_dates.py:229
 msgid ""
 "This step's due date '{due}' cannot be later than the next step's due date "
 "'{prev}'."
 msgstr "Срок сдачи этого шага '{due}' не может быть позже срока сдачи последующего шага '{prev}'."
 
-#: openassessment/xblock/resolve_dates.py:226
+#: openassessment/xblock/resolve_dates.py:245
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
 msgstr "Дата запуска '{start}' не может быть позже срока сдачи  '{due}'"
 
-#: openassessment/xblock/self_assessment_mixin.py:124
+#: openassessment/xblock/self_assessment_mixin.py:131
 msgid "You must submit a response before you can perform a self-assessment."
 msgstr "Перед оцениванием своей работы вам необходимо отправить свой ответ."
 
-#: openassessment/xblock/self_assessment_mixin.py:145
-#: openassessment/xblock/self_assessment_mixin.py:152
+#: openassessment/xblock/self_assessment_mixin.py:153
+#: openassessment/xblock/self_assessment_mixin.py:160
 msgid "Your self assessment could not be submitted."
 msgstr "Не удалось отправить вашу оценку своей работы."
 
@@ -1906,16 +1906,16 @@ msgid ""
 "problem."
 msgstr "Несмотря на то, что ваш ответ был проверен, вы получите оценку только после того, как выполните все шаги, требующиеся в этом задании."
 
-#: openassessment/xblock/student_training_mixin.py:166
+#: openassessment/xblock/student_training_mixin.py:168
 msgid "Missing options_selected key in request"
 msgstr "В запросе отсутствует ключ options_selected"
 
-#: openassessment/xblock/student_training_mixin.py:168
+#: openassessment/xblock/student_training_mixin.py:170
 msgid "options_selected must be a dictionary"
 msgstr "options_selected должен иметь форму словаря"
 
-#: openassessment/xblock/student_training_mixin.py:193
-#: openassessment/xblock/student_training_mixin.py:198
+#: openassessment/xblock/student_training_mixin.py:195
+#: openassessment/xblock/student_training_mixin.py:200
 msgid "Your scores could not be checked."
 msgstr "Не удалось проверить ваши оценки."
 

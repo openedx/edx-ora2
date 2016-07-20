@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-06 16:17+0000\n"
+"POT-Creation-Date: 2016-07-20 20:57+0000\n"
 "PO-Revision-Date: 2016-05-09 11:25+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Khmer (Cambodia) (http://www.transifex.com/open-edx/edx-platform/language/km_KH/)\n"
@@ -1645,7 +1645,7 @@ msgstr ""
 #: openassessment/xblock/leaderboard_mixin.py:51
 #: openassessment/xblock/self_assessment_mixin.py:38
 #: openassessment/xblock/student_training_mixin.py:55
-#: openassessment/xblock/student_training_mixin.py:203
+#: openassessment/xblock/student_training_mixin.py:205
 msgid "An unexpected error occurred."
 msgstr ""
 
@@ -1712,74 +1712,74 @@ msgstr ""
 msgid "Peer"
 msgstr ""
 
-#: openassessment/xblock/peer_assessment_mixin.py:56
+#: openassessment/xblock/peer_assessment_mixin.py:55
 msgid "You must submit a response before you can perform a peer assessment."
 msgstr ""
 
-#: openassessment/xblock/peer_assessment_mixin.py:70
+#: openassessment/xblock/peer_assessment_mixin.py:69
 msgid ""
 "This feedback has already been submitted or the submission has been "
 "cancelled."
 msgstr ""
 
-#: openassessment/xblock/peer_assessment_mixin.py:95
-#: openassessment/xblock/peer_assessment_mixin.py:100
+#: openassessment/xblock/peer_assessment_mixin.py:94
+#: openassessment/xblock/peer_assessment_mixin.py:99
 msgid "Your peer assessment could not be submitted."
 msgstr ""
 
-#: openassessment/xblock/peer_assessment_mixin.py:114
-#: openassessment/xblock/student_training_mixin.py:209
+#: openassessment/xblock/peer_assessment_mixin.py:113
+#: openassessment/xblock/student_training_mixin.py:211
 msgid "Could not update workflow status."
 msgstr ""
 
-#: openassessment/xblock/peer_assessment_mixin.py:123
+#: openassessment/xblock/peer_assessment_mixin.py:122
 msgid "Could not load peer assessment."
 msgstr ""
 
-#: openassessment/xblock/peer_assessment_mixin.py:201
+#: openassessment/xblock/peer_assessment_mixin.py:202
 msgid "Submit your assessment and review another response"
 msgstr ""
 
-#: openassessment/xblock/peer_assessment_mixin.py:205
+#: openassessment/xblock/peer_assessment_mixin.py:206
 msgid "Submit your assessment and move to next step"
 msgstr ""
 
-#: openassessment/xblock/peer_assessment_mixin.py:209
+#: openassessment/xblock/peer_assessment_mixin.py:210
 msgid "Submit your assessment and move to response #{response_number}"
 msgstr ""
 
-#: openassessment/xblock/resolve_dates.py:49
+#: openassessment/xblock/resolve_dates.py:62
 msgid ""
 "'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
 "MM-DDTHH:MM:SS."
 msgstr ""
 
-#: openassessment/xblock/resolve_dates.py:52
+#: openassessment/xblock/resolve_dates.py:68
 msgid "'{date}' must be a date string or datetime"
 msgstr ""
 
-#: openassessment/xblock/resolve_dates.py:204
+#: openassessment/xblock/resolve_dates.py:221
 msgid ""
 "This step's start date '{start}' cannot be earlier than the previous step's "
 "start date '{prev}'."
 msgstr ""
 
-#: openassessment/xblock/resolve_dates.py:210
+#: openassessment/xblock/resolve_dates.py:229
 msgid ""
 "This step's due date '{due}' cannot be later than the next step's due date "
 "'{prev}'."
 msgstr ""
 
-#: openassessment/xblock/resolve_dates.py:226
+#: openassessment/xblock/resolve_dates.py:245
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
 msgstr ""
 
-#: openassessment/xblock/self_assessment_mixin.py:124
+#: openassessment/xblock/self_assessment_mixin.py:131
 msgid "You must submit a response before you can perform a self-assessment."
 msgstr ""
 
-#: openassessment/xblock/self_assessment_mixin.py:145
-#: openassessment/xblock/self_assessment_mixin.py:152
+#: openassessment/xblock/self_assessment_mixin.py:153
+#: openassessment/xblock/self_assessment_mixin.py:160
 msgid "Your self assessment could not be submitted."
 msgstr ""
 
@@ -1885,16 +1885,16 @@ msgid ""
 "problem."
 msgstr ""
 
-#: openassessment/xblock/student_training_mixin.py:166
+#: openassessment/xblock/student_training_mixin.py:168
 msgid "Missing options_selected key in request"
 msgstr ""
 
-#: openassessment/xblock/student_training_mixin.py:168
+#: openassessment/xblock/student_training_mixin.py:170
 msgid "options_selected must be a dictionary"
 msgstr ""
 
-#: openassessment/xblock/student_training_mixin.py:193
-#: openassessment/xblock/student_training_mixin.py:198
+#: openassessment/xblock/student_training_mixin.py:195
+#: openassessment/xblock/student_training_mixin.py:200
 msgid "Your scores could not be checked."
 msgstr ""
 
