@@ -11,13 +11,14 @@
 # vincent <orzkng2007@yahoo.com.tw>, 2015
 # Xaver Y.R. Chen <yrchen@atcity.org>, 2014
 # Ya-chi Chang <yacchang@mail.fcu.edu.tw>, 2016
+# Ya-chi Chang <yacchang@mail.fcu.edu.tw>, 2016
 # KUN-MIN SYU <qwer20108@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-06 16:17+0000\n"
-"PO-Revision-Date: 2016-05-09 11:26+0000\n"
+"POT-Creation-Date: 2016-07-20 20:57+0000\n"
+"PO-Revision-Date: 2016-07-06 09:54+0000\n"
 "Last-Translator: Ya-chi Chang <yacchang@mail.fcu.edu.tw>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/open-edx/edx-platform/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -50,13 +51,13 @@ msgstr ""
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:191
 msgid "This response could not be submitted."
-msgstr "回答無法提交。"
+msgstr "作答無法提交。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:215
 msgid "This response could not be saved."
-msgstr "回答無法保存。"
+msgstr "作答無法保存。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
@@ -135,7 +136,7 @@ msgstr "作答尚未儲存。"
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
-msgstr ""
+msgstr "如果你沒有儲存或提交你的作答而離開這個頁面，你將遺失你任何已作答的作業。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:334
@@ -145,7 +146,7 @@ msgstr "儲存中"
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:359
 msgid "This response has been saved but not submitted."
-msgstr "這一份回复已經儲存了，但仍未提交。"
+msgstr "這一份作答已經儲存了，但仍未提交。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:362
@@ -162,7 +163,7 @@ msgstr "你想在提交前上傳您的檔案？"
 msgid ""
 "You're about to submit your response for this assignment. After you submit "
 "this response, you can't change it or submit a new response."
-msgstr "您即將提交這作業有關您的回應。在您提交回應後，你不能改變它，或者提交新的回應。"
+msgstr "您即將送出你的作答，一旦送出作答就不能修改，也無法重新送出新的作答。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:483

@@ -10,14 +10,15 @@
 # Jiazhen Tan <jessie12@live.cn>, 2016
 # jsgang <jsgang9@gmail.com>, 2015
 # louyihua <supermouselyh@hotmail.com>, 2014
+# Yue Fang <yfang@juilliard.edu>, 2016
 # zhouxuan <lion19930924@163.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-06 16:17+0000\n"
-"PO-Revision-Date: 2016-05-18 14:45+0000\n"
-"Last-Translator: Natalia Berdnikov <nberdnikov@edx.org>\n"
+"POT-Creation-Date: 2016-07-20 20:57+0000\n"
+"PO-Revision-Date: 2016-06-29 20:22+0000\n"
+"Last-Translator: Yue Fang <yfang@juilliard.edu>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/open-edx/edx-platform/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,13 +38,13 @@ msgstr "这个部分无法加载。"
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:134
 msgid "The staff assessment form could not be loaded."
-msgstr ""
+msgstr "工作人员评测表格无法加载。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:156
 msgid "The display of ungraded and checked out responses could not be loaded."
-msgstr ""
+msgstr "未打分及已通过回答的窗口无法加载。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
@@ -75,7 +76,7 @@ msgstr "这份评测无法提交。"
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:407
 msgid "One or more rescheduling tasks failed."
-msgstr "一项或几项重新编排的任务失败了。"
+msgstr "一项或几项改期任务失败了。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
@@ -110,14 +111,14 @@ msgstr "该提交无法从评分池中删除。"
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_base.js:172
 msgid "Unable to load"
-msgstr ""
+msgstr "不能加载"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_peer.js:175
 msgid ""
 "If you leave this page without submitting your peer assessment, you will "
 "lose any work you have done."
-msgstr ""
+msgstr "如果你离开本页时没有提交你的同学互评，你将丢失你所做的一切。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:234
@@ -134,7 +135,7 @@ msgstr "该答案还没有被保存。"
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
-msgstr ""
+msgstr "如果你不保存或者提交答案就离开，你可能会丢失掉写完的一切。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:334
@@ -154,7 +155,7 @@ msgstr "错误"
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:385
 msgid "Do you want to upload your file before submitting?"
-msgstr ""
+msgstr "你确定在提交之前上传你的文件吗？"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:454
@@ -173,42 +174,42 @@ msgstr "文件大小限制为5MB以下"
 #: openassessment/xblock/static/js/src/lms/oa_response.js:493
 #: openassessment/xblock/static/js/src/lms/oa_response.js:498
 msgid "You can upload files with these file types: "
-msgstr ""
+msgstr "你可以上传的文件类型："
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:503
 msgid "File type is not allowed."
-msgstr ""
+msgstr "文件类型不可用。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
 #: openassessment/xblock/static/js/src/lms/oa_self.js:116
 msgid ""
 "If you leave this page without submitting your self assessment, you will "
 "lose any work you have done."
-msgstr ""
+msgstr "如果你未提交你的自我评估就离开此页面，你将丢失所做的一切。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:146
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:223
 msgid "Unexpected server error."
-msgstr ""
+msgstr "服务器异常错误。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:150
 msgid "You must provide a learner name."
-msgstr ""
+msgstr "你必须提供一个学生姓名。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:272
 msgid "Error getting the number of ungraded responses"
-msgstr ""
+msgstr "获取未评分回复数量出现错误"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:516
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
-msgstr ""
+msgstr "如果你未提交你的员工评估就离开此页面，你将丢失所做的一切。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_container_item.js:39
@@ -235,19 +236,19 @@ msgstr "请改正画出区域"
 msgid ""
 "This problem has already been released. Any changes will apply only to "
 "future assessments."
-msgstr "问题已经被放出了。任何更改都只会在未来的评测中出现。"
+msgstr "此问题已发布。任何更改都只适用于未来的评估。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:97
 msgid "Criterion Added"
-msgstr "规范已添加"
+msgstr "标准已添加"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:98
 msgid ""
 "You have added a criterion. You will need to select an option for the "
 "criterion in the Learner Training step. To do this, click the Settings tab."
-msgstr ""
+msgstr "你已经添加了一个标准。你将需要为“学员训练”步骤中的标准选择一个选项。要执行此操作，请单击“设置”选项卡。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:144
@@ -261,14 +262,14 @@ msgid ""
 "You have deleted an option. That option has been removed from its criterion "
 "in the sample responses in the Learner Training step. You might have to "
 "select a new option for the criterion."
-msgstr ""
+msgstr "你已删除一个选项。此选项已从“学员训练”步骤中的回复示例标准中删除。你可能必须为此标准选择一个新选项。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:180
 msgid ""
 "You have deleted all the options for this criterion. The criterion has been "
 "removed from the sample responses in the Learner Training step."
-msgstr ""
+msgstr "你已删除此标准的所有选项。此标准已从“学员训练”步骤的回复示例中删除。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:206
@@ -280,7 +281,7 @@ msgstr "规范已删除"
 msgid ""
 "You have deleted a criterion. The criterion has been removed from the "
 "example responses in the Learner Training step."
-msgstr ""
+msgstr "你已删除了一个标准。此标准已从“学员训练”步骤的回复示例中撤销。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:376
@@ -297,9 +298,9 @@ msgstr "未作为作业部分的步骤变更将不会被保存。"
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:50
 msgid "File types can not be empty."
-msgstr ""
+msgstr "文件类型不能为空。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:60
 msgid "The following file types are not allowed: "
-msgstr ""
+msgstr "下列文件类型不可用："

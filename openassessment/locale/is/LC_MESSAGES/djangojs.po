@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-14 16:59+0000\n"
+"POT-Creation-Date: 2016-07-20 20:57+0000\n"
 "PO-Revision-Date: 2016-01-06 19:42+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Icelandic (http://www.transifex.com/open-edx/edx-platform/language/is/)\n"
@@ -100,7 +100,7 @@ msgid "The submission could not be removed from the grading pool."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_base.js:161
+#: openassessment/xblock/static/js/src/lms/oa_base.js:172
 msgid "Unable to load"
 msgstr ""
 
@@ -180,23 +180,23 @@ msgid ""
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:114
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:184
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:146
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:223
 msgid "Unexpected server error."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:118
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:150
 msgid "You must provide a learner name."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:205
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:272
 msgid "Error getting the number of ungraded responses"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:442
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:516
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
