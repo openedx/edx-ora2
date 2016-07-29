@@ -21,14 +21,18 @@ OpenAssessment.StudentTrainingView.prototype = {
     /**
     Load the student training view.
     **/
-    load: function() {
+    load: function(usageID) {
         var view = this;
+        var stepID = '#openassessment__student-training';
         this.server.render('student_training').done(
             function(html) {
                 // Load the HTML and install event handlers
-                $('#openassessment__student-training', view.element).replaceWith(html);
-                view.server.renderLatex($('#openassessment__student-training', view.element));
+                $(stepID, view.element).replaceWith(html);
+                view.server.renderLatex($(stepID, view.element));
                 view.installHandlers();
+                if (typeof usageID !== 'undefined' && $(stepID, view.element).hasClass("is--showing")) {
+                    $("[id='oa_training_" + usageID + "']", view.element).focus();
+                }
             }
         ).fail(function() {
             view.baseView.showLoadError('student-training');
@@ -82,22 +86,22 @@ OpenAssessment.StudentTrainingView.prototype = {
         }
         var view = this;
         var baseView = this.baseView;
+        var usageID = baseView.getUsageID();
         this.server.trainingAssess(options).done(
             function(corrections) {
                 var incorrect = $("#openassessment__student-training--incorrect", view.element);
                 var instructions = $("#openassessment__student-training--instructions", view.element);
 
                 if (!view.rubric.showCorrections(corrections)) {
-                    view.load();
-                    baseView.loadAssessmentModules();
+                    view.load(usageID);
+                    baseView.loadAssessmentModules(usageID);
                     incorrect.addClass("is--hidden");
                     instructions.removeClass("is--hidden");
                 } else {
                     instructions.addClass("is--hidden");
                     incorrect.removeClass("is--hidden");
                 }
-
-                baseView.scrollToTop();
+                baseView.scrollToTop("#openassessment__student-training");
             }
         ).fail(function(errMsg) {
             // Display the error

@@ -29,7 +29,8 @@ class OpenAssessmentA11yTest(OpenAssessmentTest):
                 "empty-heading",  # TODO: AC-197
                 "link-href",  # TODO: AC-199
                 "link-name",  # TODO: AC-196
-                "skip-link",  # TODO: AC-179
+                "skip-link",  # TODO: AC-179,
+                "duplicate-id",  # TODO: TNL-1593
             ]
         })
         page.a11y_audit.check_for_accessibility_errors()

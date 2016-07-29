@@ -487,6 +487,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             AssertionError: An assertion failed.
 
         """
+        expected_context['xblock_id'] = xblock.scope_ids.usage_id
+
         path, context = xblock.submission_path_and_context()
         self.maxDiff = None   # Show a full diff
         self.assertEqual(path, expected_path)

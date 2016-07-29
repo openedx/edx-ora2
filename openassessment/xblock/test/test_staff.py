@@ -42,7 +42,9 @@ class TestStaffAssessmentRender(StaffAssessmentTestBase):
     def _verify_grade_templates_workflow(self, xblock):
         unavailable_context = {
             'status_value': 'Not Available',
-            'step_classes': 'is--unavailable is--empty is--collapsed',
+            'button_active': 'disabled="disabled" aria-expanded="false"',
+            'step_classes': 'is--unavailable',
+            'xblock_id': xblock.scope_ids.usage_id
         }
         # Problem not yet started, Staff Grade section is marked "Not Available"
         self._assert_path_and_context(xblock, unavailable_context)
@@ -65,7 +67,9 @@ class TestStaffAssessmentRender(StaffAssessmentTestBase):
                 'message_title': 'You Must Complete the Steps Above to View Your Grade',
                 'message_content': 'Although a course staff member has assessed your response, '
                                    'you will receive your grade only after you have completed all '
-                                   'the required steps of this problem.'
+                                   'the required steps of this problem.',
+                'button_active': 'aria-expanded="false"',
+                'xblock_id': xblock.scope_ids.usage_id
             }
         )
 
@@ -79,7 +83,9 @@ class TestStaffAssessmentRender(StaffAssessmentTestBase):
             {
                 'status_value': 'Complete',
                 'icon_class': 'fa-check',
-                'step_classes': 'is--complete is--empty is--collapsed',
+                'step_classes': 'is--showing',
+                'button_active': 'aria-expanded="true"',
+                'xblock_id': xblock.scope_ids.usage_id
             }
         )
 
@@ -92,6 +98,9 @@ class TestStaffAssessmentRender(StaffAssessmentTestBase):
             {
                 'status_value': 'Cancelled',
                 'icon_class': 'fa-exclamation-triangle',
+                'button_active': 'disabled="disabled" aria-expanded="false"',
+                'step_classes': 'is--unavailable',
+                'xblock_id': xblock.scope_ids.usage_id
             }
         )
 
@@ -111,6 +120,9 @@ class TestStaffAssessmentRender(StaffAssessmentTestBase):
                 'message_title': 'Waiting for a Staff Grade',
                 'message_content': 'Check back later to see if a course staff member has assessed your response. '
                                    'You will receive your grade after the assessment is complete.',
+                'step_classes': 'is--showing',
+                'button_active': 'aria-expanded="true"',
+                'xblock_id': xblock.scope_ids.usage_id
             }
         )
 
@@ -121,7 +133,9 @@ class TestStaffAssessmentRender(StaffAssessmentTestBase):
             {
                 'status_value': 'Complete',
                 'icon_class': 'fa-check',
-                'step_classes': 'is--complete is--empty is--collapsed',
+                'step_classes': 'is--complete is--empty',
+                'button_active': 'disabled="disabled" aria-expanded="false"',
+                'xblock_id': xblock.scope_ids.usage_id
             }
         )
 

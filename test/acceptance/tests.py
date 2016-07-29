@@ -187,7 +187,8 @@ class OpenAssessmentTest(WebAppTest):
         self.staff_asmnt_page.wait_for_page()
         self.assertEqual("Staff Grade", self.staff_asmnt_page.label)
         self.staff_asmnt_page.verify_status_value(expected_status)
-        self.assertEqual(expected_message_title, self.staff_asmnt_page.message_title)
+        message_title = self.staff_asmnt_page.open_step().message_title
+        self.assertEqual(expected_message_title, message_title)
 
     def do_training(self):
         """
@@ -358,6 +359,7 @@ class StaffAssessmentTest(OpenAssessmentTest):
         self.do_staff_override(username)
         self.refresh_page()
         self.assertEqual(self.STAFF_OVERRIDE_SCORE, self.grade_page.wait_for_page().score)
+
 
 class PeerAssessmentTest(OpenAssessmentTest):
     """
@@ -806,8 +808,11 @@ class FullWorkflowMixin(object):
             self.browser, password=self.TEST_PASSWORD, course_id=self.TEST_COURSE_ID, staff=True
         )
         auto_auth_page.visit()
+
         username_email = auto_auth_page.get_username_and_email()
         self.submission_page.visit().submit_response(self.SUBMISSION)
+        EmptyPromise(self.submission_page.button("#openassessment__student-training").is_focused(),
+                     "Student training button should be focused")
 
         return username_email
 
@@ -819,8 +824,16 @@ class FullWorkflowMixin(object):
             (str, str): the username and password of the newly created user
         """
         username, email = self.do_submission()
+        EmptyPromise(self.submission_page.button("#openassessment__student-training").is_focused(),
+                     "Student training button should be focused")
+
         self.do_training()
+        EmptyPromise(self.submission_page.button("#openassessment__self-assessment").is_focused(),
+                     "Self assessment button should be focused")
+
         self.submit_self_assessment(self.SELF_ASSESSMENT)
+        EmptyPromise(self.submission_page.button("#openassessment__grade").is_focused(),
+                     "Grade button should be focused")
 
         return username, email
 

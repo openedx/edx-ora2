@@ -3,49 +3,54 @@
 {% block list_item %}
 <li
     id="openassessment__peer-assessment"
-    class="openassessment__steps__step step--peer-assessment ui-toggle-visibility {% if allow_latex %} allow--latex {%endif%}"
+    class="openassessment__steps__step step--peer-assessment is--showing ui-slidable__container {% if allow_latex %} allow--latex {%endif%}"
     data-submission-uuid="{{ peer_submission.uuid }}"
+    tabindex="-1"
 >
 {% endblock %}
 {% spaceless %}
 
-    <header class="step__header ui-toggle-visibility__control">
+    <header class="step__header ui-slidable__control">
         <h2 class="step__title">
-            <span class="step__counter"></span>
-            <span class="wrapper--copy">
-                <span class="step__label">{% trans "Assess Peers" %}</span>
-                {% if peer_start %}
-                <span class="step__deadline">
-                    {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "available August 13th, 2014 (in 5 days and 45 minutes)" #}
-                    {% blocktrans with start_date=peer_start|timezone:time_zone|date:"N j, Y H:i e" time_until=peer_start|timeuntil %}available <span class="date">{{ start_date }} (in {{ time_until }})</span>{% endblocktrans %}
+            {% block button %}
+            <button class="ui-slidable" aria-expanded="true" id="oa_peer_{{ xblock_id }}" aria-controls="oa_peer{{ xblock_id }}_content">
+            {% endblock %}
+                <span class="step__counter"></span>
+                <span class="wrapper--copy">
+                    <span class="step__label">{% trans "Assess Peers" %}</span>
+                    {% if peer_start %}
+                    <span class="step__deadline">
+                        {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "available August 13th, 2014 (in 5 days and 45 minutes)" #}
+                        {% blocktrans with start_date=peer_start|timezone:time_zone|date:"N j, Y H:i e" time_until=peer_start|timeuntil %}available <span class="date">{{ start_date }} (in {{ time_until }})</span>{% endblocktrans %}
+                    </span>
+                    {% elif peer_due %}
+                    <span class="step__deadline">
+                        {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "due August 13th, 2014 (in 5 days and 45 minutes)" #}
+                        {% blocktrans with due_date=peer_due|timezone:time_zone|date:"N j, Y H:i e" time_until=peer_due|timeuntil %}due <span class="date">{{ due_date }} (in {{ time_until }})</span>{% endblocktrans %}
+                    </span>
+                    {% endif %}
                 </span>
-                {% elif peer_due %}
-                <span class="step__deadline">
-                    {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "due August 13th, 2014 (in 5 days and 45 minutes)" #}
-                    {% blocktrans with due_date=peer_due|timezone:time_zone|date:"N j, Y H:i e" time_until=peer_due|timeuntil %}due <span class="date">{{ due_date }} (in {{ time_until }})</span>{% endblocktrans %}
-                </span>
-                {% endif %}
-            </span>
-        </h2>
+            </button>
 
-        {% block title %}
-        <span class="step__status">
-          <span class="step__status__label">{% trans "This step's status" %}:</span>
-          <span class="step__status__value">
-            <span class="copy">
-                {% with graded_string=graded|stringformat:"s" must_grade_string=must_grade|stringformat:"s" %}
-                {% blocktrans with num_graded='<span class="step__status__value--completed">'|safe|add:graded_string|add:"</span>"|safe num_must_grade='<span class="step__status__value--required">'|safe|add:must_grade_string|add:"</span>"|safe %}
-                    In Progress ({{ num_graded }} of {{ num_must_grade }})
-                {% endblocktrans %}
-                {% endwith %}
+            {% block title %}
+            <span class="step__status">
+              <span class="step__status__label">{% trans "This step's status" %}:</span>
+              <span class="step__status__value">
+                <span class="copy">
+                    {% with graded_string=graded|stringformat:"s" must_grade_string=must_grade|stringformat:"s" %}
+                    {% blocktrans with num_graded='<span class="step__status__value--completed">'|safe|add:graded_string|add:"</span>"|safe num_must_grade='<span class="step__status__value--required">'|safe|add:must_grade_string|add:"</span>"|safe %}
+                        In Progress ({{ num_graded }} of {{ num_must_grade }})
+                    {% endblocktrans %}
+                    {% endwith %}
+                </span>
+              </span>
             </span>
-          </span>
-        </span>
-        {% endblock %}
+            {% endblock %}
+        </h2>
     </header>
 
     {% block body %}
-    <div class="ui-toggle-visibility__content">
+    <div class="ui-slidable__content" aria-labelledby="oa_peer_{{ xblock_id }}" id="oa_peer{{ xblock_id }}_content">
         <div class="wrapper--step__content">
             <div class="step__instruction">
                 <p>{% trans "Read and assess the following response from one of your peers." %}</p>
@@ -82,7 +87,7 @@
             </div>
 
             <div class="step__actions">
-                <div class="message message--inline message--error message--error-server">
+                <div class="message message--inline message--error message--error-server" tabindex="-1">
                     <h3 class="message__title">{% trans "We could not submit your assessment" %}</h3>
                     <div class="message__content"></div>
                 </div>

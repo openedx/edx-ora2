@@ -443,6 +443,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             })
         path, context = xblock.self_path_and_context()
 
+        expected_context['xblock_id'] = xblock.scope_ids.usage_id
+
         self.assertEqual(path, expected_path)
         self.assertItemsEqual(context, expected_context)
 

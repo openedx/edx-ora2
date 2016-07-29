@@ -4,14 +4,20 @@
 
 
 {% block list_item %}
-<li id="openassessment__self-assessment" class="openassessment__steps__step step--self-assessment">
+<li id="openassessment__self-assessment"
+    class="openassessment__steps__step step--self-assessment ui-slidable__container"
+    tabindex="-1">
+{% endblock %}
+
+{% block button %}
+    <button class="ui-slidable" aria-expanded="false" disabled="disabled">
 {% endblock %}
 
 {% block title %}
 <span class="step__status">
   <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
-    <i class="icon fa fa-exclamation-triangle" aria-hidden="true"></i>
+    <span class="icon fa fa-exclamation-triangle" aria-hidden="true"></span>
     <span class="copy">
         {% trans "Cancelled" %}
     </span>

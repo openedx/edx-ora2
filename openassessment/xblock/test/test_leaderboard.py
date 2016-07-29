@@ -33,7 +33,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         self._assert_path_and_context(
             xblock,
             'openassessmentblock/leaderboard/oa_leaderboard_waiting.html',
-            {}
+            {'xblock_id': xblock.scope_ids.usage_id}
         )
         self._assert_leaderboard_visible(xblock, True)
 
@@ -243,8 +243,9 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
                 'topscores': scores,
                 'allow_latex': xblock.allow_latex,
                 'file_upload_type': xblock.file_upload_type,
+                'xblock_id': xblock.scope_ids.usage_id
             },
-            workflow_status='done'
+            workflow_status='done',
         )
 
         self.maxDiff = maxDiff

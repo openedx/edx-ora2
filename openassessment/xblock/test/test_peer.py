@@ -638,6 +638,7 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             mock_finished.return_value = (was_graded_enough, 1)
             path, context = xblock.peer_path_and_context(continue_grading)
 
+        expected_context['xblock_id'] = xblock.scope_ids.usage_id
         self.assertEqual(path, expected_path)
         self.assertItemsEqual(context, expected_context)
 

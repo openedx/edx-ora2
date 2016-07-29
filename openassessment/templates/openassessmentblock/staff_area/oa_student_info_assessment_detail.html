@@ -1,11 +1,13 @@
 {% load i18n %}
-<div class="staff-info__status ui-staff__content__section wrapper--ui--collapse staff-info__{{ class_type }}__assessments">
-    <button class="ui-staff ui-slidable" aria-controls="{{ class_type }}_content_{{ submission.uuid }}" aria-expanded="false" id="{{ class_type }}_{{ submission.uuid }}">
-        <h2 class="staff-info__title ui-staff__subtitle">
-            <i class="icon fa fa-caret-right" aria-hidden="true"></i>
-            <span>{{ translated_title }}</span>
-        </h2>
-    </button>
+<div class="staff-info__status ui-staff__content__section wrapper--ui--collapse staff-info__{{ class_type }}__assessments ui-slidable__container">
+    <div class="ui-slidable__control">
+        <button class="ui-staff ui-slidable" aria-controls="{{ class_type }}_content_{{ submission.uuid }}" aria-expanded="false" id="{{ class_type }}_{{ submission.uuid }}">
+            <h2 class="staff-info__title ui-staff__subtitle">
+                <span class="icon fa fa-caret-right" aria-hidden="true"></span>
+                <span>{{ translated_title }}</span>
+            </h2>
+        </button>
+    </div>
     <div class="ui-slidable__content" role="group" id="{{ class_type }}_content_{{ submission.uuid }}" aria-labelledby="{{ class_type }}_{{ submission.uuid }}">
         {% for assessment in assessments %}
             {% with assessment_num=forloop.counter %}

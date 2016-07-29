@@ -167,6 +167,7 @@ class PeerAssessmentMixin(object):
             "rubric_criteria": self.rubric_criteria_with_labels,
             "allow_latex": self.allow_latex,
             "time_zone": get_current_time_zone(user_service),
+            "xblock_id": self.get_xblock_id(),
         }
 
         if self.rubric_feedback_prompt is not None:

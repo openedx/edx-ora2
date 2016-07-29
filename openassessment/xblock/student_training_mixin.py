@@ -71,7 +71,7 @@ class StudentTrainingMixin(object):
         problem_closed, reason, start_date, due_date = self.is_closed(step="student-training")
         user_service = self.runtime.service(self, 'user')
 
-        context = {}
+        context = {"xblock_id": self.get_xblock_id()}
         template = 'openassessmentblock/student_training/student_training_unavailable.html'
 
         # add allow_latex field to the context

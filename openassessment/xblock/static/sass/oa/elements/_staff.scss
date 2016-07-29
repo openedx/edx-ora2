@@ -22,26 +22,8 @@
 
   .ui-staff {
 
-    .ui-slidable {
-
-      .icon {
-        @include transition(all $tmg-f2 ease-in-out 0s);
-        @include transform(rotate(bidi-rotate-angle(0deg)));
-      }
-
-      &.is--showing {
-        .icon {
-          @include transform(rotate(bidi-rotate-angle(90deg)));
-          @include transform-origin(50% 50%);
-        }
-      }
-    }
-
     .ui-slidable__content {
       padding: ($baseline-v/2) ($baseline-h/4);
-
-      // Display as initially collapsed.
-      display: none;
     }
   }
 
@@ -329,11 +311,6 @@
         padding: 0;
       }
     }
-
-    // Override the default color for h3 (for elements that can be toggled).
-    .ui-slidable__control .staff__grade__title {
-      color: $action-primary-color;
-    }
   }
 
   // UI - cancel submission (action)
@@ -355,13 +332,6 @@
 
   // Learner info section
   .staff-info__student__report {
-
-     // Override default button styling.
-    .ui-slidable {
-      @extend %btn-reset;
-      background-color: $staff-bg;
-      padding: 0;
-    }
 
     .staff-info__final__grade__table {
       margin-top: ($baseline-v/2);

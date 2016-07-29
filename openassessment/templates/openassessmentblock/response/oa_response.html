@@ -2,40 +2,45 @@
 {% load i18n %}
 {% spaceless %}
 {% block list_item %}
-<li id="openassessment__response" class="openassessment__steps__step step--response ui-toggle-visibility">
+<li id="openassessment__response"
+    class="openassessment__steps__step step--response is--showing ui-slidable__container"
+    tabindex="-1">
 {% endblock %}
 
-    <header class="step__header ui-toggle-visibility__control">
+    <header class="step__header ui-slidable__control">
         <h2 class="step__title">
-            <span class="step__counter"></span>
-            <span class="wrapper--copy">
-                <span class="step__label">{% trans "Your Response" %}</span>
-                {% if submission_start %}
-                <span class="step__deadline">
-                    {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "available August 13th, 2014 (in 5 days and 45 minutes)" #}
-                    {% blocktrans with start_date=submission_start|timezone:time_zone|date:"N j, Y H:i e" time_until=submission_start|timeuntil %}available <span class="date">{{ start_date }} (in {{ time_until }})</span>{% endblocktrans %}
+            {% block button %}
+            <button class="ui-slidable" aria-expanded="true" id="oa_response_{{ xblock_id }}" aria-controls="oa_response_{{ xblock_id }}_content">
+            {% endblock %}
+                <span class="step__counter"></span>
+                <span class="wrapper--copy">
+                    <span class="step__label">{% trans "Your Response" %}</span>
+                    {% if submission_start %}
+                    <span class="step__deadline">
+                        {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "available August 13th, 2014 (in 5 days and 45 minutes)" #}
+                        {% blocktrans with start_date=submission_start|timezone:time_zone|date:"N j, Y H:i e" time_until=submission_start|timeuntil %}available <span class="date">{{ start_date }} (in {{ time_until }})</span>{% endblocktrans %}
+                    </span>
+                    {% elif submission_due %}
+                    <span class="step__deadline">
+                        {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "due August 13th, 2014 (in 5 days and 45 minutes)" #}
+                        {% blocktrans with due_date=submission_due|timezone:time_zone|date:"N j, Y H:i e" time_until=submission_due|timeuntil %}due <span class="date">{{ due_date }} (in {{ time_until }})</span>{% endblocktrans %}
+                    {% endif %}
                 </span>
-                {% elif submission_due %}
-                <span class="step__deadline">
-                    {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "due August 13th, 2014 (in 5 days and 45 minutes)" #}
-                    {% blocktrans with due_date=submission_due|timezone:time_zone|date:"N j, Y H:i e" time_until=submission_due|timeuntil %}due <span class="date">{{ due_date }} (in {{ time_until }})</span>{% endblocktrans %}
-                </span>
-                {% endif %}
-            </span>
-        </h2>
+            </button>
 
-        {%  block title %}
-        <span class="step__status">
-            <span class="step__status__label">{% trans "This step's status" %}:</span>
-            <span class="step__status__value">
-                <span class="copy">{% trans "In Progress" %}</span>
+            {%  block title %}
+            <span class="step__status">
+                <span class="step__status__label">{% trans "This step's status" %}:</span>
+                <span class="step__status__value">
+                    <span class="copy">{% trans "In Progress" %}</span>
+                </span>
             </span>
-        </span>
-        {% endblock %}
+            {% endblock %}
+        </h2>
     </header>
 
     {% block body %}
-    <div class="ui-toggle-visibility__content">
+    <div class="ui-slidable__content" aria-labelledby="oa_response_{{ xblock_id }}" id="oa_response_{{ xblock_id }}_content">
         <div class="wrapper--step__content">
             <div class="step__instruction">
                 <p>
@@ -54,10 +59,10 @@
                     <ol class="list list--fields response__submission__content">
                         {% for part in saved_response.answer.parts %}
                             <li class="submission__answer__part">
-                                <article class="submission__answer__part__prompt ui-toggle-visibility">
+                                <article class="submission__answer__part__prompt">
                                     <h2 class="submission__answer__part__prompt__title">{% trans "The prompt for this section." %}</h2>
 
-                                    <div class="submission__answer__part__prompt__copy ui-toggle-visibility__content">
+                                    <div class="submission__answer__part__prompt__copy">
                                         {{ part.prompt.description|linebreaks }}
                                     </div>
                                 </article>
@@ -75,7 +80,7 @@
                         {% if file_upload_type %}
                         <li class="field">
                             <div id="upload__error">
-                                <div class="message message--inline message--error message--error-server">
+                                <div class="message message--inline message--error message--error-server" tabindex="-1">
                                     <h3 class="message__title">{% trans "We could not upload this file" %}</h3>
                                     <div class="message__content"></div>
                                 </div>
@@ -92,7 +97,7 @@
                     <span class="tip">{% trans "You may continue to work on your response until you submit it." %}</span>
 
                     <div class="response__submission__actions">
-                        <div class="message message--inline message--error message--error-server">
+                        <div class="message message--inline message--error message--error-server" tabindex="-1">
                             <h3 class="message__title">{% trans "We could not save your progress" %}</h3>
                             <div class="message__content"></div>
                         </div>
@@ -132,7 +137,7 @@
             </div>
 
             <div class="step__actions">
-                <div class="message message--inline message--error message--error-server">
+                <div class="message message--inline message--error message--error-server" tabindex="-1">
                     <h3 class="message__title">{% trans "We could not submit your response" %}</h3>
                     <div class="message__content"></div>
                 </div>

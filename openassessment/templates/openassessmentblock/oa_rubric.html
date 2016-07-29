@@ -5,16 +5,18 @@
 
         {% for criterion in rubric_criteria %}
         <li
-            class="field field--radio is--required assessment__rubric__question ui-toggle-visibility {% if criterion.options %}has--options{% endif %}"
+            class="field field--radio is--required assessment__rubric__question is--showing ui-slidable__container {% if criterion.options %}has--options{% endif %}"
             id="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}"
         >
-            <h4 class="question__title ui-toggle-visibility__control">
-                <i class="icon fa fa-caret-right" aria-hidden="true"></i>
-                <span id="{{ rubric_type }}__assessment__rubric__prompt--{{ criterion.order_num }}" class="ui-toggle-visibility__control__copy question__title__copy">{{ criterion.prompt }}</span>
-                <span class="label--required sr">* ({% trans "Required" %})</span>
+            <h4 class="question__title ui-slidable__control">
+                <button class="ui-slidable" aria-expanded="true" id="oa_rubric_{{ submission.uuid }}" aria-controls="oa_rubric_{{ submission.uuid }}_content">
+                    <span class="icon fa fa-caret-right" aria-hidden="true"></span>
+                    <span id="{{ rubric_type }}__assessment__rubric__prompt--{{ criterion.order_num }}" class="ui-slidable__control__copy question__title__copy">{{ criterion.prompt }}</span>
+                    <span class="label--required sr">* ({% trans "Required" %})</span>
+                </button>
             </h4>
 
-            <div class="ui-toggle-visibility__content">
+            <div class="ui-slidable__content" aria-labelledby="oa_rubric_{{ submission.uuid }}" id="oa_rubric_{{ submission.uuid }}_content">
                 <div class="question__answers">
                     <div role="group" aria-labelledby="{{ rubric_type }}__assessment__rubric__prompt--{{ criterion.order_num }}">
                         {% for option in criterion.options %}
