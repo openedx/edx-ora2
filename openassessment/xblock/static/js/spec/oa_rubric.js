@@ -9,7 +9,7 @@ describe("OpenAssessment.Rubric", function() {
     beforeEach(function() {
         loadFixtures('oa_rubric.html');
 
-        var el = $("#peer-assessment--001__assessment").get(0);
+        var el = $(".peer-assessment--001__assessment").get(0);
         rubric = new OpenAssessment.Rubric(el);
     });
 

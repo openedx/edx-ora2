@@ -2,8 +2,7 @@
 {% load tz %}
 {% spaceless %}
 {% block list_item %}
-<li id="openassessment__student-training"
-    class="openassessment__steps__step step--student-training is--showing ui-slidable__container {% if allow_latex %}allow--latex{%endif%}"
+<li class="openassessment__steps__step step--student-training is--showing ui-slidable__container {% if allow_latex %}allow--latex{%endif%}"
     tabindex="-1">
 {% endblock %}
 
@@ -51,7 +50,7 @@
     <div class="ui-slidable__content" aria-labelledby="oa_training_{{ xblock_id }}" id="oa_training_{{ xblock_id }}_content">
         <div class="wrapper--step__content">
 
-            <div id="openassessment__student-training--instructions" class="step__message message message--correct">
+            <div class="openassessment__student-training--instructions step__message message message--correct">
                 <h3 class="message__title">{% trans "Learning to Assess Responses" %}</h3>
 
                 <div class="message__content">
@@ -59,7 +58,7 @@
                 </div>
             </div>
 
-            <div id="openassessment__student-training--incorrect" class="step__message message message--incorrect is--hidden">
+            <div class="openassessment__student-training--incorrect step__message message message--incorrect is--hidden">
                 <h3 class="message__title">{% trans "Learning to Assess Responses" %}</h3>
 
                 <div class="message__content">
@@ -68,7 +67,7 @@
             </div>
 
             <div class="step__content">
-                <article class="student-training__display" id="student-training">
+                <article class="student-training__display">
                     <header class="student-training__display__header">
                         {% with training_num_current=training_num_current training_num_available=training_num_available %}
                         <h3 class="student-training__display__title">
@@ -86,19 +85,18 @@
 
                 </article>
 
-                <form id="student-training--001__assessment" class="student-training__assessment" method="post">
+                <form class="student-training--001__assessment student-training__assessment" method="post">
                     <div class="assessment__fields">
                         <ol class="list list--fields assessment__rubric">
                             {% for criterion in training_rubric.criteria %}
                                 {% if criterion.options %}
                                 <li
-                                    class="field field--radio is--required assessment__rubric__question has--options is--showing ui-slidable__container"
-                                    id="training__assessment__rubric__question--{{ criterion.order_num }}"
+                                    class="field field--radio is--required assessment__rubric__question has--options is--showing ui-slidable__container training__assessment__rubric__question--{{ criterion.order_num }}"
                                 >
                                     <h4 class="question__title ui-slidable__control">
                                         <button class="ui-slidable" aria-expanded="true" id="oa_training_{{ xblock_id }}_criterion--{{ criterion.order_num }}" aria-controls="oa_training_{{ xblock_id }}_content_criterion--{{  criterion.order_num }}">
                                             <span class="icon fa fa-caret-right" aria-hidden="true"></span>
-                                            <span id="training__assessment__rubric__prompt--{{ criterion.order_num }}" class="question__title__copy">{{ criterion.prompt }}</span>
+                                            <span id="training__assessment__rubric__prompt--{{ criterion.order_num }}__{{ xblock_id }}" class="question__title__copy">{{ criterion.prompt }}</span>
                                             <span class="label--required sr">* ({% trans "Required" %})</span>
                                         </button>
                                     </h4>
@@ -118,17 +116,17 @@
                                             </div>
                                         </div>
                                         <div class="question__answers">
-                                            <div role="group" aria-labelledby="training__assessment__rubric__prompt--{{ criterion.order_num }}">
+                                            <div role="group" aria-labelledby="training__assessment__rubric__prompt--{{ criterion.order_num }}__{{ xblock_id }}">
                                             {% for option in criterion.options %}
                                                 <div class="answer">
                                                     <div class="wrapper--input">
                                                         <input type="radio"
                                                                data-criterion-name="{{ criterion.name }}"
-                                                               id="training__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
-                                                               class="answer__value"
+                                                               id="training__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}"
+                                                               class="answer__value rubric_{{ criterion.order_num }}_{{ option.order_num }}"
                                                                value="{{ option.name }}"
                                                                name="training__assessment__rubric__question--{{ criterion.order_num }}"/>
-                                                        <label for="training__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
+                                                        <label for="training__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}"
                                                                class="answer__label">{{ option.label }}</label>
                                                     </div>
                                                     <div class="wrapper--metadata">
@@ -156,7 +154,7 @@
 
                 <ul class="list list--actions">
                     <li class="list--actions__item">
-                        <button type="submit" id="student-training--001__assessment__submit" class="action action--submit is--disabled">
+                        <button type="submit" class="student-training--001__assessment__submit action action--submit is--disabled">
                             <span class="copy">{% trans "Compare your selections with the instructor's selections" %}</span>
                         </button>
                     </li>

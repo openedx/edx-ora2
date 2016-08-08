@@ -45,37 +45,37 @@ logger = logging.getLogger(__name__)
 UI_MODELS = {
     "submission": {
         "name": "submission",
-        "class_id": "openassessment__response",
+        "class_id": "step--response",
         "title": "Your Response"
     },
     "student-training": {
         "name": "student-training",
-        "class_id": "openassessment__student-training",
+        "class_id": "step--student-training",
         "title": "Learn to Assess"
     },
     "peer-assessment": {
         "name": "peer-assessment",
-        "class_id": "openassessment__peer-assessment",
+        "class_id": "step--peer-assessment",
         "title": "Assess Peers' Responses"
     },
     "self-assessment": {
         "name": "self-assessment",
-        "class_id": "openassessment__self-assessment",
+        "class_id": "step--self-assessment",
         "title": "Assess Your Response"
     },
     "staff-assessment": {
         "name": "staff-assessment",
-        "class_id": "openassessment__staff-assessment",
+        "class_id": "step--staff-assessment",
         "title": "Staff Grade"
     },
     "grade": {
         "name": "grade",
-        "class_id": "openassessment__grade",
+        "class_id": "step--grade",
         "title": "Your Grade:"
     },
     "leaderboard": {
         "name": "leaderboard",
-        "class_id": "openassessment__leaderboard",
+        "class_id": "step--leaderboard",
         "title": "Leaderboard"
     }
 }

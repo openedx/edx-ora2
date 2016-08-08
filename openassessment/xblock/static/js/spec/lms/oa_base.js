@@ -53,7 +53,7 @@ describe("OpenAssessment.BaseView", function() {
         server.renderLatex = jasmine.createSpy('renderLatex');
 
         // Create the object under test
-        var el = $("#openassessment").get(0);
+        var el = $(".openassessment").get(0);
         view = new OpenAssessment.BaseView(runtime, el, server);
         view.load();
         expect($(".openassessment__steps__step").hasClass('is--loading')).toBeFalsy();

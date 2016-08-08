@@ -1,6 +1,6 @@
 {% load i18n %}
 {% spaceless %}
-<div id="openassessment__message" class="openassessment__message message">
+<div id="openassessment__message__{{ xblock_id }}" class="openassessment__message message">
     <h3 class="message__title">
         {% if not_yet_open %}
             {% trans "This Task Is Not Yet Available" %}

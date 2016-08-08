@@ -2,7 +2,7 @@
 {% load tz %}
 {% spaceless %}
 {% block list_item %}
-<li id="openassessment__self-assessment"
+<li id="openassessment__self-assessment__{{ xblock_id }}"
     class="openassessment__steps__step step--self-assessment is--showing ui-slidable__container {% if allow_latex %}allow--latex{%endif%}"
     tabindex="-1">
 {% endblock %}
@@ -44,7 +44,7 @@
     <div class="ui-slidable__content" aria-labelledby="oa_self_{{ xblock_id }}" id="oa_self_{{ xblock_id }}_content">
         <div class="wrapper--step__content">
             <div class="step__content">
-                <article class="self-assessment__display" id="self-assessment">
+                <article class="self-assessment__display">
                     <header class="self-assessment__display__header">
                         <h3 class="self-assessment__display__title">{% trans "Your Response" %}</h3>
                     </header>
@@ -56,8 +56,8 @@
                     {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=self_file_url header=translated_header class_prefix="self-assessment" %}
                 </article>
 
-                <form id="self-assessment--001__assessment" class="self-assessment__assessment" method="post">
-                    {% include "openassessmentblock/oa_rubric.html" with rubric_type="self" %}
+                <form class="self-assessment--001__assessment self-assessment__assessment" method="post">
+                    {% include "openassessmentblock/oa_rubric.html" with rubric_type="self" submission=self_submission %}
                 </form>
             </div>
 
@@ -69,7 +69,7 @@
 
                 <ul class="list list--actions">
                     <li class="list--actions__item">
-                        <button type="submit" id="self-assessment--001__assessment__submit" class="action action--submit is--disabled">
+                        <button type="submit" class="self-assessment--001__assessment__submit action action--submit is--disabled">
                             <span class="copy">{% trans "Submit your assessment" %}</span>
                         </button>
                     </li>

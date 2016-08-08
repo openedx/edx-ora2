@@ -2,21 +2,19 @@
 {% load i18n %}
 <div class="assessment__fields">
     <ol class="list list--fields assessment__rubric">
-
         {% for criterion in rubric_criteria %}
         <li
-            class="field field--radio is--required assessment__rubric__question is--showing ui-slidable__container {% if criterion.options %}has--options{% endif %}"
-            id="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}"
+            class="field field--radio is--required assessment__rubric__question is--showing ui-slidable__container {% if criterion.options %}has--options{% endif %} {{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}"
         >
             <h4 class="question__title ui-slidable__control">
-                <button class="ui-slidable" aria-expanded="true" id="oa_rubric_{{ submission.uuid }}" aria-controls="oa_rubric_{{ submission.uuid }}_content">
+                <button class="ui-slidable" aria-expanded="true" id="oa_rubric__{{ rubric_type }}__{{ submission.uuid }}__{{ criterion.order_num }}" aria-controls="oa_rubric__{{ rubric_type }}__{{ submission.uuid }}__{{ criterion.order_num }}__content">
                     <span class="icon fa fa-caret-right" aria-hidden="true"></span>
                     <span id="{{ rubric_type }}__assessment__rubric__prompt--{{ criterion.order_num }}" class="ui-slidable__control__copy question__title__copy">{{ criterion.prompt }}</span>
                     <span class="label--required sr">* ({% trans "Required" %})</span>
                 </button>
             </h4>
 
-            <div class="ui-slidable__content" aria-labelledby="oa_rubric_{{ submission.uuid }}" id="oa_rubric_{{ submission.uuid }}_content">
+            <div class="ui-slidable__content" aria-labelledby="oa_rubric__{{ rubric_type }}__{{ submission.uuid }}__{{ criterion.order_num }}" id="oa_rubric__{{ rubric_type }}__{{ submission.uuid }}__{{ criterion.order_num }}__content">
                 <div class="question__answers">
                     <div role="group" aria-labelledby="{{ rubric_type }}__assessment__rubric__prompt--{{ criterion.order_num }}">
                         {% for option in criterion.options %}
@@ -24,11 +22,11 @@
                             <div class="wrapper--input">
                                 <input type="radio"
                                        data-criterion-name="{{ criterion.name }}"
-                                       id="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
-                                       class="answer__value"
+                                       class="answer__value rubric_{{ criterion.order_num }}_{{ option.order_num }}"
+                                       id="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}"
                                        value="{{ option.name }}"
                                        name="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}"/>
-                                <label for="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}"
+                                <label for="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}"
                                        class="answer__label"
                                        >{{ option.label }}</label>
                             </div>
@@ -43,10 +41,10 @@
                     {% if criterion.feedback == 'optional' or criterion.feedback == 'required' %}
                     <div class="answer--feedback">
                         <div class="wrapper--input">
-                            <label for="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__feedback" class="answer__label">{% trans "Comments" %}</label>
+                            <label for="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__feedback__{{ xblock_id }}" class="answer__label">{% trans "Comments" %}</label>
                             <textarea
-                                id="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__feedback"
                                 class="answer__value"
+                                id="{{ rubric_type }}__assessment__rubric__question--{{ criterion.order_num }}__feedback__{{ xblock_id }}"
                                 value="{{ criterion.name }}"
                                 data-criterion-name="{{ criterion.name }}"
                                 aria-describedby="{{ rubric_type }}__assessment__rubric__prompt--{{ criterion.order_num }}"
@@ -62,14 +60,14 @@
         </li>
         {% endfor %}
         <li class="wrapper--input field field--textarea assessment__rubric__question assessment__rubric__question--feedback">
-            <label class="question__title" for="{{ rubric_type }}__assessment__rubric__question--feedback__value">
+            <label class="question__title" for="{{ rubric_type }}__assessment__rubric__question--feedback__value__{{ xblock_id }}">
                 <span class="question__title__copy">{{ rubric_feedback_prompt }}</span>
             </label>
 
             <div class="wrapper--input">
                 <textarea
-                    id="{{ rubric_type }}__assessment__rubric__question--feedback__value"
                     class="assessment__rubric__question--feedback__value"
+                    id="{{ rubric_type }}__assessment__rubric__question--feedback__value__{{ xblock_id }}"
                     placeholder="{{ rubric_feedback_default_text }}"
                     maxlength="1000"
                 >

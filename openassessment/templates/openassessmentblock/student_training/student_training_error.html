@@ -1,8 +1,13 @@
 {% extends "openassessmentblock/student_training/student_training.html" %}
 {% load i18n %}
 
+{% block list_item %}
+<li class="openassessment__steps__step step--student-training is--showing ui-slidable__container is--initially--collapsed {% if allow_latex %}allow--latex{%endif%}"
+    tabindex="-1">
+{% endblock %}
+
 {% block button %}
-    <button class="ui-slidable" aria-expanded="false" disabled="disabled" id="oa_training_{{ xblock_id }}" aria-controls="oa_training_{{ xblock_id }}_content">
+    <button class="ui-slidable" aria-expanded="false" id="oa_training_{{ xblock_id }}" aria-controls="oa_training_{{ xblock_id }}_content">
 {% endblock %}
 
 {% block body %}

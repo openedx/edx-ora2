@@ -3,6 +3,7 @@
 
 <div class="openassessment__student-info staff-info__student__report"
      data-submission-uuid="{{ submission.uuid }}">
+
 {% if submission %}
     <h2 class="title">
         <span class="label staff-info__student__report__summary" tabindex="-1">
@@ -12,7 +13,7 @@
         </span>
     </h2>
 
-    <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse staff-info__student__response ui-slidable__container">
+    <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse staff-info__student__response ui-slidable__container is--initially--collapsed ">
         <div class="ui-slidable__control">
             <button class="ui-staff ui-slidable" aria-controls="learner_response_content_{{ submission.uuid }}" aria-expanded="false" id="learner_response_{{ submission.uuid }}">
                 <h2 class="staff-info__title ui-staff__subtitle">
@@ -77,7 +78,7 @@
         {% include "openassessmentblock/staff_area/oa_student_info_assessment_detail.html" with class_type="staff" assessments=staff_assessment %}
     {% endif %}
 
-    <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse staff-info__student__grade ui-slidable__container">
+    <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse staff-info__student__grade ui-slidable__container is--initially--collapsed ">
         <div class="ui-slidable__control">
             <button class="ui-staff ui-slidable" aria-controls="final_grade_content_{{ submission.uuid }}" aria-expanded="false" id="final_grade_{{ submission.uuid }}">
                 <h2 class="staff-info__title ui-staff__subtitle">
@@ -155,7 +156,7 @@
     </div>
 
     {% if not workflow_cancellation %}
-        <div class="staff-info__staff-override ui-staff__content__section wrapper--ui--collapse ui-slidable__container">
+        <div class="staff-info__staff-override ui-staff__content__section wrapper--ui--collapse ui-slidable__container is--initially--collapsed ">
             <div class="ui-slidable__control">
                 <button class="ui-staff ui-slidable" aria-controls="grade_override_content_{{ submission.uuid }}" aria-expanded="false" id="grade_override_{{ submission.uuid }}">
                     <h2 class="staff-info__title ui-staff__subtitle">
@@ -171,7 +172,7 @@
             </div>
         </div>
 
-        <div class="staff-info__workflow-cancellation ui-staff__content__section wrapper--ui--collapse ui-slidable__container">
+        <div class="staff-info__workflow-cancellation ui-staff__content__section wrapper--ui--collapse ui-slidable__container is--initially--collapsed ">
             <div class="ui-slidable__control">
                 <button class="ui-staff ui-slidable" aria-controls="remove_submission_content_{{ submission.uuid }}" aria-expanded="false" id="remove_submission_{{ submission.uuid }}">
                     <h2 class="staff-info__title ui-staff__subtitle">

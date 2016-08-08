@@ -20,10 +20,10 @@ OpenAssessment.StaffView.prototype = {
         var view = this;
         this.server.render('staff_assessment').done(
             function(html) {
-                $('#openassessment__staff-assessment', view.element).replaceWith(html);
+                $('.step--staff-assessment', view.element).replaceWith(html);
                 view.installHandlers();
                 if (typeof usageID !== 'undefined' &&
-                    $("#openassessment__staff-assessment", view.element).hasClass("is--showing")) {
+                    $(".step--staff-assessment", view.element).hasClass("is--showing")) {
                     $("[id='oa_staff_grade_" + usageID + "']", view.element).focus();
                 }
             }
@@ -37,6 +37,6 @@ OpenAssessment.StaffView.prototype = {
     **/
     installHandlers: function() {
         // Install a click handler for collapse/expand
-        this.baseView.setUpCollapseExpand($('#openassessment__staff-assessment', this.element));
+        this.baseView.setUpCollapseExpand($('.step--staff-assessment', this.element));
     },
 };

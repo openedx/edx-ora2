@@ -2,8 +2,8 @@
 {% load i18n %}
 
 {% block list_item %}
-<li id="openassessment__response"
-    class="openassessment__steps__step step--response is--complete ui-slidable__container {% if allow_latex %}allow--latex{%endif%}"
+<li id="openassessment__response__{{ xblock_id }}"
+    class="openassessment__steps__step step--response is--complete ui-slidable__container {% if allow_latex %}allow--latex{%endif%} is--initially--collapsed"
     tabindex="-1">
 {% endblock %}
 
@@ -30,15 +30,15 @@
             <div class="message__content">
                 {% trans "You will receive your grade after all steps are complete and your response is fully assessed." %}
                 {% if peer_incomplete and self_incomplete %}
-                    {% blocktrans with peer_start_tag='<a data-behavior="ui-scroll" href="#openassessment__peer-assessment">'|safe self_start_tag='<a data-behavior="ui-scroll" href="#openassessment__self-assessment">'|safe end_tag='</a>'|safe %}
+                    {% blocktrans with peer_start_tag='<a data-behavior="ui-scroll" href="#openassessment__peer-assessment__'|add:xblock_id|add:'">'|safe self_start_tag='<a data-behavior="ui-scroll" href="#openassessment__self-assessment__'|add:xblock_id|add:'">'|safe end_tag='</a>'|safe %}
                         You still need to complete the {{ peer_start_tag }}peer assessment{{ end_tag }} and {{ self_start_tag }}self assessment{{ end_tag }} steps.
                     {% endblocktrans %}
                 {% elif peer_incomplete %}
-                    {% blocktrans with start_tag='<a data-behavior="ui-scroll" href="#openassessment__peer-assessment">'|safe end_tag='</a>'|safe %}
+                    {% blocktrans with start_tag='<a data-behavior="ui-scroll" href="#openassessment__peer-assessment__'|add:xblock_id|add:'">'|safe end_tag='</a>'|safe%}
                         You still need to complete the {{ start_tag }}peer assessment{{ end_tag }} step.
                     {% endblocktrans %}
                 {% elif self_incomplete %}
-                    {% blocktrans with start_tag='<a data-behavior="ui-scroll" href="#openassessment__self-assessment">'|safe end_tag='</a>'|safe %}
+                    {% blocktrans with start_tag='<a data-behavior="ui-scroll" href="#openassessment__self-assessment__'|add:xblock_id|add:'">'|safe end_tag='</a>'|safe%}
                         You still need to complete the {{ start_tag }}self assessment{{ end_tag }} step.
                     {% endblocktrans %}
                 {% endif %}

@@ -1,6 +1,6 @@
 {% load i18n %}
 {% spaceless %}
-<div id="openassessment__message" class="openassessment__message message">
+<div id="openassessment__message__{{ xblock_id }}" class="openassessment__message message">
     <h3 class="message__title">
         {% trans "Assignment in progress" %}
     </h3>
@@ -16,7 +16,7 @@
                 {% if self_not_released %}
                     {% trans "Check back later when the assessment period has started." %}
                 {% else %}
-                    {% with start_link='<a data-behavior="ui-scroll" href="#openassessment__self-assessment">'|safe %}
+                    {% with start_link='<a data-behavior="ui-scroll" href="#openassessment__self-assessment__'|add:xblock_id|add:'">'|safe %}
                         {% with start_strong='<strong>'|safe end_strong='</strong>'|safe end_link='</a>'|safe %}
                             {% if self_approaching %}
                                 {% blocktrans %}
@@ -34,7 +34,7 @@
                 {% if peer_not_released %}
                     {% trans "Check back later when the assessment period has started." %}
                 {% else %}
-                    {% with start_link='<a data-behavior="ui-scroll" href="#openassessment__peer-assessment">'|safe %}
+                    {% with start_link='<a data-behavior="ui-scroll" href="#openassessment__peer-assessment__'|add:xblock_id|add:'">'|safe%}
                         {% with start_strong='<strong>'|safe end_strong='</strong>'|safe end_link='</a>'|safe %}
                             {% if peer_approaching and peer_not_available %}
                                 {% blocktrans %}

@@ -40,7 +40,7 @@ describe("OpenAssessment.PeerView", function() {
     var createPeerAssessmentView = function(template) {
         loadFixtures(template);
 
-        var rootElement = $('#openassessment__peer-assessment').parent().get(0);
+        var rootElement = $('.step--peer-assessment').parent().get(0);
         var baseView = new OpenAssessment.BaseView(runtime, rootElement, server, {});
         var view = new OpenAssessment.PeerView(rootElement, server, baseView);
         view.installHandlers();

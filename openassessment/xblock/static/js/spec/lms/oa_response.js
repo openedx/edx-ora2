@@ -119,7 +119,7 @@ describe("OpenAssessment.ResponseView", function() {
         };
 
         // Create and install the view
-        var responseElement = $('#openassessment__response').get(0);
+        var responseElement = $('.step--response').get(0);
         var baseView = new OpenAssessment.BaseView(runtime, responseElement, server, {});
         view = new OpenAssessment.ResponseView(responseElement, server, fileUploader, baseView, data);
         view.installHandlers();
