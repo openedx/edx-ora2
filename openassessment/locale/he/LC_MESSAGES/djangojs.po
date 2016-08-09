@@ -6,13 +6,14 @@
 # dana bublil <dana.bublil@gmail.com>, 2016
 # ERAN RAVIV <eran.raviv.israelx@gmail.com>, 2016
 # Nadav Stark <nadav@yeda.org.il>, 2015
+# qualityalltext <quality@alltext.co.il>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-20 20:57+0000\n"
-"PO-Revision-Date: 2016-05-26 05:37+0000\n"
-"Last-Translator: ERAN RAVIV <eran.raviv.israelx@gmail.com>\n"
+"POT-Creation-Date: 2016-08-09 19:04+0000\n"
+"PO-Revision-Date: 2016-08-04 12:44+0000\n"
+"Last-Translator: qualityalltext <quality@alltext.co.il>\n"
 "Language-Team: Hebrew (http://www.transifex.com/open-edx/edx-platform/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +27,7 @@ msgstr ""
 #: openassessment/xblock/static/js/src/oa_server.js:89
 #: openassessment/xblock/static/js/src/oa_server.js:113
 msgid "This section could not be loaded."
-msgstr "לא היה ניתן לטעון קטע זה."
+msgstr "לא ניתן היה לטעון פרק זה."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
@@ -38,25 +39,25 @@ msgstr "לא ניתן היה לטעון את טופס הערכת הצוות."
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:156
 msgid "The display of ungraded and checked out responses could not be loaded."
-msgstr "לא ניתן לטעון את התצוגה של תשובות שלא דורגו ויצאו."
+msgstr "לא ניתן היה לטעון את התצוגה של תשובות יוצאות ולא-מדורגות."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:191
 msgid "This response could not be submitted."
-msgstr "לא היה ניתן להגיש את התגובה."
+msgstr "לא ניתן היה להגיש את התגובה."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:215
 msgid "This response could not be saved."
-msgstr "לא היה ניתן לשמור את התשובה."
+msgstr "לא ניתן היה לשמור את התשובה."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:241
 msgid "This feedback could not be submitted."
-msgstr "לא היה ניתן להגיש את המשוב."
+msgstr "לא ניתן היה להגיש את המשוב."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
@@ -64,7 +65,7 @@ msgstr "לא היה ניתן להגיש את המשוב."
 #: openassessment/xblock/static/js/src/oa_server.js:359
 #: openassessment/xblock/static/js/src/oa_server.js:383
 msgid "This assessment could not be submitted."
-msgstr "לא היה ניתן להגיש את פריט ההערכהה הזה."
+msgstr "לא ניתן היה להגיש את פריט ההערכהה הזה."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
@@ -103,107 +104,107 @@ msgid "The submission could not be removed from the grading pool."
 msgstr "לא ניתן להסיר את ההגשה ממאגר הציונים."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_base.js:172
+#: openassessment/xblock/static/js/src/lms/oa_base.js:203
 msgid "Unable to load"
 msgstr "לא ניתן לטעון"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_peer.js:175
+#: openassessment/xblock/static/js/src/lms/oa_peer.js:182
 msgid ""
 "If you leave this page without submitting your peer assessment, you will "
 "lose any work you have done."
-msgstr "אם תעזוב דף זה ללא שליחת הערכת העמיתים שלך, תאבד כל עבודה שביצעת."
+msgstr "אם תעזבו עמוד זה ללא שליחת הערכת עמיתיכם, תאבדו כל עבודה שביצעתם."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:234
+#: openassessment/xblock/static/js/src/lms/oa_response.js:237
 msgid "Status of Your Response"
 msgstr "מצב התשובה שלך"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:312
+#: openassessment/xblock/static/js/src/lms/oa_response.js:315
 msgid "This response has not been saved."
 msgstr "תשובה זו לא נשמרה."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:316
+#: openassessment/xblock/static/js/src/lms/oa_response.js:319
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
-msgstr "אם תעזוב דף זה ללא שמירת או שליחת התשובה שלך, תאבד כל עבודה שביצעת בתשובה."
+msgstr "אם תעזבו עמוד זה ללא שמירת או שליחת תשובתכם, תאבדו כל עבודה שביצעתם בתשובה."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:334
+#: openassessment/xblock/static/js/src/lms/oa_response.js:337
 msgid "Saving..."
 msgstr "שומר..."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:359
+#: openassessment/xblock/static/js/src/lms/oa_response.js:362
 msgid "This response has been saved but not submitted."
-msgstr "תשובה זו נשמרה אך לא תשלח."
+msgstr "תשובה זו נשמרה אך לא נשלחה."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:362
+#: openassessment/xblock/static/js/src/lms/oa_response.js:365
 msgid "Error"
 msgstr "שגיאה"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:385
+#: openassessment/xblock/static/js/src/lms/oa_response.js:388
 msgid "Do you want to upload your file before submitting?"
-msgstr "האם ברצונך להעלות את הקובץ שלך לפני השליחה?"
+msgstr "האם ברצונכם להעלות את קבציכם לפני השליחה?"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:454
+#: openassessment/xblock/static/js/src/lms/oa_response.js:459
 msgid ""
 "You're about to submit your response for this assignment. After you submit "
 "this response, you can't change it or submit a new response."
-msgstr "אתה עומד להגיש תשובה עבור מטלה זו. לא תוכל לבצע שינויים נוספים או להגיש תשובות נוספות לאחר שתגיש תשובה זו. "
+msgstr "אתם עומדים להגיש תשובה עבור מטלה זו. לא תוכלו לבצע שינויים נוספים או להגיש תשובות נוספות לאחר ההגשה. "
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:483
+#: openassessment/xblock/static/js/openassessment-lms.min.js:2
+#: openassessment/xblock/static/js/src/lms/oa_response.js:488
 msgid "File size must be 5MB or less."
 msgstr "גודל הקובץ חייב להיות קטן מ-5MB"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:488
+#: openassessment/xblock/static/js/openassessment-lms.min.js:2
 #: openassessment/xblock/static/js/src/lms/oa_response.js:493
 #: openassessment/xblock/static/js/src/lms/oa_response.js:498
+#: openassessment/xblock/static/js/src/lms/oa_response.js:503
 msgid "You can upload files with these file types: "
 msgstr "ניתן להעלות קבצים באמצעות סוגי הקבצים הבאים: "
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:503
+#: openassessment/xblock/static/js/openassessment-lms.min.js:2
+#: openassessment/xblock/static/js/src/lms/oa_response.js:508
 msgid "File type is not allowed."
 msgstr "סוג הקובץ אינו מורשה."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_self.js:116
+#: openassessment/xblock/static/js/src/lms/oa_self.js:120
 msgid ""
 "If you leave this page without submitting your self assessment, you will "
 "lose any work you have done."
-msgstr "אם תעזוב דף זה ללא שליחת ההערכה העצמית שלך, תאבד כל עבודה שביצעת."
+msgstr "אם תעזבו עמוד זה ללא שליחת ההערכה העצמית שלכם, תאבדו כל עבודה שביצעתם."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:146
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:223
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:129
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:211
 msgid "Unexpected server error."
 msgstr "שגיאת שרת לא צפויה."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:150
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:133
 msgid "You must provide a learner name."
-msgstr "עליך לספק שם תלמיד."
+msgstr "עליכם לספק שם לומד."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:272
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:263
 msgid "Error getting the number of ungraded responses"
-msgstr "שגיאה בעת ניסיון לקבל את מספר התשובות שלא צויננו"
+msgstr "שגיאה בעת ניסיון לקבל את מספר התשובות הלא-מדורגות."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:516
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:508
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
-msgstr "אם תעזוב דף זה ללא שליחת הערכת הצוות שלך, תאבד כל עבודה שביצעת."
+msgstr "אם תעזבו עמוד זה ללא שליחת הערכת הצוות שלכם, תאבדו כל עבודה שביצעתם."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_container_item.js:39
@@ -223,14 +224,14 @@ msgstr "לא ניתן לשמור את המטלה."
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:150
 msgid "Please correct the outlined fields."
-msgstr "אנא תקן את השדות המסומנים."
+msgstr "אנא תקנו את השדות המסומנים."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:184
 msgid ""
 "This problem has already been released. Any changes will apply only to "
 "future assessments."
-msgstr "בעיה זו כבר פורסמה . כל שינוי יחול רק על הערכות עתידיות ."
+msgstr "בעיה זו פורסמה כבר. כל שינוי יחול רק על הערכות עתידיות."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:97
@@ -242,7 +243,7 @@ msgstr "קריטריון נוסף בהצלחה"
 msgid ""
 "You have added a criterion. You will need to select an option for the "
 "criterion in the Learner Training step. To do this, click the Settings tab."
-msgstr "הוספת קריטריון. תצטרך לבחור אפשרות עבור הקריטריון בשלב תרגול התלמיד. כדי לבצע זאת, לחץ על הכרטיסייה 'הגדרות'."
+msgstr "הוספתם קריטריון. תצטרכו לבחור אפשרות עבור הקריטריון בשלב תרגול הלומד. על מנת לבצע זאת, לחצו על הכרטיסייה 'הגדרות'."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:144
@@ -256,14 +257,14 @@ msgid ""
 "You have deleted an option. That option has been removed from its criterion "
 "in the sample responses in the Learner Training step. You might have to "
 "select a new option for the criterion."
-msgstr "מחקת אפשרות. אפשרות זו הוסרה מהקריטריון שלה בתשובות לדוגמה שבשלב תרגול התלמיד. ייתכן שתצטרך לבחור אפשרות חדשה עבור הקריטריון."
+msgstr "מחקתם אפשרות. אפשרות זו הוסרה מהקריטריון שלה בתשובות לדוגמה שבשלב תרגול הלומד. ייתכן שתצטרכו לבחור אפשרות חדשה עבור הקריטריון."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:180
 msgid ""
 "You have deleted all the options for this criterion. The criterion has been "
 "removed from the sample responses in the Learner Training step."
-msgstr "מחקת את כל האפשרויות עבור קריטריון זה. הקריטריון הוסר מהתשובות לדוגמה שבשלב תרגול התלמיד."
+msgstr "מחקתם את כל האפשרויות עבור קריטריון זה. הקריטריון הוסר מהתשובות לדוגמה שבשלב תרגול הלומד."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:206
@@ -275,7 +276,7 @@ msgstr "קריטריון נמחק"
 msgid ""
 "You have deleted a criterion. The criterion has been removed from the "
 "example responses in the Learner Training step."
-msgstr "מחקת קריטריון. הקריטריון הוסר מהתשובות לדוגמה שבשלב תרגול התלמיד."
+msgstr "מחקתם קריטריון. הקריטריון הוסר מהתשובות לדוגמה שבשלב תרגול הלומד."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:376
@@ -292,7 +293,7 @@ msgstr "לא ישמרו שינויים לצעדים שלא נבחרו כשייכ
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:50
 msgid "File types can not be empty."
-msgstr "סוג הקובץ לא יכולים להיות ריקים."
+msgstr "סוגי הקובץ אינם יכולים להיות ריקים."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:60
