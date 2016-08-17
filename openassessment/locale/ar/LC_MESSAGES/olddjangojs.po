@@ -1,0 +1,244 @@
+# edX translation file.
+# Copyright (C) 2014 EdX
+# This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
+#
+# Translators:
+# Abdelghani Gadiri <wh.gnu.linux@gmail.com>, 2014
+# may <may@qordoba.com>, 2014
+# Nabeel El-Dughailib <nabeel@qordoba.com>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: edx-platform\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-08-19 09:43-0400\n"
+"PO-Revision-Date: 2015-03-06 10:36+0000\n"
+"Last-Translator: Usman Khalid\n"
+"Language-Team: Arabic (http://www.transifex.com/projects/p/edx-platform/"
+"language/ar/)\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:68
+#: openassessment/xblock/static/js/src/oa_server.js:112
+#: openassessment/xblock/static/js/src/oa_server.js:131
+msgid "This section could not be loaded."
+msgstr "لم يمكن تحميل هذا القسم."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:166
+msgid "This response could not be submitted."
+msgstr "لم يمكن تقديم هذا الرد."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:192
+msgid "This response could not be saved."
+msgstr "لم يمكن حفظ هذا الرد."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:229
+msgid "This feedback could not be submitted."
+msgstr "لم يمكن تقديم هذه الآراء والملاحظات."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:276
+#: openassessment/xblock/static/js/src/oa_server.js:320
+#: openassessment/xblock/static/js/src/oa_server.js:361
+#: openassessment/xblock/static/js/src/oa_server.js:395
+msgid "This assessment could not be submitted."
+msgstr "لم يمكن تقديم هذا التقييم."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:419
+msgid "One or more rescheduling tasks failed."
+msgstr "لم تنجح عملية واحدة أو أكثر من عمليات إعادة جدولة المهامّ."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:468
+msgid "This problem could not be saved."
+msgstr "لم يمكن حفظ هذه المسألة."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:498
+msgid "The server could not be contacted."
+msgstr "لم يمكن الاتصال بالمخدّم."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:524
+msgid "Could not retrieve upload url."
+msgstr "لم نتمكّن من استرجاع تحميل الرابط."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:545
+msgid "Could not retrieve download url."
+msgstr "لم يمكن استرجاع رابط التنزيل."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:573
+msgid "The submission could not be removed from the grading pool."
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_base.js:148
+msgid "Unable to Load"
+msgstr "لم يمكن إجراء التحميل."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:224
+msgid "Status of Your Response"
+msgstr "حالة ردّك"
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:251
+msgid ""
+"If you leave this page without saving or submitting your response, you'll "
+"lose any work you've done on the response."
+msgstr ""
+"إذا غادرت هذه الصفحة من دون حفظ ردّك أو تقديمه، فإنّك ستفقد أي عمل أجريته على "
+"الرد."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:333
+msgid "This response has not been saved."
+msgstr "لم يُحفّظ هذا الردّ بعد."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:351
+msgid "Saving..."
+msgstr "جاري الحفظ..."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:376
+msgid "This response has been saved but not submitted."
+msgstr "حُفِّظ هذا الردّ ولكن لم يُقدّم بعد. "
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:379
+msgid "Error"
+msgstr "خطأ"
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:454
+msgid ""
+"You're about to submit your response for this assignment. After you submit "
+"this response, you can't change it or submit a new response."
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:478
+msgid "File size must be 5MB or less."
+msgstr "يجب أن يكون حجم الملف 5 ميغابايت أو أقلّ."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:482
+msgid "File must be an image."
+msgstr "يجب أن يكون الملفّ صورة."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_container_item.js:39
+msgid "Unnamed Option"
+msgstr "خيار غير مسمّى "
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_container_item.js:49
+msgid "Not Selected"
+msgstr "لم يجرِ اختياره"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:143
+msgid "Couldn't Save This Assignment"
+msgstr "لم يمكن حفظ هذا الواجب."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:144
+msgid "Please correct the outlined fields."
+msgstr "يُرجى تصحيح الحقول المحدّدة."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:178
+msgid ""
+"This problem has already been released. Any changes will apply only to "
+"future assessments."
+msgstr ""
+"سبق أن جرى إصدار هذه المسألة. فأي تغييرات تجريها ستُطبّق فقط على التقييمات "
+"المستقبلية."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:97
+msgid "Criterion Added"
+msgstr "أُضيفت معايير جديدة."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:98
+msgid ""
+"You've added a criterion. You'll need to select an option for the criterion "
+"in the Student Training step. To do this, click the Settings tab."
+msgstr ""
+"لقد أضفتَ معيارًا ويجب عليك أن تنتقي له أحد الخيارات في خطوة ’تدريب الطلّاب‘. "
+"للقيام بذلك، انقر زر الإعدادات."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:144
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:176
+msgid "Option Deleted"
+msgstr "جرى حذف الخيار."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:145
+msgid ""
+"You've deleted an option. The system has removed that option from its "
+"criterion in the sample responses in the Student Training step. You may have "
+"to select a new option for the criterion."
+msgstr ""
+"لقد حذفتَ خيارًا، وأزاله النظام من معياره في الردود النموذجية في خطوة ’تدريب "
+"الطلّاب‘. قد تضطرّ إلى انتقاء خيار جديد لهذا المعيار."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:177
+msgid ""
+"You've deleted all the options for this criterion. The system has removed "
+"the criterion from the sample responses in the Student Training step."
+msgstr ""
+"لقد حذفتَ جميع خيارات هذا المعيار، ثمّ أزال النظام هذا المعيار من الردود "
+"النموذجية في خطوة ’تدريب الطلّاب‘."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:203
+msgid "Criterion Deleted"
+msgstr "جرى حذف المعيار."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:204
+msgid ""
+"You've deleted a criterion. The system has removed the criterion from the "
+"sample responses in the Student Training step."
+msgstr ""
+"لقد حذفتَ معيارًا، ثمّ أزال النظام هذا المعيار من الردود النموذجية في خطوة "
+"’تدريب الطلّاب‘."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:374
+msgid "Warning"
+msgstr "تحذير"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:375
+msgid ""
+"Changes to steps that are not selected as part of the assignment will not be "
+"saved."
+msgstr "لن تُحفّظ التغييرات التي تدخلها على خطوات غير منتقاة كجزء من الواجب. "
