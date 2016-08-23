@@ -1,0 +1,8 @@
+# This file describes this Open edX repo, as described in OEP-2:
+# http://open-edx-proposals.readthedocs.io/en/latest/oeps/oep-0002.html#specification
+
+nick: ora
+oeps: {}
+openedx-release: {parent-repo: edx/edx-platform}
+owner: MUST FILL IN OWNER
+track-pulls: true
