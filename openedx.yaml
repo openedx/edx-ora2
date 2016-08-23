@@ -4,5 +4,5 @@
 nick: ora
 oeps: {}
 openedx-release: {parent-repo: edx/edx-platform}
-owner: MUST FILL IN OWNER
+owner: edx/teaching-and-learning
 track-pulls: true
