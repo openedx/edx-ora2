@@ -22,8 +22,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-09 19:04+0000\n"
-"PO-Revision-Date: 2016-08-09 19:17+0000\n"
+"POT-Creation-Date: 2016-08-25 20:55+0000\n"
+"PO-Revision-Date: 2016-08-25 20:55+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Russian (http://www.transifex.com/open-edx/edx-platform/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -847,9 +847,9 @@ msgstr "Посмотреть файл, связанный с этим ответ
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:23
 msgid ""
 "(Caution: This file was uploaded by another course learner and has not been "
-"verified, screened, approved, reviewed, or endorsed by edX. If you decide to"
-" access it, you do so at your own risk.)"
-msgstr "(Осторожно: Этот файл был загружен другим слушателями курса и не был проверен. Если вы решили открыть его, то делайте это на свой страх и риск)"
+"verified, screened, approved, reviewed, or endorsed by the site "
+"administrator. If you decide to access it, you do so at your own risk.)"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:20
 msgid "Assess Peers"

@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Ahmed Jazzar <ajazzar@qrf.org>, 2015
+# AR C2 <e2f458fd4s512@outlook.com>, 2016
 # mohammad hamdi <babrica@hotmail.com>, 2014
 # baraahadri <baraahadri@gmail.com>, 2014
 # AzizAhmed <dr.zezo@gmail.com>, 2014
@@ -17,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-09 19:04+0000\n"
-"PO-Revision-Date: 2016-08-09 19:17+0000\n"
+"POT-Creation-Date: 2016-08-25 20:55+0000\n"
+"PO-Revision-Date: 2016-08-25 20:55+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Arabic (http://www.transifex.com/open-edx/edx-platform/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -533,7 +534,7 @@ msgid ""
 "\n"
 "                                        %(points_earned)s out of %(points_possible)s\n"
 "                                    "
-msgstr ""
+msgstr "\n                                        %(points_earned)s من أصل %(points_possible)s\n                                    "
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html:32
 msgid "Your submission has been cancelled."
@@ -844,9 +845,9 @@ msgstr "عرض الصورة المرتبطة بهذا التقديم"
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:23
 msgid ""
 "(Caution: This file was uploaded by another course learner and has not been "
-"verified, screened, approved, reviewed, or endorsed by edX. If you decide to"
-" access it, you do so at your own risk.)"
-msgstr "(تحذير: جرى تحميل هذا الملف من قبل متعلّم آخر في هذا المساق دون أن يتم التحقّق منه أو فحصه أو المصادقة عليه أو مراجعته أو الموافقة عليه من قبل edX. فإذا قررت فتح الملف، فسيكون ذلك على مسؤوليتك الخاصة.)"
+"verified, screened, approved, reviewed, or endorsed by the site "
+"administrator. If you decide to access it, you do so at your own risk.)"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:20
 msgid "Assess Peers"
@@ -908,7 +909,7 @@ msgid ""
 "\n"
 "                        In Progress (%(num_graded)s of %(num_must_grade)s)\n"
 "                    "
-msgstr ""
+msgstr "\n                        قيد التقدم (%(num_graded)s من %(num_must_grade)s)\n                    "
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:56
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:44
@@ -1575,7 +1576,7 @@ msgid ""
 "\n"
 "                          In Progress (%(training_completed_num)s of %(training_available_num)s)\n"
 "                      "
-msgstr ""
+msgstr "\n                          قيد التقدم (%(training_completed_num)s of %(training_available_num)s)\n                      "
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:54
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:62
