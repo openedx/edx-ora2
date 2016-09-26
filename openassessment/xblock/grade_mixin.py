@@ -567,15 +567,16 @@ class GradeMixin(object):
         # If criteria/options in the problem definition do NOT have a "label" field
         # (because they were created before this change),
         # we create a new label that has the same value as "name".
-        for part in assessment['parts']:
-            criterion_label_key = part['criterion']['name']
-            part['criterion']['label'] = criterion_labels.get(criterion_label_key, part['criterion']['name'])
+        if assessment is not None:
+            for part in assessment['parts']:
+                criterion_label_key = part['criterion']['name']
+                part['criterion']['label'] = criterion_labels.get(criterion_label_key, part['criterion']['name'])
 
-            # We need to be a little bit careful here: some assessment parts
-            # have only written feedback, so they're not associated with any options.
-            # If that's the case, we don't need to add the label field.
-            if part.get('option') is not None:
-                option_label_key = (part['criterion']['name'], part['option']['name'])
-                part['option']['label'] = option_labels.get(option_label_key, part['option']['name'])
+                # We need to be a little bit careful here: some assessment parts
+                # have only written feedback, so they're not associated with any options.
+                # If that's the case, we don't need to add the label field.
+                if part.get('option') is not None:
+                    option_label_key = (part['criterion']['name'], part['option']['name'])
+                    part['option']['label'] = option_labels.get(option_label_key, part['option']['name'])
 
         return assessment

@@ -53,7 +53,11 @@ class StaffAssessmentMixin(object):
             )
             assess_type = data.get('assess_type', 'regrade')
             self.publish_assessment_event("openassessmentblock.staff_assess", assessment, type=assess_type)
-            workflow_api.update_from_assessments(assessment["submission_uuid"], None)
+            workflow_api.update_from_assessments(
+                assessment["submission_uuid"],
+                None,
+                override_submitter_requirements=(assess_type == 'regrade')
+            )
 
         except StaffAssessmentRequestError:
             logger.warning(
