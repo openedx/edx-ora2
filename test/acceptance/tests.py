@@ -445,6 +445,8 @@ class StaffOverrideSelfTest(StaffOverrideTest):
         super(StaffOverrideSelfTest, self).__init__(*args, **kwargs)
         self.problem_type = 'self_only'
 
+    @retry()
+    @attr('acceptance')
     def test_staff_override(self):
         super(StaffOverrideSelfTest, self)._test_staff_override()
 
@@ -457,6 +459,8 @@ class StaffOverridePeerTest(StaffOverrideTest):
         super(StaffOverridePeerTest, self).__init__(*args, **kwargs)
         self.problem_type = 'peer_only'
 
+    @retry()
+    @attr('acceptance')
     def test_staff_override(self):
         super(StaffOverridePeerTest, self)._test_staff_override()
 
