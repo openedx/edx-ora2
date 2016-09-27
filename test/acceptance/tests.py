@@ -386,18 +386,25 @@ class PeerAssessmentTest(OpenAssessmentTest):
         self.do_peer_assessment()
 
 
-class PeerAssessmentTestStaffOverride(OpenAssessmentTest):
+class StaffOverrideTest(OpenAssessmentTest):
     """
-    Test setting a staff override on a problem which requires peer assessment.
+    Test setting a staff override on a problem which requires peer or self assessment.
+
+    This is used as a base class, as the problem type defined by subclasses must be known in setUp().
     """
+    def __init__(self, *args, **kwargs):
+        super(StaffOverrideTest, self).__init__(*args, **kwargs)
+        self.problem_type = None
 
     def setUp(self):
-        super(PeerAssessmentTestStaffOverride, self).setUp('peer_only', staff=True)
+        if self.problem_type is None:
+            self.fail("Please define self.problem_type in a sub-class")
+        super(StaffOverrideTest, self).setUp(self.problem_type, staff=True)
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
 
     @retry()
     @attr('acceptance')
-    def test_staff_override(self):
+    def _test_staff_override(self):
         """
         Scenario: staff can override a learner's grade
 
@@ -405,11 +412,7 @@ class PeerAssessmentTestStaffOverride(OpenAssessmentTest):
         And if I create a response to the problem
         Then there is no Staff Grade section present
         And if a staff member creates a grade override
-        Then when I refresh the page, I see that a staff override exists
-        And the message says that I must complete my steps to view the grade
-        And if I submit required peer assessments
-        Then the Staff Grade section is marked complete with no message
-        And I can see my final grade, even though no peers have assessed me
+        Then I can see my final grade, even though no peers have assessed me
         """
         # Create a submission
         self.auto_auth_page.visit()
@@ -428,6 +431,30 @@ class PeerAssessmentTestStaffOverride(OpenAssessmentTest):
 
         # Verify the staff override grade
         self.assertEqual(self.STAFF_OVERRIDE_SCORE, self.grade_page.wait_for_page().score)
+
+
+class StaffOverrideSelfTest(StaffOverrideTest):
+    """
+    Subclass of StaffOverrideTest for a 'self_only' problem.
+    """
+    def __init__(self, *args, **kwargs):
+        super(StaffOverrideSelfTest, self).__init__(*args, **kwargs)
+        self.problem_type = 'self_only'
+
+    def test_staff_override(self):
+        super(StaffOverrideSelfTest, self)._test_staff_override()
+
+
+class StaffOverridePeerTest(StaffOverrideTest):
+    """
+    Subclass of StaffOverrideTest for a 'peer_only' problem.
+    """
+    def __init__(self, *args, **kwargs):
+        super(StaffOverridePeerTest, self).__init__(*args, **kwargs)
+        self.problem_type = 'peer_only'
+
+    def test_staff_override(self):
+        super(StaffOverridePeerTest, self)._test_staff_override()
 
 
 class StudentTrainingTest(OpenAssessmentTest):
@@ -664,43 +691,6 @@ class StaffAreaTest(OpenAssessmentTest):
         # Verify that the Learner Response has been replaced with a message about the removal
         self.staff_area_page.expand_learner_report_sections()
         self.assertIn("Learner submission removed", self.staff_area_page.learner_response)
-
-    @retry()
-    @attr('acceptance')
-    def test_staff_grade_override(self):
-        """
-        Scenario: the staff grade section displays correctly
-
-        Given I am viewing a new self assessment problem as a learner
-        Then there is no Staff Grade section present
-        And if I create a response to the problem
-        Then there is no Staff Grade section present
-        And if a staff member creates a grade override
-        Then when I refresh the page, I see that a staff override exists
-        And the message says that I must complete my steps to view the grade
-        And if I submit my self-assessment
-        Then the Staff Grade section is marked complete with no message
-        And I can see my final grade
-        """
-        # View the problem-- no Staff Grade area.
-        self.auto_auth_page.visit()
-        username, _ = self.auto_auth_page.get_username_and_email()
-        self.submission_page.visit()
-        self.assertFalse(self.staff_asmnt_page.is_browser_on_page())
-
-        self.submission_page.submit_response(self.SUBMISSION)
-        self.assertTrue(self.submission_page.has_submitted)
-        self.assertFalse(self.staff_asmnt_page.is_browser_on_page())
-
-        # Submit a staff override
-        self.do_staff_override(username, self.STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE)
-
-        # Refresh the page so the learner sees the Staff Grade section.
-        self.refresh_page()
-        self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS)
-
-        # Verify the staff override grade
-        self.assertEqual(self.STAFF_OVERRIDE_SCORE, self.grade_page.wait_for_page().score)
 
     @retry()
     @attr('acceptance')
@@ -1040,10 +1030,7 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
         Given that I have created a submission
         Then I see no score yet
         And when a staff member creates a grade override
-        Then I see that an override exists, but I cannot see the score
-        And when a second learner creates a submission
-        Then I can complete my required steps (training, self assessment, peer assesssment)
-        And I see my staff override score
+        Then I see my staff override score
         And all fields in the staff area tool are correct
         """
         # Create only the initial submission before doing the staff override.
@@ -1055,7 +1042,7 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
         self.verify_staff_area_fields(learner, [], [], [])
         self.staff_area_page.verify_learner_final_score(self.STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE)
 
-        # Do staff override-- score still not shown due to steps not being complete.
+        # Do staff override
         self.do_staff_override(learner, self.STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE)
 
         # Refresh the page so the learner sees the Staff Grade section.
