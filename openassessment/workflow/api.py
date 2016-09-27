@@ -204,6 +204,9 @@ def update_from_assessments(submission_uuid, assessment_requirements, override_s
             `must_be_graded_by` to ensure that everyone will get scored.
             The intention is to eventually pass in more assessment sequence
             specific requirements in this dict.
+        override_submitter_requirements (bool): If True, the presence of a new
+            staff score will cause all of the submitter's requirements to be
+            fulfilled, moving the workflow to DONE and exposing their grade.
 
     Returns:
         dict: Assessment workflow information with the following

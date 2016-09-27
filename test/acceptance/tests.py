@@ -1,6 +1,8 @@
 """
 UI-level acceptance tests for OpenAssessment.
 """
+from __future__ import absolute_import
+
 import ddt
 import os
 import unittest
@@ -342,6 +344,8 @@ class StaffAssessmentTest(OpenAssessmentTest):
 
         # Verify staff grade section appears as expected
         self._verify_staff_grade_section("NOT AVAILABLE")
+        message_title = self.staff_asmnt_page.open_step().message_title
+        self.assertEqual("Waiting for a Staff Grade", message_title)
 
         # Perform staff assessment
         self.staff_area_page = StaffAreaPage(self.browser, self.problem_loc)
@@ -532,14 +536,8 @@ class StaffAreaTest(OpenAssessmentTest):
         self.assertEqual(self.staff_area_page.visible_staff_panels, [])
 
         for panel_name, button_label in [
-                (
-                    "staff-tools",
-                    "MANAGE INDIVIDUAL LEARNERS"
-                ),
-                (
-                    "staff-info",
-                    "VIEW ASSIGNMENT STATISTICS"
-                ),
+                ("staff-tools", "MANAGE INDIVIDUAL LEARNERS"),
+                ("staff-info", "VIEW ASSIGNMENT STATISTICS"),
         ]:
             # Click on the button and verify that the panel has opened
             self.staff_area_page.click_staff_toolbar_button(panel_name)

@@ -297,6 +297,9 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 can refer to this to decide whether the requirements have been
                 met.  Note that the requirements could change if the author
                 updates the problem definition.
+            override_submitter_requirements (bool): If True, the presence of a new
+                staff score will cause all of the submitter's requirements to be
+                fulfilled, moving the workflow to DONE and exposing their grade.
 
         """
         if self.status == self.STATUS.cancelled:
@@ -326,9 +329,10 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 # Update the assessment_completed_at field for all steps
                 # All steps are considered "assessment complete", as the staff score will override all
                 for step in steps:
-                    step.assessment_completed_at = now()
+                    common_now = now()
+                    step.assessment_completed_at = common_now
                     if override_submitter_requirements:
-                        step.submitter_completed_at = now()
+                        step.submitter_completed_at = common_now
                     step.save()
 
         if self.status == self.STATUS.done:
