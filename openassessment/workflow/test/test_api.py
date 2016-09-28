@@ -3,7 +3,6 @@ from django.test.utils import override_settings
 import ddt
 from mock import patch
 from nose.tools import raises
-from openassessment.assessment.models import PeerWorkflow
 
 from openassessment.test_utils import CacheResetTest
 
@@ -11,7 +10,7 @@ from submissions.models import Submission
 import openassessment.workflow.api as workflow_api
 from openassessment.assessment.api import ai as ai_api
 from openassessment.assessment.errors import AIError
-from openassessment.assessment.models import StudentTrainingWorkflow
+from openassessment.assessment.models import PeerWorkflow, StudentTrainingWorkflow
 import submissions.api as sub_api
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
@@ -263,7 +262,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         that has no assessments, an overriding staff score will push the workflow into the done state and not crash
         when there are no assessments in the "completed" peer step.
         """
-        mock_get_workflow.return_value = None
+        mock_get_workflow.raises = PeerWorkflow.DoesNotExist
         mock_get_staff_score.return_value = {
             "points_earned": 10,
             "points_possible": 10,
