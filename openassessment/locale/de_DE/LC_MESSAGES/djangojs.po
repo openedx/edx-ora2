@@ -7,7 +7,7 @@
 # Alexander L. <alexander.lohberg@ufo-style.de>, 2014
 # jumo, 2016
 # mc <marc.mannsfeld@phil.hhu.de>, 2015
-# Max <mail@max-vogl.de>, 2014
+# Max Vogl <mail@max-vogl.de>, 2014
 # mc <marc.mannsfeld@phil.hhu.de>, 2015
 # Nik <winston.smith_krull@yahoo.de>, 2015
 # Ron Lucke <ronlucke@googlemail.com>, 2014
@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-25 20:55+0000\n"
+"POT-Creation-Date: 2016-10-03 20:15+0000\n"
 "PO-Revision-Date: 2016-06-22 21:21+0000\n"
 "Last-Translator: jumo\n"
 "Language-Team: German (Germany) (http://www.transifex.com/open-edx/edx-platform/language/de_DE/)\n"

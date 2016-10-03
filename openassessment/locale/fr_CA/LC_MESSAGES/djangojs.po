@@ -54,8 +54,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-25 20:55+0000\n"
-"PO-Revision-Date: 2016-08-19 21:20+0000\n"
+"POT-Creation-Date: 2016-10-03 20:15+0000\n"
+"PO-Revision-Date: 2016-09-03 15:51+0000\n"
 "Last-Translator: Pierre Mailhot <pierre.mailhot@gmail.com>\n"
 "Language-Team: French (Canada) (http://www.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"
 "MIME-Version: 1.0\n"
@@ -212,7 +212,7 @@ msgstr "La taille du fichier doit être de 5MB ou moins."
 #: openassessment/xblock/static/js/src/lms/oa_response.js:498
 #: openassessment/xblock/static/js/src/lms/oa_response.js:503
 msgid "You can upload files with these file types: "
-msgstr "Vous pouvez téléverser des fichiers avec ces formats:"
+msgstr "Vous pouvez téléverser des fichiers avec ces formats : "
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
 #: openassessment/xblock/static/js/src/lms/oa_response.js:508
@@ -341,4 +341,4 @@ msgstr "Les formats de fichiers ne peuvent être vides."
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:60
 msgid "The following file types are not allowed: "
-msgstr "Les formats de fichiers suivants ne sont pas permis:"
+msgstr "Les formats de fichiers suivants ne sont pas permis : "

@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-25 20:55+0000\n"
-"PO-Revision-Date: 2016-07-26 15:05+0000\n"
+"POT-Creation-Date: 2016-10-03 20:15+0000\n"
+"PO-Revision-Date: 2016-08-31 14:56+0000\n"
 "Last-Translator: Katerina Ligkovanli <kaligova@gmail.com>\n"
 "Language-Team: Greek (http://www.transifex.com/open-edx/edx-platform/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -69,7 +69,7 @@ msgstr "Η κριτική αυτή δεν μπόρεσε να καταχωρηθ
 #: openassessment/xblock/static/js/src/oa_server.js:359
 #: openassessment/xblock/static/js/src/oa_server.js:383
 msgid "This assessment could not be submitted."
-msgstr "Η εκτίμηση αυτή δεν μπόρεσε να καταχωρηθεί."
+msgstr "Η αξιολόγησή σας δεν μπόρεσε να καταχωρηθεί."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
@@ -117,7 +117,7 @@ msgstr ""
 msgid ""
 "If you leave this page without submitting your peer assessment, you will "
 "lose any work you have done."
-msgstr ""
+msgstr "Αν εγκαταλείψετε τη σελίδα χωρίς να υποβάλετε τις αξιολογήσεις σας για τους συμφοιτητές σας, θα χάσετε οποιαδήποτε εργασία έχετε κάνει."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:237
@@ -144,7 +144,7 @@ msgstr "Γίνεται αποθήκευση..."
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:362
 msgid "This response has been saved but not submitted."
-msgstr "Η απάντηση έχει αποθηκευτεί αλλά δεν έχει καταχωρηθεί."
+msgstr "ΤΟ ΔΟΚΙΜΙΟ ΣΑΣ ΕΧΕΙ ΑΠΟΘΗΚΕΥΤΕΙ ΑΛΛΑ ΔΕΝ ΕΧΕΙ ΥΠΟΒΛΗΘΕΙ."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:365
@@ -208,7 +208,7 @@ msgstr ""
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
-msgstr ""
+msgstr "Αν εγκαταλείψετε τη σελίδα χωρίς να υποβάλετε τις αξιολογήσεις σας για τους συμφοιτητές σας, θα χάσετε οποιαδήποτε εργασία έχετε κάνει."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_container_item.js:39
@@ -235,7 +235,7 @@ msgstr ""
 msgid ""
 "This problem has already been released. Any changes will apply only to "
 "future assessments."
-msgstr ""
+msgstr "Η δοκιμασία αλληλοαξιολόγησης έχει ήδη δημοσιευθεί. Όποιες αλλαγές θα εφαρμοστούν σε μελλοντικές δοκιμασίες αλληλοαξιολόγησης."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:97
@@ -292,7 +292,7 @@ msgstr "Προειδοποίηση"
 msgid ""
 "Changes to steps that are not selected as part of the assignment will not be"
 " saved."
-msgstr ""
+msgstr "Αλλαγές στα βήματα τα οποία δεν έχουν επιλεχθεί σαν μέρος της εργασίας, δεν θα αποθηκευτούν."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:50
