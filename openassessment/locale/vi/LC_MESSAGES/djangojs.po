@@ -3,19 +3,20 @@
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
 # 
 # Translators:
-# Dinh Hung Tu <dinhhungtu@gmail.com>, 2015
+# Dinh Hung Tu <inactive+dinhhungtu@transifex.com>, 2015
 # NGUYEN CONG NAM <congnam0409@gmail.com>, 2014
 # Nguyen Don Binh <donbinhvn@gmail.com>, 2014
 # NGUYEN HOANG AN <neyugn2909@gmail.com>, 2014
+# Nguyen Nhat Quang <technicalmanager@gmail.com>, 2016
 # Ton Nu Quy Thien <thien.tonnu1001@gmail.com>, 2015
 # Trung V. Nguyen <trung.ngvan@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-25 20:55+0000\n"
-"PO-Revision-Date: 2016-05-09 11:26+0000\n"
-"Last-Translator: Eric Fischer <efischer@edx.org>\n"
+"POT-Creation-Date: 2016-10-03 20:15+0000\n"
+"PO-Revision-Date: 2016-08-27 19:32+0000\n"
+"Last-Translator: Nguyen Nhat Quang <technicalmanager@gmail.com>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/open-edx/edx-platform/language/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

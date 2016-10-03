@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-25 20:55+0000\n"
-"PO-Revision-Date: 2016-08-04 12:44+0000\n"
+"POT-Creation-Date: 2016-10-03 20:15+0000\n"
+"PO-Revision-Date: 2016-09-29 09:58+0000\n"
 "Last-Translator: qualityalltext <quality@alltext.co.il>\n"
 "Language-Team: Hebrew (http://www.transifex.com/open-edx/edx-platform/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -65,7 +65,7 @@ msgstr "לא ניתן היה להגיש את המשוב."
 #: openassessment/xblock/static/js/src/oa_server.js:359
 #: openassessment/xblock/static/js/src/oa_server.js:383
 msgid "This assessment could not be submitted."
-msgstr "לא ניתן היה להגיש את פריט ההערכהה הזה."
+msgstr "לא ניתן היה להגיש את פריט ההערכה הזה."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
@@ -113,12 +113,12 @@ msgstr "לא ניתן לטעון"
 msgid ""
 "If you leave this page without submitting your peer assessment, you will "
 "lose any work you have done."
-msgstr "אם תעזבו עמוד זה ללא שליחת הערכת עמיתיכם, תאבדו כל עבודה שביצעתם."
+msgstr "אם תעזוב עמוד זה ללא שליחת הערכת עמיתיך, תאבד כל עבודה שביצעת."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:237
 msgid "Status of Your Response"
-msgstr "מצב התשובה שלך"
+msgstr "סטטוס תשובתך"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:315
@@ -130,7 +130,7 @@ msgstr "תשובה זו לא נשמרה."
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
-msgstr "אם תעזבו עמוד זה ללא שמירת או שליחת תשובתכם, תאבדו כל עבודה שביצעתם בתשובה."
+msgstr "אם תעזוב עמוד זה ללא שמירת או שליחת תשובתך, תאבד כל עבודה שביצעת בתשובה."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:337
@@ -150,7 +150,7 @@ msgstr "שגיאה"
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:388
 msgid "Do you want to upload your file before submitting?"
-msgstr "האם ברצונכם להעלות את קבציכם לפני השליחה?"
+msgstr "האם ברצונך להעלות את קבציך לפני השליחה?"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:459
@@ -181,7 +181,7 @@ msgstr "סוג הקובץ אינו מורשה."
 msgid ""
 "If you leave this page without submitting your self assessment, you will "
 "lose any work you have done."
-msgstr "אם תעזבו עמוד זה ללא שליחת ההערכה העצמית שלכם, תאבדו כל עבודה שביצעתם."
+msgstr "אם תעזוב עמוד זה ללא שליחת ההערכה העצמית שלך, תאבד כל עבודה שביצעת."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:129
@@ -192,7 +192,7 @@ msgstr "שגיאת שרת לא צפויה."
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:133
 msgid "You must provide a learner name."
-msgstr "עליכם לספק שם לומד."
+msgstr "עליך לספק שם לומד."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:263
@@ -204,7 +204,7 @@ msgstr "שגיאה בעת ניסיון לקבל את מספר התשובות ה�
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
-msgstr "אם תעזבו עמוד זה ללא שליחת הערכת הצוות שלכם, תאבדו כל עבודה שביצעתם."
+msgstr "אם תעזוב עמוד זה ללא שליחת הערכת הצוות שלך, תאבד כל עבודה שביצעת."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_container_item.js:39
@@ -224,7 +224,7 @@ msgstr "לא ניתן לשמור את המטלה."
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:150
 msgid "Please correct the outlined fields."
-msgstr "אנא תקנו את השדות המסומנים."
+msgstr "אנא תקן את השדות המסומנים."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_edit.js:184
@@ -243,7 +243,7 @@ msgstr "קריטריון נוסף בהצלחה"
 msgid ""
 "You have added a criterion. You will need to select an option for the "
 "criterion in the Learner Training step. To do this, click the Settings tab."
-msgstr "הוספתם קריטריון. תצטרכו לבחור אפשרות עבור הקריטריון בשלב תרגול הלומד. על מנת לבצע זאת, לחצו על הכרטיסייה 'הגדרות'."
+msgstr "הוספת קריטריון. תצטרך לבחור אפשרות עבור הקריטריון בשלב תרגול הלומד. על מנת לבצע זאת, לחץ על הכרטיסייה 'הגדרות'."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:144
@@ -257,14 +257,14 @@ msgid ""
 "You have deleted an option. That option has been removed from its criterion "
 "in the sample responses in the Learner Training step. You might have to "
 "select a new option for the criterion."
-msgstr "מחקתם אפשרות. אפשרות זו הוסרה מהקריטריון שלה בתשובות לדוגמה שבשלב תרגול הלומד. ייתכן שתצטרכו לבחור אפשרות חדשה עבור הקריטריון."
+msgstr "מחקת אפשרות. אפשרות זו הוסרה מהקריטריון שלה בתשובות לדוגמה שבשלב תרגול הלומד. ייתכן שתצטרך לבחור אפשרות חדשה עבור הקריטריון."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:180
 msgid ""
 "You have deleted all the options for this criterion. The criterion has been "
 "removed from the sample responses in the Learner Training step."
-msgstr "מחקתם את כל האפשרויות עבור קריטריון זה. הקריטריון הוסר מהתשובות לדוגמה שבשלב תרגול הלומד."
+msgstr "מחקת את כל האפשרויות עבור קריטריון זה. הקריטריון הוסר מהתשובות לדוגמה שבשלב תרגול הלומד."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:206
@@ -276,7 +276,7 @@ msgstr "קריטריון נמחק"
 msgid ""
 "You have deleted a criterion. The criterion has been removed from the "
 "example responses in the Learner Training step."
-msgstr "מחקתם קריטריון. הקריטריון הוסר מהתשובות לדוגמה שבשלב תרגול הלומד."
+msgstr "מחקת קריטריון. הקריטריון הוסר מהתשובות לדוגמה שבשלב תרגול הלומד."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:2
 #: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:376

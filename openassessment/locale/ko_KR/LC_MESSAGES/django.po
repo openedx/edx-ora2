@@ -9,6 +9,7 @@
 # kmooc <shevious@gmail.com>, 2015
 # shevious <shevious@yahoo.com>, 2015
 # jeon <bluerespect@nate.com>, 2014-2015
+# gscavanger0209 <gscavanger@gmail.com>, 2016
 # Jong-Dae Park <jdpark7@gmail.com>, 2014
 # Kevin Min <gr326887@graded.br>, 2015
 # Young C. Kim, 2015
@@ -16,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-25 20:55+0000\n"
-"PO-Revision-Date: 2016-08-25 20:55+0000\n"
-"Last-Translator: Eric Fischer <efischer@edx.org>\n"
+"POT-Creation-Date: 2016-10-03 20:15+0000\n"
+"PO-Revision-Date: 2016-09-20 08:37+0000\n"
+"Last-Translator: gscavanger0209 <gscavanger@gmail.com>\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/open-edx/edx-platform/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -938,7 +939,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:20
 #: openassessment/templates/openassessmentblock/self/oa_self_cancelled.html:22
 #: openassessment/templates/openassessmentblock/student_training/student_training_cancelled.html:19
-#: openassessment/xblock/staff_assessment_mixin.py:105
+#: openassessment/xblock/staff_assessment_mixin.py:109
 msgid "Cancelled"
 msgstr ""
 
@@ -1013,8 +1014,8 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:18
 #: openassessment/templates/openassessmentblock/self/oa_self_unavailable.html:18
 #: openassessment/templates/openassessmentblock/student_training/student_training_unavailable.html:17
-#: openassessment/xblock/staff_assessment_mixin.py:98
-#: openassessment/xblock/staff_assessment_mixin.py:122
+#: openassessment/xblock/staff_assessment_mixin.py:102
+#: openassessment/xblock/staff_assessment_mixin.py:126
 msgid "Not Available"
 msgstr ""
 
@@ -1167,8 +1168,8 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:19
 #: openassessment/templates/openassessmentblock/self/oa_self_complete.html:19
 #: openassessment/templates/openassessmentblock/student_training/student_training_complete.html:18
-#: openassessment/xblock/staff_assessment_mixin.py:112
-#: openassessment/xblock/staff_assessment_mixin.py:133
+#: openassessment/xblock/staff_assessment_mixin.py:116
+#: openassessment/xblock/staff_assessment_mixin.py:137
 msgid "Complete"
 msgstr ""
 
@@ -1868,26 +1869,26 @@ msgstr ""
 msgid "The submission ID of the submission being assessed was not found."
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:64
-#: openassessment/xblock/staff_assessment_mixin.py:71
+#: openassessment/xblock/staff_assessment_mixin.py:68
+#: openassessment/xblock/staff_assessment_mixin.py:75
 msgid "Your staff assessment could not be submitted."
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:123
+#: openassessment/xblock/staff_assessment_mixin.py:127
 msgid "Waiting for a Staff Grade"
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:124
+#: openassessment/xblock/staff_assessment_mixin.py:128
 msgid ""
 "Check back later to see if a course staff member has assessed your response."
 " You will receive your grade after the assessment is complete."
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:135
+#: openassessment/xblock/staff_assessment_mixin.py:139
 msgid "You Must Complete the Steps Above to View Your Grade"
 msgstr ""
 
-#: openassessment/xblock/staff_assessment_mixin.py:136
+#: openassessment/xblock/staff_assessment_mixin.py:140
 msgid ""
 "Although a course staff member has assessed your response, you will receive "
 "your grade only after you have completed all the required steps of this "

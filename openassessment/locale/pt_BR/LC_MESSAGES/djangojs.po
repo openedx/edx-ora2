@@ -6,7 +6,7 @@
 # ALEXANDRE SILVA <alexandre.alves@gmail.com>, 2014
 # Angela Amaro <angelasimei@gmail.com>, 2016
 # Emili Costa <m.lee.costa@gmail.com>, 2015
-# Leonardo Lehnemann Agostinho Martins <lehneman@gmail.com>, 2014
+# Leonardo Lehnemann <lehneman@gmail.com>, 2014
 # Monica Farias <monifar.tp@gmail.com>, 2015-2016
 # rafap228 <rafap228@hotmail.com>, 2014
 # Renata Barboza-Murray, 2015
@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-25 20:55+0000\n"
+"POT-Creation-Date: 2016-10-03 20:15+0000\n"
 "PO-Revision-Date: 2016-05-09 11:26+0000\n"
 "Last-Translator: Monica Farias <monifar.tp@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/open-edx/edx-platform/language/pt_BR/)\n"
