@@ -177,7 +177,7 @@ def get_workflow_for_submission(submission_uuid, assessment_requirements):
     return update_from_assessments(submission_uuid, assessment_requirements)
 
 
-def update_from_assessments(submission_uuid, assessment_requirements):
+def update_from_assessments(submission_uuid, assessment_requirements, override_submitter_requirements=False):
     """
     Update our workflow status based on the status of the underlying assessments.
 
@@ -204,6 +204,9 @@ def update_from_assessments(submission_uuid, assessment_requirements):
             `must_be_graded_by` to ensure that everyone will get scored.
             The intention is to eventually pass in more assessment sequence
             specific requirements in this dict.
+        override_submitter_requirements (bool): If True, the presence of a new
+            staff score will cause all of the submitter's requirements to be
+            fulfilled, moving the workflow to DONE and exposing their grade.
 
     Returns:
         dict: Assessment workflow information with the following
@@ -259,7 +262,7 @@ def update_from_assessments(submission_uuid, assessment_requirements):
     workflow = _get_workflow_model(submission_uuid)
 
     try:
-        workflow.update_from_assessments(assessment_requirements)
+        workflow.update_from_assessments(assessment_requirements, override_submitter_requirements)
         logger.info((
             u"Updated workflow for submission UUID {uuid} "
             u"with requirements {reqs}"

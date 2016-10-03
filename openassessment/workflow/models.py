@@ -171,7 +171,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
 
                 # If we auto-added a staff step, it is optional and should be marked complete immediately
                 if step.name == "staff" and staff_auto_added:
-                    step.assessment_completed_at=now()
+                    step.assessment_completed_at = now()
                     step.save()
 
                 # For the first valid step, update the workflow status
@@ -209,6 +209,12 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         return score
 
     def status_details(self):
+        """
+        Returns workflow status in the form of a dictionary. Each step in the
+        workflow is a key, and each key maps to a dictionary defining whether
+        the step is complete (submitter requirements fulfilled) and graded (the
+        submission has been assessed).
+        """
         status_dict = {}
         steps = self._get_steps()
         for step in steps:
@@ -259,7 +265,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
 
         return score
 
-    def update_from_assessments(self, assessment_requirements):
+    def update_from_assessments(self, assessment_requirements, override_submitter_requirements=False):
         """Query assessment APIs and change our status if appropriate.
 
         If the status is done, we do nothing. Once something is done, we never
@@ -291,6 +297,9 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 can refer to this to decide whether the requirements have been
                 met.  Note that the requirements could change if the author
                 updates the problem definition.
+            override_submitter_requirements (bool): If True, the presence of a new
+                staff score will cause all of the submitter's requirements to be
+                fulfilled, moving the workflow to DONE and exposing their grade.
 
         """
         if self.status == self.STATUS.cancelled:
@@ -320,7 +329,10 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 # Update the assessment_completed_at field for all steps
                 # All steps are considered "assessment complete", as the staff score will override all
                 for step in steps:
-                    step.assessment_completed_at=now()
+                    common_now = now()
+                    step.assessment_completed_at = common_now
+                    if override_submitter_requirements:
+                        step.submitter_completed_at = common_now
                     step.save()
 
         if self.status == self.STATUS.done:
@@ -346,8 +358,10 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
 
         # If the submitter has done all they need to do, let's check to see if
         # all steps have been fully assessed (i.e. we can score it).
-        if (new_status == self.STATUS.waiting and
-            all(step.assessment_completed_at for step in steps)):
+        if (
+                new_status == self.STATUS.waiting and
+                all(step.assessment_completed_at for step in steps)
+        ):
 
             score = self.get_score(assessment_requirements, step_for_name)
             # If we found a score, then we're done
@@ -398,7 +412,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
 
         return steps
 
-    def set_staff_score(self, score, is_override=False, reason=None):
+    def set_staff_score(self, score, reason=None):
         """
         Set a staff score for the workflow.
 
@@ -425,9 +439,9 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             self.submission_uuid,
             score["points_earned"],
             score["points_possible"],
-            annotation_creator = score["staff_id"],
-            annotation_type = annotation_type,
-            annotation_reason = reason
+            annotation_creator=score["staff_id"],
+            annotation_type=annotation_type,
+            annotation_reason=reason
         )
 
     def set_score(self, score):
@@ -602,9 +616,16 @@ class AssessmentWorkflowStep(models.Model):
         ordering = ["workflow", "order_num"]
 
     def is_submitter_complete(self):
+        """
+        Used to determine whether the submitter of the response has completed
+        their required actions.
+        """
         return self.submitter_completed_at is not None
 
     def is_assessment_complete(self):
+        """
+        Used to determine whether the response has been assessed at this step.
+        """
         return self.assessment_completed_at is not None
 
     def api(self):
@@ -660,12 +681,12 @@ class AssessmentWorkflowStep(models.Model):
         assessment_finished = getattr(self.api(), 'assessment_is_finished', default_finished)
 
         # Has the user completed their obligations for this step?
-        if (not self.is_submitter_complete() and submitter_finished(submission_uuid, step_reqs)):
+        if not self.is_submitter_complete() and submitter_finished(submission_uuid, step_reqs):
             self.submitter_completed_at = now()
             step_changed = True
 
         # Has the step received a score?
-        if (not self.is_assessment_complete() and assessment_finished(submission_uuid, step_reqs)):
+        if not self.is_assessment_complete() and assessment_finished(submission_uuid, step_reqs):
             self.assessment_completed_at = now()
             step_changed = True
 

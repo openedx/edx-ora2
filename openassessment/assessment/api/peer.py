@@ -436,6 +436,8 @@ def get_assessment_median_scores(submission_uuid):
         assessments = [item.assessment for item in items]
         scores = Assessment.scores_by_criterion(assessments)
         return Assessment.get_median_score_dict(scores)
+    except PeerWorkflow.DoesNotExist:
+        return {}
     except DatabaseError:
         error_message = (
             u"Error getting assessment median scores for submission {uuid}"
