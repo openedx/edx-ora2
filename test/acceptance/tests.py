@@ -427,7 +427,7 @@ class StaffOverrideTest(OpenAssessmentTest):
         self.assertFalse(self.staff_asmnt_page.is_browser_on_page())
 
         # Submit a staff override.
-        self.do_staff_override(username, self.STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE)
+        self.do_staff_override(username)
 
         # Refresh the page so the learner sees the Staff Grade section.
         self.refresh_page()
@@ -1045,7 +1045,7 @@ class FullWorkflowOverrideTest(OpenAssessmentTest, FullWorkflowMixin):
         self.staff_area_page.verify_learner_final_score(self.STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE)
 
         # Do staff override
-        self.do_staff_override(learner, self.STAFF_OVERRIDE_STAFF_AREA_NOT_COMPLETE)
+        self.do_staff_override(learner)
 
         # Refresh the page so the learner sees the Staff Grade section.
         self.refresh_page()

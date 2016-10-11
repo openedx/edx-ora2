@@ -160,7 +160,7 @@ class StaffAreaA11yTest(OpenAssessmentA11yTest):
 
         # Refresh the page, then verify accessibility of the Staff Grade section (marked Complete).
         self.browser.refresh()
-        self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS, None)
+        self._verify_staff_grade_section(self.STAFF_GRADE_EXISTS)
 
         self._check_a11y(self.staff_asmnt_page)
 
