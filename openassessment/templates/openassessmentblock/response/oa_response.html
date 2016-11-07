@@ -84,8 +84,8 @@
                                     <div class="message__content"></div>
                                 </div>
                             </div>
-                            <label class="sr" for="submission__answer__upload">{% trans "Select a file to upload for this submission." %}</label>
-                            <input type="file" class="submission__answer__upload file--upload">
+                            <label class="sr" for="submission_answer_upload_{{ xblock_id }}">{% trans "Select a file to upload for this submission." %}</label>
+                            <input type="file" class="submission__answer__upload file--upload" id="submission_answer_upload_{{ xblock_id }}">
                             <button type="submit" class="file__upload action action--upload is--disabled">{% trans "Upload your file" %}</button>
                         </li>
                         {% endif %}
