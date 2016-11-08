@@ -29,7 +29,7 @@
 
   .ui-staff__title {
     @extend %t-heading;
-    color: $copy-staff-color;
+    color: $heading-staff-color;
   }
 
   .ui-staff__subtitle {
@@ -52,7 +52,7 @@
 
   .ui-staff__content {
     margin-top: $baseline-v;
-    color: $copy-staff-color;
+    color: $heading-staff-color;
   }
 
   .ui-staff__content__section {
@@ -63,6 +63,7 @@
     .wrapper--content {
       padding: $baseline-v ($baseline-h/2);
       background-color: $bg-content;
+      color: $copy-color;
     }
   }
 
@@ -91,14 +92,10 @@
   .openassessment_student_info_form {
     margin-bottom: ($baseline-v/2);
 
-    .list--actions__item {
-      @include text-align(left);
+    .action--submit-username {
+      @extend %btn--primary;
 
-      .action--submit-username {
-        @extend %btn--secondary;
-
-        margin-left: 0;
-      }
+      @include margin-left(0);
     }
   }
 
@@ -124,7 +121,7 @@
     }
 
     th, td {
-      border: 1px solid rgba($copy-staff-color, 0.25);
+      border: 1px solid rgba($heading-staff-color, 0.25);
       padding: ($baseline-v/2) ($baseline-h/4);
     }
 
@@ -168,7 +165,7 @@
     .staff-assessment__display__title {
       @extend %t-heading;
       margin-bottom: ($baseline-v/2);
-      color: $heading-secondary-color;
+      color: $heading-color;
     }
   }
 
@@ -319,7 +316,7 @@
     .staff-info__cancel-submission__content {
 
       .comments__label {
-        color: $copy-secondary-color;
+        color: $copy-color;
       }
 
       .cancel_submission_comments {

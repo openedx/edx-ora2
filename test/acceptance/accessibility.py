@@ -24,15 +24,10 @@ class OpenAssessmentA11yTest(OpenAssessmentTest):
         page.a11y_audit.config.set_scope(
             exclude=[
                 "#footer-edx-v3",  # Links to Facebook, Twitter, etc. Populated in production, but not here.
-                ".instructor-info-action",  # Staff Debug Info link (general for all XBlocks).
+                ".instructor-info-action",  # Staff Debug Info link (general for all XBlocks)
+                ".is--disabled", # TODO: TNL-5183
             ],
         )
-
-        page.a11y_audit.config.set_rules({
-            "ignore": [
-                "color-contrast",  # TODO: TNL-5104
-            ]
-        })
 
 
 class SelfAssessmentA11yTest(OpenAssessmentA11yTest):
@@ -295,7 +290,6 @@ class FileUploadA11yTest(OpenAssessmentA11yTest):
         super(FileUploadA11yTest, self)._configure_a11y_audit_config(page)
         page.a11y_audit.config.set_rules({
             "ignore": [
-                "color-contrast",  # TODO: TNL-5104
                 "list",  # TODO: TNL-5900
             ]
         })
