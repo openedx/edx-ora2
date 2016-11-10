@@ -45,7 +45,8 @@ install-sys-requirements: install-system install-node
 	npm config set loglevel warn
 
 install-dev:
-	gem install sass
+	echo You might want to install sass manually: http://sass-lang.com/install
+	which gem || gem install sass
 	pip install -q -r requirements/dev.txt
 
 install: install-wheels install-python install-js install-nltk-data install-test install-dev javascript sass
