@@ -70,6 +70,7 @@
                                     <textarea
                                         id="submission__answer__part__text__{{ forloop.counter }}__{{ xblock_id }}"
                                         class="submission__answer__part__text__value"
+                                        aria-describedby="submission__answer__tip__{{ xblock_id }}"
                                         placeholder="{% trans "Enter your response to the question above." %}"
                                         maxlength="100000"
                                     >{{ part.text }}</textarea>
@@ -93,7 +94,7 @@
                         {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=file_url class_prefix="submission__answer"%}
                     </ol>
 
-                    <span class="tip">{% trans "You may continue to work on your response until you submit it." %}</span>
+                    <span class="tip" id="submission__answer__tip__{{ xblock_id }}">{% trans "You may continue to work on your response until you submit it." %}</span>
 
                     <div class="response__submission__actions">
                         <div class="message message--inline message--error message--error-server" tabindex="-1">
