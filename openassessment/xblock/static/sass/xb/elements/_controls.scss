@@ -26,40 +26,6 @@
   }
 }
 
-// links - meta
-%link-meta {
-  @include transition(color $tmg-f1 ease-in-out, border $tmg-f1 ease-in-out);
-  border-bottom: 1px solid transparent;
-  color: $action-secondary-color;
-  text-decoration: none;
-
-  &:hover, &:focus {
-    color: $action-secondary-color-focus;
-    border-color: $action-secondary-color-focus;
-  }
-
-  &:active, &.is--current {
-    color: $action-secondary-color-active;
-    border-color: $action-secondary-color-active;
-  }
-}
-
-// links - page nav
-%link-nav-page {
-  @include transition(color $tmg-f1 ease-in-out, border $tmg-f1 ease-in-out);
-  display: block;
-  border-right: 1px solid solid $gray-l5;
-  padding: ($baseline-v/2) ($baseline-h/4);
-  color: $gray-l3;
-  font-family: $f-action;
-  text-decoration: none;
-
-  &:hover, &:active {
-    border-left-color: $action-secondary-color-focus;
-    color: $action-secondary-color-focus;
-  }
-}
-
 // --------------------
 // buttons
 // --------------------
@@ -117,14 +83,14 @@
   border-image: none;
 }
 
-// buttons - primary (assuming dark bg/light copy)
+// buttons - primary
 %btn--primary {
   @extend %btn-pill;
   @extend %t-strong;
   padding: ($baseline-v/2) ($baseline-h);
   background: $action-primary-color;
-  border: 1px solid shade($action-primary-color, 15%);
-  color: tint($action-primary-color, 90%);
+  border: 1px solid $action-primary-color;
+  color: $copy-inverse-color;
 
   .copy {
     @extend %t-strong;
@@ -133,7 +99,6 @@
   &:hover, &:active, &:focus {
     background: $action-primary-color-focus;
     border-color: $action-primary-color-focus;
-    color: tint($action-primary-color, 99%);
   }
 
   &.current, &.active {
@@ -146,33 +111,36 @@
   }
 
   &.disabled, &.is--disabled, &[disabled] {
-    opacity: 0.4;
+    color: $action-primary-color-disabled;
+    border-color: $action-primary-color-disabled;
+    background: $action-primary-color-disabled-back;
   }
 }
 
 
-// buttons - secondary (assuming dark bg/light copy)
+// buttons - secondary
 %btn--secondary {
   @extend %btn-pill;
   @extend %t-strong;
   padding: ($baseline-v/2) ($baseline-h);
-  background: $action-secondary-color;
-  border: 1px shade($action-secondary-color, 10%);
-  color: tint($action-secondary-color, 90%);
+  background: $white;
+  border: 1px solid $uxpl-primary-dark;
+  color: $uxpl-primary-dark;
 
   .copy {
     @extend %t-strong;
   }
 
   &:hover, &:active, &:focus {
-    background: $action-secondary-color-focus;
-    border-color: $action-secondary-color-focus;
-    color: tint($action-secondary-color, 99%);
+    background: $action-primary-color;
+    border-color: $action-primary-color;
+    color: $copy-inverse-color;
   }
 
   &.current, &.active {
-    background: $action-secondary-color-active;
-    border-color: $action-secondary-color-active;
+    background: $white;
+    border-color: $uxpl-primary-dark;
+    color: $uxpl-primary-dark;
 
     &:hover, &:active, &:focus {
 
@@ -180,40 +148,8 @@
   }
 
   &.disabled, &.is--disabled, &[disabled] {
-    opacity: 0.4;
-  }
-}
-
-
-// buttons - tertiary (assuming dark bg/light copy)
-%btn--tertiary {
-  @extend %btn-edged;
-  @extend %t-strong;
-  padding: ($baseline-v/2) ($baseline-h/2);
-  background: $action-tertiary-color;
-  border: 1px solid shade($action-tertiary-color, 10%);
-  color: tint($action-tertiary-color, 90%);
-
-  .copy {
-    @extend %t-strong;
-  }
-
-  &:hover, &:active, &:focus {
-    background: $action-tertiary-color-focus;
-    border-color: $action-tertiary-color-focus;
-    color: tint($action-tertiary-color, 99%);
-  }
-
-  &.current, &.active {
-    background: $action-tertiary-color-active;
-    border-color: $action-tertiary-color-active;
-
-    &:hover, &:active, &:focus {
-
-    }
-  }
-
-  &.disabled, &.is-disabled, &[disabled] {
-    opacity: 0.5;
+    background: $white;
+    border-color: $action-primary-color-disabled;
+    color: $action-primary-color-disabled;
   }
 }

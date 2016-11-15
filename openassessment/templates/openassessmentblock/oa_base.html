@@ -21,12 +21,14 @@
             <ol class="openassessment__steps">
                 {% for assessment in rubric_assessments %}
                     <li class="{{ assessment.class_id }} openassessment__steps__step is--loading">
-                        <header class="step__header">
+                        <header class="step__header ui-slidable__container">
                             <h2 class="step__title">
-                                <span class="step__counter"></span>
-                                <span class="wrapper--copy">
-                                    <span class="step__label">{% trans assessment.title %}</span>
-                                </span>
+                                <button class="ui-slidable" aria-expanded="false" disabled>
+                                    <span class="step__counter"></span>
+                                    <span class="wrapper--copy">
+                                        <span class="step__label">{% trans assessment.title %}</span>
+                                    </span>
+                                </button>
 
                                 <span class="step__status">
                                     <span class="step__status__label">{% trans "This step's status:" %}</span>

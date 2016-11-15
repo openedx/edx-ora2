@@ -38,7 +38,7 @@
   .openassessment__steps .openassessment__steps__step .step__header {
 
     .step__deadline {
-      color: $heading-secondary-color;
+      color: $heading-color;
     }
 
     // step title/name
@@ -67,7 +67,7 @@
           @extend %t-strong;
           content: counter(item, decimal);
           counter-increment: item;
-          color: $color-decorative-tertiary;
+          color: $copy-color;
         }
       }
     }
@@ -120,7 +120,7 @@
 
   .self-assessment__display__title, .peer-assessment__display__title {
     margin-bottom: ($baseline-v/2) !important;
-    color: $heading-secondary-color !important;
+    color: $heading-color !important;
   }
 
   // shown submission/results
@@ -142,7 +142,7 @@
   }
 
   // actions
-  .action--submit, .action--save {
+  .action--submit, .action--save, .action--upload {
     text-shadow: none !important;
     box-shadow: none !important;
   }

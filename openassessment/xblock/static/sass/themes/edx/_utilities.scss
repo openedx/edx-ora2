@@ -10,47 +10,11 @@
 // --------------------
 $edx-blue: rgb(58, 162, 224);
 $edx-blue-l1: tint($edx-blue,20%);
-$edx-blue-l2: tint($edx-blue,40%);
-$edx-blue-l3: tint($edx-blue,60%);
-$edx-blue-l4: tint($edx-blue,80%);
-$edx-blue-l5: tint($edx-blue,90%);
-$edx-blue-d1: shade($edx-blue,20%);
-$edx-blue-d2: shade($edx-blue,40%);
-$edx-blue-d3: shade($edx-blue,60%);
-$edx-blue-d4: shade($edx-blue,80%);
-$edx-blue-d5: shade($edx-blue,90%);
-$edx-blue-s1: saturate($edx-blue,15%);
-$edx-blue-s2: saturate($edx-blue,30%);
-$edx-blue-s3: saturate($edx-blue,45%);
-$edx-blue-u1: desaturate($edx-blue,15%);
-$edx-blue-u2: desaturate($edx-blue,30%);
-$edx-blue-u3: desaturate($edx-blue,45%);
-$edx-blue-t0: rgba($edx-blue,0.125);
-$edx-blue-t1: rgba($edx-blue,0.25);
-$edx-blue-t2: rgba($edx-blue,0.50);
-$edx-blue-t3: rgba($edx-blue,0.75);
+
 
 $edx-pink: rgb(182,37,104);
-$edx-pink-l1: tint($edx-pink,20%);
-$edx-pink-l2: tint($edx-pink,40%);
-$edx-pink-l3: tint($edx-pink,60%);
-$edx-pink-l4: tint($edx-pink,80%);
-$edx-pink-l5: tint($edx-pink,90%);
 $edx-pink-d1: shade($edx-pink,20%);
-$edx-pink-d2: shade($edx-pink,40%);
-$edx-pink-d3: shade($edx-pink,60%);
-$edx-pink-d4: shade($edx-pink,80%);
-$edx-pink-d5: shade($edx-pink,90%);
-$edx-pink-s1: saturate($edx-pink,15%);
-$edx-pink-s2: saturate($edx-pink,30%);
-$edx-pink-s3: saturate($edx-pink,45%);
-$edx-pink-u1: desaturate($edx-pink,15%);
-$edx-pink-u2: desaturate($edx-pink,30%);
-$edx-pink-u3: desaturate($edx-pink,45%);
-$edx-pink-t0: rgba($edx-pink,0.125);
-$edx-pink-t1: rgba($edx-pink,0.25);
-$edx-pink-t2: rgba($edx-pink,0.50);
-$edx-pink-t3: rgba($edx-pink,0.75);
+
 
 $edx-gray: rgb(164, 165, 168);
 $edx-gray-l1: tint($edx-gray,20%);
@@ -74,19 +38,10 @@ $edx-gray-t1: rgba($edx-gray,0.25);
 $edx-gray-t2: rgba($edx-gray,0.50);
 $edx-gray-t3: rgba($edx-gray,0.75);
 
-$edx-lms-header: rgb(100, 100, 100);
-$edx-lms-copy: rgb(60, 60, 60);
-$edx-lms-action-primary: rgb(29, 157, 217);
-$edx-lms-action-secondary: rgb(135, 135, 135);
-
 
 // --------------------
 // variables: overrides
 // --------------------
-// colors
-$white-t: rgb(255,255,255);
-$black-t: rgb(0,0,0);
-
 // fonts
 $f-serif: 'PT Serif', Cambria, Georgia, 'Times New Roman', Times, serif;
 $f-sans-serif: 'Open Sans','Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -100,67 +55,19 @@ $gutter: $baseline-v;
 $f-title: $f-sans-serif;
 $f-copy: $f-sans-serif;
 $f-action: $f-sans-serif;
-$f-base-color: $edx-gray;
-
-// application - colors
-$color-primary: $edx-lms-action-primary;
-$color-secondary: $edx-lms-action-secondary;
-$color-tertiary: $gray-l1;
-$color-quarternary: $gray-l2;
-
-// application - colors: decorative
-$color-decorative-primary: $gray-d3;
-
-// application - colors: states
-$color-disabled: $edx-gray-l4;
-$color-focused: $edx-gray;
-
-// application - colors: copy and headings
-$heading-color: $edx-lms-header;
-$copy-color: $edx-lms-copy;
-
-// application - colors:states
-$selected-bg: $edx-blue-t1;
-$selected-color: $edx-blue;
-
-// application - colors: actions
-$action-primary-color: tint($color-primary,10%);
-$action-primary-color-focus: saturate($color-primary,25%);
-$action-primary-color-active: $color-primary;
-$action-primary-color-visited: shade($color-primary,20%);
-
-$action-secondary-color: $color-secondary;
-$action-secondary-color-focus: shade($color-secondary,25%);
-$action-secondary-color-active: $color-secondary;
-$action-secondary-color-visited: shade($color-secondary,20%);
-
-$action-tertiary-color: tint($color-teritary,10%);
-$action-tertiary-color-focus: shade($color-teritary,25%);
-$action-tertiary-color-active: $color-teritary;
-$action-tertiary-color-visited: shade($color-teritary,20%);
 
 // application - colors: view-based elements
 $bg-view: transparent;
 
-$bg-header-main: $white-t;
 $color-header-main: $black;
 
-$bg-content: $white-t;
 $color-content: $gray-d1;
 
 $bg-content-main: $gray-l5;
 $color-content-main: $gray-d1;
 
-// application - colors: states
-$selected-color: $black-t;
-
 // application - colors: staff UI
 $color-decorative-staff: $edx-pink;
-
-// --------------------
-// mixins:
-// --------------------
-
 
 // --------------------
 // extends:
@@ -169,5 +76,5 @@ $color-decorative-staff: $edx-pink;
   @extend %hd-3;
   @extend %t-titlecase;
   margin-bottom: $baseline-v;
-  color: $heading-secondary-color;
+  color: $heading-color;
 }

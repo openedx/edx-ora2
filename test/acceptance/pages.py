@@ -38,6 +38,7 @@ class BaseAssessmentPage(PageObject):
             loc=self._problem_location
         )
 
+
 class MultipleAssessmentPage(BaseAssessmentPage):
     """
     Page object for subsection unit containing multiple ORA problems
@@ -63,7 +64,9 @@ class OpenAssessmentPage(BaseAssessmentPage):
 
         The default implementation just returns the selector
         """
-        return "{vertical_index_class} {selector}".format(vertical_index_class=self.vertical_index_class, selector=selector)
+        return "{vertical_index_class} {selector}".format(
+            vertical_index_class=self.vertical_index_class, selector=selector
+        )
 
     @property
     def vertical_index_class(self):
@@ -215,12 +218,35 @@ class AssessmentMixin(object):
         >>> page.assess([0, 2, 1])
 
         """
-        for criterion_num, option_num in enumerate(options_selected):
+        def selector(criterion_num, option_num):
             sel = ".rubric_{criterion_num}_{option_num}".format(
                 criterion_num=criterion_num,
                 option_num=option_num
             )
-            self.q(css=self._bounded_selector(sel)).first.click()
+            return sel
+
+        def select_criterion():
+            for criterion_num, option_num in enumerate(options_selected):
+                sel = selector(criterion_num, option_num)
+                self.q(css=self._bounded_selector(sel)).first.click()
+
+        def criterion_selected():
+            for criterion_num, option_num in enumerate(options_selected):
+                sel = selector(criterion_num, option_num)
+                if not self.q(css=self._bounded_selector(sel))[0].is_selected():
+                    return False
+            return True
+
+        # When selecting the criteria for the 2nd training assessment, sometimes
+        # radio buttons are not selected after the click, causing the test to fail (because the
+        # Submit button never becomes enabled). Since tests that use training assessments tend
+        # to be very long (meaning there is a high cost to retrying the whole test),
+        # retry just selecting the criterion a few times before failing the whole test.
+        attempts = 0
+        while not criterion_selected() and attempts < 5:
+            select_criterion()
+            attempts+=1
+
         self.submit_assessment()
         return self
 

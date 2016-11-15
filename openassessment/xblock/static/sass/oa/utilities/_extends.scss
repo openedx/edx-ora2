@@ -84,6 +84,11 @@
     }
   }
 
+  // STATE: is in-progress
+  &.is--in-progress {
+    border-top-color: $action-primary-color;
+  }
+
   // STATE: is complete
   &.is--complete {
     border-top-color: $color-complete;
@@ -202,7 +207,7 @@
       @extend %copy-3;
       @extend %t-strong;
       margin-bottom: 0; // FIX: need to reset base label style
-      color: $copy-secondary-color;
+      color: $copy-color;
     }
 
     .answer__value {
@@ -247,7 +252,7 @@
 
     @extend %copy-3;
     @include margin-right($baseline-v);
-    color: $copy-secondary-color;
+    color: $copy-color;
 
     @include media($bp-dm) {
       @include bidi-span-columns(6 of 8);
@@ -274,7 +279,7 @@
 
   .answer__points {
     @extend %t-score;
-    color: $copy-secondary-color;
+    color: $copy-color;
 
     @include media($bp-dm) {
       @include float(right);
@@ -295,7 +300,7 @@
   .answer__points__label {
     display: inline-block; // FIX: need to reset base label style
     @include margin-left(($baseline-v/4));
-    color: $copy-secondary-color;
+    color: $copy-color;
   }
 
   // ELEM: criterion selects

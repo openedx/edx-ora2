@@ -3,7 +3,7 @@
 {% block list_item %}
 <li
     id="openassessment__peer-assessment__{{ xblock_id }}"
-    class="openassessment__steps__step step--peer-assessment is--showing ui-slidable__container {% if allow_latex %} allow--latex {%endif%}"
+    class="openassessment__steps__step step--peer-assessment is--in-progress is--showing ui-slidable__container {% if allow_latex %} allow--latex {%endif%}"
     data-submission-uuid="{{ peer_submission.uuid }}"
     tabindex="-1"
 >

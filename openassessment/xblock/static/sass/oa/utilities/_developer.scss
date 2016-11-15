@@ -27,10 +27,6 @@
 // Developer styles for Staff Section
 // --------------------
 
-// edX constants
-$lighter-base-font-color: rgb(100,100,100);
-$link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.org/elements/colors/
-
 .wrapper--openassessment .wrapper--staff-area {
   width: 100%;
   overflow: auto;
@@ -50,7 +46,7 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
       font-size: 12px;
       border-radius: ($baseline-v/4);
       text-transform: uppercase;
-      color: $lighter-base-font-color;
+      color: $copy-color;
       background-color: $shadow-l2;
 
       &.is--active {
@@ -64,7 +60,7 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
 
       &:hover {
         color: white;
-        background-color: $link-hover;
+        background-color: $action-primary-color;
       }
     }
   }
@@ -121,7 +117,7 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
   }
 
   .student__answer__display__content {
-    border: 1px solid rgba($copy-staff-color, 0.25);
+    border: 1px solid rgba($heading-staff-color, 0.25);
     padding: ($baseline-v/2) ($baseline-h/4);
     margin-bottom: ($baseline-v/2);
   }
@@ -163,7 +159,7 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
   .student-training__display__title {
     @extend %t-heading;
     margin-bottom: ($baseline-v/2);
-    color: $heading-secondary-color;
+    color: $heading-color;
   }
 
   .student-training__display__response {
@@ -1120,7 +1116,7 @@ $link-hover: $edx-blue-l1 !default; // from our Pattern Library http://ux.edx.or
 
     .leaderboard__title {
       @extend %t-superheading;
-      color: $heading-primary-color;
+      color: $heading-color;
     }
 
     .list.leaderboard__score__list {
