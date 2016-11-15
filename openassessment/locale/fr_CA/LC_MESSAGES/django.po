@@ -93,7 +93,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-03 20:15+0000\n"
+"POT-Creation-Date: 2016-11-15 17:44+0000\n"
 "PO-Revision-Date: 2016-09-03 14:59+0000\n"
 "Last-Translator: Pierre Mailhot <pierre.mailhot@gmail.com>\n"
 "Language-Team: French (Canada) (http://www.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"
@@ -889,11 +889,11 @@ msgid ""
 "field."
 msgstr "Ce devoir comprend plusieurs étapes. Dans la première, vous fournissez une réponse à la question. Les autres étapes apparaissent alors en dessous du champ \"Votre Réponse\"."
 
-#: openassessment/templates/openassessmentblock/oa_base.html:32
+#: openassessment/templates/openassessmentblock/oa_base.html:34
 msgid "This step's status:"
 msgstr "Le statut de cette étape"
 
-#: openassessment/templates/openassessmentblock/oa_base.html:35
+#: openassessment/templates/openassessmentblock/oa_base.html:37
 msgid "Loading"
 msgstr "Chargement"
 

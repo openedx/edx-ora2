@@ -3,7 +3,7 @@
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
 # 
 # Translators:
-# Adem Özgür <admozgur@gmail.com>, 2015
+# adem ÖZGÜR <admozgur@gmail.com>, 2015
 # ali selek <aliselek01@gmail.com>, 2015
 # Emrah Emirtekin <eemirtekin@gmail.com>, 2015
 # İlker IŞIK <m.ilkerisik@hotmail.com>, 2015-2016
@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-03 20:15+0000\n"
+"POT-Creation-Date: 2016-11-15 17:44+0000\n"
 "PO-Revision-Date: 2016-05-09 11:26+0000\n"
 "Last-Translator: Emrah Emirtekin <eemirtekin@gmail.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"

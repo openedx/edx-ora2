@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Adem Özgür <admozgur@gmail.com>, 2015
+# adem ÖZGÜR <admozgur@gmail.com>, 2015
 # ali selek <aliselek01@gmail.com>, 2015
 # Ayhan Aksoy <aksoyayhan1@gmail.com>, 2015
 # Emrah Emirtekin <eemirtekin@gmail.com>, 2015
@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-03 20:15+0000\n"
-"PO-Revision-Date: 2016-08-25 20:55+0000\n"
+"POT-Creation-Date: 2016-11-15 17:44+0000\n"
+"PO-Revision-Date: 2016-10-17 01:07+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -814,11 +814,11 @@ msgid ""
 "field."
 msgstr "Bu ödev birkaç adıma sahip. İlk adımda, soruya cevap vereceğiz. Diğer adımlar Sizin Cevap alanınız altında görünecektir."
 
-#: openassessment/templates/openassessmentblock/oa_base.html:32
+#: openassessment/templates/openassessmentblock/oa_base.html:34
 msgid "This step's status:"
 msgstr "Bu aşamanın durumu:"
 
-#: openassessment/templates/openassessmentblock/oa_base.html:35
+#: openassessment/templates/openassessmentblock/oa_base.html:37
 msgid "Loading"
 msgstr "Yüklüyor..."
 

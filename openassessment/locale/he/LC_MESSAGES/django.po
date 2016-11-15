@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-03 20:15+0000\n"
-"PO-Revision-Date: 2016-09-29 12:41+0000\n"
+"POT-Creation-Date: 2016-11-15 17:44+0000\n"
+"PO-Revision-Date: 2016-11-07 11:51+0000\n"
 "Last-Translator: qualityalltext <quality@alltext.co.il>\n"
 "Language-Team: Hebrew (http://www.transifex.com/open-edx/edx-platform/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -811,11 +811,11 @@ msgid ""
 "field."
 msgstr "במטלה זו קיימים מספר שלבים. בשלב הראשון, תידרש לספק תשובה עבור השאלה. השלבים האחרים מופיעים מתחת לשדה תשובתך. "
 
-#: openassessment/templates/openassessmentblock/oa_base.html:32
+#: openassessment/templates/openassessmentblock/oa_base.html:34
 msgid "This step's status:"
 msgstr "מצב שלב זה: "
 
-#: openassessment/templates/openassessmentblock/oa_base.html:35
+#: openassessment/templates/openassessmentblock/oa_base.html:37
 msgid "Loading"
 msgstr "טוען"
 

@@ -21,7 +21,7 @@
 # louyihua <supermouselyh@hotmail.com>, 2015
 # thepanguan <742686838@qq.com>, 2014
 # wendiyan420 <wendiyan420@gmail.com>, 2014
-# Wenyong Hu <huwenyong.nl@gmail.com>, 2015
+# wenyong hu <inactive+huwenyong@transifex.com>, 2015
 # YUAN Tian <Sweetyuantian@msn.cn>, 2014
 # Yue Fang <yfang@juilliard.edu>, 2016
 # zhouxuan <lion19930924@163.com>, 2015
@@ -32,7 +32,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-03 20:15+0000\n"
+"POT-Creation-Date: 2016-11-15 17:44+0000\n"
 "PO-Revision-Date: 2016-08-25 20:55+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/open-edx/edx-platform/language/zh_CN/)\n"
@@ -827,11 +827,11 @@ msgid ""
 "field."
 msgstr "该作业包含若干步骤。首先，你应当提交自己的答案。其他步骤会在你提交后会出现。"
 
-#: openassessment/templates/openassessmentblock/oa_base.html:32
+#: openassessment/templates/openassessmentblock/oa_base.html:34
 msgid "This step's status:"
 msgstr "这一步骤的状态："
 
-#: openassessment/templates/openassessmentblock/oa_base.html:35
+#: openassessment/templates/openassessmentblock/oa_base.html:37
 msgid "Loading"
 msgstr "正在加载"
 

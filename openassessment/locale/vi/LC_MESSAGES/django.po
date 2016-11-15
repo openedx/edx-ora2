@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-03 20:15+0000\n"
+"POT-Creation-Date: 2016-11-15 17:44+0000\n"
 "PO-Revision-Date: 2016-08-27 19:37+0000\n"
 "Last-Translator: Nguyen Nhat Quang <technicalmanager@gmail.com>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/open-edx/edx-platform/language/vi/)\n"
@@ -817,11 +817,11 @@ msgid ""
 "field."
 msgstr "Bài tập này gồm nhiều bước. Ở bước đầu tiên, bạn cần đưa câu trả lời cho câu hỏi. Các bước tiếp theo sẽ hiện dưới mục Câu trả lời."
 
-#: openassessment/templates/openassessmentblock/oa_base.html:32
+#: openassessment/templates/openassessmentblock/oa_base.html:34
 msgid "This step's status:"
 msgstr "Tình trạng của bước này:"
 
-#: openassessment/templates/openassessmentblock/oa_base.html:35
+#: openassessment/templates/openassessmentblock/oa_base.html:37
 msgid "Loading"
 msgstr "Đang tải"
 

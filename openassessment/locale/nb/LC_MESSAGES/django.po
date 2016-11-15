@@ -6,14 +6,15 @@
 # Erland Flaten <eflaten@vangenplotz.no>, 2015
 # Frode Arntsen <frode.arntsen@bibsys.no>, 2014
 # Lene2015 <gundersen_lene@hotmail.com>, 2015
+# Joakim S. Johnson, 2016
 # oaeide <oaeide@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-03 20:15+0000\n"
-"PO-Revision-Date: 2016-08-25 20:55+0000\n"
-"Last-Translator: Eric Fischer <efischer@edx.org>\n"
+"POT-Creation-Date: 2016-11-15 17:44+0000\n"
+"PO-Revision-Date: 2016-10-28 23:46+0000\n"
+"Last-Translator: Joakim S. Johnson\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/open-edx/edx-platform/language/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,7 +52,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:12
 msgid "Open Response Assessment"
-msgstr ""
+msgstr "Fritekstvurdering"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:14
 msgid "Settings"
@@ -807,11 +808,11 @@ msgid ""
 "field."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/oa_base.html:32
+#: openassessment/templates/openassessmentblock/oa_base.html:34
 msgid "This step's status:"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/oa_base.html:35
+#: openassessment/templates/openassessmentblock/oa_base.html:37
 msgid "Loading"
 msgstr "Laster"
 

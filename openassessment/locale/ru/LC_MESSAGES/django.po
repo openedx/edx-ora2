@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-03 20:15+0000\n"
+"POT-Creation-Date: 2016-11-15 17:44+0000\n"
 "PO-Revision-Date: 2016-08-29 11:15+0000\n"
 "Last-Translator: Liubov Fomicheva <liubov.nelapa@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/open-edx/edx-platform/language/ru/)\n"
@@ -820,11 +820,11 @@ msgid ""
 "field."
 msgstr "Данное задание включает несколько шагов. На первом шаге вы должны ответить на вопрос. Следующие шаги появятся ниже поля с вашим ответом."
 
-#: openassessment/templates/openassessmentblock/oa_base.html:32
+#: openassessment/templates/openassessmentblock/oa_base.html:34
 msgid "This step's status:"
 msgstr "Статус этого шага:"
 
-#: openassessment/templates/openassessmentblock/oa_base.html:35
+#: openassessment/templates/openassessmentblock/oa_base.html:37
 msgid "Loading"
 msgstr "Загрузка"
 

@@ -24,8 +24,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-03 20:15+0000\n"
-"PO-Revision-Date: 2016-09-26 17:16+0000\n"
+"POT-Creation-Date: 2016-11-15 17:44+0000\n"
+"PO-Revision-Date: 2016-10-05 15:01+0000\n"
 "Last-Translator: Juan Camilo Montoya Franco <juan.montoya@edunext.co>\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/open-edx/edx-platform/language/es_419/)\n"
 "MIME-Version: 1.0\n"
@@ -820,11 +820,11 @@ msgid ""
 "field."
 msgstr "Esta tarea tiene varias etapas. En la primer etapa proveerás una respuesta a la pregunta. Las otras etapas aparecerán abajo en el campo Tu Respuesta"
 
-#: openassessment/templates/openassessmentblock/oa_base.html:32
+#: openassessment/templates/openassessmentblock/oa_base.html:34
 msgid "This step's status:"
 msgstr "El estado de esta etapa"
 
-#: openassessment/templates/openassessmentblock/oa_base.html:35
+#: openassessment/templates/openassessmentblock/oa_base.html:37
 msgid "Loading"
 msgstr "Cargando"
 
