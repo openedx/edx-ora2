@@ -27,7 +27,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-03 20:15+0000\n"
+"POT-Creation-Date: 2016-11-15 17:44+0000\n"
 "PO-Revision-Date: 2016-09-27 00:25+0000\n"
 "Last-Translator: Nayse Hillesheim <nayse.hillesheim@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/open-edx/edx-platform/language/pt_BR/)\n"
@@ -823,11 +823,11 @@ msgid ""
 "field."
 msgstr "Esta tarefa tem vários passos. No primeiro passo, você fornece a resposta para a questão. Os próximos passos aparecerão abaixo no campo \"Sua Resposta\"."
 
-#: openassessment/templates/openassessmentblock/oa_base.html:32
+#: openassessment/templates/openassessmentblock/oa_base.html:34
 msgid "This step's status:"
 msgstr "Status deste passo:"
 
-#: openassessment/templates/openassessmentblock/oa_base.html:35
+#: openassessment/templates/openassessmentblock/oa_base.html:37
 msgid "Loading"
 msgstr "Carregando"
 

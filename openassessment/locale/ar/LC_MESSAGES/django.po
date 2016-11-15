@@ -12,15 +12,16 @@
 # may <may@qordoba.com>, 2014-2015
 # Nabeel El-Dughailib <nabeel@qordoba.com>, 2014-2015
 # omarithawi <oithawi@qrf.org>, 2016
+# shefaa abu jabel <shefaa.aj@gmail.com>, 2016
 # Soha Assali <soha+transifex@qordoba.com>, 2015-2016
 # Widad El Samman <widadsamman@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-03 20:15+0000\n"
-"PO-Revision-Date: 2016-09-21 10:42+0000\n"
-"Last-Translator: AR C2 <e2f458fd4s512@outlook.com>\n"
+"POT-Creation-Date: 2016-11-15 17:44+0000\n"
+"PO-Revision-Date: 2016-11-07 21:20+0000\n"
+"Last-Translator: shefaa abu jabel <shefaa.aj@gmail.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/open-edx/edx-platform/language/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -818,11 +819,11 @@ msgid ""
 "field."
 msgstr "ينطوي هذا الواجب على عدّة خطوات. وستجيب في الخطوة الأولى على السؤال. ثمّ تظهر بقيّة الخطوات تحت حقل \"ردّك\"."
 
-#: openassessment/templates/openassessmentblock/oa_base.html:32
+#: openassessment/templates/openassessmentblock/oa_base.html:34
 msgid "This step's status:"
 msgstr "حالة هذه الخطوة:"
 
-#: openassessment/templates/openassessmentblock/oa_base.html:35
+#: openassessment/templates/openassessmentblock/oa_base.html:37
 msgid "Loading"
 msgstr "جاري التحميل"
 
@@ -847,7 +848,7 @@ msgid ""
 "(Caution: This file was uploaded by another course learner and has not been "
 "verified, screened, approved, reviewed, or endorsed by the site "
 "administrator. If you decide to access it, you do so at your own risk.)"
-msgstr ""
+msgstr "(تحذير: تم رفع هذا الملف من قبل طالب آخر في الدورة ولم يتم التحقق منه أو فحصه أو الموافقة عليه أو مراجعته أو إقراره من قبل المسؤول عن الموقع. إذا قررت الدخول إلى الملف، يمكنك القيام بذلك على مسؤوليتك الخاصة.)"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:20
 msgid "Assess Peers"

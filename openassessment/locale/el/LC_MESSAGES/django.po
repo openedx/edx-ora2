@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-03 20:15+0000\n"
-"PO-Revision-Date: 2016-09-20 15:50+0000\n"
+"POT-Creation-Date: 2016-11-15 17:44+0000\n"
+"PO-Revision-Date: 2016-10-05 13:59+0000\n"
 "Last-Translator: Katerina Ligkovanli <kaligova@gmail.com>\n"
 "Language-Team: Greek (http://www.transifex.com/open-edx/edx-platform/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -672,7 +672,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:21
 #, python-format
 msgid "%(num_points)s points"
-msgstr ""
+msgstr "%(num_points)s μονάδες"
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:25
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:74
@@ -816,11 +816,11 @@ msgid ""
 "field."
 msgstr "Η διαδικασία αλληλοαξιολόγησης έχει πολλαπλά βήματα. Σε πρώτη φάση θα πρέπει να γράψετε το δοκίμιό σας. Τα υπόλοιπα βήματα περιγράφονται κάτω από το πεδίο Το Δοκίμιό σας"
 
-#: openassessment/templates/openassessmentblock/oa_base.html:32
+#: openassessment/templates/openassessmentblock/oa_base.html:34
 msgid "This step's status:"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/oa_base.html:35
+#: openassessment/templates/openassessmentblock/oa_base.html:37
 msgid "Loading"
 msgstr ""
 

@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-03 20:15+0000\n"
-"PO-Revision-Date: 2016-07-06 09:54+0000\n"
+"POT-Creation-Date: 2016-11-15 17:44+0000\n"
+"PO-Revision-Date: 2016-10-17 04:31+0000\n"
 "Last-Translator: Ya-chi Chang <yacchang@mail.fcu.edu.tw>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/open-edx/edx-platform/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -39,13 +39,13 @@ msgstr "這個部分無法加載。"
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:134
 msgid "The staff assessment form could not be loaded."
-msgstr ""
+msgstr "工作人員評分表無法載入。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/oa_server.js:156
 msgid "The display of ungraded and checked out responses could not be loaded."
-msgstr ""
+msgstr "不分級與已回應的顯示無法載入。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
@@ -119,7 +119,7 @@ msgstr "無法載入"
 msgid ""
 "If you leave this page without submitting your peer assessment, you will "
 "lose any work you have done."
-msgstr ""
+msgstr "如果你沒有提交同儕互評而離開這個頁面，你將遺失任何這部分的作業。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_response.js:237
@@ -187,30 +187,30 @@ msgstr "檔案類型是不允許的。"
 msgid ""
 "If you leave this page without submitting your self assessment, you will "
 "lose any work you have done."
-msgstr ""
+msgstr "如果你沒有提交你的自評而離開這個頁面，你將遺失你任何你所做的作業。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:129
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:211
 msgid "Unexpected server error."
-msgstr ""
+msgstr "未預期的伺服器錯誤"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:133
 msgid "You must provide a learner name."
-msgstr ""
+msgstr "你必須提供一個學習者全名"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:263
 msgid "Error getting the number of ungraded responses"
-msgstr ""
+msgstr "錯誤獲取不分級的回應數。"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
 #: openassessment/xblock/static/js/src/lms/oa_staff_area.js:508
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
-msgstr ""
+msgstr "如果你沒有提交工作人員評估而離開這個頁面，你將會遺失任何你所做的作業。"
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_container_item.js:39
