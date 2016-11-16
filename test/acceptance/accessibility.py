@@ -25,7 +25,6 @@ class OpenAssessmentA11yTest(OpenAssessmentTest):
             exclude=[
                 "#footer-edx-v3",  # Links to Facebook, Twitter, etc. Populated in production, but not here.
                 ".instructor-info-action",  # Staff Debug Info link (general for all XBlocks)
-                ".is--disabled", # TODO: TNL-5183
             ],
         )
 

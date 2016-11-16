@@ -437,12 +437,7 @@
          * >> true
          */
         cancelSubmissionEnabled: function(enabled) {
-            var $cancelButton = $('.action--submit-cancel-submission', this.element);
-            if (typeof enabled === 'undefined') {
-                return !$cancelButton.hasClass('is--disabled');
-            } else {
-                $cancelButton.toggleClass('is--disabled', !enabled);
-            }
+            return this.baseView.buttonEnabled('.action--submit-cancel-submission', enabled);
         },
 
         /**
@@ -484,13 +479,7 @@
          * @returns {boolean} Whether the button is enabled
          */
         staffSubmitEnabled: function(scope, enabled) {
-            var button = scope.find('.wrapper--staff-assessment .action--submit');
-            if (typeof enabled === 'undefined') {
-                return !button.hasClass('is--disabled');
-            } else {
-                button.toggleClass('is--disabled', !enabled);
-                return enabled;
-            }
+            return this.baseView.buttonEnabled('.wrapper--staff-assessment .action--submit', enabled);
         },
 
         /**

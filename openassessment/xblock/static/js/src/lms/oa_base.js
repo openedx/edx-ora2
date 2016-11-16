@@ -257,6 +257,24 @@ OpenAssessment.BaseView.prototype = {
                 }
             }
         }
+    },
+
+    /**
+     * Enable/disable the button with the given class name.
+     *
+     * @param {string} className The css class to find the button
+     * @param {boolean} enabled If specified enables or disables the button. If not specified,
+     *     the state of the button is not changed, but the current enabled status is returned.
+     * @returns {boolean} whether or not the button is enabled
+     */
+    buttonEnabled: function(className, enabled) {
+        var $element = $(className, this.element);
+        if (typeof enabled === 'undefined') {
+            return !$element.prop('disabled');
+        } else {
+            $element.prop('disabled', !enabled);
+            return enabled;
+        }
     }
 };
 

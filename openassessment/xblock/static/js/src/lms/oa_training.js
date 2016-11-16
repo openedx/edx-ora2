@@ -128,11 +128,6 @@ OpenAssessment.StudentTrainingView.prototype = {
      >> true
     **/
     assessButtonEnabled: function(isEnabled) {
-        var button = $('.student-training--001__assessment__submit', this.element);
-        if (typeof isEnabled === 'undefined') {
-            return !button.hasClass('is--disabled');
-        } else {
-            button.toggleClass('is--disabled', !isEnabled);
-        }
+        return this.baseView.buttonEnabled('.student-training--001__assessment__submit', isEnabled);
     }
 };
