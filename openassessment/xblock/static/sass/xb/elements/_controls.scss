@@ -101,6 +101,7 @@
     color: $action-primary-color-disabled;
     border-color: $action-primary-color-disabled;
     background: $action-primary-color-disabled-back;
+    opacity: 1;
   }
 }
 
@@ -134,5 +135,6 @@
     background: $white;
     border-color: $action-primary-color-disabled;
     color: $action-primary-color-disabled;
+    opacity: 1;
   }
 }
