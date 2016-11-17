@@ -700,6 +700,10 @@ def serialize_content_to_xml(oa_block, root):
     if oa_block.leaderboard_show:
         root.set('leaderboard_show', unicode(oa_block.leaderboard_show))
 
+    # Set upload_file_count
+    if oa_block.upload_file_count:
+        root.set('upload_file_count', unicode(upload_file_count))
+
     # Set File upload settings
     if oa_block.file_upload_type:
         root.set('file_upload_type', unicode(oa_block.file_upload_type))
@@ -863,6 +867,13 @@ def parse_from_xml(root):
     else:
         rubric = parse_rubric_xml(rubric_el)
 
+    upload_file_count = 0
+    if 'upload_file_count' in root.attrib:
+        try:
+            upload_file_count = int(root.attrib['upload_file_count'])
+        except (TypeError, ValueError):
+            raise UpdateFromXmlError('The upload_file_count must have an integer value.')
+
     # Retrieve the prompts
     prompts = _parse_prompts_xml(root)
 
@@ -891,6 +902,7 @@ def parse_from_xml(root):
         'submission_start': submission_start,
         'submission_due': submission_due,
         'allow_file_upload': allow_file_upload,
+        'upload_file_count': upload_file_count,
         'file_upload_type': file_upload_type,
         'white_listed_file_types': white_listed_file_types,
         'allow_latex': allow_latex,

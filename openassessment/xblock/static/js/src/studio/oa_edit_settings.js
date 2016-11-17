@@ -28,13 +28,33 @@ OpenAssessment.EditSettingsView = function(element, assessmentViews, data) {
         "#openassessment_submission_due_time"
     ).install();
 
+    var self = this;
+
     new OpenAssessment.SelectControl(
         $("#openassessment_submission_upload_selector", this.element),
-        {'custom': $("#openassessment_submission_white_listed_file_types_wrapper", this.element)},
+        function(selected) {
+            var elFt = $("#openassessment_submission_white_listed_file_types_wrapper", self.element);
+            var elFc = $("#openassessment_submission_file_count_wrapper", self.element);
+            if (selected === 'custom') {
+                elFt.removeClass('is--hidden');
+            } else {
+                elFt.addClass('is--hidden');
+            }
+            if (selected !== '') {
+                elFc.removeClass('is--hidden');
+            } else {
+                elFc.addClass('is--hidden');
+            }
+        },
         new OpenAssessment.Notifier([
             new OpenAssessment.AssessmentToggleListener()
         ])
     ).install();
+
+    this.uploadFileCountField = new OpenAssessment.IntField(
+         $("#openassessment_submission_file_count", this.element),
+         {min: 0, max: 100}
+    );
 
     this.leaderboardIntField = new OpenAssessment.IntField(
         $("#openassessment_leaderboard_editor", this.element),
@@ -223,6 +243,13 @@ OpenAssessment.EditSettingsView.prototype = {
         return this.leaderboardIntField.get(num);
     },
 
+    uploadFileCountNum: function(num) {
+        if (num !== undefined) {
+            this.uploadFileCountField.set(num);
+        }
+        return this.uploadFileCountField.get(num);
+    },
+
     /**
     Construct a list of enabled assessments and their properties.
 
@@ -301,6 +328,9 @@ OpenAssessment.EditSettingsView.prototype = {
         isValid = (this.startDatetimeControl.validate() && isValid);
         isValid = (this.dueDatetimeControl.validate() && isValid);
         isValid = (this.leaderboardIntField.validate() && isValid);
+        if (this.fileUploadType() !== '') {
+            isValid = (this.uploadFileCountField.validate() && isValid);
+        }
         if (this.fileUploadType() === 'custom') {
             isValid = (this.fileTypeWhiteListInputField.validate() && isValid);
         } else {
@@ -338,6 +368,9 @@ OpenAssessment.EditSettingsView.prototype = {
         if (this.dueDatetimeControl.validationErrors().length > 0) {
             errors.push("Submission due is invalid");
         }
+        if (this.uploadFileCountField.validationErrors().length > 0) {
+            errors.push("Upload file count is invalid");
+        }
         if (this.leaderboardIntField.validationErrors().length > 0) {
             errors.push("Leaderboard number is invalid");
         }
@@ -358,6 +391,7 @@ OpenAssessment.EditSettingsView.prototype = {
     clearValidationErrors: function() {
         this.startDatetimeControl.clearValidationErrors();
         this.dueDatetimeControl.clearValidationErrors();
+        this.uploadFileCountField.clearValidationErrors();
         this.leaderboardIntField.clearValidationErrors();
         this.fileTypeWhiteListInputField.clearValidationErrors();
         $.each(this.assessmentViews, function() {

@@ -326,7 +326,7 @@ class StaffAreaMixin(object):
 
         if submission:
             context["file_upload_type"] = self.file_upload_type
-            context["staff_file_url"] = self.get_download_url_from_submission(submission)
+            context["staff_file_urls"] = self.get_download_url_from_submission(submission)
 
         if self.rubric_feedback_prompt is not None:
             context["rubric_feedback_prompt"] = self.rubric_feedback_prompt

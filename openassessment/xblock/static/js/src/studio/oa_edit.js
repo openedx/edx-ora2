@@ -205,6 +205,7 @@ OpenAssessment.StudioView.prototype = {
             submissionDue: view.settingsView.submissionDue(),
             assessments: view.settingsView.assessmentsDescription(),
             fileUploadType: view.settingsView.fileUploadType(),
+            uploadFileCountNum: view.settingsView.uploadFileCountNum(),
             fileTypeWhiteList: view.settingsView.fileTypeWhiteList(),
             latexEnabled: view.settingsView.latexEnabled(),
             leaderboardNum: view.settingsView.leaderboardNum(),

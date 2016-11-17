@@ -135,6 +135,7 @@ class StudioMixin(object):
             'criteria': criteria,
             'feedbackprompt': self.rubric_feedback_prompt,
             'feedback_default_text': feedback_default_text,
+            'upload_file_count': self.upload_file_count,
             'file_upload_type': self.file_upload_type,
             'white_listed_file_types': self.white_listed_file_types_string,
             'allow_latex': self.allow_latex,
@@ -243,6 +244,7 @@ class StudioMixin(object):
         self.rubric_feedback_default_text = data['feedback_default_text']
         self.submission_start = data['submission_start']
         self.submission_due = data['submission_due']
+        self.upload_file_count = data['upload_file_count']
         self.file_upload_type = data['file_upload_type']
         self.white_listed_file_types_string = data['white_listed_file_types']
         self.allow_latex = bool(data['allow_latex'])

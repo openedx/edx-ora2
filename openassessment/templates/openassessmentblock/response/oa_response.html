@@ -79,19 +79,21 @@
                         {% endfor %}
                         {% if file_upload_type %}
                         <li class="field">
-                            <div class="upload__error">
+                            {% for file_num in upload_file_count_lst %}
+                            <div id="upload{{ file_num }}__error">
                                 <div class="message message--inline message--error message--error-server" tabindex="-1">
                                     <h3 class="message__title">{% trans "We could not upload this file" %}</h3>
                                     <div class="message__content"></div>
                                 </div>
                             </div>
-                            <label class="sr" for="submission_answer_upload_{{ xblock_id }}">{% trans "Select a file to upload for this submission." %}</label>
-                            <input type="file" class="submission__answer__upload file--upload" id="submission_answer_upload_{{ xblock_id }}">
+                            <label class="sr" for="submission_answer_upload_{{ xblock_id }}__{{ file_num }}">{% trans "Select a file to upload for this submission." %}</label>
+                            <input type="file" class="submission__answer__upload file--upload" id="submission_answer_upload_{{ xblock_id }}__{{ file_num }}" num="{{ file_num }}">
+                            {% endfor %}
                             <button type="submit" class="file__upload action action--upload is--disabled">{% trans "Upload your file" %}</button>
                         </li>
                         {% endif %}
 
-                        {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=file_url class_prefix="submission__answer"%}
+                        {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_urls=file_urls class_prefix="submission__answer"%}
                     </ol>
 
                     <span class="tip" id="submission__answer__tip__{{ xblock_id }}">{% trans "You may continue to work on your response until you submit it." %}</span>
