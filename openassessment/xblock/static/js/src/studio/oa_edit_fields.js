@@ -323,13 +323,17 @@ OpenAssessment.SelectControl.prototype = {
     },
 
     change: function(selected) {
-        $.each(this.mapping, function(option, sel) {
-            if (option === selected) {
-                sel.removeClass('is--hidden');
-            } else {
-                sel.addClass('is--hidden');
-            }
-        });
+        if ($.isFunction(this.mapping)) {
+            this.mapping(selected);
+        } else {
+            $.each(this.mapping, function(option, sel) {
+                if (option === selected) {
+                    sel.removeClass('is--hidden');
+                } else {
+                    sel.addClass('is--hidden');
+                }
+            });
+        }
     }
 };
 

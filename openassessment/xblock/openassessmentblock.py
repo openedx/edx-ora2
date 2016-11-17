@@ -138,6 +138,12 @@ class OpenAssessmentBlock(
         help="File upload to be included with submission (can be 'image', 'pdf-and-image', or 'custom')."
     )
 
+    upload_file_count = Integer(
+        default=1,
+        scope=Scope.content,
+        help="The number of files to upload"
+    )
+
     white_listed_file_types = List(
         default=[],
         scope=Scope.content,
@@ -563,6 +569,7 @@ class OpenAssessmentBlock(
         block.title = config['title']
         block.prompts = config['prompts']
         block.allow_file_upload = config['allow_file_upload']
+        block.upload_file_count = config['upload_file_count']
         block.file_upload_type = config['file_upload_type']
         block.white_listed_file_types_string = config['white_listed_file_types']
         block.allow_latex = config['allow_latex']

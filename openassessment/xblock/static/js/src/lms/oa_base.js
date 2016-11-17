@@ -173,8 +173,8 @@ OpenAssessment.BaseView.prototype = {
         else if (type === 'feedback_assess') {
             container = '.submission__feedback__actions';
         }
-        else if (type === 'upload') {
-            container = '.upload__error';
+        else if (type.indexOf('upload') === 0) {
+            container = '#' + type + '__error';
         }
 
         // If we don't have anywhere to put the message, just log it to the console

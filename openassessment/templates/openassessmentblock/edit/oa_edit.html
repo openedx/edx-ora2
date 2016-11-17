@@ -128,6 +128,16 @@
                         </p>&nbsp;
                         <p class="setting-help message-status error"></p>
                     </div>
+                    <div id="openassessment_submission_file_count_wrapper" class="{% if not file_upload_type %}is--hidden{% endif %}">
+                         <label for="openassessment_submission_file_count" class="setting-label">{% trans "Count of Files to Upload"%}</label>
+                         <input
+                             id="openassessment_submission_file_count"
+                             class="input setting-input"
+                             type="number"
+                             value="{{ upload_file_count }}"
+                             min="0" max="99"
+                         />
+                     </div>
                 </li>
                 <li id="openassessment_submission_latex_wrapper" class="field comp-setting-entry">
                     <div class="wrapper-comp-setting">
@@ -152,7 +162,6 @@
                     </div>
                     <p class="setting-help">{% trans "Specify the number of top scoring responses to display. Valid numbers are 0 to 99. If the number is 0, the Top Responses section does not appear to learners." %}</p>
                 </li>
-                <li>
             </ul>
 
             <p class="openassessment_description" id="openassessment_step_select_description">

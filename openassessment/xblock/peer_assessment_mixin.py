@@ -230,7 +230,7 @@ class PeerAssessmentMixin(object):
 
                 # Determine if file upload is supported for this XBlock.
                 context_dict["file_upload_type"] = self.file_upload_type
-                context_dict["peer_file_url"] = self.get_download_url_from_submission(peer_sub)
+                context_dict["peer_file_urls"] = self.get_download_url_from_submission(peer_sub)
             else:
                 path = 'openassessmentblock/peer/oa_peer_turbo_mode_waiting.html'
         elif reason == 'due' and problem_closed:
@@ -245,7 +245,7 @@ class PeerAssessmentMixin(object):
                 context_dict["peer_submission"] = create_submission_dict(peer_sub, self.prompts)
                 # Determine if file upload is supported for this XBlock.
                 context_dict["file_upload_type"] = self.file_upload_type
-                context_dict["peer_file_url"] = self.get_download_url_from_submission(peer_sub)
+                context_dict["peer_file_urls"] = self.get_download_url_from_submission(peer_sub)
                 # Sets the XBlock boolean to signal to Message that it WAS NOT able to grab a submission
                 self.no_peers = False
             else:

@@ -10,13 +10,15 @@
         </header>
     {% endif %}
 
-    <div class="{{ class_prefix }}__display__file {% if not file_url %}is--hidden{% endif %} submission__{{ file_upload_type }}__upload" data-upload-type="{{ file_upload_type }}">
+    {% for file_num, file_url in file_urls %}
+    <div class="{{ class_prefix }}__display__file {% if not file_url %}is--hidden{% endif %} submission__{{ file_upload_type }}__upload" id="submission__upload__{{ file_num }}" data-upload-type="{{ file_upload_type }}">
         {% if file_upload_type == "image" %}
-            <img class="submission__answer__file submission--image"
+            <img id="submission__answer__file__{{ file_num }}"
+                 class="submission__answer__file submission--image"
                  alt="{% trans "The image associated with this submission." %}"
                  src="{{ file_url }}" />
         {% elif file_upload_type == "pdf-and-image" or file_upload_type == "custom" %}
-            <a href="{{ file_url }}" class="submission__answer__file submission--file" target="_blank">
+            <a href="{{ file_url }}" id="submission__answer__file__{{ file_num }}" class="submission__answer__file submission--file" target="_blank">
                 {% trans "View the file associated with this submission." %}
             </a>
             {% if show_warning %}
@@ -24,6 +26,7 @@
             {% endif %}
         {% endif %}
     </div>
+    {% endfor %}
 {% endif %}
 
 {% endspaceless %}
