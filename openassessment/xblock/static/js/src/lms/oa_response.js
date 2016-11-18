@@ -168,13 +168,7 @@ OpenAssessment.ResponseView.prototype = {
      >> true
      **/
     submitEnabled: function(enabled) {
-        var sel = $('.step--response__submit', this.element);
-        if (typeof enabled === 'undefined') {
-            return !sel.hasClass('is--disabled');
-        } else {
-            sel.toggleClass('is--disabled', !enabled);
-            return enabled;
-        }
+        return this.baseView.buttonEnabled('.step--response__submit', enabled);
     },
 
     /**
@@ -196,12 +190,7 @@ OpenAssessment.ResponseView.prototype = {
      >> true
      **/
     saveEnabled: function(enabled) {
-        var sel = $('.submission__save', this.element);
-        if (typeof enabled === 'undefined') {
-            return !sel.hasClass('is--disabled');
-        } else {
-            sel.toggleClass('is--disabled', !enabled);
-        }
+        return this.baseView.buttonEnabled('.submission__save', enabled);
     },
 
     /**
@@ -210,13 +199,9 @@ OpenAssessment.ResponseView.prototype = {
      Works exactly the same way as saveEnabled method.
      **/
     previewEnabled: function(enabled) {
-        var sel = $('.submission__preview', this.element);
-        if (typeof enabled === 'undefined') {
-            return !sel.hasClass('is--disabled');
-        } else {
-            sel.toggleClass('is--disabled', !enabled);
-        }
+        return this.baseView.buttonEnabled('.submission__preview', enabled);
     },
+
     /**
      Set the save status message.
      Retrieve the save status message.
@@ -228,7 +213,7 @@ OpenAssessment.ResponseView.prototype = {
      string: The current status message.
      **/
     saveStatus: function(msg) {
-        var sel = $('.response__submission__label', this.element);
+        var sel = $('.save__submission__label', this.element);
         if (typeof msg === 'undefined') {
             return sel.text();
         } else {
@@ -511,7 +496,7 @@ OpenAssessment.ResponseView.prototype = {
             this.baseView.toggleActionError('upload', null);
             this.files = files;
         }
-        $(".file__upload").toggleClass("is--disabled", this.files === null);
+        $(".file__upload").prop('disabled', this.files === null);
     },
 
     /**
@@ -523,11 +508,11 @@ OpenAssessment.ResponseView.prototype = {
     fileUpload: function() {
         var view = this;
         var fileUpload = $(".file__upload");
-        fileUpload.addClass("is--disabled");
+        fileUpload.prop('disabled', true);
 
         var handleError = function(errMsg) {
             view.baseView.toggleActionError('upload', errMsg);
-            fileUpload.removeClass("is--disabled");
+            fileUpload.prop('disabled', false);
         };
 
         // Call getUploadUrl to get the one-time upload URL for this file. Once

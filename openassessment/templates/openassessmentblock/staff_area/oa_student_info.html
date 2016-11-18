@@ -144,13 +144,21 @@
                     </tbody>
                 </table>
             {% elif workflow_status == "waiting" %}
-                <div class="staff-info__final__grade__score">{% trans "The submission is waiting for assessments." %}</div>
+                <div class="staff-info__final__grade__score">
+                    <p>{% trans "The submission is waiting for assessments." %}</p>
+                </div>
             {% elif workflow_status == "cancelled" %}
-                <div class="staff-info__final__grade__score">{% trans "The learner's submission has been removed from peer assessment. The learner receives a grade of zero unless you delete the learner's state for the problem to allow them to resubmit a response." %}</div>
+                <div class="staff-info__final__grade__score">
+                    <p>{% trans "The learner's submission has been removed from peer assessment. The learner receives a grade of zero unless you delete the learner's state for the problem to allow them to resubmit a response." %}</p>
+                </div>
             {% elif workflow_status == None %}
-                <div class="staff-info__final__grade__score">{% trans "The problem has not been started." %}</div>
+                <div class="staff-info__final__grade__score">
+                    <p>{% trans "The problem has not been started." %}</p>
+                </div>
             {% else %}
-                <div class="staff-info__final__grade__score">{% trans "The problem has not been completed." %}</div>
+                <div class="staff-info__final__grade__score">
+                    <p>{% trans "The problem has not been completed." %}</p>
+                </div>
             {% endif %}
         </div>
     </div>
@@ -200,8 +208,8 @@
                         <ul class="list list--actions">
                             <li class="list--actions__item">
                                 <button data-submission-uuid="{{ submission.uuid }}"
-                                    class="action--submit action--submit-cancel-submission is--disabled">
-                                    <span class="copy">{% trans "Remove submission" %}</span>
+                                    class="action--submit action--submit-cancel-submission" disabled>
+                                    {% trans "Remove submission" %}
                                 </button>
 
                                 <div class="cancel-submission-error"></div>

@@ -97,13 +97,7 @@ OpenAssessment.SelfView.prototype = {
      >> true
      **/
     selfSubmitEnabled: function(enabled) {
-        var button = $('.self-assessment--001__assessment__submit', this.element);
-        if (typeof enabled === 'undefined') {
-            return !button.hasClass('is--disabled');
-        } else {
-            button.toggleClass('is--disabled', !enabled);
-            return enabled;
-        }
+        return this.baseView.buttonEnabled('.self-assessment--001__assessment__submit', enabled);
     },
 
     /**

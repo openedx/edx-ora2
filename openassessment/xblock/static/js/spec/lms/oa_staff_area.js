@@ -504,9 +504,9 @@ describe('OpenAssessment.StaffAreaView', function() {
                 chooseStudent(staffArea, 'testStudent');
                 $assessment = getAssessment(staffArea, staffAreaTab);
                 $submitButton = $('.action--submit', $assessment);
-                expect($submitButton).toHaveClass('is--disabled');
+                expect(staffArea.staffSubmitEnabled()).toBe(false);
                 fillAssessment($assessment, gradingType);
-                expect($submitButton).not.toHaveClass('is--disabled');
+                expect(staffArea.staffSubmitEnabled()).toBe(true);
             });
 
             it('can submit a staff grade override', function() {
@@ -643,9 +643,9 @@ describe('OpenAssessment.StaffAreaView', function() {
             $assessment = getAssessment(staffArea, staffAreaTab);
             $submitButtons = $('.action--submit', $assessment);
             expect($submitButtons.length).toBe(2);
-            expect($submitButtons).toHaveClass('is--disabled');
+            expect($submitButtons).toHaveAttr('disabled');
             fillAssessment($assessment, gradingType);
-            expect($submitButtons).not.toHaveClass('is--disabled');
+            expect($submitButtons).not.toHaveAttr('disabled');
         });
 
         it('can submit a staff grade', function() {

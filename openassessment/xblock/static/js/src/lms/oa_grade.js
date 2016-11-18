@@ -206,7 +206,7 @@ OpenAssessment.GradeView.prototype = {
         var baseView = this.baseView;
 
         // Disable the submission button to prevent duplicate submissions
-        $(".feedback__submit", this.element).toggleClass('is--disabled', true);
+        $(".feedback__submit", this.element).prop('disabled', true);
 
         // Indicate to the user that we're starting to submit
         view.feedbackState('submitting');

@@ -41,19 +41,10 @@
     text-decoration: none;
   }
 
-  &.disabled, &[disabled], &.is--disabled {
-    cursor: default;
-    pointer-events: none;
-  }
-
   // CASE: icons in buttons
-  .copy, .icon {
+  .icon {
     display: inline-block;
     vertical-align: middle;
-  }
-
-  .copy {
-    @include margin-right(($baseline-v/2));
   }
 }
 
@@ -92,10 +83,6 @@
   border: 1px solid $action-primary-color;
   color: $copy-inverse-color;
 
-  .copy {
-    @extend %t-strong;
-  }
-
   &:hover, &:active, &:focus {
     background: $action-primary-color-focus;
     border-color: $action-primary-color-focus;
@@ -110,10 +97,11 @@
     }
   }
 
-  &.disabled, &.is--disabled, &[disabled] {
+  &[disabled] {
     color: $action-primary-color-disabled;
     border-color: $action-primary-color-disabled;
     background: $action-primary-color-disabled-back;
+    opacity: 1;
   }
 }
 
@@ -126,10 +114,6 @@
   background: $white;
   border: 1px solid $uxpl-primary-dark;
   color: $uxpl-primary-dark;
-
-  .copy {
-    @extend %t-strong;
-  }
 
   &:hover, &:active, &:focus {
     background: $action-primary-color;
@@ -147,9 +131,10 @@
     }
   }
 
-  &.disabled, &.is--disabled, &[disabled] {
+  &[disabled] {
     background: $white;
     border-color: $action-primary-color-disabled;
     color: $action-primary-color-disabled;
+    opacity: 1;
   }
 }
