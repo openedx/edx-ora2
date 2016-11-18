@@ -85,7 +85,7 @@ class OpenAssessmentPage(BaseAssessmentPage):
         """
         submit_button_selector = self._bounded_selector(button_css)
         EmptyPromise(
-            lambda: 'is--disabled' not in " ".join(self.q(css=submit_button_selector).attrs('class')),
+            lambda: False == any(self.q(css=submit_button_selector).attrs('disabled')),
             "Submit button is enabled."
         ).fulfill()
 
@@ -165,8 +165,7 @@ class SubmissionPage(OpenAssessmentPage):
         Returns:
             bool
         """
-        preview_latex_button_class = self.q(css="button.submission__preview").attrs('class')[0]
-        return 'is--disabled' in preview_latex_button_class
+        return self.q(css="button.submission__preview").attrs('disabled') == ['true']
 
     @property
     def has_submitted(self):
