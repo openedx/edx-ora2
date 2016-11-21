@@ -34,9 +34,5 @@ before_script:
 script:
   - "make test"
   - "python manage.py makemessages -l eo"
-branches:
-    only:
-      - master
-      - ora-staff-grading
 after_success:
   coveralls
