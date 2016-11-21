@@ -115,7 +115,8 @@
                             </li>
                             {% if allow_latex %}
                                 <li class="list--actions__item">
-                                    <button type="submit" class="submission__preview  action action--save" aria-describedby="response__preview_explanation__{{ xblock_id }}">
+                                    <button type="submit" class="submission__preview  action action--save" aria-describedby="response__preview_explanation__{{ xblock_id }}"
+                                        {{submit_enabled|yesno:",disabled" }}>
                                         {% trans "Preview in LaTeX"%}
                                     </button>
                                     <div id="response__preview_explanation__{{ xblock_id }}" class="response__submission__label">
