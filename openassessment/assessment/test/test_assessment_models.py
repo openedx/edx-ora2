@@ -152,7 +152,7 @@ class AssessmentTest(CacheResetTest):
         return rubric_from_dict(rubric_dict)
 
     @ddt.file_data('data/models_check_criteria_assessed.json')
-    def test_check_all_criteria_assessed(self, data):
+    def test_check_all_criteria_assessed(self, **data):
         student_item = {
             'student_id': u'𝖙𝖊𝖘𝖙 𝖚𝖘𝖊𝖗',
             'item_id': 'test_item',

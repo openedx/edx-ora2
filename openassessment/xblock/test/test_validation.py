@@ -22,7 +22,7 @@ STUB_I18N = lambda x: x
 class AssessmentValidationTest(TestCase):
 
     @ddt.file_data('data/valid_assessments.json')
-    def test_valid_assessment(self, data):
+    def test_valid_assessment(self, **data):
         success, msg = validate_assessments(
             data["assessments"], data["current_assessments"], data["is_released"], STUB_I18N
         )
@@ -30,7 +30,7 @@ class AssessmentValidationTest(TestCase):
         self.assertEqual(msg, u'')
 
     @ddt.file_data('data/invalid_assessments.json')
-    def test_invalid_assessment(self, data):
+    def test_invalid_assessment(self, **data):
         success, msg = validate_assessments(
             data["assessments"], data["current_assessments"], data["is_released"], STUB_I18N
         )
@@ -44,14 +44,14 @@ class AssessmentValidationTest(TestCase):
 
     # Make sure only legal assessment combinations are allowed.
     @ddt.file_data('data/assessment_combo.json')
-    def test_enforce_assessment_combo_restrictions(self, data):
+    def test_enforce_assessment_combo_restrictions(self, **data):
         self._assert_validation(
             data["assessments"], data["current_assessments"],
             data["is_released"], data['valid']
         )
 
     @ddt.file_data('data/student_training_combo.json')
-    def test_student_training_combos(self, data):
+    def test_student_training_combos(self, **data):
         self._assert_validation(
             data["assessments"], data["current_assessments"],
             data["is_released"], data['valid']
@@ -86,7 +86,7 @@ class AssessmentValidationTest(TestCase):
 class RubricValidationTest(TestCase):
 
     @ddt.file_data('data/valid_rubrics.json')
-    def test_valid_rubric(self, data):
+    def test_valid_rubric(self, **data):
         current_rubric = data.get('current_rubric')
         is_released = data.get('is_released', False)
         is_example_based = data.get('is_example_based', False)
@@ -101,7 +101,7 @@ class RubricValidationTest(TestCase):
         self.assertEqual(msg, u'')
 
     @ddt.file_data('data/invalid_rubrics.json')
-    def test_invalid_rubric(self, data):
+    def test_invalid_rubric(self, **data):
         current_rubric = data.get('current_rubric')
         is_released = data.get('is_released', False)
         is_example_based = data.get('is_example_based', False)
@@ -116,13 +116,13 @@ class RubricValidationTest(TestCase):
 class AssessmentExamplesValidationTest(TestCase):
 
     @ddt.file_data('data/valid_assessment_examples.json')
-    def test_valid_assessment_examples(self, data):
+    def test_valid_assessment_examples(self, **data):
         success, msg = validate_assessment_examples(data['rubric'], data['assessments'], STUB_I18N)
         self.assertTrue(success)
         self.assertEqual(msg, u'')
 
     @ddt.file_data('data/invalid_assessment_examples.json')
-    def test_invalid_assessment_examples(self, data):
+    def test_invalid_assessment_examples(self, **data):
         success, msg = validate_assessment_examples(data['rubric'], data['assessments'], STUB_I18N)
         self.assertFalse(success)
         self.assertGreater(len(msg), 0)
@@ -148,7 +148,7 @@ class DateValidationTest(TestCase):
     # from the LMS, thus bypassing our validation rules.
     # See the docstring for `resolve_dates` for a more detailed justification.
     @ddt.file_data('data/valid_dates.json')
-    def test_valid_dates(self, data):
+    def test_valid_dates(self, **data):
 
         # Input data dict specifies the index for each date
         date = lambda key: self.DATES[data[key]]
@@ -170,7 +170,7 @@ class DateValidationTest(TestCase):
         self.assertEqual(msg, u'')
 
     @ddt.file_data('data/invalid_dates.json')
-    def test_invalid_dates(self, data):
+    def test_invalid_dates(self, **data):
         # Input data dict specifies the index for each date
         date = lambda key: self.DATES[data[key]]
 

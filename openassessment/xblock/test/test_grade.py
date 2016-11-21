@@ -381,7 +381,7 @@ class TestGrade(XBlockHandlerTestCase, SubmitAssessmentsMixin):
 
     @ddt.file_data('data/waiting_scenarios.json')
     @scenario('data/grade_waiting_scenario.xml', user_id='Omar')
-    def test_grade_waiting(self, xblock, data):
+    def test_grade_waiting(self, xblock, **data):
         # If AI classifiers are not trained, then we should see a "waiting for AI" display
         if not data["waiting_for_ai"]:
             with mock.patch.object(

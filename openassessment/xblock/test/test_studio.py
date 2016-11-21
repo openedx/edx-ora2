@@ -132,7 +132,7 @@ class StudioViewTest(XBlockHandlerTestCase):
 
     @file_data('data/update_xblock.json')
     @scenario('data/basic_scenario.xml')
-    def test_update_editor_context(self, xblock, data):
+    def test_update_editor_context(self, xblock, **data):
         xblock.runtime.modulestore = MagicMock()
         xblock.runtime.modulestore.has_published_version.return_value = False
         resp = self.request(xblock, 'update_editor_context', json.dumps(data), response_format='json')
@@ -192,7 +192,7 @@ class StudioViewTest(XBlockHandlerTestCase):
 
     @file_data('data/invalid_update_xblock.json')
     @scenario('data/basic_scenario.xml')
-    def test_update_context_invalid_request_data(self, xblock, data):
+    def test_update_context_invalid_request_data(self, xblock, **data):
         # All schema validation errors have the same error message, so use that as the default
         # Remove the expected error from the dictionary so we don't get an unexpected key error.
         if 'expected_error' in data:
@@ -208,7 +208,7 @@ class StudioViewTest(XBlockHandlerTestCase):
 
     @file_data('data/invalid_rubric.json')
     @scenario('data/basic_scenario.xml')
-    def test_update_rubric_invalid(self, xblock, data):
+    def test_update_rubric_invalid(self, xblock, **data):
         request = json.dumps(data)
 
         # Store old XBlock fields for later verification
