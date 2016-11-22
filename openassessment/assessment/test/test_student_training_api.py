@@ -148,7 +148,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
             training_api.assess_training_example(self.submission_uuid, EXAMPLES[0]['options_selected'])
 
     @ddt.file_data('data/validate_training_examples.json')
-    def test_validate_training_examples(self, data):
+    def test_validate_training_examples(self, **data):
         errors = training_api.validate_training_examples(
             data['rubric'], data['examples']
         )

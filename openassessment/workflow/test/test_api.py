@@ -63,7 +63,7 @@ ITEM_2 = {
 class TestAssessmentWorkflowApi(CacheResetTest):
 
     @ddt.file_data('data/assessments.json')
-    def test_create_workflow(self, data):
+    def test_create_workflow(self, **data):
         first_step = data["steps"][0] if data["steps"] else "peer"
         if "ai" in data["steps"]:
             first_step = data["steps"][1] if len(data["steps"]) > 1 else "waiting"
@@ -191,7 +191,7 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         self.assertIsNotNone(peer_workflow)
 
     @ddt.file_data('data/assessments.json')
-    def test_need_valid_submission_uuid(self, data):
+    def test_need_valid_submission_uuid(self, **data):
         # submission doesn't exist
         with self.assertRaises(workflow_api.AssessmentWorkflowRequestError):
             workflow = workflow_api.create_workflow("xxxxxxxxxxx", data["steps"], ON_INIT_PARAMS)
@@ -232,17 +232,17 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         submission = sub_api.create_submission(ITEM_1, ANSWER_2)
         workflow_api.create_workflow(submission["uuid"], ["ai"], ON_INIT_PARAMS)
 
-    @patch.object(Submission.objects, 'get')
     @ddt.file_data('data/assessments.json')
+    @patch.object(Submission.objects, 'get')
     @raises(workflow_api.AssessmentWorkflowInternalError)
-    def test_unexpected_submissions_errors_wrapped(self, data, mock_get):
+    def test_unexpected_submissions_errors_wrapped(self, mock_get, **data):
         mock_get.side_effect = Exception("Kaboom!")
         workflow_api.create_workflow("zzzzzzzzzzzzzzz", data["steps"], ON_INIT_PARAMS)
 
-    @patch.object(AssessmentWorkflow.objects, 'create')
     @ddt.file_data('data/assessments.json')
+    @patch.object(AssessmentWorkflow.objects, 'create')
     @raises(workflow_api.AssessmentWorkflowInternalError)
-    def test_unexpected_workflow_errors_wrapped(self, data, mock_create):
+    def test_unexpected_workflow_errors_wrapped(self, mock_create, **data):
         mock_create.side_effect = DatabaseError("Kaboom!")
         submission = sub_api.create_submission(ITEM_1, ANSWER_2)
         workflow_api.create_workflow(submission["uuid"], data["steps"], ON_INIT_PARAMS)
@@ -287,29 +287,28 @@ class TestAssessmentWorkflowApi(CacheResetTest):
             override_submitter_requirements=True
         )
 
-    @patch.object(AssessmentWorkflow.objects, 'get')
     @ddt.file_data('data/assessments.json')
+    @patch.object(AssessmentWorkflow.objects, 'get')
     @raises(workflow_api.AssessmentWorkflowInternalError)
-    def test_unexpected_exception_wrapped(self, data, mock_create):
+    def test_unexpected_exception_wrapped(self, mock_create, **data):
         mock_create.side_effect = Exception("Kaboom!")
         submission = sub_api.create_submission(ITEM_1, ANSWER_2)
         workflow_api.update_from_assessments(submission["uuid"], data["steps"])
 
     @ddt.file_data('data/assessments.json')
-    def test_get_assessment_workflow_expected_errors(self, data):
+    def test_get_assessment_workflow_expected_errors(self, **data):
         with self.assertRaises(workflow_api.AssessmentWorkflowNotFoundError):
             workflow_api.get_workflow_for_submission("0000000000000", data["requirements"])
         with self.assertRaises(workflow_api.AssessmentWorkflowRequestError):
             workflow_api.get_workflow_for_submission(123, data["requirements"])
 
-    @patch.object(Submission.objects, 'get')
     @ddt.file_data('data/assessments.json')
     @raises(workflow_api.AssessmentWorkflowInternalError)
-    def test_unexpected_workflow_get_errors_wrapped(self, data, mock_get):
-        mock_get.side_effect = Exception("Kaboom!")
-        submission = sub_api.create_submission(ITEM_1, "We talk TV!")
-        workflow = workflow_api.create_workflow(submission["uuid"], data["steps"], ON_INIT_PARAMS)
-        workflow_api.get_workflow_for_submission(workflow["uuid"], {})
+    def test_unexpected_workflow_get_errors_wrapped(self, **data):
+        with patch.object(Submission.objects, 'get', side_effect=Exception):
+            submission = sub_api.create_submission(ITEM_1, "We talk TV!")
+            workflow = workflow_api.create_workflow(submission["uuid"], data["steps"], ON_INIT_PARAMS)
+            workflow_api.get_workflow_for_submission(workflow["uuid"], {})
 
     def test_preexisting_workflow(self):
         """

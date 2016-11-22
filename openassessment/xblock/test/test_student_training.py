@@ -64,7 +64,7 @@ class StudentTrainingAssessTest(StudentTrainingTest):
 
     @scenario('data/student_training.xml', user_id="Plato")
     @ddt.file_data('data/student_training_mixin.json')
-    def test_correct(self, xblock, data):
+    def test_correct(self, xblock, **data):
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
         data["expected_context"]['time_zone'] = pytz.utc
         self.assert_path_and_context(xblock, data["expected_template"], data["expected_context"])
@@ -85,7 +85,7 @@ class StudentTrainingAssessTest(StudentTrainingTest):
 
     @scenario('data/student_training.xml', user_id="Plato")
     @ddt.file_data('data/student_training_mixin.json')
-    def test_correct_with_error(self, xblock, data):
+    def test_correct_with_error(self, xblock, **data):
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
         data["expected_context"]['time_zone'] = pytz.utc
         self.assert_path_and_context(xblock, data["expected_template"], data["expected_context"])
@@ -109,7 +109,7 @@ class StudentTrainingAssessTest(StudentTrainingTest):
 
     @scenario('data/student_training.xml', user_id="Plato")
     @ddt.file_data('data/student_training_mixin.json')
-    def test_incorrect(self, xblock, data):
+    def test_incorrect(self, xblock, **data):
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
         data["expected_context"]['time_zone'] = pytz.utc
         self.assert_path_and_context(xblock, data["expected_template"], data["expected_context"])
@@ -130,7 +130,7 @@ class StudentTrainingAssessTest(StudentTrainingTest):
 
     @scenario('data/student_training.xml', user_id="Plato")
     @ddt.file_data('data/student_training_mixin.json')
-    def test_updates_workflow(self, xblock, data):
+    def test_updates_workflow(self, xblock, **data):
         expected_context = data["expected_context"].copy()
         expected_template = data["expected_template"]
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
@@ -209,7 +209,7 @@ class StudentTrainingAssessTest(StudentTrainingTest):
 
     @scenario('data/student_training.xml', user_id="Plato")
     @ddt.file_data('data/student_training_mixin.json')
-    def test_request_error(self, xblock, data):
+    def test_request_error(self, xblock, **data):
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
         expected_context = data["expected_context"].copy()
         expected_template = data["expected_template"]
@@ -226,7 +226,7 @@ class StudentTrainingAssessTest(StudentTrainingTest):
 
     @scenario('data/student_training.xml', user_id="Plato")
     @ddt.file_data('data/student_training_mixin.json')
-    def test_invalid_options_dict(self, xblock, data):
+    def test_invalid_options_dict(self, xblock, **data):
         xblock.create_submission(xblock.get_student_item_dict(), self.SUBMISSION)
         expected_context = data["expected_context"].copy()
         expected_template = data["expected_template"]

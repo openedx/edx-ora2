@@ -132,7 +132,7 @@ class TestSerializeContent(TestCase):
         self.oa_block.leaderboard_show = data.get('leaderboard_show', 0)
 
     @ddt.file_data('data/serialize.json')
-    def test_serialize(self, data):
+    def test_serialize(self, **data):
         self._configure_xblock(data)
         xml = serialize_content(self.oa_block)
 
@@ -176,7 +176,7 @@ class TestSerializeContent(TestCase):
             )
 
     @ddt.file_data('data/serialize.json')
-    def test_serialize_rubric(self, data):
+    def test_serialize_rubric(self, **data):
         self._configure_xblock(data)
         xml_str = serialize_rubric_to_xml_str(self.oa_block)
         self.assertIn("<rubric>", xml_str)
@@ -184,7 +184,7 @@ class TestSerializeContent(TestCase):
             self.assertNotIn(data['prompt'], xml_str)
 
     @ddt.file_data('data/serialize.json')
-    def test_serialize_examples(self, data):
+    def test_serialize_examples(self, **data):
         self._configure_xblock(data)
         for assessment in data['assessments']:
             if 'student-training' == assessment['name'] and assessment['examples']:
@@ -193,7 +193,7 @@ class TestSerializeContent(TestCase):
                     self.assertIn(part['text'], xml_str)
 
     @ddt.file_data('data/serialize.json')
-    def test_serialize_assessments(self, data):
+    def test_serialize_assessments(self, **data):
         self._configure_xblock(data)
         xml_str = serialize_assessments_to_xml_str(self.oa_block)
         self.assertIn(data['assessments'][0]['name'], xml_str)
@@ -440,7 +440,7 @@ class TestSerializeContent(TestCase):
 class TestParsePromptsFromXml(TestCase):
 
     @ddt.file_data("data/parse_prompts_xml.json")
-    def test_parse_prompts_from_xml(self, data):
+    def test_parse_prompts_from_xml(self, **data):
         xml = etree.fromstring("".join(data['xml']))
         prompts = _parse_prompts_xml(xml)
 
@@ -451,7 +451,7 @@ class TestParsePromptsFromXml(TestCase):
 class TestParseRubricFromXml(TestCase):
 
     @ddt.file_data("data/parse_rubric_xml.json")
-    def test_parse_rubric_from_xml(self, data):
+    def test_parse_rubric_from_xml(self, **data):
         xml = etree.fromstring("".join(data['xml']))
         rubric = parse_rubric_xml(xml)
 
@@ -463,7 +463,7 @@ class TestParseRubricFromXml(TestCase):
 class TestParseExamplesFromXml(TestCase):
 
     @ddt.file_data("data/parse_examples_xml.json")
-    def test_parse_examples_from_xml(self, data):
+    def test_parse_examples_from_xml(self, **data):
         xml = etree.fromstring("".join(data['xml']))
         examples = parse_examples_xml(xml)
         self.assertEqual(examples, data['examples'])
@@ -473,7 +473,7 @@ class TestParseExamplesFromXml(TestCase):
 class TestParseAssessmentsFromXml(TestCase):
 
     @ddt.file_data("data/parse_assessments_xml.json")
-    def test_parse_assessments_from_xml(self, data):
+    def test_parse_assessments_from_xml(self, **data):
         xml = etree.fromstring("".join(data['xml']))
         assessments = parse_assessments_xml(xml)
         self.assertEqual(assessments, data['assessments'])
@@ -487,7 +487,7 @@ class TestParseFromXml(TestCase):
     maxDiff = None
 
     @ddt.file_data('data/update_from_xml.json')
-    def test_parse_from_xml(self, data):
+    def test_parse_from_xml(self, **data):
 
         # Update the block based on the fixture XML definition
         config = parse_from_xml_str("".join(data['xml']))
@@ -525,6 +525,6 @@ class TestParseFromXml(TestCase):
                 )
 
     @ddt.file_data('data/update_from_xml_error.json')
-    def test_parse_from_xml_error(self, data):
+    def test_parse_from_xml_error(self, **data):
         with self.assertRaises(UpdateFromXmlError):
             parse_from_xml_str("".join(data['xml']))

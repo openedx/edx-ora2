@@ -31,7 +31,7 @@ class ResolveDatesTest(TestCase):
         self.DATE_STRINGS[None] = None
 
     @ddt.file_data('data/resolve_dates.json')
-    def test_resolve_dates(self, data):
+    def test_resolve_dates(self, **data):
 
         # Test data provides indices into our date dictionaries
         resolved_start, resolved_end, resolved_ranges = resolve_dates(

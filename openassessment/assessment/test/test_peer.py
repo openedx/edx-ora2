@@ -309,7 +309,7 @@ class TestPeerApi(CacheResetTest):
             self.assertEqual(len(part.feedback), Assessment.MAX_FEEDBACK_SIZE)
 
     @file_data('data/valid_assessments.json')
-    def test_get_assessments(self, assessment_dict):
+    def test_get_assessments(self, **assessment_dict):
         self._create_student_and_submission("Tim", "Tim's answer")
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
         sub = peer_api.get_submission_to_assess(bob_sub['uuid'], 3)
@@ -326,7 +326,7 @@ class TestPeerApi(CacheResetTest):
         self.assertEqual(1, len(assessments))
 
     @file_data('data/valid_assessments.json')
-    def test_get_assessments_with_date(self, assessment_dict):
+    def test_get_assessments_with_date(self, **assessment_dict):
         self._create_student_and_submission("Tim", "Tim's answer")
         bob_sub, bob = self._create_student_and_submission("Bob", "Bob's answer")
         sub = peer_api.get_submission_to_assess(bob_sub['uuid'], 3)

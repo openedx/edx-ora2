@@ -97,7 +97,7 @@ class CsvWriterTest(TransactionCacheResetTest):
     maxDiff = None
 
     @ddt.file_data('data/write_to_csv.json')
-    def test_write_to_csv(self, data):
+    def test_write_to_csv(self, **data):
         # Create in-memory buffers for the CSV file data
         output_streams = self._output_streams(data['expected_csv'].keys())
 
