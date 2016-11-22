@@ -9,10 +9,15 @@ cd `dirname $BASH_SOURCE` && cd ..
 pip install --upgrade pip
 pip install wheel
 
-WHEELHOUSE="scripts/data/wheelhouse"
+WHEELS_ARGS=""  # Get wheels from the internet by default
+
+if [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+  # Use local wheels for faster TravisCI and Vagrant installs.
+  WHEELS_ARGS="--no-index --find-links=scripts/data/wheelhouse"
+fi
 
 # Ensure that numpy is installed first; otherwise scipy won't be able to install
-pip install --use-wheel --no-index --upgrade --find-links=$WHEELHOUSE numpy
+pip install --use-wheel --upgrade $WHEELS_ARGS numpy
 
 # Then install everything else
-pip install --use-wheel --no-index --upgrade --find-links=$WHEELHOUSE -r requirements/wheels.txt
+pip install --use-wheel --upgrade $WHEELS_ARGS -r requirements/wheels.txt

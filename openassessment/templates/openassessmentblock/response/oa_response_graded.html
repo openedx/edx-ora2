@@ -22,9 +22,11 @@
             <article class="submission__answer__display">
                 <h3 class="submission__answer__display__title">{% trans "Your Response" %}</h3>
 
-                {% include "openassessmentblock/oa_submission_answer.html" with answer=student_submission.answer answer_text_label="Your response to the question above:" %}
+                {% trans "Your response to the question above:" as answer_label_trans %}
+                {% include "openassessmentblock/oa_submission_answer.html" with answer=student_submission.answer answer_text_label=answer_label_trans %}
 
-                {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=file_url header="Your Uploaded File" class_prefix="submission__answer" %}
+                {% trans "Your Uploaded File" as header_trans %}
+                {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=file_url header=header_trans class_prefix="submission__answer" %}
             </article>
         </div>
     </div>

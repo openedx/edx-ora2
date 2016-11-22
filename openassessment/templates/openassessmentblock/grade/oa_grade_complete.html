@@ -28,9 +28,11 @@
                 <article class="submission__answer__display step__content__section">
                     <h3 class="submission__answer__display__title">{% trans "Your Response" %}</h3>
 
-                    {% include "openassessmentblock/oa_submission_answer.html" with answer=student_submission.answer answer_text_label="Your response to the question above:" %}
+                    {% trans "Your response to the question above:" as your_response_trans %}
+                    {% include "openassessmentblock/oa_submission_answer.html" with answer=student_submission.answer answer_text_label=your_response_trans %}
 
-                    {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=file_url header="Your Upload" class_prefix="submission__answer" %}
+                    {% trans "Your Upload" as your_upload_trans %}
+                    {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=file_url header=your_upload_trans class_prefix="submission__answer" %}
                 </article>
 
                 <article class="submission__peer-evaluations step__content__section">
@@ -47,7 +49,7 @@
                                 <span class="question__score">
                                   <span class="label sr">{% trans "Overall Grade" %}</span>
                                   <span class="question__score__value">{{ criterion.median_score }}</span>
-                                  <span class="label label--divider sr">out of</span>
+                                  <span class="label label--divider sr">{% trans "out of" %}</span>
                                   <span class="question__score__potential">
                                     {{ criterion.total_value }}
                                     <span class="unit">{% trans "Points" %}</span>
