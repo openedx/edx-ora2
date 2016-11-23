@@ -23,7 +23,7 @@ libsass==0.10.0
 loremipsum==1.0.5
 python-dateutil==2.1
 python-memcached==1.48
-pytz==2015.2
+pytz==2016.6.1
 voluptuous==0.8.5
 
 # AI grading
