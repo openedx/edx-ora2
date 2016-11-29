@@ -47,8 +47,39 @@ setup(
     ],
     packages=find_packages(exclude=['*.test', '*.tests']),
     include_package_data=True,
-    install_requires=load_requirements('requirements/base.txt', 'requirements/wheels.txt'),
-    tests_require=load_requirements('requirements/test.txt'),
+    install_requires=[
+        'lxml',
+        'numpy',
+        'scikit-learn',
+        'scipy',
+        'XBlock',
+        'edx-submissions',
+        'boto>=2.32.1,<3.0.0',
+        'celery',
+        'defusedxml',
+        'django>=1.8.14,<1.9',
+        'django-extensions',
+        'django-model-utils',
+        'djangorestframework>=3.1,<3.3',
+        'dogapi',
+        'jsonfield',
+        'lazy',
+        'libsass',
+        'loremipsum',
+        'python-dateutil',
+        'python-memcached',
+        'pytz',
+        'voluptuous',
+
+        # AI grading
+        'ease',
+        'nltk',
+    ],
+    tests_require=load_requirements(
+        'requirements/base.txt',
+        'requirements/wheels.txt',
+        'requirements/test.txt'
+    ),
     entry_points={
         'xblock.v1': [
             'openassessment = openassessment.xblock.openassessmentblock:OpenAssessmentBlock',
