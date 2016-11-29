@@ -7,7 +7,6 @@
 
 {% block title %}
 <span class="step__status">
-  <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
     <span class="icon fa fa-check" aria-hidden="true"></span>
     <span class="copy">
@@ -26,13 +25,14 @@
         <div class="wrapper--step__content">
 
             <div class="step__message message message--complete">
-                <h3 class="message__title">{% trans "Peer Assessments Complete" %}</h3>
+                <h5 class="message__title">{% trans "Status" %}</h5>
                 <div class="message__content">{% trans "You have successfully completed all of the required peer assessments for this assignment. You may assess additional peer responses if you want to. Completing additional assessments will not affect your final grade." %}</div>
             </div>
 
             <div class="step__actions">
                 <div class="message message--inline message--error message--error-server" tabindex="-1">
-                    <h3 class="message__title">{% trans "We could not retrieve additional submissions for assessment" %}</h3>
+                    <h5 class="message__title">{% trans "We could not retrieve additional submissions for assessment" %}</h5>
+                    <div class="message__content"></div>
                 </div>
 
                 <ul class="list list--actions">

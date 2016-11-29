@@ -7,7 +7,7 @@
 {% endblock %}
 
     <header class="step__header ui-slidable__control">
-        <h2 class="step__title">
+        <h4 class="step__title">
             {% block button %}
             <button class="ui-slidable" aria-expanded="true" id="oa_response_{{ xblock_id }}" aria-controls="oa_response_{{ xblock_id }}_content">
             {% endblock %}
@@ -29,13 +29,12 @@
 
             {%  block title %}
             <span class="step__status">
-                <span class="step__status__label">{% trans "This step's status" %}:</span>
                 <span class="step__status__value">
                     <span class="copy">{% trans "In Progress" %}</span>
                 </span>
             </span>
             {% endblock %}
-        </h2>
+        </h4>
     </header>
 
     {% block body %}
@@ -58,18 +57,26 @@
                     <ol class="list list--fields response__submission__content">
                         {% for part in saved_response.answer.parts %}
                             <li class="submission__answer__part">
+                                <h5 class="submission__answer__part__text__title">{% trans "The prompt for this section" %}</h5>
                                 <article class="submission__answer__part__prompt">
-                                    <h2 class="submission__answer__part__prompt__title">{% trans "The prompt for this section." %}</h2>
-
                                     <div class="submission__answer__part__prompt__copy">
                                         {{ part.prompt.description|linebreaks }}
                                     </div>
                                 </article>
+
+
+
                                 <div class="field field--textarea submission__answer__part__text">
-                                    <label class="sr" for="submission__answer__part__text__{{ forloop.counter }}__{{ xblock_id }}">{% trans "Your response to the question above." %}</label>
+                                    <div class="submission__answer__part__text">
+                                        <h5 id="submission__answer__part__text__title__{{ forloop.counter }}__{{ xblock_id }}"
+                                            class="submission__answer__part__text__title">
+                                          {% trans "Your response" %}
+                                        </h5>
+                                    </div>
                                     <textarea
                                         id="submission__answer__part__text__{{ forloop.counter }}__{{ xblock_id }}"
                                         class="submission__answer__part__text__value"
+                                        aria-labelledby="submission__answer__part__text__title__{{ forloop.counter }}__{{ xblock_id }}"
                                         aria-describedby="submission__answer__tip__{{ xblock_id }}"
                                         placeholder="{% trans "Enter your response to the question above." %}"
                                         maxlength="100000"
@@ -81,7 +88,7 @@
                         <li class="field">
                             <div class="upload__error">
                                 <div class="message message--inline message--error message--error-server" tabindex="-1">
-                                    <h3 class="message__title">{% trans "We could not upload this file" %}</h3>
+                                    <h5 class="message__title">{% trans "We could not upload this file" %}</h5>
                                     <div class="message__content"></div>
                                 </div>
                             </div>
@@ -98,7 +105,7 @@
 
                     <div class="response__submission__actions">
                         <div class="message message--inline message--error message--error-server" tabindex="-1">
-                            <h3 class="message__title">{% trans "We could not save your progress" %}</h3>
+                            <h5 class="message__title">{% trans "We could not save your progress" %}</h5>
                             <div class="message__content"></div>
                         </div>
 
@@ -125,7 +132,7 @@
                                 </li>
                                 <li class="submission__preview__item list--actions__item">
                                     <article class="submission__answer__display">
-                                        <h3 class="submission__answer__display__title">{% trans "Preview Response"%}</h3>
+                                        <h5 class="submission__answer__display__title">{% trans "Preview Response"%}</h5>
                                         <div class="submission__answer__display__content">
                                             <p class="preview_content"></p>
                                         </div>
@@ -139,7 +146,7 @@
 
             <div class="step__actions">
                 <div class="message message--inline message--error message--error-server" tabindex="-1">
-                    <h3 class="message__title">{% trans "We could not submit your response" %}</h3>
+                    <h5 class="message__title">{% trans "We could not submit your response" %}</h5>
                     <div class="message__content"></div>
                 </div>
 

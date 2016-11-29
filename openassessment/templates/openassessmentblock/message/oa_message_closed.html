@@ -1,19 +1,13 @@
 {% load i18n %}
 {% spaceless %}
 <div id="openassessment__message__{{ xblock_id }}" class="openassessment__message message">
-    <h3 class="message__title">
-        {% if not_yet_open %}
-            {% trans "This Task Is Not Yet Available" %}
-        {% else %}
-            {% trans "This Assignment Has Closed" %}
-        {% endif %}
-    </h3>
+    <h4 class="message__title">{% trans "Status" %}</h4>
     <div class="message__content">
         <p>
             {% if not_yet_open %}
-                {% trans "Check back to complete the assignment once this section has opened." %}
+                {% trans "This task is not yet available. Check back to complete the assignment once this section has opened." %}
             {% else %}
-                {% trans "One or more deadlines for this assignment have passed. You will receive an incomplete grade for this assignment." %}
+                {% trans "This assignment has closed. One or more deadlines for this assignment have passed. You will receive an incomplete grade for this assignment." %}
             {% endif %}
         </p>
     </div>

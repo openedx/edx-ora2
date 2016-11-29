@@ -17,7 +17,6 @@
 
 {% block title %}
 <span class="step__status">
-  <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
     <span class="icon fa fa-check" aria-hidden="true"></span>
     <span class="copy">
@@ -36,7 +35,7 @@
     <div class="wrapper--step__content">
 
         <div class="step__message message message--complete">
-            <h3 class="message__title">{% trans "Peer Assessments Complete" %}</h3>
+            <h5 class="message__title">{% trans "Status" %}</h5>
             <div class="message__content">{% trans "You have successfully completed all of the required peer assessments for this assignment. You may assess additional peer responses if you want to. Completing additional assessments will not affect your final grade." %}</div>
         </div>
 
@@ -49,14 +48,7 @@
                 <li class="list--peer-assessments__item">
                     <article class="peer-assessment peer-assessment--001">
                         <div class="peer-assessment__display">
-                            <header class="peer-assessment__display__header">
-                                <h3 class="peer-assessment__display__title">{% trans "Assessment #" %}
-                                    <span class="peer-assessment__number--current">{{ review_num }}</span> of
-                                    <span class="peer-assessment__number--required">{{ must_grade }}</span>
-                                </h3>
-                            </header>
-
-                            {% trans "Your peer's response to the question above:" as translated_label %}
+                            {% trans "Your peer's response to the question above" as translated_label %}
                             {% include "openassessmentblock/oa_submission_answer.html" with answer=peer_submission.answer answer_text_label=translated_label %}
 
                             {% trans "Associated File" as translated_header %}
@@ -73,7 +65,7 @@
 
         <div class="step__actions">
             <div class="message message--inline message--error message--error-server" tabindex="-1">
-                <h3 class="message__title">{% trans "We could not submit your assessment" %}</h3>
+                <h5 class="message__title">{% trans "We could not submit your assessment" %}</h5>
             </div>
 
             <ul class="list list--actions">
