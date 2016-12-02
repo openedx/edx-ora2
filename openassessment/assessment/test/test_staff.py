@@ -302,6 +302,24 @@ class TestStaffAssessment(CacheResetTest):
         self.assertEqual(tim_workflow["score"], None)
         self.assertNotEqual(tim_workflow["status"], "done")
 
+    def test_update_with_override(self):
+        """
+        Test that, when viewing a submission with a staff override present, the workflow is not updated repeatedly.
+
+        See TNL-6092 for some historical context.
+        """
+        tim_sub, tim = TestStaffAssessment._create_student_and_submission("Tim", "Tim's answer", problem_steps=['self'])
+        tim_assessment = staff_api.create_assessment(
+            tim_sub["uuid"],
+            "Dumbledore",
+            OPTIONS_SELECTED_DICT["none"]["options"], dict(), "",
+            RUBRIC,
+        )
+        tim_workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], {})
+        with mock.patch('openassessment.workflow.models.sub_api.reset_score') as mock_reset:
+            tim_workflow = workflow_api.get_workflow_for_submission(tim_sub["uuid"], {})
+            self.assertFalse(mock_reset.called)
+
     def test_invalid_rubric_exception(self):
         # Create a submission
         tim_sub, tim = self._create_student_and_submission("Tim", "Tim's answer")
