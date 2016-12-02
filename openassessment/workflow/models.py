@@ -82,6 +82,8 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         DEFAULT_ASSESSMENT_SCORE_PRIORITY
     )
 
+    STAFF_ANNOTATION_TYPE = "staff_defined"
+
     submission_uuid = models.CharField(max_length=36, db_index=True, unique=True)
     uuid = UUIDField(version=1, db_index=True, unique=True)
 
@@ -316,8 +318,8 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             old_score = sub_api.get_latest_score_for_submission(self.submission_uuid)
             if (
                     not old_score or # There is no recorded score
-                    not old_score.get('staff_id') or # The recorded score is not a staff score
-                    old_score['points_earned'] != new_staff_score['points_earned'] # Previous staff score doesn't match
+                    not self.STAFF_ANNOTATION_TYPE in old_score.get('annotation_types') or  # Not a staff score
+                    old_score['points_earned'] != new_staff_score['points_earned']  # Previous staff score doesn't match
             ):
                 # Set the staff score using submissions api, and log that fact
                 self.set_staff_score(new_staff_score)
@@ -426,7 +428,6 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
                 will be used in the event that this parameter is not provided.
 
         """
-        annotation_type = "staff_defined"
         if reason is None:
             reason = "A staff member has defined the score for this submission"
         sub_dict = sub_api.get_submission_and_student(self.submission_uuid)
@@ -440,7 +441,7 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             score["points_earned"],
             score["points_possible"],
             annotation_creator=score["staff_id"],
-            annotation_type=annotation_type,
+            annotation_type=self.STAFF_ANNOTATION_TYPE,
             annotation_reason=reason
         )
 
