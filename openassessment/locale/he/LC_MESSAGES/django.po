@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-15 17:44+0000\n"
-"PO-Revision-Date: 2016-11-07 11:51+0000\n"
-"Last-Translator: qualityalltext <quality@alltext.co.il>\n"
+"POT-Creation-Date: 2016-12-07 17:00+0000\n"
+"PO-Revision-Date: 2016-12-07 16:59+0000\n"
+"Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Hebrew (http://www.transifex.com/open-edx/edx-platform/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1070,55 +1070,55 @@ msgstr "ההנחיה לסעיף זה."
 msgid "Your response to the question above."
 msgstr "תשובתך עבור השאלה למעלה."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:73
+#: openassessment/templates/openassessmentblock/response/oa_response.html:74
 msgid "Enter your response to the question above."
 msgstr "הזן את תשובתך לשאלה שלעיל:"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:83
+#: openassessment/templates/openassessmentblock/response/oa_response.html:84
 msgid "We could not upload this file"
 msgstr "לא הצלחנו להעלות קובץ זה"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:87
+#: openassessment/templates/openassessmentblock/response/oa_response.html:88
 msgid "Select a file to upload for this submission."
 msgstr "בחר קובץ להעלאה עבור הגשה זו."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:89
+#: openassessment/templates/openassessmentblock/response/oa_response.html:90
 msgid "Upload your file"
 msgstr "העלה את הקובץ שלך"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:96
+#: openassessment/templates/openassessmentblock/response/oa_response.html:97
 msgid "You may continue to work on your response until you submit it."
 msgstr "ניתן להמשיך לעבוד על תשובתך עד שתגיש אותה."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:100
+#: openassessment/templates/openassessmentblock/response/oa_response.html:101
 msgid "We could not save your progress"
 msgstr "לא הצלחנו לשמור את התקדמותך"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:107
+#: openassessment/templates/openassessmentblock/response/oa_response.html:108
 msgid "Save your progress"
 msgstr "שמור את התקדמותך"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:111
+#: openassessment/templates/openassessmentblock/response/oa_response.html:112
 msgid "Your Submission Status"
 msgstr "מצב ההגשה שלך"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:118
+#: openassessment/templates/openassessmentblock/response/oa_response.html:120
 msgid "Preview in LaTeX"
 msgstr "תצוגה מקדימה ב-LaTeX"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:121
-msgid "Click to preview your submission in LaTeX"
-msgstr "לחץ על מנת להציג תצוגה מקדימה של הגשתך ב-LaTeX"
+#: openassessment/templates/openassessmentblock/response/oa_response.html:123
+msgid "Click to preview your submission in LaTeX."
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:126
+#: openassessment/templates/openassessmentblock/response/oa_response.html:128
 msgid "Preview Response"
 msgstr "תצוגה מקדימה של התשובה"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:140
+#: openassessment/templates/openassessmentblock/response/oa_response.html:142
 msgid "We could not submit your response"
 msgstr "לא הצלחנו להגיש את תשובתך"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:147
+#: openassessment/templates/openassessmentblock/response/oa_response.html:150
 msgid "Submit your response and move to the next step"
 msgstr "הגש את תשובתך ועבור לשלב הבא"
 
@@ -1478,52 +1478,52 @@ msgstr[1] "\n                                        %(assessment_label)s - %(po
 msgid "Feedback Recorded"
 msgstr "המשוב הוקלט"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:147
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:148
 msgid "The submission is waiting for assessments."
 msgstr "ההגשה ממתינה להערכות."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:149
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:152
 msgid ""
 "The learner's submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "הגשת הלומד הוסרה מהערכת העמיתים. הלומד קיבל ציון אפס אלא אם כן מחקת את מצב הלומד לבעיה על מנת לאפשר לו להגיש מחדש תשובה."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:151
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:156
 msgid "The problem has not been started."
 msgstr "הבעיה לא החלה."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:153
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:160
 msgid "The problem has not been completed."
 msgstr "הבעיה לא הושלמה."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:164
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:172
 msgid "Submit Assessment Grade Override"
 msgstr "שלח מחיקת ציון הערכה"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:180
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:188
 msgid "Remove Submission From Peer Grading"
 msgstr "הסר הגשה מדירוג עמית"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:189
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:197
 msgid "Caution: This Action Cannot Be Undone"
 msgstr "זהירות: לא ניתן לבטל פעולה זו"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:190
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:198
 msgid ""
 "Removing a learner's submission cannot be undone and should be done with "
 "caution."
 msgstr "לא ניתן לבטל הסרת הגשת לומד ויש לבצעה בזהירות."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:195
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:203
 msgid "Comments:"
 msgstr "הערות:"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:204
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:212
 msgid "Remove submission"
 msgstr "הסר הגשה"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:219
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:227
 msgid "A response was not found for this learner."
 msgstr "לא נמצאה תשובה עבור לומד זה."
 

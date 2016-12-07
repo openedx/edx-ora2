@@ -19,9 +19,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-15 17:44+0000\n"
-"PO-Revision-Date: 2016-11-07 21:20+0000\n"
-"Last-Translator: shefaa abu jabel <shefaa.aj@gmail.com>\n"
+"POT-Creation-Date: 2016-12-07 17:00+0000\n"
+"PO-Revision-Date: 2016-12-07 16:59+0000\n"
+"Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Arabic (http://www.transifex.com/open-edx/edx-platform/language/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1078,55 +1078,55 @@ msgstr "علامة الاستعداد الخاصة بهذا القسم"
 msgid "Your response to the question above."
 msgstr "ردّك على السؤال أعلاه."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:73
+#: openassessment/templates/openassessmentblock/response/oa_response.html:74
 msgid "Enter your response to the question above."
 msgstr "يُرجى إدخال ردّك على السؤال المبيّن أعلاه"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:83
+#: openassessment/templates/openassessmentblock/response/oa_response.html:84
 msgid "We could not upload this file"
 msgstr "عذرًا، لم نتمكّن من تحميل هذا الملف."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:87
+#: openassessment/templates/openassessmentblock/response/oa_response.html:88
 msgid "Select a file to upload for this submission."
 msgstr "اختر ملفًا لتحميله مع هذا التقديم"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:89
+#: openassessment/templates/openassessmentblock/response/oa_response.html:90
 msgid "Upload your file"
 msgstr "حمّل ملفّك"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:96
+#: openassessment/templates/openassessmentblock/response/oa_response.html:97
 msgid "You may continue to work on your response until you submit it."
 msgstr "يمكنك مواصلة العمل على ردّك حتى لحظة تقديمك له."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:100
+#: openassessment/templates/openassessmentblock/response/oa_response.html:101
 msgid "We could not save your progress"
 msgstr "عذرًا، لم نستطع حفظ التقدّم الذي أحرزته."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:107
+#: openassessment/templates/openassessmentblock/response/oa_response.html:108
 msgid "Save your progress"
 msgstr "حفظ التقدّم الذي أحرزته"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:111
+#: openassessment/templates/openassessmentblock/response/oa_response.html:112
 msgid "Your Submission Status"
 msgstr "حالة تقديمك"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:118
+#: openassessment/templates/openassessmentblock/response/oa_response.html:120
 msgid "Preview in LaTeX"
 msgstr "عرض بصيغة لاتخ"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:121
-msgid "Click to preview your submission in LaTeX"
-msgstr "انقر هنا لاستعراض تقديمك بصيغة لاتخ"
+#: openassessment/templates/openassessmentblock/response/oa_response.html:123
+msgid "Click to preview your submission in LaTeX."
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:126
+#: openassessment/templates/openassessmentblock/response/oa_response.html:128
 msgid "Preview Response"
 msgstr "معاينة الردّ"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:140
+#: openassessment/templates/openassessmentblock/response/oa_response.html:142
 msgid "We could not submit your response"
 msgstr "عذرًا، لم نتمكّن من تقديم ردّك."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:147
+#: openassessment/templates/openassessmentblock/response/oa_response.html:150
 msgid "Submit your response and move to the next step"
 msgstr "يُرجى تقديم ردّك ثمّ الانتقال إلى الخطوة التالية."
 
@@ -1490,52 +1490,52 @@ msgstr[5] "\n                                        %(assessment_label)s - %(po
 msgid "Feedback Recorded"
 msgstr "الملاحظة المسجلة"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:147
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:148
 msgid "The submission is waiting for assessments."
 msgstr "الردود المقدّمة بانتظار التقييم."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:149
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:152
 msgid ""
 "The learner's submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "حُذِفَ تقديم إجابة المتعلّم من قسم ’تقييم الزملاء‘. يحصل الطالب على درجة صفر ما لم يُمحى ’وضع المتعلّم‘ لهذه المشكلة وذلك ليُسمح له بإعادة تقديم ردّ الإجابة من جديد."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:151
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:156
 msgid "The problem has not been started."
 msgstr "لم يبدأ تقديم الإجابات للمسألة بعد."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:153
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:160
 msgid "The problem has not been completed."
 msgstr "لم تُستكمل المسألة بعد."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:164
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:172
 msgid "Submit Assessment Grade Override"
 msgstr "قدّم تجاوز درجة التقييم."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:180
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:188
 msgid "Remove Submission From Peer Grading"
 msgstr "حذف التقديم من قسم ’تقييم الزملاء‘"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:189
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:197
 msgid "Caution: This Action Cannot Be Undone"
 msgstr "تحذير: لا يمكن التراجع عن هذا الإجراء"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:190
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:198
 msgid ""
 "Removing a learner's submission cannot be undone and should be done with "
 "caution."
 msgstr "لا يمكن التراجع عن إجراء حذف تقديم إجابة المتعلّم مما يوجب تنفيذه بحذر."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:195
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:203
 msgid "Comments:"
 msgstr "التعليقات"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:204
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:212
 msgid "Remove submission"
 msgstr "حذف التقديم"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:219
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:227
 msgid "A response was not found for this learner."
 msgstr "لم يُعثر على ردّ من هذا المتعلّم"
 

@@ -25,9 +25,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-15 17:44+0000\n"
-"PO-Revision-Date: 2016-10-17 05:13+0000\n"
-"Last-Translator: Yung Wei <oscarwei1988@gmail.com>\n"
+"POT-Creation-Date: 2016-12-07 17:00+0000\n"
+"PO-Revision-Date: 2016-12-07 16:59+0000\n"
+"Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/open-edx/edx-platform/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1079,55 +1079,55 @@ msgstr "本章節的題目。"
 msgid "Your response to the question above."
 msgstr "您對於上述問題的回答。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:73
+#: openassessment/templates/openassessmentblock/response/oa_response.html:74
 msgid "Enter your response to the question above."
 msgstr "輸入您對此問題的作答。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:83
+#: openassessment/templates/openassessmentblock/response/oa_response.html:84
 msgid "We could not upload this file"
 msgstr "我們無法上傳這個檔案。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:87
+#: openassessment/templates/openassessmentblock/response/oa_response.html:88
 msgid "Select a file to upload for this submission."
 msgstr "選擇本次提交上傳的檔案。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:89
+#: openassessment/templates/openassessmentblock/response/oa_response.html:90
 msgid "Upload your file"
 msgstr "上傳您的檔案。"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:96
+#: openassessment/templates/openassessmentblock/response/oa_response.html:97
 msgid "You may continue to work on your response until you submit it."
 msgstr "您可以在送出答案前繼續工作"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:100
+#: openassessment/templates/openassessmentblock/response/oa_response.html:101
 msgid "We could not save your progress"
 msgstr "我們無法儲存您的進度"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:107
+#: openassessment/templates/openassessmentblock/response/oa_response.html:108
 msgid "Save your progress"
 msgstr "儲存您的進度"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:111
+#: openassessment/templates/openassessmentblock/response/oa_response.html:112
 msgid "Your Submission Status"
 msgstr "您的提交狀態"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:118
+#: openassessment/templates/openassessmentblock/response/oa_response.html:120
 msgid "Preview in LaTeX"
 msgstr "Latex格式預覽"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:121
-msgid "Click to preview your submission in LaTeX"
-msgstr "點擊預覽您所提交的Latex格式文章"
+#: openassessment/templates/openassessmentblock/response/oa_response.html:123
+msgid "Click to preview your submission in LaTeX."
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:126
+#: openassessment/templates/openassessmentblock/response/oa_response.html:128
 msgid "Preview Response"
 msgstr "預覽作答"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:140
+#: openassessment/templates/openassessmentblock/response/oa_response.html:142
 msgid "We could not submit your response"
 msgstr "我們無法送出您的回應"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:147
+#: openassessment/templates/openassessmentblock/response/oa_response.html:150
 msgid "Submit your response and move to the next step"
 msgstr "送出您的回應並移動至下一步"
 
@@ -1486,52 +1486,52 @@ msgstr[0] "\n%(assessment_label)s - %(points)s 分數"
 msgid "Feedback Recorded"
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:147
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:148
 msgid "The submission is waiting for assessments."
 msgstr "意見正在等待評量。"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:149
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:152
 msgid ""
 "The learner's submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr ""
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:151
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:156
 msgid "The problem has not been started."
 msgstr "這個問題尚未開始"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:153
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:160
 msgid "The problem has not been completed."
 msgstr "問題尚未被完成。"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:164
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:172
 msgid "Submit Assessment Grade Override"
 msgstr "提交覆蓋測驗評分"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:180
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:188
 msgid "Remove Submission From Peer Grading"
 msgstr "從同儕互評中移除提交"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:189
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:197
 msgid "Caution: This Action Cannot Be Undone"
 msgstr "注意: 必須完成此操作。"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:190
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:198
 msgid ""
 "Removing a learner's submission cannot be undone and should be done with "
 "caution."
 msgstr "移除學習者的提交無法撤銷，應謹慎進行。"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:195
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:203
 msgid "Comments:"
 msgstr "評論："
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:204
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:212
 msgid "Remove submission"
 msgstr "移除提交"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:219
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:227
 msgid "A response was not found for this learner."
 msgstr "無法找到此學習者之答案。"
 

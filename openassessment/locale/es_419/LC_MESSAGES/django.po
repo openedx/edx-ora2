@@ -24,9 +24,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-15 17:44+0000\n"
-"PO-Revision-Date: 2016-10-05 15:01+0000\n"
-"Last-Translator: Juan Camilo Montoya Franco <juan.montoya@edunext.co>\n"
+"POT-Creation-Date: 2016-12-07 17:00+0000\n"
+"PO-Revision-Date: 2016-12-07 16:59+0000\n"
+"Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/open-edx/edx-platform/language/es_419/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1079,55 +1079,55 @@ msgstr "La entrada para esta sección"
 msgid "Your response to the question above."
 msgstr "Su respuesta a la pregunta anterior."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:73
+#: openassessment/templates/openassessmentblock/response/oa_response.html:74
 msgid "Enter your response to the question above."
 msgstr "Escriba su respuesta a la pregunta."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:83
+#: openassessment/templates/openassessmentblock/response/oa_response.html:84
 msgid "We could not upload this file"
 msgstr "No podemos subir este archivo"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:87
+#: openassessment/templates/openassessmentblock/response/oa_response.html:88
 msgid "Select a file to upload for this submission."
 msgstr "Seleccione un archivo para subir en la respuesta."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:89
+#: openassessment/templates/openassessmentblock/response/oa_response.html:90
 msgid "Upload your file"
 msgstr "Subir su archivo"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:96
+#: openassessment/templates/openassessmentblock/response/oa_response.html:97
 msgid "You may continue to work on your response until you submit it."
 msgstr "Puede continuar trabajando en su respuesta hasta que la publique."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:100
+#: openassessment/templates/openassessmentblock/response/oa_response.html:101
 msgid "We could not save your progress"
 msgstr "No pudimos guardar su progreso."
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:107
+#: openassessment/templates/openassessmentblock/response/oa_response.html:108
 msgid "Save your progress"
 msgstr "Guarde su progreso"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:111
+#: openassessment/templates/openassessmentblock/response/oa_response.html:112
 msgid "Your Submission Status"
 msgstr "El estado de su entrega"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:118
+#: openassessment/templates/openassessmentblock/response/oa_response.html:120
 msgid "Preview in LaTeX"
 msgstr "Vista previa en LaTeX"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:121
-msgid "Click to preview your submission in LaTeX"
-msgstr "Haga clic para obtener la vista previa de su respuesta en LaTeX"
+#: openassessment/templates/openassessmentblock/response/oa_response.html:123
+msgid "Click to preview your submission in LaTeX."
+msgstr ""
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:126
+#: openassessment/templates/openassessmentblock/response/oa_response.html:128
 msgid "Preview Response"
 msgstr "Previsualizar respuesta"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:140
+#: openassessment/templates/openassessmentblock/response/oa_response.html:142
 msgid "We could not submit your response"
 msgstr "No pudimos subir su respuesta"
 
-#: openassessment/templates/openassessmentblock/response/oa_response.html:147
+#: openassessment/templates/openassessmentblock/response/oa_response.html:150
 msgid "Submit your response and move to the next step"
 msgstr "Publique su respuesta y continúe a la siguiente etapa"
 
@@ -1487,52 +1487,52 @@ msgstr[1] "\n%(assessment_label)s - %(points)s puntos\n                         
 msgid "Feedback Recorded"
 msgstr "Comentarios registrados"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:147
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:148
 msgid "The submission is waiting for assessments."
 msgstr "El envío está esperando las evaluaciones ."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:149
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:152
 msgid ""
 "The learner's submission has been removed from peer assessment. The learner "
 "receives a grade of zero unless you delete the learner's state for the "
 "problem to allow them to resubmit a response."
 msgstr "El envío del estudiante ha sido eliminado de la evaluación por pares. El estudiante recibirá una calificación de cero a menos de que borre el estado del estudiante para el problema, dándole la oportunidad de enviar nuevamente una respuesta."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:151
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:156
 msgid "The problem has not been started."
 msgstr "El problema no ha sido iniciado."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:153
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:160
 msgid "The problem has not been completed."
 msgstr "El problema no ha sido completado."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:164
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:172
 msgid "Submit Assessment Grade Override"
 msgstr "Enviar reemplazo de la calificación"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:180
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:188
 msgid "Remove Submission From Peer Grading"
 msgstr "Eliminar envío de la calificación por pares"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:189
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:197
 msgid "Caution: This Action Cannot Be Undone"
 msgstr "Cuidado: Esta acción no se puede deshacer"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:190
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:198
 msgid ""
 "Removing a learner's submission cannot be undone and should be done with "
 "caution."
 msgstr "Borrar un envío de estudiante es algo que no se puede deshacer y debe realizarse con mucho cuidado."
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:195
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:203
 msgid "Comments:"
 msgstr "Comentarios:"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:204
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:212
 msgid "Remove submission"
 msgstr "Eliminar envío"
 
-#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:219
+#: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:227
 msgid "A response was not found for this learner."
 msgstr "No se encontró una respuesta para este estudiante."
 
