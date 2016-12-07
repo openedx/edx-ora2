@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-15 17:44+0000\n"
+"POT-Creation-Date: 2016-12-07 17:00+0000\n"
 "PO-Revision-Date: 2016-09-29 09:58+0000\n"
 "Last-Translator: qualityalltext <quality@alltext.co.il>\n"
 "Language-Team: Hebrew (http://www.transifex.com/open-edx/edx-platform/language/he/)\n"
@@ -109,75 +109,75 @@ msgid "Unable to load"
 msgstr "לא ניתן לטעון"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_peer.js:182
+#: openassessment/xblock/static/js/src/lms/oa_peer.js:171
 msgid ""
 "If you leave this page without submitting your peer assessment, you will "
 "lose any work you have done."
 msgstr "אם תעזוב עמוד זה ללא שליחת הערכת עמיתיך, תאבד כל עבודה שביצעת."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:237
+#: openassessment/xblock/static/js/src/lms/oa_response.js:222
 msgid "Status of Your Response"
 msgstr "סטטוס תשובתך"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:315
+#: openassessment/xblock/static/js/src/lms/oa_response.js:300
 msgid "This response has not been saved."
 msgstr "תשובה זו לא נשמרה."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:319
+#: openassessment/xblock/static/js/src/lms/oa_response.js:304
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
 msgstr "אם תעזוב עמוד זה ללא שמירת או שליחת תשובתך, תאבד כל עבודה שביצעת בתשובה."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:337
+#: openassessment/xblock/static/js/src/lms/oa_response.js:322
 msgid "Saving..."
 msgstr "שומר..."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:362
+#: openassessment/xblock/static/js/src/lms/oa_response.js:347
 msgid "This response has been saved but not submitted."
 msgstr "תשובה זו נשמרה אך לא נשלחה."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:365
+#: openassessment/xblock/static/js/src/lms/oa_response.js:350
 msgid "Error"
 msgstr "שגיאה"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:388
+#: openassessment/xblock/static/js/src/lms/oa_response.js:373
 msgid "Do you want to upload your file before submitting?"
 msgstr "האם ברצונך להעלות את קבציך לפני השליחה?"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:459
+#: openassessment/xblock/static/js/src/lms/oa_response.js:444
 msgid ""
 "You're about to submit your response for this assignment. After you submit "
 "this response, you can't change it or submit a new response."
 msgstr "אתם עומדים להגיש תשובה עבור מטלה זו. לא תוכלו לבצע שינויים נוספים או להגיש תשובות נוספות לאחר ההגשה. "
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_response.js:488
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:473
 msgid "File size must be 5MB or less."
 msgstr "גודל הקובץ חייב להיות קטן מ-5MB"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_response.js:493
-#: openassessment/xblock/static/js/src/lms/oa_response.js:498
-#: openassessment/xblock/static/js/src/lms/oa_response.js:503
+#: openassessment/xblock/static/js/src/lms/oa_response.js:478
+#: openassessment/xblock/static/js/src/lms/oa_response.js:483
+#: openassessment/xblock/static/js/src/lms/oa_response.js:488
 msgid "You can upload files with these file types: "
 msgstr "ניתן להעלות קבצים באמצעות סוגי הקבצים הבאים: "
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_response.js:508
+#: openassessment/xblock/static/js/src/lms/oa_response.js:493
 msgid "File type is not allowed."
 msgstr "סוג הקובץ אינו מורשה."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_self.js:120
+#: openassessment/xblock/static/js/src/lms/oa_self.js:114
 msgid ""
 "If you leave this page without submitting your self assessment, you will "
 "lose any work you have done."
@@ -200,7 +200,7 @@ msgid "Error getting the number of ungraded responses"
 msgstr "שגיאה בעת ניסיון לקבל את מספר התשובות הלא-מדורגות."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:508
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:497
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
