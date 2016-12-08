@@ -416,9 +416,18 @@ class AssessmentPage(OpenAssessmentPage, AssessmentMixin):
         if self._assessment_type not in ['peer-assessment', 'student-training']:
             msg = "Only peer assessment and student training steps can retrieve the number completed"
             raise PageConfigurationError(msg)
+
         status_completed_css = self._bounded_selector(".step__status__value--completed")
-        candidates = [int(x) for x in self.q(css=status_completed_css).text]
-        return candidates[0] if len(candidates) > 0 else None
+        complete_candidates = [int(x) for x in self.q(css=status_completed_css).text]
+        if len(complete_candidates) > 0:
+            completed = complete_candidates[0]
+        else:
+            # The number completed is no longer available on this page, but can be inferred from the
+            # current review number.
+            status_current_css = self._bounded_selector(".step__status__number--current")
+            current_candidates = [int(y) for y in self.q(css=status_current_css).text]
+            completed = current_candidates[0] - 1 if len(current_candidates) > 0 and current_candidates[0] > 0 else None
+        return completed
 
     @property
     def label(self):

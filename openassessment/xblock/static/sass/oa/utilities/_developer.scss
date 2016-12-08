@@ -1114,11 +1114,6 @@
       @include margin-right(($baseline-h/4));
     }
 
-    .leaderboard__title {
-      @extend %t-superheading;
-      color: $heading-color;
-    }
-
     .list.leaderboard__score__list {
       list-style-type: none;
 
@@ -1146,7 +1141,7 @@
 
         .leaderboard__score__title {
           font-size: 15px;
-          color: $edx-gray-l1;
+          color: $heading-color;
           text-transform: uppercase;
           display: inline-block;
           @include padding-left(15px);

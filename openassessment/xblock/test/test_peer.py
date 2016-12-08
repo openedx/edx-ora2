@@ -286,7 +286,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         self.assertIsNotNone(peer_response)
         self.assertNotIn(submission["answer"]["parts"][0]["text"].encode('utf-8'), peer_response.body)
         self.assertNotIn(submission["answer"]["parts"][1]["text"].encode('utf-8'), peer_response.body)
-        self.assertIn("Peer Assessments Complete", peer_response.body)
+        self.assertIn("You have successfully completed", peer_response.body)
 
 
 @ddt.ddt

@@ -239,10 +239,6 @@
       }
     }
 
-    .step__status__label {
-      @extend %text-sr;
-    }
-
     // step content wrapper
     .wrapper--step__content {
       margin-top: ($baseline-v/2);
@@ -547,10 +543,15 @@
     @extend %t-heading;
   }
 
-  div.submission__answer__part__text__value {
-    border: 1px solid $color-decorative-secondary;
-    background-color: $white;
-    padding: $baseline-v;
+
+  .submission__answer__part__text__value {
+    margin: ($baseline-v/2) 0;
+
+    &:not(textarea) {
+      border: 1px solid $color-decorative-secondary;
+      background-color: $white;
+      padding: $baseline-v;
+    }
   }
 
   // --------------------

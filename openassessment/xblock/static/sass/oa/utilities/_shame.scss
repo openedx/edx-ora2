@@ -42,7 +42,7 @@
     }
 
     // step title/name
-    h2.step__title {
+    .step__title {
       @include text-align(left);
       @include float(none);
       margin-top: 0 !important;
@@ -80,7 +80,7 @@
   // submission answer leaderboard fix (TNL-4009). 4 class selectors is more specific than
   // lms/static/sass/course/courseware/_courseware.scss#L453 in edx-platform (3 class selectors)
   .leaderboard__answer .submission__answer__display__content {
-    h2.submission__answer__part__text__title {
+    .submission__answer__part__text__title {
       @include text-align(left);
       @include float(none);
       font-size: inherit;

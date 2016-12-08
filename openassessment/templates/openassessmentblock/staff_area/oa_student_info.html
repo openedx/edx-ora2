@@ -43,7 +43,7 @@
                 </p>
             {% else %}
                 <div class="wrapper--content">
-                    {% trans "The learner's response to the question above:" as translated_label %}
+                    {% trans "The learner's response to the question above" as translated_label %}
                     {% include "openassessmentblock/oa_submission_answer.html" with answer=submission.answer answer_text_label=translated_label %}
 
                     {% trans "Associated File" as translated_header %}
@@ -194,7 +194,7 @@
                     <form data-submission-uuid="{{ submission.uuid }}">
 
                         <div class="step__message message message--warning">
-                            <h3 class="message__title">{% trans "Caution: This Action Cannot Be Undone" %}</h3>
+                            <h5 class="message__title">{% trans "Caution: This Action Cannot Be Undone" %}</h5>
                             <div class="message__content">{% trans "Removing a learner's submission cannot be undone and should be done with caution." %}</div>
                         </div>
 

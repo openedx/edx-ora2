@@ -2,13 +2,13 @@
 {% spaceless %}
 <li id="openassessment__leaderboard__{{ xblock_id }}" class="openassessment__steps__step step--leaderboard is--initially--collapsed ui-slidable__container" tabindex="-1">
     <header class="step__header ui-slidable__control">
-        <h2 class="step__title">
+        <h4 class="step__title">
             <button class="ui-slidable" aria-expanded="false" id="oa_leaderboard_{{ xblock_id }}" aria-controls="oa_leaderboard_{{ xblock_id }}_content">
                 <span class="wrapper--copy">
                     <span class="step__label">{% trans "Top Responses" %} </span>
                 </span>
             </button>
-        </h2>
+        </h4>
     </header>
 
     <div class="ui-slidable__content"  aria-labelledby="oa_leaderboard_{{ xblock_id }}" id="oa_leaderboard_{{ xblock_id }}_content">
