@@ -1,3 +1,6 @@
+"""
+Django admin models for openassessment
+"""
 import json
 
 from django.contrib import admin
@@ -12,6 +15,9 @@ from openassessment.assessment.serializers import RubricSerializer
 
 
 class RubricAdmin(admin.ModelAdmin):
+    """
+    Django admin model for Rubrics.
+    """
     list_per_page = 20  # Loads of criteria summary are moderately expensive
 
     list_display = ('id', 'content_hash', 'criteria_summary')
@@ -40,6 +46,9 @@ class RubricAdmin(admin.ModelAdmin):
 
 
 class PeerWorkflowItemInline(admin.StackedInline):
+    """
+    Django admin model for PeerWorkflowItems.
+    """
     model = PeerWorkflowItem
     fk_name = 'author'
     raw_id_fields = ('author', 'scorer', 'assessment')
@@ -47,23 +56,29 @@ class PeerWorkflowItemInline(admin.StackedInline):
 
 
 class PeerWorkflowAdmin(admin.ModelAdmin):
+    """
+    Django admin model for PeerWorkflows.
+    """
     list_display = (
         'id', 'student_id', 'item_id', 'course_id', 'submission_uuid',
         'created_at', 'completed_at', 'grading_completed_at',
     )
     search_fields = (
-        'id',  'student_id', 'item_id', 'course_id', 'submission_uuid',
+        'id', 'student_id', 'item_id', 'course_id', 'submission_uuid',
     )
     inlines = (PeerWorkflowItemInline,)
 
 
 class AssessmentAdmin(admin.ModelAdmin):
+    """
+    Django admin model for Assessments.
+    """
     list_display = (
-        'id', 'submission_uuid', 'score_type', 'scorer_id',  'scored_at',
+        'id', 'submission_uuid', 'score_type', 'scorer_id', 'scored_at',
         'rubric_link',
     )
     search_fields = (
-        'id', 'submission_uuid', 'score_type', 'scorer_id',  'scored_at',
+        'id', 'submission_uuid', 'score_type', 'scorer_id', 'scored_at',
         'rubric__content_hash',
     )
     readonly_fields = (
@@ -74,6 +89,9 @@ class AssessmentAdmin(admin.ModelAdmin):
     exclude = ('rubric', 'submission_uuid')
 
     def rubric_link(self, assessment_obj):
+        """
+        Returns the rubric link for this assessment.
+        """
         url = reverse(
             'admin:assessment_rubric_change',
             args=[assessment_obj.rubric.id]
@@ -86,6 +104,9 @@ class AssessmentAdmin(admin.ModelAdmin):
     rubric_link.short_description = 'Rubric'
 
     def parts_summary(self, assessment_obj):
+        """
+        Returns the parts summary of this assessment as HTML.
+        """
         return "<br/>".join(
             html.escape(
                 u"{}/{} - {} - {}: {} - {} - {}".format(
@@ -104,6 +125,9 @@ class AssessmentAdmin(admin.ModelAdmin):
 
 
 class AssessmentFeedbackAdmin(admin.ModelAdmin):
+    """
+    Django admin model for AssessmentFeedbacks.
+    """
     list_display = ('id', 'submission_uuid',)
     search_fields = ('id', 'submission_uuid',)
     readonly_fields = (
@@ -112,6 +136,9 @@ class AssessmentFeedbackAdmin(admin.ModelAdmin):
     exclude = ('assessments',)
 
     def assessments_by(self, assessment_feedback):
+        """
+        Gets all assessments for this feedback.
+        """
         links = [
             u'<a href="{}">{}</a>'.format(
                 reverse('admin:assessment_assessment_change', args=[asmt.id]),
@@ -124,22 +151,34 @@ class AssessmentFeedbackAdmin(admin.ModelAdmin):
 
 
 class AIGradingWorkflowAdmin(admin.ModelAdmin):
+    """
+    Django admin model for AIGradingWorkflows.
+    """
     list_display = ('uuid', 'submission_uuid')
     search_fields = ('uuid', 'submission_uuid', 'student_id', 'item_id', 'course_id')
     readonly_fields = ('uuid', 'submission_uuid', 'student_id', 'item_id', 'course_id')
 
 
 class AITrainingWorkflowAdmin(admin.ModelAdmin):
+    """
+    Django admin model for AITrainingWorkflows.
+    """
     list_display = ('uuid',)
     search_fields = ('uuid', 'course_id', 'item_id',)
     readonly_fields = ('uuid', 'course_id', 'item_id',)
 
 
 class AIClassifierInline(admin.TabularInline):
+    """
+    Django admin model for AIClassifiers.
+    """
     model = AIClassifier
 
 
 class AIClassifierSetAdmin(admin.ModelAdmin):
+    """
+    Django admin model for AICLassifierSets.
+    """
     list_display = ('id',)
     search_fields = ('id',)
     inlines = [AIClassifierInline]
