@@ -3,7 +3,7 @@ from collections import namedtuple
 import json
 import datetime
 import urllib
-from mock import Mock, patch
+from mock import MagicMock, Mock, patch
 from django.test.utils import override_settings
 
 from openassessment.assessment.api import peer as peer_api
@@ -54,6 +54,10 @@ class NullUserService(object):
     @staticmethod
     def get_anonymous_user_id(username, _):
         return username
+
+    @staticmethod
+    def get_current_user():
+        return MagicMock(opt_attrs={})
 
 
 class TestCourseStaff(XBlockHandlerTestCase):
