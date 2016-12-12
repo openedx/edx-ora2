@@ -62,21 +62,16 @@
                                         </div>
 
                                         <div class="ui-slidable__content" aria-labelledby="oa_grade_{{ xblock_id }}_criteria_{{ criterion_num }}" id="oa_grade_{{ xblock_id }}_criteria_{{ criterion_num }}_content">
-                                            {% if criterion.options %}
-                                                <ul class="question__answers has--hints">
-                                                    {% for assessment in criterion.assessments %}
-                                                        {% include "openassessmentblock/grade/oa_assessment_title.html" with assessment=assessment %}
-                                                    {% endfor %}
-                                                </ul>
-                                            {% endif %}
-
-                                            {% if criterion.has_feedback %}
-                                                <ul class="question__answers has--hints">
-                                                    {% for assessment in criterion.assessments %}
+                                            <ul class="question__answers has--hints">
+                                                {% for assessment in criterion.assessments %}
+                                                    <li class="answer">
+                                                        {% if criterion.options %}
+                                                            {% include "openassessmentblock/grade/oa_assessment_title.html" with assessment=assessment %}
+                                                        {% endif %}
                                                         {% include "openassessmentblock/grade/oa_assessment_feedback.html" with title=assessment.feedback_title assessment=assessment %}
-                                                    {% endfor %}
-                                                </ul>
-                                            {% endif %}
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
                                         </div>
                                     </li>
                                 {% endwith %}
@@ -92,7 +87,9 @@
 
                                     <ul class="question__answers ui-slidable__content" id="oa_grade_{{ xblock_id }}_feedback_content" aria-labelledby="oa_grade_{{ xblock_id }}_feedback">
                                         {% for feedback in grade_details.additional_feedback %}
-                                            {% include "openassessmentblock/grade/oa_assessment_feedback.html" with title=feedback.title assessment=feedback %}
+                                            <li class="answer feedback">
+                                                {% include "openassessmentblock/grade/oa_assessment_feedback.html" with title=feedback.title assessment=feedback %}
+                                            </li>
                                         {% endfor %}
                                     </ul>
                                 </li>

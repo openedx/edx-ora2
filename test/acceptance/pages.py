@@ -526,32 +526,29 @@ class GradePage(OpenAssessmentPage):
             pass
         return score_candidates[0] if len(score_candidates) > 0 else None
 
-    def grade_entry(self, question, column):
+    def grade_entry(self, question):
         """
-        Returns a tuple of source and value information for a specific grade source.
+        Returns a tuple of the text of all answer spans for a given question
 
         Args:
             question: the 0-based question for which to get grade information.
-            column: the 0-based column of data within a question. Each column corresponds
-                to a source of data (for example, staff, peer, or self).
 
-        Returns: the tuple of source and value information for the requested grade
+        Returns: a tuple containing all text elements.
 
         """
         self.wait_for_element_visibility(
-            self._bounded_selector('.question--{} .answer .answer__source__value'.format(question + 1)),
-            "Grade entry was present",
+            self._bounded_selector('.question--{} .answer'.format(question + 1)),
+            "Answers not present",
             2
         )
-        source = self.q(
-            css=self._bounded_selector('.question--{} .answer .answer__source__value'.format(question + 1))
-        )[column]
 
-        value = self.q(
-            css=self._bounded_selector('.question--{} .answer .answer__value__value'.format(question + 1))
-        )[column]
+        selector_str = ".question--{} .answer div span".format(question + 1)
+        span_text = self.q(
+            css=self._bounded_selector(selector_str)
+        )
 
-        return source.text.strip(), value.text.strip()
+        result = tuple(span_entry.text.strip() for span_entry in span_text if span_entry.text != '')
+        return result
 
     def feedback_entry(self, question, column):
         """
