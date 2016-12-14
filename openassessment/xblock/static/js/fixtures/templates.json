@@ -892,7 +892,8 @@
                 "cancelled_by": "staff",
                 "cancelled_at": "2015-10-01T04:53",
                 "comments": "Cancelled!"
-            }
+            },
+            "time_zone": "utc"
         },
         "output": "oa_staff_cancelled_submission.html"
     },

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-MAX_PEP8_VIOLATIONS=111
+MAX_PEP8_VIOLATIONS=106
 
 mkdir -p test/logs
 PEP8_VIOLATIONS=test/logs/pep8.txt

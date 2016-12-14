@@ -44,7 +44,7 @@
                 <p>
                     {% trans "Enter your response to the question." %}
                     {% if submission_due %}
-                    {% trans "You can save your progress and return to complete your response at any time before the due date" %} (<span class="step__deadline"><span class="date">{{ submission_due|utc|date:"l, N j, Y H:i e" }}</span></span>).
+                    {% trans "You can save your progress and return to complete your response at any time before the due date" %} (<span class="step__deadline"><span class="date">{{ submission_due|timezone:time_zone|date:"l, N j, Y H:i e" }}</span></span>).
                     {% else %}
                     {% trans "You can save your progress and return to complete your response at any time." %}
                     {% endif %}
