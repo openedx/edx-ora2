@@ -19,6 +19,7 @@ from django.utils.timezone import now
 from model_utils import Choices
 from model_utils.models import StatusModel, TimeStampedModel
 from submissions import api as sub_api
+from openassessment.assessment.errors.base import AssessmentError
 from openassessment.assessment.signals import assessment_complete_signal
 from .errors import AssessmentApiLoadError, AssessmentWorkflowError, AssessmentWorkflowInternalError
 
@@ -507,7 +508,11 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
             if on_cancel_func is not None:
                 on_cancel_func(self.submission_uuid)
 
-        score = self.get_score(assessment_requirements, step_for_name)
+        try:
+            score = self.get_score(assessment_requirements, step_for_name)
+        except AssessmentError as exc:
+            logger.info("TNL-5799, exception in get_score during cancellation. {}".format(exc))
+            score = None
 
         # Set the points_earned to 0.
         if score is not None:
