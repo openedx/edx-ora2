@@ -7,7 +7,7 @@ freezegun==0.1.11
 mock==1.0.1
 moto==0.3.1
 pep8==1.7.0
-factory_boy==2.6.1
+factory_boy==2.8.1
 
 git+https://github.com/edx/django-pyfs.git@1.0.3#egg=django-pyfs==1.0.3
 git+https://github.com/edx/i18n-tools.git@56f048af9b6868613c14aeae760548834c495011#egg=i18n_tools

@@ -19,7 +19,7 @@ from django.utils.timezone import now
 from model_utils import Choices
 from model_utils.models import StatusModel, TimeStampedModel
 from submissions import api as sub_api
-from openassessment.assessment.base import AssessmentError
+from openassessment.assessment.errors.base import AssessmentError
 from openassessment.assessment.signals import assessment_complete_signal
 from .errors import AssessmentApiLoadError, AssessmentWorkflowError, AssessmentWorkflowInternalError
 
