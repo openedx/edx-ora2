@@ -38,6 +38,9 @@ class BaseAssessmentPage(PageObject):
             loc=self._problem_location
         )
 
+    def get_sr_html(self):
+        return self.q(css='.sr.reader-feedback').html
+
 
 class MultipleAssessmentPage(BaseAssessmentPage):
     """
@@ -75,7 +78,6 @@ class OpenAssessmentPage(BaseAssessmentPage):
         `vert-{vertical_index}. If there is one problem on unit page, problem would have .vert-0 class attached to it.
         """
         return ".vert-{vertical_index}".format(vertical_index=self.vertical_index)
-
 
     def submit(self, button_css=".action--submit"):
         """
