@@ -11,6 +11,7 @@ OpenAssessment.StaffView = function(element, server, baseView) {
     this.baseView = baseView;
     this.isRendering = false;
     this.announceStatus = false;
+
 };
 
 OpenAssessment.StaffView.prototype = {

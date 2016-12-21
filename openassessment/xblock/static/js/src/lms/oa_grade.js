@@ -12,6 +12,7 @@ OpenAssessment.GradeView = function(element, server, baseView) {
     this.baseView = baseView;
     this.announceStatus = false;
     this.isRendering = false;
+    this.dateFactory = new OpenAssessment.DateTimeFactory(this.element);
 };
 
 OpenAssessment.GradeView.prototype = {
@@ -33,6 +34,7 @@ OpenAssessment.GradeView.prototype = {
                 view.installHandlers();
 
                 view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, true, view, focusID);
+                view.dateFactory.apply();
             }
         ).fail(function(errMsg) {
             baseView.showLoadError('grade', errMsg);

@@ -182,7 +182,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'file_upload_type': None,
                 'submission_start': dt.datetime(4999, 4, 1).replace(tzinfo=pytz.utc),
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': None,
+                'user_language': None
             }
         )
 
@@ -205,7 +206,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'peer_incomplete': True,
                 'self_incomplete': True,
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': None,
+                'user_language': None
             }
         )
 
@@ -224,7 +226,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'submit_enabled': False,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': None,
+                'user_language': None
             }
         )
 
@@ -242,7 +245,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'save_status': 'This response has not been saved.',
                 'submit_enabled': False,
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': None,
+                'user_language': None
             }
         )
 
@@ -266,7 +270,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'submit_enabled': True,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': None,
+                'user_language': None
             }
         )
 
@@ -290,7 +295,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'submit_enabled': True,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': None,
+                'user_language': None
             }
         )
 
@@ -309,7 +315,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'peer_incomplete': True,
                 'self_incomplete': True,
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': None,
+                'user_language': None
             }
         )
 
@@ -341,7 +348,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                     'cancelled_by_id': 'Bob',
                     'cancelled_by': mock_staff
                 },
-                'time_zone': pytz.utc,
+                'user_timezone': None,
+                'user_language': None
             }
         )
 
@@ -367,7 +375,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'peer_incomplete': True,
                 'self_incomplete': True,
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': None,
+                'user_language': None
             }
         )
 
@@ -379,7 +388,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'file_upload_type': None,
                 'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': None,
+                'user_language': None
             }
         )
 
@@ -398,7 +408,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'peer_incomplete': False,
                 'self_incomplete': True,
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': None,
+                'user_language': None
             }
         )
 
@@ -423,7 +434,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'student_submission': create_submission_dict(submission, xblock.prompts),
                 'file_upload_type': None,
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': None,
+                'user_language': None
             }
         )
 
@@ -448,7 +460,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'student_submission': create_submission_dict(submission, xblock.prompts),
                 'file_upload_type': None,
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': None,
+                'user_language': None
             }
         )
 
@@ -457,7 +470,7 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         # Expect that the response step is open and displays the deadline
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
         self.assertIn('Enter your response to the question', resp)
-        self.assertIn('Monday, May 6, 2999 00:00 UTC', resp)
+        self.assertIn('2999-05-05 19:00', resp)
 
         # Create a submission for the user
         xblock.create_submission(

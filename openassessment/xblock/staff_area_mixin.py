@@ -24,7 +24,7 @@ from openassessment.assessment.api import self as self_api
 from openassessment.assessment.api import ai as ai_api
 from openassessment.workflow import api as workflow_api
 from openassessment.assessment.api import staff as staff_api
-from .resolve_dates import get_current_time_zone
+from .user_data import get_user_preferences
 
 
 logger = logging.getLogger(__name__)
@@ -319,11 +319,14 @@ class StaffAreaMixin(object):
         Returns:
             A context dict for rendering a student submission and associated rubric (for staff grading).
         """
+        user_preferences = get_user_preferences(self.runtime.service(self, 'user')) # localize for staff user
+
         context = {
             'submission': create_submission_dict(submission, self.prompts) if submission else None,
             'rubric_criteria': copy.deepcopy(self.rubric_criteria_with_labels),
             'student_username': student_username,
-            'time_zone': get_current_time_zone(self.runtime.service(self, 'user')),  # localize for staff user
+            'user_timezone': user_preferences['user_timezone'],
+            'user_language': user_preferences['user_language']
         }
 
         if submission:

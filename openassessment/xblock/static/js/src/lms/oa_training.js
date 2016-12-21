@@ -16,6 +16,7 @@ OpenAssessment.StudentTrainingView = function(element, server, baseView) {
     this.rubric = null;
     this.isRendering = false;
     this.announceStatus = false;
+    this.dateFactory = new OpenAssessment.DateTimeFactory(this.element);
 };
 
 OpenAssessment.StudentTrainingView.prototype = {
@@ -38,7 +39,7 @@ OpenAssessment.StudentTrainingView.prototype = {
 
                 view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
                 view.announceStatus = false;
-
+                view.dateFactory.apply();
             }
         ).fail(function() {
             view.baseView.showLoadError('student-training');

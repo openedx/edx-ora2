@@ -16,6 +16,7 @@ OpenAssessment.SelfView = function(element, server, baseView) {
     this.rubric = null;
     this.isRendering = false;
     this.announceStatus = false;
+    this.dateFactory = new OpenAssessment.DateTimeFactory(this.element);
 };
 
 OpenAssessment.SelfView.prototype = {
@@ -38,8 +39,9 @@ OpenAssessment.SelfView.prototype = {
 
                 view.server.renderLatex($(stepID, view.element));
                 view.installHandlers();
-
                 view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
+                view.dateFactory.apply();
+
             }
         ).fail(function() {
             view.showLoadError('self-assessment');

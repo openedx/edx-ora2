@@ -223,6 +223,7 @@ OpenAssessment.BaseView.prototype = {
         this.selfView.load(usageID);
         this.gradeView.load(usageID);
         this.leaderboardView.load(usageID);
+
         /**
         this.messageView.load() is intentionally omitted.
         Because of the asynchronous loading, there is no way to tell (from the perspective of the
@@ -383,4 +384,5 @@ function OpenAssessmentBlock(runtime, element, data) {
     var server = new OpenAssessment.Server(runtime, element);
     var view = new OpenAssessment.BaseView(runtime, element, server, data);
     view.load();
+
 }

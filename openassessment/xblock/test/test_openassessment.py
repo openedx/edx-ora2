@@ -19,7 +19,7 @@ from .base import XBlockHandlerTestCase, scenario
 class TestOpenAssessment(XBlockHandlerTestCase):
     """Test Open Asessessment Xblock functionality"""
 
-    TIME_ZONE_FN_PATH = 'openassessment.xblock.peer_assessment_mixin.get_current_time_zone'
+    TIME_ZONE_FN_PATH = 'openassessment.xblock.user_data.get_user_preferences'
 
     @scenario('data/basic_scenario.xml')
     def test_load_student_view(self, xblock):
@@ -100,8 +100,8 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         # Expect that the page renders even if the update fails
         self.assertIn("OpenAssessmentBlock", xblock_fragment.body_html())
 
-    @ddt.data(('utc', 'April 1, 2014 00:00 UTC'),
-              ('America/Los_Angeles', 'March 31, 2014 17:00 PDT'))
+    @ddt.data(('utc', '2014-03-31 20:00'),
+              ('America/Los_Angeles', '2014-03-31 20:00'))
     @ddt.unpack
     def test_load_student_view_with_dates(self, time_zone, expected_date):
         """OA XBlock returns some HTML to the user.
@@ -110,8 +110,8 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         Open Assessment XBlock. We don't want to match too heavily against the
         contents.
         """
-        with patch('openassessment.xblock.submission_mixin.get_current_time_zone') as time_zone_fn:
-            time_zone_fn.return_value = pytz.timezone(time_zone)
+        with patch('openassessment.xblock.user_data.get_user_preferences') as time_zone_fn:
+            time_zone_fn.return_value['user_timezone'] = pytz.timezone(time_zone)
 
             xblock = self.load_scenario('data/dates_scenario.xml')
             xblock_fragment = self.runtime.render(xblock, "student_view")
@@ -159,67 +159,40 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         request.params = {}
         return xblock.render_peer_assessment(request)
 
-    @ddt.data(('utc', 'April 1, 2014 01:01 UTC'),
-              ('America/Los_Angeles', 'March 31, 2014 18:01 PDT'))
+    @ddt.data(('utc', '2014-03-31 21:01'),
+              ('America/Los_Angeles', '2014-03-31 21:01'))
     @ddt.unpack
     @freeze_time("2014-01-01")
     def test_formatted_start_dates(self, time_zone, expected_start_date):
         """Test start dates correctly formatted"""
         with patch(self.TIME_ZONE_FN_PATH) as time_zone_fn:
-            time_zone_fn.return_value = pytz.timezone(time_zone)
+            time_zone_fn.return_value['user_timezone'] = pytz.timezone(time_zone)
 
             xblock = self._set_up_start_date(dt.datetime(2014, 4, 1, 1, 1, 1))
             resp = self._render_xblock(xblock)
             self.assertIn(expected_start_date, resp.body)
 
-    @ddt.data((dt.datetime(2015, 3, 8, 9, 59, 00, tzinfo=pytz.utc), 'March 8, 2015 01:59 PST'),
-              (dt.datetime(2015, 3, 8, 10, 00, 00, tzinfo=pytz.utc), 'March 8, 2015 03:00 PDT'))
-    @ddt.unpack
-    @freeze_time("2014-01-01")
-    def test_formatted_start_dates_daylight_savings(self, date, expected_start_date):
-        """Test start dates correctly formatted for daylight savings time"""
-        with patch(self.TIME_ZONE_FN_PATH) as time_zone_fn:
-            time_zone_fn.return_value = pytz.timezone('America/Los_Angeles')
-
-            # Set start dates'
-            xblock = self._set_up_start_date(date)
-            resp = self._render_xblock(xblock)
-            self.assertIn(expected_start_date, resp.body)
-
-    @ddt.data(('utc', 'May 1, 2014 00:00 UTC'),
-              ('America/Los_Angeles', 'April 30, 2014 17:00 PDT'))
+    @ddt.data(('utc', '2014-04-30 20:00'),
+              ('America/Los_Angeles', '2014-04-30 20:00'))
     @ddt.unpack
     def test_formatted_end_dates(self, time_zone, expected_end_date):
         """Test end dates correctly formatted"""
         with patch(self.TIME_ZONE_FN_PATH) as time_zone_fn:
-            time_zone_fn.return_value = pytz.timezone(time_zone)
+            time_zone_fn.return_value['user_timezone'] = time_zone
 
             # Set due dates'
             xblock = self._set_up_end_date(dt.datetime(2014, 5, 1))
             resp = self._render_xblock(xblock)
             self.assertIn(expected_end_date, resp.body)
 
-    @ddt.data((dt.datetime(2015, 3, 8, 9, 59, 00, tzinfo=pytz.utc), 'March 8, 2015 01:59 PST'),
-              (dt.datetime(2015, 3, 8, 10, 00, 00, tzinfo=pytz.utc), 'March 8, 2015 03:00 PDT'))
-    @ddt.unpack
-    def test_formatted_end_dates_daylight_savings(self, date, expected_end_date):
-        """Test end dates correctly formatted for daylight savings time"""
-        with patch(self.TIME_ZONE_FN_PATH) as time_zone_fn:
-            time_zone_fn.return_value = pytz.timezone('America/Los_Angeles')
-
-            # Set due dates'
-            xblock = self._set_up_end_date(date)
-            resp = self._render_xblock(xblock)
-            self.assertIn(expected_end_date, resp.body)
-
-    @ddt.data(('utc', 'April 1, 2014 01:01 UTC'),
-              ('America/Los_Angeles', 'March 31, 2014 18:01 PDT'))
+    @ddt.data(('utc', '2014-03-31 21:01'),
+              ('America/Los_Angeles', '2014-03-31 21:01'))
     @ddt.unpack
     @freeze_time("2014-01-01")
     def test_formatted_start_dates_for_beta_tester_with_days_early(self, time_zone, expected_start_date):
         """Test start dates for beta tester with days early"""
         with patch(self.TIME_ZONE_FN_PATH) as time_zone_fn:
-            time_zone_fn.return_value = pytz.timezone(time_zone)
+            time_zone_fn.return_value['user_timezone'] = pytz.timezone(time_zone)
 
             # Set start dates
             xblock = self._set_up_start_date(dt.datetime(2014, 4, 6, 1, 1, 1))
@@ -229,25 +202,24 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             resp = self._render_xblock(xblock)
             self.assertIn(expected_start_date, resp.body)
 
-    @ddt.data(('utc', 'May 1, 2014 00:00 UTC'),
-              ('America/Los_Angeles', 'April 30, 2014 17:00 PDT'))
+    @ddt.data(('utc', '2014-04-30 20:00'),
+              ('America/Los_Angeles', '2014-04-30 20:00'))
     @ddt.unpack
     def test_formatted_end_dates_for_beta_tester_with_days_early(self, time_zone, expected_end_date):
         """Test end dates for beta tester with days early"""
         with patch(self.TIME_ZONE_FN_PATH) as time_zone_fn:
-            time_zone_fn.return_value = pytz.timezone(time_zone)
+            time_zone_fn.return_value['user_timezone'] = pytz.timezone(time_zone)
 
             # Set due dates
             xblock = self._set_up_start_date(dt.datetime(2014, 4, 6, 1, 1, 1))
             xblock.due = dt.datetime(2014, 5, 1)
             self._set_up_days_early_for_beta(xblock, 5)
             self.assertEqual(xblock.xmodule_runtime.days_early_for_beta, 5)
-
             resp = self._render_xblock(xblock)
             self.assertIn(expected_end_date, resp.body)
 
-    @ddt.data(('utc', 'April 6, 2014 01:01 UTC'),
-              ('America/Los_Angeles', 'April 5, 2014 18:01 PDT'))
+    @ddt.data(('utc', '2014-04-05 21:01'),
+              ('America/Los_Angeles', '2014-04-05 21:01'))
     @ddt.unpack
     @freeze_time("2014-01-01")
     @patch.object(openassessmentblock.OpenAssessmentBlock, 'is_beta_tester', new_callable=PropertyMock)
@@ -259,7 +231,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
     ):
         """Test start dates for beta tester without days early"""
         with patch(self.TIME_ZONE_FN_PATH) as time_zone_fn:
-            time_zone_fn.return_value = pytz.timezone(time_zone)
+            time_zone_fn.return_value['user_timezone'] = pytz.timezone(time_zone)
             mock_is_beta_tester.return_value = True
 
             # Set start dates
@@ -267,8 +239,8 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             resp = self._render_xblock(xblock)
             self.assertIn(expected_start_date, resp.body)
 
-    @ddt.data(('utc', 'May 1, 2014 00:00 UTC'),
-              ('America/Los_Angeles', 'April 30, 2014 17:00 PDT'))
+    @ddt.data(('utc', '2014-04-30 20:00'),
+              ('America/Los_Angeles', '2014-04-30 20:00'))
     @ddt.unpack
     @patch.object(openassessmentblock.OpenAssessmentBlock, 'is_beta_tester', new_callable=PropertyMock)
     def test_formatted_end_dates_for_beta_tester_without_days_early(
@@ -279,7 +251,7 @@ class TestOpenAssessment(XBlockHandlerTestCase):
     ):
         """Test end dates for beta tester without days early"""
         with patch(self.TIME_ZONE_FN_PATH) as time_zone_fn:
-            time_zone_fn.return_value = pytz.timezone(time_zone)
+            time_zone_fn.return_value['user_timezone'] = pytz.timezone(time_zone)
             mock_is_beta_tester.return_value = True
 
             # Set due dates
@@ -287,8 +259,8 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             resp = self._render_xblock(xblock)
             self.assertIn(expected_end_date, resp.body)
 
-    @ddt.data(('utc', 'April 6, 2014 01:01 UTC'),
-              ('America/Los_Angeles', 'April 5, 2014 18:01 PDT'))
+    @ddt.data(('utc', '2014-04-05 21:01'),
+              ('America/Los_Angeles', '2014-04-05 21:01'))
     @ddt.unpack
     @freeze_time("2014-01-01")
     def test_formatted_start_dates_for_beta_tester_with_nonetype_days_early(self, time_zone, expected_start_date):
@@ -304,8 +276,8 @@ class TestOpenAssessment(XBlockHandlerTestCase):
             resp = self._render_xblock(xblock)
             self.assertIn(expected_start_date, resp.body)
 
-    @ddt.data(('utc', 'May 1, 2014 00:00 UTC'),
-              ('America/Los_Angeles', 'April 30, 2014 17:00 PDT'))
+    @ddt.data(('utc', '2014-04-30 20:00'),
+              ('America/Los_Angeles', '2014-04-30 20:00'))
     @ddt.unpack
     def test_formatted_end_dates_for_beta_tester_with_nonetype_days_early(self, time_zone, expected_end_date):
         """Test end dates for beta tester with NoneType days early"""

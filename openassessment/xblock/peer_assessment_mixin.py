@@ -1,3 +1,8 @@
+"""
+The Peer Assessment Mixin for all Peer Functionality.
+
+"""
+
 import logging
 
 from webob import Response
@@ -10,7 +15,8 @@ from openassessment.assessment.errors import (
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.defaults import DEFAULT_RUBRIC_FEEDBACK_TEXT
 from .data_conversion import create_rubric_dict
-from .resolve_dates import DISTANT_FUTURE, get_current_time_zone
+from .resolve_dates import DISTANT_FUTURE
+from .user_data import get_user_preferences
 from .data_conversion import clean_criterion_feedback, create_submission_dict, verify_assessment_parameters
 
 logger = logging.getLogger(__name__)
@@ -161,12 +167,13 @@ class PeerAssessmentMixin(object):
         path = 'openassessmentblock/peer/oa_peer_unavailable.html'
         finished = False
         problem_closed, reason, start_date, due_date = self.is_closed(step="peer-assessment")
-        user_service = self.runtime.service(self, 'user')
+        user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
 
         context_dict = {
             "rubric_criteria": self.rubric_criteria_with_labels,
             "allow_latex": self.allow_latex,
-            "time_zone": get_current_time_zone(user_service),
+            "user_timezone": user_preferences['user_timezone'],
+            "user_language": user_preferences['user_language'],
             "xblock_id": self.get_xblock_id(),
         }
 
