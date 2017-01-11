@@ -309,7 +309,7 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
                 'rubric_criteria': xblock.rubric_criteria,
                 'self_submission': submission,
                 'file_upload_type': None,
-                'self_file_url': '',
+                'self_file_urls': [],
                 'allow_latex': False,
                 'user_timezone': pytz.utc,
                 'user_language': 'en'

@@ -57,6 +57,23 @@ class TestFileUploadService(TestCase):
         downloadUrl = api.get_download_url("foo")
         self.assertIn("https://mybucket.s3.amazonaws.com/submissions_attachments/foo", downloadUrl)
 
+    @mock_s3
+    @override_settings(
+        AWS_ACCESS_KEY_ID='foobar',
+        AWS_SECRET_ACCESS_KEY='bizbaz',
+        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
+    )
+    def test_remove_file(self):
+        conn = boto.connect_s3()
+        bucket = conn.create_bucket('mybucket')
+        key = Key(bucket)
+        key.key = "submissions_attachments/foo"
+        key.set_contents_from_string("Test")
+        result = api.remove_file("foo")
+        self.assertTrue(result)
+        result = api.remove_file("foo")
+        self.assertFalse(result)
+
     @raises(exceptions.FileUploadInternalError)
     def test_get_upload_url_no_bucket(self):
         api.get_upload_url("foo", "bar")
@@ -279,6 +296,15 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
 
         self.assertEqual(200, upload_response.status_code)
         self.assertEqual(200, download_response.status_code)
+
+    def test_remove_file(self):
+        self.set_key(u"noël.jpg")
+        upload_url = self.backend.get_upload_url(self.key, self.content_type)
+        self.client.put(upload_url, data=self.content.read(), content_type=self.content_type)
+        result = self.backend.remove_file(self.key)
+        self.assertTrue(result)
+        result = self.backend.remove_file(self.key)
+        self.assertFalse(result)
 
 
 @override_settings(

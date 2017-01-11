@@ -6,7 +6,7 @@ from collections import namedtuple
 import json
 import datetime
 import urllib
-from mock import MagicMock, Mock, patch
+from mock import MagicMock, Mock, call, patch
 from django.test.utils import override_settings
 
 from openassessment.assessment.api import peer as peer_api
@@ -408,7 +408,8 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # Create an image submission for Bob, and corresponding workflow.
         self._create_submission(bob_item, {
             'text': "Bob Answer",
-            'file_key': "test_key"
+            'file_keys': ["test_key"],
+            'files_descriptions': ["test_description"]
         }, ['self'])
 
         # Mock the file upload API to avoid hitting S3
@@ -423,13 +424,65 @@ class TestCourseStaff(XBlockHandlerTestCase):
             file_api.get_download_url.assert_called_with("test_key")
 
             # Check the context passed to the template
-            self.assertEquals('http://www.example.com/image.jpeg', context['staff_file_url'])
+            self.assertEquals([('http://www.example.com/image.jpeg', 'test_description')], context['staff_file_urls'])
             self.assertEquals('image', context['file_upload_type'])
 
             # Check the fully rendered template
             payload = urllib.urlencode({"student_username": "Bob"})
             resp = self.request(xblock, "render_student_info", payload)
             self.assertIn("http://www.example.com/image.jpeg", resp)
+
+    @scenario('data/self_only_scenario.xml', user_id='Bob')
+    def test_staff_area_student_info_many_images_submission(self, xblock):
+        """
+        Test multiple file uploads support
+        """
+        # Simulate that we are course staff
+        xblock.xmodule_runtime = self._create_mock_runtime(
+            xblock.scope_ids.usage_id, True, False, "Bob"
+        )
+        xblock.runtime._services['user'] = NullUserService()
+
+        bob_item = STUDENT_ITEM.copy()
+        bob_item["item_id"] = xblock.scope_ids.usage_id
+
+        file_keys = ["test_key0", "test_key1", "test_key2"]
+        files_descriptions = ["test_description0", "test_description1", "test_description2"]
+        images = ["http://www.example.com/image%d.jpeg" % i for i in range(3)]
+        file_keys_with_images = dict(zip(file_keys, images))
+
+        # Create an image submission for Bob, and corresponding workflow.
+        self._create_submission(bob_item, {
+            'text': "Bob Answer",
+            'file_keys': file_keys,
+            'files_descriptions': files_descriptions
+        }, ['self'])
+
+        # Mock the file upload API to avoid hitting S3
+        with patch("openassessment.xblock.submission_mixin.file_upload_api") as file_api:
+            file_api.get_download_url.return_value = Mock()
+            file_api.get_download_url.side_effect = lambda file_key: file_keys_with_images[file_key]
+
+            # also fake a file_upload_type so our patched url gets rendered
+            xblock.file_upload_type_raw = 'image'
+
+            __, context = xblock.get_student_info_path_and_context("Bob")
+
+            # Check that the right file key was passed to generate the download url
+            calls = [call("test_key%d" % i) for i in range(3)]
+            file_api.get_download_url.assert_has_calls(calls)
+
+            # Check the context passed to the template
+            self.assertEquals([(image, "test_description%d" % i) for i, image in enumerate(images)],
+                              context['staff_file_urls'])
+            self.assertEquals('image', context['file_upload_type'])
+
+            # Check the fully rendered template
+            payload = urllib.urlencode({"student_username": "Bob"})
+            resp = self.request(xblock, "render_student_info", payload)
+            for i in range(3):
+                self.assertIn("http://www.example.com/image%d.jpeg" % i, resp)
+                self.assertIn("test_description%d" % i, resp)
 
     @scenario('data/self_only_scenario.xml', user_id='Bob')
     def test_staff_area_student_info_file_download_url_error(self, xblock):
@@ -445,7 +498,7 @@ class TestCourseStaff(XBlockHandlerTestCase):
         # Create an image submission for Bob, and corresponding workflow.
         self._create_submission(bob_item, {
             'text': "Bob Answer",
-            'file_key': "test_key"
+            'file_keys': ["test_key"]
         }, ['self'])
 
         # Mock the file upload API to simulate an error

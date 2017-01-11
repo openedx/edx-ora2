@@ -105,7 +105,8 @@ def create_assessment(
 
     Args:
         submission_uuid (str): The unique identifier for the submission being assessed.
-        user_id (str): The ID of the user creating the assessment.  This must match the ID of the user who made the submission.
+        user_id (str): The ID of the user creating the assessment. 
+                       This must match the ID of the user who made the submission.
         options_selected (dict): Mapping of rubric criterion names to option values selected.
         criterion_feedback (dict): Dictionary mapping criterion names to the
             free-form text feedback the user gave for the criterion.

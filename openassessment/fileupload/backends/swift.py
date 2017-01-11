@@ -63,6 +63,24 @@ class Backend(BaseBackend):
             )
             raise FileUploadInternalError(ex)
 
+    def remove_file(self, key):
+        bucket_name, key_name = self._retrieve_parameters(key)
+        key, url = get_settings()
+        try:
+            temp_url = swiftclient.utils.generate_temp_url(
+                path='%s/%s/%s' % (url.path, bucket_name, key_name),
+                key=key,
+                method='DELETE',
+                seconds=self.DOWNLOAD_URL_TIMEOUT)
+            remove_url = '%s://%s%s' % (url.scheme, url.netloc, temp_url)
+            response = requests.delete(remove_url)
+            return response.status_code == 204
+        except Exception as ex:
+            logger.exception(
+                u"An internal exception occurred while removing object on swift storage."
+            )
+            raise FileUploadInternalError(ex)
+
 
 def get_settings():
     """
