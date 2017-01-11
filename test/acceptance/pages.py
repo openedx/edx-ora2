@@ -196,14 +196,15 @@ class SubmissionPage(OpenAssessmentPage):
         return self.q(css="div.upload__error > div.message--error").visible
 
     @property
-    def has_file_uploaded(self):
+    def have_files_uploaded(self):
         """
-        Check whether file is successfully uploaded
+        Check whether files were successfully uploaded
 
         Returns:
             bool
         """
-        return self.q(css=".submission__custom__upload").visible
+        self.wait_for_element_visibility('.submission__custom__upload', 'Uploaded files block is presented')
+        return self.q(css=".submission__answer__files").visible
 
 
 class AssessmentMixin(object):

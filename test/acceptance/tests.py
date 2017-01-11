@@ -741,10 +741,13 @@ class FileUploadTest(OpenAssessmentTest):
         self.assertTrue(self.submission_page.has_file_error)
 
         # trying to upload a acceptable file
-        self.submission_page.visit().select_file(os.path.dirname(os.path.realpath(__file__)) + '/README.rst')
+        readme1 = os.path.dirname(os.path.realpath(__file__)) + '/README.rst'
+        readme2 = readme1.replace('test/acceptance/', '')  # There's another README located at ../../
+        files = ', '.join([readme1, readme2])
+        self.submission_page.visit().select_file(files)
         self.assertFalse(self.submission_page.has_file_error)
         self.submission_page.upload_file()
-        self.assertTrue(self.submission_page.has_file_uploaded)
+        self.assertTrue(self.submission_page.have_files_uploaded)
 
 
 class FullWorkflowMixin(object):

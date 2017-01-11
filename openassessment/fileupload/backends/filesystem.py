@@ -42,6 +42,10 @@ class Backend(BaseBackend):
         make_download_url_available(self._get_key_name(key), self.DOWNLOAD_URL_TIMEOUT)
         return self._get_url(key)
 
+    def remove_file(self, key):
+        from openassessment.fileupload.views_filesystem import safe_remove, get_file_path
+        return safe_remove(get_file_path(self._get_key_name(key)))
+
     def _get_url(self, key):
         key_name = self._get_key_name(key)
         url = reverse("openassessment-filesystem-storage", kwargs={'key': key_name})

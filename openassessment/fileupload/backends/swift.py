@@ -63,6 +63,10 @@ class Backend(BaseBackend):
             )
             raise FileUploadInternalError(ex)
 
+    def remove_file(self, key):
+        """
+        @TODO Need to be implemented to remove previously uploaded files
+        """
 
 def get_settings():
     """
