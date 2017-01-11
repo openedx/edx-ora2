@@ -108,11 +108,11 @@ OpenAssessment.StudentTrainingView.prototype = {
                 } else {
                     instructions.addClass("is--hidden");
                     incorrect.removeClass("is--hidden");
-                    $questionAnswers.each(function (index, answer) {
+                    $questionAnswers.each(function(index, answer) {
                         var $notification = $(".step__message.message", view.rubric.element).not(".is--hidden");
                         $(answer).attr('aria-describedby', $($notification[index]).attr('id'));
                     });
-                    baseView.srReadTexts([gettext('Feedback available for selection.')])
+                    baseView.srReadTexts([gettext('Feedback available for selection.')]);
                 }
                 baseView.scrollToTop(".step--student-training");
             }

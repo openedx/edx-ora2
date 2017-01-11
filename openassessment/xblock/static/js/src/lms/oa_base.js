@@ -69,6 +69,13 @@ OpenAssessment.BaseView.prototype = {
     },
 
     /**
+     * Clear the text in the Aria live region.
+     */
+    srClear: function() {
+        $('.sr.reader-feedback').html('');
+    },
+
+    /**
      * Add the text messages to the Aria live region.
      *
      * @param {string[]} texts
@@ -77,7 +84,7 @@ OpenAssessment.BaseView.prototype = {
         var readerFeedbackID = '.sr.reader-feedback',
             $readerFeedbackSelector = $(readerFeedbackID),
             htmlFeedback = '';
-
+        this.srClear();
         $.each(texts, function(ids, value) {
             htmlFeedback = htmlFeedback + '<p>' + value + '</p>\n';
         });

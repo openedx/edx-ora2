@@ -351,7 +351,9 @@ OpenAssessment.ResponseView.prototype = {
             });
             if (currentResponseEqualsSaved) {
                 view.saveEnabled(false);
-                view.saveStatus(gettext("This response has been saved but not submitted."));
+                var msg = gettext("This response has been saved but not submitted.");
+                view.saveStatus(msg);
+                view.baseView.srReadTexts([msg]);
             }
         }).fail(function(errMsg) {
             view.saveStatus(gettext('Error'));
