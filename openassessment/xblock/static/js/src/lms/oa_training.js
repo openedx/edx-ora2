@@ -14,6 +14,8 @@ OpenAssessment.StudentTrainingView = function(element, server, baseView) {
     this.server = server;
     this.baseView = baseView;
     this.rubric = null;
+    this.isRendering = false;
+    this.announceStatus = false;
 };
 
 OpenAssessment.StudentTrainingView.prototype = {
@@ -24,15 +26,19 @@ OpenAssessment.StudentTrainingView.prototype = {
     load: function(usageID) {
         var view = this;
         var stepID = '.step--student-training';
+        var focusID = "[id='oa_training_" + usageID + "']";
+        view.isRendering = true;
         this.server.render('student_training').done(
             function(html) {
                 // Load the HTML and install event handlers
                 $(stepID, view.element).replaceWith(html);
+                view.isRendering = false;
                 view.server.renderLatex($(stepID, view.element));
                 view.installHandlers();
-                if (typeof usageID !== 'undefined' && $(stepID, view.element).hasClass("is--showing")) {
-                    $("[id='oa_training_" + usageID + "']", view.element).focus();
-                }
+
+                view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
+                view.announceStatus = false;
+
             }
         ).fail(function() {
             view.baseView.showLoadError('student-training');
@@ -69,6 +75,7 @@ OpenAssessment.StudentTrainingView.prototype = {
 
                 // Handle the click
                 view.assess();
+                view.announceStatus = true;
             }
         );
     },

@@ -790,16 +790,25 @@ class FullWorkflowMixin(object):
             (str, str): the username and password of the newly created user
         """
         username, email = self.do_submission()
+        actual = self.submission_page.get_sr_html()
         EmptyPromise(self.submission_page.button(".step--student-training").is_focused(),
                      "Student training button should be focused")
+        self.assertIn('Your Response Complete', actual[0])
+        self.assertIn('Learn to Assess Responses In Progress (1 of 2)', actual[0])
 
         self.do_training()
+        actual = self.submission_page.get_sr_html()
         EmptyPromise(self.submission_page.button(".step--self-assessment").is_focused(),
                      "Self assessment button should be focused")
+        self.assertIn('Learn to Assess Responses Complete', actual[0])
+        self.assertIn('Assess Your Response In Progress', actual[0])
 
         self.submit_self_assessment(self.SELF_ASSESSMENT)
+        actual = self.submission_page.get_sr_html()
         EmptyPromise(self.submission_page.button(".step--grade").is_focused(),
                      "Grade button should be focused")
+        self.assertIn('Assess Your Response Complete', actual[0])
+        self.assertIn('Assess Peers In Progress (1 of 1)', actual[0])
 
         return username, email
 

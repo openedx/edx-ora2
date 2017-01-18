@@ -27,6 +27,7 @@ OpenAssessment.BaseView = function(runtime, element, server, data) {
     // Staff-only area with information and tools for managing student submissions
     this.staffAreaView = new OpenAssessment.StaffAreaView(this.element, this.server, this);
     this.usageID = '';
+    this.srStatusUpdates = [];
 };
 
 if (typeof OpenAssessment.unsavedChanges === 'undefined' || !OpenAssessment.unsavedChanges) {
@@ -65,6 +66,89 @@ OpenAssessment.BaseView.prototype = {
             $(window).scrollTo($(selector, this.element), 800, {offset: -50});
             $(selector + " > header ." + this.SLIDABLE_CLASS, this.element).focus();
         }
+    },
+
+    /**
+     * Add the text messages to the Aria live region.
+     *
+     * @param {string[]} texts
+     */
+    srReadTexts: function(texts) {
+        var readerFeedbackID = '.sr.reader-feedback',
+            $readerFeedbackSelector = $(readerFeedbackID),
+            htmlFeedback = '';
+
+        $.each(texts, function(ids, value) {
+            htmlFeedback = htmlFeedback + '<p>' + value + '</p>\n';
+        });
+        $readerFeedbackSelector.html(htmlFeedback);
+    },
+
+    /**
+     * Checks the rendering status of the views that may require Screen Reader Status updates.
+     *
+     * The only views that should be added here are those that require Screen Reader updates when moving from one
+     * step to another.
+     *
+     * @returns {boolean} true if any step's view is still loading.
+     */
+    areSRStepsLoading: function() {
+        return this.responseView.isRendering ||
+            this.peerView.isRendering ||
+            this.selfView.isRendering ||
+            this.gradeView.isRendering ||
+            this.trainingView.isRendering ||
+            this.staffView.isRendering;
+    },
+
+    /**
+     * Updates text in the Aria live region if all sections are rendered and focuses on the specified ID.
+     *
+     * @param {String} stepID - The id of the Step being worked on.
+     * @param {String} usageID  - The Usage id of the xBlock.
+     * @param {boolean} gradeStatus - true if this is a Grade status, false if it is an assessment status.
+     * @param {Object} currentView - Current active view.
+     * @param {String} focusID - The ID of the region to focus on.
+     */
+    announceStatusChangeToSRandFocus: function(stepID, usageID, gradeStatus, currentView, focusID) {
+        var text = this.getStatus(stepID, currentView, gradeStatus);
+
+        if (typeof usageID !== 'undefined' &&
+            $(stepID, currentView.element).hasClass("is--showing") &&
+            typeof focusID !== 'undefined') {
+
+            $(focusID, currentView.element).focus();
+            this.srStatusUpdates.push(text);
+        } else if (currentView.announceStatus) {
+            this.srStatusUpdates.push(text);
+        }
+        if (!this.areSRStepsLoading() && this.srStatusUpdates.length > 0) {
+            this.srReadTexts(this.srStatusUpdates);
+            this.srStatusUpdates = [];
+        }
+        currentView.announceStatus = false;
+    },
+
+    /**
+     * Retrieves and returns the current status of a given step.
+     *
+     * @param {String} stepID - The id of the Step to retrieve status for.
+     * @param {Object} currentView - The current view.
+     * @param {boolean} gradeStatus - true if the status to be retrieved is the grade status,
+     *      false if it is the assessment status
+     * @returns {String} - the current status.
+     */
+    getStatus: function(stepID, currentView, gradeStatus) {
+        var cssBase = stepID + " .step__header .step__title ";
+        var cssStringTitle = cssBase + ".step__label";
+        var cssStringStatus = cssBase + ".step__status";
+
+        if (gradeStatus) {
+            cssStringStatus = cssBase + ".grade__value";
+        }
+
+        return $(cssStringTitle, currentView.element).text().trim() + ' ' +
+            $(cssStringStatus, currentView.element).text().trim();
     },
 
     /**
@@ -189,6 +273,11 @@ OpenAssessment.BaseView.prototype = {
             $(container, element).toggleClass('has--error', message !== null);
             // Send focus to the error message
             $(container + " > .message", element).focus();
+        }
+
+        if (message !== null) {
+            var contentTitle = $(container + " .message__title").text();
+            this.srReadTexts([contentTitle, message]);
         }
     },
 
