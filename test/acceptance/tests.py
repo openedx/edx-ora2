@@ -790,25 +790,22 @@ class FullWorkflowMixin(object):
             (str, str): the username and password of the newly created user
         """
         username, email = self.do_submission()
-        actual = self.submission_page.get_sr_html()
         EmptyPromise(self.submission_page.button(".step--student-training").is_focused(),
                      "Student training button should be focused")
-        self.assertIn('Your Response Complete', actual[0])
-        self.assertIn('Learn to Assess Responses In Progress (1 of 2)', actual[0])
+        self.submission_page.confirm_feedback_text('Your Response Complete')
+        self.submission_page.confirm_feedback_text('Learn to Assess Responses In Progress (1 of 2)')
 
         self.do_training()
-        actual = self.submission_page.get_sr_html()
         EmptyPromise(self.submission_page.button(".step--self-assessment").is_focused(),
                      "Self assessment button should be focused")
-        self.assertIn('Learn to Assess Responses Complete', actual[0])
-        self.assertIn('Assess Your Response In Progress', actual[0])
+        self.submission_page.confirm_feedback_text('Learn to Assess Responses Complete')
+        self.submission_page.confirm_feedback_text('Assess Your Response In Progress')
 
         self.submit_self_assessment(self.SELF_ASSESSMENT)
-        actual = self.submission_page.get_sr_html()
         EmptyPromise(self.submission_page.button(".step--grade").is_focused(),
                      "Grade button should be focused")
-        self.assertIn('Assess Your Response Complete', actual[0])
-        self.assertIn('Assess Peers In Progress (1 of 1)', actual[0])
+        self.submission_page.confirm_feedback_text('Assess Your Response Complete')
+        self.submission_page.confirm_feedback_text('Assess Peers In Progress (1 of 1)')
 
         return username, email
 

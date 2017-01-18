@@ -98,6 +98,7 @@ OpenAssessment.StudentTrainingView.prototype = {
             function(corrections) {
                 var incorrect = $(".openassessment__student-training--incorrect", view.element);
                 var instructions = $(".openassessment__student-training--instructions", view.element);
+                var $questionAnswers = $(".question__answers", view.rubric.element);
 
                 if (!view.rubric.showCorrections(corrections)) {
                     view.load(usageID);
@@ -107,6 +108,11 @@ OpenAssessment.StudentTrainingView.prototype = {
                 } else {
                     instructions.addClass("is--hidden");
                     incorrect.removeClass("is--hidden");
+                    $questionAnswers.each(function (index, answer) {
+                        var $notification = $(".step__message.message", view.rubric.element).not(".is--hidden");
+                        $(answer).attr('aria-describedby', $($notification[index]).attr('id'));
+                    });
+                    baseView.srReadTexts([gettext('Feedback available for selection.')])
                 }
                 baseView.scrollToTop(".step--student-training");
             }
