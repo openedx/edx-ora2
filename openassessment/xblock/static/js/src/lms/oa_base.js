@@ -47,6 +47,7 @@ OpenAssessment.BaseView.prototype = {
     SLIDABLE_CONTENT_CLASS: "ui-slidable__content",
     SLIDABLE_CONTROLS_CLASS: "ui-slidable__control",
     SLIDABLE_CONTAINER_CLASS: "ui-slidable__container",
+    READER_FEEDBACK_CLASS: '.sr.reader-feedback',
 
     /**
      * Checks to see if the scrollTo function is available, then scrolls to the
@@ -69,15 +70,21 @@ OpenAssessment.BaseView.prototype = {
     },
 
     /**
+     * Clear the text in the Aria live region.
+     */
+    srClear: function() {
+        $(this.READER_FEEDBACK_CLASS).html('');
+    },
+
+    /**
      * Add the text messages to the Aria live region.
      *
      * @param {string[]} texts
      */
     srReadTexts: function(texts) {
-        var readerFeedbackID = '.sr.reader-feedback',
-            $readerFeedbackSelector = $(readerFeedbackID),
+        var $readerFeedbackSelector = $(this.READER_FEEDBACK_CLASS),
             htmlFeedback = '';
-
+        this.srClear();
         $.each(texts, function(ids, value) {
             htmlFeedback = htmlFeedback + '<p>' + value + '</p>\n';
         });
