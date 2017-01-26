@@ -16,6 +16,8 @@ OpenAssessment.PeerView = function(element, server, baseView) {
     this.rubric = null;
     this.isRendering = false;
     this.announceStatus = false;
+    this.dateFactory = new OpenAssessment.DateTimeFactory(this.element);
+
 };
 
 OpenAssessment.PeerView.prototype = {
@@ -42,6 +44,7 @@ OpenAssessment.PeerView.prototype = {
 
                 view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
                 view.announceStatus = false;
+                view.dateFactory.apply();
             }
         ).fail(function() {
             view.baseView.showLoadError('peer-assessment');

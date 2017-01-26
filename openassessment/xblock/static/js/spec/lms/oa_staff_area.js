@@ -466,7 +466,7 @@ describe('OpenAssessment.StaffAreaView', function() {
 
                 // Verify that the student view reflects the cancellation
                 expect($($('.staff-info__student__response p', staffArea.element)[0]).text().trim()).toBe(
-                    'Learner submission removed by staff on October 1, 2015 04:53 UTC'
+                    'Learner submission removed by staff on 2015-10-01 04:53 UTC'
                 );
                 expect($($('.staff-info__student__response p', staffArea.element)[1]).text().trim()).toBe(
                     'Comments: Cancelled!'

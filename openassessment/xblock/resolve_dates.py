@@ -24,18 +24,6 @@ DISTANT_PAST = dt.datetime(dt.MINYEAR, 1, 1, tzinfo=pytz.utc)
 DISTANT_FUTURE = dt.datetime(dt.MAXYEAR, 1, 1, tzinfo=pytz.utc)
 
 
-def get_current_time_zone(user_service):
-    """
-    Returns the preferred time zone for the current user, if specified, or UTC if not
-
-    :param user_service: XblockUserService
-    """
-    user_preferences = user_service.get_current_user().opt_attrs.get('edx-platform.user_preferences')
-    if user_preferences is None:
-        return pytz.utc
-    return pytz.timezone(user_preferences.get('time_zone', 'utc'))
-
-
 def _parse_date(value, _):
     """
     Parse an ISO formatted datestring into a datetime object with timezone set to UTC.

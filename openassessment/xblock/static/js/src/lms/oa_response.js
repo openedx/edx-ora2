@@ -26,6 +26,7 @@ OpenAssessment.ResponseView = function(element, server, fileUploader, baseView, 
     this.fileUploaded = false;
     this.announceStatus = false;
     this.isRendering = false;
+    this.dateFactory = new OpenAssessment.DateTimeFactory(this.element);
 };
 
 OpenAssessment.ResponseView.prototype = {
@@ -58,11 +59,10 @@ OpenAssessment.ResponseView.prototype = {
                 view.server.renderLatex($(stepID, view.element));
                 view.installHandlers();
                 view.setAutoSaveEnabled(true);
-
                 view.isRendering = false;
                 view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
                 view.announceStatus = false;
-
+                view.dateFactory.apply();
             }
         ).fail(function() {
             view.baseView.showLoadError('response');

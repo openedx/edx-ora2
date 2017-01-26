@@ -893,7 +893,8 @@
                 "cancelled_at": "2015-10-01T04:53",
                 "comments": "Cancelled!"
             },
-            "time_zone": "utc"
+            "user_timezone": "utc",
+            "user_language": "en"
         },
         "output": "oa_staff_cancelled_submission.html"
     },
@@ -1195,5 +1196,22 @@
             "student_username": "mock_user_2"
         },
         "output": "oa_staff_grade_learners_assessment_2.html"
+    },
+    {
+        "template": "openassessmentblock/response/oa_response.html",
+        "context": {
+            "saved_response": {
+                "answer": {
+                    "parts": [
+                        { "text": "", "prompt": { "description": "Prompt 1" }},
+                        { "text": "", "prompt": { "description": "Prompt 2" }}
+                    ]
+                }
+            },
+            "save_status": "This response has not been saved.",
+            "submit_enabled": true,
+            "submission_due": "2020-01-01T00:00"
+        },
+        "output": "oa_response_date.html"
     }
 ]

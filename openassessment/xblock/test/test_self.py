@@ -172,7 +172,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             {
                 'self_start': datetime.datetime(5999, 1, 1).replace(tzinfo=pytz.utc),
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': pytz.utc,
+                'user_language': 'en'
             }
         )
 
@@ -185,7 +186,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             {
                 'self_due': datetime.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': pytz.utc,
+                'user_language': 'en'
             }
         )
 
@@ -196,7 +198,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             xblock, 'openassessmentblock/self/oa_self_unavailable.html',
             {
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': pytz.utc,
+                'user_language': 'en'
             }
         )
 
@@ -212,7 +215,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             xblock, 'openassessmentblock/self/oa_self_unavailable.html',
             {
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': pytz.utc,
+                'user_language': 'en'
             }
         )
 
@@ -228,7 +232,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             xblock, 'openassessmentblock/self/oa_self_complete.html',
             {
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': None,
+                'user_language': None
             },
             workflow_status='waiting',
             status_details={
@@ -249,7 +254,9 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             xblock, 'openassessmentblock/self/oa_self_complete.html',
             {
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': None,
+                'user_language': None
+
             },
             workflow_status="peer",
             status_details={
@@ -268,7 +275,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             xblock, 'openassessmentblock/self/oa_self_complete.html',
             {
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': None,
+                'user_language': None
             },
             workflow_status='done'
         )
@@ -283,7 +291,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             xblock, 'openassessmentblock/self/oa_self_cancelled.html',
             {
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': pytz.utc,
+                'user_language': 'en'
             },
             workflow_status='cancelled'
         )
@@ -302,7 +311,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
                 'file_upload_type': None,
                 'self_file_url': '',
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': pytz.utc,
+                'user_language': 'en'
             },
             workflow_status='self',
             submission_uuid=submission['uuid']
@@ -326,7 +336,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             xblock, 'openassessmentblock/self/oa_self_complete.html',
             {
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': pytz.utc,
+                'user_language': 'en'
             },
             workflow_status='self',
             submission_uuid=submission['uuid']
@@ -345,7 +356,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             {
                 'self_due': datetime.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': pytz.utc,
+                'user_language': 'en'
             },
             workflow_status='self',
             submission_uuid=submission['uuid']
@@ -376,7 +388,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             {
                 'self_due': datetime.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
                 'allow_latex': False,
-                'time_zone': pytz.utc,
+                'user_timezone': pytz.utc,
+                'user_language': 'en'
             },
             workflow_status='self',
             submission_uuid=submission['uuid']
