@@ -14,6 +14,9 @@ OpenAssessment.StudentTrainingView = function(element, server, baseView) {
     this.server = server;
     this.baseView = baseView;
     this.rubric = null;
+    this.isRendering = false;
+    this.announceStatus = false;
+    this.dateFactory = new OpenAssessment.DateTimeFactory(this.element);
 };
 
 OpenAssessment.StudentTrainingView.prototype = {
@@ -24,15 +27,19 @@ OpenAssessment.StudentTrainingView.prototype = {
     load: function(usageID) {
         var view = this;
         var stepID = '.step--student-training';
+        var focusID = "[id='oa_training_" + usageID + "']";
+        view.isRendering = true;
         this.server.render('student_training').done(
             function(html) {
                 // Load the HTML and install event handlers
                 $(stepID, view.element).replaceWith(html);
+                view.isRendering = false;
                 view.server.renderLatex($(stepID, view.element));
                 view.installHandlers();
-                if (typeof usageID !== 'undefined' && $(stepID, view.element).hasClass("is--showing")) {
-                    $("[id='oa_training_" + usageID + "']", view.element).focus();
-                }
+
+                view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
+                view.announceStatus = false;
+                view.dateFactory.apply();
             }
         ).fail(function() {
             view.baseView.showLoadError('student-training');
@@ -69,6 +76,7 @@ OpenAssessment.StudentTrainingView.prototype = {
 
                 // Handle the click
                 view.assess();
+                view.announceStatus = true;
             }
         );
     },
@@ -91,6 +99,7 @@ OpenAssessment.StudentTrainingView.prototype = {
             function(corrections) {
                 var incorrect = $(".openassessment__student-training--incorrect", view.element);
                 var instructions = $(".openassessment__student-training--instructions", view.element);
+                var $questionAnswers = $(".question__answers", view.rubric.element);
 
                 if (!view.rubric.showCorrections(corrections)) {
                     view.load(usageID);
@@ -100,6 +109,11 @@ OpenAssessment.StudentTrainingView.prototype = {
                 } else {
                     instructions.addClass("is--hidden");
                     incorrect.removeClass("is--hidden");
+                    $questionAnswers.each(function(index, answer) {
+                        var $notification = $(".step__message.message", view.rubric.element).not(".is--hidden");
+                        $(answer).attr('aria-describedby', $($notification[index]).attr('id'));
+                    });
+                    baseView.srReadTexts([gettext('Feedback available for selection.')]);
                 }
                 baseView.scrollToTop(".step--student-training");
             }

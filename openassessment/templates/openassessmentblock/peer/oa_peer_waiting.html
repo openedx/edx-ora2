@@ -13,7 +13,7 @@
 {% block title %}
 <span class="step__status">
   <span class="step__status__value">
-    <span class="copy">{{review_num}}
+    <span class="copy">
       {% with review_num_string=review_num|stringformat:"s" must_grade_string=must_grade|stringformat:"s" %}
         {% blocktrans with review_number='<span class="step__status__number--current">'|safe|add:review_num_string|add:"</span>"|safe num_must_grade='<span class="step__status__value--required">'|safe|add:must_grade_string|add:"</span>"|safe %}
           In Progress ({{ review_number }} of {{ num_must_grade }})

@@ -10,6 +10,9 @@ OpenAssessment.GradeView = function(element, server, baseView) {
     this.element = element;
     this.server = server;
     this.baseView = baseView;
+    this.announceStatus = false;
+    this.isRendering = false;
+    this.dateFactory = new OpenAssessment.DateTimeFactory(this.element);
 };
 
 OpenAssessment.GradeView.prototype = {
@@ -20,18 +23,18 @@ OpenAssessment.GradeView.prototype = {
         var view = this;
         var baseView = this.baseView;
         var stepID = ".step--grade";
+        var focusID = "[id='oa_grade_" + usageID + "']";
+        view.isRendering = true;
         this.server.render('grade').done(
             function(html) {
                 // Load the HTML and install event handlers
                 $(stepID, view.element).replaceWith(html);
                 view.server.renderLatex($(stepID, view.element));
+                view.isRendering = false;
                 view.installHandlers();
-                if (typeof usageID !== 'undefined' &&
-                    !$(stepID, view.element).hasClass("is--unfinished") &&
-                    !$(stepID, view.element).hasClass("is--unstarted") &&
-                    !$(stepID, view.element).hasClass("is--waiting--staff")) {
-                    $("[id='oa_grade_" + usageID + "']", view.element).focus();
-                }
+
+                view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, true, view, focusID);
+                view.dateFactory.apply();
             }
         ).fail(function(errMsg) {
             baseView.showLoadError('grade', errMsg);

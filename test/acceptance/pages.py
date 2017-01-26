@@ -38,6 +38,15 @@ class BaseAssessmentPage(PageObject):
             loc=self._problem_location
         )
 
+    def get_sr_html(self):
+        return self.q(css='.sr.reader-feedback').html
+
+    def confirm_feedback_text(self, text):
+        def is_text_in_feedback():
+            return text in self.get_sr_html()[0]
+
+        self.wait_for(is_text_in_feedback, 'Waiting for %s, in %s' % (text, self.q(css='.sr.reader-feedback').html[0]))
+
 
 class MultipleAssessmentPage(BaseAssessmentPage):
     """
@@ -75,7 +84,6 @@ class OpenAssessmentPage(BaseAssessmentPage):
         `vert-{vertical_index}. If there is one problem on unit page, problem would have .vert-0 class attached to it.
         """
         return ".vert-{vertical_index}".format(vertical_index=self.vertical_index)
-
 
     def submit(self, button_css=".action--submit"):
         """

@@ -17,12 +17,16 @@
                 {% if training_start %}
                     <span class="step__deadline">
                         {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "available August 13th, 2014 (in 5 days and 45 minutes)" #}
-                        {% blocktrans with start_date=training_start|timezone:time_zone|date:"N j, Y H:i e" time_until=training_start|timeuntil %}available <span class="date">{{ start_date }} (in {{ time_until }})</span>{% endblocktrans %}
+                        {% blocktrans with start_date=training_start|date:"Y-m-d H:i" time_until=training_start|timeuntil %}
+                        <span class="date ora-datetime" data-datetime="{{ start_date }}" data-string="available {date} (in {{ time_until }})" data-timezone="{{ user_timezone }}" data-language="{{ user_language }}"></span>
+                        {% endblocktrans %}
                     </span>
                 {% elif training_due %}
                     <span class="step__deadline">
                         {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "due August 13th, 2014 (in 5 days and 45 minutes)" #}
-                        {% blocktrans with due_date=training_due|timezone:time_zone|date:"N j, Y H:i e" time_until=training_due|timeuntil %}due <span class="date">{{ due_date }} (in {{ time_until }})</span>{% endblocktrans %}
+                        {% blocktrans with due_date=training_due|date:"Y-m-d H:i" time_until=training_due|timeuntil %}
+                        <span class="date ora-datetime" data-datetime="{{ due_date }}" data-string="due {date} (in {{ time_until }})" data-timezone="{{ user_timezone }}" data-language="{{ user_language }}"></span>
+                        {% endblocktrans %}
                     </span>
                 </span>
                 {% endif %}
@@ -89,43 +93,41 @@
                                         </button>
                                     </div>
                                     <div class="ui-slidable__content" aria-labelledby="oa_training_{{ xblock_id }}_criterion--{{ criterion.order_num }}" id="oa_training_{{ xblock_id }}_content_criterion--{{  criterion.order_num }}">
-                                        <div class="step__message message message--correct is--hidden">
+                                        <div id="training__assessment__rubric__correct__message--{{ criterion.order_num }}__{{ xblock_id }}" class="step__message message message--correct is--hidden">
                                             <h5 class="message__title">{% trans "Selected Options Agree" %}</h5>
 
                                             <div class="message__content">
                                                 <p>{% trans "The option you selected is the option that the instructor selected." %}</p>
                                             </div>
                                         </div>
-                                        <div class="step__message message message--incorrect is--hidden">
+                                        <div id="training__assessment__rubric__incorrect__message--{{ criterion.order_num }}__{{ xblock_id }}" class="step__message message message--incorrect is--hidden">
                                             <h5 class="message__title">{% trans "Selected Options Differ" %}</h5>
 
                                             <div class="message__content">
                                                 <p>{% trans "The option you selected is not the option that the instructor selected." %}</p>
                                             </div>
                                         </div>
-                                        <div class="question__answers">
-                                            <div role="group" aria-labelledby="training__assessment__rubric__prompt--{{ criterion.order_num }}__{{ xblock_id }}">
-                                            {% for option in criterion.options %}
-                                                <div class="answer">
-                                                    <div class="wrapper--input">
-                                                        <input type="radio"
-                                                               data-criterion-name="{{ criterion.name }}"
-                                                               id="training__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}"
-                                                               class="answer__value rubric_{{ criterion.order_num }}_{{ option.order_num }}"
-                                                               value="{{ option.name }}"
-                                                               name="training__assessment__rubric__question--{{ criterion.order_num }}"
-                                                               aria-describedby="training__assessment__rubric__meta--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}"/>
-                                                        <label for="training__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}"
-                                                               class="answer__label">{{ option.label }}</label>
-                                                    </div>
-                                                    <div class="wrapper--metadata"
-                                                         id="training__assessment__rubric__meta--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}">
-                                                        <span class="answer__tip">{{ option.explanation }}</span>
-                                                        <span class="answer__points">{{option.points}} <span class="answer__points__label">{% trans "points" %}</span></span>
-                                                    </div>
+                                        <div class="question__answers" role="group" aria-labelledby="training__assessment__rubric__prompt--{{ criterion.order_num }}__{{ xblock_id }}">
+                                        {% for option in criterion.options %}
+                                            <div class="answer">
+                                                <div class="wrapper--input">
+                                                    <input type="radio"
+                                                           data-criterion-name="{{ criterion.name }}"
+                                                           id="training__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}"
+                                                           class="answer__value rubric_{{ criterion.order_num }}_{{ option.order_num }}"
+                                                           value="{{ option.name }}"
+                                                           name="training__assessment__rubric__question--{{ criterion.order_num }}"
+                                                           aria-describedby="training__assessment__rubric__meta--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}"/>
+                                                    <label for="training__assessment__rubric__question--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}"
+                                                           class="answer__label">{{ option.label }}</label>
                                                 </div>
-                                            {% endfor %}
+                                                <div class="wrapper--metadata"
+                                                     id="training__assessment__rubric__meta--{{ criterion.order_num }}__{{ option.order_num }}__{{ xblock_id }}">
+                                                    <span class="answer__tip">{{ option.explanation }}</span>
+                                                    <span class="answer__points">{{option.points}} <span class="answer__points__label">{% trans "points" %}</span></span>
+                                                </div>
                                             </div>
+                                        {% endfor %}
                                         </div>
                                     </div>
                                 </li>

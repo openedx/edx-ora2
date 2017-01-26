@@ -6,7 +6,8 @@ from webob import Response
 from openassessment.assessment.api import self as self_api
 from openassessment.workflow import api as workflow_api
 from submissions import api as submission_api
-from .resolve_dates import DISTANT_FUTURE, get_current_time_zone
+from .resolve_dates import DISTANT_FUTURE
+from .user_data import get_user_preferences
 from .data_conversion import (clean_criterion_feedback, create_submission_dict,
                               create_rubric_dict, verify_assessment_parameters)
 
@@ -54,12 +55,13 @@ class SelfAssessmentMixin(object):
 
         path = 'openassessmentblock/self/oa_self_unavailable.html'
         problem_closed, reason, start_date, due_date = self.is_closed(step="self-assessment")
-        user_service = self.runtime.service(self, 'user')
+        user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
 
         context = {
             'allow_latex': self.allow_latex,
             "xblock_id": self.get_xblock_id(),
-            'time_zone': get_current_time_zone(user_service)
+            'user_timezone': user_preferences['user_timezone'],
+            'user_language': user_preferences['user_language']
         }
 
         # We display the due date whether the problem is open or closed.

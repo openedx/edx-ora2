@@ -24,6 +24,9 @@ OpenAssessment.ResponseView = function(element, server, fileUploader, baseView, 
     this.autoSaveTimerId = null;
     this.data = data;
     this.fileUploaded = false;
+    this.announceStatus = false;
+    this.isRendering = false;
+    this.dateFactory = new OpenAssessment.DateTimeFactory(this.element);
 };
 
 OpenAssessment.ResponseView.prototype = {
@@ -46,6 +49,9 @@ OpenAssessment.ResponseView.prototype = {
     load: function(usageID) {
         var view = this;
         var stepID = '.step--response';
+        var focusID = "[id='oa_response_" + usageID + "']";
+
+        view.isRendering = true;
         this.server.render('submission').done(
             function(html) {
                 // Load the HTML and install event handlers
@@ -53,9 +59,10 @@ OpenAssessment.ResponseView.prototype = {
                 view.server.renderLatex($(stepID, view.element));
                 view.installHandlers();
                 view.setAutoSaveEnabled(true);
-                if (typeof usageID !== 'undefined' && $(stepID, view.element).hasClass("is--showing")) {
-                    $("[id='oa_response_" + usageID + "']", view.element).focus();
-                }
+                view.isRendering = false;
+                view.baseView.announceStatusChangeToSRandFocus(stepID, usageID, false, view, focusID);
+                view.announceStatus = false;
+                view.dateFactory.apply();
             }
         ).fail(function() {
             view.baseView.showLoadError('response');
@@ -344,7 +351,9 @@ OpenAssessment.ResponseView.prototype = {
             });
             if (currentResponseEqualsSaved) {
                 view.saveEnabled(false);
-                view.saveStatus(gettext("This response has been saved but not submitted."));
+                var msg = gettext("This response has been saved but not submitted.");
+                view.saveStatus(msg);
+                view.baseView.srReadTexts([msg]);
             }
         }).fail(function(errMsg) {
             view.saveStatus(gettext('Error'));
@@ -363,7 +372,6 @@ OpenAssessment.ResponseView.prototype = {
     submit: function() {
         // Immediately disable the submit button to prevent multiple submission
         this.submitEnabled(false);
-
         var view = this;
         var baseView = this.baseView;
         var fileDefer = $.Deferred();
@@ -423,8 +431,12 @@ OpenAssessment.ResponseView.prototype = {
     moveToNextStep: function() {
         var baseView = this.baseView;
         var usageID = baseView.getUsageID();
+        var view = this;
+
         this.load(usageID);
         baseView.loadAssessmentModules(usageID);
+
+        view.announceStatus = true;
 
         // Disable the "unsaved changes" warning if the user
         // tries to navigate to another page.

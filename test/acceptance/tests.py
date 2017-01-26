@@ -792,14 +792,20 @@ class FullWorkflowMixin(object):
         username, email = self.do_submission()
         EmptyPromise(self.submission_page.button(".step--student-training").is_focused(),
                      "Student training button should be focused")
+        self.submission_page.confirm_feedback_text('Your Response Complete')
+        self.submission_page.confirm_feedback_text('Learn to Assess Responses In Progress (1 of 2)')
 
         self.do_training()
         EmptyPromise(self.submission_page.button(".step--self-assessment").is_focused(),
                      "Self assessment button should be focused")
+        self.submission_page.confirm_feedback_text('Learn to Assess Responses Complete')
+        self.submission_page.confirm_feedback_text('Assess Your Response In Progress')
 
         self.submit_self_assessment(self.SELF_ASSESSMENT)
         EmptyPromise(self.submission_page.button(".step--grade").is_focused(),
                      "Grade button should be focused")
+        self.submission_page.confirm_feedback_text('Assess Your Response Complete')
+        self.submission_page.confirm_feedback_text('Assess Peers In Progress (1 of 1)')
 
         return username, email
 

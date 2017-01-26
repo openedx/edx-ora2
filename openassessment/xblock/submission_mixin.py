@@ -8,7 +8,8 @@ from openassessment.fileupload import api as file_upload_api
 from openassessment.fileupload.exceptions import FileUploadError
 from openassessment.workflow.errors import AssessmentWorkflowError
 
-from .resolve_dates import DISTANT_FUTURE, get_current_time_zone
+from .resolve_dates import DISTANT_FUTURE
+from .user_data import get_user_preferences
 
 from data_conversion import create_submission_dict, prepare_submission_for_serialization
 from validation import validate_submission
@@ -376,11 +377,12 @@ class SubmissionMixin(object):
         """
         workflow = self.get_workflow_info()
         problem_closed, reason, start_date, due_date = self.is_closed('submission')
-        user_service = self.runtime.service(self, 'user')
+        user_preferences = get_user_preferences(self.runtime.service(self, 'user'))
 
         path = 'openassessmentblock/response/oa_response.html'
         context = {
-            'time_zone': get_current_time_zone(user_service),
+            'user_timezone': user_preferences['user_timezone'],
+            'user_language': user_preferences['user_language'],
             "xblock_id": self.get_xblock_id()}
 
         # Due dates can default to the distant future, in which case
