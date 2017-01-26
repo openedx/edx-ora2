@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-15 20:41+0000\n"
-"PO-Revision-Date: 2016-05-09 11:26+0000\n"
+"POT-Creation-Date: 2017-01-26 18:06+0000\n"
+"PO-Revision-Date: 2017-01-26 18:07+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Slovak (http://www.transifex.com/open-edx/edx-platform/language/sk/)\n"
 "MIME-Version: 1.0\n"
@@ -101,80 +101,80 @@ msgid "The submission could not be removed from the grading pool."
 msgstr "Toto podanie nebolo možné odstrániť z klasifikačného hárku."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_base.js:203
+#: openassessment/xblock/static/js/src/lms/oa_base.js:300
 msgid "Unable to load"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_peer.js:171
+#: openassessment/xblock/static/js/src/lms/oa_peer.js:190
 msgid ""
 "If you leave this page without submitting your peer assessment, you will "
 "lose any work you have done."
 msgstr ""
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:222
+#: openassessment/xblock/static/js/openassessment-lms.min.js:2
+#: openassessment/xblock/static/js/src/lms/oa_response.js:229
 msgid "Status of Your Response"
 msgstr "Stav vašej odpovede"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:300
+#: openassessment/xblock/static/js/openassessment-lms.min.js:2
+#: openassessment/xblock/static/js/src/lms/oa_response.js:307
 msgid "This response has not been saved."
 msgstr "Odpoveď nebola uložená."
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:304
+#: openassessment/xblock/static/js/openassessment-lms.min.js:2
+#: openassessment/xblock/static/js/src/lms/oa_response.js:311
 msgid ""
 "If you leave this page without saving or submitting your response, you will "
 "lose any work you have done on the response."
 msgstr ""
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:322
+#: openassessment/xblock/static/js/openassessment-lms.min.js:2
+#: openassessment/xblock/static/js/src/lms/oa_response.js:329
 msgid "Saving..."
 msgstr "Ukladá sa..."
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:347
+#: openassessment/xblock/static/js/openassessment-lms.min.js:2
+#: openassessment/xblock/static/js/src/lms/oa_response.js:354
 msgid "This response has been saved but not submitted."
 msgstr "Táto odpoveď bola uložená, ale nebola odoslaná."
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:350
+#: openassessment/xblock/static/js/openassessment-lms.min.js:2
+#: openassessment/xblock/static/js/src/lms/oa_response.js:359
 msgid "Error"
 msgstr "Chyba"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:373
+#: openassessment/xblock/static/js/openassessment-lms.min.js:2
+#: openassessment/xblock/static/js/src/lms/oa_response.js:381
 msgid "Do you want to upload your file before submitting?"
 msgstr "Chcete pred odoslaním odovzdať váš súbor?"
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:444
+#: openassessment/xblock/static/js/openassessment-lms.min.js:2
+#: openassessment/xblock/static/js/src/lms/oa_response.js:456
 msgid ""
 "You're about to submit your response for this assignment. After you submit "
 "this response, you can't change it or submit a new response."
 msgstr "Chystáte sa odoslať vašu odpoveď pre toto zadanie. Potom ako túto odpoveď odošlete, nebudete ju môcť zmeniť ani nebudete môcť odoslať novú odpoveď."
 
-#: openassessment/xblock/static/js/openassessment-lms.min.js:1
-#: openassessment/xblock/static/js/src/lms/oa_response.js:473
+#: openassessment/xblock/static/js/openassessment-lms.min.js:2
+#: openassessment/xblock/static/js/src/lms/oa_response.js:485
 msgid "File size must be 5MB or less."
 msgstr "Veľkosť súboru smie byť najviac 5MB."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_response.js:478
-#: openassessment/xblock/static/js/src/lms/oa_response.js:483
-#: openassessment/xblock/static/js/src/lms/oa_response.js:488
+#: openassessment/xblock/static/js/src/lms/oa_response.js:490
+#: openassessment/xblock/static/js/src/lms/oa_response.js:495
+#: openassessment/xblock/static/js/src/lms/oa_response.js:500
 msgid "You can upload files with these file types: "
 msgstr "Môžete odovzdávať súbory týchto typov:"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_response.js:493
+#: openassessment/xblock/static/js/src/lms/oa_response.js:505
 msgid "File type is not allowed."
 msgstr "Typ súboru nie je povolený."
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
-#: openassessment/xblock/static/js/src/lms/oa_self.js:114
+#: openassessment/xblock/static/js/src/lms/oa_self.js:121
 msgid ""
 "If you leave this page without submitting your self assessment, you will "
 "lose any work you have done."
@@ -201,6 +201,11 @@ msgstr ""
 msgid ""
 "If you leave this page without submitting your staff assessment, you will "
 "lose any work you have done."
+msgstr ""
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:2
+#: openassessment/xblock/static/js/src/lms/oa_training.js:116
+msgid "Feedback available for selection."
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
