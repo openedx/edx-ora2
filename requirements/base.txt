@@ -10,7 +10,7 @@ git+https://github.com/edx/edx-submissions.git@1.1.4#egg=edx-submissions==1.1.4
 
 # Third Party Requirements
 boto>=2.32.1,<3.0.0
-celery==3.1.18
+celery>=3.0,<4.0
 defusedxml==0.4.1
 django<1.9a0 # Resolves known bug on gemnasium. See TNL-6266
 django-extensions==1.5.9
