@@ -495,3 +495,43 @@ class OraAggregateData(object):
             'Feedback on Peer Assessments'
         ]
         return header, rows
+
+    @classmethod
+    def collect_ora2_responses(cls, course_id):
+        """
+        Get information about all ora2 blocks in the course with response count for each step
+
+        Args:
+            course_id (string) - the course id of the course whose data we would like to return
+
+        Returns:
+            A dict in the format:
+
+            {
+             'block-v1:test-org+cs101+2017_TEST+type@openassessment+block@fb668396b505470e914bad8b3178e9e7:
+                 {'training': 0, 'self': 0, 'done': 2, 'peer': 1, 'staff': 0, 'total': 3},
+             'block-v1:test-org+cs101+2017_TEST+type@openassessment+block@90b4edff50bc47d9ba037a3180c44e97:
+                 {'training': 0, 'self': 2, 'done': 0, 'peer': 0, 'staff': 2, 'total': 4},
+             ...
+            }
+
+        """
+        except_statuses = ['ai', 'cancelled']
+        statuses = [st for st in AssessmentWorkflow().STATUS_VALUES if st not in except_statuses]
+        statuses.append('total')
+
+        items = AssessmentWorkflow.objects.filter(course_id=course_id).values('item_id', 'status')
+
+        result = {}
+        for item in items:
+            item_id = item['item_id']
+            status = item['status']
+            if item_id not in result:
+                result[item_id] = {}
+                for st in statuses:
+                    result[item_id][st] = 0
+            if status in statuses:
+                result[item_id][status] += 1
+                result[item_id]['total'] += 1
+
+        return result

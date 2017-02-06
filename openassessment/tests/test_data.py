@@ -20,10 +20,14 @@ import openassessment.assessment.api.peer as peer_api
 COURSE_ID = "Test_Course"
 
 STUDENT_ID = "Student"
+STUDENT_ID2 = "Student2"
+STUDENT_ID3 = "Student3"
 
 SCORER_ID = "Scorer"
 
 ITEM_ID = "item_one"
+ITEM_ID2 = "item_two"
+ITEM_ID3 = "item_three"
 
 STUDENT_ITEM = dict(
     student_id=STUDENT_ID,
@@ -376,14 +380,14 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         peer_api.get_score(self.submission['uuid'], {'must_be_graded_by': 1, 'must_grade': 0})
         self._create_assessment_feedback(self.submission['uuid'])
 
-    def _create_submission(self, student_item_dict):
+    def _create_submission(self, student_item_dict, steps=None):
         """
         Creates a submission and initializes a peer grading workflow.
         """
         submission = sub_api.create_submission(student_item_dict, ANSWER)
         submission_uuid = submission['uuid']
         peer_api.on_start(submission_uuid)
-        workflow_api.create_workflow(submission_uuid, STEPS)
+        workflow_api.create_workflow(submission_uuid, steps if steps else STEPS)
         return submission
 
     def _create_assessment(self, submission_uuid):
@@ -474,3 +478,53 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
             FEEDBACK_OPTIONS['options'][0] + '\n' + FEEDBACK_OPTIONS['options'][1]+'\n',
             FEEDBACK_TEXT,
         ])
+
+    def test_collect_ora2_responses(self):
+        self._create_submission(dict(
+            student_id=STUDENT_ID,
+            course_id=COURSE_ID,
+            item_id=ITEM_ID2,
+            item_type="openassessment"
+        ), ['self'])
+        self._create_submission(dict(
+            student_id=STUDENT_ID2,
+            course_id=COURSE_ID,
+            item_id=ITEM_ID2,
+            item_type="openassessment"
+        ), STEPS)
+
+        self._create_submission(dict(
+            student_id=STUDENT_ID,
+            course_id=COURSE_ID,
+            item_id=ITEM_ID3,
+            item_type="openassessment"
+        ), ['self'])
+        self._create_submission(dict(
+            student_id=STUDENT_ID2,
+            course_id=COURSE_ID,
+            item_id=ITEM_ID3,
+            item_type="openassessment"
+        ), ['self'])
+        self._create_submission(dict(
+            student_id=STUDENT_ID3,
+            course_id=COURSE_ID,
+            item_id=ITEM_ID3,
+            item_type="openassessment"
+        ), STEPS)
+
+        data = OraAggregateData.collect_ora2_responses(COURSE_ID)
+
+        self.assertIn(ITEM_ID, data)
+        self.assertIn(ITEM_ID2, data)
+        self.assertIn(ITEM_ID3, data)
+        for item in [ITEM_ID, ITEM_ID2, ITEM_ID3]:
+            self.assertEqual({'total', 'training', 'peer', 'self', 'staff', 'waiting', 'done'}, set(data[item].keys()))
+        self.assertEqual(data[ITEM_ID], {
+            'total': 2, 'training': 0, 'peer': 2, 'self': 0, 'staff': 0, 'waiting': 0, 'done': 0
+        })
+        self.assertEqual(data[ITEM_ID2], {
+            'total': 2, 'training': 0, 'peer': 1, 'self': 1, 'staff': 0, 'waiting': 0, 'done': 0
+        })
+        self.assertEqual(data[ITEM_ID3], {
+            'total': 3, 'training': 0, 'peer': 1, 'self': 2, 'staff': 0, 'waiting': 0, 'done': 0
+        })
