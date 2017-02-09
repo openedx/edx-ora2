@@ -17,14 +17,14 @@
                     {% if submission_start %}
                     <span class="step__deadline">
                         {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "available August 13th, 2014 (in 5 days and 45 minutes)" #}
-                        {% blocktrans with start_date=submission_start|date:"Y-m-d H:i" time_until=submission_start|timeuntil %}
+                        {% blocktrans with start_date=submission_start|timezone:"UTC"|date:"c" time_until=submission_start|timeuntil %}
                         <span class="date ora-datetime" data-datetime="{{ start_date }}" data-string="available {date} (in {{ time_until }})" data-timezone="{{ user_timezone }}" data-language="{{ user_language }}"></span>
                         {% endblocktrans %}
                     </span>
                     {% elif submission_due %}
                     <span class="step__deadline">
                         {# Translators: This string displays a date to the user, then tells them the time until that date.  Example: "due August 13th, 2014 (in 5 days and 45 minutes)" #}
-                        {% blocktrans with due_date=submission_due|date:"Y-m-d H:i" time_until=submission_due|timeuntil %}
+                        {% blocktrans with due_date=submission_due|timezone:"UTC"|date:"c" time_until=submission_due|timeuntil %}
                         <span class="date ora-datetime" data-datetime="{{ due_date }}" data-string="due {date} (in {{ time_until }})" data-timezone="{{ user_timezone }}" data-language="{{ user_language }}"></span>
                         {% endblocktrans %}
                     </span>
@@ -50,7 +50,7 @@
                     {% if submission_due %}
                     {% trans "You can save your progress and return to complete your response at any time before the due date" %}
                     (<span class="step__deadline">
-                        <span class="date ora-datetime" data-datetime="{{ submission_due|date:'Y-m-d H:i' }}" data-timezone="{{ user_timezone }}" data-format="longDateTime" data-language="{{ user_language }}"></span>
+                        <span class="date ora-datetime" data-datetime="{{ submission_due|timezone:'UTC'|date:'c' }}" data-timezone="{{ user_timezone }}" data-format="longDateTime" data-language="{{ user_language }}"></span>
                     </span>).
                     {% else %}
                     {% trans "You can save your progress and return to complete your response at any time." %}

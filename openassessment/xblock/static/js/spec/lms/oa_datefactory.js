@@ -16,7 +16,7 @@ describe('OpenAssessment.DateTimeFactory', function() {
             datetimeFactory.apply();
             $('.ora-datetime', timeElement).each(function() {
                 var self = this;
-                expect($(self).data('datetime')).toBe('2019-12-31 19:00');
+                expect($(self).data('datetime')).toBe('2020-01-01T00:00:00+00:00');
                 expect($(self).data('string')).toContain('due {date}');
             });
         });
@@ -36,7 +36,7 @@ describe('OpenAssessment.DateTimeFactory', function() {
             $('.ora-datetime', timeElement).each(function() {
                 var el = this;
                 var testContext = datetimeFactory.determineContext($(el));
-                expect(testContext['datetime']).toBe('2019-12-31 19:00');
+                expect(testContext['datetime']).toBe('2020-01-01T00:00:00+00:00');
                 expect(testContext['timezone']).toBe('America/Los_Angeles');
                 expect(testContext['language']).toBe('en');
                 expect(testContext['format']).toBe('');
