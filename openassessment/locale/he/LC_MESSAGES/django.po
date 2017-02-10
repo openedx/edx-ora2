@@ -9,16 +9,16 @@
 # e2f he_r1 <e2f_he_r1@outlook.com>, 2016
 # Nadav Stark <nadav@yeda.org.il>, 2015
 # P S <polinas@pmo.gov.il>, 2016
-# qualityalltext <quality@alltext.co.il>, 2016
+# qualityalltext <quality@alltext.co.il>, 2016-2017
 # Ron Rozen <Ronrozen@gmail.com>, 2016
 # Yoav Caspin <yoavc@pmo.gov.il>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-26 18:06+0000\n"
-"PO-Revision-Date: 2017-01-26 18:07+0000\n"
-"Last-Translator: Eric Fischer <efischer@edx.org>\n"
+"POT-Creation-Date: 2017-02-10 20:07+0000\n"
+"PO-Revision-Date: 2017-02-05 07:54+0000\n"
+"Last-Translator: qualityalltext <quality@alltext.co.il>\n"
 "Language-Team: Hebrew (http://www.transifex.com/open-edx/edx-platform/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -92,7 +92,7 @@ msgstr "שם תצוגה"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:44
 msgid "The display name for this component."
-msgstr ""
+msgstr "שם התצוגה עבור רכיב זה"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:51
 msgid "Response Start Date"
@@ -490,7 +490,7 @@ msgid ""
 "\n"
 "                %(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s\n"
 "              "
-msgstr ""
+msgstr "\n%(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s"
 
 #: openassessment/templates/openassessmentblock/grade/oa_assessment_title.html:7
 #, python-format
@@ -502,8 +502,8 @@ msgid_plural ""
 "\n"
 "                      %(assessment_title)s - %(points)s points\n"
 "                  "
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "\n%(assessment_title)s - %(points)s נקודות"
+msgstr[1] "\n%(assessment_title)s - %(points)s נקודות"
 
 #: openassessment/templates/openassessmentblock/grade/oa_assessment_title.html:24
 #, python-format
@@ -537,7 +537,7 @@ msgid ""
 "\n"
 "                                            %(points_earned)s out of %(points_possible)s\n"
 "                                        "
-msgstr ""
+msgstr "\n%(points_earned)s מתוך %(points_possible)s "
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:32
 #: openassessment/templates/openassessmentblock/response/oa_response.html:16
@@ -567,7 +567,7 @@ msgstr "הערות נוספות על תשובתך"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:105
 msgid "Provide feedback on peer assessments"
-msgstr ""
+msgstr "ספֵּק משוב עבור הערכת עמיתים"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:114
 msgid "Submitting Feedback"
@@ -588,7 +588,7 @@ msgstr "מגיש משוב"
 #: openassessment/templates/openassessmentblock/self/oa_self_closed.html:28
 #: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:27
 msgid "Status"
-msgstr ""
+msgstr "סטטוס"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:122
 msgid ""
@@ -606,7 +606,7 @@ msgstr "צוות הקורס יוכל לראות כל משוב שתספק כאן 
 msgid ""
 "Select the statements below that best reflect your experience with peer "
 "assessments."
-msgstr ""
+msgstr "בחר את ההצהרות להלן אשר משקפות באופן הטוב ביותר את חווייתך בהערכת עמיתים."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:143
 msgid "These assessments were useful."
@@ -678,7 +678,7 @@ msgstr "%(num_points)s נקודות"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:68
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:51
 msgid "Your peer's response to the question above"
-msgstr ""
+msgstr "תשובתו של עמיתך לשאלה שלעיל:"
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:18
 msgid ""
@@ -690,44 +690,44 @@ msgstr "לאחר שתשלים את כל השלבים במשימה זו, תוכל
 msgid ""
 "This task is not yet available. Check back to complete the assignment once "
 "this section has opened."
-msgstr ""
+msgstr "המטלה אינה זמינה עדיין. חזור להשלים את המטלה כאשר יפתח חלק זה. "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_closed.html:10
 msgid ""
 "This assignment has closed. One or more deadlines for this assignment have "
 "passed. You will receive an incomplete grade for this assignment."
-msgstr ""
+msgstr "משימה זו נסגרה. תאריך יעד אחד או יותר למשימה זו עבר. תקבל ציון חלקי עבור משימה זו. "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_complete.html:8
 msgid ""
 "You have completed this assignment. Your final grade will be available when "
 "the assessments of your response are complete."
-msgstr ""
+msgstr "השלמת משימה זו. הציון הסופי יהיה זמין כאשר יושלמו ההערכות על תשובתך."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_complete.html:10
 msgid ""
 "You have completed this assignment. Review your grade and your assessment "
 "details."
-msgstr ""
+msgstr "השלמת משימה זו. בדוק את הציון שלך ואת פרטי ההערכה שלך."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:9
 msgid ""
 "This assignment is in progress. Learner training will close soon. Complete "
 "the learner training step to move on."
-msgstr ""
+msgstr "משימה זו נמצאת בתהליך. תרגול הלומד ייסגר בקרוב. השלם את שלב תרגול הלומד על מנת להמשיך הלאה."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:11
 msgid ""
 "This assignment is in progress. Complete the learner training step to move "
 "on."
-msgstr ""
+msgstr "משימה זו נמצאת בתהליך. השלם את שלב תרגול הלומד על מנת להמשיך הלאה."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:15
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:33
 msgid ""
 "This assignment is in progress. Check back later when the assessment period "
 "has started."
-msgstr ""
+msgstr "משימה זו נמצאת בתהליך. חזור מאוחר יותר כאשר תקופת ההערכה נפתחת."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:20
 #, python-format
@@ -735,7 +735,7 @@ msgid ""
 "\n"
 "                                    %(start_strong)sThis assignment is in progress. The self assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\n%(start_strong)s משימה זו נמצאת בתהליך. שלב ההערכה העצמית ייסגר בקרוב. %(end_strong)s עליך להשלים עדיין את %(start_link)s שלב %(end_link)s ההערכה העצמית."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:24
 #, python-format
@@ -743,7 +743,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\nמשימה זו נמצאת בתהליך.  עליך להשלים עדיין את %(start_link)sשלב%(end_link)s ההערכה העצמית.\n                                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:38
 #, python-format
@@ -751,7 +751,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress.%(start_strong)sThe peer assessment step will close soon.%(end_strong)s All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\nמשימה זו נמצאת בתהליך. %(start_strong)s שלב הערכת העמיתים ייסגר בקרוב. %(end_strong)s כל תשובות העמיתים שנשלחו הוערכו. בדוק מאוחר יותר על מנת לראות אם לומדים נוספים שלחו תשובות. עליך להשלים עדיין את שלב %(start_link)s הערכת עמיתים%(end_link)s step."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:42
 #, python-format
@@ -759,7 +759,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\nמשימה זו נמצאת בתהליך. כל תשובות העמיתים שנשלחו, הוערכו. חזור ובדוק מאוחר יותר על מנת לראות אם לומדים נוספים שלחו תשובות. עליך להשלים עדיין את  %(start_link)s שלב %(end_link)s step הערכת עמיתים."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:46
 #, python-format
@@ -767,7 +767,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. %(start_strong)sThe peer assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\nמשימה זו נמצאת בתהליך. %(start_strong)s שלב הערכת העמיתים ייסגר בקרוב.%(end_strong)s עליך עדיין להשלים את %(start_link)s שלב %(end_link)s הערכת העמיתים."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:50
 #, python-format
@@ -775,7 +775,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\nמשימה זו נמצאת בתהליך.  עליך להשלים עדיין את שלב %(start_link)sהערכת העמיתים%(end_link)s .\n                                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html:7
 #, python-format
@@ -818,7 +818,7 @@ msgstr "הערות"
 
 #: openassessment/templates/openassessmentblock/oa_submission_answer.html:7
 msgid "The question for this section"
-msgstr ""
+msgstr "השאלה עבור פרק זה."
 
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:16
 msgid "The image associated with this submission."
@@ -856,7 +856,7 @@ msgid ""
 "\n"
 "                        <span class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "                        "
-msgstr ""
+msgstr "\n<span class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days
@@ -875,7 +875,7 @@ msgid ""
 "\n"
 "                        <span class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "                        "
-msgstr ""
+msgstr "\n<span class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:44
 #, python-format
@@ -883,7 +883,7 @@ msgid ""
 "\n"
 "                        In Progress (%(review_number)s of %(num_must_grade)s)\n"
 "                    "
-msgstr ""
+msgstr "\nבתהליך (%(review_number)s מתוך %(num_must_grade)s)"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:59
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:43
@@ -928,7 +928,7 @@ msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer complete peer assessments or continue with this assignment, and you "
 "will receive a grade of Incomplete."
-msgstr ""
+msgstr "תאריך היעד עבור שלב זה עבר. שלב זה סגור כעת. אינך יכול יותר להשלים הערכת עמיתים או להמשיך עם משימה זו ותקבל ציון חלקי."
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:13
 msgid "Completed"
@@ -964,7 +964,7 @@ msgstr "\nהושלם  (%(num_graded)s)"
 msgid ""
 "All submitted peer responses have been assessed. Check back later to see if "
 "more learners have submitted responses."
-msgstr ""
+msgstr "כל תשובות העמיתים שנשלחו, הוערכו. בדוק מאוחר יותר אם לומדים נוספים הגישו תשובות."
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_unavailable.html:16
 #: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:17
@@ -981,7 +981,7 @@ msgid ""
 "\n"
 "          In Progress (%(review_number)s of %(num_must_grade)s)\n"
 "        "
-msgstr ""
+msgstr "\nבתהליך (%(review_number)s מתוך %(num_must_grade)s)"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html:35
 msgid ""
@@ -989,7 +989,7 @@ msgid ""
 "more learners have submitted responses. You will receive your grade after "
 "you've completed all the steps for this problem and your peers have assessed"
 " your response."
-msgstr ""
+msgstr "כל תשובות העמיתים שנשלחו הוערכו. חזור ובדוק מאוחר יותר על מנת לראות אם לומדים נוספים שלחו תשובות. תקבל את ציונך לאחר שתשלים את כל השלבים עבור בעיה זו ולאחר שעמיתיך העריכו את תשובתך."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:37
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:39
@@ -1017,14 +1017,14 @@ msgstr "לאחר שתגיש את תשובתך, לא ניתן יהיה לערוך
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:67
 msgid "The prompt for this section"
-msgstr ""
+msgstr "ההנחיה לסעיף זה."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:80
 #: openassessment/templates/openassessmentblock/response/oa_response_graded.html:28
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:49
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:51
 msgid "Your response"
-msgstr ""
+msgstr "תשובתך"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:88
 msgid "Enter your response to the question above."
@@ -1064,7 +1064,7 @@ msgstr "תצוגה מקדימה ב-LaTeX"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:137
 msgid "Click to preview your submission in LaTeX."
-msgstr ""
+msgstr "לחץ על מנת להציג תצוגה מקדימה של הגשתך ב-LaTeX"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:142
 msgid "Preview Response"
@@ -1080,7 +1080,7 @@ msgstr "הגש את תשובתך ועבור לשלב הבא"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:32
 msgid "Your submission was cancelled. "
-msgstr ""
+msgstr "הגשתך בוטלה"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:35
 #, python-format
@@ -1096,7 +1096,7 @@ msgid ""
 "\n"
 "                               Your submission was cancelled on %(removed_datetime)s\n"
 "                            "
-msgstr ""
+msgstr "\nהגשתך בוטלה ב %(removed_datetime)s"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:46
 #, python-format
@@ -1118,7 +1118,7 @@ msgid ""
 "longer submit a response or continue with this problem, and you will receive"
 " a grade of Incomplete. If you saved but did not submit a response, the "
 "response appears in the course records."
-msgstr ""
+msgstr "תאריך היעד עבור שלב זה עבר. שלב זה סגור כעת. אינך יכול יותר להגיש תשובה או להמשיך עם בעיה זו ותקבל ציון חלקי. אם שמרת תשובה אך לא הגשת אותה, היא תופיע ברשומות הקורס."
 
 #: openassessment/templates/openassessmentblock/response/oa_response_graded.html:18
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:18
@@ -1138,7 +1138,7 @@ msgstr "הקובץ שהועלה"
 msgid ""
 "Your response has been submitted. You will receive your grade after all "
 "steps are complete and your response is fully assessed."
-msgstr ""
+msgstr "תשובתך הוגשה. תקבל את הציון שלך לאחר השלמת כל השלבים והערכה מלאה של תשובתך."
 
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:32
 #, python-format
@@ -1177,7 +1177,7 @@ msgid ""
 "\n"
 "                            <span class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "                        "
-msgstr ""
+msgstr "\n<span class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
@@ -1188,7 +1188,7 @@ msgid ""
 "\n"
 "                            <span class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "                        "
-msgstr ""
+msgstr "\n<span class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:72
 msgid "Submit your assessment"
@@ -1199,7 +1199,7 @@ msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer complete a self assessment or continue with this assignment, and you "
 "will receive a grade of Incomplete."
-msgstr ""
+msgstr "תאריך היעד עבור שלב זה עבר. שלב זה סגור כעת. אינך יכול יותר להשלים הערכה עצמית או להמשיך עם משימה זו ותקבל ציון חלקי."
 
 #: openassessment/templates/openassessmentblock/staff/oa_staff_grade.html:13
 #: openassessment/xblock/grade_mixin.py:345
@@ -1334,7 +1334,7 @@ msgstr "תשובה ללומד"
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:46
 msgid "The learner's response to the question above"
-msgstr ""
+msgstr "תשובת הלומד לשאלה שלעיל:"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:47
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:46
@@ -1541,7 +1541,7 @@ msgid ""
 "\n"
 "                          In Progress (%(current_progress_num)s of %(training_available_num)s)\n"
 "                      "
-msgstr ""
+msgstr "\nבתהליך  (%(current_progress_num)s מתוך %(training_available_num)s)"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:57
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:65
@@ -1598,7 +1598,7 @@ msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer continue with this assignment, and you will receive a grade of "
 "Incomplete."
-msgstr ""
+msgstr "תאריך היעד עבור שלב זה עבר. שלב זה סגור כעת. אינך יכול יותר להמשיך עם משימה זו ותקבל ציון חלקי."
 
 #: openassessment/templates/openassessmentblock/student_training/student_training_error.html:18
 msgid "Error Loading Learner Training Examples"

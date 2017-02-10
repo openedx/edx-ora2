@@ -19,6 +19,7 @@
 # jmc <jmc@edx.org>, 2014
 # Julien Colmonts <julien.colmonts@student.uclouvain.be>, 2014
 # Julien Rolland <julien.rolland33@gmail.com>, 2013
+# Keivan Farzaneh <keivan.farzaneh@edulib.org>, 2017
 # Kévin SEVERIN <kevin.severin@laposte.net>, 2015
 # laurentFUN <laurent.at.fun@gmail.com>, 2014,2016
 # Linda B.A <siria242@gmail.com>, 2016
@@ -54,9 +55,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-26 18:06+0000\n"
-"PO-Revision-Date: 2017-01-26 18:07+0000\n"
-"Last-Translator: Eric Fischer <efischer@edx.org>\n"
+"POT-Creation-Date: 2017-02-10 20:07+0000\n"
+"PO-Revision-Date: 2017-02-10 14:19+0000\n"
+"Last-Translator: Pierre Mailhot <pierre.mailhot@gmail.com>\n"
 "Language-Team: French (Canada) (http://www.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -252,7 +253,7 @@ msgstr "Si vous quittez cette page sans soumettre votre évaluation du personnel
 #: openassessment/xblock/static/js/openassessment-lms.min.js:2
 #: openassessment/xblock/static/js/src/lms/oa_training.js:116
 msgid "Feedback available for selection."
-msgstr ""
+msgstr "Rétroaction disponible pour la sélection."
 
 #: openassessment/xblock/static/js/openassessment-studio.min.js:1
 #: openassessment/xblock/static/js/src/studio/oa_container_item.js:39
