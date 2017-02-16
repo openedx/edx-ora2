@@ -2,12 +2,15 @@
 Tests the Open Assessment XBlock functionality.
 """
 import ddt
+import json
 
 from collections import namedtuple
 import datetime as dt
 from freezegun import freeze_time
 import pytz
 from mock import Mock, patch, MagicMock, PropertyMock
+from lxml import etree
+from StringIO import StringIO
 
 from openassessment.xblock import openassessmentblock
 from openassessment.xblock.resolve_dates import DISTANT_PAST, DISTANT_FUTURE
@@ -58,6 +61,85 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         grade_response = xblock.render_grade({})
         self.assertIsNotNone(grade_response)
         self.assertIn("step--grade", grade_response.body)
+
+    def _staff_assessment_view_helper(self, xblock):
+        """
+        Helper for "staff_assessment_view" tests
+
+        """
+        xblock_fragment = self.runtime.render(xblock, "grade_available_responses_view")
+        body_html = xblock_fragment.body_html()
+        self.assertIn("StaffAssessmentBlock", body_html)
+        self.assertIn("openassessment__title", body_html)
+        return body_html
+
+    @scenario('data/staff_grade_scenario.xml')
+    def test_staff_assessment_view(self, xblock):
+        """OA XBlock returns some HTML for case if Staff Assessment is configured.
+
+        View basic test for verifying auxiliary view which displays the staff grading area.
+        """
+        body_html = self._staff_assessment_view_helper(xblock)
+        self.assertIn("openassessment__staff-area", body_html)
+        self.assertIn("ui-staff__content", body_html)
+        self.assertNotIn("openassessment__staff-area-unavailable", body_html)
+
+    @scenario('data/basic_scenario.xml')
+    def test_staff_assessment_view_staff_assessment_not_configured(self, xblock):
+        """OA XBlock returns some HTML for case if Staff Assessment is not configured.
+
+        View basic test for verifying auxiliary view which displays the staff grading area.
+        """
+        body_html = self._staff_assessment_view_helper(xblock)
+        self.assertNotIn("ui-staff__content", body_html)
+        self.assertIn("openassessment__staff-area-unavailable", body_html)
+
+    @scenario('data/basic_scenario.xml')
+    def test_ora_blocks_listing_view(self, xblock):
+        """
+        Test view for listing all courses OA blocks.
+
+        """
+        xblock_fragment = self.runtime.render(xblock, "ora_blocks_listing_view")
+        body_html = xblock_fragment.body_html()
+
+        self.assertIn("CourseOpenResponsesListingBlock", body_html)
+
+        parser = etree.HTMLParser()
+        tree = etree.parse(StringIO(body_html), parser)
+
+        xpath_query_to_get_main_section = "//section[contains(@class, 'open-response-assessment-block')]"
+        xpath_query_to_get_course_items = "//script[contains(@id, 'open-response-assessment-items')]"
+
+        sections = tree.xpath(xpath_query_to_get_main_section)
+        self.assertEqual(len(sections), 1)
+        self.assertEquals(sections[0].get('data-item-view-enabled'), '0')
+
+        scripts = tree.xpath(xpath_query_to_get_course_items)
+        self.assertEqual(len(scripts), 1)
+        self.assertEqual(scripts[0].text, '[]')
+
+        defined_ora_items = [{'id': 'test-id1', 'val': 'test-val1'},
+                             {'id': 'test-id2', 'val': 'test-val2'}]
+
+        xblock_fragment = self.runtime.render(xblock, "ora_blocks_listing_view", context={
+            'ora_items': defined_ora_items,
+            'ora_item_view_enabled': True
+        })
+        body_html = xblock_fragment.body_html()
+
+        parser = etree.HTMLParser()
+        tree = etree.parse(StringIO(body_html), parser)
+
+        sections = tree.xpath(xpath_query_to_get_main_section)
+        self.assertEqual(len(sections), 1)
+        self.assertEquals(sections[0].get('data-item-view-enabled'), '1')
+
+        scripts = tree.xpath(xpath_query_to_get_course_items)
+        self.assertEqual(len(scripts), 1)
+
+        items = json.loads(scripts[0].text)
+        self.assertEqual(items, defined_ora_items)
 
     @scenario('data/empty_prompt.xml')
     def test_prompt_intentionally_empty(self, xblock):

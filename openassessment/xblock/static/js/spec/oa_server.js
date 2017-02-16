@@ -253,7 +253,7 @@ describe("OpenAssessment.Server", function() {
             type: "POST",
             data: JSON.stringify({
                 feedback_text: "test feedback",
-                feedback_options: options,
+                feedback_options: options
             }),
             contentType : jsonContentType
         });

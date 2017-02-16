@@ -37,6 +37,7 @@ from openassessment.xblock.student_training_mixin import StudentTrainingMixin
 from openassessment.xblock.validation import validator
 from openassessment.xblock.resolve_dates import resolve_dates, parse_date_value, DISTANT_PAST, DISTANT_FUTURE
 from openassessment.xblock.data_conversion import create_prompts_list, create_rubric_dict, update_assessments_format
+from openassessment.xblock.course_items_listing_mixin import CourseItemsListingMixin
 
 
 logger = logging.getLogger(__name__)
@@ -97,21 +98,20 @@ def load(path):
 
 @XBlock.needs("i18n")
 @XBlock.needs("user")
-class OpenAssessmentBlock(
-    MessageMixin,
-    SubmissionMixin,
-    PeerAssessmentMixin,
-    SelfAssessmentMixin,
-    StaffAssessmentMixin,
-    StudioMixin,
-    GradeMixin,
-    LeaderboardMixin,
-    StaffAreaMixin,
-    WorkflowMixin,
-    StudentTrainingMixin,
-    LmsCompatibilityMixin,
-    XBlock,
-):
+class OpenAssessmentBlock(MessageMixin,
+                          SubmissionMixin,
+                          PeerAssessmentMixin,
+                          SelfAssessmentMixin,
+                          StaffAssessmentMixin,
+                          StudioMixin,
+                          GradeMixin,
+                          LeaderboardMixin,
+                          StaffAreaMixin,
+                          WorkflowMixin,
+                          StudentTrainingMixin,
+                          LmsCompatibilityMixin,
+                          CourseItemsListingMixin,
+                          XBlock):
     """Displays a prompt and provides an area where students can compose a response."""
 
     public_dir = 'static'
@@ -364,11 +364,86 @@ class OpenAssessmentBlock(
         context = Context(context_dict)
         fragment = Fragment(template.render(context))
 
+        return self._update_and_return_fragment(fragment, 'OpenAssessmentBlock')
+
+    def ora_blocks_listing_view(self, context=None):
+        """This view is used in the Open Response Assessment tab in the LMS Instructor Dashboard
+        to display all available course ORA blocks.
+
+        Args:
+            context: contains two items:
+                "ora_items" - all course items with names and parents, example:
+                    [{"parent_name": "Vertical name",
+                      "name": "ORA Display Name",
+                      "url_grade_available_responses": "/grade_available_responses_view",
+                      "staff_assessment": false,
+                      "parent_id": "vertical_block_id",
+                      "url_base": "/student_view",
+                      "id": "openassessment_block_id"
+                     }, ...]
+                "ora_item_view_enabled" - enabled LMS API endpoint to serve XBlock view or not
+
+        Returns:
+            (Fragment): The HTML Fragment for this XBlock.
+        """
+        ora_items = context.get('ora_items', []) if context else []
+        ora_item_view_enabled = context.get('ora_item_view_enabled', False) if context else False
+        context_dict = {
+            "ora_items": json.dumps(ora_items),
+            "ora_item_view_enabled": 1 if ora_item_view_enabled else 0
+        }
+
+        template = get_template('openassessmentblock/instructor_dashboard/oa_listing.html')
+        context = Context(context_dict)
+        fragment = Fragment(template.render(context))
+
+        return self._update_and_return_fragment(fragment, 'CourseOpenResponsesListingBlock')
+
+    def grade_available_responses_view(self, context=None):
+        """Grade Available Responses view.
+
+        Auxiliary view which displays the staff grading area
+        (used in the Open Response Assessment tab in the Instructor Dashboard of LMS)
+
+        Args:
+            context: Not used for this view.
+
+        Returns:
+            (Fragment): The HTML Fragment for this XBlock.
+        """
+        student_item = self.get_student_item_dict()
+        staff_assessment_required = "staff-assessment" in self.assessment_steps
+
+        context_dict = {
+            "title": self.title,
+            'staff_assessment_required': staff_assessment_required
+        }
+
+        if staff_assessment_required:
+            context_dict.update(
+                self.get_staff_assessment_statistics_context(student_item["course_id"], student_item["item_id"])
+            )
+
+        template = get_template('openassessmentblock/instructor_dashboard/oa_grade_available_responses.html')
+        context = Context(context_dict)
+        fragment = Fragment(template.render(context))
+
+        return self._update_and_return_fragment(fragment, 'StaffAssessmentBlock')
+
+    def _update_and_return_fragment(self, fragment, initialize_js_func):
+        """
+        Auxiliary function to return updated fragment
+
+        """
         i18n_service = self.runtime.service(self, 'i18n')
         if hasattr(i18n_service, 'get_language_bidi') and i18n_service.get_language_bidi():
             css_url = "static/css/openassessment-rtl.css"
         else:
             css_url = "static/css/openassessment-ltr.css"
+
+        # backgrid.js v0.3.7
+        fragment.add_css_url(self.runtime.local_resource_url(self, "static/css/lib/backgrid.min.css"))
+        self.add_javascript_files(fragment, "static/js/lib/backgrid.min.js")
 
         if settings.DEBUG:
             fragment.add_css_url(self.runtime.local_resource_url(self, css_url))
@@ -385,7 +460,7 @@ class OpenAssessmentBlock(
             "FILE_EXT_BLACK_LIST": self.FILE_EXT_BLACK_LIST,
             "FILE_TYPE_WHITE_LIST": self.white_listed_file_types,
         }
-        fragment.initialize_js('OpenAssessmentBlock', js_context_dict)
+        fragment.initialize_js(initialize_js_func, js_context_dict)
         return fragment
 
     @property
