@@ -1,0 +1,85 @@
+.open-response-assessment-block {
+
+  table {
+    table-layout: fixed;
+  }
+
+  .open-response-assessment-msg {
+    margin-bottom: 20px;
+  }
+
+  .open-response-assessment-content,
+  .open-response-assessment-item
+  {
+    display: none;
+  }
+
+  .open-response-assessment-summary {
+    td {
+      border: none;
+    }
+  }
+
+  .open-response-assessment-item-breadcrumbs {
+    padding-bottom: 20px;
+    a {
+      cursor: pointer;
+    }
+  }
+
+  .open-response-assessment-main-table {
+    th {
+      background-color: #ffffff;
+      text-align: left;
+
+      button {
+        background: none;
+        border: none;
+        box-shadow: none;
+        outline: none;
+        font-size: 14px;
+      }
+
+      a {
+        color: #000000 !important;
+      }
+    }
+
+    td {
+      a {
+        cursor: pointer;
+      }
+    }
+
+    tbody tr:nth-child(odd) {
+      background-color: #f9f9f9;
+    }
+  }
+
+  .ora-summary-title {
+    color: #0079bc;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.8em;
+  }
+
+  .ora-summary-value {
+    font-size: 2.2em;
+    padding-top: 3px;
+  }
+
+  .backgrid {
+    .peer, .self, .staff, .waiting {
+      width: 65px;
+    }
+    .training {
+      width: 90px;
+    }
+    .total {
+      width: 150px;
+    }
+    .done {
+      width: 190px;
+    }
+  }
+}

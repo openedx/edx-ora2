@@ -145,6 +145,12 @@
         "gettext",
         "ngettext",
 
+        // Backgrid library
+        "Backgrid",
+
+        // XBlock dependencies
+        "XBlock",
+
         // ORA-specific globals
         "OpenAssessment"
     ]

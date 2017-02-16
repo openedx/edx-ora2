@@ -2,9 +2,11 @@ include LICENSE
 include AUTHORS
 include README.rst
 include openassessment/xblock/static/css/*.css
+include openassessment/xblock/static/css/lib/backgrid/*.css
 include openassessment/xblock/static/js/openassessment*.min.js
+include openassessment/xblock/static/js/lib/backgrid/*.js
 recursive-include openassessment/xblock/static/js/src *.js
-recursive-include openassessment/templates *.html
+recursive-include openassessment/templates *.html *.underscore
 recursive-include openassessment/locale *.po
 recursive-include openassessment/locale *.mo
 global-exclude */test*
