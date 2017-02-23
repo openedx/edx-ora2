@@ -27,40 +27,6 @@
         }
     },
 
-    "duplicate_criteria_names": {
-        "rubric": {
-            "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
-            "criteria": [
-                {
-                    "order_num": 0,
-                    "name": "Test criterion",
-                    "prompt": "Test criterion prompt",
-                    "options": [
-                        {
-                            "order_num": 0,
-                            "points": 1,
-                            "name": "No",
-                            "explanation": "No explanation"
-                        }
-                    ]
-                },
-                {
-                    "order_num": 0,
-                    "name": "Test criterion",
-                    "prompt": "Test criterion prompt",
-                    "options": [
-                        {
-                            "order_num": 0,
-                            "points": 1,
-                            "name": "Yes",
-                            "explanation": "Yes explanation"
-                        }
-                    ]
-                }
-            ]
-        }
-    },
-
     "duplicate_option_names": {
         "rubric": {
             "prompts": [{"description": "Test Prompt 1."}, {"description": "Test Prompt 2."}],
