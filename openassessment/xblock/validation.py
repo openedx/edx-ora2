@@ -199,14 +199,6 @@ def validate_rubric(rubric_dict, current_rubric, is_released, is_example_based, 
     except InvalidRubric:
         return False, _(u'This rubric definition is not valid.')
 
-    # No duplicate criteria names
-    duplicates = _duplicates([criterion['name'] for criterion in rubric_dict['criteria']])
-    if len(duplicates) > 0:
-        msg = _(u"Criteria duplicate name(s): {duplicates}").format(
-            duplicates=", ".join(duplicates)
-        )
-        return False, msg
-
     for criterion in rubric_dict['criteria']:
         # No duplicate option names within a criterion
         duplicates = _duplicates([option['name'] for option in criterion['options']])

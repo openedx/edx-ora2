@@ -17,15 +17,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-10 20:07+0000\n"
-"PO-Revision-Date: 2017-01-26 18:07+0000\n"
+"POT-Creation-Date: 2017-02-24 18:59+0000\n"
+"PO-Revision-Date: 2017-02-24 19:07+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Polish (http://www.transifex.com/open-edx/edx-platform/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pl\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
 #: openassessment/assessment/api/student_training.py:180
 msgid "Could not parse serialized rubric"
@@ -506,6 +506,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 #: openassessment/templates/openassessmentblock/grade/oa_assessment_title.html:24
 #, python-format
@@ -1452,6 +1453,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:137
 msgid "Feedback Recorded"
@@ -2013,52 +2015,48 @@ msgstr ""
 msgid "This rubric definition is not valid."
 msgstr ""
 
-#: openassessment/xblock/validation.py:205
-msgid "Criteria duplicate name(s): {duplicates}"
-msgstr ""
-
-#: openassessment/xblock/validation.py:214
+#: openassessment/xblock/validation.py:206
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr ""
 
-#: openassessment/xblock/validation.py:222
+#: openassessment/xblock/validation.py:214
 msgid "Criteria with no options must require written feedback."
 msgstr ""
 
-#: openassessment/xblock/validation.py:231
+#: openassessment/xblock/validation.py:223
 msgid "Example-based assessments cannot have duplicate point values."
 msgstr ""
 
-#: openassessment/xblock/validation.py:240
+#: openassessment/xblock/validation.py:232
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr ""
 
-#: openassessment/xblock/validation.py:244
+#: openassessment/xblock/validation.py:236
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr ""
 
-#: openassessment/xblock/validation.py:257
+#: openassessment/xblock/validation.py:249
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr ""
 
-#: openassessment/xblock/validation.py:262
+#: openassessment/xblock/validation.py:254
 msgid "The number of options cannot be changed after a problem is released."
 msgstr ""
 
-#: openassessment/xblock/validation.py:267
+#: openassessment/xblock/validation.py:259
 msgid "Point values cannot be changed after a problem is released."
 msgstr ""
 
-#: openassessment/xblock/validation.py:318
+#: openassessment/xblock/validation.py:310
 msgid ""
 "Learner training and example-based assessments must have at least one "
 "training example."
 msgstr ""
 
-#: openassessment/xblock/validation.py:381
+#: openassessment/xblock/validation.py:373
 msgid "Leaderboard number is invalid."
 msgstr ""
 
-#: openassessment/xblock/validation.py:404
+#: openassessment/xblock/validation.py:396
 msgid "The submission format is invalid."
 msgstr ""

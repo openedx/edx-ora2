@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-10 20:07+0000\n"
-"PO-Revision-Date: 2017-01-26 18:07+0000\n"
+"POT-Creation-Date: 2017-02-24 18:59+0000\n"
+"PO-Revision-Date: 2017-02-24 19:07+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Basque (Spain) (http://www.transifex.com/open-edx/edx-platform/language/eu_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -502,7 +502,7 @@ msgstr[1] ""
 #: openassessment/templates/openassessmentblock/grade/oa_assessment_title.html:24
 #, python-format
 msgid "More information about %(name)s"
-msgstr ""
+msgstr "Iinformazio gehiago %(name)s -ri buruz"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_cancelled.html:8
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:9
@@ -582,7 +582,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/self/oa_self_closed.html:28
 #: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:27
 msgid "Status"
-msgstr ""
+msgstr "Egoera"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:122
 msgid ""
@@ -992,7 +992,7 @@ msgstr "Lanean"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:49
 msgid "Enter your response to the question."
-msgstr ""
+msgstr "Idatzi galderaren erantzuna"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:51
 msgid ""
@@ -1022,7 +1022,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:88
 msgid "Enter your response to the question above."
-msgstr ""
+msgstr "Idatzi galderaren erantzuna behean."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:98
 msgid "We could not upload this file"
@@ -1038,7 +1038,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:111
 msgid "You may continue to work on your response until you submit it."
-msgstr ""
+msgstr "Zure erantzunean lanean jarrai dezakezu bidali arte."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:115
 msgid "We could not save your progress"
@@ -1219,7 +1219,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:87
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:169
 msgid "Close"
-msgstr ""
+msgstr "Itxi"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:26
 msgid "Enter an individual learner's username or email"
@@ -1333,7 +1333,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:47
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:46
 msgid "Submit assessment"
-msgstr ""
+msgstr "Bidali ebaluazioa"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:53
 msgid "Submit assessment and continue grading"
@@ -1393,7 +1393,7 @@ msgid ""
 "\n"
 "                        Comments: %(comments)s\n"
 "                    "
-msgstr ""
+msgstr "\n                        Iruzkinak: %(comments)s\n                    "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:57
 msgid "Peer Assessments for This Learner"
@@ -2004,52 +2004,48 @@ msgstr " Zeregin-mota ezin da aldatu ariketa argitaratu ondoren."
 msgid "This rubric definition is not valid."
 msgstr "Errubrikaren definizio hau ez da baliagarria."
 
-#: openassessment/xblock/validation.py:205
-msgid "Criteria duplicate name(s): {duplicates}"
-msgstr "Bikoiztutako irizpideen izena(k): {duplicates}"
-
-#: openassessment/xblock/validation.py:214
+#: openassessment/xblock/validation.py:206
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr ""
 
-#: openassessment/xblock/validation.py:222
+#: openassessment/xblock/validation.py:214
 msgid "Criteria with no options must require written feedback."
 msgstr ""
 
-#: openassessment/xblock/validation.py:231
+#: openassessment/xblock/validation.py:223
 msgid "Example-based assessments cannot have duplicate point values."
 msgstr ""
 
-#: openassessment/xblock/validation.py:240
+#: openassessment/xblock/validation.py:232
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr ""
 
-#: openassessment/xblock/validation.py:244
+#: openassessment/xblock/validation.py:236
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr "Irizpide-kopurua ezin da aldatu ariketa argitaratu ondoren."
 
-#: openassessment/xblock/validation.py:257
+#: openassessment/xblock/validation.py:249
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr "Irizpideen izenak ezin dira aldatu ariketa argitaratu ondoren"
 
-#: openassessment/xblock/validation.py:262
+#: openassessment/xblock/validation.py:254
 msgid "The number of options cannot be changed after a problem is released."
 msgstr "Aukera-kopurua ezin da aldatu ariketa argitaratu ondoren."
 
-#: openassessment/xblock/validation.py:267
+#: openassessment/xblock/validation.py:259
 msgid "Point values cannot be changed after a problem is released."
 msgstr ""
 
-#: openassessment/xblock/validation.py:318
+#: openassessment/xblock/validation.py:310
 msgid ""
 "Learner training and example-based assessments must have at least one "
 "training example."
 msgstr ""
 
-#: openassessment/xblock/validation.py:381
+#: openassessment/xblock/validation.py:373
 msgid "Leaderboard number is invalid."
 msgstr "Sailkapen-taularen zenbakia baliogabea da."
 
-#: openassessment/xblock/validation.py:404
+#: openassessment/xblock/validation.py:396
 msgid "The submission format is invalid."
 msgstr "Bidalketa-formatua ez da baliagarria."

@@ -32,8 +32,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-10 20:07+0000\n"
-"PO-Revision-Date: 2017-01-26 18:07+0000\n"
+"POT-Creation-Date: 2017-02-24 18:59+0000\n"
+"PO-Revision-Date: 2017-02-24 19:07+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/open-edx/edx-platform/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -2024,52 +2024,48 @@ msgstr "题目公开之后，不能再修改评分类型。"
 msgid "This rubric definition is not valid."
 msgstr "这个评分标准的定义无效。"
 
-#: openassessment/xblock/validation.py:205
-msgid "Criteria duplicate name(s): {duplicates}"
-msgstr "得分点(名称)重复：{duplicates}"
-
-#: openassessment/xblock/validation.py:214
+#: openassessment/xblock/validation.py:206
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr "得分点“{criterion}”中存在重复分值(名称)：{duplicates}"
 
-#: openassessment/xblock/validation.py:222
+#: openassessment/xblock/validation.py:214
 msgid "Criteria with no options must require written feedback."
 msgstr "没有分值的得分点必须要求填写评语。"
 
-#: openassessment/xblock/validation.py:231
+#: openassessment/xblock/validation.py:223
 msgid "Example-based assessments cannot have duplicate point values."
 msgstr "基于样本的自动评判不能包含分值重复的评分点。"
 
-#: openassessment/xblock/validation.py:240
+#: openassessment/xblock/validation.py:232
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr "无法在一道题目已经公开之后创建或删除提示。"
 
-#: openassessment/xblock/validation.py:244
+#: openassessment/xblock/validation.py:236
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr "题目公开后，得分点的数量不能被修改。"
 
-#: openassessment/xblock/validation.py:257
+#: openassessment/xblock/validation.py:249
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr "题目公开后，得分点的名称不能被修改。"
 
-#: openassessment/xblock/validation.py:262
+#: openassessment/xblock/validation.py:254
 msgid "The number of options cannot be changed after a problem is released."
 msgstr "题目公开后，分值的数目不能被修改。"
 
-#: openassessment/xblock/validation.py:267
+#: openassessment/xblock/validation.py:259
 msgid "Point values cannot be changed after a problem is released."
 msgstr "题目公开后，各评分点的分值不能再改变了。"
 
-#: openassessment/xblock/validation.py:318
+#: openassessment/xblock/validation.py:310
 msgid ""
 "Learner training and example-based assessments must have at least one "
 "training example."
 msgstr "学员训练和基于例子的评估必须有至少一个训练示例。"
 
-#: openassessment/xblock/validation.py:381
+#: openassessment/xblock/validation.py:373
 msgid "Leaderboard number is invalid."
 msgstr "排行榜号码是无效的。"
 
-#: openassessment/xblock/validation.py:404
+#: openassessment/xblock/validation.py:396
 msgid "The submission format is invalid."
 msgstr "提交的格式不正确"

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-10 20:07+0000\n"
-"PO-Revision-Date: 2017-01-26 18:07+0000\n"
+"POT-Creation-Date: 2017-02-24 18:59+0000\n"
+"PO-Revision-Date: 2017-02-24 19:07+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Welsh (http://www.transifex.com/open-edx/edx-platform/language/cy/)\n"
 "MIME-Version: 1.0\n"
@@ -2005,52 +2005,48 @@ msgstr ""
 msgid "This rubric definition is not valid."
 msgstr ""
 
-#: openassessment/xblock/validation.py:205
-msgid "Criteria duplicate name(s): {duplicates}"
-msgstr ""
-
-#: openassessment/xblock/validation.py:214
+#: openassessment/xblock/validation.py:206
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr ""
 
-#: openassessment/xblock/validation.py:222
+#: openassessment/xblock/validation.py:214
 msgid "Criteria with no options must require written feedback."
 msgstr ""
 
-#: openassessment/xblock/validation.py:231
+#: openassessment/xblock/validation.py:223
 msgid "Example-based assessments cannot have duplicate point values."
 msgstr ""
 
-#: openassessment/xblock/validation.py:240
+#: openassessment/xblock/validation.py:232
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr ""
 
-#: openassessment/xblock/validation.py:244
+#: openassessment/xblock/validation.py:236
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr ""
 
-#: openassessment/xblock/validation.py:257
+#: openassessment/xblock/validation.py:249
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr ""
 
-#: openassessment/xblock/validation.py:262
+#: openassessment/xblock/validation.py:254
 msgid "The number of options cannot be changed after a problem is released."
 msgstr ""
 
-#: openassessment/xblock/validation.py:267
+#: openassessment/xblock/validation.py:259
 msgid "Point values cannot be changed after a problem is released."
 msgstr ""
 
-#: openassessment/xblock/validation.py:318
+#: openassessment/xblock/validation.py:310
 msgid ""
 "Learner training and example-based assessments must have at least one "
 "training example."
 msgstr ""
 
-#: openassessment/xblock/validation.py:381
+#: openassessment/xblock/validation.py:373
 msgid "Leaderboard number is invalid."
 msgstr ""
 
-#: openassessment/xblock/validation.py:404
+#: openassessment/xblock/validation.py:396
 msgid "The submission format is invalid."
 msgstr ""

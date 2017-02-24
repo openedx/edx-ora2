@@ -28,8 +28,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-10 20:07+0000\n"
-"PO-Revision-Date: 2017-01-26 18:07+0000\n"
+"POT-Creation-Date: 2017-02-24 18:59+0000\n"
+"PO-Revision-Date: 2017-02-24 19:07+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/open-edx/edx-platform/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -2022,52 +2022,48 @@ msgstr "O tipo de avaliação não pode ser alterado depois que o problema foi l
 msgid "This rubric definition is not valid."
 msgstr "A definição de rubrica é inválida."
 
-#: openassessment/xblock/validation.py:205
-msgid "Criteria duplicate name(s): {duplicates}"
-msgstr "Nome dos Critérios duplicado(s): {duplicates}"
-
-#: openassessment/xblock/validation.py:214
+#: openassessment/xblock/validation.py:206
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr "As opções de '{criterion}' possuem os seguintes nomes duplicado(s): {duplicates}"
 
-#: openassessment/xblock/validation.py:222
+#: openassessment/xblock/validation.py:214
 msgid "Criteria with no options must require written feedback."
 msgstr "Critérios sem opções devem exigir opinião escrita."
 
-#: openassessment/xblock/validation.py:231
+#: openassessment/xblock/validation.py:223
 msgid "Example-based assessments cannot have duplicate point values."
 msgstr "Avaliações baseadas em exemplos não podem ter valores de pontuação duplicados."
 
-#: openassessment/xblock/validation.py:240
+#: openassessment/xblock/validation.py:232
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr "Prompts não podem ser criados ou removidos depois que o problema foi lançado."
 
-#: openassessment/xblock/validation.py:244
+#: openassessment/xblock/validation.py:236
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr "O número de critérios não podem ser alterados depois que um problema for liberado."
 
-#: openassessment/xblock/validation.py:257
+#: openassessment/xblock/validation.py:249
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr "Os nomes dos critérios não podem ser alterados depois que um problema for liberado."
 
-#: openassessment/xblock/validation.py:262
+#: openassessment/xblock/validation.py:254
 msgid "The number of options cannot be changed after a problem is released."
 msgstr "O número de opções não pode ser alterado depois que um problema for liberado."
 
-#: openassessment/xblock/validation.py:267
+#: openassessment/xblock/validation.py:259
 msgid "Point values cannot be changed after a problem is released."
 msgstr "Valores de pontuação não podem ser alterados depois que um problema for publicado."
 
-#: openassessment/xblock/validation.py:318
+#: openassessment/xblock/validation.py:310
 msgid ""
 "Learner training and example-based assessments must have at least one "
 "training example."
 msgstr "O treinamento do estudante e as avaliações basedas em exemplos devem ter pelo menos um exemplo de treinamento"
 
-#: openassessment/xblock/validation.py:381
+#: openassessment/xblock/validation.py:373
 msgid "Leaderboard number is invalid."
 msgstr "Número do ranking inválido."
 
-#: openassessment/xblock/validation.py:404
+#: openassessment/xblock/validation.py:396
 msgid "The submission format is invalid."
 msgstr "O formato do envio é inválido"

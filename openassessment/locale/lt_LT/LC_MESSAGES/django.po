@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-10 20:07+0000\n"
-"PO-Revision-Date: 2017-01-26 18:07+0000\n"
+"POT-Creation-Date: 2017-02-24 18:59+0000\n"
+"PO-Revision-Date: 2017-02-24 19:07+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Lithuanian (Lithuania) (http://www.transifex.com/open-edx/edx-platform/language/lt_LT/)\n"
 "MIME-Version: 1.0\n"
@@ -2005,52 +2005,48 @@ msgstr "Paskelbus užduotį vertinimo tipo keisti negalima."
 msgid "This rubric definition is not valid."
 msgstr "Ši rubrikos apibrėžtis neteisinga."
 
-#: openassessment/xblock/validation.py:205
-msgid "Criteria duplicate name(s): {duplicates}"
-msgstr "Vienodas kriterijų pavadinimas (-ai): {duplicates}"
-
-#: openassessment/xblock/validation.py:214
+#: openassessment/xblock/validation.py:206
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr "{criterion} parametrų pavadinimas (-ai) vienodi: {duplicates}"
 
-#: openassessment/xblock/validation.py:222
+#: openassessment/xblock/validation.py:214
 msgid "Criteria with no options must require written feedback."
 msgstr "Kriterijai be parametrų turi reikalauti rašytinio atsiliepimo."
 
-#: openassessment/xblock/validation.py:231
+#: openassessment/xblock/validation.py:223
 msgid "Example-based assessments cannot have duplicate point values."
 msgstr "Vertinant pagal pavyzdį taškų skaičius negali kartotis. "
 
-#: openassessment/xblock/validation.py:240
+#: openassessment/xblock/validation.py:232
 msgid "Prompts cannot be created or deleted after a problem is released."
 msgstr "Aprašymai negali būti kuriami arba šalinami, jei užduotis jau paskelbta."
 
-#: openassessment/xblock/validation.py:244
+#: openassessment/xblock/validation.py:236
 msgid "The number of criteria cannot be changed after a problem is released."
 msgstr "Paskelbus užduotį kriterijų skaičiaus keisti negalima."
 
-#: openassessment/xblock/validation.py:257
+#: openassessment/xblock/validation.py:249
 msgid "Criteria names cannot be changed after a problem is released"
 msgstr "Paskelbus užduotį kriterijų pavadinimų keisti negalima."
 
-#: openassessment/xblock/validation.py:262
+#: openassessment/xblock/validation.py:254
 msgid "The number of options cannot be changed after a problem is released."
 msgstr "Paskelbus užduotį parametrų skaičiaus keisti negalima."
 
-#: openassessment/xblock/validation.py:267
+#: openassessment/xblock/validation.py:259
 msgid "Point values cannot be changed after a problem is released."
 msgstr "Paskelbus užduotį taškų skaičiaus keisti negalima."
 
-#: openassessment/xblock/validation.py:318
+#: openassessment/xblock/validation.py:310
 msgid ""
 "Learner training and example-based assessments must have at least one "
 "training example."
 msgstr ""
 
-#: openassessment/xblock/validation.py:381
+#: openassessment/xblock/validation.py:373
 msgid "Leaderboard number is invalid."
 msgstr "Lyderių lentelės skaičius neteisingas."
 
-#: openassessment/xblock/validation.py:404
+#: openassessment/xblock/validation.py:396
 msgid "The submission format is invalid."
 msgstr "Netinkamas darbo formatas."
