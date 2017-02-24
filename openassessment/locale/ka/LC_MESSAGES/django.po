@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-10 20:07+0000\n"
-"PO-Revision-Date: 2017-02-06 21:33+0000\n"
-"Last-Translator: Giorgi Goderdzishvili <biggeorgian@gmail.com>\n"
+"POT-Creation-Date: 2017-02-24 18:59+0000\n"
+"PO-Revision-Date: 2017-02-24 19:07+0000\n"
+"Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Georgian (http://www.transifex.com/open-edx/edx-platform/language/ka/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -257,7 +257,7 @@ msgstr "სავადებულო"
 msgid ""
 "Select one of the options above. This describes whether or not the learner "
 "will have to provide criterion feedback."
-msgstr ""
+msgstr "აირჩიეთ ერთ-ერთი ზემოთ მოყვანილი ვარიანტებიდან. ეს პარამეტრი განსაზღვრავს, უნდა დაწეროს თუ არა მსმენელმა გამოხმაურება ამ კრიტერიუმის შესახებ."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_example_based_assessment.html:8
 msgid "Step: Example-Based Assessment"
@@ -316,7 +316,7 @@ msgstr "შეფასება აუცილებელია"
 msgid ""
 "Specify the number of peer assessments that each learner must complete. "
 "Valid numbers are 0 to 99."
-msgstr ""
+msgstr "მიუთითეთ ურთიერთშეფასებისას ჯგუფის თითოეული წევრის მიერ შესაფასებელი ნამუშევრების რაოდენობა. შესაძლებელია მიუთითოთ 0-დან 99-მდე. "
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:29
 msgid "Graded By"
@@ -326,7 +326,7 @@ msgstr "შემფასებელი:"
 msgid ""
 "Specify the number of learners that each response must be assessed by. Valid"
 " numbers are 0 to 99."
-msgstr ""
+msgstr "მიუთითეთ მსმენელეთა რაოდენობა, რომლებმაც უნდა შეაფასონ თითოეული პასუხი. შესაძლებელია მიუთითოთ 0-დან 99-მდე"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:36
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:22
@@ -341,7 +341,7 @@ msgstr "დაწყების დრო"
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:53
 msgid ""
 "Enter the date and time when learners can begin assessing peer responses."
-msgstr ""
+msgstr "შეიყვანეთ თარიღი და დრო, რომლიდანაც მსმენელებმა სხვების პასუხების შეფასება უნდა დაიწყონ."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_peer_assessment.html:57
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:43
@@ -360,13 +360,13 @@ msgstr "ჩაწერეთ თარიღი და დრო რომლ�
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompt.html:8
 msgid "You cannot delete a prompt after the assignment has been released."
-msgstr ""
+msgstr "დავალების გაშვების შემდეგ, მინიშნების წაშლას ვერ შეძლებთ."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompts.html:10
 msgid ""
 "Prompts. Replace the sample text with your own text. For more information, "
 "see the ORA documentation."
-msgstr ""
+msgstr "მინიშნებები. ჩაანაცვლეთ ტექსტის ნიმუში თქვენი საკუთარით. მეტი ინფორმაციისათვის, იხილეთ ORA დოკუმენტაცია."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_prompts.html:22
 msgid "Add Prompt"
@@ -378,7 +378,7 @@ msgid ""
 "Each option has a point value. This template contains two sample criteria "
 "and their options. Replace the sample text with your own text. For more "
 "information, see the ORA documentation."
-msgstr ""
+msgstr "შეფასებები შედგება კრიტერიუმებისაგან, რომლებიც როგორც წესი შეიცავენ ერთ ან მეტ ვარიანტებს. თითოეულ ვარიანტს მინიჭებული აქვს ქულა. ეს შაბლონი შეიცავს ორ სანიმუშო კრუტერიუმსა და მათ ვარიანტებს . ჩაანაცვლეთ ტექსტის ნიმუში თქვენი საკუთარით. მეტი ინფორმაციისათვის იხილეთ  ORA დოკუმენტაცია."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:26
 msgid "Add Criterion"
@@ -396,7 +396,7 @@ msgstr "უკუკავშირის ინსტრუქცია"
 msgid ""
 "Encourage learners to provide feedback on the response they have graded. You"
 " can replace the sample text with your own."
-msgstr ""
+msgstr "წაახალისეთ მსმენელები, რომ უზრუნველყონ უკუკავშირი იმ პასუხებზე, რომლებიც მათ შეაფასეს. შეგიძლიათ შეცვალოთ შაბლონური ტექსტი თქვენი საკუთარით."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_rubric.html:46
 msgid "Default Feedback Text"
@@ -415,20 +415,20 @@ msgstr "საფეხური: თვითშეფასება"
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:13
 msgid ""
 "Learners assess their own responses using the rubric for the assignment."
-msgstr ""
+msgstr "მსმენელები საკუთარ ნამუშევრებს დავალების შეფასების სქემის გამოყენებით აფასებენ."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:17
 msgid "Specify start and due dates for the self assessment step."
-msgstr ""
+msgstr "მიუთითეთ თვითშეფასების ეტაპის დაწყებისა და დასრულების თარიღები. "
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:39
 msgid ""
 "Enter the date and time when learners can begin assessing their responses."
-msgstr ""
+msgstr "ჩაწერეთ თარიღი და დრო, როდესაც მსმენელებს შეუძლით თვითშეფასების დაწყება."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_self_assessment.html:60
 msgid "Enter the date and time when all self assessments must be complete."
-msgstr ""
+msgstr "მიუთითეთ დრო და თარიღი, როდესაც ყველა თვითშეფასება უნდა დასრულდეს."
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_staff_assessment.html:8
 msgid "Step: Staff Assessment"
@@ -484,7 +484,7 @@ msgid ""
 "\n"
 "                %(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s\n"
 "              "
-msgstr ""
+msgstr "\n                %(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s\n              "
 
 #: openassessment/templates/openassessmentblock/grade/oa_assessment_title.html:7
 #, python-format
@@ -496,7 +496,7 @@ msgid_plural ""
 "\n"
 "                      %(assessment_title)s - %(points)s points\n"
 "                  "
-msgstr[0] ""
+msgstr[0] "\n                      %(assessment_title)s - %(points)s ქულა\n                  "
 
 #: openassessment/templates/openassessmentblock/grade/oa_assessment_title.html:24
 #, python-format
@@ -556,11 +556,11 @@ msgstr "ქულები"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:84
 msgid "Additional comments on your response"
-msgstr ""
+msgstr "დამატებითი კომენტარები თქვენს პასუხზე"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:105
 msgid "Provide feedback on peer assessments"
-msgstr ""
+msgstr "მოგვაწოდეთ თქვენი აზრი თვითშეფასებაზე"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:114
 msgid "Submitting Feedback"
@@ -587,7 +587,7 @@ msgstr "სტატუსი"
 msgid ""
 "Your feedback has been submitted. Course staff will be able to see this "
 "feedback when they review course records."
-msgstr ""
+msgstr "თქვენი გამოხმაურება მიღებულია. კურსის თანამშრომლები შეძლებენ მის ნახვას, კურსის ჩანაწერების განხილვისას."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:128
 msgid ""
@@ -599,7 +599,7 @@ msgstr ""
 msgid ""
 "Select the statements below that best reflect your experience with peer "
 "assessments."
-msgstr ""
+msgstr "ქვემოთ მოცემული მტკიცებებიდან აირჩიეთ ის, რომელიც უკეთ აღწერს თქვენ მიერ ურთიერთშეფასებისას მიღებულ გამოცდილებას."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:143
 msgid "These assessments were useful."
@@ -611,11 +611,11 @@ msgstr "ეს შეფასებები არ იყო სასარ�
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:161
 msgid "I disagree with one or more of the peer assessments of my response."
-msgstr ""
+msgstr "მე ვერ დავეთანხმები ჩემი პასუხის ერთ ან მეტ შეფასებას."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:170
 msgid "Some comments I received were inappropriate."
-msgstr ""
+msgstr "ზოგიერთი მიღებული კომენტარი შეუსაბამო იყო."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:175
 msgid ""
@@ -624,7 +624,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:178
 msgid "I feel the feedback I received was..."
-msgstr ""
+msgstr "ვფიქრობ რომ ჩემი მიღებული უკუკავშირი იყო..."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:188
 msgid "We could not submit your feedback"
@@ -632,7 +632,7 @@ msgstr "თვენი უკუკავშირის გაგზავნ�
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:194
 msgid "Submit feedback on peer assessments"
-msgstr ""
+msgstr "გაგზავნეთ გამოხმაურება ურთიერთშეფასების შესახებ"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:10
 msgid "Not Completed"
@@ -640,7 +640,7 @@ msgstr "ჯერ არ არის დასრულებული"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:21
 msgid "You have not completed all the steps of this problem."
-msgstr ""
+msgstr "თქვენ არ დაგისრულებიათ ამ ამოცანის ყველა საფეხური."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_not_started.html:10
 msgid "Not Started"
@@ -648,7 +648,7 @@ msgstr "არ არის დაწყებული"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_not_started.html:21
 msgid "You have not started this problem yet."
-msgstr ""
+msgstr "თქვენ ჯერ არ დაგიწყიათ ეს ამოცანა."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_waiting.html:10
 msgid "Waiting for Assessments"
@@ -671,19 +671,19 @@ msgstr "%(num_points)s ქულა"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:68
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:51
 msgid "Your peer's response to the question above"
-msgstr ""
+msgstr "თქვენი ჯგუფელის პასუხი ზემოთ მოცემულ შეკითხვაზე"
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:18
 msgid ""
 "After you complete all the steps of this assignment, you can see the top-"
 "scoring responses from your peers."
-msgstr ""
+msgstr "ამ დავალების ყველა საფეხურის დასრულების შემდეგ, დაინახავთ თქვენი ჯგუფის წევრების უმაღლესი შეფასების მქონე პასუხებს."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_closed.html:8
 msgid ""
 "This task is not yet available. Check back to complete the assignment once "
 "this section has opened."
-msgstr ""
+msgstr "ეს დავალება ჯერ არ არის ხელმისაწვდომი. გადაამოწმეთ მოგვიანებით, რომ დაასრულოთ დავალება, როგორც კი ეს განყოფილება გაიხსნება."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_closed.html:10
 msgid ""
@@ -736,7 +736,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\n                                    მიმდინარეობს ამ დავალების შესრულება. თქვენ ჯერ კიდევ გჭირდებათ %(start_link)sთვითშეფასების%(end_link)s საფეხურის დასრულება.\n                                "
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:38
 #, python-format
@@ -811,7 +811,7 @@ msgstr "კომენტარები"
 
 #: openassessment/templates/openassessmentblock/oa_submission_answer.html:7
 msgid "The question for this section"
-msgstr ""
+msgstr "კითხვა ამ განყოფილებისათვის"
 
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:16
 msgid "The image associated with this submission."
@@ -819,7 +819,7 @@ msgstr "ამ პასუხთან ასოცირებული გა
 
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:20
 msgid "View the file associated with this submission."
-msgstr ""
+msgstr "იხილეთ ამ პასუხთან დაკავშირებული ფაილი."
 
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:23
 msgid ""
@@ -849,7 +849,7 @@ msgid ""
 "\n"
 "                        <span class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "                        "
-msgstr ""
+msgstr "\n                        <span class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n                        "
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days
@@ -868,7 +868,7 @@ msgid ""
 "\n"
 "                        <span class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "                        "
-msgstr ""
+msgstr "\n                        <span class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n                        "
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:44
 #, python-format
@@ -876,12 +876,12 @@ msgid ""
 "\n"
 "                        In Progress (%(review_number)s of %(num_must_grade)s)\n"
 "                    "
-msgstr ""
+msgstr "\n                        მიმდინარეობს (%(review_number)s / %(num_must_grade)s-დან)\n                    "
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:59
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:43
 msgid "Read and assess the following response from one of your peers."
-msgstr ""
+msgstr "წაიკითხეთ და შეაფასეთ თქვენი ერთ ერთი ჯგუფელის პასუხი."
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:71
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:54
@@ -974,7 +974,7 @@ msgid ""
 "\n"
 "          In Progress (%(review_number)s of %(num_must_grade)s)\n"
 "        "
-msgstr ""
+msgstr "\n           მიმდინარეობს (%(review_number)s / %(num_must_grade)s-დან)\n        "
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html:35
 msgid ""
@@ -991,7 +991,7 @@ msgstr "მიმდინარეობს დამუშავება"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:49
 msgid "Enter your response to the question."
-msgstr ""
+msgstr "ჩაწერეთ თქვენი პასუხი შეკითხვაზე."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:51
 msgid ""
@@ -1010,7 +1010,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:67
 msgid "The prompt for this section"
-msgstr ""
+msgstr "მინიშნება ამ განყოფილებისათვის"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:80
 #: openassessment/templates/openassessmentblock/response/oa_response_graded.html:28
@@ -1021,19 +1021,19 @@ msgstr "თქვენი პასუხი"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:88
 msgid "Enter your response to the question above."
-msgstr ""
+msgstr "ჩაწერეთ თქვენი პასუხი ზემოთ მოცემულ კითხვაზე."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:98
 msgid "We could not upload this file"
-msgstr ""
+msgstr "ფაილის ატვირთვა შეუძლებელია"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:102
 msgid "Select a file to upload for this submission."
-msgstr ""
+msgstr "პასუხის გასაგზავნად აირჩიეთ ასატვირთი ფაილი."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:104
 msgid "Upload your file"
-msgstr ""
+msgstr "ატვირთეთ ფაილი"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:111
 msgid "You may continue to work on your response until you submit it."
@@ -1041,31 +1041,31 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:115
 msgid "We could not save your progress"
-msgstr ""
+msgstr "თქვენი პასუხის შენახვა ვერ ხერხდება"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:122
 msgid "Save your progress"
-msgstr ""
+msgstr "შეინახეთ თქვენი პროგრესი"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:126
 msgid "Your Submission Status"
-msgstr ""
+msgstr "თქვენი გაგზავნილი პასუხის სტატუსი"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:134
 msgid "Preview in LaTeX"
-msgstr ""
+msgstr "LaTeX ფორმატში გადახედვა"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:137
 msgid "Click to preview your submission in LaTeX."
-msgstr ""
+msgstr "დააწკაპუნეთ თქვენი პასუხის LaTeX-ში სანახავად."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:142
 msgid "Preview Response"
-msgstr ""
+msgstr "პასუხის გადახედვა"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:156
 msgid "We could not submit your response"
-msgstr ""
+msgstr "თქვენი პასუხის გაგზავნა ვერ მოხერხდა"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:164
 msgid "Submit your response and move to the next step"
@@ -1073,7 +1073,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:32
 msgid "Your submission was cancelled. "
-msgstr ""
+msgstr "თქვენი გაგზავნილი პასუხი გაუქმებულია."
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:35
 #, python-format
@@ -1097,13 +1097,13 @@ msgid ""
 "\n"
 "                            Comments: %(comments)s\n"
 "                        "
-msgstr ""
+msgstr "\n                         კომენტარები: %(comments)s\n                        "
 
 #: openassessment/templates/openassessmentblock/response/oa_response_closed.html:17
 #: openassessment/templates/openassessmentblock/self/oa_self_closed.html:18
 #: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:17
 msgid "Incomplete"
-msgstr ""
+msgstr "არასრული"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_closed.html:30
 msgid ""
@@ -1120,12 +1120,12 @@ msgstr ""
 #: openassessment/xblock/staff_assessment_mixin.py:116
 #: openassessment/xblock/staff_assessment_mixin.py:137
 msgid "Complete"
-msgstr ""
+msgstr "დასრულებულია"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_graded.html:31
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:52
 msgid "Your Uploaded File"
-msgstr ""
+msgstr "თქვენ მიერ ატვირთული ფაილი"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:30
 msgid ""
@@ -1155,11 +1155,11 @@ msgid ""
 "\n"
 "                        You still need to complete the %(start_tag)sself assessment%(end_tag)s step.\n"
 "                    "
-msgstr ""
+msgstr "\n                        კვლავ საჭიროა დაასრულოთ %(start_tag)sთვითშეფასების%(end_tag)s საფეხური.\n                    "
 
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:17
 msgid "Assess Your Response"
-msgstr ""
+msgstr "შეაფასეთ თქვენი პასუხი"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
@@ -1170,7 +1170,7 @@ msgid ""
 "\n"
 "                            <span class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "                        "
-msgstr ""
+msgstr "\n                            <span class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n                        "
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
@@ -1181,11 +1181,11 @@ msgid ""
 "\n"
 "                            <span class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "                        "
-msgstr ""
+msgstr "\n                            <span class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n                        "
 
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:72
 msgid "Submit your assessment"
-msgstr ""
+msgstr "გაგზავნეთ თქვენი შეფასება"
 
 #: openassessment/templates/openassessmentblock/self/oa_self_closed.html:30
 msgid ""
@@ -1197,22 +1197,22 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/staff/oa_staff_grade.html:13
 #: openassessment/xblock/grade_mixin.py:345
 msgid "Staff Grade"
-msgstr ""
+msgstr "კურსის თანამშრომლების შეფასება"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:6
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:17
 msgid "Manage Individual Learners"
-msgstr ""
+msgstr "ცალკეული მსმენელების მართვა"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:7
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:89
 msgid "View Assignment Statistics"
-msgstr ""
+msgstr "დავალების სტატისტიკის ნახვა"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:9
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:171
 msgid "Grade Available Responses"
-msgstr ""
+msgstr "ხელმისაწვდომი პასუხების შეფასება"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:15
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:87
@@ -1222,7 +1222,7 @@ msgstr "დახურვა"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:26
 msgid "Enter an individual learner's username or email"
-msgstr ""
+msgstr "მიუთითეთ ცალკეული მსმენელის მომხმარებლის სახელი ან ელფოსტის მისამართი"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:29
 msgid "Submit"
@@ -1230,7 +1230,7 @@ msgstr "გაგზავნა"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:40
 msgid "Classifier set"
-msgstr ""
+msgstr "კლასიფიკატორების ნაკრები"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:42
 msgid "Field"
@@ -1246,23 +1246,23 @@ msgstr "შექმნილია"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:51
 msgid "Algorithm ID"
-msgstr ""
+msgstr "ალგორითმის იდენტიფიკატორი"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:55
 msgid "Course ID"
-msgstr ""
+msgstr "კურსის საიდენტიფიკაციო ნომერი"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:59
 msgid "Item ID"
-msgstr ""
+msgstr "ერთეულის იდენტიფიკატორი"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:65
 msgid "No classifiers are available for this problem"
-msgstr ""
+msgstr "ამ ამოცანისთვის ხელმისაწვდომი არ არის არცერთი კლასიფიკატორი "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:70
 msgid "Schedule Example-Based Assessment Training"
-msgstr ""
+msgstr "დაგეგმეთ მაგალითზე დაფუძნებული შეფასების ტრენინგი"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:77
 msgid "Reschedule All Unfinished Example-Based Assessment Grading Tasks"
@@ -1327,7 +1327,7 @@ msgstr "მსმენელის პასუხი"
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:46
 msgid "The learner's response to the question above"
-msgstr ""
+msgstr "მსმენელის პასუხი ზემოთ მოცემულ კითხვაზე"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:47
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:46
@@ -1336,7 +1336,7 @@ msgstr "შეფასების გაგზავნა"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:53
 msgid "Submit assessment and continue grading"
-msgstr ""
+msgstr "ქულის გაგზავნა და შეფასების გაგრძელება"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_count.html:6
 #, python-format
@@ -1344,11 +1344,11 @@ msgid ""
 "\n"
 "                %(ungraded)s Available and %(in_progress)s Checked Out\n"
 "            "
-msgstr ""
+msgstr "\n                %(ungraded)s ხელმისაწვდომი და %(in_progress)s შემოწმებულია.\n            "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:6
 msgid "Override this learner's current grade using the problem's rubric."
-msgstr ""
+msgstr "ამოცანის შეფასების სქემის მიხედვით მსმენელის მიმდინარე შეფასების შეცვლა."
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:15
 #, python-format
@@ -1376,7 +1376,7 @@ msgid ""
 "\n"
 "                            Learner submission removed by %(removed_by_username)s on %(removed_datetime)s\n"
 "                        "
-msgstr ""
+msgstr "\n                            მოსწავლის ნაშრომი ამოღებულია %(removed_by_username)s-ის მიერ %(removed_datetime)s-ზე\n                        "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:33
 #, python-format
@@ -1396,11 +1396,11 @@ msgstr "\n                   კომენტარები: %(comments)s\n  
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:57
 msgid "Peer Assessments for This Learner"
-msgstr ""
+msgstr "ურთიერთშეფასების ქულები ამ მსმენელისთვის"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:62
 msgid "Peer Assessments Completed by This Learner"
-msgstr ""
+msgstr "ურთიერთშეფასება შესრულდა ამ მსმენელის მიერ"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:67
 msgid "Learner's Self Assessment"
@@ -1412,7 +1412,7 @@ msgstr "მაგალითზე დაფუძნებული შეფ�
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:77
 msgid "Staff Assessment for This Learner"
-msgstr ""
+msgstr "კურსის თანამშრომელთა შეფასევბის ქულები ამ მსმენელისთვის"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:86
 msgid "Learner's Final Grade"
@@ -1428,7 +1428,7 @@ msgstr "\n                            :საბოლოო ქულა: %(poi
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:102
 msgid "Final Grade Details"
-msgstr ""
+msgstr "საბოლოო ქულის დეტალები"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:122
 #, python-format
@@ -1440,7 +1440,7 @@ msgid_plural ""
 "\n"
 "                                        %(assessment_label)s - %(points)s points\n"
 "                                    "
-msgstr[0] ""
+msgstr[0] "\n                                        %(assessment_label)s - %(points)s ქულა\n                                    "
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:137
 msgid "Feedback Recorded"
@@ -1448,7 +1448,7 @@ msgstr "აღრიცხული უკუკავშირი"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:148
 msgid "The submission is waiting for assessments."
-msgstr ""
+msgstr "ნაშრომი შეფასების მოლოდინშია."
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:152
 msgid ""
@@ -1471,11 +1471,11 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:188
 msgid "Remove Submission From Peer Grading"
-msgstr ""
+msgstr "ურთიერთშეფასების შედეგებიდან პასუხის წაშლა"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:197
 msgid "Caution: This Action Cannot Be Undone"
-msgstr ""
+msgstr "გაფრთხილება: მოქმედების დაბრუნება შეუძლებელია"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:198
 msgid ""
@@ -1509,7 +1509,7 @@ msgstr "შეფასების დეტალები"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:26
 msgid "Selected Option"
-msgstr ""
+msgstr "არჩეული ვარიანტი"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info_assessment_detail.html:27
 msgid "Feedback"
@@ -1558,11 +1558,11 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:75
 msgid "The response to the question above:"
-msgstr ""
+msgstr "პასუხი ზემოთ დასმულ კითხვაზე:"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:97
 msgid "Selected Options Agree"
-msgstr ""
+msgstr "არჩეულია მსგავსი ვარიანტები"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:100
 msgid "The option you selected is the option that the instructor selected."
@@ -1579,7 +1579,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:143
 msgid "We could not check your assessment"
-msgstr ""
+msgstr "ვერ ვახერხებთ თქვენი პასუხის შეფასებას"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:150
 msgid "Compare your selections with the instructor's selections"
@@ -1858,11 +1858,11 @@ msgstr ""
 
 #: openassessment/xblock/student_training_mixin.py:170
 msgid "Missing options_selected key in request"
-msgstr ""
+msgstr "მოთხოვნაში გამოტოვებულია options_selected გასაღები"
 
 #: openassessment/xblock/student_training_mixin.py:172
 msgid "options_selected must be a dictionary"
-msgstr ""
+msgstr "options_selected უნდა იყოს ლექსიკონი"
 
 #: openassessment/xblock/student_training_mixin.py:197
 #: openassessment/xblock/student_training_mixin.py:202
@@ -1872,18 +1872,18 @@ msgstr "თქვენი ქულების შემოწმება ვ
 #: openassessment/xblock/studio_mixin.py:172
 #: openassessment/xblock/studio_mixin.py:187
 msgid "Error updating XBlock configuration"
-msgstr ""
+msgstr "XBlock-ის კონფიგურაციის განახლების შეცდომა"
 
 #: openassessment/xblock/studio_mixin.py:210
 msgid ""
 "Validation error: There was an error in the XML definition of the examples "
 "provided by the user. Please correct the XML definition before saving."
-msgstr ""
+msgstr "ვალიდაციის შეცდომა: დაფიქსირდა შეცდომა მომხმარებლის მიერ მოწოდებული მაგალითების XML დეფინიციაში. გთხოვთ, შენახვამდე შეასწოროთ XML დეფინიცია."
 
 #: openassessment/xblock/studio_mixin.py:215
 msgid ""
 "Validation error: No examples were provided for example based assessment."
-msgstr ""
+msgstr "ვალიდაციის შეცდომა: მაგალითზე დაფუძნებული შეფასებისთვის არ იყო მოყვანილი მაგალითები."
 
 #: openassessment/xblock/studio_mixin.py:232
 msgid "Validation error: {error}"
@@ -1891,11 +1891,11 @@ msgstr "დადასტურების შეცდომა: {error}"
 
 #: openassessment/xblock/studio_mixin.py:251
 msgid "Successfully updated OpenAssessment XBlock"
-msgstr ""
+msgstr "OpenAssessment XBlock წარმატებით განახლდა"
 
 #: openassessment/xblock/submission_mixin.py:75
 msgid "\"submission\" required to submit answer."
-msgstr ""
+msgstr "პასუხების გაგზავნისთვის საჭიროა პარამეტრი \"submission\"."
 
 #: openassessment/xblock/submission_mixin.py:96
 msgid "To submit a response, view this component in Preview or Live mode."
@@ -1903,11 +1903,11 @@ msgstr ""
 
 #: openassessment/xblock/submission_mixin.py:102
 msgid "Multiple submissions are not allowed."
-msgstr ""
+msgstr "რამდენიმე ნამუშევრის გაგზავნა დაუშვებელია."
 
 #: openassessment/xblock/submission_mixin.py:140
 msgid "API returned unclassified exception."
-msgstr ""
+msgstr "API-იმ დააბრუნა არაკლასიფიცირებული გამონაკლისი."
 
 #: openassessment/xblock/submission_mixin.py:182
 msgid "This response could not be saved."
@@ -1935,31 +1935,31 @@ msgstr "ფაილის ტიპი უნდა იყოს ქვემ�
 
 #: openassessment/xblock/submission_mixin.py:243
 msgid "File type is not allowed."
-msgstr ""
+msgstr "ფაილის ტიპი დაშვებული არ არის."
 
 #: openassessment/xblock/submission_mixin.py:250
 msgid "Error retrieving upload URL."
-msgstr ""
+msgstr "ატვირთვის URL-ის ამოღების შეცდომა."
 
 #: openassessment/xblock/submission_mixin.py:343
 msgid "This response has been saved but not submitted."
-msgstr ""
+msgstr "ეს პასუხი შენახულია, მაგრამ არ გაგზავნილა."
 
 #: openassessment/xblock/submission_mixin.py:344
 msgid "This response has not been saved."
-msgstr ""
+msgstr "პასუხი არ შენახულა."
 
 #: openassessment/xblock/validation.py:121
 msgid "This problem must include at least one assessment."
-msgstr ""
+msgstr "ეს ამოცანა უნდა შეიცავდეს სულ მცირე ერთ დავალებას."
 
 #: openassessment/xblock/validation.py:125
 msgid "The assessment order you selected is invalid."
-msgstr ""
+msgstr "თქვენი არჩეული შეფასების წყობა არასწორია."
 
 #: openassessment/xblock/validation.py:135
 msgid "In peer assessment, the \"Must Grade\" value must be a positive integer."
-msgstr ""
+msgstr "ურთიერთშეფასებაში მნიშვნელობა \"აუცილებელი ნიშანი\" უნდა იყოს დადებითი  რიცხვი."
 
 #: openassessment/xblock/validation.py:138
 msgid "In peer assessment, the \"Graded By\" value must be a positive integer."
@@ -1977,77 +1977,73 @@ msgstr ""
 
 #: openassessment/xblock/validation.py:154
 msgid "Each example response for learner training must be unique."
-msgstr ""
+msgstr "მსმენელის ტრენინგის ყოველი სამაგალითო პასუხი უნიკალური უნდა იყოს."
 
 #: openassessment/xblock/validation.py:161
 msgid "The \"algorithm_id\" value must be set to \"ease\" or \"fake\""
-msgstr ""
+msgstr "„algorithm_id“ მნიშვნელობა უნდა იყოს დაყენებული  „ease“ ან „fake“-ზე"
 
 #: openassessment/xblock/validation.py:167
 msgid "The \"required\" value must be true if staff assessment is the only step."
-msgstr ""
+msgstr "თუ კურსის თანამშრომელთა შეფასება ერთადერთი საფეხურია, მნიშვნელობა „სავალდებულო“ დადებითი უნდა იყოს."
 
 #: openassessment/xblock/validation.py:171
 msgid ""
 "The number of assessments cannot be changed after the problem has been "
 "released."
-msgstr ""
+msgstr "ამოცანის გაშვების შემდეგ შეფასებების რაოდენობის შეცვლა შეუძლებელია."
 
 #: openassessment/xblock/validation.py:176
 msgid ""
 "The assessment type cannot be changed after the problem has been released."
-msgstr ""
+msgstr "ამოცანის გაშვების შემდეგ შეფასების ტიპის ცვლილება შეუძლებელია."
 
 #: openassessment/xblock/validation.py:200
 msgid "This rubric definition is not valid."
-msgstr ""
+msgstr "შეფასების კრიტერიუმი არასწორია."
 
-#: openassessment/xblock/validation.py:205
-msgid "Criteria duplicate name(s): {duplicates}"
-msgstr ""
+#: openassessment/xblock/validation.py:206
+msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
+msgstr "ვარიანტებს '{criterion}'-ში აქვს დუბლირებული სახელ(ებ)ი: {duplicates}"
 
 #: openassessment/xblock/validation.py:214
-msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
-msgstr ""
-
-#: openassessment/xblock/validation.py:222
 msgid "Criteria with no options must require written feedback."
-msgstr ""
+msgstr "კრიტერიუმებისთვის, რომლებსაც აქვთ ვარიანეტბი აუცილებელია წერილობითი უკუკავშირი."
 
-#: openassessment/xblock/validation.py:231
+#: openassessment/xblock/validation.py:223
 msgid "Example-based assessments cannot have duplicate point values."
-msgstr ""
+msgstr "მაგალითზე დაფუძნებულ შეფასებას არ შეიძლება ჰქონდეს ქულების დუბლირებული მნიშვნელობა."
 
-#: openassessment/xblock/validation.py:240
+#: openassessment/xblock/validation.py:232
 msgid "Prompts cannot be created or deleted after a problem is released."
-msgstr ""
+msgstr "ამოცანის გაშვების შემდეგ მინიშნებების შექმნა ან წაშლა შეუძლებელია."
 
-#: openassessment/xblock/validation.py:244
+#: openassessment/xblock/validation.py:236
 msgid "The number of criteria cannot be changed after a problem is released."
-msgstr ""
+msgstr "ამოცანის გაშვების შემდეგ, კრიტერიუმების რაოდენობის შეცვლა შეუძლებელია."
 
-#: openassessment/xblock/validation.py:257
+#: openassessment/xblock/validation.py:249
 msgid "Criteria names cannot be changed after a problem is released"
-msgstr ""
+msgstr "ამოცანის გაშვების შემდეგ კრიტერიუმების სახელების შეცვლა შეუძლებელია."
 
-#: openassessment/xblock/validation.py:262
+#: openassessment/xblock/validation.py:254
 msgid "The number of options cannot be changed after a problem is released."
-msgstr ""
+msgstr "ამოცანის გაშვების შემდეგ ვარიანტების რაოდენობის ცვლილება შეუძლებელია."
 
-#: openassessment/xblock/validation.py:267
+#: openassessment/xblock/validation.py:259
 msgid "Point values cannot be changed after a problem is released."
-msgstr ""
+msgstr "ამოცანის გაშვების შემდეგ ქულების მნიშვნელობის შეცვლა შეუძლებელია."
 
-#: openassessment/xblock/validation.py:318
+#: openassessment/xblock/validation.py:310
 msgid ""
 "Learner training and example-based assessments must have at least one "
 "training example."
-msgstr ""
+msgstr "მოსწავლის ტრენინგი და მაგალითზე დაფუძნებული შეფასებები უნდა შეიცავდნენ სულ მცირე ერთ მაგალითს ."
 
-#: openassessment/xblock/validation.py:381
+#: openassessment/xblock/validation.py:373
 msgid "Leaderboard number is invalid."
 msgstr "საუკეთესო პასუხების მნიშვნელობა არასწორია."
 
-#: openassessment/xblock/validation.py:404
+#: openassessment/xblock/validation.py:396
 msgid "The submission format is invalid."
 msgstr "პასუხის არასწორი ფორმატი."
