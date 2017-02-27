@@ -143,6 +143,18 @@ class SubmissionMixin(object):
                 status_tag = submission.get('student_item')
                 status_text = submission.get('attempt_number')
 
+	# Submit response for aggregation and possible download as csv
+	from responseAggregator.models import Response
+	from responseAggregator.utils import save_response
+
+	question_response_dict = {self.prompt : data['submission']}
+
+	save_response(anonymous_student_id=self.runtime.anonymous_student_id,
+			course_id=self.runtime.course_id,
+			display_name="ORA",
+			response_type="ORA",
+			question_response_pairs=question_response_dict)
+
         return status, status_tag, status_text
 
     @XBlock.json_handler
