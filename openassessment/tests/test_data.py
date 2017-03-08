@@ -20,14 +20,10 @@ import openassessment.assessment.api.peer as peer_api
 COURSE_ID = "Test_Course"
 
 STUDENT_ID = "Student"
-STUDENT_ID2 = "Student2"
-STUDENT_ID3 = "Student3"
 
 SCORER_ID = "Scorer"
 
-ITEM_ID = "item_one"
-ITEM_ID2 = "item_two"
-ITEM_ID3 = "item_three"
+ITEM_ID = "item"
 
 STUDENT_ITEM = dict(
     student_id=STUDENT_ID,
@@ -412,6 +408,18 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         feedback_dict['submission_uuid'] = submission_uuid
         peer_api.set_assessment_feedback(feedback_dict)
 
+    def _other_student(self, n):
+        """
+        n is an integer to postfix, for example _other_student(3) would return "Student_3"
+        """
+        return STUDENT_ID + '_' + str(n)
+
+    def _other_item(self, n):
+        """
+        n is an integer to postfix, for example _other_item(4) would return "item_4"
+        """
+        return ITEM_ID + '_' + str(n)
+
     def test_collect_ora2_data(self):
         headers, data = OraAggregateData.collect_ora2_data(COURSE_ID)
 
@@ -480,51 +488,72 @@ class TestOraAggregateDataIntegration(TransactionCacheResetTest):
         ])
 
     def test_collect_ora2_responses(self):
+        item_id2 = self._other_item(2)
+        item_id3 = self._other_item(3)
+
+        student_id2 = self._other_student(2)
+        student_id3 = self._other_student(3)
+
         self._create_submission(dict(
             student_id=STUDENT_ID,
             course_id=COURSE_ID,
-            item_id=ITEM_ID2,
+            item_id=item_id2,
             item_type="openassessment"
         ), ['self'])
         self._create_submission(dict(
-            student_id=STUDENT_ID2,
+            student_id=student_id2,
             course_id=COURSE_ID,
-            item_id=ITEM_ID2,
+            item_id=item_id2,
             item_type="openassessment"
         ), STEPS)
 
         self._create_submission(dict(
             student_id=STUDENT_ID,
             course_id=COURSE_ID,
-            item_id=ITEM_ID3,
+            item_id=item_id3,
             item_type="openassessment"
         ), ['self'])
         self._create_submission(dict(
-            student_id=STUDENT_ID2,
+            student_id=student_id2,
             course_id=COURSE_ID,
-            item_id=ITEM_ID3,
+            item_id=item_id3,
             item_type="openassessment"
         ), ['self'])
         self._create_submission(dict(
-            student_id=STUDENT_ID3,
+            student_id=student_id3,
             course_id=COURSE_ID,
-            item_id=ITEM_ID3,
+            item_id=item_id3,
             item_type="openassessment"
         ), STEPS)
 
         data = OraAggregateData.collect_ora2_responses(COURSE_ID)
 
         self.assertIn(ITEM_ID, data)
-        self.assertIn(ITEM_ID2, data)
-        self.assertIn(ITEM_ID3, data)
-        for item in [ITEM_ID, ITEM_ID2, ITEM_ID3]:
-            self.assertEqual({'total', 'training', 'peer', 'self', 'staff', 'waiting', 'done'}, set(data[item].keys()))
+        self.assertIn(item_id2, data)
+        self.assertIn(item_id3, data)
+        for item in [ITEM_ID, item_id2, item_id3]:
+            self.assertEqual({'total', 'training', 'peer', 'self', 'staff', 'waiting', 'done', 'ai', 'cancelled'},
+                             set(data[item].keys()))
         self.assertEqual(data[ITEM_ID], {
-            'total': 2, 'training': 0, 'peer': 2, 'self': 0, 'staff': 0, 'waiting': 0, 'done': 0
+            'total': 2, 'training': 0, 'peer': 2, 'self': 0, 'staff': 0, 'waiting': 0,
+            'done': 0, 'ai': 0, 'cancelled': 0
         })
-        self.assertEqual(data[ITEM_ID2], {
-            'total': 2, 'training': 0, 'peer': 1, 'self': 1, 'staff': 0, 'waiting': 0, 'done': 0
+        self.assertEqual(data[item_id2], {
+            'total': 2, 'training': 0, 'peer': 1, 'self': 1, 'staff': 0, 'waiting': 0,
+            'done': 0, 'ai': 0, 'cancelled': 0
         })
-        self.assertEqual(data[ITEM_ID3], {
-            'total': 3, 'training': 0, 'peer': 1, 'self': 2, 'staff': 0, 'waiting': 0, 'done': 0
+        self.assertEqual(data[item_id3], {
+            'total': 3, 'training': 0, 'peer': 1, 'self': 2, 'staff': 0, 'waiting': 0,
+            'done': 0, 'ai': 0, 'cancelled': 0
         })
+
+        data = OraAggregateData.collect_ora2_responses(COURSE_ID, ['staff', 'peer'])
+
+        self.assertIn(ITEM_ID, data)
+        self.assertIn(item_id2, data)
+        self.assertIn(item_id3, data)
+        for item in [ITEM_ID, item_id2, item_id3]:
+            self.assertEqual({'total', 'peer', 'staff'}, set(data[item].keys()))
+        self.assertEqual(data[ITEM_ID], {'total': 2, 'peer': 2, 'staff': 0})
+        self.assertEqual(data[item_id2], {'total': 1, 'peer': 1, 'staff': 0})
+        self.assertEqual(data[item_id3], {'total': 1, 'peer': 1, 'staff': 0})

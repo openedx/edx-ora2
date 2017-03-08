@@ -4,6 +4,7 @@ Aggregate data for openassessment.
 import csv
 import json
 
+from collections import defaultdict
 from django.conf import settings
 from submissions import api as sub_api
 from openassessment.workflow.models import AssessmentWorkflow
@@ -497,12 +498,13 @@ class OraAggregateData(object):
         return header, rows
 
     @classmethod
-    def collect_ora2_responses(cls, course_id):
+    def collect_ora2_responses(cls, course_id, desired_statuses=None):
         """
         Get information about all ora2 blocks in the course with response count for each step
 
         Args:
             course_id (string) - the course id of the course whose data we would like to return
+            desired_statuses (list) - statuses to return in the result dict for each ora item
 
         Returns:
             A dict in the format:
@@ -516,22 +518,19 @@ class OraAggregateData(object):
             }
 
         """
-        except_statuses = ['ai', 'cancelled']
-        statuses = [st for st in AssessmentWorkflow().STATUS_VALUES if st not in except_statuses]
-        statuses.append('total')
+        if desired_statuses:
+            statuses = [st for st in AssessmentWorkflow().STATUS_VALUES if st in desired_statuses]
+        else:
+            statuses = AssessmentWorkflow().STATUS_VALUES
 
-        items = AssessmentWorkflow.objects.filter(course_id=course_id).values('item_id', 'status')
+        items = AssessmentWorkflow.objects.filter(course_id=course_id, status__in=statuses).values('item_id', 'status')
 
-        result = {}
+        result = defaultdict(lambda: {status: 0 for status in statuses})
         for item in items:
             item_id = item['item_id']
             status = item['status']
-            if item_id not in result:
-                result[item_id] = {}
-                for st in statuses:
-                    result[item_id][st] = 0
+            result[item_id]['total'] = result[item_id].get('total', 0) + 1
             if status in statuses:
                 result[item_id][status] += 1
-                result[item_id]['total'] += 1
 
         return result
