@@ -5,9 +5,11 @@ from boto.s3.key import Key
 import ddt
 
 import json
+from mock import patch, Mock
 import os
 import shutil
 import tempfile
+from urlparse import urlparse
 
 from django.conf import settings
 from django.test import TestCase
@@ -23,6 +25,7 @@ from openassessment.fileupload import exceptions
 from openassessment.fileupload import views_filesystem as views
 from openassessment.fileupload.backends.base import Settings as FileUploadSettings
 from openassessment.fileupload.backends.filesystem import get_cache as get_filesystem_cache
+
 
 @ddt.ddt
 class TestFileUploadService(TestCase):
@@ -112,7 +115,6 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
 
         get_filesystem_cache().clear()
         self.delete_data(self.key_name)
-
 
     def tearDown(self):
         self.delete_data(self.key_name)
@@ -277,3 +279,62 @@ class TestFileUploadServiceWithFilesystemBackend(TestCase):
 
         self.assertEqual(200, upload_response.status_code)
         self.assertEqual(200, download_response.status_code)
+
+
+@override_settings(
+    ORA2_FILEUPLOAD_BACKEND='swift',
+    ORA2_SWIFT_URL='http://www.example.com:12345',
+    ORA2_SWIFT_KEY='bar',
+    FILE_UPLOAD_STORAGE_BUCKET_NAME='bucket_name'
+)
+class TestSwiftBackend(TestCase):
+    """
+    Test open assessment file upload to swift object storage.
+    """
+    def setUp(self):
+        super(TestSwiftBackend, self).setUp()
+        self.backend = api.backends.get_backend()
+
+    def _verify_url(self, url):
+        result = urlparse(url)
+        self.assertEqual(result.scheme, u'http')
+        self.assertEqual(result.netloc, u'www.example.com:12345')
+        self.assertEqual(result.path, u'/bucket_name/submissions_attachments/foo')
+        self.assertIn(result.params, 'temp_url_sig=')
+        self.assertIn(result.params, 'temp_url_expires=')
+
+    def test_get_backend(self):
+        """
+        Verify that there are no errors setting up swift as a backend.
+        """
+        self.assertTrue(isinstance(self.backend, api.backends.swift.Backend))
+
+    def test_get_upload_url(self):
+        """
+        Verify the upload URL.
+        """
+        url = self.backend.get_upload_url('foo', '_text')
+        self._verify_url(url)
+
+    @patch('openassessment.fileupload.backends.swift.requests.get')
+    def test_get_download_url_success(self, requests_get_mock):
+        """
+        Verify the download URL when the object already exists in storage.
+        """
+        fake_resp = Mock()
+        fake_resp.status_code = 200  # always return a 200 status code
+        requests_get_mock.return_value = fake_resp
+        url = self.backend.get_download_url('foo')
+        self._verify_url(url)
+
+    @patch('openassessment.fileupload.backends.swift.requests.get')
+    def test_get_download_url_no_object(self, requests_get_mock):
+        """
+        Verify the download URL is empty when the object
+        cannot be found in storage.
+        """
+        fake_resp = Mock()
+        fake_resp.status_code = 404  # always return a 404 status code
+        requests_get_mock.return_value = fake_resp
+        url = self.backend.get_download_url('foo')
+        self.assertEqual(url, '')
