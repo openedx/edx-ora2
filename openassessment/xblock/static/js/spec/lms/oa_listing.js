@@ -37,67 +37,81 @@ describe("OpenAssessment.CourseItemsListingView", function() {
         );
     };
 
-    var testData = [{
-        "parent_name": "Vertical 1",
-        "name": "Test ORA 1",
-        "url_grade_available_responses": "/grade_available_responses_view",
-        "staff_assessment": false,
-        "parent_id": "block-v1:SomeOrg+ORA101+2017+type@vertical+block@5570454d5dc4469ca75f36dd792ee316",
-        "url_base": "/student_view",
-        "id": "block-v1:SomeOrg+ORA101+2017+type@openassessment+block@9d1af6220a4d4ecbafb22a3506effcce"
-    }, {
-        "parent_name": "Vertical 2",
-        "name": "Test ORA 2",
-        "url_grade_available_responses": "/grade_available_responses_view",
-        "staff_assessment": true,
-        "parent_id": "block-v1:SomeOrg+ORA101+2017+type@vertical+block@90b4edff50bc47d9ba037a3180c44e97",
-        "url_base": "/student_view",
-        "id": "block-v1:SomeOrg+ORA101+2017+type@openassessment+block@3ec2343a95734a87af494455f52b1141"
-    }, {
-        "parent_name": "Vertical 3",
-        "name": "Test ORA 3",
-        "url_grade_available_responses": "/grade_available_responses_view",
-        "staff_assessment": false,
-        "parent_id": "block-v1:SomeOrg+ORA101+2017+type@vertical+block@59243a76bb5e4bda9243d5ded8163e18",
-        "url_base": "/student_view",
-        "id": "block-v1:SomeOrg+ORA101+2017+type@openassessment+block@40b4edfe60bc47d9ba037a3180c44e97"
-    }];
-
-    var ora2responses = {
+    var oraCourseItems = {
         "block-v1:SomeOrg+ORA101+2017+type@openassessment+block@9d1af6220a4d4ecbafb22a3506effcce": {
-            "training": 0,
-            "self": 0,
-            "peer": 1,
-            "waiting": 0,
-            "ai": 0,
-            "done": 0,
-            "cancelled": 0,
-            "total": 1,
-            "staff": 0
+            "name": "Test ORA 1",
+            "staff_assessment": false,
+            "parent": {
+                "id": "block-v1:SomeOrg+ORA101+2017+type@vertical+block@5570454d5dc4469ca75f36dd792ee316",
+                "name": "Vertical 1"
+            },
+            "responses": {
+                "training": 0,
+                "self": 0,
+                "peer": 1,
+                "waiting": 0,
+                "ai": 0,
+                "done": 0,
+                "cancelled": 0,
+                "total": 1,
+                "staff": 0
+            }
         },
         "block-v1:SomeOrg+ORA101+2017+type@openassessment+block@3ec2343a95734a87af494455f52b1141": {
-            "training": 3,
-            "self": 0,
-            "peer": 0,
-            "waiting": 0,
-            "ai": 0,
-            "done": 0,
-            "cancelled": 0,
-            "total": 8,
-            "staff": 5
+            "name": "Test ORA 2",
+            "staff_assessment": true,
+            "parent": {
+                "id": "block-v1:SomeOrg+ORA101+2017+type@vertical+block@90b4edff50bc47d9ba037a3180c44e97",
+                "name": "Vertical 2"
+            },
+            "responses": {
+                "training": 3,
+                "self": 0,
+                "peer": 0,
+                "waiting": 0,
+                "ai": 0,
+                "done": 0,
+                "cancelled": 0,
+                "total": 8,
+                "staff": 5
+            }
         },
         "block-v1:SomeOrg+ORA101+2017+type@openassessment+block@40b4edfe60bc47d9ba037a3180c44e97": {
-            "training": 0,
-            "self": 0,
-            "peer": 1,
-            "waiting": 0,
-            "ai": 0,
-            "done": 2,
-            "cancelled": 0,
-            "total": 3,
-            "staff": 0
+            "name": "Test ORA 3",
+            "staff_assessment": false,
+            "parent": {
+                "id": "block-v1:SomeOrg+ORA101+2017+type@openassessment+block@40b4edfe60bc47d9ba037a3180c44e97",
+                "name": "Vertical 3"
+            },
+            "responses": {
+                "training": 0,
+                "self": 0,
+                "peer": 1,
+                "waiting": 0,
+                "ai": 0,
+                "done": 2,
+                "cancelled": 0,
+                "total": 3,
+                "staff": 0
+            }
         }
     };
+
+    var testData = [];
+    var ora2responses = {};
+
+    $.each(oraCourseItems, function(locationId, oraItem) {
+        testData.push({
+            "parent_name": oraItem['parent']['name'],
+            "name": oraItem['name'],
+            "url_grade_available_responses": "/grade_available_responses_view",
+            "staff_assessment": oraItem['staff_assessment'],
+            "parent_id": oraItem['parent']['id'],
+            "url_base": "/student_view",
+            "id": locationId
+        });
+        ora2responses[locationId] = oraItem['responses'];
+    });
 
     beforeEach(function() {
         // Create a new stub server
@@ -131,11 +145,11 @@ describe("OpenAssessment.CourseItemsListingView", function() {
         expect(section.find('.open-response-assessment-content').is(':visible')).toBe(true);
 
         var expectedArr = [3, 3, 12, 3, 2, 0, 5, 2];
-        var arr = [];
+        var summaryRowValuesArr = [];
         section.find('.open-response-assessment-summary td div.ora-summary-value').each(function(i, val) {
-            arr.push(parseInt($(val).text()));
+            summaryRowValuesArr.push(parseInt($(val).text()));
         });
-        expect(_.isEqual(arr, expectedArr)).toBe(true);
+        expect(_.isEqual(summaryRowValuesArr, expectedArr)).toBe(true);
 
         var rows = $('.open-response-assessment-main-table tbody tr');
         expect(rows.length).toBe(3);

@@ -29,11 +29,19 @@
 
   .open-response-assessment-main-table {
     th {
-      background-color: $white;
+      background-color: #ffffff;
       text-align: left;
 
+      button {
+        background: none;
+        border: none;
+        box-shadow: none;
+        outline: none;
+        font-size: 14px;
+      }
+
       a {
-        color: $black !important;
+        color: #000000 !important;
       }
     }
 

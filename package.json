@@ -4,6 +4,7 @@
   "repository": "https://github.com/edx/edx-ora2.git",
   "dependencies": {
     "backbone": "~1.2.3",
+    "backgrid ": "~0.3.8",
     "edx-ui-toolkit": "1.5.1",
     "moment": "^2.15.1",
     "moment-timezone": "~0.5.5",

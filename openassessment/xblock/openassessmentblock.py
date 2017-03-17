@@ -390,14 +390,20 @@ class OpenAssessmentBlock(MessageMixin,
         ora_item_view_enabled = context.get('ora_item_view_enabled', False) if context else False
         context_dict = {
             "ora_items": json.dumps(ora_items),
-            "ora_item_view_enabled": 1 if ora_item_view_enabled else 0
+            "ora_item_view_enabled": ora_item_view_enabled
         }
 
         template = get_template('openassessmentblock/instructor_dashboard/oa_listing.html')
         context = Context(context_dict)
         fragment = Fragment(template.render(context))
 
-        return self._update_and_return_fragment(fragment, 'CourseOpenResponsesListingBlock')
+        min_postfix = '.min' if settings.DEBUG else ''
+
+        css_lst = ["static/css/lib/backgrid/backgrid%s.css" % min_postfix]
+        js_lst = ["static/js/lib/backgrid/backgrid%s.js" % min_postfix]
+
+        return self._update_and_return_fragment(fragment, 'CourseOpenResponsesListingBlock',
+                                                additional_css=css_lst, additional_js=js_lst)
 
     def grade_available_responses_view(self, context=None):
         """Grade Available Responses view.
@@ -430,29 +436,40 @@ class OpenAssessmentBlock(MessageMixin,
 
         return self._update_and_return_fragment(fragment, 'StaffAssessmentBlock')
 
-    def _update_and_return_fragment(self, fragment, initialize_js_func):
+    def _update_and_return_fragment(self, fragment, initialize_js_func, additional_css=None, additional_js=None):
         """
         Auxiliary function to return updated fragment
 
         """
+        if additional_css is None:
+            additional_css = []
+        if additional_js is None:
+            additional_js = []
+
         i18n_service = self.runtime.service(self, 'i18n')
         if hasattr(i18n_service, 'get_language_bidi') and i18n_service.get_language_bidi():
             css_url = "static/css/openassessment-rtl.css"
         else:
             css_url = "static/css/openassessment-ltr.css"
 
-        # backgrid.js v0.3.7
-        fragment.add_css_url(self.runtime.local_resource_url(self, "static/css/lib/backgrid.min.css"))
-        self.add_javascript_files(fragment, "static/js/lib/backgrid.min.js")
-
         if settings.DEBUG:
+            for css in additional_css:
+                fragment.add_css_url(self.runtime.local_resource_url(self, css))
             fragment.add_css_url(self.runtime.local_resource_url(self, css_url))
+
+            for js in additional_js:
+                self.add_javascript_files(fragment, js)
             self.add_javascript_files(fragment, "static/js/src/oa_shared.js")
             self.add_javascript_files(fragment, "static/js/src/oa_server.js")
             self.add_javascript_files(fragment, "static/js/src/lms")
         else:
             # TODO: load CSS and JavaScript as URLs once they can be served by the CDN
+            for css in additional_css:
+                fragment.add_css(load(css))
             fragment.add_css(load(css_url))
+
+            for js in additional_js:
+                fragment.add_javascript(load(js))
             fragment.add_javascript(load("static/js/openassessment-lms.min.js"))
         js_context_dict = {
             "ALLOWED_IMAGE_MIME_TYPES": self.ALLOWED_IMAGE_MIME_TYPES,

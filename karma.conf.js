@@ -31,7 +31,7 @@ module.exports = function(config) {
       'js/lib/jquery-ui-1.10.4.min.js',
       'js/lib/underscore-min.js',
       '../../../node_modules/backbone/backbone.js',
-      'js/lib/backgrid.min.js',
+      '../../../node_modules/backgrid/lib/backgrid.min.js',
       '../../../node_modules/requirejs/require.js',
       '../../../require-config.js',
       {
