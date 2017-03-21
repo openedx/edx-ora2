@@ -24,7 +24,7 @@ OpenAssessment.FileUploader = function() {
                     data: file,
                     async: false,
                     processData: false,
-                    contentType: file.type,
+                    contentType: file.type
                 }).done(
                     function() {
                         // Log an analytics event

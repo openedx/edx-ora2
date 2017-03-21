@@ -384,5 +384,22 @@ function OpenAssessmentBlock(runtime, element, data) {
     var server = new OpenAssessment.Server(runtime, element);
     var view = new OpenAssessment.BaseView(runtime, element, server, data);
     view.load();
+}
 
+/* XBlock JavaScript entry point for OpenAssessmentXBlock. */
+/* jshint unused:false */
+function CourseOpenResponsesListingBlock(runtime, element, data) {
+    var view = new OpenAssessment.CourseItemsListingView(runtime, element);
+    view.refreshGrids();
+}
+
+/* XBlock JavaScript entry point for OpenAssessmentXBlock. */
+/* jshint unused:false */
+function StaffAssessmentBlock(runtime, element, data) {
+    /**
+    Render auxiliary view which displays the staff grading area
+    **/
+    var server = new OpenAssessment.Server(runtime, element);
+    var view = new OpenAssessment.BaseView(runtime, element, server, data);
+    view.staffAreaView.installHandlers();
 }

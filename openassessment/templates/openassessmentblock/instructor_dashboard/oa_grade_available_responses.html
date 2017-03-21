@@ -1,0 +1,32 @@
+{% load i18n %}
+{% spaceless %}
+<div class="wrapper wrapper--xblock wrapper--openassessment theme--basic">
+    <div class="openassessment problem">
+        <div class="wrapper--grid">
+            {% if title %}
+                <h4 class="openassessment__title problem__header">{% trans title %}</h4>
+            {% endif %}
+
+            {% if staff_assessment_required %}
+            <div class="openassessment__staff-area">
+                <div class="openassessment__staff-grading wrapper--staff-grading">
+                    <div class="staff-grading ui-staff">
+                        <h5 class="staff-grading__title">
+                            <span class="staff-info__title__copy">{% trans "Grade Available Responses" %}</span>
+                        </h5>
+
+                        <div class="staff-info__content ui-staff__content">
+                        {% include "openassessmentblock/staff_area/oa_staff_grade_learners.html" with staff_assessment_ungraded=staff_assessment_ungraded staff_assessment_in_progress=staff_assessment_in_progress %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+                <div class="openassessment__staff-area-unavailable">
+                {% trans "Grade Available Responses is unavailable. This item is not configured for Staff Assessment." %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endspaceless %}
