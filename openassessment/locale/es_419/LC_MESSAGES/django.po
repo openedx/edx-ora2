@@ -9,7 +9,7 @@
 # Cristian Salamea <ovnicraft@gmail.com>, 2014-2015
 # dzepeda <davitzepeda@hotmail.com>, 2014
 # Etna Pretelín Ricárdez, 2014
-# Juan Camilo Montoya Franco <juan.montoya@edunext.co>, 2015-2016
+# Juan Camilo Montoya Franco <juan.montoya@edunext.co>, 2015-2017
 # Juan Camilo Montoya Franco <juan.montoya@edunext.co>, 2014
 # Juan Rendon <contact@lifesynergyretreat.com>, 2014
 # Laura Silva <lingison@edx.org>, 2016
@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-24 18:59+0000\n"
-"PO-Revision-Date: 2017-02-24 19:07+0000\n"
+"POT-Creation-Date: 2017-03-21 19:56+0000\n"
+"PO-Revision-Date: 2017-03-21 19:48+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/open-edx/edx-platform/language/es_419/)\n"
 "MIME-Version: 1.0\n"
@@ -101,7 +101,7 @@ msgstr "Nombre para mostrar"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:44
 msgid "The display name for this component."
-msgstr ""
+msgstr "El nombre para mostrar de este componente. "
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit.html:51
 msgid "Response Start Date"
@@ -499,7 +499,7 @@ msgid ""
 "\n"
 "                %(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s\n"
 "              "
-msgstr ""
+msgstr "\n%(start_tag)s%(title)s%(end_tag)s%(start_grade_tag)s - %(grade)s%(end_tag)s"
 
 #: openassessment/templates/openassessmentblock/grade/oa_assessment_title.html:7
 #, python-format
@@ -511,8 +511,8 @@ msgid_plural ""
 "\n"
 "                      %(assessment_title)s - %(points)s points\n"
 "                  "
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "\n%(assessment_title)s - %(points)s punto"
+msgstr[1] "\n%(assessment_title)s - %(points)s puntos"
 
 #: openassessment/templates/openassessmentblock/grade/oa_assessment_title.html:24
 #, python-format
@@ -546,7 +546,7 @@ msgid ""
 "\n"
 "                                            %(points_earned)s out of %(points_possible)s\n"
 "                                        "
-msgstr ""
+msgstr "\n%(points_earned)s de %(points_possible)s"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:32
 #: openassessment/templates/openassessmentblock/response/oa_response.html:16
@@ -576,7 +576,7 @@ msgstr "Comentarios adicionales en su respuesta"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:105
 msgid "Provide feedback on peer assessments"
-msgstr ""
+msgstr "Proporcione sus comentarios sobre la evaluación por pares"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:114
 msgid "Submitting Feedback"
@@ -597,7 +597,7 @@ msgstr "Publicar retroalimentación"
 #: openassessment/templates/openassessmentblock/self/oa_self_closed.html:28
 #: openassessment/templates/openassessmentblock/student_training/student_training_closed.html:27
 msgid "Status"
-msgstr ""
+msgstr "Estado"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:122
 msgid ""
@@ -615,7 +615,7 @@ msgstr "El personal de curso podrá ver todos los comentarios que publiques aqu�
 msgid ""
 "Select the statements below that best reflect your experience with peer "
 "assessments."
-msgstr ""
+msgstr "Seleccione las declaraciones de abajo que mejor reflejen sus experiencias con la evaluación entre pares."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:143
 msgid "These assessments were useful."
@@ -678,6 +678,22 @@ msgid ""
 "and you will receive your final grade."
 msgstr "Ha completado los pasos en la tarea, pero algunas evaluaciones aún no se han realizado sobre su respuesta. Cuando las evaluaciones de su respuesta hayan sido terminadas, podrá ver los comentarios de las personas que evaluaron su respuesta, así como su calificación final."
 
+#: openassessment/templates/openassessmentblock/instructor_dashboard/oa_grade_available_responses.html:15
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:9
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:171
+msgid "Grade Available Responses"
+msgstr "Calificar respuestas disponibles"
+
+#: openassessment/templates/openassessmentblock/instructor_dashboard/oa_grade_available_responses.html:26
+msgid ""
+"Grade Available Responses is unavailable. This item is not configured for "
+"Staff Assessment."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/instructor_dashboard/oa_listing.html:6
+msgid "Please wait"
+msgstr ""
+
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:20
 #, python-format
 msgid "%(num_points)s points"
@@ -687,7 +703,7 @@ msgstr "%(num_points)s puntos"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:68
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:51
 msgid "Your peer's response to the question above"
-msgstr ""
+msgstr "Respuesta de su compañero a la pregunta anterior"
 
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_waiting.html:18
 msgid ""
@@ -699,44 +715,44 @@ msgstr "Después de completar todos los pasos de esta tarea, podrá ver las resp
 msgid ""
 "This task is not yet available. Check back to complete the assignment once "
 "this section has opened."
-msgstr ""
+msgstr "Esta tarea todavía no está disponible. Regrese a esta sección a completar la tarea cuando esté abierta."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_closed.html:10
 msgid ""
 "This assignment has closed. One or more deadlines for this assignment have "
 "passed. You will receive an incomplete grade for this assignment."
-msgstr ""
+msgstr "Esta tarea está cerrada. Una o más fechas límites para esta tarea han pasado. Recibirá un nota de incompleto para esta tarea."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_complete.html:8
 msgid ""
 "You have completed this assignment. Your final grade will be available when "
 "the assessments of your response are complete."
-msgstr ""
+msgstr "Ha completado esta tarea. Su nota final estará disponible cuando las revisiones de su respuesta hayan sido completadas."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_complete.html:10
 msgid ""
 "You have completed this assignment. Review your grade and your assessment "
 "details."
-msgstr ""
+msgstr "Ha completado esta tarea. Revise su calificación y los detalles de su evaluación."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:9
 msgid ""
 "This assignment is in progress. Learner training will close soon. Complete "
 "the learner training step to move on."
-msgstr ""
+msgstr "Esta tarea está en proceso. El entrenamiento de estudiantes terminará pronto. Complete la fase de entrenamiento para poder avanzar."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:11
 msgid ""
 "This assignment is in progress. Complete the learner training step to move "
 "on."
-msgstr ""
+msgstr "El entrenamiento de estudiantes terminará pronto. Complete la fase de entrenamiento para poder avanzar."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:15
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:33
 msgid ""
 "This assignment is in progress. Check back later when the assessment period "
 "has started."
-msgstr ""
+msgstr "Esta tarea está en proceso. Vuelva a revisar mas tarde, cuando se haya iniciado el periodo de evaluación."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:20
 #, python-format
@@ -744,7 +760,7 @@ msgid ""
 "\n"
 "                                    %(start_strong)sThis assignment is in progress. The self assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\n%(start_strong)sEsta tarea está en proceso. El paso de auto-calificación va a cerrar pronto.%(end_strong)s Ud. todavía necesita completar el paso de %(start_link)sauto-calificación%(end_link)s."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:24
 #, python-format
@@ -752,7 +768,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. You still need to complete the %(start_link)sself assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\nEsta tarea está en proceso. Ud. todavía necesita completar el paso de %(start_link)sauto-calificación%(end_link)s."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:38
 #, python-format
@@ -760,7 +776,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress.%(start_strong)sThe peer assessment step will close soon.%(end_strong)s All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\nEsta tarea está en proceso. %(start_strong)sEl paso de calificación entre pares va a cerrar pronto.%(end_strong)s Se han calificado todas las respuestas enviadas por compañeros. Vuelva más tarde a ver si más estudiantes han enviado respuestas. Ud. todavía necesita completar el paso de %(start_link)scalificación entre pares%(end_link)s."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:42
 #, python-format
@@ -768,7 +784,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. All submitted peer responses have been assessed. Check back later to see if more learners have submitted responses. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\nEsta tarea está en proceso. Ya se han calificado todas las respuestas enviadas por sus pares. Vuelva más tarde a ver si más estudiantes han enviado respuestas. Ud. todavía necesita completar el paso de %(start_link)scalificación entre pares%(end_link)s."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:46
 #, python-format
@@ -776,7 +792,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. %(start_strong)sThe peer assessment step will close soon.%(end_strong)s You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\nEsta tarea está en proceso. %(start_strong)sEl paso de calificación entre pares va a cerrar pronto.%(end_strong)s Ud. todavía necesita completar el paso de %(start_link)scalificación entre pares%(end_link)s."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:50
 #, python-format
@@ -784,7 +800,7 @@ msgid ""
 "\n"
 "                                    This assignment is in progress. You still need to complete the %(start_link)speer assessment%(end_link)s step.\n"
 "                                "
-msgstr ""
+msgstr "\nEsta tarea está en proceso. Ud. todavía necesita completar el paso de %(start_link)scalificación entre pares%(end_link)s."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_open.html:7
 #, python-format
@@ -827,7 +843,7 @@ msgstr "Comentarios"
 
 #: openassessment/templates/openassessmentblock/oa_submission_answer.html:7
 msgid "The question for this section"
-msgstr ""
+msgstr "La pregunta para esta sección"
 
 #: openassessment/templates/openassessmentblock/oa_uploaded_file.html:16
 msgid "The image associated with this submission."
@@ -865,7 +881,7 @@ msgid ""
 "\n"
 "                        <span class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "                        "
-msgstr ""
+msgstr "\n<span class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 00:00 UTC (in 5 days
@@ -884,7 +900,7 @@ msgid ""
 "\n"
 "                        <span class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "                        "
-msgstr ""
+msgstr "\n<span class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:44
 #, python-format
@@ -892,7 +908,7 @@ msgid ""
 "\n"
 "                        In Progress (%(review_number)s of %(num_must_grade)s)\n"
 "                    "
-msgstr ""
+msgstr "\nEn proceso (%(review_number)s de %(num_must_grade)s)"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:59
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:43
@@ -937,7 +953,7 @@ msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer complete peer assessments or continue with this assignment, and you "
 "will receive a grade of Incomplete."
-msgstr ""
+msgstr "La fecha límite para este paso ha vencido. El paso está cerrado. Ud. ya no puede completar calificaciones entre pares o seguir con esta tarea, y recibirá una calificación de Incompleto."
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:13
 msgid "Completed"
@@ -973,7 +989,7 @@ msgstr "\n        Completa (%(num_graded)s)\n      "
 msgid ""
 "All submitted peer responses have been assessed. Check back later to see if "
 "more learners have submitted responses."
-msgstr ""
+msgstr "Se han calificado todas las respuestas enviadas por sus compañeros. Vuelva más tarde a ver si más estudiantes han enviado respuestas."
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_unavailable.html:16
 #: openassessment/templates/openassessmentblock/response/oa_response_unavailable.html:17
@@ -990,7 +1006,7 @@ msgid ""
 "\n"
 "          In Progress (%(review_number)s of %(num_must_grade)s)\n"
 "        "
-msgstr ""
+msgstr "\nEn proceso (%(review_number)s de %(num_must_grade)s)"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_waiting.html:35
 msgid ""
@@ -998,7 +1014,7 @@ msgid ""
 "more learners have submitted responses. You will receive your grade after "
 "you've completed all the steps for this problem and your peers have assessed"
 " your response."
-msgstr ""
+msgstr "Se han calificado todas las respuestas enviadas por sus compañeros. Vuelva más tarde a ver si más estudiantes han enviado respuestas. Ud. recibirá su nota después de que haya completado todos los pasos para este problema y que sus compañeros hayan calificado su respuesta."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:37
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:39
@@ -1026,14 +1042,14 @@ msgstr "Tras subir su respuesta no podrá editarla"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:67
 msgid "The prompt for this section"
-msgstr ""
+msgstr "El apunte para esta sección"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:80
 #: openassessment/templates/openassessmentblock/response/oa_response_graded.html:28
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:49
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:51
 msgid "Your response"
-msgstr ""
+msgstr "Su respuesta"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:88
 msgid "Enter your response to the question above."
@@ -1073,7 +1089,7 @@ msgstr "Vista previa en LaTeX"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:137
 msgid "Click to preview your submission in LaTeX."
-msgstr ""
+msgstr "Haga clic para previsualizar su envío en LaTeX."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:142
 msgid "Preview Response"
@@ -1089,7 +1105,7 @@ msgstr "Publique su respuesta y continúe a la siguiente etapa"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:32
 msgid "Your submission was cancelled. "
-msgstr ""
+msgstr "Su envío fue cancelado."
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:35
 #, python-format
@@ -1105,7 +1121,7 @@ msgid ""
 "\n"
 "                               Your submission was cancelled on %(removed_datetime)s\n"
 "                            "
-msgstr ""
+msgstr "\nSu envío fue cancelado el %(removed_datetime)s"
 
 #: openassessment/templates/openassessmentblock/response/oa_response_cancelled.html:46
 #, python-format
@@ -1127,7 +1143,7 @@ msgid ""
 "longer submit a response or continue with this problem, and you will receive"
 " a grade of Incomplete. If you saved but did not submit a response, the "
 "response appears in the course records."
-msgstr ""
+msgstr "La fecha límite para este paso ha vencido. El paso está cerrado. Ud. ya no puede completar calificaciones entre pares ni seguir con esta tarea, y recibirá una calificación de Incompleto. Si Ud. guardó una respuesta pero no la envió, la respuesta aparece en el registro del curso."
 
 #: openassessment/templates/openassessmentblock/response/oa_response_graded.html:18
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:18
@@ -1147,7 +1163,7 @@ msgstr "Su archivo cargado"
 msgid ""
 "Your response has been submitted. You will receive your grade after all "
 "steps are complete and your response is fully assessed."
-msgstr ""
+msgstr "Se ha enviado su respuesta. Ud. recibirá su nota una vez que todos los pasos estén completos y su respuesta haya sido calificada."
 
 #: openassessment/templates/openassessmentblock/response/oa_response_submitted.html:32
 #, python-format
@@ -1186,7 +1202,7 @@ msgid ""
 "\n"
 "                            <span class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "                        "
-msgstr ""
+msgstr "\n<span class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
 #. Translators: This string displays a date to the user, then tells them the
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
@@ -1197,7 +1213,7 @@ msgid ""
 "\n"
 "                            <span class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
 "                        "
-msgstr ""
+msgstr "\n<span class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>"
 
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:72
 msgid "Submit your assessment"
@@ -1208,7 +1224,7 @@ msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer complete a self assessment or continue with this assignment, and you "
 "will receive a grade of Incomplete."
-msgstr ""
+msgstr "La fecha límite para este paso ha vencido. El paso está cerrado. Ud. ya no puede completar su auto-calificación ni seguir con esta tarea, y recibirá una calificación de Incompleto."
 
 #: openassessment/templates/openassessmentblock/staff/oa_staff_grade.html:13
 #: openassessment/xblock/grade_mixin.py:345
@@ -1224,11 +1240,6 @@ msgstr "Gestionar estudiantes individuales"
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:89
 msgid "View Assignment Statistics"
 msgstr "Ver estadísticas de la tarea"
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:9
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:171
-msgid "Grade Available Responses"
-msgstr "Calificar respuestas disponibles"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:15
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:87
@@ -1343,7 +1354,7 @@ msgstr "Respuesta de estudiante"
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:24
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:46
 msgid "The learner's response to the question above"
-msgstr ""
+msgstr "La respuesta del estudiante a la pregunta de arriba"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_grade_learners_assessment.html:47
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:46
@@ -1550,7 +1561,7 @@ msgid ""
 "\n"
 "                          In Progress (%(current_progress_num)s of %(training_available_num)s)\n"
 "                      "
-msgstr ""
+msgstr "\nEn proceso (%(current_progress_num)s de %(training_available_num)s)"
 
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:57
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:65
@@ -1607,7 +1618,7 @@ msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer continue with this assignment, and you will receive a grade of "
 "Incomplete."
-msgstr ""
+msgstr "La fecha límite para este paso ha vencido. El paso está cerrado. Ud. ya no puede seguir con esta tarea, y recibirá una calificación de Incompleto."
 
 #: openassessment/templates/openassessmentblock/student_training/student_training_error.html:18
 msgid "Error Loading Learner Training Examples"
