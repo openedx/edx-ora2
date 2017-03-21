@@ -68,12 +68,12 @@ describe("OpenAssessment.CourseItemsListingView", function() {
                 "training": 3,
                 "self": 0,
                 "peer": 0,
-                "waiting": 0,
+                "waiting": 5,
                 "ai": 0,
                 "done": 0,
                 "cancelled": 0,
                 "total": 8,
-                "staff": 5
+                "staff": 0
             }
         },
         "block-v1:SomeOrg+ORA101+2017+type@openassessment+block@40b4edfe60bc47d9ba037a3180c44e97": {
