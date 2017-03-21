@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-24 18:59+0000\n"
-"PO-Revision-Date: 2017-02-24 19:07+0000\n"
+"POT-Creation-Date: 2017-03-21 19:56+0000\n"
+"PO-Revision-Date: 2017-03-21 19:48+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Hebrew (http://www.transifex.com/open-edx/edx-platform/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -669,6 +669,22 @@ msgid ""
 "and you will receive your final grade."
 msgstr "השלמת את השלבים שבמשימה, אך עדיין צריך להשלים כמה מההערכות על התשובה שלך. כאשר ההערכות על התשובה שלך הושלמו, תראה משוב מכל אחד שהעריך את תשובתך, ותקבל את הציון הסופי שלך."
 
+#: openassessment/templates/openassessmentblock/instructor_dashboard/oa_grade_available_responses.html:15
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:9
+#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:171
+msgid "Grade Available Responses"
+msgstr "דרג תשובות זמינות"
+
+#: openassessment/templates/openassessmentblock/instructor_dashboard/oa_grade_available_responses.html:26
+msgid ""
+"Grade Available Responses is unavailable. This item is not configured for "
+"Staff Assessment."
+msgstr ""
+
+#: openassessment/templates/openassessmentblock/instructor_dashboard/oa_listing.html:6
+msgid "Please wait"
+msgstr ""
+
 #: openassessment/templates/openassessmentblock/leaderboard/oa_leaderboard_show.html:20
 #, python-format
 msgid "%(num_points)s points"
@@ -1215,11 +1231,6 @@ msgstr "נהל לומדים עצמאיים"
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:89
 msgid "View Assignment Statistics"
 msgstr "הצג סטטיסטיקות משימה"
-
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:9
-#: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:171
-msgid "Grade Available Responses"
-msgstr "דרג תשובות זמינות"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:15
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:87
