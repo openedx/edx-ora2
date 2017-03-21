@@ -361,10 +361,8 @@ class OpenAssessmentBlock(MessageMixin,
             "show_staff_area": self.is_course_staff and not self.in_studio_preview,
         }
         template = get_template("openassessmentblock/oa_base.html")
-        context = Context(context_dict)
-        fragment = Fragment(template.render(context))
 
-        return self._update_and_return_fragment(fragment, 'OpenAssessmentBlock')
+        return self._create_fragment(template, context_dict, initialize_js_func='OpenAssessmentBlock')
 
     def ora_blocks_listing_view(self, context=None):
         """This view is used in the Open Response Assessment tab in the LMS Instructor Dashboard
@@ -394,16 +392,16 @@ class OpenAssessmentBlock(MessageMixin,
         }
 
         template = get_template('openassessmentblock/instructor_dashboard/oa_listing.html')
-        context = Context(context_dict)
-        fragment = Fragment(template.render(context))
 
         min_postfix = '.min' if settings.DEBUG else ''
 
-        css_lst = ["static/css/lib/backgrid/backgrid%s.css" % min_postfix]
-        js_lst = ["static/js/lib/backgrid/backgrid%s.js" % min_postfix]
-
-        return self._update_and_return_fragment(fragment, 'CourseOpenResponsesListingBlock',
-                                                additional_css=css_lst, additional_js=js_lst)
+        return self._create_fragment(
+            template,
+            context_dict,
+            initialize_js_func='CourseOpenResponsesListingBlock',
+            additional_css=["static/css/lib/backgrid/backgrid%s.css" % min_postfix],
+            additional_js=["static/js/lib/backgrid/backgrid%s.js" % min_postfix]
+        )
 
     def grade_available_responses_view(self, context=None):
         """Grade Available Responses view.
@@ -431,16 +429,17 @@ class OpenAssessmentBlock(MessageMixin,
             )
 
         template = get_template('openassessmentblock/instructor_dashboard/oa_grade_available_responses.html')
+
+        return self._create_fragment(template, context_dict, initialize_js_func='StaffAssessmentBlock')
+
+    def _create_fragment(self, template, context_dict, initialize_js_func, additional_css=None, additional_js=None):
+        """
+        Creates a fragment for display.
+
+        """
         context = Context(context_dict)
         fragment = Fragment(template.render(context))
 
-        return self._update_and_return_fragment(fragment, 'StaffAssessmentBlock')
-
-    def _update_and_return_fragment(self, fragment, initialize_js_func, additional_css=None, additional_js=None):
-        """
-        Auxiliary function to return updated fragment
-
-        """
         if additional_css is None:
             additional_css = []
         if additional_js is None:
@@ -468,8 +467,7 @@ class OpenAssessmentBlock(MessageMixin,
                 fragment.add_css(load(css))
             fragment.add_css(load(css_url))
 
-            for js in additional_js:
-                fragment.add_javascript(load(js))
+            # minified additional_js should be already included in 'make javascript'
             fragment.add_javascript(load("static/js/openassessment-lms.min.js"))
         js_context_dict = {
             "ALLOWED_IMAGE_MIME_TYPES": self.ALLOWED_IMAGE_MIME_TYPES,

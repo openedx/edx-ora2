@@ -28,15 +28,17 @@ install-nltk-data:
 
 
 STATIC_JS = openassessment/xblock/static/js
+STATIC_CSS = openassessment/xblock/static/css
 
-javascript:
-	node_modules/.bin/uglifyjs $(STATIC_JS)/src/oa_shared.js $(STATIC_JS)/src/*.js $(STATIC_JS)/src/lms/*.js > "$(STATIC_JS)/openassessment-lms.min.js"
-	node_modules/.bin/uglifyjs $(STATIC_JS)/src/oa_shared.js $(STATIC_JS)/src/*.js $(STATIC_JS)/src/studio/*.js > "$(STATIC_JS)/openassessment-studio.min.js"
-
+javascript: update-npm-requirements
+	node_modules/.bin/uglifyjs $(STATIC_JS)/src/oa_shared.js $(STATIC_JS)/src/*.js $(STATIC_JS)/src/lms/*.js $(STATIC_JS)/lib/backgrid/backgrid.min.js -c > "$(STATIC_JS)/openassessment-lms.min.js"
+	node_modules/.bin/uglifyjs $(STATIC_JS)/src/oa_shared.js $(STATIC_JS)/src/*.js $(STATIC_JS)/src/studio/*.js $(STATIC_JS)/lib/backgrid/backgrid.min.js -c > "$(STATIC_JS)/openassessment-studio.min.js"
 
 sass:
 	python scripts/compile_sass.py
 
+verify-generated-files: javascript sass
+	git diff --exit-code
 
 install-test:
 	pip install -q -r requirements/test.txt
@@ -50,8 +52,8 @@ install-dev:
 install: install-wheels install-python install-js install-nltk-data install-test install-dev javascript sass
 
 quality:
-	jshint openassessment/xblock/static/js/src -c .jshintrc --verbose
-	./node_modules/jscs/bin/jscs openassessment/xblock/static/js/src --verbose
+	jshint $(STATIC_JS)/src -c .jshintrc --verbose
+	./node_modules/jscs/bin/jscs $(STATIC_JS)/src --verbose
 	./scripts/run-pep8.sh
 	./scripts/run-pylint.sh
 
@@ -76,3 +78,8 @@ test-acceptance:
 
 test-a11y:
 	./scripts/test-acceptance.sh accessibility
+
+update-npm-requirements:
+	npm update
+	cp ./node_modules/backgrid/lib/backgrid*.js $(STATIC_JS)/lib/backgrid/
+	cp ./node_modules/backgrid/lib/backgrid*.css $(STATIC_CSS)/lib/backgrid/
