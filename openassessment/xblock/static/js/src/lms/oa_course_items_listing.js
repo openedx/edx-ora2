@@ -69,7 +69,7 @@
                 cell: "string", num: true, editable: false
             },
             {
-                name: 'staff', label: gettext("Staff"), label_summary: gettext("Staff"),
+                name: 'waiting', label: gettext("Staff"), label_summary: gettext("Staff"),
                 cell: StaffCell, num: true, editable: false
             },
             {
@@ -116,7 +116,7 @@
         var self = this;
         var $section = this.$section;
         var block = $section.find('.open-response-assessment-block');
-        var oraSteps = ['training', 'peer', 'self', 'staff', 'done'];
+        var oraSteps = ['training', 'peer', 'self', 'waiting', 'done'];
 
         $.each(self.oraData, function(i, oraItem) {
             var total = 0;
@@ -151,21 +151,27 @@
         $section.find(".open-response-assessment-summary").empty();
 
         $.each(this._columns, function(index, v) {
+            var realName = v.name === 'waiting' ? 'staff' : v.name;
             summaryData.push({
                 title: v.label_summary,
                 value: 0,
                 num: v.num,
-                class: v.name
+                class: realName
             });
-            summaryDataMap[v.name] = index;
+            summaryDataMap[realName] = index;
 
         });
 
         $.each(data, function(index, obj) {
+            var isStaffGraded = obj.staff_assessment;
             $.each(obj, function(key, value) {
                 var idx = 0;
-                if (key in summaryDataMap) {
-                    idx = summaryDataMap[key];
+                var realKey = key;
+                if (key === 'waiting' && isStaffGraded) {
+                    realKey = 'staff';
+                }
+                if (realKey in summaryDataMap) {
+                    idx = summaryDataMap[realKey];
                     if (summaryData[idx].num) {
                         summaryData[idx].value += value;
                     } else {
