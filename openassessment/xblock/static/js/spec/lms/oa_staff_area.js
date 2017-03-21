@@ -103,6 +103,13 @@ describe('OpenAssessment.StaffAreaView', function() {
         return view;
     };
 
+    var createGradeAvailableResponsesView = function() {
+        var assessmentElement = $('.openassessment').get(0);
+        var view = new OpenAssessment.BaseView(runtime, assessmentElement, server, {});
+        view.staffAreaView.installHandlers();
+        return view;
+    };
+
     /**
      * Initialize the staff area view, then check whether it makes
      * an AJAX call to populate itself.
@@ -761,6 +768,53 @@ describe('OpenAssessment.StaffAreaView', function() {
 
             submitAssessment(staffArea, staffAreaTab);
             expect(staffArea.baseView.unsavedWarningEnabled()).toBe(false);
+        });
+    });
+
+    describe('Grade Available Responses as the separate view', function() {
+        var staffAreaTab = "staff-grading";
+        var gradingType = "full-grade";
+
+        beforeEach(function() {
+            loadFixtures('oa_grade_available_responses_separate_view.html');
+        });
+
+        it('exists without any additional buttons', function() {
+            var view = createGradeAvailableResponsesView(),
+                staffArea = $('.openassessment__staff-area', view.element),
+                staffGradingButton = $('.button-staff-grading', view.element),
+                problemHeader = $('.problem__header', view.element),
+                gradeValue = $('.staff__grade__value', view.element);
+            expect(staffArea.length).toBe(1);
+            expect(staffGradingButton.length).toBe(0);
+            expect(problemHeader.text()).toBe('Test ABC');
+            expect(gradeValue.text().trim()).toBe("9 Available and 2 Checked Out");
+        });
+
+        it('can submit a staff grade', function() {
+            var view = createGradeAvailableResponsesView(),
+                $assessment, $staffGradeButton;
+            $staffGradeButton = $('.staff__grade__show-form', view.element);
+            expect($staffGradeButton).toHaveAttr('aria-expanded', 'false');
+            showInstructorAssessmentForm(view);
+            expect($staffGradeButton).toHaveAttr('aria-expanded', 'true');
+            $assessment = getAssessment(view, staffAreaTab);
+
+            // Verify that the submission is shown
+            expect($('.staff-assessment__display__title', view.element).text().trim()).toBe(
+                'Response for: mock_user'
+            );
+
+            // Fill in and submit the assessment
+            fillAssessment($assessment, gradingType);
+            server.staffGradeFormTemplate = 'oa_staff_grade_learners_assessment_2.html';
+            submitAssessment(view.staffAreaView, staffAreaTab);
+            verifyAssessType(view.staffAreaView, 'full-grade');
+
+            // Verify that the assessment form has been removed
+            expect($('.staff__grade__form', view.element).html().trim()).toBe('');
+            expect($staffGradeButton).toHaveAttr('aria-expanded', 'false');
+            verifyFocused($staffGradeButton[0]);
         });
     });
 });

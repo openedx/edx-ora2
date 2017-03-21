@@ -1,0 +1,24 @@
+{% load i18n %}
+{% spaceless %}
+<section class="open-response-assessment-block"
+         data-item-view-enabled="{{ ora_item_view_enabled|yesno:'1,0' }}"
+         data-rendered=0>
+    <div class="open-response-assessment-msg">{% trans "Please wait" %}</div>
+    <div class="open-response-assessment-content">
+        <div class="open-response-assessment-summary"></div>
+        <hr/>
+        <div class="open-response-assessment-main-table"></div>
+    </div>
+    <div class="open-response-assessment-item">
+        <div class="open-response-assessment-item-breadcrumbs"></div>
+        <div class="open-response-assessment-item-block"></div>
+    </div>
+</section>
+
+<script type="text/template" id="open-response-assessment-items">{{ ora_items |safe }}</script>
+
+<script type="text/template" id="open-response-assessment-summary-tpl">
+  {% include "openassessmentblock/instructor_dashboard/open-response-assessment-summary.underscore" %}
+</script>
+{% endspaceless %}
+

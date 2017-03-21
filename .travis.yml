@@ -32,6 +32,7 @@ before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
 script:
+  - "make verify-generated-files"
   - "make test"
   - "python manage.py makemessages -l eo"
 branches:
