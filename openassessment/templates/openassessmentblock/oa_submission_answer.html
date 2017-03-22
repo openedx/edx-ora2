@@ -11,12 +11,14 @@
                     {{ part.prompt.description|linebreaks }}
                 </div>
             </article>
+            {% if part.text %}
             <div class="submission__answer__part__text">
                 <h5 class="submission__answer__part__text__title">{{ answer_text_label }}</h5>
                 <div class="submission__answer__part__text__value">
                     {{ part.text|linebreaks }}
                 </div>
             </div>
+            {% endif %}
         </li>
     {% endfor %}
 </ol>

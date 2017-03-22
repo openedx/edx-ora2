@@ -18,6 +18,8 @@ class StudioViewTest(XBlockHandlerTestCase):
     """
     UPDATE_EDITOR_DATA = {
         "title": "Test title",
+        "text_response": "required",
+        "file_upload_response": None,
         "prompts": [{"description": "Test prompt"}],
         "feedback_prompt": "Test feedback prompt",
         "feedback_default_text": "Test feedback default text",

@@ -72,7 +72,7 @@
                                 </article>
 
 
-
+                                {% if text_response %}
                                 <div class="field field--textarea submission__answer__part__text">
                                     <div class="submission__answer__part__text">
                                         <h5 id="submission__answer__part__text__title__{{ forloop.counter }}__{{ xblock_id }}"
@@ -89,6 +89,7 @@
                                         maxlength="100000"
                                     >{{ part.text }}</textarea>
                                 </div>
+                                {% endif %}
                             </li>
                         {% endfor %}
                         {% if file_upload_type %}
@@ -110,6 +111,7 @@
 
                     <span class="tip" id="submission__answer__tip__{{ xblock_id }}">{% trans "You may continue to work on your response until you submit it." %}</span>
 
+                    {% if text_response %}
                     <div class="response__submission__actions">
                         <div class="message message--inline message--error message--error-server" tabindex="-1">
                             <h5 class="message__title">{% trans "We could not save your progress" %}</h5>
@@ -148,6 +150,7 @@
                             {% endif %}
                         </ul>
                     </div>
+                    {% endif %}
                 </form>
             </div>
 
@@ -160,6 +163,8 @@
                 <ul class="list list--actions">
                     <li class="list--actions__item">
                         <button type="submit" class="action action--submit step--response__submit"
+                                text_response="{{text_response}}"
+                                file_upload_response="{{file_upload_response}}"
                                 {{submit_enabled|yesno:",disabled" }}>
                             {% trans "Submit your response and move to the next step" %}
                         </button>

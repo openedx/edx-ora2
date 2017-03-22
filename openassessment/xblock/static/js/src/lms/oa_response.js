@@ -17,6 +17,8 @@ OpenAssessment.ResponseView = function(element, server, fileUploader, baseView, 
     this.fileUploader = fileUploader;
     this.baseView = baseView;
     this.savedResponse = [];
+    this.textResponse = 'required';
+    this.fileUploadResponse = '';
     this.files = null;
     this.fileType = null;
     this.lastChangeTime = Date.now();
@@ -92,6 +94,10 @@ OpenAssessment.ResponseView.prototype = {
         // keep the preview as display none at first
         sel.find('.submission__preview__item').hide();
 
+        var submit = $('.step--response__submit', this.element);
+        this.textResponse = $(submit).attr('text_response');
+        this.fileUploadResponse = $(submit).attr('file_upload_response');
+
         // Install a click handler for submission
         sel.find('.step--response__submit').click(
             function(eventObject) {
@@ -157,6 +163,51 @@ OpenAssessment.ResponseView.prototype = {
                 clearInterval(this.autoSaveTimerId);
             }
         }
+    },
+
+    /**
+     * Check that "submit" button could be enabled (or disabled)
+     *
+     */
+    checkSubmissionAbility: function(filesFiledIsNotBlank) {
+        var textFieldsIsNotBlank = !this.response().every(function(element) {
+            return $.trim(element) === '';
+        });
+
+        filesFiledIsNotBlank = filesFiledIsNotBlank || false;
+        $('.submission__answer__file', this.element).each(function() {
+            if (($(this).prop("tagName") === 'IMG') && ($(this).attr('src') !== '')) {
+                filesFiledIsNotBlank = true;
+            }
+            if (($(this).prop("tagName") === 'A') && ($(this).attr('href') !== '')) {
+                filesFiledIsNotBlank = true;
+            }
+        });
+        var readyToSubmit = true;
+
+        if ((this.textResponse === 'required') && !textFieldsIsNotBlank) {
+            readyToSubmit = false;
+        }
+        if ((this.fileUploadResponse === 'required') && !filesFiledIsNotBlank) {
+            readyToSubmit = false;
+        }
+        if ((this.textResponse === 'optional') && (this.fileUploadResponse === 'optional') &&
+            !textFieldsIsNotBlank && !filesFiledIsNotBlank) {
+            readyToSubmit = false;
+        }
+        this.submitEnabled(readyToSubmit);
+    },
+
+    /**
+     * Check that "save" button could be enabled (or disabled)
+     *
+     */
+    checkSaveAbility: function() {
+        var textFieldsIsNotBlank = !this.response().every(function(element) {
+            return $.trim(element) === '';
+        });
+
+        return !((this.textResponse === 'required') && !textFieldsIsNotBlank);
     },
 
     /**
@@ -293,17 +344,14 @@ OpenAssessment.ResponseView.prototype = {
      the user has entered a response.
      **/
     handleResponseChanged: function() {
-        // Enable the save/submit button only for non-blank responses
-        var isNotBlank = !this.response().every(function(element) {
-            return $.trim(element) === '';
-        });
-        this.submitEnabled(isNotBlank);
+        this.checkSubmissionAbility();
 
         // Update the save button, save status, and "unsaved changes" warning
         // only if the response has changed
         if (this.responseChanged()) {
-            this.saveEnabled(isNotBlank);
-            this.previewEnabled(isNotBlank);
+            var saveAbility = this.checkSaveAbility();
+            this.saveEnabled(saveAbility);
+            this.previewEnabled(saveAbility);
             this.saveStatus(gettext('This response has not been saved.'));
             this.baseView.unsavedWarningEnabled(
                 true,
@@ -340,12 +388,9 @@ OpenAssessment.ResponseView.prototype = {
 
             // ... but update the UI based on what the user may have entered
             // since hitting the save button.
-            var currentResponse = view.response();
-            var currentResponseIsEmpty = currentResponse.every(function(element) {
-                return element === '';
-            });
-            view.submitEnabled(!currentResponseIsEmpty);
+            view.checkSubmissionAbility();
 
+            var currentResponse = view.response();
             var currentResponseEqualsSaved = currentResponse.every(function(element, index) {
                 return element === savedResponse[index];
             });
@@ -539,6 +584,7 @@ OpenAssessment.ResponseView.prototype = {
                         view.fileUrl();
                         view.baseView.toggleActionError('upload', null);
                         view.fileUploaded = true;
+                        view.checkSubmissionAbility(true);
                     })
                     .fail(handleError);
             }

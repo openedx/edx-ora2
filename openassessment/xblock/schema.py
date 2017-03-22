@@ -56,6 +56,13 @@ def datetime_validator(value):
         raise Invalid(u"Could not parse datetime from value \"{val}\"".format(val=value))
 
 
+NECESSITY_OPTIONS = [
+    u'required',
+    u'optional',
+    u''
+]
+
+
 VALID_ASSESSMENT_TYPES = [
     u'peer-assessment',
     u'self-assessment',
@@ -65,7 +72,6 @@ VALID_ASSESSMENT_TYPES = [
 ]
 
 VALID_UPLOAD_FILE_TYPES = [
-    u'',
     u'image',
     u'pdf-and-image',
     u'custom'
@@ -83,11 +89,10 @@ EDITOR_UPDATE_SCHEMA = Schema({
     Required('feedback_default_text'): utf8_validator,
     Required('submission_start'): Any(datetime_validator, None),
     Required('submission_due'): Any(datetime_validator, None),
+    Required('text_response', default='required'): Any(All(utf8_validator, In(NECESSITY_OPTIONS)), None),
+    Required('file_upload_response', default=None): Any(All(utf8_validator, In(NECESSITY_OPTIONS)), None),
     'allow_file_upload': bool,  # Backwards compatibility.
-    Required('file_upload_type', default=None): Any(
-        All(utf8_validator, In(VALID_UPLOAD_FILE_TYPES)),
-        None
-    ),
+    Required('file_upload_type', default=None): Any(All(utf8_validator, In(VALID_UPLOAD_FILE_TYPES)), None),
     'white_listed_file_types': utf8_validator,
     Required('allow_latex'): bool,
     Required('leaderboard_show'): int,
