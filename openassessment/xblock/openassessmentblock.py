@@ -126,6 +126,18 @@ class OpenAssessmentBlock(MessageMixin,
         help="ISO-8601 formatted string representing the submission due date."
     )
 
+    text_response = String(
+        help="Specify whether learners must include a text based response to this problem's prompt.",
+        default="required",
+        scope=Scope.settings
+    )
+
+    file_upload_response_raw = String(
+        help="Specify whether learners are able to upload files as a part of their response.",
+        default=None,
+        scope=Scope.settings
+    )
+
     allow_file_upload = Boolean(
         default=None,
         scope=Scope.content,
@@ -231,6 +243,24 @@ class OpenAssessmentBlock(MessageMixin,
     @property
     def course_id(self):
         return self._serialize_opaque_key(self.xmodule_runtime.course_id)  # pylint:disable=E1101
+
+    @property
+    def file_upload_response(self):
+        """
+        Backward compatibility for existing block before that were created without
+        'text_response' and 'file_upload_response_raw' fields.
+        """
+        if not self.file_upload_response_raw and (self.file_upload_type_raw is not None or self.allow_file_upload):
+            return 'optional'
+        else:
+            return self.file_upload_response_raw
+
+    @file_upload_response.setter
+    def file_upload_response(self, value):
+        """
+        Setter for file_upload_response_raw
+        """
+        self.file_upload_response_raw = value if value else None
 
     @property
     def file_upload_type(self):
@@ -658,6 +688,8 @@ class OpenAssessmentBlock(MessageMixin,
         block.submission_due = config['submission_due']
         block.title = config['title']
         block.prompts = config['prompts']
+        block.text_response = config['text_response']
+        block.file_upload_response = config['file_upload_response']
         block.allow_file_upload = config['allow_file_upload']
         block.file_upload_type = config['file_upload_type']
         block.white_listed_file_types_string = config['white_listed_file_types']

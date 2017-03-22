@@ -1048,7 +1048,6 @@
     @extend %action-2;
     @include text-align(center);
     @include float(right);
-
     display: inline-block;
     margin: ($baseline-v/2) 0;
     box-shadow: none;

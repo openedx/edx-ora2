@@ -9,14 +9,26 @@ from .base import XBlockHandlerTestCase, scenario
 
 
 class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
+    """
+    Group of tests to check ability to save files descriptions
+
+    """
 
     @scenario('data/save_scenario.xml', user_id="Daniels")
     def test_save_files_descriptions_blank(self, xblock):
+        """
+        Checks ability to call handler without descriptions.
+
+        """
         resp = self.request(xblock, 'save_files_descriptions', json.dumps({}))
         self.assertIn('descriptions were not submitted', resp)
 
     @scenario('data/save_scenario.xml', user_id="Perleman")
     def test_save_files_descriptions(self, xblock):
+        """
+        Checks ability to call handler with descriptions and then saved texts should be available after xblock render.
+
+        """
         # Save the response
         descriptions = [u"Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", u"Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!"]
         payload = json.dumps({'descriptions': descriptions})
@@ -32,6 +44,10 @@ class SaveFilesDescriptionsTest(XBlockHandlerTestCase):
 
     @scenario('data/save_scenario.xml', user_id="Valchek")
     def test_overwrite_files_descriptions(self, xblock):
+        """
+        Checks ability to overwrite existed files descriptions.
+
+        """
         descriptions1 = [u"Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!", u"Ѕраѓтаиѕ! ГоиіБЂт, Щэ ↁіиэ іи Нэll!"]
         payload = json.dumps({'descriptions': descriptions1})
         self.request(xblock, 'save_files_descriptions', payload, response_format="json")

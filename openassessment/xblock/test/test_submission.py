@@ -90,6 +90,31 @@ class SubmissionTest(XBlockHandlerTestCase):
         self.assertEqual(resp[1], "ENOPREVIEW")
         self.assertIsNot(resp[2], None)
 
+    def _ability_to_submit_blank_answer(self, xblock):
+        """
+        Checks ability to submit blank answer if text response is not required
+
+        """
+        empty_submission = json.dumps({"submission": [""]})
+        resp = self.request(xblock, 'submit', empty_submission, response_format='json')
+        self.assertTrue(resp[0])
+
+    @scenario('data/text_response_optional.xml', user_id='Bob')
+    def test_ability_to_submit_blank_answer_if_text_response_optional(self, xblock):
+        """
+        Checks ability to submit blank answer if text response is optional
+
+        """
+        self._ability_to_submit_blank_answer(xblock)
+
+    @scenario('data/text_response_none.xml', user_id='Bob')
+    def test_ability_to_submit_blank_answer_if_text_response_none(self, xblock):
+        """
+        Checks ability to submit blank answer if text response is None
+
+        """
+        self._ability_to_submit_blank_answer(xblock)
+
     @scenario('data/over_grade_scenario.xml', user_id='Alice')
     def test_closed_submissions(self, xblock):
         resp = self.request(xblock, 'render_submission', json.dumps(dict()))
@@ -212,6 +237,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_unavailable.html',
             {
+                'text_response': 'required',
+                'file_upload_response': None,
                 'file_upload_type': None,
                 'submission_start': dt.datetime(4999, 4, 1).replace(tzinfo=pytz.utc),
                 'allow_latex': False,
@@ -235,6 +262,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             xblock, 'openassessmentblock/response/oa_response_submitted.html',
             {
                 'student_submission': create_submission_dict(submission, xblock.prompts),
+                'text_response': 'required',
+                'file_upload_response': None,
                 'file_upload_type': None,
                 'peer_incomplete': True,
                 'self_incomplete': True,
@@ -249,6 +278,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response.html',
             {
+                'text_response': 'required',
+                'file_upload_response': None,
                 'file_upload_type': None,
                 'saved_response': create_submission_dict({
                     'answer': prepare_submission_for_serialization(
@@ -269,6 +300,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response.html',
             {
+                'text_response': 'required',
+                'file_upload_response': None,
                 'file_upload_type': None,
                 'saved_response': create_submission_dict({
                     'answer': prepare_submission_for_serialization(
@@ -293,6 +326,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response.html',
             {
+                'text_response': 'required',
+                'file_upload_response': None,
                 'file_upload_type': None,
                 'saved_response': create_submission_dict({
                     'answer': prepare_submission_for_serialization(
@@ -318,6 +353,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response.html',
             {
+                'text_response': 'required',
+                'file_upload_response': None,
                 'file_upload_type': None,
                 'saved_response': create_submission_dict({
                     'answer': prepare_submission_for_serialization(
@@ -344,6 +381,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             {
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'student_submission': create_submission_dict(submission, xblock.prompts),
+                'text_response': 'required',
+                'file_upload_response': None,
                 'file_upload_type': None,
                 'peer_incomplete': True,
                 'self_incomplete': True,
@@ -371,6 +410,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_cancelled.html',
             {
+                'text_response': 'required',
+                'file_upload_response': None,
                 'file_upload_type': None,
                 'allow_latex': False,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
@@ -404,6 +445,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'student_submission': {"answer": {"parts": [
                     {"prompt": {'description': 'One prompt.'}, "text": "An old format response."}
                 ]}},
+                'text_response': 'required',
+                'file_upload_response': None,
                 'file_upload_type': None,
                 'peer_incomplete': True,
                 'self_incomplete': True,
@@ -418,6 +461,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_closed.html',
             {
+                'text_response': 'required',
+                'file_upload_response': None,
                 'file_upload_type': None,
                 'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
                 'allow_latex': False,
@@ -437,6 +482,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             {
                 'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
                 'student_submission': create_submission_dict(submission, xblock.prompts),
+                'text_response': 'required',
+                'file_upload_response': None,
                 'file_upload_type': None,
                 'peer_incomplete': False,
                 'self_incomplete': True,
@@ -465,6 +512,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             {
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'student_submission': create_submission_dict(submission, xblock.prompts),
+                'text_response': 'required',
+                'file_upload_response': None,
                 'file_upload_type': None,
                 'allow_latex': False,
                 'user_timezone': None,
@@ -491,6 +540,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             {
                 'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
                 'student_submission': create_submission_dict(submission, xblock.prompts),
+                'text_response': 'required',
+                'file_upload_response': None,
                 'file_upload_type': None,
                 'allow_latex': False,
                 'user_timezone': None,
