@@ -9,8 +9,6 @@ install-system:
 
 # not used by travis
 install-node:
-	sudo add-apt-repository -y ppa:chris-lea/node.js
-	sudo apt-get update -qq
 	sudo apt-get install -qq nodejs
 
 install-wheels:
