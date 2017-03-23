@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-21 19:56+0000\n"
+"POT-Creation-Date: 2017-03-23 17:31+0000\n"
 "PO-Revision-Date: 2017-03-21 19:48+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/open-edx/edx-platform/language/tr_TR/)\n"
@@ -40,20 +40,24 @@ msgid ""
 msgstr "Eğer ödeviniz öğrenci eğitim basamağı içeriyorsa, rubrik en az bir tane kritere sahip olmalıdır, ve bu kriter en az bir seçeneğe sahip olmalıdır."
 
 #: openassessment/assessment/api/student_training.py:204
+#, python-brace-format
 msgid "Example {example_number} has a validation error: {error}"
 msgstr "Örnek {example_number} 'de bir doğrulama hatası var: {error}"
 
 #: openassessment/assessment/api/student_training.py:218
+#, python-brace-format
 msgid ""
 "Example {example_number} has an invalid option for \"{criterion_name}\": "
 "\"{option_name}\""
 msgstr "{example_number} numaralı örnek \"{criterion_name}\" için geçersiz seçeneğe sahip: \"{option_name}\""
 
 #: openassessment/assessment/api/student_training.py:228
+#, python-brace-format
 msgid "Example {example_number} has an extra option for \"{criterion_name}\""
 msgstr "{example_number} numaralı örnek \"{criterion_name}\" ekstra seçeneğe sahip."
 
 #: openassessment/assessment/api/student_training.py:241
+#, python-brace-format
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr "\"{criterion_name}\" için eksik ayar örnek {example_number}"
 
@@ -869,7 +873,7 @@ msgstr "Akranlarını Değerlendir"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:24
 #: openassessment/templates/openassessmentblock/response/oa_response.html:20
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:20
-#, python-format
+#, python-format, python-brace-format
 msgid ""
 "\n"
 "                        <span class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
@@ -888,7 +892,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:31
 #: openassessment/templates/openassessmentblock/response/oa_response.html:27
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:27
-#, python-format
+#, python-format, python-brace-format
 msgid ""
 "\n"
 "                        <span class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
@@ -1190,7 +1194,7 @@ msgstr "Cevabını Değerlendir"
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
 #. 45 minutes)"
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:21
-#, python-format
+#, python-format, python-brace-format
 msgid ""
 "\n"
 "                            <span class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
@@ -1201,7 +1205,7 @@ msgstr ""
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
 #. minutes)"
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:28
-#, python-format
+#, python-format, python-brace-format
 msgid ""
 "\n"
 "                            <span class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
@@ -1667,6 +1671,7 @@ msgstr ""
 
 #: openassessment/xblock/grade_mixin.py:357
 #: openassessment/xblock/grade_mixin.py:501
+#, python-brace-format
 msgid "Peer {peer_index}"
 msgstr ""
 
@@ -1736,32 +1741,38 @@ msgid "Submit your assessment and move to next step"
 msgstr ""
 
 #: openassessment/xblock/peer_assessment_mixin.py:218
+#, python-brace-format
 msgid "Submit your assessment and move to response #{response_number}"
 msgstr ""
 
 #: openassessment/xblock/resolve_dates.py:50
+#, python-brace-format
 msgid ""
 "'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
 "MM-DDTHH:MM:SS."
 msgstr "'{date}' geçersiz tarih formatı. Tarih formatının GG-AA-YYYY SA:DK:SN olduğundan emin olun."
 
 #: openassessment/xblock/resolve_dates.py:56
+#, python-brace-format
 msgid "'{date}' must be a date string or datetime"
 msgstr "'{date}' tarih dizgesi ya da tarih zamanı olmalı"
 
 #: openassessment/xblock/resolve_dates.py:209
+#, python-brace-format
 msgid ""
 "This step's start date '{start}' cannot be earlier than the previous step's "
 "start date '{prev}'."
 msgstr "Bu adımın başlangıç tarihi '{start}', önceki adımın başlangıç tarihinden '{prev}' önce olamaz"
 
 #: openassessment/xblock/resolve_dates.py:217
+#, python-brace-format
 msgid ""
 "This step's due date '{due}' cannot be later than the next step's due date "
 "'{prev}'."
 msgstr "Bu adımın son tarihi '{due}' sonraki adımın son tarihi '{prev}'den sonra olamaz."
 
 #: openassessment/xblock/resolve_dates.py:233
+#, python-brace-format
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
 msgstr "Başlangıç tarihi '{start}' son tarih '{due}'den sonra olamaz."
 
@@ -1795,10 +1806,12 @@ msgid "You do not have permission to access ORA staff grading."
 msgstr ""
 
 #: openassessment/xblock/staff_area_mixin.py:212
+#, python-brace-format
 msgid "Training scheduled with new Workflow UUID: {uuid}"
 msgstr "Eğitim yeni iş akışı UUID ile programlandı: {uuid}"
 
 #: openassessment/xblock/staff_area_mixin.py:217
+#, python-brace-format
 msgid "An error occurred scheduling classifier training: {error}"
 msgstr "Sınıflandırıcı eğitim programlanırken bir hata meydana geldi: {error}"
 
@@ -1906,6 +1919,7 @@ msgid ""
 msgstr "Doğrulama hatası: Örnek tabanlı değerlendirme için örnek sağlanmadı."
 
 #: openassessment/xblock/studio_mixin.py:232
+#, python-brace-format
 msgid "Validation error: {error}"
 msgstr "Doğrulama hatası: {error}"
 
@@ -2023,6 +2037,7 @@ msgid "This rubric definition is not valid."
 msgstr "Bu rubrik tanımı geçerli değil."
 
 #: openassessment/xblock/validation.py:206
+#, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr "'{criterion}'daki seçenekler yinelenen isim(ler)e sahip: {duplicates}"
 
