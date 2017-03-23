@@ -35,7 +35,7 @@ javascript: update-npm-requirements
 sass:
 	python scripts/compile_sass.py
 
-verify-generated-files: javascript sass
+verify-generated-files:
 	@git diff --quiet || (echo 'Modifications exist locally! Run `make javascript` or `make sass` to update bundled files.'; exit 1)
 
 install-test:

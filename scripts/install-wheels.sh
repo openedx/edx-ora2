@@ -10,7 +10,7 @@ pip install --upgrade pip
 pip install wheel
 
 # Ensure that numpy is installed first; otherwise scipy won't be able to install
-pip install --use-wheel numpy==1.6.2
+pip install --only-binary numpy==1.6.2
 
 # Then install everything else
-pip install --use-wheel -r requirements/wheels.txt
+pip install --only-binary -r requirements/wheels.txt
