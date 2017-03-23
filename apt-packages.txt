@@ -3,9 +3,7 @@ g++
 gcc
 git
 gfortran
-libblas3gf
 libblas-dev
-liblapack3gf
 liblapack-dev
 libatlas-base-dev
 libfontconfig1
@@ -13,6 +11,7 @@ libmysqlclient-dev
 libxml2-dev
 libxslt1-dev
 nodejs
+npm
 python2.7
 python2.7-dev
 python-mysqldb
