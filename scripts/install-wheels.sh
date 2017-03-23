@@ -9,10 +9,8 @@ cd `dirname $BASH_SOURCE` && cd ..
 pip install --upgrade pip
 pip install wheel
 
-WHEELHOUSE="scripts/data/wheelhouse"
-
 # Ensure that numpy is installed first; otherwise scipy won't be able to install
-pip install --use-wheel --no-index --upgrade --find-links=$WHEELHOUSE numpy
+pip install --only-binary=:all: numpy==1.12.1
 
 # Then install everything else
-pip install --use-wheel --no-index --upgrade --find-links=$WHEELHOUSE -r requirements/wheels.txt
+pip install --only-binary=:all: -r requirements/wheels.txt
