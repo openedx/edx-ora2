@@ -9,13 +9,7 @@ install-system:
 
 # not used by travis
 install-node:
-	sudo add-apt-repository -y ppa:chris-lea/node.js
-	sudo apt-get update -qq
 	sudo apt-get install -qq nodejs
-
-install-wheels:
-	./scripts/install-wheels.sh
-
 
 install-python:
 	./scripts/install-python.sh
@@ -49,7 +43,7 @@ install-sys-requirements: install-system install-node
 install-dev:
 	pip install -q -r requirements/dev.txt
 
-install: install-wheels install-python install-js install-nltk-data install-test install-dev javascript sass
+install: install-python install-js install-nltk-data install-test install-dev javascript sass
 
 quality:
 	jshint $(STATIC_JS)/src -c .jshintrc --verbose
