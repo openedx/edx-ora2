@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-21 19:56+0000\n"
-"PO-Revision-Date: 2017-03-21 19:48+0000\n"
+"POT-Creation-Date: 2017-03-23 17:31+0000\n"
+"PO-Revision-Date: 2017-03-23 18:42+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Danish (http://www.transifex.com/open-edx/edx-platform/language/da/)\n"
 "MIME-Version: 1.0\n"
@@ -106,12 +106,12 @@ msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:48
-msgid "Parent Section"
+msgid "Unit Name"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:48
-msgid "Parent Sections"
+msgid "Units"
 msgstr ""
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1

@@ -32,7 +32,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-21 19:56+0000\n"
+"POT-Creation-Date: 2017-03-23 17:31+0000\n"
 "PO-Revision-Date: 2017-03-21 19:48+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/open-edx/edx-platform/language/zh_CN/)\n"
@@ -53,20 +53,24 @@ msgid ""
 msgstr "如果您的作业包含学生评分训练步骤，则评分标准必须至少包含一个得分点，并且该得分点必须至少含一个分值选项。"
 
 #: openassessment/assessment/api/student_training.py:204
+#, python-brace-format
 msgid "Example {example_number} has a validation error: {error}"
 msgstr "样例答案{example_number} 出现验证错误: {error}"
 
 #: openassessment/assessment/api/student_training.py:218
+#, python-brace-format
 msgid ""
 "Example {example_number} has an invalid option for \"{criterion_name}\": "
 "\"{option_name}\""
 msgstr "样例答案 {example_number}的“{criterion_name}”得分点中存在无效的分值选项：“{option_name}”"
 
 #: openassessment/assessment/api/student_training.py:228
+#, python-brace-format
 msgid "Example {example_number} has an extra option for \"{criterion_name}\""
 msgstr "样例答案 {example_number}的“{criterion_name}”得分点存在额外的分值选项"
 
 #: openassessment/assessment/api/student_training.py:241
+#, python-brace-format
 msgid "Example {example_number} is missing an option for \"{criterion_name}\""
 msgstr "样例答案{example_number} 的“{criterion_name}”得分点缺少分值选项"
 
@@ -882,7 +886,7 @@ msgstr "为同学评分"
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:24
 #: openassessment/templates/openassessmentblock/response/oa_response.html:20
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:20
-#, python-format
+#, python-format, python-brace-format
 msgid ""
 "\n"
 "                        <span class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
@@ -901,7 +905,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:31
 #: openassessment/templates/openassessmentblock/response/oa_response.html:27
 #: openassessment/templates/openassessmentblock/student_training/student_training.html:27
-#, python-format
+#, python-format, python-brace-format
 msgid ""
 "\n"
 "                        <span class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
@@ -1203,7 +1207,7 @@ msgstr "自我评分"
 #. time until that date.  Example: "available August 13th, 2014 (in 5 days and
 #. 45 minutes)"
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:21
-#, python-format
+#, python-format, python-brace-format
 msgid ""
 "\n"
 "                            <span class=\"date ora-datetime\" data-datetime=\"%(start_date)s\" data-string=\"available {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
@@ -1214,7 +1218,7 @@ msgstr ""
 #. time until that date.  Example: "due August 13th, 2014 (in 5 days and 45
 #. minutes)"
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:28
-#, python-format
+#, python-format, python-brace-format
 msgid ""
 "\n"
 "                            <span class=\"date ora-datetime\" data-datetime=\"%(due_date)s\" data-string=\"due {date} (in %(time_until)s)\" data-timezone=\"%(user_timezone)s\" data-language=\"%(user_language)s\"></span>\n"
@@ -1680,6 +1684,7 @@ msgstr "同伴平均分数"
 
 #: openassessment/xblock/grade_mixin.py:357
 #: openassessment/xblock/grade_mixin.py:501
+#, python-brace-format
 msgid "Peer {peer_index}"
 msgstr "同学{peer_index}"
 
@@ -1749,32 +1754,38 @@ msgid "Submit your assessment and move to next step"
 msgstr "提交你的评分并进行下一步"
 
 #: openassessment/xblock/peer_assessment_mixin.py:218
+#, python-brace-format
 msgid "Submit your assessment and move to response #{response_number}"
 msgstr "提交你的评分并跳转到第{response_number}个回复"
 
 #: openassessment/xblock/resolve_dates.py:50
+#, python-brace-format
 msgid ""
 "'{date}' is an invalid date format. Make sure the date is formatted as YYYY-"
 "MM-DDTHH:MM:SS."
 msgstr "“{date}”是一个无效的日期格式，请确保日期的格式为“YYYY-MM-DDTHH:MM:SS”。"
 
 #: openassessment/xblock/resolve_dates.py:56
+#, python-brace-format
 msgid "'{date}' must be a date string or datetime"
 msgstr "“{date}”必须是日期字符串或日期时间"
 
 #: openassessment/xblock/resolve_dates.py:209
+#, python-brace-format
 msgid ""
 "This step's start date '{start}' cannot be earlier than the previous step's "
 "start date '{prev}'."
 msgstr "这一步的开始日期“{start}”不能早于上一步骤的开始日期“{prev}”。"
 
 #: openassessment/xblock/resolve_dates.py:217
+#, python-brace-format
 msgid ""
 "This step's due date '{due}' cannot be later than the next step's due date "
 "'{prev}'."
 msgstr "这一步的截止日期“{due}”不能晚于下一个步骤的截止日期“{prev}”。"
 
 #: openassessment/xblock/resolve_dates.py:233
+#, python-brace-format
 msgid "The start date '{start}' cannot be later than the due date '{due}'"
 msgstr "起始日期“{start}”不能晚于到截止日期“{due}”"
 
@@ -1808,10 +1819,12 @@ msgid "You do not have permission to access ORA staff grading."
 msgstr "你无权访问教员评分"
 
 #: openassessment/xblock/staff_area_mixin.py:212
+#, python-brace-format
 msgid "Training scheduled with new Workflow UUID: {uuid}"
 msgstr "训练安排了新工作流程UUID：{uuid}"
 
 #: openassessment/xblock/staff_area_mixin.py:217
+#, python-brace-format
 msgid "An error occurred scheduling classifier training: {error}"
 msgstr "安排分类器训练时发生错误：{error}"
 
@@ -1919,6 +1932,7 @@ msgid ""
 msgstr "验证错误：没有为基于样本的自动评分提供样本。"
 
 #: openassessment/xblock/studio_mixin.py:232
+#, python-brace-format
 msgid "Validation error: {error}"
 msgstr "验证错误: {error}"
 
@@ -2036,6 +2050,7 @@ msgid "This rubric definition is not valid."
 msgstr "这个评分标准的定义无效。"
 
 #: openassessment/xblock/validation.py:206
+#, python-brace-format
 msgid "Options in '{criterion}' have duplicate name(s): {duplicates}"
 msgstr "得分点“{criterion}”中存在重复分值(名称)：{duplicates}"
 

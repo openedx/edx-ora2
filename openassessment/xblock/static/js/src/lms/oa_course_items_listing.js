@@ -45,7 +45,7 @@
 
         this._columns = [
             {
-                name: 'parent_name', label: gettext("Parent Section"), label_summary: gettext("Parent Sections"),
+                name: 'parent_name', label: gettext("Unit Name"), label_summary: gettext("Units"),
                 cell: "string", num: false, editable: false
             },
             {

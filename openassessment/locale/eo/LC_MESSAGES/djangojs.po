@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1a\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-21 19:56+0000\n"
+"POT-Creation-Date: 2017-03-23 17:31+0000\n"
 "PO-Revision-Date: 2014-06-04 15:41-0400\n"
 "Last-Translator: \n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
@@ -110,13 +110,13 @@ msgstr "Ûnäßlé tö löäd Ⱡ'#"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:48
-msgid "Parent Section"
-msgstr "Pärént Séçtïön Ⱡ'#"
+msgid "Unit Name"
+msgstr "Ûnït Nämé #"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:48
-msgid "Parent Sections"
-msgstr "Pärént Séçtïöns Ⱡ'#"
+msgid "Units"
+msgstr "Ûnïts Ⱡ'σяєм ι#"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:52
