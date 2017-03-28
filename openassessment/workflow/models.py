@@ -438,7 +438,8 @@ class AssessmentWorkflow(TimeStampedModel, StatusModel):
         sub_api.reset_score(
             sub_dict['student_item']['student_id'],
             self.course_id,
-            self.item_id
+            self.item_id,
+            emit_signal=False
         )
         sub_api.set_score(
             self.submission_uuid,
