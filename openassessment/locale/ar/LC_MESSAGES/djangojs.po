@@ -5,6 +5,7 @@
 # Translators:
 # Abdelghani Gadiri <wh.gnu.linux@gmail.com>, 2014
 # Ahmed Jazzar <ajazzar@qrf.org>, 2015
+# e2f_ar r3 <e2f_ar_r3@outlook.com>, 2017
 # may <may@qordoba.com>, 2014-2015
 # Nabeel El-Dughailib <nabeel@qordoba.com>, 2014-2015
 # shefaa abu jabel <shefaa.aj@gmail.com>, 2017
@@ -13,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-23 17:31+0000\n"
-"PO-Revision-Date: 2017-03-23 18:42+0000\n"
-"Last-Translator: Eric Fischer <efischer@edx.org>\n"
+"POT-Creation-Date: 2017-03-29 03:38+0000\n"
+"PO-Revision-Date: 2017-03-29 14:57+0000\n"
+"Last-Translator: e2f_ar r3 <e2f_ar_r3@outlook.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/open-edx/edx-platform/language/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
