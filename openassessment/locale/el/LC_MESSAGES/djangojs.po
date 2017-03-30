@@ -6,7 +6,7 @@
 # defaultuser2003 <defaultuser2003@gmail.com>, 2014
 # Elisabeth Georgiado <almanean@yahoo.gr>, 2015
 # Georgios Vasileiadis <gvasileiadis@outlook.com.gr>, 2014
-# Katerina Ligkovanli <kaligova@gmail.com>, 2016
+# Katerina Ligkovanli <kaligova@gmail.com>, 2016-2017
 # STERGIOU IOANNIS <stergiou_john@yahoo.gr>, 2014
 # SYMI PASALIDOU <simipass@hotmail.com>, 2016
 # Theofilos Chamalis <theofxam@gmail.com>, 2015
@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-23 17:31+0000\n"
-"PO-Revision-Date: 2017-03-23 18:42+0000\n"
-"Last-Translator: Eric Fischer <efischer@edx.org>\n"
+"POT-Creation-Date: 2017-03-29 03:38+0000\n"
+"PO-Revision-Date: 2017-03-27 16:47+0000\n"
+"Last-Translator: Katerina Ligkovanli <kaligova@gmail.com>\n"
 "Language-Team: Greek (http://www.transifex.com/open-edx/edx-platform/language/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -125,12 +125,12 @@ msgstr ""
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:52
 msgid "Assessment"
-msgstr ""
+msgstr "Αξιολόγηση"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:52
 msgid "Assessments"
-msgstr ""
+msgstr "Αξιολογήσεις"
 
 #: openassessment/xblock/static/js/openassessment-lms.min.js:1
 #: openassessment/xblock/static/js/src/lms/oa_course_items_listing.js:56

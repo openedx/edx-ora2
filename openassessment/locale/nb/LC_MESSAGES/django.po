@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-23 17:31+0000\n"
-"PO-Revision-Date: 2017-03-22 14:33+0000\n"
+"POT-Creation-Date: 2017-03-29 03:38+0000\n"
+"PO-Revision-Date: 2017-03-29 09:10+0000\n"
 "Last-Translator: Frode Arntsen <frode.arntsen@bibsys.no>\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/open-edx/edx-platform/language/nb/)\n"
 "MIME-Version: 1.0\n"
@@ -1010,7 +1010,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/response/oa_response.html:37
 #: openassessment/templates/openassessmentblock/self/oa_self_assessment.html:39
 msgid "In Progress"
-msgstr ""
+msgstr "Pågår"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:49
 msgid "Enter your response to the question."
@@ -1020,12 +1020,12 @@ msgstr ""
 msgid ""
 "You can save your progress and return to complete your response at any time "
 "before the due date"
-msgstr ""
+msgstr "Du kan lagre ditt arbeid og komme tilbake for å sluttføre svaret når som helst før fristens utløp"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:56
 msgid ""
 "You can save your progress and return to complete your response at any time."
-msgstr ""
+msgstr "Du kan lagre ditt arbeid og komme tilbake for å sluttføre svaret når som helst."
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:58
 msgid "After you submit your response, you cannot edit it"
@@ -1064,11 +1064,11 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:115
 msgid "We could not save your progress"
-msgstr ""
+msgstr "Ditt arbeid kunne ikke lagres"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:122
 msgid "Save your progress"
-msgstr ""
+msgstr "Lagre ditt arbeid"
 
 #: openassessment/templates/openassessmentblock/response/oa_response.html:126
 msgid "Your Submission Status"
@@ -1296,7 +1296,7 @@ msgstr "Sted"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:108
 msgid "Learner Progress"
-msgstr ""
+msgstr "Studentens progresjon"
 
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:112
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_area.html:135
