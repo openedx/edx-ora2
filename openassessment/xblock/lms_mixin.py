@@ -12,7 +12,7 @@ class LmsCompatibilityMixin(object):
     # Studio the default value for this field to show this XBlock
     # in the list of "Advanced Components"
     display_name = String(
-        default="Peer Assessment", scope=Scope.settings,
+        default="Open Response Assessment", scope=Scope.settings,
         help="Display name"
     )
 
