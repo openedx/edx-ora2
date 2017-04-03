@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-29 03:38+0000\n"
-"PO-Revision-Date: 2017-03-27 17:12+0000\n"
+"POT-Creation-Date: 2017-04-03 19:05+0000\n"
+"PO-Revision-Date: 2017-03-31 10:40+0000\n"
 "Last-Translator: Katerina Ligkovanli <kaligova@gmail.com>\n"
 "Language-Team: Greek (http://www.transifex.com/open-edx/edx-platform/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -259,7 +259,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:55
 msgid "Optional"
-msgstr ""
+msgstr "Προαιρετικό"
 
 #: openassessment/templates/openassessmentblock/edit/oa_edit_criterion.html:56
 #: openassessment/templates/openassessmentblock/oa_rubric.html:13
@@ -575,7 +575,7 @@ msgstr ""
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:105
 msgid "Provide feedback on peer assessments"
-msgstr ""
+msgstr "Σχολιάστε τις αξιολογήσεις που λάβατε"
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:114
 msgid "Submitting Feedback"
@@ -614,7 +614,7 @@ msgstr ""
 msgid ""
 "Select the statements below that best reflect your experience with peer "
 "assessments."
-msgstr ""
+msgstr "Επιλέξτε από τις παρακάτω φράσεις αυτές που εκφράζουν καλύτερα την εμπειρία σας από την αλληλοαξιολόγηση. "
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:143
 msgid "These assessments were useful."
@@ -635,7 +635,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:175
 msgid ""
 "Provide feedback on the grade or comments that you received from your peers."
-msgstr ""
+msgstr "Σχολιάστε τον βαθμό ή τα σχόλια που λάβατε από τους συμφοιτητές σας."
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_complete.html:178
 msgid "I feel the feedback I received was..."
@@ -651,7 +651,7 @@ msgstr "Υποβάλετε τη γνώμη σας για τις αξιολογή
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:10
 msgid "Not Completed"
-msgstr "Ανολοκλήρωτη"
+msgstr ""
 
 #: openassessment/templates/openassessmentblock/grade/oa_grade_incomplete.html:21
 msgid "You have not completed all the steps of this problem."
@@ -720,7 +720,7 @@ msgstr ""
 msgid ""
 "This assignment has closed. One or more deadlines for this assignment have "
 "passed. You will receive an incomplete grade for this assignment."
-msgstr "Η εργασία αυτή έχει κλείσει. Μία ή περισσότερες από τις προθεσμίες υποβολής έχουν λήξει. Για αυτή την εργασία θα λάβετε το βαθμό Ανολοκλήρωτη"
+msgstr "Η εργασία αυτή έχει κλείσει καθώς μία ή περισσότερες από τις προθεσμίες υποβολής έχουν λήξει. Αντί βαθμού, θα λάβετε την ειδοποίηση ότι \"Η εργασία δεν ολοκληρώθηκε\"."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_complete.html:8
 msgid ""
@@ -732,7 +732,7 @@ msgstr "Έχετε ολοκληρώσει την εργασία. Ο τελικό
 msgid ""
 "You have completed this assignment. Review your grade and your assessment "
 "details."
-msgstr ""
+msgstr "Έχετε ολοκληρώσει την εργασία. Δείτε τον βαθμό σας και τις λεπτομέρειες της αξιολόγησής σας."
 
 #: openassessment/templates/openassessmentblock/message/oa_message_incomplete.html:9
 msgid ""
@@ -921,7 +921,7 @@ msgstr ""
 #: openassessment/templates/openassessmentblock/staff_area/oa_staff_override_assessment.html:27
 #: openassessment/templates/openassessmentblock/staff_area/oa_student_info.html:49
 msgid "Associated File"
-msgstr ""
+msgstr "Σχετικό αρχείο"
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_assessment.html:85
 #: openassessment/templates/openassessmentblock/peer/oa_peer_turbo_mode.html:68
@@ -952,7 +952,7 @@ msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer complete peer assessments or continue with this assignment, and you "
 "will receive a grade of Incomplete."
-msgstr "Η προθεσμία για αυτή την διαδικασία έχει παρέλθει και το βήμα αυτό έχει κλείσει. Δεν μπορείτε πλέον να ολοκληρώσετε τις αξιολογήσεις σας για δοκίμια συμφοιτητών σας και για την εργασία θα λάβετε το βαθμό Ανολοκλήρωτη."
+msgstr "Η προθεσμία για αυτή την διαδικασία έχει παρέλθει και το βήμα αυτό έχει κλείσει. Δεν μπορείτε πλέον να ολοκληρώσετε τις αξιολογήσεις σας για δοκίμια συμφοιτητών σας. Αντί βαθμού, θα λάβετε την ειδοποίηση ότι \"Η εργασία δεν ολοκληρώθηκε\"."
 
 #: openassessment/templates/openassessmentblock/peer/oa_peer_complete.html:13
 msgid "Completed"
@@ -1223,7 +1223,7 @@ msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer complete a self assessment or continue with this assignment, and you "
 "will receive a grade of Incomplete."
-msgstr "Η προθεσμία για αυτή την διαδικασία έχει παρέλθει και το βήμα αυτό έχει κλείσει. Δεν μπορείτε πλέον να ολοκληρώσετε την αυτοαξιολόγησή σας ή να συνεχίσετε με την εργασία σας και θα λάβετε το βαθμό Ανολοκλήρωτη."
+msgstr "Η προθεσμία για αυτή την διαδικασία έχει παρέλθει και το βήμα αυτό έχει κλείσει. Δεν μπορείτε πλέον να ολοκληρώσετε την αυτοαξιολόγησή σας ή να συνεχίσετε με την εργασία σας. Αντί βαθμού, θα λάβετε την ειδοποίηση ότι \"Η εργασία δεν ολοκληρώθηκε\"."
 
 #: openassessment/templates/openassessmentblock/staff/oa_staff_grade.html:13
 #: openassessment/xblock/grade_mixin.py:345
@@ -1617,7 +1617,7 @@ msgid ""
 "The due date for this step has passed. This step is now closed. You can no "
 "longer continue with this assignment, and you will receive a grade of "
 "Incomplete."
-msgstr "Η προθεσμία για αυτή την διαδικασία έχει παρέλθει και το βήμα αυτό έχει κλείσει. Δεν μπορείτε πλέον να ολοκληρώσετε την εργασία σας και θα λάβετε γι' αυτήν το βαθμό Ανολοκλήρωτη."
+msgstr "Η προθεσμία για αυτή την διαδικασία έχει παρέλθει και το βήμα αυτό έχει κλείσει. Δεν μπορείτε πλέον να ολοκληρώσετε την εργασία σας. Αντί βαθμού, θα λάβετε την ειδοποίηση ότι \"Η εργασία δεν ολοκληρώθηκε\"."
 
 #: openassessment/templates/openassessmentblock/student_training/student_training_error.html:18
 msgid "Error Loading Learner Training Examples"
@@ -1670,17 +1670,17 @@ msgstr ""
 
 #: openassessment/xblock/grade_mixin.py:352
 msgid "Peer Median Grade"
-msgstr ""
+msgstr "Διάμεσος των βαθμών που λάβατε από τους συμφοιτητές σας"
 
 #: openassessment/xblock/grade_mixin.py:357
 #: openassessment/xblock/grade_mixin.py:501
 #, python-brace-format
 msgid "Peer {peer_index}"
-msgstr ""
+msgstr "Συμφοιτητής {peer_index}"
 
 #: openassessment/xblock/grade_mixin.py:358
 msgid "Peer Comments"
-msgstr ""
+msgstr "Σχόλια του συμφοιτητή σας"
 
 #: openassessment/xblock/grade_mixin.py:368
 msgid "Example-Based Grade"
@@ -1705,7 +1705,7 @@ msgstr ""
 
 #: openassessment/xblock/grade_mixin.py:466
 msgid "Waiting for peer reviews"
-msgstr "Περιμένετε να λάβετε δοκίμια συμφοιτητών σας"
+msgstr "Αναμείνατε την αξιολόγηση των συμφοιτητών σας"
 
 #: openassessment/xblock/grade_mixin.py:506
 msgid "Peer"
@@ -1713,7 +1713,7 @@ msgstr ""
 
 #: openassessment/xblock/peer_assessment_mixin.py:61
 msgid "You must submit a response before you can perform a peer assessment."
-msgstr "Θα πρέπει να υποβάλετε το δοκίμιό σας προτού προχωρήσετε στην αξιολόγηση συναδέλφου σας"
+msgstr "Θα πρέπει να υποβάλετε το δοκίμιό σας προτού προχωρήσετε στην αξιολόγηση των συμφοιτητών σας"
 
 #: openassessment/xblock/peer_assessment_mixin.py:75
 msgid ""
@@ -1724,7 +1724,7 @@ msgstr ""
 #: openassessment/xblock/peer_assessment_mixin.py:100
 #: openassessment/xblock/peer_assessment_mixin.py:105
 msgid "Your peer assessment could not be submitted."
-msgstr "Η υποβολή της αξιολόγησή σας για το δοκίμιο του συναδέλφου σας δεν ήταν εφικτή"
+msgstr "Η υποβολή της αξιολόγησή σας για το δοκίμιο του συμφοιτητή σας δεν κατέστη εφικτή"
 
 #: openassessment/xblock/peer_assessment_mixin.py:119
 #: openassessment/xblock/student_training_mixin.py:213

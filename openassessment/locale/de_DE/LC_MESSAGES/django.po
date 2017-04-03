@@ -12,7 +12,7 @@
 # mc <marc.mannsfeld@phil.hhu.de>, 2015
 # mc <marc.mannsfeld@phil.hhu.de>, 2015-2016
 # naturella <grafpm@bluewin.ch>, 2016
-# v4rp1ng <remosteiner@msn.com>, 2014
+# v4rp1ng <inactive+v4rp1ng@transifex.com>, 2014
 # Ron Lucke <ronlucke@googlemail.com>, 2014
 # Ron Lucke <ronlucke@googlemail.com>, 2014
 # Rouven Wachhaus <rouvenwachhaus@live.de>, 2016
@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-29 03:38+0000\n"
+"POT-Creation-Date: 2017-04-03 19:05+0000\n"
 "PO-Revision-Date: 2017-03-29 12:25+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/open-edx/edx-platform/language/de_DE/)\n"
