@@ -96,7 +96,8 @@
             },
             "save_status": "This response has not been saved.",
             "submit_enabled": false,
-            "submission_due": ""
+            "submission_due": "",
+            "file_upload_type": "image"
         },
         "output": "oa_response.html"
     },

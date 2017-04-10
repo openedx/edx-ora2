@@ -216,6 +216,12 @@ class OpenAssessmentBlock(MessageMixin,
         help="Saved response submission for the current user."
     )
 
+    saved_files_descriptions = String(
+        default=u"",
+        scope=Scope.user_state,
+        help="Saved descriptions for each uploaded file."
+    )
+
     no_peers = Boolean(
         default=False,
         scope=Scope.user_state,

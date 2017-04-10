@@ -104,9 +104,14 @@ class SubmissionMixin(object):
         status_text = self._(u'Multiple submissions are not allowed.')
         if not workflow:
             try:
+                try:
+                    saved_files_descriptions = json.loads(self.saved_files_descriptions)
+                except ValueError:
+                    saved_files_descriptions = None
                 submission = self.create_submission(
                     student_item_dict,
-                    student_sub_data
+                    student_sub_data,
+                    saved_files_descriptions
                 )
             except api.SubmissionRequestError as err:
 
@@ -187,25 +192,73 @@ class SubmissionMixin(object):
         else:
             return {'success': False, 'msg': self._(u"This response was not submitted.")}
 
-    def create_submission(self, student_item_dict, student_sub_data):
+    @XBlock.json_handler
+    def save_files_descriptions(self, data, suffix=''):
+        """
+        Save the descriptions for each uploaded file.
+
+        Args:
+            data (dict): Data should have a single key 'descriptions' that contains
+                the texts for each uploaded file.
+            suffix (str): Not used.
+
+        Returns:
+            dict: Contains a bool 'success' and unicode string 'msg'.
+        """
+        if 'descriptions' in data:
+            descriptions = data['descriptions']
+
+            if isinstance(descriptions, list):
+                all_description_correct = True
+                for description in descriptions:
+                    if not isinstance(description, basestring):
+                        all_description_correct = False
+                        break
+
+                if all_description_correct:
+                    try:
+                        self.saved_files_descriptions = json.dumps(descriptions)
+
+                        # Emit analytics event...
+                        self.runtime.publish(
+                            self,
+                            "openassessmentblock.save_files_descriptions",
+                            {"saved_response": self.saved_files_descriptions}
+                        )
+                    except:
+                        return {'success': False, 'msg': self._(u"Files descriptions could not be saved.")}
+                    else:
+                        return {'success': True, 'msg': u''}
+
+        return {'success': False, 'msg': self._(u"Files descriptions were not submitted.")}
+
+    def create_submission(self, student_item_dict, student_sub_data, files_descriptions=None):
 
         # Store the student's response text in a JSON-encodable dict
         # so that later we can add additional response fields.
+        files_descriptions = files_descriptions if files_descriptions else []
         student_sub_dict = prepare_submission_for_serialization(student_sub_data)
 
         if self.file_upload_type:
             student_sub_dict['file_keys'] = []
+            student_sub_dict['files_descriptions'] = []
             for i in range(self.MAX_FILES_COUNT):
                 key_to_save = ''
+                file_description = ''
                 item_key = self._get_student_item_key(i)
                 try:
                     url = file_upload_api.get_download_url(item_key)
                     if url:
                         key_to_save = item_key
+                        try:
+                            file_description = files_descriptions[i]
+                        except IndexError:
+                            pass
                 except FileUploadError:
                     pass
                 if key_to_save:
                     student_sub_dict['file_keys'].append(key_to_save)
+                    student_sub_dict['files_descriptions'].append(file_description)
                 else:
                     break
 
@@ -355,18 +408,24 @@ class SubmissionMixin(object):
         """
         urls = []
         if 'file_keys' in submission['answer']:
-            keys = submission['answer'].get('file_keys', '')
-            for key in keys:
+            keys = submission['answer'].get('file_keys', [])
+            descriptions = submission['answer'].get('files_descriptions', [])
+            for idx, key in enumerate(keys):
                 url = self._get_url_by_file_key(key)
                 if url:
-                    urls.append(url)
+                    description = ''
+                    try:
+                        description = descriptions[idx]
+                    except IndexError:
+                        pass
+                    urls.append((url, description))
                 else:
                     break
         elif 'file_key' in submission['answer']:
             key = submission['answer'].get('file_key', '')
             url = self._get_url_by_file_key(key)
             if url:
-                urls.append(url)
+                urls.append((url, ''))
         return urls
 
     @staticmethod
@@ -455,11 +514,21 @@ class SubmissionMixin(object):
         context['allow_latex'] = self.allow_latex
 
         if self.file_upload_type:
+            try:
+                saved_files_descriptions = json.loads(self.saved_files_descriptions)
+            except ValueError:
+                saved_files_descriptions = []
+
             context['file_urls'] = []
             for i in range(self.MAX_FILES_COUNT):
                 file_url = self._get_download_url(i)
+                file_description = ''
                 if file_url:
-                    context['file_urls'].append(file_url)
+                    try:
+                        file_description = saved_files_descriptions[i]
+                    except IndexError:
+                        pass
+                    context['file_urls'].append((file_url, file_description))
                 else:
                     break
         if self.file_upload_type == 'custom':

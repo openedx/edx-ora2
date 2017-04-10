@@ -12,15 +12,20 @@
 
     <div class="{{ class_prefix }}__display__file {% if not file_urls %}is--hidden{% endif %} submission__{{ file_upload_type }}__upload" data-upload-type="{{ file_upload_type }}">
         <div class="submission__answer__files">
-        {% for file_url in file_urls %}
-            <div class="submission__answer__file__block__{{ forloop.counter0 }}">
+        {% for file_url, file_description in file_urls %}
+            <div class="submission__answer__file__block submission__answer__file__block__{{ forloop.counter0 }}">
             {% if file_upload_type == "image" %}
-                <img class="submission__answer__file submission--image"
-                     alt="{% trans "The image associated with this submission:" %} #{{ forloop.counter }}"
-                     src="{{ file_url }}" />
+                {% if file_description %}
+                <div class="submission__file__description__label">{{ file_description }}:</div>
+                {% endif %}
+                <div><img class="submission__answer__file submission--image" src="{{ file_url }}" /></div>
             {% elif file_upload_type == "pdf-and-image" or file_upload_type == "custom" %}
                 <a href="{{ file_url }}" class="submission__answer__file submission--file" target="_blank">
-                    {% trans "View the files associated with this submission:" %} #{{ forloop.counter }}
+                    {% if file_description %}
+                      {{ file_description }}
+                    {% else %}
+                      {% trans "View the files associated with this submission:" %} #{{ forloop.counter }}
+                    {% endif %}
                 </a>
             {% endif %}
             </div>

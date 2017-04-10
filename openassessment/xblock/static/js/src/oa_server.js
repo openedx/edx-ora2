@@ -519,8 +519,29 @@ if (typeof OpenAssessment.Server === "undefined" || !OpenAssessment.Server) {
                     url: url,
                     data: JSON.stringify({}),
                     contentType: jsonContentType
-                }).done(function() {
-                    defer.resolve();
+                }).done(function(data) {
+                    if (data.success) { defer.resolve(); }
+                    else { defer.rejectWith(this, [data.msg]); }
+                }).fail(function() {
+                    defer.rejectWith(this, [gettext('Server error.')]);
+                });
+            }).promise();
+        },
+
+        /**
+         * Sends request to server to save descriptions for each uploaded file.
+         */
+        saveFilesDescriptions: function(descriptions) {
+            var url = this.url('save_files_descriptions');
+            return $.Deferred(function(defer) {
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify({descriptions: descriptions}),
+                    contentType: jsonContentType
+                }).done(function(data) {
+                    if (data.success) { defer.resolve(); }
+                    else { defer.rejectWith(this, [data.msg]); }
                 }).fail(function() {
                     defer.rejectWith(this, [gettext('Server error.')]);
                 });

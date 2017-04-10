@@ -95,17 +95,19 @@
                         <li class="field">
                             <div class="upload__error">
                                 <div class="message message--inline message--error message--error-server" tabindex="-1">
-                                    <h5 class="message__title">{% trans "We could not upload this file" %}</h5>
+                                    <h5 class="message__title">{% trans "We could not upload files" %}</h5>
                                     <div class="message__content"></div>
                                 </div>
                             </div>
                             <label class="sr" for="submission_answer_upload_{{ xblock_id }}">{% trans "Select a file to upload for this submission." %}</label>
                             <input type="file" class="submission__answer__upload file--upload" id="submission_answer_upload_{{ xblock_id }}" multiple="">
+                            <div class="files__descriptions"></div>
                             <button type="submit" class="file__upload action action--upload" disabled>{% trans "Upload files" %}</button>
                         </li>
                         {% endif %}
-
+                        <li class="field">
                         {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_urls=file_urls class_prefix="submission__answer"%}
+                        </li>
                     </ol>
 
                     <span class="tip" id="submission__answer__tip__{{ xblock_id }}">{% trans "You may continue to work on your response until you submit it." %}</span>

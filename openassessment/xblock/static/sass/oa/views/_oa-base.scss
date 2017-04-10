@@ -554,6 +554,14 @@
     }
   }
 
+  .submission__file__description__label {
+    margin-bottom: 5px;
+  }
+
+  .submission__answer__file__block {
+    margin-bottom: 8px;
+  }
+
   // --------------------
   // response
   // --------------------
@@ -573,9 +581,26 @@
         @extend %text-sr;
       }
 
-      textarea {
-        @extend %ui-content-longanswer;
-        min-height: ($baseline-v*10);
+      .files__descriptions {
+        display: none;
+
+        .submission__file__description {
+          padding-bottom: 10px;
+        }
+      }
+
+      .submission__answer__part__text {
+        textarea {
+          @extend %ui-content-longanswer;
+          min-height: ($baseline-v*10);
+        }
+      }
+
+      .submission__file__description {
+        textarea {
+          @extend %ui-content-longanswer;
+          min-height: ($baseline-v*4);
+        }
       }
 
       .tip {

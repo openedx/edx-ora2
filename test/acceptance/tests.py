@@ -743,9 +743,18 @@ class FileUploadTest(OpenAssessmentTest):
         # trying to upload a acceptable file
         readme1 = os.path.dirname(os.path.realpath(__file__)) + '/README.rst'
         readme2 = readme1.replace('test/acceptance/', '')  # There's another README located at ../../
+
         files = ', '.join([readme1, readme2])
         self.submission_page.visit().select_file(files)
         self.assertFalse(self.submission_page.has_file_error)
+        self.assertTrue(self.submission_page.upload_file_button_is_disabled)
+
+        self.submission_page.add_file_description(0, 'file description 1')
+        self.assertTrue(self.submission_page.upload_file_button_is_disabled)
+
+        self.submission_page.add_file_description(1, 'file description 2')
+        self.assertTrue(self.submission_page.upload_file_button_is_enabled)
+
         self.submission_page.upload_file()
         self.assertTrue(self.submission_page.have_files_uploaded)
 
