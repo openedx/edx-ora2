@@ -57,8 +57,8 @@ class Command(BaseCommand):
         Map a given points value to the correct option.
         """
         return {
-            "dim1": self.rubric['criteria'][0]['options'][points1 - 1]['name'],
-            "dim2": self.rubric['criteria'][0]['options'][points2 - 1]['name']
+            "dim1": self.rubric['criteria'][0]['options'][int(points1) - 1]['name'],
+            "dim2": self.rubric['criteria'][0]['options'][int(points2) - 1]['name']
         }
 
     @property
