@@ -148,7 +148,8 @@ DEFAULT_STAFF_ASSESSMENT = {
 DEFAULT_AI_ASSESSMENT = {
     "name": "example-based-assessment",
     "start": DEFAULT_START,
-    "due": DEFAULT_DUE
+    "due": DEFAULT_DUE,
+    "examples_xml": "",
 }
 
 DEFAULT_ASSESSMENT_MODULES = [
