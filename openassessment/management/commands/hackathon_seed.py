@@ -56,16 +56,9 @@ class Command(BaseCommand):
         """
         Map a given points value to the correct option.
         """
-        option1 = ""
-        option2 = ""
-        for i in range(1, 5):
-            if i == points1:
-                option1 = self.rubric['criteria'][0]['options'][i - 1]['name']
-            if i == points2:
-                option2 = self.rubric['criteria'][0]['options'][i - 1]['name']
         return {
-            "dim1": option1,
-            "dim2": option2
+            "dim1": self.rubric['criteria'][0]['options'][points1 - 1]['name'],
+            "dim2": self.rubric['criteria'][0]['options'][points2 - 1]['name']
         }
 
     @property
