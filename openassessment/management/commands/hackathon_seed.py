@@ -8,6 +8,7 @@ This pairs with the ai_grading_hack task in edx-platform.
 
 from django.core.management.base import BaseCommand
 from openassessment.assessment.api.staff import create_assessment
+from optparse import make_option
 from submissions import api as sub_api
 
 
@@ -15,15 +16,28 @@ class Command(BaseCommand):
     """
     It's a command
     """
+    option_list = BaseCommand.option_list + (
+        make_option('-b', '--block',
+            metavar='BLOCK_ID',
+            dest='location',
+            default=False,
+            help='Course ID for grade distribution'),
+        make_option('-c', '--course',
+            metavar='COURSE_ID',
+            dest='course',
+            default=False,
+            help='Course ID for grade distribution')
+        )
+
     def handle(self, *args, **options):
         with open("erics_hackathon_data.csv", "r") as infile:
-            for line in open(args[0]):
+            for line in open("/home/efischer19/sample_data.csv"):
                 tokens = line.split('|')
                 student_id = int(infile.readline())
                 student_item = {
                     "student_id": student_id,
-                    'course_id': args[1],
-                    'item_id': args[2],
+                    'course_id': options['course'],
+                    'item_id': options['location'],
                     'item_type': 'openassessment'
                 }
                 answer = {"text": tokens[1]}
