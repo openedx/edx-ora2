@@ -952,6 +952,7 @@ class OpenAssessmentBlock(MessageMixin,
             }
         """
         for assessment in self.valid_assessments:
+            print assessment["name"]
             if assessment["name"] == mixin_name:
                 return assessment
 
