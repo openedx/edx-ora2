@@ -700,6 +700,14 @@ def serialize_content_to_xml(oa_block, root):
     if oa_block.leaderboard_show:
         root.set('leaderboard_show', unicode(oa_block.leaderboard_show))
 
+    # Set text response
+    if oa_block.text_response:
+        root.set('text_response', unicode(oa_block.text_response))
+
+    # Set file upload response
+    if oa_block.file_upload_response:
+        root.set('file_upload_response', unicode(oa_block.file_upload_response))
+
     # Set File upload settings
     if oa_block.file_upload_type:
         root.set('file_upload_type', unicode(oa_block.file_upload_type))
@@ -833,6 +841,14 @@ def parse_from_xml(root):
     if 'submission_due' in root.attrib:
         submission_due = parse_date(unicode(root.attrib['submission_due']), name="submission due date")
 
+    text_response = None
+    if 'text_response' in root.attrib:
+        text_response = unicode(root.attrib['text_response'])
+
+    file_upload_response = None
+    if 'file_upload_response' in root.attrib:
+        file_upload_response = unicode(root.attrib['file_upload_response'])
+
     allow_file_upload = None
     if 'allow_file_upload' in root.attrib:
         allow_file_upload = _parse_boolean(unicode(root.attrib['allow_file_upload']))
@@ -890,6 +906,8 @@ def parse_from_xml(root):
         'rubric_feedback_default_text': rubric['feedback_default_text'],
         'submission_start': submission_start,
         'submission_due': submission_due,
+        'text_response': text_response,
+        'file_upload_response': file_upload_response,
         'allow_file_upload': allow_file_upload,
         'file_upload_type': file_upload_type,
         'white_listed_file_types': white_listed_file_types,

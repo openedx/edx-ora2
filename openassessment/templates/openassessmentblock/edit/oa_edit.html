@@ -101,32 +101,57 @@
                     </div>
                     <p class="setting-help">{% trans "The date and time when learners can no longer submit responses." %}</p>
                 </li>
-                <li id="openassessment_submission_file_wrapper" class="field comp-setting-entry">
+                <li id="openassessment_submission_text_response_wrapper" class="field comp-setting-entry">
                     <div class="wrapper-comp-setting">
-                        <label for="openassessment_submission_upload_selector" class="setting-label">{% trans "Allow File Upload"%}</label>
-                        <select id="openassessment_submission_upload_selector" class="input setting-input" name="upload submission">
-                            <option value="">{% trans "None"%}</option>
-                            <option value="image" {% if file_upload_type == "image" %} selected="true" {% endif %}>{% trans "Image File"%}</option>
-                            <option value="pdf-and-image" {% if file_upload_type == "pdf-and-image" %} selected="true" {% endif %}>{% trans "PDF or Image File"%}</option>
-                            <option value="custom" {% if file_upload_type == "custom" %} selected="true" {% endif %}>{% trans "Custom File Types"%}</option>
+                        <label for="openassessment_submission_text_response" class="setting-label">{% trans "Text Response"%}</label>
+                        <select id="openassessment_submission_text_response" class="input setting-input" name="text response">
+                            {% for option_key, option_name in necessity_options.items %}
+                            <option value="{{ option_key }}" {% if option_key == text_response %} selected="true" {% endif %}>{{ option_name }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <p class="setting-help">
-                        {% trans "Specify whether learners can submit a file along with their text response. Select Image to allow JPG, GIF, or PNG files. Select PDF or Image to allow PDF files and images. Select Custom File Types to allow files with extensions that you specify below. (Use this option with caution.)" %}
+                        {% trans "Specify whether learners must include a text based response to this problem's prompt." %}
                     </p>
-                    <div id="openassessment_submission_white_listed_file_types_wrapper" class="{% if file_upload_type != "custom" %}is--hidden{% endif %}">
+                </li>
+                <li id="openassessment_submission_file_wrapper" class="field comp-setting-entry">
+                    <div class="wrapper-comp-setting">
+                        <label for="openassessment_submission_file_upload_response" class="setting-label">{% trans "File Upload Response"%}</label>
+                        <select id="openassessment_submission_file_upload_response" class="input setting-input" name="text response">
+                            {% for option_key, option_name in necessity_options.items %}
+                            <option value="{{ option_key }}" {% if option_key == file_upload_response %} selected="true" {% endif %}>{{ option_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <p class="setting-help">
+                        {% trans "Specify whether learners are able to upload files as a part of their response." %}
+                    </p>
+                    <div id="openassessment_submission_file_upload_type_wrapper" class="{% if not file_upload_response %}is--hidden{% endif %}">
                         <div class="wrapper-comp-setting">
-                            <label for="openassessment_submission_white_listed_file_types" class="setting-label">{% trans "File Types" %}</label>
-                            <input id="openassessment_submission_white_listed_file_types"
-                                   class="input setting-input"
-                                   type="text"
-                                   value="{{ white_listed_file_types }}"
-                                    />
+                            <label for="openassessment_submission_upload_selector" class="setting-label">{% trans "File Upload Types"%}</label>
+                            <select id="openassessment_submission_upload_selector" class="input setting-input" name="upload submission">
+                                <option value="pdf-and-image" {% if file_upload_type == "pdf-and-image" %} selected="true" {% endif %}>{% trans "PDF or Image File"%}</option>
+                                <option value="image" {% if file_upload_type == "image" %} selected="true" {% endif %}>{% trans "Image File"%}</option>
+                                <option value="custom" {% if file_upload_type == "custom" %} selected="true" {% endif %}>{% trans "Custom File Types"%}</option>
+                            </select>
                         </div>
                         <p class="setting-help">
-                            {% trans "Enter the file extensions, separated by commas, that you want learners to be able to upload. For example: pdf,doc,docx." %}
-                        </p>&nbsp;
-                        <p class="setting-help message-status error"></p>
+                            {% trans "Specify whether learners can submit a file along with their text response. Select Image to allow JPG, GIF, or PNG files. Select PDF or Image to allow PDF files and images. Select Custom File Types to allow files with extensions that you specify below. (Use this option with caution.)" %}
+                        </p>
+                        <div id="openassessment_submission_white_listed_file_types_wrapper" class="{% if file_upload_type != "custom" %}is--hidden{% endif %}">
+                            <div class="wrapper-comp-setting">
+                                <label for="openassessment_submission_white_listed_file_types" class="setting-label">{% trans "File Types" %}</label>
+                                <input id="openassessment_submission_white_listed_file_types"
+                                       class="input setting-input"
+                                       type="text"
+                                       value="{{ white_listed_file_types }}"
+                                        />
+                            </div>
+                            <p class="setting-help">
+                                {% trans "Enter the file extensions, separated by commas, that you want learners to be able to upload. For example: pdf,doc,docx." %}
+                            </p>&nbsp;
+                            <p class="setting-help message-status error"></p>
+                        </div>
                     </div>
                 </li>
                 <li id="openassessment_submission_latex_wrapper" class="field comp-setting-entry">

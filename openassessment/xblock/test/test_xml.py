@@ -115,6 +115,8 @@ class TestSerializeContent(TestCase):
 
     def _configure_xblock(self, data):
         self.oa_block.title = data.get('title', '')
+        self.oa_block.text_response = data.get('text_response', '')
+        self.oa_block.file_upload_response = data.get('file_upload_response', None)
         self.oa_block.prompt = data.get('prompt')
         self.oa_block.prompts = create_prompts_list(data.get('prompt'))
         self.oa_block.rubric_feedback_prompt = data.get('rubric_feedback_prompt')

@@ -174,6 +174,59 @@ describe("OpenAssessment.ResponseView", function() {
         expect(view.saveStatus()).toContain('This response has not been saved.');
     });
 
+    it("updates submit/save buttons when response text is optional but file upload is required", function() {
+        view.textResponse = 'optional';
+        view.fileUploadResponse = 'required';
+
+        expect(view.submitEnabled()).toBe(false);
+        expect(view.saveEnabled()).toBe(false);
+
+        var files = [{type: 'application/pdf', size: 1024, name: 'application.pdf', data: ''}];
+        view.prepareUpload(files, 'pdf-and-image');
+        view.fileUpload();
+        view.checkSubmissionAbility();
+
+        expect(view.submitEnabled()).toBe(true);
+    });
+
+    it("updates save buttons when response text is optional and input is empty", function() {
+        view.textResponse = 'optional';
+        view.fileUploadResponse = 'required';
+
+        expect(view.submitEnabled()).toBe(false);
+        expect(view.saveEnabled()).toBe(false);
+
+        view.response(['Test response 1', ' ']);
+        view.handleResponseChanged();
+
+        expect(view.saveEnabled()).toBe(true);
+        view.save();
+
+        expect(view.submitEnabled()).toBe(false);
+        expect(view.saveEnabled()).toBe(false);
+
+        view.response(['', '']);
+        view.handleResponseChanged();
+        expect(view.saveEnabled()).toBe(true);
+    });
+
+    it("doesn't allow to push submit button if response text and file upload are both optional and input fields are empty ", function() {
+        view.textResponse = 'optional';
+        view.fileUploadResponse = 'optional';
+
+        view.response(['', '']);
+        view.handleResponseChanged();
+
+        expect(view.submitEnabled()).toBe(false);
+
+        var files = [{type: 'application/pdf', size: 1024, name: 'application.pdf', data: ''}];
+        view.prepareUpload(files, 'pdf-and-image');
+        view.fileUpload();
+        view.checkSubmissionAbility();
+
+        expect(view.submitEnabled()).toBe(true);
+    });
+
     it("updates submit/save buttons and save status when the user saves a response", function() {
         // Response is blank --> save/submit button is disabled
         view.response('');

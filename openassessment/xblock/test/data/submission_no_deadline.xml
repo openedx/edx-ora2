@@ -1,4 +1,4 @@
-<openassessment>
+<openassessment text_response="required">
     <title>Open Assessment Test</title>
     <prompts>
         <prompt>
