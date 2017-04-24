@@ -41,8 +41,8 @@ OpenAssessment.ResponseView.prototype = {
     // before we can autosave.
     AUTO_SAVE_WAIT: 30000,
 
-    // Maximum size (5 MB) for all attached files.
-    MAX_FILES_SIZE: 5242880,
+    // Maximum size (10 MB) for all attached files.
+    MAX_FILES_SIZE: 10485760,
 
     UNSAVED_WARNING_KEY: "learner-response",
 
@@ -558,7 +558,7 @@ OpenAssessment.ResponseView.prototype = {
             if (totalSize > this.MAX_FILES_SIZE) {
                 this.baseView.toggleActionError(
                     'upload',
-                    gettext("File size must be 5MB or less.")
+                    gettext("File size must be 10MB or less.")
                 );
                 errorCheckerTriggered = true;
                 break;
@@ -597,7 +597,7 @@ OpenAssessment.ResponseView.prototype = {
         if (!errorCheckerTriggered) {
             this.baseView.toggleActionError('upload', null);
             this.files = files;
-            this.updateFilesDescriptionsFields(files, descriptions);
+            this.updateFilesDescriptionsFields(files, descriptions, uploadType);
         }
 
         if (this.files === null) {
@@ -609,11 +609,14 @@ OpenAssessment.ResponseView.prototype = {
      Render textarea fields to input description for each uploaded file.
 
      */
-    updateFilesDescriptionsFields: function(files, descriptions) {
+    /* jshint -W083 */
+    updateFilesDescriptionsFields: function(files, descriptions, uploadType) {
         var filesDescriptions = $(this.element).find('.files__descriptions').first();
         var mainDiv = null;
-        var div1 = null;
-        var div2 = null;
+        var divLabel = null;
+        var divTextarea = null;
+        var divImage = null;
+        var img = null;
         var textarea = null;
         var descriptionsExists = true;
 
@@ -624,13 +627,13 @@ OpenAssessment.ResponseView.prototype = {
         for (var i = 0; i < files.length; i++) {
             mainDiv = $('<div/>');
 
-            div1 = $('<div/>');
-            div1.addClass('submission__file__description__label');
-            div1.text(gettext("Describe ") + files[i].name + ' ' + gettext("(required):"));
-            div1.appendTo(mainDiv);
+            divLabel = $('<div/>');
+            divLabel.addClass('submission__file__description__label');
+            divLabel.text(gettext("Describe ") + files[i].name + ' ' + gettext("(required):"));
+            divLabel.appendTo(mainDiv);
 
-            div2 = $('<div/>');
-            div2.addClass('submission__file__description');
+            divTextarea = $('<div/>');
+            divTextarea.addClass('submission__file__description');
             textarea = $('<textarea />');
             if ((this.filesDescriptions.indexOf(i) !== -1) && (this.filesDescriptions[i] !== '')) {
                 textarea.val(this.filesDescriptions[i]);
@@ -638,8 +641,24 @@ OpenAssessment.ResponseView.prototype = {
                 descriptionsExists = false;
             }
             textarea.addClass('file__description file__description__' + i);
-            textarea.appendTo(div2);
-            div2.appendTo(mainDiv);
+            textarea.appendTo(divTextarea);
+
+            if (uploadType === "image") {
+                img = $('<img/>', {
+                    src: window.URL.createObjectURL(files[i]),
+                    height: 80
+                });
+                img.onload = function() {
+                    window.URL.revokeObjectURL(this.src);
+                };
+
+                divImage = $('<div/>');
+                divImage.addClass('submission__img__preview');
+                img.appendTo(divImage);
+                divImage.appendTo(mainDiv);
+            }
+
+            divTextarea.appendTo(mainDiv);
 
             mainDiv.appendTo(filesDescriptions);
             textarea.on("change keyup drop paste", $.proxy(this, "checkFilesDescriptions"));
@@ -792,6 +811,7 @@ OpenAssessment.ResponseView.prototype = {
             var fileBlockExists = sel.find("." + className).length ? true : false;
             var div1 = null;
             var div2 = null;
+            var ariaLabelledBy = null;
 
             if (!fileBlockExists) {
                 fileBlock = $('<div/>');
@@ -800,13 +820,18 @@ OpenAssessment.ResponseView.prototype = {
             }
 
             if (view.filesType === 'image') {
-                div1 = $('<div/>');
+                ariaLabelledBy = 'file_description_' + Math.random().toString(36).substr(2, 9);
+
+                div1 = $('<div/>', {
+                    id: ariaLabelledBy
+                });
                 div1.addClass('submission__file__description__label');
                 div1.text(view.filesDescriptions[filenum] + ':');
                 div1.appendTo(fileBlock);
 
                 img = $('<img />');
                 img.addClass('submission__answer__file submission--image');
+                img.attr('aria-labelledby', ariaLabelledBy);
                 img.attr('src', url);
 
                 div2 = $('<div/>');

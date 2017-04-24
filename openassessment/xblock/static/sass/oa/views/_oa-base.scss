@@ -562,6 +562,11 @@
     margin-bottom: 8px;
   }
 
+  .submission__img__preview {
+    float: left;
+    margin-right: 10px;
+  }
+
   // --------------------
   // response
   // --------------------
@@ -600,6 +605,7 @@
         textarea {
           @extend %ui-content-longanswer;
           min-height: ($baseline-v*4);
+          width: 70%;
         }
       }
 

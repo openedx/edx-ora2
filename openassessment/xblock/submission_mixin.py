@@ -208,27 +208,20 @@ class SubmissionMixin(object):
         if 'descriptions' in data:
             descriptions = data['descriptions']
 
-            if isinstance(descriptions, list):
-                all_description_correct = True
-                for description in descriptions:
-                    if not isinstance(description, basestring):
-                        all_description_correct = False
-                        break
+            if isinstance(descriptions, list) and all(map(lambda description: isinstance(description, basestring), descriptions)):
+                try:
+                    self.saved_files_descriptions = json.dumps(descriptions)
 
-                if all_description_correct:
-                    try:
-                        self.saved_files_descriptions = json.dumps(descriptions)
-
-                        # Emit analytics event...
-                        self.runtime.publish(
-                            self,
-                            "openassessmentblock.save_files_descriptions",
-                            {"saved_response": self.saved_files_descriptions}
-                        )
-                    except:
-                        return {'success': False, 'msg': self._(u"Files descriptions could not be saved.")}
-                    else:
-                        return {'success': True, 'msg': u''}
+                    # Emit analytics event...
+                    self.runtime.publish(
+                        self,
+                        "openassessmentblock.save_files_descriptions",
+                        {"saved_response": self.saved_files_descriptions}
+                    )
+                except:
+                    return {'success': False, 'msg': self._(u"Files descriptions could not be saved.")}
+                else:
+                    return {'success': True, 'msg': u''}
 
         return {'success': False, 'msg': self._(u"Files descriptions were not submitted.")}
 
