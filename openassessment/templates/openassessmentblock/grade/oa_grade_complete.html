@@ -33,7 +33,7 @@
                         {% include "openassessmentblock/oa_submission_answer.html" with answer=student_submission.answer answer_text_label=translated_label %}
 
                         {% trans "Your Upload" as translated_header %}
-                        {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_urls=file_urls header=translated_header class_prefix="submission__answer" xblock_id=xblock_id %}
+                        {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_urls=file_urls header=translated_header class_prefix="submission__answer" including_template="grade_complete" xblock_id=xblock_id %}
                     </article>
 
                     <article class="submission__peer-evaluations step__content__section">

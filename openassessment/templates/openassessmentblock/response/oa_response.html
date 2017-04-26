@@ -153,7 +153,7 @@
                         </li>
                         {% endif %}
                         <li class="field">
-                        {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_urls=file_urls class_prefix="submission__answer" xblock_id=xblock_id %}
+                        {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_urls=file_urls class_prefix="submission__answer" including_template="response" xblock_id=xblock_id %}
                         </li>
                     </ol>
 

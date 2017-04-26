@@ -16,10 +16,10 @@
             <div class="submission__answer__file__block submission__answer__file__block__{{ forloop.counter0 }}">
             {% if file_upload_type == "image" %}
                 {% if file_description %}
-                <div class="submission__file__description__label" id="file_description_{{ xblock_id }}_{{ forloop.counter0 }}">{{ file_description }}:</div>
+                <div class="submission__file__description__label" id="file_description_{{ xblock_id }}_{{ including_template }}_{{ forloop.counter0 }}">{{ file_description }}:</div>
                 {% endif %}
                 <div><img class="submission__answer__file submission--image" src="{{ file_url }}"
-                          aria-labelledby="file_description_{{ xblock_id }}_{{ forloop.counter0 }}" /></div>
+                          aria-labelledby="file_description_{{ xblock_id }}_{{ including_template }}_{{ forloop.counter0 }}" /></div>
             {% elif file_upload_type == "pdf-and-image" or file_upload_type == "custom" %}
                 <a href="{{ file_url }}" class="submission__answer__file submission--file" target="_blank">
                     {% if file_description %}

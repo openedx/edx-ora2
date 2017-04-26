@@ -634,7 +634,9 @@ OpenAssessment.ResponseView.prototype = {
 
             divTextarea = $('<div/>');
             divTextarea.addClass('submission__file__description');
-            textarea = $('<textarea />');
+            textarea = $('<textarea />', {
+                'aria-label': gettext("Describe ") + files[i].name
+            });
             if ((this.filesDescriptions.indexOf(i) !== -1) && (this.filesDescriptions[i] !== '')) {
                 textarea.val(this.filesDescriptions[i]);
             } else {
@@ -646,7 +648,8 @@ OpenAssessment.ResponseView.prototype = {
             if (uploadType === "image") {
                 img = $('<img/>', {
                     src: window.URL.createObjectURL(files[i]),
-                    height: 80
+                    height: 80,
+                    alt: gettext("Thumbnail view of ") + files[i].name
                 });
                 img.onload = function() {
                     window.URL.revokeObjectURL(this.src);
