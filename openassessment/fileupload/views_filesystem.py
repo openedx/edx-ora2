@@ -114,6 +114,8 @@ def safe_remove(path):
     """
     if os.path.exists(path):
         os.remove(path)
+        return True
+    return False
 
 
 def get_file_path(key):

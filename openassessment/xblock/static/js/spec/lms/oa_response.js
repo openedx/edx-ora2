@@ -65,14 +65,14 @@ describe("OpenAssessment.ResponseView", function() {
         var errorPromise = $.Deferred(function(defer) { defer.rejectWith(this, ["ERROR"]); }).promise();
 
         this.uploadError = false;
-        this.uploadArgs = null;
+        this.uploadArgs = [];
 
         this.upload = function(url, data) {
             // Store the args we were passed so we can verify them
-            this.uploadArgs = {
+            this.uploadArgs.push({
                 url: url,
                 data: data
-            };
+            });
 
             // Return a promise indicating success or error
             return this.uploadError ? errorPromise : successPromise;
@@ -135,6 +135,17 @@ describe("OpenAssessment.ResponseView", function() {
                 else { defer.reject(); }
             });
         });
+        spyOn(view, 'removeUploadedFiles').and.callFake(function() {
+            return $.Deferred(function(defer) {
+                defer.resolve();
+            });
+        });
+        spyOn(view, 'saveFilesDescriptions').and.callFake(function() {
+            return $.Deferred(function(defer) {
+                view.removeFilesDescriptions();
+                defer.resolve();
+            });
+        });
     });
 
     afterEach(function() {
@@ -172,6 +183,59 @@ describe("OpenAssessment.ResponseView", function() {
         expect(view.submitEnabled()).toBe(true);
         expect(view.saveEnabled()).toBe(true);
         expect(view.saveStatus()).toContain('This response has not been saved.');
+    });
+
+    it("updates submit/save buttons when response text is optional but file upload is required", function() {
+        view.textResponse = 'optional';
+        view.fileUploadResponse = 'required';
+
+        expect(view.submitEnabled()).toBe(false);
+        expect(view.saveEnabled()).toBe(false);
+
+        var files = [{type: 'application/pdf', size: 1024, name: 'application.pdf', data: ''}];
+        view.prepareUpload(files, 'pdf-and-image', ['test description']);
+        view.uploadFiles();
+        view.checkSubmissionAbility(true);
+
+        expect(view.submitEnabled()).toBe(true);
+    });
+
+    it("updates save buttons when response text is optional and input is empty", function() {
+        view.textResponse = 'optional';
+        view.fileUploadResponse = 'required';
+
+        expect(view.submitEnabled()).toBe(false);
+        expect(view.saveEnabled()).toBe(false);
+
+        view.response(['Test response 1', ' ']);
+        view.handleResponseChanged();
+
+        expect(view.saveEnabled()).toBe(true);
+        view.save();
+
+        expect(view.submitEnabled()).toBe(false);
+        expect(view.saveEnabled()).toBe(false);
+
+        view.response(['', '']);
+        view.handleResponseChanged();
+        expect(view.saveEnabled()).toBe(true);
+    });
+
+    it("doesn't allow to push submit button if response text and file upload are both optional and input fields are empty ", function() {
+        view.textResponse = 'optional';
+        view.fileUploadResponse = 'optional';
+
+        view.response(['', '']);
+        view.handleResponseChanged();
+
+        expect(view.submitEnabled()).toBe(false);
+
+        var files = [{type: 'application/pdf', size: 1024, name: 'application.pdf', data: ''}];
+        view.prepareUpload(files, 'pdf-and-image', ['test description']);
+        view.uploadFiles();
+        view.checkSubmissionAbility(true);
+
+        expect(view.submitEnabled()).toBe(true);
     });
 
     it("updates submit/save buttons and save status when the user saves a response", function() {
@@ -434,9 +498,10 @@ describe("OpenAssessment.ResponseView", function() {
 
     it("selects too large of a file", function() {
         spyOn(view.baseView, 'toggleActionError').and.callThrough();
-        var files = [{type: 'image/jpeg', size: 6000000, name: 'huge-picture.jpg', data: ''}];
+        var files = [{type: 'image/jpeg', size: 12000000, name: 'huge-picture.jpg', data: ''}];
         view.prepareUpload(files, 'image');
-        expect(view.baseView.toggleActionError).toHaveBeenCalledWith('upload', 'File size must be 5MB or less.');
+        expect(view.baseView.toggleActionError).toHaveBeenCalledWith('upload',
+            'File size must be 10MB or less.');
     });
 
     it("selects the wrong image file type", function() {
@@ -471,31 +536,62 @@ describe("OpenAssessment.ResponseView", function() {
         view.data.FILE_TYPE_WHITE_LIST = ['exe'];
         var files = [{type: 'application/exe', size: 1024, name: 'application.exe', data: ''}];
         view.prepareUpload(files, 'custom');
-        expect(view.baseView.toggleActionError).toHaveBeenCalledWith('upload', 'File type is not allowed.');
+        expect(view.baseView.toggleActionError).toHaveBeenCalledWith('upload',
+            'File type is not allowed.');
+    });
+
+    it("selects one small and one large file", function() {
+        spyOn(view.baseView, 'toggleActionError').and.callThrough();
+        var files = [{type: 'image/jpeg', size: 1024, name: 'small-picture.jpg', data: ''},
+                     {type: 'image/jpeg', size: 11000000, name: 'huge-picture.jpg', data: ''}];
+        view.prepareUpload(files, 'image');
+        expect(view.baseView.toggleActionError).toHaveBeenCalledWith('upload',
+            'File size must be 10MB or less.');
+    });
+
+    it("selects three files - one with invalid extension", function() {
+        spyOn(view.baseView, 'toggleActionError').and.callThrough();
+        var files = [{type: 'image/jpeg', size: 1024, name: 'small-picture-1.jpg', data: ''},
+                     {type: 'application/exe', size: 1024, name: 'application.exe', data: ''},
+                     {type: 'image/jpeg', size: 1024, name: 'small-picture-2.jpg', data: ''}];
+        view.prepareUpload(files, 'image');
+        expect(view.baseView.toggleActionError).toHaveBeenCalledWith('upload',
+            'You can upload files with these file types: JPG, PNG or GIF');
     });
 
     it("uploads an image using a one-time URL", function() {
         var files = [{type: 'image/jpeg', size: 1024, name: 'picture.jpg', data: ''}];
         view.prepareUpload(files, 'image');
-        view.fileUpload();
-        expect(fileUploader.uploadArgs.url).toEqual(FAKE_URL);
-        expect(fileUploader.uploadArgs.data).toEqual(files[0]);
+        view.uploadFiles();
+        expect(fileUploader.uploadArgs[0].url).toEqual(FAKE_URL);
+        expect(fileUploader.uploadArgs[0].data).toEqual(files[0]);
+    });
+
+    it("uploads two images using a one-time URL", function() {
+        var files = [{type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: ''},
+                     {type: 'image/jpeg', size: 1024, name: 'picture2.jpg', data: ''}];
+        view.prepareUpload(files, 'image', ['text1', 'text2']);
+        view.uploadFiles();
+        expect(fileUploader.uploadArgs[0].url).toEqual(FAKE_URL);
+        expect(fileUploader.uploadArgs[0].data).toEqual(files[0]);
+        expect(fileUploader.uploadArgs[1].url).toEqual(FAKE_URL);
+        expect(fileUploader.uploadArgs[1].data).toEqual(files[1]);
     });
 
     it("uploads a PDF using a one-time URL", function() {
         var files = [{type: 'application/pdf', size: 1024, name: 'application.pdf', data: ''}];
-        view.prepareUpload(files, 'pdf-and-image');
-        view.fileUpload();
-        expect(fileUploader.uploadArgs.url).toEqual(FAKE_URL);
-        expect(fileUploader.uploadArgs.data).toEqual(files[0]);
+        view.prepareUpload(files, 'pdf-and-image', ['text']);
+        view.uploadFiles();
+        expect(fileUploader.uploadArgs[0].url).toEqual(FAKE_URL);
+        expect(fileUploader.uploadArgs[0].data).toEqual(files[0]);
     });
 
     it("uploads a arbitrary type file using a one-time URL", function() {
         var files = [{type: 'text/html', size: 1024, name: 'index.html', data: ''}];
-        view.prepareUpload(files, 'custom');
-        view.fileUpload();
-        expect(fileUploader.uploadArgs.url).toEqual(FAKE_URL);
-        expect(fileUploader.uploadArgs.data).toEqual(files[0]);
+        view.prepareUpload(files, 'custom', ['text']);
+        view.uploadFiles();
+        expect(fileUploader.uploadArgs[0].url).toEqual(FAKE_URL);
+        expect(fileUploader.uploadArgs[0].data).toEqual(files[0]);
     });
 
     it("displays an error if a one-time file upload URL cannot be retrieved", function() {
@@ -505,8 +601,8 @@ describe("OpenAssessment.ResponseView", function() {
 
         // Attempt to upload a file
         var files = [{type: 'image/jpeg', size: 1024, name: 'picture.jpg', data: ''}];
-        view.prepareUpload(files, 'image');
-        view.fileUpload();
+        view.prepareUpload(files, 'image', ['text']);
+        view.uploadFiles();
 
         // Expect an error to be displayed
         expect(view.baseView.toggleActionError).toHaveBeenCalledWith('upload', 'ERROR');
@@ -520,9 +616,53 @@ describe("OpenAssessment.ResponseView", function() {
         // Attempt to upload a file
         var files = [{type: 'image/jpeg', size: 1024, name: 'picture.jpg', data: ''}];
         view.prepareUpload(files, 'image');
-        view.fileUpload();
+        view.uploadFiles();
 
         // Expect an error to be displayed
         expect(view.baseView.toggleActionError).toHaveBeenCalledWith('upload', 'ERROR');
+    });
+
+    it("disables the upload button if any file description is not set", function() {
+        function getFileUploadField() {
+            return $(view.element).find('.file__upload').first();
+        }
+
+        spyOn(view, 'updateFilesDescriptionsFields').and.callThrough();
+        var files = [{type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: ''},
+                     {type: 'image/jpeg', size: 1024, name: 'picture2.jpg', data: ''}];
+        view.prepareUpload(files, 'image');
+
+        expect(getFileUploadField().is(':disabled')).toEqual(true);
+        expect(view.updateFilesDescriptionsFields).toHaveBeenCalledWith(files, undefined, 'image');
+
+        // set the first description field (the second is still empty)
+        // and check that upload button is disabled
+        var firstDescriptionField1 = $(view.element).find('.file__description__0').first();
+        $(firstDescriptionField1).val('test');
+        view.checkFilesDescriptions();
+        expect(getFileUploadField().is(':disabled')).toEqual(true);
+
+        // set the second description field (now both descriptions are not empty)
+        // and check that upload button is enabled
+        var firstDescriptionField2 = $(view.element).find('.file__description__1').first();
+        $(firstDescriptionField2).val('test2');
+        view.checkFilesDescriptions();
+        expect(getFileUploadField().is(':disabled')).toEqual(false);
+
+        // remove value in the first upload field
+        // and check that upload button is disabled
+        $(firstDescriptionField1).val('');
+        view.checkFilesDescriptions();
+        expect(getFileUploadField().is(':disabled')).toEqual(true);
+    });
+
+    it("removes description fields after files upload", function() {
+        var files = [{type: 'image/jpeg', size: 1024, name: 'picture1.jpg', data: ''},
+                     {type: 'image/jpeg', size: 1024, name: 'picture2.jpg', data: ''}];
+        view.prepareUpload(files, 'image', ['test1', 'test2']);
+        expect($(view.element).find('.file__description').length).toEqual(2);
+
+        view.uploadFiles();
+        expect($(view.element).find('.file__description').length).toEqual(0);
     });
 });

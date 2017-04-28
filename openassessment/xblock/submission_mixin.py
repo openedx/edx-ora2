@@ -34,6 +34,8 @@ class SubmissionMixin(object):
 
     ALLOWED_FILE_MIME_TYPES = ['application/pdf'] + ALLOWED_IMAGE_MIME_TYPES
 
+    MAX_FILES_COUNT = 20
+
     # taken from http://www.howtogeek.com/137270/50-file-extensions-that-are-potentially-dangerous-on-windows/
     # and http://pcsupport.about.com/od/tipstricks/a/execfileext.htm
     # left out .js and office extensions
@@ -58,9 +60,9 @@ class SubmissionMixin(object):
 
         Args:
             data (dict): Data may contain two attributes: submission and
-                file_url. submission is the response from the student which
-                should be stored in the Open Assessment system. file_url is the
-                path to a related file for the submission. file_url is optional.
+                file_urls. submission is the response from the student which
+                should be stored in the Open Assessment system. file_urls is the
+                path to a related file for the submission. file_urls is optional.
             suffix (str): Not used in this handler.
 
         Returns:
@@ -77,7 +79,7 @@ class SubmissionMixin(object):
 
         status = False
         student_sub_data = data['submission']
-        success, msg = validate_submission(student_sub_data, self.prompts, self._)
+        success, msg = validate_submission(student_sub_data, self.prompts, self._, self.text_response)
         if not success:
             return (
                 False,
@@ -102,9 +104,14 @@ class SubmissionMixin(object):
         status_text = self._(u'Multiple submissions are not allowed.')
         if not workflow:
             try:
+                try:
+                    saved_files_descriptions = json.loads(self.saved_files_descriptions)
+                except ValueError:
+                    saved_files_descriptions = None
                 submission = self.create_submission(
                     student_item_dict,
-                    student_sub_data
+                    student_sub_data,
+                    saved_files_descriptions
                 )
             except api.SubmissionRequestError as err:
 
@@ -154,7 +161,7 @@ class SubmissionMixin(object):
         Args:
             data (dict): Data should have a single key 'submission' that contains
                 the text of the student's response. Optionally, the data could
-                have a 'file_url' key that is the path to an associated file for
+                have a 'file_urls' key that is the path to an associated file for
                 this submission.
             suffix (str): Not used.
 
@@ -163,7 +170,7 @@ class SubmissionMixin(object):
         """
         if 'submission' in data:
             student_sub_data = data['submission']
-            success, msg = validate_submission(student_sub_data, self.prompts, self._)
+            success, msg = validate_submission(student_sub_data, self.prompts, self._, self.text_response)
             if not success:
                 return {'success': False, 'msg': msg}
             try:
@@ -185,14 +192,69 @@ class SubmissionMixin(object):
         else:
             return {'success': False, 'msg': self._(u"This response was not submitted.")}
 
-    def create_submission(self, student_item_dict, student_sub_data):
+    @XBlock.json_handler
+    def save_files_descriptions(self, data, suffix=''):
+        """
+        Save the descriptions for each uploaded file.
+
+        Args:
+            data (dict): Data should have a single key 'descriptions' that contains
+                the texts for each uploaded file.
+            suffix (str): Not used.
+
+        Returns:
+            dict: Contains a bool 'success' and unicode string 'msg'.
+        """
+        if 'descriptions' in data:
+            descriptions = data['descriptions']
+
+            if isinstance(descriptions, list) and all(map(lambda description: isinstance(description, basestring), descriptions)):
+                try:
+                    self.saved_files_descriptions = json.dumps(descriptions)
+
+                    # Emit analytics event...
+                    self.runtime.publish(
+                        self,
+                        "openassessmentblock.save_files_descriptions",
+                        {"saved_response": self.saved_files_descriptions}
+                    )
+                except:
+                    return {'success': False, 'msg': self._(u"Files descriptions could not be saved.")}
+                else:
+                    return {'success': True, 'msg': u''}
+
+        return {'success': False, 'msg': self._(u"Files descriptions were not submitted.")}
+
+    def create_submission(self, student_item_dict, student_sub_data, files_descriptions=None):
 
         # Store the student's response text in a JSON-encodable dict
         # so that later we can add additional response fields.
+        files_descriptions = files_descriptions if files_descriptions else []
         student_sub_dict = prepare_submission_for_serialization(student_sub_data)
 
         if self.file_upload_type:
-            student_sub_dict['file_key'] = self._get_student_item_key()
+            student_sub_dict['file_keys'] = []
+            student_sub_dict['files_descriptions'] = []
+            for i in range(self.MAX_FILES_COUNT):
+                key_to_save = ''
+                file_description = ''
+                item_key = self._get_student_item_key(i)
+                try:
+                    url = file_upload_api.get_download_url(item_key)
+                    if url:
+                        key_to_save = item_key
+                        try:
+                            file_description = files_descriptions[i]
+                        except IndexError:
+                            pass
+                except FileUploadError:
+                    pass
+                if key_to_save:
+                    student_sub_dict['file_keys'].append(key_to_save)
+                    student_sub_dict['files_descriptions'].append(file_description)
+                else:
+                    break
+
         submission = api.create_submission(student_item_dict, student_sub_dict)
         self.create_workflow(submission["uuid"])
         self.submission_uuid = submission["uuid"]
@@ -213,7 +275,7 @@ class SubmissionMixin(object):
         return submission
 
     @XBlock.json_handler
-    def upload_url(self, data, suffix=''):
+    def upload_url(self, data, suffix=''):  # pylint: disable=unused-argument
         """
         Request a URL to be used for uploading content related to this
         submission.
@@ -227,6 +289,7 @@ class SubmissionMixin(object):
         content_type = data['contentType']
         file_name = data['filename']
         file_name_parts = file_name.split('.')
+        file_num = int(data.get('filenum', 0))
         file_ext = file_name_parts[-1] if len(file_name_parts) > 1 else None
 
         if self.file_upload_type == 'image' and content_type not in self.ALLOWED_IMAGE_MIME_TYPES:
@@ -242,7 +305,7 @@ class SubmissionMixin(object):
         if file_ext in self.FILE_EXT_BLACK_LIST:
             return {'success': False, 'msg': self._(u"File type is not allowed.")}
         try:
-            key = self._get_student_item_key()
+            key = self._get_student_item_key(file_num)
             url = file_upload_api.get_upload_url(key, content_type)
             return {'success': True, 'url': url}
         except FileUploadError:
@@ -250,7 +313,7 @@ class SubmissionMixin(object):
             return {'success': False, 'msg': self._(u"Error retrieving upload URL.")}
 
     @XBlock.json_handler
-    def download_url(self, data, suffix=''):
+    def download_url(self, data, suffix=''):  # pylint: disable=unused-argument
         """
         Request a download URL.
 
@@ -258,20 +321,36 @@ class SubmissionMixin(object):
             A URL to be used for downloading content related to the submission.
 
         """
-        return {'success': True, 'url': self._get_download_url()}
+        file_num = int(data.get('filenum', 0))
+        return {'success': True, 'url': self._get_download_url(file_num)}
 
-    def _get_download_url(self):
+    @XBlock.json_handler
+    def remove_all_uploaded_files(self, data, suffix=''):  # pylint: disable=unused-argument
+        """
+        Removes all uploaded user files.
+
+        """
+        removed_num = 0
+        for i in range(self.MAX_FILES_COUNT):
+            removed = file_upload_api.remove_file(self._get_student_item_key(i))
+            if removed:
+                removed_num += 1
+            else:
+                break
+        return {'success': True, 'removed_num': removed_num}
+
+    def _get_download_url(self, file_num=0):
         """
         Internal function for retrieving the download url.
 
         """
         try:
-            return file_upload_api.get_download_url(self._get_student_item_key())
+            return file_upload_api.get_download_url(self._get_student_item_key(file_num))
         except FileUploadError:
             logger.exception("Error retrieving download URL.")
             return ''
 
-    def _get_student_item_key(self):
+    def _get_student_item_key(self, num=0):
         """
         Simple utility method to generate a common file upload key based on
         the student item.
@@ -281,33 +360,66 @@ class SubmissionMixin(object):
 
         """
         student_item_dict = self.get_student_item_dict()
-        return u"{student_id}/{course_id}/{item_id}".format(
-            **student_item_dict
-        )
+        num = int(num)
+        if num > 0:
+            student_item_dict['num'] = num
+            return u"{student_id}/{course_id}/{item_id}/{num}".format(
+                **student_item_dict
+            )
+        else:
+            return u"{student_id}/{course_id}/{item_id}".format(
+                **student_item_dict
+            )
 
-    def get_download_url_from_submission(self, submission):
+    def _get_url_by_file_key(self, key):
         """
-        Returns a download URL for retrieving content within a submission.
-
-        Args:
-            submission (dict): Dictionary containing an answer and a file_key.
-                The file_key is used to try and retrieve a download url
-                with related content
-
-        Returns:
-            A URL to related content. If there is no content related to this
-            key, or if there is no key for the submission, returns an empty
-            string.
+        Return download url for some particular file key.
 
         """
-        url = ""
-        key = submission['answer'].get('file_key', '')
+        url = ''
         try:
             if key:
                 url = file_upload_api.get_download_url(key)
         except FileUploadError:
             logger.exception("Unable to generate download url for file key {}".format(key))
         return url
+
+    def get_download_urls_from_submission(self, submission):
+        """
+        Returns a download URLs for retrieving content within a submission.
+
+        Args:
+            submission (dict): Dictionary containing an answer and a file_keys.
+                The file_keys is used to try and retrieve a download urls
+                with related content
+
+        Returns:
+            List with URLs to related content. If there is no content related to this
+            key, or if there is no key for the submission, returns an empty
+            list.
+
+        """
+        urls = []
+        if 'file_keys' in submission['answer']:
+            keys = submission['answer'].get('file_keys', [])
+            descriptions = submission['answer'].get('files_descriptions', [])
+            for idx, key in enumerate(keys):
+                url = self._get_url_by_file_key(key)
+                if url:
+                    description = ''
+                    try:
+                        description = descriptions[idx]
+                    except IndexError:
+                        pass
+                    urls.append((url, description))
+                else:
+                    break
+        elif 'file_key' in submission['answer']:
+            key = submission['answer'].get('file_key', '')
+            url = self._get_url_by_file_key(key)
+            if url:
+                urls.append((url, ''))
+        return urls
 
     @staticmethod
     def get_user_submission(submission_uuid):
@@ -383,7 +495,10 @@ class SubmissionMixin(object):
         context = {
             'user_timezone': user_preferences['user_timezone'],
             'user_language': user_preferences['user_language'],
-            "xblock_id": self.get_xblock_id()}
+            "xblock_id": self.get_xblock_id(),
+            "text_response": self.text_response,
+            "file_upload_response": self.file_upload_response,
+        }
 
         # Due dates can default to the distant future, in which case
         # there's effectively no due date.
@@ -394,8 +509,28 @@ class SubmissionMixin(object):
         context['file_upload_type'] = self.file_upload_type
         context['allow_latex'] = self.allow_latex
 
+        file_urls = None
+
         if self.file_upload_type:
-            context['file_url'] = self._get_download_url()
+            try:
+                saved_files_descriptions = json.loads(self.saved_files_descriptions)
+            except ValueError:
+                saved_files_descriptions = []
+
+            file_urls = []
+
+            for i in range(self.MAX_FILES_COUNT):
+                file_url = self._get_download_url(i)
+                file_description = ''
+                if file_url:
+                    try:
+                        file_description = saved_files_descriptions[i]
+                    except IndexError:
+                        pass
+                    file_urls.append((file_url, file_description))
+                else:
+                    break
+            context['file_urls'] = file_urls
         if self.file_upload_type == 'custom':
             context['white_listed_file_types'] = self.white_listed_file_types
 
@@ -422,7 +557,16 @@ class SubmissionMixin(object):
 
             context['saved_response'] = create_submission_dict(saved_response, self.prompts)
             context['save_status'] = self.save_status
-            context['submit_enabled'] = self.saved_response != ''
+
+            submit_enabled = True
+            if self.text_response == 'required' and not self.saved_response:
+                submit_enabled = False
+            if self.file_upload_response == 'required' and not file_urls:
+                submit_enabled = False
+            if self.text_response == 'optional' and self.file_upload_response == 'optional' \
+                    and not self.saved_response and not file_urls:
+                submit_enabled = False
+            context['submit_enabled'] = submit_enabled
             path = "openassessmentblock/response/oa_response.html"
         elif workflow["status"] == "cancelled":
             context["workflow_cancellation"] = self.get_workflow_cancellation_info(self.submission_uuid)

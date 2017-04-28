@@ -105,7 +105,7 @@ class SelfAssessmentMixin(object):
 
                 # Determine if file upload is supported for this XBlock and what kind of files can be uploaded.
                 context["file_upload_type"] = self.file_upload_type
-                context['self_file_url'] = self.get_download_url_from_submission(submission)
+                context['self_file_urls'] = self.get_download_urls_from_submission(submission)
 
                 path = 'openassessmentblock/self/oa_self_assessment.html'
         else:

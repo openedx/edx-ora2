@@ -18,3 +18,10 @@ def get_download_url(key):
     Returns the url at which the file that corresponds to the key can be downloaded.
     """
     return backends.get_backend().get_download_url(key)
+
+
+def remove_file(key):
+    """
+    Remove file from the storage
+    """
+    return backends.get_backend().remove_file(key)

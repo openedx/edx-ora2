@@ -90,6 +90,19 @@ class BaseBackend(object):
         """
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def remove_file(self, key):
+        """
+        Remove file from the storage
+
+        Args:
+            key (str): A unique identifier used to identify the data requested for remove.
+
+        Returns:
+            True if file was successfully removed or False is file was not removed or was not was not found.
+        """
+        raise NotImplementedError
+
     def _retrieve_parameters(self, key):
         """
         Simple utility function to validate settings and arguments before compiling

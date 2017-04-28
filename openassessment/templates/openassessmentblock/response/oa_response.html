@@ -72,12 +72,16 @@
                                 </article>
 
 
-
+                                {% if text_response %}
                                 <div class="field field--textarea submission__answer__part__text">
                                     <div class="submission__answer__part__text">
                                         <h5 id="submission__answer__part__text__title__{{ forloop.counter }}__{{ xblock_id }}"
                                             class="submission__answer__part__text__title">
-                                          {% trans "Your response" %}
+                                          {% if text_response == "required" %}
+                                            {% trans "Your response (required)" %}
+                                          {% elif text_response == "optional" %}
+                                            {% trans "Your response (optional)" %}
+                                          {% endif %}
                                         </h5>
                                     </div>
                                     <textarea
@@ -89,65 +93,72 @@
                                         maxlength="100000"
                                     >{{ part.text }}</textarea>
                                 </div>
+                                {% endif %}
                             </li>
                         {% endfor %}
+                        {% if text_response %}
+                        <li class="field">
+                            <div class="response__submission__actions">
+                                <div class="message message--inline message--error message--error-server" tabindex="-1">
+                                    <h5 class="message__title">{% trans "We could not save your progress" %}</h5>
+                                    <div class="message__content"></div>
+                                </div>
+
+                                <ul class="list list--actions">
+                                    <li class="list--actions__item">
+                                        <button type="submit" class="action action--save submission__save" aria-describedby="response__save_status__{{ xblock_id }}" disabled>
+                                            {% trans "Save your progress" %}
+                                        </button>
+
+                                        <div id="response__save_status__{{ xblock_id }}" class="save__submission__label response__submission__label">
+                                            <span class="sr">{% trans "Your Submission Status" %}:</span>
+                                            {{ save_status }}
+                                        </div>
+                                    </li>
+                                    {% if allow_latex %}
+                                        <li class="list--actions__item">
+                                            <button type="submit" class="submission__preview  action action--save" aria-describedby="response__preview_explanation__{{ xblock_id }}"
+                                                {{submit_enabled|yesno:",disabled" }}>
+                                                {% trans "Preview in LaTeX"%}
+                                            </button>
+                                            <div id="response__preview_explanation__{{ xblock_id }}" class="response__submission__label">
+                                                {% trans "Click to preview your submission in LaTeX."%}
+                                            </div>
+                                        </li>
+                                        <li class="submission__preview__item list--actions__item">
+                                            <article class="submission__answer__display">
+                                                <h5 class="submission__answer__display__title">{% trans "Preview Response"%}</h5>
+                                                <div class="submission__answer__display__content">
+                                                    <p class="preview_content"></p>
+                                                </div>
+                                            </article>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </li>
+                        {% endif %}
                         {% if file_upload_type %}
                         <li class="field">
                             <div class="upload__error">
                                 <div class="message message--inline message--error message--error-server" tabindex="-1">
-                                    <h5 class="message__title">{% trans "We could not upload this file" %}</h5>
+                                    <h5 class="message__title">{% trans "We could not upload files" %}</h5>
                                     <div class="message__content"></div>
                                 </div>
                             </div>
                             <label class="sr" for="submission_answer_upload_{{ xblock_id }}">{% trans "Select a file to upload for this submission." %}</label>
-                            <input type="file" class="submission__answer__upload file--upload" id="submission_answer_upload_{{ xblock_id }}">
-                            <button type="submit" class="file__upload action action--upload" disabled>{% trans "Upload your file" %}</button>
+                            <input type="file" class="submission__answer__upload file--upload" id="submission_answer_upload_{{ xblock_id }}" multiple="">
+                            <button type="submit" class="file__upload action action--upload" disabled>{% trans "Upload files" %}</button>
+                            <div class="files__descriptions"></div>
                         </li>
                         {% endif %}
-
-                        {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=file_url class_prefix="submission__answer"%}
+                        <li class="field">
+                        {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_urls=file_urls class_prefix="submission__answer" including_template="response" xblock_id=xblock_id %}
+                        </li>
                     </ol>
 
                     <span class="tip" id="submission__answer__tip__{{ xblock_id }}">{% trans "You may continue to work on your response until you submit it." %}</span>
 
-                    <div class="response__submission__actions">
-                        <div class="message message--inline message--error message--error-server" tabindex="-1">
-                            <h5 class="message__title">{% trans "We could not save your progress" %}</h5>
-                            <div class="message__content"></div>
-                        </div>
-
-                        <ul class="list list--actions">
-                            <li class="list--actions__item">
-                                <button type="submit" class="action action--save submission__save" aria-describedby="response__save_status__{{ xblock_id }}" disabled>
-                                    {% trans "Save your progress" %}
-                                </button>
-
-                                <div id="response__save_status__{{ xblock_id }}" class="save__submission__label response__submission__label">
-                                    <span class="sr">{% trans "Your Submission Status" %}:</span>
-                                    {{ save_status }}
-                                </div>
-                            </li>
-                            {% if allow_latex %}
-                                <li class="list--actions__item">
-                                    <button type="submit" class="submission__preview  action action--save" aria-describedby="response__preview_explanation__{{ xblock_id }}"
-                                        {{submit_enabled|yesno:",disabled" }}>
-                                        {% trans "Preview in LaTeX"%}
-                                    </button>
-                                    <div id="response__preview_explanation__{{ xblock_id }}" class="response__submission__label">
-                                        {% trans "Click to preview your submission in LaTeX."%}
-                                    </div>
-                                </li>
-                                <li class="submission__preview__item list--actions__item">
-                                    <article class="submission__answer__display">
-                                        <h5 class="submission__answer__display__title">{% trans "Preview Response"%}</h5>
-                                        <div class="submission__answer__display__content">
-                                            <p class="preview_content"></p>
-                                        </div>
-                                    </article>
-                                </li>
-                            {% endif %}
-                        </ul>
-                    </div>
                 </form>
             </div>
 
@@ -160,6 +171,8 @@
                 <ul class="list list--actions">
                     <li class="list--actions__item">
                         <button type="submit" class="action action--submit step--response__submit"
+                                text_response="{{text_response}}"
+                                file_upload_response="{{file_upload_response}}"
                                 {{submit_enabled|yesno:",disabled" }}>
                             {% trans "Submit your response and move to the next step" %}
                         </button>

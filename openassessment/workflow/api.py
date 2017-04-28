@@ -408,7 +408,8 @@ def get_assessment_workflow_cancellation(submission_uuid):
         workflow_cancellation = AssessmentWorkflowCancellation.get_latest_workflow_cancellation(submission_uuid)
         return AssessmentWorkflowCancellationSerializer(workflow_cancellation).data if workflow_cancellation else None
     except DatabaseError:
-        error_message = u"Error finding assessment workflow cancellation for submission UUID {}.".format(submission_uuid)
+        error_message = u"Error finding assessment workflow cancellation for submission UUID {}."\
+            .format(submission_uuid)
         logger.exception(error_message)
         raise PeerAssessmentInternalError(error_message)
 

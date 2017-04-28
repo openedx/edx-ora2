@@ -158,6 +158,38 @@ class SubmissionPage(OpenAssessmentPage):
         self.wait_for_element_visibility(".submission__answer__upload", "File select button is present")
         self.q(css=".submission__answer__upload").results[0].send_keys(file_path_name)
 
+    def add_file_description(self, file_num, description):
+        """
+        Submit a description for some file.
+
+        Args:
+          file_num (integer): file number
+          description (string): file description
+        """
+        textarea_element = self._bounded_selector("textarea.file__description__%d" % file_num)
+        self.wait_for_element_visibility(textarea_element, "Textarea is present")
+        self.q(css=textarea_element).fill(description)
+
+    @property
+    def upload_file_button_is_enabled(self):
+        """
+        Check if 'Upload files' button is enabled
+
+        Returns:
+            bool
+        """
+        return self.q(css="button.file__upload").attrs('disabled') == ['false']
+
+    @property
+    def upload_file_button_is_disabled(self):
+        """
+        Check if 'Upload files' button is disabled
+
+        Returns:
+            bool
+        """
+        return self.q(css="button.file__upload").attrs('disabled') == ['true']
+
     def upload_file(self):
         """
         Upload the selected file
@@ -196,14 +228,15 @@ class SubmissionPage(OpenAssessmentPage):
         return self.q(css="div.upload__error > div.message--error").visible
 
     @property
-    def has_file_uploaded(self):
+    def have_files_uploaded(self):
         """
-        Check whether file is successfully uploaded
+        Check whether files were successfully uploaded
 
         Returns:
             bool
         """
-        return self.q(css=".submission__custom__upload").visible
+        self.wait_for_element_visibility('.submission__custom__upload', 'Uploaded files block is presented')
+        return self.q(css=".submission__answer__files").visible
 
 
 class AssessmentMixin(object):
