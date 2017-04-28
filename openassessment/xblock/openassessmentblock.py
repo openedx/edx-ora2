@@ -126,7 +126,7 @@ class OpenAssessmentBlock(MessageMixin,
         help="ISO-8601 formatted string representing the submission due date."
     )
 
-    text_response = String(
+    text_response_raw = String(
         help="Specify whether learners must include a text based response to this problem's prompt.",
         default="required",
         scope=Scope.settings
@@ -243,6 +243,24 @@ class OpenAssessmentBlock(MessageMixin,
     @property
     def course_id(self):
         return self._serialize_opaque_key(self.xmodule_runtime.course_id)  # pylint:disable=E1101
+
+    @property
+    def text_response(self):
+        """
+        Backward compatibility for existing blocks that were created without text_response
+        or file_upload_response fields. These blocks will be treated as required text.
+        """
+        if not self.file_upload_response and not self.text_response_raw:
+            return 'required'
+        else:
+            return self.text_response_raw
+
+    @text_response.setter
+    def text_response(self, value):
+        """
+        Setter for text_response_raw
+        """
+        self.text_response_raw = value if value else None
 
     @property
     def file_upload_response(self):

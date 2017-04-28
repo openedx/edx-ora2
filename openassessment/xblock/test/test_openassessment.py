@@ -452,6 +452,13 @@ class TestOpenAssessment(XBlockHandlerTestCase):
         xblock.prompts = [{'description': 'Prompt 4.'}, {'description': 'Prompt 5.'}]
         self.assertEqual(xblock.prompt, '[{"description": "Prompt 4."}, {"description": "Prompt 5."}]')
 
+    @scenario('data/neither_response_type.xml')
+    def test_no_response_type(self, xblock):
+        """
+        Ensure that legacy courses will still load properly.
+        """
+        self.assertEqual(xblock.text_response, 'required')
+
 
 class TestDates(XBlockHandlerTestCase):
 
