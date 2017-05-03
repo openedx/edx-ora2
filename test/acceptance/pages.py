@@ -178,7 +178,7 @@ class SubmissionPage(OpenAssessmentPage):
         Returns:
             bool
         """
-        return self.q(css="button.file__upload").attrs('disabled') == ['false']
+        return self.q(css="button.file__upload")[0].is_enabled()
 
     @property
     def upload_file_button_is_disabled(self):
