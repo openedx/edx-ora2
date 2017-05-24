@@ -49,7 +49,7 @@ describe("OpenAssessment.CourseItemsListingView", function() {
                 "training": 0,
                 "self": 0,
                 "peer": 1,
-                "waiting": 0,
+                "waiting": 1,  // will remain 'waiting'
                 "ai": 0,
                 "done": 0,
                 "cancelled": 0,
@@ -68,7 +68,7 @@ describe("OpenAssessment.CourseItemsListingView", function() {
                 "training": 3,
                 "self": 0,
                 "peer": 0,
-                "waiting": 5,
+                "waiting": 5,  //will be translated to 'staff'
                 "ai": 0,
                 "done": 0,
                 "cancelled": 0,
@@ -144,12 +144,12 @@ describe("OpenAssessment.CourseItemsListingView", function() {
         expect(section.find('.open-response-assessment-msg').is(':visible')).toBe(false);
         expect(section.find('.open-response-assessment-content').is(':visible')).toBe(true);
 
-        var expectedArr = [3, 3, 12, 3, 2, 0, 5, 2];
+        var expectedArr = [3, 3, 13, 3, 2, 0, 1, 5, 2];
         var summaryRowValuesArr = [];
         section.find('.open-response-assessment-summary td div.ora-summary-value').each(function(i, val) {
             summaryRowValuesArr.push(parseInt($(val).text()));
         });
-        expect(_.isEqual(summaryRowValuesArr, expectedArr)).toBe(true);
+        expect(summaryRowValuesArr).toEqual(expectedArr);
 
         var rows = $('.open-response-assessment-main-table tbody tr');
         expect(rows.length).toBe(3);
@@ -166,13 +166,13 @@ describe("OpenAssessment.CourseItemsListingView", function() {
 
         var expectedTds = [
             ["Vertical 1", '<a title="Test ORA 1">Test ORA 1</a>',
-                '1', '0', '1', '0', '0', '0'],
+                '2', '0', '1', '0', '1', '0', '0'],
             ["Vertical 2", '<a title="Test ORA 2">Test ORA 2</a>',
-                '8', '3', '0', '0', '<a title="5">5</a>', '0'],
+                '8', '3', '0', '0', '0', '<a title="5">5</a>', '0'],
             ["Vertical 3", '<a title="Test ORA 3">Test ORA 3</a>',
-                '3', '0', '1', '0', '0', '2']
+                '3', '0', '1', '0', '0', '0', '2']
         ];
-        expect(_.isEqual(tds, expectedTds)).toBe(true);
+        expect(tds).toEqual(expectedTds);
     });
 
     it('shows error on failure callback', function() {
