@@ -298,7 +298,7 @@ class SubmissionMixin(object):
         if self.file_upload_type == 'pdf-and-image' and content_type not in self.ALLOWED_FILE_MIME_TYPES:
             return {'success': False, 'msg': self._(u"Content type must be PDF, GIF, PNG or JPG.")}
 
-        if self.file_upload_type == 'custom' and file_ext not in self.white_listed_file_types:
+        if self.file_upload_type == 'custom' and file_ext.lower() not in self.white_listed_file_types:
             return {'success': False, 'msg': self._(u"File type must be one of the following types: {}").format(
                 ', '.join(self.white_listed_file_types))}
 
