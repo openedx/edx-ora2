@@ -221,6 +221,29 @@ class SubmissionTest(XBlockHandlerTestCase):
         self.assertTrue(resp['success'])
         self.assertEqual(u'', resp['url'])
 
+    @mock_s3
+    @override_settings(
+        AWS_ACCESS_KEY_ID='foobar',
+        AWS_SECRET_ACCESS_KEY='bizbaz',
+        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
+    )
+    @scenario('data/custom_file_upload.xml')
+    def test_upload_files_with_uppercase_ext(self, xblock):
+        """
+        Tests that files with upper case extention uploaded successfully
+        """
+        xblock.xmodule_runtime = Mock(
+            course_id='test_course',
+            anonymous_student_id='test_student',
+        )
+        resp = self.request(xblock, 'upload_url', json.dumps({'contentType': 'filename',
+                                                              'filename': 'test.PDF'}), response_format='json')
+        self.assertTrue(resp['success'])
+        self.assertTrue(resp['url'].startswith(
+            'https://mybucket.s3.amazonaws.com/submissions_attachments/test_student/test_course/' +
+            xblock.scope_ids.usage_id
+        ))
+
 
 class SubmissionRenderTest(XBlockHandlerTestCase):
     """

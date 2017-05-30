@@ -1,0 +1,20 @@
+<openassessment file_upload_type="custom" white_listed_file_types="pdf" submission_due="2035-03-11T18:20">
+    <title>
+        Global Poverty
+    </title>
+    <rubric>
+        <prompt>
+            Given the state of the world today, what do you think should be done to combat poverty?
+
+            Read for conciseness, clarity of thought, and form.
+        </prompt>
+    </rubric>
+    <assessments>
+        <assessment name="peer-assessment"
+                    start="2014-03-11T10:00-18:10"
+                    due="2035-12-21T22:22-7:00"
+                    must_grade="1"
+                    must_be_graded_by="1" />
+        <assessment name="self-assessment" />
+    </assessments>
+</openassessment>
