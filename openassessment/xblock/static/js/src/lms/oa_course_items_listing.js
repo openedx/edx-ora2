@@ -69,7 +69,11 @@
                 cell: "string", num: true, editable: false
             },
             {
-                name: 'waiting', label: gettext("Staff"), label_summary: gettext("Staff"),
+                name: 'waiting', label: gettext("Waiting"), label_summary: gettext("Waiting"),
+                cell: "string", num: true, editable: false
+            },
+            {
+                name: 'staff', label: gettext("Staff"), label_summary: gettext("Staff"),
                 cell: StaffCell, num: true, editable: false
             },
             {
@@ -116,25 +120,29 @@
         var self = this;
         var $section = this.$section;
         var block = $section.find('.open-response-assessment-block');
-        var oraSteps = ['training', 'peer', 'self', 'waiting', 'done'];
+        var oraSteps = ['training', 'peer', 'self', 'waiting', 'staff', 'done'];
 
         $.each(self.oraData, function(i, oraItem) {
             var total = 0;
             var itemId = oraItem.id;
 
             $.each(oraSteps, function(j, step) {
-                self.oraData[i][step] = 0;
+                oraItem[step] = 0;
             });
 
             if (itemId in data) {
-                _.extend(self.oraData[i], data[itemId]);
+                _.extend(oraItem, data[itemId]);
+                if (oraItem.staff_assessment) {
+                    oraItem.staff = oraItem.waiting;
+                    oraItem.waiting = 0;
+                }
             }
 
             $.each(oraSteps, function(j, step) {
-                total += self.oraData[i][step];
+                total += oraItem[step];
             });
 
-            self.oraData[i].total = total;
+            oraItem.total = total;
         });
 
         block.data('rendered', 1);
@@ -151,27 +159,21 @@
         $section.find(".open-response-assessment-summary").empty();
 
         $.each(this._columns, function(index, v) {
-            var realName = v.name === 'waiting' ? 'staff' : v.name;
             summaryData.push({
                 title: v.label_summary,
                 value: 0,
                 num: v.num,
-                class: realName
+                class: v.name
             });
-            summaryDataMap[realName] = index;
+            summaryDataMap[v.name] = index;
 
         });
 
         $.each(data, function(index, obj) {
-            var staffGradeRequired = obj.staff_assessment;
             $.each(obj, function(key, value) {
                 var idx = 0;
-                var realKey = key;
-                if (key === 'waiting' && staffGradeRequired) {
-                    realKey = 'staff';
-                }
-                if (realKey in summaryDataMap) {
-                    idx = summaryDataMap[realKey];
+                if (key in summaryDataMap) {
+                    idx = summaryDataMap[key];
                     if (summaryData[idx].num) {
                         summaryData[idx].value += value;
                     } else {

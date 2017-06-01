@@ -56,6 +56,11 @@
     }
   }
 
+  %truncated-digits {
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
   .ora-summary-title {
     color: #0079bc;
     font-weight: bold;
@@ -64,22 +69,21 @@
   }
 
   .ora-summary-value {
-    font-size: 2.2em;
+    @extend %truncated-digits;
+    font-size: 1.5em;
     padding-top: 3px;
   }
 
   .backgrid {
-    .peer, .self, .staff, .waiting {
-      width: 65px;
-    }
-    .training {
-      width: 90px;
+    @extend %truncated-digits;
+    .peer, .self, .staff, .waiting, .training {
+      width: 80px;
     }
     .total {
-      width: 150px;
+      width: 130px;
     }
     .done {
-      width: 190px;
+      width: 160px;
     }
   }
 }
