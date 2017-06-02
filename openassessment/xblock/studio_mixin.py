@@ -181,14 +181,14 @@ class StudioMixin(object):
             logger.exception('Editor context is invalid')
             return {'success': False, 'msg': self._('Error updating XBlock configuration')}
 
-        # Check that the editor assessment order contains all the assessments.  We are more flexible on example-based.
-        given_without_example_based = set(data['editor_assessments_order']) - {'example-based-assessment'}
-        if set(DEFAULT_EDITOR_ASSESSMENTS_ORDER) != given_without_example_based:
+        # Check that the editor assessment order contains all the assessments.
+        given = set(data['editor_assessments_order'])
+        if set(DEFAULT_EDITOR_ASSESSMENTS_ORDER) != given:
             # Backwards compatibility: "staff-assessment" may not be present.
             # If that is the only problem with this data, just add it manually and continue.
             if set(DEFAULT_EDITOR_ASSESSMENTS_ORDER) == (
                 # Check the given set, minus example-based, plus staff
-                given_without_example_based | {'staff-assessment'}
+                given | {'staff-assessment'}
             ):
                 data['editor_assessments_order'].append('staff-assessment')
                 logger.info('Backwards compatibility: editor_assessments_order now contains staff-assessment')
@@ -378,13 +378,7 @@ class StudioMixin(object):
         # Start with the default order, to pick up any assessment types that have been added
         # since the user last saved their ordering.
         effective_order = copy.deepcopy(DEFAULT_EDITOR_ASSESSMENTS_ORDER)
-
-        # If the problem already contains example-based assessment
-        # then allow the editor to display example-based assessments,
-        # which is not included in the default
         enabled_assessments = [asmnt['name'] for asmnt in self.valid_assessments]
-        if 'example-based-assessment' in enabled_assessments:
-            effective_order.insert(0, 'example-based-assessment')
 
         # Account for changes the user has made to the default order
         user_order = copy.deepcopy(self.editor_assessments_order)
