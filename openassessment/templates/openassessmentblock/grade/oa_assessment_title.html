@@ -1,0 +1,33 @@
+{% load i18n %}
+{% spaceless %}
+    {% if assessment %}
+      <div class="answer__source">
+          {% if assessment.points != None %}
+              <span class="answer__source__value answer__source__value-with-points">
+                  {% blocktrans with assessment_title=assessment.title count points=assessment.points %}
+                      {{ assessment_title }} - {{ points }} point
+                  {% plural %}
+                      {{ assessment_title }} - {{ points }} points
+                  {% endblocktrans %}
+              </span>
+          {% else %}
+              <span class="answer__source__value">{{ assessment.title }}</span>
+          {% endif %}
+      </div>
+      <div class="answer__value">
+          <span class="answer__value__value">
+              {{ assessment.option.label }}
+
+              {% if assessment.option.explanation %}
+                  <span class="ui-hint hint--top" data-hint="{{ assessment.option.explanation }}">
+                      <span class="icon fa fa-info-circle" aria-hidden="true"
+                         title="{% blocktrans with name=assessment.option.label %}More information about {{ name }}{% endblocktrans %}">
+                      </span>
+                  </span>
+              {% endif %}
+
+          </span>
+      </div>
+    {% endif %}
+
+{% endspaceless %}

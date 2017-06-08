@@ -3,6 +3,7 @@
   "version": "0.2.0",
   "repository": "https://github.com/edx/edx-ora2.git",
   "devDependencies": {
+    "underscore": "^1.8.2",
     "karma": "^0.12.16",
     "karma-coverage": "^0.2.6",
     "karma-jasmine": "^0.3.6",
@@ -15,7 +16,7 @@
     "jasmine": "^2.3.0",
     "phantomjs": "^1.9.11",
     "sinon": "^1.10.3",
-    "uglify-js": "2.3.6",
+    "uglify-js": "^2.6.3",
     "jshint": "2.8.0",
     "jscs": "2.6.0"
   },

@@ -1,28 +1,24 @@
 {% load i18n %}
 {% spaceless %}
-<li id="openassessment__grade" class="openassessment__steps__step step--grade">
-    <header class="step__header ui-toggle-visibility__control">
-        <h2 class="step__title">
-            <span class="wrapper--copy">
-                <span class="step__label">{% trans "Your Grade" %}:</span>
-                <span class="grade__value">
-                    <span class="grade__value__title">{% trans "Waiting for Assessments" %}</span>
+<li id="openassessment__grade__{{ xblock_id }}" class="openassessment__steps__step step--grade is--showing {{ is_waiting_staff }} ui-slidable__container" tabindex="-1">
+    <header class="step__header ui-slidable__control">
+        <h4 class="step__title">
+            <button class="ui-slidable" aria-expanded="true" id="oa_grade_{{ xblock_id }}" aria-controls="oa_grade_{{ xblock_id }}_content">
+                <span class="wrapper--copy">
+                    <span class="step__label">{% trans "Your Grade" %}:</span>
+                    <span class="grade__value">
+                        <span class="grade__value__title">{% trans "Waiting for Assessments" %}</span>
+                    </span>
                 </span>
-            </span>
-        </h2>
+            </button>
+        </h4>
     </header>
 
-    <div class="ui-toggle-visibility__content">
+    <div class="ui-slidable__content" aria-labelledby="oa_grade_{{ xblock_id }}" id="oa_grade_{{ xblock_id }}_content">
         <div class="wrapper--step__content">
             <div class="step__content">
                 <div class="grade__value__description">
-                    {% if waiting == 'peer' %}
-                        <p>{% trans "Your response is still undergoing peer assessment. After your peers have assessed your response, you'll see their comments and receive your final grade." %}</p>
-                    {% elif waiting == 'example-based' %}
-                        <p>{% trans "Your response is still undergoing example-based assessment. After your response has been assessed, you'll see the comments and receive your final grade." %}</p>
-                    {% elif waiting == 'all' %}
-                        <p>{% trans "Your response is still undergoing peer assessment and example-based assessment. After your peers have assessed your response and example-based assessment is complete, you'll see your peers' comments and receive your final grade." %}</p>
-                    {% endif %}
+                    <p>{% trans "You have completed your steps in the assignment, but some assessments still need to be done on your response. When the assessments of your response are complete, you will see feedback from everyone who assessed your response, and you will receive your final grade." %}</p>
                 </div>
             </div>
         </div>

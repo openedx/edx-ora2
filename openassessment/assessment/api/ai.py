@@ -24,14 +24,14 @@ from openassessment.assessment.worker import grading as grading_tasks
 logger = logging.getLogger(__name__)
 
 
-def submitter_is_finished(submission_uuid, requirements):
+def submitter_is_finished(submission_uuid, ai_requirements):
     """
     Determine if the submitter has finished their requirements for Example
     Based Assessment. Always returns True.
 
     Args:
         submission_uuid (str): Not used.
-        requirements (dict): Not used.
+        ai_requirements (dict): Not used.
 
     Returns:
         True
@@ -40,14 +40,14 @@ def submitter_is_finished(submission_uuid, requirements):
     return True
 
 
-def assessment_is_finished(submission_uuid, requirements):
+def assessment_is_finished(submission_uuid, ai_requirements):
     """
     Determine if the assessment of the given submission is completed. This
     checks to see if the AI has completed the assessment.
 
     Args:
         submission_uuid (str): The UUID of the submission being graded.
-        requirements (dict): Not used.
+        ai_requirements (dict): Not used.
 
     Returns:
         True if the assessment has been completed for this submission.
@@ -56,7 +56,7 @@ def assessment_is_finished(submission_uuid, requirements):
     return bool(get_latest_assessment(submission_uuid))
 
 
-def get_score(submission_uuid, requirements):
+def get_score(submission_uuid, ai_requirements):
     """
     Generate a score based on a completed assessment for the given submission.
     If no assessment has been completed for this submission, this will return
@@ -64,10 +64,11 @@ def get_score(submission_uuid, requirements):
 
     Args:
         submission_uuid (str): The UUID for the submission to get a score for.
-        requirements (dict): Not used.
+        ai_requirements (dict): Not used.
 
     Returns:
-        A dictionary with the points earned and points possible.
+        A dictionary with the points earned, points possible, and
+        contributing_assessments information, along with a None staff_id.
 
     """
     assessment = get_latest_assessment(submission_uuid)
@@ -76,7 +77,9 @@ def get_score(submission_uuid, requirements):
 
     return {
         "points_earned": assessment["points_earned"],
-        "points_possible": assessment["points_possible"]
+        "points_possible": assessment["points_possible"],
+        "contributing_assessments": [assessment["id"]],
+        "staff_id": None,
     }
 
 

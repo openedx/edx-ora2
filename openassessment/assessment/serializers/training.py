@@ -181,9 +181,10 @@ def deserialize_training_examples(examples, rubric_dict):
                 example = TrainingExample.objects.get(content_hash=content_hash)
             except TrainingExample.DoesNotExist:
                 try:
-                    example = TrainingExample.create_example(
-                        example_dict['answer'], example_dict['options_selected'], rubric
-                    )
+                    with transaction.atomic():
+                        example = TrainingExample.create_example(
+                            example_dict['answer'], example_dict['options_selected'], rubric
+                        )
                 except IntegrityError:
                     example = TrainingExample.objects.get(content_hash=content_hash)
 

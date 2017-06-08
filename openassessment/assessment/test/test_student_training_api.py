@@ -103,7 +103,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
         # This will need to create the student training workflow and the first item
         # NOTE: we *could* cache the rubric model to reduce the number of queries here,
         # but we're selecting it by content hash, which is indexed and should be plenty fast.
-        with self.assertNumQueries(6):
+        with self.assertNumQueries(8):
             training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
 
         # Without assessing the first training example, try to retrieve a training example.
@@ -117,7 +117,7 @@ class StudentTrainingAssessmentTest(CacheResetTest):
 
         # Retrieve the next training example, which requires us to create
         # a new workflow item (but not a new workflow).
-        with self.assertNumQueries(6):
+        with self.assertNumQueries(8):
             training_api.get_training_example(self.submission_uuid, RUBRIC, EXAMPLES)
 
     def test_submitter_is_finished_num_queries(self):

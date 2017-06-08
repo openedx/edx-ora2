@@ -3,6 +3,11 @@
 
 // NOTES: use for any bad-form/orphaned scss that knowingly violate edX FED architecture/standards (see - http://csswizardry.com/2013/04/shame-css)
 
+.wrapper--xblock .openassessment h3.staff__grade__title {
+  font-size: inherit;
+  margin-bottom: 5px;
+}
+
 .openassessment {
 
   // --------------------
@@ -11,11 +16,12 @@
   // rules to overcome any poorly defined, scoped, or architected edX LMS-based CSS. Ideally this file will be removed when the LMS Front End is re-visited.
 
   // headers
-  .self-assessment__display__header, .peer-assessment__display__header, .step__header {
+  .self-assessment__display__header, .peer-assessment__display__header, .step__header,
+  .staff-assessment__display__header, .submission__answer__display__header, .student-training__display__header {
     margin-bottom: 0 !important;
     border-radius: 0 !important;
-    padding-bottom: 0 !important;
-    font-size: inherit !important;
+    padding-bottom: 2px !important;
+    font-size: initial !important;
     border-bottom: none !important;
   }
 
@@ -32,11 +38,11 @@
   .openassessment__steps .openassessment__steps__step .step__header {
 
     .step__deadline {
-      color: $heading-secondary-color;
+      color: $heading-color;
     }
 
     // step title/name
-    h2.step__title {
+    .step__title {
       @include text-align(left);
       @include float(none);
       margin-top: 0 !important;
@@ -61,7 +67,7 @@
           @extend %t-strong;
           content: counter(item, decimal);
           counter-increment: item;
-          color: $color-decorative-tertiary;
+          color: $copy-color;
         }
       }
     }
@@ -71,7 +77,16 @@
     line-height: 0;
   }
 
-
+  // submission answer leaderboard fix (TNL-4009). 4 class selectors is more specific than
+  // lms/static/sass/course/courseware/_courseware.scss#L453 in edx-platform (3 class selectors)
+  .leaderboard__answer .submission__answer__display__content {
+    .submission__answer__part__text__title {
+      @include text-align(left);
+      @include float(none);
+      font-size: inherit;
+      margin: 0;
+    }
+  }
 
   .list--actions {
     list-style: none !important;
@@ -95,18 +110,6 @@
     color: inherit;
   }
 
-  .ui-toggle-visibility .ui-toggle-visibility__control, .ui-toggle-visibility .ui-toggle-visibility__control .step__label {
-    color: $action-primary-color;
-
-    &:hover, &:focus {
-      color: $action-primary-color-focus;
-    }
-
-    &:active, &.is--current {
-      color: $action-primary-color-active;
-    }
-  }
-
   // peer assessment
   .step--peer-assessment .list--peer-assessments {
     list-style: none outside none !important;
@@ -117,7 +120,7 @@
 
   .self-assessment__display__title, .peer-assessment__display__title {
     margin-bottom: ($baseline-v/2) !important;
-    color: $heading-secondary-color !important;
+    color: $heading-color !important;
   }
 
   // shown submission/results
@@ -126,7 +129,7 @@
   }
 
   // submission/results collapse and expand targets
-  .question__title.ui-toggle-visibility__control {
+  .question__title.ui-slidable {
 
     .question__title__copy  {
       color: inherit !important;
@@ -136,14 +139,10 @@
 
   .step--grade .step__title {
     width: 100% !important;
-
-    .wrapper--copy {
-      display: block !important;
-    }
   }
 
   // actions
-  .action--submit, .action--save {
+  .action--submit, .action--save, .action--upload {
     text-shadow: none !important;
     box-shadow: none !important;
   }
@@ -189,11 +188,10 @@
     }
   }
 
-  .ui-staff__title {
-    color: $copy-staff-color !important;
-  }
-
-  .openassessment__staff-info__cancel__submission {
-    margin-bottom: ($baseline-v) !important;
+  .wrapper--staff-assessment {
+    // 'p' elements in LMS have a color set on them.
+    .student__answer__display__content p {
+      color: inherit;
+    }
   }
 }

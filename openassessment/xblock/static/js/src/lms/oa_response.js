@@ -38,18 +38,24 @@ OpenAssessment.ResponseView.prototype = {
     // Maximum file size (5 MB) for an attached file.
     MAX_FILE_SIZE: 5242880,
 
+    UNSAVED_WARNING_KEY: "learner-response",
+
     /**
      Load the response (submission) view.
      **/
-    load: function() {
+    load: function(usageID) {
         var view = this;
+        var stepID = '.step--response';
         this.server.render('submission').done(
             function(html) {
                 // Load the HTML and install event handlers
-                $('#openassessment__response', view.element).replaceWith(html);
-                view.server.renderLatex($('#openassessment__response', view.element));
+                $(stepID, view.element).replaceWith(html);
+                view.server.renderLatex($(stepID, view.element));
                 view.installHandlers();
                 view.setAutoSaveEnabled(true);
+                if (typeof usageID !== 'undefined' && $(stepID, view.element).hasClass("is--showing")) {
+                    $("[id='oa_response_" + usageID + "']", view.element).focus();
+                }
             }
         ).fail(function() {
             view.baseView.showLoadError('response');
@@ -60,13 +66,12 @@ OpenAssessment.ResponseView.prototype = {
      Install event handlers for the view.
      **/
     installHandlers: function() {
-        var sel = $('#openassessment__response', this.element);
+        var sel = $('.step--response', this.element);
         var view = this;
         var uploadType = '';
         if (sel.find('.submission__answer__display__file').length) {
             uploadType = sel.find('.submission__answer__display__file').data('upload-type');
         }
-
         // Install a click handler for collapse/expand
         this.baseView.setUpCollapseExpand(sel);
 
@@ -78,10 +83,10 @@ OpenAssessment.ResponseView.prototype = {
         var handlePrepareUpload = function(eventData) { view.prepareUpload(eventData.target.files, uploadType); };
         sel.find('input[type=file]').on('change', handlePrepareUpload);
         // keep the preview as display none at first
-        sel.find('#submission__preview__item').hide();
+        sel.find('.submission__preview__item').hide();
 
         // Install a click handler for submission
-        sel.find('#step--response__submit').click(
+        sel.find('.step--response__submit').click(
             function(eventObject) {
                 // Override default form submission
                 eventObject.preventDefault();
@@ -90,7 +95,7 @@ OpenAssessment.ResponseView.prototype = {
         );
 
         // Install a click handler for the save button
-        sel.find('#submission__save').click(
+        sel.find('.submission__save').click(
             function(eventObject) {
                 // Override default form submission
                 eventObject.preventDefault();
@@ -99,22 +104,22 @@ OpenAssessment.ResponseView.prototype = {
         );
 
         // Install click handler for the preview button
-        sel.find('#submission__preview').click(
+        sel.find('.submission__preview').click(
             function(eventObject) {
                 eventObject.preventDefault();
                 // extract typed-in response and replace newline with br
                 var previewText = sel.find('.submission__answer__part__text__value').val();
-                var previewContainer = sel.find('#preview_content');
+                var previewContainer = sel.find('.preview_content');
                 previewContainer.html(previewText.replace(/\r\n|\r|\n/g,"<br />"));
 
                 // Render in mathjax
-                sel.find('#submission__preview__item').show();
+                sel.find('.submission__preview__item').show();
                 MathJax.Hub.Queue(['Typeset', MathJax.Hub, previewContainer[0]]);
             }
         );
 
         // Install a click handler for the save button
-        sel.find('#file__upload').click(
+        sel.find('.file__upload').click(
             function(eventObject) {
                 // Override default form submission
                 eventObject.preventDefault();
@@ -163,12 +168,7 @@ OpenAssessment.ResponseView.prototype = {
      >> true
      **/
     submitEnabled: function(enabled) {
-        var sel = $('#step--response__submit', this.element);
-        if (typeof enabled === 'undefined') {
-            return !sel.hasClass('is--disabled');
-        } else {
-            sel.toggleClass('is--disabled', !enabled);
-        }
+        return this.baseView.buttonEnabled('.step--response__submit', enabled);
     },
 
     /**
@@ -190,12 +190,7 @@ OpenAssessment.ResponseView.prototype = {
      >> true
      **/
     saveEnabled: function(enabled) {
-        var sel = $('#submission__save', this.element);
-        if (typeof enabled === 'undefined') {
-            return !sel.hasClass('is--disabled');
-        } else {
-            sel.toggleClass('is--disabled', !enabled);
-        }
+        return this.baseView.buttonEnabled('.submission__save', enabled);
     },
 
     /**
@@ -204,13 +199,9 @@ OpenAssessment.ResponseView.prototype = {
      Works exactly the same way as saveEnabled method.
      **/
     previewEnabled: function(enabled) {
-        var sel = $('#submission__preview', this.element);
-        if (typeof enabled === 'undefined') {
-            return !sel.hasClass('is--disabled');
-        } else {
-            sel.toggleClass('is--disabled', !enabled);
-        }
+        return this.baseView.buttonEnabled('.submission__preview', enabled);
     },
+
     /**
      Set the save status message.
      Retrieve the save status message.
@@ -222,45 +213,14 @@ OpenAssessment.ResponseView.prototype = {
      string: The current status message.
      **/
     saveStatus: function(msg) {
-        var sel = $('#response__save_status h3', this.element);
+        var sel = $('.save__submission__label', this.element);
         if (typeof msg === 'undefined') {
             return sel.text();
         } else {
             // Setting the HTML will overwrite the screen reader tag,
             // so prepend it to the message.
             var label = gettext("Status of Your Response");
-            sel.html('<span class="sr">' + label + ':' + '</span>\n' + msg);
-        }
-    },
-
-    /**
-     Enable/disable the "navigate away" warning to alert the user of unsaved changes.
-
-     Args:
-     enabled (bool): If specified, set whether the warning is enabled.
-
-     Returns:
-     bool: Whether the warning is enabled.
-
-     Examples:
-     >> view.unsavedWarningEnabled(true); // enable the "unsaved" warning
-     >> view.unsavedWarningEnabled();
-     >> true
-     **/
-    unsavedWarningEnabled: function(enabled) {
-        if (typeof enabled === 'undefined') {
-            return (window.onbeforeunload !== null);
-        }
-        else {
-            if (enabled) {
-                window.onbeforeunload = function() {
-                    // Keep this on one big line to avoid gettext bug: http://stackoverflow.com/a/24579117
-                    return gettext("If you leave this page without saving or submitting your response, you'll lose any work you've done on the response.");  // jscs:ignore maximumLineLength
-                };
-            }
-            else {
-                window.onbeforeunload = null;
-            }
+            sel.html('<span class="sr">' + _.escape(label) + ':' + '</span>\n' + msg);
         }
     },
 
@@ -275,7 +235,7 @@ OpenAssessment.ResponseView.prototype = {
      array of strings: The current response texts.
      **/
     response: function(texts) {
-        var sel = $('.submission__answer__part__text__value', this.element);
+        var sel = $('.response__submission .submission__answer__part__text__value', this.element);
         if (typeof texts === 'undefined') {
             return sel.map(function() {
                 return $.trim($(this).val());
@@ -338,7 +298,11 @@ OpenAssessment.ResponseView.prototype = {
             this.saveEnabled(isNotBlank);
             this.previewEnabled(isNotBlank);
             this.saveStatus(gettext('This response has not been saved.'));
-            this.unsavedWarningEnabled(true);
+            this.baseView.unsavedWarningEnabled(
+                true,
+                this.UNSAVED_WARNING_KEY,
+                gettext("If you leave this page without saving or submitting your response, you will lose any work you have done on the response.") // jscs:ignore maximumLineLength
+            );
         }
 
         // Record the current time (used for autosave)
@@ -359,7 +323,7 @@ OpenAssessment.ResponseView.prototype = {
         this.baseView.toggleActionError('save', null);
 
         // Disable the "unsaved changes" warning
-        this.unsavedWarningEnabled(false);
+        this.baseView.unsavedWarningEnabled(false, this.UNSAVED_WARNING_KEY);
 
         var view = this;
         var savedResponse = this.response();
@@ -457,12 +421,14 @@ OpenAssessment.ResponseView.prototype = {
      Transition the user to the next step in the workflow.
      **/
     moveToNextStep: function() {
-        this.load();
-        this.baseView.loadAssessmentModules();
+        var baseView = this.baseView;
+        var usageID = baseView.getUsageID();
+        this.load(usageID);
+        baseView.loadAssessmentModules(usageID);
 
         // Disable the "unsaved changes" warning if the user
         // tries to navigate to another page.
-        this.unsavedWarningEnabled(false);
+        baseView.unsavedWarningEnabled(false, this.UNSAVED_WARNING_KEY);
     },
 
     /**
@@ -530,7 +496,7 @@ OpenAssessment.ResponseView.prototype = {
             this.baseView.toggleActionError('upload', null);
             this.files = files;
         }
-        $("#file__upload").toggleClass("is--disabled", this.files === null);
+        $(".file__upload").prop('disabled', this.files === null);
     },
 
     /**
@@ -541,12 +507,12 @@ OpenAssessment.ResponseView.prototype = {
      **/
     fileUpload: function() {
         var view = this;
-        var fileUpload = $("#file__upload");
-        fileUpload.addClass("is--disabled");
+        var fileUpload = $(".file__upload");
+        fileUpload.prop('disabled', true);
 
         var handleError = function(errMsg) {
             view.baseView.toggleActionError('upload', errMsg);
-            fileUpload.removeClass("is--disabled");
+            fileUpload.prop('disabled', false);
         };
 
         // Call getUploadUrl to get the one-time upload URL for this file. Once
@@ -572,7 +538,7 @@ OpenAssessment.ResponseView.prototype = {
      **/
     fileUrl: function() {
         var view = this;
-        var file = $('#submission__answer__file', view.element);
+        var file = $('.submission__answer__file', view.element);
         view.server.getDownloadUrl().done(function(url) {
             if (file.prop("tagName") === "IMG") {
                 file.attr('src', url);

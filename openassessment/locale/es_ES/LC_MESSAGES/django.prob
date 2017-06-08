@@ -1,0 +1,7 @@
+Different tags in source and translation
+  msgid: This step's start date '{start}' cannot be earlier than the previous
+         step's start date '{prev}'.
+  -----> La fecha de comienzo de esta etapa '{date}' no pude ser anterior de la
+         fecha de comienzo de la etapa previa '{prev}'.
+  -----> "{start}" vs "{date}"
+

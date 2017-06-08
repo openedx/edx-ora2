@@ -79,3 +79,13 @@ class AutoAuthPage(PageObject):
         message = self.q(css='BODY').text[0].strip()
         match = re.search(r' user_id ([^$]+)$', message)
         return match.groups()[0] if match else None
+
+    def get_username_and_email(self):
+        """
+        Finds and returns the username and email address of the current user.
+        """
+        message = self.q(css='BODY').text[0].strip()
+        match = re.search(r'Logged in user (\S+) \(.*\) with password (\S+)', message)
+        if not match:
+            return None
+        return match.group(1), match.group(2)

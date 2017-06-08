@@ -18,17 +18,23 @@ OpenAssessment.PeerView = function(element, server, baseView) {
 
 OpenAssessment.PeerView.prototype = {
 
+    UNSAVED_WARNING_KEY: "peer-assessment",
+
     /**
     Load the peer assessment view.
     **/
-    load: function() {
+    load: function(usageID) {
         var view = this;
+        var stepID = ".step--peer-assessment";
         this.server.render('peer_assessment').done(
             function(html) {
                 // Load the HTML and install event handlers
-                $('#openassessment__peer-assessment', view.element).replaceWith(html);
-                view.server.renderLatex($('#openassessment__peer-assessment', view.element));
+                $(stepID, view.element).replaceWith(html);
+                view.server.renderLatex($(stepID, view.element));
                 view.installHandlers(false);
+                if (typeof usageID !== 'undefined' && $(stepID, view.element).hasClass("is--showing")) {
+                    $("[id='oa_peer_" + usageID + "']", view.element).focus();
+                }
             }
         ).fail(function() {
             view.baseView.showLoadError('peer-assessment');
@@ -44,15 +50,18 @@ OpenAssessment.PeerView.prototype = {
     can use to continue assessing peers after they've completed
     their peer assessment requirements.
     **/
-    loadContinuedAssessment: function() {
+    loadContinuedAssessment: function(usageID) {
         var view = this;
         view.continueAssessmentEnabled(false);
         this.server.renderContinuedPeer().done(
             function(html) {
                 // Load the HTML and install event handlers
-                $('#openassessment__peer-assessment', view.element).replaceWith(html);
-                view.server.renderLatex($('#openassessment__peer-assessment', view.element));
+                $('.step--peer-assessment', view.element).replaceWith(html);
+                view.server.renderLatex($('.step--peer-assessment', view.element));
                 view.installHandlers(true);
+                if (typeof usageID !== 'undefined') {
+                    $("[id='oa_peer_" + usageID + "']", view.element).focus();
+                }
             }
         ).fail(function() {
             view.baseView.showLoadError('peer-assessment');
@@ -72,12 +81,7 @@ OpenAssessment.PeerView.prototype = {
 
     **/
     continueAssessmentEnabled: function(enabled) {
-        var button = $('#peer-assessment__continue__grading', this.element);
-        if (typeof enabled === 'undefined') {
-            return !button.hasClass('is--disabled');
-        } else {
-            button.toggleClass('is--disabled', !enabled);
-        }
+        return this.baseView.buttonEnabled('.action--continue--grading', enabled);
     },
 
     /**
@@ -89,26 +93,32 @@ OpenAssessment.PeerView.prototype = {
             the requirements.
     **/
     installHandlers: function(isContinuedAssessment) {
-        var sel = $('#openassessment__peer-assessment', this.element);
+        var sel = $('.step--peer-assessment', this.element);
         var view = this;
 
         // Install a click handler for collapse/expand
         this.baseView.setUpCollapseExpand(sel);
 
         // Initialize the rubric
-        var rubricSelector = $("#peer-assessment--001__assessment", this.element);
+        var rubricSelector = $(".peer-assessment--001__assessment", this.element);
         if (rubricSelector.size() > 0) {
             var rubricElement = rubricSelector.get(0);
             this.rubric = new OpenAssessment.Rubric(rubricElement);
+        }
+        else {
+            // If there was previously a rubric visible, clear the reference to it.
+            this.rubric = null;
         }
 
         // Install a change handler for rubric options to enable/disable the submit button
         if (this.rubric !== null) {
             this.rubric.canSubmitCallback($.proxy(view.peerSubmitEnabled, view));
+
+            this.rubric.changesExistCallback($.proxy(view.assessmentRubricChanges, view));
         }
 
         // Install a click handler for assessment
-        sel.find('#peer-assessment--001__assessment__submit').click(
+        sel.find('.peer-assessment--001__assessment__submit').click(
             function(eventObject) {
                 // Override default form submission
                 eventObject.preventDefault();
@@ -120,10 +130,10 @@ OpenAssessment.PeerView.prototype = {
         );
 
         // Install a click handler for continued assessment
-        sel.find('#peer-assessment__continue__grading').click(
+        sel.find('.action--continue--grading').click(
             function(eventObject) {
                 eventObject.preventDefault();
-                view.loadContinuedAssessment();
+                view.loadContinuedAssessment(view.baseView.getUsageID());
             }
         );
     },
@@ -144,11 +154,22 @@ OpenAssessment.PeerView.prototype = {
      >> true
      **/
     peerSubmitEnabled: function(enabled) {
-        var button = $('#peer-assessment--001__assessment__submit', this.element);
-        if (typeof enabled === 'undefined') {
-            return !button.hasClass('is--disabled');
-        } else {
-            button.toggleClass('is--disabled', !enabled);
+        return this.baseView.buttonEnabled('.peer-assessment--001__assessment__submit', enabled);
+    },
+
+    /**
+     * Called when something is selected or typed in the assessment rubric.
+     * Used to set the unsaved changes warning dialog.
+     *
+     * @param {boolean} changesExist true if unsaved changes exist
+     */
+    assessmentRubricChanges: function(changesExist) {
+        if (changesExist) {
+            this.baseView.unsavedWarningEnabled(
+                true,
+                this.UNSAVED_WARNING_KEY,
+                gettext("If you leave this page without submitting your peer assessment, you will lose any work you have done.") // jscs:ignore maximumLineLength
+            );
         }
     },
 
@@ -158,9 +179,11 @@ OpenAssessment.PeerView.prototype = {
     peerAssess: function() {
         var view = this;
         var baseView = view.baseView;
+        var usageID = baseView.getUsageID();
         this.peerAssessRequest(function() {
-            baseView.loadAssessmentModules();
-            baseView.scrollToTop();
+            baseView.unsavedWarningEnabled(false, view.UNSAVED_WARNING_KEY);
+            baseView.loadAssessmentModules(usageID);
+            baseView.scrollToTop(".step--peer-assessment");
         });
     },
 
@@ -172,10 +195,12 @@ OpenAssessment.PeerView.prototype = {
         var view = this;
         var gradeView = this.baseView.gradeView;
         var baseView = view.baseView;
+        var usageID = baseView.getUsageID();
         view.peerAssessRequest(function() {
-            view.loadContinuedAssessment();
+            baseView.unsavedWarningEnabled(false, view.UNSAVED_WARNING_KEY);
+            view.loadContinuedAssessment(usageID);
             gradeView.load();
-            baseView.scrollToTop();
+            baseView.scrollToTop(".step--peer-assessment");
         });
     },
 
@@ -190,7 +215,7 @@ OpenAssessment.PeerView.prototype = {
     **/
     peerAssessRequest: function(successFunction) {
         var view = this;
-        var uuid = $('#openassessment__peer-assessment').data('submission-uuid');
+        var uuid = this.getUUID();
 
         view.baseView.toggleActionError('peer', null);
         view.peerSubmitEnabled(false);
@@ -207,5 +232,13 @@ OpenAssessment.PeerView.prototype = {
             view.baseView.toggleActionError('peer', errMsg);
             view.peerSubmitEnabled(true);
         });
+    },
+
+    /**
+    Get uuid of a peer assessment.
+    **/
+    getUUID: function() {
+        var xBlockElement = $("div[data-usage-id='" + this.baseView.getUsageID() + "']");
+        return xBlockElement.find('.step--peer-assessment').data('submission-uuid');
     }
 };

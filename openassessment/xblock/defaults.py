@@ -63,13 +63,13 @@ DEFAULT_RUBRIC_CRITERIA = [
 # The rubric's feedback prompt is a set of instructions letting the student
 # know they can provide additional free form feedback in their assessment.
 DEFAULT_RUBRIC_FEEDBACK_PROMPT = """
-(Optional) What aspects of this response stood out to you? What did it do well? How could it improve?
+(Optional) What aspects of this response stood out to you? What did it do well? How could it be improved?
 """
 
 # The rubric's feedback text is the default text displayed and used as
 # the student's response to the feedback prompt
 DEFAULT_RUBRIC_FEEDBACK_TEXT = """
-I noticed that this response...
+I think that this response...
 """
 
 DEFAULT_EXAMPLE_ANSWER = (
@@ -138,14 +138,23 @@ DEFAULT_SELF_ASSESSMENT = {
     "due": DEFAULT_DUE,
 }
 
+DEFAULT_STAFF_ASSESSMENT = {
+    "name": "staff-assessment",
+    "start": DEFAULT_START,
+    "due": DEFAULT_DUE,
+    "required": False,
+}
+
 DEFAULT_ASSESSMENT_MODULES = [
     DEFAULT_STUDENT_TRAINING,
     DEFAULT_PEER_ASSESSMENT,
     DEFAULT_SELF_ASSESSMENT,
+    DEFAULT_STAFF_ASSESSMENT,
 ]
 
 DEFAULT_EDITOR_ASSESSMENTS_ORDER = [
     "student-training",
     "peer-assessment",
     "self-assessment",
+    "staff-assessment",
 ]

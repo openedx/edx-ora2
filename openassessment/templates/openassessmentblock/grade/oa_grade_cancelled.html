@@ -1,29 +1,31 @@
 {% load i18n %}
 {% spaceless %}
-<li id="openassessment__grade" class="openassessment__steps__step step--grade has--error">
-    <header class="step__header ui-toggle-visibility__control">
-        <h2 class="step__title">
-            <span class="wrapper--copy">
-                <span class="step__label">{% trans "Your Grade" %}: </span>
-                <span class="grade__value">
-                    <span class="grade__value__title">
-                        {% if score %}
-                            {% with points_earned_string=score.points_earned|stringformat:"s" points_possible_string=score.points_possible|stringformat:"s" %}
-                                {% blocktrans with points_earned='<span class="grade__value__earned">'|safe|add:points_earned_string|add:'</span>'|safe points_possible='<span class="grade__value__potential">'|safe|add:points_possible_string|add:'</span>'|safe %}
-                                    {{ points_earned }} out of {{ points_possible }}
-                                {% endblocktrans %}
-                            {% endwith %}
-                        {% else %}
-                            <!--When submission is cancelled right after the response submitted, the score would be 0.-->
-                            0
-                        {% endif %}
+<li id="openassessment__grade__{{ xblock_id }}" class="openassessment__steps__step step--grade is--initially--collapsed  has--error ui-slidable__container" tabindex="-1">
+    <header class="step__header ui-slidable__control">
+        <h4 class="step__title">
+            <button class="ui-slidable" aria-expanded="false" id="oa_grade_{{ xblock_id }}" aria-controls="oa_grade_{{ xblock_id }}_content">
+                <span class="wrapper--copy">
+                    <span class="step__label">{% trans "Your Grade" %}: </span>
+                    <span class="grade__value">
+                        <span class="grade__value__title">
+                            {% if score %}
+                                {% with points_earned_string=score.points_earned|stringformat:"s" points_possible_string=score.points_possible|stringformat:"s" %}
+                                    {% blocktrans with points_earned='<span class="grade__value__earned">'|safe|add:points_earned_string|add:'</span>'|safe points_possible='<span class="grade__value__potential">'|safe|add:points_possible_string|add:'</span>'|safe %}
+                                        {{ points_earned }} out of {{ points_possible }}
+                                    {% endblocktrans %}
+                                {% endwith %}
+                            {% else %}
+                                <!--When submission is cancelled right after the response submitted, the score would be 0.-->
+                                0
+                            {% endif %}
+                        </span>
                     </span>
                 </span>
-            </span>
-        </h2>
+            </button>
+        </h4>
     </header>
 
-    <div class="ui-toggle-visibility__content">
+    <div class="ui-slidable__content" id="oa_grade_{{ xblock_id }}_content" aria-labelledby="oa_grade_{{ xblock_id }}">
         <div class="wrapper--step__content">
             <div class="step__content">
                 <div class="grade__value__description">

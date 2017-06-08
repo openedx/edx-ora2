@@ -55,6 +55,8 @@ class TestSelfAssessment(XBlockHandlerTestCase):
         self.assertEqual(parts[1]['option']['criterion']['name'], u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮')
         self.assertEqual(parts[1]['option']['name'], u'ﻉซƈﻉɭɭﻉกՇ')
 
+        self.assert_assessment_event_published(xblock, 'openassessmentblock.self_assess', assessment)
+
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_self_assess_no_submission(self, xblock):
         # Submit a self-assessment without first creating a submission
@@ -77,7 +79,7 @@ class TestSelfAssessment(XBlockHandlerTestCase):
             # Verify that the workflow is updated when we submit a self-assessment
             self.assertTrue(resp['success'])
             expected_reqs = {
-                "peer": { "must_grade": 5, "must_be_graded_by": 3 }
+                "peer": {"must_grade": 5, "must_be_graded_by": 3}
             }
             mock_api.update_from_assessments.assert_called_once_with(submission['uuid'], expected_reqs)
 
@@ -134,7 +136,7 @@ class TestSelfAssessment(XBlockHandlerTestCase):
         del assessment['options_selected']
         resp = self.request(xblock, 'self_assess', json.dumps(assessment), response_format='json')
         self.assertFalse(resp['success'])
-        self.assertIn('options_selected', resp['msg'])
+        self.assertIn('options', resp['msg'])
 
     @scenario('data/self_assessment_scenario.xml', user_id='Bob')
     def test_self_assess_api_error(self, xblock):
@@ -167,7 +169,11 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock,
             'openassessmentblock/self/oa_self_unavailable.html',
-            {'self_start': datetime.datetime(5999, 1, 1).replace(tzinfo=pytz.utc), 'allow_latex': False}
+            {
+                'self_start': datetime.datetime(5999, 1, 1).replace(tzinfo=pytz.utc),
+                'allow_latex': False,
+                'time_zone': pytz.utc,
+            }
         )
 
     @scenario('data/self_assessment_closed.xml', user_id='Bob')
@@ -176,14 +182,22 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock,
             'openassessmentblock/self/oa_self_closed.html',
-            {'self_due': datetime.datetime(2000, 1, 1).replace(tzinfo=pytz.utc), 'allow_latex': False}
+            {
+                'self_due': datetime.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
+                'allow_latex': False,
+                'time_zone': pytz.utc,
+            }
         )
 
     @scenario('data/self_assessment_open.xml', user_id='Bob')
     def test_open_no_submission(self, xblock):
         # Without making a submission, this step should be unavailable
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/self/oa_self_unavailable.html', {'allow_latex': False}
+            xblock, 'openassessmentblock/self/oa_self_unavailable.html',
+            {
+                'allow_latex': False,
+                'time_zone': pytz.utc,
+            }
         )
 
     @scenario('data/self_assessment_open.xml', user_id='James Brown')
@@ -195,7 +209,11 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
 
         # Should still not be able to access self-assessment
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/self/oa_self_unavailable.html', {'allow_latex': False}
+            xblock, 'openassessmentblock/self/oa_self_unavailable.html',
+            {
+                'allow_latex': False,
+                'time_zone': pytz.utc,
+            }
         )
 
     @scenario('data/self_assessment_open.xml', user_id='James Brown')
@@ -207,7 +225,11 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             xblock.get_student_item_dict(), u"𝓟𝓪𝓼𝓼 𝓽𝓱𝓮 𝓹𝓮𝓪𝓼"
         )
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/self/oa_self_complete.html', {'allow_latex': False},
+            xblock, 'openassessmentblock/self/oa_self_complete.html',
+            {
+                'allow_latex': False,
+                'time_zone': pytz.utc,
+            },
             workflow_status='waiting',
             status_details={
                 'self': {'complete': True},
@@ -224,7 +246,11 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
         # In the self --> peer configuration, self can be complete
         # if our status is "peer"
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/self/oa_self_complete.html', {'allow_latex': False},
+            xblock, 'openassessmentblock/self/oa_self_complete.html',
+            {
+                'allow_latex': False,
+                'time_zone': pytz.utc,
+            },
             workflow_status="peer",
             status_details={
                 'self': {'complete': True},
@@ -239,7 +265,11 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             xblock.get_student_item_dict(), (u"Ⱥɨn'ŧ ɨŧ fᵾnꝁɏ 1", u"Ⱥɨn'ŧ ɨŧ fᵾnꝁɏ 2")
         )
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/self/oa_self_complete.html', {'allow_latex': False},
+            xblock, 'openassessmentblock/self/oa_self_complete.html',
+            {
+                'allow_latex': False,
+                'time_zone': pytz.utc,
+            },
             workflow_status='done'
         )
 
@@ -250,7 +280,11 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             xblock.get_student_item_dict(), u"Ⱥɨn'ŧ ɨŧ fᵾnꝁɏ"
         )
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/self/oa_self_cancelled.html', {'allow_latex': False},
+            xblock, 'openassessmentblock/self/oa_self_cancelled.html',
+            {
+                'allow_latex': False,
+                'time_zone': pytz.utc,
+            },
             workflow_status='cancelled'
         )
 
@@ -264,11 +298,11 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             xblock, 'openassessmentblock/self/oa_self_assessment.html',
             {
                 'rubric_criteria': xblock.rubric_criteria,
-                'estimated_time': '20 minutes',
                 'self_submission': submission,
                 'file_upload_type': None,
                 'self_file_url': '',
                 'allow_latex': False,
+                'time_zone': pytz.utc,
             },
             workflow_status='self',
             submission_uuid=submission['uuid']
@@ -289,7 +323,11 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
             create_rubric_dict(xblock.prompts, xblock.rubric_criteria)
         )
         self._assert_path_and_context(
-            xblock, 'openassessmentblock/self/oa_self_complete.html', {'allow_latex': False},
+            xblock, 'openassessmentblock/self/oa_self_complete.html',
+            {
+                'allow_latex': False,
+                'time_zone': pytz.utc,
+            },
             workflow_status='self',
             submission_uuid=submission['uuid']
         )
@@ -304,7 +342,11 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
         self._assert_path_and_context(
             xblock,
             'openassessmentblock/self/oa_self_closed.html',
-            {'self_due': datetime.datetime(2000, 1, 1).replace(tzinfo=pytz.utc), 'allow_latex': False},
+            {
+                'self_due': datetime.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
+                'allow_latex': False,
+                'time_zone': pytz.utc,
+            },
             workflow_status='self',
             submission_uuid=submission['uuid']
         )
@@ -331,7 +373,11 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
         # we ALWAYS show complete, even if the workflow tells us we're still have status 'self'.
         self._assert_path_and_context(
             xblock, 'openassessmentblock/self/oa_self_complete.html',
-            {'self_due': datetime.datetime(2000, 1, 1).replace(tzinfo=pytz.utc), 'allow_latex': False},
+            {
+                'self_due': datetime.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
+                'allow_latex': False,
+                'time_zone': pytz.utc,
+            },
             workflow_status='self',
             submission_uuid=submission['uuid']
         )
@@ -396,6 +442,8 @@ class TestSelfAssessmentRender(XBlockHandlerTestCase):
                 'submission_uuid': submission_uuid
             })
         path, context = xblock.self_path_and_context()
+
+        expected_context['xblock_id'] = xblock.scope_ids.usage_id
 
         self.assertEqual(path, expected_path)
         self.assertItemsEqual(context, expected_context)

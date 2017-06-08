@@ -119,7 +119,8 @@ class SubmissionTest(XBlockHandlerTestCase):
                                                               "filename": "test.jpg"}), response_format='json')
         self.assertTrue(resp['success'])
         self.assertTrue(resp['url'].startswith(
-            'https://mybucket.s3.amazonaws.com/submissions_attachments/test_student/test_course/' + xblock.scope_ids.usage_id
+            'https://mybucket.s3.amazonaws.com/submissions_attachments/test_student/test_course/' +
+            xblock.scope_ids.usage_id
         ))
 
     @mock_s3
@@ -180,9 +181,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             {
                 'file_upload_type': None,
                 'submission_start': dt.datetime(4999, 4, 1).replace(tzinfo=pytz.utc),
-                'has_peer': True,
-                'has_self': True,
                 'allow_latex': False,
+                'time_zone': pytz.utc,
             }
         )
 
@@ -202,9 +202,10 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             {
                 'student_submission': create_submission_dict(submission, xblock.prompts),
                 'file_upload_type': None,
-                'has_peer': True,
-                'has_self': True,
+                'peer_incomplete': True,
+                'self_incomplete': True,
                 'allow_latex': False,
+                'time_zone': pytz.utc,
             }
         )
 
@@ -222,9 +223,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'save_status': 'This response has not been saved.',
                 'submit_enabled': False,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
-                'has_peer': True,
-                'has_self': True,
                 'allow_latex': False,
+                'time_zone': pytz.utc,
             }
         )
 
@@ -241,9 +241,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 }, xblock.prompts),
                 'save_status': 'This response has not been saved.',
                 'submit_enabled': False,
-                'has_peer': True,
-                'has_self': False,
                 'allow_latex': False,
+                'time_zone': pytz.utc,
             }
         )
 
@@ -266,9 +265,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'save_status': 'This response has been saved but not submitted.',
                 'submit_enabled': True,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
-                'has_peer': True,
-                'has_self': True,
                 'allow_latex': False,
+                'time_zone': pytz.utc,
             }
         )
 
@@ -291,9 +289,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'save_status': 'This response has been saved but not submitted.',
                 'submit_enabled': True,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
-                'has_peer': True,
-                'has_self': True,
                 'allow_latex': False,
+                'time_zone': pytz.utc,
             }
         )
 
@@ -309,55 +306,49 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'student_submission': create_submission_dict(submission, xblock.prompts),
                 'file_upload_type': None,
-                'has_peer': True,
-                'has_self': True,
+                'peer_incomplete': True,
+                'self_incomplete': True,
                 'allow_latex': False,
+                'time_zone': pytz.utc,
             }
         )
 
     @scenario('data/submission_open.xml', user_id="Bob")
     def test_cancelled_submission(self, xblock):
         student_item = xblock.get_student_item_dict()
+        mock_staff = Mock(name='Bob')
+        xblock.get_username = Mock(return_value=mock_staff)
         submission = xblock.create_submission(
             student_item,
             ('A man must have a code', 'A man must have an umbrella too.')
         )
-        xblock.get_workflow_info = Mock(return_value={
-            'status': 'cancelled',
-            'submission_uuid': submission['uuid']
-        })
-
-        xblock.get_username = Mock(return_value='Bob')
-
-        workflow_api.get_assessment_workflow_cancellation = Mock(return_value={
-            'comments': 'Inappropriate language',
-            'cancelled_by_id': 'Bob',
-            'created_at': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
-            'cancelled_by': 'Bob'
-        })
+        workflow_api.cancel_workflow(
+            submission_uuid=submission['uuid'], comments='Inappropriate language',
+            cancelled_by_id='Bob',
+            assessment_requirements=xblock.workflow_requirements()
+        )
 
         self._assert_path_and_context(
             xblock, 'openassessmentblock/response/oa_response_cancelled.html',
             {
                 'file_upload_type': None,
                 'allow_latex': False,
-                'has_peer': True,
-                'has_self': True,
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'student_submission': submission,
                 'workflow_cancellation': {
                     'comments': 'Inappropriate language',
+                    'cancelled_at': xblock.get_workflow_cancellation_info(submission['uuid']).get('cancelled_at'),
                     'cancelled_by_id': 'Bob',
-                    'created_at': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
-                    'cancelled_by': 'Bob'
-                }
+                    'cancelled_by': mock_staff
+                },
+                'time_zone': pytz.utc,
             }
         )
 
     @patch.object(OpenAssessmentBlock, 'get_user_submission')
     @scenario('data/submission_open.xml', user_id="Bob")
     def test_open_submitted_old_format(self, xblock, mock_get_user_submission):
-        submission = xblock.create_submission(
+        xblock.create_submission(
             xblock.get_student_item_dict(),
             ('A man must have a code', 'A man must have an umbrella too.')
         )
@@ -373,9 +364,10 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                     {"prompt": {'description': 'One prompt.'}, "text": "An old format response."}
                 ]}},
                 'file_upload_type': None,
-                'has_peer': True,
-                'has_self': True,
+                'peer_incomplete': True,
+                'self_incomplete': True,
                 'allow_latex': False,
+                'time_zone': pytz.utc,
             }
         )
 
@@ -386,9 +378,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             {
                 'file_upload_type': None,
                 'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
-                'has_peer': False,
-                'has_self': True,
                 'allow_latex': False,
+                'time_zone': pytz.utc,
             }
         )
 
@@ -404,9 +395,10 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
                 'student_submission': create_submission_dict(submission, xblock.prompts),
                 'file_upload_type': None,
-                'has_peer': False,
-                'has_self': True,
+                'peer_incomplete': False,
+                'self_incomplete': True,
                 'allow_latex': False,
+                'time_zone': pytz.utc,
             }
         )
 
@@ -430,9 +422,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'submission_due': dt.datetime(2999, 5, 6).replace(tzinfo=pytz.utc),
                 'student_submission': create_submission_dict(submission, xblock.prompts),
                 'file_upload_type': None,
-                'has_peer': True,
-                'has_self': True,
                 'allow_latex': False,
+                'time_zone': pytz.utc,
             }
         )
 
@@ -456,9 +447,8 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
                 'submission_due': dt.datetime(2014, 4, 5).replace(tzinfo=pytz.utc),
                 'student_submission': create_submission_dict(submission, xblock.prompts),
                 'file_upload_type': None,
-                'has_peer': False,
-                'has_self': True,
                 'allow_latex': False,
+                'time_zone': pytz.utc,
             }
         )
 
@@ -497,7 +487,10 @@ class SubmissionRenderTest(XBlockHandlerTestCase):
             AssertionError: An assertion failed.
 
         """
+        expected_context['xblock_id'] = xblock.scope_ids.usage_id
+
         path, context = xblock.submission_path_and_context()
+        self.maxDiff = None   # Show a full diff
         self.assertEqual(path, expected_path)
         self.assertEqual(context, expected_context)
 

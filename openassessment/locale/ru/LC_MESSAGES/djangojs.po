@@ -1,0 +1,305 @@
+# edX translation file.
+# Copyright (C) 2014 EdX
+# This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
+# 
+# Translators:
+# Alexandr Kosharny <acosarnii@gmail.com>, 2016
+# ovoschee <all.spam.there@gmail.com>, 2014
+# Liubov Fomicheva <liubov.nelapa@gmail.com>, 2015-2016
+# Maksimenkova Olga <omaksimenkova@hse.ru>, 2014
+# Maria Artemieva <maria.m.artemieva@gmail.com>, 2015
+# Michael Savin <m.savin.ru@gmail.com>, 2015-2016
+# Weyedide <weyedide@gmail.com>, 2014
+# Yana Malinovskaya <y.malinovskaya@itransition.com>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: edx-platform\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-12-15 20:41+0000\n"
+"PO-Revision-Date: 2016-05-09 11:26+0000\n"
+"Last-Translator: Liubov Fomicheva <liubov.nelapa@gmail.com>\n"
+"Language-Team: Russian (http://www.transifex.com/open-edx/edx-platform/language/ru/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:53
+#: openassessment/xblock/static/js/src/oa_server.js:89
+#: openassessment/xblock/static/js/src/oa_server.js:113
+msgid "This section could not be loaded."
+msgstr "Не удалось загрузить раздел."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:134
+msgid "The staff assessment form could not be loaded."
+msgstr "Не удалось загрузить бланк оценивания."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:156
+msgid "The display of ungraded and checked out responses could not be loaded."
+msgstr "Не удалось загрузить список проверенных ответов и ответов без оценки."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:191
+msgid "This response could not be submitted."
+msgstr "Не удалось отправить ответ."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:215
+msgid "This response could not be saved."
+msgstr "Не удалось сохранить ответ."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:241
+msgid "This feedback could not be submitted."
+msgstr "Не удалось отправить отзыв."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:267
+#: openassessment/xblock/static/js/src/oa_server.js:359
+#: openassessment/xblock/static/js/src/oa_server.js:383
+msgid "This assessment could not be submitted."
+msgstr "Не удалось отправить оценку."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:407
+msgid "One or more rescheduling tasks failed."
+msgstr "Не удалось перезапустить одну или несколько задач."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:457
+msgid "This problem could not be saved."
+msgstr "Не удалось сохранить задание."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:479
+msgid "The server could not be contacted."
+msgstr "Не удалось установить соединение с сервером."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:505
+msgid "Could not retrieve upload url."
+msgstr "Не удалось получить url для загрузки."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:525
+msgid "Could not retrieve download url."
+msgstr "Не удалось получить url для скачивания."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/oa_server.js:551
+msgid "The submission could not be removed from the grading pool."
+msgstr "Не удалось удалить ответ из хранилища."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_base.js:203
+msgid "Unable to load"
+msgstr "Не удалось загрузить"
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_peer.js:171
+msgid ""
+"If you leave this page without submitting your peer assessment, you will "
+"lose any work you have done."
+msgstr "Если вы покинете страницу, не отправив вашу оценку, введённые вами данные будут потеряны."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:222
+msgid "Status of Your Response"
+msgstr "Статус вашего ответа"
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:300
+msgid "This response has not been saved."
+msgstr "Ответ ещё не сохранён."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:304
+msgid ""
+"If you leave this page without saving or submitting your response, you will "
+"lose any work you have done on the response."
+msgstr "Если вы покинете страницу, не сохранив или не отправив свой ответ, введённый вами ответ будет потерян."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:322
+msgid "Saving..."
+msgstr "Сохранение..."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:347
+msgid "This response has been saved but not submitted."
+msgstr "Ответ сохранён, но ещё не отправлен на оценивание."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:350
+msgid "Error"
+msgstr "Ошибка"
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:373
+msgid "Do you want to upload your file before submitting?"
+msgstr "Вы хотите загрузить файл до отправки ответа?"
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:444
+msgid ""
+"You're about to submit your response for this assignment. After you submit "
+"this response, you can't change it or submit a new response."
+msgstr "Вы собираетесь отправить свой ответ на оценивание. После отправки ответа Вы не сможете изменить его или отправить новый ответ."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:1
+#: openassessment/xblock/static/js/src/lms/oa_response.js:473
+msgid "File size must be 5MB or less."
+msgstr "Размер файла не должен превышать 5 Мб."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:2
+#: openassessment/xblock/static/js/src/lms/oa_response.js:478
+#: openassessment/xblock/static/js/src/lms/oa_response.js:483
+#: openassessment/xblock/static/js/src/lms/oa_response.js:488
+msgid "You can upload files with these file types: "
+msgstr "Вы можете загрузить файлы следующих типов:"
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:2
+#: openassessment/xblock/static/js/src/lms/oa_response.js:493
+msgid "File type is not allowed."
+msgstr "Недопустимый тип файла"
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:2
+#: openassessment/xblock/static/js/src/lms/oa_self.js:114
+msgid ""
+"If you leave this page without submitting your self assessment, you will "
+"lose any work you have done."
+msgstr "Если вы покинете страницу, не сохранив или не отправив свой ответ, введённые вами ответ будет потерян."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:2
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:129
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:211
+msgid "Unexpected server error."
+msgstr "Ошибка сервера."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:2
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:133
+msgid "You must provide a learner name."
+msgstr "Необходимо указать имя слушателя."
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:2
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:263
+msgid "Error getting the number of ungraded responses"
+msgstr "Ошибка при получении количества неоцененных ответов"
+
+#: openassessment/xblock/static/js/openassessment-lms.min.js:2
+#: openassessment/xblock/static/js/src/lms/oa_staff_area.js:497
+msgid ""
+"If you leave this page without submitting your staff assessment, you will "
+"lose any work you have done."
+msgstr "Если вы покинете страницу, не сохранив или не отправив задание на оценку, введённый вами ответ будет потерян."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_container_item.js:39
+msgid "Unnamed Option"
+msgstr "Вариант без названия"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_container_item.js:49
+msgid "Not Selected"
+msgstr "Не выбрано"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:149
+msgid "Couldn't Save This Assignment"
+msgstr "Не удалось сохранить это задание "
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:150
+msgid "Please correct the outlined fields."
+msgstr "Пожалуйста, исправьте значения в выделенных полях."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:1
+#: openassessment/xblock/static/js/src/studio/oa_edit.js:184
+msgid ""
+"This problem has already been released. Any changes will apply only to "
+"future assessments."
+msgstr "Задание уже выпущено. Любые внесённые изменения будут применены только к последующим запускам задания в будущем."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:97
+msgid "Criterion Added"
+msgstr "Критерий добавлен"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:98
+msgid ""
+"You have added a criterion. You will need to select an option for the "
+"criterion in the Learner Training step. To do this, click the Settings tab."
+msgstr "Вы добавили новый критерий. Вам необходимо выбрать подходящие варианты для данного критерия для примеров на шаге обучения слушателей. Для этого перейдите во вкладку «Настройки»."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:144
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:179
+msgid "Option Deleted"
+msgstr "Вариант удалён"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:145
+msgid ""
+"You have deleted an option. That option has been removed from its criterion "
+"in the sample responses in the Learner Training step. You might have to "
+"select a new option for the criterion."
+msgstr "Вы удалили вариант ответа. Он также был автоматически удалён из критерия для примеров ответов на шаге обучения слушателей. Вам может понадобиться выбрать новый вариант ответа для этого критерия."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:180
+msgid ""
+"You have deleted all the options for this criterion. The criterion has been "
+"removed from the sample responses in the Learner Training step."
+msgstr "Вы удалили все варианты ответов для этого критерия. Критерий был автоматически удалён для всех примеров на шаге обучения слушателей."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:206
+msgid "Criterion Deleted"
+msgstr "Критерий удалён"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:207
+msgid ""
+"You have deleted a criterion. The criterion has been removed from the "
+"example responses in the Learner Training step."
+msgstr "Вы удалили критерий. Он был автоматически удалён из примеров ответов на шаге обучения слушателей."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:376
+msgid "Warning"
+msgstr "Предупреждение"
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_listeners.js:377
+msgid ""
+"Changes to steps that are not selected as part of the assignment will not be"
+" saved."
+msgstr "Изменения в шагах, которые не включены в задание, не сохранятся."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:50
+msgid "File types can not be empty."
+msgstr "Необходимо заполнить список типов файлов."
+
+#: openassessment/xblock/static/js/openassessment-studio.min.js:2
+#: openassessment/xblock/static/js/src/studio/oa_edit_settings.js:60
+msgid "The following file types are not allowed: "
+msgstr "Следующие типы файлов недопустимы:"

@@ -38,6 +38,7 @@ test_ora2db-journal
 test/custom_a11y_rules.js
 test/acceptance/screenshots/*.png
 test/logs/*
+test/acceptance/xunit-*
 
 # Mr Developer
 .mr.developer.cfg
@@ -47,6 +48,9 @@ test/logs/*
 # Sass/Codekit
 .sass-cache/
 config.codekit
+
+# Sass maps
+*.map
 
 # some mac thing
 .DS_Store

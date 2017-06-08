@@ -27,18 +27,9 @@ describe("OpenAssessment.StudentTrainingView", function() {
         this.corrections = {};
     };
 
-    // Stub base view
-    var StubBaseView = function() {
-        this.showLoadError = function(msg) {};
-        this.toggleActionError = function(msg, step) {};
-        this.setUpCollapseExpand = function(sel) {};
-        this.scrollToTop = function() {};
-        this.loadAssessmentModules = function() {};
-    };
-
     // Stubs
-    var baseView = null;
     var server = null;
+    var runtime = {};
 
     // View under test
     var view = null;
@@ -50,12 +41,11 @@ describe("OpenAssessment.StudentTrainingView", function() {
         // Create a new stub server
         server = new StubServer();
         server.renderLatex = jasmine.createSpy('renderLatex')
-        // Create the stub base view
-        baseView = new StubBaseView();
 
         // Create the object under test
-        var el = $("#openassessment-base").get(0);
-        view = new OpenAssessment.StudentTrainingView(el, server, baseView);
+        var trainingElement = $('.step--student-training').get(0);
+        var baseView = new OpenAssessment.BaseView(runtime, trainingElement, server, {});
+        view = new OpenAssessment.StudentTrainingView(trainingElement, server, baseView);
         view.installHandlers();
     });
 
@@ -112,7 +102,7 @@ describe("OpenAssessment.StudentTrainingView", function() {
         // Simulate that the user answered the problem correctly, so there are no corrections
         server.corrections = {};
         spyOn(server, 'trainingAssess').and.callThrough();
-        spyOn(baseView, 'loadAssessmentModules').and.callThrough();
+        spyOn(view.baseView, 'loadAssessmentModules').and.callThrough();
 
         // Select rubric options
         var optionsSelected = {};
@@ -128,6 +118,6 @@ describe("OpenAssessment.StudentTrainingView", function() {
         expect(server.trainingAssess).toHaveBeenCalledWith(optionsSelected);
 
         // Expect that the steps were reloaded
-        expect(baseView.loadAssessmentModules).toHaveBeenCalled();
+        expect(view.baseView.loadAssessmentModules).toHaveBeenCalled();
     });
 });

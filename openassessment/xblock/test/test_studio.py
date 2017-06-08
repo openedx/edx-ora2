@@ -96,18 +96,24 @@ class StudioViewTest(XBlockHandlerTestCase):
     ]
 
     EXAMPLE_BASED_ASSESSMENT_EXAMPLES = '<examples>' + \
-        '<example>' + \
-            '<answer> TEST ANSWER </answer>' + \
-            '<select criterion="Test criterion" option="Test option" />' + \
-        '</example>' + \
-    '</examples>'
+                                        '<example>' + \
+                                        '<answer> TEST ANSWER </answer>' + \
+                                        '<select criterion="Test criterion" option="Test option" />' + \
+                                        '</example>' + \
+                                        '</examples>'
 
     ASSESSMENT_CSS_IDS = {
         "example-based-assessment": "oa_ai_assessment_editor",
         "peer-assessment": "oa_peer_assessment_editor",
         "self-assessment": "oa_self_assessment_editor",
-        "student-training": "oa_student_training_editor"
+        "student-training": "oa_student_training_editor",
+        "staff-assessment": "oa_staff_assessment_editor",
     }
+
+    @scenario('data/basic_scenario.xml')
+    def test_default_fields(self, xblock):
+        # Default value should not be empty
+        self.assertEqual(xblock.fields['title'].default, "Open Response Assessment")
 
     @scenario('data/basic_scenario.xml')
     def test_render_studio_view(self, xblock):
@@ -145,6 +151,7 @@ class StudioViewTest(XBlockHandlerTestCase):
             "student-training",
             "peer-assessment",
             "self-assessment",
+            "staff-assessment",
         ]
         xblock.runtime.modulestore = MagicMock()
         xblock.runtime.modulestore.has_published_version.return_value = False
@@ -165,6 +172,7 @@ class StudioViewTest(XBlockHandlerTestCase):
             "student-training",
             "peer-assessment",
             "self-assessment",
+            "staff-assessment",
             ]
         xblock.runtime.modulestore = MagicMock()
         xblock.runtime.modulestore.has_published_version.return_value = False
@@ -244,22 +252,17 @@ class StudioViewTest(XBlockHandlerTestCase):
 
     @scenario('data/self_then_peer.xml')
     def test_render_editor_assessment_order(self, xblock):
-        # Initially, the editor assessment order should be the default
-        # (because we haven't set it yet by saving in Studio)
-        # However, the assessment order IS set when we import the problem from XML,
-        # and it differs from the default order (self->peer instead of peer->self)
         # Expect that the editor uses the order defined by the problem.
         self._assert_rendered_editor_order(xblock, [
-            'example-based-assessment',
             'student-training',
             'self-assessment',
             'peer-assessment',
+            'staff-assessment'
         ])
 
         # Change the order (simulates what would happen when the author saves).
         xblock.editor_assessments_order = [
             'student-training',
-            'example-based-assessment',
             'peer-assessment',
             'self-assessment',
         ]
@@ -271,9 +274,9 @@ class StudioViewTest(XBlockHandlerTestCase):
         # Expect that the rendered view reflects the new order
         self._assert_rendered_editor_order(xblock, [
             'student-training',
-            'example-based-assessment',
             'peer-assessment',
             'self-assessment',
+            'staff-assessment',
         ])
 
     def _assert_rendered_editor_order(self, xblock, expected_assessment_order):
@@ -302,6 +305,7 @@ class StudioViewTest(XBlockHandlerTestCase):
         actual_assessment_order = [
             index_dict['name']
             for index_dict in sorted(assessment_indices, key=lambda d: d['index'])
+            if index_dict['index'] > 0
         ]
         self.assertEqual(actual_assessment_order, expected_assessment_order)
 

@@ -288,6 +288,14 @@
   }
 
   /**
+   * Set opacity on buttons to 50% (which matches LMS styling).
+   */
+
+  button[disabled] {
+    opacity: 0.5;
+  }
+
+  /**
    * Remove inner padding and border in Firefox 4+.
    */
 

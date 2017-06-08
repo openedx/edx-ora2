@@ -6,9 +6,9 @@ from webob import Response
 from openassessment.assessment.api import self as self_api
 from openassessment.workflow import api as workflow_api
 from submissions import api as submission_api
-from .data_conversion import create_rubric_dict
-from .resolve_dates import DISTANT_FUTURE
-from .data_conversion import clean_criterion_feedback, create_submission_dict
+from .resolve_dates import DISTANT_FUTURE, get_current_time_zone
+from .data_conversion import (clean_criterion_feedback, create_submission_dict,
+                              create_rubric_dict, verify_assessment_parameters)
 
 logger = logging.getLogger(__name__)
 
@@ -51,9 +51,16 @@ class SelfAssessmentMixin(object):
             SubmissionError: Error occurred while retrieving the current submission.
             SelfAssessmentRequestError: Error occurred while checking if we had a self-assessment.
         """
-        context = {'allow_latex': self.allow_latex}
+
         path = 'openassessmentblock/self/oa_self_unavailable.html'
         problem_closed, reason, start_date, due_date = self.is_closed(step="self-assessment")
+        user_service = self.runtime.service(self, 'user')
+
+        context = {
+            'allow_latex': self.allow_latex,
+            "xblock_id": self.get_xblock_id(),
+            'time_zone': get_current_time_zone(user_service)
+        }
 
         # We display the due date whether the problem is open or closed.
         # If no date is set, it defaults to the distant future, in which
@@ -87,8 +94,12 @@ class SelfAssessmentMixin(object):
             else:
                 submission = submission_api.get_submission(self.submission_uuid)
                 context["rubric_criteria"] = self.rubric_criteria_with_labels
-                context["estimated_time"] = "20 minutes"  # TODO: Need to configure this.
                 context["self_submission"] = create_submission_dict(submission, self.prompts)
+                if self.rubric_feedback_prompt is not None:
+                    context["rubric_feedback_prompt"] = self.rubric_feedback_prompt
+
+                if self.rubric_feedback_default_text is not None:
+                    context['rubric_feedback_default_text'] = self.rubric_feedback_default_text
 
                 # Determine if file upload is supported for this XBlock and what kind of files can be uploaded.
                 context["file_upload_type"] = self.file_upload_type
@@ -102,6 +113,7 @@ class SelfAssessmentMixin(object):
         return path, context
 
     @XBlock.json_handler
+    @verify_assessment_parameters
     def self_assess(self, data, suffix=''):
         """
         Create a self-assessment for a submission.
@@ -114,17 +126,12 @@ class SelfAssessmentMixin(object):
             Dict with keys "success" (bool) indicating success/failure
             and "msg" (unicode) containing additional information if an error occurs.
         """
-        if 'options_selected' not in data:
-            return {'success': False, 'msg': self._(u"Missing options_selected key in request")}
-
-        if 'overall_feedback' not in data:
-            return {'success': False, 'msg': self._('Must provide overall feedback in the assessment')}
-
-        if 'criterion_feedback' not in data:
-            return {'success': False, 'msg': self._('Must provide feedback for criteria in the assessment')}
 
         if self.submission_uuid is None:
-            return {'success': False, 'msg': self._(u"You must submit a response before you can perform a self-assessment.")}
+            return {
+                'success': False,
+                'msg': self._(u"You must submit a response before you can perform a self-assessment.")
+            }
 
         try:
             assessment = self_api.create_assessment(

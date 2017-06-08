@@ -3,10 +3,12 @@
 
 coverage==4.0.2
 django-nose==1.4.1
+freezegun==0.1.11
 mock==1.0.1
 moto==0.3.1
-pep8==1.6.2
-pylint<1.0
+pep8==1.7.0
+factory_boy==2.8.1
 
 git+https://github.com/edx/django-pyfs.git@1.0.3#egg=django-pyfs==1.0.3
 git+https://github.com/edx/i18n-tools.git@56f048af9b6868613c14aeae760548834c495011#egg=i18n_tools
+git+https://github.com/edx/edx-lint.git@v0.4.1#egg=edx_lint==0.4.1

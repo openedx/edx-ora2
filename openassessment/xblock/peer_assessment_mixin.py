@@ -7,12 +7,11 @@ from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.errors import (
     PeerAssessmentRequestError, PeerAssessmentInternalError, PeerAssessmentWorkflowError
 )
-from openassessment.workflow import api as workflow_api
 from openassessment.workflow.errors import AssessmentWorkflowError
 from openassessment.xblock.defaults import DEFAULT_RUBRIC_FEEDBACK_TEXT
 from .data_conversion import create_rubric_dict
-from .resolve_dates import DISTANT_FUTURE
-from .data_conversion import clean_criterion_feedback, create_submission_dict
+from .resolve_dates import DISTANT_FUTURE, get_current_time_zone
+from .data_conversion import clean_criterion_feedback, create_submission_dict, verify_assessment_parameters
 
 logger = logging.getLogger(__name__)
 
@@ -31,6 +30,7 @@ class PeerAssessmentMixin(object):
     """
 
     @XBlock.json_handler
+    @verify_assessment_parameters
     def peer_assess(self, data, suffix=''):
         """Place a peer assessment into OpenAssessment system
 
@@ -50,18 +50,10 @@ class PeerAssessmentMixin(object):
             and "msg" (unicode) containing additional information if an error occurs.
 
         """
-        # Validate the request
-        if 'options_selected' not in data:
-            return {'success': False, 'msg': self._('Must provide options selected in the assessment')}
-
-        if 'overall_feedback' not in data:
-            return {'success': False, 'msg': self._('Must provide overall feedback in the assessment')}
-
-        if 'criterion_feedback' not in data:
-            return {'success': False, 'msg': self._('Must provide feedback for criteria in the assessment')}
-
         if self.submission_uuid is None:
-            return {'success': False, 'msg': self._('You must submit a response before you can peer-assess.')}
+            return {
+                'success': False, 'msg': self._('You must submit a response before you can perform a peer assessment.')
+            }
 
         uuid_server, uuid_client = self._get_server_and_client_submission_uuids(data)
         if uuid_server != uuid_client:
@@ -169,11 +161,13 @@ class PeerAssessmentMixin(object):
         path = 'openassessmentblock/peer/oa_peer_unavailable.html'
         finished = False
         problem_closed, reason, start_date, due_date = self.is_closed(step="peer-assessment")
+        user_service = self.runtime.service(self, 'user')
 
         context_dict = {
             "rubric_criteria": self.rubric_criteria_with_labels,
-            "estimated_time": "20 minutes",  # TODO: Need to configure this.
             "allow_latex": self.allow_latex,
+            "time_zone": get_current_time_zone(user_service),
+            "xblock_id": self.get_xblock_id(),
         }
 
         if self.rubric_feedback_prompt is not None:
@@ -206,15 +200,15 @@ class PeerAssessmentMixin(object):
 
             if continue_grading:
                 context_dict["submit_button_text"] = self._(
-                    "Submit your assessment & review another response"
+                    "Submit your assessment and review another response"
                 )
             elif assessment["must_grade"] - count == 1:
                 context_dict["submit_button_text"] = self._(
-                    "Submit your assessment & move onto next step"
+                    "Submit your assessment and move to next step"
                 )
             else:
                 context_dict["submit_button_text"] = self._(
-                    "Submit your assessment & move to response #{response_number}"
+                    "Submit your assessment and move to response #{response_number}"
                 ).format(response_number=(count + 2))
 
         if workflow_status == "cancelled":

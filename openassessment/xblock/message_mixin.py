@@ -40,33 +40,53 @@ class MessageMixin(object):
         status = workflow.get('status')
         status_details = workflow.get('status_details', {})
 
-        is_closed = deadline_info.get('general').get('is_closed')
+        problem_is_closed = deadline_info.get('general').get('is_closed')
 
-        # Finds the status_information which describes the closed status of the current step (defaults to submission)
-        status_info = deadline_info.get(status, deadline_info.get("submission"))
-        status_is_closed = status_info.get('is_closed')
-
-        # Default context is empty
-        context = {}
-
-        # Default path leads to an "instruction-unavailable" block
-        path = 'openassessmentblock/message/oa_message_unavailable.html'
+        # Finds the deadline info of the current step (defaults to submission)
+        active_step_deadline_info = deadline_info.get(status, deadline_info.get("submission"))
 
         # Render the instruction message based on the status of the workflow
         # and the closed status.
         if status == "done" or status == "waiting":
             path, context = self.render_message_complete(status_details)
-        elif is_closed or status_is_closed:
-            path, context = self.render_message_closed(status_info)
-        elif status == "self":
-            path, context = self.render_message_self(deadline_info)
-        elif status == "peer":
-            path, context = self.render_message_peer(deadline_info)
-        elif status == "training":
-            path, context = self.render_message_training(deadline_info)
+        elif problem_is_closed or active_step_deadline_info.get('is_closed'):
+            path, context = self.render_message_closed(active_step_deadline_info)
+        elif status == "self" or status == "peer" or status == "training":
+            path, context = self.render_message_incomplete(status, deadline_info)
         elif status is None:
             path, context = self.render_message_open(deadline_info)
+        else:
+            # Default path leads to an "instruction-unavailable" block
+            # Default context is empty
+            path, context = 'openassessmentblock/message/oa_message_unavailable.html', {}
+
+        context['xblock_id'] = self.get_xblock_id()
         return self.render_assessment(path, context)
+
+    def render_message_incomplete(self, status, deadline_info):
+        """
+        Renders the "Incomplete" message state (User action still needed)
+
+        Args:
+            status (String): indicates the current step to be completed
+            deadline_info (dict): The dictionary of boolean assessment near/closed states
+
+        Returns:
+            The path (String) and context (dict) to render the "Incomplete" message template
+        """
+        step_info = deadline_info.get(status, {})
+
+        context = {
+                status: True,
+                "{}_approaching".format(status): step_info.get('approaching', False),
+                "{}_not_released".format(status): (step_info.get("reason") == "start"),
+
+                # Uses a static field in the XBlock to determine if the PeerAssessment Block
+                # was able to pick up an assessment.
+                "peer_not_available": self.no_peers,
+        }
+
+        return 'openassessmentblock/message/oa_message_incomplete.html', context
 
     def render_message_complete(self, status_details):
         """
@@ -83,25 +103,6 @@ class MessageMixin(object):
         }
 
         return 'openassessmentblock/message/oa_message_complete.html', context
-
-    def render_message_training(self, deadline_info):
-        """
-        Renders the "Student-Training" message state (Either Waiting or Done)
-
-        Args:
-            status (String): indicates the canonical status of the workflow
-
-        Returns:
-            The path (String) and context (dict) to render the "Complete" message template
-        """
-
-        approaching = deadline_info.get('training').get('approaching')
-
-        context = {
-            'approaching': approaching
-        }
-
-        return 'openassessmentblock/message/oa_message_training.html', context
 
     def render_message_closed(self, status_info):
         """
@@ -121,57 +122,6 @@ class MessageMixin(object):
         }
 
         return 'openassessmentblock/message/oa_message_closed.html', context
-
-    def render_message_self(self, deadline_info):
-        """
-        Renders the "Self" message state
-
-        Args:
-            deadline_info (dict): The dictionary of boolean assessment near/closed states
-
-        Returns:
-            The path (String) and context (dict) to render the "Self" template
-        """
-
-        has_peer = 'peer-assessment' in self.assessment_steps
-        self_info = deadline_info.get("self")
-
-        context = {
-            "has_peer": has_peer,
-            "self_approaching": self_info.get("approaching"),
-            "self_closed": self_info.get("is_closed"),
-            "self_not_released": (self_info.get("reason") == "start")
-        }
-
-        return 'openassessmentblock/message/oa_message_self.html', context
-
-    def render_message_peer(self, deadline_info):
-        """
-        Renders the "Peer" message state
-
-        Args:
-            deadline_info (dict): The dictionary of boolean assessment near/closed states
-
-        Returns:
-            The path (String) and context (dict) to render the "Peer" template
-        """
-
-        #Uses a static field in the XBlock to determine if the PeerAssessment Block was able to pick up an assessment.
-        waiting = self.no_peers
-
-        has_self = 'self-assessment' in self.assessment_steps
-
-        peer_info = deadline_info.get("peer")
-
-        context = {
-            "has_self": has_self,
-            "waiting": waiting,
-            "peer_approaching": peer_info.get("approaching"),
-            "peer_closed": peer_info.get("is_closed"),
-            "peer_not_released": (peer_info.get("reason") == "start")
-        }
-
-        return 'openassessmentblock/message/oa_message_peer.html', context
 
     def render_message_open(self, deadline_info):
         """

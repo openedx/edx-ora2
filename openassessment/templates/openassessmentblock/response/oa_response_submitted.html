@@ -2,37 +2,43 @@
 {% load i18n %}
 
 {% block list_item %}
-<li id="openassessment__response" class="openassessment__steps__step step--response is--complete ui-toggle-visibility is--collapsed {% if allow_latex %}allow--latex{%endif%}">
+<li id="openassessment__response__{{ xblock_id }}"
+    class="openassessment__steps__step step--response is--complete ui-slidable__container {% if allow_latex %}allow--latex{%endif%} is--initially--collapsed"
+    tabindex="-1">
+{% endblock %}
+
+{% block button %}
+    <button class="ui-slidable" aria-expanded="false" id="oa_response_{{ xblock_id }}" aria-controls="oa_response_{{ xblock_id }}_content">
 {% endblock %}
 
 {% block title %}
 <span class="step__status">
-  <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
-    <i class="icon fa fa-check"></i>
+    <span class="icon fa fa-check" aria-hidden="true"></span>
     <span class="copy">{% trans "Complete" %}</span>
   </span>
 </span>
 {% endblock %}
 
 {% block body %}
-<div class="ui-toggle-visibility__content">
+<div class="ui-slidable__content" aria-labelledby="oa_response_{{ xblock_id }}" id="oa_response_{{ xblock_id }}_content">
     <div class="wrapper--step__content">
 
         <div class="step__message message message--complete">
-            <h3 class="message__title">{% trans "Your Response Has Been Submitted" %}</h3>
+            <h5 class="message__title">{% trans "Status" %}</h5>
             <div class="message__content">
-                {% if has_peer and has_self %}
-                    {% blocktrans with peer_start_tag='<a data-behavior="ui-scroll" href="#openassessment__peer-assessment">'|safe self_start_tag='<a data-behavior="ui-scroll" href="#openassessment__self-assessment">'|safe end_tag='</a>'|safe %}
-                        You'll receive your grade after some of your peers have assessed your response and you complete the {{ peer_start_tag }}peer assessment{{ end_tag }} and {{ self_start_tag }}self assessment{{ end_tag }} steps.
+                {% trans "Your response has been submitted. You will receive your grade after all steps are complete and your response is fully assessed." %}
+                {% if peer_incomplete and self_incomplete %}
+                    {% blocktrans with peer_start_tag='<a data-behavior="ui-scroll" href="#openassessment__peer-assessment__'|add:xblock_id|add:'">'|safe self_start_tag='<a data-behavior="ui-scroll" href="#openassessment__self-assessment__'|add:xblock_id|add:'">'|safe end_tag='</a>'|safe %}
+                        You still need to complete the {{ peer_start_tag }}peer assessment{{ end_tag }} and {{ self_start_tag }}self assessment{{ end_tag }} steps.
                     {% endblocktrans %}
-                {% elif has_peer %}
-                    {% blocktrans with start_tag='<a data-behavior="ui-scroll" href="#openassessment__peer-assessment">'|safe end_tag='</a>'|safe %}
-                        You'll receive your grade after some of your peers have assessed your response and you complete the {{ start_tag }}peer assessment{{ end_tag }} step.
+                {% elif peer_incomplete %}
+                    {% blocktrans with start_tag='<a data-behavior="ui-scroll" href="#openassessment__peer-assessment__'|add:xblock_id|add:'">'|safe end_tag='</a>'|safe%}
+                        You still need to complete the {{ start_tag }}peer assessment{{ end_tag }} step.
                     {% endblocktrans %}
-                {% elif has_self %}
-                    {% blocktrans with start_tag='<a data-behavior="ui-scroll" href="#openassessment__self-assessment">'|safe end_tag='</a>'|safe %}
-                        You'll receive your grade after you complete the {{ start_tag }}self assessment{{ end_tag }} step.
+                {% elif self_incomplete %}
+                    {% blocktrans with start_tag='<a data-behavior="ui-scroll" href="#openassessment__self-assessment__'|add:xblock_id|add:'">'|safe end_tag='</a>'|safe%}
+                        You still need to complete the {{ start_tag }}self assessment{{ end_tag }} step.
                     {% endblocktrans %}
                 {% endif %}
             </div>
@@ -40,13 +46,11 @@
 
         <div class="step__content">
             <article class="submission__answer__display">
-                <h3 class="submission__answer__display__title">{% trans "Your Response" %}</h3>
+                {% trans "Your response" as translated_label %}
+                {% include "openassessmentblock/oa_submission_answer.html" with answer=student_submission.answer answer_text_label=translated_label %}
 
-                {% trans "Your response to the question above:" as answer_label_trans %}
-                {% include "openassessmentblock/oa_submission_answer.html" with answer=student_submission.answer answer_text_label=answer_label_trans %}
-
-                {% trans "Your Uploaded File" as header_trans %}
-                {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=file_url header=header_trans class_prefix="submission__answer" %}
+                {% trans "Your Uploaded File"  as translated_header %}
+                {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=file_url header=translated_header class_prefix="submission__answer" %}
             </article>
         </div>
     </div>

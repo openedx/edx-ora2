@@ -1,0 +1,230 @@
+{% load i18n %}
+{% load tz %}
+
+<div class="openassessment__student-info staff-info__student__report"
+     data-submission-uuid="{{ submission.uuid }}">
+
+{% if submission %}
+    <h2 class="title">
+        <span class="label staff-info__student__report__summary" tabindex="-1">
+            {% blocktrans with learner=student_username %}
+                Viewing learner: {{ learner }}
+            {% endblocktrans %}
+        </span>
+    </h2>
+
+    <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse staff-info__student__response ui-slidable__container is--initially--collapsed ">
+        <div class="ui-slidable__control">
+            <button class="ui-staff ui-slidable" aria-controls="learner_response_content_{{ submission.uuid }}" aria-expanded="false" id="learner_response_{{ submission.uuid }}">
+                <h2 class="staff-info__title ui-staff__subtitle">
+                    <span class="icon fa fa-caret-right" aria-hidden="true"></span>
+                    <span>{% trans "Learner's Response" %}</span>
+                </h2>
+            </button>
+        </div>
+        <div class="ui-slidable__content" role="group" id="learner_response_content_{{ submission.uuid }}" aria-labelledby="learner_response_{{ submission.uuid }}">
+            {% if workflow_cancellation %}
+                <p>
+                    {% if workflow_cancellation.cancelled_by %}
+                        {% blocktrans with removed_by_username=workflow_cancellation.cancelled_by removed_datetime=workflow_cancellation.cancelled_at|timezone:time_zone|date:"F j, Y H:i e" %}
+                            Learner submission removed by {{ removed_by_username }} on {{ removed_datetime }}
+                        {% endblocktrans %}
+                    {% else %}
+                        {% blocktrans with removed_datetime=workflow_cancellation.cancelled_at|timezone:time_zone|date:"F j, Y H:i e" %}
+                            Learner submission removed on {{ removed_datetime }}
+                        {% endblocktrans %}
+                    {% endif %}
+                </p>
+                <!-- Comments: Reason for Cancellation-->
+                <p>
+                    {% blocktrans with comments=workflow_cancellation.comments %}
+                        Comments: {{ comments }}
+                    {% endblocktrans %}
+                </p>
+            {% else %}
+                <div class="wrapper--content">
+                    {% trans "The learner's response to the question above" as translated_label %}
+                    {% include "openassessmentblock/oa_submission_answer.html" with answer=submission.answer answer_text_label=translated_label %}
+
+                    {% trans "Associated File" as translated_header %}
+                    {% include "openassessmentblock/oa_uploaded_file.html" with file_upload_type=file_upload_type file_url=staff_file_url header=translated_header class_prefix="staff-assessment" show_warning="true" %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if peer_assessments %}
+        {% trans "Peer Assessments for This Learner" as translated_title %}
+        {% include "openassessmentblock/staff_area/oa_student_info_assessment_detail.html" with class_type="peer" assessments=peer_assessments %}
+    {% endif %}
+
+    {% if submitted_assessments %}
+        {% trans "Peer Assessments Completed by This Learner" as translated_title %}
+        {% include "openassessmentblock/staff_area/oa_student_info_assessment_detail.html" with class_type="submitted" assessments=submitted_assessments %}
+    {% endif %}
+
+    {% if self_assessment %}
+        {% trans "Learner's Self Assessment" as translated_title %}
+        {% include "openassessmentblock/staff_area/oa_student_info_assessment_detail.html" with class_type="self" assessments=self_assessment %}
+    {% endif %}
+
+    {% if example_based_assessment %}
+        {% trans "Example-Based Assessment" as translated_title %}
+        {% include "openassessmentblock/staff_area/oa_student_info_assessment_detail.html" with class_type="example_based" assessments=example_based_assessment %}
+    {% endif %}
+
+    {% if staff_assessment %}
+        {% trans "Staff Assessment for This Learner" as translated_title %}
+        {% include "openassessmentblock/staff_area/oa_student_info_assessment_detail.html" with class_type="staff" assessments=staff_assessment %}
+    {% endif %}
+
+    <div class="staff-info__status ui-staff__content__section wrapper--ui--collapse staff-info__student__grade ui-slidable__container is--initially--collapsed ">
+        <div class="ui-slidable__control">
+            <button class="ui-staff ui-slidable" aria-controls="final_grade_content_{{ submission.uuid }}" aria-expanded="false" id="final_grade_{{ submission.uuid }}">
+                <h2 class="staff-info__title ui-staff__subtitle">
+                    <span class="icon fa fa-caret-right" aria-hidden="true"></span>
+                    <span>{% trans "Learner's Final Grade" %}</span>
+                </h2>
+            </button>
+        </div>
+        <div class="ui-slidable__content" role="group" id="final_grade_content_{{ submission.uuid }}" aria-labelledby="final_grade_{{ submission.uuid }}">
+            {% if workflow_status == "done" %}
+                {% if score != None %}
+                    <div class="staff-info__final__grade__score">
+                    {% with points_earned_string=score.points_earned|stringformat:"s" points_possible_string=score.points_possible|stringformat:"s" %}
+                        {% blocktrans with points_earned='<span class="grade__value__earned">'|safe|add:points_earned_string|add:'</span>'|safe points_possible='<span class="grade__value__potential">'|safe|add:points_possible_string|add:'</span>'|safe %}
+                            Final grade: {{ points_earned }} out of {{ points_possible }}
+                        {% endblocktrans %}
+                    {% endwith %}
+                    </div>
+                {% endif %}
+                <table class="staff-info__status__table staff-info__final__grade__table">
+                    <caption class="sr">{% trans "Final Grade Details" %}</caption>
+                    <thead>
+                    <tr>
+                        <th abbr="{% trans 'Criterion' %}" scope="col">{% trans "Criterion" %}</th>
+                        {% with criterion=grade_details.criteria.0 %}
+                            {% for assessment in criterion.assessments %}
+                                <th abbr="{{ assessment.title }}" scope="col">{{ assessment.title }}</th>
+                            {% endfor %}
+                        {% endwith %}
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for criterion in grade_details.criteria %}
+                        <tr>
+                            <td class="label">{{ criterion.label }}</td>
+                            {% for assessment in criterion.assessments %}
+                                <td class="value">
+                                {% if assessment.points != None %}
+                                    <div>
+                                    {% blocktrans with assessment_label=assessment.option.label count points=assessment.points %}
+                                        {{ assessment_label }} - {{ points }} point
+                                    {% plural %}
+                                        {{ assessment_label }} - {{ points }} points
+                                    {% endblocktrans %}
+                                    </div>
+                                {% endif %}
+                                {% if assessment.individual_assessments %}
+                                    {% for individual_assessment in assessment.individual_assessments %}
+                                        <div>{{ individual_assessment.title }} - {{ individual_assessment.option.label}}</div>
+                                    {% endfor %}
+                                {% elif assessment.points == None %}
+                                    {% if assessment.option != None %}
+                                        <div>{{ assessment.option.label }}</div>
+                                    {% else %}
+                                        <div>{% trans 'Feedback Recorded' %}</div>
+                                    {% endif %}
+                                {% endif %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% elif workflow_status == "waiting" %}
+                <div class="staff-info__final__grade__score">
+                    <p>{% trans "The submission is waiting for assessments." %}</p>
+                </div>
+            {% elif workflow_status == "cancelled" %}
+                <div class="staff-info__final__grade__score">
+                    <p>{% trans "The learner's submission has been removed from peer assessment. The learner receives a grade of zero unless you delete the learner's state for the problem to allow them to resubmit a response." %}</p>
+                </div>
+            {% elif workflow_status == None %}
+                <div class="staff-info__final__grade__score">
+                    <p>{% trans "The problem has not been started." %}</p>
+                </div>
+            {% else %}
+                <div class="staff-info__final__grade__score">
+                    <p>{% trans "The problem has not been completed." %}</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if not workflow_cancellation %}
+        <div class="staff-info__staff-override ui-staff__content__section wrapper--ui--collapse ui-slidable__container is--initially--collapsed ">
+            <div class="ui-slidable__control">
+                <button class="ui-staff ui-slidable" aria-controls="grade_override_content_{{ submission.uuid }}" aria-expanded="false" id="grade_override_{{ submission.uuid }}">
+                    <h2 class="staff-info__title ui-staff__subtitle">
+                        <span class="icon fa fa-caret-right" aria-hidden="true"></span>
+                        <span>{% trans "Submit Assessment Grade Override" %}</span>
+                    </h2>
+                </button>
+            </div>
+            <div class="staff-info__staff-override__content ui-slidable__content" role="group" id="grade_override_content_{{ submission.uuid }}" aria-labelledby="grade_override_{{ submission.uuid }}">
+                <div class="wrapper--input">
+                    {% include "openassessmentblock/staff_area/oa_staff_override_assessment.html" %}
+                </div>
+            </div>
+        </div>
+
+        <div class="staff-info__workflow-cancellation ui-staff__content__section wrapper--ui--collapse ui-slidable__container is--initially--collapsed ">
+            <div class="ui-slidable__control">
+                <button class="ui-staff ui-slidable" aria-controls="remove_submission_content_{{ submission.uuid }}" aria-expanded="false" id="remove_submission_{{ submission.uuid }}">
+                    <h2 class="staff-info__title ui-staff__subtitle">
+                        <span class="icon fa fa-caret-right" aria-hidden="true"></span>
+                        <span>{% trans "Remove Submission From Peer Grading" %}</span>
+                    </h2>
+                </button>
+            </div>
+            <div class="staff-info__cancel-submission__content ui-slidable__content" role="group" id="remove_submission_content_{{ submission.uuid }}" aria-labelledby="remove_submission_{{ submission.uuid }}">
+                <div class="wrapper--input">
+                    <form data-submission-uuid="{{ submission.uuid }}">
+
+                        <div class="step__message message message--warning">
+                            <h5 class="message__title">{% trans "Caution: This Action Cannot Be Undone" %}</h5>
+                            <div class="message__content">{% trans "Removing a learner's submission cannot be undone and should be done with caution." %}</div>
+                        </div>
+
+                        <ul class="list list--actions">
+                            <li>
+                                <label class="label comments__label">{% trans "Comments:" %}
+                                    <textarea class="cancel_submission_comments" value="" maxlength="10000"></textarea>
+                                </label>
+                            </li>
+                        </ul>
+                        <ul class="list list--actions">
+                            <li class="list--actions__item">
+                                <button data-submission-uuid="{{ submission.uuid }}"
+                                    class="action--submit action--submit-cancel-submission" disabled>
+                                    {% trans "Remove submission" %}
+                                </button>
+
+                                <div class="cancel-submission-error"></div>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    </div>
+{% else %}
+    <span class="staff-info__student__report__summary" tabindex="-1">
+        {% trans "A response was not found for this learner." %}
+    </span>
+{% endif %}
+</div>

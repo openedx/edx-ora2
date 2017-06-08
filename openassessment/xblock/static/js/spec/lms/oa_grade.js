@@ -26,16 +26,9 @@ describe("OpenAssessment.GradeView", function() {
         };
     };
 
-    // Stub base view
-    var StubBaseView = function() {
-        this.showLoadError = function(msg) {};
-        this.toggleActionError = function(msg, step) {};
-        this.setUpCollapseExpand = function(sel) {};
-    };
-
     // Stubs
-    var baseView = null;
     var server = null;
+    var runtime = {};
 
     // View under test
     var view = null;
@@ -47,12 +40,10 @@ describe("OpenAssessment.GradeView", function() {
         // Create the stub server
         server = new StubServer();
 
-        // Create the stub base view
-        baseView = new StubBaseView();
-
         // Create and install the view
-        var el = $('#openassessment-base').get(0);
-        view = new OpenAssessment.GradeView(el, server, baseView);
+        var gradeElement = $('.step--grade').get(0);
+        var baseView = new OpenAssessment.BaseView(runtime, gradeElement, server, {});
+        view = new OpenAssessment.GradeView(gradeElement, server, baseView);
         view.installHandlers();
     });
 

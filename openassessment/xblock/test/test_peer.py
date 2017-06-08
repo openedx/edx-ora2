@@ -33,8 +33,54 @@ class TestPeerAssessment(XBlockHandlerTestCase):
 
     @scenario('data/over_grade_scenario.xml', user_id='Bob')
     def test_load_peer_student_view_with_dates(self, xblock):
+
+        self._sally_and_hal_grade_each_other_helper(xblock)
+
+        # If Over Grading is on, this should now return Sally or Hal's response to Bob.
+        student_item = xblock.get_student_item_dict()
+        submission = xblock.create_submission(student_item, (u"Bob's answer 1", u"Bob's answer 2"))
+        workflow_info = xblock.get_workflow_info()
+        self.assertEqual(workflow_info["status"], u'peer')
+
+        # Validate Submission Rendering.
+        request = namedtuple('Request', 'params')
+        request.params = {}
+        peer_response = xblock.render_peer_assessment(request)
+        self.assertIsNotNone(peer_response)
+        self.assertNotIn(submission["answer"]["parts"][0]["text"].encode('utf-8'), peer_response.body)
+        self.assertNotIn(submission["answer"]["parts"][1]["text"].encode('utf-8'), peer_response.body)
+
+        # Validate Peer Rendering.
+        self.assertTrue("Sally".encode('utf-8') in peer_response.body or
+                        "Hal".encode('utf-8') in peer_response.body)
+
+    @mock.patch('openassessment.xblock.workflow_mixin.WorkflowMixin.workflow_requirements')
+    @scenario('data/peer_assessment_scenario.xml', user_id='Sally')
+    def test_requirements_changed(self, xblock, mock_requirements):
+        """
+        Test to verify that if requirements change, student workflows are immediately updated to
+        reflect their done status with regards to the new requirements.
+        """
+        # Setup the peer grading scenario, using the default requirements
+        self._sally_and_hal_grade_each_other_helper(xblock)
+
+        # Verify that Sally's workflow is not marked done, as the requirements are higher than 1.
+        mock_requirements.return_value = {"peer": {"must_grade": 2, "must_be_graded_by": 2}}
+        workflow_info = xblock.get_workflow_info()
+        self.assertEqual(workflow_info["status"], u'peer')
+
+        # Now, change the requirements and verify that Sally's workflow updates to 'self' status.
+        mock_requirements.return_value = {"peer": {"must_grade": 1, "must_be_graded_by": 1}}
+        workflow_info = xblock.get_workflow_info()
+        self.assertEqual(workflow_info["status"], u'self')
+
+    def _sally_and_hal_grade_each_other_helper(self, xblock):
+        """
+        A helper method to set up 2 submissions, one for each of Sally and Hal, and then have each assess the other.
+        """
         student_item = xblock.get_student_item_dict()
 
+        # Sally submits a response.
         sally_student_item = copy.deepcopy(student_item)
         sally_student_item['student_id'] = "Sally"
         sally_submission = xblock.create_submission(sally_student_item, (u"Sally's answer 1", u"Sally's answer 2"))
@@ -70,23 +116,6 @@ class TestPeerAssessment(XBlockHandlerTestCase):
             1
         )
 
-        # If Over Grading is on, this should now return Sally or Hal's response to Bob.
-        submission = xblock.create_submission(student_item, (u"Bob's answer 1", u"Bob's answer 2"))
-        workflow_info = xblock.get_workflow_info()
-        self.assertEqual(workflow_info["status"], u'peer')
-
-        # Validate Submission Rendering.
-        request = namedtuple('Request', 'params')
-        request.params = {}
-        peer_response = xblock.render_peer_assessment(request)
-        self.assertIsNotNone(peer_response)
-        self.assertNotIn(submission["answer"]["parts"][0]["text"].encode('utf-8'), peer_response.body)
-        self.assertNotIn(submission["answer"]["parts"][1]["text"].encode('utf-8'), peer_response.body)
-
-        # Validate Peer Rendering.
-        self.assertTrue("Sally".encode('utf-8') in peer_response.body or
-            "Hal".encode('utf-8') in peer_response.body)
-
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_peer_assess_before_submission(self, xblock):
         # Submit a peer assessment without a submission
@@ -98,7 +127,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
     def test_peer_assess_without_leasing_submission(self, xblock):
         # Create a submission
         student_item = xblock.get_student_item_dict()
-        submission = xblock.create_submission(student_item, (u"Bob's answer 1", u"Bob's answer 2"))
+        xblock.create_submission(student_item, (u"Bob's answer 1", u"Bob's answer 2"))
 
         # Attempt to assess a peer without first leasing their submission
         # (usually occurs by rendering the peer assessment step)
@@ -257,7 +286,7 @@ class TestPeerAssessment(XBlockHandlerTestCase):
         self.assertIsNotNone(peer_response)
         self.assertNotIn(submission["answer"]["parts"][0]["text"].encode('utf-8'), peer_response.body)
         self.assertNotIn(submission["answer"]["parts"][1]["text"].encode('utf-8'), peer_response.body)
-        self.assertIn("Peer Assessments Complete", peer_response.body)
+        self.assertIn("You have successfully completed", peer_response.body)
 
 
 @ddt.ddt
@@ -275,12 +304,12 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         # No submission, so the peer step should be unavailable
         expected_context = {
             'graded': 0,
-            'estimated_time': '20 minutes',
             'submit_button_text': 'Submit your assessment & move to response #2',
             'rubric_criteria': xblock.rubric_criteria,
             'must_grade': 5,
             'review_num': 1,
             'allow_latex': False,
+            'time_zone': pytz.utc,
         }
         self._assert_path_and_context(
             xblock, 'openassessmentblock/peer/oa_peer_unavailable.html', expected_context
@@ -291,12 +320,12 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         expected_context = {
             'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
             'graded': 0,
-            'estimated_time': '20 minutes',
             'submit_button_text': 'Submit your assessment & move to response #2',
             'rubric_criteria': xblock.rubric_criteria,
             'must_grade': 5,
             'review_num': 1,
             'allow_latex': False,
+            'time_zone': pytz.utc,
         }
         self._assert_path_and_context(
             xblock, 'openassessmentblock/peer/oa_peer_closed.html', expected_context
@@ -307,12 +336,12 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         expected_context = {
             'peer_start': dt.datetime(2999, 1, 1).replace(tzinfo=pytz.utc),
             'graded': 0,
-            'estimated_time': '20 minutes',
             'submit_button_text': 'Submit your assessment & move to response #2',
             'rubric_criteria': xblock.rubric_criteria,
             'must_grade': 5,
             'review_num': 1,
             'allow_latex': False,
+            'time_zone': pytz.utc,
         }
         self._assert_path_and_context(
             xblock, 'openassessmentblock/peer/oa_peer_unavailable.html', expected_context
@@ -326,12 +355,12 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         # Expect to be in the waiting for peers state
         expected_context = {
             'graded': 0,
-            'estimated_time': '20 minutes',
             'rubric_criteria': xblock.rubric_criteria,
             'must_grade': 5,
             'review_num': 1,
             'submit_button_text': 'submit your assessment & move to response #2',
             'allow_latex': False,
+            'time_zone': pytz.utc,
         }
         self._assert_path_and_context(
             xblock, 'openassessmentblock/peer/oa_peer_waiting.html',
@@ -363,7 +392,6 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         # We should pull the other student's submission
         expected_context = {
             'graded': 0,
-            'estimated_time': '20 minutes',
             'rubric_criteria': xblock.rubric_criteria,
             'must_grade': 5,
             'review_num': 1,
@@ -372,6 +400,7 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             'peer_file_url': '',
             'submit_button_text': 'submit your assessment & move to response #2',
             'allow_latex': False,
+            'time_zone': pytz.utc,
         }
         self._assert_path_and_context(
             xblock, 'openassessmentblock/peer/oa_peer_assessment.html',
@@ -386,12 +415,12 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
 
         expected_context = {
             'graded': 0,
-            'estimated_time': '20 minutes',
             'rubric_criteria': xblock.rubric_criteria,
             'must_grade': 5,
             'review_num': 1,
             'submit_button_text': 'submit your assessment & move to response #2',
             'allow_latex': False,
+            'time_zone': pytz.utc,
         }
 
         self._assert_path_and_context(
@@ -410,12 +439,12 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         expected_context = {
             'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
             'graded': 0,
-            'estimated_time': '20 minutes',
             'rubric_criteria': xblock.rubric_criteria,
             'must_grade': 5,
             'review_num': 1,
             'submit_button_text': 'submit your assessment & move to response #2',
             'allow_latex': False,
+            'time_zone': pytz.utc,
         }
         self._assert_path_and_context(
             xblock, 'openassessmentblock/peer/oa_peer_closed.html',
@@ -446,12 +475,12 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         expected_context = {
             'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
             'graded': 0,
-            'estimated_time': '20 minutes',
             'rubric_criteria': xblock.rubric_criteria,
             'must_grade': 5,
             'review_num': 1,
             'submit_button_text': 'submit your assessment & move to response #2',
             'allow_latex': False,
+            'time_zone': pytz.utc,
         }
         self._assert_path_and_context(
             xblock, 'openassessmentblock/peer/oa_peer_closed.html',
@@ -474,12 +503,12 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         expected_context = {
             'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
             'graded': 0,
-            'estimated_time': '20 minutes',
             'submit_button_text': 'submit your assessment & move to response #2',
             'rubric_criteria': xblock.rubric_criteria,
             'must_grade': 5,
             'review_num': 1,
             'allow_latex': False,
+            'time_zone': pytz.utc,
         }
 
         self._assert_path_and_context(
@@ -505,14 +534,14 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         # Continued grading should still be available,
         # but since there are no other submissions, we're in the waiting state.
         expected_context = {
-            'estimated_time': '20 minutes',
-             'graded': 0,
-             'must_grade': 5,
-             'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
-             'review_num': 1,
-             'rubric_criteria': xblock.rubric_criteria,
-             'submit_button_text': 'Submit your assessment & review another response',
-             'allow_latex': False,
+            'graded': 0,
+            'must_grade': 5,
+            'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
+            'review_num': 1,
+            'rubric_criteria': xblock.rubric_criteria,
+            'submit_button_text': 'Submit your assessment & review another response',
+            'allow_latex': False,
+            'time_zone': pytz.utc,
         }
         self._assert_path_and_context(
             xblock, 'openassessmentblock/peer/oa_peer_turbo_mode_waiting.html',
@@ -533,17 +562,17 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         )
 
         expected_context = {
-            'estimated_time': '20 minutes',
-             'graded': 0,
-             'must_grade': 5,
-             'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
-             'peer_submission': create_submission_dict(submission, xblock.prompts),
-             'file_upload_type': None,
-             'peer_file_url': '',
-             'review_num': 1,
-             'rubric_criteria': xblock.rubric_criteria,
-             'submit_button_text': 'Submit your assessment & review another response',
-             'allow_latex': False,
+            'graded': 0,
+            'must_grade': 5,
+            'peer_due': dt.datetime(2000, 1, 1).replace(tzinfo=pytz.utc),
+            'peer_submission': create_submission_dict(submission, xblock.prompts),
+            'file_upload_type': None,
+            'peer_file_url': '',
+            'review_num': 1,
+            'rubric_criteria': xblock.rubric_criteria,
+            'submit_button_text': 'Submit your assessment & review another response',
+            'allow_latex': False,
+            'time_zone': pytz.utc,
         }
         self._assert_path_and_context(
             xblock, 'openassessmentblock/peer/oa_peer_turbo_mode.html',
@@ -559,13 +588,13 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
         # Bugfix: This used to cause a KeyError when students would click "Peer Assessment"
         # (indicating "continued grading") before making a submission.
         expected_context = {
-            'estimated_time': '20 minutes',
             'graded': 0,
             'must_grade': 5,
             'review_num': 1,
             'rubric_criteria': xblock.rubric_criteria,
             'submit_button_text': 'Submit your assessment & review another response',
             'allow_latex': False,
+            'time_zone': pytz.utc,
         }
         self._assert_path_and_context(
             xblock, 'openassessmentblock/peer/oa_peer_unavailable.html',
@@ -609,6 +638,7 @@ class TestPeerAssessmentRender(XBlockHandlerTestCase):
             mock_finished.return_value = (was_graded_enough, 1)
             path, context = xblock.peer_path_and_context(continue_grading)
 
+        expected_context['xblock_id'] = xblock.scope_ids.usage_id
         self.assertEqual(path, expected_path)
         self.assertItemsEqual(context, expected_context)
 
@@ -650,7 +680,7 @@ class TestPeerAssessHandler(XBlockHandlerTestCase):
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_peer_assess_handler(self, xblock):
         # Submit a peer assessment
-        submission_uuid, assessment = self._submit_peer_assessment(xblock, 'Sally', 'Bob', self.ASSESSMENT)
+        submission_uuid, assessment = self._submit_peer_assessment(xblock, u'Sally', u'Bob', self.ASSESSMENT)
 
         # Check that the stored assessment matches what we expect
         self.assertEqual(assessment['submission_uuid'], submission_uuid)
@@ -666,10 +696,12 @@ class TestPeerAssessHandler(XBlockHandlerTestCase):
         self.assertEqual(parts[1]['option']['criterion']['name'], u'𝓒𝓸𝓷𝓬𝓲𝓼𝓮')
         self.assertEqual(parts[1]['option']['name'], u'ﻉซƈﻉɭɭﻉกՇ')
 
+        self.assert_assessment_event_published(xblock, 'openassessmentblock.peer_assess', assessment)
+
     @scenario('data/feedback_per_criterion.xml', user_id='Bob')
     def test_peer_assess_feedback(self, xblock):
         # Submit a peer assessment
-        _, assessment = self._submit_peer_assessment(xblock, 'Sally', 'Bob', self.ASSESSMENT)
+        _, assessment = self._submit_peer_assessment(xblock, u'Sally', u'Bob', self.ASSESSMENT)
 
         # Retrieve the assessment and check the feedback
         self.assertEqual(assessment['feedback'], self.ASSESSMENT['overall_feedback'])
@@ -683,7 +715,7 @@ class TestPeerAssessHandler(XBlockHandlerTestCase):
     def test_peer_assess_send_unsolicited_criterion_feedback(self, xblock):
         # Submit an assessment containing per-criterion feedback,
         # even though the rubric in this scenario has per-criterion feedback disabled.
-        _, assessment = self._submit_peer_assessment(xblock, 'Sally', 'Bob', self.ASSESSMENT)
+        _, assessment = self._submit_peer_assessment(xblock, u'Sally', u'Bob', self.ASSESSMENT)
 
         # Expect that per-criterion feedback were ignored
         for part in assessment['parts']:
@@ -697,7 +729,7 @@ class TestPeerAssessHandler(XBlockHandlerTestCase):
             'criterion_feedback': {u'𝖋𝖊𝖊𝖉𝖇𝖆𝖈𝖐 𝖔𝖓𝖑𝖞': u'Ṫḧïṡ ïṡ ṡöṁë ḟëëḋḅäċḳ'},
             'overall_feedback': u''
         }
-        _, assessment = self._submit_peer_assessment(xblock, 'Sally', 'Bob', assessment_dict)
+        _, assessment = self._submit_peer_assessment(xblock, u'Sally', u'Bob', assessment_dict)
 
         # Check the assessment for the criterion that has options
         self.assertEqual(assessment['parts'][0]['criterion']['name'], 'vocabulary')
@@ -714,8 +746,8 @@ class TestPeerAssessHandler(XBlockHandlerTestCase):
         # Submit a peer assessment
         assessment = self._submit_peer_assessment(
             xblock,
-            'Sally',
-            'Bob',
+            u'Sally',
+            u'Bob',
             self.ASSESSMENT_WITH_INVALID_SUBMISSION_UUID,
             expect_failure=True,
         )
@@ -727,7 +759,7 @@ class TestPeerAssessHandler(XBlockHandlerTestCase):
         # Submit an assessment, but mutate the options selected so they do NOT match the rubric
         # Expect a failure response
         self._submit_peer_assessment(
-            xblock, 'Sally', 'Bob', self.ASSESSMENT_WITH_INVALID_OPTION,
+            xblock, u'Sally', u'Bob', self.ASSESSMENT_WITH_INVALID_OPTION,
             expect_failure=True
         )
 
@@ -735,19 +767,19 @@ class TestPeerAssessHandler(XBlockHandlerTestCase):
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_peer_api_request_error(self, xblock, mock_api):
         mock_api.create_assessment.side_effect = peer_api.PeerAssessmentRequestError
-        self._submit_peer_assessment(xblock, "Sally", "Bob", self.ASSESSMENT, expect_failure=True)
+        self._submit_peer_assessment(xblock, u"Sally", u"Bob", self.ASSESSMENT, expect_failure=True)
 
     @mock.patch('openassessment.xblock.peer_assessment_mixin.peer_api')
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_peer_api_internal_error(self, xblock, mock_api):
         mock_api.create_assessment.side_effect = peer_api.PeerAssessmentInternalError
-        self._submit_peer_assessment(xblock, "Sally", "Bob", self.ASSESSMENT, expect_failure=True)
+        self._submit_peer_assessment(xblock, u"Sally", u"Bob", self.ASSESSMENT, expect_failure=True)
 
     @mock.patch('openassessment.xblock.workflow_mixin.workflow_api.update_from_assessments')
     @scenario('data/peer_assessment_scenario.xml', user_id='Bob')
     def test_peer_api_workflow_error(self, xblock, mock_call):
         mock_call.side_effect = workflow_api.AssessmentWorkflowInternalError
-        self._submit_peer_assessment(xblock, "Sally", "Bob", self.ASSESSMENT, expect_failure=True)
+        self._submit_peer_assessment(xblock, u"Sally", u"Bob", self.ASSESSMENT, expect_failure=True)
 
     def _submit_peer_assessment(self, xblock, student_id, scorer_id, assessment, expect_failure=False):
         """
@@ -792,5 +824,5 @@ class TestPeerAssessHandler(XBlockHandlerTestCase):
             self.assertTrue(resp['success'])
 
             # Retrieve the peer assessment
-            retrieved_assessment = peer_api.get_assessments(submission['uuid'], scored_only=False)[0]
+            retrieved_assessment = peer_api.get_assessments(submission['uuid'])[0]
             return submission['uuid'], retrieved_assessment

@@ -1,0 +1,181 @@
+{% load i18n %}
+{% load tz %}
+<div class="openassessment__staff-area wrapper--staff-area">
+
+    <div class="wrapper--staff-toolbar">
+        <button class="ui-staff__button button-staff-tools" aria-expanded="false" data-panel="openassessment__staff-tools">{% trans "Manage Individual Learners" %}</button>
+        <button class="ui-staff__button button-staff-info" aria-expanded="false" data-panel="openassessment__staff-info">{% trans "View Assignment Statistics" %}</button>
+        {% if staff_assessment_required %}
+            <button class="ui-staff__button button-staff-grading" aria-expanded="false" data-panel="openassessment__staff-grading">{% trans "Grade Available Responses" %}</button>
+        {% endif %}
+    </div>
+
+    <div class="openassessment__staff-tools wrapper--staff-tools wrapper--ui-staff">
+        <div class="staff-info ui-staff">
+            <button class="ui-staff_close_button ui-staff__title"><span class="sr">{% trans "Close" %}</span> <span class="icon fa fa-close" aria-hidden="true"></span></button>
+            <h2 class="staff-info__title ui-staff__title">
+                <span class="staff-info__title__copy">{% trans "Manage Individual Learners" %}</span>
+            </h2>
+
+            <div class="staff-info__content ui-staff__content">
+
+                <div class="staff-info__student">
+                    <div class="wrapper--input" class="staff-info__student__form">
+                        <form class="openassessment_student_info_form">
+                            <div class="form--error" tabindex="-1"></div>
+                            <label class="label">{% trans "Enter an individual learner's username or email" %}
+                                <input type="text" class="openassessment__student_username value" maxlength="255">
+                            </label>
+                            <button class="action--submit action--submit-username"><span class="copy">{% trans "Submit" %}</span></button>
+                            <div class="student-form-error"></div>
+                        </form>
+                    </div>
+                    <div class="openassessment__student-info staff-info__student__report"></div>
+                </div>
+
+                {% if display_schedule_training %}
+                    <div class="staff-info__classifierset ui-staff__content__section">
+                        {% if classifierset %}
+                            <table class="staff-info__classifierset__table">
+                                <caption class="title">{% trans "Classifier set" %}</caption>
+                                <thead>
+                                <th abbr="Field" scope="col">{% trans "Field" %}</th>
+                                <th abbr="Value" scope="col">{% trans "Value" %}</th>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class="value">{% trans "Created at" %}</td>
+                                    <td class="value">{{ classifierset.created_at }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="value">{% trans "Algorithm ID" %}</td>
+                                    <td class="value">{{ classifierset.algorithm_id }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="value">{% trans "Course ID" %}</td>
+                                    <td class="value">{{ classifierset.course_id }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="value">{% trans "Item ID" %}</td>
+                                    <td class="value">{{ classifierset.item_id }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        {% else %}
+                            {% trans "No classifiers are available for this problem" %}
+                        {% endif %}
+                    </div>
+
+                    <div class="staff-info__status ui-staff__content__section">
+                        <button class="action--submit action--submit-training">{% trans "Schedule Example-Based Assessment Training" %}</button>
+                        <div class="schedule_training_message"></div>
+                    </div>
+                {% endif %}
+
+                {% if display_reschedule_unfinished_tasks %}
+                    <div class="staff-info__status ui-staff__content__section">
+                        <button class="action--submit action--submit-unfinished-tasks">{% trans "Reschedule All Unfinished Example-Based Assessment Grading Tasks" %}</button>
+                        <div class="reschedule_unfinished_tasks_message"></div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="openassessment__staff-info wrapper--staff-info wrapper--ui-staff">
+        <div class="staff-info ui-staff">
+            <button class="ui-staff_close_button ui-staff__title"><span class="sr">{% trans "Close" %}</span> <span class="icon fa fa-close" aria-hidden="true"></span></button>
+            <h2 class="staff-info__title ui-staff__title">
+                <span class="staff-info__title__copy">{% trans "View Assignment Statistics" %}</span>
+            </h2>
+
+            <div class="staff-info__content ui-staff__content">
+
+                <div class="staff-info__summary ui-staff__content__section">
+                    <dl class="submissions--total">
+                        <dt class="label">{% trans "Response total" %}:</dt>
+                        <dd class="value">{{ num_submissions }}</dd>
+                    </dl>
+                </div>
+
+                <div class="staff-info__status ui-staff__content__section">
+                    {% trans "Location" %}: {{ item_id }}
+                </div>
+
+                <div class="staff-info__status ui-staff__content__section">
+                    <table class="staff-info__status__table">
+
+                        <caption class="title">{% trans "Learner Progress" %}</caption>
+
+                        <thead>
+                        <tr>
+                            <th abbr="Step" scope="col">{% trans "Problem Step" %}</th>
+                            <th abbr="# of Learners" scope="col">{% trans "Active Learners in Step" %}</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for item in status_counts %}
+                            <tr>
+                                <td class="label">{{ item.status }}</td>
+                                <td class="value">{{ item.count }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="staff-info__status ui-staff__content__section">
+                    <table class="staff-info__status__table">
+
+                        <caption class="title">{% trans "Dates" %}</caption>
+
+                        <thead>
+                        <tr>
+                            <th abbr="Problem Step" scope="col">{% trans "Problem Step" %}</th>
+                            <th abbr="Release" scope="col">{% trans "Release Date" %}</th>
+                            <th abbr="Due" scope="col">{% trans "Due Date" %}</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for item in step_dates %}
+                            <tr>
+                                <td class="label">{{ item.step }}</td>
+
+                                {% if item.start %}
+                                    <td class="value">{{ item.start|utc|date:"N j, Y H:i e" }}</td>
+                                {% else %}
+                                    <td class="value">{% trans "N/A" %}</td>
+                                {% endif %}
+
+                                {% if item.due %}
+                                    <td class="value">{{ item.due|utc|date:"N j, Y H:i e" }}</td>
+                                {% else %}
+                                    <td class="value">{% trans "N/A" %}</td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if staff_assessment_required %}
+    <div class="openassessment__staff-grading wrapper--staff-grading wrapper--ui-staff">
+        <div class="staff-grading ui-staff">
+            <button class="ui-staff_close_button ui-staff__title"><span class="sr">{% trans "Close" %}</span> <span class="icon fa fa-close" aria-hidden="true"></span></button>
+            <h2 class="staff-grading__title ui-staff__title">
+                <span class="staff-info__title__copy">{% trans "Grade Available Responses" %}</span>
+            </h2>
+
+            <div class="staff-info__content ui-staff__content">
+                {% include "openassessmentblock/staff_area/oa_staff_grade_learners.html" with staff_assessment_ungraded=staff_assessment_ungraded %}
+            </div>
+
+        </div>
+    </div>
+    {% endif %}
+</div>

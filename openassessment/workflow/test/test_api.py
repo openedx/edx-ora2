@@ -3,7 +3,6 @@ from django.test.utils import override_settings
 import ddt
 from mock import patch
 from nose.tools import raises
-from openassessment.assessment.models import PeerWorkflow
 
 from openassessment.test_utils import CacheResetTest
 
@@ -11,11 +10,12 @@ from submissions.models import Submission
 import openassessment.workflow.api as workflow_api
 from openassessment.assessment.api import ai as ai_api
 from openassessment.assessment.errors import AIError
-from openassessment.assessment.models import StudentTrainingWorkflow
+from openassessment.assessment.models import PeerWorkflow, StudentTrainingWorkflow
 import submissions.api as sub_api
 from openassessment.assessment.api import peer as peer_api
 from openassessment.assessment.api import self as self_api
-from openassessment.workflow.models import AssessmentWorkflow
+from openassessment.assessment.api import staff as staff_api
+from openassessment.workflow.models import AssessmentWorkflow, AssessmentApiLoadError
 from openassessment.workflow.errors import AssessmentWorkflowInternalError
 
 
@@ -254,6 +254,39 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         submission = sub_api.create_submission(ITEM_1, ANSWER_2)
         workflow_api.create_workflow(submission["uuid"], ["peer", "self"], ON_INIT_PARAMS)
 
+    @patch.object(staff_api, 'get_score')
+    @patch.object(PeerWorkflow.objects, 'get')
+    def test_no_peer_assessment_error_handled(self, mock_get_workflow, mock_get_staff_score):
+        """
+        Tests to verify that, given a problem that requires the peer step and a submission associated with a workflow
+        that has no assessments, an overriding staff score will push the workflow into the done state and not crash
+        when there are no assessments in the "completed" peer step.
+        """
+        mock_get_workflow.raises = PeerWorkflow.DoesNotExist
+        mock_get_staff_score.return_value = {
+            "points_earned": 10,
+            "points_possible": 10,
+            "contributing_assessments": 123,
+            "staff_id": "staff 1",
+        }
+        _, submission = self._create_workflow_with_status(
+            "user 1",
+            "test/1/1",
+            "peer-problem",
+            "peer",
+            steps=["peer"]
+        )
+        workflow_api.update_from_assessments(
+            submission["uuid"],
+            {
+                "peer": {
+                    "must_grade": 5,
+                    "must_be_graded_by": 3
+                }
+            },
+            override_submitter_requirements=True
+        )
+
     @patch.object(AssessmentWorkflow.objects, 'get')
     @ddt.file_data('data/assessments.json')
     @raises(workflow_api.AssessmentWorkflowInternalError)
@@ -277,6 +310,30 @@ class TestAssessmentWorkflowApi(CacheResetTest):
         submission = sub_api.create_submission(ITEM_1, "We talk TV!")
         workflow = workflow_api.create_workflow(submission["uuid"], data["steps"], ON_INIT_PARAMS)
         workflow_api.get_workflow_for_submission(workflow["uuid"], {})
+
+    def test_preexisting_workflow(self):
+        """
+        Verifies that even if a workflow does not go through start_workflow, it won't blow up.
+        update_from_assessments() will go through _get_steps(), and add a staff step to the workflow
+        even if it was created without one initially.
+        """
+        submission = sub_api.create_submission({
+            "student_id": "test student",
+            "course_id": "test course",
+            "item_id": "test item",
+            "item_type": "openassessment",
+        }, "test answer")
+
+        # Create the model object directly, bypassing start_workflow()
+        workflow = AssessmentWorkflow.objects.create(
+            submission_uuid=submission["uuid"],
+            status=AssessmentWorkflow.STATUS.waiting,
+            course_id="test course",
+            item_id="test item"
+        )
+
+        # This call will throw exceptions if the workflow is in an invalid state
+        workflow_api.update_from_assessments(submission["uuid"], {})
 
     def test_get_status_counts(self):
         # Initially, the counts should all be zero
@@ -360,16 +417,6 @@ class TestAssessmentWorkflowApi(CacheResetTest):
 
         with self.assertRaises(AssessmentWorkflowInternalError):
             workflow_api.create_workflow(submission['uuid'], ['self'], ON_INIT_PARAMS)
-
-        AssessmentWorkflow.objects.create(
-            submission_uuid=submission['uuid'],
-            status=AssessmentWorkflow.STATUS.waiting,
-            course_id=ITEM_1['course_id'],
-            item_id=ITEM_1['item_id']
-        )
-
-        with self.assertRaises(AssessmentWorkflowInternalError):
-            workflow_api.update_from_assessments(submission['uuid'], {})
 
     def test_cancel_the_assessment_workflow(self):
         # Create the submission and assessment workflow.

@@ -21,17 +21,8 @@ describe("OpenAssessment.SelfView", function() {
         };
     };
 
-    // Stub base view
-    var StubBaseView = function() {
-        this.showLoadError = function(msg) {};
-        this.toggleActionError = function(msg, step) {};
-        this.setUpCollapseExpand = function(sel) {};
-        this.loadAssessmentModules = function() {};
-        this.scrollToTop = function() {};
-    };
-
     // Stubs
-    var baseView = null;
+    var runtime = {};
     var server = null;
 
     // View under test
@@ -43,14 +34,17 @@ describe("OpenAssessment.SelfView", function() {
 
         // Create a new stub server
         server = new StubServer();
-
-        // Create the stub base view
-        baseView = new StubBaseView();
+        server.renderLatex = jasmine.createSpy('renderLatex');
 
         // Create the object under test
-        var el = $("#openassessment").get(0);
-        view = new OpenAssessment.SelfView(el, server, baseView);
+        var assessmentElement = $(".step--self-assessment").get(0);
+        var baseView = new OpenAssessment.BaseView(runtime, assessmentElement, server, {});
+        view = new OpenAssessment.SelfView(assessmentElement, server, baseView);
         view.installHandlers();
+    });
+
+    afterEach(function() {
+        OpenAssessment.clearUnsavedChanges();
     });
 
     it("Sends a self assessment to the server", function() {
@@ -91,5 +85,34 @@ describe("OpenAssessment.SelfView", function() {
 
         // Expect the submit button to have been re-enabled
         expect(view.selfSubmitEnabled()).toBe(true);
+    });
+
+    it("warns of unsubmitted assessments", function() {
+
+        expect(view.baseView.unsavedWarningEnabled()).toBe(false);
+
+        // Click on radio buttons, to create unsubmitted changes.
+        $('.question__answers', view.el).each(function() {
+            $('input[type="radio"]', this).first().click();
+        });
+
+        expect(view.baseView.unsavedWarningEnabled()).toBe(true);
+
+        // When selfAssess is executed, the views will all re-render. However,
+        // as the test does not mock out the surrounding elements, the re-render
+        // of the self assessment module will keep the original HTML intact (with selected
+        // options), causing the unsavedWarnings callback to be triggered again (after it is properly
+        // cleared during the submit operation). To avoid this, have the view re-render fail.
+        server.render = function() {
+            return $.Deferred(
+                function(defer) {
+                    defer.fail();
+                }
+            ).promise();
+        };
+
+        view.selfAssess();
+
+        expect(view.baseView.unsavedWarningEnabled()).toBe(false);
     });
 });

@@ -312,6 +312,18 @@ describe("OpenAssessment.Server", function() {
         });
     });
 
+    it("verifies that publishing an event submits the correct data to the backend", function() {
+        stubAjax(true, {success: true});
+        server.publishEvent('test_event_name', {'key': 'test_data'});
+
+        expect($.ajax).toHaveBeenCalledWith({
+            url: '/publish_event',
+            type: 'POST',
+            data: JSON.stringify({'key': 'test_data', 'event_name': 'test_event_name'}),
+            contentType: jsonContentType
+        });
+    });
+
     it("informs the caller of an Ajax error when rendering as HTML", function() {
         stubAjax(false, null);
 

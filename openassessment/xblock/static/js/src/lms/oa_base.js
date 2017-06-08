@@ -20,45 +20,101 @@ OpenAssessment.BaseView = function(runtime, element, server, data) {
     this.trainingView = new OpenAssessment.StudentTrainingView(this.element, this.server, this);
     this.selfView = new OpenAssessment.SelfView(this.element, this.server, this);
     this.peerView = new OpenAssessment.PeerView(this.element, this.server, this);
+    this.staffView = new OpenAssessment.StaffView(this.element, this.server, this);
     this.gradeView = new OpenAssessment.GradeView(this.element, this.server, this);
     this.leaderboardView = new OpenAssessment.LeaderboardView(this.element, this.server, this);
     this.messageView = new OpenAssessment.MessageView(this.element, this.server, this);
     // Staff-only area with information and tools for managing student submissions
     this.staffAreaView = new OpenAssessment.StaffAreaView(this.element, this.server, this);
+    this.usageID = '';
+};
+
+if (typeof OpenAssessment.unsavedChanges === 'undefined' || !OpenAssessment.unsavedChanges) {
+    OpenAssessment.unsavedChanges = {};
+}
+
+// This is used by unit tests to reset state.
+OpenAssessment.clearUnsavedChanges = function() {
+    OpenAssessment.unsavedChanges = {};
+    window.onbeforeunload = null;
 };
 
 OpenAssessment.BaseView.prototype = {
 
+    IS_SHOWING_CLASS: "is--showing",
+    SLIDABLE_CLASS: "ui-slidable",
+    SLIDABLE_CONTENT_CLASS: "ui-slidable__content",
+    SLIDABLE_CONTROLS_CLASS: "ui-slidable__control",
+    SLIDABLE_CONTAINER_CLASS: "ui-slidable__container",
+
     /**
      * Checks to see if the scrollTo function is available, then scrolls to the
-     * top of the list of steps for this display.
+     * top of the list of steps (or the specified selector) for this display.
      *
      * Ideally, we would not need to check if the function exists, and could
      * import scrollTo, or other dependencies, into workbench.
+     *
+     * @param {string} selector optional CSS selector to scroll to. If not supplied,
+     *     the default value of ".openassessment__steps" is used.
      */
-    scrollToTop: function() {
+    scrollToTop: function(selector) {
+        if (!selector) {
+            selector = ".openassessment__steps";
+        }
         if ($.scrollTo instanceof Function) {
-            $(window).scrollTo($("#openassessment__steps", this.element), 800, {offset: -50});
+            $(window).scrollTo($(selector, this.element), 800, {offset: -50});
+            $(selector + " > header ." + this.SLIDABLE_CLASS, this.element).focus();
         }
     },
 
     /**
-    Install click handlers to expand/collapse a section.
+     * Install click handlers to expand/collapse a section.
+     *
+     * @param {element} parentElement JQuery selector for the container element.
+     */
+    setUpCollapseExpand: function(parentElement) {
+        var view = this;
 
-    Args:
-        parentSel (JQuery selector): CSS selector for the container element.
-    **/
-    setUpCollapseExpand: function(parentSel) {
-        parentSel.on('click', '.ui-toggle-visibility__control', function(eventData) {
-                var sel = $(eventData.target).closest('.ui-toggle-visibility');
-                sel.toggleClass('is--collapsed');
-            }
-        );
+        $('.' + view.SLIDABLE_CONTROLS_CLASS, parentElement).each(function() {
+            $(this).on("click", function(event) {
+                event.preventDefault();
+
+                var $slidableControl = $(event.target).closest('.' + view.SLIDABLE_CONTROLS_CLASS);
+
+                var $container = $slidableControl.closest('.' + view.SLIDABLE_CONTAINER_CLASS);
+                var $toggleButton = $slidableControl.find('.' + view.SLIDABLE_CLASS);
+                var $panel = $slidableControl.next('.' + view.SLIDABLE_CONTENT_CLASS);
+
+                if ($container.hasClass('is--showing')) {
+                    $panel.slideUp();
+                    $toggleButton.attr('aria-expanded', 'false');
+                    $container.removeClass('is--showing');
+                } else if (!$container.hasClass('has--error') &&
+                    !$container.hasClass('is--empty') &&
+                    !$container.hasClass('is--unavailable')) {
+                    $panel.slideDown();
+                    $toggleButton.attr('aria-expanded', 'true');
+                    $container.addClass('is--showing');
+                }
+
+                $container.removeClass('is--initially--collapsed ');
+            });
+        });
     },
 
     /**
-     Asynchronously load each sub-view into the DOM.
-     **/
+     * Get usage key of an XBlock.
+     */
+    getUsageID: function() {
+        if (!this.usageID) {
+            this.usageID = $(this.element).data('usage-id');
+        }
+        return this.usageID;
+    },
+
+    /**
+     * Asynchronously load each sub-view into the DOM.
+     */
     load: function() {
         this.responseView.load();
         this.loadAssessmentModules();
@@ -66,15 +122,16 @@ OpenAssessment.BaseView.prototype = {
     },
 
     /**
-     Refresh the Assessment Modules. This should be called any time an action is
-     performed by the user.
-     **/
-    loadAssessmentModules: function() {
-        this.trainingView.load();
-        this.peerView.load();
-        this.selfView.load();
-        this.gradeView.load();
-        this.leaderboardView.load();
+     * Refresh the Assessment Modules. This should be called any time an action is
+     * performed by the user.
+     */
+    loadAssessmentModules: function(usageID) {
+        this.trainingView.load(usageID);
+        this.peerView.load(usageID);
+        this.staffView.load(usageID);
+        this.selfView.load(usageID);
+        this.gradeView.load(usageID);
+        this.leaderboardView.load(usageID);
         /**
         this.messageView.load() is intentionally omitted.
         Because of the asynchronous loading, there is no way to tell (from the perspective of the
@@ -91,21 +148,20 @@ OpenAssessment.BaseView.prototype = {
     },
 
     /**
-    Refresh the message only (called by PeerView to update and avoid race condition)
-    **/
+     * Refresh the message only (called by PeerView to update and avoid race condition)
+     */
     loadMessageView: function() {
         this.messageView.load();
     },
 
     /**
-    Report an error to the user.
-
-    Args:
-        type (str): Which type of error.  Options are "save", submit", "peer", and "self".
-        msg (str or null): The error message to display.
-            If null, hide the error message (with one exception: loading errors are never hidden once displayed)
-    **/
-    toggleActionError: function(type, msg) {
+     * Report an error to the user.
+     *
+     * @param {string} type The type of error. Options are "save", submit", "peer", and "self".
+     * @param {string} message The error message to display, or if null hide the message.
+     *     Note: loading errors are never hidden once displayed.
+     */
+    toggleActionError: function(type, message) {
         var element = this.element;
         var container = null;
         if (type === 'save') {
@@ -118,34 +174,107 @@ OpenAssessment.BaseView.prototype = {
             container = '.submission__feedback__actions';
         }
         else if (type === 'upload') {
-            container = '#upload__error';
+            container = '.upload__error';
         }
 
         // If we don't have anywhere to put the message, just log it to the console
         if (container === null) {
-            if (msg !== null) { console.log(msg); }
+            if (message !== null) { console.log(message); }
         }
 
         else {
             // Insert the error message
-            var msgHtml = (msg === null) ? "" : msg;
-            $(container + " .message__content", element).html('<p>' + msgHtml + '</p>');
+            $(container + " .message__content", element).html('<p>' + (message ? _.escape(message) : "") + '</p>');
             // Toggle the error class
-            $(container, element).toggleClass('has--error', msg !== null);
+            $(container, element).toggleClass('has--error', message !== null);
+            // Send focus to the error message
+            $(container + " > .message", element).focus();
         }
     },
 
     /**
-    Report an error loading a step.
+     * Report an error loading a step.
+     *
+     * @param {string} stepName The step that could not be loaded.
+     * @param {string} errorMessage An optional error message to use instead of the default.
+     */
+    showLoadError: function(stepName, errorMessage) {
+        if (!errorMessage) {
+            errorMessage = gettext('Unable to load');
+        }
+        var $container = $('.step--' + stepName);
+        $container.toggleClass('has--error', true);
+        $container.removeClass('is--showing');
+        $container.find('.ui-slidable').attr('aria-expanded', 'false');
+        $container.find('.step__status__value i').removeClass().addClass('icon fa fa-exclamation-triangle');
+        $container.find('.step__status__value .copy').html(_.escape(errorMessage));
+    },
 
-    Args:
-        step (str): the step that could not be loaded.
-    **/
-    showLoadError: function(step) {
-        var container = '#openassessment__' + step;
-        $(container).toggleClass('has--error', true);
-        $(container + ' .step__status__value i').removeClass().addClass('icon fa fa-exclamation-triangle');
-        $(container + ' .step__status__value .copy').html(gettext('Unable to Load'));
+    /**
+     * Enable/disable the "navigate away" warning to alert the user of unsaved changes.
+     *
+     * @param {boolean} enabled If specified, set whether the warning is enabled.
+     * @param {string} key A unique key related to the type of unsaved changes. Must be supplied
+     * if "enabled" is also supplied.
+     * @param {string} message The message to show if navigating away with unsaved changes. Only needed
+     * if "enabled" is true.
+     * @returns {boolean} Whether the warning is enabled (only if "enabled" argument is not supplied).
+     */
+    unsavedWarningEnabled: function(enabled, key, message) {
+        if (typeof enabled === 'undefined') {
+            return (window.onbeforeunload !== null);
+        }
+        else {
+            // To support multiple ORA XBlocks on the same page, store state by XBlock usage-id.
+            var usageID = $(this.element).data("usage-id");
+            if (enabled) {
+                if (typeof OpenAssessment.unsavedChanges[usageID] === 'undefined' ||
+                    !OpenAssessment.unsavedChanges[usageID]) {
+                    OpenAssessment.unsavedChanges[usageID] = {};
+                }
+                OpenAssessment.unsavedChanges[usageID][key] = message;
+                window.onbeforeunload = function() {
+                    for (var xblockUsageID in OpenAssessment.unsavedChanges) {
+                        if (OpenAssessment.unsavedChanges.hasOwnProperty(xblockUsageID)) {
+                            for (var key in OpenAssessment.unsavedChanges[xblockUsageID]) {
+                                if (OpenAssessment.unsavedChanges[xblockUsageID].hasOwnProperty(key)) {
+                                    return OpenAssessment.unsavedChanges[xblockUsageID][key];
+                                }
+                            }
+                        }
+                    }
+                };
+            }
+            else {
+                if (typeof OpenAssessment.unsavedChanges[usageID] !== 'undefined') {
+                    delete OpenAssessment.unsavedChanges[usageID][key];
+                    if ($.isEmptyObject(OpenAssessment.unsavedChanges[usageID])) {
+                        delete OpenAssessment.unsavedChanges[usageID];
+                    }
+                    if ($.isEmptyObject(OpenAssessment.unsavedChanges)) {
+                        window.onbeforeunload = null;
+                    }
+                }
+            }
+        }
+    },
+
+    /**
+     * Enable/disable the button with the given class name.
+     *
+     * @param {string} className The css class to find the button
+     * @param {boolean} enabled If specified enables or disables the button. If not specified,
+     *     the state of the button is not changed, but the current enabled status is returned.
+     * @returns {boolean} whether or not the button is enabled
+     */
+    buttonEnabled: function(className, enabled) {
+        var $element = $(className, this.element);
+        if (typeof enabled === 'undefined') {
+            return !$element.prop('disabled');
+        } else {
+            $element.prop('disabled', !enabled);
+            return enabled;
+        }
     }
 };
 

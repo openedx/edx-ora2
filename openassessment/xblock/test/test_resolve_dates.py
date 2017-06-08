@@ -3,13 +3,16 @@ Test resolving unspecified dates and date strings to datetimes.
 """
 
 import datetime
-import pytz
 from django.test import TestCase
 import ddt
-from openassessment.xblock.resolve_dates import resolve_dates, DISTANT_PAST, DISTANT_FUTURE
+from mock import MagicMock
+from openassessment.xblock.resolve_dates import resolve_dates, DISTANT_PAST, DISTANT_FUTURE, get_current_time_zone
+import pytz
+from workbench.runtime import WorkBenchUserService
 
 
 STUB_I18N = lambda x: x
+
 
 @ddt.ddt
 class ResolveDatesTest(TestCase):
@@ -127,3 +130,14 @@ class ResolveDatesTest(TestCase):
             ],
             STUB_I18N
         )
+
+    @ddt.data(({}, pytz.utc),
+              ({'pref-lang': 'en', 'time_zone': 'America/Los_Angeles'}, pytz.timezone('America/Los_Angeles')))
+    @ddt.unpack
+    def test_get_current_time_zone(self, user_preferences, expected_time_zone):
+        """Verify get_current_time_zone returns correct time zone or UTC"""
+        user_service = WorkBenchUserService(3)
+        user_service.get_current_user().opt_attrs['edx-platform.user_preferences'] = user_preferences
+
+        time_zone = get_current_time_zone(user_service)
+        self.assertEqual(expected_time_zone, time_zone)

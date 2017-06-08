@@ -1,17 +1,13 @@
 {% load i18n %}
 {% spaceless %}
-<div id="openassessment__message" class="openassessment__message message">
-    <h3 class="message__title">{% trans "You Have Completed This Assignment" %} </h3>
+<div id="openassessment__message__{{ xblock_id }}" class="openassessment__message message">
+    <h4 class="message__title">{% trans "Status" %} </h4>
     <div class="message__content">
         <p>
-            {% if waiting == 'peer' %}
-                <p>{% trans "Your grade will be available when your peers have completed their assessments of your response." %}</p>
-            {% elif waiting == 'example-based' %}
-                <p>{% trans "Your grade will be available when the example-based assessment of your response is complete." %}</p>
-            {% elif waiting == 'all' %}
-                <p>{% trans "Your grade will be available when your peers have completed their assessments of your response and the example-based assessment of your response is complete." %}</p>
+            {% if waiting %}
+                <p>{% trans "You have completed this assignment. Your final grade will be available when the assessments of your response are complete." %}</p>
             {% else %}
-                <a data-behavior="ui-scroll" href="#openassessment__grade">{% trans "Review your grade and your assessment details." %}</a>
+                <a data-behavior="ui-scroll" href="#openassessment__grade__{{ xblock_id }}">{% trans "You have completed this assignment. Review your grade and your assessment details." %}</a>
             {% endif %}
         </p>
     </div>

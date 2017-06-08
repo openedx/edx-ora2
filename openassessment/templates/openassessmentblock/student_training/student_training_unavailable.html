@@ -2,12 +2,16 @@
 {% load i18n %}
 
 {% block list_item %}
-    <li id="openassessment__student-training" class="openassessment__steps__step step--student-training is--empty is--unavailable is--collapsed">
+    <li class="openassessment__steps__step step--student-training is--empty is--unavailable ui-slidable__container"
+        tabindex="-1">
+{% endblock %}
+
+{% block button %}
+    <button class="ui-slidable" aria-expanded="false" disabled>
 {% endblock %}
 
 {% block title %}
     <span class="step__status">
-  <span class="step__status__label">{% trans "This step's status" %}:</span>
   <span class="step__status__value">
     <span class="copy">{% trans "Not Available" %}</span>
   </span>

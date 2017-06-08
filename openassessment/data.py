@@ -3,10 +3,11 @@ Aggregate data for openassessment.
 """
 import csv
 import json
+
 from django.conf import settings
 from submissions import api as sub_api
 from openassessment.workflow.models import AssessmentWorkflow
-from openassessment.assessment.models import AssessmentPart, AssessmentFeedback
+from openassessment.assessment.models import Assessment, AssessmentPart, AssessmentFeedback
 
 
 class CsvWriter(object):
@@ -114,15 +115,15 @@ class CsvWriter(object):
             # so we select AssessmentPart and follow the foreign key to the Assessment.
             parts = self._use_read_replica(
                 AssessmentPart.objects.select_related('assessment', 'option', 'option__criterion')
-                    .filter(assessment__submission_uuid=submission_uuid)
-                    .order_by('assessment__pk')
+                .filter(assessment__submission_uuid=submission_uuid)
+                .order_by('assessment__pk')
             )
             self._write_assessment_to_csv(parts, rubric_points_cache)
 
             feedback_query = self._use_read_replica(
                 AssessmentFeedback.objects
-                    .filter(submission_uuid=submission_uuid)
-                    .prefetch_related('options')
+                .filter(submission_uuid=submission_uuid)
+                .prefetch_related('options')
             )
             for assessment_feedback in feedback_query:
                 self._write_assessment_feedback_to_csv(assessment_feedback)
@@ -164,8 +165,8 @@ class CsvWriter(object):
             end = start + self.QUERY_INTERVAL
             query = self._use_read_replica(
                 AssessmentWorkflow.objects
-                    .filter(course_id=course_id)
-                    .order_by('created')
+                .filter(course_id=course_id)
+                .order_by('created')
             ).values('submission_uuid')[start:end]
 
             for workflow_dict in query:
@@ -334,3 +335,163 @@ class CsvWriter(object):
             if "read_replica" in settings.DATABASES
             else queryset
         )
+
+
+class OraAggregateData(object):
+    """
+    Aggregate all the ORA data into a single table-like data structure.
+    """
+
+    @classmethod
+    def _use_read_replica(cls, queryset):
+        """
+        If there's a read replica that can be used, return a cursor to that.
+        Otherwise, return a cursor to the regular database.
+
+        Args:
+            queryset (QuerySet): The queryset that we would like to use the read replica for.
+        Returns:
+            QuerySet
+        """
+        return (
+            queryset.using("read_replica")
+            if "read_replica" in settings.DATABASES
+            else queryset
+        )
+
+    @classmethod
+    def _build_assessments_cell(cls, assessments):
+        """
+        Args:
+            assessments (QuerySet) - assessments that we would like to collate into one column.
+        Returns:
+            string that should be included in the 'assessments' column for this set of assessments' row
+        """
+        returned_string = u""
+        for assessment in assessments:
+            returned_string += u"Assessment #{}\n".format(assessment.id)
+            returned_string += u"-- scored_at: {}\n".format(assessment.scored_at)
+            returned_string += u"-- type: {}\n".format(assessment.score_type)
+            returned_string += u"-- scorer_id: {}\n".format(assessment.scorer_id)
+            if assessment.feedback != u"":
+                returned_string += u"-- overall_feedback: {}\n".format(assessment.feedback)
+        return returned_string
+
+    @classmethod
+    def _build_assessments_parts_cell(cls, assessments):
+        """
+        Args:
+            assessments (QuerySet) - assessments containing the parts that we would like to collate into one column.
+        Returns:
+            string that should be included in the relevant 'assessments_parts' column for this set of assessments' row
+        """
+        returned_string = u""
+        for assessment in assessments:
+            returned_string += u"Assessment #{}\n".format(assessment.id)
+            for part in assessment.parts.order_by('criterion__order_num'):
+                returned_string += u"-- {}".format(part.criterion.label)
+                if part.option is not None and part.option.label is not None:
+                    option_label = part.option.label
+                    returned_string += u": {option_label} ({option_points})\n".format(
+                        option_label=option_label, option_points=part.option.points
+                    )
+                if part.feedback != u"":
+                    returned_string += u"-- feedback: {}\n".format(part.feedback)
+        return returned_string
+
+    @classmethod
+    def _build_feedback_options_cell(cls, assessments):
+        """
+        Args:
+            assessments (QuerySet) - assessment that we would like to use to fetch and read the feedback options.
+        Returns:
+            string that should be included in the relevant 'feedback_options' column for this set of assessments' row
+        """
+
+        returned_string = u""
+        for assessment in assessments:
+            for feedback in assessment.assessment_feedback.all():
+                for option in feedback.options.all():
+                    returned_string += option.text + u"\n"
+
+        return returned_string
+
+    @classmethod
+    def _build_feedback_cell(cls, submission_uuid):
+        """
+        Args:
+            submission_uuid (string) - the submission_uuid associated with this particular assessment feedback
+        Returns:
+            string that should be included in the relevant 'feedback' column for this set of assessments' row
+        """
+        try:
+            feedback = AssessmentFeedback.objects.get(submission_uuid=submission_uuid)
+        except AssessmentFeedback.DoesNotExist:
+            return u""
+        return feedback.feedback_text
+
+    @classmethod
+    def collect_ora2_data(cls, course_id):
+        """
+        Query database for aggregated ora2 response data.
+
+        Args:
+            course_id (string) - the course id of the course whose data we would like to return
+
+        Returns:
+            A tuple containing two lists: headers and data.
+
+            headers is a list containing strings corresponding to the column headers of the data.
+            data is a list of lists, where each sub-list corresponds to a row in the table of all the data
+                for this course.
+
+        """
+
+        all_submission_information = sub_api.get_all_course_submission_information(course_id, 'openassessment')
+
+        rows = []
+        for student_item, submission, score in all_submission_information:
+            row = []
+            assessments = cls._use_read_replica(
+                Assessment.objects.prefetch_related('parts').
+                prefetch_related('rubric').
+                filter(
+                    submission_uuid=submission['uuid']
+                )
+            )
+            assessments_cell = cls._build_assessments_cell(assessments)
+            assessments_parts_cell = cls._build_assessments_parts_cell(assessments)
+            feedback_options_cell = cls._build_feedback_options_cell(assessments)
+            feedback_cell = cls._build_feedback_cell(submission['uuid'])
+
+            row = [
+                submission['uuid'],
+                submission['student_item'],
+                student_item['student_id'],
+                submission['submitted_at'],
+                submission['answer'],
+                assessments_cell,
+                assessments_parts_cell,
+                score.get('created_at', ''),
+                score.get('points_earned', ''),
+                score.get('points_possible', ''),
+                feedback_options_cell,
+                feedback_cell
+            ]
+            rows.append(row)
+
+        header = [
+            'Submission ID',
+            'Item ID',
+            'Anonymized Student ID',
+            'Date/Time Response Submitted',
+            'Response',
+            'Assessment Details',
+            'Assessment Scores',
+            'Date/Time Final Score Given',
+            'Final Score Points Earned',
+            'Final Score Points Possible',
+            'Feedback Statements Selected',
+            'Feedback on Peer Assessments'
+        ]
+        return header, rows

@@ -18,13 +18,13 @@
         </div>
 
         <div id="openassessment_validation_alert" class="covered">
-            <i class="openassessment_alert_icon"></i>
+            <span class="openassessment_alert_icon" aria-hidden="true"></span>
             <div class="openassessment_alert_header">
                 <h2 class="openassessment_alert_title">{% trans "Rubric Change Impacts Settings Section" %}</h2>
-                <p class="openassessment_alert_message">{% trans "A change that you made to this assessment's rubric has an impact on some examples laid out in the settings tab. For more information, go to the Settings section and fix areas highlighted in red." %}</p>
+                <p class="openassessment_alert_message">{% trans "A change that you made to this assessment's rubric has an impact on some examples laid out in the settings tab. For more information, go to the Settings section and fix the areas highlighted in red." %}</p>
             </div>
             <a href="" rel="view" class="action openassessment_alert_close">
-                <i class="icon-remove-sign"></i>
+                <span class="icon fa fa-times-circle" aria-hidden="true"></span>
                 <span class="label is--hidden">{% trans "close alert" %}</span>
             </a>
         </div>
@@ -157,9 +157,9 @@
 
             <p class="openassessment_description" id="openassessment_step_select_description">
                 {% if 'example_based_assessment' in editor_assessments_order %}
-                    {% trans "In this assignment, you can include steps for learner training, peer assessment, self assessment, and example based assessment. Select the steps that you want below, and then drag them into the order that you want. If you include an example based assessment step, it must precede all other steps. If you include a learner training step, it must precede peer and self assessment steps." %}
+                    {% trans "In this assignment, you can include learner training, peer assessment, self assessment, example based assessment, and staff assessment steps. Select the steps that you want below, and then drag them into the order you want. If you include an example based assessment step, it must precede all other steps. If you include a learner training step, it must precede peer and self assessment steps. If you include a staff assessment step, it must be the final step. After you release an ORA assignment, you cannot change the type and number of assessment steps." %}
                 {% else %}
-                    {% trans "In this assignment, you can include steps for learner training, peer assessment, and self assessment. Select the steps that you want below, and then drag them into the order that you want. If you include a learner training step, it must precede all other steps." %}
+                    {% trans "In this assignment, you can include learner training, peer assessment, self assessment, and staff assessment steps. Select the steps that you want below, and then drag them into the order you want. If you include a learner training step, it must precede all other steps. If you include a staff assessment step, it must be the final step. After you release an ORA assignment, you cannot change the type and number of assessment steps." %}
                 {% endif %}
             </p>
             <ol id="openassessment_assessment_module_settings_editors">

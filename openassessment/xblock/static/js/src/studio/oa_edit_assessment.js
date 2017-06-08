@@ -372,7 +372,7 @@ OpenAssessment.EditSelfAssessmentView.prototype = {
 };
 
 /**
- Interface for editing self assessment settings.
+ Interface for editing student training assessment settings.
 
  Args:
  element (DOM element): The DOM element representing this view.
@@ -620,4 +620,95 @@ OpenAssessment.EditExampleBasedAssessmentView.prototype = {
     validate: function() { return true; },
     validationErrors: function() { return []; },
     clearValidationErrors: function() {}
+};
+
+/**
+ * Interface for editing staff assessment settings.
+ *
+ * @param {Object} element - The DOM element representing this view.
+ * @constructor
+ *
+ */
+OpenAssessment.EditStaffAssessmentView = function(element) {
+    this.element = element;
+    this.name = "staff-assessment";
+
+    // Configure the toggle checkbox to enable/disable this assessment
+    new OpenAssessment.ToggleControl(
+        $("#include_staff_assessment", this.element),
+        $("#staff_assessment_description", this.element),
+        $("#staff_assessment_description", this.element), //open and closed selectors are the same!
+        new OpenAssessment.Notifier([
+            new OpenAssessment.AssessmentToggleListener()
+        ])
+    ).install();
+};
+
+OpenAssessment.EditStaffAssessmentView.prototype = {
+
+    /**
+     * Return a description of the assessment.
+     *
+     * @returns {Object} Representation of the view.
+     */
+    description: function() {
+        return {
+            required: this.isEnabled(),
+        };
+    },
+
+    /**
+     * Get or set whether the assessment is enabled.
+     *
+     * @param {Boolean} isEnabled - If provided, set the enabled state of the assessment.
+     * @returns {Boolean}
+     */
+    isEnabled: function(isEnabled) {
+        var sel = $("#include_staff_assessment", this.element);
+        return OpenAssessment.Fields.booleanField(sel, isEnabled);
+    },
+
+    /**
+     * Toggle whether the assessment is enabled or disabled.
+     * This triggers the actual click event and is mainly useful for testing.
+     */
+    toggleEnabled: function() {
+        $("#include_staff_assessment", this.element).click();
+    },
+
+    /**
+     * Gets the ID of the assessment
+     *
+     * @returns {String} CSS class of the Element object
+     */
+    getID: function() {
+        return $(this.element).attr('id');
+    },
+
+    /**
+     * Mark validation errors.
+     *
+     * @returns {Boolean} Whether the view is valid.
+     *
+     */
+    validate: function() {
+        return true; //Nothing to validate, the only input is a boolean and either state is valid
+    },
+
+    /**
+     * Return a list of validation errors visible in the UI.
+     * Mainly useful for testing.
+     *
+     * @returns {Array} - always empty, function called but not actually used.
+     */
+    validationErrors: function() {
+        return [];
+    },
+
+    /**
+     * Clear all validation errors from the UI.
+     */
+    clearValidationErrors: function() {
+        //do nothing
+    },
 };

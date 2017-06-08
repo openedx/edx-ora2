@@ -18,17 +18,23 @@ OpenAssessment.SelfView = function(element, server, baseView) {
 
 OpenAssessment.SelfView.prototype = {
 
+    UNSAVED_WARNING_KEY: "self-assessment",
+
     /**
     Load the self assessment view.
     **/
-    load: function() {
+    load: function(usageID) {
         var view = this;
+        var stepID = '.step--self-assessment';
         this.server.render('self_assessment').done(
             function(html) {
                 // Load the HTML and install event handlers
-                $('#openassessment__self-assessment', view.element).replaceWith(html);
-                view.server.renderLatex($('#openassessment__self-assessment', view.element));
+                $(stepID, view.element).replaceWith(html);
+                view.server.renderLatex($(stepID, view.element));
                 view.installHandlers();
+                if (typeof usageID !== 'undefined' && $(stepID, view.element).hasClass("is--showing")) {
+                    $("[id='oa_self_" + usageID + "']", view.element).focus();
+                }
             }
         ).fail(function() {
             view.showLoadError('self-assessment');
@@ -40,25 +46,31 @@ OpenAssessment.SelfView.prototype = {
     **/
     installHandlers: function() {
         var view = this;
-        var sel = $('#openassessment__self-assessment', view.element);
+        var sel = $('.step--self-assessment', view.element);
 
         // Install a click handler for collapse/expand
         this.baseView.setUpCollapseExpand(sel);
 
         // Initialize the rubric
-        var rubricSelector = $("#self-assessment--001__assessment", this.element);
+        var rubricSelector = $(".self-assessment--001__assessment", this.element);
         if (rubricSelector.size() > 0) {
             var rubricElement = rubricSelector.get(0);
             this.rubric = new OpenAssessment.Rubric(rubricElement);
+        }
+        else {
+            // If there was previously a rubric visible, clear the reference to it.
+            this.rubric = null;
         }
 
         // Install a change handler for rubric options to enable/disable the submit button
         if (this.rubric !== null) {
             this.rubric.canSubmitCallback($.proxy(this.selfSubmitEnabled, this));
+
+            this.rubric.changesExistCallback($.proxy(this.assessmentRubricChanges, this));
         }
 
         // Install a click handler for the submit button
-        sel.find('#self-assessment--001__assessment__submit').click(
+        sel.find('.self-assessment--001__assessment__submit').click(
             function(eventObject) {
                 // Override default form submission
                 eventObject.preventDefault();
@@ -85,11 +97,22 @@ OpenAssessment.SelfView.prototype = {
      >> true
      **/
     selfSubmitEnabled: function(enabled) {
-        var button = $('#self-assessment--001__assessment__submit', this.element);
-        if (typeof enabled === 'undefined') {
-            return !button.hasClass('is--disabled');
-        } else {
-            button.toggleClass('is--disabled', !enabled);
+        return this.baseView.buttonEnabled('.self-assessment--001__assessment__submit', enabled);
+    },
+
+    /**
+     * Called when something is selected or typed in the assessment rubric.
+     * Used to set the unsaved changes warning dialog.
+     *
+     * @param {boolean} changesExist true if unsaved changes exist
+     */
+    assessmentRubricChanges: function(changesExist) {
+        if (changesExist) {
+            this.baseView.unsavedWarningEnabled(
+                true,
+                this.UNSAVED_WARNING_KEY,
+                gettext("If you leave this page without submitting your self assessment, you will lose any work you have done.") // jscs:ignore maximumLineLength
+            );
         }
     },
 
@@ -100,6 +123,7 @@ OpenAssessment.SelfView.prototype = {
         // Send the assessment to the server
         var view = this;
         var baseView = this.baseView;
+        var usageID = baseView.getUsageID();
         baseView.toggleActionError('self', null);
         view.selfSubmitEnabled(false);
 
@@ -109,8 +133,10 @@ OpenAssessment.SelfView.prototype = {
             this.rubric.overallFeedback()
         ).done(
             function() {
-                baseView.loadAssessmentModules();
-                baseView.scrollToTop();
+                baseView.unsavedWarningEnabled(false, view.UNSAVED_WARNING_KEY);
+                baseView.loadAssessmentModules(usageID);
+                view.load(usageID);
+                baseView.scrollToTop(".step--self-assessment");
             }
         ).fail(function(errMsg) {
             baseView.toggleActionError('self', errMsg);

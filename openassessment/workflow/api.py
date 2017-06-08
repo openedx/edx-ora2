@@ -6,14 +6,9 @@ import logging
 
 from django.db import DatabaseError
 
-from openassessment.assessment.api import peer as peer_api
-from openassessment.assessment.api import ai as ai_api
-from openassessment.assessment.api import student_training as training_api
-from openassessment.assessment.errors import (
-    PeerAssessmentError, StudentTrainingInternalError, AIError,
-    PeerAssessmentInternalError)
+from openassessment.assessment.errors import PeerAssessmentError, PeerAssessmentInternalError
 from submissions import api as sub_api
-from .models import AssessmentWorkflow, AssessmentWorkflowCancellation, AssessmentWorkflowStep
+from .models import AssessmentWorkflow, AssessmentWorkflowCancellation
 from .serializers import AssessmentWorkflowSerializer, AssessmentWorkflowCancellationSerializer
 from .errors import (
     AssessmentWorkflowError, AssessmentWorkflowInternalError,
@@ -182,8 +177,9 @@ def get_workflow_for_submission(submission_uuid, assessment_requirements):
     return update_from_assessments(submission_uuid, assessment_requirements)
 
 
-def update_from_assessments(submission_uuid, assessment_requirements):
-    """Update our workflow status based on the status of peer and self assessments.
+def update_from_assessments(submission_uuid, assessment_requirements, override_submitter_requirements=False):
+    """
+    Update our workflow status based on the status of the underlying assessments.
 
     We pass in the `assessment_requirements` each time we make the request
     because the canonical requirements are stored in the `OpenAssessmentBlock`
@@ -208,6 +204,9 @@ def update_from_assessments(submission_uuid, assessment_requirements):
             `must_be_graded_by` to ensure that everyone will get scored.
             The intention is to eventually pass in more assessment sequence
             specific requirements in this dict.
+        override_submitter_requirements (bool): If True, the presence of a new
+            staff score will cause all of the submitter's requirements to be
+            fulfilled, moving the workflow to DONE and exposing their grade.
 
     Returns:
         dict: Assessment workflow information with the following
@@ -263,12 +262,12 @@ def update_from_assessments(submission_uuid, assessment_requirements):
     workflow = _get_workflow_model(submission_uuid)
 
     try:
-        workflow.update_from_assessments(assessment_requirements)
+        workflow.update_from_assessments(assessment_requirements, override_submitter_requirements)
         logger.info((
             u"Updated workflow for submission UUID {uuid} "
             u"with requirements {reqs}"
         ).format(uuid=submission_uuid, reqs=assessment_requirements))
-        return _serialized_with_details(workflow, assessment_requirements)
+        return _serialized_with_details(workflow)
     except PeerAssessmentError as err:
         err_msg = u"Could not update assessment workflow: {}".format(err)
         logger.exception(err_msg)
@@ -346,11 +345,9 @@ def _get_workflow_model(submission_uuid):
         raise AssessmentWorkflowRequestError("submission_uuid must be a string type")
 
     try:
-        workflow = AssessmentWorkflow.objects.get(submission_uuid=submission_uuid)
-    except AssessmentWorkflow.DoesNotExist:
-        raise AssessmentWorkflowNotFoundError(
-            u"No assessment workflow matching submission_uuid {}".format(submission_uuid)
-        )
+        workflow = AssessmentWorkflow.get_by_submission_uuid(submission_uuid)
+    except AssessmentWorkflowError as exc:
+        raise AssessmentWorkflowInternalError(repr(exc))
     except Exception as exc:
         # Something very unexpected has just happened (like DB misconfig)
         err_msg = (
@@ -360,16 +357,20 @@ def _get_workflow_model(submission_uuid):
         logger.exception(err_msg)
         raise AssessmentWorkflowInternalError(err_msg)
 
+    if workflow is None:
+        raise AssessmentWorkflowNotFoundError(
+            u"No assessment workflow matching submission_uuid {}".format(submission_uuid)
+        )
+
     return workflow
 
 
-def _serialized_with_details(workflow, assessment_requirements):
-    """Given a workflow and assessment requirements, return the serialized
-    version of an `AssessmentWorkflow` and add in the status details. See
-    `update_from_assessments()` for details on params and return values.
+def _serialized_with_details(workflow):
+    """
+    Given a workflow, return its serialized version with added status details.
     """
     data_dict = AssessmentWorkflowSerializer(workflow).data
-    data_dict["status_details"] = workflow.status_details(assessment_requirements)
+    data_dict["status_details"] = workflow.status_details()
     return data_dict
 
 
@@ -398,10 +399,10 @@ def cancel_workflow(submission_uuid, comments, cancelled_by_id, assessment_requi
 
 def get_assessment_workflow_cancellation(submission_uuid):
     """
-    Get cancellation information for a assessment workflow.
+    Get cancellation information for an assessment workflow.
 
     Args:
-        submission_uuid (str): The UUID of assessment workflow.
+        submission_uuid (str): The UUID of the submission.
     """
     try:
         workflow_cancellation = AssessmentWorkflowCancellation.get_latest_workflow_cancellation(submission_uuid)

@@ -12,6 +12,7 @@ from openassessment.xblock.data_conversion import (
     create_prompts_list, create_submission_dict, prepare_submission_for_serialization, update_assessments_format
 )
 
+
 @ddt.ddt
 class DataConversionTest(TestCase):
 
@@ -38,7 +39,8 @@ class DataConversionTest(TestCase):
         (
             {'answer': {'parts': [{'text': 'a'}]}},
             [{'description': '1'}, {'description': '2'}],
-            {'answer': {'parts': [{'prompt': {'description': '1'}, 'text': 'a'}, {'prompt': {'description': '2'}, 'text': ''}]}}
+            {'answer': {'parts': [{'prompt': {'description': '1'}, 'text': 'a'},
+                                  {'prompt': {'description': '2'}, 'text': ''}]}}
         )
     )
     @ddt.unpack
@@ -60,6 +62,6 @@ class DataConversionTest(TestCase):
     def test_update_assessments_format(self, input, output):
         self.assertEqual(update_assessments_format([{
             'examples': input,
-            }]), [{
+        }]), [{
             'examples': output,
         }])

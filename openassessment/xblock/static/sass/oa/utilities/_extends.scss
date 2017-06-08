@@ -16,12 +16,6 @@
 %t-heading {
   @extend %hd-4;
   @extend %t-strong;
-  @extend %t-titlecase;
-}
-
-%t-subheading {
-  @extend %hd-4;
-  @extend %t-strong;
 }
 
 %t-score {
@@ -36,9 +30,9 @@
 // --------------------
 %ui-section {
   @include transition(all $tmg-f1 ease-in-out);
-  @include transform(scale(1.0));
+  @include transform(scale(.99));
   @include border-radius(($baseline-v/10));
-  @include single-box-shadow(0, 1px, 1px, 0, $shadow-l1);
+  @include single-box-shadow(0, 1px, 1px, 0, $shadow-l2);
   margin-bottom: $baseline-v;
   border: 1px solid $color-decorative-tertiary;
   border-top: ($baseline-v/4) solid $color-decorative-tertiary;
@@ -54,14 +48,17 @@
     @include transform(scale(1.0));
   }
 
-  // STATE: is collapsed
-  &.is--collapsed {
-    @include transform(scale(0.99));
-    @include single-box-shadow(0, 1px, 1px, 0, $shadow-l2);
-
+  // don't zoom on hover/focus when step has error
+  &.has--error {
     &:hover, &:focus {
-      @include transform(scale(1.0));
+      @include transform(scale(.99));
     }
+  }
+
+  // STATE: is showing
+  &.is--showing {
+    @include transform(scale(1.0));
+    @include single-box-shadow(0, 1px, 1px, 0, $shadow-l1);
   }
 
   // STATE: is loading
@@ -85,6 +82,11 @@
     &:hover, &:focus {
       @include transform(scale(0.99));
     }
+  }
+
+  // STATE: is in-progress
+  &.is--in-progress {
+    border-top-color: $action-primary-color;
   }
 
   // STATE: is complete
@@ -165,6 +167,7 @@
     padding-bottom: ($baseline-v/4);
 
     .icon {
+      @extend %icon-1;
       display: inline-block;
       vertical-align: middle;
     }
@@ -175,7 +178,6 @@
     @include margin-left(($baseline-h/4));
     white-space: pre-wrap;
     display: inline;
-    color: $heading-color;
   }
 }
 
@@ -205,7 +207,7 @@
       @extend %copy-3;
       @extend %t-strong;
       margin-bottom: 0; // FIX: need to reset base label style
-      color: $copy-secondary-color;
+      color: $copy-color;
     }
 
     .answer__value {
@@ -250,7 +252,7 @@
 
     @extend %copy-3;
     @include margin-right($baseline-v);
-    color: $copy-secondary-color;
+    color: $copy-color;
 
     @include media($bp-dm) {
       @include bidi-span-columns(6 of 8);
@@ -277,7 +279,7 @@
 
   .answer__points {
     @extend %t-score;
-    color: $copy-secondary-color;
+    color: $copy-color;
 
     @include media($bp-dm) {
       @include float(right);
@@ -298,7 +300,7 @@
   .answer__points__label {
     display: inline-block; // FIX: need to reset base label style
     @include margin-left(($baseline-v/4));
-    color: $copy-secondary-color;
+    color: $copy-color;
   }
 
   // ELEM: criterion selects

@@ -7,12 +7,14 @@ import copy
 
 import mock
 import pytz
+import ddt
 
 import datetime as dt
 from openassessment.xblock.openassessmentblock import OpenAssessmentBlock
 from .base import XBlockHandlerTestCase, scenario
 
 
+@ddt.ddt
 class TestMessageRender(XBlockHandlerTestCase):
     """
     Tests for the Message XBlock Handler
@@ -38,10 +40,15 @@ class TestMessageRender(XBlockHandlerTestCase):
             'completed': TODAY,
             'graded': TODAY,
         },
+        'staff': {
+            'completed': TODAY,
+            'graded': TODAY,
+        },
     }
 
+    @staticmethod
     def _assert_path_and_context(
-        self, xblock, expected_path, expected_context,
+        xblock, expected_path, expected_context,
         workflow_status, deadline_information, has_peers_to_grade,
         workflow_status_details=DEFAULT_STATUS_DETAILS
     ):
@@ -96,8 +103,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             # Asserts that the message_mixin correctly derived the path and context to be rendered
             xblock.render_assessment.assert_called_with(expected_path, expected_context)
 
-
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_submission(self, xblock):
 
         status = None
@@ -114,7 +120,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_open.html'
 
         expected_context = {
-            "approaching": False
+            "approaching": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -122,7 +129,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario_no_peer.xml', user_id = "Linda")
+    @scenario('data/message_scenario_no_peer.xml', user_id="Linda")
     def test_submission_no_peer(self, xblock):
 
         status = None
@@ -138,7 +145,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_open.html'
 
         expected_context = {
-            "approaching": False
+            "approaching": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -146,7 +154,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_submission_approaching(self, xblock):
 
         status = None
@@ -163,7 +171,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_open.html'
 
         expected_context = {
-            "approaching": True
+            "approaching": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -171,7 +180,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario_no_self.xml', user_id = "Linda")
+    @scenario('data/message_scenario_no_self.xml', user_id="Linda")
     def test_submission_no_self_approaching(self, xblock):
 
         status = None
@@ -187,7 +196,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_open.html'
 
         expected_context = {
-            "approaching": True
+            "approaching": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -195,7 +205,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_submission_not_yet_open(self, xblock):
 
         status = None
@@ -212,7 +222,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_closed.html'
 
         expected_context = {
-            "not_yet_open": True
+            "not_yet_open": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -220,7 +231,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_submission_incomplete(self, xblock):
 
         status = None
@@ -237,7 +248,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_closed.html'
 
         expected_context = {
-            "not_yet_open": False
+            "not_yet_open": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -245,7 +257,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario_student_training.xml', user_id = "Linda")
+    @scenario('data/message_scenario_student_training.xml', user_id="Linda")
     def test_training(self, xblock):
 
         status = 'training'
@@ -260,10 +272,14 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = True
 
-        expected_path = 'openassessmentblock/message/oa_message_training.html'
+        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
 
         expected_context = {
-            "approaching": False
+            "training": True,
+            "training_approaching": False,
+            "training_not_released": False,
+            "peer_not_available": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -271,7 +287,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario_student_training.xml', user_id = "Linda")
+    @scenario('data/message_scenario_student_training.xml', user_id="Linda")
     def test_training_approaching(self, xblock):
 
         status = 'training'
@@ -286,10 +302,14 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_training.html'
+        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
 
         expected_context = {
-            "approaching": True
+            "training": True,
+            "training_approaching": True,
+            "training_not_released": False,
+            "peer_not_available": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -297,7 +317,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario_student_training.xml', user_id = "Linda")
+    @scenario('data/message_scenario_student_training.xml', user_id="Linda")
     def test_training_not_released(self, xblock):
 
         status = 'training'
@@ -315,7 +335,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_closed.html'
 
         expected_context = {
-            "not_yet_open": True
+            "not_yet_open": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -323,7 +344,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario_student_training.xml', user_id = "Linda")
+    @scenario('data/message_scenario_student_training.xml', user_id="Linda")
     def test_training_closed(self, xblock):
 
         status = 'training'
@@ -333,7 +354,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             'student-training': (True, 'due', self.FAR_PAST, self.PAST),
             'peer-assessment': (True, 'due', self.PAST, self.YESTERDAY),
             'self-assessment': (False, None, self.YESTERDAY, self.FAR_FUTURE),
-            'over-all': (False, None, self.FAR_PAST, self.FAR_FUTURE)
+            'over-all': (False, None, self.FAR_PAST, self.FAR_FUTURE),
         }
 
         has_peers_to_grade = False
@@ -341,15 +362,16 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_closed.html'
 
         expected_context = {
-            "not_yet_open": False
+            "not_yet_open": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
             xblock, expected_path, expected_context,
-            status, deadline_information, has_peers_to_grade
+            status, deadline_information, has_peers_to_grade,
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_peer(self, xblock):
 
         status = 'peer'
@@ -363,14 +385,14 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = True
 
-        expected_path = 'openassessmentblock/message/oa_message_peer.html'
+        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
 
         expected_context = {
-            "has_self": True,
-            "waiting": False,
+            "peer": True,
             "peer_approaching": False,
-            "peer_closed": False,
-            "peer_not_released": False
+            "peer_not_available": False,
+            "peer_not_released": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -378,7 +400,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario_no_self.xml', user_id = "Linda")
+    @scenario('data/message_scenario_no_self.xml', user_id="Linda")
     def test_peer_no_self(self, xblock):
 
         status = 'peer'
@@ -391,14 +413,14 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = True
 
-        expected_path = 'openassessmentblock/message/oa_message_peer.html'
+        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
 
         expected_context = {
-            "has_self": False,
-            "waiting": False,
+            "peer": True,
+            "peer_not_available": False,
             "peer_approaching": False,
-            "peer_closed": False,
-            "peer_not_released": False
+            "peer_not_released": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -406,7 +428,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario_no_self.xml', user_id = "Linda")
+    @scenario('data/message_scenario_no_self.xml', user_id="Linda")
     def test_peer_no_self_approaching(self, xblock):
 
         status = 'peer'
@@ -419,14 +441,14 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = True
 
-        expected_path = 'openassessmentblock/message/oa_message_peer.html'
+        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
 
         expected_context = {
-            "has_self": False,
-            "waiting": False,
+            "peer": True,
+            "peer_not_available": False,
             "peer_approaching": True,
-            "peer_closed": False,
-            "peer_not_released": False
+            "peer_not_released": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -434,7 +456,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_peer_not_released(self, xblock):
 
         status = 'peer'
@@ -451,7 +473,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_closed.html'
 
         expected_context = {
-            "not_yet_open": True
+            "not_yet_open": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -459,7 +482,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_peer_incomplete(self, xblock):
 
         status = 'peer'
@@ -476,7 +499,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_closed.html'
 
         expected_context = {
-            "not_yet_open": False
+            "not_yet_open": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -484,7 +508,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_peer_no_peers_to_assess(self, xblock):
 
         status = 'peer'
@@ -498,14 +522,14 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_peer.html'
+        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
 
         expected_context = {
-            "has_self": True,
-            "waiting": True,
+            "peer": True,
+            "peer_not_available": True,
             "peer_approaching": False,
-            "peer_closed": False,
-            "peer_not_released": False
+            "peer_not_released": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -513,7 +537,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_peer_no_peers_to_assess_approaching(self, xblock):
 
         status = 'peer'
@@ -527,14 +551,14 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_peer.html'
+        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
 
         expected_context = {
-            "has_self": True,
-            "waiting": True,
+            "peer": True,
+            "peer_not_available": True,
             "peer_approaching": True,
-            "peer_closed": False,
-            "peer_not_released": False
+            "peer_not_released": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -542,7 +566,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_peer_not_open_approaching(self, xblock):
 
         status = 'peer'
@@ -559,7 +583,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_closed.html'
 
         expected_context = {
-            "not_yet_open": True
+            "not_yet_open": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -567,7 +592,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_self(self, xblock):
 
         status = 'self'
@@ -581,13 +606,14 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_self.html'
+        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
 
         expected_context = {
-            "has_peer": True,
+            "self": True,
             "self_approaching": False,
-            "self_closed": False,
-            "self_not_released": False
+            "self_not_released": False,
+            "peer_not_available": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -595,7 +621,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario_no_peer.xml', user_id = "Linda")
+    @scenario('data/message_scenario_no_peer.xml', user_id="Linda")
     def test_self_no_peer(self, xblock):
 
         status = 'self'
@@ -608,13 +634,14 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_self.html'
+        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
 
         expected_context = {
-            "has_peer": False,
+            "self": True,
             "self_approaching": False,
-            "self_closed": False,
-            "self_not_released": False
+            "self_not_released": False,
+            "peer_not_available": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -622,7 +649,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario_no_peer.xml', user_id = "Linda")
+    @scenario('data/message_scenario_no_peer.xml', user_id="Linda")
     def test_self_no_peer_approaching(self, xblock):
 
         status = 'self'
@@ -635,13 +662,14 @@ class TestMessageRender(XBlockHandlerTestCase):
 
         has_peers_to_grade = False
 
-        expected_path = 'openassessmentblock/message/oa_message_self.html'
+        expected_path = 'openassessmentblock/message/oa_message_incomplete.html'
 
         expected_context = {
-            "has_peer": False,
+            "self": True,
             "self_approaching": True,
-            "self_closed": False,
-            "self_not_released": False
+            "self_not_released": False,
+            "peer_not_available": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -649,7 +677,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_self_closed(self, xblock):
 
         status = 'self'
@@ -666,7 +694,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_closed.html'
 
         expected_context = {
-            "not_yet_open": True
+            "not_yet_open": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -674,7 +703,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario_no_peer.xml', user_id = "Linda")
+    @scenario('data/message_scenario_no_peer.xml', user_id="Linda")
     def test_self_no_peer_incomplete(self, xblock):
 
         status = 'self'
@@ -690,7 +719,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_closed.html'
 
         expected_context = {
-            "not_yet_open": False
+            "not_yet_open": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -698,7 +728,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_waiting_due(self, xblock):
 
         status = 'waiting'
@@ -717,7 +747,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_complete.html'
 
         expected_context = {
-            "waiting": "peer"
+            "waiting": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -725,7 +756,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade, status_details
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_waiting_not_due(self, xblock):
 
         status = 'waiting'
@@ -744,7 +775,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_complete.html'
 
         expected_context = {
-            "waiting": "peer"
+            "waiting": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -752,12 +784,18 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade, status_details
         )
 
+    @ddt.data("peer", "ai", "staff", "all")
     @scenario('data/message_scenario.xml', user_id="Linda")
-    def test_waiting_on_ai(self, xblock):
+    def test_waiting_on_steps(self, xblock, step):
 
         status = 'waiting'
         status_details = copy.deepcopy(self.DEFAULT_STATUS_DETAILS)
-        status_details["ai"]["graded"] = None
+        if step == "all":
+            status_details["peer"]["graded"] = None
+            status_details["ai"]["graded"] = None
+            status_details["staff"]["graded"] = None
+        else:
+            status_details[step]["graded"] = None
 
         deadline_information = {
             'submission': (True, 'due', self.FAR_PAST, self.YESTERDAY),
@@ -771,7 +809,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_complete.html'
 
         expected_context = {
-            "waiting": "example-based"
+            "waiting": True,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -780,34 +819,6 @@ class TestMessageRender(XBlockHandlerTestCase):
         )
 
     @scenario('data/message_scenario.xml', user_id="Linda")
-    def test_waiting_on_all(self, xblock):
-
-        status = 'waiting'
-        status_details = copy.deepcopy(self.DEFAULT_STATUS_DETAILS)
-        status_details["ai"]["graded"] = None
-        status_details["peer"]["graded"] = None
-
-        deadline_information = {
-            'submission': (True, 'due', self.FAR_PAST, self.YESTERDAY),
-            'peer-assessment': (True, 'due', self.YESTERDAY, self.TODAY),
-            'self-assessment': (True, 'due', self.YESTERDAY, self.TODAY),
-            'over-all': (True, 'due', self.FAR_PAST, self.TODAY)
-        }
-
-        has_peers_to_grade = False
-
-        expected_path = 'openassessmentblock/message/oa_message_complete.html'
-
-        expected_context = {
-            "waiting": "all"
-        }
-
-        self._assert_path_and_context(
-            xblock, expected_path, expected_context,
-            status, deadline_information, has_peers_to_grade, status_details
-        )
-
-    @scenario('data/message_scenario.xml', user_id = "Linda")
     def test_done_due(self, xblock):
 
         status = 'done'
@@ -824,7 +835,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_complete.html'
 
         expected_context = {
-            "waiting": None
+            "waiting": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(
@@ -832,7 +844,7 @@ class TestMessageRender(XBlockHandlerTestCase):
             status, deadline_information, has_peers_to_grade
         )
 
-    @scenario('data/message_scenario.xml', user_id = "Linda")
+    @scenario('data/message_scenario.xml', user_id="Linda")
     def test_done_not_due(self, xblock):
 
         status = 'done'
@@ -849,7 +861,8 @@ class TestMessageRender(XBlockHandlerTestCase):
         expected_path = 'openassessmentblock/message/oa_message_complete.html'
 
         expected_context = {
-            "waiting": None
+            "waiting": False,
+            'xblock_id': xblock.scope_ids.usage_id,
         }
 
         self._assert_path_and_context(

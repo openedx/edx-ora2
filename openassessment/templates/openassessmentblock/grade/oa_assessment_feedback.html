@@ -1,0 +1,33 @@
+{% load i18n %}
+{% spaceless %}
+    {% if assessment %}
+      {% if assessment.individual_assessments %}
+        {% for individual_assessment in assessment.individual_assessments %}
+          <div class="answer__source">
+            {%  if individual_assessment.option %}
+              {% blocktrans with title=individual_assessment.title grade=individual_assessment.option.label start_tag='<span class="answer__source__individual">'|safe end_tag="</span>"|safe start_grade_tag='<span class="answer__grade__individual">'|safe%}
+                {{ start_tag }}{{ title }}{{ end_tag }}{{ start_grade_tag }} - {{ grade }}{{end_tag}}
+              {% endblocktrans %}
+            {% else %}
+              <span class="answer__source__value">
+                {{ individual_assessment.title }}
+              </span>
+            {% endif %}
+          </div>
+          {% if individual_assessment.feedback %}
+              <div class="feedback__value">
+                  <p class="feedback__value__raw">{{ individual_assessment.feedback }}</p>
+              </div>
+          {% endif %}
+        {% endfor %}
+      {% elif assessment.feedback %}
+        <div class="answer__source">
+            <span class="answer__source__value">{{ title }}</span>
+        </div>
+        <div class="feedback__value">
+            <p class="feedback__value__raw">{{ assessment.feedback }}</p>
+        </div>
+      {% endif %}
+    {% endif %}
+
+{% endspaceless %}

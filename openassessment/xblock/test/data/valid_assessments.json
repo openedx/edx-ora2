@@ -14,6 +14,25 @@
         "is_released": false
     },
 
+    "self_then_peer_then_staff": {
+        "assessments": [
+            {
+                "name": "self-assessment"
+            },
+            {
+                "name": "peer-assessment",
+                "must_grade": 5,
+                "must_be_graded_by": 3
+            },
+            {
+                "name": "staff-assessment",
+                "required": true
+            }
+        ],
+        "current_assessments": null,
+        "is_released": false
+    },
+
     "self_only": {
         "assessments": [
             {
