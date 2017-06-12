@@ -109,7 +109,7 @@ class PeerWorkflow(models.Model):
 
     student_id = models.CharField(max_length=40, db_index=True)
     item_id = models.CharField(max_length=128, db_index=True)
-    course_id = models.CharField(max_length=40, db_index=True)
+    course_id = models.CharField(max_length=255, db_index=True)
     submission_uuid = models.CharField(max_length=128, db_index=True, unique=True)
     created_at = models.DateTimeField(default=now, db_index=True)
     completed_at = models.DateTimeField(null=True, db_index=True)
@@ -341,9 +341,10 @@ class PeerWorkflow(models.Model):
                 "and student_id<>%s "
                 "and pw.cancelled_at is NULL "
                 "and pw.id not in ( "
-                    "select pwi.author_id "
-                    "from assessment_peerworkflowitem pwi "
-                    "where pwi.scorer_id=%s); ",
+                "select pwi.author_id "
+                "from assessment_peerworkflowitem pwi "
+                "where pwi.scorer_id=%s"
+                "); ",
                 [self.course_id, self.item_id, self.student_id, self.id]
             ))
             workflow_count = len(query)
@@ -379,7 +380,9 @@ class PeerWorkflow(models.Model):
 
         """
         try:
-            item_query = self.graded.filter(submission_uuid=submission_uuid).order_by("-started_at", "-id") # pylint:disable=E1101
+            item_query = self.graded.filter(
+                submission_uuid=submission_uuid
+            ).order_by("-started_at", "-id")  # pylint:disable=E1101
             items = list(item_query[:1])
             if not items:
                 msg = (
@@ -391,8 +394,10 @@ class PeerWorkflow(models.Model):
             item.assessment = assessment
             item.save()
 
-            if (not item.author.grading_completed_at
-                    and item.author.graded_by.filter(assessment__isnull=False).count() >= num_required_grades):
+            if (
+                    not item.author.grading_completed_at and
+                    item.author.graded_by.filter(assessment__isnull=False).count() >= num_required_grades
+            ):
                 item.author.grading_completed_at = now()
                 item.author.save()
         except (DatabaseError, PeerWorkflowItem.DoesNotExist):

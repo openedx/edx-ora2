@@ -790,7 +790,6 @@ class AssessmentPart(models.Model):
             msg = u"Missing selections for criteria: {missing}".format(missing=missing_criteria)
             raise InvalidRubricSelection(msg)
 
-
     @classmethod
     def _check_all_criteria_assessed(cls, rubric_index, selected_criteria, criteria_feedback):
         """

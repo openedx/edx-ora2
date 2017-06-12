@@ -152,7 +152,7 @@ class AIClassifierSet(models.Model):
     # Though these items are duplicated in the database tables for the AITrainingWorkflow,
     # this is okay because it will drastically speed up the operation of assigning classifiers
     # to AIGradingWorkflows
-    course_id = models.CharField(max_length=40, db_index=True)
+    course_id = models.CharField(max_length=255, db_index=True)
     item_id = models.CharField(max_length=128, db_index=True)
 
     @classmethod
@@ -201,7 +201,7 @@ class AIClassifierSet(models.Model):
         # we can't assign them a score.
         all_criteria = set(classifiers_dict.keys())
         all_criteria |= set(
-            criterion.name for criterion in 
+            criterion.name for criterion in
             rubric_index.find_criteria_without_options()
         )
         missing_criteria = rubric_index.find_missing_criteria(all_criteria)
@@ -414,6 +414,7 @@ class AIClassifierSet(models.Model):
 # an AWS S3 bucket.
 AI_CLASSIFIER_STORAGE = "ora2_ai_classifiers"
 
+
 def upload_to_path(instance, filename):    # pylint:disable=W0613
     """
     Calculate the file path where classifiers should be uploaded.
@@ -505,7 +506,7 @@ class AIWorkflow(models.Model):
     # Though these items are duplicated in the database tables for the submissions app,
     # and every workflow has a reference to a submission entry, this is okay because
     # submissions are immutable.
-    course_id = models.CharField(max_length=40, db_index=True)
+    course_id = models.CharField(max_length=255, db_index=True)
     item_id = models.CharField(max_length=128, db_index=True)
 
     # Timestamps
