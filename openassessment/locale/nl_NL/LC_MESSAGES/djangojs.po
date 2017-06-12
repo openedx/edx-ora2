@@ -3,14 +3,14 @@
 # This file is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.
 # 
 # Translators:
-# devette <herman@de-vette.nl>, 2014
+# devette <inactive+devette@transifex.com>, 2014
 # Liesbeth Volckaert <Liesbeth.Volckaert@kuleuven.be>, 2016
 # Tom Boeckx <s2mash@yahoo.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-02 17:48+0000\n"
+"POT-Creation-Date: 2017-06-12 19:18+0000\n"
 "PO-Revision-Date: 2017-06-02 17:49+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/open-edx/edx-platform/language/nl_NL/)\n"

@@ -5,7 +5,7 @@
 # Translators:
 # Anne <a.vangulick@hotmail.com>, 2014
 # Falco Langeveld, 2014
-# devette <herman@de-vette.nl>, 2014
+# devette <inactive+devette@transifex.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
