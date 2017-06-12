@@ -42,7 +42,7 @@
 # Sarina Canelake <sarina@edx.org>, 2014
 # Sébastien Viallemonteil <sebastien.viallemonteil@educagri.fr>, 2015
 # Sébastien Vigneau <sebastien.vigneau@gmail.com>, 2015
-# Serge Bibauw <inyarr@gmail.com>, 2016
+# Serge Bibauw <sbibauw@gmail.com>, 2016
 # SLOG90 <slog90@gmail.com>, 2014
 # Steven BERNARD <steven.bernard@u-paris2.fr>, 2014
 # Tahar <taharbrahmi@hotmail.fr>, 2015
@@ -55,7 +55,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-02 17:48+0000\n"
+"POT-Creation-Date: 2017-06-12 19:18+0000\n"
 "PO-Revision-Date: 2017-06-02 17:49+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: French (Canada) (http://www.transifex.com/open-edx/edx-platform/language/fr_CA/)\n"

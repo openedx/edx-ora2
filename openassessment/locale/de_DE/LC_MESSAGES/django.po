@@ -11,7 +11,7 @@
 # Ettore Atalan <atalanttore@googlemail.com>, 2014,2016
 # mc <marc.mannsfeld@phil.hhu.de>, 2015
 # mc <marc.mannsfeld@phil.hhu.de>, 2015-2016
-# naturella <grafpm@bluewin.ch>, 2016
+# naturella <inactive+PetraMaria@transifex.com>, 2016
 # v4rp1ng <inactive+v4rp1ng@transifex.com>, 2014
 # Ron Lucke <ronlucke@googlemail.com>, 2014
 # Ron Lucke <ronlucke@googlemail.com>, 2014
