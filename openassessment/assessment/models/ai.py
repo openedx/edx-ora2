@@ -414,6 +414,7 @@ class AIClassifierSet(models.Model):
 # an AWS S3 bucket.
 AI_CLASSIFIER_STORAGE = "ora2_ai_classifiers"
 
+
 def upload_to_path(instance, filename):    # pylint:disable=W0613
     """
     Calculate the file path where classifiers should be uploaded.
