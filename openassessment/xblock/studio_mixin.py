@@ -10,7 +10,7 @@ from xml import UpdateFromXmlError
 from django.conf import settings
 from django.template import Context
 from django.template.loader import get_template
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, ugettext_lazy
 from voluptuous import MultipleInvalid
 from xblock.core import XBlock
 from xblock.fields import List, Scope
@@ -45,9 +45,9 @@ class StudioMixin(object):
     ]
 
     NECESSITY_OPTIONS = {
-        "required": _("Required"),
-        "optional": _("Optional"),
-        "": _("None")
+        "required": ugettext_lazy("Required"),
+        "optional": ugettext_lazy("Optional"),
+        "": ugettext_lazy("None")
     }
 
     # Since the XBlock problem definition contains only assessment
