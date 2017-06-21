@@ -12,12 +12,12 @@
 # Zapadenska <oruda@ymail.com>, 2014
 # Tetiana Korshun, 2014
 # Tsybulska Karolina <kirakivuk@gmail.com>, 2014
-# Юра <yuraantonov11@gmail.com>, 2015
+# Юра Антонов <yuraantonov11@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: edx-platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-12 19:18+0000\n"
+"POT-Creation-Date: 2017-06-21 16:10+0000\n"
 "PO-Revision-Date: 2017-06-02 17:49+0000\n"
 "Last-Translator: Eric Fischer <efischer@edx.org>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/open-edx/edx-platform/language/uk/)\n"
