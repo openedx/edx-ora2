@@ -118,19 +118,7 @@ OpenAssessment.ResponseView.prototype = {
         );
 
         // Install click handler for the preview button
-        sel.find('.submission__preview').click(
-            function(eventObject) {
-                eventObject.preventDefault();
-                // extract typed-in response and replace newline with br
-                var previewText = sel.find('.submission__answer__part__text__value').val();
-                var previewContainer = sel.find('.preview_content');
-                previewContainer.html(previewText.replace(/\r\n|\r|\n/g,"<br />"));
-
-                // Render in mathjax
-                sel.find('.submission__preview__item').show();
-                MathJax.Hub.Queue(['Typeset', MathJax.Hub, previewContainer[0]]);
-            }
-        );
+        this.baseView.bindLatexPreview(sel);
 
         // Install a click handler for the save button
         sel.find('.file__upload').click(
