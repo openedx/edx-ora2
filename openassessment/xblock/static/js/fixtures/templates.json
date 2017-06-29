@@ -100,7 +100,8 @@
             "save_status": "This response has not been saved.",
             "submit_enabled": false,
             "submission_due": "",
-            "file_upload_type": "image"
+            "file_upload_type": "image",
+            "xblock_id": "b1436dfc-5c65-11e7-b5b2-080027880ca6"
         },
         "output": "oa_response.html"
     },
@@ -343,7 +344,8 @@
                         }
                     ]
                 }
-            ]
+            ],
+            "xblock_id": "b1436dfc-5c65-11e7-b5b2-080027880ca6"
         },
         "output": "oa_peer_assessment.html"
     },
@@ -1023,7 +1025,8 @@
                     "feedback": "required",
                     "options": []
                 }
-            ]
+            ],
+            "xblock_id": "b1436dfc-5c65-11e7-b5b2-080027880ca6"
         },
         "output": "oa_rubric.html"
     },
@@ -1230,7 +1233,8 @@
             },
             "save_status": "This response has not been saved.",
             "submit_enabled": true,
-            "submission_due": "2020-01-01T00:00"
+            "submission_due": "2020-01-01T00:00",
+            "xblock_id": "b1436dfc-5c65-11e7-b5b2-080027880ca6"
         },
         "output": "oa_response_date.html"
     },

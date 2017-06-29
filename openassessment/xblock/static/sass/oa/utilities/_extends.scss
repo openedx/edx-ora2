@@ -153,6 +153,57 @@
   overflow-y: scroll;
 }
 
+%action-items {
+  .response__submission__label {
+    @extend %t-score;
+    color: $copy-color;
+    display: inline-block;
+    vertical-align: middle;
+    @include margin-left(($baseline-h/4));
+
+    .list--actions {
+      @include text-align(left);
+    }
+  }
+
+  .list--actions__item {
+    @include text-align(left);
+    margin-top: 5px;
+  }
+
+  .action--save {
+    @extend %btn--secondary;
+    @extend %action-2;
+    display: block;
+    margin-bottom: ($baseline-v/2);
+    min-width: 215px;
+
+    @include media($bp-ds) {
+      display: inline-block;
+      @include margin-right(($baseline-v/2));
+      margin-bottom: 0;
+    }
+
+    @include media($bp-dm) {
+      display: inline-block;
+      @include margin-right(($baseline-v/2));
+      margin-bottom: 0;
+    }
+
+    @include media($bp-dl) {
+      display: inline-block;
+      @include margin-right(($baseline-v/2));
+      margin-bottom: 0;
+    }
+
+    @include media($bp-dx) {
+      display: inline-block;
+      @include margin-right(($baseline-v/2));
+      margin-bottom: 0;
+    }
+  }
+}
+
 // --------------------
 // UI: rubric
 // --------------------

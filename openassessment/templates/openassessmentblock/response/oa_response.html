@@ -87,6 +87,7 @@
                                     <textarea
                                         id="submission__answer__part__text__{{ forloop.counter }}__{{ xblock_id }}"
                                         class="submission__answer__part__text__value"
+                                        data-preview="submission"
                                         aria-labelledby="submission__answer__part__text__title__{{ forloop.counter }}__{{ xblock_id }}"
                                         aria-describedby="submission__answer__tip__{{ xblock_id }}"
                                         placeholder="{% trans "Enter your response to the question above." %}"
@@ -115,25 +116,7 @@
                                             {{ save_status }}
                                         </div>
                                     </li>
-                                    {% if allow_latex %}
-                                        <li class="list--actions__item">
-                                            <button type="submit" class="submission__preview  action action--save" aria-describedby="response__preview_explanation__{{ xblock_id }}"
-                                                {{submit_enabled|yesno:",disabled" }}>
-                                                {% trans "Preview in LaTeX"%}
-                                            </button>
-                                            <div id="response__preview_explanation__{{ xblock_id }}" class="response__submission__label">
-                                                {% trans "Click to preview your submission in LaTeX."%}
-                                            </div>
-                                        </li>
-                                        <li class="submission__preview__item list--actions__item">
-                                            <article class="submission__answer__display">
-                                                <h5 class="submission__answer__display__title">{% trans "Preview Response"%}</h5>
-                                                <div class="submission__answer__display__content">
-                                                    <p class="preview_content"></p>
-                                                </div>
-                                            </article>
-                                        </li>
-                                    {% endif %}
+                                    {% include "openassessmentblock/oa_latex_preview.html" with id="submission__"|add:xblock_id elem="li" preview_name="submission" %}
                                 </ul>
                             </div>
                         </li>
