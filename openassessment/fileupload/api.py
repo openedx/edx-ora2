@@ -7,11 +7,13 @@ URLs to the new location.
 
 from . import backends
 
+
 def get_upload_url(key, content_type):
     """
     Returns a url (absolute or relative, depending on the endpoint) which can be used to upload a file to.
     """
     return backends.get_backend().get_upload_url(key, content_type)
+
 
 def get_download_url(key):
     """
