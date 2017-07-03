@@ -300,9 +300,6 @@ class SelfAssessmentTest(OpenAssessmentTest):
         # Submit a response
         self.do_self_assessment()
 
-        # Check browser scrolled back to top of assessment
-        self.assertTrue(self.self_asmnt_page.is_on_top)
-
     @retry()
     @attr('acceptance')
     def test_latex(self):

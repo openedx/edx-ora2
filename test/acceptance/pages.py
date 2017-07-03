@@ -353,14 +353,6 @@ class AssessmentPage(OpenAssessmentPage, AssessmentMixin):
         return self.q(css=css_class).is_present()
 
     @property
-    def is_on_top(self):
-        # TODO: On top behavior needs to be better defined. It is defined here more accurately as "near-top".
-        # pos = self.browser.get_window_position()
-        # return pos['y'] < 100
-        # self.wait_for_element_visibility(".chapter.is-open", "Chapter heading is on visible", timeout=10)
-        return self.q(css=".chapter.is-open").visible
-
-    @property
     def response_text(self):
         """
         Retrieve the text of the response shown in the assessment.
