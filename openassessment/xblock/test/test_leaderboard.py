@@ -47,16 +47,16 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
     def test_show_submissions(self, xblock):
         # Create some submissions (but fewer than the max that can be shown)
         self._create_submissions_and_scores(xblock, [
-            (prepare_submission_for_serialization(("test answer 1 part 1", "test answer 1 part 2")), 1),
-            (prepare_submission_for_serialization(("test answer 2 part 1", "test answer 2 part 2")), 2)
+            (prepare_submission_for_serialization(('test answer 1 part 1', 'test answer 1 part 2')), 1),
+            (prepare_submission_for_serialization(('test answer 2 part 1', 'test answer 2 part 2')), 2)
         ])
         self._assert_scores(xblock, [
-            {"score": 2, "submission": create_submission_dict(
-                {"answer": prepare_submission_for_serialization((u"test answer 2 part 1", u"test answer 2 part 2"))},
+            {'score': 2, 'files': [], 'submission': create_submission_dict(
+                {'answer': prepare_submission_for_serialization((u'test answer 2 part 1', u'test answer 2 part 2'))},
                 xblock.prompts
             )},
-            {"score": 1, "submission": create_submission_dict(
-                {"answer": prepare_submission_for_serialization((u"test answer 1 part 1", u"test answer 1 part 2"))},
+            {'score': 1, 'files': [], 'submission': create_submission_dict(
+                {'answer': prepare_submission_for_serialization((u'test answer 1 part 1', u'test answer 1 part 2'))},
                 xblock.prompts
             )}
         ])
@@ -68,21 +68,21 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
 
         # Create more submissions than the max
         self._create_submissions_and_scores(xblock, [
-            (prepare_submission_for_serialization(("test answer 3 part 1", "test answer 3 part 2")), 0),
-            (prepare_submission_for_serialization(("test answer 4 part 1", "test answer 4 part 2")), 10),
-            (prepare_submission_for_serialization(("test answer 5 part 1", "test answer 5 part 2")), 3),
+            (prepare_submission_for_serialization(('test answer 3 part 1', 'test answer 3 part 2')), 0),
+            (prepare_submission_for_serialization(('test answer 4 part 1', 'test answer 4 part 2')), 10),
+            (prepare_submission_for_serialization(('test answer 5 part 1', 'test answer 5 part 2')), 3),
         ])
         self._assert_scores(xblock, [
-            {"score": 10, "submission": create_submission_dict(
-                {"answer": prepare_submission_for_serialization((u"test answer 4 part 1", u"test answer 4 part 2"))},
+            {'score': 10, 'files': [], 'submission': create_submission_dict(
+                {'answer': prepare_submission_for_serialization((u'test answer 4 part 1', u'test answer 4 part 2'))},
                 xblock.prompts
             )},
-            {"score": 3, "submission": create_submission_dict(
-                {"answer": prepare_submission_for_serialization((u"test answer 5 part 1", u"test answer 5 part 2"))},
+            {'score': 3, 'files': [], 'submission': create_submission_dict(
+                {'answer': prepare_submission_for_serialization((u'test answer 5 part 1', u'test answer 5 part 2'))},
                 xblock.prompts
             )},
-            {"score": 2, "submission": create_submission_dict(
-                {"answer": prepare_submission_for_serialization((u"test answer 2 part 1", u"test answer 2 part 2"))},
+            {'score': 2, 'files': [], 'submission': create_submission_dict(
+                {'answer': prepare_submission_for_serialization((u'test answer 2 part 1', u'test answer 2 part 2'))},
                 xblock.prompts
             )}
         ])
@@ -92,12 +92,12 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
     def test_show_submissions_that_have_greater_than_0_score(self, xblock):
         # Create some submissions (but fewer than the max that can be shown)
         self._create_submissions_and_scores(xblock, [
-            (prepare_submission_for_serialization(("test answer 0 part 1", "test answer 0 part 2")), 0),
-            (prepare_submission_for_serialization(("test answer 1 part 1", "test answer 1 part 2")), 1)
+            (prepare_submission_for_serialization(('test answer 0 part 1', 'test answer 0 part 2')), 0),
+            (prepare_submission_for_serialization(('test answer 1 part 1', 'test answer 1 part 2')), 1)
         ])
         self._assert_scores(xblock, [
-            {"score": 1, "submission": create_submission_dict(
-                {"answer": prepare_submission_for_serialization((u"test answer 1 part 1", u"test answer 1 part 2"))},
+            {'score': 1, 'files': [], 'submission': create_submission_dict(
+                {'answer': prepare_submission_for_serialization((u'test answer 1 part 1', u'test answer 1 part 2'))},
                 xblock.prompts
             )},
         ])
@@ -109,16 +109,16 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
 
         # Create more submissions than the max
         self._create_submissions_and_scores(xblock, [
-            (prepare_submission_for_serialization(("test answer 2 part 1", "test answer 2 part 2")), 10),
-            (prepare_submission_for_serialization(("test answer 3 part 1", "test answer 3 part 2")), 0)
+            (prepare_submission_for_serialization(('test answer 2 part 1', 'test answer 2 part 2')), 10),
+            (prepare_submission_for_serialization(('test answer 3 part 1', 'test answer 3 part 2')), 0)
         ])
         self._assert_scores(xblock, [
-            {"score": 10, "submission": create_submission_dict(
-                {"answer": prepare_submission_for_serialization((u"test answer 2 part 1", u"test answer 2 part 2"))},
+            {'score': 10, 'files': [], 'submission': create_submission_dict(
+                {'answer': prepare_submission_for_serialization((u'test answer 2 part 1', u'test answer 2 part 2'))},
                 xblock.prompts
             )},
-            {"score": 1, "submission": create_submission_dict(
-                {"answer": prepare_submission_for_serialization((u"test answer 1 part 1", u"test answer 1 part 2"))},
+            {'score': 1, 'files': [], 'submission': create_submission_dict(
+                {'answer': prepare_submission_for_serialization((u'test answer 1 part 1', u'test answer 1 part 2'))},
                 xblock.prompts
             )}
         ])
@@ -127,60 +127,105 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
     @scenario('data/leaderboard_show.xml')
     def test_no_text_key_submission(self, xblock):
         self.maxDiff = None
-        # Instead of using the default submission as a dict with "text",
+        # Instead of using the default submission as a dict with 'text',
         # make the submission a string.
-        self._create_submissions_and_scores(xblock, [("test answer", 1)], submission_key=None)
+        self._create_submissions_and_scores(xblock, [('test answer', 1)], submission_key=None)
 
         # It should still work
         self._assert_scores(xblock, [
-            {"score": 1}
+            {'score': 1, 'files': []}
         ])
 
     @mock_s3
     @override_settings(
         AWS_ACCESS_KEY_ID='foobar',
         AWS_SECRET_ACCESS_KEY='bizbaz',
-        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
+        FILE_UPLOAD_STORAGE_BUCKET_NAME='mybucket'
     )
     @scenario('data/leaderboard_show.xml')
     def test_non_text_submission(self, xblock):
         # Create a mock bucket
         conn = boto.connect_s3()
         bucket = conn.create_bucket('mybucket')
-        # Create a non-text submission (the submission dict doesn't contain "text")
-        self._create_submissions_and_scores(xblock, [("s3key", 1)], submission_key="file_key")
+        # Create a non-text submission (the submission dict doesn't contain 'text')
+        self._create_submissions_and_scores(xblock, [('s3key', 1)], submission_key='file_key')
 
         # Expect that we default to an empty string for content
         self._assert_scores(xblock, [
-            {"submission": "", "score": 1, "file": ""}
+            {'score': 1, 'files': [], 'submission': ''}
         ])
 
     @mock_s3
     @override_settings(
         AWS_ACCESS_KEY_ID='foobar',
         AWS_SECRET_ACCESS_KEY='bizbaz',
-        FILE_UPLOAD_STORAGE_BUCKET_NAME="mybucket"
+        FILE_UPLOAD_STORAGE_BUCKET_NAME='mybucket'
+    )
+    @scenario('data/leaderboard_show_allowfiles.xml')
+    def test_image_and_text_submission_multiple_files(self, xblock):
+        """
+        Tests that leaderboard works as expected when multiple files are uploaded
+        """
+        file_keys = ['foo', 'bar']
+        file_descriptions = ['{}-description'.format(file_key) for file_key in file_keys]
+
+        conn = boto.connect_s3()
+        bucket = conn.create_bucket('mybucket')
+        for file_key in file_keys:
+            key = Key(bucket, 'submissions_attachments/{}'.format(file_key))
+            key.set_contents_from_string("How d'ya do?")
+            files_url_and_description = [
+                (api.get_download_url(file_key), file_descriptions[idx])
+                for idx, file_key in enumerate(file_keys)
+                ]
+
+        # Create a image and text submission
+        submission = prepare_submission_for_serialization(('test answer 1 part 1', 'test answer 1 part 2'))
+        submission[u'file_keys'] = file_keys
+        submission[u'files_descriptions'] = file_descriptions
+
+        self._create_submissions_and_scores(xblock, [
+            (submission, 1)
+        ])
+
+        self.maxDiff = None
+        # Expect that we retrieve both the text and the download URL for the file
+        self._assert_scores(xblock, [
+            {'score': 1, 'files': files_url_and_description, 'submission': create_submission_dict(
+                {'answer': submission},
+                xblock.prompts
+            )}
+        ])
+
+    @mock_s3
+    @override_settings(
+        AWS_ACCESS_KEY_ID='foobar',
+        AWS_SECRET_ACCESS_KEY='bizbaz',
+        FILE_UPLOAD_STORAGE_BUCKET_NAME='mybucket'
     )
     @scenario('data/leaderboard_show_allowfiles.xml')
     def test_image_and_text_submission(self, xblock):
+        """
+        Tests that text and image submission works as expected
+        """
         # Create a file and get the download URL
         conn = boto.connect_s3()
         bucket = conn.create_bucket('mybucket')
-        key = Key(bucket)
-        key.key = "submissions_attachments/foo"
+        key = Key(bucket, 'submissions_attachments/foo')
         key.set_contents_from_string("How d'ya do?")
-        downloadUrl = api.get_download_url("foo")
+
+        file_download_url = [(api.get_download_url('foo'), '')]
         # Create a image and text submission
-        submission = prepare_submission_for_serialization(("test answer 1 part 1", "test answer 1 part 2"))
-        submission[u"file_key"] = "foo"
+        submission = prepare_submission_for_serialization(('test answer 1 part 1', 'test answer 1 part 2'))
+        submission[u'file_key'] = 'foo'
         self._create_submissions_and_scores(xblock, [
             (submission, 1)
         ])
         self.maxDiff = None
         # Expect that we retrieve both the text and the download URL for the file
         self._assert_scores(xblock, [
-            {"file": downloadUrl, "score": 1, "submission": create_submission_dict(
-                {"answer": submission},
+            {'score': 1, 'files': file_download_url, 'submission': create_submission_dict(
+                {'answer': submission},
                 xblock.prompts
             )}
         ])
@@ -209,7 +254,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
             # to anything without affecting the test.
             student_item = xblock.get_student_item_dict()
             # adding rand number to the student_id to make it unique.
-            student_item['student_id'] = "student {num} {num2}".format(num=num, num2=randint(2, 1000))
+            student_item['student_id'] = 'student {num} {num2}'.format(num=num, num2=randint(2, 1000))
             if submission_key is not None:
                 answer = {submission_key: submission}
             else:
@@ -278,9 +323,9 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
 
         # Strip query string parameters from the file URLs, since these are time-dependent
         # (expiration and signature)
-        if "topscores" in expected_context:
-            context["topscores"] = self._clean_score_filenames(context["topscores"])
-            expected_context["topscores"] = self._clean_score_filenames(context["topscores"])
+        if 'topscores' in expected_context:
+            context['topscores'] = self._clean_score_filenames(context['topscores'])
+            expected_context['topscores'] = self._clean_score_filenames(expected_context['topscores'])
 
         self.assertEqual(path, expected_path)
         self.assertEqual(context, expected_context)
@@ -293,7 +338,7 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         """
         Check that the leaderboard is displayed in the student view.
         """
-        fragment = self.runtime.render(xblock, "student_view")
+        fragment = self.runtime.render(xblock, 'student_view')
         has_leaderboard = 'step--leaderboard' in fragment.body_html()
         self.assertEqual(has_leaderboard, is_visible)
 
@@ -301,9 +346,14 @@ class TestLeaderboardRender(XBlockHandlerTransactionTestCase):
         """
         Remove querystring parameters from the file name of the score.
         """
-        for score in scores:
-            if score.get("file"):
-                url = urlparse(score["file"])
-                score["file"] = url.scheme + "://" + url.netloc + url.path
+        def _clean_query_string(_file_url):
+            url = urlparse(_file_url)
+            return url.scheme + '://' + url.netloc + url.path
 
+        for score in scores:
+            if score.get('files'):
+                score['files'] = [
+                    (_clean_query_string(file_info[0]), file_info[1]) for file_info in score['files']
+                ]
         return scores
+
